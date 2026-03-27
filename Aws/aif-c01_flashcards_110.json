@@ -1,0 +1,2422 @@
+[
+  {
+    "id": 1,
+    "domain": "Applications of Foundation Models (28%)",
+    "question_ja": "AIF-C01で最も出題比率が高いドメインはどれですか？",
+    "answer": "C",
+    "explanation_ja": "AIF-C01ではFoundation Modelsの活用設計・評価が最大の配点（約28%）です。",
+    "difficulty": "用語",
+    "question_en": "Which domain has the highest weighting in AIF-C01?",
+    "choices_ja": {
+      "A": "Fundamentals of AI/ML (20%)",
+      "B": "Fundamentals of Generative AI (24%)",
+      "C": "Applications of Foundation Models (28%)",
+      "D": "Responsible AI (14%)"
+    },
+    "choices_en": {
+      "A": "Fundamentals of AI/ML (20%)",
+      "B": "Fundamentals of Generative AI (24%)",
+      "C": "Applications of Foundation Models (28%)",
+      "D": "Responsible AI (14%)"
+    },
+    "explanation_en": "AIF-C01 emphasizes using foundation models (~28%)."
+  },
+  {
+    "id": 2,
+    "domain": "Generative AI Fundamentals (24%)",
+    "question_ja": "Embeddingの主な役割はどれですか？",
+    "answer": "B",
+    "explanation_ja": "Embeddingは意味空間への写像であり、検索・RAG・類似度計算の基盤になります。",
+    "difficulty": "用語",
+    "question_en": "What is the main role of an embedding?",
+    "choices_ja": {
+      "A": "モデルの重みを暗号化して漏えいを防ぐ",
+      "B": "テキストや画像を数値ベクトルに変換し意味的な近さを計算できるようにする",
+      "C": "推論レイテンシを短縮するためにGPUを自動スケールする",
+      "D": "学習率を自動で調整して収束を早める"
+    },
+    "choices_en": {
+      "A": "Encrypt model weights to prevent leaks",
+      "B": "Map text/images into numeric vectors to compute semantic similarity",
+      "C": "Autoscale GPUs to reduce latency",
+      "D": "Auto-tune learning rate for faster convergence"
+    },
+    "explanation_en": "Embeddings map content into vector space for similarity/RAG."
+  },
+  {
+    "id": 3,
+    "domain": "Generative AI Fundamentals (24%)",
+    "question_ja": "トークンとコンテキストウィンドウに関する説明として正しいものはどれですか？",
+    "answer": "B",
+    "explanation_ja": "トークンはサブワード等に分割された単位で、モデルはコンテキストウィンドウ上限までを一度に扱えます。",
+    "difficulty": "用語",
+    "question_en": "Which statement about tokens and context window is correct?",
+    "choices_ja": {
+      "A": "トークン=文字数、常に1文字=1トークン",
+      "B": "コンテキストウィンドウは同時に保持できるトークンの上限を表す",
+      "C": "トークンはGPU数と同じ意味",
+      "D": "コンテキストウィンドウは学習用にしか使われない"
+    },
+    "choices_en": {
+      "A": "1 character is always 1 token",
+      "B": "The context window is the max tokens the model can handle at once",
+      "C": "Tokens equal the number of GPUs",
+      "D": "Context window is only for training"
+    },
+    "explanation_en": "The context window caps the tokens handled at once."
+  },
+  {
+    "id": 4,
+    "domain": "Applications of Foundation Models (28%)",
+    "question_ja": "Amazon Bedrockの主な目的として最も適切なのはどれですか？",
+    "answer": "B",
+    "explanation_ja": "BedrockはFM/LLMの選択・推論・ガードレール・RAGなどをマネージドに提供します。",
+    "difficulty": "設計",
+    "question_en": "What is the primary purpose of Amazon Bedrock?",
+    "choices_ja": {
+      "A": "自前のGPUクラスター管理のみを提供するサービス",
+      "B": "複数ベンダの基盤モデル(FM/LLM)をAPIで統一的に利用し、RAG/Guardrails等の機能も提供",
+      "C": "専用の機械学習IDEで学術研究に限定した用途",
+      "D": "ETLジョブのスケジューラー"
+    },
+    "choices_en": {
+      "A": "Only provides DIY GPU cluster management",
+      "B": "Unified API to multiple FMs/LLMs with RAG/guardrails features",
+      "C": "An IDE for academic research only",
+      "D": "A scheduler for ETL jobs"
+    },
+    "explanation_en": "Bedrock offers unified FM access plus RAG/guardrails."
+  },
+  {
+    "id": 5,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "question_ja": "教師あり学習・教師なし学習の典型的な組み合わせとして正しいものはどれですか？",
+    "answer": "B",
+    "explanation_ja": "教師ありは正解ラベルあり（分類・回帰）、教師なしはラベルなし（クラスタリング・PCA等）が代表例です。",
+    "difficulty": "用語",
+    "question_en": "Which pairing of supervised vs. unsupervised learning is correct?",
+    "choices_ja": {
+      "A": "教師あり=クラスタリング、教師なし=回帰",
+      "B": "教師あり=分類/回帰、教師なし=クラスタリング/次元削減",
+      "C": "教師あり=Q学習、教師なし=ポリシー勾配",
+      "D": "教師あり=主成分分析、教師なし=ランダムフォレスト"
+    },
+    "choices_en": {
+      "A": "Supervised=Clustering, Unsupervised=Regression",
+      "B": "Supervised=Classification/Regression, Unsupervised=Clustering/Dimensionality reduction",
+      "C": "Supervised=Q-learning, Unsupervised=Policy gradient",
+      "D": "Supervised=PCA, Unsupervised=Random Forest"
+    },
+    "explanation_en": "Supervised=classification/regression, Unsupervised=clustering/PCA."
+  },
+  {
+    "id": 6,
+    "domain": "Applications of Foundation Models (28%)",
+    "question_ja": "RAG（Retrieval Augmented Generation）の目的として最も適切なのはどれですか？",
+    "answer": "B",
+    "explanation_ja": "RAGは検索した社内・最新情報をプロンプトに注入し、事実性・更新性を高めます。",
+    "difficulty": "設計",
+    "question_en": "What is the goal of Retrieval Augmented Generation (RAG)?",
+    "choices_ja": {
+      "A": "GPUコストをゼロにする",
+      "B": "モデルを再学習せずに外部知識で回答を根拠付け、最新/私有データで幻覚を抑制する",
+      "C": "モデルのパラメータ数を増やして精度を上げる",
+      "D": "ネットワーク帯域の削減のみを目的にする"
+    },
+    "choices_en": {
+      "A": "Reduce GPU cost to zero",
+      "B": "Ground answers with external knowledge without retraining to reduce hallucinations",
+      "C": "Increase parameter count to improve accuracy",
+      "D": "Only reduce network bandwidth"
+    },
+    "explanation_en": "RAG grounds outputs with external knowledge to cut hallucinations."
+  },
+  {
+    "id": 7,
+    "domain": "Responsible AI (14%)",
+    "question_ja": "Amazon SageMaker ClarifyとModel Cardsの組み合わせで主に達成できることはどれですか？",
+    "answer": "B",
+    "explanation_ja": "Clarifyはバイアスや説明性を分析し、Model Cardsはモデルの目的・データ・評価等を文書化します。",
+    "difficulty": "設計",
+    "question_en": "What do SageMaker Clarify and Model Cards mainly help you achieve?",
+    "choices_ja": {
+      "A": "GPUの自動スケールと分散学習の最適化",
+      "B": "バイアス検出/説明可能性の分析と、モデルのドキュメンテーション・透明性の向上",
+      "C": "コストの自動課金停止",
+      "D": "リアルタイム翻訳"
+    },
+    "choices_en": {
+      "A": "Autoscale GPUs and optimize distributed training",
+      "B": "Bias detection/explainability and stronger model documentation/transparency",
+      "C": "Auto-stop billing",
+      "D": "Real-time translation"
+    },
+    "explanation_en": "Clarify analyzes bias/explainability; Model Cards document models."
+  },
+  {
+    "id": 8,
+    "domain": "Security, Compliance & Governance (14%)",
+    "question_ja": "生成AIアプリのセキュリティ設計として最も適切な選択はどれですか？",
+    "answer": "B",
+    "explanation_ja": "最小権限・暗号化・監査・PII管理はAIF-C01の重要論点です。",
+    "difficulty": "設計",
+    "question_en": "Which is the best security choice for a GenAI app?",
+    "choices_ja": {
+      "A": "IAMはAdministratorAccessをすべてのロールに付与する",
+      "B": "KMSで暗号化、最小権限IAM、PII対策、監査ログでガバナンスを担保する",
+      "C": "S3のパブリックアクセスを無効化しない",
+      "D": "プロンプトと出力は無期限で外部に送信して保存する"
+    },
+    "choices_en": {
+      "A": "Give AdministratorAccess to all roles",
+      "B": "Use KMS encryption, least-privilege IAM, PII controls, and audit logs for governance",
+      "C": "Do not disable S3 public access",
+      "D": "Send and store prompts/outputs externally forever"
+    },
+    "explanation_en": "Encrypt, least privilege, PII controls, and auditing are best practice."
+  },
+  {
+    "id": 9,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "question_ja": "分類問題の評価指標として“適合率(Precision)”と“再現率(Recall)”の関係を最も正しく説明しているものはどれですか？",
+    "answer": "C",
+    "explanation_ja": "Precisionは“予測陽性のうち正しい割合”、Recallは“実際の陽性をどれだけ拾えたか”を表します。",
+    "difficulty": "用語",
+    "question_en": "Which correctly describes Precision and Recall?",
+    "choices_ja": {
+      "A": "Precisionは真陽性/（真陽性+偽陰性）",
+      "B": "Recallは真陽性/（真陽性+偽陽性）",
+      "C": "Precisionは真陽性/（真陽性+偽陽性）、Recallは真陽性/（真陽性+偽陰性）",
+      "D": "どちらもAccuracyと同じ"
+    },
+    "choices_en": {
+      "A": "Precision = TP / (TP + FN)",
+      "B": "Recall = TP / (TP + FP)",
+      "C": "Precision = TP / (TP + FP), Recall = TP / (TP + FN)",
+      "D": "Both are the same as Accuracy"
+    },
+    "explanation_en": "Precision=TP/(TP+FP), Recall=TP/(TP+FN)."
+  },
+  {
+    "id": 10,
+    "domain": "Responsible AI (14%)",
+    "question_ja": "大規模言語モデルの“幻覚(hallucination)”対策として最も適切なのはどれですか？",
+    "answer": "B",
+    "explanation_ja": "根拠の提示・評価・ガードレール設定はResponsible AIの中核です。",
+    "difficulty": "ケース",
+    "question_en": "Which is an appropriate mitigation for LLM hallucinations?",
+    "choices_ja": {
+      "A": "温度(temperature)を常に最大にする",
+      "B": "RAGで根拠資料を添える、プロンプトで根拠の引用を要求、出力を評価・ガードレールで制御する",
+      "C": "最大トークン数を0にする",
+      "D": "学習データをすべて削除する"
+    },
+    "choices_en": {
+      "A": "Always set temperature to maximum",
+      "B": "Use RAG with citations, prompt for sources, and apply guardrails/evaluation",
+      "C": "Set max tokens to 0",
+      "D": "Delete all training data"
+    },
+    "explanation_en": "Mitigate hallucinations with RAG, citations, evaluation, guardrails."
+  },
+  {
+    "id": 11,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "用語",
+    "question_ja": "Temperature/Top-p に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Temperature/Top-p?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 12,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でPrompt Engineeringを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Prompt Engineering?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 13,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 少数例提示を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Providing few examples. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 14,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "用語",
+    "question_ja": "Guardrails に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Guardrails?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 15,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でKnowledge Bases for Bedrockを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Knowledge Bases for Bedrock?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 16,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: セマンティック検索を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Semantic search. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 17,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "用語",
+    "question_ja": "OpenSearch Serverless Vector に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes OpenSearch Serverless Vector?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 18,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でSageMaker JumpStartを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using SageMaker JumpStart?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 19,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: バイアス/説明可能性を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Bias & explainability. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 20,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "用語",
+    "question_ja": "Data Privacy/PII に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Data Privacy/PII?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 21,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でTemperature/Top-pを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Temperature/Top-p?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 22,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: プロンプトの構造化を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Structuring prompts. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 23,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "用語",
+    "question_ja": "Few-shot/Zero-shot に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Few-shot/Zero-shot?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 24,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でGuardrailsを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Guardrails?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 25,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: KB/RAG統合を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Managed KB/RAG integration. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 26,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "用語",
+    "question_ja": "Amazon Kendra に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Amazon Kendra?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 27,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でOpenSearch Serverless Vectorを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using OpenSearch Serverless Vector?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 28,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: モデルの発見/展開を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Discover/deploy models. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 29,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "用語",
+    "question_ja": "SageMaker Clarify に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes SageMaker Clarify?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 30,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でData Privacy/PIIを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Data Privacy/PII?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 31,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 生成AIの出力多様性制御を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Controlling output diversity. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 32,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "用語",
+    "question_ja": "Prompt Engineering に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Prompt Engineering?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 33,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でFew-shot/Zero-shotを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Few-shot/Zero-shot?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 34,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 不適切出力の制御を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Controlling unsafe outputs. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 35,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "用語",
+    "question_ja": "Knowledge Bases for Bedrock に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Knowledge Bases for Bedrock?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 36,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でAmazon Kendraを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Amazon Kendra?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 37,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: ベクターストアを必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Vector store. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 38,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "用語",
+    "question_ja": "SageMaker JumpStart に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes SageMaker JumpStart?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 39,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でSageMaker Clarifyを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using SageMaker Clarify?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 40,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 個人情報対策を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires PII handling. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 41,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "用語",
+    "question_ja": "Temperature/Top-p に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Temperature/Top-p?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 42,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でPrompt Engineeringを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Prompt Engineering?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 43,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 少数例提示を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Providing few examples. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 44,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "用語",
+    "question_ja": "Guardrails に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Guardrails?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 45,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でKnowledge Bases for Bedrockを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Knowledge Bases for Bedrock?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 46,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: セマンティック検索を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Semantic search. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 47,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "用語",
+    "question_ja": "OpenSearch Serverless Vector に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes OpenSearch Serverless Vector?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 48,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でSageMaker JumpStartを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using SageMaker JumpStart?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 49,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: バイアス/説明可能性を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Bias & explainability. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 50,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "用語",
+    "question_ja": "Data Privacy/PII に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Data Privacy/PII?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 51,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でTemperature/Top-pを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Temperature/Top-p?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 52,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: プロンプトの構造化を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Structuring prompts. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 53,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "用語",
+    "question_ja": "Few-shot/Zero-shot に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Few-shot/Zero-shot?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 54,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でGuardrailsを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Guardrails?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 55,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: KB/RAG統合を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Managed KB/RAG integration. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 56,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "用語",
+    "question_ja": "Amazon Kendra に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Amazon Kendra?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 57,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でOpenSearch Serverless Vectorを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using OpenSearch Serverless Vector?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 58,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: モデルの発見/展開を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Discover/deploy models. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 59,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "用語",
+    "question_ja": "SageMaker Clarify に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes SageMaker Clarify?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 60,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でData Privacy/PIIを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Data Privacy/PII?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 61,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 生成AIの出力多様性制御を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Controlling output diversity. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 62,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "用語",
+    "question_ja": "Prompt Engineering に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Prompt Engineering?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 63,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でFew-shot/Zero-shotを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Few-shot/Zero-shot?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 64,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 不適切出力の制御を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Controlling unsafe outputs. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 65,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "用語",
+    "question_ja": "Knowledge Bases for Bedrock に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Knowledge Bases for Bedrock?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 66,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でAmazon Kendraを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Amazon Kendra?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 67,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: ベクターストアを必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Vector store. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 68,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "用語",
+    "question_ja": "SageMaker JumpStart に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes SageMaker JumpStart?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 69,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でSageMaker Clarifyを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using SageMaker Clarify?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 70,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 個人情報対策を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires PII handling. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 71,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "用語",
+    "question_ja": "Temperature/Top-p に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Temperature/Top-p?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 72,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でPrompt Engineeringを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Prompt Engineering?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 73,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 少数例提示を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Providing few examples. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 74,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "用語",
+    "question_ja": "Guardrails に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Guardrails?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 75,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でKnowledge Bases for Bedrockを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Knowledge Bases for Bedrock?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 76,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: セマンティック検索を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Semantic search. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 77,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "用語",
+    "question_ja": "OpenSearch Serverless Vector に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes OpenSearch Serverless Vector?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 78,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でSageMaker JumpStartを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using SageMaker JumpStart?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 79,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: バイアス/説明可能性を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Bias & explainability. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 80,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "用語",
+    "question_ja": "Data Privacy/PII に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Data Privacy/PII?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 81,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でTemperature/Top-pを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Temperature/Top-p?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 82,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: プロンプトの構造化を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Structuring prompts. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 83,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "用語",
+    "question_ja": "Few-shot/Zero-shot に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Few-shot/Zero-shot?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 84,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でGuardrailsを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Guardrails?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 85,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: KB/RAG統合を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Managed KB/RAG integration. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 86,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "用語",
+    "question_ja": "Amazon Kendra に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Amazon Kendra?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 87,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でOpenSearch Serverless Vectorを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using OpenSearch Serverless Vector?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 88,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: モデルの発見/展開を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Discover/deploy models. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 89,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "用語",
+    "question_ja": "SageMaker Clarify に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes SageMaker Clarify?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 90,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でData Privacy/PIIを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Data Privacy/PII?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 91,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 生成AIの出力多様性制御を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Controlling output diversity. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 92,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "用語",
+    "question_ja": "Prompt Engineering に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Prompt Engineering?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 93,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でFew-shot/Zero-shotを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Few-shot/Zero-shot?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 94,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 不適切出力の制御を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Controlling unsafe outputs. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 95,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "用語",
+    "question_ja": "Knowledge Bases for Bedrock に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Knowledge Bases for Bedrock?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 96,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でAmazon Kendraを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Amazon Kendra?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 97,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: ベクターストアを必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Vector store. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 98,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "用語",
+    "question_ja": "SageMaker JumpStart に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes SageMaker JumpStart?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 99,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でSageMaker Clarifyを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using SageMaker Clarify?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 100,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 個人情報対策を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires PII handling. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  },
+  {
+    "id": 101,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "用語",
+    "question_ja": "Temperature/Top-p に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Temperature/Top-p?",
+    "choices_ja": {
+      "A": "常に精度を最大化するための損失関数",
+      "B": "サンプリングの多様性を制御するハイパーパラメータ",
+      "C": "GPUメモリ容量の指標",
+      "D": "学習データの前処理手順"
+    },
+    "choices_en": {
+      "A": "A loss that always maximizes accuracy",
+      "B": "Hyperparameters that control sampling diversity",
+      "C": "A metric of GPU memory",
+      "D": "A data preprocessing step"
+    },
+    "answer": "B",
+    "explanation_ja": "温度/Top-pは確率分布からのサンプリング多様性を調整します。",
+    "explanation_en": "Temperature/Top-p tune sampling diversity."
+  },
+  {
+    "id": 102,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でPrompt Engineeringを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Prompt Engineering?",
+    "choices_ja": {
+      "A": "モデルの重みを直接変更する",
+      "B": "学習データの分布を再学習なしで変更する",
+      "C": "役割・指示・制約・形式を明確化して出力品質を高める",
+      "D": "GPU台数を自動増減させる仕組み"
+    },
+    "choices_en": {
+      "A": "Directly change model weights",
+      "B": "Change data distribution without retraining",
+      "C": "Clarify role/instructions/constraints/format",
+      "D": "Mechanism to autoscale GPUs"
+    },
+    "answer": "C",
+    "explanation_ja": "役割・制約・評価基準を明確化すると安定化します。",
+    "explanation_en": "Clear role/constraints/criteria yield more stable outputs."
+  },
+  {
+    "id": 103,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: 少数例提示を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Providing few examples. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "例を多く与えるほど過学習が進むため不可",
+      "B": "数例のデモを入れるとタスク理解が安定しやすい",
+      "C": "出力トークンを必ず削減できる",
+      "D": "温度を0にする必要がある"
+    },
+    "choices_en": {
+      "A": "Many examples always cause overfitting",
+      "B": "A few demos can stabilize task understanding",
+      "C": "Always reduces output tokens",
+      "D": "Requires temperature=0"
+    },
+    "answer": "B",
+    "explanation_ja": "Few-shotで指示解釈が安定します。",
+    "explanation_en": "Few-shot demos often stabilize task following."
+  },
+  {
+    "id": 104,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "用語",
+    "question_ja": "Guardrails に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Guardrails?",
+    "choices_ja": {
+      "A": "推論レイテンシを下げるGPU設定",
+      "B": "コスト自動最適化のみを行う機能",
+      "C": "S3の整合性制御機能",
+      "D": "コンテンツポリシー/PII/トピック制限などの出力制御"
+    },
+    "choices_en": {
+      "A": "GPU setting for lower latency",
+      "B": "Cost-only optimization feature",
+      "C": "S3 consistency feature",
+      "D": "Policy/PII/topic constraints on outputs"
+    },
+    "answer": "D",
+    "explanation_ja": "ポリシーベースで出力を制御します。",
+    "explanation_en": "Policy-based output control."
+  },
+  {
+    "id": 105,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でKnowledge Bases for Bedrockを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using Knowledge Bases for Bedrock?",
+    "choices_ja": {
+      "A": "Bedrockで学習用GPUを貸し出す機能",
+      "B": "ソース接続・取り込み・埋め込み・検索の統合",
+      "C": "Kendra専用の別サービス",
+      "D": "IAMの代替"
+    },
+    "choices_en": {
+      "A": "GPU rental for training",
+      "B": "Integrates sources, ingestion, embeddings, search",
+      "C": "Separate Kendra-only service",
+      "D": "Replacement for IAM"
+    },
+    "answer": "B",
+    "explanation_ja": "取り込み〜検索までを一貫管理できます。",
+    "explanation_en": "Manages ingestion-to-retrieval end-to-end."
+  },
+  {
+    "id": 106,
+    "domain": "Fundamentals of AI/ML (20%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: セマンティック検索を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Semantic search. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "企業ドキュメント検索のマネージドサービス",
+      "B": "GPUスケジューラー",
+      "C": "ETL専用エンジン",
+      "D": "DDoS緩和専用サービス"
+    },
+    "choices_en": {
+      "A": "Managed enterprise document search",
+      "B": "GPU scheduler",
+      "C": "ETL engine",
+      "D": "DDoS mitigation service"
+    },
+    "answer": "A",
+    "explanation_ja": "FAQ/ドキュメント検索を高精度に提供します。",
+    "explanation_en": "High-quality enterprise doc/FAQ search."
+  },
+  {
+    "id": 107,
+    "domain": "Generative AI Fundamentals (24%)",
+    "difficulty": "用語",
+    "question_ja": "OpenSearch Serverless Vector に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes OpenSearch Serverless Vector?",
+    "choices_ja": {
+      "A": "画像生成専用エンジン",
+      "B": "GPUメトリクス管理",
+      "C": "ベクトル類似検索を提供する",
+      "D": "IAMポリシー言語"
+    },
+    "choices_en": {
+      "A": "Image-only engine",
+      "B": "GPU metrics",
+      "C": "Provides vector similarity search",
+      "D": "IAM policy language"
+    },
+    "answer": "C",
+    "explanation_ja": "埋め込み向けの類似検索を提供します。",
+    "explanation_en": "Supports similarity search for embeddings."
+  },
+  {
+    "id": 108,
+    "domain": "Applications of Foundation Models (28%)",
+    "difficulty": "設計",
+    "question_ja": "生成AIワークロード設計でSageMaker JumpStartを正しく使う目的として適切なのはどれですか？",
+    "question_en": "In GenAI solution design, what is an appropriate purpose for using SageMaker JumpStart?",
+    "choices_ja": {
+      "A": "課金停止のみ",
+      "B": "事前ビルドの解決策やモデルを簡単に展開",
+      "C": "Lambdaの代替",
+      "D": "プロンプトのテンプレート言語"
+    },
+    "choices_en": {
+      "A": "Billing stop only",
+      "B": "Deploy prebuilt solutions/models easily",
+      "C": "Lambda replacement",
+      "D": "Prompt template language"
+    },
+    "answer": "B",
+    "explanation_ja": "テンプレートから素早くPoC可能。",
+    "explanation_en": "Templates enable quick PoCs."
+  },
+  {
+    "id": 109,
+    "domain": "Responsible AI (14%)",
+    "difficulty": "ケース",
+    "question_ja": "ケース: バイアス/説明可能性を必要とする社内QAボットの要件です。最も妥当な選択はどれですか？",
+    "question_en": "Case: An internal QA bot requires Bias & explainability. What is the most appropriate choice?",
+    "choices_ja": {
+      "A": "データ/モデルのバイアス検出や説明可能性評価",
+      "B": "S3暗号化",
+      "C": "Edge推論",
+      "D": "DDoS対策"
+    },
+    "choices_en": {
+      "A": "Bias detection and explainability",
+      "B": "S3 encryption",
+      "C": "Edge inference",
+      "D": "DDoS protection"
+    },
+    "answer": "A",
+    "explanation_ja": "Responsible AIで重要な機能です。",
+    "explanation_en": "Core to Responsible AI on AWS."
+  },
+  {
+    "id": 110,
+    "domain": "Security, Compliance & Governance (14%)",
+    "difficulty": "用語",
+    "question_ja": "Data Privacy/PII に関する最も適切な説明はどれですか？",
+    "question_en": "Which statement best describes Data Privacy/PII?",
+    "choices_ja": {
+      "A": "常に公開S3に保存する",
+      "B": "暗号化は不要",
+      "C": "KMS暗号化/マスキング/最小権限/IAM・CloudTrail監査",
+      "D": "外部に無期限で送る"
+    },
+    "choices_en": {
+      "A": "Always store in public S3",
+      "B": "No need to encrypt",
+      "C": "KMS encryption, masking, least privilege, auditing",
+      "D": "Send externally forever"
+    },
+    "answer": "C",
+    "explanation_ja": "PIIは最小権限・暗号化・監査が基本。",
+    "explanation_en": "Use least privilege, encryption, audit."
+  }
+]
