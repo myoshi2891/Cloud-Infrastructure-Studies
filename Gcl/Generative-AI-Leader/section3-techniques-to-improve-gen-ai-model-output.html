@@ -1,0 +1,2855 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Section 3 完全解説 | Gen AI 出力改善技術 | Generative AI Leader 試験対策</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* ══════════════════════════════════════
+   DESIGN: Laboratory / Scientific Notebook
+   — Deep teal-green on near-black
+   — Fira Code for technical, Outfit for display
+   — Precision, measurement, experimentation
+══════════════════════════════════════ */
+            :root {
+                --bg0: #030a0a;
+                --bg1: #061212;
+                --bg2: #091a1a;
+                --bg3: #0d2222;
+                --bg4: #112a2a;
+                --border: #163636;
+                --border2: #1d4444;
+
+                --teal: #00d9c0;
+                --teal-dim: #009e8c;
+                --lime: #9dff6e;
+                --amber: #ffcc00;
+                --rose: #ff6b8a;
+                --sky: #5bc8ff;
+                --violet: #c084fc;
+                --orange: #ff9a45;
+
+                --text: #b8d4d0;
+                --muted: #aabfbf;
+                --bright: #e8f8f6;
+
+                --code: 'Fira Code', monospace;
+                --head: 'Outfit', 'Noto Sans JP', sans-serif;
+                --body: 'Noto Sans JP', sans-serif;
+
+                --r1: 4px;
+                --r2: 10px;
+                --r3: 16px;
+                --r4: 22px;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                background: var(--bg0);
+                color: var(--text);
+                font-family: var(--body);
+                line-height: 1.75;
+                overflow-x: hidden;
+            }
+
+            /* grid overlay */
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background-image:
+                    linear-gradient(rgba(0, 217, 192, 0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 217, 192, 0.025) 1px, transparent 1px);
+                background-size: 48px 48px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            /* ── HERO ── */
+            .hero {
+                position: relative;
+                min-height: 420px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 100px 32px 80px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+                overflow: hidden;
+                z-index: 1;
+            }
+            .hero::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        ellipse 70% 60% at 50% -5%,
+                        rgba(0, 217, 192, 0.12) 0%,
+                        transparent 65%
+                    ),
+                    radial-gradient(
+                        ellipse 40% 40% at 10% 90%,
+                        rgba(157, 255, 110, 0.05) 0%,
+                        transparent 60%
+                    );
+                pointer-events: none;
+            }
+
+            /* corner decorations */
+            .hero-corner {
+                position: absolute;
+                width: 120px;
+                height: 120px;
+                border: 1px solid rgba(0, 217, 192, 0.15);
+            }
+            .hero-corner.tl {
+                top: 24px;
+                left: 24px;
+                border-right: none;
+                border-bottom: none;
+            }
+            .hero-corner.tr {
+                top: 24px;
+                right: 24px;
+                border-left: none;
+                border-bottom: none;
+            }
+            .hero-corner.bl {
+                bottom: 24px;
+                left: 24px;
+                border-right: none;
+                border-top: none;
+            }
+            .hero-corner.br {
+                bottom: 24px;
+                right: 24px;
+                border-left: none;
+                border-top: none;
+            }
+
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                background: rgba(0, 217, 192, 0.06);
+                border: 1px solid rgba(0, 217, 192, 0.2);
+                border-radius: var(--r1);
+                padding: 5px 16px;
+                font-family: var(--code);
+                font-size: 11px;
+                color: var(--teal);
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                margin-bottom: 28px;
+                position: relative;
+                z-index: 1;
+            }
+            .hero-eyebrow .blink {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--lime);
+                animation: blink 1s step-end infinite;
+            }
+            @keyframes blink {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0;
+                }
+            }
+
+            .hero-label {
+                font-family: var(--code);
+                font-size: 12px;
+                color: var(--teal-dim);
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                margin-bottom: 12px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .hero h1 {
+                font-family: var(--head);
+                font-size: clamp(28px, 5vw, 58px);
+                font-weight: 800;
+                color: var(--bright);
+                line-height: 1.1;
+                margin-bottom: 20px;
+                position: relative;
+                z-index: 1;
+            }
+            .hero h1 em {
+                font-style: normal;
+                background: linear-gradient(120deg, var(--teal), var(--lime));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .hero-sub {
+                font-size: 15px;
+                color: var(--muted);
+                max-width: 640px;
+                margin: 0 auto 48px;
+                position: relative;
+                z-index: 1;
+                line-height: 1.8;
+            }
+
+            .hero-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 16px;
+                background: rgba(0, 217, 192, 0.07);
+                border: 1px solid rgba(0, 217, 192, 0.25);
+                border-radius: var(--r2);
+                padding: 16px 28px;
+                position: relative;
+                z-index: 1;
+            }
+            .hero-badge .num {
+                font-family: var(--code);
+                font-size: 42px;
+                font-weight: 600;
+                color: var(--teal);
+                line-height: 1;
+            }
+            .hero-badge .info strong {
+                display: block;
+                font-family: var(--head);
+                font-size: 14px;
+                color: var(--bright);
+            }
+            .hero-badge .info span {
+                font-size: 12px;
+                color: var(--muted);
+            }
+
+            /* sub-sections row */
+            .subsec-row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                margin-top: 32px;
+                position: relative;
+                z-index: 1;
+            }
+            .ss-chip {
+                font-family: var(--code);
+                font-size: 11px;
+                padding: 5px 14px;
+                border-radius: var(--r1);
+                border: 1px solid;
+                cursor: default;
+                letter-spacing: 0.5px;
+            }
+            .ss-1 {
+                background: rgba(0, 217, 192, 0.08);
+                color: var(--teal);
+                border-color: rgba(0, 217, 192, 0.25);
+            }
+            .ss-2 {
+                background: rgba(157, 255, 110, 0.08);
+                color: var(--lime);
+                border-color: rgba(157, 255, 110, 0.25);
+            }
+            .ss-3 {
+                background: rgba(91, 200, 255, 0.08);
+                color: var(--sky);
+                border-color: rgba(91, 200, 255, 0.25);
+            }
+
+            /* ── STICKY NAV ── */
+            .snav {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: rgba(3, 10, 10, 0.94);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                gap: 0;
+                padding: 0 28px;
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+            .snav::-webkit-scrollbar {
+                display: none;
+            }
+            .snav a {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 13px 16px;
+                font-family: var(--code);
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--muted);
+                white-space: nowrap;
+                text-decoration: none;
+                border-bottom: 2px solid transparent;
+                transition: all 0.18s;
+                letter-spacing: 0.5px;
+            }
+            .snav a:hover {
+                color: var(--bright);
+            }
+            .snav a.t1:hover {
+                border-color: var(--teal);
+            }
+            .snav a.t2:hover {
+                border-color: var(--lime);
+            }
+            .snav a.t3:hover {
+                border-color: var(--sky);
+            }
+            .snav a .ch {
+                width: 20px;
+                height: 20px;
+                border-radius: var(--r1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 9px;
+                font-weight: 700;
+                flex-shrink: 0;
+            }
+            .ch1 {
+                background: rgba(0, 217, 192, 0.15);
+                color: var(--teal);
+            }
+            .ch2 {
+                background: rgba(157, 255, 110, 0.15);
+                color: var(--lime);
+            }
+            .ch3 {
+                background: rgba(91, 200, 255, 0.15);
+                color: var(--sky);
+            }
+
+            /* ── LAYOUT ── */
+            .wrap {
+                max-width: 1120px;
+                margin: 0 auto;
+                padding: 72px 24px;
+                position: relative;
+                z-index: 1;
+            }
+
+            /* ── SECTION HEADER ── */
+            .sec-header {
+                display: flex;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 28px 32px;
+                border-radius: var(--r3);
+                margin-bottom: 36px;
+                border: 1px solid var(--border2);
+                background: linear-gradient(135deg, var(--bg2), var(--bg3));
+                position: relative;
+                overflow: hidden;
+            }
+            .sec-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, var(--teal), transparent);
+            }
+            .sec-num-box {
+                width: 56px;
+                height: 56px;
+                border-radius: var(--r2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--code);
+                font-size: 18px;
+                font-weight: 600;
+                flex-shrink: 0;
+            }
+            .sn-teal {
+                background: rgba(0, 217, 192, 0.12);
+                color: var(--teal);
+                border: 1px solid rgba(0, 217, 192, 0.3);
+            }
+            .sn-lime {
+                background: rgba(157, 255, 110, 0.12);
+                color: var(--lime);
+                border: 1px solid rgba(157, 255, 110, 0.3);
+            }
+            .sn-sky {
+                background: rgba(91, 200, 255, 0.12);
+                color: var(--sky);
+                border: 1px solid rgba(91, 200, 255, 0.3);
+            }
+            .sec-header h2 {
+                font-family: var(--head);
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--bright);
+                margin-bottom: 5px;
+            }
+            .sec-header p {
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .sec-pct {
+                margin-left: auto;
+                padding: 5px 14px;
+                border-radius: var(--r1);
+                font-family: var(--code);
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            .p-teal {
+                background: rgba(0, 217, 192, 0.1);
+                color: var(--teal);
+                border: 1px solid rgba(0, 217, 192, 0.3);
+            }
+            .p-lime {
+                background: rgba(157, 255, 110, 0.1);
+                color: var(--lime);
+                border: 1px solid rgba(157, 255, 110, 0.3);
+            }
+            .p-sky {
+                background: rgba(91, 200, 255, 0.1);
+                color: var(--sky);
+                border: 1px solid rgba(91, 200, 255, 0.3);
+            }
+
+            /* ── CARD ── */
+            .card {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: var(--r3);
+                padding: 28px;
+                margin-bottom: 20px;
+                transition:
+                    border-color 0.2s,
+                    transform 0.15s;
+                position: relative;
+                overflow: hidden;
+            }
+            .card:hover {
+                border-color: var(--teal-dim);
+                transform: translateY(-2px);
+            }
+            .card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 3px;
+                height: 100%;
+                background: var(--teal);
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+            .card:hover::before {
+                opacity: 0.6;
+            }
+
+            .card-h {
+                font-family: var(--head);
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--bright);
+                margin-bottom: 16px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .code-tag {
+                font-family: var(--code);
+                font-size: 10px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid var(--border2);
+                padding: 2px 8px;
+                border-radius: var(--r1);
+                color: var(--muted);
+            }
+
+            /* ── FEATURE GRID ── */
+            .fgrid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .fi {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: var(--r2);
+                padding: 16px 18px;
+                border-top: 2px solid transparent;
+                transition: border-color 0.2s;
+            }
+            .fi:hover {
+                border-top-color: var(--teal);
+            }
+            .fi-t {
+                font-family: var(--head);
+                font-weight: 700;
+                font-size: 13px;
+                color: var(--teal);
+                margin-bottom: 6px;
+            }
+            .fi-d {
+                font-size: 13px;
+                color: var(--muted);
+                line-height: 1.6;
+            }
+
+            /* ── LIMITATION CARD ── */
+            .lim-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .lim {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: var(--r2);
+                padding: 18px 20px;
+                position: relative;
+            }
+            .lim-icon {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            .lim-t {
+                font-family: var(--head);
+                font-weight: 700;
+                font-size: 14px;
+                color: var(--rose);
+                margin-bottom: 6px;
+            }
+            .lim-d {
+                font-size: 13px;
+                color: var(--muted);
+                margin-bottom: 12px;
+                line-height: 1.6;
+            }
+            .lim-sol {
+                font-size: 12px;
+                color: var(--text);
+                background: rgba(0, 217, 192, 0.06);
+                border: 1px solid rgba(0, 217, 192, 0.15);
+                border-radius: var(--r1);
+                padding: 8px 12px;
+            }
+            .lim-sol-t {
+                font-family: var(--code);
+                font-size: 10px;
+                color: var(--teal);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 4px;
+            }
+
+            /* ── PROMPT TECHNIQUE ── */
+            .pt-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                margin: 16px 0;
+            }
+            .pt {
+                display: grid;
+                grid-template-columns: 140px 1fr;
+                border: 1px solid var(--border);
+                border-bottom: none;
+                overflow: hidden;
+                transition: background 0.15s;
+            }
+            .pt:first-child {
+                border-radius: var(--r2) var(--r2) 0 0;
+            }
+            .pt:last-child {
+                border-radius: 0 0 var(--r2) var(--r2);
+                border-bottom: 1px solid var(--border);
+            }
+            .pt:hover {
+                background: var(--bg3);
+            }
+            .pt-label {
+                background: var(--bg3);
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                border-right: 1px solid var(--border);
+                gap: 4px;
+            }
+            .pt-tag {
+                font-family: var(--code);
+                font-size: 10px;
+                padding: 2px 8px;
+                border-radius: var(--r1);
+                font-weight: 600;
+                letter-spacing: 0.5px;
+            }
+            .level-basic {
+                background: rgba(0, 217, 192, 0.1);
+                color: var(--teal);
+                border: 1px solid rgba(0, 217, 192, 0.2);
+            }
+            .level-standard {
+                background: rgba(157, 255, 110, 0.1);
+                color: var(--lime);
+                border: 1px solid rgba(157, 255, 110, 0.2);
+            }
+            .level-advanced {
+                background: rgba(255, 204, 0, 0.1);
+                color: var(--amber);
+                border: 1px solid rgba(255, 204, 0, 0.2);
+            }
+            .level-expert {
+                background: rgba(255, 107, 138, 0.1);
+                color: var(--rose);
+                border: 1px solid rgba(255, 107, 138, 0.2);
+            }
+            .pt-name {
+                font-family: var(--head);
+                font-weight: 700;
+                font-size: 12px;
+                color: var(--bright);
+                margin-top: 4px;
+            }
+            .pt-body {
+                padding: 16px 20px;
+            }
+            .pt-body strong {
+                display: block;
+                font-family: var(--head);
+                font-size: 13px;
+                color: var(--bright);
+                margin-bottom: 4px;
+            }
+            .pt-body p {
+                font-size: 13px;
+                color: var(--muted);
+                line-height: 1.65;
+            }
+            .pt-ex {
+                margin-top: 8px;
+                background: var(--bg4);
+                border: 1px solid var(--border2);
+                border-radius: var(--r1);
+                padding: 8px 12px;
+                font-family: var(--code);
+                font-size: 11px;
+                color: var(--teal);
+                line-height: 1.6;
+            }
+            .pt-ex .comment {
+                color: var(--muted);
+            }
+
+            /* ── COMPARISON TABLE ── */
+            .ctbl {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 14px 0;
+                font-size: 13px;
+            }
+            .ctbl th {
+                background: var(--bg3);
+                padding: 11px 16px;
+                text-align: left;
+                color: var(--muted);
+                font-size: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                border-bottom: 1px solid var(--border);
+                font-family: var(--code);
+            }
+            .ctbl td {
+                padding: 11px 16px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                color: var(--text);
+                vertical-align: top;
+            }
+            .ctbl tr:hover td {
+                background: rgba(0, 217, 192, 0.02);
+            }
+
+            /* ── CODE BLOCK ── */
+            .codeblock {
+                background: var(--bg4);
+                border: 1px solid var(--border2);
+                border-radius: var(--r2);
+                padding: 18px 20px;
+                margin: 14px 0;
+                font-family: var(--code);
+                font-size: 12px;
+                color: var(--teal);
+                overflow-x: auto;
+                line-height: 1.85;
+                position: relative;
+            }
+            .codeblock::before {
+                content: 'EXAMPLE';
+                position: absolute;
+                top: 10px;
+                right: 14px;
+                font-size: 9px;
+                letter-spacing: 2px;
+                color: var(--muted);
+                font-family: var(--code);
+            }
+            .cmt {
+                color: var(--muted);
+            }
+            .kw {
+                color: var(--lime);
+            }
+            .str {
+                color: var(--amber);
+            }
+            .fn {
+                color: var(--sky);
+            }
+            .num {
+                color: var(--violet);
+            }
+
+            /* ── RAG DIAGRAM ── */
+            .rag-flow {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                margin: 16px 0;
+            }
+            .rag-step {
+                display: flex;
+                gap: 16px;
+                align-items: stretch;
+                position: relative;
+            }
+            .rag-step:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                left: 22px;
+                top: 56px;
+                width: 2px;
+                height: calc(100% - 40px);
+                background: linear-gradient(180deg, var(--teal), transparent);
+            }
+            .rag-num {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                flex-shrink: 0;
+                background: rgba(0, 217, 192, 0.12);
+                border: 1px solid rgba(0, 217, 192, 0.3);
+                color: var(--teal);
+                font-family: var(--code);
+                font-size: 14px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 4px;
+            }
+            .rag-body {
+                flex: 1;
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: var(--r2);
+                padding: 16px 20px;
+                margin-bottom: 12px;
+            }
+            .rag-body strong {
+                display: block;
+                font-family: var(--head);
+                font-size: 14px;
+                color: var(--bright);
+                margin-bottom: 4px;
+            }
+            .rag-body p {
+                font-size: 13px;
+                color: var(--muted);
+                line-height: 1.65;
+            }
+            .rag-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-top: 8px;
+            }
+            .rag-tag {
+                font-family: var(--code);
+                font-size: 10px;
+                padding: 2px 8px;
+                border-radius: var(--r1);
+                border: 1px solid;
+            }
+            .rt-teal {
+                background: rgba(0, 217, 192, 0.07);
+                color: var(--teal);
+                border-color: rgba(0, 217, 192, 0.2);
+            }
+            .rt-lime {
+                background: rgba(157, 255, 110, 0.07);
+                color: var(--lime);
+                border-color: rgba(157, 255, 110, 0.2);
+            }
+            .rt-sky {
+                background: rgba(91, 200, 255, 0.07);
+                color: var(--sky);
+                border-color: rgba(91, 200, 255, 0.2);
+            }
+            .rt-amber {
+                background: rgba(255, 204, 0, 0.07);
+                color: var(--amber);
+                border-color: rgba(255, 204, 0, 0.2);
+            }
+
+            /* ── PARAMETER CARDS ── */
+            .param-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .param {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: var(--r2);
+                padding: 18px 20px;
+                position: relative;
+                overflow: hidden;
+            }
+            .param::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, var(--teal), transparent);
+            }
+            .param-name {
+                font-family: var(--code);
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--teal);
+                margin-bottom: 6px;
+            }
+            .param-range {
+                font-family: var(--code);
+                font-size: 11px;
+                color: var(--muted);
+                background: var(--bg4);
+                border: 1px solid var(--border2);
+                padding: 3px 10px;
+                border-radius: var(--r1);
+                display: inline-block;
+                margin-bottom: 10px;
+            }
+            .param-desc {
+                font-size: 13px;
+                color: var(--muted);
+                line-height: 1.6;
+                margin-bottom: 10px;
+            }
+            .param-scale {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .param-scale-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 11px;
+            }
+            .param-scale-val {
+                font-family: var(--code);
+                color: var(--teal);
+                width: 30px;
+            }
+            .param-bar {
+                flex: 1;
+                height: 5px;
+                border-radius: 100px;
+                background: var(--border);
+                overflow: hidden;
+            }
+            .param-fill {
+                height: 100%;
+                border-radius: 100px;
+                background: linear-gradient(90deg, var(--teal), var(--lime));
+            }
+            .param-label {
+                color: var(--muted);
+                font-size: 11px;
+                width: 80px;
+                text-align: right;
+            }
+
+            /* ── BEST PRACTICE ── */
+            .bp {
+                background: rgba(0, 217, 192, 0.04);
+                border: 1px solid rgba(0, 217, 192, 0.18);
+                border-left: 3px solid var(--teal);
+                border-radius: var(--r2);
+                padding: 16px 20px;
+                margin: 14px 0;
+            }
+            .bpt {
+                font-family: var(--code);
+                font-size: 10px;
+                font-weight: 600;
+                color: var(--teal);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 9px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .bp ul {
+                list-style: none;
+                padding: 0;
+            }
+            .bp li {
+                font-size: 13px;
+                color: var(--text);
+                padding: 4px 0 4px 20px;
+                position: relative;
+                line-height: 1.6;
+            }
+            .bp li::before {
+                content: '▸';
+                color: var(--teal);
+                position: absolute;
+                left: 0;
+                font-size: 11px;
+                top: 5px;
+            }
+
+            /* ── WARNING ── */
+            .warn {
+                background: rgba(255, 204, 0, 0.04);
+                border: 1px solid rgba(255, 204, 0, 0.18);
+                border-left: 3px solid var(--amber);
+                border-radius: var(--r2);
+                padding: 14px 18px;
+                margin: 12px 0;
+            }
+            .warnt {
+                font-family: var(--code);
+                font-size: 10px;
+                font-weight: 600;
+                color: var(--amber);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 7px;
+            }
+            .warn p,
+            .warn li {
+                font-size: 13px;
+                color: var(--text);
+            }
+            .warn ul {
+                list-style: none;
+                padding: 0;
+            }
+            .warn li {
+                padding: 3px 0 3px 18px;
+                position: relative;
+            }
+            .warn li::before {
+                content: '!';
+                font-size: 10px;
+                font-weight: 700;
+                font-family: var(--code);
+                position: absolute;
+                left: 0;
+                top: 4px;
+                color: var(--amber);
+            }
+
+            /* ── INFO ── */
+            .info {
+                background: rgba(91, 200, 255, 0.04);
+                border: 1px solid rgba(91, 200, 255, 0.18);
+                border-left: 3px solid var(--sky);
+                border-radius: var(--r2);
+                padding: 14px 18px;
+                margin: 12px 0;
+                font-size: 13px;
+                color: var(--text);
+            }
+            .infot {
+                font-family: var(--code);
+                font-size: 10px;
+                font-weight: 600;
+                color: var(--sky);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 7px;
+            }
+
+            /* ── STRATEGY COMPARISON ── */
+            .strat-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .strat {
+                background: var(--bg3);
+                border: 1px solid var(--border2);
+                border-radius: var(--r2);
+                padding: 20px;
+                position: relative;
+            }
+            .strat-head {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 12px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--border);
+            }
+            .strat-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: var(--r2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                flex-shrink: 0;
+            }
+            .strat-name {
+                font-family: var(--head);
+                font-weight: 700;
+                font-size: 14px;
+                color: var(--bright);
+            }
+            .strat-type {
+                font-family: var(--code);
+                font-size: 10px;
+                color: var(--muted);
+            }
+            .strat-items {
+                list-style: none;
+                padding: 0;
+            }
+            .strat-items li {
+                font-size: 12px;
+                color: var(--muted);
+                padding: 3px 0 3px 16px;
+                position: relative;
+            }
+            .strat-items li::before {
+                content: '→';
+                color: var(--teal-dim);
+                position: absolute;
+                left: 0;
+                font-size: 11px;
+            }
+            .strat-badge {
+                margin-top: 12px;
+                padding: 4px 10px;
+                border-radius: var(--r1);
+                font-family: var(--code);
+                font-size: 10px;
+                font-weight: 600;
+                display: inline-block;
+            }
+
+            /* ── SOURCE ── */
+            .src {
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid var(--border);
+                border-radius: var(--r2);
+                padding: 14px 18px;
+                margin-top: 20px;
+            }
+            .srct {
+                font-family: var(--code);
+                font-size: 9px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin-bottom: 8px;
+            }
+            .src a {
+                display: block;
+                font-size: 11px;
+                color: var(--teal);
+                text-decoration: none;
+                padding: 3px 0;
+                opacity: 0.7;
+                transition: opacity 0.2s;
+                word-break: break-all;
+                font-family: var(--code);
+            }
+            .src a:hover {
+                opacity: 1;
+                text-decoration: underline;
+            }
+
+            /* ── DIVIDER ── */
+            .divider {
+                border: none;
+                border-top: 1px solid var(--border);
+                margin: 72px 0 56px;
+            }
+
+            /* ── SECTION GAP ── */
+            .sg {
+                margin-top: 72px;
+            }
+
+            /* ── QUICK FACT BOX ── */
+            .fact-row {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 10px;
+                margin: 20px 0;
+            }
+            .fact {
+                background: var(--bg3);
+                border: 1px solid var(--border2);
+                border-radius: var(--r2);
+                padding: 16px;
+                text-align: center;
+            }
+            .fact-val {
+                font-family: var(--code);
+                font-size: 26px;
+                font-weight: 600;
+                line-height: 1;
+                margin-bottom: 4px;
+                color: var(--teal);
+            }
+            .fact-lbl {
+                font-size: 11px;
+                color: var(--muted);
+            }
+
+            /* ── SPLIT BOX ── */
+            .split2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin: 14px 0;
+            }
+            .sbox {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: var(--r2);
+                padding: 18px;
+            }
+            .sbox-t {
+                font-family: var(--head);
+                font-size: 13px;
+                font-weight: 700;
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .sbox ul {
+                list-style: none;
+                padding: 0;
+            }
+            .sbox li {
+                font-size: 12px;
+                color: var(--muted);
+                padding: 3px 0 3px 14px;
+                position: relative;
+                line-height: 1.5;
+            }
+            .sbox li::before {
+                content: '›';
+                color: var(--teal-dim);
+                position: absolute;
+                left: 0;
+                font-size: 13px;
+                top: 2px;
+            }
+
+            /* FOOTER */
+            footer {
+                background: var(--bg1);
+                border-top: 1px solid var(--border);
+                padding: 48px 40px;
+                text-align: center;
+                color: var(--muted);
+                font-size: 13px;
+                position: relative;
+                z-index: 1;
+            }
+            footer a {
+                color: var(--teal);
+                text-decoration: none;
+            }
+            footer strong {
+                color: var(--text);
+            }
+
+            @media (max-width: 680px) {
+                .hero {
+                    padding: 72px 16px 60px;
+                }
+                .wrap {
+                    padding: 48px 14px;
+                }
+                .sec-header {
+                    flex-wrap: wrap;
+                }
+                .sec-pct {
+                    margin-left: 0;
+                }
+                .fgrid,
+                .lim-grid,
+                .param-grid,
+                .strat-grid,
+                .fact-row {
+                    grid-template-columns: 1fr;
+                }
+                .split2 {
+                    grid-template-columns: 1fr;
+                }
+                .pt {
+                    grid-template-columns: 1fr;
+                }
+                .pt-label {
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                .hero-corner {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- ═══════════ HERO ═══════════ -->
+        <header class="hero">
+            <div class="hero-corner tl"></div>
+            <div class="hero-corner tr"></div>
+            <div class="hero-corner bl"></div>
+            <div class="hero-corner br"></div>
+
+            <div class="hero-eyebrow">
+                <span class="blink"></span>
+                Generative AI Leader 試験対策 — Section 3 深掘り
+            </div>
+
+            <div class="hero-label">GEN AI MODEL IMPROVEMENT TECHNIQUES</div>
+
+            <h1>
+                モデル出力を<br />
+                <em>劇的に改善する</em>技術
+            </h1>
+
+            <p class="hero-sub">
+                試験配点 <strong style="color: var(--teal)">~20%</strong> の Section 3 を完全制覇。
+                ファウンデーションモデルの限界を把握し、プロンプトエンジニアリング・グラウンディング・RAG
+                の3大技術を 実例付きで深掘り解説。初学者が「なぜそうするか」まで理解できるよう設計。
+            </p>
+
+            <div class="hero-badge">
+                <div class="num">~20%</div>
+                <div class="info">
+                    <strong>Section 3: Techniques to Improve Gen AI Model Output</strong>
+                    <span>3つのサブセクション構成 • 試験全体の核心技術領域</span>
+                </div>
+            </div>
+
+            <div class="subsec-row">
+                <div class="ss-chip ss-1">3.1 基盤モデルの限界と克服戦略</div>
+                <div class="ss-chip ss-2">3.2 プロンプトエンジニアリング技術</div>
+                <div class="ss-chip ss-3">3.3 グラウンディング・RAG 技術</div>
+            </div>
+        </header>
+
+        <!-- ═══════════ NAV ═══════════ -->
+        <nav class="snav">
+            <a href="#s31" class="t1"><span class="ch ch1">3.1</span>モデルの限界と克服</a>
+            <a href="#s32" class="t2"><span class="ch ch2">3.2</span>プロンプトエンジニアリング</a>
+            <a href="#s33" class="t3"><span class="ch ch3">3.3</span>グラウンディング・RAG</a>
+            <a href="#summary"
+                ><span class="ch" style="background: rgba(255, 255, 255, 0.06); color: var(--muted)"
+                    >◎</span
+                >まとめ</a
+            >
+        </nav>
+
+        <!-- ═══════════ MAIN ═══════════ -->
+        <main class="wrap">
+            <!-- ──────────── 3.1 ──────────── -->
+            <section id="s31">
+                <div class="sec-header">
+                    <div class="sec-num-box sn-teal">3.1</div>
+                    <div>
+                        <h2>ファウンデーションモデルの限界と克服戦略</h2>
+                        <p>
+                            基盤モデルが抱える根本的な課題を特定し、Google Cloud
+                            推奨の対処法と継続的モニタリングを理解する
+                        </p>
+                    </div>
+                    <div class="sec-pct p-teal">試験頻出</div>
+                </div>
+
+                <!-- What is FM Limitation -->
+                <div class="card">
+                    <div class="card-h">⚠️ なぜ基盤モデルには「限界」があるのか？</div>
+                    <p style="font-size: 14px; line-height: 1.8; margin-bottom: 16px">
+                        LLM（大規模言語モデル）はトレーニングデータのパターンを学習して出力を生成する。このアーキテクチャ上の特性から、<strong
+                            style="color: var(--teal)"
+                            >生まれつき持つ構造的な弱点</strong
+                        >が存在する。
+                        試験では「どの限界に対して、どの対処法が最適か」の組み合わせが問われる。
+                    </p>
+
+                    <div class="lim-grid">
+                        <!-- Hallucination -->
+                        <div class="lim">
+                            <div class="lim-icon">🌀</div>
+                            <div class="lim-t">ハルシネーション（幻覚）</div>
+                            <div class="lim-d">
+                                事実と異なる内容を、あたかも確実であるかのように自信を持って生成する現象。「でたらめを堂々と話す」問題。
+                            </div>
+                            <div class="lim-sol">
+                                <div class="lim-sol-t">▸ Google Cloud 推奨の対処法</div>
+                                グラウンディング（Grounding）・RAG（検索拡張生成）・Human-in-the-Loop（HITL）で事実確認を実施
+                            </div>
+                        </div>
+                        <!-- Knowledge Cutoff -->
+                        <div class="lim">
+                            <div class="lim-icon">📅</div>
+                            <div class="lim-t">知識カットオフ（Knowledge Cutoff）</div>
+                            <div class="lim-d">
+                                トレーニングデータの締め切り日以降の出来事を知らない。「昨日何があったか」を答えられない。
+                            </div>
+                            <div class="lim-sol">
+                                <div class="lim-sol-t">▸ Google Cloud 推奨の対処法</div>
+                                Grounding with Google Search でリアルタイム検索を注入・RAG
+                                でリアルタイムデータを補完
+                            </div>
+                        </div>
+                        <!-- Bias & Fairness -->
+                        <div class="lim">
+                            <div class="lim-icon">⚖️</div>
+                            <div class="lim-t">バイアス・公平性（Bias / Fairness）</div>
+                            <div class="lim-d">
+                                トレーニングデータに内在するバイアスがモデルの出力に反映される。人種・性別・文化的偏りが結果に出る。
+                            </div>
+                            <div class="lim-sol">
+                                <div class="lim-sol-t">▸ Google Cloud 推奨の対処法</div>
+                                多様なトレーニングデータの使用・RLHF（人間フィードバックによる強化学習）・定期的な公平性評価
+                            </div>
+                        </div>
+                        <!-- Data Dependency -->
+                        <div class="lim">
+                            <div class="lim-icon">📊</div>
+                            <div class="lim-t">データ依存性（Data Dependency）</div>
+                            <div class="lim-d">
+                                学習データの質・量・多様性がモデルの品質を直接決定する。「ゴミを入れればゴミが出る（GIGO）」原則。
+                            </div>
+                            <div class="lim-sol">
+                                <div class="lim-sol-t">▸ Google Cloud 推奨の対処法</div>
+                                高品質なデータガバナンス・Vertex AI Feature Store
+                                でデータ一貫性を担保・データ品質監査
+                            </div>
+                        </div>
+                        <!-- Edge Cases -->
+                        <div class="lim">
+                            <div class="lim-icon">🎯</div>
+                            <div class="lim-t">エッジケースへの脆弱性</div>
+                            <div class="lim-d">
+                                学習データに存在しない稀なパターンや特殊な状況に対して、予期しない動作や誤った出力を生成する。
+                            </div>
+                            <div class="lim-sol">
+                                <div class="lim-sol-t">▸ Google Cloud 推奨の対処法</div>
+                                ファインチューニング（業界固有データでの追加学習）・プロンプトエンジニアリングで対応範囲を定義
+                            </div>
+                        </div>
+                        <!-- Context Length -->
+                        <div class="lim">
+                            <div class="lim-icon">📏</div>
+                            <div class="lim-t">コンテキストウィンドウの制限</div>
+                            <div class="lim-d">
+                                一度に処理できるテキスト量（トークン数）に上限がある。長大な文書は一度に処理できない。
+                            </div>
+                            <div class="lim-sol">
+                                <div class="lim-sol-t">▸ Google Cloud 推奨の対処法</div>
+                                RAG でチャンク分割・Gemini 1.5 Pro の
+                                100万トークン対応モデルへの移行・サマリーチェーン技法
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Improvement Strategies -->
+                <div class="card">
+                    <div class="card-h">🛠️ Google Cloud 推奨の改善戦略マップ</div>
+                    <p style="font-size: 14px; margin-bottom: 16px">
+                        以下の5つのアプローチは目的に応じて単独または組み合わせて使用する。<strong
+                            style="color: var(--teal)"
+                            >コスト・速度・精度のトレードオフ</strong
+                        >を理解して最適な戦略を選ぶことが試験のポイント。
+                    </p>
+
+                    <div class="strat-grid">
+                        <!-- Prompt Engineering -->
+                        <div class="strat">
+                            <div class="strat-head">
+                                <div class="strat-icon" style="background: rgba(0, 217, 192, 0.12)">
+                                    ✏️
+                                </div>
+                                <div>
+                                    <div class="strat-name">プロンプトエンジニアリング</div>
+                                    <div class="strat-type">コスト低 / 速度 ◎ / 即時効果</div>
+                                </div>
+                            </div>
+                            <ul class="strat-items">
+                                <li>追加学習不要でモデルの動作を制御</li>
+                                <li>Few-shot / Chain-of-Thought 等の技法を活用</li>
+                                <li>ゼロコストで始められる最初のステップ</li>
+                                <li>効果は中程度（モデル重みは変えない）</li>
+                            </ul>
+                            <div
+                                class="strat-badge"
+                                style="
+                                    background: rgba(0, 217, 192, 0.1);
+                                    color: var(--teal);
+                                    border: 1px solid rgba(0, 217, 192, 0.25);
+                                "
+                            >
+                                最初に試すべき手法
+                            </div>
+                        </div>
+                        <!-- Grounding / RAG -->
+                        <div class="strat">
+                            <div class="strat-head">
+                                <div
+                                    class="strat-icon"
+                                    style="background: rgba(157, 255, 110, 0.12)"
+                                >
+                                    🔗
+                                </div>
+                                <div>
+                                    <div class="strat-name">グラウンディング・RAG</div>
+                                    <div class="strat-type">
+                                        コスト中 / 速度 ○ / リアルタイム性高
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="strat-items">
+                                <li>外部知識ベースにLLMを紐づける</li>
+                                <li>ハルシネーション・知識カットオフを解決</li>
+                                <li>最新情報を常に反映できる</li>
+                                <li>Vertex AI Search / RAG API / Google Search</li>
+                            </ul>
+                            <div
+                                class="strat-badge"
+                                style="
+                                    background: rgba(157, 255, 110, 0.1);
+                                    color: var(--lime);
+                                    border: 1px solid rgba(157, 255, 110, 0.25);
+                                "
+                            >
+                                ハルシネーション対策の王道
+                            </div>
+                        </div>
+                        <!-- Fine-tuning -->
+                        <div class="strat">
+                            <div class="strat-head">
+                                <div
+                                    class="strat-icon"
+                                    style="background: rgba(91, 200, 255, 0.12)"
+                                >
+                                    🎓
+                                </div>
+                                <div>
+                                    <div class="strat-name">ファインチューニング</div>
+                                    <div class="strat-type">コスト高 / 速度 △ / 高精度</div>
+                                </div>
+                            </div>
+                            <ul class="strat-items">
+                                <li>業界・ドメイン固有データで追加学習</li>
+                                <li>モデルの重みを更新し専門性を付与</li>
+                                <li>高品質データが必要（通常 100〜数千件）</li>
+                                <li>SFT / RLHF / PEFT（LoRA/QLoRA）等の手法</li>
+                            </ul>
+                            <div
+                                class="strat-badge"
+                                style="
+                                    background: rgba(91, 200, 255, 0.1);
+                                    color: var(--sky);
+                                    border: 1px solid rgba(91, 200, 255, 0.25);
+                                "
+                            >
+                                専門ドメインへの特化
+                            </div>
+                        </div>
+                        <!-- HITL -->
+                        <div class="strat">
+                            <div class="strat-head">
+                                <div class="strat-icon" style="background: rgba(255, 204, 0, 0.12)">
+                                    👤
+                                </div>
+                                <div>
+                                    <div class="strat-name">HITL（Human-in-the-Loop）</div>
+                                    <div class="strat-type">コスト可変 / 品質保証 ◎</div>
+                                </div>
+                            </div>
+                            <ul class="strat-items">
+                                <li>AIの判断に人間のレビューを挟む</li>
+                                <li>高リスク判断（医療・法律）で必須</li>
+                                <li>ミス検知・フィードバックデータ収集</li>
+                                <li>継続的なモデル改善サイクルの基盤</li>
+                            </ul>
+                            <div
+                                class="strat-badge"
+                                style="
+                                    background: rgba(255, 204, 0, 0.1);
+                                    color: var(--amber);
+                                    border: 1px solid rgba(255, 204, 0, 0.25);
+                                "
+                            >
+                                高リスク業務では必須
+                            </div>
+                        </div>
+                        <!-- Evaluation -->
+                        <div class="strat">
+                            <div class="strat-head">
+                                <div
+                                    class="strat-icon"
+                                    style="background: rgba(192, 132, 252, 0.12)"
+                                >
+                                    📐
+                                </div>
+                                <div>
+                                    <div class="strat-name">継続的評価・モニタリング</div>
+                                    <div class="strat-type">コスト低〜中 / 品質維持</div>
+                                </div>
+                            </div>
+                            <ul class="strat-items">
+                                <li>Vertex AI Evaluation Service で自動評価</li>
+                                <li>ドリフト検知・KPI 継続計測</li>
+                                <li>自動モデルアップグレード適用</li>
+                                <li>Vertex AI Feature Store で特徴量管理</li>
+                            </ul>
+                            <div
+                                class="strat-badge"
+                                style="
+                                    background: rgba(192, 132, 252, 0.1);
+                                    color: var(--violet);
+                                    border: 1px solid rgba(192, 132, 252, 0.25);
+                                "
+                            >
+                                本番維持に不可欠
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warn">
+                        <div class="warnt">⚠️ 試験頻出：戦略の選択基準</div>
+                        <ul>
+                            <li>
+                                <strong style="color: var(--bright)"
+                                    >まずプロンプトエンジニアリング</strong
+                                >から試し、それで不十分なら RAG / ファインチューニングへ進む
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)">最新情報が必要</strong>な場合は
+                                RAG / グラウンディングを選ぶ（ファインチューニングでは解決不可）
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)"
+                                    >業界固有の言葉遣い・形式</strong
+                                >が必要な場合はファインチューニングが適切
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)">医療・法律・金融</strong
+                                >などの高リスク判断では HITL を必ず組み込む
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Continuous Monitoring -->
+                <div class="card">
+                    <div class="card-h">📡 継続的モニタリングとモデル管理（試験頻出）</div>
+                    <p style="font-size: 14px; margin-bottom: 16px">
+                        Gen AI モデルは一度デプロイして終わりではない。<strong
+                            style="color: var(--teal)"
+                            >データドリフト・パフォーマンス低下・セキュリティ脆弱性</strong
+                        >に継続的に対応する必要がある。
+                    </p>
+
+                    <div class="fgrid">
+                        <div class="fi">
+                            <div class="fi-t">🔄 自動モデルアップグレード</div>
+                            <div class="fi-d">
+                                Vertex AI
+                                の管理モデルはGoogleが定期的にセキュリティパッチ・バージョン更新を自動適用。手動対応の工数を削減し、常に最新の安全なモデルを利用できる。
+                            </div>
+                        </div>
+                        <div class="fi">
+                            <div class="fi-t">📊 KPI継続追跡</div>
+                            <div class="fi-d">
+                                精度（Accuracy）・F1スコア・BLEU/ROUGE・ユーザー満足度などの指標を継続的に計測。Cloud
+                                Monitoring と統合してアラートを自動発火。
+                            </div>
+                        </div>
+                        <div class="fi">
+                            <div class="fi-t">🌊 ドリフト監視</div>
+                            <div class="fi-d">
+                                入力データの統計的分布が学習時と乖離（ドリフト）していないか監視。コンセプトドリフトを早期検知して再学習トリガーを設定。
+                            </div>
+                        </div>
+                        <div class="fi">
+                            <div class="fi-t">🗄️ Vertex AI Feature Store</div>
+                            <div class="fi-d">
+                                特徴量（Feature）を一元管理し、学習時と推論時で同じ特徴量変換を使用することを保証。トレーニング・サービングスキューの防止に不可欠。
+                            </div>
+                        </div>
+                        <div class="fi">
+                            <div class="fi-t">📦 バージョン管理</div>
+                            <div class="fi-d">
+                                Vertex AI Model Registry
+                                でモデルのバージョン・メタデータを管理。ロールバック可能な状態を維持し、A/Bテストによる段階的デプロイを実現。
+                            </div>
+                        </div>
+                        <div class="fi">
+                            <div class="fi-t">🔒 セキュリティパッチ</div>
+                            <div class="fi-d">
+                                プロンプトインジェクション攻撃・データポイズニングなどの脅威に対するパッチを定期適用。Vertex
+                                AI の管理モデルは Google が自動更新。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bp">
+                        <div class="bpt">✅ 継続的モニタリングのベストプラクティス</div>
+                        <ul>
+                            <li>
+                                本番デプロイ前に<strong>Vertex AI Evaluation Service</strong
+                                >でベースラインスコアを記録し、定期比較する
+                            </li>
+                            <li>
+                                Vertex AI
+                                <strong>Feature Store</strong>
+                                でオンライン/オフライン特徴量を一元管理してスキューを防止する
+                            </li>
+                            <li>
+                                <strong>シャドーモード（Shadow Mode）</strong
+                                >で新モデルを旧モデルと並行実行し、安全にA/Bテストを実施する
+                            </li>
+                            <li>
+                                ドリフト検知アラートは Cloud Monitoring
+                                で設定し、閾値を超えたら自動でエンジニアに通知する
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="src">
+                        <div class="srct">📎 参照リソース</div>
+                        <a
+                            href="https://cloud.google.com/vertex-ai/docs/model-monitoring/overview"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/docs/model-monitoring/overview</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/docs/featurestore/overview"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/docs/featurestore/overview</a
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <hr class="divider" />
+
+            <!-- ──────────── 3.2 ──────────── -->
+            <section id="s32" class="sg">
+                <div class="sec-header">
+                    <div class="sec-num-box sn-lime">3.2</div>
+                    <div>
+                        <h2>プロンプトエンジニアリング技術</h2>
+                        <p>
+                            LLM との効果的なコミュニケーション技法を体系的に理解する。Zero-shot から
+                            ReAct まで全手法を実例付きで解説
+                        </p>
+                    </div>
+                    <div class="sec-pct p-lime">最重要</div>
+                </div>
+
+                <!-- What is Prompt Engineering -->
+                <div class="card">
+                    <div class="card-h">🎯 プロンプトエンジニアリングとは？</div>
+                    <p style="font-size: 14px; line-height: 1.8; margin-bottom: 16px">
+                        プロンプトエンジニアリングとは、<strong style="color: var(--lime)"
+                            >LLM（大規模言語モデル）から望ましい出力を引き出すための入力文（プロンプト）を設計・最適化する技術</strong
+                        >。
+                        モデルの重みを変えずに動作を制御できる最もコスト効率の高い改善手法。試験では各技法の名称・定義・適切なユースケースの識別が問われる。
+                    </p>
+
+                    <div class="fact-row">
+                        <div class="fact">
+                            <div class="fact-val" style="color: var(--lime)">0円</div>
+                            <div class="fact-lbl">追加コスト<br />（API料金のみ）</div>
+                        </div>
+                        <div class="fact">
+                            <div class="fact-val" style="color: var(--lime)">即時</div>
+                            <div class="fact-lbl">効果発揮<br />（再学習不要）</div>
+                        </div>
+                        <div class="fact">
+                            <div class="fact-val" style="color: var(--lime)">6+</div>
+                            <div class="fact-lbl">主要技法数<br />（試験出題範囲）</div>
+                        </div>
+                        <div class="fact">
+                            <div class="fact-val" style="color: var(--amber)">中</div>
+                            <div class="fact-lbl">最大効果<br />（FT比較）</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prompt Techniques -->
+                <div class="card">
+                    <div class="card-h">📚 全プロンプト技法 完全ガイド（Zero-shot → ReAct）</div>
+
+                    <div class="pt-list">
+                        <!-- Zero-shot -->
+                        <div class="pt">
+                            <div class="pt-label">
+                                <span class="pt-tag level-basic">BASIC</span>
+                                <div class="pt-name">Zero-Shot</div>
+                            </div>
+                            <div class="pt-body">
+                                <strong>ゼロショット：例示なしで直接タスクを依頼する</strong>
+                                <p>
+                                    事前の例示（デモンストレーション）を与えずに、タスクの指示文だけでLLMに回答させる。最もシンプルで、明確なタスクに有効。モデルが学習済みの知識だけで対応する。
+                                </p>
+                                <div class="pt-ex">
+                                    <span class="kw">Prompt:</span>
+                                    <span class="str"
+                                        >"次の文章を日本語に翻訳してください：The weather is nice
+                                        today."</span
+                                    ><br />
+                                    <span class="kw">Output:</span>
+                                    <span class="str">"今日は天気がいいですね。"</span><br />
+                                    <span class="comment"
+                                        >// 例示なし。モデルの事前知識だけで回答。</span
+                                    >
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--muted)">
+                                    <strong style="color: var(--text)">適用場面：</strong
+                                    >明確で単純なタスク（翻訳・要約・分類）、モデルが十分に学習済みのドメイン
+                                </div>
+                            </div>
+                        </div>
+                        <!-- One-shot -->
+                        <div class="pt">
+                            <div class="pt-label">
+                                <span class="pt-tag level-basic">BASIC</span>
+                                <div class="pt-name">One-Shot</div>
+                            </div>
+                            <div class="pt-body">
+                                <strong>ワンショット：1つの例示を与えてからタスクを実行</strong>
+                                <p>
+                                    1つの入出力ペアを例として示してからタスクを依頼する。出力フォーマットを厳密に指定したい場合に特に有効。モデルがパターンを学習して同形式で応答する。
+                                </p>
+                                <div class="pt-ex">
+                                    <span class="comment">// 例示（1件）</span><br />
+                                    <span class="kw">Input:</span> <span class="str">"東京"</span> →
+                                    <span class="kw">Output:</span>
+                                    <span class="str">"首都 / 日本 / 1380万人"</span><br />
+                                    <span class="comment">// タスク</span><br />
+                                    <span class="kw">Input:</span> <span class="str">"大阪"</span> →
+                                    <span class="kw">Output:</span> <span class="str">???</span>
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--muted)">
+                                    <strong style="color: var(--text)">適用場面：</strong
+                                    >出力形式を統一したい場合、JSON/CSV
+                                    等の構造化フォーマットを指定する場合
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Few-shot -->
+                        <div class="pt">
+                            <div class="pt-label">
+                                <span class="pt-tag level-standard">STANDARD</span>
+                                <div class="pt-name">Few-Shot</div>
+                            </div>
+                            <div class="pt-body">
+                                <strong
+                                    >フューショット：複数の例示（2〜8件）で精度を向上させる</strong
+                                >
+                                <p>
+                                    複数の入出力ペアを例として提供することで、モデルが期待されるパターンをより正確に把握できる。Few-shot
+                                    は In-Context Learning（文脈内学習）の代表的な技法。
+                                </p>
+                                <div class="pt-ex">
+                                    <span class="comment">// 例示3件：感情分類タスク</span><br />
+                                    <span class="str">"この商品は最高！"</span> →
+                                    <span class="kw">ポジティブ</span><br />
+                                    <span class="str">"遅延が多くて困った"</span> →
+                                    <span class="kw">ネガティブ</span><br />
+                                    <span class="str">"普通の品質でした"</span> →
+                                    <span class="kw">ニュートラル</span><br />
+                                    <span class="comment">// タスク</span><br />
+                                    <span class="str">"梱包が丁寧で感動した"</span> →
+                                    <span class="fn">???</span>
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--muted)">
+                                    <strong style="color: var(--text)">適用場面：</strong
+                                    >特定のパターン・形式・分類スキームに従わせたい場合。例示が多いほど精度が向上するが、コンテキスト消費も増える
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Role Prompting -->
+                        <div class="pt">
+                            <div class="pt-label">
+                                <span class="pt-tag level-standard">STANDARD</span>
+                                <div class="pt-name">Role Prompting</div>
+                            </div>
+                            <div class="pt-body">
+                                <strong
+                                    >ロールプロンプティング：AIに特定の役割・ペルソナを与える</strong
+                                >
+                                <p>
+                                    モデルに専門家・キャラクター・特定の視点を持つ人物として振る舞うよう指示する。役割を明確に設定することで、その専門分野に特化した質・スタイルの回答を引き出せる。
+                                </p>
+                                <div class="pt-ex">
+                                    <span class="comment">// システムプロンプト</span><br />
+                                    <span class="kw">Role:</span>
+                                    <span class="str"
+                                        >"あなたは15年以上の経験を持つ上級セキュリティエンジニアです。"</span
+                                    ><br />
+                                    <span class="str"
+                                        >"技術的な正確さを最優先し、平易な言葉で説明してください。"</span
+                                    ><br />
+                                    <span class="comment">// ユーザー入力</span><br />
+                                    <span class="kw">User:</span>
+                                    <span class="str"
+                                        >"ゼロトラストアーキテクチャを実装する際の注意点は？"</span
+                                    >
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--muted)">
+                                    <strong style="color: var(--text)">適用場面：</strong
+                                    >技術文書・法律レビュー・医療相談など、専門性が求められるタスク。Gemini
+                                    の Gems 機能もこれを体系化したもの
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Prompt Chaining -->
+                        <div class="pt">
+                            <div class="pt-label">
+                                <span class="pt-tag level-standard">STANDARD</span>
+                                <div class="pt-name">Prompt Chaining</div>
+                            </div>
+                            <div class="pt-body">
+                                <strong
+                                    >プロンプトチェーニング：複雑なタスクを複数ステップに分解して連鎖させる</strong
+                                >
+                                <p>
+                                    1つのプロンプトで解決できない複雑なタスクを、複数の小さなステップに分割して順番に実行する手法。前のステップの出力を次のステップの入力に使用する。
+                                </p>
+                                <div class="pt-ex">
+                                    <span class="comment">// Step 1: 文章を要約</span><br />
+                                    <span class="kw">Prompt 1:</span>
+                                    <span class="str"
+                                        >"以下の長文を3行で要約してください：{raw_text}"</span
+                                    ><br />
+                                    <span class="num">→ summary_text</span><br /><br />
+                                    <span class="comment">// Step 2: 要約から課題を抽出</span><br />
+                                    <span class="kw">Prompt 2:</span>
+                                    <span class="str"
+                                        >"以下の要約から主要な課題を箇条書きで抽出：{summary_text}"</span
+                                    ><br />
+                                    <span class="num">→ issues_list</span><br /><br />
+                                    <span class="comment">// Step 3: 解決策を提案</span><br />
+                                    <span class="kw">Prompt 3:</span>
+                                    <span class="str"
+                                        >"以下の課題に対する解決策を提案：{issues_list}"</span
+                                    >
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--muted)">
+                                    <strong style="color: var(--text)">適用場面：</strong
+                                    >長大な文書処理・多段階のデータ変換・エージェントの思考ステップ実装
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chain-of-Thought -->
+                        <div class="pt">
+                            <div class="pt-label">
+                                <span class="pt-tag level-advanced">ADVANCED</span>
+                                <div class="pt-name">Chain-of-Thought</div>
+                            </div>
+                            <div class="pt-body">
+                                <strong
+                                    >思考の連鎖（CoT）：ステップバイステップで推論プロセスを可視化させる</strong
+                                >
+                                <p>
+                                    「ステップバイステップで考えてください（Let's think step by
+                                    step）」という指示で、モデルが中間の推論ステップを明示的に記述しながら解答する手法。複雑な論理問題・数学・多段階推論で精度が大幅に向上する。
+                                </p>
+                                <div class="pt-ex">
+                                    <span class="comment">// Zero-shot CoT の例</span><br />
+                                    <span class="kw">Prompt:</span>
+                                    <span class="str"
+                                        >"太郎は50個のリンゴを持っています。20個を花子に渡し、"</span
+                                    ><br />
+                                    <span class="str"
+                                        >"残りの半分を次郎に渡しました。太郎に残るリンゴは何個？"</span
+                                    ><br />
+                                    <span class="str">"ステップバイステップで考えてください。"</span
+                                    ><br /><br />
+                                    <span class="comment">// モデルの出力例</span><br />
+                                    <span class="num">Step 1: 50 - 20 = 30個（花子に渡した後）</span
+                                    ><br />
+                                    <span class="num">Step 2: 30 ÷ 2 = 15個（次郎に渡した後）</span
+                                    ><br />
+                                    <span class="num">Answer: 15個</span>
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--muted)">
+                                    <strong style="color: var(--text)">適用場面：</strong
+                                    >数学・論理推論・多段階の意思決定・コードのデバッグ。「なぜその答えか」の説明可能性も向上する
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ReAct -->
+                        <div class="pt">
+                            <div class="pt-label">
+                                <span class="pt-tag level-expert">EXPERT</span>
+                                <div class="pt-name">ReAct</div>
+                            </div>
+                            <div class="pt-body">
+                                <strong
+                                    >ReAct（Reasoning +
+                                    Acting）：推論と行動を交互に繰り返すエージェント手法</strong
+                                >
+                                <p>
+                                    Reason（推論）→ Act（ツール使用などの行動）→
+                                    Observe（結果観察）のサイクルを繰り返す。外部ツール（検索・計算・API等）を呼び出しながら問題を段階的に解決する、エージェント設計の核心技法。
+                                </p>
+                                <div class="pt-ex">
+                                    <span class="kw">Task:</span>
+                                    <span class="str"
+                                        >"2024年の日本のGDPはアメリカのGDPの何倍か？"</span
+                                    ><br /><br />
+                                    <span class="num">Thought 1:</span>
+                                    <span class="comment">GDPデータを調べる必要がある</span><br />
+                                    <span class="fn">Action 1:</span>
+                                    <span class="str">search("2024年 日本 GDP")</span><br />
+                                    <span class="kw">Obs 1:</span>
+                                    <span class="str">日本GDP = 約4.2兆ドル</span><br /><br />
+                                    <span class="num">Thought 2:</span>
+                                    <span class="comment">アメリカのGDPも調べる</span><br />
+                                    <span class="fn">Action 2:</span>
+                                    <span class="str">search("2024年 アメリカ GDP")</span><br />
+                                    <span class="kw">Obs 2:</span>
+                                    <span class="str">米国GDP = 約27兆ドル</span><br /><br />
+                                    <span class="num">Thought 3:</span>
+                                    <span class="comment">計算する</span><br />
+                                    <span class="fn">Action 3:</span>
+                                    <span class="str">calculate(4.2 / 27)</span><br />
+                                    <span class="kw">Answer:</span>
+                                    <span class="str">約0.155倍（約15.6%）</span>
+                                </div>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--muted)">
+                                    <strong style="color: var(--text)">適用場面：</strong
+                                    >外部ツール・API・データベースと連携するAIエージェント。Vertex
+                                    AI Agent Builder の内部ロジックとしても活用
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bp">
+                        <div class="bpt">✅ プロンプト設計の黄金律</div>
+                        <ul>
+                            <li>
+                                <strong>明確さ優先：</strong
+                                >「何を」「どのような形式で」「何文字程度で」生成するかを具体的に記述する
+                            </li>
+                            <li>
+                                <strong>コンテキストを提供：</strong
+                                >背景情報・制約条件・対象読者を明示することで出力品質が向上する
+                            </li>
+                            <li>
+                                <strong>ネガティブ指示：</strong
+                                >「〜してはいけない」という制約も書くと不適切な出力を防げる
+                            </li>
+                            <li>
+                                <strong>出力フォーマット指定：</strong
+                                >「JSON形式で」「箇条書きで3点」などフォーマットを明示する
+                            </li>
+                            <li>
+                                <strong>反復改善：</strong
+                                >プロンプトはイテレーション（試行錯誤）で最適化する。一発完成を期待しない
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Comparison Table -->
+                    <table class="ctbl" style="margin-top: 20px">
+                        <thead>
+                            <tr>
+                                <th>技法</th>
+                                <th>難易度</th>
+                                <th>主なユースケース</th>
+                                <th>コスト（トークン）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style="color: var(--teal)">Zero-shot</strong></td>
+                                <td>★☆☆</td>
+                                <td>翻訳・要約・分類（明確なタスク）</td>
+                                <td>最小</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--teal)">One-shot</strong></td>
+                                <td>★☆☆</td>
+                                <td>フォーマット指定・構造化出力</td>
+                                <td>小</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--lime)">Few-shot</strong></td>
+                                <td>★★☆</td>
+                                <td>パターン学習・カスタム分類</td>
+                                <td>中</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--lime)">Role Prompting</strong></td>
+                                <td>★★☆</td>
+                                <td>専門家視点・特定スタイルの文章生成</td>
+                                <td>中</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--lime)">Prompt Chaining</strong></td>
+                                <td>★★☆</td>
+                                <td>多段階処理・ワークフロー自動化</td>
+                                <td>中〜大</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong style="color: var(--amber)">Chain-of-Thought</strong>
+                                </td>
+                                <td>★★★</td>
+                                <td>数学・論理推論・説明可能性向上</td>
+                                <td>大</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--rose)">ReAct</strong></td>
+                                <td>★★★</td>
+                                <td>AIエージェント・外部ツール連携</td>
+                                <td>最大</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="src">
+                        <div class="srct">📎 参照リソース</div>
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/introduction-prompt-design"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/introduction-prompt-design</a
+                        >
+                        <a href="https://arxiv.org/pdf/2201.11903.pdf" target="_blank"
+                            >Chain-of-Thought Prompting 原論文 (Wei et al., 2022):
+                            https://arxiv.org/pdf/2201.11903.pdf</a
+                        >
+                        <a href="https://arxiv.org/pdf/2210.03629.pdf" target="_blank"
+                            >ReAct 原論文 (Yao et al., 2022):
+                            https://arxiv.org/pdf/2210.03629.pdf</a
+                        >
+                        <a
+                            href="https://github.com/GoogleCloudPlatform/generative-ai/blob/main/language/prompts/examples/chain_of_thought_react.ipynb"
+                            target="_blank"
+                            >Google Cloud CoT & ReAct サンプルノートブック:
+                            https://github.com/GoogleCloudPlatform/generative-ai/</a
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <hr class="divider" />
+
+            <!-- ──────────── 3.3 ──────────── -->
+            <section id="s33" class="sg">
+                <div class="sec-header">
+                    <div class="sec-num-box sn-sky">3.3</div>
+                    <div>
+                        <h2>グラウンディング技術と RAG</h2>
+                        <p>
+                            LLM
+                            の回答を事実に基づかせる「グラウンディング」の概念・3種類のデータソース・Google
+                            Cloud の RAG オファリング・サンプリングパラメータを完全理解する
+                        </p>
+                    </div>
+                    <div class="sec-pct p-sky">最重要</div>
+                </div>
+
+                <!-- What is Grounding -->
+                <div class="card">
+                    <div class="card-h">🌍 グラウンディング（Grounding）の本質</div>
+                    <p style="font-size: 14px; line-height: 1.8; margin-bottom: 16px">
+                        グラウンディングとは、<strong style="color: var(--sky)"
+                            >LLM
+                            の生成する回答を、信頼できる外部データソースに「紐づける（錨をおろす）」技術</strong
+                        >。
+                        モデルが「記憶から作り話をする」のではなく「参照した文書から回答する」ようにすることで、ハルシネーションを根本的に削減する。
+                    </p>
+
+                    <div class="split2">
+                        <div class="sbox">
+                            <div class="sbox-t" style="color: var(--rose)">
+                                ❌ グラウンディングなし（危険）
+                            </div>
+                            <ul>
+                                <li>モデルの学習済みパラメータのみから生成</li>
+                                <li>ハルシネーションが頻繁に発生</li>
+                                <li>知識カットオフ以降の情報を参照不可</li>
+                                <li>企業固有の情報を回答できない</li>
+                                <li>出典・根拠の引用が不可能</li>
+                            </ul>
+                        </div>
+                        <div class="sbox">
+                            <div class="sbox-t" style="color: var(--teal)">
+                                ✅ グラウンディングあり（推奨）
+                            </div>
+                            <ul>
+                                <li>外部データソースを参照してから生成</li>
+                                <li>ハルシネーションを大幅に低減</li>
+                                <li>最新情報・リアルタイムデータを反映</li>
+                                <li>企業固有の社内文書を参照可能</li>
+                                <li>引用元（ソース）を明示して信頼性向上</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 types of grounding data -->
+                <div class="card">
+                    <div class="card-h">📂 グラウンディングの3種類のデータソース（試験頻出）</div>
+                    <p style="font-size: 14px; margin-bottom: 16px">
+                        試験では「どのデータソースで、どのグラウンディング手法を使うか」の組み合わせが問われる。
+                    </p>
+
+                    <div class="fgrid">
+                        <div class="fi" style="border-top-color: var(--teal)">
+                            <div class="fi-t" style="color: var(--teal)">
+                                🏢 ファーストパーティデータ（自社データ）
+                            </div>
+                            <div class="fi-d">
+                                企業が保有する独自の内部データ。社内文書・製品マニュアル・業務ナレッジベース・CRM
+                                データ等。<br /><br />
+                                <strong style="color: var(--text)">特徴：</strong
+                                >機密性が高い。外部に出さずにGCP内で処理する必要がある。<br /><br />
+                                <strong style="color: var(--text)">推奨手法：</strong>Vertex AI
+                                Search（プリビルト RAG）または RAG API
+                            </div>
+                        </div>
+                        <div class="fi" style="border-top-color: var(--sky)">
+                            <div class="fi-t" style="color: var(--sky)">
+                                🌐 サードパーティデータ（外部データ）
+                            </div>
+                            <div class="fi-d">
+                                業界レポート・ニュースフィード・規制当局の発表・パートナー企業から提供されるデータ。<br /><br />
+                                <strong style="color: var(--text)">特徴：</strong
+                                >ライセンス・著作権に注意が必要。定期更新が必要。<br /><br />
+                                <strong style="color: var(--text)">推奨手法：</strong
+                                >データパイプラインで取り込み後、Vertex AI Search に登録
+                            </div>
+                        </div>
+                        <div class="fi" style="border-top-color: var(--lime)">
+                            <div class="fi-t" style="color: var(--lime)">
+                                🌏 World Data（世界の一般知識）
+                            </div>
+                            <div class="fi-d">
+                                インターネット全体のリアルタイム情報。最新ニュース・Wikipedia・公開
+                                Web サイトなど。<br /><br />
+                                <strong style="color: var(--text)">特徴：</strong
+                                >最も新鮮。情報の信頼性はソースによって異なる。<br /><br />
+                                <strong style="color: var(--text)">推奨手法：</strong>Grounding with
+                                Google Search（リアルタイム Web 検索）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warn">
+                        <div class="warnt">
+                            ⚠️ 試験頻出：データソースとグラウンディング手法の対応
+                        </div>
+                        <ul>
+                            <li>
+                                <strong style="color: var(--bright)"
+                                    >自社機密データ + セキュリティ重視</strong
+                                >
+                                → Vertex AI Search（VPC 内処理）または RAG API
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)"
+                                    >最新の世界情報 + 知識カットオフ解消</strong
+                                >
+                                → Grounding with Google Search
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)">両方が必要な企業アプリ</strong>
+                                → ハイブリッド（社内 Vertex AI Search + Google Search を組み合わせ）
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- RAG Explained -->
+                <div class="card">
+                    <div class="card-h">
+                        🔄 RAG（Retrieval-Augmented Generation）仕組みの完全解説
+                    </div>
+                    <p style="font-size: 14px; margin-bottom: 16px">
+                        RAG = <strong style="color: var(--sky)">検索（Retrieval）</strong> +
+                        <strong style="color: var(--lime)">拡張（Augmented）</strong> +
+                        <strong style="color: var(--teal)">生成（Generation）</strong
+                        >。外部文書から関連情報を検索し、それをコンテキストに追加してLLMが生成する技術。
+                    </p>
+
+                    <div class="rag-flow">
+                        <div class="rag-step">
+                            <div class="rag-num">1</div>
+                            <div class="rag-body">
+                                <strong>📥 ドキュメントの取り込み・前処理（Ingestion）</strong>
+                                <p>
+                                    PDF・Word・Webページ・データベースなどの企業内ドキュメントを読み込む。テキストを適切なサイズの断片（チャンク）に分割する。チャンクサイズは大きすぎても小さすぎても精度に影響。
+                                </p>
+                                <div class="rag-tags">
+                                    <span class="rag-tag rt-teal">チャンキング</span>
+                                    <span class="rag-tag rt-sky">ドキュメント前処理</span>
+                                    <span class="rag-tag rt-amber">OCR対応（PDF等）</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rag-step">
+                            <div class="rag-num">2</div>
+                            <div class="rag-body">
+                                <strong>🔢 エンベディング（ベクター化）</strong>
+                                <p>
+                                    各チャンクをエンベディングモデル（text-embedding-004等）で数値ベクターに変換。意味的に近いテキストは近い位置のベクターになる。このベクターをベクターデータベースに格納する。
+                                </p>
+                                <div class="rag-tags">
+                                    <span class="rag-tag rt-teal">text-embedding-004</span>
+                                    <span class="rag-tag rt-lime">意味的検索</span>
+                                    <span class="rag-tag rt-sky">ベクターDB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rag-step">
+                            <div class="rag-num">3</div>
+                            <div class="rag-body">
+                                <strong>🔍 クエリ・検索（Retrieval）</strong>
+                                <p>
+                                    ユーザーの質問もエンベディングでベクター化。ベクターデータベースでコサイン類似度・内積などで最も関連するチャンクを上位N件取得（ベクター検索
+                                    + BM25の組み合わせもある）。
+                                </p>
+                                <div class="rag-tags">
+                                    <span class="rag-tag rt-teal">コサイン類似度</span>
+                                    <span class="rag-tag rt-lime">Approximate NN</span>
+                                    <span class="rag-tag rt-amber">リランキング</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rag-step">
+                            <div class="rag-num">4</div>
+                            <div class="rag-body">
+                                <strong
+                                    >📝 プロンプト拡張・LLM生成（Augmentation + Generation）</strong
+                                >
+                                <p>
+                                    検索で取得したチャンクをコンテキストとしてプロンプトに追加し、LLMに渡す。LLMはモデルの知識だけでなく提供されたコンテキストを参照して回答を生成。ソース引用も可能になる。
+                                </p>
+                                <div class="rag-tags">
+                                    <span class="rag-tag rt-teal">コンテキスト注入</span>
+                                    <span class="rag-tag rt-lime">Gemini Pro</span>
+                                    <span class="rag-tag rt-sky">ソース引用</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div class="infot">📌 RAG とファインチューニングの違い</div>
+                        <p>
+                            RAG は「外部から情報を検索して補う」→<strong style="color: var(--sky)"
+                                >最新情報対応・データを変えればすぐ反映</strong
+                            >。ファインチューニングは「モデル自体を再学習させる」→<strong
+                                style="color: var(--lime)"
+                                >特定ドメインへの深い適応・推論時コストゼロ</strong
+                            >。多くの場合 RAG → FT の順で試すのが Google 推奨のアプローチ。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3 RAG Offerings -->
+                <div class="card">
+                    <div class="card-h">☁️ Google Cloud の3つの RAG オファリング（試験必須）</div>
+                    <p style="font-size: 14px; margin-bottom: 16px">
+                        Google Cloud は難易度・制御度に応じた3段階の RAG
+                        ソリューションを提供。<strong style="color: var(--sky)"
+                            >何を優先するかで選択肢が変わる</strong
+                        >ことが試験のポイント。
+                    </p>
+
+                    <div class="fgrid">
+                        <div class="fi" style="border-top: 2px solid var(--lime)">
+                            <div class="fi-t" style="color: var(--lime)">
+                                ① プリビルト RAG — Vertex AI Search
+                            </div>
+                            <div class="fi-d">
+                                <strong style="color: var(--text)">概要：</strong
+                                >ドキュメントをアップロードするだけで RAG 搭載の検索・Q&A API
+                                が完成。チャンキング・エンベディング・ベクター検索・LLM回答生成をすべて自動化。<br /><br />
+                                <strong style="color: var(--text)">特徴：</strong
+                                >コード最少・最速でPoC可能・エンタープライズ品質<br /><br />
+                                <strong style="color: var(--text)">適用場面：</strong
+                                >社内ナレッジ検索・チャットボット・カスタマーサポートのFAQ回答
+                            </div>
+                        </div>
+                        <div class="fi" style="border-top: 2px solid var(--sky)">
+                            <div class="fi-t" style="color: var(--sky)">
+                                ② RAG API — Vertex AI RAG Engine
+                            </div>
+                            <div class="fi-d">
+                                <strong style="color: var(--text)">概要：</strong>RAG
+                                パイプラインの各ステップ（チャンキング戦略・埋め込みモデル選択・リランキングアルゴリズム）をAPIで細かくカスタマイズ。<br /><br />
+                                <strong style="color: var(--text)">特徴：</strong
+                                >高度な制御・複数データソースの動的切り替え可能・専用エンドポイント<br /><br />
+                                <strong style="color: var(--text)">適用場面：</strong
+                                >特定のチャンキング戦略が必要な場合・カスタム再ランキングが必要な場合
+                            </div>
+                        </div>
+                        <div class="fi" style="border-top: 2px solid var(--teal)">
+                            <div class="fi-t" style="color: var(--teal)">
+                                ③ Grounding with Google Search
+                            </div>
+                            <div class="fi-d">
+                                <strong style="color: var(--text)">概要：</strong>Google
+                                のリアルタイム Web 検索インデックスを LLM の回答に注入。API
+                                設定1行で有効化でき、常に最新の世界情報を提供。<br /><br />
+                                <strong style="color: var(--text)">特徴：</strong
+                                >リアルタイム・最新情報・知識カットオフを完全解消<br /><br />
+                                <strong style="color: var(--text)">適用場面：</strong
+                                >最新ニュース・株価・天気・時事情報が必要なアプリ
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="ctbl" style="margin-top: 16px">
+                        <thead>
+                            <tr>
+                                <th>比較軸</th>
+                                <th>① Vertex AI Search（プリビルト）</th>
+                                <th>② RAG API（カスタム）</th>
+                                <th>③ Grounding w/ Google Search</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>実装難易度</strong></td>
+                                <td>★☆☆（最簡単）</td>
+                                <td>★★☆（中程度）</td>
+                                <td>★☆☆（最簡単）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>制御度</strong></td>
+                                <td>低（自動管理）</td>
+                                <td>高（各ステップ制御）</td>
+                                <td>低（Google管理）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>データソース</strong></td>
+                                <td>社内文書・DB</td>
+                                <td>任意（カスタム）</td>
+                                <td>公開 Web（リアルタイム）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>最新情報</strong></td>
+                                <td>登録次第（手動更新）</td>
+                                <td>データ次第</td>
+                                <td>◎（常時最新）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>適用場面</strong></td>
+                                <td>社内ナレッジ・PoC</td>
+                                <td>高精度・専門システム</td>
+                                <td>世界の最新情報が必要な場合</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="bp">
+                        <div class="bpt">✅ RAG オファリング選択のフレームワーク</div>
+                        <ul>
+                            <li>
+                                <strong>まず試すなら</strong> → Vertex AI Search（プリビルト
+                                RAG）。最小コード・最速PoC
+                            </li>
+                            <li>
+                                <strong>精度向上が必要なら</strong> → RAG API
+                                でチャンキング戦略・リランキングをカスタマイズ
+                            </li>
+                            <li>
+                                <strong>最新情報が必須なら</strong> → Grounding with Google Search
+                                を単体または組み合わせで使用
+                            </li>
+                            <li>
+                                <strong>エンタープライズ本番なら</strong> → 社内データ（Vertex AI
+                                Search）+ 必要に応じて Google Search のハイブリッド構成
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="src">
+                        <div class="srct">📎 参照リソース</div>
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/grounding/overview"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/generative-ai/docs/grounding/overview</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/grounding/grounding-with-vertex-ai-search"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/generative-ai/docs/grounding/grounding-with-vertex-ai-search</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/grounding"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/grounding</a
+                        >
+                        <a href="https://arxiv.org/pdf/2005.14165.pdf" target="_blank"
+                            >RAG 原論文 (Lewis et al., 2020):
+                            https://arxiv.org/pdf/2005.14165.pdf</a
+                        >
+                    </div>
+                </div>
+
+                <!-- Sampling Parameters -->
+                <div class="card">
+                    <div class="card-h">
+                        🎛️ サンプリングパラメータ — LLM の動作を精密にコントロールする
+                    </div>
+                    <p style="font-size: 14px; margin-bottom: 16px">
+                        Gen AI
+                        モデルは複数のパラメータで出力の多様性・長さ・安全性を制御できる。試験では<strong
+                            style="color: var(--sky)"
+                            >各パラメータの機能と推奨設定値</strong
+                        >が頻繁に問われる。
+                    </p>
+
+                    <div class="param-grid">
+                        <!-- Temperature -->
+                        <div class="param">
+                            <div class="param-name">temperature（温度）</div>
+                            <div class="param-range">範囲: 0.0 〜 2.0</div>
+                            <div class="param-desc">
+                                出力の<strong style="color: var(--teal)">ランダム性・創造性</strong
+                                >を制御する最重要パラメータ。低いほど決定論的（毎回同じ）、高いほど多様で予測不能な出力になる。
+                            </div>
+                            <div class="param-scale">
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">0.0</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 5%"></div>
+                                    </div>
+                                    <div class="param-label">完全決定論的</div>
+                                </div>
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">0.2</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 20%"></div>
+                                    </div>
+                                    <div class="param-label">事実QA推奨</div>
+                                </div>
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">0.7</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 55%"></div>
+                                    </div>
+                                    <div class="param-label">バランス型</div>
+                                </div>
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">1.0+</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 85%"></div>
+                                    </div>
+                                    <div class="param-label">創作文章推奨</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Top-P -->
+                        <div class="param">
+                            <div class="param-name">top_p（Nucleus Sampling）</div>
+                            <div class="param-range">範囲: 0.0 〜 1.0</div>
+                            <div class="param-desc">
+                                確率の累積値が
+                                <strong style="color: var(--teal)"
+                                    >P に達するまでの上位トークン</strong
+                                >からのみサンプリングする。確率が低い「奇妙な単語」を排除し、品質を保ちながら多様性を確保する。
+                            </div>
+                            <div class="param-scale">
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">0.1</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 10%"></div>
+                                    </div>
+                                    <div class="param-label">非常に保守的</div>
+                                </div>
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">0.8</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 60%"></div>
+                                    </div>
+                                    <div class="param-label">バランス型</div>
+                                </div>
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">0.95</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 80%"></div>
+                                    </div>
+                                    <div class="param-label">一般推奨値</div>
+                                </div>
+                                <div class="param-scale-row">
+                                    <div class="param-scale-val">1.0</div>
+                                    <div class="param-bar">
+                                        <div class="param-fill" style="width: 100%"></div>
+                                    </div>
+                                    <div class="param-label">全トークン対象</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Max Output Tokens -->
+                        <div class="param">
+                            <div class="param-name">max_output_tokens</div>
+                            <div class="param-range">モデル依存（例: Gemini Pro = 8192）</div>
+                            <div class="param-desc">
+                                生成する<strong style="color: var(--teal)">最大トークン数</strong
+                                >を設定。1トークン ≒
+                                日本語で約1〜2文字、英語で約4文字。短い応答が必要なら小さく設定して
+                                API コストを削減できる。
+                            </div>
+                            <div style="margin-top: 12px; font-size: 12px; color: var(--muted)">
+                                <strong style="color: var(--text)">推奨設定：</strong><br />
+                                チャット応答 → 256〜512<br />
+                                要約タスク → 1024〜2048<br />
+                                長文生成 → モデル上限まで
+                            </div>
+                        </div>
+                        <!-- Safety Settings -->
+                        <div class="param">
+                            <div class="param-name">safety_settings</div>
+                            <div class="param-range">OFF / LOW / MEDIUM / HIGH / BLOCK_ALL</div>
+                            <div class="param-desc">
+                                有害コンテンツ（ヘイトスピーチ・危険情報・性的内容・暴力）の<strong
+                                    style="color: var(--teal)"
+                                    >フィルタリング強度</strong
+                                >を設定。カテゴリ別に個別設定可能。エンタープライズでは HIGH
+                                を推奨。
+                            </div>
+                            <div style="margin-top: 12px; font-size: 12px; color: var(--muted)">
+                                <strong style="color: var(--text)">カテゴリ：</strong><br />
+                                HARM_CATEGORY_HARASSMENT<br />
+                                HARM_CATEGORY_HATE_SPEECH<br />
+                                HARM_CATEGORY_DANGEROUS_CONTENT<br />
+                                HARM_CATEGORY_SEXUALLY_EXPLICIT
+                            </div>
+                        </div>
+                        <!-- Token Count -->
+                        <div class="param">
+                            <div class="param-name">token_count（入力トークン）</div>
+                            <div class="param-range">モデルのコンテキストウィンドウ以内</div>
+                            <div class="param-desc">
+                                入力プロンプト（コンテキスト）のトークン数。<strong
+                                    style="color: var(--teal)"
+                                    >APIコストは入力+出力トークン数の合計</strong
+                                >で課金される。長いコンテキストは精度を上げるがコストも上がる。
+                            </div>
+                            <div style="margin-top: 12px; font-size: 12px; color: var(--muted)">
+                                <strong style="color: var(--text)"
+                                    >Gemini のコンテキスト上限：</strong
+                                ><br />
+                                Gemini 1.5 Flash → 1M トークン<br />
+                                Gemini 1.5 Pro → 1M トークン<br />
+                                Gemini 2.0 Flash → 1M トークン
+                            </div>
+                        </div>
+                        <!-- Stop Sequences -->
+                        <div class="param">
+                            <div class="param-name">stop_sequences</div>
+                            <div class="param-range">任意の文字列リスト</div>
+                            <div class="param-desc">
+                                指定した文字列が出力に現れた時点で<strong style="color: var(--teal)"
+                                    >生成を即座に停止</strong
+                                >するシーケンス。JSON生成時の「}」やマークダウン区切りの「---」など、出力の終端を制御するのに使用。
+                            </div>
+                            <div style="margin-top: 12px; font-size: 12px; color: var(--muted)">
+                                <strong style="color: var(--text)">活用例：</strong><br />
+                                stop_sequences: ["```", "END", "\n\n"]
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bp">
+                        <div class="bpt">✅ サンプリングパラメータのベストプラクティス</div>
+                        <ul>
+                            <li>
+                                <strong>事実確認・QA・要約</strong> → temperature:
+                                0.0〜0.3（低い値で一貫性を確保）
+                            </li>
+                            <li>
+                                <strong>マーケティング文章・アイデア生成</strong> → temperature:
+                                0.7〜1.0（高い値で創造性を発揮）
+                            </li>
+                            <li>
+                                <strong>コード生成</strong> → temperature:
+                                0.0〜0.2（構文的に正確なコードが必要）
+                            </li>
+                            <li>
+                                <strong>エンタープライズ本番環境</strong> → safety_settings を HIGH
+                                に設定。コンプライアンス監査ログを記録
+                            </li>
+                            <li>
+                                <strong>コスト最適化</strong> → max_output_tokens
+                                を必要最小限に設定。不必要な長文生成を防ぐ
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="codeblock">
+                        <span class="comment"
+                            >// Vertex AI Python SDK でのサンプリングパラメータ設定例</span
+                        ><br />
+                        <span class="fn">from</span>
+                        <span class="kw">vertexai.generative_models</span>
+                        <span class="fn">import</span> GenerativeModel, GenerationConfig<br /><br />
+                        model = GenerativeModel(<span class="str">"gemini-1.5-pro-002"</span
+                        >)<br /><br />
+                        config = GenerationConfig(<br />
+                        &nbsp;&nbsp;temperature=<span class="num">0.2</span>,
+                        <span class="comment"># 事実QA向けに低く設定</span><br />
+                        &nbsp;&nbsp;top_p=<span class="num">0.9</span>,
+                        <span class="comment"># 上位90%のトークンからサンプリング</span><br />
+                        &nbsp;&nbsp;max_output_tokens=<span class="num">1024</span>,
+                        <span class="comment"># 最大1024トークンで応答</span><br />
+                        &nbsp;&nbsp;stop_sequences=[<span class="str">"END"</span>],
+                        <span class="comment"># "END"が出たら停止</span><br />
+                        )<br /><br />
+                        response = model.generate_content(<br />
+                        &nbsp;&nbsp;<span class="str"
+                            >"本日の気温と過去30年の平均気温を比較してください"</span
+                        >,<br />
+                        &nbsp;&nbsp;generation_config=config,<br />
+                        )
+                    </div>
+                    <div class="src">
+                        <div class="srct">📎 参照リソース</div>
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/docs/generative-ai/model-reference/text#request_body"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/docs/generative-ai/model-reference/text#request_body</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/configure-safety-attributes"
+                            target="_blank"
+                            >https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/configure-safety-attributes</a
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <hr class="divider" />
+
+            <!-- ═══════════ SUMMARY ═══════════ -->
+            <section id="summary">
+                <div
+                    class="card"
+                    style="
+                        border-color: rgba(0, 217, 192, 0.3);
+                        background: linear-gradient(135deg, var(--bg2), var(--bg4));
+                    "
+                >
+                    <div class="card-h" style="font-size: 18px">
+                        🎯 Section 3 試験攻略 — 最重要ポイント完全まとめ
+                    </div>
+
+                    <div class="fact-row">
+                        <div class="fact">
+                            <div class="fact-val">~20%</div>
+                            <div class="fact-lbl">試験での配点</div>
+                        </div>
+                        <div class="fact">
+                            <div class="fact-val">3</div>
+                            <div class="fact-lbl">サブセクション数</div>
+                        </div>
+                        <div class="fact">
+                            <div class="fact-val">7</div>
+                            <div class="fact-lbl">プロンプト技法数</div>
+                        </div>
+                        <div class="fact">
+                            <div class="fact-val">6</div>
+                            <div class="fact-lbl">サンプリングパラメータ</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px">
+                        <div class="fgrid">
+                            <div class="fi" style="border-top-color: var(--teal)">
+                                <div class="fi-t">3.1 で絶対押さえる3点</div>
+                                <div class="fi-d">
+                                    ① 6つの限界とそれぞれの対処法の組み合わせ ②
+                                    5つの改善戦略のトレードオフ ③ Vertex AI Feature
+                                    Store・ドリフト監視の役割
+                                </div>
+                            </div>
+                            <div class="fi" style="border-top-color: var(--lime)">
+                                <div class="fi-t">3.2 で絶対押さえる3点</div>
+                                <div class="fi-d">
+                                    ① 7技法の名称・定義・適用場面（特に CoT と ReAct） ②
+                                    Zero-shot→ReAct の難易度・コスト順 ③ プロンプト設計の黄金律5箇条
+                                </div>
+                            </div>
+                            <div class="fi" style="border-top-color: var(--sky)">
+                                <div class="fi-t">3.3 で絶対押さえる3点</div>
+                                <div class="fi-d">
+                                    ① 3種データソースとグラウンディング手法の対応 ② RAG
+                                    3オファリングの使い分け基準 ③ temperature・top-p
+                                    の意味と推奨設定値
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warn" style="margin-top: 20px">
+                        <div class="warnt">⚠️ Section 3 で特に混同しやすい概念</div>
+                        <ul>
+                            <li>
+                                <strong style="color: var(--bright)"
+                                    >RAG ≠ ファインチューニング</strong
+                                >：RAG は「検索して補う」、FT
+                                は「モデルを再学習させる」。最新情報対応は RAG でしか解決できない
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)"
+                                    >Temperature=0 は「完全に同じ出力」ではない</strong
+                                >：top-p・top-k の影響で完全同一ではないが、極めて高い一貫性になる
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)"
+                                    >Prompt Chaining ≠ Chain-of-Thought</strong
+                                >：Chaining は複数プロンプトをつなぐ「ワークフロー」、CoT
+                                は1プロンプト内で推論を「見える化」する技法
+                            </li>
+                            <li>
+                                <strong style="color: var(--bright)">Grounding ≠ RAG</strong>：RAG
+                                はグラウンディングの実装方法の一つ。Grounding
+                                はより広い概念で、Google Search グラウンディングは RAG の変形
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="src">
+                        <div class="srct">📎 Section 3 全体の参照リソース</div>
+                        <a
+                            href="https://cloud.google.com/learn/certification/generative-ai-leader"
+                            target="_blank"
+                            >試験ページ:
+                            https://cloud.google.com/learn/certification/generative-ai-leader</a
+                        >
+                        <a
+                            href="https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf"
+                            target="_blank"
+                            >試験ガイド PDF:
+                            https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/introduction-prompt-design"
+                            target="_blank"
+                            >Prompt Design ガイド:
+                            https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/introduction-prompt-design</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/generative-ai/docs/grounding/overview"
+                            target="_blank"
+                            >Grounding 概要:
+                            https://cloud.google.com/vertex-ai/generative-ai/docs/grounding/overview</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/docs/model-monitoring/overview"
+                            target="_blank"
+                            >Model Monitoring:
+                            https://cloud.google.com/vertex-ai/docs/model-monitoring/overview</a
+                        >
+                        <a href="https://arxiv.org/pdf/2201.11903.pdf" target="_blank"
+                            >Chain-of-Thought 論文 (Wei 2022):
+                            https://arxiv.org/pdf/2201.11903.pdf</a
+                        >
+                        <a href="https://arxiv.org/pdf/2210.03629.pdf" target="_blank"
+                            >ReAct 論文 (Yao 2022): https://arxiv.org/pdf/2210.03629.pdf</a
+                        >
+                        <a href="https://arxiv.org/pdf/2005.14165.pdf" target="_blank"
+                            >RAG 論文 (Lewis 2020): https://arxiv.org/pdf/2005.14165.pdf</a
+                        >
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ═══════════ FOOTER ═══════════ -->
+        <footer>
+            <p style="margin-bottom: 8px">
+                <strong>Google Cloud Generative AI Leader — Section 3 深掘り解説ガイド</strong>
+            </p>
+            <p>
+                参考：<a
+                    href="https://cloud.google.com/learn/certification/generative-ai-leader"
+                    target="_blank"
+                    >Google Cloud 公式試験ページ</a
+                >
+                ｜ 作成日：2026年3月
+            </p>
+            <p style="margin-top: 8px; font-size: 11px; opacity: 0.4">
+                ※ 本ガイドは学習目的で作成。最新情報は必ず公式サイトでご確認ください。
+            </p>
+        </footer>
+    </body>
+</html>
