@@ -5,7 +5,7 @@ import AssociateCloudEngineerPage from '@/app/gcl/associate-cloud-engineer/page'
 describe('Associate Cloud Engineer ページ', () => {
     it('ページコンポーネントがレンダリングされること', () => {
         render(<AssociateCloudEngineerPage />);
-        expect(screen.getByText(/Associate Cloud Engineer/)).toBeInTheDocument();
+        expect(screen.getAllByText(/Associate Cloud Engineer/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('hero セクションに試験タイトルが含まれること', () => {
