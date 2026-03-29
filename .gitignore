@@ -103,5 +103,17 @@ credentials.json
 node_modules/
 package-lock.json
 
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Bun
+bun.lock
+
+# テスト結果
+test-results/
+playwright-report/
+
 .claude/skills
-Aws/archive
+Aws/archive/*
