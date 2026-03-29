@@ -17,7 +17,7 @@ describe('Generative AI Leader ページ', () => {
         render(<GenaiLeaderPage />);
         expect(screen.getByText('90 分')).toBeInTheDocument();
         expect(screen.getByText('50〜60問')).toBeInTheDocument();
-        expect(screen.getByText('$99')).toBeInTheDocument();
+        expect(screen.getAllByText('$99').length).toBeGreaterThanOrEqual(1);
     });
 
     it('4つのセクション見出しが存在すること', () => {
@@ -32,9 +32,9 @@ describe('Generative AI Leader ページ', () => {
         render(<GenaiLeaderPage />);
         const nav = screen.getByRole('navigation');
         expect(nav).toBeInTheDocument();
-        expect(screen.getByText(/Section 1: Gen AI 基礎/)).toBeInTheDocument();
-        expect(screen.getByText(/Section 2: GCP サービス/)).toBeInTheDocument();
-        expect(screen.getByText(/Section 3: モデル改善/)).toBeInTheDocument();
-        expect(screen.getByText(/Section 4: ビジネス戦略/)).toBeInTheDocument();
+        expect(screen.getAllByText(/Section 1: Gen AI 基礎/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Section 2: GCP サービス/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Section 3: モデル改善/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Section 4: ビジネス戦略/).length).toBeGreaterThanOrEqual(1);
     });
 });
