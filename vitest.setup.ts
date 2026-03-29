@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom/vitest';
+import React from 'react';
 import { vi } from 'vitest';
 
 // next/font/google のモック
@@ -63,7 +64,6 @@ vi.mock('next/font/google', () => ({
 // next/link のモック
 vi.mock('next/link', () => ({
     default: ({ children, href, ...props }: { children: React.ReactNode; href: string; [key: string]: unknown }) => {
-        const React = require('react');
         return React.createElement('a', { href, ...props }, children);
     },
 }));

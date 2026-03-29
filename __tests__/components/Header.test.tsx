@@ -24,4 +24,28 @@ describe('Header', () => {
         render(<Header />);
         expect(screen.getByRole('navigation')).toBeInTheDocument();
     });
+
+    it('Section 1 へのドロップダウンリンクが存在すること', () => {
+        render(<Header />);
+        const link = screen.getByRole('link', { name: /section 1/i });
+        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section1');
+    });
+
+    it('Section 2 へのドロップダウンリンクが存在すること', () => {
+        render(<Header />);
+        const link = screen.getByRole('link', { name: /section 2/i });
+        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section2');
+    });
+
+    it('Section 3 へのドロップダウンリンクが存在すること', () => {
+        render(<Header />);
+        const link = screen.getByRole('link', { name: /section 3/i });
+        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section3');
+    });
+
+    it('Section 4 へのドロップダウンリンクが存在すること', () => {
+        render(<Header />);
+        const link = screen.getByRole('link', { name: /section 4/i });
+        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section4');
+    });
 });
