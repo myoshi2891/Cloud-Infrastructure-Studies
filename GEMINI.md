@@ -4,6 +4,7 @@
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
 
 ## 主な技術スタック
+
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS 4, CSS Modules (一部カスタム CSS)
@@ -11,6 +12,7 @@
 - **Runtime:** Bun / Node.js
 
 ## 開発と実行
+
 主要なコマンドは `package.json` に定義されています。
 
 - **開発サーバー起動:** `npm run dev` (または `bun dev`)
@@ -20,9 +22,10 @@
 - **Lint 実行:** `npm run lint`
 
 ## プロジェクト構造
+
 - `/app`: Next.js App Router のページコンポーネント。
-  - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
-  - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
+    - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
+    - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
 - `/components`: 共通コンポーネント（Header, Footer など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。
@@ -30,11 +33,13 @@
 - `/Aws`: AWS 関連の古い資料（アーカイブ済み）。
 
 ## 開発コンベンション
+
 - **テスト駆動:** 新機能や修正の際は、`/__tests__` に対応するテストを追加または更新してください。
 - **UI デザイン:** 各セクションごとに固有のテーマカラー（Aurora, Sapphire, Laboratory, Gold）が設定されています。
 - **スタイリング:** CSS 変数は `app/globals.css` で定義された 3層トークンアーキテクチャに従ってください。
 - **保守性:** 共通の定数（作成日など）は `app/gcl/genai-leader/constants.ts` に集約されています。
 
 ## 注意事項
+
 - `litellm` や `dspy` は脆弱性の懸念があるため、プロジェクトへの追加は禁止されています。
 - ページコンポーネント（`page.tsx`）が巨大化する傾向があるため、必要に応じてロジックやコンテンツの分離を検討してください。
