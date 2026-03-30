@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Outfit, Fira_Code } from 'next/font/google';
+import { getFormattedCreationDate } from '../constants';
 import './section3.css';
 
 const outfit = Outfit({
@@ -452,7 +453,7 @@ export default function Section3Page() {
                 <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer">
                     Google Cloud 公式試験ページ
                 </a>
-                {' '}｜ 作成日：2026年3月<br /><br />
+                {' '}｜ {getFormattedCreationDate()}<br /><br />
                 <span style={{ fontSize: '11px', opacity: 0.4 }}>
                     ※ 本ガイドは学習目的で作成。最新情報は必ず公式サイトでご確認ください。
                 </span>
