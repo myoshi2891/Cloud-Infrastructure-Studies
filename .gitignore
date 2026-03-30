@@ -117,3 +117,5 @@ playwright-report/
 
 .claude/skills
 Aws/archive/*
+Gcl/
+tsconfig.tsbuildinfo
