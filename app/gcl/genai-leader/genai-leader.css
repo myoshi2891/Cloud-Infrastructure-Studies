@@ -1,0 +1,649 @@
+/*
+ * Generative AI Leader — Google Blue テーマ
+ * Layer 3: ページ固有テーマ変数 + コンポーネントスタイル
+ * 全セレクタは .genai-leader-page スコープ下に配置
+ */
+
+/* ─── DESIGN TOKENS ─── */
+:root {
+    --gl-bg: #060a14;
+    --gl-surface: #0d1526;
+    --gl-surface2: #131e33;
+    --gl-border: #1e2f4a;
+    --gl-blue: #4285f4;
+    --gl-green: #34a853;
+    --gl-yellow: #fbbc04;
+    --gl-red: #ea4335;
+    --gl-cyan: #00d4ff;
+    --gl-purple: #a855f7;
+    --gl-text: #e2e8f0;
+    --gl-text-muted: #ebf0f5;
+    --gl-text-bright: #ffffff;
+    --gl-glow: 0 0 20px rgba(66, 133, 244, 0.3);
+}
+
+/* ─── HERO ─── */
+.genai-leader-page .hero {
+    min-height: 400px;
+    background: linear-gradient(135deg, #060a14 0%, #0a1628 50%, #0d1f3c 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 32px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--gl-border);
+}
+
+.genai-leader-page .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(66, 133, 244, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.genai-leader-page .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(66, 133, 244, 0.08);
+    border: 1px solid rgba(66, 133, 244, 0.25);
+    border-radius: 100px;
+    padding: 5px 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gl-cyan);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+}
+
+.genai-leader-page .hero h1 {
+    font-size: clamp(26px, 5vw, 54px);
+    font-weight: 900;
+    color: var(--gl-text-bright);
+    line-height: 1.12;
+    margin-bottom: 14px;
+}
+
+.genai-leader-page .hero h1 .accent {
+    background: linear-gradient(90deg, #4285f4, #00d4ff, #34a853);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.genai-leader-page .hero-sub {
+    color: var(--gl-text-muted);
+    font-size: 15px;
+    max-width: 640px;
+    margin: 0 auto 40px;
+    opacity: 0.8;
+}
+
+.genai-leader-page .meta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.genai-leader-page .meta-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--gl-border);
+    border-radius: 10px;
+    padding: 10px 18px;
+    text-align: center;
+    min-width: 110px;
+}
+
+.genai-leader-page .meta-card .ml {
+    font-size: 10px;
+    color: var(--gl-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: var(--font-mono);
+    opacity: 0.7;
+}
+
+.genai-leader-page .meta-card .mv {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gl-cyan);
+    margin-top: 2px;
+}
+
+/* ─── STICKY NAV ─── */
+.genai-leader-page .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(6, 10, 20, 0.93);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--gl-border);
+    display: flex;
+    gap: 2px;
+    padding: 0 32px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.genai-leader-page .sticky-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.genai-leader-page .nav-item {
+    padding: 13px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gl-text-muted);
+    white-space: nowrap;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.18s;
+    opacity: 0.7;
+}
+
+.genai-leader-page .nav-item:hover {
+    color: var(--gl-text-bright);
+    opacity: 1;
+}
+
+.genai-leader-page .nav-item.s1:hover { border-color: var(--gl-blue); }
+.genai-leader-page .nav-item.s2:hover { border-color: var(--gl-green); }
+.genai-leader-page .nav-item.s3:hover { border-color: var(--gl-yellow); }
+.genai-leader-page .nav-item.s4:hover { border-color: var(--gl-red); }
+
+/* ドットインジケーター */
+.genai-leader-page .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.genai-leader-page .dot-blue   { background: var(--gl-blue); }
+.genai-leader-page .dot-green  { background: var(--gl-green); }
+.genai-leader-page .dot-yellow { background: var(--gl-yellow); }
+.genai-leader-page .dot-red    { background: var(--gl-red); }
+
+/* ─── WRAPPER ─── */
+.genai-leader-page .wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 24px;
+}
+
+/* ─── EXAM OVERVIEW ─── */
+.genai-leader-page .exam-overview {
+    background: var(--gl-surface);
+    border: 1px solid var(--gl-border);
+    border-radius: 18px;
+    padding: 32px;
+    margin-bottom: 56px;
+}
+
+.genai-leader-page .exam-overview h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gl-text-bright);
+    margin-bottom: 24px;
+}
+
+.genai-leader-page .prow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+}
+
+.genai-leader-page .pl {
+    width: 230px;
+    color: var(--gl-text-muted);
+    font-size: 12px;
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.genai-leader-page .pbar {
+    flex: 1;
+    height: 9px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.genai-leader-page .pfill {
+    height: 100%;
+    border-radius: 100px;
+}
+
+.genai-leader-page .fb { background: var(--gl-blue); }
+.genai-leader-page .fg { background: var(--gl-green); }
+.genai-leader-page .fy { background: var(--gl-yellow); }
+.genai-leader-page .fr { background: var(--gl-red); }
+
+.genai-leader-page .ppct {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    width: 42px;
+    text-align: right;
+}
+
+.genai-leader-page .cb { color: var(--gl-blue); }
+.genai-leader-page .cg { color: var(--gl-green); }
+.genai-leader-page .cy { color: var(--gl-yellow); }
+.genai-leader-page .cr { color: var(--gl-red); }
+
+/* ─── SECTION HEADER ─── */
+.genai-leader-page .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--gl-border);
+    margin-bottom: 36px;
+}
+
+.genai-leader-page .section-number {
+    width: 58px;
+    height: 58px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.genai-leader-page .s1-num { background: rgba(66, 133, 244, 0.12); color: var(--gl-blue); border: 1px solid rgba(66, 133, 244, 0.3); }
+.genai-leader-page .s2-num { background: rgba(52, 168, 83, 0.12); color: var(--gl-green); border: 1px solid rgba(52, 168, 83, 0.3); }
+.genai-leader-page .s3-num { background: rgba(251, 188, 4, 0.12); color: var(--gl-yellow); border: 1px solid rgba(251, 188, 4, 0.3); }
+.genai-leader-page .s4-num { background: rgba(234, 67, 53, 0.12); color: var(--gl-red); border: 1px solid rgba(234, 67, 53, 0.3); }
+
+.genai-leader-page .section-header-text h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--gl-text-bright);
+    margin-bottom: 5px;
+}
+
+.genai-leader-page .section-header-text p {
+    color: var(--gl-text-muted);
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.genai-leader-page .pct-badge {
+    margin-left: auto;
+    padding: 4px 13px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.genai-leader-page .pb1 { background: rgba(66, 133, 244, 0.1); color: var(--gl-blue); border: 1px solid rgba(66, 133, 244, 0.25); }
+.genai-leader-page .pb2 { background: rgba(52, 168, 83, 0.1); color: var(--gl-green); border: 1px solid rgba(52, 168, 83, 0.25); }
+.genai-leader-page .pb3 { background: rgba(251, 188, 4, 0.1); color: var(--gl-yellow); border: 1px solid rgba(251, 188, 4, 0.25); }
+.genai-leader-page .pb4 { background: rgba(234, 67, 53, 0.1); color: var(--gl-red); border: 1px solid rgba(234, 67, 53, 0.25); }
+
+/* ─── TOPIC CARD ─── */
+.genai-leader-page .topic-card {
+    background: var(--gl-surface);
+    border: 1px solid var(--gl-border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.genai-leader-page .topic-card:hover {
+    border-color: rgba(66, 133, 244, 0.35);
+    box-shadow: var(--gl-glow);
+}
+
+.genai-leader-page .topic-card .ttitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gl-text-bright);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.genai-leader-page .topic-card .tid {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 2px 8px;
+    border-radius: 5px;
+    color: var(--gl-text-muted);
+    opacity: 0.6;
+}
+
+/* ─── TERM GRID ─── */
+.genai-leader-page .term-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.genai-leader-page .term-item {
+    background: var(--gl-surface2);
+    border: 1px solid var(--gl-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.genai-leader-page .term-item .tname {
+    font-weight: 700;
+    color: var(--gl-cyan);
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.genai-leader-page .term-item .tdef {
+    font-size: 13px;
+    color: var(--gl-text-muted);
+    line-height: 1.55;
+    opacity: 0.8;
+}
+
+/* ─── BEST PRACTICE ─── */
+.genai-leader-page .best-practice {
+    background: rgba(52, 168, 83, 0.05);
+    border: 1px solid rgba(52, 168, 83, 0.2);
+    border-left: 3px solid var(--gl-green);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 14px 0;
+}
+
+.genai-leader-page .best-practice .bpt {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gl-green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.genai-leader-page .best-practice ul { list-style: none; padding: 0; }
+.genai-leader-page .best-practice ul li { font-size: 13px; color: var(--gl-text); padding: 3px 0 3px 18px; position: relative; }
+.genai-leader-page .best-practice ul li::before { content: '\2713'; color: var(--gl-green); position: absolute; left: 0; font-size: 11px; top: 5px; }
+
+/* ─── WARNING BOX ─── */
+.genai-leader-page .warning-box {
+    background: rgba(251, 188, 4, 0.05);
+    border: 1px solid rgba(251, 188, 4, 0.2);
+    border-left: 3px solid var(--gl-yellow);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+}
+
+.genai-leader-page .warning-box .wbt {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gl-yellow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.genai-leader-page .warning-box p,
+.genai-leader-page .warning-box li { font-size: 13px; color: var(--gl-text); }
+.genai-leader-page .warning-box ul { list-style: none; padding: 0; }
+.genai-leader-page .warning-box ul li { padding: 3px 0 3px 16px; position: relative; }
+.genai-leader-page .warning-box ul li::before { content: '\26A0'; font-size: 10px; position: absolute; left: 0; top: 4px; color: var(--gl-yellow); }
+
+/* ─── INFO BOX ─── */
+.genai-leader-page .info-box {
+    background: rgba(66, 133, 244, 0.05);
+    border: 1px solid rgba(66, 133, 244, 0.2);
+    border-left: 3px solid var(--gl-blue);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13px;
+    color: var(--gl-text);
+}
+
+.genai-leader-page .info-box .ibt {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gl-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+/* ─── STEP FLOW ─── */
+.genai-leader-page .step-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 14px 0;
+}
+
+.genai-leader-page .step-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.genai-leader-page .step-item .snum {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: rgba(66, 133, 244, 0.12);
+    border: 1px solid rgba(66, 133, 244, 0.35);
+    color: var(--gl-blue);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.genai-leader-page .step-item .scont strong {
+    color: var(--gl-text-bright);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.genai-leader-page .step-item .scont p {
+    font-size: 13px;
+    color: var(--gl-text-muted);
+    opacity: 0.8;
+}
+
+/* ─── SERVICE PILLS ─── */
+.genai-leader-page .service-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.genai-leader-page .pill {
+    padding: 4px 11px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+}
+
+.genai-leader-page .pill-blue   { background: rgba(66, 133, 244, 0.1); color: var(--gl-blue); border-color: rgba(66, 133, 244, 0.3); }
+.genai-leader-page .pill-green  { background: rgba(52, 168, 83, 0.1); color: var(--gl-green); border-color: rgba(52, 168, 83, 0.3); }
+.genai-leader-page .pill-yellow { background: rgba(251, 188, 4, 0.1); color: var(--gl-yellow); border-color: rgba(251, 188, 4, 0.3); }
+.genai-leader-page .pill-purple { background: rgba(168, 85, 247, 0.1); color: var(--gl-purple); border-color: rgba(168, 85, 247, 0.3); }
+.genai-leader-page .pill-cyan   { background: rgba(0, 212, 255, 0.1); color: var(--gl-cyan); border-color: rgba(0, 212, 255, 0.3); }
+.genai-leader-page .pill-red    { background: rgba(234, 67, 53, 0.1); color: var(--gl-red); border-color: rgba(234, 67, 53, 0.3); }
+
+/* ─── COMPARE TABLE ─── */
+.genai-leader-page .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+}
+
+.genai-leader-page .compare-table th {
+    background: var(--gl-surface2);
+    padding: 10px 14px;
+    text-align: left;
+    color: var(--gl-text-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--gl-border);
+}
+
+.genai-leader-page .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--gl-text);
+    vertical-align: top;
+}
+
+.genai-leader-page .compare-table tr:hover td {
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.genai-leader-page .compare-table strong {
+    color: var(--gl-text-bright);
+}
+
+/* ─── SOURCE BOX ─── */
+.genai-leader-page .source-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--gl-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 18px;
+}
+
+.genai-leader-page .source-box .srct {
+    font-size: 11px;
+    color: var(--gl-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-family: var(--font-mono);
+    opacity: 0.7;
+}
+
+.genai-leader-page .source-box a {
+    display: block;
+    font-size: 12px;
+    color: var(--gl-cyan);
+    text-decoration: none;
+    padding: 3px 0;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    word-break: break-all;
+}
+
+.genai-leader-page .source-box a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* ─── SECTION DIVIDER ─── */
+.genai-leader-page .section-divider {
+    border: none;
+    border-top: 1px solid var(--gl-border);
+    margin: 68px 0 52px;
+}
+
+/* ─── SECTION SEPARATOR (軽量) ─── */
+.genai-leader-page .section-sep {
+    border: none;
+    border-top: 1px solid rgba(30, 47, 74, 0.5);
+    margin: 48px 0 40px;
+}
+
+/* ─── COMPARISON 2-COL ─── */
+.genai-leader-page .compare-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+}
+
+.genai-leader-page .cbox {
+    background: var(--gl-surface2);
+    border: 1px solid var(--gl-border);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.genai-leader-page .cbox-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--gl-text-bright);
+}
+
+.genai-leader-page .cbox ul { list-style: none; padding: 0; }
+.genai-leader-page .cbox ul li { font-size: 12px; color: var(--gl-text-muted); padding: 2px 0 2px 14px; position: relative; }
+.genai-leader-page .cbox ul li::before { content: '\2192'; color: var(--gl-cyan); position: absolute; left: 0; top: 2px; font-size: 11px; }
+
+/* ─── PAGE FOOTER ─── */
+.genai-leader-page .page-footer {
+    background: var(--gl-surface);
+    border-top: 1px solid var(--gl-border);
+    padding: 40px;
+    text-align: center;
+    color: var(--gl-text-muted);
+    font-size: 13px;
+}
+
+.genai-leader-page .page-footer a {
+    color: var(--gl-cyan);
+    text-decoration: none;
+}
+
+.genai-leader-page .page-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+    .genai-leader-page .hero { padding: 60px 16px 40px; min-height: 320px; }
+    .genai-leader-page .wrapper { padding: 40px 14px; }
+    .genai-leader-page .sticky-nav { padding: 0 12px; }
+    .genai-leader-page .section-header { flex-wrap: wrap; }
+    .genai-leader-page .pct-badge { margin-left: 0; }
+    .genai-leader-page .term-grid { grid-template-columns: 1fr; }
+    .genai-leader-page .compare-2 { grid-template-columns: 1fr; }
+    .genai-leader-page .prow { flex-wrap: wrap; }
+    .genai-leader-page .pl { width: 100%; }
+    .genai-leader-page .meta-grid { flex-direction: column; align-items: center; }
+    .genai-leader-page .exam-overview { padding: 20px 16px; }
+    .genai-leader-page .topic-card { padding: 20px 16px; }
+}
