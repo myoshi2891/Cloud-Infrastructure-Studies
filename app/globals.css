@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+/*
+ * 3層デザイントークンアーキテクチャ
+ *
+ * Layer 1: セマンティックトークン（shadcn/ui 互換）
+ *   → サイト全体の基本カラー。shadcn/ui コンポーネントが参照する。
+ *
+ * Layer 2: 共有プリミティブ
+ *   → 全ページで共通のフォント・radius・shadow 等。
+ *
+ * Layer 3: ページ固有テーマ変数（各ページの .css ファイルで定義）
+ *   → Aurora, Sapphire, Laboratory, Executive 等のテーマカラー。
+ */
+
+@theme {
+    /* Layer 1: セマンティックトークン (shadcn/ui 互換) */
+    --color-background: #08090f;
+    --color-foreground: #e2e8f0;
+    --color-card: #0e1117;
+    --color-card-foreground: #e2e8f0;
+    --color-muted: #1a2030;
+    --color-muted-foreground: #94a3b8;
+    --color-border: #1e2840;
+    --color-ring: #4f8ef7;
+    --color-primary: #4f8ef7;
+    --color-primary-foreground: #ffffff;
+
+    /* Layer 2: 共有プリミティブ */
+    --font-body: 'Noto Sans JP', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --radius-sm: 4px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+}
+
+/* ベースリセット */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    line-height: 1.75;
+    overflow-x: hidden;
+}
