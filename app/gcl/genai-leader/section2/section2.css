@@ -590,6 +590,276 @@
     line-height: 1.7;
 }
 
+/* ── TABLE (tbl) ── */
+.s2-page .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+}
+
+.s2-page .tbl th {
+    background: var(--s3);
+    padding: 11px 16px;
+    text-align: left;
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+}
+
+.s2-page .tbl td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    vertical-align: top;
+}
+
+.s2-page .tbl tr:hover td { background: rgba(255, 255, 255, 0.015); }
+
+/* ── TAGS ── */
+.s2-page .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 10px 0;
+}
+
+.s2-page .tag {
+    padding: 4px 11px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid;
+    font-family: var(--mono);
+}
+
+.s2-page .t-blue { background: rgba(61,111,255,0.08); color: var(--sapphire); border-color: rgba(61,111,255,0.25); }
+.s2-page .t-aqua { background: rgba(0,200,255,0.08); color: var(--aqua); border-color: rgba(0,200,255,0.25); }
+.s2-page .t-green { background: rgba(0,229,160,0.08); color: var(--emerald); border-color: rgba(0,229,160,0.25); }
+.s2-page .t-amber { background: rgba(255,181,0,0.08); color: var(--amber); border-color: rgba(255,181,0,0.25); }
+.s2-page .t-violet { background: rgba(167,139,250,0.08); color: var(--violet); border-color: rgba(167,139,250,0.25); }
+.s2-page .t-rose { background: rgba(255,95,126,0.08); color: var(--rose); border-color: rgba(255,95,126,0.25); }
+.s2-page .t-muted { background: rgba(255,255,255,0.04); color: var(--muted); border-color: var(--line); }
+
+/* ── SOURCE BOX ── */
+.s2-page .src {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    padding: 14px 18px;
+    margin-top: 20px;
+}
+
+.s2-page .srct {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.s2-page .src a {
+    display: block;
+    font-size: 11px;
+    color: var(--aqua);
+    text-decoration: none;
+    padding: 3px 0;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+    word-break: break-all;
+}
+
+.s2-page .src a:hover { opacity: 1; text-decoration: underline; }
+
+/* ── COMPARISON SPLIT ── */
+.s2-page .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+}
+
+.s2-page .sbox {
+    background: var(--s3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    padding: 18px;
+}
+
+.s2-page .sbox-t {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+}
+
+.s2-page .sbox ul { list-style: none; padding: 0; }
+
+.s2-page .sbox li {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 3px 0 3px 16px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.s2-page .sbox li::before {
+    content: '\203A';
+    color: var(--aqua);
+    position: absolute;
+    left: 0;
+    font-size: 13px;
+    top: 2px;
+}
+
+/* ── ARCHITECTURE DIAGRAM ── */
+.s2-page .arch {
+    background: var(--s3);
+    border: 1px solid var(--line2);
+    border-radius: var(--r-card);
+    padding: 24px;
+    margin: 16px 0;
+}
+
+.s2-page .arch-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+}
+
+.s2-page .arch-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.s2-page .alayer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--s4);
+    border: 1px solid var(--line2);
+    border-radius: 10px;
+    padding: 12px 16px;
+}
+
+.s2-page .alayer-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.s2-page .alayer-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--bright);
+    width: 160px;
+    flex-shrink: 0;
+}
+
+.s2-page .alayer-desc {
+    font-size: 12px;
+    color: var(--muted);
+    flex: 1;
+}
+
+.s2-page .alayer-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.s2-page .alayer-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: var(--mono);
+}
+
+/* ── STEP FLOW ── */
+.s2-page .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 14px 0;
+}
+
+.s2-page .fstep {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.s2-page .fnum {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: rgba(61, 111, 255, 0.12);
+    border: 1px solid rgba(61, 111, 255, 0.3);
+    color: var(--sapphire);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.s2-page .fbody strong {
+    display: block;
+    color: var(--bright);
+    font-size: 14px;
+    margin-bottom: 3px;
+    font-family: var(--sans);
+}
+
+.s2-page .fbody p {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* ── SCORE CARD ── */
+.s2-page .scorecard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.s2-page .sc {
+    background: var(--s3);
+    border: 1px solid var(--line2);
+    border-radius: var(--r-sm);
+    padding: 18px;
+    text-align: center;
+}
+
+.s2-page .sc-val {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.s2-page .sc-lbl {
+    font-size: 12px;
+    color: var(--muted);
+}
+
 /* ── DIVIDER ── */
 .s2-page .sdiv {
     height: 1px;
@@ -619,4 +889,8 @@
     .s2-page .fgrid { grid-template-columns: 1fr; }
     .s2-page .tool-grid { grid-template-columns: 1fr; }
     .s2-page .topnav { overflow-x: auto; flex-wrap: nowrap; }
+    .s2-page .split { grid-template-columns: 1fr; }
+    .s2-page .scorecard { grid-template-columns: 1fr 1fr; }
+    .s2-page .alayer { flex-wrap: wrap; }
+    .s2-page .alayer-name { width: 100%; }
 }
