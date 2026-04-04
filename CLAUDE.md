@@ -1,0 +1,81 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## プロジェクト概要
+
+GCP・AWS資格試験対策（Associate Cloud Engineer, Generative AI Leader）を目的としたNext.js学習アプリ。
+
+## コマンド
+
+```bash
+# 開発
+npm run dev          # Turbopack で開発サーバー起動（localhost:3000）
+npm run build        # プロダクションビルド
+npm run lint         # ESLint
+
+# テスト
+npm run test         # Vitest（ユニット・コンポーネント）
+npm run test:watch   # Vitest ウォッチモード（単一ファイル: vitest run __tests__/foo.test.tsx）
+npm run test:e2e     # Playwright E2E（dev server を自動起動）
+```
+
+初回E2Eテスト前: `npx playwright install`
+
+## アーキテクチャ
+
+**ルーティング:** Next.js 16 App Router。全ページは `app/` 配下。
+
+```
+app/
+  layout.tsx                        # ルートレイアウト（Header/Footer、フォント定義）
+  page.tsx                          # トップページ
+  globals.css                       # グローバルスタイル（デザイントークン定義）
+  gcl/
+    associate-cloud-engineer/
+      page.tsx                      # ACE 試験対策ページ
+      ace.css                       # Aurora テーマ（ページ固有）
+    genai-leader/
+      page.tsx                      # Generative AI Leader トップ
+      genai-leader.css              # Sapphire テーマ（ページ固有）
+      constants.ts                  # 共通定数（作成日など）
+      section{1-4}/page.tsx         # 各セクションページ
+
+components/
+  Header.tsx                        # ナビゲーション（新ページ追加時はここも更新）
+  Footer.tsx
+
+__tests__/                          # Vitest（jsdom環境）
+e2e/                                # Playwright（Chromiumのみ）
+Gcl/                                # 旧HTML資料（参照・移行元）
+Aws/                                # AWS資料アーカイブ
+```
+
+## CSSデザイントークン（3層アーキテクチャ）
+
+**Layer 1 – グローバルセマンティック** (`app/globals.css` の `@theme {}`):
+
+- `--color-background`, `--color-foreground`, `--color-muted`, `--color-border` 等
+- Tailwind v4 の `@theme` で定義するため `tailwind.config.js` は存在しない
+
+**Layer 2 – 共有プリミティブ** (同 `@theme`):
+
+- `--font-body`, `--font-mono`, `--radius-*`
+
+**Layer 3 – ページ固有テーマ** (各ページの `.css`):
+
+- Aurora（ACE）、Sapphire/Laboratory/Gold/Executive（Generative AI Leader 各セクション）
+- テーマ変数は `--color-*` を上書きする形で定義
+
+新しいテーマカラーを追加する場合は、ページ固有 `.css` を作成し `app/gcl/xxx/layout.tsx` でインポートする。
+
+## テスト構成
+
+- **Vitest:** `__tests__/**/*.test.{ts,tsx}`、jsdom環境、`@` エイリアスが `./` に解決される
+- **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`npm run dev`を自動起動
+
+## 制約事項
+
+- `litellm` / `dspy` の追加禁止（脆弱性懸念）
+- 新ページを `app/gcl/` に追加した場合、`components/Header.tsx` のナビゲーションも更新すること
+- ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）

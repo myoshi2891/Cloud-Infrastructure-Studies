@@ -795,7 +795,7 @@
 .s3-page .num { color: var(--violet); }
 
 /* ── INFO BOX ── */
-.s3-page .info {
+.s3-page .info-box {
     background: rgba(91,200,255,0.04);
     border: 1px solid rgba(91,200,255,0.18);
     border-left: 3px solid var(--sky);
@@ -938,6 +938,69 @@
 .s3-page .rt-lime { background: rgba(157,255,110,0.07); color: var(--lime); border-color: rgba(157,255,110,0.2); }
 .s3-page .rt-sky  { background: rgba(91,200,255,0.07); color: var(--sky); border-color: rgba(91,200,255,0.2); }
 .s3-page .rt-amber { background: rgba(255,204,0,0.07); color: var(--amber); border-color: rgba(255,204,0,0.2); }
+
+/* ── PARAM GRID ── */
+.s3-page .param-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+.s3-page .param {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 16px 18px;
+}
+.s3-page .param-name {
+    font-family: var(--code);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 4px;
+}
+.s3-page .param-range {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+.s3-page .param-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+.s3-page .param-scale { display: flex; flex-direction: column; gap: 6px; }
+.s3-page .param-scale-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.s3-page .param-scale-val {
+    width: 36px;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    text-align: right;
+}
+.s3-page .param-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.s3-page .param-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--lime));
+    border-radius: 3px;
+}
+.s3-page .param-label {
+    width: 80px;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 680px) {
