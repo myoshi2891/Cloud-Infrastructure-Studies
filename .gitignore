@@ -116,6 +116,6 @@ test-results/
 playwright-report/
 
 .claude/skills
-Aws/archive/*
+Aws/archive/
 Gcl/
 tsconfig.tsbuildinfo
