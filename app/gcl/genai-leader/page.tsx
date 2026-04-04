@@ -511,7 +511,7 @@ export default function GenaiLeaderPage() {
                 {/* Overview */}
                 <div id="overview">
                     <div className="exam-overview">
-                        <h3>📊 出題セクション別 比重</h3>
+                        <h3><span aria-hidden="true">📊</span> 出題セクション別 比重</h3>
                         <div className="progress-row">
                             <div className="progress-label">Section 1: Gen AI 基礎</div>
                             <div className="progress-bar"><div className="progress-fill fill-blue" style={{ width: '30%' }} /></div>

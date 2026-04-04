@@ -22,6 +22,22 @@ export const metadata: Metadata = {
         'Generative AI Leader 試験 Section 1 完全解説 — AI・ML・生成AIの核心概念、データの本質、Gen AI ランドスケープ、Google基盤モデル',
 };
 
+/* ── 参照リソース共通コンポーネント ── */
+interface RefsItem { href: string; label?: string }
+
+function ReferencesBlock({ title, items }: { title: string; items: RefsItem[] }) {
+    return (
+        <div className="src">
+            <div className="srct">{title}</div>
+            {items.map(({ href, label }) => (
+                <a key={href} href={href} target="_blank" rel="noreferrer">
+                    {label ?? href}
+                </a>
+            ))}
+        </div>
+    );
+}
+
 /* ── Sub-section 1.1: 核心概念・用語 ── */
 function Section11() {
     return (
@@ -306,18 +322,14 @@ function Section11c() {
                         <li>CI/CD for ML — モデルの継続的インテグレーション・デプロイを実現</li>
                     </ul>
                 </div>
-                <div className="src">
-                    <div className="srct">📎 参照リソース</div>
-                    <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models" target="_blank" rel="noreferrer">
-                        https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
-                    </a>
-                    <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noreferrer">
-                        https://cloud.google.com/vertex-ai
-                    </a>
-                    <a href="https://arxiv.org/pdf/2005.14165.pdf" target="_blank" rel="noreferrer">
-                        Attention is All You Need 原論文: https://arxiv.org/pdf/2005.14165.pdf
-                    </a>
-                </div>
+                <ReferencesBlock
+                    title="📎 参照リソース"
+                    items={[
+                        { href: 'https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models' },
+                        { href: 'https://cloud.google.com/vertex-ai' },
+                        { href: 'https://arxiv.org/abs/1706.03762', label: 'Attention is All You Need 原論文' },
+                    ]}
+                />
             </div>
         </section>
     );
@@ -409,15 +421,13 @@ function Section12() {
                         <div className="gt-def">データが定義されたルール・形式・範囲に従っているか。</div>
                     </div>
                 </div>
-                <div className="src">
-                    <div className="srct">📎 参照リソース</div>
-                    <a href="https://cloud.google.com/dataplex/docs/data-quality-overview" target="_blank" rel="noreferrer">
-                        https://cloud.google.com/dataplex/docs/data-quality-overview
-                    </a>
-                    <a href="https://cloud.google.com/security/products/sensitive-data-protection" target="_blank" rel="noreferrer">
-                        https://cloud.google.com/security/products/sensitive-data-protection
-                    </a>
-                </div>
+                <ReferencesBlock
+                    title="📎 参照リソース"
+                    items={[
+                        { href: 'https://cloud.google.com/dataplex/docs/data-quality-overview' },
+                        { href: 'https://cloud.google.com/security/products/sensitive-data-protection' },
+                    ]}
+                />
             </div>
         </section>
     );
@@ -519,15 +529,13 @@ function Section13() {
                         <li><strong style={{ color: 'var(--bright)' }}>アプリケーション層</strong>：最も参入しやすい。既存のモデル・プラットフォームを活用してビジネス価値を創出できる。Gemini for Workspace がこの代表例。</li>
                     </ul>
                 </div>
-                <div className="src">
-                    <div className="srct">📎 参照リソース</div>
-                    <a href="https://cloud.google.com/use-cases/generative-ai" target="_blank" rel="noreferrer">
-                        https://cloud.google.com/use-cases/generative-ai
-                    </a>
-                    <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noreferrer">
-                        https://cloud.google.com/vertex-ai
-                    </a>
-                </div>
+                <ReferencesBlock
+                    title="📎 参照リソース"
+                    items={[
+                        { href: 'https://cloud.google.com/use-cases/generative-ai' },
+                        { href: 'https://cloud.google.com/vertex-ai' },
+                    ]}
+                />
             </div>
         </section>
     );
@@ -631,21 +639,15 @@ function Section14() {
                         <li><strong style={{ color: 'var(--bright)' }}>複数モダリティが混在するタスク</strong> → Gemini（全モダリティ統合処理）</li>
                     </ul>
                 </div>
-                <div className="src">
-                    <div className="srct">📎 参照リソース</div>
-                    <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models" target="_blank" rel="noreferrer">
-                        Vertex AI モデル一覧: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
-                    </a>
-                    <a href="https://cloud.google.com/model-garden" target="_blank" rel="noreferrer">
-                        Model Garden: https://cloud.google.com/model-garden
-                    </a>
-                    <a href="https://ai.google.dev/gemma/docs" target="_blank" rel="noreferrer">
-                        Gemma 公式ドキュメント: https://ai.google.dev/gemma/docs
-                    </a>
-                    <a href="https://deepmind.google/technologies/gemini/" target="_blank" rel="noreferrer">
-                        Gemini 公式サイト: https://deepmind.google/technologies/gemini/
-                    </a>
-                </div>
+                <ReferencesBlock
+                    title="📎 参照リソース"
+                    items={[
+                        { href: 'https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models', label: 'Vertex AI モデル一覧: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models' },
+                        { href: 'https://cloud.google.com/model-garden', label: 'Model Garden: https://cloud.google.com/model-garden' },
+                        { href: 'https://ai.google.dev/gemma/docs', label: 'Gemma 公式ドキュメント: https://ai.google.dev/gemma/docs' },
+                        { href: 'https://deepmind.google/technologies/gemini/', label: 'Gemini 公式サイト: https://deepmind.google/technologies/gemini/' },
+                    ]}
+                />
             </div>
 
             {/* 試験まとめ */}
@@ -694,7 +696,7 @@ function Section14() {
                         <div className="fi-d">
                             ① 構造化 vs 非構造化データの定義と実例<br />
                             ② ラベルあり vs なしデータの学習アプローチへの対応<br />
-                            ③ データ品質6特性（完全性・一貫性・関連性・可用性・コスト・フォーマット）の定義
+                            ③ データ品質6特性（正確性・完全性・一貫性・適時性・一意性・妥当性）の定義
                         </div>
                     </div>
                     <div className="fi" style={{ borderTop: '2px solid var(--aurora4)' }}>
@@ -708,7 +710,7 @@ function Section14() {
                         <div className="fi-t" style={{ color: 'var(--aurora5)' }}>1.4 で絶対押さえる4点</div>
                         <div className="fi-d">
                             ① Gemini = マルチモーダル LLM（全モダリティ対応）<br />
-                            ② Gemma = オープンウェイト・Apache 2.0・ローカル実行<br />
+                            ② Gemma = オープンウェイト・ローカル実行<br />
                             ③ Imagen = テキスト→画像生成（拡散モデル）<br />
                             ④ Veo = テキスト→動画生成
                         </div>
@@ -718,34 +720,24 @@ function Section14() {
                 <div className="warn" style={{ marginTop: '20px' }}>
                     <div className="warnt">⚠️ Section 1 で特に混同しやすい概念</div>
                     <ul>
-                        <li><strong style={{ color: 'var(--bright)' }}>「生成 AI = LLM」は誤り</strong>：LLM はテキスト生成専門。生成 AI は画像・動画・音楽生成も含む広い概念</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>「生成 AI = LLM」は誤り</strong>：LLM は主に言語タスクを扱うが、近年はマルチモーダル拡張もある。生成 AI は画像・動画・音楽生成も含む広い概念</li>
                         <li><strong style={{ color: 'var(--bright)' }}>「基盤モデル = LLM」は誤り</strong>：基盤モデルは LLM を含む概念。Imagen（画像）・Veo（動画）も基盤モデル</li>
                         <li><strong style={{ color: 'var(--bright)' }}>Prompt Engineering ≠ Prompt Tuning</strong>：前者はプロンプト文を人間が工夫するだけ、後者は機械学習でプレフィックスを最適化する</li>
                         <li><strong style={{ color: 'var(--bright)' }}>Gemma ≠ Gemini の小型版</strong>：GemmaはGeminiとは別のオープンウェイトモデルファミリー。目的（オープン化）が異なる</li>
                     </ul>
                 </div>
 
-                <div className="src">
-                    <div className="srct">📎 Section 1 全体の参照リソース</div>
-                    <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer">
-                        試験ページ: https://cloud.google.com/learn/certification/generative-ai-leader
-                    </a>
-                    <a href="https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf" target="_blank" rel="noreferrer">
-                        試験ガイド PDF: https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf
-                    </a>
-                    <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models" target="_blank" rel="noreferrer">
-                        Vertex AI モデルガイド: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
-                    </a>
-                    <a href="https://cloud.google.com/model-garden" target="_blank" rel="noreferrer">
-                        Model Garden: https://cloud.google.com/model-garden
-                    </a>
-                    <a href="https://ai.google.dev/gemma/docs" target="_blank" rel="noreferrer">
-                        Gemma ドキュメント: https://ai.google.dev/gemma/docs
-                    </a>
-                    <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noreferrer">
-                        Vertex AI: https://cloud.google.com/vertex-ai
-                    </a>
-                </div>
+                <ReferencesBlock
+                    title="📎 Section 1 全体の参照リソース"
+                    items={[
+                        { href: 'https://cloud.google.com/learn/certification/generative-ai-leader', label: '試験ページ: https://cloud.google.com/learn/certification/generative-ai-leader' },
+                        { href: 'https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf', label: '試験ガイド PDF: https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf' },
+                        { href: 'https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models', label: 'Vertex AI モデルガイド: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models' },
+                        { href: 'https://cloud.google.com/model-garden', label: 'Model Garden: https://cloud.google.com/model-garden' },
+                        { href: 'https://ai.google.dev/gemma/docs', label: 'Gemma ドキュメント: https://ai.google.dev/gemma/docs' },
+                        { href: 'https://cloud.google.com/vertex-ai', label: 'Vertex AI: https://cloud.google.com/vertex-ai' },
+                    ]}
+                />
             </div>
         </section>
     );

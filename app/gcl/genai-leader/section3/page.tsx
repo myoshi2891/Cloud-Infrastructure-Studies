@@ -746,7 +746,7 @@ function Section33() {
                     </div>
                 </div>
 
-                <div className="info">
+                <div className="info-box">
                     <div className="infot">📌 RAG とファインチューニングの違い</div>
                     <p>
                         RAG は「外部から情報を検索して補う」→<strong style={{ color: 'var(--sky)' }}>最新情報対応・データを変えればすぐ反映</strong>。
