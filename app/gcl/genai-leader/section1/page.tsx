@@ -306,6 +306,18 @@ function Section11c() {
                         <li>CI/CD for ML — モデルの継続的インテグレーション・デプロイを実現</li>
                     </ul>
                 </div>
+                <div className="src">
+                    <div className="srct">📎 参照リソース</div>
+                    <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models" target="_blank" rel="noreferrer">
+                        https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
+                    </a>
+                    <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noreferrer">
+                        https://cloud.google.com/vertex-ai
+                    </a>
+                    <a href="https://arxiv.org/pdf/2005.14165.pdf" target="_blank" rel="noreferrer">
+                        Attention is All You Need 原論文: https://arxiv.org/pdf/2005.14165.pdf
+                    </a>
+                </div>
             </div>
         </section>
     );
@@ -396,6 +408,15 @@ function Section12() {
                         <div className="gt-jp">妥当性</div>
                         <div className="gt-def">データが定義されたルール・形式・範囲に従っているか。</div>
                     </div>
+                </div>
+                <div className="src">
+                    <div className="srct">📎 参照リソース</div>
+                    <a href="https://cloud.google.com/dataplex/docs/data-quality-overview" target="_blank" rel="noreferrer">
+                        https://cloud.google.com/dataplex/docs/data-quality-overview
+                    </a>
+                    <a href="https://cloud.google.com/security/products/sensitive-data-protection" target="_blank" rel="noreferrer">
+                        https://cloud.google.com/security/products/sensitive-data-protection
+                    </a>
                 </div>
             </div>
         </section>
@@ -490,12 +511,22 @@ function Section13() {
                 </div>
 
                 <div className="warn">
-                    <div className="warnt">試験のポイント</div>
+                    <div className="warnt">⚠️ 試験頻出：各層のビジネス的含意</div>
                     <ul>
-                        <li>「Vertex AI」は主にプラットフォーム層（3層）のサービス — モデル層ではない</li>
-                        <li>「Model Garden」はプラットフォーム層でモデルを選択・比較するカタログサービス</li>
-                        <li>「Agentspace」はエージェント層 — 企業内の情報をエージェントが横断的に検索・処理</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>インフラ層</strong>：参入障壁が最も高い。Google・Amazon・Microsoft のような巨大企業が主役。一般企業は「利用者」として位置する。</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>モデル層</strong>：基盤モデルは少数の企業が提供。一般企業はファインチューニングで自社特化モデルを作るか、API 経由で利用する。</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>プラットフォーム層</strong>：ここが一般企業・開発者の主戦場。Vertex AI はこの層に位置する。</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>アプリケーション層</strong>：最も参入しやすい。既存のモデル・プラットフォームを活用してビジネス価値を創出できる。Gemini for Workspace がこの代表例。</li>
                     </ul>
+                </div>
+                <div className="src">
+                    <div className="srct">📎 参照リソース</div>
+                    <a href="https://cloud.google.com/use-cases/generative-ai" target="_blank" rel="noreferrer">
+                        https://cloud.google.com/use-cases/generative-ai
+                    </a>
+                    <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noreferrer">
+                        https://cloud.google.com/vertex-ai
+                    </a>
                 </div>
             </div>
         </section>
@@ -597,30 +628,123 @@ function Section14() {
                         <li><strong style={{ color: 'var(--bright)' }}>画像生成・編集</strong> → Imagen</li>
                         <li><strong style={{ color: 'var(--bright)' }}>動画生成</strong> → Veo</li>
                         <li><strong style={{ color: 'var(--bright)' }}>レイテンシ重視・モバイル/エッジ</strong> → Gemini Nano / Gemma 2B</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>複数モダリティが混在するタスク</strong> → Gemini（全モダリティ統合処理）</li>
                     </ul>
+                </div>
+                <div className="src">
+                    <div className="srct">📎 参照リソース</div>
+                    <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models" target="_blank" rel="noreferrer">
+                        Vertex AI モデル一覧: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
+                    </a>
+                    <a href="https://cloud.google.com/model-garden" target="_blank" rel="noreferrer">
+                        Model Garden: https://cloud.google.com/model-garden
+                    </a>
+                    <a href="https://ai.google.dev/gemma/docs" target="_blank" rel="noreferrer">
+                        Gemma 公式ドキュメント: https://ai.google.dev/gemma/docs
+                    </a>
+                    <a href="https://deepmind.google/technologies/gemini/" target="_blank" rel="noreferrer">
+                        Gemini 公式サイト: https://deepmind.google/technologies/gemini/
+                    </a>
                 </div>
             </div>
 
             {/* 試験まとめ */}
-            <div className="card">
-                <div className="card-h">📝 Section 1 試験対策まとめ</div>
+            <div className="card" style={{ borderColor: 'var(--rim2)' }}>
+                <div className="card-h" style={{ fontSize: '18px' }}>✦ Section 1 試験攻略 — 最重要ポイント完全まとめ</div>
                 <div className="sum-grid">
                     <div className="sum-f">
-                        <div className="sum-v" style={{ color: 'var(--aurora1)' }}>~30%</div>
-                        <div className="sum-l">Section 1 の試験配点</div>
+                        <div className="sum-v" style={{ color: 'var(--aurora3)' }}>~30%</div>
+                        <div className="sum-l">試験全体での配点</div>
                     </div>
                     <div className="sum-f">
-                        <div className="sum-v" style={{ color: 'var(--aurora3)' }}>4</div>
+                        <div className="sum-v" style={{ color: 'var(--aurora1)' }}>4</div>
                         <div className="sum-l">サブセクション数</div>
                     </div>
                     <div className="sum-f">
-                        <div className="sum-v" style={{ color: 'var(--aurora4)' }}>4</div>
-                        <div className="sum-l">Google 基盤モデル（Gemini/Gemma/Imagen/Veo）</div>
+                        <div className="sum-v" style={{ color: 'var(--aurora4)' }}>8+</div>
+                        <div className="sum-l">必須用語数（1.1）</div>
                     </div>
                     <div className="sum-f">
-                        <div className="sum-v" style={{ color: 'var(--aurora5)' }}>5</div>
-                        <div className="sum-l">Gen AI ランドスケープ層数</div>
+                        <div className="sum-v" style={{ color: 'var(--aurora5)' }}>6</div>
+                        <div className="sum-l">データ品質特性数</div>
                     </div>
+                    <div className="sum-f">
+                        <div className="sum-v" style={{ color: 'var(--aurora2)' }}>5</div>
+                        <div className="sum-l">ランドスケープ層数</div>
+                    </div>
+                    <div className="sum-f">
+                        <div className="sum-v" style={{ color: 'var(--aurora1)' }}>4</div>
+                        <div className="sum-l">Google 基盤モデル数</div>
+                    </div>
+                </div>
+
+                <div className="fgrid" style={{ marginTop: '24px' }}>
+                    <div className="fi" style={{ borderTop: '2px solid var(--aurora1)' }}>
+                        <div className="fi-t" style={{ color: 'var(--aurora1)' }}>1.1 で絶対押さえる5点</div>
+                        <div className="fi-d">
+                            ① AI⊃ML⊃DL⊃GenAI の包含関係<br />
+                            ② LLM・基盤モデル・マルチモーダルの定義の違い<br />
+                            ③ Prompt Engineering vs Prompt Tuning の差<br />
+                            ④ 教師あり・教師なし・強化学習の判断基準<br />
+                            ⑤ ML ライフサイクル5ステージと GCP ツール対応
+                        </div>
+                    </div>
+                    <div className="fi" style={{ borderTop: '2px solid var(--aurora3)' }}>
+                        <div className="fi-t" style={{ color: 'var(--aurora3)' }}>1.2 で絶対押さえる3点</div>
+                        <div className="fi-d">
+                            ① 構造化 vs 非構造化データの定義と実例<br />
+                            ② ラベルあり vs なしデータの学習アプローチへの対応<br />
+                            ③ データ品質6特性（完全性・一貫性・関連性・可用性・コスト・フォーマット）の定義
+                        </div>
+                    </div>
+                    <div className="fi" style={{ borderTop: '2px solid var(--aurora4)' }}>
+                        <div className="fi-t" style={{ color: 'var(--aurora4)' }}>1.3 で絶対押さえる2点</div>
+                        <div className="fi-d">
+                            ① 5層構造の名称と順序（Infrastructure → Models → Platforms → Agents → Applications）<br />
+                            ② 各層のビジネス的意味と GCP での具体例（Vertex AI はプラットフォーム層）
+                        </div>
+                    </div>
+                    <div className="fi" style={{ borderTop: '2px solid var(--aurora5)' }}>
+                        <div className="fi-t" style={{ color: 'var(--aurora5)' }}>1.4 で絶対押さえる4点</div>
+                        <div className="fi-d">
+                            ① Gemini = マルチモーダル LLM（全モダリティ対応）<br />
+                            ② Gemma = オープンウェイト・Apache 2.0・ローカル実行<br />
+                            ③ Imagen = テキスト→画像生成（拡散モデル）<br />
+                            ④ Veo = テキスト→動画生成
+                        </div>
+                    </div>
+                </div>
+
+                <div className="warn" style={{ marginTop: '20px' }}>
+                    <div className="warnt">⚠️ Section 1 で特に混同しやすい概念</div>
+                    <ul>
+                        <li><strong style={{ color: 'var(--bright)' }}>「生成 AI = LLM」は誤り</strong>：LLM はテキスト生成専門。生成 AI は画像・動画・音楽生成も含む広い概念</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>「基盤モデル = LLM」は誤り</strong>：基盤モデルは LLM を含む概念。Imagen（画像）・Veo（動画）も基盤モデル</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>Prompt Engineering ≠ Prompt Tuning</strong>：前者はプロンプト文を人間が工夫するだけ、後者は機械学習でプレフィックスを最適化する</li>
+                        <li><strong style={{ color: 'var(--bright)' }}>Gemma ≠ Gemini の小型版</strong>：GemmaはGeminiとは別のオープンウェイトモデルファミリー。目的（オープン化）が異なる</li>
+                    </ul>
+                </div>
+
+                <div className="src">
+                    <div className="srct">📎 Section 1 全体の参照リソース</div>
+                    <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer">
+                        試験ページ: https://cloud.google.com/learn/certification/generative-ai-leader
+                    </a>
+                    <a href="https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf" target="_blank" rel="noreferrer">
+                        試験ガイド PDF: https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf
+                    </a>
+                    <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models" target="_blank" rel="noreferrer">
+                        Vertex AI モデルガイド: https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models
+                    </a>
+                    <a href="https://cloud.google.com/model-garden" target="_blank" rel="noreferrer">
+                        Model Garden: https://cloud.google.com/model-garden
+                    </a>
+                    <a href="https://ai.google.dev/gemma/docs" target="_blank" rel="noreferrer">
+                        Gemma ドキュメント: https://ai.google.dev/gemma/docs
+                    </a>
+                    <a href="https://cloud.google.com/vertex-ai" target="_blank" rel="noreferrer">
+                        Vertex AI: https://cloud.google.com/vertex-ai
+                    </a>
                 </div>
             </div>
         </section>
