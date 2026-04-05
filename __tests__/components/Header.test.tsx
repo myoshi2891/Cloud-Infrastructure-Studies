@@ -14,10 +14,30 @@ describe('Header', () => {
         expect(link).toHaveAttribute('href', '/gcl/genai-leader');
     });
 
-    it('Associate Cloud Engineer ページへのリンクが存在すること', () => {
+    it('Associate Cloud Engineer ドロップダウントリガーが存在すること', () => {
         render(<Header />);
-        const link = screen.getByRole('link', { name: /associate cloud engineer/i });
-        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer');
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('aria-haspopup', 'true');
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE 概要リンクが /gcl/associate-cloud-engineer を指すこと', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer"]');
+        expect(link).toBeInTheDocument();
+    });
+
+    it('ACE architecture-guide サブリンクが存在すること', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer/architecture-guide"]');
+        expect(link).toBeInTheDocument();
+    });
+
+    it('ACE domain1 サブリンクが存在すること', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer/domain1"]');
+        expect(link).toBeInTheDocument();
     });
 
     it('nav 要素として描画されること', () => {

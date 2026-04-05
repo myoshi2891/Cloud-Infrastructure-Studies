@@ -1,6 +1,11 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 
 export function Header() {
+    const [aceOpen, setAceOpen] = useState(false);
+
     return (
         <nav className="sticky top-0 z-50 flex items-center gap-6 border-b border-[var(--color-border)] bg-[var(--color-background)]/95 px-6 py-3 backdrop-blur-md">
             <Link href="/" className="text-lg font-bold text-[var(--color-foreground)]">
@@ -43,14 +48,17 @@ export function Header() {
                     </div>
                 </div>
                 <div className="group relative">
-                    <Link
-                        href="/gcl/associate-cloud-engineer"
+                    <button
+                        type="button"
+                        onClick={() => setAceOpen((v) => !v)}
+                        aria-haspopup="true"
+                        aria-expanded={aceOpen}
                         className="flex items-center gap-1 text-[var(--color-muted-foreground)] transition-colors hover:text-[var(--color-foreground)]"
                     >
                         Associate Cloud Engineer
                         <span className="text-xs">▾</span>
-                    </Link>
-                    <div className="invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+                    </button>
+                    <div className={`invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100${aceOpen ? ' !visible !opacity-100' : ''}`}>
                         <Link
                             href="/gcl/associate-cloud-engineer"
                             className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
