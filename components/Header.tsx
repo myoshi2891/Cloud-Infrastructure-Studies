@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export function Header() {
     const [isGenAiOpen, setIsGenAiOpen] = useState(false);
@@ -103,7 +104,7 @@ export function Header() {
                         Associate Cloud Engineer
                         <span className="text-xs">▾</span>
                     </button>
-                    <div className={`invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100${aceOpen ? ' !visible !opacity-100' : ''}`}>
+                    <div className={cn("invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100", aceOpen && "!visible !opacity-100")}>
                         <Link
                             href="/gcl/associate-cloud-engineer"
                             className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"

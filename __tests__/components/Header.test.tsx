@@ -50,6 +50,24 @@ describe('Header', () => {
         expect(button).toHaveAttribute('aria-expanded', 'false');
     });
 
+    it('ACE ドロップダウンが Escape キーで閉じること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.keyDown(document, { key: 'Escape' });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE ドロップダウンが外側クリックで閉じること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.mouseDown(document);
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
     it('ACE 概要リンクが /gcl/associate-cloud-engineer を指すこと', () => {
         const { container } = render(<Header />);
         const link = container.querySelector('a[href="/gcl/associate-cloud-engineer"]');
