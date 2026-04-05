@@ -42,7 +42,8 @@
             "sup",
             "kbd",
             "details",
-            "summary"
+            "summary",
+            "a"
         ]
     },
     "MD034": false,
