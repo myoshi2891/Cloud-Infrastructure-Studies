@@ -42,12 +42,35 @@ export function Header() {
                         </Link>
                     </div>
                 </div>
-                <Link
-                    href="/gcl/associate-cloud-engineer"
-                    className="text-[var(--color-muted-foreground)] transition-colors hover:text-[var(--color-foreground)]"
-                >
-                    Associate Cloud Engineer
-                </Link>
+                <div className="group relative">
+                    <Link
+                        href="/gcl/associate-cloud-engineer"
+                        className="flex items-center gap-1 text-[var(--color-muted-foreground)] transition-colors hover:text-[var(--color-foreground)]"
+                    >
+                        Associate Cloud Engineer
+                        <span className="text-xs">▾</span>
+                    </Link>
+                    <div className="invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+                        <Link
+                            href="/gcl/associate-cloud-engineer"
+                            className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
+                        >
+                            概要
+                        </Link>
+                        <Link
+                            href="/gcl/associate-cloud-engineer/architecture-guide"
+                            className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
+                        >
+                            試験対策・アーキテクチャ詳細ガイド
+                        </Link>
+                        <Link
+                            href="/gcl/associate-cloud-engineer/domain1"
+                            className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
+                        >
+                            Domain 1: 環境設定 包括的解説
+                        </Link>
+                    </div>
+                </div>
             </div>
         </nav>
     );
