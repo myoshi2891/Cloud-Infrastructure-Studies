@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Header } from '@/components/Header';
 
 describe('Header', () => {
@@ -8,16 +8,82 @@ describe('Header', () => {
         expect(screen.getByText('Cloud Infrastructure Studies')).toBeInTheDocument();
     });
 
+    it('GenAI Leader ドロップダウントリガーが存在すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('aria-haspopup', 'true');
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('GenAI Leader ドロップダウントリガーがクリックで開閉すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
     it('GenAI Leader ページへのリンクが存在すること', () => {
         render(<Header />);
-        const link = screen.getByRole('link', { name: /generative ai leader/i });
+        const link = screen.getByRole('link', { name: /generative ai leader 概要/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader');
     });
 
-    it('Associate Cloud Engineer ページへのリンクが存在すること', () => {
+    it('Associate Cloud Engineer ドロップダウントリガーが存在すること', () => {
         render(<Header />);
-        const link = screen.getByRole('link', { name: /associate cloud engineer/i });
-        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer');
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('aria-haspopup', 'true');
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE ドロップダウントリガーがクリックで開閉すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE ドロップダウンが Escape キーで閉じること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.keyDown(document, { key: 'Escape' });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE ドロップダウンが外側クリックで閉じること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.mouseDown(document);
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE 概要リンクが /gcl/associate-cloud-engineer を指すこと', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer"]');
+        expect(link).toBeInTheDocument();
+    });
+
+    it('ACE architecture-guide サブリンクが存在すること', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer/architecture-guide"]');
+        expect(link).toBeInTheDocument();
+    });
+
+    it('ACE domain1 サブリンクが存在すること', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer/domain1"]');
+        expect(link).toBeInTheDocument();
     });
 
     it('nav 要素として描画されること', () => {
