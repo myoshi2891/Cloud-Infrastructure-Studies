@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Header } from '@/components/Header';
 
 describe('Header', () => {
@@ -8,9 +8,27 @@ describe('Header', () => {
         expect(screen.getByText('Cloud Infrastructure Studies')).toBeInTheDocument();
     });
 
+    it('GenAI Leader ドロップダウントリガーが存在すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('aria-haspopup', 'true');
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('GenAI Leader ドロップダウントリガーがクリックで開閉すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
     it('GenAI Leader ページへのリンクが存在すること', () => {
         render(<Header />);
-        const link = screen.getByRole('link', { name: /generative ai leader/i });
+        const link = screen.getByRole('link', { name: /generative ai leader 概要/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader');
     });
 
@@ -19,6 +37,16 @@ describe('Header', () => {
         const button = screen.getByRole('button', { name: /associate cloud engineer/i });
         expect(button).toBeInTheDocument();
         expect(button).toHaveAttribute('aria-haspopup', 'true');
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE ドロップダウントリガーがクリックで開閉すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.click(button);
         expect(button).toHaveAttribute('aria-expanded', 'false');
     });
 
