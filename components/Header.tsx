@@ -4,6 +4,13 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
+/**
+ * Render the sticky top navigation bar with interactive dropdowns for "Generative AI Leader" and "Associate Cloud Engineer".
+ *
+ * The component manages open/close state for each dropdown, closes menus on outside mouse clicks or when the Escape key is pressed, and ensures dropdown links close their parent menu on navigation.
+ *
+ * @returns A JSX element representing the sticky top navigation bar with a home link and two dropdown menus
+ */
 export function Header() {
     const [isGenAiOpen, setIsGenAiOpen] = useState(false);
     const [aceOpen, setAceOpen] = useState(false);
