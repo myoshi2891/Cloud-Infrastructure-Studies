@@ -831,7 +831,7 @@ LLMの回答を信頼できる外部データソース（企業データ・Googl
 | Compute Engine | VM・IaaS・OS制御・GPUが必要 | レガシー移行・特定OS要件 |
 | GKE | コンテナ・Kubernetes・ステートフル | マイクロサービス・長時間処理 |
 | Cloud Run | コンテナ・サーバーレス・HTTP・0スケール | ステートレスAPI・スパイクトラフィック |
-| Cloud Run Functions | FaaS・イベント駆動・軽量処理 | Webhookト・リガー・小さな関数 |
+| Cloud Run Functions | FaaS・イベント駆動・軽量処理 | Webhook・トリガー・小さな関数 |
 | App Engine | PaaS・Webアプリ・コードだけ | レガシーWebアプリの移行 |
 
 ### 7.2 ストレージ・データベース
@@ -976,9 +976,9 @@ Week 6: 試験直前対策
 | リソース | URL |
 | --- | --- |
 | 試験概要ページ | https://cloud.google.com/learn/certification/cloud-digital-leader |
-| 公式試験ガイド PDF | https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf |
+| 公式試験ガイド | https://cloud.google.com/learn/certification/guides/cloud-digital-leader |
 | Cloud Skills Boost 学習パス | https://www.cloudskillsboost.google/paths/9 |
-| 公式サンプル問題 | https://docs.google.com/forms/d/e/1FAIpQLSedAmuf4cDCe8b4lHEV2XkgFkGHF2bKXFBFw1i_fzJBrMxHA/viewform |
+| 公式サンプル問題 | https://cloud.google.com/learn/certification/cloud-digital-leader |
 | 試験登録 | https://cp.certmetrics.com/google/en/login |
 | Google Cloud ドキュメント | https://cloud.google.com/docs |
 | IAM ドキュメント | https://cloud.google.com/iam/docs |
@@ -987,9 +987,9 @@ Week 6: 試験直前対策
 | セキュリティ概要 | https://cloud.google.com/security/overview |
 | Google AI 原則 | https://ai.google/responsibility/principles/ |
 | クラウドコンピューティングとは | https://cloud.google.com/learn/what-is-cloud-computing |
-| Gemini for Workspace | https://workspace.google.com/products/gemini/ |
+| Gemini for Workspace | https://workspace.google.com/intl/en/products/gemini/ |
 | Cloud Storage クラス | https://cloud.google.com/storage/docs/storage-classes |
-| コスト最適化 | https://cloud.google.com/cost-management/docs/best-practices |
+| コスト最適化 | https://cloud.google.com/architecture/framework/cost-optimization |
 
 ---
 
