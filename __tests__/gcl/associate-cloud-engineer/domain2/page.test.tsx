@@ -14,7 +14,7 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
     });
 
     it('hero セクションにドメイン説明が含まれること', () => {
-        expect(screen.getByText(/計画と実装/)).toBeInTheDocument();
+        expect(screen.getAllByText(/計画と実装/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('試験配点情報が表示されること', () => {
@@ -33,7 +33,7 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
     });
 
     it('コンピューティングサービスの章見出しが存在すること', () => {
-        expect(screen.getByText(/コンピューティングサービス/)).toBeInTheDocument();
+        expect(screen.getAllByText(/コンピューティングサービス/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('Terraform の章見出しが存在すること', () => {
