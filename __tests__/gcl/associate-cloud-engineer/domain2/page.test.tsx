@@ -18,7 +18,7 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
     });
 
     it('試験配点情報が表示されること', () => {
-        expect(screen.getByText(/~21%/)).toBeInTheDocument();
+        expect(screen.getAllByText(/~21%/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('全16章の見出しが存在すること', () => {
@@ -37,7 +37,7 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
     });
 
     it('Terraform の章見出しが存在すること', () => {
-        expect(screen.getByText(/Terraform/)).toBeInTheDocument();
+        expect(screen.getAllByText(/Terraform/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('ベストプラクティスセクションが存在すること', () => {
