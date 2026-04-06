@@ -49,8 +49,8 @@ Cloud Digital Leader (CDL) は Google Cloud が提供する **ビジネスリー
 
 > 📎 **公式リソース**  
 > 試験ページ: https://cloud.google.com/learn/certification/cloud-digital-leader  
-> 公式学習パス: https://www.cloudskillsboost.google/paths/9  
-> 試験ガイドPDF: https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf
+> 公式試験ガイド: https://cloud.google.com/learn/certification/guides/cloud-digital-leader  
+> 公式学習パス: https://www.cloudskillsboost.google/paths/9
 
 ---
 
