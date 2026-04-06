@@ -387,6 +387,458 @@ gcloud compute firewall-rules create allow-ssh-bastion \\
     );
 }
 
+function Chapter14() {
+    return (
+        <div id="ch14" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn14">14</div>
+                <div className="sec-head-txt">
+                    <h2>ロードバランサの選定と設定</h2>
+                    <p>ALB/NLB・URL マップ・Cloud Armor・コンプライアンス要件 — トラフィック分散の完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.1</span>ロードバランサ選定フローチャート</div>
+                <pre className="codeblock">{`どんなトラフィック？
+├── HTTP/HTTPS
+│   └── Application Load Balancer (L7)
+│       ├── グローバル配信が必要 → Global External ALB (Premium Tier)
+│       ├── リージョン内に限定 → Regional External ALB
+│       └── VPC 内部のみ → Internal ALB
+│
+└── TCP/UDP/その他
+    └── Network Load Balancer (L4)
+        ├── SSL オフロード必要 → Proxy Network LB
+        └── 送信元 IP 保持・UDP が必要 → Passthrough Network LB
+            └── 内部通信のみ → Internal Passthrough NLB`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.2</span>Application Load Balancer（L7）</div>
+
+                <p className="stitle">Global External ALB（グローバル外部 ALB）</p>
+                <pre className="codeblock">{`特徴:
+  ├── Anycast IP（1つのIPで全世界にサービス提供）
+  ├── ユーザーに最も近いエッジ PoP で SSL 終端
+  ├── URL ベースのルーティング（/api/* → API バックエンド）
+  ├── ヘッダーベースのルーティング
+  ├── Cloud Armor（DDoS 防御）と統合
+  └── Premium Tier ネットワーク使用（Google のバックボーン）
+
+主なユースケース:
+  ├── グローバルな Web サービス
+  ├── 複数リージョンにバックエンドを分散
+  └── セキュリティ要件の高い Web アプリ`}</pre>
+
+                <p className="stitle">URL マップによるルーティング</p>
+                <pre className="codeblock">{`URL マップの例:
+
+/ （デフォルト）→ フロントエンド MIG
+/api/*         → API Cloud Run サービス
+/static/*      → Cloud Storage バケット（静的コンテンツ）
+/admin/*       → 管理者用バックエンド（特定 IP のみ Cloud Armor で制限）`}</pre>
+
+                <pre className="codeblock">{`# URL マップを作成
+gcloud compute url-maps create my-url-map \\
+  --default-service=frontend-backend-service
+
+# パスマッチャーを追加
+gcloud compute url-maps add-path-matcher my-url-map \\
+  --path-matcher-name=api-matcher \\
+  --default-service=frontend-backend-service \\
+  --backend-service-path-rules=/api/*=api-backend-service,/static/*=storage-backend`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.3</span>Network Load Balancer（L4）</div>
+                <pre className="codeblock">{`Proxy Network LB（プロキシ型）:
+  クライアント ─── 接続終端 ─── Cloud LB ─── 新しい接続 ─── バックエンド
+
+  ・LB でTCP接続を終端
+  ・SSL オフロードが可能
+  ・クライアントの送信元IPが失われる（X-Forwarded-For ヘッダーで補完）
+
+Passthrough Network LB（パススルー型）:
+  クライアント ──────────────── バックエンド（直接）
+              ↑ パケットをそのまま転送
+
+  ・クライアントの送信元IPをそのままバックエンドに転送
+  ・TCP/UDP/ESP/GRE/ICMP に対応
+  ・バックエンドが直接クライアントに応答（DSR: Direct Server Return）
+
+使い分け:
+  送信元IP が必要（ログ記録・地域制限など）→ Passthrough
+  SSL オフロードが必要 → Proxy`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.4</span>コンプライアンス要件とロードバランサの選択</div>
+                <div className="wb">
+                    <div className="wbt">試験頻出</div>
+                    <p>データ主権・コンプライアンス要件がある場合</p>
+                </div>
+                <pre className="codeblock">{`【コンプライアンス要件がある場合】
+
+「すべてのトラフィックを日本国内に留める必要がある」
+「SSL/TLS 終端は必ず東京リージョンで行わなければならない」
+
+→ グローバルスコープの ALB は使えない！
+  グローバル ALB はエッジで SSL 終端するため
+  海外の PoP でも処理される可能性がある
+
+→ 必ず「リージョナル」ロードバランサを選択
+  Regional External ALB または
+  Regional Internal ALB`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.5</span>Cloud Armor（DDoS 防御）</div>
+                <pre className="codeblock">{`【Cloud Armor の主な機能】
+
+DDoS 防御:
+  → アプリケーション層（L7）の攻撃を自動軽減
+
+WAF（Web Application Firewall）:
+  → SQLインジェクション・XSS などを検出・ブロック
+
+カスタムルール:
+  → 特定 IP からのブロック
+  → 地理情報ベースのアクセス制御
+
+レート制限:
+  → 1つの IP から大量リクエストをブロック`}</pre>
+
+                <pre className="codeblock">{`# Cloud Armor ポリシーを作成して ALB に適用
+gcloud compute security-policies create my-security-policy \\
+  --description="WAF and DDoS protection"
+
+# 日本以外からのアクセスをブロック
+gcloud compute security-policies rules create 1000 \\
+  --security-policy=my-security-policy \\
+  --expression="origin.region_code != 'JP'" \\
+  --action=deny-403
+
+# ALB バックエンドサービスにポリシーを適用
+gcloud compute backend-services update my-backend-service \\
+  --security-policy=my-security-policy \\
+  --global`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.BP</span>ベストプラクティス: ロードバランサ</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <div className="ctable">
+                        <div className="ctable-head">
+                            <span className="cthead">#</span>
+                            <span className="cthead">ベストプラクティス</span>
+                            <span className="cthead">理由</span>
+                        </div>
+                        {[
+                            ['1', '本番 Web アプリには Cloud Armor を必ず設定', 'DDoS・WAF 保護'],
+                            ['2', 'コンプライアンス要件がある場合はリージョナル LB を選択', 'データの地理的制限'],
+                            ['3', 'バックエンドサービスにヘルスチェックを設定', '異常バックエンドへのルーティング防止'],
+                            ['4', 'グローバル ALB は Premium Tier ネットワークで使用', 'Standard Tier では真のグローバル配信にならない'],
+                            ['5', '送信元 IP が必要なら Passthrough NLB を選択', 'Proxy 型は送信元 IP が失われる'],
+                        ].map(([num, bp, reason]) => (
+                            <div className="ctable-row" key={num}>
+                                <span className="ctval">{num}</span>
+                                <span className="ctval">{bp}</span>
+                                <span className="ctdef">{reason}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter15() {
+    return (
+        <div id="ch15" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn15">15</div>
+                <div className="sec-head-txt">
+                    <h2>Infrastructure as Code (Terraform)</h2>
+                    <p>State管理・リモートバックエンド・CI/CD統合・GitOps — IaC の完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.1</span>なぜ IaC が重要か？</div>
+                <pre className="codeblock">{`【手動でコンソール操作する問題】
+
+  ├── 再現性がない（「あの設定どうやったっけ？」）
+  ├── 環境間の差異（dev と prod の設定が微妙に違う）
+  ├── 監査ができない（「誰がいつ何を変えたか？」）
+  └── ヒューマンエラー（クリック間違い）
+
+【Terraform（IaC）による解決】
+
+  ├── コードとして定義 → 完全に再現可能
+  ├── Git で管理 → 変更履歴が完全に記録される
+  ├── PR レビュー → 本番適用前に人間がチェック
+  └── plan → apply の 2 ステップで安全に適用`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.2</span>Terraform の基本構造</div>
+                <pre className="codeblock">{`# main.tf - リソースの定義
+resource "google_compute_instance" "web_server" {
+  name         = "web-server-prod"
+  machine_type = "n2-standard-4"
+  zone         = "asia-northeast1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+      size  = 50
+    }
+  }
+
+  network_interface {
+    network    = "my-vpc"
+    subnetwork = "web-subnet"
+    # access_config なし = 外部IP なし（推奨）
+  }
+
+  metadata = {
+    enable-oslogin = "TRUE"
+  }
+
+  tags = ["web-server"]
+}
+
+# variables.tf - 変数の定義
+variable "project_id" {
+  description = "Google Cloud プロジェクト ID"
+  type        = string
+}
+
+variable "region" {
+  description = "デプロイするリージョン"
+  type        = string
+  default     = "asia-northeast1"
+}
+
+# outputs.tf - 出力値の定義
+output "instance_internal_ip" {
+  description = "VM の内部 IP"
+  value       = google_compute_instance.web_server.network_interface[0].network_ip
+}`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.3</span>State ファイルの管理（最重要）</div>
+                <p className="tcard-desc">Terraform は「terraform.tfstate」というファイルで「コードと実際のGCPリソースの対応関係」を管理します。</p>
+                <pre className="codeblock">{`terraform.tfstate の中身（例）:
+{
+  "resources": [
+    {
+      "type": "google_compute_instance",
+      "name": "web_server",
+      "instances": [
+        {
+          "attributes": {
+            "id": "projects/my-proj/zones/asia-northeast1-a/instances/web-server-prod",
+            "machine_type": "n2-standard-4",
+            ...
+          }
+        }
+      ]
+    }
+  ]
+}
+
+もしこのファイルが壊れると:
+  Terraform がリソースを「存在しない」と思い込み
+  → 既存リソースを削除して再作成しようとする！
+  → 本番環境への大規模障害！`}</pre>
+                <div className="wb">
+                    <div className="wbt">絶対禁止</div>
+                    <p><code>terraform.tfstate</code> を手動で編集してはいけません！</p>
+                </div>
+
+                <p className="stitle">ローカル State の問題点</p>
+                <pre className="codeblock">{`【ローカル State の問題】
+
+開発者 A が terraform apply
+  → ローカルの tfstate が更新
+
+開発者 B が同時に terraform apply（古い tfstate を持っている）
+  → State の競合！
+  → リソースが重複作成 or 意図しない削除！
+
+→ チーム開発でのローカル State は使用禁止`}</pre>
+
+                <p className="stitle">リモートバックエンドの設定（Cloud Storage）</p>
+                <pre className="codeblock">{`# backend.tf
+terraform {
+  backend "gcs" {
+    bucket  = "my-terraform-state-bucket"
+    prefix  = "terraform/state"
+  }
+}`}</pre>
+
+                <pre className="codeblock">{`# State 用の Cloud Storage バケットを作成
+gcloud storage buckets create gs://my-terraform-state-bucket \\
+  --location=asia-northeast1 \\
+  --uniform-bucket-level-access
+
+# バージョニングを有効化（State の変更履歴を保存）
+gcloud storage buckets update gs://my-terraform-state-bucket \\
+  --versioning
+
+# State ロックは GCS バックエンドで自動的に有効化される
+# → 並行 apply を自動防止！`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.4</span>Terraform の安全なデプロイフロー</div>
+                <pre className="codeblock">{`【標準的なデプロイフロー】
+
+Step 1: コードを変更してコミット
+  ↓
+Step 2: terraform plan でプレビュー
+  $ terraform plan -out=tfplan
+
+  出力例:
+  Plan: 1 to add, 2 to change, 0 to destroy.
+
+  + google_compute_instance.new_vm       ← 追加される
+  ~ google_compute_instance.web_server   ← 変更される
+
+  → 変更内容を確認してレビュー
+
+Step 3: プランファイルを使って適用
+  $ terraform apply tfplan
+
+  → plan 時と同じ内容のみ適用（サプライズなし！）
+
+【重要】プランファイルの注意点:
+  プランファイルは実行環境（パスなど）に依存するため
+  環境間を移動して使うことはできない`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.5</span>既存リソースの Import</div>
+
+                <p className="stitle">従来の方法（Terraform {`<`} 1.5）</p>
+                <pre className="codeblock">{`# Console で手動作成した VM を Terraform 管理下に置く
+terraform import google_compute_instance.my_vm \\
+  projects/PROJECT/zones/asia-northeast1-a/instances/my-vm`}</pre>
+
+                <p className="stitle">モダンな方法（Terraform {`>=`} 1.5 推奨）</p>
+                <pre className="codeblock">{`# main.tf に import ブロックを追加
+import {
+  to = google_compute_instance.my_vm
+  id = "projects/PROJECT/zones/asia-northeast1-a/instances/my-vm"
+}
+
+resource "google_compute_instance" "my_vm" {
+  name         = "my-vm"
+  # ... リソースの設定
+}`}</pre>
+
+                <pre className="codeblock">{`# import を含む plan を実行
+terraform plan  # import ブロックを検出して取り込み計画を表示
+
+# 問題なければ apply
+terraform apply`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.6</span>CI/CD パイプラインとの統合（GitOps）</div>
+                <pre className="codeblock">{`リポジトリ構造:
+
+my-infra/
+├── environments/
+│   ├── dev/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── terraform.tfvars
+│   │
+│   └── prod/
+│       ├── main.tf
+│       ├── variables.tf
+│       └── terraform.tfvars
+│
+└── modules/
+    ├── vpc/
+    ├── gke/
+    └── cloud-sql/
+
+【ブランチ戦略】
+  feature/xxx → dev ブランチへの PR
+                  ↓ マージ
+              dev ブランチ → dev 環境に自動 apply
+                  ↓ 承認
+              main ブランチへの PR → レビュー
+                  ↓ マージ
+              main ブランチ → prod 環境に自動 apply`}</pre>
+
+                <p className="stitle">Cloud Build による CI/CD</p>
+                <pre className="codeblock">{`# cloudbuild.yaml
+steps:
+  # Terraform の初期化
+  - name: 'hashicorp/terraform:1.5'
+    entrypoint: 'terraform'
+    args: ['init', '-backend-config=bucket=my-state-bucket']
+    dir: 'environments/\${_ENV}'
+
+  # プランの実行
+  - name: 'hashicorp/terraform:1.5'
+    entrypoint: 'terraform'
+    args: ['plan', '-out=tfplan']
+    dir: 'environments/\${_ENV}'
+
+  # 適用（main ブランチのみ）
+  - name: 'hashicorp/terraform:1.5'
+    entrypoint: 'terraform'
+    args: ['apply', '-auto-approve', 'tfplan']
+    dir: 'environments/\${_ENV}'
+
+substitutions:
+  _ENV: 'dev'
+
+# Cloud Build のサービスアカウントで実行（JSON キー不要！）
+serviceAccount: 'projects/PROJECT/serviceAccounts/terraform-sa@PROJECT.iam.gserviceaccount.com'`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.BP</span>ベストプラクティス: Terraform</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <div className="ctable">
+                        <div className="ctable-head">
+                            <span className="cthead">#</span>
+                            <span className="cthead">ベストプラクティス</span>
+                            <span className="cthead">理由</span>
+                        </div>
+                        {[
+                            ['1', 'State は Cloud Storage リモートバックエンドに保存', '競合・紛失防止'],
+                            ['2', 'State バケットはバージョニングを有効化', '誤操作からの復元'],
+                            ['3', 'terraform plan -out=tfplan を必ず実施', '意図しない変更の防止'],
+                            ['4', 'State ファイルを手動編集禁止', '設定破損リスク'],
+                            ['5', 'CI/CD 認証は Workload Identity/ADC を使用（JSON キー禁止）', 'キー漏洩防止'],
+                            ['6', '環境ごとに別ディレクトリ・別 State バケットを使用', '誤った環境への適用防止'],
+                            ['7', 'terraform import ブロックで既存リソースを管理下へ', 'コンソールで作ったリソースをIaC管理に移行'],
+                        ].map(([num, bp, reason]) => (
+                            <div className="ctable-row" key={num}>
+                                <span className="ctval">{num}</span>
+                                <span className="ctval">{bp}</span>
+                                <span className="ctdef">{reason}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function Chapter11() {
     return (
         <div id="ch11" className="sgap">
@@ -2345,14 +2797,8 @@ export default function Domain2Page() {
                 <Chapter11 />
                 <Chapter12 />
                 <Chapter13 />
-                <div id="ch14" className="sgap">
-                    <h2>ロードバランサ</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch15" className="sgap">
-                    <h2>Terraform による IaC</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
+                <Chapter14 />
+                <Chapter15 />
                 <div id="ch16" className="sgap">
                     <h2>試験対策まとめ</h2>
                     <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>ベストプラクティス: 実装中...</p>
