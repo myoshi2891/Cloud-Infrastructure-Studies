@@ -153,6 +153,36 @@ function Chapter1() {
                     参考: cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option
                 </div>
             </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">1.3</span>コスト最適化: Pricing Calculator と確約利用割引（補足）</div>
+                <p className="tcard-desc">アーキテクチャ計画段階でのコスト見積もりと制御メカニズムを理解することが、クラウド破産を防ぐ鍵です。</p>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">最適化手法</span>
+                        <span className="cthead">説明</span>
+                        <span className="cthead">対象</span>
+                    </div>
+                    {[
+                        ['Pricing Calculator', 'リソースの予想利用量から月額料金をシミュレーション。リージョンごとの差分も把握可能', 'すべてのサービス'],
+                        ['確約利用割引（CUD）1年', '1年間の利用確約でオンデマンド価格から最大20%割引', 'Compute Engine / Cloud SQL'],
+                        ['確約利用割引（CUD）3年', '3年間の利用確約で最大70%割引', 'Compute Engine / Cloud SQL'],
+                        ['財務バッファ', 'サーバーレスの見積もりには10〜20%の余裕を追加（トラフィックスパイク対応）', 'Cloud Run / Functions / MIG'],
+                        ['カスタム割り当て（Quotas）', 'BigQuery の1日あたりの処理データ量に上限を設定して高額請求を防止', 'BigQuery'],
+                        ['Maximum bytes billed', 'クエリ単位で上限バイト数を設定。上限超過クエリは実行前に失敗させる', 'BigQuery'],
+                    ].map(([method, desc, target]) => (
+                        <div className="ctable-row" key={method}>
+                            <span className="ctval">{method}</span>
+                            <span className="ctdef">{desc}</span>
+                            <span className="ctdef">{target}</span>
+                        </div>
+                    ))}
+                </div>
+                <div className="wb">
+                    <div className="wbt">初学者の罠</div>
+                    <p>BigQuery で <code>LIMIT</code> 句を使っても、列指向ストレージの特性上スキャンされるデータ量（課金対象バイト数）は一切減少しません。必ず<strong>テーブルプレビュー機能</strong>を使い、クエリ前に推定コストを確認してください。</p>
+                </div>
+            </div>
         </div>
     );
 }
@@ -381,6 +411,193 @@ gcloud compute firewall-rules create allow-ssh-bastion \\
                 </div>
                 <div className="src">
                     参考: cloud.google.com/blog/products/compute/top-compute-engine-documentation-pages/
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter16() {
+    return (
+        <div id="ch16" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn16">16</div>
+                <div className="sec-head-txt">
+                    <h2>試験対策まとめ</h2>
+                    <p>頻出パターン・重要用語チェックリスト・推奨リソース — ACE Domain 2 完全攻略ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.1</span>試験頻出の選択問題パターン</div>
+
+                <p className="stitle">パターン①: コンピューティングサービスの選択</p>
+                <pre className="codeblock">{`【問題文の例】
+「画像処理のバッチジョブを実行したい。
+ コストを最小化しつつ、停止されても問題ない。
+ どのサービスを使うべきか？」
+
+正解: Spot VM + MIG
+理由:
+  ・バッチジョブ → 停止されても問題ない
+  ・コスト最小化 → Spot VM（最大91%割引）
+  ・停止後の自動再作成 → MIG と組み合わせ
+
+【問題文の例】
+「HTTP API を提供したい。
+ アイドル時間はコストゼロにしたい。
+ どのサービスを使うべきか？」
+
+正解: Cloud Run
+理由:
+  ・HTTP API → Cloud Run
+  ・アイドル時コストゼロ → ゼロスケール可能`}</pre>
+
+                <p className="stitle">パターン②: データベースの選択</p>
+                <pre className="codeblock">{`【問題文の例】
+「グローバルに展開する金融システムで
+ 強い整合性が必要。99.999% の可用性が必要。
+ どのDBを使うべきか？」
+
+正解: Cloud Spanner
+理由:
+  ・グローバル分散 → Spanner
+  ・強整合性 → Spanner（ACID）
+  ・99.999% SLA → Spanner のみが提供
+
+【問題文の例】
+「IoT デバイスから毎秒100万件のデータが来る。
+ 低レイテンシでの書き込みが必要。
+ どのDBを使うべきか？」
+
+正解: Cloud Bigtable
+理由:
+  ・超大規模・高スループット → Bigtable
+  ・時系列データ → Bigtable のユースケース`}</pre>
+
+                <p className="stitle">パターン③: ネットワーク設計</p>
+                <pre className="codeblock">{`【問題文の例】
+「複数のチームが同じ VPC ネットワークを使いたい。
+ ネットワーク管理は1チームが担当し、
+ 各チームはアプリのみ管理したい。」
+
+正解: Shared VPC
+理由:
+  ・ネットワーク管理の集中化 → ホストプロジェクト
+  ・各チームがアプリを管理 → サービスプロジェクト
+
+【問題文の例】
+「VPC A が VPC B と Peering。
+ VPC B が VPC C と Peering。
+ A から C に直接通信できるか？」
+
+正解: できない（Peering は推移的でない）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.2</span>Domain 2 重要用語チェックリスト</div>
+
+                <p className="stitle">コンピューティング</p>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <ul>
+                        <li>Spot VM は最大 <strong>91%</strong> 割引で、いつでもプリエンプトされる</li>
+                        <li>Spot VM はバッチ・ML・レンダリングに最適（Web サーバーは NG）</li>
+                        <li>GKE Autopilot は Pod リソース単位の課金（アイドルコストなし）</li>
+                        <li>GKE Standard は特権コンテナや DaemonSet が必要な場合に選択</li>
+                        <li>Workload Identity で GKE から GCP API にアクセス（JSON キー禁止）</li>
+                        <li>Cloud Run はゼロスケール可能なサーバーレスコンテナ</li>
+                    </ul>
+                </div>
+
+                <p className="stitle">ストレージ・データベース</p>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <ul>
+                        <li>Cloud Storage の 4 クラス（Standard/Nearline/Coldline/Archive）の使い分け</li>
+                        <li>Nearline=30日、Coldline=90日、Archive=365日 の最小保存期間</li>
+                        <li>OLM（Object Lifecycle Management）でストレージクラスを自動移行</li>
+                        <li>署名付き URL の最大有効期間は <strong>7日間</strong></li>
+                        <li>Cloud SQL は標準 RDBMS、Spanner はグローバル分散（99.999%）</li>
+                        <li>Bigtable は ペタバイトスケール・時系列データ</li>
+                        <li>Firestore はリアルタイム同期・モバイル/IoT バックエンド</li>
+                    </ul>
+                </div>
+
+                <p className="stitle">ネットワーク</p>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <ul>
+                        <li>Google Cloud VPC は <strong>グローバル</strong>（リージョンをまたぐ）</li>
+                        <li>Shared VPC: ホストプロジェクトがネットワークを集中管理</li>
+                        <li>VPC Peering は <strong>推移的でない</strong>（A-B-C でも A-C は通信不可）</li>
+                        <li>Cloud NAT: 外部 IP なし VM のインターネットアウトバウンド</li>
+                        <li>Cloud DNS 転送ゾーン: GCP → オンプレの DNS 解決</li>
+                        <li>Global ALB はグローバル配信、Regional LB はリージョン内限定</li>
+                        <li>コンプライアンス要件（データ主権）には必ずリージョナル LB</li>
+                    </ul>
+                </div>
+
+                <p className="stitle">Terraform</p>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <ul>
+                        <li>State ファイルは <strong>Cloud Storage のリモートバックエンド</strong>に保存</li>
+                        <li>State ファイルを <strong>手動編集禁止</strong></li>
+                        <li><code>terraform plan -out=tfplan</code> → <code>terraform apply tfplan</code> の順番</li>
+                        <li>CI/CD の認証は JSON キーではなく <strong>Workload Identity/ADC</strong></li>
+                        <li>Terraform 1.5以降は <code>import</code> ブロックで既存リソースを取り込み</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.3</span>推奨学習リソース（Domain 2）</div>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">リソース</span>
+                        <span className="cthead">URL</span>
+                    </div>
+                    {[
+                        ['ACE 試験公式ページ', 'cloud.google.com/learn/certification/cloud-engineer'],
+                        ['Compute Engine ドキュメント', 'cloud.google.com/compute/docs'],
+                        ['OS Login 設定', 'cloud.google.com/compute/docs/oslogin/set-up-oslogin'],
+                        ['Spot VM の作成と使用', 'cloud.google.com/compute/docs/instances/create-use-spot'],
+                        ['GKE Autopilot セキュリティ', 'cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security'],
+                        ['GKE Autopilot vs Standard', 'cloud.google.com/kubernetes-engine/docs/resources/autopilot-standard-feature-comparison'],
+                        ['Cloud Run ネットワーキング', 'cloud.google.com/run/docs/configuring/networking-best-practices'],
+                        ['Cloud Storage ベストプラクティス', 'cloud.google.com/storage/docs/best-practices'],
+                        ['データベース選定ガイド', 'cloud.google.com/blog/topics/developers-practitioners/your-google-cloud-database-options-explained'],
+                        ['VPC 設計ベストプラクティス', 'cloud.google.com/architecture/best-practices-vpc-design'],
+                        ['Shared VPC', 'cloud.google.com/vpc/docs/shared-vpc'],
+                        ['Cloud NAT のベストプラクティス', 'cloud.google.com/blog/products/networking/6-best-practices-for-running-cloud-nat'],
+                        ['ロードバランサ選定', 'cloud.google.com/load-balancing/docs/choosing-load-balancer'],
+                        ['Terraform ベストプラクティス', 'cloud.google.com/docs/terraform/best-practices/operations'],
+                    ].map(([resource, url]) => (
+                        <div className="ctable-row" key={resource}>
+                            <span className="ctval">{resource}</span>
+                            <span className="ctdef">{url}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.ADV</span>Domain 2 学習の最終アドバイス</div>
+                <div className="wb">
+                    <div className="wbt">最終アドバイス</div>
+                    <p>Domain 2 は ACE 試験の中で<strong>最大配点（≈21%）</strong>です。以下の点を徹底的に習得してください。</p>
+                </div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <ul>
+                        <li><strong>① サービス選定の「理由」を説明できるようにする</strong><br />
+                            「このサービスを選ぶのはなぜか？」を自分の言葉で説明できること</li>
+                        <li><strong>② アンチパターンと推奨パターンをセットで覚える</strong><br />
+                            「❌ JSON キー → ✅ Workload Identity」のように対比で理解する</li>
+                        <li><strong>③ 実際に手を動かす（ハンズオン）</strong><br />
+                            Cloud Shell や Google Cloud Skills Boost で実際に触ることが最高の学習法</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -834,6 +1051,47 @@ serviceAccount: 'projects/PROJECT/serviceAccounts/terraform-sa@PROJECT.iam.gserv
                         ))}
                     </div>
                 </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.ADV</span>AlloyDB アーキテクチャ深掘り: コンピュート/ストレージ分離（補足）</div>
+                <pre className="codeblock">{`【AlloyDB の革新的アーキテクチャ】
+
+従来の PostgreSQL:
+  プライマリ DB が WAL（Write-Ahead Logging）を処理しながら
+  ページをディスクに書き込む → I/O 負荷が高い
+  「Torn Pages（不完全なページ書き込み）」問題のリスクあり
+
+AlloyDB のコンピュート/ストレージ分離:
+  WAL レコードのみをインテリジェントな分散ストレージ層
+  （Log Processing Service: LPS）に送信
+
+  LPS が担当:
+  ├── WAL の解析・適用
+  ├── ページの更新（コンピュート層に代わって）
+  └── ネットワーク効率の最大化
+
+  → プライマリ DB は I/O の重い作業から解放
+  → Torn Pages 問題を根本から解決
+  → リードレプリカを極めて低遅延でスケールアウト可能`}</pre>
+
+                <pre className="codeblock">{`【Hyperdisk（次世代ブロックストレージ）との使い分け】
+
+Persistent Disk（従来）:
+  容量・スループット・IOPS が連動して決まる
+
+Hyperdisk（新世代）:
+  容量 と スループット/IOPS を完全に独立してプロビジョニング
+  → データ分析: 大容量・高スループット を低コストで実現
+  → 高I/O DB: 大容量 は不要だが高IOPSが必要、という場合に最適
+  → 動的な変更が可能（再起動不要）
+
+用途別推奨:
+  ├── 一般的な VM ワークロード → Balanced Persistent Disk
+  ├── 高I/O データベース → Hyperdisk Extreme
+  ├── データ分析・高スループット → Hyperdisk Throughput
+  └── キャッシュ・一時データ → Local SSD（VM停止でデータ消滅）`}</pre>
+                <div className="src">参考: cloud.google.com/blog/products/databases/alloydb-for-postgresql-intelligent-scalable-storage</div>
             </div>
         </div>
     );
@@ -2093,6 +2351,33 @@ spec:
                     </div>
                 </div>
             </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.ADV</span>GKE ネットワーク深掘り: VPC-native クラスター（補足）</div>
+                <pre className="codeblock">{`【ルートベース vs VPC ネイティブ クラスター】
+
+ルートベース クラスター（旧）:
+  Pod の IP ルーティングを VPC の静的ルートに依存
+  → ノード数増加でルート割り当て上限（クォータ）に到達
+  → スケーラビリティのボトルネックとなる
+  → 一度作成したら VPC ネイティブに移行不可！
+
+VPC ネイティブ クラスター（現在のデフォルト・推奨）:
+  エイリアスIP（Alias IPs）で Pod に直接 IP を割り当て
+  → VPC ルーティングテーブルを消費しない
+  → 無限に近いスケーラビリティを実現
+
+VPC ネイティブが有効にする追加機能:
+  ├── コンテナネイティブ負荷分散（NEG: Network Endpoint Group）
+  │   → LB が Pod に直接ルーティング（VMを経由しない高効率）
+  └── Google API へのプライベートアクセス（VPC SC との連携）
+
+計画段階での重要な教訓:
+  → 新規クラスターは必ず VPC ネイティブを選択
+  → ルートベースから VPC ネイティブへの移行は不可能
+     （クラスターを作り直す必要がある）`}</pre>
+                <div className="src">参考: cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster</div>
+            </div>
         </div>
     );
 }
@@ -2799,10 +3084,7 @@ export default function Domain2Page() {
                 <Chapter13 />
                 <Chapter14 />
                 <Chapter15 />
-                <div id="ch16" className="sgap">
-                    <h2>試験対策まとめ</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>ベストプラクティス: 実装中...</p>
-                </div>
+                <Chapter16 />
             </div>
 
             <footer className="page-footer">
