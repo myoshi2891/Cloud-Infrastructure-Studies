@@ -387,6 +387,340 @@ gcloud compute firewall-rules create allow-ssh-bastion \\
     );
 }
 
+function Chapter3() {
+    return (
+        <div id="ch3" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn3">03</div>
+                <div className="sec-head-txt">
+                    <h2>Spot VM とプリエンプティブル VM</h2>
+                    <p>最大91%割引の余剰リソース活用 — チェックポイント設計とプリエンプション対応の完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.1</span>Spot VM とは？</div>
+                <p className="tcard-desc">
+                    Google のデータセンターには、常に余剰の計算リソースがあります。Spot VM はその余剰リソースを格安で提供する仕組みです。
+                </p>
+                <pre className="codeblock">{`【通常の VM】
+  ・確実に稼働し続ける
+  ・通常料金（例: n2-standard-4 = 約$0.19/時間）
+
+【Spot VM】
+  ・余剰リソースを利用するため最大 91% 割引
+  ・Google がリソースを必要としたら 30秒前通知で強制停止される
+  ・例: n2-standard-4 = 約$0.02/時間（約90%割引）`}</pre>
+                <div className="wb">
+                    <div className="wbt">重要</div>
+                    <p>Spot VM はいつでも停止される可能性があります。ステートフルなアプリや停止が許されないサービスには使用禁止！</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.2</span>Spot VM vs Preemptible VM</div>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">項目</span>
+                        <span className="cthead">Preemptible VM（旧）</span>
+                        <span className="cthead">Spot VM（現在推奨）</span>
+                    </div>
+                    {[
+                        ['最大稼働時間', '24時間（強制停止）', '制限なし'],
+                        ['停止通知', '30秒前', '30秒前'],
+                        ['価格', '最大80%割引', '最大91%割引'],
+                        ['推奨度', '❌ 非推奨（レガシー）', '✅ 推奨'],
+                    ].map(([item, old, current]) => (
+                        <div className="ctable-row" key={item}>
+                            <span className="ctval">{item}</span>
+                            <span className="ctdef">{old}</span>
+                            <span className="ctdef">{current}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.3</span>Spot VM に適したワークロード</div>
+                <pre className="codeblock">{`✅ 向いているワークロード:
+  ├── バッチ処理（夜間の大量データ処理）
+  ├── ML/AI モデルのトレーニング
+  ├── 3D レンダリング、動画エンコード
+  ├── ゲノム解析などのサイエンティフィック計算
+  └── 継続的インテグレーション（CI）のビルド/テスト
+
+❌ 向いていないワークロード:
+  ├── Web サーバー（ユーザーへの影響大）
+  ├── データベース（データの整合性が壊れる可能性）
+  ├── ステートフルなアプリ（状態が失われる）
+  └── 停止が許されないミッションクリティカルなサービス`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.4</span>プリエンプション（強制停止）への対応設計</div>
+
+                <p className="stitle">① 終了アクションの設定</p>
+                <pre className="codeblock">{`# Spot VM 作成時に終了アクションを設定
+gcloud compute instances create my-spot-vm \\
+  --machine-type=n2-standard-4 \\
+  --provisioning-model=SPOT \\
+  --instance-termination-action=STOP  # STOP または DELETE
+
+# STOP: VM を停止状態にする（ローカルディスクのデータ保持）
+#   → キャパシティが戻った時に再起動可能
+# DELETE: VM を削除する（最小コスト・ローカルデータ消失）`}</pre>
+
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">終了アクション</span>
+                        <span className="cthead">ローカルSSDデータ</span>
+                        <span className="cthead">再起動</span>
+                        <span className="cthead">用途</span>
+                    </div>
+                    {[
+                        ['STOP', '✅ 保持', '自動（キャパシティ回復後）', 'データを保持したいバッチ'],
+                        ['DELETE', '❌ 消える', 'MIG が新規作成', '純粋なバッチ・ステートレス'],
+                    ].map(([action, data, restart, usage]) => (
+                        <div className="ctable-row" key={action}>
+                            <span className="ctval">{action}</span>
+                            <span className="ctdef">{data}</span>
+                            <span className="ctdef">{restart}</span>
+                            <span className="ctdef">{usage}</span>
+                        </div>
+                    ))}
+                </div>
+
+                <p className="stitle">② シャットダウンスクリプトの設定</p>
+                <pre className="codeblock">{`# 停止前に状態を Cloud Storage に保存するスクリプト
+#!/bin/bash
+# /etc/google-cloud/metadata/shutdown-scripts
+
+echo "Spot VM preemption detected. Saving checkpoint..."
+
+# 処理の進捗を Cloud Storage に保存
+gsutil cp /var/app/checkpoint.dat gs://my-batch-bucket/checkpoints/job-\${JOB_ID}.dat
+
+# 処理ログを保存
+gsutil cp /var/log/app.log gs://my-batch-bucket/logs/job-\${JOB_ID}.log
+
+echo "Checkpoint saved. Shutting down."`}</pre>
+
+                <pre className="codeblock">{`gcloud compute instances add-metadata VM_NAME \\
+  --metadata-from-file shutdown-script=shutdown.sh`}</pre>
+
+                <p className="stitle">③ チェックポイントの実装パターン</p>
+                <pre className="codeblock">{`# バッチ処理でのチェックポイント実装例（Python）
+import signal
+import json
+from google.cloud import storage
+
+checkpoint_file = "gs://my-bucket/checkpoints/job.json"
+is_preempted = False
+
+def handle_sigterm(signum, frame):
+    """SIGTERM を受け取ったら（プリエンプション通知）"""
+    global is_preempted
+    is_preempted = True
+    save_checkpoint(current_progress)
+    print("Checkpoint saved, shutting down gracefully")
+
+signal.signal(signal.SIGTERM, handle_sigterm)
+
+def save_checkpoint(progress):
+    """進捗を GCS に保存"""
+    client = storage.Client()
+    # ... チェックポイントをGCSに書き込み
+
+def load_checkpoint():
+    """前回の進捗を GCS から読み込み"""
+    # ... GCS からチェックポイントを読み込み
+    pass
+
+# メイン処理（チェックポイントから再開）
+last_checkpoint = load_checkpoint()
+for i in range(last_checkpoint, total_items):
+    if is_preempted:
+        break
+    process_item(i)
+    current_progress = i`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.5</span>Spot VM のコスト計算例</div>
+                <pre className="codeblock">{`通常の ML トレーニングジョブ:
+  A2 Ultra（8x A100 GPU） 通常料金: $32.77/時間
+  Spot VM 割引（約70%）:            $9.83/時間
+
+  10時間のトレーニング:
+    通常: $327.70
+    Spot: $98.30
+    節約: $229.40（約70%節約）！`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.BP</span>ベストプラクティス: Spot VM</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <div className="ctable">
+                        <div className="ctable-head">
+                            <span className="cthead">#</span>
+                            <span className="cthead">ベストプラクティス</span>
+                            <span className="cthead">詳細</span>
+                        </div>
+                        {[
+                            ['1', 'MIG（Managed Instance Group）と組み合わせる', 'プリエンプト後に自動で新しい VM を作成'],
+                            ['2', 'チェックポイント機能を必ず実装', '処理を途中から再開できるよう設計'],
+                            ['3', '終了アクションは STOP を基本に', 'データを保持しキャパシティ回復後に再起動'],
+                            ['4', 'シャットダウンスクリプトを設定', '30秒の猶予でクリーンに終了処理'],
+                            ['5', '複数ゾーンにわたる MIG を構成', '特定ゾーンの Spot VM が全滅するリスクを分散'],
+                            ['6', 'gcloud compute operations describe でプリエンプション履歴を確認', 'Spot 利用率の最適化'],
+                        ].map(([num, bp, detail]) => (
+                            <div className="ctable-row" key={num}>
+                                <span className="ctval">{num}</span>
+                                <span className="ctval">{bp}</span>
+                                <span className="ctdef">{detail}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter4() {
+    return (
+        <div id="ch4" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn4">04</div>
+                <div className="sec-head-txt">
+                    <h2>Managed Instance Group (MIG)</h2>
+                    <p>自動ヒーリング・オートスケーリング・ローリングアップデート — 高可用性VM管理の完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.1</span>MIG とは？</div>
+                <p className="tcard-desc">
+                    MIG（Managed Instance Group）は、<strong>インスタンステンプレート</strong> から同一設定の VM を複数自動管理する機能です。
+                </p>
+                <pre className="codeblock">{`インスタンステンプレート（設計図）
+  ├── マシンタイプ: n2-standard-4
+  ├── OS イメージ: debian-11
+  ├── ディスクサイズ: 100GB
+  └── スタートアップスクリプト: install_app.sh
+
+       ↓ MIG が自動的に複数の VM を作成・管理
+
+VM1（asia-northeast1-a）
+VM2（asia-northeast1-b）
+VM3（asia-northeast1-c）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.2</span>MIG の主要機能</div>
+
+                <p className="stitle">機能① 自動ヒーリング（Auto Healing）</p>
+                <pre className="codeblock">{`ヘルスチェックで VM の異常を検知
+    ↓
+異常な VM を自動的に削除
+    ↓
+新しい VM を自動作成
+
+→ 人間が介入しなくてもサービスを維持！`}</pre>
+
+                <p className="stitle">ヘルスチェックの設定</p>
+                <pre className="codeblock">{`# ヘルスチェックを作成
+gcloud compute health-checks create http my-health-check \\
+  --port=80 \\
+  --request-path=/health \\
+  --check-interval=30s \\
+  --timeout=10s \\
+  --healthy-threshold=1 \\
+  --unhealthy-threshold=3
+
+# MIG にヘルスチェックを設定
+gcloud compute instance-groups managed set-autohealing my-mig \\
+  --health-check=my-health-check \\
+  --initial-delay=300  # 起動後300秒は異常判定しない`}</pre>
+
+                <p className="stitle">機能② 自動スケーリング（Autoscaling）</p>
+                <pre className="codeblock">{`負荷が増加 → VM を自動追加（スケールアウト）
+負荷が減少 → VM を自動削除（スケールイン）
+
+スケーリングの指標:
+  ├── CPU 使用率（最もシンプル）
+  ├── HTTP リクエスト数（LB と連携）
+  ├── Cloud Monitoring カスタムメトリクス
+  └── Pub/Sub キューの深さ（バッチ処理に有効）`}</pre>
+
+                <pre className="codeblock">{`# CPU 使用率 60% を目標にオートスケールを設定
+gcloud compute instance-groups managed set-autoscaling my-mig \\
+  --max-num-replicas=10 \\
+  --min-num-replicas=2 \\
+  --target-cpu-utilization=0.6 \\
+  --cool-down-period=90`}</pre>
+
+                <p className="stitle">機能③ ローリングアップデート（Rolling Update）</p>
+                <pre className="codeblock">{`旧バージョンのインスタンステンプレート
+          ↓ ローリングアップデート
+新バージョンのインスタンステンプレート
+
+・1台ずつ順番に更新（サービスを止めない）
+・問題が発生したらロールバック可能`}</pre>
+
+                <pre className="codeblock">{`# ローリングアップデートを実行
+gcloud compute instance-groups managed rolling-action start-update my-mig \\
+  --version=template=new-template \\
+  --max-surge=1 \\
+  --max-unavailable=0    # 同時に停止できるVM数（0=サービス継続）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.3</span>ゾーン MIG vs リージョン MIG</div>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">種類</span>
+                        <span className="cthead">展開範囲</span>
+                        <span className="cthead">耐障害性</span>
+                        <span className="cthead">用途</span>
+                    </div>
+                    {[
+                        ['ゾーン MIG', '1つのゾーン', '低（ゾーン障害で全停止）', '開発・テスト環境'],
+                        ['リージョン MIG', '3つのゾーンに均等分散', '高（1ゾーン障害でも継続）', '本番環境（推奨）'],
+                    ].map(([type, range, fault, usage]) => (
+                        <div className="ctable-row" key={type}>
+                            <span className="ctval">{type}</span>
+                            <span className="ctdef">{range}</span>
+                            <span className="ctdef">{fault}</span>
+                            <span className="ctdef">{usage}</span>
+                        </div>
+                    ))}
+                </div>
+                <pre className="codeblock">{`# リージョン MIG の作成（本番環境推奨）
+gcloud compute instance-groups managed create my-regional-mig \\
+  --template=my-template \\
+  --size=6 \\
+  --region=asia-northeast1  # ゾーンではなくリージョンを指定`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.BP</span>ベストプラクティス: MIG</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <ul>
+                        <li>本番環境は<strong>リージョン MIG</strong> でゾーン障害に備える</li>
+                        <li><strong>ヘルスチェック + 自動ヒーリング</strong>を必ず設定する</li>
+                        <li>Spot VM との組み合わせでコスト削減（<code>--provisioning-model=SPOT</code>）</li>
+                        <li>オートスケーリングの <code>max-num-replicas</code> に上限を設ける（コスト暴走防止）</li>
+                        <li>ローリングアップデートで <code>max-unavailable=0</code> を設定してゼロダウンタイム更新</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Domain2Page() {
     return (
         <div className="d2-page">
@@ -441,14 +775,8 @@ export default function Domain2Page() {
                 <SectionIntro />
                 <Chapter1 />
                 <Chapter2 />
-                <div id="ch3" className="sgap">
-                    <h2>Spot VM の活用</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch4" className="sgap">
-                    <h2>Managed Instance Groups (MIG)</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
+                <Chapter3 />
+                <Chapter4 />
                 <div id="ch5" className="sgap">
                     <h2>Google Kubernetes Engine (GKE)</h2>
                     <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
