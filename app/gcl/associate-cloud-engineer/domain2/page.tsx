@@ -387,6 +387,600 @@ gcloud compute firewall-rules create allow-ssh-bastion \\
     );
 }
 
+function Chapter5() {
+    return (
+        <div id="ch5" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn5">05</div>
+                <div className="sec-head-txt">
+                    <h2>Google Kubernetes Engine (GKE)</h2>
+                    <p>Autopilot vs Standard・Workload Identity・Binary Authorization・オートスケーリングの完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.1</span>Kubernetes の基本概念</div>
+                <pre className="codeblock">{`【Kubernetes の主要オブジェクト】
+
+Pod（ポッド）
+  └── 1つ以上のコンテナをまとめた最小デプロイ単位
+      例: nginx コンテナ + ログ収集サイドカー
+
+Deployment（デプロイメント）
+  └── Pod の望ましい状態を定義・管理
+      例: 「このアプリを3つのレプリカで動かす」
+
+Service（サービス）
+  └── Pod へのネットワークアクセスを提供
+      例: 「このラベルを持つPodに負荷分散する」
+
+Node（ノード）
+  └── Pod が実際に動く仮想マシン（VM）
+      GKE では Compute Engine VM が Node になる
+
+Namespace（ネームスペース）
+  └── クラスタを論理的に分割する仮想境界
+      例: namespace: frontend, backend, monitoring`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.2</span>GKE の 2 つのモード: Autopilot vs Standard</div>
+
+                <p className="stitle">モード選択のフローチャート</p>
+                <pre className="codeblock">{`特権コンテナが必要？ → YES → Standard モード
+カーネルパラメータの変更が必要？ → YES → Standard モード
+DaemonSet でのエージェント配置が必要？ → YES → Standard モード
+既存のノード管理チームがある？ → YES → Standard モード
+                    ↓
+              それ以外の場合
+                    ↓
+          Autopilot モード（推奨）`}</pre>
+
+                <p className="stitle">🚀 GKE Autopilot モード</p>
+                <pre className="codeblock">{`【Autopilot でGoogle が自動管理するもの】
+
+インフラ管理:
+  ├── ノードのプロビジョニング（VM の作成）
+  ├── ノードのスケーリング（増減）
+  ├── ノードのアップグレード（Kubernetes バージョン更新）
+  └── ノードの修復（障害ノードの自動交換）
+
+セキュリティ:
+  ├── Kubernetes Baseline セキュリティ標準の強制適用
+  ├── 特権コンテナのブロック
+  ├── ホスト名前空間へのアクセス制限
+  └── Workload Identity の自動有効化
+
+【Autopilot の課金モデル】
+  ❌ ノード（VM）単位の課金 ではなく
+  ✅ Pod が要求する vCPU / メモリ / エフェメラルストレージ の課金
+
+  例: Pod が requests: cpu=0.5, memory=1Gi を設定
+    → その Pod が動いている時間だけ課金
+    → アイドルノードへの課金なし！`}</pre>
+
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">制約（Autopilot）</span>
+                        <span className="cthead">説明</span>
+                    </div>
+                    {[
+                        ['特権コンテナ', '❌ 実行不可'],
+                        ['HostPath ボリューム', '❌ 使用不可'],
+                        ['NodeSelector（特定ノードへの配置）', '限定的'],
+                        ['DaemonSet', '❌ 基本的に不可'],
+                        ['カーネルパラメータ変更', '❌ 不可'],
+                    ].map(([constraint, desc]) => (
+                        <div className="ctable-row" key={constraint}>
+                            <span className="ctval">{constraint}</span>
+                            <span className="ctdef">{desc}</span>
+                        </div>
+                    ))}
+                </div>
+
+                <p className="stitle">⚙️ GKE Standard モード</p>
+                <pre className="codeblock">{`【Standard でユーザーが管理するもの】
+
+・ノードプールの作成・削除
+・マシンタイプの選択
+・ノードのアップグレード（手動またはスケジュール設定）
+・ノード上の DaemonSet の管理
+
+【Standard が必要な場面】
+  ├── 特権コンテナの実行（一部のセキュリティツールなど）
+  ├── カーネルパラメータ（sysctl）の変更
+  ├── GPU / TPU ノードプールの設定
+  ├── カスタムロギング/監視エージェント（DaemonSet）
+  └── Bare Metal/特殊ハードウェアの要件`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.3</span>GKE クラスタの作成</div>
+
+                <p className="stitle">Autopilot クラスタの作成</p>
+                <pre className="codeblock">{`# Autopilot クラスタを作成（推奨設定）
+gcloud container clusters create-auto my-autopilot-cluster \\
+  --region=asia-northeast1 \\
+  --network=my-vpc \\
+  --subnetwork=my-subnet \\
+  --enable-private-nodes \\
+  --master-ipv4-cidr=172.16.0.0/28
+
+# クラスタへの認証情報を取得（kubectl で操作できるようにする）
+gcloud container clusters get-credentials my-autopilot-cluster \\
+  --region=asia-northeast1`}</pre>
+
+                <p className="stitle">Standard クラスタの作成</p>
+                <pre className="codeblock">{`# Standard クラスタを作成
+gcloud container clusters create my-standard-cluster \\
+  --machine-type=n2-standard-4 \\
+  --num-nodes=3 \\
+  --region=asia-northeast1 \\
+  --node-locations=asia-northeast1-a,asia-northeast1-b,asia-northeast1-c \\
+  --enable-autoscaling \\
+  --min-nodes=1 \\
+  --max-nodes=10 \\
+  --workload-pool=PROJECT_ID.svc.id.goog \\
+  --enable-private-nodes \\
+  --master-ipv4-cidr=172.16.0.0/28`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.4</span>GKE のセキュリティ設計</div>
+
+                <p className="stitle">Workload Identity Federation（最重要）</p>
+                <pre className="codeblock">{`【❌ 危険なアンチパターン】
+サービスアカウントの JSON キーを
+Kubernetes Secret に保存して Pod から参照
+    ↓
+キーが漏洩するリスク / キーの定期ローテーションの手間
+
+【✅ 正しい方法: Workload Identity】
+
+Kubernetes Service Account (KSA)
+    ↓ bind（紐付け）
+Google Cloud IAM Service Account (GSA)
+    ↓
+Pod は KSA を使って Google Cloud API に直接アクセス
+（JSON キー不要！）`}</pre>
+
+                <pre className="codeblock">{`# 1. Google Cloud IAM サービスアカウントを作成
+gcloud iam service-accounts create my-app-sa \\
+  --display-name="My Application SA"
+
+# 2. 必要な IAM ロールを付与（例: Cloud Storage の読み取り）
+gcloud projects add-iam-policy-binding PROJECT_ID \\
+  --member="serviceAccount:my-app-sa@PROJECT_ID.iam.gserviceaccount.com" \\
+  --role="roles/storage.objectViewer"
+
+# 3. KSA と GSA を紐付け
+gcloud iam service-accounts add-iam-policy-binding \\
+  my-app-sa@PROJECT_ID.iam.gserviceaccount.com \\
+  --role="roles/iam.workloadIdentityUser" \\
+  --member="serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]"`}</pre>
+
+                <pre className="codeblock">{`# Kubernetes Service Account に GSA を紐付けるアノテーション
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-ksa
+  namespace: my-app
+  annotations:
+    iam.gke.io/gcp-service-account: my-app-sa@PROJECT_ID.iam.gserviceaccount.com
+---
+# Pod で KSA を使用
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  serviceAccountName: my-ksa
+  containers:
+  - name: my-container
+    image: my-image`}</pre>
+
+                <p className="stitle">Binary Authorization（コンテナの完全性保証）</p>
+                <pre className="codeblock">{`【Binary Authorization の仕組み】
+
+CI パイプライン:
+  コードビルド → テスト通過 → イメージに署名
+
+GKE デプロイ時:
+  Binary Authorization が署名を検証
+    ├── 有効な署名あり → デプロイ許可 ✅
+    └── 署名なし・無効 → デプロイ拒否 ❌
+
+【防げる攻撃】
+  ├── 承認されていないイメージの誤デプロイ
+  ├── サプライチェーン攻撃（パッケージへの悪意のあるコード挿入）
+  └── 本番環境への未テストイメージのデプロイ`}</pre>
+
+                <p className="stitle">セキュリティポスチャダッシュボード</p>
+                <pre className="codeblock">{`GKE Console → セキュリティポスチャ
+
+自動スキャン項目:
+  ├── Pod の設定上の懸念事項
+  │   例: 「root として実行している」「特権コンテナ」
+  ├── コンテナイメージの脆弱性（CVE）
+  │   例: 「コンテナの libssl に高リスクのCVEあり」
+  └── 推奨される修正アクション（自動提示）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.5</span>GKE のオートスケーリング</div>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">スケーリング種別</span>
+                        <span className="cthead">対象</span>
+                        <span className="cthead">仕組み</span>
+                    </div>
+                    {[
+                        ['HPA（Horizontal Pod Autoscaler）', 'Pod 数', 'CPU/メモリ/カスタムメトリクスに基づいてPodを増減'],
+                        ['VPA（Vertical Pod Autoscaler）', 'Pod のリソース量', 'CPU/メモリのリクエストを自動調整'],
+                        ['Cluster Autoscaler', 'ノード数', 'Podがスケジュールできない時にノードを追加'],
+                        ['KEDA', 'Pod 数', 'Pub/Subキューなど外部メトリクスに基づいてスケール'],
+                    ].map(([type, target, how]) => (
+                        <div className="ctable-row" key={type}>
+                            <span className="ctval">{type}</span>
+                            <span className="ctdef">{target}</span>
+                            <span className="ctdef">{how}</span>
+                        </div>
+                    ))}
+                </div>
+                <pre className="codeblock">{`# HPA の設定例
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-app
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60  # CPU 60% を目標に Pod 数を調整`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.BP</span>ベストプラクティス: GKE</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <div className="ctable">
+                        <div className="ctable-head">
+                            <span className="cthead">#</span>
+                            <span className="cthead">ベストプラクティス</span>
+                            <span className="cthead">理由</span>
+                        </div>
+                        {[
+                            ['1', '新規クラスタは Autopilot を選択（特別な要件がなければ）', '運用負荷ゼロ・セキュリティが自動強化'],
+                            ['2', 'JSON キーは絶対に使わず Workload Identity を使用', '認証情報の漏洩を根本的に防止'],
+                            ['3', 'プライベートクラスタ（外部 IP なし）で構築', 'ノードへの直接攻撃を遮断'],
+                            ['4', 'Binary Authorization を有効化', '承認されていないイメージのデプロイを阻止'],
+                            ['5', 'Security Posture Dashboard を定期確認', 'CVE と設定ミスをプロアクティブに解消'],
+                            ['6', 'リソースリクエストとリミットを必ず設定', 'Podのリソース競合・コスト最適化'],
+                            ['7', 'Namespace で環境・チームを分離', 'マルチテナントのアクセス制御'],
+                        ].map(([num, bp, reason]) => (
+                            <div className="ctable-row" key={num}>
+                                <span className="ctval">{num}</span>
+                                <span className="ctval">{bp}</span>
+                                <span className="ctdef">{reason}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter6() {
+    return (
+        <div id="ch6" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn6">06</div>
+                <div className="sec-head-txt">
+                    <h2>Cloud Run</h2>
+                    <p>サーバーレスコンテナ — ゼロスケール・Direct VPC Egress・カナリアデプロイの完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.1</span>Cloud Run とは？</div>
+                <p className="tcard-desc">
+                    Cloud Run はコンテナイメージを渡すだけで動くフルマネージドのサーバーレスプラットフォームです。
+                </p>
+                <pre className="codeblock">{`【Cloud Run の特徴】
+
+デプロイは 3ステップだけ:
+  1. コンテナイメージをビルド（Artifact Registry へ push）
+  2. Cloud Run にデプロイ
+  3. HTTPS エンドポイントが自動生成されて完了！
+
+スケーリング:
+  リクエストが来たら → 自動でスケールアウト
+  リクエストがなければ → ゼロにスケールダウン（コストゼロ）
+
+料金:
+  リクエスト処理中のみ課金
+  アイドル時間は無料（最小インスタンス=0の場合）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.2</span>Cloud Run の 2 世代の実行環境</div>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">項目</span>
+                        <span className="cthead">第1世代</span>
+                        <span className="cthead">第2世代（推奨）</span>
+                    </div>
+                    {[
+                        ['CPU', 'リクエスト処理中のみ', '常時利用可能'],
+                        ['ネットワーク', 'VPC コネクタ経由', 'Direct VPC Egress（高速）'],
+                        ['スループット', '制限あり', '最大2Gbps'],
+                        ['並行処理', '最大 250 リクエスト/インスタンス', '最大 1000 リクエスト/インスタンス'],
+                    ].map(([item, gen1, gen2]) => (
+                        <div className="ctable-row" key={item}>
+                            <span className="ctval">{item}</span>
+                            <span className="ctdef">{gen1}</span>
+                            <span className="ctdef">{gen2}</span>
+                        </div>
+                    ))}
+                </div>
+                <pre className="codeblock">{`# 第2世代で Cloud Run をデプロイ（推奨）
+gcloud run deploy my-service \\
+  --image=gcr.io/PROJECT_ID/my-app:latest \\
+  --region=asia-northeast1 \\
+  --platform=managed \\
+  --execution-environment=gen2 \\
+  --vpc-egress=all-traffic \\
+  --network=my-vpc \\
+  --subnet=my-subnet`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.3</span>VPC 内のリソースへの接続</div>
+
+                <p className="stitle">Direct VPC Egress（第2世代・推奨）</p>
+                <pre className="codeblock">{`Cloud Run コンテナ
+    ↓ Direct VPC Egress（高速・低レイテンシ）
+VPC ネットワーク
+    ├── Cloud SQL（プライベート IP）
+    ├── Memorystore（Redis）
+    ├── GCE VM（内部 IP）
+    └── GKE サービス`}</pre>
+
+                <pre className="codeblock">{`# Direct VPC Egress で VPC 内リソースにアクセス
+gcloud run deploy my-service \\
+  --image=CONTAINER_IMAGE \\
+  --vpc-egress=private-ranges-only \\
+  --network=my-vpc \\
+  --subnet=my-subnet`}</pre>
+
+                <p className="stitle">旧: Serverless VPC Access コネクタ（第1世代）</p>
+                <pre className="codeblock">{`# Serverless VPC Access コネクタを作成（旧方式）
+gcloud compute networks vpc-access connectors create my-connector \\
+  --network=my-vpc \\
+  --region=asia-northeast1 \\
+  --range=10.8.0.0/28
+
+# Cloud Run にコネクタを設定
+gcloud run deploy my-service \\
+  --vpc-connector=my-connector`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.4</span>トラフィック分割（カナリアデプロイ）</div>
+                <p className="tcard-desc">Cloud Run はトラフィックを複数のリビジョン（バージョン）に分割できます。</p>
+                <pre className="codeblock">{`【カナリアデプロイの例】
+
+v1（安定版） ─────── 90% のトラフィック
+v2（新バージョン） ── 10% のトラフィック
+                      ↓
+              問題なければ 100% に切り替え
+              問題あればすぐ v1 に戻す`}</pre>
+
+                <pre className="codeblock">{`# v2 に 10% のトラフィックを向ける
+gcloud run services update-traffic my-service \\
+  --to-revisions=v1=90,v2=10
+
+# 問題なければ v2 に 100% 切り替え
+gcloud run services update-traffic my-service \\
+  --to-latest`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.5</span>Cloud Run の認証</div>
+                <pre className="codeblock">{`【外部からのアクセス制御】
+
+インターネット公開（認証不要）:
+  gcloud run deploy my-service --allow-unauthenticated
+
+認証必須（IAM で制御）:
+  gcloud run deploy my-service --no-allow-unauthenticated
+  → アクセスには roles/run.invoker ロールが必要
+
+サービス間認証:
+  Cloud Run サービス A → Cloud Run サービス B
+    サービス A のサービスアカウントに
+    サービス B の roles/run.invoker を付与`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.BP</span>ベストプラクティス: Cloud Run</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <div className="ctable">
+                        <div className="ctable-head">
+                            <span className="cthead">#</span>
+                            <span className="cthead">ベストプラクティス</span>
+                            <span className="cthead">理由</span>
+                        </div>
+                        {[
+                            ['1', '第2世代実行環境 + Direct VPC Egress を使用', 'スループット向上・VPC コネクタ不要'],
+                            ['2', 'ステートレスな設計（状態は Cloud SQL・Firestore に保存）', 'スケーリングに対応するため'],
+                            ['3', '最小インスタンス数を設定してコールドスタートを削減', 'レイテンシの安定化'],
+                            ['4', '--no-allow-unauthenticated で IAM 認証を必須に', '意図せぬ公開を防止'],
+                            ['5', 'Secret Manager から環境変数を注入してシークレット管理', 'コードや環境変数にシークレットを直書きしない'],
+                            ['6', 'カナリアデプロイでリリースリスクを軽減', '問題を早期発見・即時ロールバック'],
+                        ].map(([num, bp, reason]) => (
+                            <div className="ctable-row" key={num}>
+                                <span className="ctval">{num}</span>
+                                <span className="ctval">{bp}</span>
+                                <span className="ctdef">{reason}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter7() {
+    return (
+        <div id="ch7" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn7">07</div>
+                <div className="sec-head-txt">
+                    <h2>Cloud Functions</h2>
+                    <p>イベント駆動サーバーレス — HTTP/GCS/Pub/Sub トリガーと Gen2 の完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.1</span>Cloud Functions とは？</div>
+                <pre className="codeblock">{`【Cloud Functions の特徴】
+
+サーバー管理不要:
+  コードだけ書けばOK
+  実行環境・スケーリングはGoogle が管理
+
+イベントドリブン:
+  ├── HTTP リクエスト
+  ├── Cloud Storage へのファイルアップロード
+  ├── Pub/Sub メッセージ
+  ├── Cloud Scheduler（定期実行）
+  └── Firestore の変更
+
+料金:
+  関数の呼び出し回数 + 実行時間の課金
+  月 200 万回まで無料`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.2</span>Cloud Functions の世代</div>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">項目</span>
+                        <span className="cthead">第1世代</span>
+                        <span className="cthead">第2世代（推奨）</span>
+                    </div>
+                    {[
+                        ['実行時間の上限', '9分', '60分'],
+                        ['並列性', '1リクエスト/インスタンス', '最大1000リクエスト/インスタンス'],
+                        ['メモリ', '最大 8GB', '最大 32GB'],
+                        ['CPU', 'リクエスト中のみ', '常時'],
+                        ['ベース', 'Cloud Functions', 'Cloud Run Functions（Cloud Run 上で動作）'],
+                    ].map(([item, gen1, gen2]) => (
+                        <div className="ctable-row" key={item}>
+                            <span className="ctval">{item}</span>
+                            <span className="ctdef">{gen1}</span>
+                            <span className="ctdef">{gen2}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.3</span>Cloud Functions の代表的な使用例</div>
+
+                <p className="stitle">例1: HTTP トリガー（API エンドポイント）</p>
+                <pre className="codeblock">{`import functions_framework
+from flask import jsonify
+
+@functions_framework.http
+def hello_world(request):
+    name = request.args.get('name', 'World')
+    return jsonify({'message': f'Hello, {name}!'})`}</pre>
+
+                <p className="stitle">例2: Cloud Storage トリガー（画像アップロード時に処理）</p>
+                <pre className="codeblock">{`import functions_framework
+from google.cloud import storage, vision
+
+@functions_framework.cloud_event
+def process_image(cloud_event):
+    data = cloud_event.data
+    bucket_name = data["bucket"]
+    file_name = data["name"]
+
+    # Cloud Vision API で画像分析
+    client = vision.ImageAnnotatorClient()
+    image = vision.Image()
+    image.source.image_uri = f"gs://{bucket_name}/{file_name}"
+
+    response = client.label_detection(image=image)
+    print(f"Labels: {[l.description for l in response.label_annotations]}")`}</pre>
+
+                <p className="stitle">例3: Pub/Sub トリガー（予算アラートへの対応）</p>
+                <pre className="codeblock">{`import base64
+import json
+import googleapiclient.discovery
+
+def stop_billing(event, context):
+    """予算超過アラートを受けてリソースを停止"""
+    pubsub_data = base64.b64decode(event['data']).decode('utf-8')
+    data = json.loads(pubsub_data)
+
+    if data['costAmount'] >= data['budgetAmount']:
+        compute = googleapiclient.discovery.build('compute', 'v1')
+        # VM を停止
+        compute.instances().stop(
+            project='PROJECT_ID',
+            zone='asia-northeast1-a',
+            instance='my-vm'
+        ).execute()`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.4</span>Cloud Functions vs Cloud Run の使い分け</div>
+                <pre className="codeblock">{`【Cloud Functions を選ぶとき】
+  ├── 単純なイベント処理（数行〜数十行のコード）
+  ├── 各種 Google Cloud サービスのイベントに反応
+  ├── 定期バッチ（Cloud Scheduler + Functions）
+  └── プロトタイプ・PoC の素早い実装
+
+【Cloud Run を選ぶとき】
+  ├── 複数のエンドポイントを持つ REST API
+  ├── 既存のコンテナ化されたアプリ
+  ├── カスタムランタイム（Go・Rust など）
+  ├── 長時間実行が必要（60分以上）
+  └── 複雑なミドルウェアが必要なアプリ`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.BP</span>ベストプラクティス: Cloud Functions</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <ul>
+                        <li><strong>第2世代を使用</strong>（実行時間60分・高並列性）</li>
+                        <li><strong>関数は単一責任の原則</strong>（1関数 = 1つのことだけ処理）</li>
+                        <li><strong>シークレットは Secret Manager から取得</strong>（環境変数に直書き禁止）</li>
+                        <li><strong>VPC コネクタ</strong>でプライベートリソースに接続</li>
+                        <li><strong>冪等性（Idempotency）の確保</strong>（同じイベントを複数回受けても安全）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function Chapter3() {
     return (
         <div id="ch3" className="sgap">
@@ -777,18 +1371,9 @@ export default function Domain2Page() {
                 <Chapter2 />
                 <Chapter3 />
                 <Chapter4 />
-                <div id="ch5" className="sgap">
-                    <h2>Google Kubernetes Engine (GKE)</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch6" className="sgap">
-                    <h2>Cloud Run</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch7" className="sgap">
-                    <h2>Cloud Functions</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
+                <Chapter5 />
+                <Chapter6 />
+                <Chapter7 />
                 <div id="ch8" className="sgap">
                     <h2>Cloud Storage</h2>
                     <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
