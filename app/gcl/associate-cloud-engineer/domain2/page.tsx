@@ -387,6 +387,333 @@ gcloud compute firewall-rules create allow-ssh-bastion \\
     );
 }
 
+function Chapter11() {
+    return (
+        <div id="ch11" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn11">11</div>
+                <div className="sec-head-txt">
+                    <h2>VPC ネットワーク設計</h2>
+                    <p>グローバルVPC・カスタムモードサブネット・タグベースFWルール — ネットワーク基盤の設計ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">11.1</span>Google Cloud VPC の特徴</div>
+                <pre className="codeblock">{`【他のクラウドとの違い】
+
+他社クラウド（一般的）:        Google Cloud VPC:
+  リージョンごとに VPC          1つの VPC がグローバルに存在
+  asia-northeast1 VPC
+  us-central1 VPC        →     グローバル VPC
+                                 ├── サブネット（東京）
+                                 ├── サブネット（米国）
+                                 └── サブネット（欧州）
+
+→ マルチリージョン展開でもVPCを1つで管理できる！
+→ リージョン間の通信はGoogle のプライベートネットワーク（高速・低コスト）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">11.2</span>サブネット設計</div>
+                <pre className="codeblock">{`【自動モード VPC】
+  → サブネットが各リージョンに自動作成（10.128.0.0/9）
+  → お試し・開発用途に便利
+  → 本番環境には不推奨（IP 範囲が固定）
+
+【カスタムモード VPC（本番環境推奨）】
+  → 自分でサブネットとIPレンジを定義
+  → 将来の VPC Peering で重複しないよう計画的に設計`}</pre>
+
+                <p className="stitle">サブネットの IP 範囲設計例</p>
+                <pre className="codeblock">{`【企業全体の IP 設計例】
+
+10.0.0.0/8 を会社全体に割り当て
+
+├── 10.1.0.0/16  → 東京リージョン（asia-northeast1）
+│   ├── 10.1.1.0/24  → 東京 Web 層（asia-northeast1-a）
+│   ├── 10.1.2.0/24  → 東京 App 層（asia-northeast1-b）
+│   └── 10.1.3.0/24  → 東京 DB 層（asia-northeast1-c）
+│
+├── 10.2.0.0/16  → 大阪リージョン（asia-northeast2）
+│   └── ...
+│
+└── 10.3.0.0/16  → オンプレミス（VPN/Interconnect で接続）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">11.3</span>ファイアウォールルールの設計</div>
+                <pre className="codeblock">{`ファイアウォールルールは VPC レベルで管理（ハードウェアでなくソフトウェア）
+
+方向:
+  ├── INGRESS（入ってくるトラフィック）
+  └── EGRESS（出ていくトラフィック）
+
+対象の指定方法:
+  ├── ネットワークタグ（例: tag=web-server）← 推奨
+  ├── サービスアカウント
+  └── IP レンジ（例: 0.0.0.0/0 = すべて）
+
+優先度（Priority）: 数値が小さいほど優先（0〜65534）
+  デフォルト拒否ルール: Priority=65535（最低優先度）`}</pre>
+
+                <p className="stitle">ベストプラクティス: タグベースのファイアウォール</p>
+                <pre className="codeblock">{`# Web サーバータグを持つ VM に HTTP/HTTPS を許可
+gcloud compute firewall-rules create allow-web \\
+  --network=my-vpc \\
+  --direction=INGRESS \\
+  --priority=1000 \\
+  --action=ALLOW \\
+  --rules=tcp:80,tcp:443 \\
+  --target-tags=web-server \\
+  --source-ranges=0.0.0.0/0
+
+# App サーバーはロードバランサからのみアクセスを許可
+gcloud compute firewall-rules create allow-app-from-lb \\
+  --network=my-vpc \\
+  --direction=INGRESS \\
+  --priority=1000 \\
+  --action=ALLOW \\
+  --rules=tcp:8080 \\
+  --target-tags=app-server \\
+  --source-tags=load-balancer`}</pre>
+            </div>
+        </div>
+    );
+}
+
+function Chapter12() {
+    return (
+        <div id="ch12" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn12">12</div>
+                <div className="sec-head-txt">
+                    <h2>Shared VPC と VPC Peering</h2>
+                    <p>ホストプロジェクト・サービスプロジェクト・推移的接続の制約 — マルチプロジェクトネットワーク設計</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">12.1</span>Shared VPC（共有 VPC）</div>
+                <pre className="codeblock">{`【Shared VPC がない場合の問題】
+
+各チームが独自の VPC を持つ:
+  Project A（フロントエンドチーム）: 10.0.0.0/16
+  Project B（バックエンドチーム）: 10.1.0.0/16
+  Project C（DBチーム）: 10.2.0.0/16
+
+  問題: 各チームが自分でネットワークを管理 → 設定のばらつき
+       セキュリティポリシーの一貫性がない
+       ネットワーク管理の責任が分散
+
+【Shared VPC による解決】
+
+ホストプロジェクト（ネットワーク管理チームが所有）
+  └── VPC（統一されたサブネット・ファイアウォール）
+
+サービスプロジェクト A（フロントエンドチーム）
+  └── アプリ → ホストプロジェクトの VPC のサブネットを利用
+
+サービスプロジェクト B（バックエンドチーム）
+  └── アプリ → ホストプロジェクトの VPC のサブネットを利用
+
+メリット:
+  ✓ ネットワーク設定を一元管理（セキュリティポリシーの統一）
+  ✓ ネットワーク管理とアプリ開発の職務分掌
+  ✓ 各チームのコストは独立したプロジェクトで管理`}</pre>
+
+                <p className="stitle">Shared VPC の設定</p>
+                <pre className="codeblock">{`# ホストプロジェクトを指定
+gcloud compute shared-vpc enable HOST_PROJECT_ID
+
+# サービスプロジェクトをホストに紐付け
+gcloud compute shared-vpc associated-projects add SERVICE_PROJECT_ID \\
+  --host-project=HOST_PROJECT_ID
+
+# Network User ロールをサービスプロジェクトのチームに付与
+# （サブネットの使用権限のみ、VPC の設定変更は不可）
+gcloud projects add-iam-policy-binding HOST_PROJECT_ID \\
+  --member="group:backend-team@example.com" \\
+  --role="roles/compute.networkUser" \\
+  --condition="resource.name == projects/HOST_PROJECT_ID/regions/asia-northeast1/subnetworks/backend-subnet"`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">12.2</span>VPC Network Peering</div>
+                <pre className="codeblock">{`VPC A（Project 1）  ← Peering →  VPC B（Project 2）
+
+・内部 IP でプライベートに通信
+・Google のプライベートネットワークを使用（高速）
+・インターネットを経由しない
+・トラフィックが GCP を出ない
+
+使用場面:
+  ├── 異なるプロジェクト間の内部通信
+  └── 異なる組織の VPC 間の接続`}</pre>
+
+                <p className="stitle">⚠️ VPC Peering の重要な制約</p>
+                <pre className="codeblock">{`【制約 1: 推移的（Transitive）ではない】
+
+VPC A ── Peering ── VPC B ── Peering ── VPC C
+
+A と B は通信できる ✅
+B と C は通信できる ✅
+A と C は通信できない ❌ ← これが最重要！
+
+→ A と C を通信させるには、A-C 間の Peering を別途作成する必要あり
+
+【制約 2: IP アドレスの重複不可】
+
+VPC A: 10.0.0.0/16
+VPC B: 10.0.0.0/16 ← 重複！Peering 不可！
+
+→ Peering する VPC 間は IP 範囲が重複してはいけない
+→ カスタムモード VPC でIP を計画的に設計することが重要`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">12.3</span>Shared VPC vs VPC Peering の使い分け</div>
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">判断基準</span>
+                        <span className="cthead">Shared VPC</span>
+                        <span className="cthead">VPC Peering</span>
+                    </div>
+                    {[
+                        ['管理の一元化', '✅（ホストプロジェクトで集中管理）', '❌（各VPCで個別管理）'],
+                        ['同一組織内', '✅', '✅'],
+                        ['異なる組織間', '❌', '✅'],
+                        ['スケール', '多数のプロジェクトに対応', '1対1の接続'],
+                        ['設定の複雑さ', '中程度', '低い'],
+                    ].map(([criteria, shared, peering]) => (
+                        <div className="ctable-row" key={criteria}>
+                            <span className="ctval">{criteria}</span>
+                            <span className="ctdef">{shared}</span>
+                            <span className="ctdef">{peering}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter13() {
+    return (
+        <div id="ch13" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn13">13</div>
+                <div className="sec-head-txt">
+                    <h2>Cloud NAT と Cloud DNS</h2>
+                    <p>外部IP不要のアウトバウンド接続・ハイブリッドDNS解決 — セキュアなネットワーク出口設計</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">13.1</span>Cloud NAT</div>
+                <pre className="codeblock">{`【なぜ Cloud NAT が必要か？】
+
+セキュリティのベストプラクティス:
+  VM に外部 IP を割り当てない
+  → でも VM からインターネット（パッケージDL等）へのアクセスが必要
+
+解決策: Cloud NAT
+
+外部IP なし の VM
+    ↓
+Cloud NAT（送信元 IP を変換）
+    ↓
+インターネット（apt-get install, etc.）
+
+VM の外部 IP = Cloud NAT の IP（共有）
+→ 個々の VM の IP が外部に直接露出しない`}</pre>
+
+                <p className="stitle">Cloud NAT の設定</p>
+                <pre className="codeblock">{`# Cloud Router を作成（Cloud NAT の前提条件）
+gcloud compute routers create my-router \\
+  --network=my-vpc \\
+  --region=asia-northeast1
+
+# Cloud NAT を作成
+gcloud compute routers nats create my-nat \\
+  --router=my-router \\
+  --region=asia-northeast1 \\
+  --nat-all-subnet-ip-ranges \\
+  --auto-allocate-nat-external-ips`}</pre>
+
+                <p className="stitle">Cloud NAT のポート枯渇問題</p>
+                <pre className="codeblock">{`【ポート枯渇とは？】
+
+Cloud NAT は送信元 IP:ポート でセッションを識別
+各 VM に割り当てられるポート数には上限がある
+
+VM が同時接続数の上限を超えると:
+  → 新しい接続が確立できない
+  → "Connection refused" エラー
+
+【監視コマンド（MQL クエリ）】
+fetch nat_gateway
+| metric 'compute.googleapis.com/nat/port_usage'
+| align mean_aligner()
+| every 1m
+
+【対策】
+  ├── ポート数を手動増加（--min-ports-per-vm）
+  ├── 静的 NAT IP を追加
+  └── コネクションプールの最適化（アプリ側）`}</pre>
+
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス: Cloud NAT</div>
+                    <ul>
+                        <li><strong>すべての VM に外部 IP を割り当てない</strong>（Cloud NAT でアウトバウンドを確保）</li>
+                        <li><strong>ポート使用率を Cloud Monitoring で継続監視</strong></li>
+                        <li><strong>--min-ports-per-vm</strong> を接続数に応じて適切に設定</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">13.2</span>Cloud DNS</div>
+
+                <p className="stitle">ハイブリッド環境でのDNS解決</p>
+                <pre className="codeblock">{`【シナリオ: オンプレミス + Google Cloud のハイブリッド構成】
+
+問題: 2つの環境でのDNS名前解決を統合したい
+
+Cloud DNS のプライベートゾーン:
+  gcp.internal → GCPリソースの名前解決
+
+オンプレミスの DNS サーバー:
+  corp.internal → オンプレミスリソースの名前解決
+
+【解決策】
+
+① オンプレ → GCP のプライベートゾーンを解決:
+  Cloud DNS にインバウンドフォワーダーを設定
+  オンプレの DNS が 169.254.169.254 に転送
+
+② GCP → オンプレのDNSを解決:
+  Cloud DNS に転送ゾーン（Forwarding Zone）を設定
+  gcp で corp.internal クエリ → オンプレ DNS サーバーに転送`}</pre>
+
+                <pre className="codeblock">{`# 転送ゾーンを作成（GCP → オンプレの DNS を解決）
+gcloud dns managed-zones create on-prem-forwarding \\
+  --dns-name=corp.internal. \\
+  --description="Forward to on-premises DNS" \\
+  --visibility=private \\
+  --networks=my-vpc \\
+  --forwarding-targets=10.0.0.53
+
+# インバウンドポリシーを作成（オンプレ → GCP を解決）
+gcloud dns policies create inbound-policy \\
+  --description="Inbound DNS forwarding" \\
+  --networks=my-vpc \\
+  --enable-inbound-forwarding`}</pre>
+            </div>
+        </div>
+    );
+}
+
 function Chapter8() {
     return (
         <div id="ch8" className="sgap">
@@ -2015,18 +2342,9 @@ export default function Domain2Page() {
                 <Chapter8 />
                 <Chapter9 />
                 <Chapter10 />
-                <div id="ch11" className="sgap">
-                    <h2>VPC 設計</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch12" className="sgap">
-                    <h2>Shared VPC と VPC Peering</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch13" className="sgap">
-                    <h2>Cloud NAT と Cloud DNS</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
+                <Chapter11 />
+                <Chapter12 />
+                <Chapter13 />
                 <div id="ch14" className="sgap">
                     <h2>ロードバランサ</h2>
                     <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
