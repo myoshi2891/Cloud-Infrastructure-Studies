@@ -114,4 +114,53 @@ describe('Header', () => {
         const link = screen.getByRole('link', { name: /section 4/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section4');
     });
+
+    it('Cloud Digital Leader ドロップダウントリガーが存在すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /cloud digital leader/i });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('aria-haspopup', 'true');
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('Cloud Digital Leader ドロップダウントリガーがクリックで開閉すること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /cloud digital leader/i });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('Cloud Digital Leader ページへのリンクが存在すること', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector('a[href="/gcl/cloud-digital-leader"]');
+        expect(link).toBeInTheDocument();
+    });
+
+    it('Cloud Digital Leader ドロップダウンが Escape キーで閉じること', () => {
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /cloud digital leader/i });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
+        fireEvent.keyDown(document, { key: 'Escape' });
+        expect(button).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ACE domain2 サブリンクが存在すること', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector(
+            'a[href="/gcl/associate-cloud-engineer/domain2"]'
+        );
+        expect(link).toBeInTheDocument();
+    });
+
+    it('ACE domain3 サブリンクが存在すること', () => {
+        const { container } = render(<Header />);
+        const link = container.querySelector(
+            'a[href="/gcl/associate-cloud-engineer/domain3"]'
+        );
+        expect(link).toBeInTheDocument();
+    });
 });
