@@ -387,6 +387,644 @@ gcloud compute firewall-rules create allow-ssh-bastion \\
     );
 }
 
+function Chapter8() {
+    return (
+        <div id="ch8" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn8">08</div>
+                <div className="sec-head-txt">
+                    <h2>Cloud Storage（オブジェクトストレージ）</h2>
+                    <p>4ストレージクラス・OLM・署名付きURL・データ保護 — 非構造化データ管理の完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.1</span>Cloud Storage とは？</div>
+                <pre className="codeblock">{`【Cloud Storage の特徴】
+  ├── 容量無制限（バケット単位で管理）
+  ├── 高い耐久性（99.999999999% = イレブンナイン）
+  ├── グローバルなアクセス
+  ├── バケット ─ オブジェクト の 2 層構造
+  └── HTTP/HTTPS でアクセス可能`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.2</span>4 つのストレージクラス</div>
+                <pre className="codeblock">{`アクセス頻度
+  高い ←──────────────────────────────────→ 低い
+
+Standard → Nearline → Coldline → Archive
+ ↑費用/GB    ↑費用/GB   ↑費用/GB   ↑費用/GB
+  高め        中         低め        最安値
+            ↑取り出し料金
+   無料      有料(安)    有料(中)    有料(高)`}</pre>
+
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">クラス</span>
+                        <span className="cthead">GB 単価</span>
+                        <span className="cthead">取り出し料金</span>
+                        <span className="cthead">最小保存期間</span>
+                        <span className="cthead">アクセス頻度の目安</span>
+                    </div>
+                    {[
+                        ['Standard', '$0.020/GB', '無料', 'なし', '頻繁（日次以上）'],
+                        ['Nearline', '$0.010/GB', '$0.01/GB', '30日', '月1回程度'],
+                        ['Coldline', '$0.004/GB', '$0.02/GB', '90日', '四半期1回程度'],
+                        ['Archive', '$0.0012/GB', '$0.05/GB', '365日', '年1回以下'],
+                    ].map(([cls, price, retrieve, minPeriod, freq]) => (
+                        <div className="ctable-row" key={cls}>
+                            <span className="ctval">{cls}</span>
+                            <span className="ctdef">{price}</span>
+                            <span className="ctdef">{retrieve}</span>
+                            <span className="ctdef">{minPeriod}</span>
+                            <span className="ctdef">{freq}</span>
+                        </div>
+                    ))}
+                </div>
+                <div className="wb">
+                    <div className="wbt">試験頻出</div>
+                    <p>最小保存期間より前に削除しても、最小保存期間分の料金が発生します！</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.3</span>バケットの作成とロケーション設定</div>
+                <pre className="codeblock">{`【Single Region（単一リージョン）】
+  例: asia-northeast1（東京）
+  → 最もコストが低い
+  → リージョン障害でデータにアクセス不可
+  → 同一リージョン内でのデータ転送が最速
+
+【Dual Region（デュアルリージョン）】
+  例: asia1（東京 + 大阪）
+  → 2リージョン間で自動レプリケーション
+  → 地理的冗長性あり
+  → コストは Multi-Region と同程度
+
+【Multi Region（マルチリージョン）】
+  例: asia（アジア全体）、us（米国全体）、eu（EU）
+  → 最高の可用性と地理分散
+  → コストは最も高い
+  → グローバルなコンテンツ配信に最適`}</pre>
+
+                <pre className="codeblock">{`# バケットの作成
+gcloud storage buckets create gs://my-app-bucket \\
+  --location=asia-northeast1 \\
+  --storage-class=STANDARD \\
+  --uniform-bucket-level-access`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.4</span>オブジェクトライフサイクル管理（OLM）</div>
+                <pre className="codeblock">{`オブジェクト作成（Standard）
+    │
+    ├── 30日後 → Nearline に自動移行
+    │
+    ├── 90日後 → Coldline に自動移行
+    │
+    ├── 365日後 → Archive に自動移行
+    │
+    └── 730日後 → 自動削除
+
+→ このルールを設定するだけでコスト最適化が自動化！`}</pre>
+
+                <pre className="codeblock">{`{
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {"type": "SetStorageClass", "storageClass": "NEARLINE"},
+        "condition": {"age": 30}
+      },
+      {
+        "action": {"type": "SetStorageClass", "storageClass": "COLDLINE"},
+        "condition": {"age": 90}
+      },
+      {
+        "action": {"type": "SetStorageClass", "storageClass": "ARCHIVE"},
+        "condition": {"age": 365}
+      },
+      {
+        "action": {"type": "Delete"},
+        "condition": {"age": 730}
+      }
+    ]
+  }
+}`}</pre>
+
+                <pre className="codeblock">{`# OLM ポリシーをバケットに適用
+gcloud storage buckets update gs://my-bucket \\
+  --lifecycle-file=lifecycle.json`}</pre>
+
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">条件名</span>
+                        <span className="cthead">説明</span>
+                        <span className="cthead">例</span>
+                    </div>
+                    {[
+                        ['age', 'オブジェクトの作成からの日数', '30'],
+                        ['numNewerVersions', 'より新しいバージョンの数', '3（3つ以上の新バージョンがあれば）'],
+                        ['isLive', '最新バージョンかどうか', 'false（非最新のみ対象）'],
+                        ['matchesStorageClass', '特定ストレージクラスのみ対象', '["STANDARD"]'],
+                        ['createdBefore', '特定日付より前に作成', '2024-01-01'],
+                    ].map(([cond, desc, ex]) => (
+                        <div className="ctable-row" key={cond}>
+                            <span className="ctval">{cond}</span>
+                            <span className="ctdef">{desc}</span>
+                            <span className="ctdef">{ex}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.5</span>バケットセキュリティのベストプラクティス</div>
+                <pre className="codeblock">{`【バケット名のルール】
+  ├── グローバルに一意（全世界で重複不可）
+  ├── 3〜63文字
+  ├── 小文字・数字・ハイフン・アンダースコアのみ
+  ├── 「goog」で始まる名前は予約済みで使用不可
+  ├── 「google」のスペルミス（googel など）も使用不可
+  └── バケット名は URL に含まれる！
+
+【バケット名の設計原則】
+  ❌ 悪い例: my-company-production-database-backups-tokyo
+    → 会社名・環境・内容が丸わかり
+
+  ✅ 良い例: bkt-a7f2k9-prod-bak
+    → 意味を推測しにくいランダムなサフィックス付き
+    → 個人情報・機密情報を一切含まない`}</pre>
+
+                <pre className="codeblock">{`【アクセス制御の 2 つのモデル】
+
+【1. ACL（Access Control List）】  ← 旧モデル・非推奨
+  オブジェクトごとに個別のアクセス制御が可能
+  管理が複雑になりがち
+
+【2. 統一バケットレベルアクセス（Uniform Bucket-Level Access）】 ← 推奨
+  バケット全体に IAM ポリシーを適用
+  オブジェクト個別の ACL は無効化
+  管理がシンプル・一貫性あり`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.6</span>署名付き URL（Signed URLs）</div>
+                <p className="tcard-desc">Google アカウントを持たないユーザーに一時的なアクセスを付与する仕組みです。</p>
+                <pre className="codeblock">{`【ユースケース】
+  ├── 外部パートナーへのデータ共有
+  ├── 顧客へのダウンロードリンク提供
+  └── 一時的なアップロード用 URL の生成
+
+【署名付き URL の構造】
+  https://storage.googleapis.com/BUCKET/OBJECT
+    ?X-Goog-Algorithm=GOOG4-RSA-SHA256
+    &X-Goog-Credential=...
+    &X-Goog-Date=20240101T000000Z
+    &X-Goog-Expires=3600         ← 有効期間（秒）
+    &X-Goog-Signature=...`}</pre>
+
+                <pre className="codeblock">{`# 1時間有効な署名付き URL を生成
+gcloud storage sign-url gs://my-bucket/my-file.pdf \\
+  --duration=1h \\
+  --service-account=my-sa@PROJECT.iam.gserviceaccount.com
+
+# 最大有効期間は 7日間（604800秒）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.7</span>データ保護機能</div>
+
+                <p className="stitle">論理削除（Soft Delete）</p>
+                <pre className="codeblock">{`デフォルト設定: 有効（7日間保持）
+
+オブジェクト削除 → 7日間はリカバリ可能
+              → 8日目以降は完全削除（コストも発生）
+
+保持期間のカスタマイズ（0〜90日）:
+  gcloud storage buckets update gs://my-bucket \\
+    --soft-delete-duration=30d`}</pre>
+
+                <div className="wb">
+                    <div className="wbt">バケット再作成の仕様</div>
+                    <p>バケットを削除後 10 分以内に同名バケットを作成しようとすると 404 エラーが発生します。</p>
+                </div>
+
+                <p className="stitle">バケットロック（Bucket Lock）と保持ポリシー</p>
+                <pre className="codeblock">{`【用途】コンプライアンス・法規制対応
+
+保持ポリシー:
+  バケット内のすべてのオブジェクトを
+  指定期間（例: 7年間）削除・上書き不可にする
+
+バケットロック:
+  保持ポリシー自体を変更・削除不可にする
+  （取り消しができない操作！）
+
+gcloud storage buckets update gs://my-compliance-bucket \\
+  --retention-period=7y  # 7年間保持
+
+gcloud storage buckets lock gs://my-compliance-bucket  # ロック（不可逆！）`}</pre>
+
+                <p className="stitle">オブジェクトバージョニング</p>
+                <pre className="codeblock">{`# バージョニングを有効化
+gcloud storage buckets update gs://my-bucket --versioning
+
+# 非最新バージョンを確認
+gcloud storage objects list gs://my-bucket --all-versions
+
+# 特定バージョンを復元
+gsutil cp gs://my-bucket/file.txt#1234567890 gs://my-bucket/file.txt`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">8.BP</span>ベストプラクティス: Cloud Storage</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <div className="ctable">
+                        <div className="ctable-head">
+                            <span className="cthead">#</span>
+                            <span className="cthead">ベストプラクティス</span>
+                            <span className="cthead">理由</span>
+                        </div>
+                        {[
+                            ['1', '統一バケットレベルアクセスを有効化', 'IAMで一元管理・ACLの複雑さを排除'],
+                            ['2', 'OLM を必ず設定してストレージクラスを自動移行', 'コスト最適化の自動化'],
+                            ['3', 'バケット名に機密情報を含めない', 'バケット名は URL に公開される'],
+                            ['4', 'バージョニングを有効化し、非最新版には OLM を設定', '誤削除対策・コスト管理'],
+                            ['5', 'Soft Delete は用途に応じて保持期間を設定', 'デフォルト7日では短すぎる場合も'],
+                            ['6', 'パブリックアクセスを原則禁止', '意図しないデータ公開を防止'],
+                        ].map(([num, bp, reason]) => (
+                            <div className="ctable-row" key={num}>
+                                <span className="ctval">{num}</span>
+                                <span className="ctval">{bp}</span>
+                                <span className="ctdef">{reason}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter9() {
+    return (
+        <div id="ch9" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn9">09</div>
+                <div className="sec-head-txt">
+                    <h2>ブロックストレージとファイルストレージ</h2>
+                    <p>Persistent Disk・リージョナルPD・Filestore — VM ストレージの完全ガイド</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">9.1</span>Persistent Disk（永続ディスク）</div>
+                <p className="tcard-desc">VM に接続するブロックストレージです。</p>
+                <pre className="codeblock">{`Persistent Disk の特徴:
+  ├── VM とは独立して存在（VM を削除してもディスクは残る設定可能）
+  ├── 複数のVMから読み取り専用で共有可能（マルチリーダー）
+  ├── 1つのVMへの読み書きと1つのVMへの共有（マルチライター）※Extreme除く
+  └── ゾーンPD と リージョンPD の2種類
+
+【ゾーン PD】
+  1つのゾーン内に存在
+  → そのゾーン障害でアクセス不可
+
+【リージョン PD（高可用性）】
+  2つのゾーンに同期レプリケーション
+  → 1ゾーン障害でも他ゾーンでアクセス継続
+  → 約2倍のコスト`}</pre>
+
+                <pre className="codeblock">{`# リージョン Persistent Disk の作成（高可用性）
+gcloud compute disks create my-regional-disk \\
+  --type=pd-balanced \\
+  --size=100GB \\
+  --region=asia-northeast1 \\
+  --replica-zones=asia-northeast1-a,asia-northeast1-b`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">9.2</span>Filestore（マネージドNFSファイルシステム）</div>
+                <p className="tcard-desc">複数の VM から同時にアクセスできるNFSファイルシステムです。</p>
+                <pre className="codeblock">{`【Filestore の用途】
+  ├── 複数の VM でファイルを共有（共有ホームディレクトリなど）
+  ├── レガシーアプリの NFS 依存を維持したまま移行
+  └── CMS（WordPress など）の共有ストレージ
+
+【Filestore 階層】
+  Basic HDD → Basic SSD → High Scale SSD → Enterprise
+  （コスト低←──────────────────────────→パフォーマンス高）`}</pre>
+            </div>
+        </div>
+    );
+}
+
+function Chapter10() {
+    return (
+        <div id="ch10" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn10">10</div>
+                <div className="sec-head-txt">
+                    <h2>データベースサービス完全選定ガイド</h2>
+                    <p>Cloud SQL / Spanner / AlloyDB / Firestore / Bigtable / Memorystore / BigQuery — 最適なDBを選ぶフレームワーク</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.1</span>データベース選定のフローチャート</div>
+                <pre className="codeblock">{`どんなデータを扱う？
+│
+├── 構造化データ（スキーマが決まっている）
+│   │
+│   └── SQL が必要？
+│       ├── YES → どんな規模・要件？
+│       │         ├── 標準的なWebアプリ → Cloud SQL
+│       │         ├── グローバル分散・99.999% → Cloud Spanner
+│       │         └── PostgreSQL 高性能（4倍）→ AlloyDB
+│       │
+│       └── NO（NoSQL）→ どんな特性が必要？
+│           ├── リアルタイム同期・モバイル → Firestore
+│           ├── 超大規模・低レイテンシ・時系列 → Cloud Bigtable
+│           └── マイクロ秒・キャッシュ → Memorystore
+│
+├── 分析・DWH → BigQuery
+│
+└── Oracle を移行したい → Bare Metal Solution`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.2</span>Cloud SQL</div>
+                <p className="tcard-desc">MySQL、PostgreSQL、SQL Server のフルマネージドサービスです。</p>
+                <pre className="codeblock">{`【Cloud SQL が管理してくれるもの】
+  ├── OS パッチ適用
+  ├── データベースマイナーバージョンアップ
+  ├── 自動バックアップ（日次）
+  ├── フェイルオーバーレプリカ（HA構成）
+  └── SSL/TLS 暗号化`}</pre>
+
+                <p className="stitle">アーキテクチャパターン</p>
+                <pre className="codeblock">{`【シングルインスタンス（開発環境）】
+  プライマリ DB ←── 読み書き
+  コスト: 安い、可用性: 低い
+
+【高可用性（HA）構成（本番環境）】
+  プライマリ DB（ゾーンA）
+       ↓ 同期レプリケーション
+  スタンバイ DB（ゾーンB）
+
+  プライマリ障害 → 自動フェイルオーバー（数十秒）
+  コスト: 2倍程度
+
+【リードレプリカ（読み取りスケール）】
+  プライマリ DB（書き込み）
+       ↓ 非同期レプリケーション
+  リードレプリカ 1（読み取り）
+  リードレプリカ 2（読み取り）
+
+  読み取り負荷を複数レプリカに分散`}</pre>
+
+                <p className="stitle">Cloud SQL への安全な接続</p>
+                <pre className="codeblock">{`【3つの接続方法】
+
+方法1: Cloud SQL Auth Proxy（推奨）
+  アプリ → Cloud SQL Auth Proxy（ローカル）→ Cloud SQL
+  → SSL/TLS を自動処理、IAM で認証
+  → DB のパスワードが不要
+
+  使用例:
+  # Auth Proxy を起動
+  ./cloud-sql-proxy PROJECT:REGION:INSTANCE_NAME
+
+方法2: プライベート IP（VPC 内から）
+  VPC 内のアプリ → プライベート IP → Cloud SQL
+  → インターネットを経由しない最も安全な方法
+  → Private Service Connect を使用
+
+方法3: 公開 IP（外部から）
+  外部アプリ → Cloud SQL（公開 IP）
+  → 許可された IP アドレスのみアクセス可能（許可リスト）
+  → 原則避けるべき`}</pre>
+
+                <pre className="codeblock">{`# Cloud SQL インスタンス作成（HA 構成）
+gcloud sql instances create my-postgres \\
+  --database-version=POSTGRES_15 \\
+  --tier=db-n1-standard-4 \\
+  --region=asia-northeast1 \\
+  --availability-type=REGIONAL \\
+  --backup-start-time=03:00 \\
+  --no-assign-ip \\
+  --network=my-vpc`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.3</span>Cloud Spanner</div>
+                <pre className="codeblock">{`Cloud Spanner = リレーショナル × グローバル分散 × 水平スケール
+
+【何が特別か】
+  通常の DB: スケールアップ（大きなマシンに変える）で対応
+  Cloud Spanner: ノードを追加するだけで水平スケール
+                 SQL/ACIDトランザクションを維持したまま！
+
+【SLA: 99.999%（ファイブナイン）】
+  年間ダウンタイム: 約 5.26 分
+  他の DB は通常 99.9%（年間 8.76 時間）
+
+【ユースケース】
+  ├── グローバルな金融システム（証券、決済）
+  ├── 大規模インベントリ管理
+  └── グローバルゲームのリーダーボード・状態管理`}</pre>
+
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">判断基準</span>
+                        <span className="cthead">Cloud SQL</span>
+                        <span className="cthead">Cloud Spanner</span>
+                    </div>
+                    {[
+                        ['規模', '中規模まで', '大規模・超大規模'],
+                        ['グローバル分散', '❌（リードレプリカは可能）', '✅'],
+                        ['水平スケール', '❌', '✅'],
+                        ['SQL 対応', '✅', '✅（方言あり）'],
+                        ['費用', '安い', '高い（ノード=$0.9/時間〜）'],
+                        ['移行コスト', '低い', '高い（スキーマ変更が必要）'],
+                    ].map(([criteria, sql, spanner]) => (
+                        <div className="ctable-row" key={criteria}>
+                            <span className="ctval">{criteria}</span>
+                            <span className="ctdef">{sql}</span>
+                            <span className="ctdef">{spanner}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.4</span>AlloyDB</div>
+                <pre className="codeblock">{`AlloyDB = PostgreSQL 完全互換 + Google AI 最適化
+
+【性能】
+  標準 PostgreSQL の 4倍のトランザクション性能
+  分析クエリは 100倍速い（列指向ストレージを内部使用）
+
+【Cloud SQL PostgreSQL vs AlloyDB の使い分け】
+  Cloud SQL PostgreSQL:
+    → 標準的な Web アプリ・既存 PG アプリの移行
+    → 中規模まで
+
+  AlloyDB:
+    → OLTP と分析（HTAP）を同一 DB で処理したい
+    → 高性能が必要・AI/ML との統合が必要
+    → pgvector を使ったベクトル検索（AI 機能）`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.5</span>Firestore</div>
+                <pre className="codeblock">{`【Firestore の特徴】
+
+ドキュメント指向 NoSQL:
+  データ構造: コレクション → ドキュメント → フィールド
+
+  users（コレクション）
+    └── alice（ドキュメント）
+         ├── name: "Alice"
+         ├── age: 30
+         └── orders（サブコレクション）
+               └── order-001
+                    ├── item: "laptop"
+                    └── price: 150000
+
+リアルタイム同期:
+  データが変更されると全クライアントに即時反映
+  → モバイルアプリ・チャット・コラボツールに最適
+
+サーバーレス:
+  キャパシティプランニング不要・自動的にスケール`}</pre>
+
+                <div className="ctable">
+                    <div className="ctable-head">
+                        <span className="cthead">判断基準</span>
+                        <span className="cthead">Firestore</span>
+                        <span className="cthead">Cloud Bigtable</span>
+                    </div>
+                    {[
+                        ['データ規模', 'GB〜TB', 'TB〜PB'],
+                        ['アクセス', 'ドキュメント単位', '行/列単位'],
+                        ['クエリ', '豊富（複合クエリ可）', 'キーのみ（フィルタは限定的）'],
+                        ['リアルタイム同期', '✅', '❌'],
+                        ['レイテンシ', 'ミリ秒', 'ミリ秒未満'],
+                        ['ユースケース', 'モバイル・Web バックエンド', 'IoT・時系列・ML データ'],
+                    ].map(([criteria, fs, bt]) => (
+                        <div className="ctable-row" key={criteria}>
+                            <span className="ctval">{criteria}</span>
+                            <span className="ctdef">{fs}</span>
+                            <span className="ctdef">{bt}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.6</span>Cloud Bigtable</div>
+                <pre className="codeblock">{`【Cloud Bigtable の特徴】
+
+ワイドカラム型 NoSQL:
+  数十億行 × 数百万列 のデータを処理
+  ミリ秒未満のレイテンシを維持
+
+  行キー（Row Key）でアクセス最適化:
+  例: "sensor_001#2024010112000000"（センサーID + タイムスタンプ）
+     → 時系列データの範囲スキャンが超高速
+
+HBase 互換:
+  Hadoop エコシステムとの統合が容易
+
+【ユースケース】
+  ├── IoT センサーデータ（秒間数百万レコード）
+  ├── 広告配信ログ
+  ├── 金融の取引履歴
+  └── ML フィーチャーストア`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.7</span>Memorystore</div>
+                <pre className="codeblock">{`【Memorystore の特徴】
+
+Redis / Memcached のフルマネージドサービス
+  → 自分で Redis を EC2 や GCE に立てる必要なし
+
+マイクロ秒レベルのレスポンス:
+  通常の DB（ミリ秒）の 1/1000 の速さ
+
+【用途】
+  ├── セッション管理（ユーザーのログイン状態）
+  ├── キャッシュ（頻繁にアクセスされるDBクエリ結果）
+  ├── リーダーボード（ゲームのランキング）
+  ├── レート制限（API の呼び出し回数制限）
+  └── Pub/Sub パターン（Redis の Pub/Sub 機能）
+
+【Memcached vs Redis の選択】
+  Memcached: シンプルなキャッシュ・マルチスレッド
+  Redis: データ永続化・複雑なデータ構造（Set, SortedSet など）
+         → ほとんどのケースで Redis を推奨`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.8</span>BigQuery</div>
+                <pre className="codeblock">{`【BigQuery の特徴】
+
+サーバーレス・フルマネージドのデータウェアハウス
+  → インフラ管理不要
+  → 数秒で数TB のデータを分析
+
+ストレージとコンピューティングの分離:
+  ストレージ: 安価（$0.02/GB/月）
+  クエリ: 処理したデータ量に課金（$5/TB）
+  → 必要な時だけクエリを実行（コスト効率高い）
+
+SQL で機械学習（BigQuery ML）:
+  CREATE MODEL でモデルをトレーニング
+  → データサイエンティストが Python 不要で ML を実施
+
+【ACE 試験での BigQuery の位置づけ】
+  ├── Cloud Billing データのエクスポート先（監査・分析）
+  ├── Cloud Logging のエクスポート先（長期ログ分析）
+  └── データウェアハウス・BI の基盤`}</pre>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">10.BP</span>ベストプラクティス: データベース選定</div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス</div>
+                    <div className="ctable">
+                        <div className="ctable-head">
+                            <span className="cthead">ユースケース</span>
+                            <span className="cthead">推奨サービス</span>
+                            <span className="cthead">理由</span>
+                        </div>
+                        {[
+                            ['WordPress・EC サイト', 'Cloud SQL (MySQL/PG)', '標準的な RDBMS で移行コスト低'],
+                            ['グローバル金融システム', 'Cloud Spanner', '99.999% SLA・グローバル強整合性'],
+                            ['PostgreSQL で高性能が必要', 'AlloyDB', 'PG 互換のまま4倍の性能'],
+                            ['モバイルアプリのバックエンド', 'Firestore', 'リアルタイム同期・サーバーレス'],
+                            ['IoT・時系列データ', 'Cloud Bigtable', 'ペタバイトスケール・ミリ秒レイテンシ'],
+                            ['セッション・キャッシュ', 'Memorystore (Redis)', 'マイクロ秒レスポンス'],
+                            ['コスト分析・BI', 'BigQuery', 'サーバーレスDWH・SQL分析'],
+                            ['Oracle の移行', 'Bare Metal Solution', 'Oracle ライセンス・低レイテンシHW'],
+                        ].map(([usecase, svc, reason]) => (
+                            <div className="ctable-row" key={usecase}>
+                                <span className="ctval">{usecase}</span>
+                                <span className="ctval">{svc}</span>
+                                <span className="ctdef">{reason}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function Chapter5() {
     return (
         <div id="ch5" className="sgap">
@@ -1374,18 +2012,9 @@ export default function Domain2Page() {
                 <Chapter5 />
                 <Chapter6 />
                 <Chapter7 />
-                <div id="ch8" className="sgap">
-                    <h2>Cloud Storage</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch9" className="sgap">
-                    <h2>ブロック・ファイルストレージ</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
-                <div id="ch10" className="sgap">
-                    <h2>データベース選定</h2>
-                    <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
-                </div>
+                <Chapter8 />
+                <Chapter9 />
+                <Chapter10 />
                 <div id="ch11" className="sgap">
                     <h2>VPC 設計</h2>
                     <p style={{ color: 'var(--d2-text-muted, #8899b0)' }}>実装中...</p>
