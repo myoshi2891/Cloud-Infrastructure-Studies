@@ -105,12 +105,96 @@ export const RESOURCES: Resource[] = [
     { name: '試験概要ページ', url: 'cloud.google.com/learn/certification/cloud-digital-leader' },
     { name: '公式試験ガイド', url: 'cloud.google.com/learn/certification/guides/cloud-digital-leader' },
     { name: 'Cloud Skills Boost 学習パス', url: 'cloudskillsboost.google/paths/9' },
+    { name: '公式サンプル問題', url: 'cloud.google.com/learn/certification/cloud-digital-leader' },
     { name: '試験登録', url: 'cp.certmetrics.com/google/en/login' },
+    { name: 'Google Cloud ドキュメント', url: 'cloud.google.com/docs' },
     { name: 'IAM ドキュメント', url: 'cloud.google.com/iam/docs' },
     { name: 'BigQuery ドキュメント', url: 'cloud.google.com/bigquery/docs' },
     { name: 'Vertex AI ドキュメント', url: 'cloud.google.com/vertex-ai/docs' },
     { name: 'セキュリティ概要', url: 'cloud.google.com/security/overview' },
     { name: 'Google AI 原則', url: 'ai.google/responsibility/principles/' },
+    { name: 'クラウドコンピューティングとは', url: 'cloud.google.com/learn/what-is-cloud-computing' },
+    { name: 'Gemini for Workspace', url: 'workspace.google.com/intl/en/products/gemini/' },
     { name: 'Cloud Storage クラス', url: 'cloud.google.com/storage/docs/storage-classes' },
     { name: 'コスト最適化', url: 'cloud.google.com/architecture/framework/cost-optimization' },
+];
+
+// ── S1: DX基礎 ──────────────────────────────────────────────────────
+
+export type DeploymentModel = {
+    model: string;
+    desc: string;
+    useCase: string;
+};
+
+export const DEPLOYMENT_MODELS: DeploymentModel[] = [
+    { model: 'パブリッククラウド', desc: 'GCP・AWS・Azure が提供する共有インフラ', useCase: 'コスト最適化・スケーラビリティ重視' },
+    { model: 'プライベートクラウド', desc: '企業専用のクラウド環境（オンプレ）', useCase: '高いセキュリティ・コンプライアンス要件' },
+    { model: 'ハイブリッドクラウド', desc: 'パブリック + プライベートを組み合わせ', useCase: '段階的移行・データ主権の確保' },
+    { model: 'マルチクラウド', desc: '複数のクラウドプロバイダーを利用', useCase: 'ベンダーロックイン回避・最適サービス選択' },
+];
+
+export type CapexOpexItem = {
+    concept: string;
+    desc: string;
+    relation: string;
+};
+
+export const CAPEX_OPEX: CapexOpexItem[] = [
+    { concept: 'CapEx（資本支出）', desc: '設備・サーバー等への先行投資。資産として計上', relation: 'オンプレミス運用の特徴' },
+    { concept: 'OpEx（運用費用）', desc: '月次・年次の運用コスト。費用として計上', relation: 'クラウドの特徴（使った分だけ払う）' },
+];
+
+export type GcpStrength = {
+    strength: string;
+    desc: string;
+};
+
+export const GCP_STRENGTHS: GcpStrength[] = [
+    { strength: 'ネットワーク', desc: '世界最大級のプライベートグローバルネットワーク（海底ケーブル含む）' },
+    { strength: 'セキュリティ', desc: 'Google 自社の知見をフル活用。ゼロトラストアーキテクチャ' },
+    { strength: 'AI/ML', desc: '10年以上の AI 実用化実績。TPU という独自の AI チップ' },
+    { strength: 'データ分析', desc: 'BigQuery を中心とした世界最高水準のデータ基盤' },
+    { strength: 'オープン性', desc: 'Kubernetes・TensorFlow などの OSS を主導。ベンダーロックイン回避' },
+    { strength: 'サステナビリティ', desc: '2007年からカーボンニュートラル達成。再生可能エネルギー100%目標' },
+];
+
+export type ServiceModelResponsibility = {
+    model: string;
+    definition: string;
+    useCase: string;
+    userResponsibility: string;
+};
+
+export const SERVICE_MODEL_RESPONSIBILITY: ServiceModelResponsibility[] = [
+    {
+        model: 'IaaS',
+        definition: '仮想マシン、ストレージ、仮想ネットワークをオンデマンドで提供',
+        useCase: '既存レガシーシステムのリホストや高度なカスタマイズが必要なシステム',
+        userResponsibility: 'OS、ミドルウェア、アプリケーション、データ',
+    },
+    {
+        model: 'PaaS',
+        definition: 'アプリ実行環境（ランタイム・OS・DB管理）をマネージドサービスとして提供',
+        useCase: 'インフラ保守を排除し開発チームがアプリ開発に専念できる環境',
+        userResponsibility: 'アプリケーション、データ',
+    },
+    {
+        model: 'SaaS',
+        definition: 'インターネット経由で完全に機能するソフトウェアを提供',
+        useCase: 'インフラ構築なしに業務生産性ツールを即活用（Google Workspace など）',
+        userResponsibility: 'データのガバナンス、アクセス権限（IAM）の設定',
+    },
+];
+
+export type AdoptionFrameworkPillar = {
+    pillar: string;
+    desc: string;
+};
+
+export const ADOPTION_FRAMEWORK: AdoptionFrameworkPillar[] = [
+    { pillar: 'Lead（主導）', desc: '経営層からのトップダウンのマンデートとクロスファンクショナルなボトムアップの勢い' },
+    { pillar: 'Learn（学習）', desc: 'ITスタッフのスキルアップや外部パートナーからの知識移転による継続学習' },
+    { pillar: 'Scale（スケーリング）', desc: 'マネージドサービスとサーバーレスで運用オーバーヘッドを削減しインフラを抽象化' },
+    { pillar: 'Secure（保護）', desc: 'アイデンティティを中心とした多層的なセキュリティモデルでリソースアクセスを制御' },
 ];
