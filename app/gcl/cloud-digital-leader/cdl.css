@@ -41,7 +41,7 @@
 }
 
 /* ─── Reset & Base ─────────────────────────────────────────────── */
-.cdl-page * {
+.cdl-page :is(div, p, section, header, footer, nav, ul, ol, li, a, img, form, input, button, table, thead, tbody, tr, th, td, pre, span, h1, h2, h3, h4, h5, h6, main, aside, article, iframe, video, audio) {
     box-sizing: border-box;
 }
 

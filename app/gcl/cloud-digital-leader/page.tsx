@@ -426,7 +426,7 @@ export default function CloudDigitalLeaderPage() {
                 <div className="hero-meta">
                     <span className="hero-badge">
                         <span className="dot dot-blue" />
-                        全8セクション
+                        全9セクション
                     </span>
                     <span className="hero-badge">
                         <span className="dot dot-red" />
