@@ -23,6 +23,13 @@ import {
     COMPLIANCE_CERTS,
     COST_MODEL,
     SUPPORT_TIERS,
+    PREBUILT_APIS,
+    AUTOML_SERVICES,
+    VERTEX_COMPONENTS,
+    GEMINI_MODELS,
+    RESPONSIBLE_AI_PRINCIPLES,
+    PRIVACY_TECHNIQUES,
+    ML_APPROACHES,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -505,7 +512,7 @@ NoSQLが必要か？
                             <text x={stage.x} y={58} textAnchor="middle" fill="var(--color-foreground)" fontSize={11} fontWeight="bold">{stage.label}</text>
                             <text x={stage.x} y={76} textAnchor="middle" fill="var(--color-muted)" fontSize={9}>{stage.sub}</text>
                             {i < arr.length - 1 && (
-                                <path d={`M${stage.x + 55} 62 L${arr[i + 1].x - 55} 62`} stroke="var(--color-border)" strokeWidth={1.5} markerEnd="url(#arrow2)" />
+                                <path d={`M${stage.x + 55} 62 L${(arr[i + 1]?.x ?? 0) - 55} 62`} stroke="var(--color-border)" strokeWidth={1.5} markerEnd="url(#arrow2)" />
                             )}
                         </g>
                     ))}
@@ -1242,6 +1249,820 @@ function Section5() {
                                     <td>{row.description}</td>
                                 </tr>
                             ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.2 AI・ML 階層 SVG */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.2</span>AI・ML・深層学習・生成 AI の包含関係（最重要）</div>
+                <p className="tdesc">
+                    試験で最も基本的かつ頻出の概念です。
+                    AI ⊃ ML ⊃ 深層学習 ⊃ 生成AI ⊃ LLM の入れ子構造（包含関係）を理解することが最重要です。
+                    AI が最も広い概念、LLM が最も狭い概念です。
+                    「生成AI = LLM」は<strong>誤り</strong>。LLM はテキスト生成専門ですが、
+                    生成AI には画像生成（Imagen）・動画生成（Veo）・音楽生成なども含まれます。
+                    深層学習とは多層ニューラルネットワークを使った ML であり、画像認識・音声認識・翻訳に活用されます。
+                </p>
+                <svg
+                    role="img"
+                    aria-label="AI・ML・深層学習・生成AI・LLM の包含関係図"
+                    viewBox="0 0 560 340"
+                    className="diagram-svg"
+                >
+                    {/* AI 最外層 */}
+                    <rect x="10" y="10" width="540" height="320" rx="12" fill="#e8f4f8" stroke="#5b9bd5" strokeWidth="2" />
+                    <text x="30" y="38" fontSize="15" fontWeight="bold" fill="#1a4a72">AI（人工知能 / Artificial Intelligence）</text>
+                    <text x="30" y="56" fontSize="12" fill="#2c5f8a">「人間の知的行動をコンピュータで模倣する技術全般」</text>
+
+                    {/* ML 層 */}
+                    <rect x="30" y="68" width="500" height="248" rx="10" fill="#d4e9f7" stroke="#2980b9" strokeWidth="2" />
+                    <text x="50" y="92" fontSize="14" fontWeight="bold" fill="#1a5276">ML（機械学習 / Machine Learning）</text>
+                    <text x="50" y="108" fontSize="11" fill="#1f618d">「データからパターンを自動学習する」　代表例: スパムフィルタ・需要予測</text>
+
+                    {/* 深層学習 層 */}
+                    <rect x="50" y="118" width="460" height="184" rx="8" fill="#c3dff2" stroke="#1a6fa3" strokeWidth="2" />
+                    <text x="70" y="140" fontSize="13" fontWeight="bold" fill="#154360">深層学習（Deep Learning）</text>
+                    <text x="70" y="156" fontSize="11" fill="#1a5276">「多層ニューラルネットワーク」　代表例: 画像認識・音声認識・翻訳</text>
+
+                    {/* 生成AI 層 */}
+                    <rect x="70" y="166" width="420" height="122" rx="6" fill="#aed6f1" stroke="#117a8b" strokeWidth="2" />
+                    <text x="90" y="188" fontSize="13" fontWeight="bold" fill="#0e6655">生成 AI（Generative AI）</text>
+                    <text x="90" y="204" fontSize="11" fill="#117a65">「新しいテキスト・画像・音声・動画を生成できる AI」</text>
+                    <text x="90" y="220" fontSize="11" fill="#117a65">例: Gemini（テキスト）・Imagen（画像）・Veo（動画）</text>
+
+                    {/* LLM 層 */}
+                    <rect x="90" y="230" width="380" height="48" rx="5" fill="#85c1e9" stroke="#0a5a6e" strokeWidth="2" />
+                    <text x="280" y="250" fontSize="13" fontWeight="bold" fill="#0a3d5f" textAnchor="middle">LLM（大規模言語モデル）</text>
+                    <text x="280" y="268" fontSize="11" fill="#0a3d5f" textAnchor="middle">「テキスト生成に特化した超大規模モデル」　例: Gemini・GPT-4・Claude</text>
+                </svg>
+
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>概念</th>
+                                <th>定義</th>
+                                <th>具体例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>AI（人工知能）</strong></td>
+                                <td>人間の知的行動をコンピュータで模倣する技術全般</td>
+                                <td>チェスプログラム・Siri・自動運転</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ML（機械学習）</strong></td>
+                                <td>データからパターンを自動学習する AI の手法</td>
+                                <td>スパムフィルタ・需要予測・顧客セグメント</td>
+                            </tr>
+                            <tr>
+                                <td><strong>深層学習（DL）</strong></td>
+                                <td>多層のニューラルネットワークを使った ML</td>
+                                <td>画像認識・音声認識・翻訳</td>
+                            </tr>
+                            <tr>
+                                <td><strong>生成 AI</strong></td>
+                                <td>新しいテキスト・画像・音声・動画を生成できる AI</td>
+                                <td>Gemini・Imagen・Veo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>LLM</strong></td>
+                                <td>テキスト生成に特化した超大規模な言語モデル</td>
+                                <td>Gemini・GPT-4・Claude</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.3 機械学習 3 アプローチ */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.3</span>機械学習の 3 つのアプローチ</div>
+                <p className="tdesc">
+                    機械学習には「教師あり学習」「教師なし学習」「強化学習」の 3 つのアプローチがあります。
+                    データの形式と学習方法が異なるため、ユースケースによって使い分けます。
+                    RLHF（人間フィードバックによる強化学習）は Gemini の品質向上にも活用されています。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>アプローチ</th>
+                                <th>データ形式</th>
+                                <th>代表タスク</th>
+                                <th>GCP 活用例</th>
+                                <th>ビジネス活用例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {ML_APPROACHES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.approach}</strong></td>
+                                    <td>{row.dataFormat}</td>
+                                    <td>{row.tasks}</td>
+                                    <td>{row.gcpExample}</td>
+                                    <td>{row.businessExample}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">教師あり学習のビジネス活用例</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>業界</th>
+                                <th>ユースケース</th>
+                                <th>入力データ</th>
+                                <th>予測対象</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>金融</td><td>与信審査</td><td>年収・勤続年数・取引履歴</td><td>返済可能か</td></tr>
+                            <tr><td>EC</td><td>購買予測</td><td>閲覧・購買履歴</td><td>購入確率</td></tr>
+                            <tr><td>医療</td><td>疾患診断支援</td><td>検査データ・画像</td><td>疾患の有無</td></tr>
+                            <tr><td>製造</td><td>品質検査</td><td>センサーデータ・画像</td><td>不良品か否か</td></tr>
+                            <tr><td>マーケティング</td><td>離脱予測</td><td>顧客行動ログ</td><td>解約確率</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">教師なし学習のビジネス活用例</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>ユースケース</th>
+                                <th>説明</th>
+                                <th>効果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>顧客セグメンテーション</strong></td><td>購買パターンで自動的に顧客グループを発見</td><td>ターゲットマーケティングの精度向上</td></tr>
+                            <tr><td><strong>不正検知</strong></td><td>正常な取引パターンから逸脱したものを検知</td><td>事前定義不要で新種の不正も検知</td></tr>
+                            <tr><td><strong>レコメンドエンジン</strong></td><td>「この商品を見た人はこれも見ている」を発見</td><td>顧客体験向上・クロスセル強化</td></tr>
+                            <tr><td><strong>文書分類</strong></td><td>大量のドキュメントを内容でグループ化</td><td>情報管理・ナレッジ整理</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.4 AI サービス層スペクトラム SVG */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.4</span>Google Cloud AI サービスの階層構造（サービス選択の指針）</div>
+                <p className="tdesc">
+                    Google Cloud の AI サービスは「使いやすさ」と「カスタマイズ性」のバランスで 4 層に分かれています。
+                    <strong>プリビルト API</strong>（ML 知識不要・即座に利用）→ AutoML（ノーコードでカスタムモデル）→
+                    Vertex AI（<strong>カスタムモデル</strong>・フル制御）→ 生成 AI サービスの順にステップアップします。
+                    まずプリビルト AI API から試し、精度が不十分なら AutoML、さらに高い要件なら Vertex AI カスタムモデルを検討します。
+                </p>
+                <svg
+                    role="img"
+                    aria-label="Google Cloud AI サービス層スペクトラム"
+                    viewBox="0 0 700 200"
+                    className="diagram-svg"
+                >
+                    {/* 軸 */}
+                    <text x="10" y="20" fontSize="12" fill="#555">◀ 使いやすさ重視</text>
+                    <text x="530" y="20" fontSize="12" fill="#555">カスタマイズ重視 ▶</text>
+                    <line x1="10" y1="28" x2="690" y2="28" stroke="#aaa" strokeWidth="1" />
+
+                    {/* Layer 1: プリビルト API */}
+                    <rect x="10" y="38" width="155" height="130" rx="8" fill="#d5e8d4" stroke="#82b366" strokeWidth="2" />
+                    <text x="87" y="62" fontSize="12" fontWeight="bold" fill="#1a5c1a" textAnchor="middle">プリビルト AI API</text>
+                    <text x="87" y="80" fontSize="10" fill="#2e7d32" textAnchor="middle">ML 知識不要</text>
+                    <text x="87" y="96" fontSize="10" fill="#2e7d32" textAnchor="middle">コード最小</text>
+                    <text x="87" y="112" fontSize="10" fill="#2e7d32" textAnchor="middle">即座に利用開始</text>
+                    <text x="87" y="128" fontSize="10" fill="#2e7d32" textAnchor="middle">低コスト</text>
+                    <text x="87" y="148" fontSize="11" fontWeight="bold" fill="#1b5e20" textAnchor="middle">Vision / NL / Speech</text>
+                    <text x="87" y="162" fontSize="11" fontWeight="bold" fill="#1b5e20" textAnchor="middle">Translation / Document AI</text>
+
+                    {/* Layer 2: AutoML */}
+                    <rect x="178" y="38" width="155" height="130" rx="8" fill="#dae8fc" stroke="#6c8ebf" strokeWidth="2" />
+                    <text x="255" y="62" fontSize="12" fontWeight="bold" fill="#1a3c6e" textAnchor="middle">AutoML（ノーコード）</text>
+                    <text x="255" y="80" fontSize="10" fill="#1f4e8c" textAnchor="middle">ML 知識少し必要</text>
+                    <text x="255" y="96" fontSize="10" fill="#1f4e8c" textAnchor="middle">独自データで学習</text>
+                    <text x="255" y="112" fontSize="10" fill="#1f4e8c" textAnchor="middle">数時間で完成</text>
+                    <text x="255" y="128" fontSize="10" fill="#1f4e8c" textAnchor="middle">中コスト</text>
+                    <text x="255" y="148" fontSize="11" fontWeight="bold" fill="#1a3a6e" textAnchor="middle">AutoML Vision</text>
+                    <text x="255" y="162" fontSize="11" fontWeight="bold" fill="#1a3a6e" textAnchor="middle">AutoML Tables / NL</text>
+
+                    {/* Layer 3: Vertex AI カスタムモデル */}
+                    <rect x="346" y="38" width="175" height="130" rx="8" fill="#fff2cc" stroke="#d6b656" strokeWidth="2" />
+                    <text x="433" y="62" fontSize="12" fontWeight="bold" fill="#7d4f00" textAnchor="middle">Vertex AI（フルコード）</text>
+                    <text x="433" y="80" fontSize="10" fill="#8a5500" textAnchor="middle">ML 専門知識必要</text>
+                    <text x="433" y="96" fontSize="10" fill="#8a5500" textAnchor="middle">カスタムモデル</text>
+                    <text x="433" y="112" fontSize="10" fill="#8a5500" textAnchor="middle">数週間〜数ヶ月</text>
+                    <text x="433" y="128" fontSize="10" fill="#8a5500" textAnchor="middle">高コスト</text>
+                    <text x="433" y="148" fontSize="11" fontWeight="bold" fill="#7d4f00" textAnchor="middle">Vertex AI Training</text>
+                    <text x="433" y="162" fontSize="11" fontWeight="bold" fill="#7d4f00" textAnchor="middle">Model Garden</text>
+
+                    {/* Layer 4: 生成 AI */}
+                    <rect x="534" y="38" width="156" height="130" rx="8" fill="#f8cecc" stroke="#b85450" strokeWidth="2" />
+                    <text x="612" y="62" fontSize="12" fontWeight="bold" fill="#7d1f1a" textAnchor="middle">生成 AI サービス</text>
+                    <text x="612" y="80" fontSize="10" fill="#8c2a24" textAnchor="middle">ビジネス活用重視</text>
+                    <text x="612" y="96" fontSize="10" fill="#8c2a24" textAnchor="middle">即座〜数時間</text>
+                    <text x="612" y="112" fontSize="10" fill="#8c2a24" textAnchor="middle">API 課金</text>
+                    <text x="612" y="132" fontSize="11" fontWeight="bold" fill="#7d1f1a" textAnchor="middle">Gemini・Vertex AI</text>
+                    <text x="612" y="148" fontSize="11" fontWeight="bold" fill="#7d1f1a" textAnchor="middle">Studio・Agent</text>
+                    <text x="612" y="162" fontSize="11" fontWeight="bold" fill="#7d1f1a" textAnchor="middle">Builder</text>
+                </svg>
+            </div>
+
+            {/* 5.5 プリビルト AI API 表（7行） */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.5</span>プリビルト AI API — 事前学習済みモデル（7 種）</div>
+                <p className="tdesc">
+                    プリビルト AI API は、Google が膨大なデータで事前学習済みのモデルを API として公開したサービスです。
+                    ML の専門知識不要で即座に利用開始でき、学習コスト・インフラ管理も不要です。
+                    まずプリビルト AI API から試し、精度が不十分であれば AutoML でカスタムモデルを検討します。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>API</th>
+                                <th>カテゴリ</th>
+                                <th>主な機能・ユースケース</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {PREBUILT_APIS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.api}</strong></td>
+                                    <td>{row.category}</td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">各 API の詳細</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>API</th>
+                                <th>入力</th>
+                                <th>出力</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Vision API</strong></td>
+                                <td>画像・動画フレーム</td>
+                                <td>ラベル・テキスト・顔情報</td>
+                                <td>画像認識・OCR・不適切コンテンツ検出・ランドマーク認識・ロゴ検出</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Natural Language API</strong></td>
+                                <td>テキスト</td>
+                                <td>感情・エンティティ・分類</td>
+                                <td>感情分析（ポジ/ネガ/中立）・エンティティ抽出・構文解析・コンテンツ分類（700以上のカテゴリ）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Translation API</strong></td>
+                                <td>テキスト（任意言語）</td>
+                                <td>翻訳済みテキスト</td>
+                                <td>130以上の言語間翻訳・自動言語検出・ドキュメント翻訳（PDF/Wordのレイアウト保持）・Glossary対応</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Speech-to-Text</strong></td>
+                                <td>音声ファイル・ストリーム</td>
+                                <td>テキスト</td>
+                                <td>125以上の言語・方言対応・話者分離・リアルタイムおよびバッチ処理・カスタム音声モデル</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Text-to-Speech</strong></td>
+                                <td>テキスト</td>
+                                <td>音声ファイル</td>
+                                <td>40以上の言語・220以上の音声・WaveNet音声・IVR・アクセシビリティ対応・感情・速度・ピッチのカスタマイズ</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Video Intelligence API</strong></td>
+                                <td>動画ファイル</td>
+                                <td>シーン・物体・テキスト情報</td>
+                                <td>シーン変換検出・物体追跡・コンテンツモデレーション・音声文字起こし・人物検出</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Document AI API</strong></td>
+                                <td>PDF・画像文書</td>
+                                <td>構造化データ（JSON）</td>
+                                <td>30以上の業界固有文書処理・請求書/領収書/契約書/身分証明書・Human-in-the-Loop対応</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.6 AutoML サービス表 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.6</span>AutoML — ノーコード ML（独自データでカスタムモデル）</div>
+                <p className="tdesc">
+                    AutoML は ML の専門知識なしに独自データからカスタム ML モデルを構築できるサービスです。
+                    従来 ML エンジニアが数週間〜数ヶ月かけて実施する作業を、数時間〜1日・ML 知識不要で完結します。
+                    Google の AutoML が内部で最適なモデルアーキテクチャの自動選択、ハイパーパラメータの自動チューニング（Neural Architecture Search）、データ拡張の自動適用を実施します。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>AutoML サービス</th>
+                                <th>対象データ</th>
+                                <th>機能・ユースケース</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {AUTOML_SERVICES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.service}</strong></td>
+                                    <td>{row.target}</td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">AutoML の利用手順（AutoML Tables を例に）</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>ステップ</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Step 1</strong></td><td>データの準備・アップロード（CSV または BigQuery テーブル。最低1,000件、推奨10,000件以上）</td></tr>
+                            <tr><td><strong>Step 2</strong></td><td>目的変数（ターゲット）の設定 — 予測したい列を選択（例: 「解約済みフラグ」）</td></tr>
+                            <tr><td><strong>Step 3</strong></td><td>トレーニング実行 — 予算（最大トレーニング時間）を設定して「トレーニング開始」ボタンをクリック</td></tr>
+                            <tr><td><strong>Step 4</strong></td><td>モデルの評価 — 精度・再現率・AUC を自動計算。特徴量重要度（どの変数が予測に重要か）を確認</td></tr>
+                            <tr><td><strong>Step 5</strong></td><td>デプロイ・予測 API — ボタン1つでエンドポイントとしてデプロイ。REST API で新しいデータの予測結果を取得</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.7 Vertex AI コンポーネント表（9行） */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.7</span>Vertex AI — 統合 ML プラットフォーム（9 コンポーネント）</div>
+                <p className="tdesc">
+                    Vertex AI は ML ライフサイクル全体（データ準備→学習→評価→デプロイ→監視）を一つのプラットフォームで管理できる統合 ML 基盤です。
+                    2021年に複数の個別 ML サービス（AI Platform・AutoML・Explainable AI・Prediction Service 等）が統合されました。
+                    データサイエンティストとエンジニアの協業が容易になり、MLOps（ML の DevOps）を実現します。
+                    Model Monitoring はデータドリフト・予測ドリフトを自動検知し、アラートを発報・再学習を自動トリガーします。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>コンポーネント</th>
+                                <th>役割・機能</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {VERTEX_COMPONENTS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.component}</strong></td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.8 Gemini モデル表（4種） */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.8</span>Gemini — Google の基盤モデルファミリー</div>
+                <p className="tdesc">
+                    Gemini は Google DeepMind が開発したフラッグシップのマルチモーダル基盤モデルです。
+                    テキスト・画像・音声・動画・コードを統合的に理解・生成できます。
+                    Gemini 1.5 Pro/Flash は最大 100 万トークン（約70万語・映画脚本750本分）のコンテキストウィンドウを持ち、長大な文書やコードベース全体をまとめて処理できます。
+                    Google の全サービスに統合されていく次世代 AI です。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>モデル</th>
+                                <th>コンテキスト</th>
+                                <th>特徴と主なユースケース</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {GEMINI_MODELS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.model}</strong></td>
+                                    <td>{row.context}</td>
+                                    <td>{row.useCase}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">Google 基盤モデルファミリー全体</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>モデル</th>
+                                <th>タイプ</th>
+                                <th>入力</th>
+                                <th>出力</th>
+                                <th>試験キーワード</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Gemini Ultra</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>最高性能・複雑な推論・医療診断・科学研究</td></tr>
+                            <tr><td><strong>Gemini Pro</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>性能とコストのバランス・RAG・コード生成</td></tr>
+                            <tr><td><strong>Gemini Flash</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>高速・低コスト・100万トークン・大量処理</td></tr>
+                            <tr><td><strong>Gemini Nano</strong></td><td>小型 LLM</td><td>テキスト・画像</td><td>テキスト</td><td>オンデバイス・エッジ・オフライン・スマートフォン</td></tr>
+                            <tr><td><strong>Gemma</strong></td><td>オープンウェイト LLM</td><td>テキスト</td><td>テキスト</td><td>OSS・自己ホスト・ベンダーロックイン回避・機密データ保護</td></tr>
+                            <tr><td><strong>Imagen</strong></td><td>画像生成</td><td>テキスト</td><td>画像</td><td>拡散モデル・SynthID 透かし・商用利用・EC商品画像</td></tr>
+                            <tr><td><strong>Veo</strong></td><td>動画生成</td><td>テキスト・画像</td><td>動画</td><td>動画生成・シネマティック・広告プロトタイプ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.9 Gemini for Workspace + NotebookLM */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.9</span>Gemini for Workspace と NotebookLM</div>
+                <p className="tdesc">
+                    Gemini for Workspace は Gmail・Docs・Sheets・Slides・Meet に Gemini の AI 機能を直接組み込むアドオンです。
+                    ビジネスユーザーが普段使うツールの中で AI を活用でき、メール作成時間 30〜50% 短縮・会議準備・議事録作成の自動化・繰り返し作業の大幅削減・言語の壁を超えたグローバルコラボレーションが実現します。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>アプリ</th>
+                                <th>AI 機能</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Gmail</strong></td>
+                                <td>長いメールスレッドの自動要約・返信メールのドラフト自動生成・トーン調整（丁寧・カジュアル・簡潔に）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Google Docs</strong></td>
+                                <td>アウトラインからドキュメントを自動生成・既存文書の要約・翻訳・改善提案・社内ドキュメントへの質問応答</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Google Sheets</strong></td>
+                                <td>自然言語で数式を自動生成（「売上の前年比を計算して」）・データからインサイトを自動抽出・可視化・予測分析</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Google Slides</strong></td>
+                                <td>テキストからプレゼンスライドを自動生成・画像・デザインの自動提案（Imagen と連携）・スピーカーノートの自動生成</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Google Meet</strong></td>
+                                <td>会議のリアルタイム文字起こし・会議終了後の自動サマリーとアクション項目抽出・遅刻者向けのキャッチアップ機能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">NotebookLM</div>
+                <p className="tdesc">
+                    NotebookLM は、ドキュメント（PDF・URL・Google Docs 等）を「ソース」として設定し、そのソースだけを参照して質問応答・要約・ポッドキャスト生成を行うツールです。
+                    ソースに基づいた回答のみを生成するため<strong>ハルシネーション（でたらめ回答）を大幅に低減</strong>します。
+                    社内文書・報告書・研究論文の分析に最適であり、知識ワーカー（ナレッジワーカー）向けの AI ツールです。
+                </p>
+            </div>
+
+            {/* 5.10 Vertex AI Agent Builder */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.10</span>Vertex AI Agent Builder — AI エージェントの構築</div>
+                <p className="tdesc">
+                    AI エージェントとは、LLM が「ツールを使いながら自律的に複数ステップのタスクを実行できる」システムです。
+                    通常の LLM は受動的（質問に答えるだけ）ですが、AI エージェントは能動的・自律的に行動します。
+                    例えば「来週の水曜日、東京から大阪の新幹線を予約して」と依頼すると、カレンダー確認・新幹線検索・座席予約・確認メール送信まで自律的に実行します。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>コンポーネント</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Agent Designer（ローコード UI）</strong></td>
+                                <td>ビジュアルインターフェースでエージェントを設計。ノーコードでエージェントのフローを定義</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Agent Development Kit（ADK）</strong></td>
+                                <td>Python・Java でカスタムエージェントをコーディング。オープンソース（GitHub で公開）。複雑なロジック・カスタムツールの実装</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Agent Engine（マネージドランタイム）</strong></td>
+                                <td>デプロイ・スケーリング・監視を自動管理。セッション管理・長期メモリ（Memory Bank）。実行ログ・トレースの可視化</td>
+                            </tr>
+                            <tr>
+                                <td><strong>利用可能なツール</strong></td>
+                                <td>Google Search・Vertex AI Search・Code Interpreter・外部 API（REST/GraphQL）・BigQuery・Cloud SQL・Google Workspace（Gmail・Calendar・Drive）・カスタム関数</td>
+                            </tr>
+                            <tr>
+                                <td><strong>マルチエージェント</strong></td>
+                                <td>複数の専門エージェントが協調して複雑なタスクを処理。例: リサーチ・執筆・校正エージェントが連携してレポートを自動生成</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.11 RAG SVG 図 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.11</span>RAG（Retrieval-Augmented Generation）— 検索拡張生成</div>
+                <p className="tdesc">
+                    RAG（検索拡張生成）は LLM に「外部知識ベースから関連情報を検索して渡す」技術です。
+                    LLM が抱える①ハルシネーション ②知識のカットオフ ③非公開情報を知らない という根本的な課題を解決します。
+                    ベクトルデータベースに文書を埋め込み（Embedding）として格納し、ユーザーの質問と意味的に近い文書を高速検索します。
+                </p>
+                <svg
+                    role="img"
+                    aria-label="RAG（Retrieval-Augmented Generation）の仕組み図"
+                    viewBox="0 0 700 260"
+                    className="diagram-svg"
+                >
+                    {/* タイトル */}
+                    <text x="350" y="22" fontSize="14" fontWeight="bold" fill="#333" textAnchor="middle">RAG の仕組み — 通常の LLM vs RAG</text>
+
+                    {/* 通常のLLM（左側） */}
+                    <rect x="10" y="34" width="320" height="210" rx="8" fill="#ffeeba" stroke="#ffc107" strokeWidth="2" />
+                    <text x="170" y="56" fontSize="12" fontWeight="bold" fill="#856404" textAnchor="middle">通常の LLM（ハルシネーションリスクあり）</text>
+                    <rect x="30" y="66" width="120" height="34" rx="5" fill="#fff3cd" stroke="#ffc107" strokeWidth="1" />
+                    <text x="90" y="88" fontSize="11" fill="#856404" textAnchor="middle">ユーザーの質問</text>
+                    <line x1="150" y1="83" x2="190" y2="83" stroke="#856404" strokeWidth="1.5" markerEnd="url(#arrow1)" />
+                    <rect x="190" y="66" width="100" height="34" rx="5" fill="#ffe8a1" stroke="#ffc107" strokeWidth="1" />
+                    <text x="240" y="88" fontSize="11" fill="#856404" textAnchor="middle">LLM のみ</text>
+                    <text x="170" y="120" fontSize="11" fill="#856404" textAnchor="middle">↓</text>
+                    <rect x="50" y="128" width="220" height="46" rx="5" fill="#f8d7da" stroke="#f5c6cb" strokeWidth="1" />
+                    <text x="160" y="148" fontSize="11" fill="#721c24" textAnchor="middle">❌ 自社情報を知らない</text>
+                    <text x="160" y="165" fontSize="11" fill="#721c24" textAnchor="middle">❌ ハルシネーション発生</text>
+                    <text x="170" y="192" fontSize="11" fill="#856404" textAnchor="middle">例: 「弊社の製品保証は一般的に1年です」</text>
+                    <text x="170" y="208" fontSize="11" fill="#721c24" textAnchor="middle">（自社情報でなく一般情報を回答）</text>
+
+                    {/* RAG（右側） */}
+                    <rect x="360" y="34" width="330" height="210" rx="8" fill="#d4edda" stroke="#28a745" strokeWidth="2" />
+                    <text x="525" y="56" fontSize="12" fontWeight="bold" fill="#155724" textAnchor="middle">RAG（ハルシネーション大幅低減）</text>
+
+                    {/* Step 1: ユーザー質問 */}
+                    <rect x="375" y="66" width="110" height="30" rx="4" fill="#c3e6cb" stroke="#28a745" strokeWidth="1" />
+                    <text x="430" y="86" fontSize="11" fill="#155724" textAnchor="middle">ユーザーの質問</text>
+
+                    {/* ① 検索 */}
+                    <line x1="485" y1="81" x2="510" y2="81" stroke="#155724" strokeWidth="1.5" />
+                    <rect x="510" y="66" width="160" height="30" rx="4" fill="#b8daff" stroke="#004085" strokeWidth="1" />
+                    <text x="590" y="80" fontSize="10" fill="#004085" textAnchor="middle">① ベクトルデータベース</text>
+                    <text x="590" y="93" fontSize="10" fill="#004085" textAnchor="middle">（Vector DB）で類似検索</text>
+
+                    {/* ② コンテキスト拡張 */}
+                    <text x="525" y="118" fontSize="11" fill="#155724" textAnchor="middle">↓ ② 関連文書を取得してプロンプトに追加</text>
+
+                    {/* LLM */}
+                    <rect x="430" y="128" width="185" height="30" rx="4" fill="#c3e6cb" stroke="#28a745" strokeWidth="1" />
+                    <text x="522" y="148" fontSize="11" fill="#155724" textAnchor="middle">③ LLM が文書を参照して回答生成</text>
+
+                    <text x="525" y="178" fontSize="11" fill="#155724" textAnchor="middle">↓</text>
+                    <rect x="375" y="185" width="295" height="46" rx="5" fill="#d4edda" stroke="#28a745" strokeWidth="1" />
+                    <text x="522" y="205" fontSize="11" fill="#155724" textAnchor="middle">✅ 「弊社の製品保証期間は購入日から3年間です」</text>
+                    <text x="522" y="222" fontSize="11" fill="#155724" textAnchor="middle">（保証規定 P.3 参照）← 根拠付き回答</text>
+                </svg>
+
+                <div className="stitle">RAG のメリットと Google Cloud での実装</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>観点</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>ハルシネーション低減</strong></td><td>外部文書を根拠とした回答を生成するため、事実と異なる内容の生成を大幅に削減</td></tr>
+                            <tr><td><strong>最新情報対応</strong></td><td>ベクトルデータベースのデータを更新するだけで知識を最新化（モデル再学習不要）</td></tr>
+                            <tr><td><strong>自社情報活用</strong></td><td>社内文書・製品マニュアル・FAQ など非公開情報に基づく回答が可能</td></tr>
+                            <tr><td><strong>根拠の明示</strong></td><td>回答に引用元（ソース）を提示できるため信頼性・透明性が向上</td></tr>
+                            <tr><td><strong>GCP: Vertex AI Search</strong></td><td>最も簡単・プリビルト。エンタープライズ検索と RAG を統合</td></tr>
+                            <tr><td><strong>GCP: Vertex AI RAG Engine</strong></td><td>カスタム RAG パイプラインを構築したい場合</td></tr>
+                            <tr><td><strong>GCP: Grounding with Google Search</strong></td><td>リアルタイム Web 検索で最新情報を補完（知識カットオフ問題を解消）</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.12 ハルシネーション・ファインチューニング・グラウンディング */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.12</span>生成 AI の活用技術 — ハルシネーション・グラウンディング・ファインチューニング</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>技術</th>
+                                <th>定義・仕組み</th>
+                                <th>対策・活用方法</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ハルシネーション（幻覚）</strong></td>
+                                <td>LLM が事実と異なる内容を自信を持った形で生成する現象。LLM が「正確な事実」ではなく「もっともらしい文章」を確率的に予測するため発生する。例: 実在しない人物の受賞歴・間違った医療情報・動かないコードを正確として出力</td>
+                                <td>RAG・グラウンディング・Human-in-the-Loop（重要な決定に人間のレビューを挟む）・低 Temperature 設定・ファクトチェック機能の組み込み</td>
+                            </tr>
+                            <tr>
+                                <td><strong>グラウンディング（Grounding）</strong></td>
+                                <td>LLM の回答を「信頼できる外部データソース」に根拠付ける技術。RAG の上位概念（RAG はグラウンディングの一実装方法）。①自社データ（社内文書・製品マニュアル・FAQ）②Google 検索（リアルタイム Web 情報）③サードパーティ（天気・株価・為替等）の 3 種類がある</td>
+                                <td>Vertex AI Search（自社データ）・Grounding with Google Search（最新 Web 情報）・Vertex AI RAG Engine（カスタムパイプライン）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ファインチューニング（Fine-tuning）</strong></td>
+                                <td>事前学習済み基盤モデルを自社固有データで追加学習させる技術。モデルの「重み（パラメータ）」自体を更新する。SFT（教師あり微調整）・RLHF（人間フィードバックによる強化学習。ChatGPT・Gemini の品質向上に活用）・PEFT/LoRA（少ないパラメータで効率的に微調整）の手法がある</td>
+                                <td>特定ドメインの専門用語・文体の習得・特定フォーマットの出力を安定生成・業界固有知識の深い理解に活用。高品質なデータセット作成と GPU コストが必要</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">3 技術の使い分け比較</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>比較項目</th>
+                                <th>RAG / グラウンディング</th>
+                                <th>ファインチューニング</th>
+                                <th>プロンプトエンジニアリング</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>目的</strong></td><td>最新・自社情報を反映</td><td>ドメイン知識・文体の習得</td><td>出力の最適化</td></tr>
+                            <tr><td><strong>データ更新</strong></td><td>リアルタイム更新可能</td><td>再学習が必要</td><td>不要</td></tr>
+                            <tr><td><strong>コスト</strong></td><td>中程度</td><td>高い（GPU 学習）</td><td>低い</td></tr>
+                            <tr><td><strong>ハルシネーション対策</strong></td><td>◎ 効果的</td><td>△ 一部改善</td><td>△ 限定的</td></tr>
+                            <tr><td><strong>GCP サービス</strong></td><td>Vertex AI Search・RAG Engine</td><td>Vertex AI Training</td><td>Vertex AI Studio</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.13 責任ある AI 6 原則表 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.13</span>責任ある AI（Responsible AI）— 6 つの核心原則</div>
+                <p className="tdesc">
+                    AI が引き起こす可能性のある問題（差別・偏見、ハルシネーション、プライバシー侵害、フェイクニュース・ディープフェイク、ブラックボックス問題）に対処するために、Google は責任ある AI の原則を全製品・研究に適用しています。
+                    公平性・説明責任・透明性・プライバシー保護は試験で特に頻出の原則です。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>原則</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {RESPONSIBLE_AI_PRINCIPLES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.principle}</strong></td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">AI のバイアスの種類と対策</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>バイアスの種類</th>
+                                <th>説明</th>
+                                <th>例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>選択バイアス</strong></td><td>学習データが特定の集団に偏っている</td><td>医療 AI の学習データが白人男性中心 → 他の人種に精度が低い</td></tr>
+                            <tr><td><strong>確証バイアス</strong></td><td>既存の偏見を強化する方向に学習が進む</td><td>採用 AI が「男性エンジニアが多い」現状を「正解」として学習</td></tr>
+                            <tr><td><strong>測定バイアス</strong></td><td>データの収集・ラベリング方法自体に偏りがある</td><td>アノテーターの文化的背景が正解ラベルに影響する</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.14 プライバシー保護技術表 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.14</span>プライバシー保護技術（試験頻出）</div>
+                <p className="tdesc">
+                    AI・データ処理においてプライバシーを保護するための 3 つの主要技術です。
+                    GDPR（EU個人データ保護規則）や医療情報保護法（HIPAA）などの規制対応にも密接に関連します。
+                    匿名化は再識別が不可能なため GDPR の適用外となりますが、仮名化は紐付けテーブルで再識別が可能なため GDPR が適用されます。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>手法</th>
+                                <th>説明</th>
+                                <th>具体例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {PRIVACY_TECHNIQUES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.technique}</strong></td>
+                                    <td>{row.desc}</td>
+                                    <td>{row.example}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.15 BigQuery ML */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.15</span>BigQuery ML — SQL で ML モデルを作成</div>
+                <p className="tdesc">
+                    BigQuery ML（BQML）は、BigQuery 内で SQL 文を書くだけで ML モデルを作成・学習・評価・予測できる機能です。
+                    データをエクスポートして別の環境で学習させる必要がなく、データが存在する BigQuery 上で直接 ML を実行できます。
+                    データサイエンティストでなくても SQL を知っていれば ML モデルを構築できるため、ビジネスアナリストによる ML 活用を促進します。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>特徴</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>SQL で ML モデル作成</strong></td>
+                                <td>{`CREATE MODEL 文でモデルを定義・学習。ML 専門知識なしで SQL のみで完結`}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>対応モデルタイプ</strong></td>
+                                <td>線形回帰・ロジスティック回帰・k-means クラスタリング・行列因子分解・時系列予測（ARIMA+）・DNN・XGBoost・インポート済み TensorFlow モデル</td>
+                            </tr>
+                            <tr>
+                                <td><strong>MLモデルをSQLで評価</strong></td>
+                                <td>{`ML.EVALUATE 関数でモデルの精度・RMSE・AUC 等を評価。ML.PREDICT で新しいデータへの予測を実施`}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ビジネス活用例</strong></td>
+                                <td>顧客チャーン予測・需要予測・商品レコメンド・異常検知・サプライチェーン最適化（BigQuery ML のクラスタリング）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>メリット</strong></td>
+                                <td>データ移動不要（BigQuery 上で完結）・インフラ管理不要・BigQuery の高速・大規模処理を活用・Vertex AI との連携でデプロイも可能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 5.16 Explainable AI */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">5.16</span>Explainable AI（説明可能な AI / XAI）</div>
+                <p className="tdesc">
+                    Explainable AI（XAI）は、AI がなぜその判断をしたかを人間が理解できる形で説明する技術です。
+                    EU AI Act・金融規制などで「判断根拠の説明」が義務化されており、規制対応として必須です。
+                    また、誤判断の原因特定・バイアスの発見・ユーザーの AI への信頼醸成に不可欠です。
+                    Vertex Explainable AI は特徴量重要度の提示・注意機構の可視化（ヒートマップ）・SHAP（Shapley Additive Explanations）による影響量の数値化を提供します。
+                </p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>機能</th>
+                                <th>説明</th>
+                                <th>活用例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>特徴量重要度（Feature Importance）</strong></td>
+                                <td>どの入力変数が予測に最も影響を与えたかを数値で表示</td>
+                                <td>「この融資否認は『収入』60%・『負債比率』30%・『勤続年数』10% の影響」→ 顧客への説明責任を果たせる</td>
+                            </tr>
+                            <tr>
+                                <td><strong>注意機構の可視化（Attention Visualization）</strong></td>
+                                <td>画像分類において、モデルが注目した領域をヒートマップで表示</td>
+                                <td>「この画像のどの部分を見て猫と判断したか」をヒートマップで表示。誤判断の原因特定が容易</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SHAP（Shapley Additive Explanations）</strong></td>
+                                <td>ゲーム理論に基づき各特徴量が予測に与えた影響量を正確に数値化</td>
+                                <td>複数の特徴量が複雑に絡み合うモデルでも公平な貢献度を算出。医療診断・採用判定・ローン審査の説明に活用</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
