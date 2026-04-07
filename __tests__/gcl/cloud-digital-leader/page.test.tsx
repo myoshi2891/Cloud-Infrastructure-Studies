@@ -250,6 +250,6 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
     it('S3: Apigee と API マネタイゼーションが存在すること', () => {
         render(<CloudDigitalLeaderPage />);
         expect(screen.getAllByText(/Apigee/i).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getByText(/マネタイゼーション/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/マネタイゼーション/i).length).toBeGreaterThanOrEqual(1);
     });
 });
