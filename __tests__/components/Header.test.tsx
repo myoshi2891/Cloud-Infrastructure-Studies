@@ -28,6 +28,8 @@ describe('Header', () => {
 
     it('GenAI Leader ページへのリンクが存在すること', () => {
         render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        fireEvent.click(button);
         const link = screen.getByRole('link', { name: /generative ai leader 概要/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader');
     });
@@ -69,21 +71,27 @@ describe('Header', () => {
     });
 
     it('ACE 概要リンクが /gcl/associate-cloud-engineer を指すこと', () => {
-        const { container } = render(<Header />);
-        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer"]');
-        expect(link).toBeInTheDocument();
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        const link = screen.getAllByRole('link', { name: /^概要$/i })[0];
+        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer');
     });
 
     it('ACE architecture-guide サブリンクが存在すること', () => {
-        const { container } = render(<Header />);
-        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer/architecture-guide"]');
-        expect(link).toBeInTheDocument();
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        const link = screen.getByRole('link', { name: /試験対策・アーキテクチャ詳細ガイド/i });
+        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer/architecture-guide');
     });
 
     it('ACE domain1 サブリンクが存在すること', () => {
-        const { container } = render(<Header />);
-        const link = container.querySelector('a[href="/gcl/associate-cloud-engineer/domain1"]');
-        expect(link).toBeInTheDocument();
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        const link = screen.getByRole('link', { name: /domain 1: 環境設定 包括的解説/i });
+        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer/domain1');
     });
 
     it('nav 要素として描画されること', () => {
@@ -93,24 +101,32 @@ describe('Header', () => {
 
     it('Section 1 へのドロップダウンリンクが存在すること', () => {
         render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        fireEvent.click(button);
         const link = screen.getByRole('link', { name: /section 1/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section1');
     });
 
     it('Section 2 へのドロップダウンリンクが存在すること', () => {
         render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        fireEvent.click(button);
         const link = screen.getByRole('link', { name: /section 2/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section2');
     });
 
     it('Section 3 へのドロップダウンリンクが存在すること', () => {
         render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        fireEvent.click(button);
         const link = screen.getByRole('link', { name: /section 3/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section3');
     });
 
     it('Section 4 へのドロップダウンリンクが存在すること', () => {
         render(<Header />);
+        const button = screen.getByRole('button', { name: /generative ai leader/i });
+        fireEvent.click(button);
         const link = screen.getByRole('link', { name: /section 4/i });
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section4');
     });
@@ -134,9 +150,11 @@ describe('Header', () => {
     });
 
     it('Cloud Digital Leader ページへのリンクが存在すること', () => {
-        const { container } = render(<Header />);
-        const link = container.querySelector('a[href="/gcl/cloud-digital-leader"]');
-        expect(link).toBeInTheDocument();
+        render(<Header />);
+        const button = screen.getByRole('button', { name: /cloud digital leader/i });
+        fireEvent.click(button);
+        const link = screen.getByRole('link', { name: /cloud digital leader 認定試験/i });
+        expect(link).toHaveAttribute('href', '/gcl/cloud-digital-leader');
     });
 
     it('Cloud Digital Leader ドロップダウンが Escape キーで閉じること', () => {
@@ -149,24 +167,20 @@ describe('Header', () => {
     });
 
     it('ACE domain2 サブリンクが存在すること', () => {
-        const { container } = render(<Header />);
+        render(<Header />);
         const button = screen.getByRole('button', { name: /associate cloud engineer/i });
         fireEvent.click(button);
         expect(button).toHaveAttribute('aria-expanded', 'true');
-        const link = container.querySelector(
-            'a[href="/gcl/associate-cloud-engineer/domain2"]'
-        );
+        const link = screen.getByRole('link', { name: /domain 2: 計画と実装 包括的解説/i });
         expect(link).toBeInTheDocument();
     });
 
     it('ACE domain3 サブリンクが存在すること', () => {
-        const { container } = render(<Header />);
+        render(<Header />);
         const button = screen.getByRole('button', { name: /associate cloud engineer/i });
         fireEvent.click(button);
         expect(button).toHaveAttribute('aria-expanded', 'true');
-        const link = container.querySelector(
-            'a[href="/gcl/associate-cloud-engineer/domain3"]'
-        );
+        const link = screen.getByRole('link', { name: /domain 3: 運用管理 包括的解説/i });
         expect(link).toBeInTheDocument();
     });
 });
