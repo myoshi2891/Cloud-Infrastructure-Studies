@@ -85,9 +85,9 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
 
     it('S1: DX の3つの柱 SVG 図が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByText(/インフラの近代化/i)).toBeInTheDocument();
-        expect(screen.getByText(/データとAIの活用/i)).toBeInTheDocument();
-        expect(screen.getByText(/スマートアナリティクス/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/インフラの近代化/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/データとAIの活用/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/スマートアナリティクス/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S1: IaaS/PaaS/SaaS 管理責任表が存在すること', () => {
@@ -133,19 +133,19 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         render(<CloudDigitalLeaderPage />);
         expect(screen.getByText(/LookML/i)).toBeInTheDocument();
         expect(screen.getByText(/真実の唯一の情報源/i)).toBeInTheDocument();
-        expect(screen.getByText(/セルフサービスBI/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/セルフサービスBI/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S2: Dataflow / Dataproc / Pub\/Sub 説明が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
         expect(screen.getAllByText(/Apache Beam/i).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getByText(/Hadoop/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/Hadoop/i).length).toBeGreaterThanOrEqual(1);
         expect(screen.getByText(/メッセージングサービス/i)).toBeInTheDocument();
     });
 
     it('S2: スマートアナリティクスアーキテクチャ SVG が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByText(/データ取り込み/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/データ取り込み/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S2: ストレージライフサイクルベストプラクティスが存在すること', () => {
@@ -156,16 +156,16 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
 
     it('S2: 構造化・半構造化・非構造化データが存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByText(/構造化データ/i)).toBeInTheDocument();
-        expect(screen.getByText(/半構造化データ/i)).toBeInTheDocument();
-        expect(screen.getByText(/非構造化データ/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/構造化データ/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/半構造化データ/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/非構造化データ/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S2: データウェアハウス vs データレイク vs レイクハウスが存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByText(/データウェアハウス/i)).toBeInTheDocument();
-        expect(screen.getByText(/データレイク/i)).toBeInTheDocument();
-        expect(screen.getByText(/データレイクハウス/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/データウェアハウス/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/データレイク/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/データレイクハウス/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S2: GCS ストレージクラス表（アクセス頻度列含む）が存在すること', () => {
