@@ -119,6 +119,39 @@ export const RESOURCES: Resource[] = [
     { name: 'コスト最適化', url: 'cloud.google.com/architecture/framework/cost-optimization' },
 ];
 
+// ── S2: データ ──────────────────────────────────────────────────────
+
+export type StorageClass = {
+    name: string;
+    frequency: string;
+    minRetention: string;
+    useCase: string;
+};
+
+export const STORAGE_CLASSES: StorageClass[] = [
+    { name: 'Standard', frequency: '頻繁', minRetention: 'なし', useCase: 'Webコンテンツ・アクティブデータ' },
+    { name: 'Nearline', frequency: '月1回程度', minRetention: '30日', useCase: 'バックアップ・月次レポート' },
+    { name: 'Coldline', frequency: '四半期1回程度', minRetention: '90日', useCase: 'アーカイブ・DR用バックアップ' },
+    { name: 'Archive', frequency: '年1回未満', minRetention: '365日', useCase: '長期保管・規制対応アーカイブ' },
+];
+
+export type DbService = {
+    service: string;
+    type: string;
+    feature: string;
+    useCase: string;
+};
+
+export const DB_SERVICES: DbService[] = [
+    { service: 'Cloud SQL', type: 'マネージドRDBMS', feature: 'MySQL・PostgreSQL・SQL Server対応。垂直スケール', useCase: '既存RDBのクラウド移行、Webアプリ' },
+    { service: 'Cloud Spanner', type: 'グローバル分散RDBMS', feature: '99.999% SLA。世界規模の強一貫性', useCase: '金融・在庫管理・グローバルEC' },
+    { service: 'Firestore', type: 'NoSQLドキュメント', feature: 'サーバーレス・リアルタイム同期', useCase: 'モバイル/Webアプリのバックエンド' },
+    { service: 'Bigtable', type: 'NoSQLワイドカラム', feature: '超高スループット・超低遅延', useCase: '時系列・IoT・広告データ' },
+    { service: 'BigQuery', type: 'データウェアハウス', feature: 'サーバーレスSQL分析。数TBを数秒で処理', useCase: 'BI・データ分析・機械学習' },
+    { service: 'Memorystore', type: 'インメモリDB', feature: 'マネージドRedis/Memcached', useCase: 'セッション管理・キャッシュ' },
+    { service: 'AlloyDB', type: 'PostgreSQL互換', feature: 'Cloud SQLより高速な分析性能（HTAP）', useCase: '高性能トランザクション+分析' },
+];
+
 // ── S1: DX基礎 ──────────────────────────────────────────────────────
 
 export type DeploymentModel = {

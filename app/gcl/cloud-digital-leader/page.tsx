@@ -13,6 +13,8 @@ import {
     GCP_STRENGTHS,
     SERVICE_MODEL_RESPONSIBILITY,
     ADOPTION_FRAMEWORK,
+    STORAGE_CLASSES,
+    DB_SERVICES,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -362,29 +364,184 @@ function Section2() {
                 <div className="sec-num sn2">02</div>
                 <div className="sec-head-txt">
                     <h2>データとイノベーション — クラウドによるイノベーション</h2>
-                    <p>BigQuery・Cloud Storage・データベース選択・データ分析パイプライン</p>
+                    <p>データ価値・データ型・DB選択・BigQuery・分析パイプライン・Cloud Storage</p>
                 </div>
-                <div className="pct-badge pb2">12.5%</div>
+                <div className="pct-badge pb2">16%</div>
             </div>
 
+            {/* 2.1 データの価値とビジネス活用 */}
             <div className="tcard">
-                <div className="ttitle"><span className="tid">2.1</span>Google Cloud Storage (GCS) クラス</div>
+                <div className="ttitle"><span className="tid">2.1</span>データの価値とビジネス活用</div>
+                <p className="card-desc"><strong>データドリブン経営</strong>とは、勘や経験ではなくデータに基づいて意思決定を行う経営スタイルです。</p>
+                <div className="stitle">データが生み出す4つのビジネス価値</div>
+                <ol className="cdl-list">
+                    <li><strong>過去の理解</strong>: 何が起きたかを把握（記述的分析）</li>
+                    <li><strong>現状の把握</strong>: 今何が起きているかをリアルタイムで監視（診断的分析）</li>
+                    <li><strong>未来の予測</strong>: 次に何が起きるかを予測（予測的分析）</li>
+                    <li><strong>最適行動の提案</strong>: 何をすべきかをAIが提案（処方的分析）</li>
+                </ol>
+            </div>
+
+            {/* 2.2 データの種類とアーキテクチャ */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">2.2</span>データの種類とストレージアーキテクチャ</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>構造化データ</strong>
+                        <p>リレーショナルデータベースで管理される行・列形式のデータ。SQLでクエリ可能。</p>
+                        <p><em>例: 顧客テーブル、注文履歴、会計データ</em></p>
+                    </div>
+                    <div className="titem">
+                        <strong>半構造化データ</strong>
+                        <p>スキーマは固定されていないが、タグや階層構造を持つデータ。</p>
+                        <p><em>例: JSON、XML、ログファイル</em></p>
+                    </div>
+                    <div className="titem">
+                        <strong>非構造化データ</strong>
+                        <p>定義されたフォーマットを持たないデータ。クラウドが最も価値を解放する領域。</p>
+                        <p><em>例: 画像、動画、音声、テキスト文書</em></p>
+                    </div>
+                </div>
+                <div className="stitle">データリポジトリの設計</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>データウェアハウス</strong>
+                        <p>高度に構造化・最適化されたデータセットを保存。BI ツールを用いた高速なクエリやレポーティングに特化。</p>
+                        <p><em>GCP例: BigQuery</em></p>
+                    </div>
+                    <div className="titem">
+                        <strong>データレイク</strong>
+                        <p>あらゆる形式の生データをそのままのフォーマットで安価に大量保存。ML トレーニングデータや将来のデータ探索の基盤。</p>
+                        <p><em>GCP例: Cloud Storage</em></p>
+                    </div>
+                    <div className="titem">
+                        <strong>データレイクハウス</strong>
+                        <p>データレイクの柔軟性とデータウェアハウスの管理・クエリ性能を兼ね備えた次世代アーキテクチャ。</p>
+                        <p><em>GCP例: BigQuery + Cloud Storage 統合</em></p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 2.3 データベースサービス一覧 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">2.3</span>データベースサービス一覧</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>サービス</th>
+                                <th>タイプ</th>
+                                <th>特徴</th>
+                                <th>適用場面</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {DB_SERVICES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.service}</strong></td>
+                                    <td>{row.type}</td>
+                                    <td>{row.feature}</td>
+                                    <td>{row.useCase}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="stitle">DB選択デシジョンツリー</div>
+                <pre className="codeblock">{`RDBが必要か？
+├── YES: グローバルに強一貫性が必要 → Cloud Spanner
+└── YES: リージョン内で十分      → Cloud SQL
+
+NoSQLが必要か？
+├── ドキュメント形式・リアルタイム → Firestore
+├── 時系列・超大量データ         → Bigtable
+└── キャッシュ・セッション        → Memorystore
+
+分析・DWH用途                    → BigQuery
+高性能HTAP（OLTP+分析）          → AlloyDB`}</pre>
+            </div>
+
+            {/* 2.4 データ分析サービス */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">2.4</span>データ分析サービス</div>
+
+                <div className="stitle">Looker（エンタープライズBI）</div>
+                <p className="card-desc"><strong>Looker</strong> は Google Cloud のエンタープライズ BI プラットフォーム。<strong>LookML</strong> という独自言語でデータ定義を一元管理し、全社員が同じ定義で一貫したデータを参照できる「<strong>真実の唯一の情報源</strong>」を実現する。BigQuery・Cloud SQL など主要 DB に直接接続し、経営ダッシュボード・売上レポート・顧客分析に活用される。</p>
+
+                <div className="stitle">Looker Studio（セルフサービスBI）</div>
+                <p className="card-desc">無料で使える<strong>セルフサービスBI</strong>/ダッシュボードツール。コードなしでインタラクティブなレポートを作成。Google Sheets・BigQuery・Google Analytics などと連携。</p>
+
+                <div className="stitle">Google Cloud Dataflow</div>
+                <p className="card-desc">フルマネージドのデータ処理パイプライン（<strong>Apache Beam</strong> ベース）。リアルタイム（ストリーミング）とバッチ処理の両方に対応。大量データの変換・集計・分析パイプラインを構築。<em>用途: ログ処理・IoTデータ変換・ETLパイプライン</em></p>
+
+                <div className="stitle">Google Cloud Dataproc</div>
+                <p className="card-desc">マネージド <strong>Apache Hadoop</strong>/Spark クラスタ。既存のHadoopワークロードをクラウドへ移行し、必要な時だけクラスタを起動してコスト削減。<em>用途: 大規模バッチデータ処理・ML パイプライン</em></p>
+
+                <div className="stitle">Google Cloud Pub/Sub</div>
+                <p className="card-desc">フルマネージドの<strong>メッセージングサービス</strong>。イベント駆動アーキテクチャの基盤として、1秒あたり数百万メッセージを処理可能。<em>用途: リアルタイムデータ取り込み・システム間の非同期連携</em></p>
+            </div>
+
+            {/* 2.5 スマートアナリティクスアーキテクチャ SVG */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">2.5</span>スマートアナリティクスのアーキテクチャ</div>
+                <svg viewBox="0 0 700 160" className="cdl-svg" aria-label="スマートアナリティクスアーキテクチャ" role="img">
+                    {[
+                        { x: 50, label: 'データソース', sub: 'IoT・Webログ', color: 'var(--cdl-blue)' },
+                        { x: 180, label: 'データ取り込み', sub: 'Pub/Sub', color: 'var(--cdl-cyan)' },
+                        { x: 310, label: '処理・変換', sub: 'Dataflow / Dataproc', color: 'var(--cdl-green)' },
+                        { x: 450, label: '格納', sub: 'BigQuery / Bigtable', color: 'var(--cdl-yellow)' },
+                        { x: 580, label: '分析・可視化', sub: 'Looker / Vertex AI', color: 'var(--cdl-purple)' },
+                    ].map((stage, i, arr) => (
+                        <g key={stage.label}>
+                            <rect x={stage.x - 55} y={30} width={110} height={64} rx={8} fill={stage.color} opacity={0.2} stroke={stage.color} strokeWidth={1.5} />
+                            <text x={stage.x} y={58} textAnchor="middle" fill="var(--color-foreground)" fontSize={11} fontWeight="bold">{stage.label}</text>
+                            <text x={stage.x} y={76} textAnchor="middle" fill="var(--color-muted)" fontSize={9}>{stage.sub}</text>
+                            {i < arr.length - 1 && (
+                                <path d={`M${stage.x + 55} 62 L${arr[i + 1].x - 55} 62`} stroke="var(--color-border)" strokeWidth={1.5} markerEnd="url(#arrow2)" />
+                            )}
+                        </g>
+                    ))}
+                    <defs>
+                        <marker id="arrow2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L6,3 L0,6 Z" fill="var(--color-border)" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            {/* 2.6 GCS ストレージクラス */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">2.6</span>Google Cloud Storage (GCS) ストレージクラス</div>
                 <div className="ctable-wrap">
                     <table className="ctable">
                         <thead>
                             <tr>
                                 <th>クラス</th>
-                                <th>ユースケース</th>
+                                <th>アクセス頻度</th>
                                 <th>最低保存期間</th>
+                                <th>ユースケース</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td><strong>Standard</strong></td><td>頻繁にアクセスするデータ、Webコンテンツ</td><td>なし</td></tr>
-                            <tr><td><strong>Nearline</strong></td><td>月に1回未満のアクセス、バックアップ</td><td>30日</td></tr>
-                            <tr><td><strong>Coldline</strong></td><td>四半期に1回未満のアクセス、アーカイブ</td><td>90日</td></tr>
-                            <tr><td><strong>Archive</strong></td><td>年に1回未満のアクセス、長期保存</td><td>365日</td></tr>
+                            {STORAGE_CLASSES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.name}</strong></td>
+                                    <td>{row.frequency}</td>
+                                    <td>{row.minRetention}</td>
+                                    <td>{row.useCase}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
+                </div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス: ストレージコスト最適化</div>
+                    <ul>
+                        <li><strong>ライフサイクルポリシー</strong>を設定して古いデータを自動的に低コストクラスへ移行</li>
+                        <li>30日アクセスなし → Nearline、90日 → Coldline、365日以上 → Archive</li>
+                        <li>不要データは自動削除ルールを設定</li>
+                        <li><strong>バケットロック</strong>でコンプライアンス要件（WORM）に対応</li>
+                    </ul>
                 </div>
             </div>
         </div>
