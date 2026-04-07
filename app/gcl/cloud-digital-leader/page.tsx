@@ -8,6 +8,11 @@ import {
     COMPUTE_SERVICES,
     CONFUSING_PAIRS,
     RESOURCES,
+    DEPLOYMENT_MODELS,
+    CAPEX_OPEX,
+    GCP_STRENGTHS,
+    SERVICE_MODEL_RESPONSIBILITY,
+    ADOPTION_FRAMEWORK,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -94,11 +99,12 @@ function Section1() {
                 <div className="sec-num sn1">01</div>
                 <div className="sec-head-txt">
                     <h2>DX・クラウド基礎 — デジタルトランスフォーメーションと Google Cloud</h2>
-                    <p>クラウドの5特性・IaaS/PaaS/SaaS・デプロイモデル・CapEx vs OpEx・6つのR</p>
+                    <p>クラウドの5特性・IaaS/PaaS/SaaS・デプロイモデル・CapEx vs OpEx・Cloud Adoption Framework</p>
                 </div>
-                <div className="pct-badge pb1">10%</div>
+                <div className="pct-badge pb1">17%</div>
             </div>
 
+            {/* 1.1 NIST 5特性 */}
             <div className="tcard">
                 <div className="ttitle"><span className="tid">1.1</span>クラウドの5つの本質的特性（NIST 定義）</div>
                 <div className="ctable-wrap">
@@ -123,22 +129,227 @@ function Section1() {
                 </div>
             </div>
 
+            {/* 1.2 IaaS/PaaS/SaaS 責任分担 SVG */}
             <div className="tcard">
-                <div className="ttitle"><span className="tid Generator">1.2</span>クラウドサービスモデル（IaaS / PaaS / SaaS）</div>
-                <pre className="codeblock">{`責任の分担（下が基盤、上がユーザー責任）
+                <div className="ttitle"><span className="tid">1.2</span>クラウドサービスモデル（IaaS / PaaS / SaaS）</div>
+                <svg viewBox="0 0 640 260" className="cdl-svg" aria-label="IaaS/PaaS/SaaS 責任分担図" role="img">
+                    {/* 列ヘッダ */}
+                    {[{ x: 80, label: 'IaaS' }, { x: 280, label: 'PaaS' }, { x: 480, label: 'SaaS' }].map(col => (
+                        <g key={col.label}>
+                            <rect x={col.x - 80} y={4} width={160} height={32} rx={6} fill="var(--cdl-blue)" opacity={0.9} />
+                            <text x={col.x} y={24} textAnchor="middle" fill="#fff" fontSize={14} fontWeight="bold">{col.label}</text>
+                        </g>
+                    ))}
+                    {/* 行ラベルと色分け */}
+                    {[
+                        { layer: 'アプリ', y: 48, iaas: 'USER', paas: 'USER', saas: 'GCP' },
+                        { layer: 'ランタイム', y: 90, iaas: 'USER', paas: 'GCP', saas: 'GCP' },
+                        { layer: 'OS / VM', y: 132, iaas: 'USER', paas: 'GCP', saas: 'GCP' },
+                        { layer: 'ネットワーク', y: 174, iaas: 'GCP', paas: 'GCP', saas: 'GCP' },
+                        { layer: 'ハードウェア', y: 216, iaas: 'GCP', paas: 'GCP', saas: 'GCP' },
+                    ].map(row => {
+                        const cells = [row.iaas, row.paas, row.saas];
+                        return (
+                            <g key={row.layer}>
+                                <text x={8} y={row.y + 22} fill="var(--color-muted)" fontSize={11}>{row.layer}</text>
+                                {cells.map((owner, ci) => {
+                                    const cx = ci * 200 + 80;
+                                    const fill = owner === 'USER' ? 'var(--cdl-blue)' : 'var(--cdl-green)';
+                                    return (
+                                        <g key={ci}>
+                                            <rect x={cx - 72} y={row.y + 4} width={144} height={30} rx={4} fill={fill} opacity={0.75} />
+                                            <text x={cx} y={row.y + 24} textAnchor="middle" fill="#fff" fontSize={12}>{owner}</text>
+                                        </g>
+                                    );
+                                })}
+                            </g>
+                        );
+                    })}
+                    {/* 例示ラベル */}
+                    {[
+                        { x: 80, label: 'Compute Engine' },
+                        { x: 280, label: 'Cloud Run / App Engine' },
+                        { x: 480, label: 'Google Workspace' },
+                    ].map(col => (
+                        <text key={col.label} x={col.x} y={254} textAnchor="middle" fill="var(--color-muted)" fontSize={10}>{col.label}</text>
+                    ))}
+                </svg>
+                <div className="stitle">各モデルの使いどころ</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>IaaS</strong>
+                        <p>OS・ミドルウェアを自分で管理したい場合。オンプレをそのままクラウドへ移行（リフト&シフト）。最大の柔軟性が必要なワークロード。</p>
+                        <p><em>例: Compute Engine、Cloud Storage</em></p>
+                    </div>
+                    <div className="titem">
+                        <strong>PaaS</strong>
+                        <p>インフラ管理なしにアプリ開発に集中したい場合。開発者の生産性を最大化。</p>
+                        <p><em>例: App Engine、Cloud Run、BigQuery</em></p>
+                    </div>
+                    <div className="titem">
+                        <strong>SaaS</strong>
+                        <p>インストール・管理不要でソフトウェアをすぐ使いたい場合。</p>
+                        <p><em>例: Google Workspace（Gmail、Docs、Meet）</em></p>
+                    </div>
+                </div>
+            </div>
 
-┌─────────────────┬─────────────────┬─────────────────┐
-│     IaaS         │     PaaS         │     SaaS         │
-│  Infrastructure  │    Platform      │    Software      │
-│  as a Service    │  as a Service    │  as a Service    │
-├─────────────────┼─────────────────┼─────────────────┤
-│ アプリ [USER]    │ アプリ [USER]    │         [USER]   │
-│ ランタイム [USER]│ ランタイム [GCP] │         [GCP]    │
-│ OS / VM [USER]   │         [GCP]    │         [GCP]    │
-│ ネットワーク[GCP]│         [GCP]    │         [GCP]    │
-│ ストレージ [GCP] │         [GCP]    │         [GCP]    │
-└─────────────────┴─────────────────┴─────────────────┘
-例: Compute Engine   Cloud Run          Google Workspace`}</pre>
+            {/* 1.3 デプロイメントモデル */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">1.3</span>クラウドデプロイメントモデル</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>モデル</th>
+                                <th>説明</th>
+                                <th>適用場面</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {DEPLOYMENT_MODELS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.model}</strong></td>
+                                    <td>{row.desc}</td>
+                                    <td>{row.useCase}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス: デプロイメントモデル選定</div>
+                    <ul>
+                        <li><strong>コスト優先</strong>: パブリッククラウドを選択。CapEx から OpEx へ転換</li>
+                        <li><strong>規制対応</strong>: 金融・医療など規制産業ではハイブリッドを検討</li>
+                        <li><strong>既存投資保護</strong>: オンプレの設備投資が残る場合はハイブリッドで段階移行</li>
+                        <li><strong>ベンダー分散</strong>: 単一障害点を避けるためマルチクラウド戦略を検討</li>
+                    </ul>
+                </div>
+            </div>
+
+            {/* 1.4 DX の3つの柱 SVG */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">1.4</span>Google Cloud の DX を加速する3つの柱</div>
+                <svg viewBox="0 0 640 180" className="cdl-svg" aria-label="DX の3つの柱" role="img">
+                    {[
+                        { x: 80, color: 'var(--cdl-blue)', title: 'インフラの近代化', items: ['オンプレ → クラウドへ移行', 'レガシーシステムの刷新', 'コスト削減・俊敏性向上'] },
+                        { x: 280, color: 'var(--cdl-green)', title: 'データとAIの活用', items: ['データドリブン意思決定', 'AI/ML で業務自動化・予測', 'リアルタイム分析基盤'] },
+                        { x: 480, color: 'var(--cdl-purple)', title: 'スマートアナリティクス', items: ['ビジネスインテリジェンス', '顧客インサイトの取得', '新ビジネスモデルの創出'] },
+                    ].map(col => (
+                        <g key={col.title}>
+                            <rect x={col.x - 75} y={4} width={150} height={172} rx={8} fill={col.color} opacity={0.15} stroke={col.color} strokeWidth={1.5} />
+                            <rect x={col.x - 75} y={4} width={150} height={34} rx={8} fill={col.color} opacity={0.85} />
+                            <text x={col.x} y={26} textAnchor="middle" fill="#fff" fontSize={11} fontWeight="bold">{col.title}</text>
+                            {col.items.map((item, ii) => (
+                                <text key={ii} x={col.x} y={60 + ii * 28} textAnchor="middle" fill="var(--color-foreground)" fontSize={10}>{item}</text>
+                            ))}
+                        </g>
+                    ))}
+                </svg>
+            </div>
+
+            {/* 1.5 CapEx vs OpEx */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">1.5</span>CapEx vs OpEx（重要概念）</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>概念</th>
+                                <th>説明</th>
+                                <th>クラウドとの関係</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {CAPEX_OPEX.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.concept}</strong></td>
+                                    <td>{row.desc}</td>
+                                    <td>{row.relation}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="ib">
+                    <div className="ibt">試験ポイント</div>
+                    <p>クラウドへの移行は CapEx を OpEx に転換する。これにより初期投資を抑え、需要変動に柔軟に対応できる。</p>
+                </div>
+            </div>
+
+            {/* 1.6 Google Cloud の強み */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">1.6</span>Google Cloud の強み</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>強み</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {GCP_STRENGTHS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.strength}</strong></td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 1.7 IaaS/PaaS/SaaS 管理責任表 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">1.7</span>サービスモデル別 管理責任の分担</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>モデル</th>
+                                <th>定義</th>
+                                <th>ユースケース</th>
+                                <th>ユーザー側の管理責任</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {SERVICE_MODEL_RESPONSIBILITY.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.model}</strong></td>
+                                    <td>{row.definition}</td>
+                                    <td>{row.useCase}</td>
+                                    <td>{row.userResponsibility}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 1.8 Cloud Adoption Framework */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">1.8</span>Cloud Adoption Framework（クラウド導入フレームワーク）</div>
+                <p className="card-desc">Google Cloud が提供するクラウド移行成熟度モデル。技術・組織文化・プロセスを含めた全体論的なアプローチで、4つのテーマに基づく。</p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>テーマ</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {ADOPTION_FRAMEWORK.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.pillar}</strong></td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

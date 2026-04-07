@@ -40,7 +40,7 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         const nav = screen.getByRole('navigation', { name: /セクションナビゲーション/i });
         expect(nav).toBeInTheDocument();
         expect(screen.getByText('試験概要')).toBeInTheDocument();
-        expect(screen.getByText('AI/ML')).toBeInTheDocument();
+        expect(screen.getAllByText('AI/ML').length).toBeGreaterThanOrEqual(1);
     });
 
     it('DX・クラウド基礎セクションが存在すること', () => {
@@ -64,10 +64,10 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
     // ── S1 DX基礎 拡張テスト ──────────────────────────────────────────
     it('S1: デプロイメントモデル表が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByText(/パブリッククラウド/i)).toBeInTheDocument();
-        expect(screen.getByText(/プライベートクラウド/i)).toBeInTheDocument();
-        expect(screen.getByText(/ハイブリッドクラウド/i)).toBeInTheDocument();
-        expect(screen.getByText(/マルチクラウド/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/パブリッククラウド/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/プライベートクラウド/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/ハイブリッドクラウド/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/マルチクラウド/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S1: CapEx vs OpEx 表が存在すること', () => {
@@ -97,10 +97,10 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
 
     it('S1: Cloud Adoption Framework 4つの柱が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByText(/Cloud Adoption Framework/i)).toBeInTheDocument();
-        expect(screen.getByText(/Lead（主導）/i)).toBeInTheDocument();
-        expect(screen.getByText(/Learn（学習）/i)).toBeInTheDocument();
-        expect(screen.getByText(/Scale（スケーリング）/i)).toBeInTheDocument();
-        expect(screen.getByText(/Secure（保護）/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/Cloud Adoption Framework/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Lead（主導）/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Learn（学習）/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Scale（スケーリング）/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Secure（保護）/i).length).toBeGreaterThanOrEqual(1);
     });
 });
