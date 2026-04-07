@@ -79,8 +79,8 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
 
     it('S1: Google Cloud の強み表が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByText(/カーボンニュートラル/i)).toBeInTheDocument();
-        expect(screen.getByText(/TPU という独自の AI チップ/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/カーボンニュートラル/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/TPU という独自の AI チップ/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S1: DX の3つの柱 SVG 図が存在すること', () => {
