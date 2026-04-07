@@ -174,4 +174,82 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         expect(screen.getByText(/四半期1回程度/i)).toBeInTheDocument();
         expect(screen.getByText(/年1回未満/i)).toBeInTheDocument();
     });
+
+    // ── S3 インフラ 拡張テスト ──────────────────────────────────────────
+    it('S3: 移行6R表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Rehost/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Replatform/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Repurchase/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Refactor/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Retire/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Retain/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: Compute Engine 詳細が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Preemptible/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Sustained Use Discount/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Committed Use Discount/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: マシンタイプ表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/E2/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/N2\/N4/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/C3/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/M3/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/A2\/A3/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: コンテナ vs VM SVG 比較図が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Hypervisor/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Container Runtime/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: GKE Autopilot vs Standard 表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Autopilot/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Pod単位課金/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: Cloud Run・Cloud Run Functions・App Engine 説明が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/0スケール/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/FaaS/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText(/Standard環境/i)).toBeInTheDocument();
+    });
+
+    it('S3: ネットワークサービスが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Virtual Private Cloud/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Cloud CDN/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Dedicated Interconnect/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Partner Interconnect/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Cloud VPN/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: マネージドサービス説明が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/差別化されない重労働/i)).toBeInTheDocument();
+    });
+
+    it('S3: マイクロサービスアーキテクチャが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/疎結合/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/ステートレス/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: GKE Enterprise と Anthos が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/GKE Enterprise/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Anthos/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S3: Apigee と API マネタイゼーションが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Apigee/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText(/マネタイゼーション/i)).toBeInTheDocument();
+    });
 });
