@@ -446,3 +446,35 @@ export const PRIVACY_TECHNIQUES: PrivacyTechnique[] = [
     { technique: '仮名化', desc: '直接識別子を別の識別子（仮名）に置き換え、元データと分離管理', example: 'GDPR 準拠のデータ処理における患者 ID の仮名化' },
     { technique: '差分プライバシー', desc: '統計的ノイズを付加して個別レコードの特定を防ぎながら集計精度を保持', example: 'Google の Chrome ブラウザの使用状況統計収集' },
 ];
+
+export type MlApproach = {
+    approach: string;
+    dataFormat: string;
+    tasks: string;
+    gcpExample: string;
+    businessExample: string;
+};
+
+export const ML_APPROACHES: MlApproach[] = [
+    {
+        approach: '教師あり学習（Supervised Learning）',
+        dataFormat: '入力 + 正解ラベル付きデータ',
+        tasks: '分類（Classification）・回帰（Regression）',
+        gcpExample: 'AutoML・Vision API・AutoML Tables',
+        businessExample: 'スパム分類・需要予測・画像認識・疾患診断支援',
+    },
+    {
+        approach: '教師なし学習（Unsupervised Learning）',
+        dataFormat: '入力のみ（正解ラベルなし）',
+        tasks: 'クラスタリング・次元削減・異常検知',
+        gcpExample: 'BigQuery ML のクラスタリング・Vertex AI',
+        businessExample: '顧客セグメンテーション・不正検知・レコメンドエンジン',
+    },
+    {
+        approach: '強化学習（Reinforcement Learning）',
+        dataFormat: '環境との対話（報酬シグナル）',
+        tasks: '最適制御・ゲーム AI・自動化',
+        gcpExample: 'Vertex AI・RLHF（Gemini 品質向上に活用）',
+        businessExample: '自動運転・広告入札最適化・データセンター電力管理',
+    },
+];
