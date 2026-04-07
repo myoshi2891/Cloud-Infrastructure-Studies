@@ -673,7 +673,7 @@ Cloud Run:
 
 Cloud Run Functions:
   - 関数は単一責務の原則（1 関数 = 1 タスク）
-  - 実行時間の上限（最大 9 分）を考慮したアーキテクチャ設計
+  - 実行時間の上限はトリガー種別により異なる（HTTP: 最大 60 分、スケジュール/タスクキュー: 最大 30 分、イベント駆動: 最大 9 分）を考慮したアーキテクチャ設計
   - Secrets Manager でシークレットを管理（コードに API キーを書かない）
   - エラーハンドリングと再試行ロジックを必ず実装
 ```
@@ -1013,7 +1013,7 @@ CI/CD パイプラインの流れ:
 
   コードをコミット（Git）
        ↓
-  Cloud Source Repositories（ソースコード管理）
+  Secure Source Manager（ソースコード管理）
        ↓
   Cloud Build（自動ビルド・テスト）
     - コードのコンパイル
@@ -1043,14 +1043,15 @@ CI/CD パイプラインの流れ:
 
 ### 8.3 Google Cloud の CI/CD サービス詳細
 
-#### Cloud Source Repositories
+#### Secure Source Manager
 
 ```
-Cloud Source Repositories とは:
-  - Google Cloud のプライベート Git リポジトリ
-  - GitHub・Bitbucket と連携可能（ミラーリング）
+Secure Source Manager（SSM）とは:
+  - Google Cloud のマネージドソースコード管理サービス（旧 Cloud Source Repositories の後継）
+  - GitHub 互換の Git リポジトリ（GitHub・Bitbucket と連携可能）
   - IAM でアクセス制御（GCP 権限と統合）
   - Cloud Build と緊密に統合
+  - VPC Service Controls・組織ポリシーによる高度なセキュリティ管理
 ```
 
 #### Cloud Build

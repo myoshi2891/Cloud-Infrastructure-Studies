@@ -210,13 +210,13 @@ export const SUPPORT_TIERS: SupportTier[] = [
     },
     {
         tier: 'Enhanced Support',
-        cost: '$500 またはクラウド支出の階層的割合 (10%〜3%)',
+        cost: '$100 またはクラウド支出の階層的割合 (10% / 7% / 5% / 3%)',
         sla: 'P1 (Critical Impact) の課題に対し 1 時間以内',
         features: '高速な対応が求められる本番環境向け。Active Assist API 利用含む',
     },
     {
         tier: 'Premium Support',
-        cost: '$15,000 またはクラウド支出の階層的割合 (10%〜3%)',
+        cost: '$15,000 またはクラウド支出の階層的割合 (10% / 7% / 5% / 3%)',
         sla: 'P1 (Critical Impact) の課題に対し 15 分以内',
         features: 'ミッションクリティカルなエンタープライズ向け。専任 TAM が配置',
     },
@@ -415,10 +415,10 @@ export type GeminiModel = {
 };
 
 export const GEMINI_MODELS: GeminiModel[] = [
-    { model: 'Gemini Ultra', context: '最大コンテキスト', useCase: '最高性能の複雑なタスク（高度な推論・マルチモーダル解析）' },
-    { model: 'Gemini Pro', context: '長コンテキスト', useCase: '幅広いタスク（コーディング支援・文書要約・Q&A）' },
-    { model: 'Gemini Flash', context: '長コンテキスト', useCase: '高速・低コストが求められるタスク（チャット・分類）' },
-    { model: 'Gemini Nano', context: '短コンテキスト', useCase: 'デバイス上での推論（オンデバイス AI・モバイル）' },
+    { model: 'Gemini 2.5 Pro', context: '長コンテキスト（100万トークン超）', useCase: '最高性能・高度な推論・マルチモーダル解析・コーディング支援' },
+    { model: 'Gemini 2.5 Flash', context: '長コンテキスト（100万トークン超）', useCase: '性能とコストのバランス・幅広いビジネスタスク・RAG・要約' },
+    { model: 'Gemini 2.5 Flash-Lite', context: '長コンテキスト', useCase: '高速・低コスト・大量処理・リアルタイムアプリ向け' },
+    { model: 'Gemini 2.0 Flash', context: '長コンテキスト（100万トークン）', useCase: '高速レスポンスが必要なエージェント・チャット・分類タスク' },
 ];
 
 export type ResponsibleAiPrinciple = {
