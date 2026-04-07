@@ -103,4 +103,75 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         expect(screen.getAllByText(/Scale（スケーリング）/i).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/Secure（保護）/i).length).toBeGreaterThanOrEqual(1);
     });
+
+    // ── S2 データ 拡張テスト ──────────────────────────────────────────
+    it('S2: データの4つのビジネス価値が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/記述的分析/i)).toBeInTheDocument();
+        expect(screen.getByText(/診断的分析/i)).toBeInTheDocument();
+        expect(screen.getByText(/予測的分析/i)).toBeInTheDocument();
+        expect(screen.getByText(/処方的分析/i)).toBeInTheDocument();
+    });
+
+    it('S2: データベースサービス表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Cloud SQL/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Cloud Spanner/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Firestore/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Bigtable/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/BigQuery/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Memorystore/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/AlloyDB/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S2: DB選択デシジョンツリーが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/グローバルに強一貫性/i)).toBeInTheDocument();
+    });
+
+    it('S2: Looker と Looker Studio の説明が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/LookML/i)).toBeInTheDocument();
+        expect(screen.getByText(/真実の唯一の情報源/i)).toBeInTheDocument();
+        expect(screen.getByText(/セルフサービスBI/i)).toBeInTheDocument();
+    });
+
+    it('S2: Dataflow / Dataproc / Pub\/Sub 説明が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Apache Beam/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText(/Hadoop/i)).toBeInTheDocument();
+        expect(screen.getByText(/メッセージングサービス/i)).toBeInTheDocument();
+    });
+
+    it('S2: スマートアナリティクスアーキテクチャ SVG が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/データ取り込み/i)).toBeInTheDocument();
+    });
+
+    it('S2: ストレージライフサイクルベストプラクティスが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/ライフサイクルポリシー/i)).toBeInTheDocument();
+        expect(screen.getByText(/バケットロック/i)).toBeInTheDocument();
+    });
+
+    it('S2: 構造化・半構造化・非構造化データが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/構造化データ/i)).toBeInTheDocument();
+        expect(screen.getByText(/半構造化データ/i)).toBeInTheDocument();
+        expect(screen.getByText(/非構造化データ/i)).toBeInTheDocument();
+    });
+
+    it('S2: データウェアハウス vs データレイク vs レイクハウスが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/データウェアハウス/i)).toBeInTheDocument();
+        expect(screen.getByText(/データレイク/i)).toBeInTheDocument();
+        expect(screen.getByText(/データレイクハウス/i)).toBeInTheDocument();
+    });
+
+    it('S2: GCS ストレージクラス表（アクセス頻度列含む）が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/月1回程度/i)).toBeInTheDocument();
+        expect(screen.getByText(/四半期1回程度/i)).toBeInTheDocument();
+        expect(screen.getByText(/年1回未満/i)).toBeInTheDocument();
+    });
 });
