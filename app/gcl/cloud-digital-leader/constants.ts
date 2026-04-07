@@ -152,6 +152,76 @@ export const DB_SERVICES: DbService[] = [
     { service: 'AlloyDB', type: 'PostgreSQL互換', feature: 'Cloud SQLより高速な分析性能（HTAP）', useCase: '高性能トランザクション+分析' },
 ];
 
+// ── S4: セキュリティ ──────────────────────────────────────────────────────
+
+export type IamRole = {
+    roleType: string;
+    desc: string;
+    recommendation: string;
+};
+
+export const IAM_ROLES: IamRole[] = [
+    { roleType: '基本ロール', desc: 'Owner / Editor / Viewer。プロジェクト全体に適用', recommendation: '❌ 本番環境では非推奨' },
+    { roleType: '事前定義ロール', desc: '特定サービスに最適化されたロール', recommendation: '✅ 推奨' },
+    { roleType: 'カスタムロール', desc: '必要な権限のみを組み合わせた自作ロール', recommendation: '✅ 最小権限の原則を徹底' },
+];
+
+export type ComplianceCert = {
+    cert: string;
+    industry: string;
+    desc: string;
+};
+
+export const COMPLIANCE_CERTS: ComplianceCert[] = [
+    { cert: 'ISO 27001', industry: '全業種', desc: '情報セキュリティ管理の国際規格' },
+    { cert: 'SOC 2 / SOC 3', industry: '全業種', desc: 'システムの信頼性・セキュリティの監査報告' },
+    { cert: 'PCI DSS', industry: '金融・EC', desc: 'クレジットカード情報の取り扱い基準' },
+    { cert: 'HIPAA', industry: '医療（米国）', desc: '医療情報の保護に関する規制' },
+    { cert: 'GDPR', industry: 'EU圏', desc: '欧州個人データ保護規則' },
+    { cert: 'FedRAMP', industry: '米国政府', desc: '連邦政府クラウドサービスの安全基準' },
+];
+
+export type CostModelItem = {
+    concept: string;
+    desc: string;
+};
+
+export const COST_MODEL: CostModelItem[] = [
+    { concept: '従量課金', desc: '使用した分だけ支払う（秒単位課金が多い）' },
+    { concept: 'Sustained Use Discount', desc: '月間で一定時間以上使うと自動で最大 30% 割引' },
+    { concept: 'Committed Use Discount', desc: '1年/3年コミットで最大 57% 割引（Compute Engine）' },
+    { concept: 'Spot/Preemptible VM', desc: '通常比最大 91% 安価（中断の可能性あり）' },
+    { concept: 'ネットワーク下り転送', desc: '同じリージョン内は無料、リージョン間・外部は有料' },
+];
+
+export type SupportTier = {
+    tier: string;
+    cost: string;
+    sla: string;
+    features: string;
+};
+
+export const SUPPORT_TIERS: SupportTier[] = [
+    {
+        tier: 'Standard Support',
+        cost: '$29 またはクラウド支出の 3% のいずれか高い方',
+        sla: 'P2 (High Impact) の課題に対し 4 時間以内',
+        features: '試験的なプロジェクトや開発・テスト環境向け',
+    },
+    {
+        tier: 'Enhanced Support',
+        cost: '$500 またはクラウド支出の階層的割合 (10%〜3%)',
+        sla: 'P1 (Critical Impact) の課題に対し 1 時間以内',
+        features: '高速な対応が求められる本番環境向け。Active Assist API 利用含む',
+    },
+    {
+        tier: 'Premium Support',
+        cost: '$15,000 またはクラウド支出の階層的割合 (10%〜3%)',
+        sla: 'P1 (Critical Impact) の課題に対し 15 分以内',
+        features: 'ミッションクリティカルなエンタープライズ向け。専任 TAM が配置',
+    },
+];
+
 // ── S3: インフラ ──────────────────────────────────────────────────────
 
 export type MigrationStrategy = {

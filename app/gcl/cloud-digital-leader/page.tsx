@@ -19,6 +19,10 @@ import {
     MACHINE_TYPES,
     GKE_MODES,
     NETWORK_SERVICES,
+    IAM_ROLES,
+    COMPLIANCE_CERTS,
+    COST_MODEL,
+    SUPPORT_TIERS,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -848,20 +852,342 @@ function Section4() {
                 <div className="sec-num sn4">04</div>
                 <div className="sec-head-txt">
                     <h2>セキュリティと運用 — Google Cloud のセキュリティと運用</h2>
-                    <p>共有責任モデル・IAM・リソース階層・セキュリティ製品・運用ツール</p>
+                    <p>共有責任モデル・Shared Fate・BeyondCorp・IAM・セキュリティサービス・コンプライアンス・費用管理</p>
                 </div>
-                <div className="pct-badge pb4">30%</div>
+                <div className="pct-badge pb4">17%</div>
             </div>
 
+            {/* 4.0 セキュリティ多層構造 SVG */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.0</span>Google Cloud セキュリティの多層構造</div>
+                <p className="card-desc">Google Cloud は<strong>多層防御（Defense in Depth）</strong>とゼロトラストセキュリティの考え方を基本とします。</p>
+                <svg viewBox="0 0 580 280" className="cdl-svg" aria-label="セキュリティ7層構造" role="img">
+                    {[
+                        { label: 'Layer 7: データ', sub: '暗号化・DLP・アクセス制御', color: 'var(--cdl-purple)', y: 20 },
+                        { label: 'Layer 6: ユーザー', sub: 'IAM・MFA・Cloud Identity', color: 'var(--cdl-blue)', y: 58 },
+                        { label: 'Layer 5: アプリ', sub: '脆弱性スキャン・Container Analysis', color: 'var(--cdl-cyan)', y: 96 },
+                        { label: 'Layer 4: エンドポイント', sub: 'Chrome Enterprise・BeyondCorp', color: 'var(--cdl-green)', y: 134 },
+                        { label: 'Layer 3: ネットワーク', sub: 'VPC・ファイアウォール・Cloud Armor', color: 'var(--cdl-yellow)', y: 172 },
+                        { label: 'Layer 2: インフラ', sub: 'Shielded VMs・Confidential Computing', color: 'var(--cdl-red)', y: 210 },
+                        { label: 'Layer 1: ハードウェア', sub: 'Titan チップ・物理セキュリティ', color: '#666', y: 248 },
+                    ].map((layer, i) => {
+                        const width = 560 - i * 24;
+                        const x = (580 - width) / 2;
+                        return (
+                            <g key={layer.label}>
+                                <rect x={x} y={layer.y} width={width} height={32} rx={4} fill={layer.color} opacity={0.8} />
+                                <text x={290} y={layer.y + 13} textAnchor="middle" fill="#fff" fontSize={11} fontWeight="bold">{layer.label}</text>
+                                <text x={290} y={layer.y + 27} textAnchor="middle" fill="#fff" fontSize={9} opacity={0.9}>{layer.sub}</text>
+                            </g>
+                        );
+                    })}
+                </svg>
+            </div>
+
+            {/* 4.1 リソース階層 */}
             <div className="tcard">
                 <div className="ttitle"><span className="tid">4.1</span>リソース階層（Resource Hierarchy）</div>
-                <pre className="codeblock">{`組織 (Organization)  ← 会社全体、GWS/Cloud Identity と紐付け
-└── フォルダ (Folders)  ← 部門、環境（Dev/Prod）
-    └── プロジェクト (Projects)  ← 課金単位、API管理
-        └── リソース (Resources)  ← VM, DB, Bucket`}</pre>
+                <pre className="codeblock">{`組織（Organization）
+    │
+    ├── フォルダ（Folder）← 部門・環境（Dev/Prod）でグループ化
+    │       │
+    │       ├── プロジェクト（Project）← 課金単位、API 管理
+    │       │       │
+    │       │       └── リソース（VM・GCS・DB 等）
+    │       │
+    │       └── プロジェクト（Project）
+    │
+    └── フォルダ（Folder）
+
+ポリシーは上位から下位へ継承される（上書き不可）`}</pre>
                 <div className="ib">
-                    <div className="ibt">重要: 継承の原則</div>
-                    <p>上位階層で設定した IAM ポリシーは、下位階層にすべて<strong>継承</strong>される（拒否はできない、追加のみ）。</p>
+                    <div className="ibt">重要: 継承の原則（ポリシーの加算性）</div>
+                    <p>上位階層で設定した IAM ポリシーは、下位階層にすべて<strong>継承</strong>される（拒否はできない、追加のみ）。IAM ポリシーは「追加のみ」で、上位で付与した権限は下位でも有効。</p>
+                </div>
+            </div>
+
+            {/* 4.2 IAM 詳細 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.2</span>IAM（Identity and Access Management）</div>
+                <p className="card-desc">IAM は「<strong>誰が（Who）・何を（Permission）・どのリソースに（Resource）できるか</strong>」を制御するサービスです。</p>
+
+                <div className="stitle">メンバー（誰が）の種類</div>
+                <ul className="cdl-list">
+                    <li><strong>Google アカウント</strong>（個人ユーザー）</li>
+                    <li><strong>サービスアカウント</strong>（アプリ・VM・サービス用）</li>
+                    <li><strong>Google グループ</strong>（複数ユーザーのまとめ）</li>
+                    <li><strong>Cloud Identity ドメイン</strong></li>
+                </ul>
+
+                <div className="stitle">ロールの種類</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>ロール種別</th>
+                                <th>説明</th>
+                                <th>推奨度</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {IAM_ROLES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.roleType}</strong></td>
+                                    <td>{row.desc}</td>
+                                    <td>{row.recommendation}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="bp">
+                    <div className="bpt">IAM ベストプラクティス</div>
+                    <ol className="cdl-list">
+                        <li><strong>最小権限の原則</strong>: 必要最小限のロールのみを付与</li>
+                        <li><strong>グループ管理</strong>: 個人ではなくグループにロールを付与</li>
+                        <li><strong>サービスアカウントキー</strong>: 可能な限り発行せず、<strong>Workload Identity Federation</strong> を使用</li>
+                        <li><strong>定期レビュー</strong>: 不要なロールの付与を定期的に棚卸し</li>
+                        <li><strong>2段階認証（MFA）</strong>: 全ユーザーに強制する</li>
+                    </ol>
+                </div>
+            </div>
+
+            {/* 4.3 主要セキュリティサービス */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.3</span>主要セキュリティサービス</div>
+
+                <div className="stitle">Cloud Identity-Aware Proxy（Cloud IAP）</div>
+                <p className="card-desc">VPN なしで社内アプリへの<strong>コンテキストアウェアアクセス</strong>を実現。ユーザーの ID・デバイス・場所に基づいてアクセスを制御。<strong>BeyondCorp Enterprise</strong> の核心コンポーネント。</p>
+
+                <div className="stitle">Cloud Armor</div>
+                <p className="card-desc">Web アプリの <strong>DDoS</strong> 保護・<strong>WAF（Web アプリファイアウォール）</strong>。SQLインジェクション・XSS など OWASP Top 10 脆弱性をブロック。IP・地域ベースのアクセス制御。Cloud Load Balancing と統合。</p>
+
+                <div className="stitle">Secret Manager</div>
+                <p className="card-desc">API キー・パスワード・TLS 証明書などの<strong>機密情報を安全に管理</strong>。アプリのコードにシークレットをハードコードしない。自動ローテーション・アクセスログを提供。</p>
+
+                <div className="stitle">Cloud Key Management Service（Cloud KMS）</div>
+                <p className="card-desc"><strong>暗号化キーの集中管理サービス</strong>。<strong>CMEK（Customer-Managed Encryption Keys）</strong> で顧客自身が暗号鍵を管理し、データを完全自社管理。ハードウェアセキュリティモジュール（HSM）対応。</p>
+
+                <div className="stitle">Security Command Center</div>
+                <p className="card-desc">Google Cloud リソース全体の<strong>セキュリティ脅威・脆弱性を一元可視化</strong>。リスクの検出・優先順位付け・修復のガイダンスを提供。コンプライアンス状況のダッシュボード。</p>
+
+                <div className="stitle">Sensitive Data Protection（旧 Cloud DLP）</div>
+                <p className="card-desc">データ内の個人情報（PII）・機密情報を<strong>自動検出・分類・マスキング</strong>。BigQuery・Cloud Storage などに格納されたデータをスキャン。GDPR・HIPAA 等のコンプライアンス対応に必須。</p>
+            </div>
+
+            {/* 4.4 コンプライアンスと規制対応 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.4</span>コンプライアンスと規制対応</div>
+                <p className="card-desc">Google Cloud は多数の第三者認証・コンプライアンスフレームワークに対応しています。</p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>規制/認証</th>
+                                <th>対象業界</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {COMPLIANCE_CERTS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.cert}</strong></td>
+                                    <td>{row.industry}</td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 4.5 クラウドオペレーション */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.5</span>クラウドオペレーション（Cloud Observability）</div>
+
+                <div className="stitle">Cloud Monitoring</div>
+                <p className="card-desc"><strong>メトリクスの収集・可視化・アラート</strong>。CPU 使用率・レイテンシ・エラー率などを継続監視。アップタイムチェックでサービスの死活監視。</p>
+
+                <div className="stitle">Cloud Logging</div>
+                <p className="card-desc">GCP 全サービスのログを<strong>一元収集・保存・分析</strong>。<strong>監査ログ（Audit Logs）</strong>: 誰がいつ何をしたかを記録（Admin Activity は常時有効・無効化不可）。ログシンクで BigQuery・Cloud Storage へ転送して長期分析。</p>
+
+                <div className="stitle">Cloud Trace</div>
+                <p className="card-desc">アプリケーションの<strong>分散トレーシング</strong>（レイテンシ分析）。マイクロサービス間のリクエスト経路と処理時間を可視化。</p>
+
+                <div className="stitle">Cloud Profiler</div>
+                <p className="card-desc"><strong>本番アプリのパフォーマンスプロファイリング</strong>。CPU とメモリ消費の原因箇所を特定（オーバーヘッドが非常に小さい）。</p>
+
+                <div className="bp">
+                    <div className="bpt">オペレーション ベストプラクティス</div>
+                    <ul>
+                        <li><strong>SLO ベースのアラート設定</strong>: 症状ベースのアラートでノイズを減らす</li>
+                        <li><strong>ログバケットの保持期間設定</strong>: デフォルトは 30 日。コンプライアンス要件に応じて延長</li>
+                        <li><strong>予算アラート</strong>: 予算の 50%・90%・100% 消費時に通知を設定</li>
+                        <li><strong>Active Assist（推奨）</strong>: GCP が自動でコスト削減・パフォーマンス改善を提案</li>
+                    </ul>
+                </div>
+            </div>
+
+            {/* 4.6 費用管理と最適化 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.6</span>費用管理と最適化</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>概念</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {COST_MODEL.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.concept}</strong></td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="stitle">費用最適化のアプローチ</div>
+                <ol className="cdl-list">
+                    <li><strong>右サイズ化（Right-sizing）</strong>: 過剰スペックの VM をダウンサイズ</li>
+                    <li><strong>使われていないリソースの削除</strong>: 停止中の VM・未使用の IP アドレス</li>
+                    <li><strong>ストレージクラスの最適化</strong>: アクセス頻度に応じたクラス選択</li>
+                    <li><strong>Spot VM の活用</strong>: バッチ処理・CI/CD などに</li>
+                    <li><strong>Committed Use の適用</strong>: 安定したワークロードには長期契約が得</li>
+                </ol>
+
+                <div className="stitle">Google Cloud Billing の管理ツール</div>
+                <ul className="cdl-list">
+                    <li><strong>予算アラート</strong>: 月次予算を設定し、閾値超過時に通知</li>
+                    <li><strong>Cost Table</strong>: プロジェクト・サービス別のコスト内訳</li>
+                    <li><strong>BigQuery への課金データエクスポート</strong>: 詳細分析・カスタムレポート</li>
+                    <li><strong>Recommender（Active Assist）</strong>: AI によるコスト削減・セキュリティ改善の推奨</li>
+                </ul>
+            </div>
+
+            {/* 4.7 責任共有モデルと Shared Fate */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.7</span>責任共有モデルと Shared Fate</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>責任共有モデル（Shared Responsibility Model）</strong>
+                        <p>Google Cloud が基盤インフラ（データセンター・ハードウェア・ネットワーク）の保護に責任を持ち、顧客はサービスレイヤーに応じた責任（OS パッチ・IAM 設定・データアクセス制御など）を負うという概念。</p>
+                    </div>
+                    <div className="titem">
+                        <strong>Shared Fate（共有の運命）</strong>
+                        <p>Google Cloud 独自のアプローチ。クラウドベンダーが責任境界を引いて顧客を突き放すのではなく、検証済みのセキュリティブループリント・セキュアな IaC・サイバー保険オプションを提供し、顧客のリスク管理に積極的に関与して<strong>共同でセキュリティ成果を達成</strong>する理念。</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 4.8 BeyondCorp ゼロトラスト */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.8</span>BeyondCorp とゼロトラストアーキテクチャ</div>
+                <p className="card-desc">従来のオンプレミス環境で主流だった「境界防御モデル（ファイアウォールで脅威を遮断）」は、テレワークやクラウドの普及によりもはや有効ではありません。</p>
+                <p className="card-desc">Google Cloud は、内部ネットワークであっても暗黙の信頼を置かず、すべてのユーザーとデバイスのアクセス要求に対して、その都度コンテキスト（身元・場所・デバイスの安全性など）を動的に検証する<strong>ゼロトラスト</strong>モデルである <strong>BeyondCorp</strong> アプローチを採用しています。</p>
+                <div className="ib">
+                    <div className="ibt">ゼロトラストの原則</div>
+                    <p>「決して信頼せず、常に検証する（Never Trust, Always Verify）」— ネットワーク内にいるからといって安全とは限らない。</p>
+                </div>
+            </div>
+
+            {/* 4.9 CMEK とデータレジデンシ */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.9</span>CMEK とデータレジデンシ・データ主権</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>CMEK（顧客管理暗号化キー）</strong>
+                        <p>Google Cloud に保存されるデータはデフォルトで暗号化されます。さらに機密性の高い要件を満たすため、顧客自身が <strong>Cloud KMS</strong> で暗号鍵を管理する <strong>CMEK</strong> を利用し、データの制御を完全に自社管理にできます。</p>
+                    </div>
+                    <div className="titem">
+                        <strong>データレジデンシとデータ主権</strong>
+                        <p>欧州の GDPR などに代表される<strong>データレジデンシ</strong>（データの地理的保管要件）に対応するため、ユーザー自身がデータを保存するリージョンを指定し、他リージョンへの移動を制限する<strong>データ主権</strong>の制御機能を Google Cloud は強力にサポートしています。</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 4.10 サポート階層 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.10</span>Google Cloud サポート階層</div>
+                <div className="ib">
+                    <div className="ibt">注</div>
+                    <p>以下のサポート料金・SLA 情報は 2026-04-06 時点の公式ドキュメントに基づく。最新情報は公式サポートページでご確認ください。</p>
+                </div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>サポート階層</th>
+                                <th>月額コスト</th>
+                                <th>SLA（レスポンスタイム）</th>
+                                <th>主要な特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {SUPPORT_TIERS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.tier}</strong></td>
+                                    <td>{row.cost}</td>
+                                    <td>{row.sla}</td>
+                                    <td>{row.features}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* 4.11 Active Assist */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.11</span>Active Assist による継続的な最適化</div>
+                <p className="card-desc"><strong>Active Assist</strong> は、機械学習を用いて顧客のクラウド利用状況を継続的に分析し、インテリジェントな推奨事項（レコメンデーション）を提示するポートフォリオです。</p>
+                <div className="tgrid">
+                    {[
+                        { cat: 'コスト', ex: 'アイドル状態の VM の特定・削除推奨' },
+                        { cat: 'セキュリティ', ex: '過剰な IAM 権限の検出' },
+                        { cat: 'パフォーマンス', ex: '過剰プロビジョニングインスタンスの Right-sizing 提案' },
+                        { cat: '信頼性', ex: '単一障害点の検出' },
+                        { cat: 'サステナビリティ', ex: '炭素排出量の削減推奨' },
+                    ].map(item => (
+                        <div key={item.cat} className="titem">
+                            <strong>{item.cat}</strong>
+                            <p>{item.ex}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* 4.12 SRE・DevOps・DR */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.12</span>SRE・DevOps・ディザスタリカバリ</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>SRE（Site Reliability Engineering）</strong>
+                        <p>開発と運用を融合させた DevOps アプローチを実践するための枠組み。SLO（Service Level Objective）・SLI・エラーバジェットを中心に高い可用性を維持します。</p>
+                    </div>
+                    <div className="titem">
+                        <strong>ディザスタリカバリ（DR）</strong>
+                        <p>単一障害点（SPOF）を排除し、Cloud Load Balancing のグローバル Anycast IP を使用して複数リージョンにトラフィックをインテリジェントに分散するアーキテクチャを採用します。</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 4.13 Carbon Footprint とサステナビリティ */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">4.13</span>Carbon Footprint とサステナビリティ</div>
+                <p className="card-desc">Google Cloud は、顧客の環境負荷を測定し削減を支援するための <strong>Carbon Footprint</strong> ツールを提供しています。データセンターの機器レベルでの詳細な電力監視データに基づき、プロジェクト・プロダクトごとに炭素排出量をダッシュボードで正確に可視化します。</p>
+                <div className="bp">
+                    <div className="bpt">サステナビリティ ベストプラクティス</div>
+                    <ul>
+                        <li>Carbon Footprint を用いて排出量の多い<strong>カーボンホットスポット</strong>を特定</li>
+                        <li>時間的制約のないバッチ処理ワークロードを、再生可能エネルギーの供給比率が高い（炭素強度が低い）リージョンにスケジューリング</li>
+                        <li>Active Assist と連携して非稼働状態のリソースを積極的に廃止</li>
+                        <li>Google Cloud は 2007 年からカーボンニュートラル達成済み</li>
+                    </ul>
                 </div>
             </div>
         </div>
