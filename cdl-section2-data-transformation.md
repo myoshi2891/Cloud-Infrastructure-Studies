@@ -57,7 +57,7 @@ Section 2 で問われる主なこと:
 | 5 | BigQuery の特徴とユースケース | ★★★ |
 | 6 | Looker と Looker Studio の違い | ★★★ |
 | 7 | Pub/Sub・Dataflow・Dataproc の役割 | ★★★ |
-| 8 | Dataplex・Data Catalog | ★★☆ |
+| 8 | Dataplex / BigQuery Universal Catalog | ★★☆ |
 | 9 | データのプライバシー・ガバナンス | ★★★ |
 | 10 | ビジネスユースケース別のデータ活用 | ★★☆ |
 
@@ -1223,8 +1223,7 @@ BigQuery のアクセス制御レベル:
 > 📎 **参照**:  
 > https://cloud.google.com/dataplex/docs  
 > https://cloud.google.com/dlp/docs  
-> https://cloud.google.com/bigquery/docs/column-level-security-intro  
-> https://cloud.google.com/data-catalog/docs
+> https://cloud.google.com/bigquery/docs/column-level-security-intro
 
 ---
 
@@ -1359,7 +1358,7 @@ Q: IoT センサーデータの格納に最適な DB は？
 A: Bigtable（時系列の超大量データを超低レイテンシで読み書き）
 
 Q: データガバナンスのツールは？
-A: Dataplex（総合管理）・Data Catalog（メタデータ検索）・
+A: Dataplex（総合管理とユニバーサルカタログ）・
    Sensitive Data Protection（個人情報保護）
 ```
 
@@ -1456,7 +1455,7 @@ A: Dataplex（総合管理）・Data Catalog（メタデータ検索）・
 □ Pub/Sub・Dataflow・Dataproc の役割の違いを説明できる
 □ バッチ処理とストリーミング処理の使い分けを理解している
 □ 匿名化・仮名化・差分プライバシーの違いを説明できる
-□ Dataplex・Data Catalog・Sensitive Data Protection の役割を説明できる
+□ Dataplex と Sensitive Data Protection の役割を説明できる
 □ データガバナンスとはなにか、なぜ重要かを説明できる
 ```
 
@@ -1490,7 +1489,6 @@ A: Dataplex（総合管理）・Data Catalog（メタデータ検索）・
 | **Dataproc** | 概要ドキュメント | https://cloud.google.com/dataproc/docs |
 | **Datastream** | 概要ドキュメント | https://cloud.google.com/datastream/docs |
 | **Dataplex** | 概要ドキュメント | https://cloud.google.com/dataplex/docs |
-| **Data Catalog** | 概要ドキュメント | https://cloud.google.com/data-catalog/docs |
 | **Sensitive Data Protection** | 概要ドキュメント | https://cloud.google.com/dlp/docs |
 | **BigQuery セキュリティ** | 列レベルセキュリティ | https://cloud.google.com/bigquery/docs/column-level-security-intro |
 | **Database Migration** | 概要ドキュメント | https://cloud.google.com/database-migration/docs |
