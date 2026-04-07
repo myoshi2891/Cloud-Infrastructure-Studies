@@ -359,3 +359,90 @@ export const ADOPTION_FRAMEWORK: AdoptionFrameworkPillar[] = [
     { pillar: 'Scale（スケーリング）', desc: 'マネージドサービスとサーバーレスで運用オーバーヘッドを削減しインフラを抽象化' },
     { pillar: 'Secure（保護）', desc: 'アイデンティティを中心とした多層的なセキュリティモデルでリソースアクセスを制御' },
 ];
+
+// ── S5: AI/ML ────────────────────────────────────────────────────────────
+
+export type PrebuiltApi = {
+    api: string;
+    category: string;
+    desc: string;
+};
+
+export const PREBUILT_APIS: PrebuiltApi[] = [
+    { api: 'Vision API', category: '画像', desc: 'ラベル検出・OCR・顔検出・物体検出' },
+    { api: 'Video Intelligence API', category: '動画', desc: 'シーン変換・オブジェクト追跡・明示的コンテンツ検出' },
+    { api: 'Natural Language API', category: 'テキスト', desc: 'エンティティ分析・センチメント分析・構文解析・コンテンツ分類' },
+    { api: 'Translation API', category: 'テキスト', desc: '100+ 言語間のテキスト翻訳（Neural Machine Translation）' },
+    { api: 'Speech-to-Text', category: '音声', desc: '音声をテキストに変換（125+ 言語対応、句読点自動挿入）' },
+    { api: 'Text-to-Speech', category: '音声', desc: 'テキストを自然音声に変換（WaveNet 音声）' },
+    { api: 'Document AI', category: '文書', desc: 'PDF/画像から構造化データを抽出（請求書・契約書・身分証明書）' },
+];
+
+export type AutomlService = {
+    service: string;
+    target: string;
+    desc: string;
+};
+
+export const AUTOML_SERVICES: AutomlService[] = [
+    { service: 'AutoML Vision', target: '画像', desc: '画像分類・物体検出モデルをノーコードで学習' },
+    { service: 'AutoML Natural Language', target: 'テキスト', desc: 'カスタムテキスト分類・エンティティ抽出モデルを作成' },
+    { service: 'AutoML Tables', target: '表形式', desc: '構造化データ（CSV/BigQuery）から分類・回帰モデルを自動構築' },
+    { service: 'AutoML Video Intelligence', target: '動画', desc: 'カスタム動画分類・物体追跡モデルをトレーニング' },
+];
+
+export type VertexComponent = {
+    component: string;
+    desc: string;
+};
+
+export const VERTEX_COMPONENTS: VertexComponent[] = [
+    { component: 'Vertex AI Workbench', desc: 'JupyterLab ベースの統合開発環境（ノートブック）' },
+    { component: 'Vertex AI Pipelines', desc: 'ML ワークフローを定義・スケジュール・実行する MLOps パイプライン' },
+    { component: 'Training', desc: 'カスタムトレーニングジョブ（分散学習・GPU/TPU 対応）' },
+    { component: 'Model Registry', desc: 'モデルのバージョン管理・メタデータ追跡・ガバナンス' },
+    { component: 'Model Monitoring', desc: '本番モデルのデータドリフト・予測品質を継続監視' },
+    { component: 'Vertex AI Prediction', desc: 'オンライン予測・バッチ予測のエンドポイントを提供' },
+    { component: 'Feature Store', desc: '特徴量の保存・再利用・共有を管理するセントラルリポジトリ' },
+    { component: 'Vertex AI Search', desc: 'エンタープライズ検索と Grounding を提供するマネージドサービス' },
+    { component: 'Vertex AI Agent Builder', desc: 'RAG・Grounding を用いた AI エージェント/チャットボットを構築' },
+];
+
+export type GeminiModel = {
+    model: string;
+    context: string;
+    useCase: string;
+};
+
+export const GEMINI_MODELS: GeminiModel[] = [
+    { model: 'Gemini Ultra', context: '最大コンテキスト', useCase: '最高性能の複雑なタスク（高度な推論・マルチモーダル解析）' },
+    { model: 'Gemini Pro', context: '長コンテキスト', useCase: '幅広いタスク（コーディング支援・文書要約・Q&A）' },
+    { model: 'Gemini Flash', context: '長コンテキスト', useCase: '高速・低コストが求められるタスク（チャット・分類）' },
+    { model: 'Gemini Nano', context: '短コンテキスト', useCase: 'デバイス上での推論（オンデバイス AI・モバイル）' },
+];
+
+export type ResponsibleAiPrinciple = {
+    principle: string;
+    desc: string;
+};
+
+export const RESPONSIBLE_AI_PRINCIPLES: ResponsibleAiPrinciple[] = [
+    { principle: '公平性', desc: 'バイアスを最小化し、すべてのユーザーに対して公平な結果を提供する' },
+    { principle: '説明責任', desc: 'AI の意思決定に対する責任を明確にし、適切な監視体制を整備する' },
+    { principle: '透明性', desc: 'AI の動作原理・データ使用方法をステークホルダーに分かりやすく説明する' },
+    { principle: 'プライバシー保護', desc: '個人データを適切に保護し、データ最小化の原則を遵守する' },
+    { principle: '安全性', desc: '意図しない危害を防ぎ、セーフガードを通じて安全な運用を保証する' },
+    { principle: '社会的有益性', desc: '社会全体に利益をもたらし、環境・人権への悪影響を最小化する' },
+];
+
+export type PrivacyTechnique = {
+    technique: string;
+    desc: string;
+    example: string;
+};
+
+export const PRIVACY_TECHNIQUES: PrivacyTechnique[] = [
+    { technique: '匿名化', desc: '個人を特定できないようにデータから識別情報を完全に削除', example: '医療統計でのデモグラフィックデータ集計' },
+    { technique: '仮名化', desc: '直接識別子を別の識別子（仮名）に置き換え、元データと分離管理', example: 'GDPR 準拠のデータ処理における患者 ID の仮名化' },
+    { technique: '差分プライバシー', desc: '統計的ノイズを付加して個別レコードの特定を防ぎながら集計精度を保持', example: 'Google の Chrome ブラウザの使用状況統計収集' },
+];
