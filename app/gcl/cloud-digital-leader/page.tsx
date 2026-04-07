@@ -30,6 +30,7 @@ import {
     RESPONSIBLE_AI_PRINCIPLES,
     PRIVACY_TECHNIQUES,
     ML_APPROACHES,
+    BQML_FEATURES,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -2004,26 +2005,12 @@ function Section5() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><strong>SQL で ML モデル作成</strong></td>
-                                <td>{`CREATE MODEL 文でモデルを定義・学習。ML 専門知識なしで SQL のみで完結`}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>対応モデルタイプ</strong></td>
-                                <td>線形回帰・ロジスティック回帰・k-means クラスタリング・行列因子分解・時系列予測（ARIMA+）・DNN・XGBoost・インポート済み TensorFlow モデル</td>
-                            </tr>
-                            <tr>
-                                <td><strong>MLモデルをSQLで評価</strong></td>
-                                <td>{`ML.EVALUATE 関数でモデルの精度・RMSE・AUC 等を評価。ML.PREDICT で新しいデータへの予測を実施`}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>ビジネス活用例</strong></td>
-                                <td>顧客チャーン予測・需要予測・商品レコメンド・異常検知・サプライチェーン最適化（BigQuery ML のクラスタリング）</td>
-                            </tr>
-                            <tr>
-                                <td><strong>メリット</strong></td>
-                                <td>データ移動不要（BigQuery 上で完結）・インフラ管理不要・BigQuery の高速・大規模処理を活用・Vertex AI との連携でデプロイも可能</td>
-                            </tr>
+                            {BQML_FEATURES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.feature}</strong></td>
+                                    <td>{row.desc}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

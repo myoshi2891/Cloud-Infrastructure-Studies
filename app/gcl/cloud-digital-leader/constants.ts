@@ -468,7 +468,7 @@ export const ML_APPROACHES: MlApproach[] = [
         dataFormat: '入力のみ（正解ラベルなし）',
         tasks: 'クラスタリング・次元削減・異常検知',
         gcpExample: 'BigQuery ML のクラスタリング・Vertex AI',
-        businessExample: '顧客セグメンテーション・不正検知・レコメンドエンジン',
+        businessExample: '顧客セグメント・不正検知・レコメンドエンジン',
     },
     {
         approach: '強化学習（Reinforcement Learning）',
@@ -476,5 +476,33 @@ export const ML_APPROACHES: MlApproach[] = [
         tasks: '最適制御・ゲーム AI・自動化',
         gcpExample: 'Vertex AI・RLHF（Gemini 品質向上に活用）',
         businessExample: '自動運転・広告入札最適化・データセンター電力管理',
+    },
+];
+
+export type MlFeature = {
+    feature: string;
+    desc: string;
+};
+
+export const BQML_FEATURES: MlFeature[] = [
+    {
+        feature: 'SQL で ML モデル作成',
+        desc: 'CREATE MODEL 文でモデルを定義・学習。ML 専門知識なしで SQL のみで完結',
+    },
+    {
+        feature: '対応モデルタイプ',
+        desc: '線形回帰・ロジスティック回帰・k-means クラスタリング・行列因子分解・時系列予測（ARIMA+）・DNN・XGBoost・インポート済み TensorFlow モデル',
+    },
+    {
+        feature: 'MLモデルをSQLで評価',
+        desc: 'ML.EVALUATE 関数でモデルの精度・RMSE・AUC 等を評価。ML.PREDICT で新しいデータへの予測を実施',
+    },
+    {
+        feature: 'ビジネス活用例',
+        desc: '顧客チャーン予測・需要予測・商品レコメンド・異常検知・サプライチェーン最適化（BigQuery ML のクラスタリング）',
+    },
+    {
+        feature: 'メリット',
+        desc: 'データ移動不要（BigQuery 上で完結）・インフラ管理不要・BigQuery の高速・大規模処理を活用・Vertex AI との連携でデプロイも可能',
     },
 ];
