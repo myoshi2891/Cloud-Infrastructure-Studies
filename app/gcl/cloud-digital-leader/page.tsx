@@ -15,6 +15,10 @@ import {
     ADOPTION_FRAMEWORK,
     STORAGE_CLASSES,
     DB_SERVICES,
+    MIGRATION_6R,
+    MACHINE_TYPES,
+    GKE_MODES,
+    NETWORK_SERVICES,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -555,32 +559,282 @@ function Section3() {
                 <div className="sec-num sn3">03</div>
                 <div className="sec-head-txt">
                     <h2>インフラとモダナイゼーション — インフラとアプリのモダナイゼーション</h2>
-                    <p>Compute Engine・GKE・Cloud Run・ハイブリッドクラウド・Anthos</p>
+                    <p>移行戦略6R・Compute Engine・GKE・Cloud Run・ネットワーク・GKE Enterprise・Apigee</p>
                 </div>
-                <div className="pct-badge pb3">30%</div>
+                <div className="pct-badge pb3">17%</div>
             </div>
 
+            {/* 3.1 移行戦略 6R */}
             <div className="tcard">
-                <div className="ttitle"><span className="tid">3.1</span>コンピューティングの選択</div>
+                <div className="ttitle"><span className="tid">3.1</span>クラウドへの移行戦略（6つの R）</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>戦略</th>
+                                <th>別名</th>
+                                <th>説明</th>
+                                <th>コスト</th>
+                                <th>期間</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {MIGRATION_6R.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.strategy}</strong></td>
+                                    <td>{row.alias}</td>
+                                    <td>{row.desc}</td>
+                                    <td>{row.cost}</td>
+                                    <td>{row.duration}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="ib">
+                    <div className="ibt">試験ポイント</div>
+                    <p>「最も速く・安く移行する」= <strong>Rehost（リフト&シフト）</strong>。「クラウドのメリットを最大限活かす」= <strong>Refactor</strong>。</p>
+                </div>
+            </div>
+
+            {/* 3.2 コンピューティングサービス詳細 */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.2</span>コンピューティングサービス詳細</div>
+
+                <div className="stitle">Compute Engine（仮想マシン）</div>
+                <p className="card-desc">Google Cloud の <strong>IaaS コンピューティングサービス</strong>。OS・ミドルウェア・アプリの完全制御と幅広いマシンタイプを提供。</p>
+                <ul className="cdl-list">
+                    <li><strong>Preemptible/Spot VM</strong>: 通常比最大 91% 安価。中断可能なバッチ処理向け</li>
+                    <li><strong>Sustained Use Discount</strong>: 月の一定時間以上利用すると自動割引（最大 30%）</li>
+                    <li><strong>Committed Use Discount</strong>: 1年・3年契約で最大 57% 割引</li>
+                </ul>
+
+                <div className="stitle">マシンタイプの種類</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>シリーズ</th>
+                                <th>用途</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {MACHINE_TYPES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.series}</strong></td>
+                                    <td>{row.use}</td>
+                                    <td>{row.feature}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="stitle">Google Kubernetes Engine（GKE）</div>
+                <p className="card-desc"><strong>Kubernetes</strong> はコンテナ化されたアプリを自動的にデプロイ・スケール・管理するオープンソースプラットフォーム。</p>
+
+                {/* コンテナ vs VM SVG */}
+                <svg viewBox="0 0 560 200" className="cdl-svg" aria-label="コンテナ vs VM 比較図" role="img">
+                    {/* VM 側 */}
+                    <rect x={10} y={10} width={240} height={180} rx={8} fill="var(--cdl-red)" opacity={0.1} stroke="var(--cdl-red)" strokeWidth={1.5} />
+                    <text x={130} y={30} textAnchor="middle" fill="var(--cdl-red)" fontSize={13} fontWeight="bold">従来の VM</text>
+                    {[
+                        { label: 'App A', y: 44, bg: 'var(--cdl-blue)' },
+                        { label: 'バイナリ / Lib', y: 76, bg: 'var(--cdl-blue)' },
+                        { label: 'ゲストOS', y: 108, bg: 'var(--cdl-red)' },
+                        { label: 'Hypervisor', y: 140, bg: 'var(--cdl-red)' },
+                        { label: 'ホストOS / HW', y: 162, bg: '#555' },
+                    ].map(layer => (
+                        <g key={layer.label}>
+                            <rect x={30} y={layer.y} width={200} height={26} rx={4} fill={layer.bg} opacity={0.7} />
+                            <text x={130} y={layer.y + 18} textAnchor="middle" fill="#fff" fontSize={11}>{layer.label}</text>
+                        </g>
+                    ))}
+                    <text x={130} y={194} textAnchor="middle" fill="var(--color-muted)" fontSize={10}>重くて起動が遅い</text>
+
+                    {/* コンテナ側 */}
+                    <rect x={310} y={10} width={240} height={180} rx={8} fill="var(--cdl-green)" opacity={0.1} stroke="var(--cdl-green)" strokeWidth={1.5} />
+                    <text x={430} y={30} textAnchor="middle" fill="var(--cdl-green)" fontSize={13} fontWeight="bold">コンテナ</text>
+                    {[
+                        { label: 'App A | App B', y: 44, bg: 'var(--cdl-blue)' },
+                        { label: 'バイナリ / Lib', y: 76, bg: 'var(--cdl-blue)' },
+                        { label: 'Container Runtime', y: 108, bg: 'var(--cdl-green)' },
+                        { label: 'ホストOS / HW', y: 140, bg: '#555' },
+                    ].map(layer => (
+                        <g key={layer.label}>
+                            <rect x={330} y={layer.y} width={200} height={26} rx={4} fill={layer.bg} opacity={0.7} />
+                            <text x={430} y={layer.y + 18} textAnchor="middle" fill="#fff" fontSize={11}>{layer.label}</text>
+                        </g>
+                    ))}
+                    <text x={430} y={194} textAnchor="middle" fill="var(--color-muted)" fontSize={10}>軽くて起動が速い</text>
+                </svg>
+
+                <div className="stitle">GKE の 2 つのモード</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>モード</th>
+                                <th>ノード管理</th>
+                                <th>課金</th>
+                                <th>推奨場面</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {GKE_MODES.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.mode}</strong></td>
+                                    <td>{row.nodeManagement}</td>
+                                    <td>{row.billing}</td>
+                                    <td>{row.recommended}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="stitle">Cloud Run（サーバーレスコンテナ）</div>
+                <p className="card-desc">コンテナをサーバーレスで実行するフルマネージドサービス。リクエストがない時は <strong>0スケール</strong>（コストゼロ）。リクエストに応じて自動スケール。<em>用途: HTTP/gRPC API・イベント処理・スパイクトラフィック対応</em></p>
+
+                <div className="stitle">Cloud Run Functions（旧Cloud Functions）</div>
+                <p className="card-desc">イベント駆動のサーバーレス関数（<strong>FaaS</strong>）。HTTP リクエスト・Pub/Sub・Cloud Storage イベントでトリガー。<em>用途: 軽量処理・Webhook・ETL・通知送信</em></p>
+
+                <div className="stitle">App Engine</div>
+                <p className="card-desc">PaaS の Web アプリプラットフォーム。<strong>Standard環境</strong>: Python・Node.js・Go・Java など対応。Flexible 環境: カスタムランタイム・Docker コンテナ対応。</p>
+
+                <div className="stitle">コンピューティングサービス選択ガイド</div>
+                <pre className="codeblock">{`OS・ミドルウェアの制御が必要         → Compute Engine
+コンテナ + ステートフル/長時間処理    → GKE
+コンテナ + ステートレス HTTP API      → Cloud Run
+イベント駆動 + 短時間の小さな関数     → Cloud Run Functions
+コード書くだけでOK（PaaS）           → App Engine
+0スケールでコスト最小化              → Cloud Run / Cloud Run Functions`}</pre>
+            </div>
+
+            {/* 3.3 ネットワークサービス */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.3</span>ネットワークサービス</div>
+
+                <div className="stitle">Virtual Private Cloud（VPC）</div>
+                <p className="card-desc">Google Cloud の<strong>ソフトウェア定義ネットワーク</strong>。1つの VPC が<strong>グローバルに展開</strong>（リージョンをまたがる）。プロジェクトごとに分離されたネットワーク環境を構築。ファイアウォールルールで送受信トラフィックを細かく制御。</p>
+
+                <div className="stitle">Cloud Load Balancing</div>
+                <p className="card-desc"><strong>グローバルロードバランサー</strong>: 世界規模でトラフィックを分散（HTTP/HTTPS）。<strong>リージョナルロードバランサー</strong>: 特定リージョン内での負荷分散。自動スケーリング対応。</p>
+
+                <div className="stitle">Cloud CDN（Content Delivery Network）</div>
+                <p className="card-desc">Google のグローバルネットワークを使ってコンテンツをキャッシュ・高速配信。静的コンテンツ（画像・動画・CSS/JS）のレイテンシを大幅削減。</p>
+
+                <div className="stitle">Cloud Interconnect / Cloud VPN</div>
                 <div className="ctable-wrap">
                     <table className="ctable">
                         <thead>
                             <tr>
                                 <th>サービス</th>
-                                <th>キーワード</th>
-                                <th>使い分け</th>
+                                <th>説明</th>
+                                <th>帯域</th>
+                                <th>用途</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {COMPUTE_SERVICES.map((row, i) => (
+                            {NETWORK_SERVICES.map((row, i) => (
                                 <tr key={i}>
                                     <td><strong>{row.service}</strong></td>
-                                    <td>{row.keyword}</td>
-                                    <td>{row.usage}</td>
+                                    <td>{row.desc}</td>
+                                    <td>{row.bandwidth}</td>
+                                    <td>{row.use}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            {/* 3.4 マネージドサービスと責任分担 SVG */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.4</span>マネージドサービスと責任分担</div>
+                <p className="card-desc"><strong>マネージドサービス</strong>とは、インフラの管理（パッチ適用・スケーリング・バックアップ等）を Google が代わりに行うサービス。</p>
+                <svg viewBox="0 0 680 200" className="cdl-svg" aria-label="マネージドサービスの責任分担" role="img">
+                    {[
+                        { x: 70, label: 'オンプレミス', layers: ['アプリ', 'ランタイム', 'OS', 'ミドルウェア', '仮想化', 'HW'], userCount: 6, color: 'var(--cdl-red)' },
+                        { x: 230, label: 'IaaS (GCE)', layers: ['アプリ', 'ランタイム', 'OS', 'ミドルウェア [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 4, color: 'var(--cdl-yellow)' },
+                        { x: 400, label: 'PaaS (App Eng)', layers: ['アプリ', 'ランタイム [GCP]', 'OS [GCP]', 'MW [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 2, color: 'var(--cdl-blue)' },
+                        { x: 580, label: 'サーバーレス', layers: ['アプリ', 'ランタイム [GCP]', 'OS [GCP]', 'MW [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 1, color: 'var(--cdl-green)' },
+                    ].map(col => (
+                        <g key={col.label}>
+                            <text x={col.x} y={16} textAnchor="middle" fill="var(--color-foreground)" fontSize={10} fontWeight="bold">{col.label}</text>
+                            {col.layers.map((layer, li) => {
+                                const isUser = li < col.userCount;
+                                return (
+                                    <g key={li}>
+                                        <rect x={col.x - 70} y={22 + li * 28} width={140} height={24} rx={4} fill={isUser ? col.color : '#444'} opacity={isUser ? 0.7 : 0.5} />
+                                        <text x={col.x} y={22 + li * 28 + 16} textAnchor="middle" fill="#fff" fontSize={9}>{layer}</text>
+                                    </g>
+                                );
+                            })}
+                        </g>
+                    ))}
+                </svg>
+                <div className="bp">
+                    <div className="bpt">ベストプラクティス: マネージドサービス活用</div>
+                    <ul>
+                        <li><strong>差別化されない重労働</strong>（インフラ管理・パッチ適用）はマネージドサービスに委譲</li>
+                        <li>エンジニアはビジネス価値を生む<strong>アプリケーション開発に集中</strong></li>
+                        <li>スケーリング設定より<strong>ビジネスロジックの実装</strong>に時間を使う</li>
+                    </ul>
+                </div>
+            </div>
+
+            {/* 3.5 マイクロサービスアーキテクチャ */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.5</span>マイクロサービスとアーキテクチャのモダナイゼーション</div>
+                <p className="card-desc">Google Cloud Architecture Framework が示すベストプラクティスによれば、システムは密結合なモノリシック（一枚岩）アーキテクチャから脱却し、コンポーネントごとに独立してスケール・更新が可能な「<strong>疎結合（Decoupled）</strong>」かつ「<strong>ステートレス（状態を保持しない）</strong>」なマイクロサービスアーキテクチャへと移行すべきです。</p>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>モノリシックアーキテクチャ</strong>
+                        <p>全機能が単一プロセスに統合。変更に時間がかかり、部分的なスケールが困難。</p>
+                    </div>
+                    <div className="titem">
+                        <strong>マイクロサービスアーキテクチャ</strong>
+                        <p>機能ごとに独立したサービスとして分割。各サービスが独立してデプロイ・スケール可能。</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 3.6 GKE Enterprise と ハイブリッド/マルチクラウド */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.6</span>GKE Enterprise と ハイブリッド/マルチクラウド</div>
+                <p className="card-desc">企業の IT インフラは単一のパブリッククラウドだけで完結するとは限りません。法規制・データ主権・既存オンプレミス投資の観点から、ハイブリッドクラウドやマルチクラウド戦略を採用することが増えています。</p>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>GKE Enterprise（旧 Anthos）</strong>
+                        <p>Google Cloud、他社クラウド、オンプレミス環境を組み合わせた分散環境を<strong>単一のコントロールパネル</strong>から統合管理。セキュリティポリシーやコンテナのオーケストレーションを一元化し、一貫した運用を実現。</p>
+                    </div>
+                    <div className="titem">
+                        <strong>ハイブリッド/マルチクラウドの用途</strong>
+                        <ul className="cdl-list">
+                            <li>法規制・データ主権への対応</li>
+                            <li>既存オンプレミス投資の保護</li>
+                            <li>ベンダーロックイン回避</li>
+                            <li>最適なサービスをプロバイダーをまたいで選択</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {/* 3.7 Apigee と API エコノミー */}
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">3.7</span>Apigee と API エコノミー</div>
+                <p className="card-desc">モダナイゼーションの中核として、社内外のシステムをつなぐ <strong>API（Application Programming Interface）</strong> の重要性が増しています。API は単なる連携ツールではなく、企業のデータやサービスをパッケージ化し、サードパーティに提供することで新たな収益源を生み出すビジネス資産です。</p>
+                <div className="tgrid">
+                    <div className="titem">
+                        <strong>Apigee（API管理プラットフォーム）</strong>
+                        <p>フルライフサイクルの API 管理プラットフォーム。API のバージョン管理・セキュリティ担保（アクセス制御・DDoS 対策）・高度なトラフィック分析を提供。</p>
+                    </div>
+                    <div className="titem">
+                        <strong>API マネタイゼーション（収益化）</strong>
+                        <p>サブスクリプションや従量課金などの柔軟なモデルを用いた API の<strong>マネタイゼーション</strong>（収益化）を Apigee が強力に支援。API エコノミーへの参入を加速する。</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -152,6 +152,64 @@ export const DB_SERVICES: DbService[] = [
     { service: 'AlloyDB', type: 'PostgreSQL互換', feature: 'Cloud SQLより高速な分析性能（HTAP）', useCase: '高性能トランザクション+分析' },
 ];
 
+// ── S3: インフラ ──────────────────────────────────────────────────────
+
+export type MigrationStrategy = {
+    strategy: string;
+    alias: string;
+    desc: string;
+    cost: string;
+    duration: string;
+};
+
+export const MIGRATION_6R: MigrationStrategy[] = [
+    { strategy: 'Rehost', alias: 'リフト&シフト', desc: 'そのままクラウドへ移動', cost: '低', duration: '短' },
+    { strategy: 'Replatform', alias: 'リフト&調整&シフト', desc: '最小限の変更でクラウド最適化', cost: '中', duration: '中' },
+    { strategy: 'Repurchase', alias: 'ドロップ&ショッピング', desc: 'SaaS製品への乗り換え', cost: '中', duration: '中' },
+    { strategy: 'Refactor', alias: 'リアーキテクチャ', desc: 'クラウドネイティブへ再設計', cost: '高', duration: '長' },
+    { strategy: 'Retire', alias: '廃止', desc: '不要なシステムを廃止', cost: 'なし', duration: '短' },
+    { strategy: 'Retain', alias: '保持', desc: '当面オンプレに残す', cost: 'なし', duration: '—' },
+];
+
+export type MachineType = {
+    series: string;
+    use: string;
+    feature: string;
+};
+
+export const MACHINE_TYPES: MachineType[] = [
+    { series: 'E2', use: '汎用・コスト重視', feature: '最も安価。開発・テスト環境に最適' },
+    { series: 'N2/N4', use: '汎用・バランス', feature: '幅広いワークロードに対応' },
+    { series: 'C3', use: 'コンピューティング最適化', feature: '高CPU性能。科学計算・ゲームサーバー' },
+    { series: 'M3', use: 'メモリ最適化', feature: '大容量メモリ。SAP HANA・インメモリDB' },
+    { series: 'A2/A3', use: 'GPU最適化', feature: 'AI/ML学習・HPC・グラフィックス処理' },
+];
+
+export type GkeMode = {
+    mode: string;
+    nodeManagement: string;
+    billing: string;
+    recommended: string;
+};
+
+export const GKE_MODES: GkeMode[] = [
+    { mode: 'Autopilot', nodeManagement: 'Google が完全管理', billing: 'Pod単位課金', recommended: '運用負荷を最小化したい場合' },
+    { mode: 'Standard', nodeManagement: 'ユーザーが管理', billing: 'ノードVM課金', recommended: '細かいノード制御が必要な場合' },
+];
+
+export type NetworkService = {
+    service: string;
+    desc: string;
+    bandwidth: string;
+    use: string;
+};
+
+export const NETWORK_SERVICES: NetworkService[] = [
+    { service: 'Dedicated Interconnect', desc: '専用回線でGCPと直接接続', bandwidth: '10/100Gbps', use: '大量データ転送・ミッションクリティカル' },
+    { service: 'Partner Interconnect', desc: 'パートナー経由の専用接続', bandwidth: '50Mbps〜50Gbps', use: 'Dedicated Interconnectに満たない要件' },
+    { service: 'Cloud VPN', desc: 'インターネット経由IPsecトンネル', bandwidth: '最大3Gbps/トンネル', use: '低コストのオンプレ接続' },
+];
+
 // ── S1: DX基礎 ──────────────────────────────────────────────────────
 
 export type DeploymentModel = {
