@@ -252,4 +252,102 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         expect(screen.getAllByText(/Apigee/i).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/マネタイゼーション/i).length).toBeGreaterThanOrEqual(1);
     });
+
+    // ── S4 セキュリティ 拡張テスト ──────────────────────────────────────
+    it('S4: セキュリティ多層構造 SVG が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Layer 7/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Titan/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: IAM ロール表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/基本ロール/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/事前定義ロール/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/カスタムロール/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: IAM ベストプラクティスが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/最小権限の原則/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText(/Workload Identity Federation/i)).toBeInTheDocument();
+    });
+
+    it('S4: 主要セキュリティサービス説明が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Cloud Identity-Aware Proxy|Cloud IAP/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/DDoS/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Secret Manager/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Cloud KMS/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Security Command Center/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Sensitive Data Protection/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: コンプライアンス表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/ISO 27001/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/SOC 2/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/PCI DSS/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/HIPAA/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/GDPR/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/FedRAMP/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: Cloud Monitoring / Logging / Trace / Profiler が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Cloud Monitoring/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Cloud Logging/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Cloud Trace/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Cloud Profiler/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/監査ログ/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: 費用モデル表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/従量課金/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/ネットワーク下り転送/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: 費用最適化アプローチが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/右サイズ化/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/予算アラート/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: 責任共有モデルと Shared Fate が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/責任共有モデル/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Shared Fate|共有の運命/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: BeyondCorp ゼロトラストが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/BeyondCorp/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/ゼロトラスト/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: CMEK とデータレジデンシが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/CMEK/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/データレジデンシ|データ主権/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: サポート階層表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Standard Support/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Enhanced Support/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Premium Support/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/15 分以内/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: Active Assist が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Active Assist/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S4: Carbon Footprint とサステナビリティが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Carbon Footprint/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/カーボンホットスポット/i).length).toBeGreaterThanOrEqual(1);
+    });
 });
