@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import './cdl.css';
 
 export const metadata: Metadata = {
     title: 'Cloud Digital Leader 認定試験',
