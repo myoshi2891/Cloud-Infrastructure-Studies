@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import Domain3Page from '@/app/gcl/associate-cloud-engineer/domain3/page';
 
 describe('Domain 3: Ensuring Successful Operation of a Cloud Solution ページ', () => {
@@ -34,6 +34,12 @@ describe('Domain 3: Ensuring Successful Operation of a Cloud Solution ページ'
     it('sticky nav に各章へのリンクが含まれること', () => {
         const nav = screen.getByRole('navigation');
         expect(nav).toBeInTheDocument();
+
+        const links = within(nav).getAllByRole('link');
+        const hrefs = links.map((a) => a.getAttribute('href'));
+        for (let i = 0; i <= 17; i++) {
+            expect(hrefs).toContain(`#ch${i}`);
+        }
     });
 
     it('SRE の章見出しが存在すること', () => {

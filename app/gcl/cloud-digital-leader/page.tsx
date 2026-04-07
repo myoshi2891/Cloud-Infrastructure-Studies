@@ -426,7 +426,7 @@ IAM ポリシーは「追加のみ」→ 上位で付与した権限は下位で
                     <div className="ctable-head">
                         <span>サービス</span><span>キーワード</span><span>役割</span>
                     </div>
-                    <div className="ctable-row"><span>Cloud IAP</span><span>DDoS・WAF・IP ブロック</span><span>VPN なし・ゼロトラストで社内アプリアクセス制御</span></div>
+                    <div className="ctable-row"><span>Cloud IAP</span><span>認証・アクセス制御・ゼロトラスト</span><span>VPN なし・ゼロトラストで社内アプリアクセス制御</span></div>
                     <div className="ctable-row"><span>Cloud Armor</span><span>DDoS・WAF・OWASP Top 10</span><span>Web アプリの DDoS 保護・SQL インジェクション・XSS ブロック</span></div>
                     <div className="ctable-row"><span>Secret Manager</span><span>API キー・パスワード管理</span><span>機密情報を安全に管理。自動ローテーション対応</span></div>
                     <div className="ctable-row"><span>Cloud KMS</span><span>暗号化キー管理・CMEK</span><span>顧客管理暗号化キーでデータをさらに強固に保護</span></div>

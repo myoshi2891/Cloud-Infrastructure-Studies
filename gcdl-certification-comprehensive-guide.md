@@ -78,6 +78,7 @@ BIは「過去に何が起こり、現在どのような状態にあるか」を
 さらに、AIの判断根拠を人間が理解できる形で提示する「Explainable AI（説明可能なAI）」や、バイアスを排除し倫理的な利用を保証する「責任あるAI」の原則が、企業としての信頼性を維持する上で不可欠な要素となっている [2](https://cloud.google.com/learn/certification/cloud-digital-leader?hl=en)。
 Google Cloud における AI/ML ソリューションの選択
 Google Cloud は、組織の専門知識のレベル、必要なカスタマイズの度合い、そして市場投入までのスピード（Time to Market）のバランスに基づいて選択できる、多層的な AI ソリューションを提供している。
+
 1. 事前学習済み API (Pre-trained APIs):
 機械学習の専門知識を持たない開発者であっても、Google が数千億のデータポイントから学習させた強力なモデルを、シンプルなAPI呼び出しで即座にアプリケーションに統合できる。
 画像や動画の内容を分析する Vision API、テキストの感情やエンティティを抽出する Natural Language API、多言語間の翻訳を行う Cloud Translation API、音声をテキスト化する Speech-to-Text API などが存在する [2](https://cloud.google.com/learn/certification/cloud-digital-leader?hl=en)。

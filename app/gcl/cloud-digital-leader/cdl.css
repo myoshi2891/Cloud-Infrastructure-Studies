@@ -5,6 +5,7 @@
    =================================================================== */
 
 :root {
+    /* CDL page-specific palette */
     --cdl-bg:          #060810;
     --cdl-surface:     #0b0f1e;
     --cdl-surface2:    #10152a;
@@ -24,6 +25,15 @@
     --cdl-text-muted:  #8890a8;
     --cdl-text-bright: #e8ecf8;
     --cdl-glow:        0 0 24px rgba(66, 133, 244, 0.20);
+
+    /* Layer 3: globals.css セマンティックトークンを上書き（Header 等グローバルコンポーネント対応） */
+    --color-background:       var(--cdl-bg);
+    --color-foreground:       var(--cdl-text);
+    --color-card:             var(--cdl-surface);
+    --color-card-foreground:  var(--cdl-text);
+    --color-muted-foreground: var(--cdl-text-muted);
+    --color-border:           var(--cdl-border);
+    --color-primary:          var(--cdl-blue);
 }
 
 /* ─── Reset & Base ─────────────────────────────────────────────── */
@@ -32,8 +42,8 @@
 }
 
 .cdl-page {
-    background: var(--cdl-bg, #060810);
-    color: var(--cdl-text, #c8d0e4);
+    background: var(--color-background, #060810);
+    color: var(--color-foreground, #c8d0e4);
     min-height: 100vh;
     font-family: var(--font-body, 'Noto Sans JP', sans-serif);
     line-height: 1.75;

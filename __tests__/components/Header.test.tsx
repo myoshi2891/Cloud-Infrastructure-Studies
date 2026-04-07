@@ -150,6 +150,9 @@ describe('Header', () => {
 
     it('ACE domain2 サブリンクが存在すること', () => {
         const { container } = render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
         const link = container.querySelector(
             'a[href="/gcl/associate-cloud-engineer/domain2"]'
         );
@@ -158,6 +161,9 @@ describe('Header', () => {
 
     it('ACE domain3 サブリンクが存在すること', () => {
         const { container } = render(<Header />);
+        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
+        fireEvent.click(button);
+        expect(button).toHaveAttribute('aria-expanded', 'true');
         const link = container.querySelector(
             'a[href="/gcl/associate-cloud-engineer/domain3"]'
         );
