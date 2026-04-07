@@ -12,7 +12,13 @@ export const EXAM_SPEC: ExamSpecItem[] = [
     { item: '前提知識', content: '不要（推奨: 6ヶ月以上のクラウド経験）' },
 ];
 
-export const EXAM_DOMAINS = [
+export type ExamDomain = {
+    section: string;
+    theme: string;
+    weight: string;
+};
+
+export const EXAM_DOMAINS: ExamDomain[] = [
     { section: 'Domain 1', theme: 'Google Cloud によるデジタルトランスフォーメーション', weight: '10%' },
     { section: 'Domain 2', theme: 'クラウドによるイノベーション', weight: '12.5%' },
     { section: 'Domain 3', theme: 'インフラとアプリのモダナイゼーション', weight: '30%' },
@@ -21,7 +27,13 @@ export const EXAM_DOMAINS = [
     { section: 'Domain 6', theme: 'Google Cloud の AI によるイノベーション', weight: '5%' },
 ];
 
-export const NIST_CHARACTERISTICS = [
+export type NistCharacteristic = {
+    trait: string;
+    desc: string;
+    meaning: string;
+};
+
+export const NIST_CHARACTERISTICS: NistCharacteristic[] = [
     { trait: 'オンデマンド・セルフサービス', desc: '人手を介さずにリソースを即時調達', meaning: 'IT部門の承認待ち時間ゼロ' },
     { trait: '幅広いネットワークアクセス', desc: '任意のデバイスからアクセス可能', meaning: '場所・端末を選ばない働き方' },
     { trait: 'リソースの共有（マルチテナント）', desc: '複数ユーザーで物理リソースを共有', meaning: 'コスト効率の向上' },
@@ -29,7 +41,12 @@ export const NIST_CHARACTERISTICS = [
     { trait: '計測されたサービス', desc: '使用量に応じた従量課金', meaning: '使った分だけ払う経済合理性' },
 ];
 
-export const AI_PRINCIPLES = [
+export type AiPrinciple = {
+    principle: string;
+    description: string;
+};
+
+export const AI_PRINCIPLES: AiPrinciple[] = [
     { principle: '社会に有益である', description: '社会や経済へのプラスの影響を考慮する' },
     { principle: '不当なバイアスの発生を避ける', description: '人種、性別、信条などに関する不当な偏りを排除する' },
     { principle: '安全性に関する十分なテストを行う', description: '予期せぬ危害を防ぐためのセーフガードを設ける' },
@@ -39,14 +56,25 @@ export const AI_PRINCIPLES = [
     { principle: 'これらの原則に沿った利用に限定する', description: '有害な用途や権利を侵害する目的での利用を避ける' },
 ];
 
-export const AI_NOT_PURSUE = [
+export type AiNotPursueItem = {
+    target: string;
+    description: string;
+};
+
+export const AI_NOT_PURSUE: AiNotPursueItem[] = [
     { target: '重大な損害をもたらす可能性のある技術', description: '身体的、精神的、社会的な深刻な被害' },
     { target: '兵器としての AI', description: '直接的に殺傷を目的とする兵器への組み込み' },
     { target: '監視目的の AI', description: '国際的な規範に反する個人の監視や人権侵害' },
     { target: '国際法に違反する技術', description: '人権、プライバシー、表現の自由を侵害する利用' },
 ];
 
-export const COMPUTE_SERVICES = [
+export type ComputeService = {
+    service: string;
+    keyword: string;
+    usage: string;
+};
+
+export const COMPUTE_SERVICES: ComputeService[] = [
     { service: 'Compute Engine', keyword: 'VM・IaaS・OS 制御・GPU が必要', usage: 'レガシー移行・特定 OS 要件' },
     { service: 'GKE', keyword: 'コンテナ・Kubernetes・ステートフル', usage: 'マイクロサービス・長時間処理' },
     { service: 'Cloud Run', keyword: 'コンテナ・サーバーレス・HTTP・0 スケール', usage: 'ステートレス API・スパイクトラフィック' },
@@ -54,7 +82,12 @@ export const COMPUTE_SERVICES = [
     { service: 'App Engine', keyword: 'PaaS・Web アプリ・コードだけ', usage: 'レガシー Web アプリの移行' },
 ];
 
-export const CONFUSING_PAIRS = [
+export type ConfusingPair = {
+    pair: string;
+    truth: string;
+};
+
+export const CONFUSING_PAIRS: ConfusingPair[] = [
     { pair: 'Cloud Run vs Cloud Run Functions', truth: 'Cloud Run はコンテナ。Functions は関数（コード）。どちらもサーバーレス' },
     { pair: 'Cloud SQL vs BigQuery', truth: 'Cloud SQL: OLTP（トランザクション処理）。BigQuery: OLAP（分析）' },
     { pair: 'Dataflow vs Dataproc', truth: 'Dataflow: Apache Beam（ストリーミング + バッチ）。Dataproc: Hadoop/Spark（バッチ）' },
@@ -63,7 +96,12 @@ export const CONFUSING_PAIRS = [
     { pair: 'Looker vs Looker Studio', truth: 'Looker: エンタープライズ BI（有料）。Looker Studio: セルフサービス BI（無料）' },
 ];
 
-export const RESOURCES = [
+export type Resource = {
+    name: string;
+    url: string;
+};
+
+export const RESOURCES: Resource[] = [
     { name: '試験概要ページ', url: 'cloud.google.com/learn/certification/cloud-digital-leader' },
     { name: '公式試験ガイド', url: 'cloud.google.com/learn/certification/guides/cloud-digital-leader' },
     { name: 'Cloud Skills Boost 学習パス', url: 'cloudskillsboost.google/paths/9' },
