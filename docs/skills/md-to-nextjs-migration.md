@@ -120,6 +120,8 @@ bun run test __tests__/gcl/cloud-digital-leader/page.test.tsx
 bun run build
 ```
 
+```
+
 ### Step 7: コミット
 
 ```bash
@@ -234,6 +236,7 @@ CLAUDE.md のルール: 非nullアサーション（`!`）禁止。`??` か `?.`
 ### ❌ 定数を追加したが page.tsx にインポートを追加し忘れる
 
 → constants.ts 追加 → page.tsx インポート → JSX の順番を守る
+
 
 ---
 

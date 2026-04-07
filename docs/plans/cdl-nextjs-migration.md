@@ -17,7 +17,7 @@
 ## 進捗
 
 | セクション | テスト | 実装 | 状態 |
-| ----------- cl| -------- cl| ------ cl| ------ cl|
+| ----------- | -------- | ------ | ------ |
 | S0: 試験概要 | ✅ | ✅ | 完了 |
 | S1: DX・クラウド基礎 | ✅ | ✅ | 完了 |
 | S2: データ変革 | ✅ | ✅ | 完了 |
@@ -31,30 +31,9 @@
 
 ## S5 未実装コンテンツ（15テスト）
 
-### 追加が必要な定数（constants.ts）
+### 未実装コンテンツ（TODO）
 
-- `ML_APPROACHES` — 機械学習3アプローチ（教師あり・教師なし・強化学習）
-- `BQML_FEATURES` — BigQuery ML の特徴リスト（SQLでMLモデル作成）
-
-### 追加が必要な JSX（page.tsx: Section5 関数）
-
-| # | カード | 定数/実装 | テスト |
-| --- cl| -------- cl| ----------- cl| -------- cl|
-| 5.2 | AI/ML 階層 SVG | SVGインライン（生成AI・深層学習・LLM） | S5-1 |
-| 5.3 | 機械学習3アプローチ表 | `ML_APPROACHES`（新規） | S5-2 |
-| 5.4 | AI層スペクトラム SVG | SVGインライン（プリビルトAPI〜カスタムモデル） | S5-3 |
-| 5.5 | プリビルト AI API 表（7行） | `PREBUILT_APIS`（既存） | S5-4 |
-| 5.6 | AutoML サービス表 | `AUTOML_SERVICES`（既存） | S5-5 |
-| 5.7 | Vertex AI コンポーネント表（9行） | `VERTEX_COMPONENTS`（既存） | S5-6 |
-| 5.8 | Gemini モデル表（4種） | `GEMINI_MODELS`（既存） | S5-7 |
-| 5.9 | Gemini for Workspace + NotebookLM | テキスト記述 | S5-8 |
-| 5.10 | Vertex AI Agent Builder | `VERTEX_COMPONENTS`内に含まれる | S5-9 |
-| 5.11 | RAG SVG 図 | SVGインライン（ベクトルDB） | S5-10 |
-| 5.12 | ハルシネーション・ファインチューニング・グラウンディング | テキスト記述 | S5-11 |
-| 5.13 | 責任ある AI 6原則表 | `RESPONSIBLE_AI_PRINCIPLES`（既存） | S5-12 |
-| 5.14 | プライバシー保護技術表 | `PRIVACY_TECHNIQUES`（既存） | S5-13 |
-| 5.15 | BigQuery ML | `BQML_FEATURES`（新規） | S5-14 |
-| 5.16 | Explainable AI | テキスト記述 | S5-15 |
+- [ ] Section 6〜8 の最終的な整合性確認とリファクタリング
 
 ---
 
