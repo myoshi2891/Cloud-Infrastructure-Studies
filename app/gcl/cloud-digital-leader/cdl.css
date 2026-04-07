@@ -4,7 +4,7 @@
    スコープクラス: .cdl-page
    =================================================================== */
 
-:root {
+.cdl-page {
     /* CDL page-specific palette */
     --cdl-bg:          #060810;
     --cdl-surface:     #0b0f1e;
