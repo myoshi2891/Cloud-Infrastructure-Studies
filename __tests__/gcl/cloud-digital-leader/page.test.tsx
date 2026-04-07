@@ -22,7 +22,7 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         expect(screen.getAllByText('50–60問').length).toBeGreaterThanOrEqual(1);
     });
 
-    it('全8セクションの見出しが存在すること', () => {
+    it('全9セクションの見出しが存在すること', () => {
         render(<CloudDigitalLeaderPage />);
         expect(screen.getByRole('heading', { level: 2, name: /試験概要と出題セクション/i })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /DX・クラウド基礎/i })).toBeInTheDocument();

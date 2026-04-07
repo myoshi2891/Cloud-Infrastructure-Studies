@@ -470,7 +470,7 @@ export default function CloudDigitalLeaderPage() {
             </div>
 
             <footer className="page-footer">
-                <p>Cloud Digital Leader 認定試験 包括的解説 — 2024 Edition</p>
+                <p>Cloud Digital Leader 認定試験 包括的解説 — 2026 Edition</p>
             </footer>
         </div>
     );

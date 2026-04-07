@@ -1,4 +1,9 @@
-export const EXAM_SPEC = [
+export type ExamSpecItem = {
+    item: string;
+    content: string;
+};
+
+export const EXAM_SPEC: ExamSpecItem[] = [
     { item: '試験時間', content: '90分' },
     { item: '問題数', content: '50–60問' },
     { item: '合格点', content: '約 70%' },
