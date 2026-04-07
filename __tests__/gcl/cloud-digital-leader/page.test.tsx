@@ -350,4 +350,105 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         expect(screen.getAllByText(/Carbon Footprint/i).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/カーボンホットスポット/i).length).toBeGreaterThanOrEqual(1);
     });
+
+    // ── S5 AI/ML 拡張テスト ──────────────────────────────────────────────
+    it('S5: AI/ML 階層 SVG が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/生成AI/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/深層学習/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/LLM/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: 機械学習3アプローチ表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/教師あり学習/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/教師なし学習/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/強化学習/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: AI 層スペクトラム SVG が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/プリビルト API/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/カスタムモデル/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: プリビルト AI API 表（7行）が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Vision API/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Natural Language API/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Translation API/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Speech-to-Text/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: AutoML サービス表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/AutoML Vision/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/AutoML Natural Language/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/AutoML Tables/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: Vertex AI コンポーネント表（9行）が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Vertex AI Workbench/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Vertex AI Pipelines/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Model Registry/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: Gemini モデル表（4種）が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Gemini Ultra/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Gemini Pro/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Gemini Flash/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Gemini Nano/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: Gemini for Workspace の詳細が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Gemini for Workspace/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/NotebookLM/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: Vertex AI Agent Builder が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Vertex AI Agent Builder/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: RAG SVG 図が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/RAG/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/ベクトルデータベース|Vector/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: ハルシネーション・ファインチューニング・グラウンディングが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/ハルシネーション/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/ファインチューニング/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/グラウンディング/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: 責任ある AI 6原則表が存在すること（AI_PRINCIPLES とは別）', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/公平性/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/説明責任/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/透明性/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/プライバシー保護/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: プライバシー保護技術表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/匿名化/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/仮名化/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/差分プライバシー/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: BigQuery ML が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/BigQuery ML/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/SQL.*ML|MLモデル.*SQL/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('S5: Explainable AI が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Explainable AI|説明可能な AI|説明可能なAI/i).length).toBeGreaterThanOrEqual(1);
+    });
 });
