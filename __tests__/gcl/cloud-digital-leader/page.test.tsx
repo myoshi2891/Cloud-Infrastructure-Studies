@@ -60,4 +60,47 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         expect(screen.getByRole('heading', { level: 2, name: /必ず押さえるべき概念/i })).toBeInTheDocument();
         expect(screen.getByText(/推奨学習ロードマップ/i)).toBeInTheDocument();
     });
+
+    // ── S1 DX基礎 拡張テスト ──────────────────────────────────────────
+    it('S1: デプロイメントモデル表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/パブリッククラウド/i)).toBeInTheDocument();
+        expect(screen.getByText(/プライベートクラウド/i)).toBeInTheDocument();
+        expect(screen.getByText(/ハイブリッドクラウド/i)).toBeInTheDocument();
+        expect(screen.getByText(/マルチクラウド/i)).toBeInTheDocument();
+    });
+
+    it('S1: CapEx vs OpEx 表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/CapEx（資本支出）/i)).toBeInTheDocument();
+        expect(screen.getByText(/OpEx（運用費用）/i)).toBeInTheDocument();
+        expect(screen.getByText(/資本支出/i)).toBeInTheDocument();
+    });
+
+    it('S1: Google Cloud の強み表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/カーボンニュートラル/i)).toBeInTheDocument();
+        expect(screen.getByText(/TPU という独自の AI チップ/i)).toBeInTheDocument();
+    });
+
+    it('S1: DX の3つの柱 SVG 図が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/インフラの近代化/i)).toBeInTheDocument();
+        expect(screen.getByText(/データとAIの活用/i)).toBeInTheDocument();
+        expect(screen.getByText(/スマートアナリティクス/i)).toBeInTheDocument();
+    });
+
+    it('S1: IaaS/PaaS/SaaS 管理責任表が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/OS、ミドルウェア、アプリケーション、データ/i)).toBeInTheDocument();
+    });
+
+    it('S1: Cloud Adoption Framework 4つの柱が存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/Cloud Adoption Framework/i)).toBeInTheDocument();
+        expect(screen.getByText(/Lead（主導）/i)).toBeInTheDocument();
+        expect(screen.getByText(/Learn（学習）/i)).toBeInTheDocument();
+        expect(screen.getByText(/Scale（スケーリング）/i)).toBeInTheDocument();
+        expect(screen.getByText(/Secure（保護）/i)).toBeInTheDocument();
+    });
 });
