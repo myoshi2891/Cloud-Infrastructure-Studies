@@ -48,7 +48,13 @@ export function Header() {
                 Cloud Infrastructure Studies
             </Link>
             <div className="flex gap-4 text-sm">
-                <div className="group relative" ref={genAiRef}>
+                {/* Generative AI Leader */}
+                <div
+                    className="relative"
+                    ref={genAiRef}
+                    onMouseEnter={() => setOpenMenu('genai')}
+                    onMouseLeave={() => setOpenMenu(null)}
+                >
                     <button
                         type="button"
                         onClick={() => setOpenMenu((v) => v === 'genai' ? null : 'genai')}
@@ -59,7 +65,10 @@ export function Header() {
                         Generative AI Leader
                         <span className="text-xs">▾</span>
                     </button>
-                    <div className={`invisible absolute left-0 top-full z-50 mt-1 min-w-[260px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100${openMenu === 'genai' ? ' !visible !opacity-100' : ''}`}>
+                    <div className={cn(
+                        "invisible absolute left-0 top-full z-50 mt-1 min-w-[260px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all",
+                        openMenu === 'genai' && "visible opacity-100"
+                    )}>
                         <Link
                             href="/gcl/genai-leader"
                             className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
@@ -97,7 +106,14 @@ export function Header() {
                         </Link>
                     </div>
                 </div>
-                <div className="group relative" ref={aceRef}>
+
+                {/* Associate Cloud Engineer */}
+                <div
+                    className="relative"
+                    ref={aceRef}
+                    onMouseEnter={() => setOpenMenu('ace')}
+                    onMouseLeave={() => setOpenMenu(null)}
+                >
                     <button
                         type="button"
                         onClick={() => setOpenMenu((v) => v === 'ace' ? null : 'ace')}
@@ -108,7 +124,10 @@ export function Header() {
                         Associate Cloud Engineer
                         <span className="text-xs">▾</span>
                     </button>
-                    <div className={cn("invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100", openMenu === 'ace' && "!visible !opacity-100")}>
+                    <div className={cn(
+                        "invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all",
+                        openMenu === 'ace' && "visible opacity-100"
+                    )}>
                         <Link
                             href="/gcl/associate-cloud-engineer"
                             className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
@@ -146,7 +165,14 @@ export function Header() {
                         </Link>
                     </div>
                 </div>
-                <div className="group relative" ref={cdlRef}>
+
+                {/* Cloud Digital Leader */}
+                <div
+                    className="relative"
+                    ref={cdlRef}
+                    onMouseEnter={() => setOpenMenu('cdl')}
+                    onMouseLeave={() => setOpenMenu(null)}
+                >
                     <button
                         type="button"
                         onClick={() => setOpenMenu((v) => v === 'cdl' ? null : 'cdl')}
@@ -157,7 +183,10 @@ export function Header() {
                         Cloud Digital Leader
                         <span className="text-xs">▾</span>
                     </button>
-                    <div className={cn("invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100", openMenu === 'cdl' && "!visible !opacity-100")}>
+                    <div className={cn(
+                        "invisible absolute left-0 top-full z-50 mt-1 min-w-[280px] rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-1 opacity-0 shadow-lg transition-all",
+                        openMenu === 'cdl' && "visible opacity-100"
+                    )}>
                         <Link
                             href="/gcl/cloud-digital-leader"
                             className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"

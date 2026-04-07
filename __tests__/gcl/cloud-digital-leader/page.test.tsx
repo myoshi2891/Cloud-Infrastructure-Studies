@@ -1,56 +1,63 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import CloudDigitalLeaderPage from '@/app/gcl/cloud-digital-leader/page';
+import CloudDigitalLeaderPage from '@/app/gcl/cloud-digital-leader/page.tsx';
 
 describe('Cloud Digital Leader 認定試験 ページ', () => {
-    beforeEach(() => {
-        render(<CloudDigitalLeaderPage />);
-    });
-
     it('ページコンポーネントがレンダリングされること', () => {
-        expect(
-            screen.getAllByText(/Cloud Digital Leader/).length
-        ).toBeGreaterThanOrEqual(1);
+        const { container } = render(<CloudDigitalLeaderPage />);
+        expect(container.querySelector('.cdl-page')).toBeInTheDocument();
     });
 
     it('hero セクションにタイトルが含まれること', () => {
-        expect(
-            screen.getAllByText(/認定試験/).length
-        ).toBeGreaterThanOrEqual(1);
+        render(<CloudDigitalLeaderPage />);
+        const titles = screen.getAllByText(/Cloud Digital Leader/i);
+        expect(titles.length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByRole('heading', { level: 1, name: /Cloud Digital Leader/i })).toBeInTheDocument();
     });
 
     it('試験仕様情報が表示されること', () => {
-        expect(
-            screen.getAllByText(/60問/).length
-        ).toBeGreaterThanOrEqual(1);
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText('試験時間')).toBeInTheDocument();
+        expect(screen.getByText('90分')).toBeInTheDocument();
+        expect(screen.getAllByText('50–60問').length).toBeGreaterThanOrEqual(1);
     });
 
     it('全8セクションの見出しが存在すること', () => {
-        expect(
-            screen.getAllByRole('heading', { level: 2 }).length
-        ).toBeGreaterThanOrEqual(8);
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByRole('heading', { level: 2, name: /試験概要と出題セクション/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /DX・クラウド基礎/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /データとイノベーション/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /インフラとモダナイゼーション/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /セキュリティと運用/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /AI\/ML/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /サービス早見表/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /試験攻略チェックリスト/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /参照リソース/i })).toBeInTheDocument();
     });
 
     it('sticky nav に各セクションへのリンクが含まれること', () => {
-        const nav = screen.getByRole('navigation');
+        render(<CloudDigitalLeaderPage />);
+        const nav = screen.getByRole('navigation', { name: /セクションナビゲーション/i });
         expect(nav).toBeInTheDocument();
+        expect(screen.getByText('試験概要')).toBeInTheDocument();
+        expect(screen.getByText('AI/ML')).toBeInTheDocument();
     });
 
     it('DX・クラウド基礎セクションが存在すること', () => {
-        expect(
-            screen.getAllByText(/DX/).length
-        ).toBeGreaterThanOrEqual(1);
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByText(/デジタルトランスフォーメーションと Google Cloud/i)).toBeInTheDocument();
+        expect(screen.getByText(/NIST 定義/i)).toBeInTheDocument();
     });
 
     it('AI・ML セクションが存在すること', () => {
-        expect(
-            screen.getAllByText(/AI/).length
-        ).toBeGreaterThanOrEqual(1);
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getAllByText(/Google AI 原則/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getByText(/社会に有益である/i)).toBeInTheDocument();
     });
 
-    it('ベストプラクティスセクションが存在すること', () => {
-        expect(
-            screen.getAllByText(/ベストプラクティス/).length
-        ).toBeGreaterThanOrEqual(1);
+    it('重要コンセプトセクションが存在すること', () => {
+        render(<CloudDigitalLeaderPage />);
+        expect(screen.getByRole('heading', { level: 2, name: /必ず押さえるべき概念/i })).toBeInTheDocument();
+        expect(screen.getByText(/推奨学習ロードマップ/i)).toBeInTheDocument();
     });
 });
