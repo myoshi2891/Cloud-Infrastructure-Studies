@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import './domain2.css';
 
 export const metadata: Metadata = {
     title: 'Domain 2: Planning and Implementing a Cloud Solution',
