@@ -1110,27 +1110,30 @@ Dataplex とは:
      - 複数サービスへのアクセス制御を一箇所で管理
 ```
 
-### 10.3 Data Catalog（データカタログ）
+### 10.3 Dataplex Universal Catalog（BigQuery Universal Catalog）
 
 ```
-Data Catalog とは:
+Dataplex Universal Catalog / BigQuery Universal Catalog とは:
+  - 旧 Data Catalog の後継として統合されたメタデータ管理サービス
   - 組織内の全データアセット（テーブル・ファイル・BI レポート等）を
-    検索・発見・管理するためのメタデータ管理サービス
-  - Google Cloud 上のデータを自動的に発見して登録
-  - ビジネス用語・タグ・説明を付与してデータを整理
+    検索・発見・管理するためのユニバーサルカタログ
+  - Dataplex による自動メタデータ検出でデータアセットを自動登録
+  - BigQuery 上でユニバーサルデータセット探索が可能
+  - Dataplex / Policy Controller によるグロッサリー・タグ管理
+  - IAM およびアクセスポリシーと統合したアクセス制御
 
 使用例:
   「顧客の購買履歴データが欲しい」
-    → Data Catalog で "購買" を検索
+    → Dataplex Universal Catalog で "購買" を検索
     → BigQuery の "purchase_history" テーブルが見つかる
     → テーブルの説明・オーナー・使用例を確認
-    → 適切なアクセス権を申請
+    → IAM ポリシーを通じて適切なアクセス権を申請
 
 機能:
-  - メタデータの自動収集（BigQuery・GCS・Pub/Sub から）
+  - Dataplex によるメタデータの自動収集・検出（BigQuery・GCS・Pub/Sub 等）
   - タグテンプレートによるカスタムメタデータの付与
-  - ビジネス用語集（Glossary）の管理
-  - データアクセスポリシーの確認
+  - ビジネス用語集（Glossary）の管理（Dataplex / BigQuery 統合）
+  - IAM と連携したデータアクセスポリシーの一元管理
 ```
 
 ### 10.4 Sensitive Data Protection（機密データ保護）

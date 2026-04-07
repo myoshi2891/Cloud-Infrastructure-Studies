@@ -87,6 +87,7 @@ import {
 ### Step 4: Section 関数に JSX カードを追加
 
 カードの構造:
+
 ```tsx
 <div className="tcard">
     <div className="ttitle"><span className="tid">5.N</span>カードタイトル</div>
@@ -189,6 +190,7 @@ CLAUDE.md のルール: 非nullアサーション（`!`）禁止。`??` か `?.`
 ### 5. 省略なし・要約なし
 
 ソース MD の内容を省略・要約せずに全文を組み込む。
+
 - 表は全行を含める
 - 説明文は箇条書きも含めて展開する
 - 「ベストプラクティス」「注意事項」「ビジネス活用例」も省略しない
@@ -218,15 +220,19 @@ CLAUDE.md のルール: 非nullアサーション（`!`）禁止。`??` か `?.`
 ## よくある失敗パターン
 
 ### ❌ SVG text 要素のテキストがテストにマッチしない
+
 → 正確な文字列を `<p>` か `<td>` にも記述する
 
 ### ❌ TypeScript ビルドエラー（`arr[i+1]` undefined）
+
 → `arr[i + 1]?.x ?? 0` で optional chaining を使う
 
 ### ❌ 大きな Edit で既存コンテンツが消える
+
 → `old_string` の末尾をより具体的にする。または Edit を複数に分割する
 
 ### ❌ 定数を追加したが page.tsx にインポートを追加し忘れる
+
 → constants.ts 追加 → page.tsx インポート → JSX の順番を守る
 
 ---

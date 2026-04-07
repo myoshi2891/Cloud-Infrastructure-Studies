@@ -700,7 +700,7 @@ IAM ポリシーを変更する必要なし！
 | **デフォルト SA** | Google が自動作成 | App Engine、Compute Engine のデフォルト |
 | **Google 管理 SA** | Google が内部で使用 | Google サービスの内部通信 |
 
-> ⚠️ **デフォルト SA の危険性**: Compute Engine のデフォルト SA は `roles/editor` に近い権限を持っているため、そのまま使用は危険です。専用の最小権限 SA を作成してアタッチしてください。
+> ⚠️ **デフォルト SA の危険性**: Compute Engine のデフォルト SA は、組織の作成時期によっては `roles/editor` 相当の権限を自動付与される可能性があります。組織ポリシー（`iam.automaticIamGrantsForDefaultServiceAccounts`）を確認し、2024-05-03 以降に作成された組織ではこの制約がデフォルトで有効なため自動付与は行われませんが、旧来の組織では明示的に確認が必要です。いずれの場合も、専用の最小権限 SA を作成してアタッチしてください。
 
 ---
 
@@ -1257,7 +1257,7 @@ db_password = access_secret("my-project", "db-password")
 gcloud run deploy my-service \
   --image=gcr.io/PROJECT/my-app:latest \
   --region=asia-northeast1 \
-  --set-secrets="DB_PASSWORD=db-password:latest,API_KEY=api-key:v2"
+  --set-secrets="DB_PASSWORD=db-password:latest,API_KEY=api-key:latest"
   # 環境変数名=シークレット名:バージョン
 ```
 

@@ -1470,7 +1470,7 @@ Google Workspace を使った働き方:
 | データ活用 | BigQuery + Looker | データドリブン意思決定の実現 |
 | EC 売上向上 | Recommendations AI | 個別化されたレコメンデーション |
 | 製造業の品質改善 | Vision AI + AutoML | 製品不良の自動検出 |
-| 人材・採用 | Hire by Google | 採用プロセスの効率化 |
+| 人材・採用 | Cloud Talent Solution | 求人検索・採用マッチングの AI 最適化 |
 | コスト削減 | Cloud Run + BigQuery | サーバーレスで ITコスト最小化 |
 
 > 📎 **参照**:  
