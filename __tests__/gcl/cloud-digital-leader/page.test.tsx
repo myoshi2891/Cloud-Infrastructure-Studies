@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import CloudDigitalLeaderPage from '@/app/gcl/cloud-digital-leader/page.tsx';
 
 describe('Cloud Digital Leader 認定試験 ページ', () => {
@@ -40,7 +40,7 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         const nav = screen.getByRole('navigation', { name: /セクションナビゲーション/i });
         expect(nav).toBeInTheDocument();
         expect(screen.getByText('試験概要')).toBeInTheDocument();
-        expect(screen.getAllByText('AI/ML').length).toBeGreaterThanOrEqual(1);
+        expect(within(nav).getByRole('link', { name: /AI\/ML/i })).toBeInTheDocument();
     });
 
     it('DX・クラウド基礎セクションが存在すること', () => {
