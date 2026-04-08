@@ -71,3 +71,17 @@ npm run test:e2e
 ## 📝 ライセンス
 
 Private Project
+
+## 🤖 AI Skills (AI エージェント向け)
+
+本プロジェクトの開発や移行作業を補助するための専用 AI スキルが用意されています。
+
+- **`infra-md-to-nextjs-migration.skill`**: Markdown 形式の試験対策コンテンツを `Next.js` アプリケーションへ安全に移行するためのルールと手順（JSX構造、SVG変換、TypeScript Strict対応）を定義したスキルです。
+
+**Gemini CLI での利用方法:**
+
+```bash
+# プロジェクト内にインストール
+gemini skills install infra-md-to-nextjs-migration.skill --scope workspace
+```
+※ インストール後、Gemini CLI の対話セッションで `/skills reload` を実行して有効化してください。

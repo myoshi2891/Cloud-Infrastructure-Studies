@@ -43,3 +43,16 @@
 
 - `litellm` や `dspy` は脆弱性の懸念があるため、プロジェクトへの追加は禁止されています。
 - ページコンポーネント（`page.tsx`）が巨大化する傾向があるため、必要に応じてロジックやコンテンツの分離を検討してください。
+
+## AI Skills
+
+本プロジェクトにはAIエージェント（Gemini CLI 等）向けの専用スキルが用意されています。
+
+- **`infra-md-to-nextjs-migration`**: Markdownの学習資料からNext.js（App Router）の `page.tsx` および `constants.ts` への移行ワークフローを定義したスキルです。
+
+**インストール・利用手順 (Gemini CLI)**:
+```bash
+# プロジェクト（ワークスペース）スコープでインストール
+gemini skills install infra-md-to-nextjs-migration.skill --scope workspace
+```
+対話セッション内では `/skills reload` を実行してスキルを有効化し、「MDを移行して」などのトリガーワードで呼び出してください。
