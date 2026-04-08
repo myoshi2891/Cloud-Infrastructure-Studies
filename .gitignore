@@ -119,3 +119,7 @@ playwright-report/
 Aws/archive/
 Gcl/*
 tsconfig.tsbuildinfo
+infra-md-to-nextjs-migration.skill
+.gemini
+docs/skills
+.gitignore
