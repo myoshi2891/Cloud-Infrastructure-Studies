@@ -271,7 +271,7 @@ Section 2 で問われる主なこと:
   Transfer          Dataproc           Cloud SQL          Vertex AI          Looker Studio
   Service           Cloud Run          Cloud Storage      BigQuery ML        Gemini
   Storage           Cloud Functions    Bigtable           Looker
-  Transfer          Datastream         Firestore          Data Studio
+  Transfer          Datastream         Firestore          Looker Studio
   Appliance
 ```
 
@@ -382,10 +382,12 @@ Cloud Storage の特徴:
 
 | クラス | 月次保存コスト | 取得コスト | 最小保存期間 | 適したユースケース |
 | --- | --- | --- | --- | --- |
-| **Standard** | 高（$0.020/GB） | 無料 | なし | 頻繁にアクセスするデータ・Web コンテンツ・ML 学習データ |
-| **Nearline** | 中（$0.010/GB） | あり（小） | 30日 | 月1回程度のアクセス・バックアップ・月次レポート |
-| **Coldline** | 低（$0.004/GB） | あり（中） | 90日 | 四半期に1回程度のアクセス・DR バックアップ |
-| **Archive** | 最安（$0.0012/GB） | あり（大） | 365日 | 年1回未満のアクセス・法令遵守のための長期保管 |
+| **Standard** | 高（目安: $0.020/GB） | 無料 | なし | 頻繁にアクセスするデータ・Web コンテンツ・ML 学習データ |
+| **Nearline** | 中（目安: $0.010/GB） | あり（小） | 30日 | 月1回程度のアクセス・バックアップ・月次レポート |
+| **Coldline** | 低（目安: $0.004/GB） | あり（中） | 90日 | 四半期に1回程度のアクセス・DR バックアップ |
+| **Archive** | 最安（目安: $0.0012/GB） | あり（大） | 365日 | 年1回未満のアクセス・法令遵守のための長期保管 |
+
+※ 価格はリージョンにより異なります — 表は us-central1 の参考値です。最新情報は[公式の料金ページ](https://cloud.google.com/storage/pricing)をご確認ください。
 
 #### Cloud Storage のライフサイクル管理
 
@@ -743,7 +745,7 @@ LookML（Looker Modeling Language）:
 
 ```
 Looker Studio の特徴:
-  - 完全無料（Google アカウントがあれば誰でも使える）
+  - 基本機能は無料だが、有償の Looker Studio Pro（例: $9/ユーザー/プロジェクト/月）などの有料オプションがある
   - コードなしでドラッグ&ドロップで作成
   - 30 以上のデータソースと接続可能
   - 共有・コメント機能（Google ドキュメントと同じ感覚）
@@ -1306,7 +1308,7 @@ BigQuery に全データを蓄積 → モデルの継続的な改善
 
 医療画像（レントゲン・CT・MRI）
     ↓
-Cloud Storage（HIPAA 準拠ストレージ）
+Cloud Storage（HIPAA 対応構成が可能なストレージ）
     ↓
 Cloud Healthcare API（HL7 FHIR 対応）
     ↓
@@ -1316,7 +1318,7 @@ Vertex AI（医療画像 AI / Medical Imaging）
 
 注意事項:
   - 医療データは HIPAA（米国）・個人情報保護法の対象
-  - Google Cloud は HIPAA BAA（事業提携契約）に対応
+  - Google Cloud は HIPAA BAA（事業提携契約）に対応（利用には BAA の締結が必須であり、顧客側の構成・運用責任が前提）
   - データ暗号化・アクセスログが必須
 ```
 

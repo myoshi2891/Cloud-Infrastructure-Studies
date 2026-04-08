@@ -39,11 +39,11 @@
 
 ## 実装手順
 
-1. `constants.ts` に `ML_APPROACHES`, `BQML_FEATURES` を追加
-2. `page.tsx` の `Section5` 関数を拡張（5.2〜5.16 のカードを追加）
-3. `bun run test __tests__/gcl/cloud-digital-leader/page.test.tsx` で全64テスト GREEN 確認
-4. `bun run build` でビルドエラーなし確認
-5. commit: `feat(cdl/S5): add AI/ML hierarchy, ML approaches, Vertex AI, Gemini, RAG`
+- [x] `constants.ts` に `ML_APPROACHES`, `BQML_FEATURES` を追加
+- [x] `page.tsx` の `Section5` 関数を拡張（5.2〜5.16 のカードを追加）
+- [x] `bun run test __tests__/gcl/cloud-digital-leader/page.test.tsx` で全64テスト GREEN 確認
+- [x] `bun run build` でビルドエラーなし確認
+- [x] commit: `feat(cdl/S5): add AI/ML hierarchy, ML approaches, Vertex AI, Gemini, RAG`
 
 ---
 
