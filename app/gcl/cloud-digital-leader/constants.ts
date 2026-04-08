@@ -19,12 +19,12 @@ export type ExamDomain = {
 };
 
 export const EXAM_DOMAINS: ExamDomain[] = [
-    { section: 'Domain 1', theme: 'Google Cloud によるデジタルトランスフォーメーション', weight: '10%' },
-    { section: 'Domain 2', theme: 'クラウドによるイノベーション', weight: '12.5%' },
-    { section: 'Domain 3', theme: 'インフラとアプリのモダナイゼーション', weight: '30%' },
-    { section: 'Domain 4', theme: 'Google Cloud のセキュリティと運用', weight: '30%' },
-    { section: 'Domain 5', theme: 'データによるイノベーション', weight: '12.5%' },
-    { section: 'Domain 6', theme: 'Google Cloud の AI によるイノベーション', weight: '5%' },
+    { section: 'Domain 1', theme: 'Google Cloud でビジネスを変革する', weight: '~17%' },
+    { section: 'Domain 2', theme: 'Google Cloud によるデータ活用の探求', weight: '~17%' },
+    { section: 'Domain 3', theme: 'Google Cloud AI によるイノベーション', weight: '~17%' },
+    { section: 'Domain 4', theme: 'インフラとアプリのモダナイゼーション', weight: '~16%' },
+    { section: 'Domain 5', theme: 'Trust and Security with Google Cloud', weight: '~17%' },
+    { section: 'Domain 6', theme: 'Scaling with Google Cloud Operations', weight: '~16%' },
 ];
 
 export type NistCharacteristic = {

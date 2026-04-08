@@ -119,7 +119,6 @@ function Section1() {
                     <h2>DX・クラウド基礎 — デジタルトランスフォーメーションと Google Cloud</h2>
                     <p>クラウドの5特性・IaaS/PaaS/SaaS・デプロイモデル・CapEx vs OpEx・Cloud Adoption Framework</p>
                 </div>
-                <div className="pct-badge pb1">17%</div>
             </div>
 
             {/* 1.1 NIST 5特性 */}
@@ -382,7 +381,6 @@ function Section2() {
                     <h2>データとイノベーション — クラウドによるイノベーション</h2>
                     <p>データ価値・データ型・DB選択・BigQuery・分析パイプライン・Cloud Storage</p>
                 </div>
-                <div className="pct-badge pb2">16%</div>
             </div>
 
             {/* 2.1 データの価値とビジネス活用 */}
@@ -573,7 +571,6 @@ function Section3() {
                     <h2>インフラとモダナイゼーション — インフラとアプリのモダナイゼーション</h2>
                     <p>移行戦略6R・Compute Engine・GKE・Cloud Run・ネットワーク・GKE Enterprise・Apigee</p>
                 </div>
-                <div className="pct-badge pb3">17%</div>
             </div>
 
             {/* 3.1 移行戦略 6R */}
@@ -862,7 +859,6 @@ function Section4() {
                     <h2>セキュリティと運用 — Google Cloud のセキュリティと運用</h2>
                     <p>共有責任モデル・Shared Fate・BeyondCorp・IAM・セキュリティサービス・コンプライアンス・費用管理</p>
                 </div>
-                <div className="pct-badge pb4">17%</div>
             </div>
 
             {/* 4.0 セキュリティ多層構造 SVG */}
@@ -1211,7 +1207,6 @@ function Section5() {
                     <h2>AI/ML — Google Cloud の AI によるイノベーション</h2>
                     <p>AI 原則・Vertex AI・生成 AI・Gemini・RAG</p>
                 </div>
-                <div className="pct-badge pb5">5%</div>
             </div>
 
             <div className="tcard">
