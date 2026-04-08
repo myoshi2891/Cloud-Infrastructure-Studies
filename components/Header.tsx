@@ -163,6 +163,13 @@ export function Header() {
                         >
                             Domain 3: 運用管理 包括的解説
                         </Link>
+                        <Link
+                            href="/gcl/associate-cloud-engineer/domain4"
+                            className="block px-4 py-2 text-sm text-[var(--color-muted-foreground)] hover:bg-[var(--color-accent)] hover:text-[var(--color-foreground)]"
+                            onClick={() => setOpenMenu(null)}
+                        >
+                            Domain 4: アクセスとセキュリティ 包括的解説
+                        </Link>
                     </div>
                 </div>
 
