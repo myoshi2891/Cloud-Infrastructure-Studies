@@ -1679,10 +1679,10 @@ function Section5() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td><strong>Gemini Ultra</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>最高性能・複雑な推論・医療診断・科学研究</td></tr>
-                            <tr><td><strong>Gemini Pro</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>性能とコストのバランス・RAG・コード生成</td></tr>
-                            <tr><td><strong>Gemini Flash</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>高速・低コスト・100万トークン・大量処理</td></tr>
-                            <tr><td><strong>Gemini Nano</strong></td><td>小型 LLM</td><td>テキスト・画像</td><td>テキスト</td><td>オンデバイス・エッジ・オフライン・スマートフォン</td></tr>
+                            <tr><td><strong>Gemini 2.5 Pro</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>最高性能・複雑な推論・100万トークン超</td></tr>
+                            <tr><td><strong>Gemini 2.5 Flash</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>性能とコストのバランス・RAG・100万トークン超</td></tr>
+                            <tr><td><strong>Gemini 2.5 Flash-Lite</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>高速・低コスト・大量処理・長文コンテキスト</td></tr>
+                            <tr><td><strong>Gemini 2.0 Flash</strong></td><td>マルチモーダル LLM</td><td>テキスト・画像・音声・動画</td><td>テキスト・コード</td><td>エージェント・チャット・100万トークン</td></tr>
                             <tr><td><strong>Gemma</strong></td><td>オープンウェイト LLM</td><td>テキスト</td><td>テキスト</td><td>OSS・自己ホスト・ベンダーロックイン回避・機密データ保護</td></tr>
                             <tr><td><strong>Imagen</strong></td><td>画像生成</td><td>テキスト</td><td>画像</td><td>拡散モデル・SynthID 透かし・商用利用・EC商品画像</td></tr>
                             <tr><td><strong>Veo</strong></td><td>動画生成</td><td>テキスト・画像</td><td>動画</td><td>動画生成・シネマティック・広告プロトタイプ</td></tr>

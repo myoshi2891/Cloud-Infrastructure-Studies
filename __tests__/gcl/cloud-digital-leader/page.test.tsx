@@ -396,10 +396,10 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
 
     it('S5: Gemini モデル表（4種）が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getAllByText(/Gemini Ultra/i).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/Gemini Pro/i).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/Gemini Flash/i).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/Gemini Nano/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Gemini 2\.5 Pro/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Gemini 2\.5 Flash/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Gemini 2\.5 Flash-Lite/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/Gemini 2\.0 Flash/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('S5: Gemini for Workspace の詳細が存在すること', () => {
