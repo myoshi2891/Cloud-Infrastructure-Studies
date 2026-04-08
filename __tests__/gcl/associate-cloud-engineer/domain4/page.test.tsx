@@ -51,7 +51,7 @@ describe('ACE Domain 4 Page', () => {
         render(<Domain4Page />);
         expect(screen.getByText(/サービスアカウントキーのリスクと代替手法/)).toBeDefined();
         expect(screen.getByText(/SA JSON キーの使用はセキュリティ上の重大なアンチパターン/)).toBeDefined();
-        expect(screen.getByText(/gcloud auth application-default login/)).toBeDefined();
+        expect(screen.getAllByText(/gcloud auth application-default login/)[0]).toBeDefined();
     });
 
     it('renders Chapter 8 content correctly', () => {
@@ -59,5 +59,33 @@ describe('ACE Domain 4 Page', () => {
         expect(screen.getAllByText(/Workload Identity Federation/)[0]).toBeDefined();
         expect(screen.getAllByText(/Google Cloud API にアクセスするための仕組みです/)[0]).toBeDefined();
         expect(screen.getAllByText(/GitHub Actions との Workload Identity Federation 設定/)[0]).toBeDefined();
+    });
+
+    it('renders Chapter 9 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getAllByText(/Application Default Credentials/)[0]).toBeDefined();
+        expect(screen.getByText(/コードを変更せずに認証情報を切り替えられる仕組み/)).toBeDefined();
+        expect(screen.getAllByText(/gcloud auth application-default login/)[0]).toBeDefined();
+    });
+
+    it('renders Chapter 10 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/権限借用（Impersonation）と PAM/)).toBeDefined();
+        expect(screen.getByText(/alice は自分の権限ではなく SA を借用して作業/)).toBeDefined();
+        expect(screen.getByText(/Privileged Access Manager/)).toBeDefined();
+    });
+
+    it('renders Chapter 11 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/Secret Manager（シークレット管理）/)).toBeDefined();
+        expect(screen.getByText(/環境変数に平文でシークレットを設定/)).toBeDefined();
+        expect(screen.getAllByText(/gcloud secrets create db-password/)[0]).toBeDefined();
+    });
+
+    it('renders Chapter 12 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/Cloud KMS（鍵管理サービス）/)).toBeDefined();
+        expect(screen.getByText(/暗号化キーを Cloud KMS で一元管理/)).toBeDefined();
+        expect(screen.getByText(/CMEK による Cloud Storage の暗号化/)).toBeDefined();
     });
 });
