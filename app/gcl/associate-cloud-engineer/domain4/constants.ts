@@ -130,3 +130,33 @@ export const KMS_ROLES: RoleItem[] = [
     { role: 'roles/cloudkms.cryptoKeyDecrypter', description: '復号化のみ' },
     { role: 'roles/cloudkms.viewer', description: 'キーのメタデータ閲覧のみ' },
 ];
+
+export const SCC_FINDINGS: { category: string; details: string }[] = [
+    { category: 'IAM の問題', details: 'プロジェクトオーナーが複数いる、allUsers への権限付与' },
+    { category: 'ネットワーク設定', details: '0.0.0.0/0 からの SSH/RDP 許可、パブリックアクセス' },
+    { category: 'Cloud Storage', details: 'パブリックバケット、暗号化なし' },
+    { category: 'Compute Engine', details: 'シールドド VM 無効、OS Login 無効、外部 IP' },
+    { category: 'GKE', details: '認証の弱い設定、特権コンテナ、古いバージョン' },
+    { category: 'ログ関連', details: '監査ログ無効、ログ取り込み設定なし' },
+    { category: 'SQL', details: '公開 IP、SSL 無効、バックアップなし' },
+];
+
+export const DOMAIN4_BEST_PRACTICES: { category: string; practice: string }[] = [
+    { category: 'IAM 一般', practice: '最小権限の原則を徹底（事前定義ロール優先）' },
+    { category: 'IAM 一般', practice: 'グループにロールを付与（個人への直接付与は避ける）' },
+    { category: 'IAM 一般', practice: '定期的な権限レビュー（Policy Recommender 活用）' },
+    { category: 'SA 管理', practice: 'SA JSON キーの生成を組織ポリシーで禁止' },
+    { category: 'SA 管理', practice: 'CI/CD は Workload Identity Federation を使用' },
+    { category: 'SA 管理', practice: 'ローカル開発は ADC（gcloud auth application-default login）' },
+    { category: 'SA 管理', practice: '特権操作は SA Impersonation または PAM' },
+    { category: 'シークレット', practice: 'Secret Manager でシークレットを一元管理' },
+    { category: 'シークレット', practice: 'コード・設定ファイルへのハードコードを根絶' },
+    { category: '暗号化', practice: '規制データには CMEK（Cloud KMS）を適用' },
+    { category: 'ネットワーク', practice: 'VM の外部 IP を削除し IAP 経由でアクセス' },
+    { category: 'ネットワーク', practice: 'OS Login + 2FA を組織ポリシーで強制' },
+    { category: 'ネットワーク', practice: 'すべての本番 ALB に Cloud Armor を設定' },
+    { category: 'コンテナ', practice: 'Binary Authorization で承認済みイメージのみデプロイ' },
+    { category: '可視化', practice: 'SCC で設定ミスを定期確認・修正' },
+    { category: '可視化', practice: 'データアクセス監査ログを有効化（機密データ）' },
+];
+

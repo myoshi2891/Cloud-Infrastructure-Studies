@@ -88,4 +88,46 @@ describe('ACE Domain 4 Page', () => {
         expect(screen.getByText(/暗号化キーを Cloud KMS で一元管理/)).toBeDefined();
         expect(screen.getByText(/CMEK による Cloud Storage の暗号化/)).toBeDefined();
     });
+
+    it('renders Chapter 13 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/VPC Service Controls とは？/)).toBeDefined();
+        expect(screen.getAllByText(/データの持ち出し/)[0]).toBeDefined();
+        expect(screen.getByText(/サービス境界（Service Perimeter）の構造/)).toBeDefined();
+    });
+
+    it('renders Chapter 14 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/Identity-Aware Proxy \(IAP\)/)).toBeDefined();
+        expect(screen.getAllByText(/VPN なしで VM や GKE ノードに安全に接続できます/)[0]).toBeDefined();
+        expect(screen.getByText(/IAP による SSH \/ TCP トンネリング/)).toBeDefined();
+    });
+
+    it('renders Chapter 15 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/Cloud Armor（DDoS 防御 \/ WAF）/)).toBeDefined();
+        expect(screen.getByText(/Cloud Armor が保護するレイヤ/)).toBeDefined();
+        expect(screen.getByText(/Adaptive Protection とは？/)).toBeDefined();
+    });
+
+    it('renders Chapter 16 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/Security Command Center \(SCC\)/)).toBeDefined();
+        expect(screen.getAllByText(/Security Health Analytics（設定ミスの検出）/)[0]).toBeDefined();
+        expect(screen.getByText(/Binary Authorization（コンテナの完全性保証）/)).toBeDefined();
+    });
+
+    it('renders Chapter 17 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/Domain 4 試験対策まとめ/)).toBeDefined();
+        expect(screen.getByText(/試験頻出パターン/)).toBeDefined();
+        expect(screen.getByText(/セキュリティサービスの役割マップ/)).toBeDefined();
+    });
+
+    it('renders Chapter 18 content correctly', () => {
+        render(<Domain4Page />);
+        expect(screen.getByText(/包括的調査および実践的アーキテクチャガイド/)).toBeDefined();
+        expect(screen.getByText(/クラウドインフラストラクチャにおけるセキュリティの重要性/)).toBeDefined();
+        expect(screen.getByText(/サービスアカウントキーの脆弱性と最新の組織ポリシー/)).toBeDefined();
+    });
 });

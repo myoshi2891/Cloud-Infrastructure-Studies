@@ -15,6 +15,8 @@ import {
     SECRET_MANAGER_ROLES,
     SECRET_MANAGER_BEST_PRACTICES,
     KMS_ROLES,
+    SCC_FINDINGS,
+    DOMAIN4_BEST_PRACTICES,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -1559,6 +1561,769 @@ gcloud kms keys add-iam-policy-binding my-symmetric-key \\
     );
 }
 
+function Chapter13() {
+    return (
+        <div id="ch13" className="sec-head">
+            <h2 className="stitle"><span className="sn3">13</span> VPC Service Controls</h2>
+            
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">13.1</span> VPC Service Controls とは？</div>
+                <div className="code-block">
+                    <pre><code>{`【VPC Service Controls の目的】
+
+通常の IAM:
+  「誰が何のリソースにアクセスできるか」を制御
+
+VPC Service Controls:
+  「どこから」アクセスできるかを制御
+  （IAM と組み合わせてより強固なセキュリティを実現）
+
+【防御できる脅威】
+
+脅威1: データの持ち出し（Data Exfiltration）
+  攻撃者が会社の BigQuery データを
+  自分の Google Cloud プロジェクトにコピーしようとする
+  → VPC Service Controls でブロック！
+
+脅威2: 認証情報の盗難後のアクセス
+  盗まれた SA キーで外部から Cloud Storage にアクセスしようとする
+  → VPC Service Controls で許可された場所からのみアクセス！
+
+脅威3: フィッシング後の不正アクセス
+  社員が騙されてフィッシングサイトで認証情報を入力
+  → 特定の IP / VPC からのみアクセスを許可しているためブロック！`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">13.2</span> VPC Service Controls の設計</div>
+                <div className="code-block">
+                    <pre><code>{`【サービス境界（Service Perimeter）の構造】
+
+サービス境界（Service Perimeter）:
+  ├── 保護対象プロジェクト: project-A, project-B
+  ├── 保護対象 API: BigQuery, Cloud Storage, Cloud SQL
+  │
+  ├── アクセスポリシー（誰がアクセスできるか）:
+  │   ├── VPC Network: my-corp-vpc（社内ネットワークから）
+  │   ├── IP アドレス範囲: 203.0.113.0/24（会社の外部 IP）
+  │   └── SA: trusted-sa@project.iam.gserviceaccount.com
+  │
+  └── アクセスレベル（Access Level）:
+      └── 上記の組み合わせで定義
+
+境界外からのアクセス → PERMISSION DENIED
+境界内からのアクセス → IAM で判断`}</code></pre>
+                </div>
+                <div className="code-block mt-4">
+                    <pre><code>{`# アクセスポリシーの作成
+gcloud access-context-manager policies create \\
+  --organization=ORG_ID \\
+  --title="My Corp Access Policy"
+
+# アクセスレベルの作成（会社の VPC + IP 範囲を許可）
+gcloud access-context-manager levels create corp-network \\
+  --policy=POLICY_ID \\
+  --title="Corporate Network Access" \\
+  --basic-level-spec=access-level-spec.yaml
+
+# サービス境界の作成
+gcloud access-context-manager perimeters create my-perimeter \\
+  --policy=POLICY_ID \\
+  --title="Data Protection Perimeter" \\
+  --resources=projects/PROJECT_NUMBER \\
+  --restricted-services=bigquery.googleapis.com,storage.googleapis.com \\
+  --access-levels=accessPolicies/POLICY_ID/accessLevels/corp-network`}</code></pre>
+                </div>
+                <p className="tdesc mt-4">🔗 <strong>参考</strong>: https://cloud.google.com/vpc-service-controls/docs/overview</p>
+            </div>
+        </div>
+    );
+}
+
+function Chapter14() {
+    return (
+        <div id="ch14" className="sec-head">
+            <h2 className="stitle"><span className="sn4">14</span> Identity-Aware Proxy (IAP)</h2>
+            
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.1</span> IAP とは？</div>
+                <div className="code-block">
+                    <pre><code>{`【IAP がない場合（従来の方法）】
+
+ユーザー → インターネット → VPN → 社内システム
+または
+ユーザー → インターネット → Bastion Host → 社内システム
+
+問題点:
+  ├── VPN のセットアップが面倒
+  ├── Bastion Host の管理コスト
+  └── VPN が侵害されると内部に全アクセス
+
+【IAP がある場合（ゼロトラストアクセス）】
+
+ユーザー → インターネット → IAP → Google 内部ネットワーク → アプリ
+              ↑
+         認証・認可をここで実施
+         ・Google アカウントで認証
+         ・IAM で認可（どのユーザーがアクセス可能か）
+         ・デバイスのセキュリティ状態を確認
+         ・VPN 不要！`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.2</span> IAP の設定</div>
+                <div className="code-block">
+                    <pre><code>{`# Cloud Run サービスに IAP を有効化
+# （先にロードバランサを設定し、IAP はバックエンドサービスに適用）
+
+# バックエンドサービスに IAP を有効化
+gcloud compute backend-services update my-backend-service \\
+  --iap=enabled \\
+  --oauth2-client-id=CLIENT_ID \\
+  --oauth2-client-secret=CLIENT_SECRET \\
+  --global
+
+# ユーザーにアクセスを許可
+gcloud iap web add-iam-policy-binding \\
+  --resource-type=backend-services \\
+  --service=my-backend-service \\
+  --member="user:alice@example.com" \\
+  --role="roles/iap.httpsResourceAccessor"
+
+# グループにアクセスを許可（推奨）
+gcloud iap web add-iam-policy-binding \\
+  --resource-type=backend-services \\
+  --service=my-backend-service \\
+  --member="group:internal-users@example.com" \\
+  --role="roles/iap.httpsResourceAccessor"`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">14.3</span> IAP による SSH / TCP トンネリング</div>
+                <p className="tdesc">VPN なしで VM や GKE ノードに安全に接続できます。</p>
+                <div className="code-block">
+                    <pre><code>{`# IAP トンネル経由で VM に SSH 接続
+gcloud compute ssh VM_NAME \\
+  --zone=asia-northeast1-a \\
+  --tunnel-through-iap
+# → 外部 IP なし・ファイアウォールで SSH を開放していない VM にも接続可能！
+
+# IAP トンネル経由でローカルポートフォワーディング
+# 例: Cloud SQL に直接接続（Auth Proxy の代替）
+gcloud compute start-iap-tunnel VM_NAME 3306 \\
+  --local-host-port=localhost:3307 \\
+  --zone=asia-northeast1-a
+# → localhost:3307 → IAP → VM の 3306 にトンネル`}</code></pre>
+                </div>
+
+                <p className="stitle mt-4">✅ ベストプラクティス: IAP</p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ベストプラクティス</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td><strong>VPN の代わりに IAP</strong> でゼロトラストアクセスを実現</td></tr>
+                            <tr><td>2</td><td><strong>VM の外部 IP を削除</strong>し、IAP トンネル経由でのみ SSH を許可</td></tr>
+                            <tr><td>3</td><td><strong>グループで IAP アクセスを管理</strong>（個人への付与は避ける）</td></tr>
+                            <tr><td>4</td><td><strong>IAP + OS Login の組み合わせ</strong>で多層防御</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p className="tdesc mt-4">🔗 <strong>参考</strong>: https://cloud.google.com/iap/docs/concepts-overview</p>
+            </div>
+        </div>
+    );
+}
+
+function Chapter15() {
+    return (
+        <div id="ch15" className="sec-head">
+            <h2 className="stitle"><span className="sn5">15</span> Cloud Armor（DDoS 防御 / WAF）</h2>
+            
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.1</span> Cloud Armor の役割</div>
+                <div className="code-block">
+                    <pre><code>{`【Cloud Armor が保護するレイヤ】
+
+インターネット → Cloud Armor → Cloud Load Balancer → バックエンド
+     ↑
+  DDoS 攻撃・悪意のあるリクエストをここでブロック
+
+【Cloud Armor でできること】
+
+① L3/L4 DDoS 防御（自動）
+   → ネットワーク層の大規模 DDoS を自動的に軽減
+
+② L7 WAF（Web Application Firewall）
+   → SQL インジェクション、XSS などの攻撃を検出・ブロック
+
+③ IP ベースのアクセス制御
+   → 特定の IP アドレスをブロック or 許可リスト
+
+④ 地理情報ベースのアクセス制御
+   → 特定の国からのアクセスをブロック
+
+⑤ レート制限
+   → 1つの IP からの大量リクエストを制限`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.2</span> Cloud Armor のセキュリティポリシー設定</div>
+                <div className="code-block">
+                    <pre><code>{`# セキュリティポリシーを作成
+gcloud compute security-policies create my-waf-policy \\
+  --description="WAF and DDoS protection for production"
+
+# ===== WAF ルール（OWASP ルールセット）=====
+
+# SQL インジェクション対策ルールを追加
+gcloud compute security-policies rules create 1000 \\
+  --security-policy=my-waf-policy \\
+  --expression="evaluatePreconfiguredExpr('sqli-v33-stable')" \\
+  --action=deny-403 \\
+  --description="Block SQL injection attempts"
+
+# XSS（クロスサイトスクリプティング）対策
+gcloud compute security-policies rules create 1001 \\
+  --security-policy=my-waf-policy \\
+  --expression="evaluatePreconfiguredExpr('xss-v33-stable')" \\
+  --action=deny-403 \\
+  --description="Block XSS attempts"
+
+# ===== IP ベースのルール =====
+
+# 特定 IP をブロック
+gcloud compute security-policies rules create 2000 \\
+  --security-policy=my-waf-policy \\
+  --src-ip-ranges=203.0.113.100/32 \\
+  --action=deny-403 \\
+  --description="Block known malicious IP"
+
+# 特定の国からのアクセスをブロック
+gcloud compute security-policies rules create 3000 \\
+  --security-policy=my-waf-policy \\
+  --expression="origin.region_code == 'XX'" \\
+  --action=deny-403 \\
+  --description="Block traffic from country XX"
+
+# ===== レート制限 =====
+
+# 1 IP あたり 100 リクエスト/60 秒に制限
+gcloud compute security-policies rules create 4000 \\
+  --security-policy=my-waf-policy \\
+  --expression="true" \\
+  --action=rate-based-ban \\
+  --rate-limit-threshold-count=100 \\
+  --rate-limit-threshold-interval-sec=60 \\
+  --ban-duration-sec=600 \\
+  --conform-action=allow \\
+  --exceed-action=deny-429 \\
+  --description="Rate limiting per IP"
+
+# ===== ポリシーを LB バックエンドサービスに適用 =====
+gcloud compute backend-services update my-backend-service \\
+  --security-policy=my-waf-policy \\
+  --global`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">15.3</span> Cloud Armor のアダプティブ保護（Adaptive Protection）</div>
+                <div className="code-block">
+                    <pre><code>{`【Adaptive Protection とは？】
+
+Google の ML モデルがトラフィックを分析:
+  ├── 通常のトラフィックパターンを学習
+  ├── 異常なトラフィック（DDoS の可能性）を検出
+  ├── ブロックルールを自動提案
+  └── ワンクリックで適用可能
+
+設定方法:
+  gcloud compute security-policies update my-waf-policy \\
+    --enable-layer7-ddos-defense
+
+→ 大規模 DDoS 攻撃時に自動的に保護ルールを適用`}</code></pre>
+                </div>
+
+                <p className="stitle mt-4">✅ ベストプラクティス: Cloud Armor</p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ベストプラクティス</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td><strong>すべての本番 ALB に Cloud Armor を設定</strong></td></tr>
+                            <tr><td>2</td><td><strong>OWASP Top 10 対策ルールを有効化</strong>（WAF ルールセット）</td></tr>
+                            <tr><td>3</td><td><strong>レート制限で DDoS によるコスト暴走を防止</strong></td></tr>
+                            <tr><td>4</td><td><strong>Adaptive Protection を有効化</strong>して ML ベースの自動保護</td></tr>
+                            <tr><td>5</td><td><strong>プリコンフィグ済みルールはまず `preview` モードで確認</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p className="tdesc mt-4">🔗 <strong>参考</strong>: https://cloud.google.com/armor/docs/overview</p>
+            </div>
+        </div>
+    );
+}
+
+function Chapter16({ findings }: { findings: any[] }) {
+    return (
+        <div id="ch16" className="sec-head">
+            <h2 className="stitle"><span className="sn1">16</span> Security Command Center (SCC)</h2>
+            
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.1</span> Security Command Center とは？</div>
+                <div className="code-block">
+                    <pre><code>{`【SCC の目的と位置づけ】
+
+Security Command Center = Google Cloud のセキュリティ管理センター
+
+機能:
+  ├── 脆弱性の自動検出（VM の設定ミス、公開バケットなど）
+  ├── 脅威の検出（不審な操作、マルウェアなど）
+  ├── コンプライアンス状況の可視化（CIS Benchmark など）
+  └── セキュリティスコアの提供
+
+【SCC のサービス階層】
+
+Standard（無料）:
+  ├── Security Health Analytics（設定ミスの検出）
+  ├── Web Security Scanner（基本）
+  └── Cloud Asset Inventory との統合
+
+Premium（有料）:
+  ├── Event Threat Detection（リアルタイム脅威検出）
+  ├── Container Threat Detection（GKE の脅威）
+  ├── Virtual Machine Threat Detection（VM のマルウェア）
+  └── Web Security Scanner（高度）`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.2</span> Security Health Analytics（設定ミスの検出）</div>
+                <p className="tdesc">SCC は以下のような設定ミスを自動的に検出してアラートを出します。</p>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>検出カテゴリ</th>
+                                <th>具体的な検出内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {findings.map((item, i) => (
+                                <tr key={i}>
+                                    <td><strong>{item.category}</strong></td>
+                                    <td>{item.details}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.3</span> SCC の所見（Findings）の確認</div>
+                <div className="code-block">
+                    <pre><code>{`# SCC の所見一覧を確認
+gcloud scc findings list ORGANIZATION_ID \\
+  --source=ALL \\
+  --filter="state=ACTIVE AND severity=HIGH" \\
+  --format="table(name,category,severity,state)"
+
+# 特定のプロジェクトの所見
+gcloud scc findings list ORGANIZATION_ID \\
+  --source=ALL \\
+  --filter="resourceName:projects/my-project AND state=ACTIVE"
+
+# 所見を解消済みとしてマーク
+gcloud scc findings update FINDING_NAME \\
+  --source=SOURCE_ID \\
+  --organization=ORG_ID \\
+  --state=INACTIVE`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.4</span> Binary Authorization（コンテナの完全性保証）</div>
+                <div className="code-block">
+                    <pre><code>{`【Binary Authorization の目的】
+
+問題:
+  「誰でもどんなコンテナイメージでも GKE にデプロイできる」
+  → サプライチェーン攻撃に弱い
+  → テストしていないイメージが本番に入るリスク
+
+解決策: Binary Authorization
+
+CI/CD パイプライン:
+  コードビルド → テスト合格 → 承認済み署名をイメージに付与
+
+GKE デプロイ時:
+  Binary Authorization がポリシーを確認
+    ├── 有効な署名あり → デプロイ許可 ✅
+    └── 署名なし / 無効な署名 → デプロイ拒否 ❌ + アラート
+
+【防げる攻撃】
+  ├── 承認されていないイメージの誤デプロイ
+  ├── サプライチェーン攻撃（npm パッケージへの悪意のあるコード）
+  └── 開発者による手動デプロイ（CI/CD をバイパス）`}</code></pre>
+                </div>
+                <div className="code-block mt-4">
+                    <pre><code>{`# Binary Authorization を GKE クラスタで有効化
+gcloud container clusters update my-cluster \\
+  --binauthz-evaluation-mode=PROJECT_SINGLETON_POLICY_ENFORCE \\
+  --region=asia-northeast1
+
+# 証明者（Attestor）の作成
+# 証明者 = 「このイメージを承認できる人/サービス」の定義
+gcloud container binauthz attestors create my-attestor \\
+  --attestation-authority-note=projects/PROJECT/notes/my-note \\
+  --attestation-authority-note-project=PROJECT
+
+# ポリシーの設定（すべてのイメージに署名を要求）
+cat > policy.yaml <<EOF
+defaultAdmissionRule:
+  evaluationMode: REQUIRE_ATTESTATION
+  enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
+  requireAttestationsBy:
+    - projects/PROJECT/attestors/my-attestor
+globalPolicyEvaluationMode: ENABLE
+EOF
+
+gcloud container binauthz policy import policy.yaml`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.5</span> ファイアウォールルールのセキュリティ設計</div>
+                
+                <h3 className="stitle">ファイアウォール設計の原則</h3>
+                <div className="code-block">
+                    <pre><code>{`【デフォルト拒否（Default Deny）の原則】
+
+ネットワークのデフォルト状態:
+  すべてのトラフィックを拒否
+    ↓ 明示的に許可したもののみ通過
+
+GCP のデフォルトファイアウォール:
+  ├── INGRESS: すべて拒否（デフォルト）
+  └── EGRESS: すべて許可（デフォルト）
+      ↑ 本番環境では Egress も制限することを検討`}</code></pre>
+                </div>
+
+                <h3 className="stitle">安全なファイアウォール設計パターン</h3>
+                <div className="code-block">
+                    <pre><code>{`# ===== 推奨パターン: タグベースのルール =====
+
+# Web サーバーへの HTTP/HTTPS のみ許可
+gcloud compute firewall-rules create allow-http-https-to-web \\
+  --network=prod-vpc \\
+  --direction=INGRESS \\
+  --priority=1000 \\
+  --action=ALLOW \\
+  --rules=tcp:80,tcp:443 \\
+  --target-tags=web-server \\        # web-server タグを持つ VM のみ
+  --source-ranges=0.0.0.0/0 \\
+  --description="Allow HTTP/HTTPS traffic to web servers"
+
+# App サーバーへはロードバランサからのみ許可
+gcloud compute firewall-rules create allow-app-from-lb \\
+  --network=prod-vpc \\
+  --direction=INGRESS \\
+  --priority=1000 \\
+  --action=ALLOW \\
+  --rules=tcp:8080 \\
+  --target-tags=app-server \\
+  --source-tags=web-server          # web-server タグからのみ
+
+# DB サーバーへはアプリサーバーからのみ許可
+gcloud compute firewall-rules create allow-db-from-app \\
+  --network=prod-vpc \\
+  --direction=INGRESS \\
+  --priority=1000 \\
+  --action=ALLOW \\
+  --rules=tcp:5432 \\
+  --target-tags=db-server \\
+  --source-tags=app-server          # app-server タグからのみ
+
+# SSH は IAP からのみ許可（外部からの直接 SSH を完全ブロック）
+gcloud compute firewall-rules create allow-ssh-iap \\
+  --network=prod-vpc \\
+  --direction=INGRESS \\
+  --priority=1000 \\
+  --action=ALLOW \\
+  --rules=tcp:22 \\
+  --target-tags=ssh-allowed \\
+  --source-ranges=35.235.240.0/20   # IAP の IP レンジ`}</code></pre>
+                </div>
+
+                <h3 className="stitle">❌ やってはいけないファイアウォール設定</h3>
+                <div className="code-block">
+                    <pre><code>{`# ❌ 危険: SSH を全世界に公開
+gcloud compute firewall-rules create bad-ssh-rule \\
+  --action=ALLOW \\
+  --rules=tcp:22 \\
+  --source-ranges=0.0.0.0/0   # すべての IP から SSH 接続可能！
+
+# ❌ 危険: タグなし（全 VM に適用）
+gcloud compute firewall-rules create bad-rule \\
+  --action=ALLOW \\
+  --rules=tcp:3389 \\           # RDP を全 VM に公開
+  --source-ranges=0.0.0.0/0
+
+# ✅ 修正: IAP からの SSH のみ許可、特定タグの VM のみ
+gcloud compute firewall-rules create good-ssh-rule \\
+  --action=ALLOW \\
+  --rules=tcp:22 \\
+  --source-ranges=35.235.240.0/20 \\  # IAP の IP レンジ
+  --target-tags=bastion-only          # 限定された VM のみ`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">16.6</span> OS Login と多層防御（再確認）</div>
+                <p className="tdesc">Domain 4 として改めて OS Login の重要性を整理します。</p>
+                <div className="code-block">
+                    <pre><code>{`【OS Login の多層防御効果】
+
+層1: IAM（誰が SSH できるか）
+  roles/compute.osLogin        → SSH 接続（sudo なし）
+  roles/compute.osAdminLogin   → SSH 接続（sudo あり）
+  → IAM で制御されるため、退職者は即時アクセス不可
+
+層2: OS Login 自体の設定
+  enable-oslogin=TRUE          → OS Login 有効化
+  enable-oslogin-2fa=TRUE      → 2 要素認証必須
+
+層3: ファイアウォールルール
+  SSH は IAP からのみ許可（35.235.240.0/20）
+  → 外部 IP からの直接アクセスを完全ブロック
+
+層4: 組織ポリシー（強制適用）
+  constraints/compute.requireOsLogin
+  → 全 VM で OS Login を強制（設定し忘れ防止）
+
+→ この 4 層すべてを通過しないと VM にアクセスできない！`}</code></pre>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function Chapter17({ practices }: { practices: any[] }) {
+    return (
+        <div id="ch17" className="sec-head">
+            <h2 className="stitle"><span className="sn2">17</span> Domain 4 試験対策まとめ</h2>
+            
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">17.1</span> 試験頻出パターン</div>
+                <div className="code-block">
+                    <pre><code>{`【パターン①: IAM ロールの選択問題】
+「フロントエンドエンジニアは Cloud Run へのデプロイと
+ Artifact Registry からのイメージプルができる必要がある。
+ 最小権限のロールはどれか？」
+
+考え方:
+  Step 1: 必要な操作を特定
+    ├── Cloud Run のデプロイ → roles/run.developer
+    └── Artifact Registry の読み取り → roles/artifactregistry.reader
+
+  Step 2: 基本ロールは選ばない
+    ❌ roles/editor（過剰権限）
+    ✅ roles/run.developer + roles/artifactregistry.reader
+
+【よくある誤答パターン】
+  ❌ roles/owner（問題外の過剰権限）
+  ❌ roles/editor（多くの不要な権限が含まれる）
+  ✅ 事前定義ロールの組み合わせ または カスタムロール
+
+【パターン②: SA キーの代替手法の問題】
+「GitHub Actions から GCP のリソースを操作したい。
+ 最もセキュアな方法はどれか？」
+
+正解: Workload Identity Federation
+  → GitHub OIDC トークンを GCP トークンに交換
+  → SA キーを GitHub に保存しない
+
+【パターン③: シークレット管理の問題】
+「Cloud Run アプリがデータベースのパスワードを必要とする。
+ 最もセキュアな管理方法はどれか？」
+
+正解:
+  Secret Manager にパスワードを保存
+  Cloud Run の --set-secrets フラグで環境変数として注入
+  SA に roles/secretmanager.secretAccessor を付与
+
+【パターン④: ネットワークセキュリティの問題】
+「本番環境の VM への SSH アクセスをセキュアにしたい。
+ 外部 IP を持たない VM にも接続できるようにしたい。」
+
+正解: IAP トンネル + OS Login`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">17.2</span> セキュリティサービスの役割マップ</div>
+                <div className="code-block">
+                    <pre><code>{`【攻撃経路別のセキュリティサービス】
+
+① 認証・アクセス制御
+   IAM: 誰が何をできるか
+   OS Login: VM への SSH アクセス
+   IAP: VPN 不要のゼロトラストアクセス
+   Binary Authorization: 承認済みコンテナのみデプロイ
+
+② シークレット・データ保護
+   Secret Manager: パスワード・APIキーの安全な管理
+   Cloud KMS: 暗号化キーの管理・CMEK
+
+③ ネットワーク防御
+   Cloud Armor: DDoS・WAF（外部からの攻撃）
+   VPC Firewall: ネットワーク層のアクセス制御
+   VPC Service Controls: データ持ち出し防止
+
+④ 可視化・検出
+   Security Command Center: 設定ミス・脅威の検出
+   Cloud Audit Logs: 誰が何をしたかの記録
+   Cloud Asset Inventory: リソース・IAM の全体把握`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">17.3</span> Domain 4 全体のベストプラクティス一覧</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>カテゴリ</th>
+                                <th>ベストプラクティス</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {practices.map((item, i) => (
+                                <tr key={i}>
+                                    <td><strong>{item.category}</strong></td>
+                                    <td>{item.practice}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div className="wb">
+                <div className="wbt">📝 Domain 4 学習の最終アドバイス</div>
+                <p>必ず押さえるべき 5 つの核心:</p>
+                <ol className="list-decimal pl-6 mt-2 space-y-1">
+                    <li><strong>SA JSON キーは使わない</strong> → Workload Identity / ADC / Impersonation</li>
+                    <li><strong>基本ロール（Editor/Owner）は本番禁止</strong> → 事前定義ロールを使う</li>
+                    <li><strong>Secret Manager でシークレットを管理</strong>（ハードコード・平文禁止）</li>
+                    <li><strong>IAP + OS Login で VM への SSH を多層防御</strong>（外部 IP 不要）</li>
+                    <li><strong>Cloud Armor ですべての本番 ALB を DDoS/WAF から保護</strong></li>
+                </ol>
+            </div>
+        </div>
+    );
+}
+
+function Chapter18() {
+    return (
+        <div id="ch18" className="sec-head">
+            <h2 className="stitle"><span className="sn3">18</span> 包括的調査および実践的アーキテクチャガイド</h2>
+            
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">18.1</span> クラウドインフラストラクチャにおけるセキュリティの重要性</div>
+                <p className="tdesc">現代のクラウドインフラストラクチャ設計において、強固なセキュリティ基盤の確立と厳格なアクセス制御の実装は、システムの可用性とデータの機密性を担保するための最重要課題です。ゼロトラストアーキテクチャの原則に基づき、最小特権の原則を実際のシステムに適用する実践的な能力が問われます。</p>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">18.2</span> IAM権限とロールの構造的分類</div>
+                <p className="tdesc">IAMにおける最小のアクセス制御単位は「権限（Permissions）」であり、通常 <code>service.resource.verb</code> の形式（例：<code>compute.instances.start</code>）で表現されます。これらを論理的に束ねた「ロール（Roles）」をプリンシパルに割り当てます。</p>
+                <div className="code-block">
+                    <pre><code>{`【ロールの種類と特徴】
+
+基本ロール (Basic Roles):
+  「オーナー」「編集者」「閲覧者」。広範なアクセス権を提供。
+  本番環境での使用はセキュリティ上の観点から強く非推奨。
+
+事前定義ロール (Predefined Roles):
+  Googleが保守。特定のサービスやジョブ機能に特化した細粒度の権限を提供。
+  本番環境における標準的かつ最も推奨される選択肢。
+
+カスタムロール (Custom Roles):
+  組織独自の要件に適合させるため、任意の権限を組み合わせて定義。
+  編集権限を持つプリンシパルに対する厳格な制限が必要（特権昇格リスク）。`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">18.3</span> IAMポリシーの動的管理とAPIの失敗に対する指数バックオフ戦略</div>
+                <div className="code-block">
+                    <pre><code>{`【Read-Modify-Write パターン】
+
+大規模な変更をREST APIやクライアントライブラリを通じて実行する場合:
+1. Read: getIamPolicy() で現在の許可ポリシーと ETag を取得
+2. Modify: JSONオブジェクトに対してプリンシパルの追加・ロール変更を適用
+3. Write: setIamPolicy() で送信し、サーバー側で ETag を比較
+
+【Thundering Herd 問題の回避】
+IAM APIリクエストが失敗した場合、「ジッター（揺らぎ）を伴う切り捨て指数バックオフ」を適用。
+待機時間 = min((2^n + random-fraction), maximum-backoff)
+※ 409 (Conflict) エラーの場合は、単なる再試行ではなく、getIamPolicy() からやり直す。`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">18.4</span> サービスアカウントキーの脆弱性と最新の組織ポリシー</div>
+                <div className="code-block">
+                    <pre><code>{`2024年のセキュリティ動向レポートによると、認証情報の脆弱性がクラウド侵害の約76%を占めます。
+Google Cloudは2024年5月以降、デフォルトで iam.disableServiceAccountKeyCreation の強力な組織ポリシーを適用しています。
+
+キーを使用せざるを得ない環境での運用ルール:
+・一時ディレクトリや公開された共有フォルダに絶対に放置しない。
+・ユーザー間で電子メールやチャットツールを通じて直接受け渡ししない。
+・GitHubやGitLabなどのソースコードリポジトリにキーを含めてコミットしない。
+・アプリケーションの実行バイナリの内部にキーをハードコードして埋め込まない。
+・定期的なローテーションポリシーを確立し自動化する。`}</code></pre>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">18.5</span> Cloud Audit Logsによる監視体制とコンプライアンスの確保</div>
+                <div className="code-block">
+                    <pre><code>{`【監査ログの4つのカテゴリ】
+
+管理アクティビティ監査ログ (Admin Activity):
+  リソースの構成変更を記録。強制的に有効（無料）、400日間保存。
+
+データアクセス監査ログ (Data Access):
+  ユーザーデータに対する作成・変更・読み取りを記録。
+  デフォルト無効。有効化時は膨大なボリュームに注意。
+  「免除されたプリンシパル」を設定してノイズを削減することが重要。
+
+システムイベント監査ログ (System Event):
+  Google Cloudシステム側が自律的に実行したイベント。常に有効（無料）。
+
+ポリシー拒否監査ログ (Policy Denied):
+  セキュリティポリシー違反や拒否されたアクセス試行を記録。デフォルト有効。`}</code></pre>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Domain4Page() {
     return (
         <main className="d4-page">
@@ -1575,10 +2340,10 @@ export default function Domain4Page() {
 
             <nav className="snav">
                 <div className="snav-inner">
-                    <a href="#ch1" className="snav-link"><span className="snav-num">01</span> セキュリ ティの基本</a>
+                    <a href="#ch1" className="snav-link"><span className="snav-num">01</span> セキュリティの基本</a>
                     <a href="#ch2" className="snav-link"><span className="snav-num">02</span> IAMアーキテクチャ</a>
                     <a href="#ch3" className="snav-link"><span className="snav-num">03</span> ロールの 3 種類</a>
-                    <a href="#ch4" className="snav-link"><span className="snav-num">04</span> IAM ポリ シー管理</a>
+                    <a href="#ch4" className="snav-link"><span className="snav-num">04</span> IAM ポリシー管理</a>
                     <a href="#ch5" className="snav-link"><span className="snav-num">05</span> 条件付き IAM</a>
                     <a href="#ch6" className="snav-link"><span className="snav-num">06</span> サービスアカウント</a>
                     <a href="#ch7" className="snav-link"><span className="snav-num">07</span> SA キーのリスク</a>
@@ -1587,6 +2352,12 @@ export default function Domain4Page() {
                     <a href="#ch10" className="snav-link"><span className="snav-num">10</span> Impersonation / PAM</a>
                     <a href="#ch11" className="snav-link"><span className="snav-num">11</span> Secret Manager</a>
                     <a href="#ch12" className="snav-link"><span className="snav-num">12</span> Cloud KMS</a>
+                    <a href="#ch13" className="snav-link"><span className="snav-num">13</span> VPC Service Controls</a>
+                    <a href="#ch14" className="snav-link"><span className="snav-num">14</span> IAP</a>
+                    <a href="#ch15" className="snav-link"><span className="snav-num">15</span> Cloud Armor</a>
+                    <a href="#ch16" className="snav-link"><span className="snav-num">16</span> SCC</a>
+                    <a href="#ch17" className="snav-link"><span className="snav-num">17</span> Domain 4 まとめ</a>
+                    <a href="#ch18" className="snav-link"><span className="snav-num">18</span> 包括的調査ガイド</a>
                 </div>
             </nav>
 
@@ -1603,6 +2374,12 @@ export default function Domain4Page() {
                 <Chapter10 />
                 <Chapter11 />
                 <Chapter12 />
+                <Chapter13 />
+                <Chapter14 />
+                <Chapter15 />
+                <Chapter16 findings={SCC_FINDINGS} />
+                <Chapter17 practices={DOMAIN4_BEST_PRACTICES} />
+                <Chapter18 />
             </div>
         </main>
     );
