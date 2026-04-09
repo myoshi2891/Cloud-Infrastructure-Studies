@@ -2324,6 +2324,115 @@ Google Cloudは2024年5月以降、デフォルトで iam.disableServiceAccountK
     );
 }
 
+function Chapter19() {
+    return (
+        <div id="ch19" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num">19</div>
+                <div className="sec-head-txt">
+                    <h2>参考資料（References）</h2>
+                    <p>公式ドキュメントおよび信頼性の高い学習リソース</p>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">19.1</span> 公式ドキュメント・学習リソース一覧</div>
+                <div className="tdesc">本ドメインの解説にあたって参照したソースおよび、さらに深く学習するためのリソースです。</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/learn/certification/cloud-engineer?hl=en" target="_blank" rel="noopener noreferrer">Associate Cloud Engineer Certification</a></div>
+                        <div className="tdef">公式試験情報ページ</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://docs.cloud.google.com/iam/docs/overview" target="_blank" rel="noopener noreferrer">IAM overview</a></div>
+                        <div className="tdef">Google Cloud IAM の概要</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://docs.cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer">Roles and permissions</a></div>
+                        <div className="tdef">IAM ロールと権限の詳細</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://docs.cloud.google.com/iam/docs/using-iam-securely" target="_blank" rel="noopener noreferrer">Use IAM securely</a></div>
+                        <div className="tdef">IAM の安全な利用方法</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener noreferrer">Best practices for service accounts</a></div>
+                        <div className="tdef">サービスアカウント運用のベストプラクティス</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer">Workload Identity Federation</a></div>
+                        <div className="tdef">外部 ID との連携による鍵なし認証</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://docs.cloud.google.com/kubernetes-engine/docs/how-to/workload-identity" target="_blank" rel="noopener noreferrer">GKE Workload Identity</a></div>
+                        <div className="tdef">GKE アプリケーションのセキュアな認証</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/secret-manager/docs/overview" target="_blank" rel="noopener noreferrer">Secret Manager Overview</a></div>
+                        <div className="tdef">シークレット管理サービス</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/kms/docs/overview" target="_blank" rel="noopener noreferrer">Cloud KMS Overview</a></div>
+                        <div className="tdef">鍵管理システム (CMEK 等)</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/vpc-service-controls/docs/overview" target="_blank" rel="noopener noreferrer">VPC Service Controls</a></div>
+                        <div className="tdef">データの境界保護と持ち出し防止</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/iap/docs/concepts-overview" target="_blank" rel="noopener noreferrer">Identity-Aware Proxy (IAP)</a></div>
+                        <div className="tdef">ゼロトラストアクセスの実現</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/armor/docs/overview" target="_blank" rel="noopener noreferrer">Cloud Armor Overview</a></div>
+                        <div className="tdef">DDoS 防御および WAF</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/security-command-center/docs/overview" target="_blank" rel="noopener noreferrer">Security Command Center</a></div>
+                        <div className="tdef">脅威検出と脆弱性管理</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://docs.cloud.google.com/logging/docs/audit" target="_blank" rel="noopener noreferrer">Cloud Audit Logs Overview</a></div>
+                        <div className="tdef">API 操作の監査ログ記録</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://cloud.google.com/binary-authorization/docs/overview" target="_blank" rel="noopener noreferrer">Binary Authorization</a></div>
+                        <div className="tdef">デプロイ時ポリシー強制</div>
+                    </div>
+                    <div className="titem">
+                       <div className="tname"><a href="https://cloud.google.com/iam/docs/pam-overview" target="_blank" rel="noopener noreferrer">Privileged Access Manager (PAM)</a></div>
+                       <div className="tdef">ジャストインタイムの特権アクセス</div>
+                    </div>
+                </div>
+
+                <div className="tdesc mt-4">その他、詳細な技術解説ブログ・コミュニティリソース：</div>
+                <div className="tgrid">
+                    <div className="titem">
+                        <div className="tname"><a href="https://dev.to/latchudevops/part-126-understanding-google-cloud-iam-roles-permissions-and-access-explained-2li3" target="_blank" rel="noopener noreferrer">Understanding Google Cloud IAM</a></div>
+                        <div className="tdef">dev.to による IAM の役割解説</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://www.strongdm.com/blog/gcp-iam-roles" target="_blank" rel="noopener noreferrer">GCP IAM Roles: Basic vs Custom vs Predefined</a></div>
+                        <div className="tdef">StrongDM によるロール比較</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://www.cloudoptimo.com/blog/google-cloud-iam-role-hierarchies-explained/" target="_blank" rel="noopener noreferrer">IAM Role Hierarchies Explained</a></div>
+                        <div className="tdef">CloudOptimo によるリソース階層の解説</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://oneuptime.com/blog/post/2026-02-17-how-to-implement-short-lived-credentials-with-service-account-token-creator-role/view" target="_blank" rel="noopener noreferrer">Short-Lived Credentials Guide</a></div>
+                        <div className="tdef">OneUptime による短期トークンの実装解説</div>
+                    </div>
+                    <div className="titem">
+                        <div className="tname"><a href="https://www.binadox.com/blog/binadox-article-enable-workload-identity/" target="_blank" rel="noopener noreferrer">Workload Identity Guide</a></div>
+                        <div className="tdef">Binadox による FinOps/Security 解説</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Domain4Page() {
     return (
         <main className="d4-page">
@@ -2358,6 +2467,7 @@ export default function Domain4Page() {
                     <a href="#ch16" className="snav-link"><span className="snav-num">16</span> SCC</a>
                     <a href="#ch17" className="snav-link"><span className="snav-num">17</span> Domain 4 まとめ</a>
                     <a href="#ch18" className="snav-link"><span className="snav-num">18</span> 包括的調査ガイド</a>
+                    <a href="#ch19" className="snav-link"><span className="snav-num">19</span> 参考資料</a>
                 </div>
             </nav>
 
@@ -2380,6 +2490,7 @@ export default function Domain4Page() {
                 <Chapter16 findings={SCC_FINDINGS} />
                 <Chapter17 practices={DOMAIN4_BEST_PRACTICES} />
                 <Chapter18 />
+                <Chapter19 />
             </div>
         </main>
     );
