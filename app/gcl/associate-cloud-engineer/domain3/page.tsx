@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { OFFICIAL_DOCS, TECH_GUIDES, CHAPTER_COUNT } from './constants';
+import { CHAPTER_COUNT } from './constants';
 import Chapter18 from './Chapter18';
 export const metadata: Metadata = {
     title: 'Domain 3: Ensuring Successful Operation of a Cloud Solution',
