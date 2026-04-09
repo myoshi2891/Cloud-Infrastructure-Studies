@@ -1,0 +1,417 @@
+/* ===== Home Page Styles ===== */
+
+/* ─── CSS Variables ──────────────────────────────────────── */
+:root {
+    --home-ace:   220, 100%, 70%;  /* Blue */
+    --home-genai: 270, 80%,  65%;  /* Purple */
+    --home-cdl:   160, 70%,  55%;  /* Teal */
+}
+
+/* ─── Page Container ─────────────────────────────────────── */
+.home-page {
+    min-height: 100vh;
+    overflow-x: clip;
+}
+
+/* ─── Hero Section ───────────────────────────────────────── */
+.home-hero {
+    position: relative;
+    padding: 100px 24px 80px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.home-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.home-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    background: hsl(220 100% 70% / 0.12);
+    border: 1px solid hsl(220 100% 70% / 0.3);
+    border-radius: 100px;
+    padding: 4px 14px;
+    margin-bottom: 28px;
+}
+
+.home-title {
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--color-foreground);
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+}
+
+.home-title-accent {
+    background: linear-gradient(135deg, hsl(220 100% 70%), hsl(270 80% 65%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.home-sub {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--color-muted-foreground);
+    margin-bottom: 36px;
+}
+
+.home-hero-badges {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.home-hbadge {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-muted);
+    background: hsl(220 20% 12%);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    padding: 6px 16px;
+}
+
+/* Glow effect behind hero */
+.home-hero-glow {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 60% 50% at 20% 60%, hsl(220 100% 70% / 0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 40%, hsl(270 80% 65% / 0.07) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* ─── Cards Section ──────────────────────────────────────── */
+.home-cards-section {
+    padding: 16px 24px 80px;
+}
+
+.home-cards-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.home-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted-foreground);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.home-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+/* ─── Individual Card ────────────────────────────────────── */
+.home-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.home-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+}
+
+/* ACE Card */
+.card-ace {
+    border-color: hsl(220 100% 70% / 0.25);
+}
+.card-ace::before {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(220 100% 70% / 0.08), transparent);
+}
+.card-ace:hover {
+    border-color: hsl(220 100% 70% / 0.5);
+}
+.card-ace:hover::before {
+    opacity: 1;
+}
+
+/* GenAI Card */
+.card-genai {
+    border-color: hsl(270 80% 65% / 0.25);
+}
+.card-genai::before {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(270 80% 65% / 0.08), transparent);
+}
+.card-genai:hover {
+    border-color: hsl(270 80% 65% / 0.5);
+}
+.card-genai:hover::before {
+    opacity: 1;
+}
+
+/* CDL Card */
+.card-cdl {
+    border-color: hsl(160 70% 55% / 0.25);
+}
+.card-cdl::before {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(160 70% 55% / 0.08), transparent);
+}
+.card-cdl:hover {
+    border-color: hsl(160 70% 55% / 0.5);
+}
+.card-cdl:hover::before {
+    opacity: 1;
+}
+
+/* ─── Card Header ────────────────────────────────────────── */
+.home-card-header {
+    flex: 1;
+    margin-bottom: 24px;
+}
+
+.home-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.home-card-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.home-card-labels {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.home-card-level {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-muted-foreground);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    padding: 2px 10px;
+}
+
+.home-card-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-foreground);
+    background: hsl(220 20% 18%);
+    border-radius: 100px;
+    padding: 2px 10px;
+}
+
+.home-card-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-foreground);
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.home-card-abbr {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted-foreground);
+    margin-bottom: 8px;
+}
+
+.home-card-score {
+    font-size: 12px;
+    color: var(--color-muted-foreground);
+    margin-bottom: 14px;
+}
+
+.home-card-desc {
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--color-muted-foreground);
+}
+
+/* ─── Domain Links ───────────────────────────────────────── */
+.home-card-domains {
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
+    margin-bottom: 20px;
+}
+
+.home-domains-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted-foreground);
+    margin-bottom: 8px;
+}
+
+.home-domains-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.home-domain-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.home-domain-link:hover {
+    background: hsl(220 20% 14%);
+}
+
+.home-domain-name {
+    font-size: 13px;
+    color: var(--color-muted);
+    transition: color 0.15s ease;
+}
+
+.home-domain-link:hover .home-domain-name {
+    color: var(--color-foreground);
+}
+
+.home-domain-pct {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-muted-foreground);
+    background: hsl(220 20% 14%);
+    border-radius: 100px;
+    padding: 2px 8px;
+    flex-shrink: 0;
+}
+
+/* ─── CTA Button ─────────────────────────────────────────── */
+.home-card-footer {
+    margin-top: auto;
+}
+
+.home-card-cta {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    background: hsl(220 20% 14%);
+    color: var(--color-foreground);
+    border: 1px solid var(--color-border);
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.card-ace .home-card-cta:hover {
+    background: hsl(220 100% 70% / 0.15);
+    border-color: hsl(220 100% 70% / 0.5);
+    color: hsl(220, 100%, 80%);
+}
+
+.card-genai .home-card-cta:hover {
+    background: hsl(270 80% 65% / 0.15);
+    border-color: hsl(270 80% 65% / 0.5);
+    color: hsl(270, 80%, 80%);
+}
+
+.card-cdl .home-card-cta:hover {
+    background: hsl(160 70% 55% / 0.15);
+    border-color: hsl(160 70% 55% / 0.5);
+    color: hsl(160, 70%, 70%);
+}
+
+/* ─── Stats Section ──────────────────────────────────────── */
+.home-stats-section {
+    padding: 40px 24px 80px;
+    border-top: 1px solid var(--color-border);
+}
+
+.home-stats-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+}
+
+.home-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.home-stat-value {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--color-foreground), var(--color-muted-foreground));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.home-stat-label {
+    font-size: 12px;
+    color: var(--color-muted-foreground);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .home-hero {
+        padding: 64px 20px 48px;
+    }
+
+    .home-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .home-stats-inner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-stats-inner {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
