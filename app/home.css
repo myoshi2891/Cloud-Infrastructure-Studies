@@ -1,12 +1,5 @@
 /* ===== Home Page Styles ===== */
 
-/* ─── CSS Variables ──────────────────────────────────────── */
-:root {
-    --home-ace:   220, 100%, 70%;  /* Blue */
-    --home-genai: 270, 80%,  65%;  /* Purple */
-    --home-cdl:   160, 70%,  55%;  /* Teal */
-}
-
 /* ─── Page Container ─────────────────────────────────────── */
 .home-page {
     min-height: 100vh;
@@ -142,7 +135,8 @@
     pointer-events: none;
 }
 
-.home-card:hover {
+.home-card:hover,
+.home-card:focus-visible {
     transform: translateY(-4px);
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
 }
@@ -294,7 +288,8 @@
     transition: background 0.15s ease;
 }
 
-.home-domain-link:hover {
+.home-domain-link:hover,
+.home-domain-link:focus-visible {
     background: hsl(220 20% 14%);
 }
 
@@ -337,19 +332,22 @@
     transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.card-ace .home-card-cta:hover {
+.card-ace .home-card-cta:hover,
+.card-ace .home-card-cta:focus-visible {
     background: hsl(220 100% 70% / 0.15);
     border-color: hsl(220 100% 70% / 0.5);
     color: hsl(220, 100%, 80%);
 }
 
-.card-genai .home-card-cta:hover {
+.card-genai .home-card-cta:hover,
+.card-genai .home-card-cta:focus-visible {
     background: hsl(270 80% 65% / 0.15);
     border-color: hsl(270 80% 65% / 0.5);
     color: hsl(270, 80%, 80%);
 }
 
-.card-cdl .home-card-cta:hover {
+.card-cdl .home-card-cta:hover,
+.card-cdl .home-card-cta:focus-visible {
     background: hsl(160 70% 55% / 0.15);
     border-color: hsl(160 70% 55% / 0.5);
     color: hsl(160, 70%, 70%);
