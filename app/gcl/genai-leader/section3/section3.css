@@ -41,7 +41,7 @@
     font-family: var(--body);
     line-height: 1.8;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 /* ── HERO ── */
