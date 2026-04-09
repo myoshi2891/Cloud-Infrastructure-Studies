@@ -543,20 +543,7 @@
 /* ─── 補完クラス: ch5〜ch18 で使用 ────────────────────────────────── */
 
 /* 外側 div が sec-head クラスになっているチャプターの tcard を正しく表示 */
-.d4-page [id^='ch5'],
-.d4-page [id^='ch6'],
-.d4-page [id^='ch7'],
-.d4-page [id^='ch8'],
-.d4-page [id^='ch9'],
-.d4-page [id^='ch10'],
-.d4-page [id^='ch11'],
-.d4-page [id^='ch12'],
-.d4-page [id^='ch13'],
-.d4-page [id^='ch14'],
-.d4-page [id^='ch15'],
-.d4-page [id^='ch16'],
-.d4-page [id^='ch17'],
-.d4-page [id^='ch18'] {
+.d4-page [id^='ch'].sec-head {
     display: block;
     margin-bottom: 64px;
 }
