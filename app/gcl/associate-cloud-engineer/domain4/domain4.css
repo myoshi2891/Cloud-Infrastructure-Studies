@@ -8,36 +8,35 @@
 /* ※ :root ではなく .d4-page に定義することで他ページへの影響を防ぐ */
 .d4-page {
     /* セマンティックトークンの上書き（domain4 専用） */
-    --color-background:       #0d0617;
-    --color-foreground:       #e2d4f0;
-    --color-card:             #180d28;
-    --color-card-foreground:  #e2d4f0;
+    --color-background: #0d0617;
+    --color-foreground: #e2d4f0;
+    --color-card: #180d28;
+    --color-card-foreground: #e2d4f0;
     --color-muted-foreground: #c0a8cc;
-    --color-border:           #3a2050;
-    --color-primary:          #c084fc;
+    --color-border: #3a2050;
+    --color-primary: #c084fc;
 
     /* セマンティックトークンへのエイリアス */
-    --d4-bg:          var(--color-background);
-    --d4-surface:     var(--color-card);
-    --d4-border:      var(--color-border);
-    --d4-text:        var(--color-foreground);
-    --d4-text-muted:  var(--color-muted-foreground);
+    --d4-bg: var(--color-background);
+    --d4-surface: var(--color-card);
+    --d4-border: var(--color-border);
+    --d4-text: var(--color-foreground);
+    --d4-text-muted: var(--color-muted-foreground);
     /* page-specific プリミティブ */
-    --d4-surface2:    #21103a;
-    --d4-surface3:    #2a1848;
+    --d4-surface2: #21103a;
+    --d4-surface3: #2a1848;
     --d4-border-bright: #5a3070;
-    --d4-purple:      #c084fc;
-    --d4-fuchsia:     #e879f9;
-    --d4-amber:       #fbbf24;
-    --d4-blue:        #60a5fa;
-    --d4-green:       #34d399;
-    --d4-red:         #f87171;
-    --d4-orange:      #fb923c;
+    --d4-purple: #c084fc;
+    --d4-fuchsia: #e879f9;
+    --d4-amber: #fbbf24;
+    --d4-blue: #60a5fa;
+    --d4-green: #34d399;
+    --d4-red: #f87171;
+    --d4-orange: #fb923c;
     --d4-text-bright: #f5eeff;
-    --d4-glow:        0 0 24px rgba(192, 132, 252, 0.25);
-    --d4-glow-sm:     0 0 10px rgba(192, 132, 252, 0.15);
+    --d4-glow: 0 0 24px rgba(192, 132, 252, 0.25);
+    --d4-glow-sm: 0 0 10px rgba(192, 132, 252, 0.15);
 }
-
 
 /* ─── Reset & Base ─────────────────────────────────────────────── */
 .d4-page * {
@@ -79,7 +78,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(168, 85, 247, 0.10);
+    background: rgba(168, 85, 247, 0.1);
     border: 1px solid rgba(168, 85, 247, 0.25);
     border-radius: 999px;
     padding: 4px 16px;
@@ -141,9 +140,15 @@
     flex-shrink: 0;
 }
 
-.d4-page .hero-badge .dot-purple { background: var(--d4-purple, #a855f7); }
-.d4-page .hero-badge .dot-amber  { background: var(--d4-amber, #f59e0b); }
-.d4-page .hero-badge .dot-fuchsia{ background: var(--d4-fuchsia, #d946ef); }
+.d4-page .hero-badge .dot-purple {
+    background: var(--d4-purple, #a855f7);
+}
+.d4-page .hero-badge .dot-amber {
+    background: var(--d4-amber, #f59e0b);
+}
+.d4-page .hero-badge .dot-fuchsia {
+    background: var(--d4-fuchsia, #d946ef);
+}
 
 /* ─── Sticky Nav ─────────────────────────────────────────────────── */
 .d4-page .snav {
@@ -158,7 +163,9 @@
     scrollbar-width: none;
 }
 
-.d4-page .snav::-webkit-scrollbar { display: none; }
+.d4-page .snav::-webkit-scrollbar {
+    display: none;
+}
 
 .d4-page .snav-inner {
     display: flex;
@@ -179,7 +186,9 @@
     color: var(--d4-text-muted, #947a92);
     text-decoration: none;
     white-space: nowrap;
-    transition: background 0.15s, color 0.15s;
+    transition:
+        background 0.15s,
+        color 0.15s;
 }
 
 .d4-page .snav-link:hover {
@@ -231,7 +240,9 @@
     border: 1px solid rgba(168, 85, 247, 0.25);
 }
 
-.d4-page .sec-head-txt { flex: 1; }
+.d4-page .sec-head-txt {
+    flex: 1;
+}
 
 .d4-page .sec-head-txt h2 {
     font-size: 20px;
@@ -351,7 +362,9 @@
     line-height: 1.6;
 }
 
-.d4-page .ctable tr:last-child td { border-bottom: none; }
+.d4-page .ctable tr:last-child td {
+    border-bottom: none;
+}
 
 .d4-page .ctable tr:hover td {
     background: rgba(168, 85, 247, 0.04);
@@ -365,7 +378,7 @@
 /* ─── Best Practice Box ───────────────────────────────────────────── */
 .d4-page .bp {
     background: rgba(168, 85, 247, 0.06);
-    border: 1px solid rgba(168, 85, 247, 0.20);
+    border: 1px solid rgba(168, 85, 247, 0.2);
     border-left: 3px solid var(--d4-purple, #a855f7);
     border-radius: 8px;
     padding: 16px 18px;
@@ -394,12 +407,14 @@
     line-height: 1.65;
 }
 
-.d4-page .bp li:last-child { margin-bottom: 0; }
+.d4-page .bp li:last-child {
+    margin-bottom: 0;
+}
 
 /* ─── Warning Box ─────────────────────────────────────────────────── */
 .d4-page .wb {
     background: rgba(245, 158, 11, 0.06);
-    border: 1px solid rgba(245, 158, 11, 0.20);
+    border: 1px solid rgba(245, 158, 11, 0.2);
     border-left: 3px solid var(--d4-amber, #f59e0b);
     border-radius: 8px;
     padding: 14px 18px;
@@ -441,9 +456,16 @@
     scrollbar-color: var(--d4-border, #3a2050) transparent;
 }
 
-.d4-page .codeblock::-webkit-scrollbar { height: 4px; }
-.d4-page .codeblock::-webkit-scrollbar-track { background: transparent; }
-.d4-page .codeblock::-webkit-scrollbar-thumb { background: var(--d4-border, #3a2050); border-radius: 2px; }
+.d4-page .codeblock::-webkit-scrollbar {
+    height: 4px;
+}
+.d4-page .codeblock::-webkit-scrollbar-track {
+    background: transparent;
+}
+.d4-page .codeblock::-webkit-scrollbar-thumb {
+    background: var(--d4-border, #3a2050);
+    border-radius: 2px;
+}
 
 /* ─── Code Block Wrap+Label ───────────────────────────────────────── */
 .d4-page .cb-wrap {
@@ -521,26 +543,26 @@
 /* ─── 補完クラス: ch5〜ch18 で使用 ────────────────────────────────── */
 
 /* 外側 div が sec-head クラスになっているチャプターの tcard を正しく表示 */
-.d4-page [id^="ch5"],
-.d4-page [id^="ch6"],
-.d4-page [id^="ch7"],
-.d4-page [id^="ch8"],
-.d4-page [id^="ch9"],
-.d4-page [id^="ch10"],
-.d4-page [id^="ch11"],
-.d4-page [id^="ch12"],
-.d4-page [id^="ch13"],
-.d4-page [id^="ch14"],
-.d4-page [id^="ch15"],
-.d4-page [id^="ch16"],
-.d4-page [id^="ch17"],
-.d4-page [id^="ch18"] {
+.d4-page [id^='ch5'],
+.d4-page [id^='ch6'],
+.d4-page [id^='ch7'],
+.d4-page [id^='ch8'],
+.d4-page [id^='ch9'],
+.d4-page [id^='ch10'],
+.d4-page [id^='ch11'],
+.d4-page [id^='ch12'],
+.d4-page [id^='ch13'],
+.d4-page [id^='ch14'],
+.d4-page [id^='ch15'],
+.d4-page [id^='ch16'],
+.d4-page [id^='ch17'],
+.d4-page [id^='ch18'] {
     display: block;
     margin-bottom: 64px;
 }
 
 /* チャプター見出し (h2.stitle): sec-head の代わりに使われているケースに対応 */
-.d4-page [id^="ch"] > h2.stitle {
+.d4-page [id^='ch'] > h2.stitle {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -554,13 +576,16 @@
 }
 
 /* h2.stitle 内の ::before を無効化（通常 stitle は小見出し用）*/
-.d4-page [id^="ch"] > h2.stitle::before {
+.d4-page [id^='ch'] > h2.stitle::before {
     display: none;
 }
 
 /* チャプター番号バッジ (sn1〜sn5): sec-num の色違いバリアント */
-.d4-page .sn1, .d4-page .sn2, .d4-page .sn3,
-.d4-page .sn4, .d4-page .sn5 {
+.d4-page .sn1,
+.d4-page .sn2,
+.d4-page .sn3,
+.d4-page .sn4,
+.d4-page .sn5 {
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -576,10 +601,26 @@
     color: var(--d4-purple, #a855f7);
     border: 1px solid rgba(168, 85, 247, 0.25);
 }
-.d4-page .sn2 { background: rgba(59, 130, 246, 0.12); color: var(--d4-blue, #3b82f6); border-color: rgba(59, 130, 246, 0.25); }
-.d4-page .sn3 { background: rgba(16, 208, 112, 0.12); color: var(--d4-green, #10d070); border-color: rgba(16, 208, 112, 0.25); }
-.d4-page .sn4 { background: rgba(245, 158, 11, 0.12); color: var(--d4-amber, #f59e0b); border-color: rgba(245, 158, 11, 0.25); }
-.d4-page .sn5 { background: rgba(217, 70, 239, 0.12); color: var(--d4-fuchsia, #d946ef); border-color: rgba(217, 70, 239, 0.25); }
+.d4-page .sn2 {
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--d4-blue, #3b82f6);
+    border-color: rgba(59, 130, 246, 0.25);
+}
+.d4-page .sn3 {
+    background: rgba(16, 208, 112, 0.12);
+    color: var(--d4-green, #10d070);
+    border-color: rgba(16, 208, 112, 0.25);
+}
+.d4-page .sn4 {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--d4-amber, #f59e0b);
+    border-color: rgba(245, 158, 11, 0.25);
+}
+.d4-page .sn5 {
+    background: rgba(217, 70, 239, 0.12);
+    color: var(--d4-fuchsia, #d946ef);
+    border-color: rgba(217, 70, 239, 0.25);
+}
 
 /* code-block: cb-wrap 相当のコードブロックラッパー */
 .d4-page .code-block {
@@ -603,9 +644,16 @@
     scrollbar-color: var(--d4-border, #3a2050) transparent;
 }
 
-.d4-page .code-block pre::-webkit-scrollbar { height: 4px; }
-.d4-page .code-block pre::-webkit-scrollbar-track { background: transparent; }
-.d4-page .code-block pre::-webkit-scrollbar-thumb { background: var(--d4-border, #3a2050); border-radius: 2px; }
+.d4-page .code-block pre::-webkit-scrollbar {
+    height: 4px;
+}
+.d4-page .code-block pre::-webkit-scrollbar-track {
+    background: transparent;
+}
+.d4-page .code-block pre::-webkit-scrollbar-thumb {
+    background: var(--d4-border, #3a2050);
+    border-radius: 2px;
+}
 
 .d4-page .code-block pre code {
     font-family: inherit;
@@ -615,7 +663,9 @@
     padding: 0;
 }
 
-.d4-page .code-block.mt-4 { margin-top: 16px; }
+.d4-page .code-block.mt-4 {
+    margin-top: 16px;
+}
 
 /* alert-box: 警告・重要情報ボックス（wb の赤バリアント）*/
 .d4-page .alert-box {
@@ -627,7 +677,9 @@
     margin-bottom: 14px;
 }
 
-.d4-page .alert-box.mt-4 { margin-top: 16px; }
+.d4-page .alert-box.mt-4 {
+    margin-top: 16px;
+}
 
 .d4-page .alert-box p,
 .d4-page .alert-box li {
@@ -659,7 +711,9 @@
 }
 
 /* mt-4: 汎用上マージン */
-.d4-page .mt-4 { margin-top: 16px; }
+.d4-page .mt-4 {
+    margin-top: 16px;
+}
 
 /* stitle を p タグで使っているケースに対応 */
 .d4-page p.stitle {

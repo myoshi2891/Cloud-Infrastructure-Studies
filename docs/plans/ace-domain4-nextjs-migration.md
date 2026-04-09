@@ -18,8 +18,9 @@
 | 3 | Section 1-4 実装 | `page.tsx` (Chapter 1〜4 相当) | 該当するテストケースがGREENになること |
 | 4 | Section 5-8 実装 | `page.tsx` (Chapter 5〜8 相当) | 該当するテストケースがGREENになること |
 | 5 | Section 9-12 実装 | `page.tsx` (Chapter 9〜12 相当) | 該当するテストケースがGREENになること |
-| 6 | Section 13-17 実装 | `page.tsx` (Chapter 13〜17 相当) | 全テストケースがGREENになること |
-| 7 | ヘッダー更新 | `components/Header.tsx` | Domain 4 へのナビゲーションリンクが正常に機能すること |
+| 6 | Section 13-17 実装 | `page.tsx` (Chapter 13〜17 相当) | 該当するテストケースがGREENになること |
+| 7 | Section 18 実装 | `page.tsx` (Chapter 18 相当) | 全テストケースがGREENになること |
+| 8 | ヘッダー更新 | `components/Header.tsx` | Domain 4 へのナビゲーションリンクが正常に機能すること |
 
 ## コンテンツチェックリスト（完了状況）
 
@@ -40,7 +41,7 @@
 - [x] Chapter 15: Cloud Armor（DDoS 防御 / WAF）
 - [x] Chapter 16: Security Command Center (SCC)
 - [x] Chapter 17: Domain 4 試験対策まとめ
-- [x] Chapter 18: 包括的調査および実践的アーキテクチャガイド (ace-section4.md)
+- [x] Chapter 18: 包括的調査および実践的アーキテクチャガイド (ace-section4-access-and-security.md)
 
 ## 実装上の注意
 
