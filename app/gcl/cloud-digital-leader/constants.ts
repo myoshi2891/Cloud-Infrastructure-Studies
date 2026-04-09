@@ -610,7 +610,7 @@ export const BQML_FEATURES: MlFeature[] = [
         section: 'Section 5: AI/ML',
         items: [
             'プリビルトAPI vs AutoML vs Vertex AI カスタムモデルの使い分け',
-            'Gemini の4バリアント（Ultra・Pro・Flash・Nano）の特徴',
+            'Gemini の4バリアント（2.5 Pro / 2.5 Flash / 2.5 Flash-Lite / 2.0 Flash）の特徴',
             'RAG とは何か・なぜハルシネーションを減らせるか',
             '責任あるAIの6原則',
             '匿名化 vs 仮名化の違い（再識別可能かどうか）',
