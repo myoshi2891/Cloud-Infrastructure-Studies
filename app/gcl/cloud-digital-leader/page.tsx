@@ -31,6 +31,15 @@ import {
     PRIVACY_TECHNIQUES,
     ML_APPROACHES,
     BQML_FEATURES,
+    QR_COMPUTE,
+    QR_STORAGE_DB,
+    QR_AIML,
+    QR_SECURITY,
+    QR_OPS,
+    CHECKLIST_CONCEPTS,
+    ROADMAP_WEEKS,
+    EXAM_TIPS,
+    REFERENCE_LINKS,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -372,6 +381,11 @@ function Section1() {
     );
 }
 
+/**
+ * Renders the "データとイノベーション" section (section 02) describing data value, data types and repositories, database selection guidance, data analytics services, a smart analytics architecture diagram, and Google Cloud Storage classes with best practices.
+ *
+ * @returns The JSX element for the section, containing subsections: data-driven value propositions, structured/semistructured/unstructured data, data warehouse/lake/lakehouse descriptions, a database services table and decision tree, descriptions of Looker/Looker Studio/Dataflow/Dataproc/Pub/Sub, an SVG analytics pipeline diagram, and a GCS storage class table with cost-optimization tips.
+ */
 function Section2() {
     return (
         <div id="s2" className="sgap">
@@ -507,9 +521,9 @@ NoSQLが必要か？
                         { x: 580, label: '分析・可視化', sub: 'Looker / Vertex AI', color: 'var(--cdl-purple)' },
                     ].map((stage, i, arr) => (
                         <g key={stage.label}>
-                            <rect x={stage.x - 55} y={30} width={110} height={64} rx={8} fill={stage.color} opacity={0.2} stroke={stage.color} strokeWidth={1.5} />
-                            <text x={stage.x} y={58} textAnchor="middle" fill="var(--color-foreground)" fontSize={11} fontWeight="bold">{stage.label}</text>
-                            <text x={stage.x} y={76} textAnchor="middle" fill="var(--color-muted)" fontSize={9}>{stage.sub}</text>
+                            <rect x={stage.x - 55} y={30} width={110} height={64} rx={8} fill={stage.color} opacity={0.6} stroke={stage.color} strokeWidth={1.5} />
+                            <text x={stage.x} y={58} textAnchor="middle" fill="#fff" fontSize={11} fontWeight="bold">{stage.label}</text>
+                            <text x={stage.x} y={76} textAnchor="middle" fill="#fff" fontSize={9} opacity={0.8}>{stage.sub}</text>
                             {i < arr.length - 1 && (
                                 <path d={`M${stage.x + 55} 62 L${(arr[i + 1]?.x ?? 0) - 55} 62`} stroke="var(--color-border)" strokeWidth={1.5} markerEnd="url(#arrow2)" />
                             )}
@@ -1198,6 +1212,20 @@ function Section4() {
     );
 }
 
+/**
+ * Renders the AI/ML section (Section 5) of the Cloud Digital Leader page.
+ *
+ * The section includes Responsible AI principles, the containment relationship
+ * between AI/ML/DL/Generative AI/LLM, ML approaches and business examples,
+ * Google Cloud AI service layers (Prebuilt APIs, AutoML, Vertex AI, Generative AI),
+ * Prebuilt APIs details, AutoML workflow, Vertex AI components, Gemini models,
+ * Agent Builder, RAG (Retrieval-Augmented Generation) and its benefits,
+ * generative-AI techniques (hallucination, grounding, fine-tuning),
+ * responsible-AI principles and bias mitigation, privacy techniques,
+ * BigQuery ML features, and Explainable AI capabilities.
+ *
+ * @returns A React element containing the full AI/ML section markup with tables, explanatory text, and illustrative SVG diagrams.
+ */
 function Section5() {
     return (
         <div id="s5" className="sgap">
@@ -2053,24 +2081,179 @@ function Section5() {
     );
 }
 
+type QuickReferenceTableProps = {
+    title: React.ReactNode;
+    headers: string[];
+    data: { service: string; keywords: string; usecase: string }[];
+};
+
+/**
+ * Render a compact reference card containing a three-column table.
+ *
+ * Renders a titled card that displays table headers and rows for quick service lookup.
+ *
+ * @param title - Title node shown above the table
+ * @param headers - Array of column header labels (expected to have three entries)
+ * @param data - Array of row objects with `service`, `keywords`, and `usecase` fields
+ * @returns A JSX element: a card containing the provided title and a table of the `data` rows
+ */
+function QuickReferenceTable({ title, headers, data }: QuickReferenceTableProps) {
+    return (
+        <div className="tcard">
+            <div className="ttitle">{title}</div>
+            <div className="ctable-wrap">
+                <table className="ctable">
+                    <thead>
+                        <tr>
+                            {headers.map((h, i) => (
+                                <th key={i}>{h}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((row, i) => (
+                            <tr key={i}>
+                                <td><strong>{row.service}</strong></td>
+                                <td>{row.keywords}</td>
+                                <td>{row.usecase}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+/**
+ * Renders a checklist card that groups key concepts into titled sections with bullet items.
+ *
+ * @param data - An array of sections, each with a `section` title and an `items` list to display
+ * @returns A card element containing each section title and its corresponding bulleted items
+ */
+function ChecklistGroup({ data }: { data: { section: string; items: string[] }[] }) {
+    return (
+        <div className="tcard">
+            <div className="ttitle"><span className="tid">7.1</span>必ず押さえるべき概念（各セクション）</div>
+            <div className="tgrid">
+                {data.map((list, i) => (
+                    <div key={i} className="titem">
+                        <strong>{list.section}</strong>
+                        <ul className="cdl-list">
+                            {list.items.map((item, j) => (
+                                <li key={j}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+/**
+ * Renders a compact "Recommended study roadmap" card divided into weekly sections.
+ *
+ * Each entry in `data` becomes a titled subsection with a bulleted list of recommended tasks.
+ *
+ * @param data - Array of roadmap entries. Each entry should have a `week` string used as the subsection title and an `items` array of strings rendered as bullets.
+ * @returns The rendered roadmap card element containing the weeks and their corresponding items.
+ */
+function RoadmapBlock({ data }: { data: { week: string; items: string[] }[] }) {
+    return (
+        <div className="tcard">
+            <div className="ttitle"><span className="tid">7.3</span>推奨学習ロードマップ</div>
+            {data.map((rw, i) => (
+                <div key={i} className="mb-4">
+                    <div className="stitle">{rw.week}</div>
+                    <ul className="cdl-list">
+                        {rw.items.map((item, j) => (
+                            <li key={j}>{item}</li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+/**
+ * Render the "頻出サービス早見表" section containing quick-reference tables for core services.
+ *
+ * Displays a section header and five QuickReferenceTable cards for Compute, Storage & Database,
+ * AI/ML, Security, and Operations using the corresponding QR_* datasets.
+ *
+ * @returns A JSX element representing the section with the five quick-reference tables
+ */
 function Section6() {
     return (
         <div id="s6" className="sgap">
             <div className="sec-head">
                 <div className="sec-num sn6">06</div>
                 <div className="sec-head-txt">
-                    <h2>サービス早見表 — 混同ペアの整理</h2>
-                    <p>コンピューティング・分析・コスト管理の重要ペア</p>
+                    <h2>頻出サービス早見表</h2>
+                    <p>試験直前に見直すべき主要サービスのまとめ</p>
                 </div>
             </div>
 
+            <QuickReferenceTable
+                title={<><span className="tid">6.1</span> コンピューティング</>}
+                headers={['サービス', 'キーワード', '使い分け']}
+                data={QR_COMPUTE}
+            />
+
+            <QuickReferenceTable
+                title={<><span className="tid">6.2</span> ストレージ・データベース</>}
+                headers={['サービス', 'キーワード', '使い分け']}
+                data={QR_STORAGE_DB}
+            />
+
+            <QuickReferenceTable
+                title={<><span className="tid">6.3</span> AI・ML</>}
+                headers={['サービス', 'キーワード', '対象者・用途']}
+                data={QR_AIML}
+            />
+
+            <QuickReferenceTable
+                title={<><span className="tid">6.4</span> セキュリティ</>}
+                headers={['サービス', 'キーワード', '役割']}
+                data={QR_SECURITY}
+            />
+
+            <QuickReferenceTable
+                title={<><span className="tid">6.5</span> オペレーション</>}
+                headers={['サービス', 'キーワード', '役割']}
+                data={QR_OPS}
+            />
+        </div>
+    );
+}
+
+/**
+ * Renders the "試験攻略チェックリスト" page section including checklist cards, a table of commonly confused pairs, a study roadmap, and exam-day tips.
+ *
+ * @returns The section's JSX content as a React element
+ */
+function Section7() {
+    return (
+        <div id="s7" className="sgap">
+            <div className="sec-head">
+                <div className="sec-num sn7">07</div>
+                <div className="sec-head-txt">
+                    <h2>試験攻略チェックリスト</h2>
+                    <p>必ず押さえるべき概念・混同しやすいポイント・学習ロードマップ・試験当日のポイント</p>
+                </div>
+            </div>
+
+            <ChecklistGroup data={CHECKLIST_CONCEPTS} />
+
             <div className="tcard">
-                <div className="ttitle"><span className="tid">6.1</span>よく混同されるサービスペア</div>
+                <div className="ttitle"><span className="tid">7.2</span>よく混同されるポイント</div>
                 <div className="ctable-wrap">
                     <table className="ctable">
                         <thead>
                             <tr>
-                                <th>混同ペア</th>
+                                <th>間違いやすい組み合わせ</th>
                                 <th>正しい理解</th>
                             </tr>
                         </thead>
@@ -2085,47 +2268,33 @@ function Section6() {
                     </table>
                 </div>
             </div>
-        </div>
-    );
-}
 
-function Section7() {
-    return (
-        <div id="s7" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn7">07</div>
-                <div className="sec-head-txt">
-                    <h2>試験攻略チェックリスト — 必ず押さえるべき概念</h2>
-                    <p>セクション別チェックリスト・学習ロードマップ</p>
-                </div>
-            </div>
+            <RoadmapBlock data={ROADMAP_WEEKS} />
 
             <div className="tcard">
-                <div className="ttitle"><span className="tid">7.1</span>推奨学習ロードマップ</div>
-                <pre className="codeblock">{`Week 1-2: 基礎概念の固め
-├── Cloud の基本概念（IaaS/PaaS/SaaS、デプロイモデル）
-├── Google Cloud のコアサービス概要
-└── Cloud Skills Boost の入門コースを修了
-
-Week 3-4: 主要サービスの理解
-├── コンピューティング・ストレージ・ネットワーク
-├── データ分析・データベースサービス
-└── セキュリティの基本（IAM・暗号化）
-
-Week 5: AI/ML と総まとめ
-├── AI API の種類と使い分け
-├── 生成 AI（Gemini・RAG・ファインチューニング）
-└── 責任ある AI
-
-Week 6: 試験直前対策
-├── 公式サンプル問題を繰り返し解く
-├── 間違えた問題の公式ドキュメントを読む
-└── 頻出サービス早見表を暗記`}</pre>
+                <div className="ttitle"><span className="tid">7.4</span>試験当日のポイント</div>
+                <ol className="cdl-list">
+                    {EXAM_TIPS.map((tip, i) => {
+                        const colonIndex = tip.indexOf(':');
+                        const title = tip.slice(0, colonIndex);
+                        const content = tip.slice(colonIndex + 1);
+                        return (
+                            <li key={i}><strong>{title}</strong>:{content}</li>
+                        );
+                    })}
+                </ol>
             </div>
         </div>
     );
 }
 
+/**
+ * Render the References section that lists official documentation and exam registration links.
+ *
+ * Renders section "08" containing a table of reference entries (title and URL). Each URL is rendered as an external link that opens in a new tab.
+ *
+ * @returns The rendered JSX for the references section
+ */
 function Section8() {
     return (
         <div id="s8" className="sgap">
@@ -2148,10 +2317,10 @@ function Section8() {
                             </tr>
                         </thead>
                         <tbody>
-                            {RESOURCES.map((row, i) => (
+                            {REFERENCE_LINKS.map((row, i) => (
                                 <tr key={i}>
-                                    <td>{row.name}</td>
-                                    <td><a href={`https://${row.url}`} target="_blank" rel="noopener noreferrer">{row.url}</a></td>
+                                    <td>{row.title}</td>
+                                    <td><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></td>
                                 </tr>
                             ))}
                         </tbody>
