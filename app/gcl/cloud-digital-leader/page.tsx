@@ -381,6 +381,11 @@ function Section1() {
     );
 }
 
+/**
+ * Renders the "データとイノベーション" section (section 02) describing data value, data types and repositories, database selection guidance, data analytics services, a smart analytics architecture diagram, and Google Cloud Storage classes with best practices.
+ *
+ * @returns The JSX element for the section, containing subsections: data-driven value propositions, structured/semistructured/unstructured data, data warehouse/lake/lakehouse descriptions, a database services table and decision tree, descriptions of Looker/Looker Studio/Dataflow/Dataproc/Pub/Sub, an SVG analytics pipeline diagram, and a GCS storage class table with cost-optimization tips.
+ */
 function Section2() {
     return (
         <div id="s2" className="sgap">
@@ -1207,6 +1212,20 @@ function Section4() {
     );
 }
 
+/**
+ * Renders the AI/ML section (Section 5) of the Cloud Digital Leader page.
+ *
+ * The section includes Responsible AI principles, the containment relationship
+ * between AI/ML/DL/Generative AI/LLM, ML approaches and business examples,
+ * Google Cloud AI service layers (Prebuilt APIs, AutoML, Vertex AI, Generative AI),
+ * Prebuilt APIs details, AutoML workflow, Vertex AI components, Gemini models,
+ * Agent Builder, RAG (Retrieval-Augmented Generation) and its benefits,
+ * generative-AI techniques (hallucination, grounding, fine-tuning),
+ * responsible-AI principles and bias mitigation, privacy techniques,
+ * BigQuery ML features, and Explainable AI capabilities.
+ *
+ * @returns A React element containing the full AI/ML section markup with tables, explanatory text, and illustrative SVG diagrams.
+ */
 function Section5() {
     return (
         <div id="s5" className="sgap">
@@ -2068,6 +2087,16 @@ type QuickReferenceTableProps = {
     data: { service: string; keywords: string; usecase: string }[];
 };
 
+/**
+ * Render a compact reference card containing a three-column table.
+ *
+ * Renders a titled card that displays table headers and rows for quick service lookup.
+ *
+ * @param title - Title node shown above the table
+ * @param headers - Array of column header labels (expected to have three entries)
+ * @param data - Array of row objects with `service`, `keywords`, and `usecase` fields
+ * @returns A JSX element: a card containing the provided title and a table of the `data` rows
+ */
 function QuickReferenceTable({ title, headers, data }: QuickReferenceTableProps) {
     return (
         <div className="tcard">
@@ -2096,6 +2125,12 @@ function QuickReferenceTable({ title, headers, data }: QuickReferenceTableProps)
     );
 }
 
+/**
+ * Renders a checklist card that groups key concepts into titled sections with bullet items.
+ *
+ * @param data - An array of sections, each with a `section` title and an `items` list to display
+ * @returns A card element containing each section title and its corresponding bulleted items
+ */
 function ChecklistGroup({ data }: { data: { section: string; items: string[] }[] }) {
     return (
         <div className="tcard">
@@ -2116,6 +2151,14 @@ function ChecklistGroup({ data }: { data: { section: string; items: string[] }[]
     );
 }
 
+/**
+ * Renders a compact "Recommended study roadmap" card divided into weekly sections.
+ *
+ * Each entry in `data` becomes a titled subsection with a bulleted list of recommended tasks.
+ *
+ * @param data - Array of roadmap entries. Each entry should have a `week` string used as the subsection title and an `items` array of strings rendered as bullets.
+ * @returns The rendered roadmap card element containing the weeks and their corresponding items.
+ */
 function RoadmapBlock({ data }: { data: { week: string; items: string[] }[] }) {
     return (
         <div className="tcard">
@@ -2134,6 +2177,14 @@ function RoadmapBlock({ data }: { data: { week: string; items: string[] }[] }) {
     );
 }
 
+/**
+ * Render the "頻出サービス早見表" section containing quick-reference tables for core services.
+ *
+ * Displays a section header and five QuickReferenceTable cards for Compute, Storage & Database,
+ * AI/ML, Security, and Operations using the corresponding QR_* datasets.
+ *
+ * @returns A JSX element representing the section with the five quick-reference tables
+ */
 function Section6() {
     return (
         <div id="s6" className="sgap">
@@ -2178,6 +2229,11 @@ function Section6() {
     );
 }
 
+/**
+ * Renders the "試験攻略チェックリスト" page section including checklist cards, a table of commonly confused pairs, a study roadmap, and exam-day tips.
+ *
+ * @returns The section's JSX content as a React element
+ */
 function Section7() {
     return (
         <div id="s7" className="sgap">
@@ -2232,6 +2288,13 @@ function Section7() {
     );
 }
 
+/**
+ * Render the References section that lists official documentation and exam registration links.
+ *
+ * Renders section "08" containing a table of reference entries (title and URL). Each URL is rendered as an external link that opens in a new tab.
+ *
+ * @returns The rendered JSX for the references section
+ */
 function Section8() {
     return (
         <div id="s8" className="sgap">
