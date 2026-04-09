@@ -88,7 +88,7 @@ export type ConfusingPair = {
 };
 
 export const CONFUSING_PAIRS: ConfusingPair[] = [
-    { pair: 'Cloud Run vs Cloud Run Functions', truth: 'Cloud Run はコンテナ。Functions は関数（コード）。どちらもサーバーレス' },
+    { pair: 'Cloud Run = コンテナ専用 vs Cloud Run Functions = コード専用', truth: 'Cloud Run はコンテナ。Functions は関数（コード）。どちらもサーバーレス' },
     { pair: 'Cloud SQL vs BigQuery', truth: 'Cloud SQL: OLTP（トランザクション処理）。BigQuery: OLAP（分析）' },
     { pair: 'Dataflow vs Dataproc', truth: 'Dataflow: Apache Beam（ストリーミング + バッチ）。Dataproc: Hadoop/Spark（バッチ）' },
     { pair: 'Committed Use vs Sustained Use', truth: 'Committed Use は事前申込が必要。Sustained Use は自動適用' },
@@ -499,10 +499,202 @@ export const BQML_FEATURES: MlFeature[] = [
     },
     {
         feature: 'ビジネス活用例',
-        desc: '顧客チャーン予測・需要予測・商品レコメンド・異常検知・サプライチェーン最適化（BigQuery ML のクラスタリング）',
+        desc: '顧客チャーン予測・需要予測・商品レコメンド・異常検知・サプライチェーン最適化（BigQuery ML の クラスタリング）',
     },
     {
         feature: 'メリット',
         desc: 'データ移動不要（BigQuery 上で完結）・インフラ管理不要・BigQuery の高速・大規模処理を活用・Vertex AI との連携でデプロイも可能',
     },
-];
+    ];
+
+    // ── S6: サービス早見表 ───────────────────────────────────────────────────
+
+    export type QuickReferenceService = {
+    service: string;
+    keywords: string;
+    usecase: string;
+    };
+
+    export const QR_COMPUTE: QuickReferenceService[] = [
+    { service: 'Compute Engine', keywords: 'VM・IaaS・OS制御・GPUが必要', usecase: 'レガシー移行・特定OS要件' },
+    { service: 'GKE', keywords: 'コンテナ・Kubernetes・ステートフル', usecase: 'マイクロサービス・長時間処理' },
+    { service: 'Cloud Run', keywords: 'コンテナ・サーバーレス・HTTP・0スケール', usecase: 'ステートレスAPI・スパイクトラフィック' },
+    { service: 'Cloud Run Functions', keywords: 'FaaS・イベント駆動・軽量処理', usecase: 'Webhook・トリガー・小さな関数' },
+    { service: 'App Engine', keywords: 'PaaS・Webアプリ・コードだけ', usecase: 'レガシーWebアプリの移行' },
+    ];
+
+    export const QR_STORAGE_DB: QuickReferenceService[] = [
+    { service: 'Cloud Storage', keywords: 'オブジェクト・バイナリ・画像・動画', usecase: '非構造化データの格納・配信' },
+    { service: 'Cloud SQL', keywords: 'MySQL・PostgreSQL・RDB', usecase: '既存RDBの移行・Webアプリ' },
+    { service: 'Cloud Spanner', keywords: 'グローバル・強一貫性・RDBMS', usecase: '金融・グローバルEC・在庫管理' },
+    { service: 'Firestore', keywords: 'NoSQL・ドキュメント・リアルタイム', usecase: 'モバイル/Webアプリ' },
+    { service: 'Bigtable', keywords: '時系列・IoT・超大量・低遅延', usecase: 'IoT・広告・監視データ' },
+    { service: 'BigQuery', keywords: 'DWH・SQL分析・サーバーレス', usecase: 'BI・データ分析・ML' },
+    { service: 'Memorystore', keywords: 'Redis・キャッシュ・セッション', usecase: '低遅延キャッシュ' },
+    ];
+
+    export const QR_AIML: QuickReferenceService[] = [
+    { service: 'Vision / NL / Translation API', keywords: 'プリビルト・コード少・汎用タスク', usecase: '非ML専門家' },
+    { service: 'AutoML', keywords: 'ノーコード・独自データ・カスタムモデル', usecase: 'ビジネスアナリスト' },
+    { service: 'Vertex AI', keywords: 'フル機能ML・カスタム・本番向け', usecase: 'MLエンジニア' },
+    { service: 'Gemini for Workspace', keywords: 'オフィスAI・Gmail/Docs/Sheets', usecase: '一般オフィスワーカー' },
+    { service: 'Vertex AI Agent Builder', keywords: 'エージェント・自律型AI', usecase: 'AI開発者' },
+    { service: 'NotebookLM', keywords: '文書Q&A・ハルシネーション低減', usecase: 'ナレッジワーカー' },
+    ];
+
+    export const QR_SECURITY: QuickReferenceService[] = [
+    { service: 'IAM', keywords: '誰が・何を・できるか', usecase: '認証・認可の基盤' },
+    { service: 'Cloud Armor', keywords: 'DDoS・WAF・IPブロック', usecase: 'Webアプリ防御' },
+    { service: 'Secret Manager', keywords: 'APIキー・パスワード管理', usecase: 'シークレット保護' },
+    { service: 'Cloud KMS', keywords: '暗号化キー管理・CMEK', usecase: 'データ暗号化' },
+    { service: 'Security Command Center', keywords: '脅威・脆弱性の一元可視化', usecase: 'セキュリティ監視' },
+    { service: 'Sensitive Data Protection', keywords: 'PII検出・マスキング', usecase: 'データプライバシー' },
+    { service: 'Cloud IAP', keywords: 'VPNなし・ゼロトラスト', usecase: '社内アプリアクセス制御' },
+    ];
+
+    export const QR_OPS: QuickReferenceService[] = [
+    { service: 'Cloud Monitoring', keywords: 'メトリクス・アラート・ダッシュボード', usecase: 'システム監視' },
+    { service: 'Cloud Logging', keywords: 'ログ収集・監査・分析', usecase: 'ログ管理' },
+    { service: 'Cloud Trace', keywords: '分散トレーシング・レイテンシ', usecase: 'パフォーマンス分析' },
+    { service: 'Cloud Profiler', keywords: 'CPU/メモリプロファイリング', usecase: 'ボトルネック特定' },
+    ];
+
+    // ── S7: 試験攻略チェックリスト ──────────────────────────────────────────────
+
+    export type ConceptChecklist = {
+    section: string;
+    items: string[];
+    };
+
+    export const CHECKLIST_CONCEPTS: ConceptChecklist[] = [
+    {
+        section: 'Section 1: デジタルトランスフォーメーション',
+        items: [
+            'IaaS / PaaS / SaaS の違いと具体例',
+            'パブリック・プライベート・ハイブリッド・マルチクラウドの違い',
+            'CapEx vs OpEx の違いとクラウドとの関係',
+            'クラウド移行の6つのR（Rehost・Replatform・Refactor・Repurchase・Retire・Retain）',
+        ],
+    },
+    {
+        section: 'Section 2: データとイノベーション',
+        items: [
+            'BigQuery とはどんなサービスか（DWH・サーバーレス・SQL分析）',
+            'Cloud Storage のストレージクラス4種（Standard・Nearline・Coldline・Archive）',
+            'DB選択基準（RDB vs NoSQL、グローバル一貫性 vs リージョン）',
+            'Looker / Looker Studio の違い（エンタープライズBI vs セルフサービス）',
+            'Pub/Sub・Dataflow・Dataproc の役割の違い',
+        ],
+    },
+    {
+        section: 'Section 3: インフラとモダナイゼーション',
+        items: [
+            'コンテナとVMの違い',
+            'Compute Engine / GKE / Cloud Run / Cloud Run Functions の使い分け',
+            'GKE AutopilotとStandardの違い',
+            'Cloud Interconnect vs Cloud VPN の使い分け',
+            'Spot/Preemptible VMはいつ使うか',
+        ],
+    },
+    {
+        section: 'Section 4: セキュリティとオペレーション',
+        items: [
+            'IAM の最小権限の原則・グループ管理',
+            'リソース階層（組織→フォルダ→プロジェクト→リソース）',
+            'Cloud Armor・Cloud KMS・Secret Manager・IAP・SCC の役割',
+            '監査ログの種類（Admin Activity・Data Access・System Eventの違い）',
+            '費用最適化の手段（Committed Use・Spot VM・右サイズ化）',
+        ],
+    },
+    {
+        section: 'Section 5: AI/ML',
+        items: [
+            'プリビルトAPI vs AutoML vs Vertex AI カスタムモデルの使い分け',
+            'Gemini の4バリアント（Ultra・Pro・Flash・Nano）の特徴',
+            'RAG とは何か・なぜハルシネーションを減らせるか',
+            '責任あるAIの6原則',
+            '匿名化 vs 仮名化の違い（再識別可能かどうか）',
+        ],
+    },
+    ];
+
+    export type ConfusionPoint = {
+    mistake: string;
+    correct: string;
+    };
+
+    export const CONFUSION_POINTS: ConfusionPoint[] = [
+    { mistake: 'Cloud Run = コンテナ専用 vs Cloud Run Functions = コード専用', correct: 'Cloud Run はコンテナ、Functions は関数（コード）。どちらもサーバーレス' },
+    { mistake: 'Cloud SQL = BigQuery', correct: 'SQL: OLTP（トランザクション処理）、BigQuery: OLAP（分析）' },
+    { mistake: 'Dataflow = Dataproc', correct: 'Dataflow: Apache Beam（ストリーミング+バッチ）、Dataproc: Hadoop/Spark（バッチ）' },
+    { mistake: 'IAM ロール = 全員同じでOK', correct: '最小権限の原則！必要最小限のロールのみ付与' },
+    { mistake: '匿名化 = 仮名化', correct: '匿名化は再識別不可（GDPR対象外）。仮名化は再識別可能（GDPR対象）' },
+    { mistake: 'ハルシネーション = バグ', correct: '構造的な問題。RAG・グラウンディングで軽減' },
+    { mistake: 'Committed Use = 自動適用', correct: '事前に申し込みが必要（Sustained Useは自動）' },
+    ];
+
+    export const ROADMAP_WEEKS = [
+    {
+        week: 'Week 1-2: 基礎概念の固め',
+        items: [
+            'Cloud の基本概念（IaaS/PaaS/SaaS、デプロイモデル）',
+            'Google Cloud のコアサービス概要',
+            'Cloud Skills Boost の入門コースを修了',
+        ],
+    },
+    {
+        week: 'Week 3-4: 主要サービスの理解',
+        items: [
+            'コンピューティング・ストレージ・ネットワーク',
+            'データ分析・データベースサービス',
+            'セキュリティの基本（IAM・暗号化）',
+        ],
+    },
+    {
+        week: 'Week 5: AI/ML と総まとめ',
+        items: [
+            'AI APIの種類と使い分け',
+            '生成AI（Gemini・RAG・ファインチューニング）',
+            '責任あるAI',
+        ],
+    },
+    {
+        week: 'Week 6: 試験直前対策',
+        items: [
+            '公式サンプル問題を繰り返し解く',
+            '間違えた問題の公式ドキュメントを読む',
+            '頻出サービス早見表を暗記',
+        ],
+    },
+    ];
+
+    export const EXAM_TIPS = [
+    '「ビジネスリーダー」の視点で解答する: 技術詳細よりビジネス価値・コスト効率・生産性向上を重視',
+    'Google Cloud 固有のサービス名を覚える: 一般用語ではなく Google Cloud 固有の名前で選択肢を判断',
+    '「最も適切な」に注意: 複数が正しい場合でも「最もシンプル」「最もコスト効率が良い」を選ぶ',
+    'セキュリティ問題は最小権限の原則: 権限を広く与えるより絞る方が正解',
+    'マネージドサービス優先: 「自分で管理する」より「マネージドサービスを使う」が Google の推奨',
+    ];
+
+    export type ReferenceLink = {
+    title: string;
+    url: string;
+    };
+
+    export const REFERENCE_LINKS: ReferenceLink[] = [
+    { title: '試験概要ページ', url: 'https://cloud.google.com/learn/certification/cloud-digital-leader' },
+    { title: '公式試験ガイド', url: 'https://cloud.google.com/learn/certification/guides/cloud-digital-leader' },
+    { title: 'Cloud Skills Boost 学習パス', url: 'https://www.cloudskillsboost.google/paths/9' },
+    { title: '公式サンプル問題', url: 'https://cloud.google.com/learn/certification/cloud-digital-leader' },
+    { title: '試験登録', url: 'https://cp.certmetrics.com/google/en/login' },
+    { title: 'Google Cloud ドキュメント', url: 'https://cloud.google.com/docs' },
+    { title: 'IAM ドキュメント', url: 'https://cloud.google.com/iam/docs' },
+    { title: 'BigQuery ドキュメント', url: 'https://cloud.google.com/bigquery/docs' },
+    { title: 'Vertex AI ドキュメント', url: 'https://cloud.google.com/vertex-ai/docs' },
+    { title: 'セキュリティ概要', url: 'https://cloud.google.com/security/overview' },
+    { title: 'Google AI 原則', url: 'https://ai.google/responsibility/principles/' },
+    { title: 'クラウドコンピューティングとは', url: 'https://cloud.google.com/learn/what-is-cloud-computing' },
+    { title: 'Gemini for Workspace', url: 'https://workspace.google.com/intl/en/products/gemini/' },
+    { title: 'Cloud Storage クラス', url: 'https://cloud.google.com/storage/docs/storage-classes' },
+    { title: 'コスト最適化', url: 'https://cloud.google.com/architecture/framework/cost-optimization' },
+    ];
