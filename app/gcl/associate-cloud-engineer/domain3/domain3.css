@@ -150,7 +150,7 @@
 .d3-page .snav {
     position: sticky;
     top: 0;
-    z-index: 40;
+    z-index: 100;
     background: rgba(6, 12, 10, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
