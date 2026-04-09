@@ -5,7 +5,9 @@ import { Header } from '@/components/Header';
 describe('Header', () => {
     it('サイトタイトルが表示されること', () => {
         render(<Header />);
-        expect(screen.getByText('Cloud Infrastructure Studies')).toBeInTheDocument();
+        // "Cloud Infrastructure" と "Studies" が別 <span> に分かれているため
+        // getByRole でアクセシブル名（全子孫テキストを結合）を検索する
+        expect(screen.getByRole('link', { name: /cloud infrastructure studies/i })).toBeInTheDocument();
     });
 
     it('GenAI Leader ドロップダウントリガーが存在すること', () => {

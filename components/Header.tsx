@@ -47,7 +47,7 @@ export function Header() {
             className="sticky top-0 z-50 grid border-b border-white/[0.06] bg-[var(--color-background)]/90 px-8 backdrop-blur-xl"
             style={{
                 height: 'var(--header-h, 48px)',
-                minHeight: '56px',
+                minHeight: 'var(--header-h, 48px)',
                 gridTemplateColumns: '1fr auto 1fr',
                 alignItems: 'center',
             }}
@@ -145,6 +145,7 @@ export function Header() {
                             href="/gcl/genai-leader"
                             label="概要"
                             desc="Generative AI Leader とは"
+                            ariaLabel="Generative AI Leader 概要"
                             onClick={() => setOpenMenu(null)}
                         />
                         <DropdownItem
@@ -235,12 +236,14 @@ export function Header() {
                             href="/gcl/associate-cloud-engineer"
                             label="概要"
                             desc="Associate Cloud Engineer とは"
+                            ariaLabel="概要"
                             onClick={() => setOpenMenu(null)}
                         />
                         <DropdownItem
                             href="/gcl/associate-cloud-engineer/architecture-guide"
                             label="アーキテクチャガイド"
                             desc="試験対策・詳細ガイド"
+                            ariaLabel="アーキテクチャガイド 試験対策・アーキテクチャ詳細ガイド"
                             onClick={() => setOpenMenu(null)}
                         />
                         <div className="my-1 h-px bg-white/[0.06]" />
@@ -248,24 +251,28 @@ export function Header() {
                             href="/gcl/associate-cloud-engineer/domain1"
                             label="Domain 1"
                             desc="環境設定 — 17.5%"
+                            ariaLabel="Domain 1: 環境設定 包括的解説"
                             onClick={() => setOpenMenu(null)}
                         />
                         <DropdownItem
                             href="/gcl/associate-cloud-engineer/domain2"
                             label="Domain 2"
                             desc="計画と実装 — 21%"
+                            ariaLabel="Domain 2: 計画と実装 包括的解説"
                             onClick={() => setOpenMenu(null)}
                         />
                         <DropdownItem
                             href="/gcl/associate-cloud-engineer/domain3"
                             label="Domain 3"
                             desc="運用管理 — 22%"
+                            ariaLabel="Domain 3: 運用管理 包括的解説"
                             onClick={() => setOpenMenu(null)}
                         />
                         <DropdownItem
                             href="/gcl/associate-cloud-engineer/domain4"
                             label="Domain 4"
                             desc="アクセスとセキュリティ — 20%"
+                            ariaLabel="Domain 4: アクセスとセキュリティ 包括的解説"
                             onClick={() => setOpenMenu(null)}
                         />
                     </div>
@@ -349,23 +356,26 @@ function DropdownItem({
     href,
     label,
     desc,
+    ariaLabel,
     onClick,
 }: {
     href: string;
     label: string;
     desc: string;
+    ariaLabel?: string;
     onClick: () => void;
 }) {
     return (
         <Link
             href={href}
             onClick={onClick}
+            aria-label={ariaLabel}
             className="group relative flex items-center gap-3 rounded-xl px-8 py-5 transition-all duration-150 hover:bg-white/[0.08]"
         >
             {/* Accent left bar that appears on hover */}
             <span
                 className="absolute left-0 top-1/2 h-0 w-0.5 -translate-y-1/2 rounded-full bg-[var(--color-primary)] opacity-0 transition-all duration-200 group-hover:h-5 group-hover:opacity-100"
-                aria-hidden
+                aria-hidden="true"
             />
             <span className="flex flex-col gap-2 pl-3">
                 <span className="text-[14px] font-bold leading-relaxed text-[var(--color-muted)] transition-colors duration-150 group-hover:text-[var(--color-foreground)]">
@@ -375,8 +385,11 @@ function DropdownItem({
                     {desc}
                 </span>
             </span>
-            {/* Arrow that slides in on hover */}
-            <span className="ml-auto translate-x-0 text-[10px] text-[var(--color-muted-foreground)] opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100">
+            {/* 装飾用矢印 — アクセシブル名の計算から除外 */}
+            <span
+                className="ml-auto translate-x-0 text-[10px] text-[var(--color-muted-foreground)] opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100"
+                aria-hidden="true"
+            >
                 →
             </span>
         </Link>
