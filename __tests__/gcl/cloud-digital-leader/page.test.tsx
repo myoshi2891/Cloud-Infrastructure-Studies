@@ -57,7 +57,7 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
 
     it('重要コンセプトセクションが存在すること', () => {
         render(<CloudDigitalLeaderPage />);
-        expect(screen.getByRole('heading', { level: 2, name: /必ず押さえるべき概念/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /試験攻略チェックリスト/i })).toBeInTheDocument();
         expect(screen.getByText(/推奨学習ロードマップ/i)).toBeInTheDocument();
     });
 
@@ -450,5 +450,79 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
     it('S5: Explainable AI が存在すること', () => {
         render(<CloudDigitalLeaderPage />);
         expect(screen.getAllByText(/Explainable AI|説明可能な AI|説明可能なAI/i).length).toBeGreaterThanOrEqual(1);
+    });
+
+    describe('Section 6: 頻出サービス早見表', () => {
+        it('S6: セクションタイトルが存在すること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/頻出サービス早見表/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/7.1/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/コンピューティング/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S6: コンピューティングサービスが含まれていること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/Compute Engine/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/GKE/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/Cloud Run/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S6: ストレージ・データベースが含まれていること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/7.2/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/Cloud Spanner/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S6: AI・MLが含まれていること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/7.3/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/Vertex AI Agent Builder/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S6: セキュリティが含まれていること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/7.4/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/Cloud Armor/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S6: オペレーションが含まれていること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/7.5/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/Cloud Trace/i).length).toBeGreaterThanOrEqual(1);
+        });
+    });
+
+    describe('Section 7: 試験攻略チェックリスト', () => {
+        it('S7: セクションタイトルが存在すること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/試験攻略チェックリスト/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S7: 必ず押さえるべき概念が存在すること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/必ず押さえるべき概念/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S7: 試験でよく混同されるポイントが存在すること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/よく混同されるポイント/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/Cloud Run = コンテナ専用 vs Cloud Run Functions = コード専用/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S7: 推奨学習ロードマップが存在すること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/推奨学習ロードマップ/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S7: 試験当日のポイントが存在すること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/試験当日のポイント/i).length).toBeGreaterThanOrEqual(1);
+        });
+
+        it('S7: 公式参照リソース一覧が存在すること', () => {
+            render(<CloudDigitalLeaderPage />);
+            expect(screen.getAllByText(/公式参照リソース一覧/i).length).toBeGreaterThanOrEqual(1);
+            expect(screen.getAllByText(/https:\/\/cloud.google.com\/learn\/certification\/cloud-digital-leader/i).length).toBeGreaterThanOrEqual(1);
+        });
     });
 });

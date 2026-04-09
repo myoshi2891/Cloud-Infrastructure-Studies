@@ -31,6 +31,15 @@ import {
     PRIVACY_TECHNIQUES,
     ML_APPROACHES,
     BQML_FEATURES,
+    QR_COMPUTE,
+    QR_STORAGE_DB,
+    QR_AIML,
+    QR_SECURITY,
+    QR_OPS,
+    CHECKLIST_CONCEPTS,
+    ROADMAP_WEEKS,
+    EXAM_TIPS,
+    REFERENCE_LINKS,
 } from './constants';
 
 export const metadata: Metadata = {
@@ -2059,26 +2068,124 @@ function Section6() {
             <div className="sec-head">
                 <div className="sec-num sn6">06</div>
                 <div className="sec-head-txt">
-                    <h2>サービス早見表 — 混同ペアの整理</h2>
-                    <p>コンピューティング・分析・コスト管理の重要ペア</p>
+                    <h2>頻出サービス早見表</h2>
+                    <p>試験直前に見直すべき主要サービスのまとめ</p>
                 </div>
             </div>
 
             <div className="tcard">
-                <div className="ttitle"><span className="tid">6.1</span>よく混同されるサービスペア</div>
+                <div className="ttitle"><span className="tid">6.1</span>7.1 コンピューティング</div>
                 <div className="ctable-wrap">
                     <table className="ctable">
                         <thead>
                             <tr>
-                                <th>混同ペア</th>
-                                <th>正しい理解</th>
+                                <th>サービス</th>
+                                <th>キーワード</th>
+                                <th>使い分け</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {CONFUSING_PAIRS.map((row, i) => (
+                            {QR_COMPUTE.map((row, i) => (
                                 <tr key={i}>
-                                    <td><strong>{row.pair}</strong></td>
-                                    <td>{row.truth}</td>
+                                    <td><strong>{row.service}</strong></td>
+                                    <td>{row.keywords}</td>
+                                    <td>{row.usecase}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.2</span>7.2 ストレージ・データベース</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>サービス</th>
+                                <th>キーワード</th>
+                                <th>使い分け</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {QR_STORAGE_DB.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.service}</strong></td>
+                                    <td>{row.keywords}</td>
+                                    <td>{row.usecase}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.3</span>7.3 AI・ML</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>サービス</th>
+                                <th>キーワード</th>
+                                <th>対象者・用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {QR_AIML.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.service}</strong></td>
+                                    <td>{row.keywords}</td>
+                                    <td>{row.usecase}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.4</span>7.4 セキュリティ</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>サービス</th>
+                                <th>キーワード</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {QR_SECURITY.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.service}</strong></td>
+                                    <td>{row.keywords}</td>
+                                    <td>{row.usecase}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">6.5</span>7.5 オペレーション</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>サービス</th>
+                                <th>キーワード</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {QR_OPS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.service}</strong></td>
+                                    <td>{row.keywords}</td>
+                                    <td>{row.usecase}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -2095,32 +2202,70 @@ function Section7() {
             <div className="sec-head">
                 <div className="sec-num sn7">07</div>
                 <div className="sec-head-txt">
-                    <h2>試験攻略チェックリスト — 必ず押さえるべき概念</h2>
-                    <p>セクション別チェックリスト・学習ロードマップ</p>
+                    <h2>試験攻略チェックリスト</h2>
+                    <p>必ず押さえるべき概念・混同しやすいポイント・学習ロードマップ・試験当日のポイント</p>
                 </div>
             </div>
 
             <div className="tcard">
-                <div className="ttitle"><span className="tid">7.1</span>推奨学習ロードマップ</div>
-                <pre className="codeblock">{`Week 1-2: 基礎概念の固め
-├── Cloud の基本概念（IaaS/PaaS/SaaS、デプロイモデル）
-├── Google Cloud のコアサービス概要
-└── Cloud Skills Boost の入門コースを修了
+                <div className="ttitle"><span className="tid">7.1</span>必ず押さえるべき概念（各セクション）</div>
+                <div className="tgrid">
+                    {CHECKLIST_CONCEPTS.map((list, i) => (
+                        <div key={i} className="titem">
+                            <strong>{list.section}</strong>
+                            <ul className="cdl-list">
+                                {list.items.map((item, j) => (
+                                    <li key={j}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
-Week 3-4: 主要サービスの理解
-├── コンピューティング・ストレージ・ネットワーク
-├── データ分析・データベースサービス
-└── セキュリティの基本（IAM・暗号化）
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.2</span>よく混同されるポイント</div>
+                <div className="ctable-wrap">
+                    <table className="ctable">
+                        <thead>
+                            <tr>
+                                <th>間違いやすい組み合わせ</th>
+                                <th>正しい理解</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {CONFUSING_PAIRS.map((row, i) => (
+                                <tr key={i}>
+                                    <td><strong>{row.pair}</strong></td>
+                                    <td>{row.truth}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-Week 5: AI/ML と総まとめ
-├── AI API の種類と使い分け
-├── 生成 AI（Gemini・RAG・ファインチューニング）
-└── 責任ある AI
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.3</span>推奨学習ロードマップ</div>
+                {ROADMAP_WEEKS.map((rw, i) => (
+                    <div key={i} style={{ marginBottom: '1rem' }}>
+                        <div className="stitle">{rw.week}</div>
+                        <ul className="cdl-list">
+                            {rw.items.map((item, j) => (
+                                <li key={j}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
 
-Week 6: 試験直前対策
-├── 公式サンプル問題を繰り返し解く
-├── 間違えた問題の公式ドキュメントを読む
-└── 頻出サービス早見表を暗記`}</pre>
+            <div className="tcard">
+                <div className="ttitle"><span className="tid">7.4</span>試験当日のポイント</div>
+                <ol className="cdl-list">
+                    {EXAM_TIPS.map((tip, i) => (
+                        <li key={i}><strong>{tip.split(':')[0]}</strong>: {tip.split(':')[1]}</li>
+                    ))}
+                </ol>
             </div>
         </div>
     );
@@ -2148,10 +2293,10 @@ function Section8() {
                             </tr>
                         </thead>
                         <tbody>
-                            {RESOURCES.map((row, i) => (
+                            {REFERENCE_LINKS.map((row, i) => (
                                 <tr key={i}>
-                                    <td>{row.name}</td>
-                                    <td><a href={`https://${row.url}`} target="_blank" rel="noopener noreferrer">{row.url}</a></td>
+                                    <td>{row.title}</td>
+                                    <td><a href={row.url} target="_blank" rel="noopener noreferrer">{row.url}</a></td>
                                 </tr>
                             ))}
                         </tbody>

@@ -23,33 +23,18 @@
 | S2: データ変革 | ✅ | ✅ | 完了 |
 | S3: インフラ近代化 | ✅ | ✅ | 完了 |
 | S4: セキュリティ・コンプライアンス | ✅ | ✅ | 完了 |
-| **S5: AI/ML（AI によるイノベーション）** | ✅ 15件 | ✅ 実装済み | **完了** |
-| S6: サービス早見表 | 未実装 | ✅ | TODO |
-| S7: 試験攻略チェックリスト | 未実装 | ✅ | TODO |
-
----
-
-## 未実装コンテンツ — Section 6〜7 の整合性確認とリファクタリング
-
-### 未実装コンテンツ（TODO）
-
-- [ ] Section 6〜7 の最終的な整合性確認とリファクタリング
+| S5: AI/ML（AI によるイノベーション） | ✅ 15件 | ✅ 実装済み | 完了 |
+| **S6: サービス早見表** | ✅ | ✅ 実装済み | **完了** |
+| **S7: 試験攻略チェックリスト** | ✅ | ✅ 実装済み | **完了** |
 
 ---
 
 ## 実装手順
 
-- [x] `constants.ts` に `ML_APPROACHES`, `BQML_FEATURES` を追加
-- [x] `page.tsx` の `Section5` 関数を拡張（5.2〜5.16 のカードを追加）
-- [x] `bun run test __tests__/gcl/cloud-digital-leader/page.test.tsx` で全64テスト GREEN 確認
+- [x] `__tests__/gcl/cloud-digital-leader/page.test.tsx` に S6 と S7 のテストを追加
+- [x] `constants.ts` に S6 と S7 のデータを追加
+- [x] `page.tsx` の `Section6`, `Section7`, `Section8` 関数を拡張してデータを表示
+- [x] `bun run test __tests__/gcl/cloud-digital-leader/page.test.tsx` で全76テスト GREEN 確認
 - [x] `bun run build` でビルドエラーなし確認
-- [x] commit: `feat(cdl/S5): add AI/ML hierarchy, ML approaches, Vertex AI, Gemini, RAG`
+- [x] commit: `feat(gcl/cloud-digital-leader/S6-S7): add section 6 and 7 for quick references and checklist`
 
----
-
-## 参照ファイル
-
-- ソースMD: `cdl-section3-ai-innovation.md`
-- テスト: `__tests__/gcl/cloud-digital-leader/page.test.tsx` (L354-453)
-- 定数: `app/gcl/cloud-digital-leader/constants.ts` (L363-)
-- 実装: `app/gcl/cloud-digital-leader/page.tsx` (L1199-1249)
