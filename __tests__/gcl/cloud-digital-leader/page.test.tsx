@@ -456,7 +456,8 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         it('S6: セクションタイトルが存在すること', () => {
             render(<CloudDigitalLeaderPage />);
             const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap') || document.body;
+            const section = heading.closest('.sgap');
+            expect(section).not.toBeNull();
             expect(within(section as HTMLElement).getAllByText(/頻出サービス早見表/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/6.1/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/コンピューティング/i).length).toBeGreaterThanOrEqual(1);
@@ -465,7 +466,8 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         it('S6: コンピューティングサービスが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
             const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap') || document.body;
+            const section = heading.closest('.sgap');
+            expect(section).not.toBeNull();
             expect(within(section as HTMLElement).getAllByText(/Compute Engine/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/GKE/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/Cloud Run/i).length).toBeGreaterThanOrEqual(1);
@@ -474,7 +476,8 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         it('S6: ストレージ・データベースが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
             const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap') || document.body;
+            const section = heading.closest('.sgap');
+            expect(section).not.toBeNull();
             expect(within(section as HTMLElement).getAllByText(/6.2/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/Cloud Spanner/i).length).toBeGreaterThanOrEqual(1);
         });
@@ -482,7 +485,8 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         it('S6: AI・MLが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
             const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap') || document.body;
+            const section = heading.closest('.sgap');
+            expect(section).not.toBeNull();
             expect(within(section as HTMLElement).getAllByText(/6.3/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/Vertex AI Agent Builder/i).length).toBeGreaterThanOrEqual(1);
         });
@@ -490,7 +494,8 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         it('S6: セキュリティが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
             const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap') || document.body;
+            const section = heading.closest('.sgap');
+            expect(section).not.toBeNull();
             expect(within(section as HTMLElement).getAllByText(/6.4/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/Cloud Armor/i).length).toBeGreaterThanOrEqual(1);
         });
@@ -498,7 +503,8 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         it('S6: オペレーションが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
             const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap') || document.body;
+            const section = heading.closest('.sgap');
+            expect(section).not.toBeNull();
             expect(within(section as HTMLElement).getAllByText(/6.5/i).length).toBeGreaterThanOrEqual(1);
             expect(within(section as HTMLElement).getAllByText(/Cloud Trace/i).length).toBeGreaterThanOrEqual(1);
         });

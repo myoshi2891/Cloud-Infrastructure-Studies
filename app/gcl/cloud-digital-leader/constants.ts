@@ -679,20 +679,7 @@ export type ReferenceLink = {
     url: string;
 };
 
-export const REFERENCE_LINKS: ReferenceLink[] = [
-    { title: '試験概要ページ', url: 'https://cloud.google.com/learn/certification/cloud-digital-leader' },
-    { title: '公式試験ガイド', url: 'https://cloud.google.com/learn/certification/guides/cloud-digital-leader' },
-    { title: 'Cloud Skills Boost 学習パス', url: 'https://www.cloudskillsboost.google/paths/9' },
-    { title: '公式サンプル問題', url: 'https://cloud.google.com/learn/certification/cloud-digital-leader' },
-    { title: '試験登録', url: 'https://cp.certmetrics.com/google/en/login' },
-    { title: 'Google Cloud ドキュメント', url: 'https://cloud.google.com/docs' },
-    { title: 'IAM ドキュメント', url: 'https://cloud.google.com/iam/docs' },
-    { title: 'BigQuery ドキュメント', url: 'https://cloud.google.com/bigquery/docs' },
-    { title: 'Vertex AI ドキュメント', url: 'https://cloud.google.com/vertex-ai/docs' },
-    { title: 'セキュリティ概要', url: 'https://cloud.google.com/security/overview' },
-    { title: 'Google AI 原則', url: 'https://ai.google/responsibility/principles/' },
-    { title: 'クラウドコンピューティングとは', url: 'https://cloud.google.com/learn/what-is-cloud-computing' },
-    { title: 'Gemini for Workspace', url: 'https://workspace.google.com/intl/en/products/gemini/' },
-    { title: 'Cloud Storage クラス', url: 'https://cloud.google.com/storage/docs/storage-classes' },
-    { title: 'コスト最適化', url: 'https://cloud.google.com/architecture/framework/cost-optimization' },
-];
+export const REFERENCE_LINKS: ReferenceLink[] = RESOURCES.map(r => ({
+    title: r.name,
+    url: `https://${r.url}`
+}));
