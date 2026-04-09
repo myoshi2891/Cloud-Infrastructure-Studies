@@ -117,7 +117,7 @@ playwright-report/
 
 .claude/skills
 Aws/archive/
-Gcl/*
+Gcl_Archive/*
 tsconfig.tsbuildinfo
 infra-md-to-nextjs-migration.skill
 .gemini
