@@ -1,3 +1,5 @@
+export const CHAPTER_COUNT = 18;
+
 export type ReferenceLink = [string, string, string];
 
 export const OFFICIAL_DOCS: ReferenceLink[] = [

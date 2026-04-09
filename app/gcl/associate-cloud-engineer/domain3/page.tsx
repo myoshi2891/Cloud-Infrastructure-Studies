@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { OFFICIAL_DOCS, TECH_GUIDES } from './constants';
+import { OFFICIAL_DOCS, TECH_GUIDES, CHAPTER_COUNT } from './constants';
 import Chapter18 from './Chapter18';
 export const metadata: Metadata = {
     title: 'Domain 3: Ensuring Successful Operation of a Cloud Solution',
@@ -63,7 +63,7 @@ function SectionIntro() {
             </div>
 
             <div className="tcard">
-                 <div className="ttitle"><span className="tid">3.0</span>目次（全18章）</div>
+                 <div className="ttitle"><span className="tid">3.0</span>目次（全{CHAPTER_COUNT}章）</div>
                 <div className="ctable">
                     <div className="ctable-head">
                         <span>章</span><span>タイトル</span><span>カテゴリ</span>
@@ -2323,7 +2323,7 @@ export default function Domain3Page() {
                     </span>
                     <span className="hero-badge">
                         <span className="dot dot-cyan" />
-                        全18章
+                        全{CHAPTER_COUNT}章
                     </span>
                     <span className="hero-badge">
                         <span className="dot" />

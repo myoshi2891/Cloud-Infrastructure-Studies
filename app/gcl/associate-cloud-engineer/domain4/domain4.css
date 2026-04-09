@@ -562,7 +562,7 @@
     border-bottom: 1px solid var(--d4-border, #2b1a30);
 }
 
-/* h2.stitle 内の ::before を無効化（通常 stitle は小見出し用）*/
+/* h2.stitle 内の ::before を無効化（通常 stitle は小見出し用） */
 .d4-page [id^='ch'] > h2.stitle::before {
     display: none;
 }
