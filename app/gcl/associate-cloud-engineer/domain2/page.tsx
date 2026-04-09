@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-
+import { REFERENCE_LINKS } from './constants';
 export const metadata: Metadata = {
     title: 'Domain 2: Planning and Implementing a Cloud Solution',
     description:
@@ -13,7 +13,7 @@ function SectionIntro() {
                 <div className="sec-num sn0">00</div>
                 <div className="sec-head-txt">
                     <h2>Domain 2 全体マップ</h2>
-                    <p>クラウドソリューションの計画と実装 — 4つのサブドメインと16章の体系的学習ガイド</p>
+                    <p>クラウドソリューションの計画と実装 — 4つのサブドメインと17章の体系的学習ガイド</p>
                 </div>
             </div>
 
@@ -620,44 +620,7 @@ function Chapter17() {
                     <span className="tid">17.1</span>公式ドキュメント（Official Documentation）
                 </div>
                 <div className="tgrid">
-                    {[
-                        ['Associate Cloud Engineer Certification | Learn - Google Cloud', 'https://cloud.google.com/learn/certification/cloud-engineer', 'ACE 試験の公式情報ページ'],
-                        ['Associate Cloud Engineer Certification | Learn | Google Cloud', 'https://cloud.google.com/learn/certification/cloud-engineer?hl=en#exam-guide', '試験ガイドの詳細'],
-                        ['Compute Engine documentation', 'https://docs.cloud.google.com/compute/docs', 'Compute Engine の公式ドキュメント'],
-                        ['Set up OS Login | Compute Engine', 'https://docs.cloud.google.com/compute/docs/oslogin/set-up-oslogin', 'OS Login の設定手順'],
-                        ['Create and use Spot VMs | Compute Engine', 'https://docs.cloud.google.com/compute/docs/instances/create-use-spot', 'Spot VM の作成と使用'],
-                        ['GKE Autopilot security capabilities', 'https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security', 'GKE Autopilot のセキュリティ機能'],
-                        ['Autopilot vs Standard feature comparison | GKE', 'https://docs.cloud.google.com/kubernetes-engine/docs/resources/autopilot-standard-feature-comparison', 'GKE Autopilot vs Standard の機能比較'],
-                        ['Cloud Run networking best practices', 'https://docs.cloud.google.com/run/docs/configuring/networking-best-practices', 'Cloud Run ネットワーキングのベストプラクティス'],
-                        ['Best practices for Cloud Storage', 'https://docs.cloud.google.com/storage/docs/best-practices', 'Cloud Storage のベストプラクティス'],
-                        ['Your Google Cloud database options, explained', 'https://cloud.google.com/blog/topics/developers-practitioners/your-google-cloud-database-options-explained', 'データベース選定の完全ガイド'],
-                        ['Best practices and reference architectures for VPC design', 'https://docs.cloud.google.com/architecture/best-practices-vpc-design', 'VPC 設計のベストプラクティスと参考アーキテクチャ'],
-                        ['Shared VPC overview | Virtual Private Cloud', 'https://docs.cloud.google.com/vpc/docs/shared-vpc', 'Shared VPC の概要と設定'],
-                        ['6 best practices for running Cloud NAT | Google Cloud Blog', 'https://cloud.google.com/blog/products/networking/6-best-practices-for-running-cloud-nat', 'Cloud NAT 運用のベストプラクティス'],
-                        ['Best practices for Cloud DNS', 'https://docs.cloud.google.com/dns/docs/best-practices', 'Cloud DNS のベストプラクティス'],
-                        ['Choosing a load balancer | Cloud Load Balancing', 'https://docs.cloud.google.com/load-balancing/docs/choosing-load-balancer', 'ロードバランサ選定の完全ガイド'],
-                        ['Terraform best practices for operations | Google Cloud', 'https://docs.cloud.google.com/docs/terraform/best-practices/operations', 'Terraform 運用のベストプラクティス'],
-                        ['Google Cloud Pricing Calculator', 'https://cloud.google.com/products/calculator', 'クラウドコストの見積もりツール'],
-                        ['Estimate and control costs | BigQuery', 'https://docs.cloud.google.com/bigquery/docs/best-practices-costs', 'BigQuery コスト管理のベストプラクティス'],
-                        ['Best practices for Compute Engine regions selection', 'https://docs.cloud.google.com/solutions/best-practices-compute-engine-region-selection', 'Compute Engine リージョン選択のベストプラクティス'],
-                        ['Choose a Compute Engine deployment strategy for your workload', 'https://docs.cloud.google.com/compute/docs/choose-compute-deployment-option', 'Compute Engine デプロイ戦略の選択'],
-                        ['Creating a routes-based cluster | GKE networking', 'https://docs.cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster', 'Routes-based GKE クラスタの作成'],
-                        ['Best practices for GKE networking', 'https://docs.cloud.google.com/kubernetes-engine/docs/best-practices/networking', 'GKE ネットワーキングのベストプラクティス'],
-                        ['Authenticate to Google Cloud APIs from GKE workloads', 'https://docs.cloud.google.com/kubernetes-engine/docs/how-to/workload-identity', 'GKE Workload Identity による認証'],
-                        ['Cloud run vs cloud functions for serverless | Google Cloud Blog', 'https://cloud.google.com/blog/products/serverless/cloud-run-vs-cloud-functions-for-serverless', 'サーバーレスサービスの選択ガイド'],
-                        ['General development tips | Cloud Run', 'https://docs.cloud.google.com/run/docs/tips/general', 'Cloud Run 開発の実践ヒント'],
-                        ['Functions best practices | Cloud Run', 'https://docs.cloud.google.com/run/docs/tips/functions-best-practices', 'Cloud Functions のベストプラクティス'],
-                        ['Decision tree for data analytics workloads on Google Cloud', 'https://cloud.google.com/blog/products/data-analytics/decision-tree-for-data-analytics-workloads-on-google-cloud', 'データ分析サービスの選定決定木'],
-                        ['Design an optimal storage strategy for your cloud workload', 'https://docs.cloud.google.com/architecture/storage-advisor', 'ストレージ戦略設計アドバイザー'],
-                        ['Pick the right storage option on Google Cloud', 'https://cloud.google.com/blog/products/storage-data-transfer/pick-the-right-storage-option-on-google-cloud', 'ストレージオプションの比較と選択'],
-                        ['AlloyDB for PostgreSQL intelligent scalable storage', 'https://cloud.google.com/blog/products/databases/alloydb-for-postgresql-intelligent-scalable-storage', 'AlloyDB のインテリジェントストレージ解説'],
-                        ['Virtual Private Cloud (VPC) - Google Cloud', 'https://cloud.google.com/vpc', 'VPC の概要と機能'],
-                        ['Private Service Connect Features and Benefits', 'https://cloud.google.com/private-service-connect', 'プライベートサービス接続の機能とメリット'],
-                        ['What is Infrastructure as Code (IaC)? - Google Cloud', 'https://cloud.google.com/discover/what-is-infrastructure-as-code', 'IaC の概念解説'],
-                        ['Infrastructure as Code on Google Cloud', 'https://docs.cloud.google.com/docs/terraform/iac-overview', 'Terraform による IaC の概要'],
-                        ['Build a modern three-tier architecture web application with Cloud Run', 'https://developers.google.com/learn/pathways/solution-three-tier-cloud-run', 'Cloud Run の3層アーキテクチャ'],
-                        ['Jump Start Solution: Three-tier web app', 'https://docs.cloud.google.com/architecture/application-development/three-tier-web-app', '3層 Web アプリのジャンプスタートソリューション'],
-                    ].map(([pageTitle, url, desc]) => (
+                    {REFERENCE_LINKS.map(([pageTitle, url, desc]) => (
                         <div className="titem" key={url}>
                             <div className="tname">
                                 <a href={url} target="_blank" rel="noopener noreferrer">{pageTitle}</a>
