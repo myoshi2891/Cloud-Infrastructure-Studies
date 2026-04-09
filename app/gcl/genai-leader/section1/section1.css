@@ -39,7 +39,7 @@
     color: var(--text);
     font-family: var(--body);
     line-height: 1.8;
-    overflow-x: hidden;
+    overflow-x: clip;
     min-height: 100vh;
     position: relative;
 }

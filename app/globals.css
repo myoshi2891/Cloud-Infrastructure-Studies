@@ -30,6 +30,9 @@
     --font-body: 'Noto Sans JP', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
+    /* サイトヘッダーの高さ — snav の top オフセットに使用 (issue #42) */
+    --header-h: 48px;
+
     --radius-sm: 4px;
     --radius-md: 10px;
     --radius-lg: 16px;
@@ -45,6 +48,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: clip; /* overflow-x:hidden は sticky を壊すため clip を使用 (issue #42) */
 }
 
 body {
@@ -52,5 +56,4 @@ body {
     color: var(--color-foreground);
     font-family: var(--font-body);
     line-height: 1.75;
-    overflow-x: hidden;
 }

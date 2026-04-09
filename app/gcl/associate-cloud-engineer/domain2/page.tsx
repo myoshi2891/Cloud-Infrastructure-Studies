@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-
+import { CHAPTER_COUNT } from './constants';
+import Chapter17 from './Chapter17';
 export const metadata: Metadata = {
     title: 'Domain 2: Planning and Implementing a Cloud Solution',
     description:
@@ -13,7 +14,7 @@ function SectionIntro() {
                 <div className="sec-num sn0">00</div>
                 <div className="sec-head-txt">
                     <h2>Domain 2 全体マップ</h2>
-                    <p>クラウドソリューションの計画と実装 — 4つのサブドメインと16章の体系的学習ガイド</p>
+                    <p>クラウドソリューションの計画と実装 — 4つのサブドメインと{CHAPTER_COUNT}章の体系的学習ガイド</p>
                 </div>
             </div>
 
@@ -77,6 +78,7 @@ function SectionIntro() {
                         ['Ch14', 'ロードバランサ', 'LB種類選定・URLマップ・Cloud Armor・SSL'],
                         ['Ch15', 'Terraform', 'State管理・モジュール・CI/CD・リモートバックエンド'],
                         ['Ch16', '試験対策まとめ', '頻出パターン・重要用語・練習問題'],
+                        ['Ch17', '参考資料', '公式ドキュメント・技術リソース集'],
                     ].map(([ch, title, topics]) => (
                         <div className="ctable-row" key={ch}>
                             <span className="ctval">{ch}</span>
@@ -602,6 +604,8 @@ function Chapter16() {
         </div>
     );
 }
+
+
 
 function Chapter14() {
     return (
@@ -3035,7 +3039,7 @@ export default function Domain2Page() {
                     </span>
                     <span className="hero-badge">
                         <span className="dot dot-cyan" />
-                        全16章
+                        全{CHAPTER_COUNT}章
                     </span>
                     <span className="hero-badge">
                         <span className="dot" />
@@ -3063,6 +3067,7 @@ export default function Domain2Page() {
                     <a href="#ch14" className="snav-link"><span className="snav-num">14</span>ロードバランサ</a>
                     <a href="#ch15" className="snav-link"><span className="snav-num">15</span>Terraform</a>
                     <a href="#ch16" className="snav-link"><span className="snav-num">16</span>試験対策</a>
+                    <a href="#ch17" className="snav-link"><span className="snav-num">17</span>参考資料</a>
                 </div>
             </nav>
 
@@ -3084,6 +3089,7 @@ export default function Domain2Page() {
                 <Chapter14 />
                 <Chapter15 />
                 <Chapter16 />
+                <Chapter17 />
             </div>
 
             <footer className="page-footer">

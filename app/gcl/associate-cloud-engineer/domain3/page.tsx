@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-
+import { OFFICIAL_DOCS, TECH_GUIDES, CHAPTER_COUNT } from './constants';
+import Chapter18 from './Chapter18';
 export const metadata: Metadata = {
     title: 'Domain 3: Ensuring Successful Operation of a Cloud Solution',
     description:
@@ -62,7 +63,7 @@ function SectionIntro() {
             </div>
 
             <div className="tcard">
-                <div className="ttitle"><span className="tid">3.0</span>目次（全17章）</div>
+                 <div className="ttitle"><span className="tid">3.0</span>目次（全{CHAPTER_COUNT}章）</div>
                 <div className="ctable">
                     <div className="ctable-head">
                         <span>章</span><span>タイトル</span><span>カテゴリ</span>
@@ -84,6 +85,7 @@ function SectionIntro() {
                     <div className="ctable-row"><span>Ch15</span><span>Cloud Trace / Profiler / Error Reporting</span><span>3-C 可観測性</span></div>
                     <div className="ctable-row"><span>Ch16</span><span>Gemini Cloud Assist + Cloud Asset Inventory</span><span>3-D AI 運用</span></div>
                     <div className="ctable-row"><span>Ch17</span><span>試験対策まとめ</span><span>試験対策</span></div>
+                    <div className="ctable-row"><span>Ch18</span><span>参考資料</span><span>リファレンス</span></div>
                 </div>
             </div>
         </div>
@@ -2300,6 +2302,8 @@ function Chapter17() {
     );
 }
 
+
+
 export default function Domain3Page() {
     return (
         <div className="d3-page">
@@ -2319,7 +2323,7 @@ export default function Domain3Page() {
                     </span>
                     <span className="hero-badge">
                         <span className="dot dot-cyan" />
-                        全17章
+                        全{CHAPTER_COUNT}章
                     </span>
                     <span className="hero-badge">
                         <span className="dot" />
@@ -2348,6 +2352,7 @@ export default function Domain3Page() {
                     <a href="#ch15" className="snav-link"><span className="snav-num">15</span>Trace/Profiler</a>
                     <a href="#ch16" className="snav-link"><span className="snav-num">16</span>Gemini Cloud Assist</a>
                     <a href="#ch17" className="snav-link"><span className="snav-num">17</span>試験対策</a>
+                    <a href="#ch18" className="snav-link"><span className="snav-num">18</span>参考資料</a>
                 </div>
             </nav>
 
@@ -2370,6 +2375,7 @@ export default function Domain3Page() {
                 <Chapter15 />
                 <Chapter16 />
                 <Chapter17 />
+                <Chapter18 />
             </div>
 
             <footer className="page-footer">
