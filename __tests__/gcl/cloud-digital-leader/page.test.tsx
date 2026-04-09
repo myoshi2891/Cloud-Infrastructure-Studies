@@ -2,6 +2,13 @@ import { describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import CloudDigitalLeaderPage from '@/app/gcl/cloud-digital-leader/page.tsx';
 
+function getSectionByHeading(headingPattern: RegExp) {
+    const heading = screen.getByRole('heading', { level: 2, name: headingPattern });
+    const section = heading.closest('.sgap');
+    if (!section) throw new Error(`Section container not found for heading: ${headingPattern}`);
+    return section as HTMLElement;
+}
+
 describe('Cloud Digital Leader 認定試験 ページ', () => {
     it('ページコンポーネントがレンダリングされること', () => {
         const { container } = render(<CloudDigitalLeaderPage />);
@@ -455,94 +462,88 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
     describe('Section 6: 頻出サービス早見表', () => {
         it('S6: セクションタイトルが存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap');
-            expect(section).not.toBeNull();
-            expect(within(section as HTMLElement).getAllByText(/頻出サービス早見表/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/6.1/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/コンピューティング/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/頻出サービス早見表/i);
+            expect(within(section).getAllByText(/頻出サービス早見表/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/6.1/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/コンピューティング/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: コンピューティングサービスが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap');
-            expect(section).not.toBeNull();
-            expect(within(section as HTMLElement).getAllByText(/Compute Engine/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/GKE/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/Cloud Run/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/頻出サービス早見表/i);
+            expect(within(section).getAllByText(/Compute Engine/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/GKE/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/Cloud Run/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: ストレージ・データベースが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap');
-            expect(section).not.toBeNull();
-            expect(within(section as HTMLElement).getAllByText(/6.2/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/Cloud Spanner/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/頻出サービス早見表/i);
+            expect(within(section).getAllByText(/6.2/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/Cloud Spanner/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: AI・MLが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap');
-            expect(section).not.toBeNull();
-            expect(within(section as HTMLElement).getAllByText(/6.3/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/Vertex AI Agent Builder/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/頻出サービス早見表/i);
+            expect(within(section).getAllByText(/6.3/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/Vertex AI Agent Builder/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: セキュリティが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap');
-            expect(section).not.toBeNull();
-            expect(within(section as HTMLElement).getAllByText(/6.4/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/Cloud Armor/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/頻出サービス早見表/i);
+            expect(within(section).getAllByText(/6.4/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/Cloud Armor/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: オペレーションが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
-            const section = heading.closest('.sgap');
-            expect(section).not.toBeNull();
-            expect(within(section as HTMLElement).getAllByText(/6.5/i).length).toBeGreaterThanOrEqual(1);
-            expect(within(section as HTMLElement).getAllByText(/Cloud Trace/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/頻出サービス早見表/i);
+            expect(within(section).getAllByText(/6.5/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/Cloud Trace/i).length).toBeGreaterThanOrEqual(1);
         });
     });
 
     describe('Section 7: 試験攻略チェックリスト', () => {
         it('S7: セクションタイトルが存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/試験攻略チェックリスト/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/試験攻略チェックリスト/i);
+            expect(within(section).getAllByText(/試験攻略チェックリスト/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S7: 必ず押さえるべき概念が存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/必ず押さえるべき概念/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/試験攻略チェックリスト/i);
+            expect(within(section).getAllByText(/必ず押さえるべき概念/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S7: 試験でよく混同されるポイントが存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/よく混同されるポイント/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/Cloud Run = コンテナ専用 vs Cloud Run Functions = コード専用/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/試験攻略チェックリスト/i);
+            expect(within(section).getAllByText(/よく混同されるポイント/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/Cloud Run = コンテナ専用 vs Cloud Run Functions = コード専用/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S7: 推奨学習ロードマップが存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/推奨学習ロードマップ/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/試験攻略チェックリスト/i);
+            expect(within(section).getAllByText(/推奨学習ロードマップ/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S7: 試験当日のポイントが存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/試験当日のポイント/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/試験攻略チェックリスト/i);
+            expect(within(section).getAllByText(/試験当日のポイント/i).length).toBeGreaterThanOrEqual(1);
         });
     });
 
     describe('Section 8: 参照リソース', () => {
         it('S8: 公式参照リソース一覧が存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/公式参照リソース一覧/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/https:\/\/cloud.google.com\/learn\/certification\/cloud-digital-leader/i).length).toBeGreaterThanOrEqual(1);
+            const section = getSectionByHeading(/参照リソース|公式参照リソース一覧/i);
+            expect(within(section).getAllByText(/公式参照リソース一覧/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section).getAllByText(/https:\/\/cloud.google.com\/learn\/certification\/cloud-digital-leader/i).length).toBeGreaterThanOrEqual(1);
         });
     });
 });
