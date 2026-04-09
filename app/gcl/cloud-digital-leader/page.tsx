@@ -517,8 +517,8 @@ NoSQLが必要か？
                     ].map((stage, i, arr) => (
                         <g key={stage.label}>
                             <rect x={stage.x - 55} y={30} width={110} height={64} rx={8} fill={stage.color} opacity={0.2} stroke={stage.color} strokeWidth={1.5} />
-                            <text x={stage.x} y={58} textAnchor="middle" fill="var(--color-foreground)" fontSize={11} fontWeight="bold">{stage.label}</text>
-                            <text x={stage.x} y={76} textAnchor="middle" fill="var(--color-muted)" fontSize={9}>{stage.sub}</text>
+                            <text x={stage.x} y={58} textAnchor="middle" fill="#fff" fontSize={11} fontWeight="bold">{stage.label}</text>
+                            <text x={stage.x} y={76} textAnchor="middle" fill="#fff" fontSize={9} opacity={0.8}>{stage.sub}</text>
                             {i < arr.length - 1 && (
                                 <path d={`M${stage.x + 55} 62 L${(arr[i + 1]?.x ?? 0) - 55} 62`} stroke="var(--color-border)" strokeWidth={1.5} markerEnd="url(#arrow2)" />
                             )}
