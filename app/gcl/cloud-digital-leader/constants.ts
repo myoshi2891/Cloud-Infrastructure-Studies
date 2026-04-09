@@ -499,7 +499,7 @@ export const BQML_FEATURES: MlFeature[] = [
     },
     {
         feature: 'ビジネス活用例',
-        desc: '顧客チャーン予測・需要予測・商品レコメンド・異常検知・サプライチェーン最適化（BigQuery ML の クラスタリング）',
+        desc: '顧客チャーン予測・需要予測・商品レコメンド・異常検知・サプライチェーン最適化（BigQuery ML のクラスタリング）',
     },
     {
         feature: 'メリット',
@@ -621,15 +621,10 @@ export type ConfusionPoint = {
     correct: string;
 };
 
-export const CONFUSION_POINTS: ConfusionPoint[] = [
-    { mistake: 'Cloud Run = コンテナ専用 vs Cloud Run Functions = コード専用', correct: 'Cloud Run はコンテナ、Functions は関数（コード）。どちらもサーバーレス' },
-    { mistake: 'Cloud SQL = BigQuery', correct: 'SQL: OLTP（トランザクション処理）、BigQuery: OLAP（分析）' },
-    { mistake: 'Dataflow = Dataproc', correct: 'Dataflow: Apache Beam（ストリーミング+バッチ）、Dataproc: Hadoop/Spark（バッチ）' },
-    { mistake: 'IAM ロール = 全員同じでOK', correct: '最小権限の原則！必要最小限のロールのみ付与' },
-    { mistake: '匿名化 = 仮名化', correct: '匿名化は再識別不可（GDPR対象外）。仮名化は再識別可能（GDPR対象）' },
-    { mistake: 'ハルシネーション = バグ', correct: '構造的な問題。RAG・グラウンディングで軽減' },
-    { mistake: 'Committed Use = 自動適用', correct: '事前に申し込みが必要（Sustained Useは自動）' },
-];
+export const CONFUSION_POINTS: ConfusionPoint[] = CONFUSING_PAIRS.map(p => ({
+    mistake: p.pair,
+    correct: p.truth
+}));
 
 export const ROADMAP_WEEKS = [
     {
