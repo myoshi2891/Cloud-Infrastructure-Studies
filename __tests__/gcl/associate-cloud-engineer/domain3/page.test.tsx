@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import Domain3Page from '@/app/gcl/associate-cloud-engineer/domain3/page';
-import { OFFICIAL_DOCS, TECH_GUIDES } from '@/app/gcl/associate-cloud-engineer/domain3/constants';
+import { OFFICIAL_DOCS, TECH_GUIDES, CHAPTER_COUNT } from '@/app/gcl/associate-cloud-engineer/domain3/constants';
 
 describe('Domain 3: Ensuring Successful Operation of a Cloud Solution ページ', () => {
     beforeEach(() => {
@@ -26,10 +26,10 @@ describe('Domain 3: Ensuring Successful Operation of a Cloud Solution ページ'
         ).toBeGreaterThanOrEqual(1);
     });
 
-    it('全18章の見出しが存在すること', () => {
+    it(`全${CHAPTER_COUNT}章の見出しが存在すること`, () => {
         expect(
             screen.getAllByRole('heading', { level: 2 }).length
-        ).toBeGreaterThanOrEqual(18);
+        ).toBeGreaterThanOrEqual(CHAPTER_COUNT);
     });
 
     it('sticky nav に各章へのリンクが含まれること', () => {
@@ -38,7 +38,7 @@ describe('Domain 3: Ensuring Successful Operation of a Cloud Solution ページ'
 
         const links = within(nav).getAllByRole('link');
         const hrefs = links.map((a) => a.getAttribute('href'));
-        for (let i = 0; i <= 18; i++) {
+        for (let i = 0; i <= CHAPTER_COUNT; i++) {
             expect(hrefs).toContain(`#ch${i}`);
         }
     });
