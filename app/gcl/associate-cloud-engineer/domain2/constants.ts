@@ -38,3 +38,34 @@ export const REFERENCE_LINKS: ReferenceLink[] = [
     ['Build a modern three-tier architecture web application with Cloud Run', 'https://developers.google.com/learn/pathways/solution-three-tier-cloud-run', 'Cloud Run の3層アーキテクチャ'],
     ['Jump Start Solution: Three-tier web app', 'https://docs.cloud.google.com/architecture/application-development/three-tier-web-app', '3層 Web アプリのジャンプスタートソリューション'],
 ];
+
+export const CHAPTER_COUNT = 17;
+
+export const TECH_GUIDE_LINKS: ReferenceLink[] = [
+    ['How to Prepare for the Google Cloud Associate Cloud Engineer Exam Core Services', 'https://oneuptime.com/blog/post/2026-02-17-how-to-prepare-for-the-google-cloud-associate-cloud-engineer-exam-core-services-study-guide/view', 'ACE コアサービスの学習ガイド'],
+    ['Google Associate Cloud Engineer Exam Guide ... - CloudFluently', 'https://cloudfluently.com/blog/google-associate-cloud-engineer-exam-guide-2026', 'ACE 試験対策ガイド 2026年版'],
+    ['Help me pls.. GCP Associate Cloud Engineer : r/googlecloud - Reddit', 'https://www.reddit.com/r/googlecloud/comments/1qzj5kc/help_me_pls_gcp_associate_cloud_engineer/', 'Reddit での ACE 試験対策相談スレッド'],
+    ['GCP Pricing Calculator: A Complete Guide - DataCamp', 'https://www.datacamp.com/tutorial/gcp-pricing-calculator', 'GCP 料金計算ツールの完全ガイド'],
+    ['Free Practice Questions for Google Associate Cloud Engineer - CertSafari', 'https://www.certsafari.com/google/cloud-engineer-associate', '無料の ACE 練習問題'],
+    ['Just passed Associate Cloud Engineer: Resources, Study Tips, and Exam Topics inside', 'https://www.reddit.com/r/googlecloud/comments/1qmn1km/just_passed_associate_cloud_engineer_resources/', 'ACE 合格体験記と学習リソース'],
+    ['I just passed the GCP Associate Cloud Engineer exam! : r/googlecloud', 'https://www.reddit.com/r/googlecloud/comments/1j4hvxg/i_just_passed_the_gcp_associate_cloud_engineer/', 'ACE 合格報告と孤独学習のヒント'],
+    ['How to Choose Between VPC-Native and Routes-Based GKE Clusters - OneUptime', 'https://oneuptime.com/blog/post/2026-02-17-how-to-choose-between-vpc-native-and-routes-based-gke-clusters/view', 'GKE クラスタタイプの選択'],
+    ['VPC native and Route based cluster - KodeKloud', 'https://notes.kodekloud.com/docs/GKE-Google-Kubernetes-Engine/Networking-for-GKE-clusters/VPC-native-and-Route-based-cluster/page', 'GKE ネットワーククラスタの詳解'],
+    ['Production grade GKE network deployment, in 3 easy steps.', 'https://medium.com/@pbijjala/3-key-best-practices-for-gke-deployment-4fa132e157e2', 'GKE 本番環境デプロイ3つの鍵'],
+    ['Master IAM Concepts for the Google Cloud ACE Certification', 'https://oneuptime.com/blog/post/2026-02-17-how-to-master-iam-concepts-for-the-google-cloud-associate-cloud-engineer-certification/view', 'ACE 試験の IAM コンセプトマスターガイド'],
+    ['Exam Associate Cloud Engineer topic 1 question 301 discussion', 'https://www.examtopics.com/discussions/google/view/303709-exam-associate-cloud-engineer-topic-1-question-301/', 'ExamTopics Q301 ディスカッション'],
+    ['App Engine vs. Cloud Run: A real-world engineering comparison', 'https://northflank.com/blog/app-engine-vs-cloud-run', 'App Engine vs Cloud Run の実践比較'],
+    ['Google App Engine in 2025: Serverless Simplicity vs Cloud Run and GKE', 'https://medium.com/google-cloud/google-app-engine-in-2025-serverless-simplicity-vs-cloud-run-and-gke-d46f485cf908', 'App Engine の2025年現在の位置づけ'],
+    ['Google Cloud Functions in 2026: What It Is, Cloud Run vs Functions, Use Cases & Pricing', 'https://www.netcomlearning.com/blog/google-cloud-functions', 'Cloud Functions 入門ガイド 2026'],
+    ['How to Choose Between Cloud Run Cloud Functions App Engine and GKE', 'https://oneuptime.com/blog/post/2026-02-17-how-to-choose-between-cloud-run-cloud-functions-app-engine-and-gke-for-your-workload/view', 'サーバーレスサービスの完全選定ガイド'],
+    ['The Ultimate Guide to Google Cloud Storage Services and Databases in 2025 - YouTube', 'https://www.youtube.com/watch?v=WdF5fnLR_VY', 'GCS とデータベースの学習ガイド（動画）'],
+    ['Google Cloud Pricing: Models, Calculations, & Tips - Veeam', 'https://www.veeam.com/blog/google-cloud-pricing-guide.html', 'Google Cloud 料金モデル解説 1'],
+    ['Google Cloud Pricing: The Complete Guide | NetApp', 'https://www.netapp.com/blog/gcp-cvo-blg-google-cloud-pricing-the-complete-guide/', 'Google Cloud 料金モデル詳解 2'],
+    ['VPC Networks: GCP Virtual Networking Tutorial for Beginners - YouTube', 'https://www.youtube.com/watch?v=ekpznz8hIzU', 'VPC ネットワーク入門（動画）'],
+    ['Private connectivity for AlloyDB: VPC Peering vs Private Service Connect', 'https://medium.com/google-cloud/private-connectivity-for-alloydb-vpc-peering-vs-private-service-connect-3ddf24c64ab6', 'AlloyDB プライベート接続の選択'],
+    ['GCP Cloud Engineer Guide: Google Cloud Associate Cloud Engineer Exam Guide', 'https://dev.to/thesius_code_7a136ae718b7/gcp-cloud-engineer-guide-google-cloud-associate-cloud-engineer-exam-guide-38d3', 'GCP Cloud Engineer 完全ガイド 2026'],
+    ['Infrastructure as code - YouTube', 'https://www.youtube.com/watch?v=84Ql00Bjh1Y', 'IaC 入門動画'],
+    ['How to build a three-tier serverless Cloud Run app - YouTube', 'https://www.youtube.com/watch?v=4URpj0h3mv8', 'Cloud Run 3層アプリ構築動画'],
+    ['Google Cloud Spot VMs: Use cases and best practices', 'https://cloud.google.com/blog/products/compute/google-cloud-spot-vm-use-cases-and-best-practices', 'Spot VM のユースケースとベストプラクティス'],
+    ['How to Choose Between GKE Autopilot and Standard Mode', 'https://oneuptime.com/blog/post/2026-02-17-how-to-choose-between-gke-autopilot-and-standard-mode-for-your-workload-requirements/view', 'ワークロード要件に応じた GKE モードの選択'],
+];
