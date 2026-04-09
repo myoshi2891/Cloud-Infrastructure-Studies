@@ -516,7 +516,7 @@ NoSQLが必要か？
                         { x: 580, label: '分析・可視化', sub: 'Looker / Vertex AI', color: 'var(--cdl-purple)' },
                     ].map((stage, i, arr) => (
                         <g key={stage.label}>
-                            <rect x={stage.x - 55} y={30} width={110} height={64} rx={8} fill={stage.color} opacity={0.2} stroke={stage.color} strokeWidth={1.5} />
+                            <rect x={stage.x - 55} y={30} width={110} height={64} rx={8} fill={stage.color} opacity={0.6} stroke={stage.color} strokeWidth={1.5} />
                             <text x={stage.x} y={58} textAnchor="middle" fill="#fff" fontSize={11} fontWeight="bold">{stage.label}</text>
                             <text x={stage.x} y={76} textAnchor="middle" fill="#fff" fontSize={9} opacity={0.8}>{stage.sub}</text>
                             {i < arr.length - 1 && (
@@ -2062,6 +2062,78 @@ function Section5() {
     );
 }
 
+type QuickReferenceTableProps = {
+    title: React.ReactNode;
+    headers: string[];
+    data: { service: string; keywords: string; usecase: string }[];
+};
+
+function QuickReferenceTable({ title, headers, data }: QuickReferenceTableProps) {
+    return (
+        <div className="tcard">
+            <div className="ttitle">{title}</div>
+            <div className="ctable-wrap">
+                <table className="ctable">
+                    <thead>
+                        <tr>
+                            {headers.map((h, i) => (
+                                <th key={i}>{h}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((row, i) => (
+                            <tr key={i}>
+                                <td><strong>{row.service}</strong></td>
+                                <td>{row.keywords}</td>
+                                <td>{row.usecase}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function ChecklistGroup({ data }: { data: { section: string; items: string[] }[] }) {
+    return (
+        <div className="tcard">
+            <div className="ttitle"><span className="tid">7.1</span>必ず押さえるべき概念（各セクション）</div>
+            <div className="tgrid">
+                {data.map((list, i) => (
+                    <div key={i} className="titem">
+                        <strong>{list.section}</strong>
+                        <ul className="cdl-list">
+                            {list.items.map((item, j) => (
+                                <li key={j}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function RoadmapBlock({ data }: { data: { week: string; items: string[] }[] }) {
+    return (
+        <div className="tcard">
+            <div className="ttitle"><span className="tid">7.3</span>推奨学習ロードマップ</div>
+            {data.map((rw, i) => (
+                <div key={i} className="mb-4">
+                    <div className="stitle">{rw.week}</div>
+                    <ul className="cdl-list">
+                        {rw.items.map((item, j) => (
+                            <li key={j}>{item}</li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </div>
+    );
+}
+
 function Section6() {
     return (
         <div id="s6" className="sgap">
@@ -2073,125 +2145,35 @@ function Section6() {
                 </div>
             </div>
 
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">6.1</span>7.1 コンピューティング</div>
-                <div className="ctable-wrap">
-                    <table className="ctable">
-                        <thead>
-                            <tr>
-                                <th>サービス</th>
-                                <th>キーワード</th>
-                                <th>使い分け</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {QR_COMPUTE.map((row, i) => (
-                                <tr key={i}>
-                                    <td><strong>{row.service}</strong></td>
-                                    <td>{row.keywords}</td>
-                                    <td>{row.usecase}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <QuickReferenceTable
+                title={<><span className="tid">6.1</span>6.1 コンピューティング</>}
+                headers={['サービス', 'キーワード', '使い分け']}
+                data={QR_COMPUTE}
+            />
 
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">6.2</span>7.2 ストレージ・データベース</div>
-                <div className="ctable-wrap">
-                    <table className="ctable">
-                        <thead>
-                            <tr>
-                                <th>サービス</th>
-                                <th>キーワード</th>
-                                <th>使い分け</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {QR_STORAGE_DB.map((row, i) => (
-                                <tr key={i}>
-                                    <td><strong>{row.service}</strong></td>
-                                    <td>{row.keywords}</td>
-                                    <td>{row.usecase}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <QuickReferenceTable
+                title={<><span className="tid">6.2</span>6.2 ストレージ・データベース</>}
+                headers={['サービス', 'キーワード', '使い分け']}
+                data={QR_STORAGE_DB}
+            />
 
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">6.3</span>7.3 AI・ML</div>
-                <div className="ctable-wrap">
-                    <table className="ctable">
-                        <thead>
-                            <tr>
-                                <th>サービス</th>
-                                <th>キーワード</th>
-                                <th>対象者・用途</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {QR_AIML.map((row, i) => (
-                                <tr key={i}>
-                                    <td><strong>{row.service}</strong></td>
-                                    <td>{row.keywords}</td>
-                                    <td>{row.usecase}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <QuickReferenceTable
+                title={<><span className="tid">6.3</span>6.3 AI・ML</>}
+                headers={['サービス', 'キーワード', '対象者・用途']}
+                data={QR_AIML}
+            />
 
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">6.4</span>7.4 セキュリティ</div>
-                <div className="ctable-wrap">
-                    <table className="ctable">
-                        <thead>
-                            <tr>
-                                <th>サービス</th>
-                                <th>キーワード</th>
-                                <th>役割</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {QR_SECURITY.map((row, i) => (
-                                <tr key={i}>
-                                    <td><strong>{row.service}</strong></td>
-                                    <td>{row.keywords}</td>
-                                    <td>{row.usecase}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <QuickReferenceTable
+                title={<><span className="tid">6.4</span>6.4 セキュリティ</>}
+                headers={['サービス', 'キーワード', '役割']}
+                data={QR_SECURITY}
+            />
 
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">6.5</span>7.5 オペレーション</div>
-                <div className="ctable-wrap">
-                    <table className="ctable">
-                        <thead>
-                            <tr>
-                                <th>サービス</th>
-                                <th>キーワード</th>
-                                <th>役割</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {QR_OPS.map((row, i) => (
-                                <tr key={i}>
-                                    <td><strong>{row.service}</strong></td>
-                                    <td>{row.keywords}</td>
-                                    <td>{row.usecase}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <QuickReferenceTable
+                title={<><span className="tid">6.5</span>6.5 オペレーション</>}
+                headers={['サービス', 'キーワード', '役割']}
+                data={QR_OPS}
+            />
         </div>
     );
 }
@@ -2207,21 +2189,7 @@ function Section7() {
                 </div>
             </div>
 
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">7.1</span>必ず押さえるべき概念（各セクション）</div>
-                <div className="tgrid">
-                    {CHECKLIST_CONCEPTS.map((list, i) => (
-                        <div key={i} className="titem">
-                            <strong>{list.section}</strong>
-                            <ul className="cdl-list">
-                                {list.items.map((item, j) => (
-                                    <li key={j}>{item}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <ChecklistGroup data={CHECKLIST_CONCEPTS} />
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">7.2</span>よく混同されるポイント</div>
@@ -2245,19 +2213,7 @@ function Section7() {
                 </div>
             </div>
 
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">7.3</span>推奨学習ロードマップ</div>
-                {ROADMAP_WEEKS.map((rw, i) => (
-                    <div key={i} style={{ marginBottom: '1rem' }}>
-                        <div className="stitle">{rw.week}</div>
-                        <ul className="cdl-list">
-                            {rw.items.map((item, j) => (
-                                <li key={j}>{item}</li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
-            </div>
+            <RoadmapBlock data={ROADMAP_WEEKS} />
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">7.4</span>試験当日のポイント</div>

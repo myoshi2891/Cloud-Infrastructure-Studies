@@ -455,40 +455,52 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
     describe('Section 6: 頻出サービス早見表', () => {
         it('S6: セクションタイトルが存在すること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/頻出サービス早見表/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/7.1/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/コンピューティング/i).length).toBeGreaterThanOrEqual(1);
+            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
+            const section = heading.closest('.sgap') || document.body;
+            expect(within(section as HTMLElement).getAllByText(/頻出サービス早見表/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/6.1/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/コンピューティング/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: コンピューティングサービスが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/Compute Engine/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/GKE/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/Cloud Run/i).length).toBeGreaterThanOrEqual(1);
+            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
+            const section = heading.closest('.sgap') || document.body;
+            expect(within(section as HTMLElement).getAllByText(/Compute Engine/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/GKE/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/Cloud Run/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: ストレージ・データベースが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/7.2/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/Cloud Spanner/i).length).toBeGreaterThanOrEqual(1);
+            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
+            const section = heading.closest('.sgap') || document.body;
+            expect(within(section as HTMLElement).getAllByText(/6.2/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/Cloud Spanner/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: AI・MLが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/7.3/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/Vertex AI Agent Builder/i).length).toBeGreaterThanOrEqual(1);
+            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
+            const section = heading.closest('.sgap') || document.body;
+            expect(within(section as HTMLElement).getAllByText(/6.3/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/Vertex AI Agent Builder/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: セキュリティが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/7.4/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/Cloud Armor/i).length).toBeGreaterThanOrEqual(1);
+            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
+            const section = heading.closest('.sgap') || document.body;
+            expect(within(section as HTMLElement).getAllByText(/6.4/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/Cloud Armor/i).length).toBeGreaterThanOrEqual(1);
         });
 
         it('S6: オペレーションが含まれていること', () => {
             render(<CloudDigitalLeaderPage />);
-            expect(screen.getAllByText(/7.5/i).length).toBeGreaterThanOrEqual(1);
-            expect(screen.getAllByText(/Cloud Trace/i).length).toBeGreaterThanOrEqual(1);
+            const heading = screen.getByRole('heading', { level: 2, name: /頻出サービス早見表/i });
+            const section = heading.closest('.sgap') || document.body;
+            expect(within(section as HTMLElement).getAllByText(/6.5/i).length).toBeGreaterThanOrEqual(1);
+            expect(within(section as HTMLElement).getAllByText(/Cloud Trace/i).length).toBeGreaterThanOrEqual(1);
         });
     });
 
