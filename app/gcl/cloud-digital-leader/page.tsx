@@ -2146,31 +2146,31 @@ function Section6() {
             </div>
 
             <QuickReferenceTable
-                title={<><span className="tid">6.1</span>6.1 コンピューティング</>}
+                title={<><span className="tid">6.1</span> コンピューティング</>}
                 headers={['サービス', 'キーワード', '使い分け']}
                 data={QR_COMPUTE}
             />
 
             <QuickReferenceTable
-                title={<><span className="tid">6.2</span>6.2 ストレージ・データベース</>}
+                title={<><span className="tid">6.2</span> ストレージ・データベース</>}
                 headers={['サービス', 'キーワード', '使い分け']}
                 data={QR_STORAGE_DB}
             />
 
             <QuickReferenceTable
-                title={<><span className="tid">6.3</span>6.3 AI・ML</>}
+                title={<><span className="tid">6.3</span> AI・ML</>}
                 headers={['サービス', 'キーワード', '対象者・用途']}
                 data={QR_AIML}
             />
 
             <QuickReferenceTable
-                title={<><span className="tid">6.4</span>6.4 セキュリティ</>}
+                title={<><span className="tid">6.4</span> セキュリティ</>}
                 headers={['サービス', 'キーワード', '役割']}
                 data={QR_SECURITY}
             />
 
             <QuickReferenceTable
-                title={<><span className="tid">6.5</span>6.5 オペレーション</>}
+                title={<><span className="tid">6.5</span> オペレーション</>}
                 headers={['サービス', 'キーワード', '役割']}
                 data={QR_OPS}
             />
@@ -2218,9 +2218,14 @@ function Section7() {
             <div className="tcard">
                 <div className="ttitle"><span className="tid">7.4</span>試験当日のポイント</div>
                 <ol className="cdl-list">
-                    {EXAM_TIPS.map((tip, i) => (
-                        <li key={i}><strong>{tip.split(':')[0]}</strong>: {tip.split(':')[1]}</li>
-                    ))}
+                    {EXAM_TIPS.map((tip, i) => {
+                        const colonIndex = tip.indexOf(':');
+                        const title = tip.slice(0, colonIndex);
+                        const content = tip.slice(colonIndex + 1);
+                        return (
+                            <li key={i}><strong>{title}</strong>:{content}</li>
+                        );
+                    })}
                 </ol>
             </div>
         </div>

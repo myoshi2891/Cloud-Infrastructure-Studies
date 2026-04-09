@@ -530,8 +530,10 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
             render(<CloudDigitalLeaderPage />);
             expect(screen.getAllByText(/試験当日のポイント/i).length).toBeGreaterThanOrEqual(1);
         });
+    });
 
-        it('S7: 公式参照リソース一覧が存在すること', () => {
+    describe('Section 8: 参照リソース', () => {
+        it('S8: 公式参照リソース一覧が存在すること', () => {
             render(<CloudDigitalLeaderPage />);
             expect(screen.getAllByText(/公式参照リソース一覧/i).length).toBeGreaterThanOrEqual(1);
             expect(screen.getAllByText(/https:\/\/cloud.google.com\/learn\/certification\/cloud-digital-leader/i).length).toBeGreaterThanOrEqual(1);
