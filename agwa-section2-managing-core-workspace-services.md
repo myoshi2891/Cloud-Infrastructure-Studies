@@ -1630,7 +1630,6 @@ Meet の安全設定 → ノックイン機能を有効化
 | **コンテンツコンプライアンス**  | <https://support.google.com/a/answer/1346936>                                                               |
 | **Gmail ルーティング**          | <https://support.google.com/a/answer/2368153>                                                               |
 | **Drive と Docs の設定**        | <https://support.google.com/a/answer/7212025>                                                               |
-| **Drive 信頼ルール**            | <https://support.google.com/a/answer/10759259>                                                              |
 | **ターゲットオーディエンス**    | <https://support.google.com/a/answer/9934697>                                                               |
 | **共有ドライブ**                | <https://support.google.com/a/answer/7212025>                                                               |
 | **Calendar の設定**             | <https://support.google.com/a/answer/60765>                                                                 |
@@ -1639,7 +1638,6 @@ Meet の安全設定 → ノックイン機能を有効化
 | **Meet セーフティ**             | <https://support.google.com/a/answer/9768550>                                                               |
 | **Chat の設定**                 | <https://support.google.com/a/answer/9540647>                                                               |
 | **Gemini for Workspace**        | <https://support.google.com/a/answer/13961526>                                                              |
-| **AppSheet**                    | <https://support.google.com/a/answer/10860699>                                                              |
 | **Admin Toolbox**               | <https://toolbox.googleapps.com/apps/main/>                                                                 |
 | **Cloud Skills Boost 学習パス** | <https://www.cloudskillsboost.google/paths/24>                                                              |
 

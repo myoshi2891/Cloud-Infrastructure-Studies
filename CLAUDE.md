@@ -72,10 +72,11 @@ Aws/                                # AWS資料アーカイブ
 ## テスト構成
 
 - **Vitest:** `__tests__/**/*.test.{ts,tsx}`、jsdom環境、`@` エイリアスが `./` に解決される
-- **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`npm run dev`を自動起動
+- **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
 
 ## 制約事項
 
 - `litellm` / `dspy` の追加禁止（脆弱性懸念）
 - 新ページを `app/gcl/` に追加した場合、`components/Header.tsx` のナビゲーションも更新すること
 - ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）
+

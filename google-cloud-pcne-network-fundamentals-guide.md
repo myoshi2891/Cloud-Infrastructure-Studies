@@ -133,8 +133,8 @@ OSI 参照モデル（Open Systems Interconnection）
 
 GCPとの関連:
 
-  - Cloud Interconnect の VLAN Attachment はこのレイヤー
-  - VPC 内の通信は仮想的なL2スイッチング
+  - Cloud Interconnect の VLAN Attachment はオンプレミスネットワークと Google エッジ間のレイヤー 2 隣接性を提供し、物理/論理的な接続点として機能する
+  - VPC 内の通信は「分散 L3 ルーティング（各ホストでの L3 転送）」が実態であり、仮想的な L2 スイッチングではない
 
 ```
 
@@ -1762,7 +1762,9 @@ iBGP vs eBGP:
   eBGP（External BGP）: 異なるAS間
 
   Cloud VPN/Interconnect: eBGP を使用
-  Google の ASN (16550) ↔ お客様の ASN (64512-65534)
+  Partner Interconnect では Google ASN として 16550 を使用
+  Dedicated Interconnect や HA VPN（Cloud Router）では Cloud Router 用の ASN（16-bit 64512–65534 または 32-bit 4200000000–4294967294: RFC 6996）を使用
+  お客様の ASN はパブリック・プライベートいずれも利用可能
 ```
 
 ### 13.2 BGPの重要な属性（PCNE試験頻出）

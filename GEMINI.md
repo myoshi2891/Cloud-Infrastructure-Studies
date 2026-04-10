@@ -13,12 +13,12 @@
 
 ## 開発と実行
 
-主要なコマンドは `package.json` に定義されています。**【絶対ルール】コマンドの実行には必ず `bun` を使用すること（`npm` は使用禁止です）。**
+主要なコマンドは `package.json` に定義されています。**【リポジトリ標準】コマンドの実行には必ず `bun` を使用してください（bun 推奨、詳細は `README.md` を参照）。**
 
 - **開発サーバー起動:** `bun run dev`
 - **ビルド:** `bun run build`
 - **単体テスト実行:** `bun run test` (Vitest)
-- **E2E テスト実行:** `bun run test:e2e` (Playwright)
+- **E2E テスト実行:** `bunx playwright install`（初回のみ）、その後 `bun run test:e2e` (Playwright)
 - **Lint 実行:** `bun run lint`
 
 ## プロジェクト構造
