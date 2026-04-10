@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import styles from './page.module.css';
-import { EXAMS, STATS, type Exam, type Stat } from './constants';
+import { EXAMS, STATS, type Exam, type Stat, type ColorKey } from './constants';
 
 export const metadata: Metadata = {
     title: 'Cloud Infrastructure Studies | ホーム',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
         'Google Cloud 認定試験対策の総合学習ガイド。Associate Cloud Engineer、Generative AI Leader、Cloud Digital Leader の試験対策コンテンツを提供します。',
 };
 
-const cardColorMap: Record<string, string> = {
+const cardColorMap: Record<ColorKey, string> = {
     'card-ace': `card-ace ${styles.cardAce}`,
     'card-genai': `card-genai ${styles.cardGenai}`,
     'card-cdl': `card-cdl ${styles.cardCdl}`,

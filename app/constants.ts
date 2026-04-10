@@ -6,13 +6,15 @@ export interface ExamDomain {
     pct: string;
 }
 
+export type ColorKey = 'card-ace' | 'card-genai' | 'card-cdl';
+
 export interface Exam {
     id: string;
     label: string;
     abbr: string;
     level: string;
     score: string;
-    color: string;
+    color: ColorKey;
     href: string;
     description: string;
     domains: ExamDomain[];
