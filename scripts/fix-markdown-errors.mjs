@@ -1,10 +1,13 @@
 import { readFile, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
 
 async function fixMarkdown(filePath) {
     const content = await readFile(filePath, 'utf8');
     const lines = content.split('\n');
     const fixedLines = [];
     let inCodeBlock = false;
+    let fenceChar = '';
+    let fenceLen = 0;
     let lastLineWasBlockquote = false;
 
     // First pass: line-by-line fixes
@@ -13,21 +16,26 @@ async function fixMarkdown(filePath) {
         const trimmed = line.trim();
 
         // 1. Fix code blocks (MD040)
-        if (line.startsWith('```')) {
-            if (!inCodeBlock) {
-                if (line.trim() === '```') {
-                    line = '```text';
+        if (!inCodeBlock) {
+            const match = trimmed.match(/^(`{3,}|~{3,})/);
+            if (match) {
+                fenceChar = match[1][0];
+                fenceLen = match[1].length;
+                if (trimmed === match[1]) {
+                    line = match[1] + 'text';
                 }
                 inCodeBlock = true;
-            } else {
-                inCodeBlock = false;
+                fixedLines.push(line);
+                lastLineWasBlockquote = false;
+                continue;
             }
-            fixedLines.push(line);
-            lastLineWasBlockquote = false;
-            continue;
-        }
-
-        if (inCodeBlock) {
+        } else {
+            const match = trimmed.match(/^(`{3,}|~{3,})\s*$/);
+            if (match && match[1][0] === fenceChar && match[1].length >= fenceLen) {
+                inCodeBlock = false;
+                fenceChar = '';
+                fenceLen = 0;
+            }
             fixedLines.push(line);
             lastLineWasBlockquote = false;
             continue;
@@ -124,4 +132,21 @@ async function fixMarkdown(filePath) {
     await writeFile(filePath, collapsedLines.join('\n'), 'utf8');
 }
 
-fixMarkdown(process.argv[2]);
+const targetFile = process.argv[2];
+
+if (!targetFile) {
+    console.error('Usage: bun scripts/fix-markdown-errors.mjs <file-path>');
+    process.exit(1);
+}
+
+if (!existsSync(targetFile)) {
+    console.error(`Error: File not found: ${targetFile}`);
+    process.exit(1);
+}
+
+try {
+    await fixMarkdown(targetFile);
+} catch (error) {
+    console.error(`Error fixing ${targetFile}:`, error);
+    process.exit(1);
+}

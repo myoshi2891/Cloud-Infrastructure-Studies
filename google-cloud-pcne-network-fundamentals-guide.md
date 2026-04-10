@@ -117,7 +117,7 @@ OSI 参照モデル（Open Systems Interconnection）
 
     - IPアドレス → MACアドレス の変換
     - 「このIPを持つ機器よ、MACを教えてくれ！」とブロードキャスト
-    
+
     例:
     PC-A (10.0.0.1) が PC-B (10.0.0.2) に送信したい
     → ARP Request: "10.0.0.2 を持つ人は MAC を教えて"
@@ -251,10 +251,10 @@ TCP/IP モデル（実際のインターネットで使用）
 │  トランスポート層    │ TCP, UDP                         │
 │                     │ = OSI Layer 4                    │
 ├──────────────────────────────────────────────────────────┤
-│  インターネット層    │ IP, ICMP, ARP                    │
+│  インターネット層    │ IP, ICMP                         │
 │                     │ = OSI Layer 3                    │
 ├──────────────────────────────────────────────────────────┤
-│  ネットワーク接続層  │ Ethernet, Wi-Fi, 光ファイバー    │
+│  ネットワーク接続層  │ Ethernet, Wi-Fi, ARP             │
 │                     │ = OSI Layer 1+2                  │
 └──────────────────────────────────────────────────────────┘
 ```
@@ -400,7 +400,7 @@ GCPとの関連:
 
 解答:
   /24 を4分割 → /26 (2ビット追加で4分割)
-  
+
   サブネット1: 10.0.0.0/26   (10.0.0.0   〜 10.0.0.63)
   サブネット2: 10.0.0.64/26  (10.0.0.64  〜 10.0.0.127)
   サブネット3: 10.0.0.128/26 (10.0.0.128 〜 10.0.0.191)
@@ -718,14 +718,13 @@ GCPでの考慮:
 
 ```yaml
 ファイアウォールルールの設計:
-  HTTP/HTTPS(TCP):  外部→LB のみ開放
-  SSH(TCP 22):      IAPのIPレンジのみ (35.235.240.0/20)
-  DNS(UDP/TCP 53):  内部ネットワークのみ
-  ICMP:             内部ネットワークのみ（デバッグ用）
-  すべての通信:      明示的に不要なものは DENY
+  HTTP/HTTPS(TCP): 外部→LB のみ開放
+  SSH(TCP 22): IAPのIPレンジのみ (35.235.240.0/20)
+  DNS(UDP/TCP 53): 内部ネットワークのみ
+  ICMP: 内部ネットワークのみ（デバッグ用）
+  すべての通信: 明示的に不要なものは DENY
 
-注意点:
-  UDP は接続確立がないため、より細かいフィルタリングが必要
+注意点: UDP は接続確立がないため、より細かいフィルタリングが必要
   DoS攻撃でよく使われる → Cloud Armor でレート制限を設定
 ```
 
@@ -840,10 +839,10 @@ TTL 86400 → 24時間キャッシュ
 TTL の設計指針:
   変更予定なしの安定したレコード:
     → TTL: 86400（24時間）→ DNSサーバーへの問い合わせ削減
-  
+
   変更予定があるレコード（移行前）:
     → TTL: 300（5分）→ 変更が素早く伝播する
-  
+
   移行手順:
     ① 現在 TTL: 86400 を 300 に変更
     ② 最低 86400秒（24時間）待つ（古いキャッシュが消えるまで）
@@ -1089,7 +1088,7 @@ GCPとの関連:
 1. 用途別に分離する
 
    本番: VLAN 100 / 開発: VLAN 200 / 管理: VLAN 300
-   
+
 2. インターVLAN通信はルーターで制御
 
    異なるVLAN間の通信 = 明示的にファイアウォールで許可
@@ -1291,7 +1290,7 @@ IPsecの2つのモード:
 
 IKE（Internet Key Exchange）:
   VPN接続時の鍵交換プロトコル
-  
+
   IKEv1（旧世代）: 複雑・脆弱性あり → 非推奨
   IKEv2（現代標準）: シンプル・安全・高速 → 推奨
 
@@ -1317,7 +1316,7 @@ IKEの接続確立フェーズ:
 対称鍵暗号化（共通鍵暗号化）:
   同じ鍵で暗号化・復号化
   高速 → 大量データの暗号化に使用
-  
+
   AES（Advanced Encryption Standard）:
     現代の標準的な対称鍵暗号
     AES-128: 鍵長128bit → 標準的
@@ -1683,7 +1682,7 @@ GCPのロードバランサーで使用:
 L4 ロードバランサー（トランスポート層）:
 
   判断基準: IPアドレス + ポート番号
-  
+
   特徴:
   ✓ 高速（コンテンツを解析しない）
   ✓ あらゆるTCP/UDPトラフィックに対応
@@ -1700,7 +1699,7 @@ L4 ロードバランサー（トランスポート層）:
 L7 ロードバランサー（アプリケーション層）:
 
   判断基準: URL・HTTPヘッダー・Cookieなど
-  
+
   特徴:
   ✓ URLパスで異なるサービスに振り分け可能
   ✓ HTTPヘッダーの書き換え・追加
@@ -1826,7 +1825,7 @@ BGPセッション確立:
 フェイルオーバーの設定例:
   # プライマリ: Interconnect (LOCAL_PREF: 200)
   # バックアップ: HA VPN (LOCAL_PREF: 100)
-  
+
   Interconnect が落ちると:
     → BGPでルートが消える
     → 自動的に VPN のルート（LOCAL_PREF: 100）に切り替わり
@@ -2100,16 +2099,16 @@ GCPでのNFV:
 CDNが解決する問題:
 
   CDNなし（オリジンサーバーから直接配信）:
-  
+
   東京のユーザー → [太平洋を横断] → ニューヨークのサーバー
   → レイテンシ: 200〜300ms（遠すぎる）
   → サーバー負荷: 全世界のアクセスが1か所に集中
 
   CDNあり（エッジキャッシュから配信）:
-  
+
   東京のユーザー → [東京のEdgeサーバー（キャッシュ）]
                       → ミリ秒で応答（物理的に近い）
-  
+
   東京に無い場合のみ:
   東京Edge → [ニューヨークのオリジンサーバー] → キャッシュ保存
 
@@ -2367,49 +2366,57 @@ Network Connectivity Center (NCC) でのマルチクラウド:
 
 ## よく混同される概念の整理
 
-| 混同パターン | 正しい理解 |
-| --- | --- |
-| L4 LB でURLルーティング | URLルーティングはL7のみ（HTTP(S) LB） |
-| Cloud NAT でインバウンド | Cloud NATはアウトバウンドのみ |
-| BGP LOCAL_PREFは低い値優先 | LOCAL_PREFは高い値優先（MED は低い値優先） |
-| /24 = 256ホスト | 256 - 2（NW+BC）= 254、GCPはさらに-3 |
-| TCP は接続確立なし | 接続確立なし = UDP |
-| VPN で物理回線同等 | 物理的品質 = Interconnect、VPN はインターネット経由 |
-| HA VPN = 1本のトンネル | HA VPN = 2本のトンネルで冗長化 |
-| DNS A レコードで CNAME と同じ | Zone Apex（ドメイン自体）にCNAMEは設定不可 |
+| 混同パターン                  | 正しい理解                                          |
+| ----------------------------- | --------------------------------------------------- |
+| L4 LB でURLルーティング       | URLルーティングはL7のみ（HTTP(S) LB）               |
+| Cloud NAT でインバウンド      | Cloud NATはアウトバウンドのみ                       |
+| BGP LOCAL_PREFは低い値優先    | LOCAL_PREFは高い値優先（MED は低い値優先）          |
+| /24 = 256ホスト               | 256 - 2（NW+BC）= 254、GCPはさらに-3                |
+| TCP は接続確立なし            | 接続確立なし = UDP                                  |
+| VPN で物理回線同等            | 物理的品質 = Interconnect、VPN はインターネット経由 |
+| HA VPN = 1本のトンネル        | HA VPN = 2本のトンネルで冗長化                      |
+| DNS A レコードで CNAME と同じ | Zone Apex（ドメイン自体）にCNAMEは設定不可          |
 
 ---
 
 ## 📎 参照リソース 総まとめ
 
-| テーマ | URL |
-| --- | --- |
-| **試験情報** | https://cloud.google.com/learn/certification/cloud-network-engineer |
-| **VPC** | https://cloud.google.com/vpc/docs/vpc |
-| **ファイアウォール** | https://cloud.google.com/vpc/docs/firewalls |
-| **Cloud NAT** | https://cloud.google.com/nat/docs/overview |
-| **Cloud VPN** | https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview |
-| **Cloud Interconnect** | https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview |
-| **Cloud Router/BGP** | https://cloud.google.com/network-connectivity/docs/router/concepts/overview |
-| **BFD** | https://cloud.google.com/network-connectivity/docs/router/concepts/bfd |
-| **ロードバランシング** | https://cloud.google.com/load-balancing/docs/load-balancing-overview |
-| **Cloud DNS** | https://cloud.google.com/dns/docs/overview |
-| **Cloud CDN** | https://cloud.google.com/cdn/docs/overview |
-| **Cloud Armor** | https://cloud.google.com/armor/docs/cloud-armor-overview |
-| **IAP** | https://cloud.google.com/iap/docs/concepts-overview |
-| **TLS/SSL ポリシー** | https://cloud.google.com/load-balancing/docs/ssl-policies-concepts |
-| **NCC** | https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview |
-| **サブネット設計** | https://cloud.google.com/vpc/docs/subnets |
-| **VPC Flow Logs** | https://cloud.google.com/vpc/docs/using-flow-logs |
-| **Network Intelligence** | https://cloud.google.com/network-intelligence-center/docs/overview |
-| **BeyondCorp** | https://cloud.google.com/beyondcorp-enterprise/docs/overview |
-| **可用性設計** | https://cloud.google.com/architecture/framework/reliability |
-| **RFC 1918** | https://tools.ietf.org/html/rfc1918 |
-| **IANA ポート番号** | https://www.iana.org/assignments/service-names-port-numbers/ |
+| テーマ                   | URL                                                                                              |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| **試験情報**             | https://cloud.google.com/learn/certification/cloud-network-engineer                              |
+| **VPC**                  | https://cloud.google.com/vpc/docs/vpc                                                            |
+| **ファイアウォール**     | https://cloud.google.com/vpc/docs/firewalls                                                      |
+| **Cloud NAT**            | https://cloud.google.com/nat/docs/overview                                                       |
+| **Cloud VPN**            | https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview                         |
+| **Cloud Interconnect**   | https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview                |
+| **Cloud Router/BGP**     | https://cloud.google.com/network-connectivity/docs/router/concepts/overview                      |
+| **BFD**                  | https://cloud.google.com/network-connectivity/docs/router/concepts/bfd                           |
+| **ロードバランシング**   | https://cloud.google.com/load-balancing/docs/load-balancing-overview                             |
+| **Cloud DNS**            | https://cloud.google.com/dns/docs/overview                                                       |
+| **Cloud CDN**            | https://cloud.google.com/cdn/docs/overview                                                       |
+| **Cloud Armor**          | https://cloud.google.com/armor/docs/cloud-armor-overview                                         |
+| **IAP**                  | https://cloud.google.com/iap/docs/concepts-overview                                              |
+| **TLS/SSL ポリシー**     | https://cloud.google.com/load-balancing/docs/ssl-policies-concepts                               |
+| **NCC**                  | https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview |
+| **サブネット設計**       | https://cloud.google.com/vpc/docs/subnets                                                        |
+| **VPC Flow Logs**        | https://cloud.google.com/vpc/docs/using-flow-logs                                                |
+| **Network Intelligence** | https://cloud.google.com/network-intelligence-center/docs/overview                               |
+| **BeyondCorp**           | https://cloud.google.com/beyondcorp-enterprise/docs/overview                                     |
+| **可用性設計**           | https://cloud.google.com/architecture/framework/reliability                                      |
+| **RFC 1918**             | https://tools.ietf.org/html/rfc1918                                                              |
+| **IANA ポート番号**      | https://www.iana.org/assignments/service-names-port-numbers/                                     |
 
 ---
 
-*本ガイドは Professional Cloud Network Engineer（PCNE）試験の前提となる*
-*ネットワーク基礎知識を体系的に学ぶための教材です。*
-*試験の最新情報は必ず公式サイトでご確認ください。*
-*作成日: 2026年4月*
+_本ガイドは Professional Cloud Network Engineer（PCNE）試験の前提となる_
+_ネットワーク基礎知識を体系的に学ぶための教材です。_
+_試験の最新情報は必ず公式サイトでご確認ください。_
+_作成日: 2026年4月_
+tps://www.iana.org/assignments/service-names-port-numbers/ |
+
+---
+
+_本ガイドは Professional Cloud Network Engineer（PCNE）試験の前提となる_
+_ネットワーク基礎知識を体系的に学ぶための教材です。_
+_試験の最新情報は必ず公式サイトでご確認ください。_
+_作成日: 2026年4月_

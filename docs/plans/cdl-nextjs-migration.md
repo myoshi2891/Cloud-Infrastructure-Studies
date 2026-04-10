@@ -1,7 +1,7 @@
 # CDL → Next.js 移行計画書
 
-**作成日**: 2026-04-08  
-**対象**: `app/gcl/cloud-digital-leader/page.tsx`  
+**作成日**: 2026-04-08
+**対象**: `app/gcl/cloud-digital-leader/page.tsx`
 **ソース**: `cdl-section1〜5-*.md`, `google-cloud-digital-leader-comprehensive-guide.md`
 
 ---

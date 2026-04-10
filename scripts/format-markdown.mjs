@@ -113,10 +113,10 @@ async function formatMarkdown(filePath) {
             processedLines.push(line);
         }
 
-        // 6. Normalize spacing (already handled during line processing)
+        // 5. Normalize spacing (already handled during line processing)
         let content = processedLines.join('\n');
 
-        // 5. Ensure single trailing newline (preserve meaningful spaces)
+        // 6. Ensure single trailing newline (preserve meaningful spaces)
         if (!content.endsWith('\n')) {
             content += '\n';
         } else {
@@ -138,3 +138,4 @@ if (!targetFile) {
 }
 
 formatMarkdown(targetFile);
+ormatMarkdown(targetFile);

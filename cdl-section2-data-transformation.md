@@ -48,18 +48,18 @@ Section 2 で問われる主なこと:
 
 ### 1.2 Section 2 のサブトピック一覧
 
-| # | サブトピック | 重要度 |
-| --- | --- | --- |
-| 1 | データのビジネス価値（4種類の分析） | ★★★ |
-| 2 | 構造化・非構造化・半構造化データ | ★★★ |
-| 3 | Cloud Storage のストレージクラス | ★★★ |
-| 4 | データベース選択（RDB vs NoSQL） | ★★★ |
-| 5 | BigQuery の特徴とユースケース | ★★★ |
-| 6 | Looker と Looker Studio の違い | ★★★ |
-| 7 | Pub/Sub・Dataflow・Dataproc の役割 | ★★★ |
-| 8 | Dataplex / BigQuery Universal Catalog | ★★☆ |
-| 9 | データのプライバシー・ガバナンス | ★★★ |
-| 10 | ビジネスユースケース別のデータ活用 | ★★☆ |
+| #   | サブトピック                          | 重要度 |
+| --- | ------------------------------------- | ------ |
+| 1   | データのビジネス価値（4種類の分析）   | ★★★    |
+| 2   | 構造化・非構造化・半構造化データ      | ★★★    |
+| 3   | Cloud Storage のストレージクラス      | ★★★    |
+| 4   | データベース選択（RDB vs NoSQL）      | ★★★    |
+| 5   | BigQuery の特徴とユースケース         | ★★★    |
+| 6   | Looker と Looker Studio の違い        | ★★★    |
+| 7   | Pub/Sub・Dataflow・Dataproc の役割    | ★★★    |
+| 8   | Dataplex / BigQuery Universal Catalog | ★★☆    |
+| 9   | データのプライバシー・ガバナンス      | ★★★    |
+| 10  | ビジネスユースケース別のデータ活用    | ★★☆    |
 
 ---
 
@@ -90,13 +90,13 @@ Section 2 で問われる主なこと:
 
 #### 従来型経営 vs データドリブン経営の比較
 
-| 比較項目 | 従来型（経験・勘） | データドリブン |
-| --- | --- | --- |
-| **意思決定の根拠** | ベテランの経験則 | データと統計的分析 |
-| **スピード** | 会議・議論に時間がかかる | リアルタイムで判断可能 |
-| **精度** | 個人の能力に依存 | 再現性・客観性が高い |
-| **スケール** | 個人の限界がある | AIで大量データを処理 |
-| **リスク** | バイアスが入りやすい | データに基づくため客観的 |
+| 比較項目           | 従来型（経験・勘）       | データドリブン           |
+| ------------------ | ------------------------ | ------------------------ |
+| **意思決定の根拠** | ベテランの経験則         | データと統計的分析       |
+| **スピード**       | 会議・議論に時間がかかる | リアルタイムで判断可能   |
+| **精度**           | 個人の能力に依存         | 再現性・客観性が高い     |
+| **スケール**       | 個人の限界がある         | AIで大量データを処理     |
+| **リスク**         | バイアスが入りやすい     | データに基づくため客観的 |
 
 ### 2.3 データが生み出す 4 種類のビジネス価値
 
@@ -127,12 +127,12 @@ Section 2 で問われる主なこと:
 
 #### 各分析レベルの具体例（EC サイトの場合）
 
-| レベル | 問い | 分析の例 | 使うツール |
-| --- | --- | --- | --- |
-| ① 記述的 | 先月何個売れたか？ | 月次売上レポート | Looker Studio |
-| ② 診断的 | なぜ売上が下がったか？ | 顧客行動の深掘り分析 | BigQuery + Looker |
-| ③ 予測的 | 来月何個売れるか？ | 需要予測モデル | Vertex AI + BigQuery |
-| ④ 処方的 | 何個仕入れるべきか？ | 自動発注 AI | Vertex AI Agent |
+| レベル   | 問い                   | 分析の例             | 使うツール           |
+| -------- | ---------------------- | -------------------- | -------------------- |
+| ① 記述的 | 先月何個売れたか？     | 月次売上レポート     | Looker Studio        |
+| ② 診断的 | なぜ売上が下がったか？ | 顧客行動の深掘り分析 | BigQuery + Looker    |
+| ③ 予測的 | 来月何個売れるか？     | 需要予測モデル       | Vertex AI + BigQuery |
+| ④ 処方的 | 何個仕入れるべきか？   | 自動発注 AI          | Vertex AI Agent      |
 
 > 📎 **参照**: Google Cloud データ分析ソリューション
 > <https://cloud.google.com/solutions/smart-analytics>
@@ -174,13 +174,13 @@ Section 2 で問われる主なこと:
 
 #### 構造化データの具体例
 
-| データ種別 | 具体例 | 格納先（GCP） |
-| --- | --- | --- |
-| 売上データ | 日付・商品ID・金額・数量 | Cloud SQL / BigQuery |
-| 顧客マスタ | 顧客ID・氏名・住所・年齢 | Cloud SQL / Spanner |
-| 在庫データ | SKU・倉庫・在庫数・入出庫日 | Cloud SQL / Spanner |
-| 気象データ | 日時・気温・湿度・降水量 | BigQuery / Bigtable |
-| 株価データ | 銘柄・日時・始値・終値・出来高 | BigQuery / Bigtable |
+| データ種別 | 具体例                         | 格納先（GCP）        |
+| ---------- | ------------------------------ | -------------------- |
+| 売上データ | 日付・商品ID・金額・数量       | Cloud SQL / BigQuery |
+| 顧客マスタ | 顧客ID・氏名・住所・年齢       | Cloud SQL / Spanner  |
+| 在庫データ | SKU・倉庫・在庫数・入出庫日    | Cloud SQL / Spanner  |
+| 気象データ | 日時・気温・湿度・降水量       | BigQuery / Bigtable  |
+| 株価データ | 銘柄・日時・始値・終値・出来高 | BigQuery / Bigtable  |
 
 ### 3.3 非構造化データ（Unstructured Data）
 
@@ -203,14 +203,14 @@ Section 2 で問われる主なこと:
 
 #### 非構造化データの具体例
 
-| データ種別 | 具体例 | 格納先（GCP） | 分析方法 |
-| --- | --- | --- | --- |
-| テキスト | メール・SNS 投稿・レビュー | Cloud Storage | Natural Language API |
-| 画像 | 商品写真・医療画像・衛星写真 | Cloud Storage | Vision API |
-| 動画 | 監視カメラ・広告・教育動画 | Cloud Storage | Video Intelligence API |
-| 音声 | コールセンター録音・ポッドキャスト | Cloud Storage | Speech-to-Text API |
-| PDF | 契約書・請求書・レポート | Cloud Storage | Document AI |
-| ログ | Webサーバーログ・アプリログ | Cloud Logging / GCS | BigQuery |
+| データ種別 | 具体例                             | 格納先（GCP）       | 分析方法               |
+| ---------- | ---------------------------------- | ------------------- | ---------------------- |
+| テキスト   | メール・SNS 投稿・レビュー         | Cloud Storage       | Natural Language API   |
+| 画像       | 商品写真・医療画像・衛星写真       | Cloud Storage       | Vision API             |
+| 動画       | 監視カメラ・広告・教育動画         | Cloud Storage       | Video Intelligence API |
+| 音声       | コールセンター録音・ポッドキャスト | Cloud Storage       | Speech-to-Text API     |
+| PDF        | 契約書・請求書・レポート           | Cloud Storage       | Document AI            |
+| ログ       | Webサーバーログ・アプリログ        | Cloud Logging / GCS | BigQuery               |
 
 ### 3.4 半構造化データ（Semi-Structured Data）
 
@@ -242,14 +242,14 @@ Section 2 で問われる主なこと:
 
 ### 3.5 データ形式の比較まとめ
 
-| 比較項目 | 構造化 | 半構造化 | 非構造化 |
-| --- | --- | --- | --- |
-| **例** | CSV・RDB テーブル | JSON・XML・CSV | 画像・動画・音声・PDF |
-| **スキーマ** | 固定・厳格 | 柔軟 | なし |
-| **検索方法** | SQL | JSONPath・SQL | AI/ML・全文検索 |
-| **GCP ストレージ** | Cloud SQL・BigQuery | Firestore・BigQuery | Cloud Storage |
-| **全データ中の割合** | ~10-20% | ~10-15% | ~70-80% |
-| **分析の難易度** | 低（容易） | 中 | 高（AI/ML 必要） |
+| 比較項目             | 構造化              | 半構造化            | 非構造化              |
+| -------------------- | ------------------- | ------------------- | --------------------- |
+| **例**               | CSV・RDB テーブル   | JSON・XML・CSV      | 画像・動画・音声・PDF |
+| **スキーマ**         | 固定・厳格          | 柔軟                | なし                  |
+| **検索方法**         | SQL                 | JSONPath・SQL       | AI/ML・全文検索       |
+| **GCP ストレージ**   | Cloud SQL・BigQuery | Firestore・BigQuery | Cloud Storage         |
+| **全データ中の割合** | ~10-20%             | ~10-15%             | ~70-80%               |
+| **分析の難易度**     | 低（容易）          | 中                  | 高（AI/ML 必要）      |
 
 > 📎 **参照**:
 > <https://cloud.google.com/learn/what-is-structured-data>
@@ -395,12 +395,12 @@ Cloud Storage の特徴:
               └─────────────────────────────────┘
 ```
 
-| クラス | 月次保存コスト | 取得コスト | 最小保存期間 | 適したユースケース |
-| --- | --- | --- | --- | --- |
-| **Standard** | 高（目安: $0.020/GB） | 無料 | なし | 頻繁にアクセスするデータ・Web コンテンツ・ML 学習データ |
-| **Nearline** | 中（目安: $0.010/GB） | あり（小） | 30日 | 月1回程度のアクセス・バックアップ・月次レポート |
-| **Coldline** | 低（目安: $0.004/GB） | あり（中） | 90日 | 四半期に1回程度のアクセス・DR バックアップ |
-| **Archive** | 最安（目安: $0.0012/GB） | あり（大） | 365日 | 年1回未満のアクセス・法令遵守のための長期保管 |
+| クラス       | 月次保存コスト           | 取得コスト | 最小保存期間 | 適したユースケース                                      |
+| ------------ | ------------------------ | ---------- | ------------ | ------------------------------------------------------- |
+| **Standard** | 高（目安: $0.020/GB）    | 無料       | なし         | 頻繁にアクセスするデータ・Web コンテンツ・ML 学習データ |
+| **Nearline** | 中（目安: $0.010/GB）    | あり（小） | 30日         | 月1回程度のアクセス・バックアップ・月次レポート         |
+| **Coldline** | 低（目安: $0.004/GB）    | あり（中） | 90日         | 四半期に1回程度のアクセス・DR バックアップ              |
+| **Archive**  | 最安（目安: $0.0012/GB） | あり（大） | 365日        | 年1回未満のアクセス・法令遵守のための長期保管           |
 
 ※ 価格はリージョンにより異なります — 表は us-central1 の参考値です。最新情報は[公式の料金ページ](https://cloud.google.com/storage/pricing)をご確認ください。
 
@@ -408,7 +408,6 @@ Cloud Storage の特徴:
 
 ```yaml
 ライフサイクルポリシーの例（コスト自動最適化）:
-
   - ルール 1: 作成から 30 日後に Standard → Nearline へ移行
   - ルール 2: 作成から 90 日後に Nearline → Coldline へ移行
   - ルール 3: 作成から 365 日後に Coldline → Archive へ移行
@@ -421,24 +420,20 @@ Cloud Storage の特徴:
 
 ```yaml
 バケット設計:
-
   - リージョン選択: データのユーザーに近いリージョンを選ぶ
   - バージョニング: 重要なデータは誤削除・上書き防止のため有効化
   - ライフサイクル: 全バケットにライフサイクルポリシーを設定する
 
 セキュリティ:
-
   - 均一バケットレベルアクセス（Uniform Bucket Access）を使用する
   - 公開バケットは最小限に（必要な場合のみ）
   - Cloud Audit Logs でアクセスを記録する
   - CMEK（顧客管理暗号化キー）で機密データを保護
 
 コスト最適化:
-
   - ライフサイクルポリシーでデータを自動的に低コストクラスへ移行
   - リージョン間のデータ転送コストを意識してアーキテクチャを設計
   - Recommender の提案を定期的に確認する
-
 ```
 
 > 📎 **参照**:
@@ -538,15 +533,15 @@ Cloud Spanner とは:
 
 #### Cloud SQL vs Cloud Spanner の比較
 
-| 比較項目 | Cloud SQL | Cloud Spanner |
-| --- | --- | --- |
-| **スケール** | 垂直（単一サーバー強化） | 水平（ノード追加で無限拡張） |
-| **リージョン** | 単一リージョン | マルチリージョン対応 |
-| **SLA** | 99.99%（HA 構成時） | 99.999% |
-| **最大規模** | 64 TB | ペタバイト規模 |
-| **コスト** | 比較的安価 | 非常に高価 |
-| **互換性** | MySQL/PG/SQL Server | Cloud Spanner 独自 SQL |
-| **選ぶ場面** | リージョン内の中規模 OLTP | グローバル展開・超大規模 OLTP |
+| 比較項目       | Cloud SQL                 | Cloud Spanner                 |
+| -------------- | ------------------------- | ----------------------------- |
+| **スケール**   | 垂直（単一サーバー強化）  | 水平（ノード追加で無限拡張）  |
+| **リージョン** | 単一リージョン            | マルチリージョン対応          |
+| **SLA**        | 99.99%（HA 構成時）       | 99.999%                       |
+| **最大規模**   | 64 TB                     | ペタバイト規模                |
+| **コスト**     | 比較的安価                | 非常に高価                    |
+| **互換性**     | MySQL/PG/SQL Server       | Cloud Spanner 独自 SQL        |
+| **選ぶ場面**   | リージョン内の中規模 OLTP | グローバル展開・超大規模 OLTP |
 
 ### 6.4 Firestore（NoSQL ドキュメント DB）
 
@@ -640,13 +635,13 @@ BigQuery の革命的な点:
 
 #### BigQuery の独自機能
 
-| 機能 | 説明 | ユースケース |
-| --- | --- | --- |
-| **BigQuery ML** | SQL でML モデルを構築・実行 | データアナリストが Python なしで予測モデル作成 |
-| **BigQuery BI Engine** | インメモリ分析で高速レスポンス | Looker Studio との連携で秒単位の応答 |
-| **BigQuery Omni** | AWS・Azure のデータも BigQuery で分析 | マルチクラウド環境のデータ分析 |
-| **Gemini in BigQuery** | 自然言語でクエリ・コード生成 | SQL の知識がなくても分析可能 |
-| **BigQuery DataFrames** | Python Pandas ライクに BigQuery を操作 | データサイエンティスト向け |
+| 機能                    | 説明                                   | ユースケース                                   |
+| ----------------------- | -------------------------------------- | ---------------------------------------------- |
+| **BigQuery ML**         | SQL でML モデルを構築・実行            | データアナリストが Python なしで予測モデル作成 |
+| **BigQuery BI Engine**  | インメモリ分析で高速レスポンス         | Looker Studio との連携で秒単位の応答           |
+| **BigQuery Omni**       | AWS・Azure のデータも BigQuery で分析  | マルチクラウド環境のデータ分析                 |
+| **Gemini in BigQuery**  | 自然言語でクエリ・コード生成           | SQL の知識がなくても分析可能                   |
+| **BigQuery DataFrames** | Python Pandas ライクに BigQuery を操作 | データサイエンティスト向け                     |
 
 ### 6.7 Memorystore（インメモリ DB）
 
@@ -692,15 +687,15 @@ Cloud SQL PostgreSQL との違い:
 
 ### 6.9 全データベースサービスの比較まとめ
 
-| サービス | タイプ | 規模 | 主な用途 | キーワード |
-| --- | --- | --- | --- | --- |
-| **Cloud SQL** | RDB（マネージド） | 中規模 | Web アプリ・既存 DB 移行 | MySQL・PG・SQL Server |
-| **Cloud Spanner** | グローバル RDB | 超大規模 | 金融・グローバル EC | グローバル・強一貫性・99.999% |
-| **AlloyDB** | PG 互換高性能 DB | 大規模 | 高性能 PG・HTAP | PostgreSQL 互換・4倍高速 |
-| **Firestore** | NoSQL ドキュメント | 中〜大規模 | モバイル・Web アプリ | リアルタイム同期・サーバーレス |
-| **Bigtable** | NoSQL ワイドカラム | ペタバイト | IoT・時系列・広告 | 超高スループット・低レイテンシ |
-| **BigQuery** | データウェアハウス | ペタバイト | BI・分析・ML | サーバーレス・SQL 分析 |
-| **Memorystore** | インメモリ | 小〜中規模 | キャッシュ・セッション | Redis・低レイテンシ |
+| サービス          | タイプ             | 規模       | 主な用途                 | キーワード                     |
+| ----------------- | ------------------ | ---------- | ------------------------ | ------------------------------ |
+| **Cloud SQL**     | RDB（マネージド）  | 中規模     | Web アプリ・既存 DB 移行 | MySQL・PG・SQL Server          |
+| **Cloud Spanner** | グローバル RDB     | 超大規模   | 金融・グローバル EC      | グローバル・強一貫性・99.999%  |
+| **AlloyDB**       | PG 互換高性能 DB   | 大規模     | 高性能 PG・HTAP          | PostgreSQL 互換・4倍高速       |
+| **Firestore**     | NoSQL ドキュメント | 中〜大規模 | モバイル・Web アプリ     | リアルタイム同期・サーバーレス |
+| **Bigtable**      | NoSQL ワイドカラム | ペタバイト | IoT・時系列・広告        | 超高スループット・低レイテンシ |
+| **BigQuery**      | データウェアハウス | ペタバイト | BI・分析・ML             | サーバーレス・SQL 分析         |
+| **Memorystore**   | インメモリ         | 小〜中規模 | キャッシュ・セッション   | Redis・低レイテンシ            |
 
 > 📎 **参照**:
 > <https://cloud.google.com/sql/docs>
@@ -761,14 +756,14 @@ LookML（Looker Modeling Language）:
 
 #### Looker の主な機能
 
-| 機能 | 説明 | ビジネス価値 |
-| --- | --- | --- |
-| **ダッシュボード** | 複数の可視化をまとめた画面 | 経営状況の一覧把握 |
-| **Explore** | ノーコードでデータを探索 | エンジニアなしで深掘り分析 |
-| **Looks** | 保存した可視化レポート | 定期レポートの自動化 |
-| **Alerts** | データ変化時の通知 | 異常値・目標達成を即座に把握 |
-| **Looker API** | 外部システムとの統合 | アプリへのデータ埋め込み |
-| **Looker Blocks** | 業界別の分析テンプレート | 分析環境の素早い構築 |
+| 機能               | 説明                       | ビジネス価値                 |
+| ------------------ | -------------------------- | ---------------------------- |
+| **ダッシュボード** | 複数の可視化をまとめた画面 | 経営状況の一覧把握           |
+| **Explore**        | ノーコードでデータを探索   | エンジニアなしで深掘り分析   |
+| **Looks**          | 保存した可視化レポート     | 定期レポートの自動化         |
+| **Alerts**         | データ変化時の通知         | 異常値・目標達成を即座に把握 |
+| **Looker API**     | 外部システムとの統合       | アプリへのデータ埋め込み     |
+| **Looker Blocks**  | 業界別の分析テンプレート   | 分析環境の素早い構築         |
 
 ### 7.2 Looker Studio（無料セルフサービス BI）
 
@@ -804,34 +799,31 @@ Looker Studio の特徴:
 試験で最もよく問われる比較ポイント!
 ```
 
-| 比較項目 | Looker | Looker Studio |
-| --- | --- | --- |
-| **費用** | 有料（エンタープライズライセンス） | 無料 |
-| **対象ユーザー** | データチーム・大企業 | 個人・中小企業・マーケター |
-| **データモデル** | LookML で厳密に定義 | 柔軟だが各人が独自定義 |
-| **真実の唯一性** | ◎ 保証できる | △ 担保が難しい |
-| **スケール** | 大規模な組織向け | 小〜中規模 |
-| **主な用途** | 全社的な BI 基盤 | アドホックな可視化・個人レポート |
-| **API** | あり（外部連携可能） | 限定的 |
-| **Git 統合** | あり（バージョン管理） | なし |
+| 比較項目         | Looker                             | Looker Studio                    |
+| ---------------- | ---------------------------------- | -------------------------------- |
+| **費用**         | 有料（エンタープライズライセンス） | 無料                             |
+| **対象ユーザー** | データチーム・大企業               | 個人・中小企業・マーケター       |
+| **データモデル** | LookML で厳密に定義                | 柔軟だが各人が独自定義           |
+| **真実の唯一性** | ◎ 保証できる                       | △ 担保が難しい                   |
+| **スケール**     | 大規模な組織向け                   | 小〜中規模                       |
+| **主な用途**     | 全社的な BI 基盤                   | アドホックな可視化・個人レポート |
+| **API**          | あり（外部連携可能）               | 限定的                           |
+| **Git 統合**     | あり（バージョン管理）             | なし                             |
 
 #### ✅ ベストプラクティス: BI ツール選択
 
 ```yaml
 Looker を選ぶ場合:
-
   - 大企業で部門横断の統一されたデータ文化を作りたい
   - データ定義のガバナンスが必要
   - 100人以上がデータを参照する環境
   - アプリに分析を埋め込みたい（Looker API 活用）
 
 Looker Studio を選ぶ場合:
-
   - 個人・チームレベルの可視化
   - 素早くダッシュボードを作りたい
   - コストをかけられない
   - Google Analytics・広告データの可視化
-
 ```
 
 > 📎 **参照**:
@@ -884,13 +876,13 @@ Pub/Sub ありの解決策:
 
 #### Pub/Sub のユースケース
 
-| ユースケース | 説明 |
-| --- | --- |
-| **IoT データ収集** | センサーデータをリアルタイムで収集・配信 |
+| ユースケース                   | 説明                                     |
+| ------------------------------ | ---------------------------------------- |
+| **IoT データ収集**             | センサーデータをリアルタイムで収集・配信 |
 | **イベント駆動アーキテクチャ** | マイクロサービス間の非同期メッセージング |
-| **ストリーミングデータ分析** | Dataflow へデータを流して分析 |
-| **ログ集約** | 複数サービスのログを一箇所に集める |
-| **リアルタイム通知** | 特定イベント発生時の即座の通知 |
+| **ストリーミングデータ分析**   | Dataflow へデータを流して分析            |
+| **ログ集約**                   | 複数サービスのログを一箇所に集める       |
+| **リアルタイム通知**           | 特定イベント発生時の即座の通知           |
 
 ### 8.2 Cloud Dataflow（データパイプライン）
 
@@ -919,13 +911,13 @@ Dataflow の特徴:
 
 #### Dataflow のユースケース
 
-| ユースケース | バッチ/ストリーミング | 説明 |
-| --- | --- | --- |
-| **ETL パイプライン** | バッチ | 複数ソースのデータを BigQuery へ投入 |
-| **ログ分析** | ストリーミング | Webログをリアルタイムで集計・分析 |
-| **不正検知** | ストリーミング | 取引データをリアルタイムで分析 |
-| **データ品質チェック** | バッチ | データのクレンジング・バリデーション |
-| **ファイル変換** | バッチ | CSV → JSON、Avro への変換 |
+| ユースケース           | バッチ/ストリーミング | 説明                                 |
+| ---------------------- | --------------------- | ------------------------------------ |
+| **ETL パイプライン**   | バッチ                | 複数ソースのデータを BigQuery へ投入 |
+| **ログ分析**           | ストリーミング        | Webログをリアルタイムで集計・分析    |
+| **不正検知**           | ストリーミング        | 取引データをリアルタイムで分析       |
+| **データ品質チェック** | バッチ                | データのクレンジング・バリデーション |
+| **ファイル変換**       | バッチ                | CSV → JSON、Avro への変換            |
 
 ### 8.3 Cloud Dataproc（マネージド Hadoop/Spark）
 
@@ -1254,11 +1246,11 @@ Sensitive Data Protection（旧 Cloud DLP）とは:
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-| 手法 | 再識別の可能性 | GDPR 対象 | 主な用途 |
-| --- | --- | --- | --- |
-| **匿名化** | 不可能（理論上） | 対象外 | データの公開・共有 |
-| **仮名化** | 可能（変換テーブル必要） | 対象 | 開発・テスト環境 |
-| **差分プライバシー** | 困難 | 状況による | 統計分析・ML 学習 |
+| 手法                 | 再識別の可能性           | GDPR 対象  | 主な用途           |
+| -------------------- | ------------------------ | ---------- | ------------------ |
+| **匿名化**           | 不可能（理論上）         | 対象外     | データの公開・共有 |
+| **仮名化**           | 可能（変換テーブル必要） | 対象       | 開発・テスト環境   |
+| **差分プライバシー** | 困難                     | 状況による | 統計分析・ML 学習  |
 
 ### 10.6 データのアクセス制御
 
@@ -1314,12 +1306,12 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
 
 #### 具体的な活用例
 
-| 課題 | データ | GCP サービス | 効果 |
-| --- | --- | --- | --- |
-| 顧客離脱を予測したい | 購買履歴・行動ログ | BigQuery ML + Vertex AI | 離脱 3 週間前に介入できる |
-| 在庫を最適化したい | POS・天気・カレンダー | BigQuery + Vertex AI | 欠品率 30% 削減 |
-| レコメンドを改善したい | 閲覧・購買履歴 | Recommendations AI | CV率 15% 向上 |
-| レビューを分析したい | 顧客レビューテキスト | Natural Language API | 製品改善サイクル短縮 |
+| 課題                   | データ                | GCP サービス            | 効果                      |
+| ---------------------- | --------------------- | ----------------------- | ------------------------- |
+| 顧客離脱を予測したい   | 購買履歴・行動ログ    | BigQuery ML + Vertex AI | 離脱 3 週間前に介入できる |
+| 在庫を最適化したい     | POS・天気・カレンダー | BigQuery + Vertex AI    | 欠品率 30% 削減           |
+| レコメンドを改善したい | 閲覧・購買履歴        | Recommendations AI      | CV率 15% 向上             |
+| レビューを分析したい   | 顧客レビューテキスト  | Natural Language API    | 製品改善サイクル短縮      |
 
 ### 11.2 製造業でのデータ活用
 
@@ -1503,15 +1495,15 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 
 ### 12.3 混同しやすいポイントの整理
 
-| 混同パターン | 正しい理解 |
-| --- | --- |
-| BigQuery = データベース | BigQuery はデータウェアハウス（DWH）。OLTP には向かない |
-| Dataflow = Dataproc | Dataflow は Beam ベース（サーバーレス）、Dataproc は Hadoop/Spark |
-| Looker = Looker Studio | Looker は有料エンタープライズ BI、Looker Studio は無料セルフサービス |
-| 匿名化 = 仮名化 | 匿名化は再識別不可、仮名化は再識別可能（変換テーブル必要） |
-| Cloud SQL = BigQuery | Cloud SQL は OLTP（RDB）、BigQuery は OLAP（DWH・分析） |
-| Bigtable = BigQuery | Bigtable は NoSQL 時系列 DB、BigQuery は SQL 分析 DWH |
-| Pub/Sub = Dataflow | Pub/Sub はメッセージング（配信）、Dataflow はデータ処理（変換） |
+| 混同パターン            | 正しい理解                                                           |
+| ----------------------- | -------------------------------------------------------------------- |
+| BigQuery = データベース | BigQuery はデータウェアハウス（DWH）。OLTP には向かない              |
+| Dataflow = Dataproc     | Dataflow は Beam ベース（サーバーレス）、Dataproc は Hadoop/Spark    |
+| Looker = Looker Studio  | Looker は有料エンタープライズ BI、Looker Studio は無料セルフサービス |
+| 匿名化 = 仮名化         | 匿名化は再識別不可、仮名化は再識別可能（変換テーブル必要）           |
+| Cloud SQL = BigQuery    | Cloud SQL は OLTP（RDB）、BigQuery は OLAP（DWH・分析）              |
+| Bigtable = BigQuery     | Bigtable は NoSQL 時系列 DB、BigQuery は SQL 分析 DWH                |
+| Pub/Sub = Dataflow      | Pub/Sub はメッセージング（配信）、Dataflow はデータ処理（変換）      |
 
 ### 12.4 Section 2 チェックリスト
 
@@ -1536,38 +1528,38 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 
 ## 13. 公式参照リソース一覧
 
-| カテゴリ | リソース | URL |
-| --- | --- | --- |
-| **試験情報** | CDL 試験概要ページ | <https://cloud.google.com/learn/certification/cloud-digital-leader> |
-| **試験情報** | 試験ガイド PDF | <https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf> |
-| **データ概念** | スマートアナリティクス概要 | <https://cloud.google.com/solutions/smart-analytics> |
-| **データ概念** | データライフサイクル管理 | <https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices> |
-| **Cloud Storage** | ストレージクラス | <https://cloud.google.com/storage/docs/storage-classes> |
-| **Cloud Storage** | ライフサイクル管理 | <https://cloud.google.com/storage/docs/lifecycle> |
-| **Cloud Storage** | ベストプラクティス | <https://cloud.google.com/storage/docs/best-practices> |
-| **Cloud SQL** | 概要ドキュメント | <https://cloud.google.com/sql/docs> |
-| **Cloud SQL** | 高可用性構成 | <https://cloud.google.com/sql/docs/mysql/high-availability> |
-| **Cloud Spanner** | 概要ドキュメント | <https://cloud.google.com/spanner/docs> |
-| **Firestore** | 概要ドキュメント | <https://cloud.google.com/firestore/docs> |
-| **Bigtable** | 概要ドキュメント | <https://cloud.google.com/bigtable/docs> |
-| **BigQuery** | 概要ドキュメント | <https://cloud.google.com/bigquery/docs> |
-| **BigQuery** | BigQuery ML | <https://cloud.google.com/bigquery/docs/bqml-introduction> |
-| **BigQuery** | コスト最適化 | <https://cloud.google.com/bigquery/docs/best-practices-costs> |
-| **AlloyDB** | 概要ドキュメント | <https://cloud.google.com/alloydb/docs> |
-| **Memorystore** | 概要ドキュメント | <https://cloud.google.com/memorystore/docs> |
-| **Looker** | 概要ドキュメント | <https://cloud.google.com/looker/docs> |
-| **Looker Studio** | 概要ドキュメント | <https://lookerstudio.google.com/> |
-| **Pub/Sub** | 概要ドキュメント | <https://cloud.google.com/pubsub/docs> |
-| **Dataflow** | 概要ドキュメント | <https://cloud.google.com/dataflow/docs> |
-| **Dataproc** | 概要ドキュメント | <https://cloud.google.com/dataproc/docs> |
-| **Datastream** | 概要ドキュメント | <https://cloud.google.com/datastream/docs> |
-| **Dataplex** | 概要ドキュメント | <https://cloud.google.com/dataplex/docs> |
-| **Sensitive Data Protection** | 概要ドキュメント | <https://cloud.google.com/dlp/docs> |
-| **BigQuery セキュリティ** | 列レベルセキュリティ | <https://cloud.google.com/bigquery/docs/column-level-security-intro> |
-| **Database Migration** | 概要ドキュメント | <https://cloud.google.com/database-migration/docs> |
+| カテゴリ                      | リソース                   | URL                                                                         |
+| ----------------------------- | -------------------------- | --------------------------------------------------------------------------- |
+| **試験情報**                  | CDL 試験概要ページ         | <https://cloud.google.com/learn/certification/cloud-digital-leader>         |
+| **試験情報**                  | 試験ガイド PDF             | <https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf>      |
+| **データ概念**                | スマートアナリティクス概要 | <https://cloud.google.com/solutions/smart-analytics>                        |
+| **データ概念**                | データライフサイクル管理   | <https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices> |
+| **Cloud Storage**             | ストレージクラス           | <https://cloud.google.com/storage/docs/storage-classes>                     |
+| **Cloud Storage**             | ライフサイクル管理         | <https://cloud.google.com/storage/docs/lifecycle>                           |
+| **Cloud Storage**             | ベストプラクティス         | <https://cloud.google.com/storage/docs/best-practices>                      |
+| **Cloud SQL**                 | 概要ドキュメント           | <https://cloud.google.com/sql/docs>                                         |
+| **Cloud SQL**                 | 高可用性構成               | <https://cloud.google.com/sql/docs/mysql/high-availability>                 |
+| **Cloud Spanner**             | 概要ドキュメント           | <https://cloud.google.com/spanner/docs>                                     |
+| **Firestore**                 | 概要ドキュメント           | <https://cloud.google.com/firestore/docs>                                   |
+| **Bigtable**                  | 概要ドキュメント           | <https://cloud.google.com/bigtable/docs>                                    |
+| **BigQuery**                  | 概要ドキュメント           | <https://cloud.google.com/bigquery/docs>                                    |
+| **BigQuery**                  | BigQuery ML                | <https://cloud.google.com/bigquery/docs/bqml-introduction>                  |
+| **BigQuery**                  | コスト最適化               | <https://cloud.google.com/bigquery/docs/best-practices-costs>               |
+| **AlloyDB**                   | 概要ドキュメント           | <https://cloud.google.com/alloydb/docs>                                     |
+| **Memorystore**               | 概要ドキュメント           | <https://cloud.google.com/memorystore/docs>                                 |
+| **Looker**                    | 概要ドキュメント           | <https://cloud.google.com/looker/docs>                                      |
+| **Looker Studio**             | 概要ドキュメント           | <https://lookerstudio.google.com/>                                          |
+| **Pub/Sub**                   | 概要ドキュメント           | <https://cloud.google.com/pubsub/docs>                                      |
+| **Dataflow**                  | 概要ドキュメント           | <https://cloud.google.com/dataflow/docs>                                    |
+| **Dataproc**                  | 概要ドキュメント           | <https://cloud.google.com/dataproc/docs>                                    |
+| **Datastream**                | 概要ドキュメント           | <https://cloud.google.com/datastream/docs>                                  |
+| **Dataplex**                  | 概要ドキュメント           | <https://cloud.google.com/dataplex/docs>                                    |
+| **Sensitive Data Protection** | 概要ドキュメント           | <https://cloud.google.com/dlp/docs>                                         |
+| **BigQuery セキュリティ**     | 列レベルセキュリティ       | <https://cloud.google.com/bigquery/docs/column-level-security-intro>        |
+| **Database Migration**        | 概要ドキュメント           | <https://cloud.google.com/database-migration/docs>                          |
 
 ---
 
-*本ガイドは Google Cloud Digital Leader（CDL）試験の Section 2 に特化した学習資料です。*
-*試験の最新情報は必ず公式サイト（<https://cloud.google.com/learn/certification/cloud-digital-leader）でご確認ください。>*
-*作成日: 2026年4月*
+_本ガイドは Google Cloud Digital Leader（CDL）試験の Section 2 に特化した学習資料です。_
+_試験の最新情報は必ず公式サイト（<https://cloud.google.com/learn/certification/cloud-digital-leader）でご確認ください。>_
+_作成日: 2026年4月_
