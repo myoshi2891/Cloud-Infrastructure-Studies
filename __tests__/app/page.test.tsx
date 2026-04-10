@@ -19,9 +19,8 @@ describe('Home ページ', () => {
     it('最初の試験（ACE）のドメインリンクがすべて存在すること', () => {
         const { container } = render(<Home />);
         const firstCard = container.querySelector('.card-ace')!;
-        const links = within(firstCard as HTMLElement).getAllByRole('link');
-        // ドメインリンク数 + CTA リンク 1 本
-        expect(links.length).toBeGreaterThanOrEqual(EXAMS[0].domains.length);
+        const domainLinks = (firstCard as HTMLElement).querySelectorAll('.home-domain-link');
+        expect(domainLinks).toHaveLength(EXAMS[0].domains.length);
     });
 
     it('ドメインリンクに home-domain-link クラスが付与されること', () => {

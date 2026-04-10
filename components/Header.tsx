@@ -58,25 +58,14 @@ export function Header() {
                 className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85"
             >
                 <span
-                    className="flex h-7 w-7 items-center justify-center rounded-lg text-sm font-black"
-                    style={{
-                        background: 'linear-gradient(135deg, hsl(220 100% 62%), hsl(270 80% 60%))',
-                    }}
+                    className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black"
                     aria-hidden
                 >
                     ☁
                 </span>
                 <span className="text-[15px] font-bold tracking-tight">
                     Cloud Infrastructure{' '}
-                    <span
-                        style={{
-                            background:
-                                'linear-gradient(135deg, hsl(220 100% 72%), hsl(270 70% 65%))',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                        }}
-                    >
+                    <span className="text-gradient-aurora">
                         Studies
                     </span>
                 </span>
@@ -104,11 +93,7 @@ export function Header() {
                         )}
                     >
                         <span
-                            className="flex h-4 w-4 items-center justify-center rounded text-[10px]"
-                            style={{
-                                background: 'hsl(270 60% 55% / 0.25)',
-                                color: 'hsl(270 80% 75%)',
-                            }}
+                            className="icon-theme-genai flex h-4 w-4 items-center justify-center rounded text-[10px]"
                             aria-hidden
                         >
                             ✨
@@ -195,11 +180,7 @@ export function Header() {
                         )}
                     >
                         <span
-                            className="flex h-4 w-4 items-center justify-center rounded text-[10px]"
-                            style={{
-                                background: 'hsl(220 60% 55% / 0.25)',
-                                color: 'hsl(220 100% 75%)',
-                            }}
+                            className="icon-theme-ace flex h-4 w-4 items-center justify-center rounded text-[10px]"
                             aria-hidden
                         >
                             ⚙
@@ -298,11 +279,7 @@ export function Header() {
                         )}
                     >
                         <span
-                            className="flex h-4 w-4 items-center justify-center rounded text-[10px]"
-                            style={{
-                                background: 'hsl(160 50% 45% / 0.25)',
-                                color: 'hsl(160 70% 65%)',
-                            }}
+                            className="icon-theme-cdl flex h-4 w-4 items-center justify-center rounded text-[10px]"
                             aria-hidden
                         >
                             🌐
