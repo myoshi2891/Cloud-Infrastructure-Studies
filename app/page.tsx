@@ -15,6 +15,12 @@ const cardColorMap: Record<string, string> = {
     'card-cdl': `card-cdl ${styles.cardCdl}`,
 };
 
+/**
+ * Renders the page hero section containing the eyebrow, main title with accent,
+ * Japanese subtitle, three informational badges, and a decorative (aria-hidden) glow.
+ *
+ * @returns The hero section element for the home page
+ */
 function Hero() {
     return (
         <section className={styles.hero}>
@@ -41,6 +47,15 @@ function Hero() {
     );
 }
 
+/**
+ * Render a section containing a card for each exam in `exams`.
+ *
+ * Renders exam metadata (icon, level, badge, title, abbreviation, score, description),
+ * a list of domain links with percentages, and a call-to-action link for each exam.
+ *
+ * @param exams - Array of exam objects used to populate each card (id, icon, level, badge, label, abbr, score, description, color, domains, href)
+ * @returns The section element that contains the rendered exam cards
+ */
 function ExamCards({ exams }: { exams: Exam[] }) {
     return (
         <section className={styles.cardsSection}>
@@ -90,6 +105,12 @@ function ExamCards({ exams }: { exams: Exam[] }) {
     );
 }
 
+/**
+ * Renders a stats section that displays each stat's value and label.
+ *
+ * @param stats - Array of stat entries to render; each entry's `value` is shown prominently and `label` is shown below it. `label` is used as the React key and should be unique.
+ * @returns A JSX element containing the stats section with value/label pairs.
+ */
 function Stats({ stats }: { stats: Stat[] }) {
     return (
         <section className={`home-stats-section ${styles.statsSection}`}>
@@ -105,6 +126,11 @@ function Stats({ stats }: { stats: Stat[] }) {
     );
 }
 
+/**
+ * Renders the home page layout containing the hero, exam cards, and statistics sections.
+ *
+ * @returns The page's root JSX element with Hero, ExamCards, and Stats components.
+ */
 export default function Home() {
     return (
         <main className={styles.page}>
