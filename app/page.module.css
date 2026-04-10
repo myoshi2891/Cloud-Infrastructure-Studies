@@ -26,8 +26,8 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-primary);
-    background: hsl(220 100% 70% / 0.12);
-    border: 1px solid hsl(220 100% 70% / 0.3);
+    background: color-mix(in srgb, var(--color-brand-text-start) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-brand-text-start) 30%, transparent);
     border-radius: 100px;
     padding: 4px 14px;
     margin-bottom: 28px;
@@ -43,7 +43,7 @@
 }
 
 .titleAccent {
-    background: linear-gradient(135deg, hsl(220 100% 70%), hsl(270 80% 65%));
+    background: linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -77,8 +77,8 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 60% 50% at 20% 60%, hsl(220 100% 70% / 0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 50% at 80% 40%, hsl(270 80% 65% / 0.07) 0%, transparent 70%);
+        radial-gradient(ellipse 60% 50% at 20% 60%, color-mix(in srgb, var(--color-brand-start) 8%, transparent) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 40%, color-mix(in srgb, var(--color-brand-end) 7%, transparent) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -137,39 +137,39 @@
 }
 
 .cardAce {
-    border-color: hsl(220 100% 70% / 0.25);
+    border-color: var(--color-theme-ace-bg);
 }
 .cardAce::before {
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(220 100% 70% / 0.08), transparent);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--color-theme-ace-fg) 8%, transparent), transparent);
 }
 .cardAce:hover, .cardAce:focus-within {
-    border-color: hsl(220 100% 70% / 0.5);
+    border-color: color-mix(in srgb, var(--color-theme-ace-fg) 50%, transparent);
 }
 .cardAce:hover::before, .cardAce:focus-within::before {
     opacity: 1;
 }
 
 .cardGenai {
-    border-color: hsl(270 80% 65% / 0.25);
+    border-color: var(--color-theme-genai-bg);
 }
 .cardGenai::before {
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(270 80% 65% / 0.08), transparent);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--color-theme-genai-fg) 8%, transparent), transparent);
 }
 .cardGenai:hover, .cardGenai:focus-within {
-    border-color: hsl(270 80% 65% / 0.5);
+    border-color: color-mix(in srgb, var(--color-theme-genai-fg) 50%, transparent);
 }
 .cardGenai:hover::before, .cardGenai:focus-within::before {
     opacity: 1;
 }
 
 .cardCdl {
-    border-color: hsl(160 70% 55% / 0.25);
+    border-color: var(--color-theme-cdl-bg);
 }
 .cardCdl::before {
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(160 70% 55% / 0.08), transparent);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--color-theme-cdl-fg) 8%, transparent), transparent);
 }
 .cardCdl:hover, .cardCdl:focus-within {
-    border-color: hsl(160 70% 55% / 0.5);
+    border-color: color-mix(in srgb, var(--color-theme-cdl-fg) 50%, transparent);
 }
 .cardCdl:hover::before, .cardCdl:focus-within::before {
     opacity: 1;
@@ -326,23 +326,23 @@
 
 .cardAce .ctaBtn:hover,
 .cardAce .ctaBtn:focus-visible {
-    background: hsl(220 100% 70% / 0.15);
-    border-color: hsl(220 100% 70% / 0.5);
-    color: hsl(220 100% 80%);
+    background: color-mix(in srgb, var(--color-theme-ace-fg) 15%, transparent);
+    border-color: color-mix(in srgb, var(--color-theme-ace-fg) 50%, transparent);
+    color: var(--color-theme-ace-fg);
 }
 
 .cardGenai .ctaBtn:hover,
 .cardGenai .ctaBtn:focus-visible {
-    background: hsl(270 80% 65% / 0.15);
-    border-color: hsl(270 80% 65% / 0.5);
-    color: hsl(270 80% 80%);
+    background: color-mix(in srgb, var(--color-theme-genai-fg) 15%, transparent);
+    border-color: color-mix(in srgb, var(--color-theme-genai-fg) 50%, transparent);
+    color: var(--color-theme-genai-fg);
 }
 
 .cardCdl .ctaBtn:hover,
 .cardCdl .ctaBtn:focus-visible {
-    background: hsl(160 70% 55% / 0.15);
-    border-color: hsl(160 70% 55% / 0.5);
-    color: hsl(160 70% 70%);
+    background: color-mix(in srgb, var(--color-theme-cdl-fg) 15%, transparent);
+    border-color: color-mix(in srgb, var(--color-theme-cdl-fg) 50%, transparent);
+    color: var(--color-theme-cdl-fg);
 }
 
 .statsSection {

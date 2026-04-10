@@ -18,7 +18,8 @@ describe('Home ページ', () => {
 
     it('最初の試験（ACE）のドメインリンクがすべて存在すること', () => {
         const { container } = render(<Home />);
-        const firstCard = container.querySelector('.card-ace')!;
+        const firstCard = container.querySelector('.card-ace');
+        expect(firstCard).toBeInTheDocument();
         const domainLinks = (firstCard as HTMLElement).querySelectorAll('.home-domain-link');
         expect(domainLinks).toHaveLength(EXAMS[0].domains.length);
     });
@@ -32,7 +33,8 @@ describe('Home ページ', () => {
 
     it('stats セクションに統計値が含まれること', () => {
         const { container } = render(<Home />);
-        const statsSection = container.querySelector('.home-stats-section')!;
+        const statsSection = container.querySelector('.home-stats-section');
+        expect(statsSection).toBeInTheDocument();
         STATS.forEach((s) => {
             expect(within(statsSection as HTMLElement).getByText(s.value)).toBeInTheDocument();
         });
@@ -40,19 +42,22 @@ describe('Home ページ', () => {
 
     it('stats セクションに "50+" が含まれること', () => {
         const { container } = render(<Home />);
-        const statsSection = container.querySelector('.home-stats-section')!;
+        const statsSection = container.querySelector('.home-stats-section');
+        expect(statsSection).toBeInTheDocument();
         expect(within(statsSection as HTMLElement).getByText('50+')).toBeInTheDocument();
     });
 
     it('stats セクションに "600+" が含まれること', () => {
         const { container } = render(<Home />);
-        const statsSection = container.querySelector('.home-stats-section')!;
+        const statsSection = container.querySelector('.home-stats-section');
+        expect(statsSection).toBeInTheDocument();
         expect(within(statsSection as HTMLElement).getByText('600+')).toBeInTheDocument();
     });
 
     it('stats セクションに "100%" が含まれること', () => {
         const { container } = render(<Home />);
-        const statsSection = container.querySelector('.home-stats-section')!;
+        const statsSection = container.querySelector('.home-stats-section');
+        expect(statsSection).toBeInTheDocument();
         expect(within(statsSection as HTMLElement).getByText('100%')).toBeInTheDocument();
     });
 
@@ -63,10 +68,12 @@ describe('Home ページ', () => {
 
     it('CDL カードのドメインリンクが 1 件のみ（セクションページ未実装のため集約）', () => {
         const { container } = render(<Home />);
-        const cdlCard = container.querySelector('.card-cdl')!;
+        const cdlCard = container.querySelector('.card-cdl');
+        expect(cdlCard).toBeInTheDocument();
         const domainLinks = within(cdlCard as HTMLElement).getAllByRole('link');
         // CTA を除くドメインリンクが 1 件 = CDL.domains.length
-        const cdlExam = EXAMS.find((e) => e.id === 'cdl')!;
+        const cdlExam = EXAMS.find((e) => e.id === 'cdl');
+        expect(cdlExam).toBeDefined();
         expect(cdlExam.domains).toHaveLength(1);
         // ドメインリンク 1 本 + CTA 1 本 = 計 2 本
         expect(domainLinks).toHaveLength(2);
