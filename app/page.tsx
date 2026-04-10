@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import './home.css';
+import styles from './page.module.css';
 import { EXAMS, STATS, type Exam, type Stat } from './constants';
 
 export const metadata: Metadata = {
@@ -9,68 +9,76 @@ export const metadata: Metadata = {
         'Google Cloud 認定試験対策の総合学習ガイド。Associate Cloud Engineer、Generative AI Leader、Cloud Digital Leader の試験対策コンテンツを提供します。',
 };
 
+const cardColorMap: Record<string, string> = {
+    'card-ace': `card-ace ${styles.cardAce}`,
+    'card-genai': `card-genai ${styles.cardGenai}`,
+    'card-cdl': `card-cdl ${styles.cardCdl}`,
+};
+
 function Hero() {
     return (
-        <section className="home-hero">
-            <div className="home-hero-inner">
-                <p className="home-eyebrow">Google Cloud 認定試験 学習ガイド</p>
-                <h1 className="home-title">
+        <section className={styles.hero}>
+            <div className={styles.heroInner}>
+                <p className={styles.eyebrow}>
+                    Google Cloud 認定試験 学習ガイド
+                </p>
+                <h1 className={styles.title}>
                     Cloud Infrastructure<br />
-                    <span className="home-title-accent">Studies</span>
+                    <span className={styles.titleAccent}>Studies</span>
                 </h1>
-                <p className="home-sub">
+                <p className={styles.sub}>
                     現場で通用するクラウドエンジニアを目指す方のための<br />
                     体系的な試験対策コンテンツ集
                 </p>
-                <div className="home-hero-badges">
-                    <span className="home-hbadge">📚 3試験対応</span>
-                    <span className="home-hbadge">🇯🇵 日本語解説</span>
-                    <span className="home-hbadge">🔄 定期更新</span>
+                <div className={styles.heroBadges}>
+                    <span className={styles.hbadge}>📚 3試験対応</span>
+                    <span className={styles.hbadge}>🇯🇵 日本語解説</span>
+                    <span className={styles.hbadge}>🔄 定期更新</span>
                 </div>
             </div>
-            <div className="home-hero-glow" aria-hidden />
+            <div className={styles.heroGlow} aria-hidden />
         </section>
     );
 }
 
 function ExamCards({ exams }: { exams: Exam[] }) {
     return (
-        <section className="home-cards-section">
-            <div className="home-cards-inner">
-                <h2 className="home-section-title">対応試験一覧</h2>
-                <div className="home-cards">
+        <section className={styles.cardsSection}>
+            <div className={styles.cardsInner}>
+                <h2 className={styles.sectionTitle}>対応試験一覧</h2>
+                <div className={styles.cards}>
                     {exams.map((exam) => (
-                        <article key={exam.id} className={`home-card ${exam.color}`}>
-                            <div className="home-card-header">
-                                <div className="home-card-top">
-                                    <span className="home-card-icon">{exam.icon}</span>
-                                    <div className="home-card-labels">
-                                        <span className="home-card-level">{exam.level}</span>
-                                        <span className="home-card-badge">{exam.badge}</span>
+                        <article key={exam.id} className={`home-card ${styles.card} ${cardColorMap[exam.color] || ''}`}>
+                            <div className={styles.cardHeader}>
+                                <div className={styles.cardTop}>
+                                    <span className={styles.cardIcon}>{exam.icon}</span>
+                                    <div className={styles.cardLabels}>
+                                        <span className={styles.cardLevel}>{exam.level}</span>
+                                        <span className={styles.cardBadge}>{exam.badge}</span>
                                     </div>
                                 </div>
-                                <h3 className="home-card-title">{exam.label}</h3>
-                                <p className="home-card-abbr">{exam.abbr}</p>
-                                <p className="home-card-score">🕐 {exam.score}</p>
-                                <p className="home-card-desc">{exam.description}</p>
+                                <h3 className={styles.cardTitle}>{exam.label}</h3>
+                                <p className={styles.cardAbbr}>{exam.abbr}</p>
+                                <p className={styles.cardScore}>🕐 {exam.score}</p>
+                                <p className={styles.cardDesc}>{exam.description}</p>
                             </div>
 
-                            <div className="home-card-domains">
-                                <p className="home-domains-label">学習コンテンツ</p>
-                                <ul className="home-domains-list">
+                            <div className={styles.cardDomains}>
+                                <p className={styles.domainsLabel}>学習コンテンツ</p>
+                                <ul className={styles.domainsList}>
                                     {exam.domains.map((d) => (
                                         <li key={d.href + d.label}>
-                                            <Link href={d.href} className="home-domain-link">
-                                                <span className="home-domain-name">{d.label}</span>
-                                                <span className="home-domain-pct">{d.pct}</span>
+                                            <Link href={d.href} className={`home-domain-link ${styles.domainLink}`}>
+                                                <span className={styles.domainName}>{d.label}</span>
+                                                <span className={styles.domainPct}>{d.pct}</span>
                                             </Link>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
 
-                            <div className="home-card-footer">
-                                <Link href={exam.href} className="home-card-cta">
+                            <div className={styles.cardFooter}>
+                                <Link href={exam.href} className={`home-card-cta ${styles.ctaBtn}`}>
                                     学習を始める →
                                 </Link>
                             </div>
@@ -84,12 +92,12 @@ function ExamCards({ exams }: { exams: Exam[] }) {
 
 function Stats({ stats }: { stats: Stat[] }) {
     return (
-        <section className="home-stats-section">
-            <div className="home-stats-inner">
+        <section className={`home-stats-section ${styles.statsSection}`}>
+            <div className={styles.statsInner}>
                 {stats.map((s) => (
-                    <div key={s.label} className="home-stat">
-                        <span className="home-stat-value">{s.value}</span>
-                        <span className="home-stat-label">{s.label}</span>
+                    <div key={s.label} className={styles.stat}>
+                        <span className={styles.statValue}>{s.value}</span>
+                        <span className={styles.statLabel}>{s.label}</span>
                     </div>
                 ))}
             </div>
@@ -99,7 +107,7 @@ function Stats({ stats }: { stats: Stat[] }) {
 
 export default function Home() {
     return (
-        <main className="home-page">
+        <main className={styles.page}>
             <Hero />
             <ExamCards exams={EXAMS} />
             <Stats stats={STATS} />

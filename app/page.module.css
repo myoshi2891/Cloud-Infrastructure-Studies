@@ -1,27 +1,25 @@
-/* ===== Home Page Styles ===== */
+/* app/page.module.css */
 
-/* ─── Page Container ─────────────────────────────────────── */
-.home-page {
+.page {
     min-height: 100vh;
     overflow-x: clip;
 }
 
-/* ─── Hero Section ───────────────────────────────────────── */
-.home-hero {
+.hero {
     position: relative;
     padding: 100px 24px 80px;
     text-align: center;
     overflow: hidden;
 }
 
-.home-hero-inner {
+.heroInner {
     position: relative;
     z-index: 1;
     max-width: 720px;
     margin: 0 auto;
 }
 
-.home-eyebrow {
+.eyebrow {
     display: inline-block;
     font-size: 12px;
     font-weight: 700;
@@ -35,7 +33,7 @@
     margin-bottom: 28px;
 }
 
-.home-title {
+.title {
     font-size: clamp(36px, 6vw, 64px);
     font-weight: 900;
     line-height: 1.1;
@@ -44,28 +42,28 @@
     margin-bottom: 20px;
 }
 
-.home-title-accent {
+.titleAccent {
     background: linear-gradient(135deg, hsl(220 100% 70%), hsl(270 80% 65%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-.home-sub {
+.sub {
     font-size: 16px;
     line-height: 1.8;
     color: var(--color-muted-foreground);
     margin-bottom: 36px;
 }
 
-.home-hero-badges {
+.heroBadges {
     display: flex;
     gap: 12px;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.home-hbadge {
+.hbadge {
     font-size: 13px;
     font-weight: 600;
     color: var(--color-muted);
@@ -75,8 +73,7 @@
     padding: 6px 16px;
 }
 
-/* Glow effect behind hero */
-.home-hero-glow {
+.heroGlow {
     position: absolute;
     inset: 0;
     background:
@@ -85,17 +82,16 @@
     pointer-events: none;
 }
 
-/* ─── Cards Section ──────────────────────────────────────── */
-.home-cards-section {
+.cardsSection {
     padding: 16px 24px 80px;
 }
 
-.home-cards-inner {
+.cardsInner {
     max-width: 1100px;
     margin: 0 auto;
 }
 
-.home-section-title {
+.sectionTitle {
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
@@ -106,14 +102,13 @@
     border-bottom: 1px solid var(--color-border);
 }
 
-.home-cards {
+.cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
 }
 
-/* ─── Individual Card ────────────────────────────────────── */
-.home-card {
+.card {
     display: flex;
     flex-direction: column;
     background: var(--color-card);
@@ -125,7 +120,7 @@
     overflow: hidden;
 }
 
-.home-card::before {
+.card::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -135,79 +130,75 @@
     pointer-events: none;
 }
 
-.home-card:hover,
-.home-card:focus-visible {
+.card:hover,
+.card:focus-visible {
     transform: translateY(-4px);
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
 }
 
-/* ACE Card */
-.card-ace {
+.cardAce {
     border-color: hsl(220 100% 70% / 0.25);
 }
-.card-ace::before {
+.cardAce::before {
     background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(220 100% 70% / 0.08), transparent);
 }
-.card-ace:hover {
+.cardAce:hover, .cardAce:focus-within {
     border-color: hsl(220 100% 70% / 0.5);
 }
-.card-ace:hover::before {
+.cardAce:hover::before, .cardAce:focus-within::before {
     opacity: 1;
 }
 
-/* GenAI Card */
-.card-genai {
+.cardGenai {
     border-color: hsl(270 80% 65% / 0.25);
 }
-.card-genai::before {
+.cardGenai::before {
     background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(270 80% 65% / 0.08), transparent);
 }
-.card-genai:hover {
+.cardGenai:hover, .cardGenai:focus-within {
     border-color: hsl(270 80% 65% / 0.5);
 }
-.card-genai:hover::before {
+.cardGenai:hover::before, .cardGenai:focus-within::before {
     opacity: 1;
 }
 
-/* CDL Card */
-.card-cdl {
+.cardCdl {
     border-color: hsl(160 70% 55% / 0.25);
 }
-.card-cdl::before {
+.cardCdl::before {
     background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(160 70% 55% / 0.08), transparent);
 }
-.card-cdl:hover {
+.cardCdl:hover, .cardCdl:focus-within {
     border-color: hsl(160 70% 55% / 0.5);
 }
-.card-cdl:hover::before {
+.cardCdl:hover::before, .cardCdl:focus-within::before {
     opacity: 1;
 }
 
-/* ─── Card Header ────────────────────────────────────────── */
-.home-card-header {
+.cardHeader {
     flex: 1;
     margin-bottom: 24px;
 }
 
-.home-card-top {
+.cardTop {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 16px;
 }
 
-.home-card-icon {
+.cardIcon {
     font-size: 32px;
     line-height: 1;
 }
 
-.home-card-labels {
+.cardLabels {
     display: flex;
     gap: 8px;
     align-items: center;
 }
 
-.home-card-level {
+.cardLevel {
     font-size: 11px;
     font-weight: 600;
     color: var(--color-muted-foreground);
@@ -216,7 +207,7 @@
     padding: 2px 10px;
 }
 
-.home-card-badge {
+.cardBadge {
     font-size: 11px;
     font-weight: 700;
     color: var(--color-foreground);
@@ -225,7 +216,7 @@
     padding: 2px 10px;
 }
 
-.home-card-title {
+.cardTitle {
     font-size: 20px;
     font-weight: 800;
     color: var(--color-foreground);
@@ -234,7 +225,7 @@
     line-height: 1.3;
 }
 
-.home-card-abbr {
+.cardAbbr {
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -243,26 +234,25 @@
     margin-bottom: 8px;
 }
 
-.home-card-score {
+.cardScore {
     font-size: 12px;
     color: var(--color-muted-foreground);
     margin-bottom: 14px;
 }
 
-.home-card-desc {
+.cardDesc {
     font-size: 13px;
     line-height: 1.75;
     color: var(--color-muted-foreground);
 }
 
-/* ─── Domain Links ───────────────────────────────────────── */
-.home-card-domains {
+.cardDomains {
     border-top: 1px solid var(--color-border);
     padding-top: 16px;
     margin-bottom: 20px;
 }
 
-.home-domains-label {
+.domainsLabel {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -271,14 +261,16 @@
     margin-bottom: 8px;
 }
 
-.home-domains-list {
+.domainsList {
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    padding: 0;
+    margin: 0;
 }
 
-.home-domain-link {
+.domainLink {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -288,22 +280,23 @@
     transition: background 0.15s ease;
 }
 
-.home-domain-link:hover,
-.home-domain-link:focus-visible {
+.domainLink:hover,
+.domainLink:focus-visible {
     background: hsl(220 20% 14%);
 }
 
-.home-domain-name {
+.domainName {
     font-size: 13px;
     color: var(--color-muted);
     transition: color 0.15s ease;
 }
 
-.home-domain-link:hover .home-domain-name {
+.domainLink:hover .domainName,
+.domainLink:focus-visible .domainName {
     color: var(--color-foreground);
 }
 
-.home-domain-pct {
+.domainPct {
     font-size: 11px;
     font-weight: 600;
     color: var(--color-muted-foreground);
@@ -313,12 +306,11 @@
     flex-shrink: 0;
 }
 
-/* ─── CTA Button ─────────────────────────────────────────── */
-.home-card-footer {
+.cardFooter {
     margin-top: auto;
 }
 
-.home-card-cta {
+.ctaBtn {
     display: block;
     text-align: center;
     padding: 12px;
@@ -332,34 +324,33 @@
     transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.card-ace .home-card-cta:hover,
-.card-ace .home-card-cta:focus-visible {
+.cardAce .ctaBtn:hover,
+.cardAce .ctaBtn:focus-visible {
     background: hsl(220 100% 70% / 0.15);
     border-color: hsl(220 100% 70% / 0.5);
-    color: hsl(220, 100%, 80%);
+    color: hsl(220 100% 80%);
 }
 
-.card-genai .home-card-cta:hover,
-.card-genai .home-card-cta:focus-visible {
+.cardGenai .ctaBtn:hover,
+.cardGenai .ctaBtn:focus-visible {
     background: hsl(270 80% 65% / 0.15);
     border-color: hsl(270 80% 65% / 0.5);
-    color: hsl(270, 80%, 80%);
+    color: hsl(270 80% 80%);
 }
 
-.card-cdl .home-card-cta:hover,
-.card-cdl .home-card-cta:focus-visible {
+.cardCdl .ctaBtn:hover,
+.cardCdl .ctaBtn:focus-visible {
     background: hsl(160 70% 55% / 0.15);
     border-color: hsl(160 70% 55% / 0.5);
-    color: hsl(160, 70%, 70%);
+    color: hsl(160 70% 70%);
 }
 
-/* ─── Stats Section ──────────────────────────────────────── */
-.home-stats-section {
+.statsSection {
     padding: 40px 24px 80px;
     border-top: 1px solid var(--color-border);
 }
 
-.home-stats-inner {
+.statsInner {
     max-width: 800px;
     margin: 0 auto;
     display: grid;
@@ -368,13 +359,13 @@
     text-align: center;
 }
 
-.home-stat {
+.stat {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.home-stat-value {
+.statValue {
     font-size: 36px;
     font-weight: 900;
     letter-spacing: -0.02em;
@@ -384,7 +375,7 @@
     background-clip: text;
 }
 
-.home-stat-label {
+.statLabel {
     font-size: 12px;
     color: var(--color-muted-foreground);
     font-weight: 600;
@@ -392,24 +383,23 @@
     letter-spacing: 0.06em;
 }
 
-/* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .home-hero {
+    .hero {
         padding: 64px 20px 48px;
     }
 
-    .home-cards {
+    .cards {
         grid-template-columns: 1fr;
     }
 
-    .home-stats-inner {
+    .statsInner {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
     }
 }
 
 @media (max-width: 480px) {
-    .home-stats-inner {
+    .statsInner {
         grid-template-columns: repeat(2, 1fr);
     }
 }
