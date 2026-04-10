@@ -72,7 +72,7 @@ Step 6: 試験登録
 
 > 📎 **公式リソース**  
 > 試験ページ: https://cloud.google.com/learn/certification/cloud-network-engineer  
-> 試験ガイドPDF: https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide.pdf
+> 試験ガイド: https://cloud.google.com/learn/certification/guides/cloud-network-engineer
 
 ---
 
@@ -1407,7 +1407,7 @@ gcloud compute security-policies create my-security-policy \
 # OWASPルールの追加
 gcloud compute security-policies rules create 300 \
   --security-policy=my-security-policy \
-  --expression="evaluatePreconfiguredExpr('sqli-stable')" \
+  --expression="evaluatePreconfiguredWaf('sqli-v422-stable')" \
   --action=deny-403
 
 # IPブロックルール
@@ -1714,8 +1714,10 @@ Google Cloud ネットワーク課金の主要ポイント:
 
   1. インターネット下り転送（Egress to Internet）
      - GCPからインターネットへのデータ転送
-     - 最初の1GB/月は無料
-     - 以降は宛先リージョンによって変動（$0.08〜$0.23/GB）
+     - Standard Tier では最初の 200 GiB/月が無料
+     - 以降は段階的課金（例: Standard Tier $0.085/GiB for 200 GiB–10 TiB、以降割引あり）
+     - Premium Tier は送信元と宛先の地域に応じて変動
+     - ※詳細は公式 Google Cloud VPC 料金ページを参照してください。
 
   2. リージョン間転送（Inter-region）
      - 同一リージョン内: 無料
@@ -1956,7 +1958,7 @@ Multi-Region HA Design:
 | カテゴリ | リソース | URL |
 |---|---|---|
 | **試験情報** | PCNE 試験概要ページ | https://cloud.google.com/learn/certification/cloud-network-engineer |
-| **試験情報** | 試験ガイドPDF | https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide.pdf |
+| **試験情報** | 試験ガイド | https://cloud.google.com/learn/certification/guides/cloud-network-engineer |
 | **VPC基礎** | VPC概要 | https://cloud.google.com/vpc/docs/vpc |
 | **VPC基礎** | サブネット | https://cloud.google.com/vpc/docs/subnets |
 | **VPC基礎** | ファイアウォールルール | https://cloud.google.com/vpc/docs/firewalls |
