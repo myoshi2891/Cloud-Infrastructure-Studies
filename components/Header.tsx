@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 /**
- * Render the sticky top navigation bar with interactive dropdowns for "Generative AI Leader" and "Associate Cloud Engineer".
+ * Renders the sticky top navigation bar with dropdowns for Generative AI Leader, Associate Cloud Engineer, and Cloud Digital Leader.
  *
- * The component manages open/close state for each dropdown, closes menus on outside mouse clicks or when the Escape key is pressed, and ensures dropdown links close their parent menu on navigation.
+ * Manages which dropdown is open, closes menus when the user clicks outside or presses Escape, and ensures selecting a dropdown link closes its parent menu.
  *
- * @returns A JSX element representing the sticky top navigation bar with a home link and two dropdown menus
+ * @returns The header's JSX element containing the home link and center-aligned dropdown navigation
  */
 export function Header() {
     const [openMenu, setOpenMenu] = useState<'genai' | 'ace' | 'cdl' | null>(null);
@@ -328,7 +328,19 @@ export function Header() {
     );
 }
 
-/** Shared dropdown menu item */
+/**
+ * Renders a styled dropdown menu entry as a link with a label, description, and decorative affordances.
+ *
+ * The rendered item calls `onClick` when activated, includes a left accent bar that appears on hover,
+ * and a decorative arrow on the right which is marked `aria-hidden`.
+ *
+ * @param href - Destination URL for the link
+ * @param label - Primary label text shown at the top of the item
+ * @param desc - Secondary descriptive text shown below the label
+ * @param ariaLabel - Optional accessible name applied to the link
+ * @param onClick - Callback invoked when the link is clicked (used to close menus or handle navigation)
+ * @returns The JSX element for a single dropdown link entry
+ */
 function DropdownItem({
     href,
     label,
