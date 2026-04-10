@@ -24,8 +24,8 @@
 ## プロジェクト構造
 
 - `/app`: Next.js App Router のページコンポーネント。
-    - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
-    - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
+  - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
+  - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
 - `/components`: 共通コンポーネント（Header, Footer など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。

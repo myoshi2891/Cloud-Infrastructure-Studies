@@ -26,7 +26,7 @@ npm run test:e2e     # Playwright E2E（dev server を自動起動）
 
 **ルーティング:** Next.js 16 App Router。全ページは `app/` 配下。
 
-```
+```text
 app/
   layout.tsx                        # ルートレイアウト（Header/Footer、フォント定義）
   page.tsx                          # トップページ

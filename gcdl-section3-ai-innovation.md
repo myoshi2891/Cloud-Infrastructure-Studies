@@ -288,7 +288,7 @@ Vertex AI Pipelinesは、このオーケストレーションの中核となる�
 そして、これらの技術的な意思決定は、堅牢なデータエンジニアリング基盤、厳格なIAMによるセキュリティ制御、継続的なコスト最適化、そして何よりも「責任あるAI」という倫理的枠組みの上に構築されなければならない。これらの要素を俯瞰的な視点から統合し、持続可能なMLOpsパイプラインを通じてビジネスプロセスに実装する能力こそが、真の意味でのデジタルトランスフォーメーションを牽引するリーダーシップの証明となるのである。
 
 [**cloud.google.com**Cloud Digital Leader | Learn - Google Cloud](https://cloud.google.com/learn/certification/cloud-digital-leader)
-[**cloud.google.com**Cloud Digital Leader | Learn | Google Cloud](https://cloud.google.com/learn/certification/cloud-digital-leader?hl=en)
+| Learn |
 [**cloud.google.com**Your ultimate AI/ML decision tree | Google Cloud Blog](https://cloud.google.com/blog/topics/developers-practitioners/pick-your-aiml-path-google-cloud)
 [**developers.google.com**Machine Learning Glossary - Google for Developers](https://developers.google.com/machine-learning/glossary)
 [**developers.google.com**Machine Learning Glossary: ML Fundamentals - Google for Developers](https://developers.google.com/machine-learning/glossary/fundamentals)
@@ -306,11 +306,11 @@ Vertex AI Pipelinesは、このオーケストレーションの中核となる�
 [**whizlabs.com**Google Cloud Generative AI Leader Certification Guide 2026 - Whizlabs](https://www.whizlabs.com/blog/google-cloud-generative-ai-leader-guide/)
 [**cloud.google.com**Mastering secure AI on Google Cloud: A practical guide for enterprises](https://cloud.google.com/blog/products/identity-security/mastering-secure-ai-on-google-cloud-a-practical-guide-for-enterprises)
 [**docs.cloud.google.com**Responsible AI | Generative AI on Vertex AI - Google Cloud Documentation](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/responsible-ai)
-[**medium.com**Google Cloud AI and Generative AI Decision Tree: A Simple Guide. | by Mohamed AIT-ALLA | Medium](https://medium.com/@mohamed.aitalla/google-cloud-ai-decision-tree-a-simple-guide-6dbaa94e40b8)
+| by Mohamed AIT-ALLA |
 [**dbztech.blog**Pre-Trained APIs Vs AutoML Vs Custom Models in GCP - DBzTech-Technology Dossier](https://dbztech.blog/2026/01/31/pre-trained-apis-vs-automl-vs-custom-models-in-gcp/)
-[**docs.cloud.google.com**Choose a training method | Vertex AI | Google Cloud Documentation](https://docs.cloud.google.com/vertex-ai/docs/start/training-methods)
+| Vertex AI |
 [**cloud.google.com**How to use BigQuery machine learning | Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/how-to-use-bigquery-machine-learning)
-[**medium.com**Machine Learning Directly in BigQuery: A Complete Guide to BigQuery ML | by Virinchi T | Google Cloud - Medium](https://medium.com/google-cloud/machine-learning-directly-in-bigquery-a-complete-guide-to-bigquery-ml-e3f2eabf5677)
+| by Virinchi T |
 [**docs.cloud.google.com**Overview of Vertex AI | Google Cloud Documentation](https://docs.cloud.google.com/vertex-ai/docs/start/introduction-unified-platform)
 [**cloud.google.com**AI APIs | Google Cloud](https://cloud.google.com/ai/apis)
 [**kartaca.com**A Guide to Google's Powerful Pre-Trained AI APIs - Kartaca](https://kartaca.com/en/a-guide-to-googles-powerful-pre-trained-ai-apis/)
@@ -330,7 +330,7 @@ Vertex AI Pipelinesは、このオーケストレーションの中核となる�
 [**docs.cloud.google.com**Generative AI glossary | Google Cloud Documentation](https://docs.cloud.google.com/docs/generative-ai/glossary)
 [**docs.cloud.google.com**Vertex AI access control with IAM | Google Cloud Documentation](https://docs.cloud.google.com/vertex-ai/docs/general/access-control)
 [**cloud.google.com**Google Cloud security best practices center](https://cloud.google.com/security/best-practices)
-[**docs.cloud.google.com**Recommended user groups and Identity and Access Management roles for generative AI | Security | Google Cloud Documentation](https://docs.cloud.google.com/docs/security/security-best-practices-genai/recommended-iam-groups)
+| Security |
 [**hoop.dev**What BigQuery Vertex AI Actually Does and When to Use It - Hoop.dev](https://hoop.dev/blog/what-bigquery-vertex-ai-actually-does-and-when-to-use-it)
 [**docs.cloud.google.com**AI and machine learning resources | Cloud Architecture Center](https://docs.cloud.google.com/architecture/ai-ml)
 [**cloud.google.com**Practitioners Guide to Machine Learning Operations (MLOps) - Google Cloud](https://cloud.google.com/resources/mlops-whitepaper)

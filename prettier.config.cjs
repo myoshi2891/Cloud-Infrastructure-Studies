@@ -10,4 +10,14 @@ module.exports = {
     bracketSpacing: true,
     arrowParens: 'always',
     endOfLine: 'lf',
+    overrides: [
+        {
+            files: ['*.md', '*.mdx'],
+            options: {
+                tabWidth: 2,
+                printWidth: 120,
+                proseWrap: 'preserve',
+            },
+        },
+    ],
 };

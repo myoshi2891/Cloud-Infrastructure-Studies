@@ -1,9 +1,9 @@
 # Google Associate Google Workspace Administrator (AGWA) 試験対策・完全解説ガイド
 
-> **対象読者**: Google Workspace の初学者〜実務担当者  
-> **試験情報**: 試験時間 2時間 / 50〜60問 / 受験料 $125 / 有効期限 3年  
-> **公式ページ**: https://cloud.google.com/learn/certification/associate-google-workspace-administrator  
-> **試験ガイド (PDF)**: https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf
+> **対象読者**: Google Workspace の初学者〜実務担当者
+> **試験情報**: 試験時間 2時間 / 50〜60問 / 受験料 $125 / 有効期限 3年
+> **公式ページ**: <https://cloud.google.com/learn/certification/associate-google-workspace-administrator>
+> **試験ガイド (PDF)**: <https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf>
 
 ---
 
@@ -25,7 +25,7 @@
 ### 1.1 試験の出題ドメインと配点
 
 | セクション | テーマ | 配点比率 |
-| ----------- | -------- | -------- |
+| --- | --- | --- |
 | Section 1 | ユーザーアカウント・ドメイン・ディレクトリの管理 | 約20% |
 | Section 2 | コアWorkspaceサービスの管理 | 約23% |
 | Section 3 | データガバナンスとコンプライアンス | 約15% |
@@ -42,12 +42,12 @@
 ### 1.3 推奨学習リソース
 
 | リソース | URL |
-| --------- | ----- |
-| 公式学習パス (Cloud Skills Boost) | https://www.cloudskillsboost.google/paths/24 |
-| Google Workspace Admin Help | https://support.google.com/a#topic=7570177 |
-| サンプル問題 | https://forms.gle/neC5XLotJGvRBgEz9 |
-| Google Workspace ホーム | https://workspace.google.com/ |
-| Google Workspace アップデートブログ | https://workspaceupdates.googleblog.com/ |
+| --- | --- |
+| 公式学習パス (Cloud Skills Boost) | <https://www.cloudskillsboost.google/paths/24> |
+| Google Workspace Admin Help | <https://support.google.com/a#topic=7570177> |
+| サンプル問題 | <https://forms.gle/neC5XLotJGvRBgEz9> |
+| Google Workspace ホーム | <https://workspace.google.com/> |
+| Google Workspace アップデートブログ | <https://workspaceupdates.googleblog.com/> |
 
 ---
 
@@ -64,7 +64,7 @@
 移行元環境に合わせて適切なツールを選ぶことが重要です。
 
 | 移行シナリオ | 推奨ツール | 説明 |
-| ------------ | ----------- | ------ |
+| --- | --- | --- |
 | Microsoft Exchange / Outlook から移行 | **GWMME** (Google Workspace Migration for Microsoft Exchange) | メール・カレンダー・連絡先を一括移行 |
 | 他のGoogle Workspaceドメインから移行 | **データ移行サービス** (Admin Console) | コンソールから直接操作可能 |
 | IMAP対応メールサーバーから移行 | **IMAP移行** (Admin Console) | 汎用的なIMAP接続で移行 |
@@ -82,20 +82,20 @@
 - オンプレミスのActive Directory（AD）またはLDAPと同期
 - ユーザーの作成・更新・削除を自動化
 - スケジュール実行が可能
-- **参考**: https://support.google.com/a/answer/106368
+- **参考**: <https://support.google.com/a/answer/106368>
 
 **方法2: SAML SSO + サードパーティIdP（Identity Provider）**
 
 - Okta、Azure AD、OneLogin などと連携
 - SSO（シングルサインオン）の実現
 - Just-in-Time プロビジョニングに対応
-- **参考**: https://support.google.com/a/answer/60224
+- **参考**: <https://support.google.com/a/answer/60224>
 
 **方法3: Admin SDK（Directory API）**
 
 - プログラムによるユーザー管理
 - スクリプトやカスタムアプリからの自動プロビジョニング
-- **参考**: https://developers.google.com/admin-sdk/directory
+- **参考**: <https://developers.google.com/admin-sdk/directory>
 
 #### SAML SSO の基本設定手順
 
@@ -104,16 +104,18 @@
 3. 属性マッピングを設定（`email` → Google の主要識別子）
 4. テストユーザーで動作確認後、全体適用
 
-```
+```text
 【重要な理解ポイント】
+
 - SP-initiated SSO: Google からログインを開始
 - IdP-initiated SSO: IdP側のダッシュボードから開始
+
 ```
 
 #### アカウント操作のまとめ
 
 | 操作 | 用途 | 注意点 |
-| ------ | ------ | -------- |
+| --- | --- | --- |
 | **停止 (Suspend)** | 一時的なアクセス禁止 | データは保持される。ライセンスも消費したまま |
 | **削除 (Delete)** | アカウントの完全削除 | 削除後20日以内なら復元可能 |
 | **復元 (Restore)** | 削除アカウントの復元 | 削除後20日以内のみ有効 |
@@ -133,7 +135,7 @@
 
 **OU（Organizational Unit / 組織部門）**は、Google Workspace のリソースを階層的にグループ化する仕組みです。OUに対してポリシーを設定すると、その配下の全ユーザー・デバイスに設定が継承されます。
 
-```
+```text
 [例：OU階層の設計]
 組織 (example.com)
 ├── 本社
@@ -157,7 +159,7 @@
 - 「機能（Function）」ベースより「ポリシー（Policy）」ベースで設計する
 - 例外が多い場合はグループポリシーを活用する
 
-**参考**: https://support.google.com/a/answer/182537
+**参考**: <https://support.google.com/a/answer/182537>
 
 ---
 
@@ -166,7 +168,7 @@
 #### グループの種類と使い分け
 
 | グループタイプ | 用途 | 特徴 |
-| ------------- | ------ | ------ |
+| --- | --- | --- |
 | **配信リスト** | メール一斉送信 | 宛先として指定することで全メンバーにメールが届く |
 | **Collaborative Inbox（共有メールボックス）** | チームでのメール対応 | メールの割り当て・ステータス管理が可能 |
 | **セキュリティグループ** | IAMやアクセス制御 | Google Cloudリソースへのアクセス制御に使用 |
@@ -174,7 +176,7 @@
 
 **動的グループの例**:
 
-```
+```text
 条件: department = "Engineering" AND location = "Tokyo"
 → 東京のエンジニア全員が自動的にグループに追加される
 ```
@@ -185,7 +187,7 @@
 - 大規模組織では動的グループを活用してメンバー管理を自動化する
 - Collaborative Inbox は少人数のカスタマーサポートチームに特に有効
 
-**参考**: https://support.google.com/a/answer/33329
+**参考**: <https://support.google.com/a/answer/33329>
 
 ---
 
@@ -194,7 +196,7 @@
 #### プライマリドメインとセカンダリドメインの違い
 
 | 種別 | 説明 | 用途 |
-| ------ | ------ | ------ |
+| --- | --- | --- |
 | **プライマリドメイン** | 最初に登録したドメイン | 管理の基準となるドメイン |
 | **セカンダリドメイン** | 追加したドメイン | 別ブランドや地域ごとのメールアドレス |
 | **ドメインエイリアス** | 既存ドメインへの別名 | `@example.jp` を `@example.com` のエイリアスとして設定 |
@@ -207,7 +209,7 @@
 
 **📌 ベストプラクティス**: ドメイン確認には TXTレコード方式を推奨。CNAMEはWebサーバーの設定と干渉する場合があるため。
 
-**参考**: https://support.google.com/a/answer/9008873
+**参考**: <https://support.google.com/a/answer/9008873>
 
 ---
 
@@ -229,7 +231,7 @@
 - リソース名に検索しやすいキーワードを含める（例: `東京-3F-会議室A-定員10名`）
 - 予約権限は OU またはグループ単位で細かく制御する
 
-**参考**: https://support.google.com/a/answer/1686462
+**参考**: <https://support.google.com/a/answer/1686462>
 
 ---
 
@@ -239,7 +241,7 @@
 
 #### 🔰 メールルーティングの基本
 
-```
+```text
 [メールフロー]
 送信者 → インターネット → [MXレコード] → Google のメールサーバー
                                                ↓
@@ -252,7 +254,7 @@
 
 **MXレコードの設定**: ドメインのDNSに以下を追加することでGmailでメールを受信できます。
 
-```
+```text
 優先度10: ASPMX.L.GOOGLE.COM
 優先度20: ALT1.ASPMX.L.GOOGLE.COM
 優先度20: ALT2.ASPMX.L.GOOGLE.COM
@@ -266,7 +268,7 @@
 - 自ドメインから送信を許可するIPアドレスを宣言
 - DNS TXTレコードに記述
 
-```
+```text
 v=spf1 include:_spf.google.com ~all
 ```
 
@@ -276,13 +278,13 @@ v=spf1 include:_spf.google.com ~all
 
 - 送信メールに電子署名を付与し、改ざんを防止
 - Admin コンソール → Gmail → メールの認証でDKIMを生成・有効化
-- **参考**: https://support.google.com/a/answer/174124
+- **参考**: <https://support.google.com/a/answer/174124>
 
 **3. DMARC（Domain-based Message Authentication）**
 
 - SPFとDKIMの結果に基づきメールの処理ポリシーを定義
 
-```
+```text
 v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com
 ```
 
@@ -303,13 +305,13 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com
 #### メールルーティングの主な設定
 
 | 設定 | 用途 |
-| ------ | ------ |
+| --- | --- |
 | **デフォルトルーティング** | 特定ドメインのメールを別のサーバーに転送 |
 | **受信ゲートウェイ** | サードパーティのスパムフィルタを経由させる |
 | **コンテンツコンプライアンス** | キーワードや添付ファイルに基づいてメールをフィルタリング・ルーティング |
 | **メール隔離** | ポリシー違反メールを隔離キューに保存し管理者がレビュー |
 
-**参考**: https://support.google.com/a/answer/2368153
+**参考**: <https://support.google.com/a/answer/2368153>
 
 ---
 
@@ -317,7 +319,7 @@ v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com
 
 #### 共有設定の階層構造
 
-```
+```text
 組織全体の設定（Admin コンソール）
     ↓ 上書き可能
 OU単位の設定
@@ -328,7 +330,7 @@ OU単位の設定
 #### 共有設定の主要オプション
 
 | 設定 | 説明 |
-| ------ | ------ |
+| --- | --- |
 | **外部共有の許可/禁止** | 組織外のユーザーへのファイル共有を制御 |
 | **リンクでの共有** | 「リンクを知っている全員」へのアクセスを制御 |
 | **ターゲットオーディエンス** | 「組織内」の範囲を定義（外部パートナー含む場合など） |
@@ -346,7 +348,7 @@ OU単位の設定
 - 外部共有が不要なデータはOUレベルで外部共有を無効化する
 - ストレージクォータを設定して不要なデータの蓄積を防ぐ
 
-**参考**: https://support.google.com/a/answer/7212025
+**参考**: <https://support.google.com/a/answer/7212025>
 
 ---
 
@@ -365,7 +367,7 @@ OU単位の設定
 **外部共有の設定オプション**:
 
 | 設定 | 説明 |
-| ------ | ------ |
+| --- | --- |
 | 空き時間のみ共有 | 詳細を隠して、空き/予定ありだけ表示 |
 | 予定のタイトルと時間のみ共有 | 詳細は非表示 |
 | 全ての情報を共有 | 詳細含めて外部に公開 |
@@ -373,7 +375,7 @@ OU単位の設定
 
 **📌 ベストプラクティス**: 特別な理由がない限り、外部共有は「空き時間のみ」に設定することを推奨。
 
-**参考**: https://support.google.com/a/answer/60765
+**参考**: <https://support.google.com/a/answer/60765>
 
 ---
 
@@ -382,7 +384,7 @@ OU単位の設定
 #### Meetの主要設定
 
 | 設定カテゴリ | 内容 |
-| ------------ | ------ |
+| --- | --- |
 | **セーフティ設定** | 参加前の確認、ホストによる承認、外部参加者の制限 |
 | **録画・文字起こし** | 録画の保存先（Drive）、自動文字起こしの有効化 |
 | **品質設定** | 動画の解像度、バックグラウンドぼかしの許可 |
@@ -413,7 +415,7 @@ OU単位の設定
 #### 管理者が制御できるGemini設定
 
 | 項目 | 説明 |
-| ------ | ------ |
+| --- | --- |
 | **Gemini の有効化/無効化** | OU単位でGemini機能のオン/オフを制御 |
 | **データ保護** | 組織データをGeminiモデルの学習に使用しない設定の確認 |
 | **Workspace拡張機能** | GeminiアプリからGmail・Driveなどへのアクセス制御 |
@@ -421,7 +423,7 @@ OU単位の設定
 
 **📌 重要な理解ポイント**: Google Workspace の Gemini は、**組織のデータをモデルの学習に使用しない**ことが保証されています。管理者はこの点をユーザーに周知することが重要です。
 
-**参考**: https://workspace.google.com/intl/ja/features/gemini/
+**参考**: <https://workspace.google.com/intl/ja/features/gemini/>
 
 ---
 
@@ -430,7 +432,7 @@ OU単位の設定
 #### AppSheet と Apps Script の使い分け
 
 | ツール | 対象ユーザー | ユースケース |
-| -------- | ------------ | ------------ |
+| --- | --- | --- |
 | **AppSheet** | ノーコード開発者 | Googleシートのデータを元にモバイルアプリを作成 |
 | **Apps Script** | スクリプト経験者 | Gmail自動返信、Sheets自動処理、カレンダー自動操作 |
 
@@ -449,7 +451,7 @@ OU単位の設定
 #### Vaultの主要機能
 
 | 機能 | 説明 |
-| ------ | ------ |
+| --- | --- |
 | **保持ルール (Retention Rules)** | データを自動的に一定期間保持または削除 |
 | **ホールド (Holds)** | 訴訟・調査のため特定データの削除を停止 |
 | **検索 (Search)** | Gmail、Chat、Drive、Meet など全サービスを横断検索 |
@@ -458,7 +460,7 @@ OU単位の設定
 
 #### 保持ルールの設定例
 
-```
+```text
 [コンプライアンス要件の例]
 ・財務メール: 7年間保持
 ・一般メール: 3年間保持
@@ -475,7 +477,7 @@ OU単位の設定
 - ホールドを設定したら、その旨を関係者（法務部など）に必ず通知する
 - Vault の操作自体も監査ログに記録されるため、アクセス権は最小限に絞る
 
-**参考**: https://support.google.com/vault/answer/2462365
+**参考**: <https://support.google.com/vault/answer/2462365>
 
 ---
 
@@ -488,28 +490,33 @@ OU単位の設定
 #### DLPが対応しているサービス
 
 | サービス | DLP対応範囲 |
-| --------- | ------------ |
+| --- | --- |
 | **Gmail** | 送受信メール、添付ファイル |
 | **Google Drive** | ファイルコンテンツのスキャン |
 | **Google Chat** | メッセージ内容 |
 
 #### DLPルールの設定フロー
 
-```
+```text
+
 1. コンテンツ検出器の選択
+
    ├── 組み込みの検出器（クレジットカード番号、社会保障番号など）
    └── カスタム正規表現（独自の機密情報パターン）
 
 2. スコープの設定
+
    └── 対象OU / グループ / 全組織
 
 3. アクション（ポリシー違反時）の設定
+
    ├── ブロック（送信/共有を拒否）
    ├── 警告（ユーザーに通知して続行可能）
    ├── 隔離（管理者レビューのためにキューに入れる）
    └── 監査ログに記録のみ
 
 4. 通知メッセージのカスタマイズ
+
    └── ユーザーへのわかりやすい説明を記載
 ```
 
@@ -519,7 +526,7 @@ OU単位の設定
 - ユーザーへの通知メッセージは「なぜブロックされたか」が明確にわかる内容にする
 - 定期的にDLPレポートを確認し、ルールの有効性を評価する
 
-**参考**: https://support.google.com/a/answer/9725686
+**参考**: <https://support.google.com/a/answer/9725686>
 
 ---
 
@@ -533,7 +540,7 @@ OU単位の設定
 - 機密グループのメンバー → 外部共有を完全にブロック
 - パートナー企業ドメイン → 限定的な共有を許可
 
-**参考**: https://support.google.com/a/answer/10759259
+**参考**: <https://support.google.com/a/answer/10759259>
 
 ---
 
@@ -542,7 +549,7 @@ OU単位の設定
 #### データエクスポートの方法
 
 | ツール | 対象 | 特徴 |
-| -------- | ------ | ------ |
+| --- | --- | --- |
 | **Google Takeout** | エンドユーザー向け | ユーザー自身がデータをダウンロード。管理者は無効化可能 |
 | **データエクスポートツール** | 管理者向け | ドメイン全体のデータを一括エクスポート（大規模向け） |
 | **Google Vault エクスポート** | コンプライアンス向け | 検索条件を指定して法的証拠として出力 |
@@ -553,7 +560,7 @@ OU単位の設定
 
 **📌 ベストプラクティス**: GDPR やその他の地域規制への対応が必要な場合、データリージョンを明示的に設定し、定期的に確認する。
 
-**参考**: https://support.google.com/a/answer/7630496
+**参考**: <https://support.google.com/a/answer/7630496>
 
 ---
 
@@ -562,12 +569,12 @@ OU単位の設定
 **Drive ラベル（Drive Labels）**を使用して、ファイルに機密レベルを付与できます。
 
 | ラベルの種類 | 用途 |
-| ------------ | ------ |
+| --- | --- |
 | **ユーザー分類ラベル** | ユーザーが手動でファイルに分類を付ける |
 | **AIによる自動分類** | コンテンツを分析して自動的にラベルを付与（Enterprise） |
 | **DLPとの連携** | ラベルに基づいてDLPルールを適用 |
 
-**参考**: https://support.google.com/a/answer/9292382
+**参考**: <https://support.google.com/a/answer/9292382>
 
 ---
 
@@ -578,7 +585,7 @@ OU単位の設定
 #### 🔰 パスワードポリシーの設定
 
 | 設定項目 | 推奨値 | 設定場所 |
-| --------- | -------- | --------- |
+| --- | --- | --- |
 | 最低文字数 | 12文字以上 | Admin コンソール → セキュリティ → パスワード設定 |
 | 強度の強制 | 強い（大文字・小文字・数字・記号を含む） | 同上 |
 | 再利用禁止 | 過去24回分 | 同上 |
@@ -589,7 +596,7 @@ OU単位の設定
 **2SV（2-Step Verification / 二要素認証）**はアカウント乗っ取り対策の最重要施策です。
 
 | 2SV方式 | セキュリティレベル | 説明 |
-| --------- | --------------- | ------ |
+| --- | --- | --- |
 | **セキュリティキー（FIDO2）** | 最高 | 物理キー（YubiKeyなど）またはパスキー。フィッシング耐性あり |
 | **Google Authenticator（TOTP）** | 高 | スマートフォンアプリで生成するワンタイムコード |
 | **パスキー（Passkey）** | 高 | 生体認証を使用した次世代認証 |
@@ -602,7 +609,7 @@ OU単位の設定
 - 全ユーザーへの2SV強制は段階的に展開（まず特権ユーザー → 全ユーザー）
 - 2SV有効化後は定期的にコンプライアンス状況を確認する
 
-**参考**: https://support.google.com/a/answer/175197
+**参考**: <https://support.google.com/a/answer/175197>
 
 #### コンテキストアウェアアクセス（Context-Aware Access）
 
@@ -614,21 +621,21 @@ OU単位の設定
 - 海外IPからの管理コンソールアクセスを要求段階でブロック
 - VPN接続時のみ特定サービスへのアクセスを許可
 
-**参考**: https://support.google.com/a/answer/9275380
+**参考**: <https://support.google.com/a/answer/9275380>
 
 #### 管理者ロールの割り当て
 
 **📌 最小特権の原則**: 管理者に必要以上の権限を与えない。
 
 | ロール | 権限範囲 | ユースケース |
-| ------- | --------- | ------------ |
+| --- | --- | --- |
 | **スーパー管理者** | 全権限 | 最小人数のみ（最低2名）。日常業務には使用しない |
 | **グループ管理者** | グループの管理 | ヘルプデスクスタッフ |
 | **ユーザー管理者** | ユーザーアカウントの管理 | IT担当者 |
 | **Vault管理者** | Vaultの操作 | 法務・コンプライアンス担当者 |
 | **カスタムロール** | 指定した権限のみ | 特定の管理タスクが必要な場合 |
 
-**参考**: https://support.google.com/a/answer/2405986
+**参考**: <https://support.google.com/a/answer/2405986>
 
 ---
 
@@ -639,7 +646,7 @@ OU単位の設定
 **セキュリティセンター**（Enterprise 向け）は、Workspaceのセキュリティ状態を一元的に把握するダッシュボードです。
 
 | 機能 | 説明 |
-| ------ | ------ |
+| --- | --- |
 | **セキュリティダッシュボード** | 主要なセキュリティ指標の可視化 |
 | **調査ツール** | ログを横断的に検索・分析 |
 | **アクティビティルール** | 異常なアクティビティを検知してアラートを発砲 |
@@ -648,7 +655,7 @@ OU単位の設定
 **監査ログの種類**:
 
 | ログ | 確認できること |
-| ----- | -------------- |
+| --- | --- |
 | **管理者監査ログ** | 管理コンソールでの操作履歴 |
 | **Gmailログ** | メールの送受信・フィルタ・転送の履歴 |
 | **Driveログ** | ファイルの作成・編集・共有・削除の履歴 |
@@ -660,7 +667,7 @@ OU単位の設定
 - アラートルールを設定し、不審なアクティビティ（深夜のログイン、大量ダウンロードなど）を自動検知する
 - スーパー管理者のログインには必ずアラートを設定する
 
-**参考**: https://support.google.com/a/answer/4579579
+**参考**: <https://support.google.com/a/answer/4579579>
 
 ---
 
@@ -669,7 +676,7 @@ OU単位の設定
 #### Marketplace アプリの管理
 
 | 設定 | 説明 |
-| ------ | ------ |
+| --- | --- |
 | **許可リスト（Allowlist）** | 管理者が承認したアプリのみユーザーがインストール可能 |
 | **強制インストール** | 全ユーザーまたは特定OUに自動でアプリをインストール |
 | **ブロック** | 特定のアプリの使用を禁止 |
@@ -684,7 +691,7 @@ OU単位の設定
 - 接続済みアプリと許可スコープを定期的に確認
 - 組織データへの広範なアクセス（全ドライブファイルなど）を要求するアプリは精査する
 
-**参考**: https://support.google.com/a/answer/6089179
+**参考**: <https://support.google.com/a/answer/6089179>
 
 ---
 
@@ -695,7 +702,7 @@ OU単位の設定
 #### モバイル管理ソリューションの選択
 
 | 管理方式 | 機能範囲 | ユースケース |
-| --------- | --------- | ------------ |
+| --- | --- | --- |
 | **基本モバイル管理（無料）** | 最低限のポリシー適用 | BYOD（個人デバイス）の最低限管理 |
 | **高度なモバイル管理（MDM）** | 完全なデバイス制御 | 会社支給デバイスの完全管理 |
 | **サードパーティMDM** | カスタム要件対応 | 複雑なポリシーや既存MDM基盤との統合 |
@@ -709,18 +716,22 @@ OU単位の設定
 
 #### 退職者デバイスのオフボーディング
 
-```
+```text
 退職者デバイス処理フロー:
+
 1. アカウントの停止
 2. モバイルデバイスからのリモートアカウントワイプ
+
    （会社データのみ削除 or デバイス全体のワイプ）
+
 3. デバイス管理リストからの削除
 4. アカウントの削除（猶予期間後）
+
 ```
 
 **📌 ベストプラクティス**: BYODデバイスに対しては「アカウントワイプ（会社データのみ削除）」を実施し、個人データへの影響を最小限にする。
 
-**参考**: https://support.google.com/a/answer/7326921
+**参考**: <https://support.google.com/a/answer/7326921>
 
 ---
 
@@ -729,7 +740,7 @@ OU単位の設定
 #### Chrome ブラウザポリシーの主な設定
 
 | ポリシーカテゴリ | 設定例 |
-| --------------- | -------- |
+| --- | --- |
 | **セキュリティ** | SafeBrowsing の強制、特定サイトへのアクセスブロック |
 | **拡張機能管理** | 許可/ブロック/強制インストール |
 | **更新ポリシー** | 自動更新の強制、更新チャネルの指定 |
@@ -747,7 +758,7 @@ OU単位の設定
 - 拡張機能は **許可リスト方式** で管理し、未審査の拡張機能を禁止する
 - Chrome の自動更新を強制し、古いバージョンのセキュリティリスクを排除する
 
-**参考**: https://support.google.com/chrome/a/answer/9116814
+**参考**: <https://support.google.com/chrome/a/answer/9116814>
 
 ---
 
@@ -757,22 +768,26 @@ OU単位の設定
 
 #### 問題診断のファーストステップ
 
-```
+```text
 問題報告を受けたら:
+
 1. Google Workspace ステータスダッシュボードを確認
+
    → https://www.google.com/appsstatus
    → 広範なサービス障害ならGoogle側の問題
 
 2. Admin コンソールの監査ログを確認
+
    → 特定ユーザーの操作履歴を調査
 
 3. 問題の再現手順を確認
+
    → ブラウザ / デバイス / ネットワーク環境を特定
 ```
 
 #### Google Workspace ステータスダッシュボード
 
-- URL: https://www.google.com/appsstatus
+- URL: <https://www.google.com/appsstatus>
 - 各サービスの現在の状態を確認
 - 過去のインシデント履歴も確認可能
 - **ベストプラクティス**: ユーザーから問い合わせがあったら、まずここを確認する習慣をつける
@@ -789,21 +804,25 @@ OU単位の設定
 - 送受信メールの配信ステータスを詳細に確認
 - 送信元・送信先・メッセージIDで検索可能
 
-```
+```text
 [メール未着の調査フロー]
+
 1. Email Log Search でメッセージIDを検索
 2. 配信ステータスを確認
+
    ├── Delivered → 正常配信済み（受信者側の問題）
    ├── Bounced → 送信失敗（バウンスの理由を確認）
    ├── Spam → スパムフォルダへ振り分け
    └── Queued → キューに滞留中
+
 3. SPF/DKIM/DMARCの認証状況を確認
 4. ヘッダー情報の分析（Google Admin Toolbox を使用）
+
 ```
 
 **Google Admin Toolbox**:
 
-- URL: https://toolbox.googleapps.com/apps/main/
+- URL: <https://toolbox.googleapps.com/apps/main/>
 - メッセージヘッダーの分析
 - DNS チェック（MX、SPF、DKIM の確認）
 - ブラウザのHAR生成サポート
@@ -811,7 +830,7 @@ OU単位の設定
 #### Driveの問題トラブルシューティング
 
 | 問題 | 確認ポイント |
-| ------ | ------------ |
+| --- | --- |
 | ファイルを共有できない | 共有設定・OUポリシー・Drive信頼ルールを確認 |
 | ファイルが見つからない | ゴミ箱・共有されたアイテム・検索フィルターを確認 |
 | Drive for Desktopが同期しない | アプリのバージョン・ファイアウォール・プロキシ設定を確認 |
@@ -821,7 +840,7 @@ OU単位の設定
 #### Calendarの問題トラブルシューティング
 
 | 問題 | 対処法 |
-| ------ | -------- |
+| --- | --- |
 | AppleカレンダーやOutlookと同期しない | CalDAV/iCal設定の確認、アクセスの許可確認 |
 | 空き時間情報が表示されない | 共有設定の確認（「空き時間のみ」が必要） |
 | 会議室の予約ができない | 予約権限・予約ポリシーの確認 |
@@ -841,7 +860,7 @@ OU単位の設定
 #### 主要な管理レポート
 
 | レポート | 内容 |
-| --------- | ------ |
+| --- | --- |
 | **アプリの利用状況** | Gmail、Drive、Meetなど各サービスの利用統計 |
 | **ストレージ使用量** | ユーザー別・OU別のストレージ使用状況 |
 | **デバイスアクティビティ** | モバイルデバイスの登録・アクセス状況 |
@@ -868,7 +887,7 @@ OU単位の設定
 #### 収集すべきログの種類
 
 | ログ | 収集方法 | 用途 |
-| ------ | --------- | ------ |
+| --- | --- | --- |
 | **HARファイル** | ブラウザの開発者ツール → Network タブ | ブラウザとサーバー間の通信を記録 |
 | **Admin コンソール監査ログ** | Admin コンソール → レポート | 管理操作の履歴 |
 | **メールログ** | Email Log Search | メール配信の詳細 |
@@ -881,7 +900,7 @@ OU単位の設定
 3. 問題の操作を再現
 4. 右クリック → 「Save all as HAR with content」
 
-**参考**: https://support.google.com/a/answer/9362714
+**参考**: <https://support.google.com/a/answer/9362714>
 
 ---
 
@@ -939,18 +958,18 @@ OU単位の設定
 ### 📚 最終推奨リソース一覧
 
 | リソース | URL |
-| --------- | ----- |
-| 公式試験ページ | https://cloud.google.com/learn/certification/associate-google-workspace-administrator |
-| 試験ガイド（PDF） | https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf |
-| 学習パス（Cloud Skills Boost） | https://www.cloudskillsboost.google/paths/24 |
-| サンプル問題 | https://forms.gle/neC5XLotJGvRBgEz9 |
-| Google Workspace Admin Help | https://support.google.com/a#topic=7570177 |
-| Google Admin Toolbox | https://toolbox.googleapps.com/apps/main/ |
-| Google Workspace ステータス | https://www.google.com/appsstatus |
-| Workspace アップデートブログ | https://workspaceupdates.googleblog.com/ |
-| Vault ヘルプ | https://support.google.com/vault |
-| Chrome管理ヘルプ | https://support.google.com/chrome/a |
+| --- | --- |
+| 公式試験ページ | <https://cloud.google.com/learn/certification/associate-google-workspace-administrator> |
+| 試験ガイド（PDF） | <https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf> |
+| 学習パス（Cloud Skills Boost） | <https://www.cloudskillsboost.google/paths/24> |
+| サンプル問題 | <https://forms.gle/neC5XLotJGvRBgEz9> |
+| Google Workspace Admin Help | <https://support.google.com/a#topic=7570177> |
+| Google Admin Toolbox | <https://toolbox.googleapps.com/apps/main/> |
+| Google Workspace ステータス | <https://www.google.com/appsstatus> |
+| Workspace アップデートブログ | <https://workspaceupdates.googleblog.com/> |
+| Vault ヘルプ | <https://support.google.com/vault> |
+| Chrome管理ヘルプ | <https://support.google.com/chrome/a> |
 
 ---
 
-> **💡 最後に**: Associate Google Workspace Administrator 試験は、単なる暗記ではなく「管理者として何をすべきか」という実務判断力が問われます。Admin コンソールを実際に操作してハンズオン経験を積むことが、合格への最短ルートです。Google の無料トライアル（https://workspace.google.com/intl/ja/features/）を活用して、実際に手を動かしながら学習することを強くお勧めします。
+> **💡 最後に**: Associate Google Workspace Administrator 試験は、単なる暗記ではなく「管理者として何をすべきか」という実務判断力が問われます。Admin コンソールを実際に操作してハンズオン経験を積むことが、合格への最短ルートです。Google の無料トライアル（<https://workspace.google.com/intl/ja/features/）を活用して、実際に手を動かしながら学習することを強くお勧めします。>
