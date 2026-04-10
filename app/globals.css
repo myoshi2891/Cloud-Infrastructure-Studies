@@ -26,6 +26,21 @@
     --color-primary: #4f8ef7;
     --color-primary-foreground: #ffffff;
 
+    /* Header & Brand Theme Tokens */
+    --color-brand-start: hsl(220 100% 62%);
+    --color-brand-end: hsl(270 80% 60%);
+    --color-brand-text-start: hsl(220 100% 72%);
+    --color-brand-text-end: hsl(270 70% 65%);
+    
+    --color-theme-genai-bg: hsl(270 60% 55% / 0.25);
+    --color-theme-genai-fg: hsl(270 80% 75%);
+    
+    --color-theme-ace-bg: hsl(220 60% 55% / 0.25);
+    --color-theme-ace-fg: hsl(220 100% 75%);
+    
+    --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
+    --color-theme-cdl-fg: hsl(160 70% 65%);
+
     /* Layer 2: 共有プリミティブ */
     --font-body: 'Noto Sans JP', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -56,4 +71,30 @@ body {
     color: var(--color-foreground);
     font-family: var(--font-body);
     line-height: 1.75;
+}
+
+@utility bg-gradient-aurora {
+    background: linear-gradient(135deg, var(--color-brand-start), var(--color-brand-end));
+}
+
+@utility text-gradient-aurora {
+    background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@utility icon-theme-genai {
+    background: var(--color-theme-genai-bg);
+    color: var(--color-theme-genai-fg);
+}
+
+@utility icon-theme-ace {
+    background: var(--color-theme-ace-bg);
+    color: var(--color-theme-ace-fg);
+}
+
+@utility icon-theme-cdl {
+    background: var(--color-theme-cdl-bg);
+    color: var(--color-theme-cdl-fg);
 }
