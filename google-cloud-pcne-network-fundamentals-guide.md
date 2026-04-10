@@ -2412,11 +2412,3 @@ _本ガイドは Professional Cloud Network Engineer（PCNE）試験の前提と
 _ネットワーク基礎知識を体系的に学ぶための教材です。_
 _試験の最新情報は必ず公式サイトでご確認ください。_
 _作成日: 2026年4月_
-tps://www.iana.org/assignments/service-names-port-numbers/ |
-
----
-
-_本ガイドは Professional Cloud Network Engineer（PCNE）試験の前提となる_
-_ネットワーク基礎知識を体系的に学ぶための教材です。_
-_試験の最新情報は必ず公式サイトでご確認ください。_
-_作成日: 2026年4月_

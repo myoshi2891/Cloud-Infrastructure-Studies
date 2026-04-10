@@ -13,13 +13,13 @@
 
 ## 開発と実行
 
-主要なコマンドは `package.json` に定義されています。
+主要なコマンドは `package.json` に定義されています。**【絶対ルール】コマンドの実行には必ず `bun` を使用すること（`npm` は使用禁止です）。**
 
-- **開発サーバー起動:** `npm run dev` (または `bun dev`)
-- **ビルド:** `npm run build`
-- **単体テスト実行:** `npm run test` (Vitest)
-- **E2E テスト実行:** `npm run test:e2e` (Playwright)
-- **Lint 実行:** `npm run lint`
+- **開発サーバー起動:** `bun run dev`
+- **ビルド:** `bun run build`
+- **単体テスト実行:** `bun run test` (Vitest)
+- **E2E テスト実行:** `bun run test:e2e` (Playwright)
+- **Lint 実行:** `bun run lint`
 
 ## プロジェクト構造
 

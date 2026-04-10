@@ -29,7 +29,6 @@ async function formatMarkdown(filePath) {
         let inFencedCodeBlock = false;
         let activeFenceChar = '';
         let activeFenceLen = 0;
-        const removeHorizontalRules = false; // Default: preserve thematic breaks
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i];
@@ -92,14 +91,6 @@ async function formatMarkdown(filePath) {
             // 4. Split concatenated links (outside code blocks/front matter)
             line = line.replace(/\)\[/g, ')\n[');
 
-            if (trimmed === '---') {
-                // Preservation logic for horizontal rules (thematic breaks)
-                if (removeHorizontalRules) {
-                    continue;
-                }
-                // Fall through to push(line) below
-            }
-
             // 5. Ensure blank line before headings (MD022)
             if (/^#{1,6}\s+/.test(line)) {
                 if (
@@ -138,4 +129,3 @@ if (!targetFile) {
 }
 
 formatMarkdown(targetFile);
-ormatMarkdown(targetFile);

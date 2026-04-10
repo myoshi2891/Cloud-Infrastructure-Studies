@@ -1561,5 +1561,5 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 ---
 
 _本ガイドは Google Cloud Digital Leader（CDL）試験の Section 2 に特化した学習資料です。_
-_試験の最新情報は必ず公式サイト（<https://cloud.google.com/learn/certification/cloud-digital-leader）でご確認ください。>_
+_試験の最新情報は必ず公式サイト（https://cloud.google.com/learn/certification/cloud-digital-leader）でご確認ください。_
 _作成日: 2026年4月_
