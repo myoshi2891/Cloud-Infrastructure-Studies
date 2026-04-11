@@ -1311,8 +1311,7 @@ Admin コンソール → Google Chat → 設定
 #### Chat 招待のコントロール
 
 ```text
-Admin コンソール → Google Chat → チャットと古典的ハングアウト →
-招待設定
+メニュー > Apps > Google Workspace > Google Chat > Chat Invitations (招待設定)
 ```
 
 | 設定                         | 説明                                                   |
@@ -1634,7 +1633,7 @@ Meet の安全設定 → ノックイン機能を有効化
 | **Gmail ルーティング**          | <https://support.google.com/a/answer/2368153>                                                               |
 | **Drive と Docs の設定**        | <https://support.google.com/a/answer/7212025>                                                               |
 | **ターゲットオーディエンス**    | <https://support.google.com/a/answer/9934697>                                                               |
-| **共有ドライブ**                | <https://support.google.com/a/answer/7212025>                                                               |
+| **共有ドライブ**                | <https://support.google.com/a/answer/7662202>                                                               |
 | **Calendar の設定**             | <https://support.google.com/a/answer/60765>                                                                 |
 | **Calendar 外部共有**           | <https://support.google.com/a/answer/60185>                                                                 |
 | **Meet の設定**                 | <https://support.google.com/a/answer/7317369>                                                               |

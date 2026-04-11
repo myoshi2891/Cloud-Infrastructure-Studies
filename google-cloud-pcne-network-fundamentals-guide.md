@@ -133,8 +133,7 @@ OSI 参照モデル（Open Systems Interconnection）
 
 GCPとの関連:
 
-  - Cloud Interconnect の VLAN Attachment はオンプレミスネットワークと Google エッジ間のレイヤー 2 隣接性を提供し、物理/論理的な接続点として機能する
-  - VPC 内の通信は「分散 L3 ルーティング（各ホストでの L3 転送）」が実態であり、仮想的な L2 スイッチングではない
+  - VLAN Attachment はオンプレミスと Google エッジの接続点であり、実際のトラフィックは Cloud Router/BGP による L3 経路交換で扱われ、VPC は仮想的な L2 セグメントの延伸ではない
 
 ```
 
@@ -1469,7 +1468,7 @@ Cloud LBのSSLポリシー:
 推奨設定:
   一般的なWebサービス → Modern (TLS 1.2以上)
   金融・医療等コンプライアンス → Restricted (TLS 1.2+)
-  最新ブラウザのみ対象 → TLS 1.3 をCustomで指定
+  最新ブラウザのみ対象 (TLS 1.3専用) → RESTRICTED プロファイルで最小TLSバージョンを1.3に設定 (Modern等では不可)
 
 暗号スイートの例（TLS 1.2）:
   TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
