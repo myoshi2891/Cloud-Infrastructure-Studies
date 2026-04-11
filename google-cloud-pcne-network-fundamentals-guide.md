@@ -1463,12 +1463,12 @@ TLSバージョンの変遷（試験に関連）:
 Cloud LBのSSLポリシー:
   Compatible: TLS 1.0以上（最も広い互換性、安全性低い）
   Modern:     TLS 1.2以上（推奨・一般的な選択）
-  Restricted: TLS 1.2のみ（PCI DSS等のコンプライアンス向け）
+  Restricted: TLS 1.2+（プロファイルで各 TLS バージョン向けに暗号スイートを制御。TLS 1.3 標準暗号スイート TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256 は有効）
   Custom:     手動で暗号スイートを指定
 
 推奨設定:
   一般的なWebサービス → Modern (TLS 1.2以上)
-  金融・医療等コンプライアンス → Restricted (TLS 1.2のみ)
+  金融・医療等コンプライアンス → Restricted (TLS 1.2+)
   最新ブラウザのみ対象 → TLS 1.3 をCustomで指定
 
 暗号スイートの例（TLS 1.2）:
@@ -2144,7 +2144,7 @@ Cache-Control: public, max-age=86400
 ETagとCacheの連携:
   オリジンがコンテンツにETAGを付与（例: "abc123"）
   CDNがキャッシュと一緒にETAGを保存
-  TTL後、CDNがオリジンに "etag: abc123 で変更あり?" と問い合わせ
+  TTL後、CDNがオリジンに条件付きリクエスト（If-None-Match: "abc123" 等）で変更の有無を問い合わせ
   → 変更なし (304 Not Modified) → キャッシュをそのまま使用
   → 変更あり (200 OK) → 新しいコンテンツを取得
 
