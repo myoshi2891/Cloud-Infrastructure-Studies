@@ -2375,7 +2375,7 @@ Network Connectivity Center (NCC) でのマルチクラウド:
 | L4 LB でURLルーティング       | URLルーティングはL7のみ（HTTP(S) LB）               |
 | Cloud NAT でインバウンド      | Cloud NATはアウトバウンドのみ                       |
 | BGP LOCAL_PREFは低い値優先    | LOCAL_PREFは高い値優先（MED は低い値優先）          |
-| /24 = 256ホスト               | 256 - 2（NW+BC）= 254、GCPはさらに-3                |
+| /24 = 256ホスト               | GCPは最初の4つ(.0,.1,.2,.3)と最後の1つ(.255)を予約するため実質250台（256 - 2(NW/BC) - 4(GCP予約) = 250） |
 | TCP は接続確立なし            | 接続確立なし = UDP                                  |
 | VPN で物理回線同等            | 物理的品質 = Interconnect、VPN はインターネット経由 |
 | HA VPN = 1本のトンネル        | HA VPN = 2本のトンネルで冗長化                      |
