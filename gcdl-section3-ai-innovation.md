@@ -320,7 +320,6 @@ Vertex AI Pipelinesは、このオーケストレーションの中核となる�
 [**medium.com**Building Image Detection with Google Cloud AutoML | by Po Stevanus Andrianta - Medium](https://medium.com/data-science/building-image-detection-with-google-cloud-automl-8b9cf2b8074b)
 [**docs.cloud.google.com**Prepare image training data for object detection | Vertex AI - Google Cloud Documentation](https://docs.cloud.google.com/vertex-ai/docs/image-data/object-detection/prepare-data)
 [**premiercloud.com**Vertex AI Explained: A Business Leader's Guide to Google's AI Platform - Premier Cloud](https://premiercloud.com/blog/what-is-google-vertex-ai/)
-[**cloud.google.com**Vertex AI Platform | Google Cloud](https://cloud.google.com/vertex-ai)
 [**tutorialsdojo.com**Google Cloud Certified Generative AI Leader Exam Study Guide - Tutorials Dojo](https://tutorialsdojo.com/google-cloud-certified-generative-ai-leader-exam-study-guide/)
 [**docs.cloud.google.com**AI and ML perspective: Cost optimization | Cloud Architecture Center](https://docs.cloud.google.com/architecture/framework/perspectives/ai-ml/cost-optimization)
 [**cloud.google.com**Generative AI Leader | Learn - Google Cloud](https://cloud.google.com/learn/certification/generative-ai-leader)
