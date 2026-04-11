@@ -481,7 +481,7 @@ PCNE 試験で問われる設計原則:
 ```
 
 > 📎 参照: https://cloud.google.com/vpc/docs/subnets
-> 📎 参照: https://tools.ietf.org/html/rfc1918
+> 📎 参照: https://www.rfc-editor.org/rfc/rfc1918
 
 ---
 
