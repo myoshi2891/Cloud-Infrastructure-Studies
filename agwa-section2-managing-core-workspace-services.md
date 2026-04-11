@@ -775,8 +775,6 @@ Admin コンソール → Drive と Docs → 信頼ルール → ルールを作
 - 外部の訪問者アクセスの許可
 
 > ⚠️ **信頼ルールは Enterprise エディション** が必要です。
->
-> 🔗 **参考**: <https://support.google.com/a/answer/10759259>
 
 ---
 
@@ -1490,7 +1488,6 @@ Admin コンソール → アプリ → Google Workspace → AppSheet →
 | 3   | **Apps Script のトリガーを定期的に見直す**（不要なトリガーが動作し続けていないか確認）             |
 | 4   | **AppSheet アプリの共有範囲を組織内に限定する**                                                    |
 
-> 🔗 **参考（AppSheet）**: <https://support.google.com/a/answer/10860699>
 > 🔗 **参考（Apps Script）**: <https://support.google.com/a/answer/11509345>
 
 ---
