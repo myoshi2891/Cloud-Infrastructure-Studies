@@ -1381,7 +1381,7 @@ Admin コンソール → アプリ → Google Workspace → Gemini for Workspac
 
 #### Gemini アプリからの Workspace データへのアクセス
 
-**Workspace 拡張機能**は、Gemini アプリ（chat.google.com/gemini）からGmail・Drive・Docsなどの Workspace データにアクセスできる機能です。
+**Workspace 拡張機能**は、Gemini ウェブアプリ（gemini.google.com）からGmail・Drive・Docsなどの Workspace データにアクセスできる機能です。
 
 ```text
 Admin コンソール → アプリ → Google Workspace → Gemini →

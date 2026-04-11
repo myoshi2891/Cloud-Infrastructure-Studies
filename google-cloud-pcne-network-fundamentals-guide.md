@@ -1486,10 +1486,11 @@ Cloud LBのSSLポリシー:
 1. TLS 1.2 以上を必須化（TLS 1.0/1.1 は無効化）
 2. Google マネージド証明書を使用（自動更新・コスト削減）
 3. HTTP→HTTPSリダイレクトを設定（常時HTTPS化）
-4. HSTSヘッダーを設定（HTTPSを強制するブラウザ機能）
-5. 証明書の有効期限を監視（30日前にアラート）
-6. HPKP（証明書ピンニング）は慎重に使用（誤設定リスクあり）
-7. ワイルドカード証明書（*.example.com）は利用範囲を限定
+4. HSTSでHTTPSを強制（ダウングレード攻撃の防止）
+5. CAA（Certification Authority Authorization）で信頼できるCAに限定
+6. Certificate Transparency（CT）監視で誤発行検知
+7. 証明書自動監視・アラート（失効・期限切れの早期検出）
+8. ワイルドカード証明書（*.example.com）は利用範囲を限定
 
 ```
 
