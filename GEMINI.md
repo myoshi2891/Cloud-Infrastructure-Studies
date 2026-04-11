@@ -13,19 +13,19 @@
 
 ## 開発と実行
 
-主要なコマンドは `package.json` に定義されています。
+主要なコマンドは `package.json` に定義されています。**【リポジトリ標準】コマンドの実行には必ず `bun` を使用してください（bun 推奨、詳細は `README.md` を参照）。**
 
-- **開発サーバー起動:** `npm run dev` (または `bun dev`)
-- **ビルド:** `npm run build`
-- **単体テスト実行:** `npm run test` (Vitest)
-- **E2E テスト実行:** `npm run test:e2e` (Playwright)
-- **Lint 実行:** `npm run lint`
+- **開発サーバー起動:** `bun run dev`
+- **ビルド:** `bun run build`
+- **単体テスト実行:** `bun run test` (Vitest)
+- **E2E テスト実行:** `bunx playwright install`（初回のみ）、その後 `bun run test:e2e` (Playwright)
+- **Lint 実行:** `bun run lint`
 
 ## プロジェクト構造
 
 - `/app`: Next.js App Router のページコンポーネント。
-    - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
-    - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
+  - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
+  - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
 - `/components`: 共通コンポーネント（Header, Footer など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。

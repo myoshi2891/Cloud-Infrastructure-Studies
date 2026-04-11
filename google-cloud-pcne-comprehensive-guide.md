@@ -2,9 +2,9 @@
 
 ## 試験完全対策ガイド 〜 初学者から合格まで完全マスター 〜
 
-> **対象読者**: ネットワーク初学者〜中級者 / クラウドネットワーク設計者  
-> **試験時間**: 120分 / 問題数: 50〜60問 / 受験料: $200  
-> **有効期間**: 2年間 / 推奨経験: 3年以上のネットワーク設計・実装経験  
+> **対象読者**: ネットワーク初学者〜中級者 / クラウドネットワーク設計者
+> **試験時間**: 120分 / 問題数: 50〜60問 / 受験料: $200
+> **有効期間**: 2年間 / 推奨経験: 3年以上のネットワーク設計・実装経験
 > **本ガイド作成日**: 2026年4月
 
 ---
@@ -39,18 +39,18 @@
 
 ### 1.2 出題セクション別 配点
 
-| セクション | テーマ | 配点目安 |
-|---|---|---|
-| Section 1 | VPCネットワークの設計・実装 | ~21% |
-| Section 2 | ハイブリッド接続・ネットワーク相互接続 | ~23% |
-| Section 3 | ロードバランシングとトラフィック管理 | ~19% |
-| Section 4 | CDN・DNS・IPアドレス管理 | ~15% |
-| Section 5 | ネットワークセキュリティの設計と実装 | ~12% |
-| Section 6 | ネットワーク操作と監視 | ~10% |
+| セクション | テーマ                                 | 配点目安 |
+| ---------- | -------------------------------------- | -------- |
+| Section 1  | VPCネットワークの設計・実装            | ~21%     |
+| Section 2  | ハイブリッド接続・ネットワーク相互接続 | ~23%     |
+| Section 3  | ロードバランシングとトラフィック管理   | ~19%     |
+| Section 4  | CDN・DNS・IPアドレス管理               | ~15%     |
+| Section 5  | ネットワークセキュリティの設計と実装   | ~12%     |
+| Section 6  | ネットワーク操作と監視                 | ~10%     |
 
 ### 1.3 試験の準備方法
 
-```
+```text
 推奨学習ステップ:
 
 Step 1: 公式試験ガイドを熟読する（必須）
@@ -70,9 +70,9 @@ Step 6: 試験登録
   └── https://cp.certmetrics.com/google/en/login
 ```
 
-> 📎 **公式リソース**  
-> 試験ページ: https://cloud.google.com/learn/certification/cloud-network-engineer  
-> 試験ガイド: https://cloud.google.com/learn/certification/guides/cloud-network-engineer
+> 📎 **公式リソース**
+> 試験ページ: <https://cloud.google.com/learn/certification/cloud-network-engineer>
+> 試験ガイド: <https://cloud.google.com/learn/certification/guides/cloud-network-engineer>
 
 ---
 
@@ -84,7 +84,7 @@ Step 6: 試験登録
 
 #### VPC の最大の特徴：グローバルスコープ
 
-```
+```text
 従来のクラウド（AWSなど）:
   ┌── リージョン A ──┐    ┌── リージョン B ──┐
   │  VPC（独立）      │    │  VPC（独立）      │
@@ -105,19 +105,19 @@ Google Cloud VPC:
 
 #### VPC の2つのモード
 
-| モード | 説明 | 用途 | 注意点 |
-|---|---|---|---|
-| **Auto Mode** | 各リージョンに自動でサブネット作成 (`10.128.0.0/9`) | 開発・検証環境 | IPレンジが固定、オンプレとの重複リスクあり |
-| **Custom Mode** | サブネットを手動で設計・作成 | 本番環境・エンタープライズ | 設計工数がかかるが柔軟 |
+| モード          | 説明                                                | 用途                       | 注意点                                     |
+| --------------- | --------------------------------------------------- | -------------------------- | ------------------------------------------ |
+| **Auto Mode**   | 各リージョンに自動でサブネット作成 (`10.128.0.0/9`) | 開発・検証環境             | IPレンジが固定、オンプレとの重複リスクあり |
+| **Custom Mode** | サブネットを手動で設計・作成                        | 本番環境・エンタープライズ | 設計工数がかかるが柔軟                     |
 
-> ⚠️ **重要**: Auto Mode VPC は本番環境では**非推奨**。  
+> ⚠️ **重要**: Auto Mode VPC は本番環境では**非推奨**。
 > 理由：`10.128.0.0/9` のレンジが固定されており、オンプレCIDRとの重複が発生しやすいため。
 
 ### 2.2 サブネットの設計原則
 
 #### サブネットのスコープ：リージョナル
 
-```
+```text
 VPC（グローバル）
 ├── サブネット: us-central1-subnet    → us-central1 のリソースが属する
 ├── サブネット: europe-west1-subnet   → europe-west1 のリソースが属する
@@ -134,7 +134,7 @@ VPC（グローバル）
 
 #### CIDR 設計のベストプラクティス
 
-```
+```text
 推奨 CIDR 設計例（RFC 1918プライベートIPレンジ）:
 
 10.0.0.0/8    → 大規模組織向け（16,777,214 ホスト）
@@ -169,7 +169,7 @@ VPC（グローバル）
 - 拡張時のダウンタイムなし
 - **プライマリレンジ**と**セカンダリレンジ**の使い分け
 
-```
+```text
 セカンダリレンジの用途：
   GKEのPod/ServiceのIPアドレス空間として活用
 
@@ -187,15 +187,16 @@ VPC（グローバル）
 5. **用途別にサブネットを分割**（web/app/db）
 6. **セカンダリレンジはGKE使用時に事前計画**
 
-> 📎 参照: https://cloud.google.com/vpc/docs/vpc  
-> 📎 参照: https://cloud.google.com/vpc/docs/subnets
+> 📎 参照: <https://cloud.google.com/vpc/docs/vpc>
+> 📎 参照: <https://cloud.google.com/vpc/docs/subnets>
 
 ### 2.3 VPC ファイアウォールルール
 
 #### ファイアウォールの基本概念
 
-```
+```text
 Google Cloud ファイアウォールの特徴:
+
   - ステートフル（戻りトラフィックは自動許可）
   - VM レベルで適用（ネットワーク境界ではなくVMに直接適用）
   - 優先度（Priority）0〜65535（低い値が高優先度）
@@ -216,8 +217,9 @@ Google Cloud ファイアウォールの特徴:
 
 #### ターゲット指定の3つの方法
 
-```
+```text
 方法 1: ネットワークタグ（推奨・最もシンプル）
+
   - VMにタグ(例: "web-server")を付与
   - ルールのターゲットタグに"web-server"を指定
   - 例: タグ"web-server"を持つVMに対して80/443を許可
@@ -237,6 +239,7 @@ Google Cloud ファイアウォールの特徴:
     --target-tags=web-server
 
 方法 2: サービスアカウント（推奨・セキュリティが高い）
+
   - タグは誰でも付けられるが、SAは権限が必要
   - VMに割り当てたSAでFWルールを制御
   - IAMと連動したよりセキュアな制御
@@ -251,15 +254,18 @@ Google Cloud ファイアウォールの特徴:
     --target-service-accounts=db-sa@project.iam.gserviceaccount.com
 
 方法 3: ネットワーク全体（全VMに適用）
+
   - --target-tags や --target-service-accounts を指定しない場合
   - VPC内の全VMに適用される
   - 細粒度制御には不向き
+
 ```
 
 #### ファイアウォールルールの優先度と評価順序
 
-```
+```text
 ルール評価順序:
+
   1. 全ルールを収集（ingress/egressそれぞれ）
   2. 優先度（priority）の小さい順に評価
   3. 最初にマッチしたルールを適用（Allow or Deny）
@@ -275,7 +281,7 @@ Google Cloud ファイアウォールの特徴:
 
 #### 階層型ファイアウォールポリシー（Hierarchical Firewall Policies）
 
-```
+```text
 組織レベルでのファイアウォール統一管理:
 
   ┌── 組織（Organization）レベルポリシー ────────────┐
@@ -292,8 +298,10 @@ Google Cloud ファイアウォールの特徴:
   └─────────────────────────────────────────────────┘
 
 評価順序: 組織 → フォルダ → プロジェクト → VPC
+
   - 上位の "GOTO_NEXT" → 下位に評価を委譲
   - 上位の "ALLOW/DENY" → 即座に適用（下位を無視）
+
 ```
 
 #### ✅ ベストプラクティス: ファイアウォールルール
@@ -316,11 +324,11 @@ Google Cloud ファイアウォールの特徴:
 アプリケーション別ルール:
   - web-tier: 0.0.0.0/0 → TCP 80, 443
   - app-tier: web-tier のIPのみ → TCP 8080
-  - db-tier:  app-tier のSAのみ → TCP 3306, 5432
+  - db-tier: app-tier のSAのみ → TCP 3306, 5432
 ```
 
-> 📎 参照: https://cloud.google.com/vpc/docs/firewalls  
-> 📎 参照: https://cloud.google.com/vpc/docs/firewall-policies
+> 📎 参照: <https://cloud.google.com/vpc/docs/firewalls>
+> 📎 参照: <https://cloud.google.com/vpc/docs/firewall-policies>
 
 ### 2.4 VPC ピアリング（VPC Network Peering）
 
@@ -328,7 +336,7 @@ Google Cloud ファイアウォールの特徴:
 
 異なるVPC間でプライベートIPアドレスを使って直接通信する仕組みです。
 
-```
+```text
 ピアリングの構造:
 
   VPC-A (Project-A)          VPC-B (Project-B)
@@ -343,7 +351,7 @@ Google Cloud ファイアウォールの特徴:
 
 #### ピアリングの重要な制約
 
-```
+```text
 制約 1: 推移的ルーティング（Transitive Routing）は不可
 
   VPC-A ──ピアリング── VPC-B ──ピアリング── VPC-C
@@ -355,21 +363,25 @@ Google Cloud ファイアウォールの特徴:
   解決策: A-C 間にも直接ピアリングを設定する
 
 制約 2: IPアドレスの重複は不可
+
   - ピアリングするVPCのCIDRが重複してはいけない
   - 10.0.0.0/16 と 10.0.0.0/24 でも重複とみなされる
 
 制約 3: 自動ルート交換
+
   - ピアリングが確立されるとルートが自動で交換される
   - カスタムルートの交換はオプション（明示的に有効化）
 
 制約 4: タグ・サービスアカウントは不可
+
   - ピアリングされたVPCのVMにはネットワークタグ/SAベースの
+
     ファイアウォールルールが適用されない（IP/CIDRベースのみ）
 ```
 
 #### ピアリング vs Shared VPC の選択基準
 
-```
+```text
 ┌─────────────────────────┬──────────────────────────┐
 │    VPC Peering           │       Shared VPC          │
 ├─────────────────────────┼──────────────────────────┤
@@ -390,13 +402,13 @@ Google Cloud ファイアウォールの特徴:
 4. **異なる組織間の接続はピアリングが有効な選択肢**
 5. **ルート交換ポリシーを明確に設計**（export/import custom routes）
 
-> 📎 参照: https://cloud.google.com/vpc/docs/vpc-peering
+> 📎 参照: <https://cloud.google.com/vpc/docs/vpc-peering>
 
 ### 2.5 Shared VPC（共有VPC）
 
 #### Shared VPC のアーキテクチャ
 
-```
+```text
 Shared VPC の構成:
 
   ┌── Host Project（ホストプロジェクト）──────────────────┐
@@ -416,7 +428,7 @@ Shared VPC の構成:
 
 #### Shared VPC の役割と権限
 
-```
+```text
 役割の分離:
 
   ネットワーク管理者（Host Project）:
@@ -437,7 +449,7 @@ Shared VPC の構成:
 3. **サブネット単位でサービスプロジェクトへの権限を付与**（最小権限）
 4. **組織ポリシーで Shared VPC 外のVPC作成を制限**
 
-> 📎 参照: https://cloud.google.com/vpc/docs/shared-vpc
+> 📎 参照: <https://cloud.google.com/vpc/docs/shared-vpc>
 
 ### 2.6 Private Google Access と Private Service Connect
 
@@ -445,7 +457,7 @@ Shared VPC の構成:
 
 VPCサブネット内の**外部IPを持たないVMが、Googleサービス（GCS・BigQuery等）へアクセス**できる機能。
 
-```
+```text
 通常（外部IP必要）:
   VM(内部IPのみ) → インターネット → 8.8.8.8(Google Public IP) → GCS
 
@@ -462,7 +474,7 @@ Private Google Access 有効時:
 
 #### Private Service Connect（PSC）
 
-```
+```text
 PSCの役割：マネージドサービスへのプライベートアクセス
 
   従来の方法（VPC Peering）:
@@ -475,15 +487,22 @@ PSCの役割：マネージドサービスへのプライベートアクセス
     → VPC Peeringなしでシンプルに接続
 
 PSCのユースケース:
+
   1. Google マネージドサービスへのアクセス
+
      （Cloud SQL・GCS・BigQuery等）
+
   2. サードパーティのマネージドサービスへのアクセス
+
      （ISVベンダーのサービス等）
+
   3. 同一/他組織の内部サービスの公開
 
 設定コンポーネント:
+
   - Forwarding Rule（転送ルール）: PSC Endpointのエントリポイント
   - Service Attachment: サービス側の公開設定
+
 ```
 
 #### ✅ ベストプラクティス: Private Access
@@ -492,8 +511,8 @@ PSCのユースケース:
 2. **マネージドサービスへのアクセスは PSC を優先**（VPC Peeringより管理が簡単）
 3. **Cloud NAT と組み合わせてインターネットアクセスを制御**
 
-> 📎 参照: https://cloud.google.com/vpc/docs/private-google-access  
-> 📎 参照: https://cloud.google.com/vpc/docs/private-service-connect
+> 📎 参照: <https://cloud.google.com/vpc/docs/private-google-access>
+> 📎 参照: <https://cloud.google.com/vpc/docs/private-service-connect>
 
 ### 2.7 Cloud NAT（Network Address Translation）
 
@@ -501,7 +520,7 @@ PSCのユースケース:
 
 外部IPを持たないVMがインターネットへ**アウトバウンド通信**できるようにするマネージドNATサービス。
 
-```
+```text
 Cloud NAT の動作:
 
   ┌── VPC ────────────────────────────────────────────────┐
@@ -517,11 +536,13 @@ Cloud NAT の動作:
   [インターネット]
 
 特徴:
+
   - インバウンド接続は不可（アウトバウンドのみ）
   - ステートフル（戻りパケットは自動で転送）
   - リージョン単位で設定
   - Cloud Router に依存
   - マネージドサービスのためインフラ管理不要
+
 ```
 
 #### Cloud NAT の設定
@@ -549,22 +570,26 @@ gcloud compute routers nats create my-nat \
 
 #### Cloud NAT のポートアロケーション
 
-```
+```text
 ポートの割り当て方式:
 
   Dynamic Port Allocation（デフォルト・推奨）:
+
     - VPCの全VMに対して動的にポートを割り当て
     - min/max ポート数を設定可能
     - スパイクトラフィック時に自動的にポートを追加
 
   Static Port Allocation:
+
     - VM ごとに固定ポート数を割り当て
     - 予測可能だが過剰割り当てのリスク
 
 ポート枯渇の対策:
+
   - 複数の外部IPを割り当て
   - Dynamic Port Allocation でmax-ports-per-vmを増加
   - ログでポート枯渇をモニタリング
+
 ```
 
 #### ✅ ベストプラクティス: Cloud NAT
@@ -575,7 +600,7 @@ gcloud compute routers nats create my-nat \
 4. **本番環境では予約外部IPを使用**（IPが変わらない）
 5. **サブネット単位でNATの適用範囲を制御**
 
-> 📎 参照: https://cloud.google.com/nat/docs/overview
+> 📎 参照: <https://cloud.google.com/nat/docs/overview>
 
 ---
 
@@ -583,7 +608,7 @@ gcloud compute routers nats create my-nat \
 
 ### 3.1 ハイブリッド接続の全体像
 
-```
+```text
 オンプレミス ←→ Google Cloud の接続オプション:
 
   帯域幅: 低 ────────────────────────── 高
@@ -612,8 +637,9 @@ gcloud compute routers nats create my-nat \
 
 #### Cloud VPN の種類
 
-```
+```text
 HA VPN（High Availability VPN）─ 推奨:
+
   - 99.99% SLA
   - 2つの外部IPを使用（2トンネル冗長）
   - BGP（動的ルーティング）必須
@@ -628,10 +654,12 @@ HA VPN（High Availability VPN）─ 推奨:
   → どちらのインターフェースが落ちても継続通信可能
 
 Classic VPN（旧来）:
+
   - 99.9% SLA（HA VPNより低い）
   - 1つの外部IP
   - 静的/動的ルーティング対応
   - 新規構築では非推奨
+
 ```
 
 #### HA VPN の設定ステップ
@@ -684,14 +712,16 @@ gcloud compute routers add-bgp-peer my-vpn-router \
 
 #### VPN のルーティング方式
 
-```
+```text
 静的ルーティング（Static）:
+
   - ルートを手動で設定
   - ルート変更時は手動更新が必要
   - Classic VPN でのみ使用可能
   - シンプルだが管理コストが高い
 
 動的ルーティング（Dynamic/BGP）:
+
   - Cloud Router を使って BGP でルートを自動交換
   - オンプレのルート変更が自動的にGCPに伝播
   - HA VPN と必ず組み合わせる
@@ -714,14 +744,14 @@ BGP のASN（Autonomous System Number）:
 4. **VPNトンネルは最低2本設定**（冗長化）
 5. **帯域が足りない場合は等コストマルチパス（ECMP）でスケール**
 
-> 📎 参照: https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview  
-> 📎 参照: https://cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn
+> 📎 参照: <https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview>
+> 📎 参照: <https://cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn>
 
 ### 3.3 Cloud Interconnect
 
 #### Dedicated Interconnect（専用線）
 
-```
+```text
 Dedicated Interconnect の仕組み:
 
   オンプレデータセンター
@@ -742,18 +772,21 @@ Dedicated Interconnect の仕組み:
   └──────────────────┘
 
 回線オプション:
+
   - 10Gbps × 最大8回線 = 80Gbps
   - 100Gbps × 最大2回線 = 200Gbps
 
 VLAN Attachment（アタッチメント）:
+
   - 物理回線を論理的に分割する仕組み（VLAN）
   - 1つの物理回線に複数のVLAN Attachmentを作成可能
   - 各アタッチメントが1つのVPCに対応
+
 ```
 
 #### Partner Interconnect（パートナー経由）
 
-```
+```text
 Partner Interconnect の仕組み:
 
   オンプレ ──── パートナーネットワーク ──── Google Cloud
@@ -761,6 +794,7 @@ Partner Interconnect の仕組み:
                 Equinix など)
 
 利点:
+
   - Dedicated Interconnect が届かない場所でも利用可能
   - 50Mbps から開始可能（Dedicated は 10Gbpsから）
   - パートナーが物理接続を管理
@@ -772,7 +806,7 @@ Partner Interconnect の仕組み:
 
 #### Interconnect の冗長性設計
 
-```
+```text
 SLA別の推奨冗長構成:
 
 99.9% SLA（1リージョン、1 Metro）:
@@ -800,17 +834,18 @@ SLA別の推奨冗長構成:
 4. **Cloud Armorと組み合わせてセキュリティを強化**
 5. **帯域監視アラートを設定**（使用率80%でアラート）
 
-> 📎 参照: https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview  
-> 📎 参照: https://cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices
+> 📎 参照: <https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview>
+> 📎 参照: <https://cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices>
 
 ### 3.4 Cloud Router と BGP
 
 #### Cloud Router の役割
 
-```
+```text
 Cloud Router の機能:
 
   1. BGP（Border Gateway Protocol）の終端
+
      → オンプレとGCPでルートを動的に交換
 
   2. Cloud VPN / Interconnect のルーティングを管理
@@ -818,6 +853,7 @@ Cloud Router の機能:
   3. Cloud NAT のゲートウェイ機能
 
   4. ルート広告のカスタマイズ
+
      → どのサブネットをオンプレに広告するかを制御
 
 BGP セッションの確立:
@@ -832,13 +868,15 @@ BGP セッションの確立:
 
 #### Cloud Router のルート広告モード
 
-```
+```text
 モード 1: Default（デフォルト）
+
   - VPC内の全サブネットのCIDRを自動広告
   - 新しいサブネットも自動で広告される
   - シンプルだが細かい制御が難しい
 
 モード 2: Custom（推奨）
+
   - 広告するルートを手動で指定
   - 特定のサブネットのみをオンプレに広告可能
   - より細かいルーティング制御が可能
@@ -855,7 +893,7 @@ BGP セッションの確立:
 3. **リージョンごとに個別のCloud Routerを作成**（独立した管理）
 4. **BGPセッションの状態を監視**（Stackdriverでアラート）
 
-> 📎 参照: https://cloud.google.com/network-connectivity/docs/router/concepts/overview
+> 📎 参照: <https://cloud.google.com/network-connectivity/docs/router/concepts/overview>
 
 ### 3.5 Network Connectivity Center（NCC）
 
@@ -863,7 +901,7 @@ BGP セッションの確立:
 
 **Network Connectivity Center（NCC）**は、複数の接続（VPN・Interconnect・Router Appliance）を**ハブ＆スポーク型**で集中管理する新しいネットワーキング製品です。
 
-```
+```text
 NCC のトポロジー:
 
           ┌──────────────────────────────┐
@@ -888,7 +926,7 @@ NCC のトポロジー:
 2. **SD-WAN との統合でRouter Applianceを利用**
 3. **スポーク間の通信要件を事前に設計**
 
-> 📎 参照: https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview
+> 📎 参照: <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview>
 
 ---
 
@@ -896,7 +934,7 @@ NCC のトポロジー:
 
 ### 4.1 Google Cloud ロードバランシングの全体像
 
-```
+```text
 ロードバランサーの選択フローチャート:
 
 外部(インターネット向け) or 内部(VPC内)?
@@ -922,21 +960,21 @@ NCC のトポロジー:
 
 #### 主要ロードバランサーの比較
 
-| LB名 | スコープ | プロトコル | セッション維持 | Cloud Armor | Backend |
-|---|---|---|---|---|---|
-| **Global Ext HTTP(S)** | グローバル | HTTP/HTTPS/HTTP2/gRPC | ○ | ○ | Instance/NEG |
-| **Regional Ext HTTP(S)** | リージョン | HTTP/HTTPS | ○ | ○ | Instance/NEG |
-| **Ext TCP Proxy** | グローバル | TCP | ○ | ✕ | Instance |
-| **Ext SSL Proxy** | グローバル | SSL/TLS | ○ | ✕ | Instance |
-| **Ext Network LB** | リージョン | TCP/UDP | ○ | ✕ | Instance |
-| **Internal HTTP(S)** | リージョン | HTTP/HTTPS | ○ | ○ | Instance/NEG |
-| **Internal TCP/UDP** | リージョン | TCP/UDP | ○ | ✕ | Instance |
+| LB名                     | スコープ   | プロトコル            | セッション維持 | Cloud Armor | Backend      |
+| ------------------------ | ---------- | --------------------- | -------------- | ----------- | ------------ |
+| **Global Ext HTTP(S)**   | グローバル | HTTP/HTTPS/HTTP2/gRPC | ○              | ○           | Instance/NEG |
+| **Regional Ext HTTP(S)** | リージョン | HTTP/HTTPS            | ○              | ○           | Instance/NEG |
+| **Ext TCP Proxy**        | グローバル | TCP                   | ○              | ✕           | Instance     |
+| **Ext SSL Proxy**        | グローバル | SSL/TLS               | ○              | ✕           | Instance     |
+| **Ext Network LB**       | リージョン | TCP/UDP               | ○              | ✕           | Instance     |
+| **Internal HTTP(S)**     | リージョン | HTTP/HTTPS            | ○              | ○           | Instance/NEG |
+| **Internal TCP/UDP**     | リージョン | TCP/UDP               | ○              | ✕           | Instance     |
 
 ### 4.2 Global External HTTP(S) Load Balancer（L7グローバルLB）
 
 #### アーキテクチャと動作原理
 
-```
+```text
 Global External HTTP(S) LB の構成:
 
 [ユーザー（世界中）]
@@ -952,12 +990,14 @@ Global External HTTP(S) LB の構成:
   /*      → Backend Service B（マルチリージョン）
 
 主要コンポーネント:
+
   1. Forwarding Rule: 外部IPとポートの定義
   2. Target HTTP(S) Proxy: SSL証明書の管理
   3. URL Map: URLパスベースのルーティング
   4. Backend Service: バックエンドの設定
   5. Backend: Instance Group / NEG / Cloud Storage
   6. Health Check: バックエンドの死活監視
+
 ```
 
 #### URL Map（URLルーティング）
@@ -969,34 +1009,43 @@ defaultService: projects/PROJECT/global/backendServices/web-backend
 
 hostRules:
   - hosts:
-      - "api.example.com"
+      - 'api.example.com'
+
     pathMatcher: api-paths
+
   - hosts:
-      - "www.example.com"
+      - 'www.example.com'
+
     pathMatcher: web-paths
 
 pathMatchers:
   - name: api-paths
+
     defaultService: projects/PROJECT/global/backendServices/api-backend
     pathRules:
       - paths:
-          - "/v1/*"
+          - '/v1/*'
+
         service: projects/PROJECT/global/backendServices/api-v1-backend
+
       - paths:
-          - "/v2/*"
+          - '/v2/*'
+
         service: projects/PROJECT/global/backendServices/api-v2-backend
 
   - name: web-paths
+
     defaultService: projects/PROJECT/global/backendServices/web-backend
     pathRules:
       - paths:
-          - "/static/*"
+          - '/static/*'
+
         service: projects/PROJECT/global/backendServices/gcs-backend
 ```
 
 #### NEG（Network Endpoint Groups）
 
-```
+```text
 NEGの種類と用途:
 
   Zonal NEG:
@@ -1031,11 +1080,11 @@ NEG の設定例（Cloud Run をバックエンドに）:
 5. **SSL Policy で古い TLS バージョンを無効化**（最低TLS 1.2以上）
 6. **Managed SSL Certificate（Google管理SSL）を使用**
 
-> 📎 参照: https://cloud.google.com/load-balancing/docs/https
+> 📎 参照: <https://cloud.google.com/load-balancing/docs/https>
 
 ### 4.3 Internal HTTP(S) Load Balancer（内部L7LB）
 
-```
+```text
 内部LBのユースケース:
 
   マイクロサービス間の通信:
@@ -1056,7 +1105,7 @@ NEG の設定例（Cloud Run をバックエンドに）:
 
 ### 4.4 External TCP/UDP Network Load Balancer
 
-```
+```text
 パススルーLBの特徴:
 
   パススルー = クライアントのIPを保持してバックエンドに届ける
@@ -1070,6 +1119,7 @@ NEG の設定例（Cloud Run をバックエンドに）:
     バックエンドから見たsrc IP: 1.2.3.4（クライアントIPが保持）
 
   用途:
+
     - クライアントIPが必要なアプリケーション（ログ・地理情報等）
     - UDP トラフィック（DNS・QUIC等）
     - 非HTTP系のゲームサーバー等
@@ -1079,7 +1129,7 @@ NEG の設定例（Cloud Run をバックエンドに）:
 
 ### 4.5 ヘルスチェック（Health Check）
 
-```
+```text
 ヘルスチェックの設定パラメータ:
 
   Check Interval: 5秒（デフォルト）
@@ -1095,6 +1145,7 @@ NEG の設定例（Cloud Run をバックエンドに）:
     → 「異常」と判断するために連続失敗が必要な回数
 
 ヘルスチェックの種類:
+
   - HTTP: パスとレスポンスコードで判定
   - HTTPS: SSL+HTTP
   - TCP: ポートの疎通確認のみ
@@ -1103,6 +1154,7 @@ NEG の設定例（Cloud Run をバックエンドに）:
 
 ファイアウォールルール（必須）:
   Google のヘルスチェックIPレンジからのアクセスを許可:
+
   - 35.191.0.0/16
   - 130.211.0.0/22
 
@@ -1122,11 +1174,11 @@ NEG の設定例（Cloud Run をバックエンドに）:
 3. **本番環境ではUnhealthy Thresholdを小さく設定**（素早いフェイルオーバー）
 4. **チェック間隔とタイムアウトのバランスを調整**
 
-> 📎 参照: https://cloud.google.com/load-balancing/docs/health-checks
+> 📎 参照: <https://cloud.google.com/load-balancing/docs/health-checks>
 
 ### 4.6 Cloud CDN（Content Delivery Network）
 
-```
+```text
 Cloud CDN の動作:
 
   1. ユーザーが静的コンテンツをリクエスト
@@ -1134,7 +1186,8 @@ Cloud CDN の動作:
   3. キャッシュHIT → 即座にレスポンス
   4. キャッシュMISS → オリジン（バックエンド）から取得してキャッシュ
 
-  効果: 
+  効果:
+
     - レイテンシの削減（ユーザーに近いPOPから配信）
     - オリジンサーバーの負荷軽減
     - グローバル配信コスト削減
@@ -1144,6 +1197,7 @@ Cloud CDN の動作:
   カスタム: 特定のヘッダー・クエリパラメータのみ含める
 
 キャッシュモード:
+
   - CACHE_ALL_STATIC: 静的コンテンツを自動キャッシュ（デフォルト）
   - USE_ORIGIN_HEADERS: オリジンのCache-Controlに従う
   - FORCE_CACHE_ALL: 全レスポンスを強制キャッシュ
@@ -1161,7 +1215,7 @@ Cache Control ヘッダーの設定例（バックエンド側）:
 3. **Signed URLで限定公開コンテンツを保護**
 4. **キャッシュパフォーマンスメトリクスを監視**（ヒット率）
 
-> 📎 参照: https://cloud.google.com/cdn/docs/overview
+> 📎 参照: <https://cloud.google.com/cdn/docs/overview>
 
 ---
 
@@ -1171,32 +1225,37 @@ Cache Control ヘッダーの設定例（バックエンド側）:
 
 #### Cloud DNS の基本概念
 
-```
+```text
 Cloud DNS のコンポーネント:
 
   マネージドゾーン（Managed Zone）:
+
     - DNS権威サーバーを管理する単位
     - ゾーン名は完全修飾ドメイン名（FQDN）
     - パブリックゾーン or プライベートゾーン
 
   パブリックゾーン:
+
     - インターネット全体に公開される
     - example.com の権威NSを管理
     - GoogleのAnycasted NSサーバーが対応
 
   プライベートゾーン:
+
     - VPC内のリソースのみに公開
     - 内部通信用のプライベートDNS
     - 例: internal.example.com
     - 複数VPCから同じゾーンを参照可能
+
 ```
 
 #### DNS 転送（Forwarding）と応答ポリシー（Response Policy）
 
-```
+```text
 DNS 転送の種類:
 
   アウトバウンド転送（GCP → オンプレ）:
+
     - GCPのリソースがオンプレのDNSサーバーに問い合わせ
     - 用途: オンプレのドメイン名解決（on-prem.example.com）
 
@@ -1204,6 +1263,7 @@ DNS 転送の種類:
     オンプレDNS: 192.168.1.10 (Cloud Interconnect/VPN経由)
 
   インバウンド転送（オンプレ → GCP）:
+
     - オンプレからGCPのCloud DNSに問い合わせ
     - Cloud DNSのインバウンドポリシーを使用
     - GCP内のVMに割り当てたIPアドレスを解決
@@ -1216,14 +1276,16 @@ DNS 転送の種類:
     --private-forwarding-targets=192.168.1.10
 
 応答ポリシー（Response Policy）:
+
   - 特定のDNSクエリに対してカスタム応答を返す
   - セキュリティ（マルウェアドメインをブロック）に活用
   - ローカルオーバーライド（特定ドメインを内部IPに解決）
+
 ```
 
 #### DNS ピアリング
 
-```
+```text
 DNS ピアリングのユースケース:
 
   VPC-A でのみ管理しているプライベートゾーンを
@@ -1248,19 +1310,21 @@ DNS ピアリングのユースケース:
 4. **DNSSEC でパブリックゾーンの完全性を保護**
 5. **TTL を適切に設定**（変更頻度に応じて）
 
-> 📎 参照: https://cloud.google.com/dns/docs/overview
+> 📎 参照: <https://cloud.google.com/dns/docs/overview>
 
 ### 5.2 IPアドレス管理
 
 #### 外部IPアドレスの種類
 
-```
+```text
 エフェメラルIP（Ephemeral）:
+
   - VMの起動/停止のたびに変わる
   - 追加コストなし
   - 本番環境には不向き
 
 静的IP（Static / Reserved）:
+
   - IP を予約して固定する
   - VMを停止/削除してもIPを保持可能
   - 使用していない静的IPはコストが発生（注意）
@@ -1276,26 +1340,31 @@ DNS ピアリングのユースケース:
 
 #### IP アドレスのスコープ
 
-```
+```text
 グローバルIP:
+
   - グローバルLBに使用
   - Anycast（世界中のPOPから同じIPで応答）
   - 静的にのみ使用可能
 
 リージョンIP:
+
   - リージョンLB・VM・Cloud NATに使用
   - そのリージョン内でのみ有効
 
 内部IP:
+
   - VPC内のプライベートIP
   - リソース作成時にサブネットから自動割り当て
   - 予約して固定することも可能（静的内部IP）
+
 ```
 
 #### IPv6 サポート
 
-```
+```text
 Google Cloud の IPv6:
+
   - VPCサブネットで IPv6 を有効化可能
   - デュアルスタック（IPv4 + IPv6）対応
   - External IPv6 アドレスの割り当て
@@ -1312,13 +1381,15 @@ Google Cloud の IPv6:
 
 #### VPC のルーティングの仕組み
 
-```
+```text
 デフォルトルート（自動作成）:
+
   - 0.0.0.0/0 → デフォルトゲートウェイ（インターネット）
   - サブネット内の通信は自動でルーティング
   - VPCピアリング・Interconnect/VPNはCloud Routerで管理
 
 カスタム静的ルート:
+
   - 特定の宛先CIDRを手動でネクストホップに向ける
   - ネクストホップ: VM・VPN GW・Internal LB・デフォルトGW
 
@@ -1330,6 +1401,7 @@ Google Cloud の IPv6:
     --next-hop-vpn-tunnel-region=us-central1
 
 ポリシーベースルーティング（PBR）:
+
   - 送信元IPやソースタグに基づいてルーティングを変更
   - Network Function Chainingに活用
 
@@ -1344,7 +1416,7 @@ Google Cloud の IPv6:
 2. **ルートの優先度を設計してアクティブ/スタンバイを制御**
 3. **デフォルトルートの削除で不要なインターネットアクセスを防止**
 
-> 📎 参照: https://cloud.google.com/vpc/docs/routes
+> 📎 参照: <https://cloud.google.com/vpc/docs/routes>
 
 ---
 
@@ -1354,42 +1426,50 @@ Google Cloud の IPv6:
 
 #### Cloud Armor の役割
 
-```
+```text
 Cloud Armor が提供するセキュリティ機能:
 
   1. DDoS攻撃防御
+
      → Layer 3/4 のボリューム攻撃（SYN Flood・UDP Flood等）
      → Googleのインフラレベルで自動緩和
 
   2. WAF（Web Application Firewall）
+
      → SQLインジェクション対策
      → クロスサイトスクリプティング（XSS）対策
      → OWASPトップ10の脆弱性対策
      → 事前設定ルール（Preconfigured Rules）を使用
 
   3. IPベースのアクセス制御
+
      → 特定IPまたはIP範囲を許可/拒否
      → ジオブロッキング（国単位でブロック）
 
   4. Rate Limiting（レート制限）
+
      → 単一IPからの過度なリクエストを制限
      → スロットリング（503レスポンス）またはリダイレクト
 
   5. reCAPTCHA Enterprise 統合
+
      → ボットトラフィックの検出・ブロック
 
   6. Adaptive Protection
+
      → AIによるDDoS攻撃パターンの自動検出・推奨ルール生成
 ```
 
 #### Cloud Armor のルール構造
 
-```
+```text
 セキュリティポリシー（Security Policy）:
+
   - 複数のルールをまとめたもの
   - バックエンドサービスに適用
 
 ルールの評価順序:
+
   - 優先度（0〜2147483647）が低い値ほど高優先度
   - マッチしたルールを適用（ALLOW or DENY）
   - どのルールにもマッチしない → デフォルトルール（通常ALLOW）
@@ -1426,7 +1506,7 @@ gcloud compute security-policies rules create 100 \
 5. **ログを有効化してアタックパターンを分析**
 6. **Rate Limitingで大量リクエスト攻撃を緩和**
 
-> 📎 参照: https://cloud.google.com/armor/docs/cloud-armor-overview
+> 📎 参照: <https://cloud.google.com/armor/docs/cloud-armor-overview>
 
 ### 6.2 VPC Service Controls（VPC SC）
 
@@ -1434,7 +1514,7 @@ gcloud compute security-policies rules create 100 \
 
 GCPのAPIサービスへのアクセスを**VPCの境界で制限**するセキュリティ機能。データ漏洩（Data Exfiltration）を防止する。
 
-```
+```text
 VPC Service Controls のイメージ:
 
   ┌── Service Perimeter（サービス境界）────────────────┐
@@ -1449,14 +1529,17 @@ VPC Service Controls のイメージ:
   境界外（インターネット・他プロジェクト）からのAPIアクセスを拒否
 
 主な保護対象サービス:
+
   - BigQuery（機密データの漏洩防止）
   - Cloud Storage（バケットへの不正アクセス防止）
   - Cloud KMS（暗号化キーの保護）
   - Pub/Sub・Spanner・Firestore 等
 
 アクセスレベル（Access Levels）:
+
   - 境界外のユーザーに条件付きアクセスを許可
   - 条件例: 特定のIPレンジ・MFA使用・デバイスポリシー等
+
 ```
 
 #### ✅ ベストプラクティス: VPC SC
@@ -1466,11 +1549,11 @@ VPC Service Controls のイメージ:
 3. **アクセスレベルで例外を細かく管理**
 4. **Access Context Manager と組み合わせて条件付きアクセスを実装**
 
-> 📎 参照: https://cloud.google.com/vpc-service-controls/docs/overview
+> 📎 参照: <https://cloud.google.com/vpc-service-controls/docs/overview>
 
 ### 6.3 Identity-Aware Proxy（IAP）
 
-```
+```text
 IAPの役割：VPNなしでの安全なアプリケーションアクセス
 
   従来のVPNアクセス:
@@ -1483,6 +1566,7 @@ IAPの役割：VPNなしでの安全なアプリケーションアクセス
            (Google Account + IAM ポリシー)
 
   IAPの利点:
+
     - VPN 不要（クライアントソフト不要）
     - ゼロトラストの実現（毎リクエストで認証）
     - ユーザー属性・デバイス状態で細かい制御
@@ -1510,11 +1594,11 @@ IAPでSSH/RDP接続:
 2. **管理画面・内部ツールへのアクセスはIAPで保護**
 3. **アクセスポリシーでデバイス状態・場所を条件に追加**
 
-> 📎 参照: https://cloud.google.com/iap/docs/concepts-overview
+> 📎 参照: <https://cloud.google.com/iap/docs/concepts-overview>
 
 ### 6.4 Certificate Manager と SSL/TLS
 
-```
+```text
 SSL/TLS 証明書の管理方法:
 
   1. Google マネージド証明書（推奨）
@@ -1533,6 +1617,7 @@ SSL/TLS 証明書の管理方法:
      - DNS/HTTP認証でドメイン所有権を確認
 
 SSL Policy（TLS バージョン制御）:
+
   - Modern: TLS 1.2〜（最新推奨）
   - Restricted: TLS 1.2のみ（厳格なコンプライアンス要件）
   - Compatible: TLS 1.0〜（レガシーシステム向け、非推奨）
@@ -1548,8 +1633,9 @@ SSL Policy（TLS バージョン制御）:
 
 ### 7.1 VPC Flow Logs
 
-```
+```text
 VPC Flow Logs とは:
+
   - VPCサブネット内のネットワークトラフィックをサンプリングして記録
   - 送信元/宛先IP・ポート・プロトコル・バイト数・パケット数を記録
   - Cloud Loggingに保存（BigQuery・Cloud Storageにエクスポート可能）
@@ -1563,21 +1649,25 @@ VPC Flow Logs とは:
     --region=us-central1
 
 設定パラメータ:
+
   - Aggregation Interval: 5秒〜15分（短いほど詳細・コスト高）
   - Flow Sampling: 0.0〜1.0（1.0=100%サンプリング・デフォルト0.5）
   - Metadata: INCLUDE_ALL_METADATA（詳細情報）or EXCLUDE_ALL_METADATA
 
 ユースケース:
+
   - セキュリティ監査（不審な通信の検出）
   - ネットワークトラブルシューティング
   - コスト最適化（どのリソースがトラフィックを多く使っているか）
   - コンプライアンス（PCI DSS等のネットワーク記録要件）
+
 ```
 
 ### 7.2 ファイアウォールルールログ
 
-```
+```text
 ファイアウォールログの有効化:
+
   - ルールごとに個別に有効化
   - 許可・拒否の両方をログ可能
 
@@ -1585,20 +1675,23 @@ VPC Flow Logs とは:
     --enable-logging
 
 ログの内容:
+
   - 接続の送信元/宛先
   - プロトコル・ポート
   - 適用されたルール名
   - Allow/Deny の結果
 
 活用方法:
+
   - 不必要に拒否されているトラフィックの特定
   - セキュリティ侵害の調査
   - コンプライアンス証跡の取得
+
 ```
 
 ### 7.3 Network Intelligence Center
 
-```
+```text
 Network Intelligence Center の5つのツール:
 
   1. Connectivity Tests（接続テスト）
@@ -1606,7 +1699,7 @@ Network Intelligence Center の5つのツール:
      - VPCファイアウォール・ルート・NAT等を分析
      - 実際にパケットを送らずに接続可能かを検証
 
-     使用例: 
+     使用例:
        gcloud network-management connectivity-tests create my-test \
          --source-instance=projects/P/zones/Z/instances/vm1 \
          --destination-instance=projects/P/zones/Z/instances/vm2 \
@@ -1632,12 +1725,14 @@ Network Intelligence Center の5つのツール:
   5. Network Topology（ネットワークトポロジー）
      - VPC・サブネット・VMの接続関係を可視化
      - トラフィックフロー・帯域使用量の表示
+
 ```
 
 ### 7.4 Packet Mirroring（パケットミラーリング）
 
-```
+```text
 Packet Mirroringとは:
+
   - 対象のVMのトラフィックをコピーして別VMで分析
   - ネットワークの詳細分析・IDS（侵入検知）・デバッグに使用
 
@@ -1651,34 +1746,41 @@ Packet Mirroringとは:
   └─────────────────────────────────────────┘
 
 設定要件:
+
   - コレクター: Internal LB (TCP/UDP) が必要
   - ミラーリングポリシー: 送信元・フィルター条件を定義
   - 同一リージョン内のみ
+
 ```
 
 ### 7.5 トラブルシューティング手順
 
-```
+```text
 Step 1: 症状を確認
+
   - どのリソース間の通信が失敗しているか？
   - エラーメッセージは何か？
   - いつから発生しているか？
 
 Step 2: Network Intelligence Center で Connectivity Test
+
   - 仮想パケットトレースで問題箇所を絞り込む
   - ファイアウォール・ルーティング・NAT のどこか？
 
 Step 3: ファイアウォールルールを確認
+
   - 送信元/宛先のIPとポートが許可されているか？
   - 暗黙の deny ルールに引っかかっていないか？
   - ファイアウォールログを確認
 
 Step 4: ルーティングを確認
+
   - 正しいネクストホップにルートが向いているか？
   - VPN/Interconnectのトンネルが UP か？
   - BGPセッションが確立しているか？
 
 Step 5: アプリケーション側を確認
+
   - サービスが起動しているか？
   - リスニングポートが正しいか？
   - ヘルスチェックは通過しているか？
@@ -1700,8 +1802,8 @@ Step 5: アプリケーション側を確認
   → ルートが存在するか確認
 ```
 
-> 📎 参照: https://cloud.google.com/network-intelligence-center/docs/overview  
-> 📎 参照: https://cloud.google.com/vpc/docs/using-flow-logs
+> 📎 参照: <https://cloud.google.com/network-intelligence-center/docs/overview>
+> 📎 参照: <https://cloud.google.com/vpc/docs/using-flow-logs>
 
 ---
 
@@ -1709,7 +1811,7 @@ Step 5: アプリケーション側を確認
 
 ### 8.1 ネットワークコストの理解
 
-```
+```text
 Google Cloud ネットワーク課金の主要ポイント:
 
   1. インターネット下り転送（Egress to Internet）
@@ -1734,17 +1836,19 @@ Google Cloud ネットワーク課金の主要ポイント:
      - 処理データ量 + ルール数
 
 コスト削減のポイント:
+
   - 同一リージョン内での通信に集約
   - Cloud CDNでオリジンへのトラフィックを削減
   - 不要なNAT/LBを削除
   - ネットワーク帯域幅の使用量を監視
+
 ```
 
 ### 8.2 主要ネットワーク設計パターン
 
 #### パターン1: ハブ＆スポーク型（推奨・大規模組織向け）
 
-```
+```text
 Hub & Spoke with Shared VPC:
 
     ┌── Hub VPC（Shared VPC Host Project）──────────┐
@@ -1758,6 +1862,7 @@ Hub & Spoke with Shared VPC:
     └─────────────────┘  └─────────────────┘
 
 メリット:
+
   - ネットワーク管理の集中化
   - セキュリティポリシーの一元適用
   - コスト効率（共有リソース）
@@ -1767,7 +1872,7 @@ Hub & Spoke with Shared VPC:
 
 #### パターン2: 完全分離型（セキュリティ最優先）
 
-```
+```text
 Full Isolation with VPC SC:
 
     ┌── Prod VPC ────────────────────────────────┐
@@ -1787,7 +1892,7 @@ Full Isolation with VPC SC:
 
 #### パターン3: マルチリージョン高可用性
 
-```
+```text
 Multi-Region HA Design:
 
   ┌── us-central1 ──────────────────────────────┐
@@ -1801,8 +1906,10 @@ Multi-Region HA Design:
   └───────────────────────────────────────────────┘
 
   単一障害点なし:
+
   - グローバルLBが最寄りの正常なリージョンに自動フェイルオーバー
   - Cloud SQL のフェイルオーバーレプリカ
+
 ```
 
 ---
@@ -1811,36 +1918,36 @@ Multi-Region HA Design:
 
 ### 9.1 頻出サービス早見表
 
-| サービス | キーワード | 用途 |
-|---|---|---|
-| **VPC** | グローバルスコープ・Custom Mode | ネットワーク基盤 |
-| **Shared VPC** | 集中管理・Host/Service Project | 企業内ネットワーク統合 |
-| **VPC Peering** | 異VPC通信・推移的ルーティング不可 | VPC間プライベート通信 |
-| **Cloud VPN (HA)** | 99.99% SLA・BGP・2トンネル | オンプレとの暗号化接続 |
-| **Dedicated Interconnect** | 専用線・10G/100G・低レイテンシ | 大帯域オンプレ接続 |
-| **Partner Interconnect** | パートナー経由・50Mbps〜50Gbps | 中帯域オンプレ接続 |
-| **Cloud Router** | BGP・動的ルーティング | ルート交換エンジン |
-| **Cloud NAT** | アウトバウンドのみ・外部IP不要 | プライベートVM→インターネット |
-| **Global HTTP(S) LB** | L7・Anycast・URL map・CDN | Webアプリグローバル配信 |
-| **Internal HTTP(S) LB** | L7・VPC内・マイクロサービス | 内部Webサービス負荷分散 |
-| **Network LB** | L4・パススルー・クライアントIP保持 | 非HTTP・UDP・クライアントIP必要 |
-| **Cloud CDN** | キャッシュ・Edgeポイント・静的コンテンツ | コンテンツ高速配信 |
-| **Cloud Armor** | WAF・DDoS・IP制御・OWASP | Webセキュリティ |
-| **Cloud DNS** | パブリック/プライベートゾーン・転送 | DNS管理 |
-| **Private Google Access** | 外部IPなし→GCPサービスアクセス | セキュアなGCPサービス利用 |
-| **PSC** | プライベート接続・VPCピアリング不要 | マネージドサービスへの接続 |
-| **VPC Flow Logs** | トラフィック記録・セキュリティ監査 | 可視性・コンプライアンス |
-| **VPC SC** | API境界・データ漏洩防止 | 高セキュリティ環境 |
-| **IAP** | VPNなし・ゼロトラスト・SSH/RDP | セキュアな管理アクセス |
-| **Connectivity Test** | 仮想パケットトレース・疎通確認 | トラブルシューティング |
-| **Packet Mirroring** | トラフィックコピー・IDS | 詳細分析・セキュリティ監視 |
-| **NCC** | ハブ＆スポーク・多拠点接続 | 大規模ネットワーク管理 |
+| サービス                   | キーワード                               | 用途                            |
+| -------------------------- | ---------------------------------------- | ------------------------------- |
+| **VPC**                    | グローバルスコープ・Custom Mode          | ネットワーク基盤                |
+| **Shared VPC**             | 集中管理・Host/Service Project           | 企業内ネットワーク統合          |
+| **VPC Peering**            | 異VPC通信・推移的ルーティング不可        | VPC間プライベート通信           |
+| **Cloud VPN (HA)**         | 99.99% SLA・BGP・2トンネル               | オンプレとの暗号化接続          |
+| **Dedicated Interconnect** | 専用線・10G/100G・低レイテンシ           | 大帯域オンプレ接続              |
+| **Partner Interconnect**   | パートナー経由・50Mbps〜50Gbps           | 中帯域オンプレ接続              |
+| **Cloud Router**           | BGP・動的ルーティング                    | ルート交換エンジン              |
+| **Cloud NAT**              | アウトバウンドのみ・外部IP不要           | プライベートVM→インターネット   |
+| **Global HTTP(S) LB**      | L7・Anycast・URL map・CDN                | Webアプリグローバル配信         |
+| **Internal HTTP(S) LB**    | L7・VPC内・マイクロサービス              | 内部Webサービス負荷分散         |
+| **Network LB**             | L4・パススルー・クライアントIP保持       | 非HTTP・UDP・クライアントIP必要 |
+| **Cloud CDN**              | キャッシュ・Edgeポイント・静的コンテンツ | コンテンツ高速配信              |
+| **Cloud Armor**            | WAF・DDoS・IP制御・OWASP                 | Webセキュリティ                 |
+| **Cloud DNS**              | パブリック/プライベートゾーン・転送      | DNS管理                         |
+| **Private Google Access**  | 外部IPなし→GCPサービスアクセス           | セキュアなGCPサービス利用       |
+| **PSC**                    | プライベート接続・VPCピアリング不要      | マネージドサービスへの接続      |
+| **VPC Flow Logs**          | トラフィック記録・セキュリティ監査       | 可視性・コンプライアンス        |
+| **VPC SC**                 | API境界・データ漏洩防止                  | 高セキュリティ環境              |
+| **IAP**                    | VPNなし・ゼロトラスト・SSH/RDP           | セキュアな管理アクセス          |
+| **Connectivity Test**      | 仮想パケットトレース・疎通確認           | トラブルシューティング          |
+| **Packet Mirroring**       | トラフィックコピー・IDS                  | 詳細分析・セキュリティ監視      |
+| **NCC**                    | ハブ＆スポーク・多拠点接続               | 大規模ネットワーク管理          |
 
 ### 9.2 試験攻略チェックリスト
 
 #### Section 1: VPCネットワーク設計
 
-```
+```text
 必須知識:
   □ VPCのグローバルスコープを理解している
   □ Auto Mode と Custom Mode の違いと使い分けを説明できる
@@ -1857,7 +1964,7 @@ Multi-Region HA Design:
 
 #### Section 2: ハイブリッド接続
 
-```
+```text
 必須知識:
   □ HA VPN と Classic VPN の違いと SLA を説明できる
   □ Cloud VPN の HA 構成（2トンネル）を説明できる
@@ -1870,7 +1977,7 @@ Multi-Region HA Design:
 
 #### Section 3: ロードバランシング
 
-```
+```text
 必須知識:
   □ 6種類のLBの適用場面を説明できる
   □ Global と Regional LB の違いを説明できる
@@ -1884,7 +1991,7 @@ Multi-Region HA Design:
 
 #### Section 4: DNS・IPアドレス管理
 
-```
+```text
 必須知識:
   □ パブリックゾーンとプライベートゾーンの違いを説明できる
   □ DNS転送（アウトバウンド・インバウンド）を説明できる
@@ -1895,7 +2002,7 @@ Multi-Region HA Design:
 
 #### Section 5: ネットワークセキュリティ
 
-```
+```text
 必須知識:
   □ Cloud Armorの主要機能（WAF・DDoS・Rate Limiting）を説明できる
   □ VPC Service Controlsの目的（データ漏洩防止）を説明できる
@@ -1906,7 +2013,7 @@ Multi-Region HA Design:
 
 #### Section 6: ネットワーク監視・運用
 
-```
+```text
 必須知識:
   □ Network Intelligence Center の5ツールを説明できる
   □ Connectivity Testで問題を絞り込む手順を説明できる
@@ -1917,37 +2024,43 @@ Multi-Region HA Design:
 
 ### 9.3 よく混同されるポイント
 
-| 混同パターン | 正しい理解 |
-|---|---|
-| VPC はリージョンスコープ | VPCはグローバル、サブネットがリージョン |
-| Cloud VPN = 99.99% SLA | HA VPN = 99.99%、Classic VPN = 99.9% |
-| Cloud NAT でインバウンドOK | Cloud NAT はアウトバウンドのみ |
-| VPC Peering で推移的ルーティング | 推移的ルーティング不可（A-B-C でAとCは通信不可） |
-| Dedicated Interconnect は誰でも使える | Google指定のコロケーション施設に接続できる場合のみ |
-| Network LBはCloudArmorが使える | Cloud ArmorはProxy型LBのみ対応、パススルー型は不可 |
-| プライベートゾーンはVPC外からアクセス可 | プライベートゾーンは指定VPCからのみアクセス可 |
+| 混同パターン                            | 正しい理解                                         |
+| --------------------------------------- | -------------------------------------------------- |
+| VPC はリージョンスコープ                | VPCはグローバル、サブネットがリージョン            |
+| Cloud VPN = 99.99% SLA                  | HA VPN = 99.99%、Classic VPN = 99.9%               |
+| Cloud NAT でインバウンドOK              | Cloud NAT はアウトバウンドのみ                     |
+| VPC Peering で推移的ルーティング        | 推移的ルーティング不可（A-B-C でAとCは通信不可）   |
+| Dedicated Interconnect は誰でも使える   | Google指定のコロケーション施設に接続できる場合のみ |
+| Network LBはCloudArmorが使える          | Cloud ArmorはProxy型LBのみ対応、パススルー型は不可 |
+| プライベートゾーンはVPC外からアクセス可 | プライベートゾーンは指定VPCからのみアクセス可      |
 
 ### 9.4 試験当日のポイント
 
-```
+```text
 解答戦略:
 
 1. 「最もシンプルな解決策」を選ぶ
+
    → 複雑な構成より管理が簡単なソリューションが正解になりやすい
 
 2. 「マネージドサービスを優先」
+
    → 自分で管理するより Google が管理するサービスを選ぶ
 
 3. 「冗長性・HA の要件を確認」
+
    → 99.99% SLA が必要なら HA VPN・Interconnect 複数 Metro
 
 4. 「コストと要件のバランス」
+
    → Dedicated Interconnect が必須か、VPNで十分か
 
 5. 「セキュリティは最小権限」
+
    → 最も限定的なアクセスを許可するソリューション
 
 6. 「ハイブリッド接続の帯域要件を確認」
+
    → 大帯域 → Interconnect、中帯域 → Partner、小帯域/コスト優先 → VPN
 ```
 
@@ -1955,42 +2068,42 @@ Multi-Region HA Design:
 
 ## 📎 公式参照リソース一覧
 
-| カテゴリ | リソース | URL |
-|---|---|---|
-| **試験情報** | PCNE 試験概要ページ | https://cloud.google.com/learn/certification/cloud-network-engineer |
-| **試験情報** | 試験ガイド | https://cloud.google.com/learn/certification/guides/cloud-network-engineer |
-| **VPC基礎** | VPC概要 | https://cloud.google.com/vpc/docs/vpc |
-| **VPC基礎** | サブネット | https://cloud.google.com/vpc/docs/subnets |
-| **VPC基礎** | ファイアウォールルール | https://cloud.google.com/vpc/docs/firewalls |
-| **VPC基礎** | 階層型FWポリシー | https://cloud.google.com/vpc/docs/firewall-policies |
-| **VPC基礎** | VPCピアリング | https://cloud.google.com/vpc/docs/vpc-peering |
-| **VPC基礎** | Shared VPC | https://cloud.google.com/vpc/docs/shared-vpc |
-| **VPC基礎** | Private Google Access | https://cloud.google.com/vpc/docs/private-google-access |
-| **VPC基礎** | Private Service Connect | https://cloud.google.com/vpc/docs/private-service-connect |
-| **VPC基礎** | Cloud NAT | https://cloud.google.com/nat/docs/overview |
-| **ハイブリッド** | Cloud VPN 概要 | https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview |
-| **ハイブリッド** | HA VPN 作成 | https://cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn |
-| **ハイブリッド** | Cloud Interconnect 概要 | https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview |
-| **ハイブリッド** | Interconnect ベストプラクティス | https://cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices |
-| **ハイブリッド** | Cloud Router 概要 | https://cloud.google.com/network-connectivity/docs/router/concepts/overview |
-| **ハイブリッド** | NCC 概要 | https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview |
-| **ロードバランシング** | LB 概要 | https://cloud.google.com/load-balancing/docs/load-balancing-overview |
-| **ロードバランシング** | Global HTTP(S) LB | https://cloud.google.com/load-balancing/docs/https |
-| **ロードバランシング** | Health Check | https://cloud.google.com/load-balancing/docs/health-checks |
-| **CDN** | Cloud CDN 概要 | https://cloud.google.com/cdn/docs/overview |
-| **DNS** | Cloud DNS 概要 | https://cloud.google.com/dns/docs/overview |
-| **セキュリティ** | Cloud Armor 概要 | https://cloud.google.com/armor/docs/cloud-armor-overview |
-| **セキュリティ** | VPC Service Controls 概要 | https://cloud.google.com/vpc-service-controls/docs/overview |
-| **セキュリティ** | IAP 概要 | https://cloud.google.com/iap/docs/concepts-overview |
-| **セキュリティ** | ルート | https://cloud.google.com/vpc/docs/routes |
-| **監視** | VPC Flow Logs | https://cloud.google.com/vpc/docs/using-flow-logs |
-| **監視** | Network Intelligence Center | https://cloud.google.com/network-intelligence-center/docs/overview |
+| カテゴリ               | リソース                        | URL                                                                                                |
+| ---------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **試験情報**           | PCNE 試験概要ページ             | <https://cloud.google.com/learn/certification/cloud-network-engineer>                              |
+| **試験情報**           | 試験ガイド                      | <https://cloud.google.com/learn/certification/guides/cloud-network-engineer>                       |
+| **VPC基礎**            | VPC概要                         | <https://cloud.google.com/vpc/docs/vpc>                                                            |
+| **VPC基礎**            | サブネット                      | <https://cloud.google.com/vpc/docs/subnets>                                                        |
+| **VPC基礎**            | ファイアウォールルール          | <https://cloud.google.com/vpc/docs/firewalls>                                                      |
+| **VPC基礎**            | 階層型FWポリシー                | <https://cloud.google.com/vpc/docs/firewall-policies>                                              |
+| **VPC基礎**            | VPCピアリング                   | <https://cloud.google.com/vpc/docs/vpc-peering>                                                    |
+| **VPC基礎**            | Shared VPC                      | <https://cloud.google.com/vpc/docs/shared-vpc>                                                     |
+| **VPC基礎**            | Private Google Access           | <https://cloud.google.com/vpc/docs/private-google-access>                                          |
+| **VPC基礎**            | Private Service Connect         | <https://cloud.google.com/vpc/docs/private-service-connect>                                        |
+| **VPC基礎**            | Cloud NAT                       | <https://cloud.google.com/nat/docs/overview>                                                       |
+| **ハイブリッド**       | Cloud VPN 概要                  | <https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview>                         |
+| **ハイブリッド**       | HA VPN 作成                     | <https://cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn>                    |
+| **ハイブリッド**       | Cloud Interconnect 概要         | <https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview>                |
+| **ハイブリッド**       | Interconnect ベストプラクティス | <https://cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices>          |
+| **ハイブリッド**       | Cloud Router 概要               | <https://cloud.google.com/network-connectivity/docs/router/concepts/overview>                      |
+| **ハイブリッド**       | NCC 概要                        | <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview> |
+| **ロードバランシング** | LB 概要                         | <https://cloud.google.com/load-balancing/docs/load-balancing-overview>                             |
+| **ロードバランシング** | Global HTTP(S) LB               | <https://cloud.google.com/load-balancing/docs/https>                                               |
+| **ロードバランシング** | Health Check                    | <https://cloud.google.com/load-balancing/docs/health-checks>                                       |
+| **CDN**                | Cloud CDN 概要                  | <https://cloud.google.com/cdn/docs/overview>                                                       |
+| **DNS**                | Cloud DNS 概要                  | <https://cloud.google.com/dns/docs/overview>                                                       |
+| **セキュリティ**       | Cloud Armor 概要                | <https://cloud.google.com/armor/docs/cloud-armor-overview>                                         |
+| **セキュリティ**       | VPC Service Controls 概要       | <https://cloud.google.com/vpc-service-controls/docs/overview>                                      |
+| **セキュリティ**       | IAP 概要                        | <https://cloud.google.com/iap/docs/concepts-overview>                                              |
+| **セキュリティ**       | ルート                          | <https://cloud.google.com/vpc/docs/routes>                                                         |
+| **監視**               | VPC Flow Logs                   | <https://cloud.google.com/vpc/docs/using-flow-logs>                                                |
+| **監視**               | Network Intelligence Center     | <https://cloud.google.com/network-intelligence-center/docs/overview>                               |
 
 ---
 
 ## 📝 学習メモ欄
 
-```
+```text
 自分の弱点・重点復習ポイントを記録:
 
 □ _____________________________________________
@@ -2007,6 +2120,6 @@ Multi-Region HA Design:
 
 ---
 
-*本ガイドは Google Cloud Professional Cloud Network Engineer（PCNE）試験の対策学習資料です。*  
-*試験の最新情報・サービス仕様は必ず公式サイトでご確認ください。*  
-*作成日: 2026年4月*
+_本ガイドは Google Cloud Professional Cloud Network Engineer（PCNE）試験の対策学習資料です。_
+_試験の最新情報・サービス仕様は必ず公式サイトでご確認ください。_
+_作成日: 2026年4月_
