@@ -2407,7 +2407,7 @@ Network Connectivity Center (NCC) でのマルチクラウド:
 | **Network Intelligence** | https://cloud.google.com/network-intelligence-center/docs/overview                               |
 | **BeyondCorp**           | https://cloud.google.com/beyondcorp-enterprise/docs/overview                                     |
 | **可用性設計**           | https://cloud.google.com/architecture/framework/reliability                                      |
-| **RFC 1918**             | https://tools.ietf.org/html/rfc1918                                                              |
+| **RFC 1918**             | https://www.rfc-editor.org/rfc/rfc1918                                                           |
 | **IANA ポート番号**      | https://www.iana.org/assignments/service-names-port-numbers/                                     |
 
 ---
