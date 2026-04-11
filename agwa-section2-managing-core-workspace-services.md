@@ -1578,7 +1578,7 @@ Meet の安全設定 → ノックイン機能を有効化
 
 #### Gmail（2.1）
 
-- [ ] **MX レコード**の設定値（ASPMX.L.GOOGLE.COM など）と伝播時間を知っている
+- [ ] **MX レコード**の設定値（推奨: smtp.google.com / レガシー: ASPMX.L.GOOGLE.COM など — 伝播時間を確認）を知っている
 - [ ] **SPF・DKIM・DMARC** の役割の違いを説明できる
 - [ ] **SPF レコード**を DNS に追加できる（`v=spf1 include:_spf.google.com ~all`）
 - [ ] **DKIM** の設定手順（Admin コンソールでキー生成 → DNS 追加 → 署名開始）を知っている
