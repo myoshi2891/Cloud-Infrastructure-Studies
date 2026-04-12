@@ -308,7 +308,7 @@ export function Header() {
 
                     <div
                         className={cn(
-                            'invisible absolute right-0 top-full z-50 mt-2 flex w-[22rem] origin-top-right flex-col gap-1.5 rounded-xl border border-white/[0.08] bg-[#0e1117]/95 p-4 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-150',
+                            'invisible absolute right-0 top-full z-50 mt-2 flex w-72 origin-top-right flex-col gap-1.5 rounded-xl border border-white/[0.08] bg-[#0e1117]/95 p-4 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-150',
                             openMenu === 'cdl' && 'visible opacity-100',
                         )}
                     >
@@ -316,13 +316,6 @@ export function Header() {
                             href="/gcl/cloud-digital-leader"
                             label="Cloud Digital Leader 認定試験"
                             desc="すべてのコンテンツを見る"
-                            onClick={() => setOpenMenu(null)}
-                        />
-                        <div className="my-1 h-px bg-white/[0.06]" />
-                        <DropdownItem
-                            href="/gcl/cloud-digital-leader/comprehensive-guide"
-                            label="エンタープライズ詳細解説"
-                            desc="完全網羅的ベストプラクティス"
                             onClick={() => setOpenMenu(null)}
                         />
                     </div>
