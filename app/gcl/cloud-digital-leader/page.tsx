@@ -48,7 +48,7 @@ export const metadata: Metadata = {
         'Google Cloud Digital Leader 包括的解説。DX・データ・AI/ML・インフラ・セキュリティ・生成AI の全領域を詳解。',
 };
 
-function SectionIntro() {
+export function SectionIntro() {
     return (
         <div id="s0" className="sgap">
             <div className="sec-head">
@@ -119,7 +119,7 @@ Step 4: cp.certmetrics.com/google から試験を予約
     );
 }
 
-function Section1() {
+export function Section1() {
     return (
         <div id="s1" className="sgap">
             <div className="sec-head">
@@ -386,7 +386,7 @@ function Section1() {
  *
  * @returns The JSX element for the section, containing subsections: data-driven value propositions, structured/semistructured/unstructured data, data warehouse/lake/lakehouse descriptions, a database services table and decision tree, descriptions of Looker/Looker Studio/Dataflow/Dataproc/Pub/Sub, an SVG analytics pipeline diagram, and a GCS storage class table with cost-optimization tips.
  */
-function Section2() {
+export function Section2() {
     return (
         <div id="s2" className="sgap">
             <div className="sec-head">
@@ -576,7 +576,7 @@ NoSQLが必要か？
     );
 }
 
-function Section3() {
+export function Section3() {
     return (
         <div id="s3" className="sgap">
             <div className="sec-head">
@@ -864,7 +864,7 @@ function Section3() {
     );
 }
 
-function Section4() {
+export function Section4() {
     return (
         <div id="s4" className="sgap">
             <div className="sec-head">
@@ -1226,7 +1226,7 @@ function Section4() {
  *
  * @returns A React element containing the full AI/ML section markup with tables, explanatory text, and illustrative SVG diagrams.
  */
-function Section5() {
+export function Section5() {
     return (
         <div id="s5" className="sgap">
             <div className="sec-head">
@@ -2185,7 +2185,7 @@ function RoadmapBlock({ data }: { data: { week: string; items: string[] }[] }) {
  *
  * @returns A JSX element representing the section with the five quick-reference tables
  */
-function Section6() {
+export function Section6() {
     return (
         <div id="s6" className="sgap">
             <div className="sec-head">
@@ -2234,7 +2234,7 @@ function Section6() {
  *
  * @returns The section's JSX content as a React element
  */
-function Section7() {
+export function Section7() {
     return (
         <div id="s7" className="sgap">
             <div className="sec-head">
@@ -2295,7 +2295,7 @@ function Section7() {
  *
  * @returns The rendered JSX for the references section
  */
-function Section8() {
+export function Section8() {
     return (
         <div id="s8" className="sgap">
             <div className="sec-head">
