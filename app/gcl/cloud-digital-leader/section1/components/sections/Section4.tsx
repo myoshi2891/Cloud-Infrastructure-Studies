@@ -76,80 +76,59 @@ export const Section4: React.FC = () => (
                 </g>
             </DiagramSVG>
 
-            <div className="stitle">4.2 IaaS（Infrastructure as a Service）</div>
-            <p className="tdesc"><strong>定義</strong>: 仮想マシン・ストレージ・ネットワークなどの<strong>インフラ基盤をサービスとして提供</strong>するモデル。ユーザーは OS・ミドルウェア・アプリを自分で管理します。</p>
-            <div className="stitle">特徴とメリット・デメリット</div>
-            <TableComponent
-                headers={['項目', '内容']}
-                rows={IAAS_FEATURES}
-                renderRow={(row, i) => (
-                    <tr key={i}>
-                        <td><strong>{row.item}</strong></td>
-                        <td>{row.content}</td>
-                    </tr>
-                )}
-            />
-            <div className="stitle">Google Cloud での IaaS サービス例</div>
-            <TableComponent
-                headers={['サービス', '説明']}
-                rows={IAAS_SERVICES}
-                renderRow={(row, i) => (
-                    <tr key={i}>
-                        <td><strong>{row.service}</strong></td>
-                        <td>{row.description}</td>
-                    </tr>
-                )}
-            />
-
-            <div className="stitle">4.3 PaaS（Platform as a Service）</div>
-            <p className="tdesc"><strong>定義</strong>: アプリケーションの開発・実行・管理に必要な<strong>プラットフォーム（実行環境）をサービスとして提供</strong>するモデル。ユーザーはアプリとデータだけに集中できます。</p>
-            <div className="stitle">特徴とメリット・デメリット</div>
-            <TableComponent
-                headers={['項目', '内容']}
-                rows={PAAS_FEATURES}
-                renderRow={(row, i) => (
-                    <tr key={i}>
-                        <td><strong>{row.item}</strong></td>
-                        <td>{row.content}</td>
-                    </tr>
-                )}
-            />
-            <div className="stitle">Google Cloud での PaaS サービス例</div>
-            <TableComponent
-                headers={['サービス', '説明']}
-                rows={PAAS_SERVICES}
-                renderRow={(row, i) => (
-                    <tr key={i}>
-                        <td><strong>{row.service}</strong></td>
-                        <td>{row.description}</td>
-                    </tr>
-                )}
-            />
-
-            <div className="stitle">4.4 SaaS（Software as a Service）</div>
-            <p className="tdesc"><strong>定義</strong>: 完全に構築されたソフトウェアを<strong>サービスとして提供</strong>するモデル。インターネット接続とブラウザがあれば、インストールなしに即座に使えます。</p>
-            <div className="stitle">特徴とメリット・デメリット</div>
-            <TableComponent
-                headers={['項目', '内容']}
-                rows={SAAS_FEATURES}
-                renderRow={(row, i) => (
-                    <tr key={i}>
-                        <td><strong>{row.item}</strong></td>
-                        <td>{row.content}</td>
-                    </tr>
-                )}
-            />
-            <div className="stitle">Google Cloud での SaaS サービス例</div>
-            <TableComponent
-                headers={['サービス', '説明']}
-                rows={SAAS_SERVICES}
-                renderRow={(row, i) => (
-                    <tr key={i}>
-                        <td><strong>{row.service}</strong></td>
-                        <td>{row.description}</td>
-                    </tr>
-                )}
-            />
+            {[
+                {
+                    title: "4.2 IaaS（Infrastructure as a Service）",
+                    definition: "仮想マシン・ストレージ・ネットワークなどの",
+                    boldPart: "インフラ基盤をサービスとして提供",
+                    tail: "するモデル。ユーザーは OS・ミドルウェア・アプリを自分で管理します。",
+                    features: IAAS_FEATURES,
+                    services: IAAS_SERVICES,
+                },
+                {
+                    title: "4.3 PaaS（Platform as a Service）",
+                    definition: "アプリケーションの開発・実行・管理に必要な",
+                    boldPart: "プラットフォーム（実行環境）をサービスとして提供",
+                    tail: "するモデル。ユーザーはアプリとデータだけに集中できます。",
+                    features: PAAS_FEATURES,
+                    services: PAAS_SERVICES,
+                },
+                {
+                    title: "4.4 SaaS（Software as a Service）",
+                    definition: "完全に構築されたソフトウェアを",
+                    boldPart: "サービスとして提供",
+                    tail: "するモデル。インターネット接続とブラウザがあれば、インストールなしに即座に使えます。",
+                    features: SAAS_FEATURES,
+                    services: SAAS_SERVICES,
+                }
+            ].map((section) => (
+                <React.Fragment key={section.title}>
+                    <div className="stitle">{section.title}</div>
+                    <p className="tdesc"><strong>定義</strong>: {section.definition}<strong>{section.boldPart}</strong>{section.tail}</p>
+                    <div className="stitle">特徴とメリット・デメリット</div>
+                    <TableComponent
+                        headers={['項目', '内容']}
+                        rows={section.features}
+                        renderRow={(row, i) => (
+                            <tr key={i}>
+                                <td><strong>{row.item}</strong></td>
+                                <td>{row.content}</td>
+                            </tr>
+                        )}
+                    />
+                    <div className="stitle">Google Cloud でのサービス例</div>
+                    <TableComponent
+                        headers={['サービス', '説明']}
+                        rows={section.services}
+                        renderRow={(row, i) => (
+                            <tr key={i}>
+                                <td><strong>{row.service}</strong></td>
+                                <td>{row.description}</td>
+                            </tr>
+                        )}
+                    />
+                </React.Fragment>
+            ))}
             <p className="tdesc">📎 <strong>参照</strong>: Google Cloud のサービスモデル解説<br />
             <a href="https://cloud.google.com/learn/what-is-iaas" target="_blank" rel="noreferrer">https://cloud.google.com/learn/what-is-iaas</a><br />
             <a href="https://cloud.google.com/learn/what-is-paas" target="_blank" rel="noreferrer">https://cloud.google.com/learn/what-is-paas</a><br />

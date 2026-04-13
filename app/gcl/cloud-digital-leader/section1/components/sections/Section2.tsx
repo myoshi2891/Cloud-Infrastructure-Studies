@@ -24,7 +24,7 @@ export const Section2: React.FC = () => (
             }
         >
             <div className="stitle">DX の 3 つのレベル</div>
-            <DiagramSVG viewBox="0 0 600 240">
+            <DiagramSVG viewBox="0 0 600 240" ariaLabel="DXの3つのレベル">
                 <g transform="translate(10, 20)">
                     <text x="0" y="0" fill="currentColor" fontSize="14" fontWeight="bold">レベル 3: ビジネスモデル変革（本当の DX）</text>
                     <path d="M 10 10 L 10 30 L 20 30" strokeWidth="2" stroke="var(--color-primary)" />
@@ -57,7 +57,7 @@ export const Section2: React.FC = () => (
             />
 
             <div className="stitle">クラウドが解決できること</div>
-            <DiagramSVG viewBox="0 0 600 200">
+            <DiagramSVG viewBox="0 0 600 200" ariaLabel="オンプレミス対クラウド比較">
                 <text x="10" y="20" fill="currentColor" fontSize="14" fontWeight="bold">課題: 「新しいサービスを来週リリースしたい」</text>
                 <text x="50" y="50" fill="currentColor" fontSize="14" fontWeight="bold">オンプレミス</text>
                 <text x="350" y="50" fill="currentColor" fontSize="14" fontWeight="bold">クラウド</text>

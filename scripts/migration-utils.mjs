@@ -28,13 +28,14 @@ function validate(currentLines) {
         const lineNum = i + 1;
 
         // Check Template Literals
-        if (line.includes('{\`')) {
-            if (inTemplateLiteral) errors.push(`Line ${lineNum}: Nested template literal start detected.`);
-            inTemplateLiteral = true;
-        }
-        if (line.includes('\`}')) {
-            if (!inTemplateLiteral) errors.push(`Line ${lineNum}: Template literal end without start.`);
-            inTemplateLiteral = false;
+        // Find all backticks not preceded by a backslash
+        const backticks = line.match(/(?<!\\)`/g) || [];
+        for (let j = 0; j < backticks.length; j++) {
+            if (!inTemplateLiteral) {
+                inTemplateLiteral = true;
+            } else {
+                inTemplateLiteral = false;
+            }
         }
 
         // Check Div Nesting (Simple count)

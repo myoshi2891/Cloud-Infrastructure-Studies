@@ -19,8 +19,8 @@ export const SectionHero: React.FC<SectionHeroProps> = ({ eyebrow, title, subtit
             <h1>{title}</h1>
             <p className="hero-sub">{subtitle}</p>
             <div className="hero-meta">
-                {badges.map((badge, i) => (
-                    <span key={i} className="hero-badge">
+                {badges.map((badge) => (
+                    <span key={badge.label} className="hero-badge">
                         <span className={`dot dot-${badge.color}`} />
                         {badge.label}
                     </span>

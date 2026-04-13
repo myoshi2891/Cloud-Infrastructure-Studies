@@ -16,7 +16,7 @@ export const Section10: React.FC = () => (
             idNumber="10.1"
             title="リソース階層"
         >
-            <DiagramSVG viewBox="0 0 500 240">
+            <DiagramSVG viewBox="0 0 500 240" ariaLabel="Google Cloud リソース階層（組織 → フォルダ → プロジェクト → リソース）">
                 <rect x="10" y="10" width="220" height="30" rx="4" fill="var(--color-primary)" fillOpacity="0.4" />
                 <text x="20" y="30" fill="var(--color-background)" fontSize="13" fontWeight="bold">組織 (Organization)</text>
                 <path d="M 40 40 L 40 70 L 50 70" stroke="var(--color-muted)" />

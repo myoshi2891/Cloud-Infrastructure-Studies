@@ -311,3 +311,27 @@ export const GCDL_REFERENCES: ReferenceLink[] = [
     { title: 'リソース階層を使用したアクセス制御', url: 'https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control?hl=ja' },
     { title: 'Google Cloud Digital Leader Exam Guide (2026)', url: 'https://cloudfluently.com/blog/google-cloud-digital-leader-exam-guide-2026' },
 ];
+
+export const HERO_BADGES = [
+    { label: '出題比率 約17%', color: 'blue' as const },
+    { label: '最重要セクション', color: 'red' as const },
+    { label: 'ビジネス視点の理解', color: 'green' as const },
+];
+
+export const NAV_LINKS = [
+    { id: 's0', num: '00', label: 'ガイド' },
+    { id: 's1', num: '01', label: '出題範囲' },
+    { id: 's2', num: '02', label: 'DX本質' },
+    { id: 's3', num: '03', label: '基礎概念' },
+    { id: 's4', num: '04', label: 'モデル' },
+    { id: 's5', num: '05', label: 'デプロイ' },
+    { id: 's6', num: '06', label: '財務' },
+    { id: 's7', num: '07', label: '移行戦略' },
+    { id: 's8', num: '08', label: '強み' },
+    { id: 's9', num: '09', label: 'インフラ' },
+    { id: 's10', num: '10', label: '階層' },
+    { id: 's11', num: '11', label: 'DXソリュ' },
+    { id: 's12', num: '12', label: 'まとめ' },
+    { id: 's13', num: '13', label: 'レポート' },
+    { id: 's14', num: '14', label: 'リソース' },
+];

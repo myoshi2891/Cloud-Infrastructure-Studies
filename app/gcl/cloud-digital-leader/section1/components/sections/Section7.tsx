@@ -20,8 +20,8 @@ export const Section7: React.FC = () => (
             <TableComponent
                 headers={['戦略', '変更規模', 'スピード', 'コスト', 'リスク', 'クラウド活用度']}
                 rows={MIGRATION_STRATEGY_COMPARISON}
-                renderRow={(row, i) => (
-                    <tr key={i}>
+                renderRow={(row) => (
+                    <tr key={row.strategy}>
                         <td><strong>{row.strategy}</strong></td>
                         <td>{row.scale}</td>
                         <td>{row.speed}</td>
