@@ -1,14 +1,15 @@
 import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { ON_PREMISE_ISSUES } from '../../constants';
+import styles from './Section2.module.css';
 
 export const Section2: React.FC = () => (
-    <div id="s2" className="sgap">
-        <div className="sec-head">
-            <div className="sec-num sn2">02</div>
-            <div className="sec-head-txt">
-                <h2 className="sec-title">なぜ今クラウドなのか？デジタルトランスフォーメーションの本質</h2>
-                <p className="tdesc">デジタルトランスフォーメーション（DX）とは / クラウドが必要な理由</p>
+    <div id="s2" className={styles.sgap}>
+        <div className={styles.secHead}>
+            <div className={styles.secNum}>02</div>
+            <div className={styles.secHeadTxt}>
+                <h2 className={styles.secTitle}>なぜ今クラウドなのか？デジタルトランスフォーメーションの本質</h2>
+                <p className={styles.tdesc}>デジタルトランスフォーメーション（DX）とは / クラウドが必要な理由</p>
             </div>
         </div>
 
@@ -23,7 +24,7 @@ export const Section2: React.FC = () => (
                 </>
             }
         >
-            <div className="stitle">DX の 3 つのレベル</div>
+            <div className={styles.stitle}>DX の 3 つのレベル</div>
             <DiagramSVG viewBox="0 0 600 240" ariaLabel="DXの3つのレベル">
                 <g transform="translate(10, 20)">
                     <text x="0" y="0" fill="currentColor" fontSize="14" fontWeight="bold">レベル 3: ビジネスモデル変革（本当の DX）</text>
@@ -42,13 +43,13 @@ export const Section2: React.FC = () => (
                 </g>
             </DiagramSVG>
 
-            <div className="stitle">2.2 なぜ今クラウドが必要なのか？</div>
-            <div className="stitle">従来のオンプレミス環境が抱える 5 つの課題</div>
+            <div className={styles.stitle}>2.2 なぜ今クラウドが必要なのか？</div>
+            <div className={styles.stitle}>従来のオンプレミス環境が抱える 5 つの課題</div>
             <TableComponent
                 headers={['課題', '説明', 'ビジネスへの影響']}
                 rows={ON_PREMISE_ISSUES}
-                renderRow={(row, i) => (
-                    <tr key={i}>
+                renderRow={(row) => (
+                    <tr key={row.issue}>
                         <td><strong>{row.issue}</strong></td>
                         <td>{row.description}</td>
                         <td>{row.impact}</td>
@@ -56,7 +57,7 @@ export const Section2: React.FC = () => (
                 )}
             />
 
-            <div className="stitle">クラウドが解決できること</div>
+            <div className={styles.stitle}>クラウドが解決できること</div>
             <DiagramSVG viewBox="0 0 600 200" ariaLabel="オンプレミス対クラウド比較">
                 <text x="10" y="20" fill="currentColor" fontSize="14" fontWeight="bold">課題: 「新しいサービスを来週リリースしたい」</text>
                 <text x="50" y="50" fill="currentColor" fontSize="14" fontWeight="bold">オンプレミス</text>
@@ -94,8 +95,8 @@ export const Section2: React.FC = () => (
                 </defs>
             </DiagramSVG>
 
-            <div className="stitle">2.3 クラウドが DX を加速する 3 つのメカニズム</div>
-            <DiagramSVG viewBox="0 0 600 220">
+            <div className={styles.stitle}>2.3 クラウドが DX を加速する 3 つのメカニズム</div>
+            <DiagramSVG viewBox="0 0 600 220" ariaLabel="クラウドがDXを加速するメカニズム">
                 <g transform="translate(10, 20)">
                     <text x="0" y="0" fill="var(--color-primary)" fontSize="14" fontWeight="bold">メカニズム 1: スピードと俊敏性</text>
                     <text x="10" y="20" fill="currentColor" fontSize="13">・インフラを数分で調達 → 実験・検証サイクルを高速化</text>
@@ -112,7 +113,7 @@ export const Section2: React.FC = () => (
                     <text x="10" y="40" fill="currentColor" fontSize="13">・節約したコストをイノベーションに再投資</text>
                 </g>
             </DiagramSVG>
-            <p className="tdesc">📎 <strong>参照</strong>: Google Cloud が考える DX<br />
+            <p className={styles.tdesc}>📎 <strong>参照</strong>: Google Cloud が考える DX<br />
             <a href="https://cloud.google.com/solutions/smart-analytics" target="_blank" rel="noreferrer">https://cloud.google.com/solutions/smart-analytics</a><br />
             <a href="https://cloud.google.com/transform" target="_blank" rel="noreferrer">https://cloud.google.com/transform</a></p>
         </SectionCard>

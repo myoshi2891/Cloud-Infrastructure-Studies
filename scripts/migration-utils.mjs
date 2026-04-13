@@ -2,7 +2,12 @@ import fs from 'fs';
 import path from 'path';
 
 const filePath = process.argv[2];
-const mode = process.argv[3] || 'check'; // 'check' or 'fix'
+const mode = process.argv[3]; // 'check' or 'fix'
+
+if (mode !== 'check' && mode !== 'fix') {
+    console.error('Usage: node scripts/migration-utils.mjs <file_path> [check|fix]');
+    process.exit(1);
+}
 
 if (!filePath) {
     console.error('Usage: node scripts/migration-utils.mjs <file_path> [check|fix]');
@@ -14,9 +19,6 @@ if (!fs.existsSync(absolutePath)) {
     console.error(`File not found: ${filePath}`);
     process.exit(1);
 }
-
-let content = fs.readFileSync(absolutePath, 'utf-8');
-const lines = content.split('\n');
 
 function validate(currentLines) {
     let openDivs = 0;
@@ -38,9 +40,9 @@ function validate(currentLines) {
             }
         }
 
-        // Check Div Nesting (Simple count)
-        const opens = (line.match(/<div/g) || []).length;
-        const closes = (line.match(/<\/div>/g) || []).length;
+        // Check Div Nesting using strict regex bounds
+        const opens = (line.match(/<div\b[^>]*>/g) || []).length;
+        const closes = (line.match(/<\/div\s*>/g) || []).length;
         openDivs += opens;
         openDivs -= closes;
 
@@ -65,18 +67,17 @@ function validate(currentLines) {
 }
 
 function fix() {
+    let content = fs.readFileSync(absolutePath, 'utf-8');
+    let lines = content.split('\n');
     let openDivs = 0;
     let newLines = [];
     
-    // 標準的な Next.js ページ構造 (Page -> Header -> Nav -> Main) を想定
-    // セクション開始 (<div id="sX") の時点で開いているべき div 数は 2 (Page wrapper + Main)
     const TARGET_DEPTH = 3; 
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         
         if (line.match(/<div id="s[0-9]+"/)) {
-            // 新しいセクションが始まる前に、深すぎるネストを閉じる
             while (openDivs >= TARGET_DEPTH) {
                 newLines.push('                </div>');
                 openDivs--;
@@ -84,18 +85,25 @@ function fix() {
         }
         
         newLines.push(line);
-        const opens = (line.match(/<div/g) || []).length;
-        const closes = (line.match(/<\/div>/g) || []).length;
+        const opens = (line.match(/<div\b[^>]*>/g) || []).length;
+        const closes = (line.match(/<\/div\s*>/g) || []).length;
         openDivs += opens;
         openDivs -= closes;
     }
 
-    // main や page 自体の閉じタグを考慮して、余分な div をメイン終了直前に挿入
-    // 実際には </main> の直前で調整
     let finalLines = [];
     let adjusted = false;
-    for (let line of newLines) {
+    // reset openDivs and recalculate during final push
+    openDivs = 0;
+    for (let i = 0; i < newLines.length; i++) {
+        const line = newLines[i];
+        const opens = (line.match(/<div\b[^>]*>/g) || []).length;
+        const closes = (line.match(/<\/div\s*>/g) || []).length;
+        openDivs += opens;
+        openDivs -= closes;
+
         if (line.includes('</main>') && !adjusted) {
+            // Need to close up to 2 open divs before main closing
             while (openDivs > 2) {
                 finalLines.push('                </div>');
                 openDivs--;
@@ -118,6 +126,8 @@ if (mode === 'fix') {
         process.exit(1);
     }
 } else {
+    const content = fs.readFileSync(absolutePath, 'utf-8');
+    const lines = content.split('\n');
     if (!validate(lines)) {
         process.exit(1);
     }

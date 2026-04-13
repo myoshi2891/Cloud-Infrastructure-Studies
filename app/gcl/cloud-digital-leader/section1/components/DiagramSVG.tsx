@@ -15,8 +15,7 @@ export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, chil
                 height="100%" 
                 fill="none" 
                 stroke="currentColor"
-                role="img"
-                aria-label={ariaLabel}
+                {...(ariaLabel ? { role: 'img', 'aria-label': ariaLabel } : { 'aria-hidden': 'true' })}
             >
                 {ariaLabel && <title>{ariaLabel}</title>}
                 {children}

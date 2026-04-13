@@ -109,8 +109,8 @@ export const Section4: React.FC = () => (
                     <TableComponent
                         headers={['項目', '内容']}
                         rows={section.features}
-                        renderRow={(row, i) => (
-                            <tr key={i}>
+                        renderRow={(row) => (
+                            <tr key={row.item}>
                                 <td><strong>{row.item}</strong></td>
                                 <td>{row.content}</td>
                             </tr>
@@ -120,8 +120,8 @@ export const Section4: React.FC = () => (
                     <TableComponent
                         headers={['サービス', '説明']}
                         rows={section.services}
-                        renderRow={(row, i) => (
-                            <tr key={i}>
+                        renderRow={(row) => (
+                            <tr key={row.service}>
                                 <td><strong>{row.service}</strong></td>
                                 <td>{row.description}</td>
                             </tr>

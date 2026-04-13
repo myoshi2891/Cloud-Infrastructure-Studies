@@ -312,13 +312,24 @@ export const GCDL_REFERENCES: ReferenceLink[] = [
     { title: 'Google Cloud Digital Leader Exam Guide (2026)', url: 'https://cloudfluently.com/blog/google-cloud-digital-leader-exam-guide-2026' },
 ];
 
-export const HERO_BADGES = [
-    { label: '出題比率 約17%', color: 'blue' as const },
-    { label: '最重要セクション', color: 'red' as const },
-    { label: 'ビジネス視点の理解', color: 'green' as const },
+export type HeroBadge = {
+    label: string;
+    color: 'blue' | 'red' | 'green';
+};
+
+export const HERO_BADGES: readonly HeroBadge[] = [
+    { label: '出題比率 約17%', color: 'blue' },
+    { label: '最重要セクション', color: 'red' },
+    { label: 'ビジネス視点の理解', color: 'green' },
 ];
 
-export const NAV_LINKS = [
+export type NavLink = {
+    id: string;
+    num: string;
+    label: string;
+};
+
+export const NAV_LINKS: readonly NavLink[] = [
     { id: 's0', num: '00', label: 'ガイド' },
     { id: 's1', num: '01', label: '出題範囲' },
     { id: 's2', num: '02', label: 'DX本質' },

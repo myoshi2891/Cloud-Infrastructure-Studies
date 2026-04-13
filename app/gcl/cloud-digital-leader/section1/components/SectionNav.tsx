@@ -1,13 +1,8 @@
 import React from 'react';
-
-type NavLink = {
-    id: string;
-    num: string;
-    label: string;
-};
+import { NavLink } from '../constants';
 
 interface SectionNavProps {
-    links: NavLink[];
+    links: readonly NavLink[];
 }
 
 export const SectionNav: React.FC<SectionNavProps> = ({ links }) => {

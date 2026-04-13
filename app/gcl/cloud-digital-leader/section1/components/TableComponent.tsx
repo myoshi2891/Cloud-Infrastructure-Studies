@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './TableComponent.module.css';
 
 interface TableComponentProps<T> {
     headers: string[];
@@ -8,8 +9,8 @@ interface TableComponentProps<T> {
 
 export function TableComponent<T>({ headers, rows, renderRow }: TableComponentProps<T>) {
     return (
-        <div className="ctable-wrap">
-            <table className="ctable">
+        <div className={styles.tableWrap}>
+            <table className={styles.table}>
                 <thead>
                     <tr>
                         {headers.map((h, i) => (

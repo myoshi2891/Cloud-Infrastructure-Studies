@@ -1,15 +1,11 @@
 import React from 'react';
-
-type Badge = {
-    label: string;
-    color: 'blue' | 'red' | 'green';
-};
+import { HeroBadge } from '../constants';
 
 interface SectionHeroProps {
     eyebrow: string;
     title: React.ReactNode;
     subtitle: string;
-    badges: Badge[];
+    badges: readonly HeroBadge[];
 }
 
 export const SectionHero: React.FC<SectionHeroProps> = ({ eyebrow, title, subtitle, badges }) => {
