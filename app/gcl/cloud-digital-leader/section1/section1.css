@@ -1,0 +1,9 @@
+.s1-page {
+    /* ページ固有のスタイル。UI/UXの重要ルールに基づき snav は z-index: 100 と top: 0 を持つ */
+}
+
+.s1-page .snav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
