@@ -20,6 +20,19 @@ if (!fs.existsSync(absolutePath)) {
     process.exit(1);
 }
 
+/**
+ * Validate template literal boundaries and simple <div> nesting for the provided file lines.
+ *
+ * Performs a line-by-line heuristic check for:
+ * - Unclosed template literals by tracking unescaped backticks.
+ * - Unbalanced `<div>` / `</div>` counts and unusually deep nesting when a section `<div id="sN">` is encountered.
+ *
+ * This function logs a warning when a section start is detected while nesting is high, logs errors when validation fails,
+ * and sets `process.exitCode = 1` on failure.
+ *
+ * @param {string[]} currentLines - The file content split into lines.
+ * @returns {boolean} `true` if validation passed (no errors), `false` otherwise.
+ */
 function validate(currentLines) {
     let openDivs = 0;
     let inTemplateLiteral = false;
@@ -66,6 +79,14 @@ function validate(currentLines) {
     return true;
 }
 
+/**
+ * Inserts closing </div> lines to reduce excessive <div> nesting and writes the modified file back to disk.
+ *
+ * Scans the in-memory `lines`, and whenever a section start matching `<div id="s<digits>"` is encountered,
+ * inserts repeated '                </div>' lines until the running open-<div> count is below the TARGET_DEPTH (3).
+ * After a first occurrence of `</main>`, inserts '                </div>' lines until the open-<div> count is 2.
+ * Finally writes the resulting lines to `absolutePath` and logs the file path that was modified.
+ */
 function fix() {
     let content = fs.readFileSync(absolutePath, 'utf-8');
     let lines = content.split('\n');
