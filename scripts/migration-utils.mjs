@@ -18,13 +18,13 @@ if (!fs.existsSync(absolutePath)) {
 let content = fs.readFileSync(absolutePath, 'utf-8');
 const lines = content.split('\n');
 
-function validate() {
+function validate(currentLines) {
     let openDivs = 0;
     let inTemplateLiteral = false;
     let errors = [];
 
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
+    for (let i = 0; i < currentLines.length; i++) {
+        const line = currentLines[i];
         const lineNum = i + 1;
 
         // Check Template Literals
@@ -56,6 +56,7 @@ function validate() {
     if (errors.length > 0) {
         console.error('--- Validation Errors ---');
         errors.forEach(e => console.error(e));
+        process.exitCode = 1;
         return false;
     }
     console.log('✅ Validation passed.');
@@ -109,7 +110,14 @@ function fix() {
 
 if (mode === 'fix') {
     fix();
-    validate();
+    // Reload content and lines after fix
+    const updatedContent = fs.readFileSync(absolutePath, 'utf-8');
+    const updatedLines = updatedContent.split('\n');
+    if (!validate(updatedLines)) {
+        process.exit(1);
+    }
 } else {
-    validate();
+    if (!validate(lines)) {
+        process.exit(1);
+    }
 }

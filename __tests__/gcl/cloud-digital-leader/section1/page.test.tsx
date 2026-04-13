@@ -6,7 +6,7 @@ describe('Cloud Digital Leader Section 1 Page', () => {
     it('renders the page title', () => {
         render(<Page />);
         expect(
-            screen.getByRole('heading', { level: 1, name: /Section 1: デジタルトランスフォーメーション/i })
+            screen.getByRole('heading', { level: 1, name: /デジタルトランスフォーメーションと Google Cloud/i })
         ).toBeInTheDocument();
     });
 });
