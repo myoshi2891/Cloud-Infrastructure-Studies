@@ -80,12 +80,9 @@ function validate(currentLines) {
 }
 
 /**
- * Inserts closing </div> lines to reduce excessive <div> nesting and writes the modified file back to disk.
+ * Reduce excessive <div> nesting in the target file by inserting indented closing `</div>` tags and writing the modified content back to disk.
  *
- * Scans the in-memory `lines`, and whenever a section start matching `<div id="s<digits>"` is encountered,
- * inserts repeated '                </div>' lines until the running open-<div> count is below the TARGET_DEPTH (3).
- * After a first occurrence of `</main>`, inserts '                </div>' lines until the open-<div> count is 2.
- * Finally writes the resulting lines to `absolutePath` and logs the file path that was modified.
+ * When a section start (`<div id="s<digits>"`) is encountered, inserts indented `</div>` lines until the running open-`<div>` count is below a target depth (3). Before the first `</main>` occurrence, inserts indented `</div>` lines until the open-`<div>` count is 2. Writes the resulting lines to `absolutePath` and logs the modified file path.
  */
 function fix() {
     let content = fs.readFileSync(absolutePath, 'utf-8');
