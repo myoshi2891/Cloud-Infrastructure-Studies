@@ -141,15 +141,15 @@ import { DiagramSVG } from '../DiagramSVG';
 export function SectionN() {
     return (
         <section className={styles.section} aria-label="セクションN">
-            <div className="tcard">
-                <div className="ttitle"><span className="tid">N.M</span>カードタイトル</div>
-                <p className="tdesc">説明文（省略・要約なし）</p>
-                
+            <div className={styles.tcard}>
+                <div className={styles.ttitle}><span className={styles.tid}>N.M</span>カードタイトル</div>
+                <p className={styles.tdesc}>説明文（省略・要約なし）</p>
+
                 {/* ASCIIの代わりにSVGを利用 */}
                 <DiagramSVG />
 
-                <div className="ctable-wrap" tabIndex={0} aria-label="データテーブル">
-                    <table className="ctable">
+                <div className={styles.ctableWrap} tabIndex={0} aria-label="データテーブル">
+                    <table className={styles.ctable}>
                         <thead>
                             <tr><th scope="col">列1</th><th scope="col">列2</th></tr>
                         </thead>

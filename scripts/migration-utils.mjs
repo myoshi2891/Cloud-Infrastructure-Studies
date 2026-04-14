@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 const filePath = process.argv[2];
-const mode = process.argv[3]; // 'check' or 'fix'
+const mode = process.argv[3] || 'check'; // 'check' or 'fix'
 
 if (mode !== 'check' && mode !== 'fix') {
     console.error('Usage: node scripts/migration-utils.mjs <file_path> [check|fix]');

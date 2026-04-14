@@ -1,5 +1,16 @@
 import React from 'react';
+import styles from './DiagramSVG.module.css';
 
+/**
+ * SVGダイアグラムを表示するためのコンポーネント
+ * 
+ * アクセシビリティに配慮したSVGラッパーとして機能します。
+ * 
+ * @param viewBox - SVGのビューボックス（例: "0 0 600 300"）
+ * @param ariaLabel - SVG要素のアクセシビリティラベル
+ * @param children - SVG内部に描画されるReact要素
+ * @returns ラップされたSVG要素
+ */
 interface DiagramSVGProps {
     viewBox: string;
     ariaLabel?: string;
@@ -8,7 +19,7 @@ interface DiagramSVGProps {
 
 export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, children }) => {
     return (
-        <div className="diagram-svg">
+        <div className={styles.diagramSvg}>
             <svg 
                 viewBox={viewBox} 
                 width="100%" 
