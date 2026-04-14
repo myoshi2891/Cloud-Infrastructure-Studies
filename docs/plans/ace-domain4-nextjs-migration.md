@@ -45,7 +45,10 @@
 
 ## 実装上の注意
 
-- `domain4.css` にページ固有のテーマカラー・変数を定義する。
+- `domain4.css` にページ固有のテーマカラー・変数を定義しつつ、各コンポーネント固有のスタイルには **CSS Modules** (`*.module.css`) を使用する。
+- 巨大化を防ぐため、各セクション（Chapter）は `components/sections/` などの別ファイルに分割して実装する。
+- ASCIIダイアグラムは専用の SVG コンポーネント（`DiagramSVG.tsx` 等）に置き換える。
+- アクセシビリティ（`aria-label` やセマンティックタグの活用）を徹底し、コンポーネントには **Docstrings** (JSDoc) を追加する。
 - JSXの属性変換（例: `stroke-width` → `strokeWidth`）を遵守する。
 - TypeScriptのstrictモードに適合させる。
-- 1回の `page.tsx` 更新は適度なサイズに抑え、複数回に分けて実装する。
+- 1回の更新は適度なサイズに抑え、複数回に分けて実装する。

@@ -9,8 +9,11 @@
 ## 移行方針
 
 - Red-Green サイクル: テストを先に書き、実装で通す
-- 定数は `constants.ts` に集約し、JSX は `page.tsx` でレンダリング
-- SVGはインライン実装（`cdl-section3-ai-innovation.md` の図を参照）
+- 定数は `constants.ts` に集約し、JSX は巨大化を防ぐため `components/sections/Section*.tsx` などに分割してレンダリングする
+- SVGは専用コンポーネント（`components/DiagramSVG.tsx` など）に抽出する
+- コンポーネント固有のスタイルは **CSS Modules**（`*.module.css`）を使用する
+- アクセシビリティ（a11y）の向上（`aria-label` の付与やセマンティックなタグの使用）を徹底する
+- コンポーネントおよびユーティリティには **Docstrings** を追加する
 
 ---
 

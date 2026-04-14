@@ -314,8 +314,15 @@ export function Header() {
                     >
                         <DropdownItem
                             href="/gcl/cloud-digital-leader"
-                            label="Cloud Digital Leader 認定試験"
-                            desc="すべてのコンテンツを見る"
+                            label="概要"
+                            desc="Cloud Digital Leader とは"
+                            ariaLabel="Cloud Digital Leader 概要"
+                            onClick={() => setOpenMenu(null)}
+                        />
+                        <DropdownItem
+                            href="/gcl/cloud-digital-leader/section1"
+                            label="Section 1"
+                            desc="デジタルトランスフォーメーションと Google Cloud"
                             onClick={() => setOpenMenu(null)}
                         />
                     </div>
