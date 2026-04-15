@@ -149,7 +149,7 @@ Vertex AI（医療画像 AI / Medical Imaging）
   - Google Cloud は HIPAA BAA（事業提携契約）に対応（利用には BAA の締結が必須であり、顧客側の構成・運用責任が前提）
   - データ暗号化・アクセスログが必須
 </code></pre>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

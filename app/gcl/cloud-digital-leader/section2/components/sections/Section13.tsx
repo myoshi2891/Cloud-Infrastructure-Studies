@@ -157,7 +157,7 @@ export const Section13: React.FC = () => {
 <td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/database-migration/docs">https://cloud.google.com/database-migration/docs</a></td>
 </tr>
 </tbody></table></div>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 <p class="tdesc"><em>本ガイドは Google Cloud Digital Leader（CDL）試験の Section 2 に特化した学習資料です。</em>
 <em>試験の最新情報は必ず公式サイト（<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/learn/certification/cloud-digital-leader">https://cloud.google.com/learn/certification/cloud-digital-leader</a>）でご確認ください。</em>
 <em>作成日: 2026年4月</em></p>

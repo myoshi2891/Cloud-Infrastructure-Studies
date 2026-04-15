@@ -136,7 +136,7 @@ GCS       → Dataproc →`}
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices">https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></p>
 </blockquote>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

@@ -202,7 +202,7 @@ Looker Studio を選ぶ場合:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://lookerstudio.google.com/">https://lookerstudio.google.com/</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/bi-engine-intro">https://cloud.google.com/bigquery/docs/bi-engine-intro</a></p>
 </blockquote>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

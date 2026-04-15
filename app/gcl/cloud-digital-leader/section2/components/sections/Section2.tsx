@@ -148,7 +148,7 @@ export const Section2: React.FC = () => {
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/introduction">https://cloud.google.com/bigquery/docs/introduction</a></p>
 </blockquote>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

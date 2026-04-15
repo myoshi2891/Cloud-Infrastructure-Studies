@@ -208,7 +208,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 □ Dataplex と Sensitive Data Protection の役割を説明できる
 □ データガバナンスとはなにか、なぜ重要かを説明できる
 </code></pre>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

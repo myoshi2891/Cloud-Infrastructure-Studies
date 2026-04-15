@@ -383,7 +383,7 @@ Cloud SQL PostgreSQL との違い:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/memorystore/docs">https://cloud.google.com/memorystore/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/alloydb/docs">https://cloud.google.com/alloydb/docs</a></p>
 </blockquote>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

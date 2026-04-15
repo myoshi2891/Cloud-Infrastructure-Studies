@@ -96,7 +96,7 @@ export const Section4: React.FC = () => {
   - 両方が必要な場合（過去の分析+リアルタイム監視）
   - Dataflow は同一コードでバッチ・ストリーミング両対応
 </code></pre>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

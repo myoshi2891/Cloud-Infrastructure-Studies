@@ -244,7 +244,7 @@ export const Section10: React.FC = () => {
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dlp/docs">https://cloud.google.com/dlp/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/column-level-security-intro">https://cloud.google.com/bigquery/docs/column-level-security-intro</a></p>
 </blockquote>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

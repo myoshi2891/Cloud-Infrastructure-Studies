@@ -142,7 +142,7 @@ export const Section5: React.FC = () => {
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/best-practices">https://cloud.google.com/storage/docs/best-practices</a></p>
 </blockquote>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>

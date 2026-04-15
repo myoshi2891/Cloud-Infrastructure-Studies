@@ -97,7 +97,7 @@ export const Section1: React.FC = () => {
 <td class="p-3 align-top leading-relaxed text-[13px]">★★☆</td>
 </tr>
 </tbody></table></div>
-<hr />
+<hr class="my-8 border-[var(--color-border)]" />
 ` }} />
             
             </SectionCard>
