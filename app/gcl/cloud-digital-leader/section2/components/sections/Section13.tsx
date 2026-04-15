@@ -13,7 +13,7 @@ export const Section13: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-13" idNumber="13" title="公式参照リソース一覧">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<table>
+                <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>カテゴリ</th>
@@ -156,7 +156,7 @@ export const Section13: React.FC = () => {
 <td>概要ドキュメント</td>
 <td><a href="https://cloud.google.com/database-migration/docs">https://cloud.google.com/database-migration/docs</a></td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <hr />
 <p class="tdesc"><em>本ガイドは Google Cloud Digital Leader（CDL）試験の Section 2 に特化した学習資料です。</em>
 <em>試験の最新情報は必ず公式サイト（<a href="https://cloud.google.com/learn/certification/cloud-digital-leader">https://cloud.google.com/learn/certification/cloud-digital-leader</a>）でご確認ください。</em>

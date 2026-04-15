@@ -70,7 +70,7 @@ Looker の解決策:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Looker の主な機能</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>機能</th>
@@ -108,12 +108,12 @@ Looker の解決策:
 <td>業界別の分析テンプレート</td>
 <td>分析環境の素早い構築</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">7.2 Looker Studio（無料セルフサービス BI）</h3>
 <h4 class="stitle">Looker Studio とは</h4>
 <p class="tdesc"><strong>Looker Studio</strong>（旧 Google Data Studio）は、
 無料で使えるセルフサービスのダッシュボード作成ツールです。</p>
-<pre><code className="language-text">Looker Studio の特徴:
+<pre class="code-block"><code className="language-text">Looker Studio の特徴:
 
   - 基本機能は無料だが、有償の Looker Studio Pro（例: \$9/ユーザー/プロジェクト/月）などの有料オプションがある
   - コードなしでドラッグ&amp;ドロップで作成
@@ -132,9 +132,9 @@ Looker の解決策:
   - + サードパーティコネクタ多数
 </code></pre>
 <h3 class="stitle">7.3 Looker vs Looker Studio の比較</h3>
-<pre><code className="language-text">試験で最もよく問われる比較ポイント!
+<pre class="code-block"><code className="language-text">試験で最もよく問われる比較ポイント!
 </code></pre>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>比較項目</th>
@@ -182,9 +182,9 @@ Looker の解決策:
 <td>あり（バージョン管理）</td>
 <td>なし</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h4 class="stitle">✅ ベストプラクティス: BI ツール選択</h4>
-<pre><code className="language-yaml">Looker を選ぶ場合:
+<pre class="code-block"><code className="language-yaml">Looker を選ぶ場合:
   - 大企業で部門横断の統一されたデータ文化を作りたい
   - データ定義のガバナンスが必要
   - 100人以上がデータを参照する環境

@@ -17,7 +17,7 @@ export const Section5: React.FC = () => {
 <h4 class="stitle">Cloud Storage とは</h4>
 <p class="tdesc"><strong>Cloud Storage</strong> は、あらゆる種類のファイル（オブジェクト）を
 インターネット経由で保存・取得できるストレージサービスです。</p>
-<pre><code className="language-text">Cloud Storage の特徴:
+<pre class="code-block"><code className="language-text">Cloud Storage の特徴:
 
   - ファイルサイズ制限なし（最大 5TB/オブジェクト）
   - グローバルにアクセス可能
@@ -60,7 +60,7 @@ export const Section5: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<table>
+                <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>クラス</th>
@@ -98,7 +98,7 @@ export const Section5: React.FC = () => {
 <td>365日</td>
 <td>年1回未満のアクセス・法令遵守のための長期保管</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p class="tdesc">※ 価格はリージョンにより異なります — 表は us-central1 の参考値です。最新情報は<a href="https://cloud.google.com/storage/pricing">公式の料金ページ</a>をご確認ください。</p>
 <h4 class="stitle">Cloud Storage のライフサイクル管理</h4>
 ` }} />
@@ -120,7 +120,7 @@ export const Section5: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">✅ ベストプラクティス: Cloud Storage</h4>
-<pre><code className="language-yaml">バケット設計:
+<pre class="code-block"><code className="language-yaml">バケット設計:
   - リージョン選択: データのユーザーに近いリージョンを選ぶ
   - バージョニング: 重要なデータは誤削除・上書き防止のため有効化
   - ライフサイクル: 全バケットにライフサイクルポリシーを設定する
@@ -152,7 +152,7 @@ export const Section5: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<p class="tdesc"><strong>2.2 Google Cloud データマネジメントソリューション</strong></p>
 <p class="tdesc">CDL試験では、ビジネスのユースケースに応じて最適なデータ管理製品を選択する能力が求められる。これには、データベース、データウェアハウス、データレイクといった基本概念の明確な区別が含まれる 。</p>
 <p class="tdesc">以下の表は、データ管理の主要な3つの概念の違いを明確に示したものである 。</p>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th><strong>アーキテクチャ</strong></th>
@@ -179,7 +179,7 @@ export const Section5: React.FC = () => {
 <td>読み取り時スキーマ（Schema-on-read）。柔軟性が高く、事前のデータモデリングが不要。</td>
 <td>Cloud Storage</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <p class="tdesc">最近のトレンドとして、データレイクの柔軟性とデータウェアハウスの管理機能（ACIDトランザクションや高度なSQLサポート）を融合させた「データレイクハウス（Data Lakehouse）」という概念も普及しており、Google CloudではBigQueryの拡張機能（BigLake等）がこの領域をカバーしている 。</p>
 <h3 class="stitle"><strong>オブジェクトストレージの最適化：Cloud Storage</strong></h3>
 <p class="tdesc">Cloud Storageは、あらゆる量の非構造化データを保存し、必要な頻度で取得できるフルマネージドのオブジェクトストレージサービスである 。クラウドのコスト最適化において、Cloud Storageの適切な「ストレージクラス」の選択は極めて重要である 。Google Cloudは、データのアクセス頻度と保存期間の要件に応じて、4つの主要なストレージクラスを提供している 。</p>

@@ -156,7 +156,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">12.3 混同しやすいポイントの整理</h3>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>混同パターン</th>
@@ -191,9 +191,9 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 <td>Pub/Sub = Dataflow</td>
 <td>Pub/Sub はメッセージング（配信）、Dataflow はデータ処理（変換）</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">12.4 Section 2 チェックリスト</h3>
-<pre><code className="language-text">試験前の最終確認:
+<pre class="code-block"><code className="language-text">試験前の最終確認:
 
 □ 構造化・半構造化・非構造化データの違いと例を説明できる
 □ データ分析の4レベル（記述・診断・予測・処方）を説明できる

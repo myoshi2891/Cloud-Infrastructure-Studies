@@ -38,7 +38,7 @@ export const Section1: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">1.2 Section 2 のサブトピック一覧</h3>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>#</th>
@@ -96,7 +96,7 @@ export const Section1: React.FC = () => {
 <td>ビジネスユースケース別のデータ活用</td>
 <td>★★☆</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <hr />
 ` }} />
             

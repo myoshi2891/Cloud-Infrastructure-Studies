@@ -16,14 +16,14 @@ export const Section3: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">3.1 3 種類のデータ形式</h3>
 <p class="tdesc">データは形式によって 3 種類に分類されます。
 試験では「どのデータ形式にどのサービスが適切か」が問われます。</p>
-<pre><code className="language-text">世界中のデータの内訳（概算）:
+<pre class="code-block"><code className="language-text">世界中のデータの内訳（概算）:
   構造化データ:    約 10〜20%
   半構造化データ:  約 10〜15%
   非構造化データ:  約 70〜80%   ← 最も多い！
 </code></pre>
 <h3 class="stitle">3.2 構造化データ（Structured Data）</h3>
 <h4 class="stitle">定義と特徴</h4>
-<pre><code className="language-text">構造化データとは:
+<pre class="code-block"><code className="language-text">構造化データとは:
 
   - 行と列（表形式）で整理されたデータ
   - スキーマ（型定義）が明確に定まっている
@@ -36,7 +36,7 @@ export const Section3: React.FC = () => {
   ❌ 非構造化データのような柔軟な表現は難しい
 </code></pre>
 <h4 class="stitle">構造化データの具体例</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>データ種別</th>
@@ -69,7 +69,7 @@ export const Section3: React.FC = () => {
 <td>銘柄・日時・始値・終値・出来高</td>
 <td>BigQuery / Bigtable</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">3.3 非構造化データ（Unstructured Data）</h3>
 <h4 class="stitle">定義と特徴</h4>
 ` }} />
@@ -96,7 +96,7 @@ export const Section3: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">非構造化データの具体例</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>データ種別</th>
@@ -141,10 +141,10 @@ export const Section3: React.FC = () => {
 <td>Cloud Logging / GCS</td>
 <td>BigQuery</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">3.4 半構造化データ（Semi-Structured Data）</h3>
 <h4 class="stitle">定義と特徴</h4>
-<pre><code className="language-text">半構造化データとは:
+<pre class="code-block"><code className="language-text">半構造化データとは:
 
   - 完全な表形式ではないが、一定の構造を持つデータ
   - JSON・XML・CSV・YAML などの形式
@@ -167,7 +167,7 @@ export const Section3: React.FC = () => {
   ✅ BigQuery や Firestore で直接扱える
 </code></pre>
 <h3 class="stitle">3.5 データ形式の比較まとめ</h3>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>比較項目</th>
@@ -212,7 +212,7 @@ export const Section3: React.FC = () => {
 <td>中</td>
 <td>高（AI/ML 必要）</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <blockquote>
 <p class="tdesc">📎 <strong>参照</strong>:
 <a href="https://cloud.google.com/learn/what-is-structured-data">https://cloud.google.com/learn/what-is-structured-data</a>

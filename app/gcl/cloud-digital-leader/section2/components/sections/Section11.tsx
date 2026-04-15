@@ -37,7 +37,7 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">具体的な活用例</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>課題</th>
@@ -70,7 +70,7 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
 <td>Natural Language API</td>
 <td>製品改善サイクル短縮</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">11.2 製造業でのデータ活用</h3>
 ` }} />
             
@@ -131,7 +131,7 @@ BigQuery に全データを蓄積 → モデルの継続的な改善
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">11.4 医療業界でのデータ活用</h3>
-<pre><code className="language-text">課題: 診断精度を上げたい・業務効率化
+<pre class="code-block"><code className="language-text">課題: 診断精度を上げたい・業務効率化
 
 医療画像（レントゲン・CT・MRI）
     ↓

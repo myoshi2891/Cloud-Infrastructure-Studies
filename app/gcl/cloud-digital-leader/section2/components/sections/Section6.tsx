@@ -16,7 +16,7 @@ export const Section6: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">6.1 データベース選択の全体像</h3>
 <p class="tdesc">Google Cloud には多種多様なデータベースサービスがあります。
 適切なサービスを選ぶことが試験の重要なポイントです。</p>
-<pre><code className="language-text">データベース選択フロー:
+<pre class="code-block"><code className="language-text">データベース選択フロー:
 
                    RDB が必要？
                    /          \\
@@ -33,7 +33,7 @@ export const Section6: React.FC = () => {
                      BigQuery
 </code></pre>
 <h3 class="stitle">6.2 Cloud SQL（マネージドリレーショナルDB）</h3>
-<pre><code className="language-text">Cloud SQL とは:
+<pre class="code-block"><code className="language-text">Cloud SQL とは:
 
   - MySQL・PostgreSQL・SQL Server のフルマネージドサービス
   - OS パッチ・バックアップ・フェイルオーバーを Google が自動管理
@@ -107,7 +107,7 @@ HA 構成あり（マルチゾーン）:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Cloud SQL vs Cloud Spanner の比較</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>比較項目</th>
@@ -150,9 +150,9 @@ HA 構成あり（マルチゾーン）:
 <td>リージョン内の中規模 OLTP</td>
 <td>グローバル展開・超大規模 OLTP</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">6.4 Firestore（NoSQL ドキュメント DB）</h3>
-<pre><code className="language-text">Firestore とは:
+<pre class="code-block"><code className="language-text">Firestore とは:
 
   - サーバーレスの NoSQL ドキュメントデータベース
   - データを「ドキュメント（JSON 的な形式）」と「コレクション」で管理
@@ -181,7 +181,7 @@ HA 構成あり（マルチゾーン）:
   ❌ 大規模な JOIN クエリや集計分析は得意でない
 </code></pre>
 <h3 class="stitle">6.5 Bigtable（NoSQL ワイドカラム DB）</h3>
-<pre><code className="language-text">Bigtable とは:
+<pre class="code-block"><code className="language-text">Bigtable とは:
 
   - Google が内部で Gmail・Google Maps・YouTube に使用してきた DB
   - 非常に大量のデータを超低レイテンシで読み書きできる
@@ -205,7 +205,7 @@ Cloud SQL との違い:
   Cloud SQL: 標準的な RDB 操作（JOIN・集計・トランザクション）
 </code></pre>
 <h3 class="stitle">6.6 BigQuery（データウェアハウス）</h3>
-<pre><code className="language-text">BigQuery とは:
+<pre class="code-block"><code className="language-text">BigQuery とは:
 
   - Google Cloud のサーバーレスなデータウェアハウス
   - ペタバイト規模のデータを数秒で SQL 分析できる
@@ -232,7 +232,7 @@ BigQuery の革命的な点:
   - 予約スロット（定額課金）とオンデマンド課金の使い分け
 </code></pre>
 <h4 class="stitle">BigQuery の独自機能</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>機能</th>
@@ -265,7 +265,7 @@ BigQuery の革命的な点:
 <td>Python Pandas ライクに BigQuery を操作</td>
 <td>データサイエンティスト向け</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">6.7 Memorystore（インメモリ DB）</h3>
 ` }} />
             
@@ -295,7 +295,7 @@ Redis vs Memcached の選択:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">6.8 AlloyDB（PostgreSQL 互換高性能 DB）</h3>
-<pre><code className="language-text">AlloyDB とは:
+<pre class="code-block"><code className="language-text">AlloyDB とは:
 
   - Google が独自設計した PostgreSQL 互換のフルマネージド DB
   - Cloud SQL PostgreSQL より分析クエリが最大 4 倍高速
@@ -313,7 +313,7 @@ Cloud SQL PostgreSQL との違い:
   ✅ PostgreSQL アプリをほぼ変更なしに高性能化したい場合
 </code></pre>
 <h3 class="stitle">6.9 全データベースサービスの比較まとめ</h3>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>サービス</th>
@@ -372,7 +372,7 @@ Cloud SQL PostgreSQL との違い:
 <td>キャッシュ・セッション</td>
 <td>Redis・低レイテンシ</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <blockquote>
 <p class="tdesc">📎 <strong>参照</strong>:
 <a href="https://cloud.google.com/sql/docs">https://cloud.google.com/sql/docs</a>
@@ -404,7 +404,7 @@ Cloud SQL PostgreSQL との違い:
 <p class="tdesc">極めて低い遅延が求められるインメモリのユースケースには、「Memorystore」が利用される。これはRedisおよびMemcachedと互換性のあるフルマネージドのインメモリデータストアであり、データベースのクエリ結果のキャッシング、ウェブアプリケーションのセッション管理、リアルタイムのリーダーボードなど、ミリ秒未満の応答速度が不可欠なワークロードに適用される 。</p>
 <h3 class="stitle"><strong>データベース選定のデシジョン・マトリクス</strong></h3>
 <p class="tdesc">多様なビジネス要件に対して、どのデータベースソリューションを採用すべきかの判断基準を以下の表に整理する 。</p>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th><strong>要件の特性</strong></th>
@@ -443,7 +443,7 @@ Cloud SQL PostgreSQL との違い:
 <td><strong>Memorystore</strong></td>
 <td>セッション管理、クエリキャッシュ、リアルタイムリーダーボード</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle"><strong>データベースの移行とモダナイゼーション (Database Migration)</strong></h3>
 <p class="tdesc">オンプレミスのレガシーデータベースや他のクラウドプロバイダーの環境からGoogle Cloudへの移行は、インフラストラクチャをモダナイズする上で不可避のステップである 。この移行プロセスにおける運用上の負担を排除し、安全かつシームレスな移行を実現するサービスが「Database Migration Service (DMS)」である (<a href="https://cloud.google.com/database-migration)%E3%80%82">https://cloud.google.com/database-migration)。</a></p>
 <p class="tdesc">DMSは、移行用のサーバーをプロビジョニングしたり管理したりする必要がないサーバーレスの移行ソリューションである。オートスケーリング機能により、ソースデータベースの初期スナップショットの取得から、継続的な変更データキャプチャ（CDC）によるレプリケーションまで、大規模なデータ移行を最小限のダウンタイムで実行できる 。DMSの特筆すべきベストプラクティスは、生成AIの力を活用した「Gemini in Database Migration Service」の利用である。従来、OracleやSQL Serverといった商用データベースから、Cloud SQL for PostgreSQLなどの異なるデータベースエンジン（異種移行）へ移行する際、ストアドプロシージャ、トリガー、関数といったデータベース常駐コードの変換は極めて困難で手作業による修正が不可避であった。Geminiを利用することで、これらの複雑なコードがターゲットのSQLダイアレクト（方言）に合わせてAIによって自動的に変換・提案され、開発者のコード修正作業の負担とエラーのリスクが劇的に削減される 。</p>

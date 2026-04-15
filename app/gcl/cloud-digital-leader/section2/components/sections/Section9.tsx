@@ -15,7 +15,7 @@ export const Section9: React.FC = () => {
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">9.1 データアーキテクチャの全体像</h3>
 <h4 class="stitle">データレイクとデータウェアハウス</h4>
-<pre><code className="language-text">データレイク（Data Lake）:
+<pre class="code-block"><code className="language-text">データレイク（Data Lake）:
 
   - あらゆる形式の生データを大量に保管する場所
   - スキーマ定義なし（スキーマオンリード）

@@ -65,7 +65,7 @@ Pub/Sub ありの解決策:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Pub/Sub のユースケース</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>ユースケース</th>
@@ -92,7 +92,7 @@ Pub/Sub ありの解決策:
 <td><strong>リアルタイム通知</strong></td>
 <td>特定イベント発生時の即座の通知</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">8.2 Cloud Dataflow（データパイプライン）</h3>
 <h4 class="stitle">Dataflow とは</h4>
 <p class="tdesc"><strong>Dataflow</strong> は、バッチ処理とストリーミング処理の両方に対応した
@@ -124,7 +124,7 @@ Pub/Sub ありの解決策:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Dataflow のユースケース</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>ユースケース</th>
@@ -157,7 +157,7 @@ Pub/Sub ありの解決策:
 <td>バッチ</td>
 <td>CSV → JSON、Avro への変換</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">8.3 Cloud Dataproc（マネージド Hadoop/Spark）</h3>
 <h4 class="stitle">Dataproc とは</h4>
 <p class="tdesc"><strong>Dataproc</strong> は、Apache Hadoop・Apache Spark クラスタを

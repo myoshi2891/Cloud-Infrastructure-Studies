@@ -49,7 +49,7 @@ export const Section10: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">10.2 Dataplex（データ管理・ガバナンス基盤）</h3>
-<pre><code className="language-text">Dataplex とは:
+<pre class="code-block"><code className="language-text">Dataplex とは:
 
   - Google Cloud の統合データ管理・ガバナンスプラットフォーム
   - BigQuery・Cloud Storage・Cloud SQL など複数サービスを横断して管理
@@ -176,7 +176,7 @@ export const Section10: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<table>
+                <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>手法</th>
@@ -203,7 +203,7 @@ export const Section10: React.FC = () => {
 <td>状況による</td>
 <td>統計分析・ML 学習</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">10.6 データのアクセス制御</h3>
 ` }} />
             

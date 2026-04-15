@@ -41,7 +41,7 @@ export const Section2: React.FC = () => {
 <p class="tdesc"><strong>データドリブン経営</strong>とは、経験・勘・感覚ではなく、
 <strong>データと分析に基づいて意思決定</strong>を行う経営スタイルです。</p>
 <h4 class="stitle">従来型経営 vs データドリブン経営の比較</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>比較項目</th>
@@ -74,7 +74,7 @@ export const Section2: React.FC = () => {
 <td>バイアスが入りやすい</td>
 <td>データに基づくため客観的</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <h3 class="stitle">2.3 データが生み出す 4 種類のビジネス価値</h3>
 <p class="tdesc">データ分析には4つのレベルがあります。
 上位レベルほど高い価値を生み出しますが、より高度な技術が必要です。</p>
@@ -109,7 +109,7 @@ export const Section2: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">各分析レベルの具体例（EC サイトの場合）</h4>
-<table>
+<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
 <th>レベル</th>
@@ -142,7 +142,7 @@ export const Section2: React.FC = () => {
 <td>自動発注 AI</td>
 <td>Vertex AI Agent</td>
 </tr>
-</tbody></table>
+</tbody></table></div>
 <blockquote>
 <p class="tdesc">📎 <strong>参照</strong>: Google Cloud データ分析ソリューション
 <a href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a>

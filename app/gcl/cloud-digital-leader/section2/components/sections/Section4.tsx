@@ -41,7 +41,7 @@ export const Section4: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">4.2 バッチ処理 vs ストリーミング処理</h3>
 <p class="tdesc">データの処理方式には主に 2 種類あります。
 どちらを選ぶかはビジネス要件によって決まります。</p>
-<pre><code className="language-text">バッチ処理（Batch Processing）:
+<pre class="code-block"><code className="language-text">バッチ処理（Batch Processing）:
   定義: データをある程度溜めてから、まとめて一括処理する
 
   例:
@@ -75,7 +75,7 @@ export const Section4: React.FC = () => {
   GCP サービス: Pub/Sub + Dataflow
 </code></pre>
 <h4 class="stitle">✅ ベストプラクティス: 処理方式の選択</h4>
-<pre><code className="language-yaml">バッチ処理を選ぶ場合:
+<pre class="code-block"><code className="language-yaml">バッチ処理を選ぶ場合:
 
   - データの鮮度が数時間〜1日遅れても許容できる
   - コストを最小化したい
