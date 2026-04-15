@@ -13,7 +13,7 @@ export const Section10: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-10" idNumber="10" title="Google Cloud のデータガバナンスとセキュリティ">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">10.1 データガバナンスとは</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">10.1 データガバナンスとは</h3>
 <p class="tdesc"><strong>データガバナンス</strong>とは、組織のデータを
 正確・安全・効率的に管理するための仕組み・プロセス・ポリシーです。</p>
 ` }} />
@@ -48,7 +48,7 @@ export const Section10: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">10.2 Dataplex（データ管理・ガバナンス基盤）</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">10.2 Dataplex（データ管理・ガバナンス基盤）</h3>
 <pre class="code-block"><code className="language-text">Dataplex とは:
 
   - Google Cloud の統合データ管理・ガバナンスプラットフォーム
@@ -72,7 +72,7 @@ export const Section10: React.FC = () => {
   4. セキュリティポリシーの一元管理
      - 複数サービスへのアクセス制御を一箇所で管理
 </code></pre>
-<h3 class="stitle">10.3 Dataplex Universal Catalog（BigQuery Universal Catalog）</h3>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">10.3 Dataplex Universal Catalog（BigQuery Universal Catalog）</h3>
 ` }} />
             
 
@@ -110,7 +110,7 @@ export const Section10: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">10.4 Sensitive Data Protection（機密データ保護）</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">10.4 Sensitive Data Protection（機密データ保護）</h3>
 ` }} />
             
 
@@ -141,7 +141,7 @@ export const Section10: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">10.5 データのプライバシー保護技術（試験頻出）</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">10.5 データのプライバシー保護技術（試験頻出）</h3>
 <p class="tdesc">試験でよく問われる 3 つのプライバシー保護手法の違いを理解することが重要です。</p>
 ` }} />
             
@@ -204,7 +204,7 @@ export const Section10: React.FC = () => {
 <td class="p-3 align-top leading-relaxed text-[13px]">統計分析・ML 学習</td>
 </tr>
 </tbody></table></div>
-<h3 class="stitle">10.6 データのアクセス制御</h3>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">10.6 データのアクセス制御</h3>
 ` }} />
             
 
@@ -251,7 +251,7 @@ export const Section10: React.FC = () => {
             
             <SectionCard id="gcdl-2-10" idNumber="Deep Dive" title="データガバナンスとセキュリティの基盤">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle"><strong>データガバナンスとセキュリティの基盤</strong></h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>データガバナンスとセキュリティの基盤</strong></h3>
 <p class="tdesc">どれほど高度な分析基盤を構築しても、データガバナンスが欠如していれば、データレイクは目的のデータが見つからず、品質も保証されない「データスワンプ（データの沼）」へと陥ってしまう 。成功するデータジャーニーにおいて、ガバナンスは不可欠な要素である 。Google Cloudにおいて、このデータガバナンスを統合的に管理するソリューションが「Dataplex」である (<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataplex)%E3%80%82">https://cloud.google.com/dataplex)。</a></p>
 <p class="tdesc">Dataplexの中核機能である「Universal Catalog（統合カタログ）」は、Cloud Storage、BigQuery、さらにはVertex AIの機械学習モデルに至るまで、組織全体に分散するデータおよびAIアセットを自動的に検出し、メタデータを一元的に管理する 。これにより、データアナリストやデータサイエンティストは必要なデータを迅速に発見（Discoverability）できるようになる。さらに、「ビジネスグロッサリー（Business Glossary）」機能を用いることで、「GMV（流通取引総額）」といったビジネス用語の定義を標準化し、技術的な実装と切り離して管理できる。これにより、部署間でのデータ解釈の齟齬を防ぐことができる 。また、データがどこから生成され、どのように変換されてきたかを追跡する「データリネージ（Data Lineage）」機能は、GDPRやHIPAAといった法規制へのコンプライアンス遵守と、監査の透明性を確保するために極めて重要である 。</p>
 <p class="tdesc">データガバナンスは強固なセキュリティと表裏一体である。Google Cloudでは、保存データ（At-rest）および転送中のデータ（In-transit）はデフォルトで強力に暗号化されているが、コンプライアンス要件が極めて厳しい企業向けには、顧客管理の暗号鍵（CMEK）を使用して独自の鍵管理を行うオプションも提供されている 。セキュリティのベストプラクティスとしては、「最小特権の原則（PoLP）」に基づく厳格なIdentity and Access Management（IAM）の適用が挙げられる。ユーザーやサービスアカウントには、業務遂行に必要な最小限の権限のみを付与し、定期的にIAMポリシーの監査を行うべきである 。</p>

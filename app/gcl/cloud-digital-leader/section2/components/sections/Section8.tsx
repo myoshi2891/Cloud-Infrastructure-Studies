@@ -13,8 +13,8 @@ export const Section8: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-8" idNumber="8" title="データパイプラインとデータ統合">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">8.1 Google Cloud Pub/Sub（メッセージング）</h3>
-<h4 class="stitle">Pub/Sub とは</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.1 Google Cloud Pub/Sub（メッセージング）</h3>
+<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Pub/Sub とは</h4>
 <p class="tdesc"><strong>Pub/Sub</strong>（パブリッシュ・サブスクライブ）は、
 システム間でメッセージを非同期に送受信するためのサービスです。</p>
 ` }} />
@@ -34,7 +34,7 @@ export const Section8: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Pub/Sub を使う理由</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Pub/Sub を使う理由</h4>
 ` }} />
             
 
@@ -64,7 +64,7 @@ Pub/Sub ありの解決策:
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Pub/Sub のユースケース</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Pub/Sub のユースケース</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
@@ -93,8 +93,8 @@ Pub/Sub ありの解決策:
 <td class="p-3 align-top leading-relaxed text-[13px]">特定イベント発生時の即座の通知</td>
 </tr>
 </tbody></table></div>
-<h3 class="stitle">8.2 Cloud Dataflow（データパイプライン）</h3>
-<h4 class="stitle">Dataflow とは</h4>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.2 Cloud Dataflow（データパイプライン）</h3>
+<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Dataflow とは</h4>
 <p class="tdesc"><strong>Dataflow</strong> は、バッチ処理とストリーミング処理の両方に対応した
 フルマネージドのデータ処理パイプラインサービスです。</p>
 ` }} />
@@ -123,7 +123,7 @@ Pub/Sub ありの解決策:
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Dataflow のユースケース</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Dataflow のユースケース</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
@@ -158,8 +158,8 @@ Pub/Sub ありの解決策:
 <td class="p-3 align-top leading-relaxed text-[13px]">CSV → JSON、Avro への変換</td>
 </tr>
 </tbody></table></div>
-<h3 class="stitle">8.3 Cloud Dataproc（マネージド Hadoop/Spark）</h3>
-<h4 class="stitle">Dataproc とは</h4>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.3 Cloud Dataproc（マネージド Hadoop/Spark）</h3>
+<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Dataproc とは</h4>
 <p class="tdesc"><strong>Dataproc</strong> は、Apache Hadoop・Apache Spark クラスタを
 クラウド上で迅速に立ち上げ・管理できるサービスです。</p>
 ` }} />
@@ -197,7 +197,7 @@ Dataproc vs Dataflow の違い:
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">8.4 Database Migration Service（データ移行）</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.4 Database Migration Service（データ移行）</h3>
 ` }} />
             
 
@@ -221,7 +221,7 @@ Dataproc vs Dataflow の違い:
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">8.5 Datastream（変更データキャプチャ）</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.5 Datastream（変更データキャプチャ）</h3>
 ` }} />
             
 
@@ -263,7 +263,7 @@ Dataproc vs Dataflow の違い:
             
             <SectionCard id="gcdl-2-8" idNumber="Deep Dive" title="ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle"><strong>ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow</strong></h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow</strong></h3>
 <p class="tdesc">現代のビジネスにおいて、データが生成されたその瞬間にインサイトを抽出し、行動に結びつける「リアルタイムストリーミング分析」の重要性はますます高まっている 。Google Cloudにおいて、このストリーミング分析のパイプラインは、「Cloud Pub/Sub」と「Cloud Dataflow」の強力な連携によって実現される 。</p>
 <p class="tdesc">「Cloud Pub/Sub」は、独立したアプリケーション間でイベントデータを非同期に送受信する、グローバルに分散されたフルマネージドのメッセージング指向ミドルウェアである 。データの送信者（パブリッシャー）と受信者（サブスクライバー）を論理的に切り離し（Decoupling）、突発的なトラフィックのスパイク（急増）が発生した場合でも、オートスケーリングによってデータを確実に取り込み、バッファリングする「ショックアブソーバー（緩衝材）」の役割を果たす 。</p>
 <p class="tdesc">一方、「Cloud Dataflow」は、Apache Beam SDKを基盤とするサーバーレスのデータ処理サービスである。ストリーミングデータとバッチデータの両方を全く同じプログラミングモデルで処理でき、Pub/Subからリアルタイムに送られてくるメッセージを抽出、変換、集計（ETL）し、最終的な分析先であるBigQueryなどにロードする役割を担う (<a class="text-blue-400 hover:text-blue-300 underline" href="https://docs.cloud.google.com/dataflow/docs/overview)%E3%80%82Dataflow%E3%81%AF%E3%80%81%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%88%B0%E7%9D%80%E9%81%85%E5%BB%B6%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BF%E3%83%BC%E3%83%9E%E3%83%BC%E3%82%AF%E6%A9%9F%E8%83%BD%E3%82%84%E3%80%81%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E5%87%A6%E7%90%86%E6%A9%9F%E8%83%BD%E3%81%AB%E5%84%AA%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82">https://docs.cloud.google.com/dataflow/docs/overview)。Dataflowは、データの到着遅延を処理するウォーターマーク機能や、ウィンドウ処理機能に優れている。</a></p>

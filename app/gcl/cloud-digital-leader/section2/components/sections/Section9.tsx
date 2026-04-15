@@ -13,8 +13,8 @@ export const Section9: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-9" idNumber="9" title="スマートアナリティクスの全体アーキテクチャ">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">9.1 データアーキテクチャの全体像</h3>
-<h4 class="stitle">データレイクとデータウェアハウス</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">9.1 データアーキテクチャの全体像</h3>
+<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">データレイクとデータウェアハウス</h4>
 <pre class="code-block"><code className="language-text">データレイク（Data Lake）:
 
   - あらゆる形式の生データを大量に保管する場所
@@ -37,8 +37,8 @@ export const Section9: React.FC = () => {
   - BigQuery のストレージに生データも分析データも保存
   - Google Cloud ではこのアーキテクチャを推奨
 </code></pre>
-<h3 class="stitle">9.2 代表的なデータパイプラインアーキテクチャ</h3>
-<h4 class="stitle">パターン A: バッチ分析パイプライン</h4>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">9.2 代表的なデータパイプラインアーキテクチャ</h3>
+<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">パターン A: バッチ分析パイプライン</h4>
 ` }} />
             
 
@@ -62,7 +62,7 @@ export const Section9: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">パターン B: リアルタイムストリーミングパイプライン</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">パターン B: リアルタイムストリーミングパイプライン</h4>
 ` }} />
             
 
@@ -86,7 +86,7 @@ Web クリック    ──►           ──►           ──►
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">パターン C: ハイブリッドパイプライン（最も一般的）</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">パターン C: ハイブリッドパイプライン（最も一般的）</h4>
 ` }} />
             
 
@@ -106,7 +106,7 @@ GCS       → Dataproc →`}
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">9.3 データメッシュ（Data Mesh）の考え方</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">9.3 データメッシュ（Data Mesh）の考え方</h3>
 ` }} />
             
 
