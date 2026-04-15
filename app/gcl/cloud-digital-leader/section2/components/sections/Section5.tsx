@@ -62,41 +62,41 @@ export const Section5: React.FC = () => {
 
                 <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">クラス</th>
-<th scope="col">月次保存コスト</th>
-<th scope="col">取得コスト</th>
-<th scope="col">最小保存期間</th>
-<th scope="col">適したユースケース</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">クラス</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">月次保存コスト</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">取得コスト</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">最小保存期間</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">適したユースケース</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>Standard</strong></td>
-<td>高（目安: \$0.020/GB）</td>
-<td>無料</td>
-<td>なし</td>
-<td>頻繁にアクセスするデータ・Web コンテンツ・ML 学習データ</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Standard</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">高（目安: \$0.020/GB）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">無料</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">なし</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">頻繁にアクセスするデータ・Web コンテンツ・ML 学習データ</td>
 </tr>
-<tr>
-<td><strong>Nearline</strong></td>
-<td>中（目安: \$0.010/GB）</td>
-<td>あり（小）</td>
-<td>30日</td>
-<td>月1回程度のアクセス・バックアップ・月次レポート</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Nearline</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">中（目安: \$0.010/GB）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">あり（小）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">30日</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">月1回程度のアクセス・バックアップ・月次レポート</td>
 </tr>
-<tr>
-<td><strong>Coldline</strong></td>
-<td>低（目安: \$0.004/GB）</td>
-<td>あり（中）</td>
-<td>90日</td>
-<td>四半期に1回程度のアクセス・DR バックアップ</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Coldline</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">低（目安: \$0.004/GB）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">あり（中）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">90日</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">四半期に1回程度のアクセス・DR バックアップ</td>
 </tr>
-<tr>
-<td><strong>Archive</strong></td>
-<td>最安（目安: \$0.0012/GB）</td>
-<td>あり（大）</td>
-<td>365日</td>
-<td>年1回未満のアクセス・法令遵守のための長期保管</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Archive</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">最安（目安: \$0.0012/GB）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">あり（大）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">365日</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">年1回未満のアクセス・法令遵守のための長期保管</td>
 </tr>
 </tbody></table></div>
 <p class="tdesc">※ 価格はリージョンにより異なります — 表は us-central1 の参考値です。最新情報は<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/pricing">公式の料金ページ</a>をご確認ください。</p>
@@ -154,30 +154,30 @@ export const Section5: React.FC = () => {
 <p class="tdesc">以下の表は、データ管理の主要な3つの概念の違いを明確に示したものである 。</p>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col"><strong>アーキテクチャ</strong></th>
-<th scope="col"><strong>定義と主な目的</strong></th>
-<th scope="col"><strong>データ形式とスキーマ要件</strong></th>
-<th scope="col"><strong>Google Cloudの該当サービス</strong></th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>アーキテクチャ</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>定義と主な目的</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>データ形式とスキーマ要件</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>Google Cloudの該当サービス</strong></th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>データベース (Database)</strong></td>
-<td>アプリケーションを稼働させるために必要な現在のデータを保存し、リアルタイムのトランザクション処理（OLTP）を提供する。</td>
-<td>厳密に構造化されたデータ。更新頻度が高く、特定のアプリケーションに最適化されている。</td>
-<td>Cloud SQL, Cloud Spanner, Firestore, Cloud Bigtable</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データベース (Database)</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">アプリケーションを稼働させるために必要な現在のデータを保存し、リアルタイムのトランザクション処理（OLTP）を提供する。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">厳密に構造化されたデータ。更新頻度が高く、特定のアプリケーションに最適化されている。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL, Cloud Spanner, Firestore, Cloud Bigtable</td>
 </tr>
-<tr>
-<td><strong>データウェアハウス (Data Warehouse)</strong></td>
-<td>複数のシステムから抽出・変換・ロード（ETL）された現在および過去のデータを統合し、高度なビジネス分析（OLAP）やレポート作成を支援する。</td>
-<td>書き込み時スキーマ（Schema-on-write）。分析用にクレンジングおよび構造化されたデータ。</td>
-<td>BigQuery</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データウェアハウス (Data Warehouse)</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">複数のシステムから抽出・変換・ロード（ETL）された現在および過去のデータを統合し、高度なビジネス分析（OLAP）やレポート作成を支援する。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">書き込み時スキーマ（Schema-on-write）。分析用にクレンジングおよび構造化されたデータ。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery</td>
 </tr>
-<tr>
-<td><strong>データレイク (Data Lake)</strong></td>
-<td>構造化、半構造化、非構造化（画像、動画、音声など）を問わず、あらゆるデータを未加工の状態で安価に大量保存する。機械学習の基盤となる。</td>
-<td>読み取り時スキーマ（Schema-on-read）。柔軟性が高く、事前のデータモデリングが不要。</td>
-<td>Cloud Storage</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データレイク (Data Lake)</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">構造化、半構造化、非構造化（画像、動画、音声など）を問わず、あらゆるデータを未加工の状態で安価に大量保存する。機械学習の基盤となる。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">読み取り時スキーマ（Schema-on-read）。柔軟性が高く、事前のデータモデリングが不要。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
 </tr>
 </tbody></table></div>
 <p class="tdesc">最近のトレンドとして、データレイクの柔軟性とデータウェアハウスの管理機能（ACIDトランザクションや高度なSQLサポート）を融合させた「データレイクハウス（Data Lakehouse）」という概念も普及しており、Google CloudではBigQueryの拡張機能（BigLake等）がこの領域をカバーしている 。</p>

@@ -109,46 +109,46 @@ HA 構成あり（マルチゾーン）:
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Cloud SQL vs Cloud Spanner の比較</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">比較項目</th>
-<th scope="col">Cloud SQL</th>
-<th scope="col">Cloud Spanner</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">比較項目</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">Cloud SQL</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">Cloud Spanner</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>スケール</strong></td>
-<td>垂直（単一サーバー強化）</td>
-<td>水平（ノード追加で無限拡張）</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>スケール</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">垂直（単一サーバー強化）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">水平（ノード追加で無限拡張）</td>
 </tr>
-<tr>
-<td><strong>リージョン</strong></td>
-<td>単一リージョン</td>
-<td>マルチリージョン対応</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>リージョン</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">単一リージョン</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">マルチリージョン対応</td>
 </tr>
-<tr>
-<td><strong>SLA</strong></td>
-<td>99.99%（HA 構成時）</td>
-<td>99.999%</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>SLA</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">99.99%（HA 構成時）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">99.999%</td>
 </tr>
-<tr>
-<td><strong>最大規模</strong></td>
-<td>64 TB</td>
-<td>ペタバイト規模</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>最大規模</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">64 TB</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ペタバイト規模</td>
 </tr>
-<tr>
-<td><strong>コスト</strong></td>
-<td>比較的安価</td>
-<td>非常に高価</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>コスト</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">比較的安価</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">非常に高価</td>
 </tr>
-<tr>
-<td><strong>互換性</strong></td>
-<td>MySQL/PG/SQL Server</td>
-<td>Cloud Spanner 独自 SQL</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>互換性</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">MySQL/PG/SQL Server</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Spanner 独自 SQL</td>
 </tr>
-<tr>
-<td><strong>選ぶ場面</strong></td>
-<td>リージョン内の中規模 OLTP</td>
-<td>グローバル展開・超大規模 OLTP</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>選ぶ場面</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">リージョン内の中規模 OLTP</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">グローバル展開・超大規模 OLTP</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">6.4 Firestore（NoSQL ドキュメント DB）</h3>
@@ -234,36 +234,36 @@ BigQuery の革命的な点:
 <h4 class="stitle">BigQuery の独自機能</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">機能</th>
-<th scope="col">説明</th>
-<th scope="col">ユースケース</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">機能</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">説明</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">ユースケース</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>BigQuery ML</strong></td>
-<td>SQL でML モデルを構築・実行</td>
-<td>データアナリストが Python なしで予測モデル作成</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery ML</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">SQL でML モデルを構築・実行</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データアナリストが Python なしで予測モデル作成</td>
 </tr>
-<tr>
-<td><strong>BigQuery BI Engine</strong></td>
-<td>インメモリ分析で高速レスポンス</td>
-<td>Looker Studio との連携で秒単位の応答</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery BI Engine</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">インメモリ分析で高速レスポンス</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Looker Studio との連携で秒単位の応答</td>
 </tr>
-<tr>
-<td><strong>BigQuery Omni</strong></td>
-<td>AWS・Azure のデータも BigQuery で分析</td>
-<td>マルチクラウド環境のデータ分析</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery Omni</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">AWS・Azure のデータも BigQuery で分析</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">マルチクラウド環境のデータ分析</td>
 </tr>
-<tr>
-<td><strong>Gemini in BigQuery</strong></td>
-<td>自然言語でクエリ・コード生成</td>
-<td>SQL の知識がなくても分析可能</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Gemini in BigQuery</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">自然言語でクエリ・コード生成</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">SQL の知識がなくても分析可能</td>
 </tr>
-<tr>
-<td><strong>BigQuery DataFrames</strong></td>
-<td>Python Pandas ライクに BigQuery を操作</td>
-<td>データサイエンティスト向け</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery DataFrames</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Python Pandas ライクに BigQuery を操作</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データサイエンティスト向け</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">6.7 Memorystore（インメモリ DB）</h3>
@@ -315,62 +315,62 @@ Cloud SQL PostgreSQL との違い:
 <h3 class="stitle">6.9 全データベースサービスの比較まとめ</h3>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">サービス</th>
-<th scope="col">タイプ</th>
-<th scope="col">規模</th>
-<th scope="col">主な用途</th>
-<th scope="col">キーワード</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">サービス</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">タイプ</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">規模</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">主な用途</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">キーワード</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>Cloud SQL</strong></td>
-<td>RDB（マネージド）</td>
-<td>中規模</td>
-<td>Web アプリ・既存 DB 移行</td>
-<td>MySQL・PG・SQL Server</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud SQL</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">RDB（マネージド）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">中規模</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Web アプリ・既存 DB 移行</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">MySQL・PG・SQL Server</td>
 </tr>
-<tr>
-<td><strong>Cloud Spanner</strong></td>
-<td>グローバル RDB</td>
-<td>超大規模</td>
-<td>金融・グローバル EC</td>
-<td>グローバル・強一貫性・99.999%</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Spanner</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">グローバル RDB</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">超大規模</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">金融・グローバル EC</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">グローバル・強一貫性・99.999%</td>
 </tr>
-<tr>
-<td><strong>AlloyDB</strong></td>
-<td>PG 互換高性能 DB</td>
-<td>大規模</td>
-<td>高性能 PG・HTAP</td>
-<td>PostgreSQL 互換・4倍高速</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>AlloyDB</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">PG 互換高性能 DB</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">大規模</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">高性能 PG・HTAP</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">PostgreSQL 互換・4倍高速</td>
 </tr>
-<tr>
-<td><strong>Firestore</strong></td>
-<td>NoSQL ドキュメント</td>
-<td>中〜大規模</td>
-<td>モバイル・Web アプリ</td>
-<td>リアルタイム同期・サーバーレス</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Firestore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">NoSQL ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">中〜大規模</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">モバイル・Web アプリ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">リアルタイム同期・サーバーレス</td>
 </tr>
-<tr>
-<td><strong>Bigtable</strong></td>
-<td>NoSQL ワイドカラム</td>
-<td>ペタバイト</td>
-<td>IoT・時系列・広告</td>
-<td>超高スループット・低レイテンシ</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Bigtable</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">NoSQL ワイドカラム</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ペタバイト</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">IoT・時系列・広告</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">超高スループット・低レイテンシ</td>
 </tr>
-<tr>
-<td><strong>BigQuery</strong></td>
-<td>データウェアハウス</td>
-<td>ペタバイト</td>
-<td>BI・分析・ML</td>
-<td>サーバーレス・SQL 分析</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データウェアハウス</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ペタバイト</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BI・分析・ML</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">サーバーレス・SQL 分析</td>
 </tr>
-<tr>
-<td><strong>Memorystore</strong></td>
-<td>インメモリ</td>
-<td>小〜中規模</td>
-<td>キャッシュ・セッション</td>
-<td>Redis・低レイテンシ</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Memorystore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">インメモリ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">小〜中規模</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">キャッシュ・セッション</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Redis・低レイテンシ</td>
 </tr>
 </tbody></table></div>
 <blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
@@ -406,42 +406,42 @@ Cloud SQL PostgreSQL との違い:
 <p class="tdesc">多様なビジネス要件に対して、どのデータベースソリューションを採用すべきかの判断基準を以下の表に整理する 。</p>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col"><strong>要件の特性</strong></th>
-<th scope="col"><strong>データモデルと整合性</strong></th>
-<th scope="col"><strong>推奨されるGoogle Cloudサービス</strong></th>
-<th scope="col"><strong>主なユースケース</strong></th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>要件の特性</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>データモデルと整合性</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>推奨されるGoogle Cloudサービス</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>主なユースケース</strong></th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>一般的なRDBMS環境のクラウド化</strong></td>
-<td>リレーショナル (SQL)。厳密なACIDトランザクション。</td>
-<td><strong>Cloud SQL</strong></td>
-<td>ERP、CMS、一般的なWebアプリケーション（容量数十TB未満）</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>一般的なRDBMS環境のクラウド化</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">リレーショナル (SQL)。厳密なACIDトランザクション。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud SQL</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ERP、CMS、一般的なWebアプリケーション（容量数十TB未満）</td>
 </tr>
-<tr>
-<td><strong>グローバル規模のトランザクション</strong></td>
-<td>リレーショナル (SQL)。無限の水平拡張とグローバルな強整合性。</td>
-<td><strong>Cloud Spanner</strong></td>
-<td>グローバル金融決済、大規模サプライチェーン、SaaS基盤</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>グローバル規模のトランザクション</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">リレーショナル (SQL)。無限の水平拡張とグローバルな強整合性。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Spanner</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">グローバル金融決済、大規模サプライチェーン、SaaS基盤</td>
 </tr>
-<tr>
-<td><strong>超大規模な時系列・ログデータ</strong></td>
-<td>ワイドカラム型NoSQL。結果整合性。高スループットの読み書き。</td>
-<td><strong>Cloud Bigtable</strong></td>
-<td>IoTセンサーデータ、アドテク、金融市場データ</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>超大規模な時系列・ログデータ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ワイドカラム型NoSQL。結果整合性。高スループットの読み書き。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Bigtable</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">IoTセンサーデータ、アドテク、金融市場データ</td>
 </tr>
-<tr>
-<td><strong>モバイル/Webの迅速なアプリ開発</strong></td>
-<td>ドキュメント型NoSQL。ドキュメント単位のACID。リアルタイム同期。</td>
-<td><strong>Firestore</strong></td>
-<td>チャットアプリ、モバイルゲーム、オフライン対応アプリ</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>モバイル/Webの迅速なアプリ開発</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ドキュメント型NoSQL。ドキュメント単位のACID。リアルタイム同期。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Firestore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">チャットアプリ、モバイルゲーム、オフライン対応アプリ</td>
 </tr>
-<tr>
-<td><strong>超低遅延のデータアクセス</strong></td>
-<td>キーバリュー型 (KVS)。インメモリデータストア。</td>
-<td><strong>Memorystore</strong></td>
-<td>セッション管理、クエリキャッシュ、リアルタイムリーダーボード</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>超低遅延のデータアクセス</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">キーバリュー型 (KVS)。インメモリデータストア。</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Memorystore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">セッション管理、クエリキャッシュ、リアルタイムリーダーボード</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle"><strong>データベースの移行とモダナイゼーション (Database Migration)</strong></h3>

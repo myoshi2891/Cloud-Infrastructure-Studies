@@ -72,41 +72,41 @@ Looker の解決策:
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Looker の主な機能</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">機能</th>
-<th scope="col">説明</th>
-<th scope="col">ビジネス価値</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">機能</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">説明</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">ビジネス価値</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>ダッシュボード</strong></td>
-<td>複数の可視化をまとめた画面</td>
-<td>経営状況の一覧把握</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ダッシュボード</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">複数の可視化をまとめた画面</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">経営状況の一覧把握</td>
 </tr>
-<tr>
-<td><strong>Explore</strong></td>
-<td>ノーコードでデータを探索</td>
-<td>エンジニアなしで深掘り分析</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Explore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ノーコードでデータを探索</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">エンジニアなしで深掘り分析</td>
 </tr>
-<tr>
-<td><strong>Looks</strong></td>
-<td>保存した可視化レポート</td>
-<td>定期レポートの自動化</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Looks</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">保存した可視化レポート</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">定期レポートの自動化</td>
 </tr>
-<tr>
-<td><strong>Alerts</strong></td>
-<td>データ変化時の通知</td>
-<td>異常値・目標達成を即座に把握</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Alerts</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データ変化時の通知</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">異常値・目標達成を即座に把握</td>
 </tr>
-<tr>
-<td><strong>Looker API</strong></td>
-<td>外部システムとの統合</td>
-<td>アプリへのデータ埋め込み</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Looker API</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">外部システムとの統合</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">アプリへのデータ埋め込み</td>
 </tr>
-<tr>
-<td><strong>Looker Blocks</strong></td>
-<td>業界別の分析テンプレート</td>
-<td>分析環境の素早い構築</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Looker Blocks</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">業界別の分析テンプレート</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">分析環境の素早い構築</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">7.2 Looker Studio（無料セルフサービス BI）</h3>
@@ -136,51 +136,51 @@ Looker の解決策:
 </code></pre>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">比較項目</th>
-<th scope="col">Looker</th>
-<th scope="col">Looker Studio</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">比較項目</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">Looker</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">Looker Studio</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>費用</strong></td>
-<td>有料（エンタープライズライセンス）</td>
-<td>無料</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>費用</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">有料（エンタープライズライセンス）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">無料</td>
 </tr>
-<tr>
-<td><strong>対象ユーザー</strong></td>
-<td>データチーム・大企業</td>
-<td>個人・中小企業・マーケター</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>対象ユーザー</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データチーム・大企業</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">個人・中小企業・マーケター</td>
 </tr>
-<tr>
-<td><strong>データモデル</strong></td>
-<td>LookML で厳密に定義</td>
-<td>柔軟だが各人が独自定義</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データモデル</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">LookML で厳密に定義</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">柔軟だが各人が独自定義</td>
 </tr>
-<tr>
-<td><strong>真実の唯一性</strong></td>
-<td>◎ 保証できる</td>
-<td>△ 担保が難しい</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>真実の唯一性</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">◎ 保証できる</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">△ 担保が難しい</td>
 </tr>
-<tr>
-<td><strong>スケール</strong></td>
-<td>大規模な組織向け</td>
-<td>小〜中規模</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>スケール</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">大規模な組織向け</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">小〜中規模</td>
 </tr>
-<tr>
-<td><strong>主な用途</strong></td>
-<td>全社的な BI 基盤</td>
-<td>アドホックな可視化・個人レポート</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>主な用途</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">全社的な BI 基盤</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">アドホックな可視化・個人レポート</td>
 </tr>
-<tr>
-<td><strong>API</strong></td>
-<td>あり（外部連携可能）</td>
-<td>限定的</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>API</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">あり（外部連携可能）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">限定的</td>
 </tr>
-<tr>
-<td><strong>Git 統合</strong></td>
-<td>あり（バージョン管理）</td>
-<td>なし</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Git 統合</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">あり（バージョン管理）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">なし</td>
 </tr>
 </tbody></table></div>
 <h4 class="stitle">✅ ベストプラクティス: BI ツール選択</h4>

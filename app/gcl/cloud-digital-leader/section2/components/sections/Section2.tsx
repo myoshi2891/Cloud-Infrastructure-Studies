@@ -43,36 +43,36 @@ export const Section2: React.FC = () => {
 <h4 class="stitle">従来型経営 vs データドリブン経営の比較</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">比較項目</th>
-<th scope="col">従来型（経験・勘）</th>
-<th scope="col">データドリブン</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">比較項目</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">従来型（経験・勘）</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">データドリブン</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>意思決定の根拠</strong></td>
-<td>ベテランの経験則</td>
-<td>データと統計的分析</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>意思決定の根拠</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ベテランの経験則</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データと統計的分析</td>
 </tr>
-<tr>
-<td><strong>スピード</strong></td>
-<td>会議・議論に時間がかかる</td>
-<td>リアルタイムで判断可能</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>スピード</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">会議・議論に時間がかかる</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">リアルタイムで判断可能</td>
 </tr>
-<tr>
-<td><strong>精度</strong></td>
-<td>個人の能力に依存</td>
-<td>再現性・客観性が高い</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>精度</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">個人の能力に依存</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">再現性・客観性が高い</td>
 </tr>
-<tr>
-<td><strong>スケール</strong></td>
-<td>個人の限界がある</td>
-<td>AIで大量データを処理</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>スケール</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">個人の限界がある</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">AIで大量データを処理</td>
 </tr>
-<tr>
-<td><strong>リスク</strong></td>
-<td>バイアスが入りやすい</td>
-<td>データに基づくため客観的</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>リスク</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">バイアスが入りやすい</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データに基づくため客観的</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">2.3 データが生み出す 4 種類のビジネス価値</h3>
@@ -111,36 +111,36 @@ export const Section2: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">各分析レベルの具体例（EC サイトの場合）</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">レベル</th>
-<th scope="col">問い</th>
-<th scope="col">分析の例</th>
-<th scope="col">使うツール</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">レベル</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">問い</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">分析の例</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">使うツール</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>① 記述的</td>
-<td>先月何個売れたか？</td>
-<td>月次売上レポート</td>
-<td>Looker Studio</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">① 記述的</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">先月何個売れたか？</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">月次売上レポート</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Looker Studio</td>
 </tr>
-<tr>
-<td>② 診断的</td>
-<td>なぜ売上が下がったか？</td>
-<td>顧客行動の深掘り分析</td>
-<td>BigQuery + Looker</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">② 診断的</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">なぜ売上が下がったか？</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">顧客行動の深掘り分析</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery + Looker</td>
 </tr>
-<tr>
-<td>③ 予測的</td>
-<td>来月何個売れるか？</td>
-<td>需要予測モデル</td>
-<td>Vertex AI + BigQuery</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">③ 予測的</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">来月何個売れるか？</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">需要予測モデル</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Vertex AI + BigQuery</td>
 </tr>
-<tr>
-<td>④ 処方的</td>
-<td>何個仕入れるべきか？</td>
-<td>自動発注 AI</td>
-<td>Vertex AI Agent</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">④ 処方的</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">何個仕入れるべきか？</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">自動発注 AI</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Vertex AI Agent</td>
 </tr>
 </tbody></table></div>
 <blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">

@@ -39,36 +39,36 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">具体的な活用例</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">課題</th>
-<th scope="col">データ</th>
-<th scope="col">GCP サービス</th>
-<th scope="col">効果</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">課題</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">データ</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">GCP サービス</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">効果</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>顧客離脱を予測したい</td>
-<td>購買履歴・行動ログ</td>
-<td>BigQuery ML + Vertex AI</td>
-<td>離脱 3 週間前に介入できる</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">顧客離脱を予測したい</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">購買履歴・行動ログ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery ML + Vertex AI</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">離脱 3 週間前に介入できる</td>
 </tr>
-<tr>
-<td>在庫を最適化したい</td>
-<td>POS・天気・カレンダー</td>
-<td>BigQuery + Vertex AI</td>
-<td>欠品率 30% 削減</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">在庫を最適化したい</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">POS・天気・カレンダー</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery + Vertex AI</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">欠品率 30% 削減</td>
 </tr>
-<tr>
-<td>レコメンドを改善したい</td>
-<td>閲覧・購買履歴</td>
-<td>Recommendations AI</td>
-<td>CV率 15% 向上</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">レコメンドを改善したい</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">閲覧・購買履歴</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Recommendations AI</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">CV率 15% 向上</td>
 </tr>
-<tr>
-<td>レビューを分析したい</td>
-<td>顧客レビューテキスト</td>
-<td>Natural Language API</td>
-<td>製品改善サイクル短縮</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">レビューを分析したい</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">顧客レビューテキスト</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Natural Language API</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">製品改善サイクル短縮</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">11.2 製造業でのデータ活用</h3>

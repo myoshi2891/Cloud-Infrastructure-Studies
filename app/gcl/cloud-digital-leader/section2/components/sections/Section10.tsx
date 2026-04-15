@@ -178,30 +178,30 @@ export const Section10: React.FC = () => {
 
                 <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">手法</th>
-<th scope="col">再識別の可能性</th>
-<th scope="col">GDPR 対象</th>
-<th scope="col">主な用途</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">手法</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">再識別の可能性</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">GDPR 対象</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">主な用途</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>匿名化</strong></td>
-<td>不可能（理論上）</td>
-<td>対象外</td>
-<td>データの公開・共有</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>匿名化</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">不可能（理論上）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">対象外</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データの公開・共有</td>
 </tr>
-<tr>
-<td><strong>仮名化</strong></td>
-<td>可能（変換テーブル必要）</td>
-<td>対象</td>
-<td>開発・テスト環境</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>仮名化</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">可能（変換テーブル必要）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">対象</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">開発・テスト環境</td>
 </tr>
-<tr>
-<td><strong>差分プライバシー</strong></td>
-<td>困難</td>
-<td>状況による</td>
-<td>統計分析・ML 学習</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>差分プライバシー</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">困難</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">状況による</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">統計分析・ML 学習</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">10.6 データのアクセス制御</h3>

@@ -40,61 +40,61 @@ export const Section1: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">1.2 Section 2 のサブトピック一覧</h3>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">#</th>
-<th scope="col">サブトピック</th>
-<th scope="col">重要度</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">#</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">サブトピック</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">重要度</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>1</td>
-<td>データのビジネス価値（4種類の分析）</td>
-<td>★★★</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">1</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データのビジネス価値（4種類の分析）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>2</td>
-<td>構造化・非構造化・半構造化データ</td>
-<td>★★★</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">2</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">構造化・非構造化・半構造化データ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>3</td>
-<td>Cloud Storage のストレージクラス</td>
-<td>★★★</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">3</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage のストレージクラス</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>4</td>
-<td>データベース選択（RDB vs NoSQL）</td>
-<td>★★★</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">4</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データベース選択（RDB vs NoSQL）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>5</td>
-<td>BigQuery の特徴とユースケース</td>
-<td>★★★</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">5</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery の特徴とユースケース</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>6</td>
-<td>Looker と Looker Studio の違い</td>
-<td>★★★</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">6</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Looker と Looker Studio の違い</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>7</td>
-<td>Pub/Sub・Dataflow・Dataproc の役割</td>
-<td>★★★</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">7</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Pub/Sub・Dataflow・Dataproc の役割</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>8</td>
-<td>Dataplex / BigQuery Universal Catalog</td>
-<td>★★☆</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">8</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Dataplex / BigQuery Universal Catalog</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★☆</td>
 </tr>
-<tr>
-<td>9</td>
-<td>データのプライバシー・ガバナンス</td>
-<td>★★★</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">9</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データのプライバシー・ガバナンス</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★★</td>
 </tr>
-<tr>
-<td>10</td>
-<td>ビジネスユースケース別のデータ活用</td>
-<td>★★☆</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">10</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ビジネスユースケース別のデータ活用</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">★★☆</td>
 </tr>
 </tbody></table></div>
 <hr />

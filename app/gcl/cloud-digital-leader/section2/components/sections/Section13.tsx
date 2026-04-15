@@ -15,146 +15,146 @@ export const Section13: React.FC = () => {
                 
                 <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">カテゴリ</th>
-<th scope="col">リソース</th>
-<th scope="col">URL</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">カテゴリ</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">リソース</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">URL</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>試験情報</strong></td>
-<td>CDL 試験概要ページ</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/learn/certification/cloud-digital-leader">https://cloud.google.com/learn/certification/cloud-digital-leader</a></td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>試験情報</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">CDL 試験概要ページ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/learn/certification/cloud-digital-leader">https://cloud.google.com/learn/certification/cloud-digital-leader</a></td>
 </tr>
-<tr>
-<td><strong>試験情報</strong></td>
-<td>試験ガイド PDF</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf">https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>試験情報</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">試験ガイド PDF</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf">https://services.google.com/fh/files/misc/cdl_exam_guide_english.pdf</a></td>
 </tr>
-<tr>
-<td><strong>データ概念</strong></td>
-<td>スマートアナリティクス概要</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データ概念</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">スマートアナリティクス概要</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></td>
 </tr>
-<tr>
-<td><strong>データ概念</strong></td>
-<td>データライフサイクル管理</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices">https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データ概念</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データライフサイクル管理</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices">https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices</a></td>
 </tr>
-<tr>
-<td><strong>Cloud Storage</strong></td>
-<td>ストレージクラス</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Storage</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ストレージクラス</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a></td>
 </tr>
-<tr>
-<td><strong>Cloud Storage</strong></td>
-<td>ライフサイクル管理</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Storage</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ライフサイクル管理</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a></td>
 </tr>
-<tr>
-<td><strong>Cloud Storage</strong></td>
-<td>ベストプラクティス</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/best-practices">https://cloud.google.com/storage/docs/best-practices</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Storage</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ベストプラクティス</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/best-practices">https://cloud.google.com/storage/docs/best-practices</a></td>
 </tr>
-<tr>
-<td><strong>Cloud SQL</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/sql/docs">https://cloud.google.com/sql/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud SQL</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/sql/docs">https://cloud.google.com/sql/docs</a></td>
 </tr>
-<tr>
-<td><strong>Cloud SQL</strong></td>
-<td>高可用性構成</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/sql/docs/mysql/high-availability">https://cloud.google.com/sql/docs/mysql/high-availability</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud SQL</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">高可用性構成</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/sql/docs/mysql/high-availability">https://cloud.google.com/sql/docs/mysql/high-availability</a></td>
 </tr>
-<tr>
-<td><strong>Cloud Spanner</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/spanner/docs">https://cloud.google.com/spanner/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Spanner</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/spanner/docs">https://cloud.google.com/spanner/docs</a></td>
 </tr>
-<tr>
-<td><strong>Firestore</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/firestore/docs">https://cloud.google.com/firestore/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Firestore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/firestore/docs">https://cloud.google.com/firestore/docs</a></td>
 </tr>
-<tr>
-<td><strong>Bigtable</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigtable/docs">https://cloud.google.com/bigtable/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Bigtable</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigtable/docs">https://cloud.google.com/bigtable/docs</a></td>
 </tr>
-<tr>
-<td><strong>BigQuery</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs">https://cloud.google.com/bigquery/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs">https://cloud.google.com/bigquery/docs</a></td>
 </tr>
-<tr>
-<td><strong>BigQuery</strong></td>
-<td>BigQuery ML</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/bqml-introduction">https://cloud.google.com/bigquery/docs/bqml-introduction</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery ML</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/bqml-introduction">https://cloud.google.com/bigquery/docs/bqml-introduction</a></td>
 </tr>
-<tr>
-<td><strong>BigQuery</strong></td>
-<td>コスト最適化</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/best-practices-costs">https://cloud.google.com/bigquery/docs/best-practices-costs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">コスト最適化</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/best-practices-costs">https://cloud.google.com/bigquery/docs/best-practices-costs</a></td>
 </tr>
-<tr>
-<td><strong>AlloyDB</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/alloydb/docs">https://cloud.google.com/alloydb/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>AlloyDB</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/alloydb/docs">https://cloud.google.com/alloydb/docs</a></td>
 </tr>
-<tr>
-<td><strong>Memorystore</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/memorystore/docs">https://cloud.google.com/memorystore/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Memorystore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/memorystore/docs">https://cloud.google.com/memorystore/docs</a></td>
 </tr>
-<tr>
-<td><strong>Looker</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/looker/docs">https://cloud.google.com/looker/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Looker</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/looker/docs">https://cloud.google.com/looker/docs</a></td>
 </tr>
-<tr>
-<td><strong>Looker Studio</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://lookerstudio.google.com/">https://lookerstudio.google.com/</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Looker Studio</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://lookerstudio.google.com/">https://lookerstudio.google.com/</a></td>
 </tr>
-<tr>
-<td><strong>Pub/Sub</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/pubsub/docs">https://cloud.google.com/pubsub/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Pub/Sub</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/pubsub/docs">https://cloud.google.com/pubsub/docs</a></td>
 </tr>
-<tr>
-<td><strong>Dataflow</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataflow/docs">https://cloud.google.com/dataflow/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Dataflow</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataflow/docs">https://cloud.google.com/dataflow/docs</a></td>
 </tr>
-<tr>
-<td><strong>Dataproc</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataproc/docs">https://cloud.google.com/dataproc/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Dataproc</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataproc/docs">https://cloud.google.com/dataproc/docs</a></td>
 </tr>
-<tr>
-<td><strong>Datastream</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/datastream/docs">https://cloud.google.com/datastream/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Datastream</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/datastream/docs">https://cloud.google.com/datastream/docs</a></td>
 </tr>
-<tr>
-<td><strong>Dataplex</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataplex/docs">https://cloud.google.com/dataplex/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Dataplex</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataplex/docs">https://cloud.google.com/dataplex/docs</a></td>
 </tr>
-<tr>
-<td><strong>Sensitive Data Protection</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dlp/docs">https://cloud.google.com/dlp/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Sensitive Data Protection</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dlp/docs">https://cloud.google.com/dlp/docs</a></td>
 </tr>
-<tr>
-<td><strong>BigQuery セキュリティ</strong></td>
-<td>列レベルセキュリティ</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/column-level-security-intro">https://cloud.google.com/bigquery/docs/column-level-security-intro</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery セキュリティ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">列レベルセキュリティ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/column-level-security-intro">https://cloud.google.com/bigquery/docs/column-level-security-intro</a></td>
 </tr>
-<tr>
-<td><strong>Database Migration</strong></td>
-<td>概要ドキュメント</td>
-<td><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/database-migration/docs">https://cloud.google.com/database-migration/docs</a></td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Database Migration</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">概要ドキュメント</td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/database-migration/docs">https://cloud.google.com/database-migration/docs</a></td>
 </tr>
 </tbody></table></div>
 <hr />

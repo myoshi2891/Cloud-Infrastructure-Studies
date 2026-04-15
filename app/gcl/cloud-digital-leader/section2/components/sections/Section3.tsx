@@ -38,36 +38,36 @@ export const Section3: React.FC = () => {
 <h4 class="stitle">構造化データの具体例</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">データ種別</th>
-<th scope="col">具体例</th>
-<th scope="col">格納先（GCP）</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">データ種別</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">具体例</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">格納先（GCP）</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>売上データ</td>
-<td>日付・商品ID・金額・数量</td>
-<td>Cloud SQL / BigQuery</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">売上データ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">日付・商品ID・金額・数量</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL / BigQuery</td>
 </tr>
-<tr>
-<td>顧客マスタ</td>
-<td>顧客ID・氏名・住所・年齢</td>
-<td>Cloud SQL / Spanner</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">顧客マスタ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">顧客ID・氏名・住所・年齢</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL / Spanner</td>
 </tr>
-<tr>
-<td>在庫データ</td>
-<td>SKU・倉庫・在庫数・入出庫日</td>
-<td>Cloud SQL / Spanner</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">在庫データ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">SKU・倉庫・在庫数・入出庫日</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL / Spanner</td>
 </tr>
-<tr>
-<td>気象データ</td>
-<td>日時・気温・湿度・降水量</td>
-<td>BigQuery / Bigtable</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">気象データ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">日時・気温・湿度・降水量</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery / Bigtable</td>
 </tr>
-<tr>
-<td>株価データ</td>
-<td>銘柄・日時・始値・終値・出来高</td>
-<td>BigQuery / Bigtable</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">株価データ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">銘柄・日時・始値・終値・出来高</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery / Bigtable</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">3.3 非構造化データ（Unstructured Data）</h3>
@@ -98,48 +98,48 @@ export const Section3: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">非構造化データの具体例</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">データ種別</th>
-<th scope="col">具体例</th>
-<th scope="col">格納先（GCP）</th>
-<th scope="col">分析方法</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">データ種別</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">具体例</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">格納先（GCP）</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">分析方法</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>テキスト</td>
-<td>メール・SNS 投稿・レビュー</td>
-<td>Cloud Storage</td>
-<td>Natural Language API</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">テキスト</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">メール・SNS 投稿・レビュー</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Natural Language API</td>
 </tr>
-<tr>
-<td>画像</td>
-<td>商品写真・医療画像・衛星写真</td>
-<td>Cloud Storage</td>
-<td>Vision API</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">画像</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">商品写真・医療画像・衛星写真</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Vision API</td>
 </tr>
-<tr>
-<td>動画</td>
-<td>監視カメラ・広告・教育動画</td>
-<td>Cloud Storage</td>
-<td>Video Intelligence API</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">動画</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">監視カメラ・広告・教育動画</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Video Intelligence API</td>
 </tr>
-<tr>
-<td>音声</td>
-<td>コールセンター録音・ポッドキャスト</td>
-<td>Cloud Storage</td>
-<td>Speech-to-Text API</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">音声</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">コールセンター録音・ポッドキャスト</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Speech-to-Text API</td>
 </tr>
-<tr>
-<td>PDF</td>
-<td>契約書・請求書・レポート</td>
-<td>Cloud Storage</td>
-<td>Document AI</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">PDF</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">契約書・請求書・レポート</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Document AI</td>
 </tr>
-<tr>
-<td>ログ</td>
-<td>Webサーバーログ・アプリログ</td>
-<td>Cloud Logging / GCS</td>
-<td>BigQuery</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">ログ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Webサーバーログ・アプリログ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Logging / GCS</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">3.4 半構造化データ（Semi-Structured Data）</h3>
@@ -169,48 +169,48 @@ export const Section3: React.FC = () => {
 <h3 class="stitle">3.5 データ形式の比較まとめ</h3>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">比較項目</th>
-<th scope="col">構造化</th>
-<th scope="col">半構造化</th>
-<th scope="col">非構造化</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">比較項目</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">構造化</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">半構造化</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">非構造化</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>例</strong></td>
-<td>CSV・RDB テーブル</td>
-<td>JSON・XML・CSV</td>
-<td>画像・動画・音声・PDF</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>例</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">CSV・RDB テーブル</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">JSON・XML・CSV</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">画像・動画・音声・PDF</td>
 </tr>
-<tr>
-<td><strong>スキーマ</strong></td>
-<td>固定・厳格</td>
-<td>柔軟</td>
-<td>なし</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>スキーマ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">固定・厳格</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">柔軟</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">なし</td>
 </tr>
-<tr>
-<td><strong>検索方法</strong></td>
-<td>SQL</td>
-<td>JSONPath・SQL</td>
-<td>AI/ML・全文検索</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>検索方法</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">SQL</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">JSONPath・SQL</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">AI/ML・全文検索</td>
 </tr>
-<tr>
-<td><strong>GCP ストレージ</strong></td>
-<td>Cloud SQL・BigQuery</td>
-<td>Firestore・BigQuery</td>
-<td>Cloud Storage</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>GCP ストレージ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL・BigQuery</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Firestore・BigQuery</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
 </tr>
-<tr>
-<td><strong>全データ中の割合</strong></td>
-<td>~10-20%</td>
-<td>~10-15%</td>
-<td>~70-80%</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>全データ中の割合</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">~10-20%</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">~10-15%</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">~70-80%</td>
 </tr>
-<tr>
-<td><strong>分析の難易度</strong></td>
-<td>低（容易）</td>
-<td>中</td>
-<td>高（AI/ML 必要）</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>分析の難易度</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">低（容易）</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">中</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">高（AI/ML 必要）</td>
 </tr>
 </tbody></table></div>
 <blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">

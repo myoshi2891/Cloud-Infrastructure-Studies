@@ -67,30 +67,30 @@ Pub/Sub ありの解決策:
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Pub/Sub のユースケース</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">ユースケース</th>
-<th scope="col">説明</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">ユースケース</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">説明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>IoT データ収集</strong></td>
-<td>センサーデータをリアルタイムで収集・配信</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>IoT データ収集</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">センサーデータをリアルタイムで収集・配信</td>
 </tr>
-<tr>
-<td><strong>イベント駆動アーキテクチャ</strong></td>
-<td>マイクロサービス間の非同期メッセージング</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>イベント駆動アーキテクチャ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">マイクロサービス間の非同期メッセージング</td>
 </tr>
-<tr>
-<td><strong>ストリーミングデータ分析</strong></td>
-<td>Dataflow へデータを流して分析</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ストリーミングデータ分析</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Dataflow へデータを流して分析</td>
 </tr>
-<tr>
-<td><strong>ログ集約</strong></td>
-<td>複数サービスのログを一箇所に集める</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ログ集約</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">複数サービスのログを一箇所に集める</td>
 </tr>
-<tr>
-<td><strong>リアルタイム通知</strong></td>
-<td>特定イベント発生時の即座の通知</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>リアルタイム通知</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">特定イベント発生時の即座の通知</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">8.2 Cloud Dataflow（データパイプライン）</h3>
@@ -126,36 +126,36 @@ Pub/Sub ありの解決策:
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Dataflow のユースケース</h4>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">ユースケース</th>
-<th scope="col">バッチ/ストリーミング</th>
-<th scope="col">説明</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">ユースケース</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">バッチ/ストリーミング</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">説明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>ETL パイプライン</strong></td>
-<td>バッチ</td>
-<td>複数ソースのデータを BigQuery へ投入</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ETL パイプライン</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">バッチ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">複数ソースのデータを BigQuery へ投入</td>
 </tr>
-<tr>
-<td><strong>ログ分析</strong></td>
-<td>ストリーミング</td>
-<td>Webログをリアルタイムで集計・分析</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ログ分析</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ストリーミング</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Webログをリアルタイムで集計・分析</td>
 </tr>
-<tr>
-<td><strong>不正検知</strong></td>
-<td>ストリーミング</td>
-<td>取引データをリアルタイムで分析</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>不正検知</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">ストリーミング</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">取引データをリアルタイムで分析</td>
 </tr>
-<tr>
-<td><strong>データ品質チェック</strong></td>
-<td>バッチ</td>
-<td>データのクレンジング・バリデーション</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データ品質チェック</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">バッチ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">データのクレンジング・バリデーション</td>
 </tr>
-<tr>
-<td><strong>ファイル変換</strong></td>
-<td>バッチ</td>
-<td>CSV → JSON、Avro への変換</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ファイル変換</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]">バッチ</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">CSV → JSON、Avro への変換</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">8.3 Cloud Dataproc（マネージド Hadoop/Spark）</h3>

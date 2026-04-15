@@ -158,38 +158,38 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">12.3 混同しやすいポイントの整理</h3>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
-<tr>
-<th scope="col">混同パターン</th>
-<th scope="col">正しい理解</th>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">混同パターン</th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">正しい理解</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>BigQuery = データベース</td>
-<td>BigQuery はデータウェアハウス（DWH）。OLTP には向かない</td>
+<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery = データベース</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery はデータウェアハウス（DWH）。OLTP には向かない</td>
 </tr>
-<tr>
-<td>Dataflow = Dataproc</td>
-<td>Dataflow は Beam ベース（サーバーレス）、Dataproc は Hadoop/Spark</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">Dataflow = Dataproc</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Dataflow は Beam ベース（サーバーレス）、Dataproc は Hadoop/Spark</td>
 </tr>
-<tr>
-<td>Looker = Looker Studio</td>
-<td>Looker は有料エンタープライズ BI、Looker Studio は無料セルフサービス</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">Looker = Looker Studio</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Looker は有料エンタープライズ BI、Looker Studio は無料セルフサービス</td>
 </tr>
-<tr>
-<td>匿名化 = 仮名化</td>
-<td>匿名化は再識別不可、仮名化は再識別可能（変換テーブル必要）</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">匿名化 = 仮名化</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">匿名化は再識別不可、仮名化は再識別可能（変換テーブル必要）</td>
 </tr>
-<tr>
-<td>Cloud SQL = BigQuery</td>
-<td>Cloud SQL は OLTP（RDB）、BigQuery は OLAP（DWH・分析）</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL = BigQuery</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL は OLTP（RDB）、BigQuery は OLAP（DWH・分析）</td>
 </tr>
-<tr>
-<td>Bigtable = BigQuery</td>
-<td>Bigtable は NoSQL 時系列 DB、BigQuery は SQL 分析 DWH</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">Bigtable = BigQuery</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Bigtable は NoSQL 時系列 DB、BigQuery は SQL 分析 DWH</td>
 </tr>
-<tr>
-<td>Pub/Sub = Dataflow</td>
-<td>Pub/Sub はメッセージング（配信）、Dataflow はデータ処理（変換）</td>
+<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
+<td class="p-3 align-top leading-relaxed text-[13px]">Pub/Sub = Dataflow</td>
+<td class="p-3 align-top leading-relaxed text-[13px]">Pub/Sub はメッセージング（配信）、Dataflow はデータ処理（変換）</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle">12.4 Section 2 チェックリスト</h3>
