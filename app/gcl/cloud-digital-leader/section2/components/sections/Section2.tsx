@@ -21,7 +21,7 @@ export const Section2: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`データ → 情報 → 知識 → 知恵 → 意思決定
@@ -81,7 +81,7 @@ export const Section2: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`        価値

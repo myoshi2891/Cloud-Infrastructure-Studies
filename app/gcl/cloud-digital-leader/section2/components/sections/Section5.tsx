@@ -38,7 +38,7 @@ export const Section5: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`コスト構造の考え方:
@@ -104,7 +104,7 @@ export const Section5: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`ライフサイクルポリシーの例（コスト自動最適化）:

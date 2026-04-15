@@ -20,7 +20,7 @@ export const Section8: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Pub/Sub の仕組み（郵便に例えると）:
@@ -38,7 +38,7 @@ export const Section8: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Pub/Sub なし（直接連携）の問題:
@@ -100,7 +100,7 @@ Pub/Sub ありの解決策:
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Dataflow の特徴:
@@ -165,7 +165,7 @@ Pub/Sub ありの解決策:
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Dataproc を選ぶ主な理由:
@@ -201,7 +201,7 @@ Dataproc vs Dataflow の違い:
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Database Migration Service とは:
@@ -225,7 +225,7 @@ Dataproc vs Dataflow の違い:
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Datastream とは:

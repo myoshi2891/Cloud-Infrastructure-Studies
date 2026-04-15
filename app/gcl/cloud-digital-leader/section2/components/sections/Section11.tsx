@@ -17,7 +17,7 @@ export const Section11: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`課題: 売上を伸ばしたい・在庫ロスを減らしたい
@@ -75,7 +75,7 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`課題: 品質不良を減らしたい・設備ダウンタイムを削減したい
@@ -103,7 +103,7 @@ BigQuery（履歴データ蓄積） → Vertex AI（予兆検知モデル）
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`課題: 不正取引を即座に検知したい

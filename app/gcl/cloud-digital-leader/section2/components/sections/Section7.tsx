@@ -20,7 +20,7 @@ export const Section7: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Looker の核心的な考え方: 「真実の唯一の情報源（Single Source of Truth）」
@@ -46,7 +46,7 @@ Looker の解決策:
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`LookML（Looker Modeling Language）:

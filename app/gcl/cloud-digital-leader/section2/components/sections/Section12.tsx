@@ -17,7 +17,7 @@ export const Section12: React.FC = () => {
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`Q: 構造化・半構造化・非構造化データの例を各1つ挙げよ
@@ -63,7 +63,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`問題: 「世界中のユーザーが同時に在庫を更新するグローバル EC を
@@ -88,7 +88,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`問題: 「規制上 7 年間保持が必要な財務レポートがある。
@@ -112,7 +112,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`問題: 「クレジットカードの不正取引を取引直後に検知したい。
@@ -135,7 +135,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 ` }} />
             
 
-                <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
+                <div>
                     <DiagramSVG viewBox="0 0 800 400">
                         <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
                             {`問題: 「大企業全社で統一されたデータ定義に基づく
