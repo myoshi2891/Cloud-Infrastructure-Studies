@@ -68,8 +68,8 @@ Pub/Sub ありの解決策:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>ユースケース</th>
-<th>説明</th>
+<th scope="col">ユースケース</th>
+<th scope="col">説明</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -127,9 +127,9 @@ Pub/Sub ありの解決策:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>ユースケース</th>
-<th>バッチ/ストリーミング</th>
-<th>説明</th>
+<th scope="col">ユースケース</th>
+<th scope="col">バッチ/ストリーミング</th>
+<th scope="col">説明</th>
 </tr>
 </thead>
 <tbody><tr>

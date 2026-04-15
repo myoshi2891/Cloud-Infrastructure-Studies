@@ -44,9 +44,9 @@ export const Section2: React.FC = () => {
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>比較項目</th>
-<th>従来型（経験・勘）</th>
-<th>データドリブン</th>
+<th scope="col">比較項目</th>
+<th scope="col">従来型（経験・勘）</th>
+<th scope="col">データドリブン</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -112,10 +112,10 @@ export const Section2: React.FC = () => {
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>レベル</th>
-<th>問い</th>
-<th>分析の例</th>
-<th>使うツール</th>
+<th scope="col">レベル</th>
+<th scope="col">問い</th>
+<th scope="col">分析の例</th>
+<th scope="col">使うツール</th>
 </tr>
 </thead>
 <tbody><tr>

@@ -41,9 +41,9 @@ export const Section1: React.FC = () => {
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>#</th>
-<th>サブトピック</th>
-<th>重要度</th>
+<th scope="col">#</th>
+<th scope="col">サブトピック</th>
+<th scope="col">重要度</th>
 </tr>
 </thead>
 <tbody><tr>

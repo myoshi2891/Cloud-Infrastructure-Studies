@@ -16,9 +16,9 @@ export const Section13: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>カテゴリ</th>
-<th>リソース</th>
-<th>URL</th>
+<th scope="col">カテゴリ</th>
+<th scope="col">リソース</th>
+<th scope="col">URL</th>
 </tr>
 </thead>
 <tbody><tr>

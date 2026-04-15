@@ -179,10 +179,10 @@ export const Section10: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>手法</th>
-<th>再識別の可能性</th>
-<th>GDPR 対象</th>
-<th>主な用途</th>
+<th scope="col">手法</th>
+<th scope="col">再識別の可能性</th>
+<th scope="col">GDPR 対象</th>
+<th scope="col">主な用途</th>
 </tr>
 </thead>
 <tbody><tr>

@@ -63,11 +63,11 @@ export const Section5: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>クラス</th>
-<th>月次保存コスト</th>
-<th>取得コスト</th>
-<th>最小保存期間</th>
-<th>適したユースケース</th>
+<th scope="col">クラス</th>
+<th scope="col">月次保存コスト</th>
+<th scope="col">取得コスト</th>
+<th scope="col">最小保存期間</th>
+<th scope="col">適したユースケース</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -155,10 +155,10 @@ export const Section5: React.FC = () => {
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th><strong>アーキテクチャ</strong></th>
-<th><strong>定義と主な目的</strong></th>
-<th><strong>データ形式とスキーマ要件</strong></th>
-<th><strong>Google Cloudの該当サービス</strong></th>
+<th scope="col"><strong>アーキテクチャ</strong></th>
+<th scope="col"><strong>定義と主な目的</strong></th>
+<th scope="col"><strong>データ形式とスキーマ要件</strong></th>
+<th scope="col"><strong>Google Cloudの該当サービス</strong></th>
 </tr>
 </thead>
 <tbody><tr>

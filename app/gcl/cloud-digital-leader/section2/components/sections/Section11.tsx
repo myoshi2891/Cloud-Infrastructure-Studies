@@ -40,10 +40,10 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>課題</th>
-<th>データ</th>
-<th>GCP サービス</th>
-<th>効果</th>
+<th scope="col">課題</th>
+<th scope="col">データ</th>
+<th scope="col">GCP サービス</th>
+<th scope="col">効果</th>
 </tr>
 </thead>
 <tbody><tr>

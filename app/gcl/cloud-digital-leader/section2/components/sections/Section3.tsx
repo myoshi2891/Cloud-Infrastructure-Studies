@@ -39,9 +39,9 @@ export const Section3: React.FC = () => {
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>データ種別</th>
-<th>具体例</th>
-<th>格納先（GCP）</th>
+<th scope="col">データ種別</th>
+<th scope="col">具体例</th>
+<th scope="col">格納先（GCP）</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -99,10 +99,10 @@ export const Section3: React.FC = () => {
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>データ種別</th>
-<th>具体例</th>
-<th>格納先（GCP）</th>
-<th>分析方法</th>
+<th scope="col">データ種別</th>
+<th scope="col">具体例</th>
+<th scope="col">格納先（GCP）</th>
+<th scope="col">分析方法</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -170,10 +170,10 @@ export const Section3: React.FC = () => {
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>比較項目</th>
-<th>構造化</th>
-<th>半構造化</th>
-<th>非構造化</th>
+<th scope="col">比較項目</th>
+<th scope="col">構造化</th>
+<th scope="col">半構造化</th>
+<th scope="col">非構造化</th>
 </tr>
 </thead>
 <tbody><tr>

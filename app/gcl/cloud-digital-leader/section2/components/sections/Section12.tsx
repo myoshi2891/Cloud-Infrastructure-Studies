@@ -159,8 +159,8 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>混同パターン</th>
-<th>正しい理解</th>
+<th scope="col">混同パターン</th>
+<th scope="col">正しい理解</th>
 </tr>
 </thead>
 <tbody><tr>

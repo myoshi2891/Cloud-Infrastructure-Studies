@@ -110,9 +110,9 @@ HA 構成あり（マルチゾーン）:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>比較項目</th>
-<th>Cloud SQL</th>
-<th>Cloud Spanner</th>
+<th scope="col">比較項目</th>
+<th scope="col">Cloud SQL</th>
+<th scope="col">Cloud Spanner</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -235,9 +235,9 @@ BigQuery の革命的な点:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>機能</th>
-<th>説明</th>
-<th>ユースケース</th>
+<th scope="col">機能</th>
+<th scope="col">説明</th>
+<th scope="col">ユースケース</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -316,11 +316,11 @@ Cloud SQL PostgreSQL との違い:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>サービス</th>
-<th>タイプ</th>
-<th>規模</th>
-<th>主な用途</th>
-<th>キーワード</th>
+<th scope="col">サービス</th>
+<th scope="col">タイプ</th>
+<th scope="col">規模</th>
+<th scope="col">主な用途</th>
+<th scope="col">キーワード</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -407,10 +407,10 @@ Cloud SQL PostgreSQL との違い:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th><strong>要件の特性</strong></th>
-<th><strong>データモデルと整合性</strong></th>
-<th><strong>推奨されるGoogle Cloudサービス</strong></th>
-<th><strong>主なユースケース</strong></th>
+<th scope="col"><strong>要件の特性</strong></th>
+<th scope="col"><strong>データモデルと整合性</strong></th>
+<th scope="col"><strong>推奨されるGoogle Cloudサービス</strong></th>
+<th scope="col"><strong>主なユースケース</strong></th>
 </tr>
 </thead>
 <tbody><tr>

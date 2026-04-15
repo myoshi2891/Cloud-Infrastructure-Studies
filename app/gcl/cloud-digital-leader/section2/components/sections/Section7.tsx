@@ -73,9 +73,9 @@ Looker の解決策:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>機能</th>
-<th>説明</th>
-<th>ビジネス価値</th>
+<th scope="col">機能</th>
+<th scope="col">説明</th>
+<th scope="col">ビジネス価値</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -137,9 +137,9 @@ Looker の解決策:
 <div class="ctable-wrap" tabIndex="0"><table class="ctable">
 <thead>
 <tr>
-<th>比較項目</th>
-<th>Looker</th>
-<th>Looker Studio</th>
+<th scope="col">比較項目</th>
+<th scope="col">Looker</th>
+<th scope="col">Looker Studio</th>
 </tr>
 </thead>
 <tbody><tr>
