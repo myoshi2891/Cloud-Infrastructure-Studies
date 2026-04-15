@@ -36,7 +36,7 @@ export const Section3: React.FC = () => {
   ❌ 非構造化データのような柔軟な表現は難しい
 </code></pre>
 <h4 class="stitle">構造化データの具体例</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">データ種別</th>
@@ -96,7 +96,7 @@ export const Section3: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">非構造化データの具体例</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">データ種別</th>
@@ -167,7 +167,7 @@ export const Section3: React.FC = () => {
   ✅ BigQuery や Firestore で直接扱える
 </code></pre>
 <h3 class="stitle">3.5 データ形式の比較まとめ</h3>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">比較項目</th>

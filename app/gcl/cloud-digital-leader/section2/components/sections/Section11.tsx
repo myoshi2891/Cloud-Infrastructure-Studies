@@ -37,7 +37,7 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">具体的な活用例</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">課題</th>

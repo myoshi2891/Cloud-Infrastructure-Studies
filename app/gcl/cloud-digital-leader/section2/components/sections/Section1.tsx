@@ -38,7 +38,7 @@ export const Section1: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">1.2 Section 2 のサブトピック一覧</h3>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">#</th>

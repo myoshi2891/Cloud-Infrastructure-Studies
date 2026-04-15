@@ -107,7 +107,7 @@ HA 構成あり（マルチゾーン）:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Cloud SQL vs Cloud Spanner の比較</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">比較項目</th>
@@ -232,7 +232,7 @@ BigQuery の革命的な点:
   - 予約スロット（定額課金）とオンデマンド課金の使い分け
 </code></pre>
 <h4 class="stitle">BigQuery の独自機能</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">機能</th>
@@ -313,7 +313,7 @@ Cloud SQL PostgreSQL との違い:
   ✅ PostgreSQL アプリをほぼ変更なしに高性能化したい場合
 </code></pre>
 <h3 class="stitle">6.9 全データベースサービスの比較まとめ</h3>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">サービス</th>
@@ -404,7 +404,7 @@ Cloud SQL PostgreSQL との違い:
 <p class="tdesc">極めて低い遅延が求められるインメモリのユースケースには、「Memorystore」が利用される。これはRedisおよびMemcachedと互換性のあるフルマネージドのインメモリデータストアであり、データベースのクエリ結果のキャッシング、ウェブアプリケーションのセッション管理、リアルタイムのリーダーボードなど、ミリ秒未満の応答速度が不可欠なワークロードに適用される 。</p>
 <h3 class="stitle"><strong>データベース選定のデシジョン・マトリクス</strong></h3>
 <p class="tdesc">多様なビジネス要件に対して、どのデータベースソリューションを採用すべきかの判断基準を以下の表に整理する 。</p>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col"><strong>要件の特性</strong></th>

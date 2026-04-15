@@ -60,7 +60,7 @@ export const Section5: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+                <div dangerouslySetInnerHTML={{ __html: `<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">クラス</th>
@@ -152,7 +152,7 @@ export const Section5: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<p class="tdesc"><strong>2.2 Google Cloud データマネジメントソリューション</strong></p>
 <p class="tdesc">CDL試験では、ビジネスのユースケースに応じて最適なデータ管理製品を選択する能力が求められる。これには、データベース、データウェアハウス、データレイクといった基本概念の明確な区別が含まれる 。</p>
 <p class="tdesc">以下の表は、データ管理の主要な3つの概念の違いを明確に示したものである 。</p>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col"><strong>アーキテクチャ</strong></th>

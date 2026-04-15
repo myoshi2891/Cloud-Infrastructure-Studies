@@ -156,7 +156,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">12.3 混同しやすいポイントの整理</h3>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">混同パターン</th>

@@ -41,7 +41,7 @@ export const Section2: React.FC = () => {
 <p class="tdesc"><strong>データドリブン経営</strong>とは、経験・勘・感覚ではなく、
 <strong>データと分析に基づいて意思決定</strong>を行う経営スタイルです。</p>
 <h4 class="stitle">従来型経営 vs データドリブン経営の比較</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">比較項目</th>
@@ -109,7 +109,7 @@ export const Section2: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">各分析レベルの具体例（EC サイトの場合）</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">レベル</th>

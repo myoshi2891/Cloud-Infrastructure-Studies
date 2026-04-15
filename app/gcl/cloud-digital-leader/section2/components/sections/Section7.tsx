@@ -70,7 +70,7 @@ Looker の解決策:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">Looker の主な機能</h4>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">機能</th>
@@ -134,7 +134,7 @@ Looker の解決策:
 <h3 class="stitle">7.3 Looker vs Looker Studio の比較</h3>
 <pre class="code-block"><code className="language-text">試験で最もよく問われる比較ポイント!
 </code></pre>
-<div class="ctable-wrap" tabIndex="0"><table class="ctable">
+<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr>
 <th scope="col">比較項目</th>
