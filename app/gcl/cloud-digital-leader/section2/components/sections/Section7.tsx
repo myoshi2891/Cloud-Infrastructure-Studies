@@ -196,7 +196,7 @@ Looker Studio を選ぶ場合:
   - コストをかけられない
   - Google Analytics・広告データの可視化
 </code></pre>
-<blockquote>
+<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
 <p class="tdesc">📎 <strong>参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/looker/docs">https://cloud.google.com/looker/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://lookerstudio.google.com/">https://lookerstudio.google.com/</a>

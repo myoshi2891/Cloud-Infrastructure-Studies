@@ -213,7 +213,7 @@ export const Section3: React.FC = () => {
 <td>高（AI/ML 必要）</td>
 </tr>
 </tbody></table></div>
-<blockquote>
+<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
 <p class="tdesc">📎 <strong>参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/learn/what-is-structured-data">https://cloud.google.com/learn/what-is-structured-data</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data">https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data</a></p>

@@ -143,7 +143,7 @@ export const Section2: React.FC = () => {
 <td>Vertex AI Agent</td>
 </tr>
 </tbody></table></div>
-<blockquote>
+<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
 <p class="tdesc">📎 <strong>参照</strong>: Google Cloud データ分析ソリューション
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/introduction">https://cloud.google.com/bigquery/docs/introduction</a></p>

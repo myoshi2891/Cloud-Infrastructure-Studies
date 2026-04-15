@@ -373,7 +373,7 @@ Cloud SQL PostgreSQL との違い:
 <td>Redis・低レイテンシ</td>
 </tr>
 </tbody></table></div>
-<blockquote>
+<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
 <p class="tdesc">📎 <strong>参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/sql/docs">https://cloud.google.com/sql/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/spanner/docs">https://cloud.google.com/spanner/docs</a>

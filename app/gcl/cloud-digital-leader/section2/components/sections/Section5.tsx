@@ -136,7 +136,7 @@ export const Section5: React.FC = () => {
   - リージョン間のデータ転送コストを意識してアーキテクチャを設計
   - Recommender の提案を定期的に確認する
 </code></pre>
-<blockquote>
+<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
 <p class="tdesc">📎 <strong>参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a>

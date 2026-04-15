@@ -238,7 +238,7 @@ export const Section10: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<blockquote>
+                <div dangerouslySetInnerHTML={{ __html: `<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
 <p class="tdesc">📎 <strong>参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataplex/docs">https://cloud.google.com/dataplex/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dlp/docs">https://cloud.google.com/dlp/docs</a>
