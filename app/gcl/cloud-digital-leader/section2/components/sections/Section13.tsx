@@ -161,7 +161,7 @@ export const Section13: React.FC = () => {
 <p><em>本ガイドは Google Cloud Digital Leader（CDL）試験の Section 2 に特化した学習資料です。</em>
 <em>試験の最新情報は必ず公式サイト（<a href="https://cloud.google.com/learn/certification/cloud-digital-leader">https://cloud.google.com/learn/certification/cloud-digital-leader</a>）でご確認ください。</em>
 <em>作成日: 2026年4月</em></p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             
@@ -240,7 +240,7 @@ export const Section13: React.FC = () => {
 <a href="https://docs.cloud.google.com/architecture/ml-on-gcp-best-practices"><strong>docs.cloud.google.com</strong>Best practices for implementing machine learning on Google Cloud | Cloud Architecture Center新しいウィンドウで開く</a>
 | <a href="https://medium.com/search?q=Warley%27s+CatOps+Google+Cloud">by Warley&#39;s CatOps</a> |
 <a href="https://cloud.google.com/resources/idc-report-cloud-iaas"><strong>cloud.google.com</strong>The business value of Google Cloud IaaS</a></p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
         

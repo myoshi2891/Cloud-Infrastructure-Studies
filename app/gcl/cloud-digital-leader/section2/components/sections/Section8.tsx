@@ -17,7 +17,7 @@ export const Section8: React.FC = () => {
 <h4>Pub/Sub とは</h4>
 <p><strong>Pub/Sub</strong>（パブリッシュ・サブスクライブ）は、
 システム間でメッセージを非同期に送受信するためのサービスです。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -35,7 +35,7 @@ export const Section8: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4>Pub/Sub を使う理由</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -97,7 +97,7 @@ Pub/Sub ありの解決策:
 <h4>Dataflow とは</h4>
 <p><strong>Dataflow</strong> は、バッチ処理とストリーミング処理の両方に対応した
 フルマネージドのデータ処理パイプラインサービスです。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -162,7 +162,7 @@ Pub/Sub ありの解決策:
 <h4>Dataproc とは</h4>
 <p><strong>Dataproc</strong> は、Apache Hadoop・Apache Spark クラスタを
 クラウド上で迅速に立ち上げ・管理できるサービスです。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -198,7 +198,7 @@ Dataproc vs Dataflow の違い:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>8.4 Database Migration Service（データ移行）</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -222,7 +222,7 @@ Dataproc vs Dataflow の違い:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>8.5 Datastream（変更データキャプチャ）</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -257,7 +257,7 @@ Dataproc vs Dataflow の違い:
 <a href="https://cloud.google.com/database-migration/docs">https://cloud.google.com/database-migration/docs</a></p>
 </blockquote>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             
@@ -272,7 +272,7 @@ Dataproc vs Dataflow の違い:
 <p>第二に、システムコストとレイテンシの最適化である。もしビジネス要件として、後段のシステム（例えばBigQuery側）でデータの重複を許容できる、あるいは独自に重複排除を行える設計であるならば、DataflowのストリーミングモードをデフォルトのExactly-onceから「At-least-once（少なくとも1回）」モードに変更することが推奨される。これにより、内部的な重複排除処理のオーバーヘッドが削減され、処理レイテンシの向上とコンピューティングコストの大幅な削減を実現できる 。</p>
 <p>第三に、Pub/Subのサブスクリプションとデッドレタートピックの適切な構成である。一つのPub/Subサブスクリプションを複数のDataflowパイプラインで共有して読み取ることは避けるべきである。これを実行すると、データが非決定的に各パイプラインに分割されてしまい、重複メッセージの発生やウォーターマーク処理の遅延、オートスケーリングの非効率化を引き起こすため、必ずパイプラインごとに独立したサブスクリプションを作成する必要がある 。また、処理に失敗したメッセージを退避させるためのPub/Subの「デッドレタートピック」機能は、Dataflowのソースとして設定するべきではない。Dataflowはワーカーのシャットダウンなどの内部的な理由により、パイプラインのコード自体にエラーがなくてもPub/Subに対して否定応答（NACK）を返すことがあるため、正常なメッセージまで誤ってデッドレタートピックに送られてしまうリスクがあるからだ 。</p>
 <p>さらに、稼働中のDataflowパイプラインにおいて、Pub/Subの過去の特定時点に巻き戻してデータを再読み込みする機能（Pub/Sub Seek）を使用することは推奨されない。ウォーターマークのロジックが破綻し、大量のメッセージの重複や欠落を引き起こす原因となる。データを再処理する必要がある場合は、サブスクリプションのスナップショットを作成し、新しいサブスクリプションをそこから派生させた上で、既存のパイプラインをドレイン（安全な停止）し、新しいサブスクリプションをソースとして新規パイプラインを立ち上げるというワークフローがベストプラクティスである 。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
         

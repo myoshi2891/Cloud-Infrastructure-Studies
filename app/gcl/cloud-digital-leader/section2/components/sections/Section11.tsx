@@ -14,7 +14,7 @@ export const Section11: React.FC = () => {
             <SectionCard id="cdl-2-11" idNumber="11" title="ビジネスユースケース別 データ活用パターン">
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>11.1 小売・EC 業界でのデータ活用</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -72,7 +72,7 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
 </tr>
 </tbody></table>
 <h3>11.2 製造業でのデータ活用</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -100,7 +100,7 @@ BigQuery（履歴データ蓄積） → Vertex AI（予兆検知モデル）
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>11.3 金融業でのデータ活用</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -150,7 +150,7 @@ Vertex AI（医療画像 AI / Medical Imaging）
   - データ暗号化・アクセスログが必須
 </code></pre>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             

@@ -16,7 +16,7 @@ export const Section4: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h3>4.1 データライフサイクルの全体像</h3>
 <p>データは「生まれてから消えるまで」に複数のステージを経ます。
 各ステージに適切な Google Cloud サービスを対応させることが重要です。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -97,7 +97,7 @@ export const Section4: React.FC = () => {
   - Dataflow は同一コードでバッチ・ストリーミング両対応
 </code></pre>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             

@@ -18,7 +18,7 @@ export const Section2: React.FC = () => {
 何らかの情報を記録したものです。
 単体では価値が低くても、<strong>分析・組み合わせ・活用</strong>することで
 ビジネス上の洞察（インサイト）と価値を生み出します。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -78,7 +78,7 @@ export const Section2: React.FC = () => {
 <h3>2.3 データが生み出す 4 種類のビジネス価値</h3>
 <p>データ分析には4つのレベルがあります。
 上位レベルほど高い価値を生み出しますが、より高度な技術が必要です。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -149,7 +149,7 @@ export const Section2: React.FC = () => {
 <a href="https://cloud.google.com/bigquery/docs/introduction">https://cloud.google.com/bigquery/docs/introduction</a></p>
 </blockquote>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             
@@ -165,7 +165,7 @@ export const Section2: React.FC = () => {
 <p>データが価値を生み出すプロセスは、工場の組み立てライン（Assembly Line）に例えられる。未加工の原材料である生データがライン上を移動するにつれて、様々なシステムによって処理と文脈の付加が行われ、最終的に人間や機械が具体的な行動を起こすためのインサイトへと変換される (<a href="https://campus.datacamp.com/courses/exploring-data-transformation-with-google-cloud/the-value-of-data?ex=6)%E3%80%82%E3%81%93%E3%81%AE%E9%80%A3%E7%B6%9A%E7%9A%84%E3%81%AA%E4%BE%A1%E5%80%A4%E5%89%B5%E9%80%A0%E3%81%AE%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9%E3%81%AF%E3%80%8C%E3%83%87%E3%83%BC%E3%82%BF%E3%83%90%E3%83%AA%E3%83%A5%E3%83%BC%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3%E3%80%8D%E3%81%A8%E5%91%BC%E3%81%B0%E3%82%8C%E3%80%81%E4%B8%BB%E3%81%AB4%E3%81%A4%E3%81%AE%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB%E3%82%B9%E3%83%86%E3%83%BC%E3%82%B8%E3%81%A7%E6%A7%8B%E6%88%90%E3%81%95%E3%82%8C%E3%82%8B">https://campus.datacamp.com/courses/exploring-data-transformation-with-google-cloud/the-value-of-data?ex=6)。この連続的な価値創造のプロセスは「データバリューチェーン」と呼ばれ、主に4つのライフサイクルステージで構成される</a> 。</p>
 <p>第一のステージは「取り込み（Ingest）」である。アプリケーションのログ、IoTデバイスからのストリーミングデータ、オンプレミス環境からのバッチデータなど、多種多様なソースからクラウド上にデータを収集する。このフェーズでは、Cloud Pub/Subによるリアルタイムメッセージングや、Storage Transfer Serviceなどが活用される 。第二のステージは「保存（Store）」であり、取り込んだデータを耐久性が高くアクセス容易なフォーマットで保持する。オブジェクトデータであればCloud Storage、構造化されたトランザクションデータであればCloud SQLやCloud Spannerが選択される 。</p>
 <p>第三のステージは「処理と分析（Process and Analyze）」である。蓄積された生データをクレンジングし、正規化し、分析可能な形式に変換する。Cloud Dataflowを使用したサーバーレスのストリーム処理やバッチ処理、あるいはCloud DataprocによるHadoop/Sparkエコシステムの活用がこれに該当する。そして処理されたデータは、BigQueryなどの分析システムに格納される 。最後の第四ステージが「探索と可視化（Explore and Visualize）」である。分析結果をダッシュボードやレポートに変換し、関係者が直感的にビジネスの現状を把握し、インサイトを引き出せるようにする。LookerやLooker Studioがこのフェーズの中核を担う 。この一連のライフサイクルを最適化することで、企業はデータから迅速かつ継続的に価値を引き出すことが可能となる。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
         

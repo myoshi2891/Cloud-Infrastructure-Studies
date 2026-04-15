@@ -51,7 +51,7 @@ export const Section6: React.FC = () => {
   ❌ 数十 TB を超える大規模分析には BigQuery が適切
 </code></pre>
 <h4>Cloud SQL の高可用性（HA）構成</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -79,7 +79,7 @@ HA 構成あり（マルチゾーン）:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>6.3 Cloud Spanner（グローバル分散 RDBMS）</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -267,7 +267,7 @@ BigQuery の革命的な点:
 </tr>
 </tbody></table>
 <h3>6.7 Memorystore（インメモリ DB）</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -384,7 +384,7 @@ Cloud SQL PostgreSQL との違い:
 <a href="https://cloud.google.com/alloydb/docs">https://cloud.google.com/alloydb/docs</a></p>
 </blockquote>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             
@@ -448,7 +448,7 @@ Cloud SQL PostgreSQL との違い:
 <p>オンプレミスのレガシーデータベースや他のクラウドプロバイダーの環境からGoogle Cloudへの移行は、インフラストラクチャをモダナイズする上で不可避のステップである 。この移行プロセスにおける運用上の負担を排除し、安全かつシームレスな移行を実現するサービスが「Database Migration Service (DMS)」である (<a href="https://cloud.google.com/database-migration)%E3%80%82">https://cloud.google.com/database-migration)。</a></p>
 <p>DMSは、移行用のサーバーをプロビジョニングしたり管理したりする必要がないサーバーレスの移行ソリューションである。オートスケーリング機能により、ソースデータベースの初期スナップショットの取得から、継続的な変更データキャプチャ（CDC）によるレプリケーションまで、大規模なデータ移行を最小限のダウンタイムで実行できる 。DMSの特筆すべきベストプラクティスは、生成AIの力を活用した「Gemini in Database Migration Service」の利用である。従来、OracleやSQL Serverといった商用データベースから、Cloud SQL for PostgreSQLなどの異なるデータベースエンジン（異種移行）へ移行する際、ストアドプロシージャ、トリガー、関数といったデータベース常駐コードの変換は極めて困難で手作業による修正が不可避であった。Geminiを利用することで、これらの複雑なコードがターゲットのSQLダイアレクト（方言）に合わせてAIによって自動的に変換・提案され、開発者のコード修正作業の負担とエラーのリスクが劇的に削減される 。</p>
 <p>さらに、SaaSアプリケーション（Salesforceなど）、クラウドストレージ（Amazon S3など）、あるいはSnowflakeやTeradataといった他のデータウェアハウスから、Google CloudのBigQueryへ定期的にデータを転送・統合する場合には、「BigQuery Data Transfer Service (DTS)」を利用することがベストプラクティスである 。DTSは、コーディングを必要とせずにデータ転送のスケジューリングを自動化し、フルロードだけでなく増分移行にも対応するため、データ分析基盤の構築を迅速化する 。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
         

@@ -16,7 +16,7 @@ export const Section1: React.FC = () => {
                 <div dangerouslySetInnerHTML={{ __html: `<h3>1.1 試験における Section 2 の位置づけ</h3>
 <p>Google Cloud Digital Leader（CDL）試験の Section 2 は
 「<strong>Google Cloud によるデータ トランスフォーメーションの探求</strong>」がテーマです。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -98,7 +98,7 @@ export const Section1: React.FC = () => {
 </tr>
 </tbody></table>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             

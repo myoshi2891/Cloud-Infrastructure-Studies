@@ -17,7 +17,7 @@ export const Section7: React.FC = () => {
 <h4>Looker とは</h4>
 <p><strong>Looker</strong> は、Google Cloud のエンタープライズ向け
 ビジネスインテリジェンス（BI）プラットフォームです。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -43,7 +43,7 @@ Looker の解決策:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4>LookML とは</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -203,7 +203,7 @@ Looker Studio を選ぶ場合:
 <a href="https://cloud.google.com/bigquery/docs/bi-engine-intro">https://cloud.google.com/bigquery/docs/bi-engine-intro</a></p>
 </blockquote>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             
@@ -226,7 +226,7 @@ Looker Studio を選ぶ場合:
 第一に、数千万行を超えるような巨大なデータセットに対するリアルタイム計算の回避である。行レベルの詳細データを毎回クエリすると、BigQueryの課金とレスポンス遅延が増大する。この問題を解決するために、月次や週次などの単位で事前に集計した「集計テーブル（Pre-Aggregated Data）」を作成し、Lookerの「Aggregate Awareness（集計の認識）」機能を活用することが最も効果的な最適化戦略である 。これにより、Lookerはユーザーのクエリが事前集計テーブルで回答可能かどうかを自動的に判断し、適切な場合は軽量なテーブルにクエリをルーティングするため、パフォーマンスが10倍から100倍向上する (<a href="https://www.squareshift.co/post/optimizing-looker-performance-for-large-scale-data-workloads)%E3%80%82">https://www.squareshift.co/post/optimizing-looker-performance-for-large-scale-data-workloads)。</a></p>
 <p>第二に、データモデルにおける無駄な処理の削減である。分析に不要なテーブルの結合（Join）は極力制限し、ダッシュボード上のExplore（データ探索領域）を焦点を絞ったシンプルな状態に保つことが重要である 。ダッシュボードに配置する要素（タイルやグラフ）の数も重要であり、1つのダッシュボードに25個以上の複雑なクエリタイルを配置すると、ブラウザのメモリリソースを著しく消費し、レンダリング速度が低下するため避けるべきである 。</p>
 <p>第三に、データガバナンスとアクセス制御の最適化である。Lookerでは行レベルのセキュリティ（Row-Level Security）などを柔軟に設定できるが、ユーザーレベルでの複雑なアクセス制御ロジックを多用すると、クエリの実行計画が複雑化し、システム全体のパフォーマンスに悪影響を及ぼす 。したがって、ロールベースのアクセス制御（RBAC）を用いて、ユーザーの役割や責任範囲に必要なExploreやフィールドへのアクセス権のみをシンプルに付与し、不必要な大規模データへの偶発的なクエリを制限することが、セキュリティとパフォーマンスの両面におけるベストプラクティスである 。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
         

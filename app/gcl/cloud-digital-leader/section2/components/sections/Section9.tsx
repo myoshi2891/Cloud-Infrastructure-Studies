@@ -39,7 +39,7 @@ export const Section9: React.FC = () => {
 </code></pre>
 <h3>9.2 代表的なデータパイプラインアーキテクチャ</h3>
 <h4>パターン A: バッチ分析パイプライン</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -63,7 +63,7 @@ export const Section9: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4>パターン B: リアルタイムストリーミングパイプライン</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -87,7 +87,7 @@ Web クリック    ──►           ──►           ──►
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4>パターン C: ハイブリッドパイプライン（最も一般的）</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -107,7 +107,7 @@ GCS       → Dataproc →`}
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>9.3 データメッシュ（Data Mesh）の考え方</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -137,7 +137,7 @@ GCS       → Dataproc →`}
 <a href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></p>
 </blockquote>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             

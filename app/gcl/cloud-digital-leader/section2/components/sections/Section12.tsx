@@ -14,7 +14,7 @@ export const Section12: React.FC = () => {
             <SectionCard id="cdl-2-12" idNumber="12" title="Section 2 総まとめ・頻出問題パターン">
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>12.1 最重要用語の一問一答</h3>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -60,7 +60,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3>12.2 よく出る問題パターンと解法</h3>
 <h4>パターン 1: データベース選択</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -85,7 +85,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4>パターン 2: ストレージクラス選択</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -109,7 +109,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4>パターン 3: データパイプライン選択</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -132,7 +132,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h4>パターン 4: BI ツール選択</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -209,7 +209,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 □ データガバナンスとはなにか、なぜ重要かを説明できる
 </code></pre>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             

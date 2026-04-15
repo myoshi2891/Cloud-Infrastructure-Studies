@@ -72,7 +72,7 @@ export const Section3: React.FC = () => {
 </tbody></table>
 <h3>3.3 非構造化データ（Unstructured Data）</h3>
 <h4>定義と特徴</h4>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
 
                 <div className="my-4 overflow-x-auto bg-gray-50 p-4 rounded-md">
@@ -219,7 +219,7 @@ export const Section3: React.FC = () => {
 <a href="https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data">https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data</a></p>
 </blockquote>
 <hr />
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
             
@@ -227,7 +227,7 @@ export const Section3: React.FC = () => {
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3><strong>データの種類と価値創造のアプローチ</strong></h3>
 <p>企業がデータから新たな価値を創造するためには、主に3つのアプローチが存在する。一つ目は「現在のデータ（Current Data）」の活用である。既存のトランザクションデータや顧客行動履歴を深掘りすることで、業務の最適化やパーソナライゼーションを実現する。二つ目は「新しいデータ（New Data）」の収集である。これまで取得していなかったウェブサイトのクリックストリームや、製品に組み込まれたセンサーからのテレメトリデータを新たに収集し、未知の顧客ニーズや機器の故障予測モデルを構築する。三つ目は「外部データ（External Data）」の調達である。Google Cloud Public Datasetsなどを通じて公開されている気象データ、人口統計、市場トレンドなどの外部データセットを自社の内部データと結合することで、分析のコンテキストを劇的に拡張し、より精度の高い予測を可能にする 。</p>
-` }} className="prose max-w-none text-sm mb-4" />
+` }} />
             
             </SectionCard>
         
