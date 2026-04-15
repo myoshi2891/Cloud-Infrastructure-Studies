@@ -116,37 +116,37 @@ HA 構成あり（マルチゾーン）:
 </tr>
 </thead>
 <tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>スケール</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">スケール</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">垂直（単一サーバー強化）</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">水平（ノード追加で無限拡張）</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>リージョン</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">リージョン</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">単一リージョン</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">マルチリージョン対応</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>SLA</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">SLA</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">99.99%（HA 構成時）</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">99.999%</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>最大規模</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">最大規模</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">64 TB</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ペタバイト規模</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>コスト</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">コスト</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">比較的安価</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">非常に高価</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>互換性</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">互換性</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">MySQL/PG/SQL Server</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Cloud Spanner 独自 SQL</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>選ぶ場面</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">選ぶ場面</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">リージョン内の中規模 OLTP</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">グローバル展開・超大規模 OLTP</td>
 </tr>
@@ -241,27 +241,27 @@ BigQuery の革命的な点:
 </tr>
 </thead>
 <tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery ML</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">BigQuery ML</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">SQL でML モデルを構築・実行</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">データアナリストが Python なしで予測モデル作成</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery BI Engine</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">BigQuery BI Engine</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">インメモリ分析で高速レスポンス</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Looker Studio との連携で秒単位の応答</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery Omni</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">BigQuery Omni</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">AWS・Azure のデータも BigQuery で分析</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">マルチクラウド環境のデータ分析</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Gemini in BigQuery</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Gemini in BigQuery</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">自然言語でクエリ・コード生成</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">SQL の知識がなくても分析可能</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery DataFrames</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">BigQuery DataFrames</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Python Pandas ライクに BigQuery を操作</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">データサイエンティスト向け</td>
 </tr>
@@ -324,49 +324,49 @@ Cloud SQL PostgreSQL との違い:
 </tr>
 </thead>
 <tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud SQL</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Cloud SQL</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">RDB（マネージド）</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">中規模</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Web アプリ・既存 DB 移行</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">MySQL・PG・SQL Server</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Spanner</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Cloud Spanner</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">グローバル RDB</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">超大規模</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">金融・グローバル EC</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">グローバル・強一貫性・99.999%</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>AlloyDB</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">AlloyDB</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">PG 互換高性能 DB</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">大規模</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">高性能 PG・HTAP</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">PostgreSQL 互換・4倍高速</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Firestore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Firestore</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">NoSQL ドキュメント</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">中〜大規模</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">モバイル・Web アプリ</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">リアルタイム同期・サーバーレス</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Bigtable</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Bigtable</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">NoSQL ワイドカラム</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ペタバイト</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">IoT・時系列・広告</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">超高スループット・低レイテンシ</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>BigQuery</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">BigQuery</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">データウェアハウス</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ペタバイト</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">BI・分析・ML</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">サーバーレス・SQL 分析</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Memorystore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Memorystore</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">インメモリ</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">小〜中規模</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">キャッシュ・セッション</td>
@@ -374,7 +374,7 @@ Cloud SQL PostgreSQL との違い:
 </tr>
 </tbody></table></div>
 <blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
-<p class="tdesc mb-4 leading-relaxed">📎 <strong>参照</strong>:
+<p class="tdesc mb-4 leading-relaxed">📎 <strong class="text-[var(--color-foreground)] font-bold">参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/sql/docs">https://cloud.google.com/sql/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/spanner/docs">https://cloud.google.com/spanner/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs">https://cloud.google.com/bigquery/docs</a>
@@ -390,61 +390,61 @@ Cloud SQL PostgreSQL との違い:
             
             <SectionCard id="gcdl-2-6" idNumber="Deep Dive" title="リレーショナルデータベースとNoSQLの戦略的活用">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>リレーショナルデータベースの選定とアーキテクチャ</strong></h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong class="text-[var(--color-foreground)] font-bold">リレーショナルデータベースの選定とアーキテクチャ</strong></h3>
 <p class="tdesc mb-4 leading-relaxed">リレーショナルデータベース（RDBMS）は、データがテーブル、行、列の形式で構造化され、SQLを使用して操作されるシステムである。金融取引や在庫管理など、トランザクションの原子性、一貫性、独立性、永続性（ACID特性）が厳密に求められるユースケースにおいて不可欠である 。Google Cloudでは主に二つの強力なRDBMSの選択肢が存在する。</p>
 <p class="tdesc mb-4 leading-relaxed">一つ目は「Cloud SQL」である。これは、MySQL、PostgreSQL、SQL Serverといったオープンソースおよび商用のデータベースエンジンをフルマネージドで提供するサービスである 。データベースのプロビジョニング、バックアップ、パッチ適用、フェイルオーバーといった日常的な運用タスクが自動化されている。アプリケーションのバックエンドとして、データ容量が数十TB未満であり、単一リージョンでの高可用性で十分な一般的なトランザクション処理（OLTP）システムにおいて、最も標準的で推奨される選択肢である 。</p>
 <p class="tdesc mb-4 leading-relaxed">二つ目は「Cloud Spanner」である。これは、リレーショナルデータベースの利点（完全なSQLサポート、厳密なグローバルACID整合性）と、非リレーショナルデータベースの利点（無限の水平スケーリング）を世界で初めて統合した革新的なグローバル分散型データベースである 。Cloud SQLが垂直スケーリング（インスタンスのスケールアップ）に限界を持つのに対し、Cloud Spannerはノードを追加するだけでダウンタイムなしに書き込みと読み取りのパフォーマンスを線形にスケールアウトできる。データ量が10TBを大きく超えるシステムや、グローバルな金融決済システム、最大99.999%の可用性が求められるミッションクリティカルな環境において最適なソリューションである 。</p>
 <p class="tdesc mb-4 leading-relaxed">Cloud Spannerのパフォーマンスを最大限に引き出すためのベストプラクティスは、従来の単一ノードRDBMSの常識とは大きく異なる点に注意が必要である。Spannerは背後でデータをキーに基づいて複数のサーバー（スプリット）に分散・パーティショニングする。そのため、タイムスタンプや連続するシーケンス番号（AUTO_INCREMENTなど）を主キー（Primary Key）として使用すると、すべての新しいデータが単一のサーバーに集中して書き込まれる「ホットスポット（Hotspotting）」という現象が発生し、パフォーマンスが著しく低下する (<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/blog/topics/developers-practitioners/understanding-cloud-spanner-performance-metrics-scale-key-visualizer)%E3%80%82%E3%81%93%E3%82%8C%E3%82%92%E5%9B%9E%E9%81%BF%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AB%E3%81%AF%E3%80%81UUID%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B34%E3%81%AA%E3%81%A9%E3%81%AE%E3%83%A9%E3%83%B3%E3%83%80%E3%83%A0%E3%81%AA%E5%80%A4%E3%82%92%E4%B8%BB%E3%82%AD%E3%83%BC%E3%81%A8%E3%81%97%E3%81%A6%E6%8E%A1%E7%94%A8%E3%81%99%E3%82%8B%E3%81%8B%E3%80%81%E9%80%A3%E7%B6%9A%E3%81%99%E3%82%8B%E3%82%AD%E3%83%BC%E3%81%AE%E3%83%93%E3%83%83%E3%83%88%E3%82%92%E5%8F%8D%E8%BB%A2%EF%BC%88Bit-reverse%EF%BC%89%E3%81%95%E3%81%9B%E3%81%A6%E4%BF%9D%E5%AD%98%E7%A9%BA%E9%96%93%E5%85%A8%E4%BD%93%E3%81%AB%E6%9B%B8%E3%81%8D%E8%BE%BC%E3%81%BF%E8%B2%A0%E8%8D%B7%E3%82%92%E5%9D%87%E7%AD%89%E3%81%AB%E5%88%86%E6%95%A3%E3%81%95%E3%81%9B%E3%82%8B%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E8%A8%AD%E8%A8%88%E3%81%8C%E5%BC%B7%E3%81%8F%E6%8E%A8%E5%A5%A8%E3%81%95%E3%82%8C%E3%82%8B">https://cloud.google.com/blog/topics/developers-practitioners/understanding-cloud-spanner-performance-metrics-scale-key-visualizer)。これを回避するためには、UUIDバージョン4などのランダムな値を主キーとして採用するか、連続するキーのビットを反転（Bit-reverse）させて保存空間全体に書き込み負荷を均等に分散させるスキーマ設計が強く推奨される</a> 。さらに、クエリの実行においては、リテラル値を直接埋め込むのではなくパラメータ化されたクエリ（Parameterized Queries）を使用することで、Spannerがクエリ実行プランをキャッシュして再利用できるようになり、コンパイルのオーバーヘッドを削減してパフォーマンスを向上させることができる 。</p>
-<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>非リレーショナルデータベース (NoSQL) の戦略的活用</strong></h3>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong class="text-[var(--color-foreground)] font-bold">非リレーショナルデータベース (NoSQL) の戦略的活用</strong></h3>
 <p class="tdesc mb-4 leading-relaxed">非リレーショナルデータベース（NoSQL）は、厳密なテーブル構造を持たず、柔軟なスキーマを許容することで、極めて大規模なデータの読み書きを驚異的な低レイテンシで処理することに特化している。</p>
 <p class="tdesc mb-4 leading-relaxed">大規模な分析および運用ワークロード向けに設計されているのが「Cloud Bigtable」である。Bigtableは、ペタバイト規模のデータをミリ秒未満のレイテンシで処理できるフルマネージドのワイドカラム（Wide-column）型NoSQLデータベースである 。IoTデバイスから絶え間なく送信されるセンサーデータ、アドテクにおけるリアルタイムのユーザー行動ログ、金融市場の時系列ティッカーデータなど、極端に高いスループットとスケーラビリティが要求されるユースケースに最適である 。</p>
 <p class="tdesc mb-4 leading-relaxed">Bigtableのパフォーマンスは、スキーマ設計、特に「行キー（Row Key）」の設計に完全に依存している 。Bigtableのベストプラクティスとして、関連するデータは可能な限り単一の行に格納することが推奨されるが、1行あたりのデータサイズが100MBを超えないように分割する必要がある 。また、行キーはメモリとストレージ効率のために4KB以下に短く保つべきである 。Spannerと同様に、Bigtableでもタイムスタンプを行キーの先頭に配置すると書き込みのホットスポットが発生する。時系列データを扱う場合は、ハッシュ関数を用いて生成したプレフィックスを行キーの先頭に付加する「キーソルト（Key Salting）」という手法を用いることで、分散ノード全体に書き込み負荷を均等に分散させることがベストプラクティスとして確立されている (<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/blog/products/databases/cloud-bigtable-schema-optimization-key-salting/)%E3%80%82">https://cloud.google.com/blog/products/databases/cloud-bigtable-schema-optimization-key-salting/)。</a></p>
 <p class="tdesc mb-4 leading-relaxed">モバイルアプリケーションやウェブアプリケーションのバックエンドとして設計されているのが「Firestore」である。Firestoreは、サーバーレスのフルマネージド・ドキュメント型NoSQLデータベースであり、柔軟な階層型データ構造（ドキュメントとコレクション）をサポートしている 。クライアントとデータベース間でデータをリアルタイムに同期する機能や、ネットワーク接続が切断された状態でもアプリケーションが動作し続けるオフラインサポート機能を内蔵しているため、チャットアプリ、マルチプレイヤーゲーム、モバイル向けの商品カタログなどに最適である 。</p>
 <p class="tdesc mb-4 leading-relaxed">Firestoreを大規模に運用する際のベストプラクティスは、インデックス管理とセキュリティの確立である。Firestoreはデフォルトでドキュメント内のすべてのフィールドに対してインデックスを自動生成する。これは検索を高速化する一方で、大規模な配列データなどを頻繁に更新するワークロードにおいては、インデックスの更新負荷（インデックスファンアウト）によって書き込みレイテンシが増大し、不要なストレージコストが発生する原因となる 。これを防ぐため、検索条件として使用されないフィールドに対しては「インデックスの除外（Index Exemptions）」を設定することが強く推奨される (<a class="text-blue-400 hover:text-blue-300 underline" href="https://firebase.google.com/docs/firestore/best-practices)%E3%80%82%E3%81%BE%E3%81%9F%E3%80%81Firestore%E3%81%AF%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%8B%E3%82%89%E7%9B%B4%E6%8E%A5%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%95%E3%82%8C%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E5%A4%9A%E3%81%84%E3%81%9F%E3%82%81%E3%80%81%E3%80%8CFirestore">https://firebase.google.com/docs/firestore/best-practices)。また、Firestoreはクライアントアプリケーションから直接アクセスされることが多いため、「Firestore</a> Security Rules」を用いてロールベースのアクセス制御（RBAC）を厳密に定義し、権限のないユーザーによるデータの読み書きをデータベース層で確実にブロックする堅牢なセキュリティフレームワークを構築する必要がある 。</p>
 <p class="tdesc mb-4 leading-relaxed">極めて低い遅延が求められるインメモリのユースケースには、「Memorystore」が利用される。これはRedisおよびMemcachedと互換性のあるフルマネージドのインメモリデータストアであり、データベースのクエリ結果のキャッシング、ウェブアプリケーションのセッション管理、リアルタイムのリーダーボードなど、ミリ秒未満の応答速度が不可欠なワークロードに適用される 。</p>
-<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>データベース選定のデシジョン・マトリクス</strong></h3>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong class="text-[var(--color-foreground)] font-bold">データベース選定のデシジョン・マトリクス</strong></h3>
 <p class="tdesc mb-4 leading-relaxed">多様なビジネス要件に対して、どのデータベースソリューションを採用すべきかの判断基準を以下の表に整理する 。</p>
 <div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
 <thead>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>要件の特性</strong></th>
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>データモデルと整合性</strong></th>
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>推奨されるGoogle Cloudサービス</strong></th>
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong>主なユースケース</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong class="text-[var(--color-foreground)] font-bold">要件の特性</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong class="text-[var(--color-foreground)] font-bold">データモデルと整合性</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong class="text-[var(--color-foreground)] font-bold">推奨されるGoogle Cloudサービス</strong></th>
+<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20"><strong class="text-[var(--color-foreground)] font-bold">主なユースケース</strong></th>
 </tr>
 </thead>
 <tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>一般的なRDBMS環境のクラウド化</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">一般的なRDBMS環境のクラウド化</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">リレーショナル (SQL)。厳密なACIDトランザクション。</td>
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud SQL</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Cloud SQL</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ERP、CMS、一般的なWebアプリケーション（容量数十TB未満）</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>グローバル規模のトランザクション</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">グローバル規模のトランザクション</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">リレーショナル (SQL)。無限の水平拡張とグローバルな強整合性。</td>
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Spanner</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Cloud Spanner</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">グローバル金融決済、大規模サプライチェーン、SaaS基盤</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>超大規模な時系列・ログデータ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">超大規模な時系列・ログデータ</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ワイドカラム型NoSQL。結果整合性。高スループットの読み書き。</td>
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Cloud Bigtable</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Cloud Bigtable</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">IoTセンサーデータ、アドテク、金融市場データ</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>モバイル/Webの迅速なアプリ開発</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">モバイル/Webの迅速なアプリ開発</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ドキュメント型NoSQL。ドキュメント単位のACID。リアルタイム同期。</td>
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Firestore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Firestore</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">チャットアプリ、モバイルゲーム、オフライン対応アプリ</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>超低遅延のデータアクセス</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">超低遅延のデータアクセス</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">キーバリュー型 (KVS)。インメモリデータストア。</td>
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>Memorystore</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">Memorystore</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">セッション管理、クエリキャッシュ、リアルタイムリーダーボード</td>
 </tr>
 </tbody></table></div>
-<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>データベースの移行とモダナイゼーション (Database Migration)</strong></h3>
+<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong class="text-[var(--color-foreground)] font-bold">データベースの移行とモダナイゼーション (Database Migration)</strong></h3>
 <p class="tdesc mb-4 leading-relaxed">オンプレミスのレガシーデータベースや他のクラウドプロバイダーの環境からGoogle Cloudへの移行は、インフラストラクチャをモダナイズする上で不可避のステップである 。この移行プロセスにおける運用上の負担を排除し、安全かつシームレスな移行を実現するサービスが「Database Migration Service (DMS)」である (<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/database-migration)%E3%80%82">https://cloud.google.com/database-migration)。</a></p>
 <p class="tdesc mb-4 leading-relaxed">DMSは、移行用のサーバーをプロビジョニングしたり管理したりする必要がないサーバーレスの移行ソリューションである。オートスケーリング機能により、ソースデータベースの初期スナップショットの取得から、継続的な変更データキャプチャ（CDC）によるレプリケーションまで、大規模なデータ移行を最小限のダウンタイムで実行できる 。DMSの特筆すべきベストプラクティスは、生成AIの力を活用した「Gemini in Database Migration Service」の利用である。従来、OracleやSQL Serverといった商用データベースから、Cloud SQL for PostgreSQLなどの異なるデータベースエンジン（異種移行）へ移行する際、ストアドプロシージャ、トリガー、関数といったデータベース常駐コードの変換は極めて困難で手作業による修正が不可避であった。Geminiを利用することで、これらの複雑なコードがターゲットのSQLダイアレクト（方言）に合わせてAIによって自動的に変換・提案され、開発者のコード修正作業の負担とエラーのリスクが劇的に削減される 。</p>
 <p class="tdesc mb-4 leading-relaxed">さらに、SaaSアプリケーション（Salesforceなど）、クラウドストレージ（Amazon S3など）、あるいはSnowflakeやTeradataといった他のデータウェアハウスから、Google CloudのBigQueryへ定期的にデータを転送・統合する場合には、「BigQuery Data Transfer Service (DTS)」を利用することがベストプラクティスである 。DTSは、コーディングを必要とせずにデータ転送のスケジューリングを自動化し、フルロードだけでなく増分移行にも対応するため、データ分析基盤の構築を迅速化する 。</p>

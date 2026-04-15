@@ -15,7 +15,7 @@ export const Section8: React.FC = () => {
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.1 Google Cloud Pub/Sub（メッセージング）</h3>
 <h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Pub/Sub とは</h4>
-<p class="tdesc mb-4 leading-relaxed"><strong>Pub/Sub</strong>（パブリッシュ・サブスクライブ）は、
+<p class="tdesc mb-4 leading-relaxed"><strong class="text-[var(--color-foreground)] font-bold">Pub/Sub</strong>（パブリッシュ・サブスクライブ）は、
 システム間でメッセージを非同期に送受信するためのサービスです。</p>
 ` }} />
             
@@ -73,29 +73,29 @@ Pub/Sub ありの解決策:
 </tr>
 </thead>
 <tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>IoT データ収集</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">IoT データ収集</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">センサーデータをリアルタイムで収集・配信</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>イベント駆動アーキテクチャ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">イベント駆動アーキテクチャ</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">マイクロサービス間の非同期メッセージング</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ストリーミングデータ分析</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">ストリーミングデータ分析</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Dataflow へデータを流して分析</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ログ集約</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">ログ集約</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">複数サービスのログを一箇所に集める</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>リアルタイム通知</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">リアルタイム通知</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">特定イベント発生時の即座の通知</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.2 Cloud Dataflow（データパイプライン）</h3>
 <h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Dataflow とは</h4>
-<p class="tdesc mb-4 leading-relaxed"><strong>Dataflow</strong> は、バッチ処理とストリーミング処理の両方に対応した
+<p class="tdesc mb-4 leading-relaxed"><strong class="text-[var(--color-foreground)] font-bold">Dataflow</strong> は、バッチ処理とストリーミング処理の両方に対応した
 フルマネージドのデータ処理パイプラインサービスです。</p>
 ` }} />
             
@@ -133,34 +133,34 @@ Pub/Sub ありの解決策:
 </tr>
 </thead>
 <tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ETL パイプライン</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">ETL パイプライン</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">バッチ</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">複数ソースのデータを BigQuery へ投入</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ログ分析</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">ログ分析</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ストリーミング</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Webログをリアルタイムで集計・分析</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>不正検知</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">不正検知</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">ストリーミング</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">取引データをリアルタイムで分析</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>データ品質チェック</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">データ品質チェック</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">バッチ</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">データのクレンジング・バリデーション</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>ファイル変換</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">ファイル変換</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">バッチ</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">CSV → JSON、Avro への変換</td>
 </tr>
 </tbody></table></div>
 <h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.3 Cloud Dataproc（マネージド Hadoop/Spark）</h3>
 <h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Dataproc とは</h4>
-<p class="tdesc mb-4 leading-relaxed"><strong>Dataproc</strong> は、Apache Hadoop・Apache Spark クラスタを
+<p class="tdesc mb-4 leading-relaxed"><strong class="text-[var(--color-foreground)] font-bold">Dataproc</strong> は、Apache Hadoop・Apache Spark クラスタを
 クラウド上で迅速に立ち上げ・管理できるサービスです。</p>
 ` }} />
             
@@ -250,7 +250,7 @@ Dataproc vs Dataflow の違い:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
-<p class="tdesc mb-4 leading-relaxed">📎 <strong>参照</strong>:
+<p class="tdesc mb-4 leading-relaxed">📎 <strong class="text-[var(--color-foreground)] font-bold">参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/pubsub/docs">https://cloud.google.com/pubsub/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataflow/docs">https://cloud.google.com/dataflow/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataproc/docs">https://cloud.google.com/dataproc/docs</a>
@@ -263,7 +263,7 @@ Dataproc vs Dataflow の違い:
             
             <SectionCard id="gcdl-2-8" idNumber="Deep Dive" title="ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow</strong></h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong class="text-[var(--color-foreground)] font-bold">ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow</strong></h3>
 <p class="tdesc mb-4 leading-relaxed">現代のビジネスにおいて、データが生成されたその瞬間にインサイトを抽出し、行動に結びつける「リアルタイムストリーミング分析」の重要性はますます高まっている 。Google Cloudにおいて、このストリーミング分析のパイプラインは、「Cloud Pub/Sub」と「Cloud Dataflow」の強力な連携によって実現される 。</p>
 <p class="tdesc mb-4 leading-relaxed">「Cloud Pub/Sub」は、独立したアプリケーション間でイベントデータを非同期に送受信する、グローバルに分散されたフルマネージドのメッセージング指向ミドルウェアである 。データの送信者（パブリッシャー）と受信者（サブスクライバー）を論理的に切り離し（Decoupling）、突発的なトラフィックのスパイク（急増）が発生した場合でも、オートスケーリングによってデータを確実に取り込み、バッファリングする「ショックアブソーバー（緩衝材）」の役割を果たす 。</p>
 <p class="tdesc mb-4 leading-relaxed">一方、「Cloud Dataflow」は、Apache Beam SDKを基盤とするサーバーレスのデータ処理サービスである。ストリーミングデータとバッチデータの両方を全く同じプログラミングモデルで処理でき、Pub/Subからリアルタイムに送られてくるメッセージを抽出、変換、集計（ETL）し、最終的な分析先であるBigQueryなどにロードする役割を担う (<a class="text-blue-400 hover:text-blue-300 underline" href="https://docs.cloud.google.com/dataflow/docs/overview)%E3%80%82Dataflow%E3%81%AF%E3%80%81%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%88%B0%E7%9D%80%E9%81%85%E5%BB%B6%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BF%E3%83%BC%E3%83%9E%E3%83%BC%E3%82%AF%E6%A9%9F%E8%83%BD%E3%82%84%E3%80%81%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E5%87%A6%E7%90%86%E6%A9%9F%E8%83%BD%E3%81%AB%E5%84%AA%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82">https://docs.cloud.google.com/dataflow/docs/overview)。Dataflowは、データの到着遅延を処理するウォーターマーク機能や、ウィンドウ処理機能に優れている。</a></p>

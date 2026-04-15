@@ -177,44 +177,44 @@ export const Section3: React.FC = () => {
 </tr>
 </thead>
 <tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>例</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">例</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">CSV・RDB テーブル</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">JSON・XML・CSV</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">画像・動画・音声・PDF</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>スキーマ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">スキーマ</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">固定・厳格</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">柔軟</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">なし</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>検索方法</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">検索方法</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">SQL</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">JSONPath・SQL</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">AI/ML・全文検索</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>GCP ストレージ</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">GCP ストレージ</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Cloud SQL・BigQuery</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Firestore・BigQuery</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">Cloud Storage</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>全データ中の割合</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">全データ中の割合</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">~10-20%</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">~10-15%</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">~70-80%</td>
 </tr>
 <tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]"><strong>分析の難易度</strong></td>
+<td class="p-3 align-top leading-relaxed text-[13px]"><strong class="text-[var(--color-foreground)] font-bold">分析の難易度</strong></td>
 <td class="p-3 align-top leading-relaxed text-[13px]">低（容易）</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">中</td>
 <td class="p-3 align-top leading-relaxed text-[13px]">高（AI/ML 必要）</td>
 </tr>
 </tbody></table></div>
 <blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
-<p class="tdesc mb-4 leading-relaxed">📎 <strong>参照</strong>:
+<p class="tdesc mb-4 leading-relaxed">📎 <strong class="text-[var(--color-foreground)] font-bold">参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/learn/what-is-structured-data">https://cloud.google.com/learn/what-is-structured-data</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data">https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data</a></p>
 </blockquote>
@@ -225,7 +225,7 @@ export const Section3: React.FC = () => {
             
             <SectionCard id="gcdl-2-3" idNumber="Deep Dive" title="データの種類と価値創造のアプローチ">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>データの種類と価値創造のアプローチ</strong></h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong class="text-[var(--color-foreground)] font-bold">データの種類と価値創造のアプローチ</strong></h3>
 <p class="tdesc mb-4 leading-relaxed">企業がデータから新たな価値を創造するためには、主に3つのアプローチが存在する。一つ目は「現在のデータ（Current Data）」の活用である。既存のトランザクションデータや顧客行動履歴を深掘りすることで、業務の最適化やパーソナライゼーションを実現する。二つ目は「新しいデータ（New Data）」の収集である。これまで取得していなかったウェブサイトのクリックストリームや、製品に組み込まれたセンサーからのテレメトリデータを新たに収集し、未知の顧客ニーズや機器の故障予測モデルを構築する。三つ目は「外部データ（External Data）」の調達である。Google Cloud Public Datasetsなどを通じて公開されている気象データ、人口統計、市場トレンドなどの外部データセットを自社の内部データと結合することで、分析のコンテキストを劇的に拡張し、より精度の高い予測を可能にする 。</p>
 ` }} />
             
