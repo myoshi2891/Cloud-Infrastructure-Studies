@@ -13,7 +13,7 @@ export const Section12: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-12" idNumber="12" title="Section 2 総まとめ・頻出問題パターン">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>12.1 最重要用語の一問一答</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">12.1 最重要用語の一問一答</h3>
 ` }} />
             
 
@@ -58,8 +58,8 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>12.2 よく出る問題パターンと解法</h3>
-<h4>パターン 1: データベース選択</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">12.2 よく出る問題パターンと解法</h3>
+<h4 class="stitle">パターン 1: データベース選択</h4>
 ` }} />
             
 
@@ -84,7 +84,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4>パターン 2: ストレージクラス選択</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">パターン 2: ストレージクラス選択</h4>
 ` }} />
             
 
@@ -108,7 +108,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4>パターン 3: データパイプライン選択</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">パターン 3: データパイプライン選択</h4>
 ` }} />
             
 
@@ -131,7 +131,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4>パターン 4: BI ツール選択</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">パターン 4: BI ツール選択</h4>
 ` }} />
             
 
@@ -155,7 +155,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>12.3 混同しやすいポイントの整理</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">12.3 混同しやすいポイントの整理</h3>
 <table>
 <thead>
 <tr>
@@ -192,7 +192,7 @@ A: Dataplex（総合管理とユニバーサルカタログ）・
 <td>Pub/Sub はメッセージング（配信）、Dataflow はデータ処理（変換）</td>
 </tr>
 </tbody></table>
-<h3>12.4 Section 2 チェックリスト</h3>
+<h3 class="stitle">12.4 Section 2 チェックリスト</h3>
 <pre><code className="language-text">試験前の最終確認:
 
 □ 構造化・半構造化・非構造化データの違いと例を説明できる

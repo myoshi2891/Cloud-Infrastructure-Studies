@@ -13,16 +13,16 @@ export const Section3: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-3" idNumber="3" title="データの種類と特性">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>3.1 3 種類のデータ形式</h3>
-<p>データは形式によって 3 種類に分類されます。
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">3.1 3 種類のデータ形式</h3>
+<p class="tdesc">データは形式によって 3 種類に分類されます。
 試験では「どのデータ形式にどのサービスが適切か」が問われます。</p>
 <pre><code className="language-text">世界中のデータの内訳（概算）:
   構造化データ:    約 10〜20%
   半構造化データ:  約 10〜15%
   非構造化データ:  約 70〜80%   ← 最も多い！
 </code></pre>
-<h3>3.2 構造化データ（Structured Data）</h3>
-<h4>定義と特徴</h4>
+<h3 class="stitle">3.2 構造化データ（Structured Data）</h3>
+<h4 class="stitle">定義と特徴</h4>
 <pre><code className="language-text">構造化データとは:
 
   - 行と列（表形式）で整理されたデータ
@@ -35,7 +35,7 @@ export const Section3: React.FC = () => {
   ✅ データ品質の管理がしやすい
   ❌ 非構造化データのような柔軟な表現は難しい
 </code></pre>
-<h4>構造化データの具体例</h4>
+<h4 class="stitle">構造化データの具体例</h4>
 <table>
 <thead>
 <tr>
@@ -70,8 +70,8 @@ export const Section3: React.FC = () => {
 <td>BigQuery / Bigtable</td>
 </tr>
 </tbody></table>
-<h3>3.3 非構造化データ（Unstructured Data）</h3>
-<h4>定義と特徴</h4>
+<h3 class="stitle">3.3 非構造化データ（Unstructured Data）</h3>
+<h4 class="stitle">定義と特徴</h4>
 ` }} />
             
 
@@ -95,7 +95,7 @@ export const Section3: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4>非構造化データの具体例</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">非構造化データの具体例</h4>
 <table>
 <thead>
 <tr>
@@ -142,8 +142,8 @@ export const Section3: React.FC = () => {
 <td>BigQuery</td>
 </tr>
 </tbody></table>
-<h3>3.4 半構造化データ（Semi-Structured Data）</h3>
-<h4>定義と特徴</h4>
+<h3 class="stitle">3.4 半構造化データ（Semi-Structured Data）</h3>
+<h4 class="stitle">定義と特徴</h4>
 <pre><code className="language-text">半構造化データとは:
 
   - 完全な表形式ではないが、一定の構造を持つデータ
@@ -166,7 +166,7 @@ export const Section3: React.FC = () => {
   ✅ スキーマが柔軟（フィールドの追加・変更が容易）
   ✅ BigQuery や Firestore で直接扱える
 </code></pre>
-<h3>3.5 データ形式の比較まとめ</h3>
+<h3 class="stitle">3.5 データ形式の比較まとめ</h3>
 <table>
 <thead>
 <tr>
@@ -214,7 +214,7 @@ export const Section3: React.FC = () => {
 </tr>
 </tbody></table>
 <blockquote>
-<p>📎 <strong>参照</strong>:
+<p class="tdesc">📎 <strong>参照</strong>:
 <a href="https://cloud.google.com/learn/what-is-structured-data">https://cloud.google.com/learn/what-is-structured-data</a>
 <a href="https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data">https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data</a></p>
 </blockquote>
@@ -225,8 +225,8 @@ export const Section3: React.FC = () => {
             
             <SectionCard id="gcdl-2-3" idNumber="Deep Dive" title="データの種類と価値創造のアプローチ">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3><strong>データの種類と価値創造のアプローチ</strong></h3>
-<p>企業がデータから新たな価値を創造するためには、主に3つのアプローチが存在する。一つ目は「現在のデータ（Current Data）」の活用である。既存のトランザクションデータや顧客行動履歴を深掘りすることで、業務の最適化やパーソナライゼーションを実現する。二つ目は「新しいデータ（New Data）」の収集である。これまで取得していなかったウェブサイトのクリックストリームや、製品に組み込まれたセンサーからのテレメトリデータを新たに収集し、未知の顧客ニーズや機器の故障予測モデルを構築する。三つ目は「外部データ（External Data）」の調達である。Google Cloud Public Datasetsなどを通じて公開されている気象データ、人口統計、市場トレンドなどの外部データセットを自社の内部データと結合することで、分析のコンテキストを劇的に拡張し、より精度の高い予測を可能にする 。</p>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle"><strong>データの種類と価値創造のアプローチ</strong></h3>
+<p class="tdesc">企業がデータから新たな価値を創造するためには、主に3つのアプローチが存在する。一つ目は「現在のデータ（Current Data）」の活用である。既存のトランザクションデータや顧客行動履歴を深掘りすることで、業務の最適化やパーソナライゼーションを実現する。二つ目は「新しいデータ（New Data）」の収集である。これまで取得していなかったウェブサイトのクリックストリームや、製品に組み込まれたセンサーからのテレメトリデータを新たに収集し、未知の顧客ニーズや機器の故障予測モデルを構築する。三つ目は「外部データ（External Data）」の調達である。Google Cloud Public Datasetsなどを通じて公開されている気象データ、人口統計、市場トレンドなどの外部データセットを自社の内部データと結合することで、分析のコンテキストを劇的に拡張し、より精度の高い予測を可能にする 。</p>
 ` }} />
             
             </SectionCard>

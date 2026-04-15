@@ -13,7 +13,7 @@ export const Section11: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-11" idNumber="11" title="ビジネスユースケース別 データ活用パターン">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>11.1 小売・EC 業界でのデータ活用</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">11.1 小売・EC 業界でのデータ活用</h3>
 ` }} />
             
 
@@ -36,7 +36,7 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4>具体的な活用例</h4>
+                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle">具体的な活用例</h4>
 <table>
 <thead>
 <tr>
@@ -71,7 +71,7 @@ Web 行動ログ     →  Vertex AI     →            → パーソナライズ
 <td>製品改善サイクル短縮</td>
 </tr>
 </tbody></table>
-<h3>11.2 製造業でのデータ活用</h3>
+<h3 class="stitle">11.2 製造業でのデータ活用</h3>
 ` }} />
             
 
@@ -99,7 +99,7 @@ BigQuery（履歴データ蓄積） → Vertex AI（予兆検知モデル）
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>11.3 金融業でのデータ活用</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">11.3 金融業でのデータ活用</h3>
 ` }} />
             
 
@@ -130,7 +130,7 @@ BigQuery に全データを蓄積 → モデルの継続的な改善
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>11.4 医療業界でのデータ活用</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">11.4 医療業界でのデータ活用</h3>
 <pre><code className="language-text">課題: 診断精度を上げたい・業務効率化
 
 医療画像（レントゲン・CT・MRI）

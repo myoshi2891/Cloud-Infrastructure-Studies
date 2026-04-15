@@ -13,8 +13,8 @@ export const Section1: React.FC = () => {
             </div>
             <SectionCard id="cdl-2-1" idNumber="1" title="Section 2 の出題範囲と学習ポイント">
                 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>1.1 試験における Section 2 の位置づけ</h3>
-<p>Google Cloud Digital Leader（CDL）試験の Section 2 は
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">1.1 試験における Section 2 の位置づけ</h3>
+<p class="tdesc">Google Cloud Digital Leader（CDL）試験の Section 2 は
 「<strong>Google Cloud によるデータ トランスフォーメーションの探求</strong>」がテーマです。</p>
 ` }} />
             
@@ -37,7 +37,7 @@ export const Section1: React.FC = () => {
                 </div>
             
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3>1.2 Section 2 のサブトピック一覧</h3>
+                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle">1.2 Section 2 のサブトピック一覧</h3>
 <table>
 <thead>
 <tr>
