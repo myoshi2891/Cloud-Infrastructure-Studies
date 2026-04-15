@@ -251,10 +251,10 @@ Dataproc vs Dataflow の違い:
 
                 <div dangerouslySetInnerHTML={{ __html: `<blockquote>
 <p class="tdesc">📎 <strong>参照</strong>:
-<a href="https://cloud.google.com/pubsub/docs">https://cloud.google.com/pubsub/docs</a>
-<a href="https://cloud.google.com/dataflow/docs">https://cloud.google.com/dataflow/docs</a>
-<a href="https://cloud.google.com/dataproc/docs">https://cloud.google.com/dataproc/docs</a>
-<a href="https://cloud.google.com/database-migration/docs">https://cloud.google.com/database-migration/docs</a></p>
+<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/pubsub/docs">https://cloud.google.com/pubsub/docs</a>
+<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataflow/docs">https://cloud.google.com/dataflow/docs</a>
+<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataproc/docs">https://cloud.google.com/dataproc/docs</a>
+<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/database-migration/docs">https://cloud.google.com/database-migration/docs</a></p>
 </blockquote>
 <hr />
 ` }} />
@@ -266,7 +266,7 @@ Dataproc vs Dataflow の違い:
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle"><strong>ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow</strong></h3>
 <p class="tdesc">現代のビジネスにおいて、データが生成されたその瞬間にインサイトを抽出し、行動に結びつける「リアルタイムストリーミング分析」の重要性はますます高まっている 。Google Cloudにおいて、このストリーミング分析のパイプラインは、「Cloud Pub/Sub」と「Cloud Dataflow」の強力な連携によって実現される 。</p>
 <p class="tdesc">「Cloud Pub/Sub」は、独立したアプリケーション間でイベントデータを非同期に送受信する、グローバルに分散されたフルマネージドのメッセージング指向ミドルウェアである 。データの送信者（パブリッシャー）と受信者（サブスクライバー）を論理的に切り離し（Decoupling）、突発的なトラフィックのスパイク（急増）が発生した場合でも、オートスケーリングによってデータを確実に取り込み、バッファリングする「ショックアブソーバー（緩衝材）」の役割を果たす 。</p>
-<p class="tdesc">一方、「Cloud Dataflow」は、Apache Beam SDKを基盤とするサーバーレスのデータ処理サービスである。ストリーミングデータとバッチデータの両方を全く同じプログラミングモデルで処理でき、Pub/Subからリアルタイムに送られてくるメッセージを抽出、変換、集計（ETL）し、最終的な分析先であるBigQueryなどにロードする役割を担う (<a href="https://docs.cloud.google.com/dataflow/docs/overview)%E3%80%82Dataflow%E3%81%AF%E3%80%81%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%88%B0%E7%9D%80%E9%81%85%E5%BB%B6%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BF%E3%83%BC%E3%83%9E%E3%83%BC%E3%82%AF%E6%A9%9F%E8%83%BD%E3%82%84%E3%80%81%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E5%87%A6%E7%90%86%E6%A9%9F%E8%83%BD%E3%81%AB%E5%84%AA%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82">https://docs.cloud.google.com/dataflow/docs/overview)。Dataflowは、データの到着遅延を処理するウォーターマーク機能や、ウィンドウ処理機能に優れている。</a></p>
+<p class="tdesc">一方、「Cloud Dataflow」は、Apache Beam SDKを基盤とするサーバーレスのデータ処理サービスである。ストリーミングデータとバッチデータの両方を全く同じプログラミングモデルで処理でき、Pub/Subからリアルタイムに送られてくるメッセージを抽出、変換、集計（ETL）し、最終的な分析先であるBigQueryなどにロードする役割を担う (<a class="text-blue-400 hover:text-blue-300 underline" href="https://docs.cloud.google.com/dataflow/docs/overview)%E3%80%82Dataflow%E3%81%AF%E3%80%81%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%88%B0%E7%9D%80%E9%81%85%E5%BB%B6%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BF%E3%83%BC%E3%83%9E%E3%83%BC%E3%82%AF%E6%A9%9F%E8%83%BD%E3%82%84%E3%80%81%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E5%87%A6%E7%90%86%E6%A9%9F%E8%83%BD%E3%81%AB%E5%84%AA%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82">https://docs.cloud.google.com/dataflow/docs/overview)。Dataflowは、データの到着遅延を処理するウォーターマーク機能や、ウィンドウ処理機能に優れている。</a></p>
 <p class="tdesc">このPub/SubとDataflowを統合して堅牢なストリーミングパイプラインを構築する際には、システムアーキテクチャにおける重要なベストプラクティスを遵守する必要がある 。</p>
 <p class="tdesc">第一に、「Exactly-once（1回限り）処理」の重複排除メカニズムの競合を避けることである。Dataflowは、パイプライン内で独自のメカニズムを用いてメッセージの重複を排除し、強固なExactly-onceセマンティクスを保証している。そのため、データソースであるPub/Sub側の機能として提供されている「Exactly-once配信」を有効にしてDataflowと接続することは推奨されない 。両方のシステムで厳密な配信保証を行おうとすると、並列処理できるメッセージ数が著しく制限され、パイプライン全体のパフォーマンス低下やスループットの悪化を招くためである 。</p>
 <p class="tdesc">第二に、システムコストとレイテンシの最適化である。もしビジネス要件として、後段のシステム（例えばBigQuery側）でデータの重複を許容できる、あるいは独自に重複排除を行える設計であるならば、DataflowのストリーミングモードをデフォルトのExactly-onceから「At-least-once（少なくとも1回）」モードに変更することが推奨される。これにより、内部的な重複排除処理のオーバーヘッドが削減され、処理レイテンシの向上とコンピューティングコストの大幅な削減を実現できる 。</p>

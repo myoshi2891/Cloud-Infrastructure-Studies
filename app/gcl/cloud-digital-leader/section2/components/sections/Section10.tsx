@@ -240,9 +240,9 @@ export const Section10: React.FC = () => {
 
                 <div dangerouslySetInnerHTML={{ __html: `<blockquote>
 <p class="tdesc">📎 <strong>参照</strong>:
-<a href="https://cloud.google.com/dataplex/docs">https://cloud.google.com/dataplex/docs</a>
-<a href="https://cloud.google.com/dlp/docs">https://cloud.google.com/dlp/docs</a>
-<a href="https://cloud.google.com/bigquery/docs/column-level-security-intro">https://cloud.google.com/bigquery/docs/column-level-security-intro</a></p>
+<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataplex/docs">https://cloud.google.com/dataplex/docs</a>
+<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dlp/docs">https://cloud.google.com/dlp/docs</a>
+<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/bigquery/docs/column-level-security-intro">https://cloud.google.com/bigquery/docs/column-level-security-intro</a></p>
 </blockquote>
 <hr />
 ` }} />
@@ -252,10 +252,10 @@ export const Section10: React.FC = () => {
             <SectionCard id="gcdl-2-10" idNumber="Deep Dive" title="データガバナンスとセキュリティの基盤">
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle"><strong>データガバナンスとセキュリティの基盤</strong></h3>
-<p class="tdesc">どれほど高度な分析基盤を構築しても、データガバナンスが欠如していれば、データレイクは目的のデータが見つからず、品質も保証されない「データスワンプ（データの沼）」へと陥ってしまう 。成功するデータジャーニーにおいて、ガバナンスは不可欠な要素である 。Google Cloudにおいて、このデータガバナンスを統合的に管理するソリューションが「Dataplex」である (<a href="https://cloud.google.com/dataplex)%E3%80%82">https://cloud.google.com/dataplex)。</a></p>
+<p class="tdesc">どれほど高度な分析基盤を構築しても、データガバナンスが欠如していれば、データレイクは目的のデータが見つからず、品質も保証されない「データスワンプ（データの沼）」へと陥ってしまう 。成功するデータジャーニーにおいて、ガバナンスは不可欠な要素である 。Google Cloudにおいて、このデータガバナンスを統合的に管理するソリューションが「Dataplex」である (<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataplex)%E3%80%82">https://cloud.google.com/dataplex)。</a></p>
 <p class="tdesc">Dataplexの中核機能である「Universal Catalog（統合カタログ）」は、Cloud Storage、BigQuery、さらにはVertex AIの機械学習モデルに至るまで、組織全体に分散するデータおよびAIアセットを自動的に検出し、メタデータを一元的に管理する 。これにより、データアナリストやデータサイエンティストは必要なデータを迅速に発見（Discoverability）できるようになる。さらに、「ビジネスグロッサリー（Business Glossary）」機能を用いることで、「GMV（流通取引総額）」といったビジネス用語の定義を標準化し、技術的な実装と切り離して管理できる。これにより、部署間でのデータ解釈の齟齬を防ぐことができる 。また、データがどこから生成され、どのように変換されてきたかを追跡する「データリネージ（Data Lineage）」機能は、GDPRやHIPAAといった法規制へのコンプライアンス遵守と、監査の透明性を確保するために極めて重要である 。</p>
 <p class="tdesc">データガバナンスは強固なセキュリティと表裏一体である。Google Cloudでは、保存データ（At-rest）および転送中のデータ（In-transit）はデフォルトで強力に暗号化されているが、コンプライアンス要件が極めて厳しい企業向けには、顧客管理の暗号鍵（CMEK）を使用して独自の鍵管理を行うオプションも提供されている 。セキュリティのベストプラクティスとしては、「最小特権の原則（PoLP）」に基づく厳格なIdentity and Access Management（IAM）の適用が挙げられる。ユーザーやサービスアカウントには、業務遂行に必要な最小限の権限のみを付与し、定期的にIAMポリシーの監査を行うべきである 。</p>
-<p class="tdesc">さらに、高度なネットワークセキュリティ対策として「VPC Service Controls」の導入が強く推奨される (<a href="https://cloud.google.com/security/vpc-service-controls)%E3%80%82Cloud">https://cloud.google.com/security/vpc-service-controls)。Cloud</a> StorageやBigQueryのようなマルチテナントサービスは、デフォルトではパブリックなエンドポイントを持つが、VPC Service Controlsを使用することで、これらのリソースの周囲に仮想的なセキュリティ境界（Perimeter）を構築できる。境界内部のクライアントは許可されたリソースにのみアクセスでき、境界外部の承認されていないリソースへのデータのコピー（例えば <code>gcloud storage cp</code> コマンドによる外部バケットへの持ち出し）はネットワークレベルで完全に遮断される。これにより、悪意のある内部関係者や、認証情報（OAuthトークンなど）が漏洩した場合のデータ流出（Exfiltration）リスクを劇的に低減することが可能となる 。</p>
+<p class="tdesc">さらに、高度なネットワークセキュリティ対策として「VPC Service Controls」の導入が強く推奨される (<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/security/vpc-service-controls)%E3%80%82Cloud">https://cloud.google.com/security/vpc-service-controls)。Cloud</a> StorageやBigQueryのようなマルチテナントサービスは、デフォルトではパブリックなエンドポイントを持つが、VPC Service Controlsを使用することで、これらのリソースの周囲に仮想的なセキュリティ境界（Perimeter）を構築できる。境界内部のクライアントは許可されたリソースにのみアクセスでき、境界外部の承認されていないリソースへのデータのコピー（例えば <code>gcloud storage cp</code> コマンドによる外部バケットへの持ち出し）はネットワークレベルで完全に遮断される。これにより、悪意のある内部関係者や、認証情報（OAuthトークンなど）が漏洩した場合のデータ流出（Exfiltration）リスクを劇的に低減することが可能となる 。</p>
 ` }} />
             
             </SectionCard>
