@@ -15,7 +15,7 @@ export const Section8: React.FC = () => {
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.1 Google Cloud Pub/Sub（メッセージング）</h3>
 <h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Pub/Sub とは</h4>
-<p class="tdesc"><strong>Pub/Sub</strong>（パブリッシュ・サブスクライブ）は、
+<p class="tdesc mb-4 leading-relaxed"><strong>Pub/Sub</strong>（パブリッシュ・サブスクライブ）は、
 システム間でメッセージを非同期に送受信するためのサービスです。</p>
 ` }} />
             
@@ -95,7 +95,7 @@ Pub/Sub ありの解決策:
 </tbody></table></div>
 <h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.2 Cloud Dataflow（データパイプライン）</h3>
 <h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Dataflow とは</h4>
-<p class="tdesc"><strong>Dataflow</strong> は、バッチ処理とストリーミング処理の両方に対応した
+<p class="tdesc mb-4 leading-relaxed"><strong>Dataflow</strong> は、バッチ処理とストリーミング処理の両方に対応した
 フルマネージドのデータ処理パイプラインサービスです。</p>
 ` }} />
             
@@ -160,7 +160,7 @@ Pub/Sub ありの解決策:
 </tbody></table></div>
 <h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">8.3 Cloud Dataproc（マネージド Hadoop/Spark）</h3>
 <h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">Dataproc とは</h4>
-<p class="tdesc"><strong>Dataproc</strong> は、Apache Hadoop・Apache Spark クラスタを
+<p class="tdesc mb-4 leading-relaxed"><strong>Dataproc</strong> は、Apache Hadoop・Apache Spark クラスタを
 クラウド上で迅速に立ち上げ・管理できるサービスです。</p>
 ` }} />
             
@@ -250,7 +250,7 @@ Dataproc vs Dataflow の違い:
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
-<p class="tdesc">📎 <strong>参照</strong>:
+<p class="tdesc mb-4 leading-relaxed">📎 <strong>参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/pubsub/docs">https://cloud.google.com/pubsub/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataflow/docs">https://cloud.google.com/dataflow/docs</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/dataproc/docs">https://cloud.google.com/dataproc/docs</a>
@@ -264,14 +264,14 @@ Dataproc vs Dataflow の違い:
             <SectionCard id="gcdl-2-8" idNumber="Deep Dive" title="ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow">
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6"><strong>ストリーミング分析アーキテクチャ: Pub/Sub と Dataflow</strong></h3>
-<p class="tdesc">現代のビジネスにおいて、データが生成されたその瞬間にインサイトを抽出し、行動に結びつける「リアルタイムストリーミング分析」の重要性はますます高まっている 。Google Cloudにおいて、このストリーミング分析のパイプラインは、「Cloud Pub/Sub」と「Cloud Dataflow」の強力な連携によって実現される 。</p>
-<p class="tdesc">「Cloud Pub/Sub」は、独立したアプリケーション間でイベントデータを非同期に送受信する、グローバルに分散されたフルマネージドのメッセージング指向ミドルウェアである 。データの送信者（パブリッシャー）と受信者（サブスクライバー）を論理的に切り離し（Decoupling）、突発的なトラフィックのスパイク（急増）が発生した場合でも、オートスケーリングによってデータを確実に取り込み、バッファリングする「ショックアブソーバー（緩衝材）」の役割を果たす 。</p>
-<p class="tdesc">一方、「Cloud Dataflow」は、Apache Beam SDKを基盤とするサーバーレスのデータ処理サービスである。ストリーミングデータとバッチデータの両方を全く同じプログラミングモデルで処理でき、Pub/Subからリアルタイムに送られてくるメッセージを抽出、変換、集計（ETL）し、最終的な分析先であるBigQueryなどにロードする役割を担う (<a class="text-blue-400 hover:text-blue-300 underline" href="https://docs.cloud.google.com/dataflow/docs/overview)%E3%80%82Dataflow%E3%81%AF%E3%80%81%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%88%B0%E7%9D%80%E9%81%85%E5%BB%B6%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BF%E3%83%BC%E3%83%9E%E3%83%BC%E3%82%AF%E6%A9%9F%E8%83%BD%E3%82%84%E3%80%81%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E5%87%A6%E7%90%86%E6%A9%9F%E8%83%BD%E3%81%AB%E5%84%AA%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82">https://docs.cloud.google.com/dataflow/docs/overview)。Dataflowは、データの到着遅延を処理するウォーターマーク機能や、ウィンドウ処理機能に優れている。</a></p>
-<p class="tdesc">このPub/SubとDataflowを統合して堅牢なストリーミングパイプラインを構築する際には、システムアーキテクチャにおける重要なベストプラクティスを遵守する必要がある 。</p>
-<p class="tdesc">第一に、「Exactly-once（1回限り）処理」の重複排除メカニズムの競合を避けることである。Dataflowは、パイプライン内で独自のメカニズムを用いてメッセージの重複を排除し、強固なExactly-onceセマンティクスを保証している。そのため、データソースであるPub/Sub側の機能として提供されている「Exactly-once配信」を有効にしてDataflowと接続することは推奨されない 。両方のシステムで厳密な配信保証を行おうとすると、並列処理できるメッセージ数が著しく制限され、パイプライン全体のパフォーマンス低下やスループットの悪化を招くためである 。</p>
-<p class="tdesc">第二に、システムコストとレイテンシの最適化である。もしビジネス要件として、後段のシステム（例えばBigQuery側）でデータの重複を許容できる、あるいは独自に重複排除を行える設計であるならば、DataflowのストリーミングモードをデフォルトのExactly-onceから「At-least-once（少なくとも1回）」モードに変更することが推奨される。これにより、内部的な重複排除処理のオーバーヘッドが削減され、処理レイテンシの向上とコンピューティングコストの大幅な削減を実現できる 。</p>
-<p class="tdesc">第三に、Pub/Subのサブスクリプションとデッドレタートピックの適切な構成である。一つのPub/Subサブスクリプションを複数のDataflowパイプラインで共有して読み取ることは避けるべきである。これを実行すると、データが非決定的に各パイプラインに分割されてしまい、重複メッセージの発生やウォーターマーク処理の遅延、オートスケーリングの非効率化を引き起こすため、必ずパイプラインごとに独立したサブスクリプションを作成する必要がある 。また、処理に失敗したメッセージを退避させるためのPub/Subの「デッドレタートピック」機能は、Dataflowのソースとして設定するべきではない。Dataflowはワーカーのシャットダウンなどの内部的な理由により、パイプラインのコード自体にエラーがなくてもPub/Subに対して否定応答（NACK）を返すことがあるため、正常なメッセージまで誤ってデッドレタートピックに送られてしまうリスクがあるからだ 。</p>
-<p class="tdesc">さらに、稼働中のDataflowパイプラインにおいて、Pub/Subの過去の特定時点に巻き戻してデータを再読み込みする機能（Pub/Sub Seek）を使用することは推奨されない。ウォーターマークのロジックが破綻し、大量のメッセージの重複や欠落を引き起こす原因となる。データを再処理する必要がある場合は、サブスクリプションのスナップショットを作成し、新しいサブスクリプションをそこから派生させた上で、既存のパイプラインをドレイン（安全な停止）し、新しいサブスクリプションをソースとして新規パイプラインを立ち上げるというワークフローがベストプラクティスである 。</p>
+<p class="tdesc mb-4 leading-relaxed">現代のビジネスにおいて、データが生成されたその瞬間にインサイトを抽出し、行動に結びつける「リアルタイムストリーミング分析」の重要性はますます高まっている 。Google Cloudにおいて、このストリーミング分析のパイプラインは、「Cloud Pub/Sub」と「Cloud Dataflow」の強力な連携によって実現される 。</p>
+<p class="tdesc mb-4 leading-relaxed">「Cloud Pub/Sub」は、独立したアプリケーション間でイベントデータを非同期に送受信する、グローバルに分散されたフルマネージドのメッセージング指向ミドルウェアである 。データの送信者（パブリッシャー）と受信者（サブスクライバー）を論理的に切り離し（Decoupling）、突発的なトラフィックのスパイク（急増）が発生した場合でも、オートスケーリングによってデータを確実に取り込み、バッファリングする「ショックアブソーバー（緩衝材）」の役割を果たす 。</p>
+<p class="tdesc mb-4 leading-relaxed">一方、「Cloud Dataflow」は、Apache Beam SDKを基盤とするサーバーレスのデータ処理サービスである。ストリーミングデータとバッチデータの両方を全く同じプログラミングモデルで処理でき、Pub/Subからリアルタイムに送られてくるメッセージを抽出、変換、集計（ETL）し、最終的な分析先であるBigQueryなどにロードする役割を担う (<a class="text-blue-400 hover:text-blue-300 underline" href="https://docs.cloud.google.com/dataflow/docs/overview)%E3%80%82Dataflow%E3%81%AF%E3%80%81%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E5%88%B0%E7%9D%80%E9%81%85%E5%BB%B6%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BF%E3%83%BC%E3%83%9E%E3%83%BC%E3%82%AF%E6%A9%9F%E8%83%BD%E3%82%84%E3%80%81%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E5%87%A6%E7%90%86%E6%A9%9F%E8%83%BD%E3%81%AB%E5%84%AA%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82">https://docs.cloud.google.com/dataflow/docs/overview)。Dataflowは、データの到着遅延を処理するウォーターマーク機能や、ウィンドウ処理機能に優れている。</a></p>
+<p class="tdesc mb-4 leading-relaxed">このPub/SubとDataflowを統合して堅牢なストリーミングパイプラインを構築する際には、システムアーキテクチャにおける重要なベストプラクティスを遵守する必要がある 。</p>
+<p class="tdesc mb-4 leading-relaxed">第一に、「Exactly-once（1回限り）処理」の重複排除メカニズムの競合を避けることである。Dataflowは、パイプライン内で独自のメカニズムを用いてメッセージの重複を排除し、強固なExactly-onceセマンティクスを保証している。そのため、データソースであるPub/Sub側の機能として提供されている「Exactly-once配信」を有効にしてDataflowと接続することは推奨されない 。両方のシステムで厳密な配信保証を行おうとすると、並列処理できるメッセージ数が著しく制限され、パイプライン全体のパフォーマンス低下やスループットの悪化を招くためである 。</p>
+<p class="tdesc mb-4 leading-relaxed">第二に、システムコストとレイテンシの最適化である。もしビジネス要件として、後段のシステム（例えばBigQuery側）でデータの重複を許容できる、あるいは独自に重複排除を行える設計であるならば、DataflowのストリーミングモードをデフォルトのExactly-onceから「At-least-once（少なくとも1回）」モードに変更することが推奨される。これにより、内部的な重複排除処理のオーバーヘッドが削減され、処理レイテンシの向上とコンピューティングコストの大幅な削減を実現できる 。</p>
+<p class="tdesc mb-4 leading-relaxed">第三に、Pub/Subのサブスクリプションとデッドレタートピックの適切な構成である。一つのPub/Subサブスクリプションを複数のDataflowパイプラインで共有して読み取ることは避けるべきである。これを実行すると、データが非決定的に各パイプラインに分割されてしまい、重複メッセージの発生やウォーターマーク処理の遅延、オートスケーリングの非効率化を引き起こすため、必ずパイプラインごとに独立したサブスクリプションを作成する必要がある 。また、処理に失敗したメッセージを退避させるためのPub/Subの「デッドレタートピック」機能は、Dataflowのソースとして設定するべきではない。Dataflowはワーカーのシャットダウンなどの内部的な理由により、パイプラインのコード自体にエラーがなくてもPub/Subに対して否定応答（NACK）を返すことがあるため、正常なメッセージまで誤ってデッドレタートピックに送られてしまうリスクがあるからだ 。</p>
+<p class="tdesc mb-4 leading-relaxed">さらに、稼働中のDataflowパイプラインにおいて、Pub/Subの過去の特定時点に巻き戻してデータを再読み込みする機能（Pub/Sub Seek）を使用することは推奨されない。ウォーターマークのロジックが破綻し、大量のメッセージの重複や欠落を引き起こす原因となる。データを再処理する必要がある場合は、サブスクリプションのスナップショットを作成し、新しいサブスクリプションをそこから派生させた上で、既存のパイプラインをドレイン（安全な停止）し、新しいサブスクリプションをソースとして新規パイプラインを立ち上げるというワークフローがベストプラクティスである 。</p>
 ` }} />
             
             </SectionCard>

@@ -14,7 +14,7 @@ export const Section4: React.FC = () => {
             <SectionCard id="cdl-2-4" idNumber="4" title="データのライフサイクルとパイプライン">
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">4.1 データライフサイクルの全体像</h3>
-<p class="tdesc">データは「生まれてから消えるまで」に複数のステージを経ます。
+<p class="tdesc mb-4 leading-relaxed">データは「生まれてから消えるまで」に複数のステージを経ます。
 各ステージに適切な Google Cloud サービスを対応させることが重要です。</p>
 ` }} />
             
@@ -39,7 +39,7 @@ export const Section4: React.FC = () => {
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">4.2 バッチ処理 vs ストリーミング処理</h3>
-<p class="tdesc">データの処理方式には主に 2 種類あります。
+<p class="tdesc mb-4 leading-relaxed">データの処理方式には主に 2 種類あります。
 どちらを選ぶかはビジネス要件によって決まります。</p>
 <pre class="code-block"><code className="language-text">バッチ処理（Batch Processing）:
   定義: データをある程度溜めてから、まとめて一括処理する

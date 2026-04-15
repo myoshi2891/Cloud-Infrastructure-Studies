@@ -132,7 +132,7 @@ GCS       → Dataproc →`}
             
 
                 <div dangerouslySetInnerHTML={{ __html: `<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
-<p class="tdesc">📎 <strong>参照</strong>:
+<p class="tdesc mb-4 leading-relaxed">📎 <strong>参照</strong>:
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices">https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices</a>
 <a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></p>
 </blockquote>
