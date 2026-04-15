@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
-import CloudDigitalLeaderPage from '@/app/gcl/cloud-digital-leader/page.tsx';
+import CloudDigitalLeaderPage from '@/app/gcl/cloud-digital-leader/page';
 
 function getSectionByHeading(headingPattern: RegExp) {
     const heading = screen.getByRole('heading', { level: 2, name: headingPattern });

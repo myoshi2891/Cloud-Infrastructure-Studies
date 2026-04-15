@@ -21,7 +21,7 @@ describe('Home ページ', () => {
         const firstCard = container.querySelector('.card-ace');
         expect(firstCard).toBeInTheDocument();
         const domainLinks = (firstCard as HTMLElement).querySelectorAll('.home-domain-link');
-        expect(domainLinks).toHaveLength(EXAMS[0].domains.length);
+        expect(domainLinks).toHaveLength(EXAMS[0]!.domains!.length);
     });
 
     it('ドメインリンクに home-domain-link クラスが付与されること', () => {
@@ -74,7 +74,7 @@ describe('Home ページ', () => {
         // CTA を除くドメインリンクが 1 件 = CDL.domains.length
         const cdlExam = EXAMS.find((e) => e.id === 'cdl');
         expect(cdlExam).toBeDefined();
-        expect(cdlExam.domains).toHaveLength(1);
+        expect(cdlExam!.domains).toHaveLength(1);
         // ドメインリンク 1 本 + CTA 1 本 = 計 2 本
         expect(domainLinks).toHaveLength(2);
     });
