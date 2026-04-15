@@ -15,7 +15,7 @@ export const Section1: React.FC = () => {
                 
                 <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">1.1 試験における Section 2 の位置づけ</h3>
 <p class="tdesc mb-4 leading-relaxed">Google Cloud Digital Leader（CDL）試験の Section 2 は
-「<strong class="text-[var(--color-foreground)] font-bold">Google Cloud によるデータ トランスフォーメーションの探求</strong>」がテーマです。</p>
+「<strong>Google Cloud によるデータ トランスフォーメーションの探求</strong>」がテーマです。</p>
 ` }} />
             
 
