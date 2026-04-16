@@ -1,6 +1,11 @@
 import React from 'react';
 import { SectionCard, DiagramSVG } from '../index';
 
+/**
+ * セクション4: データライフサイクル
+ * データの収集、保存、処理、分析、活用と、バッチ/ストリーミング処理について解説します。
+ * @returns JSX.Element
+ */
 export const Section4: React.FC = () => {
     return (
         <div id="s4" className="sgap">

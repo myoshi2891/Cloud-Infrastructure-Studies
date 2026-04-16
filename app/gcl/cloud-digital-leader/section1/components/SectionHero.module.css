@@ -56,12 +56,11 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    box-shadow: 0 0 8px currentColor;
+    box-shadow: 0 0 8px currentcolor;
 }
 
 .dotBlue { background: var(--color-primary); }
 .dotRed { background: var(--cdl-red); }
-.dotYellow { background: var(--cdl-yellow); }
 .dotGreen { background: var(--cdl-green); }
 
 @media (max-width: 640px) {

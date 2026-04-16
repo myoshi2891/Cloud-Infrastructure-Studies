@@ -17,5 +17,5 @@
 }
 
 .diagramSvg text {
-    font-family: var(--font-azeret-mono, monospace);
+    font-family: var(--font-mono, monospace);
 }

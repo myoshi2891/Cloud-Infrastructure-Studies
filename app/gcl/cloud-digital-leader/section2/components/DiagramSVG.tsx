@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './DiagramSVG.module.css';
+import styles from '../../../../../components/DiagramSVG.module.css';
 
 /**
  * SVGダイアグラムを表示するためのコンポーネント

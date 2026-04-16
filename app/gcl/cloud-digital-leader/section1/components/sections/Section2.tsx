@@ -47,8 +47,8 @@ export const Section2: React.FC = () => (
                 </g>
             </DiagramSVG>
 
-            <div className={styles.stitle}>2.2 なぜ今クラウドが必要なのか？</div>
-            <div className={styles.stitle}>従来のオンプレミス環境が抱える 5 つの課題</div>
+            <h3 className={styles.stitle}>2.2 なぜ今クラウドが必要なのか？</h3>
+            <h3 className={styles.stitle}>従来のオンプレミス環境が抱える 5 つの課題</h3>
             <TableComponent
                 headers={['課題', '説明', 'ビジネスへの影響']}
                 rows={ON_PREMISE_ISSUES}

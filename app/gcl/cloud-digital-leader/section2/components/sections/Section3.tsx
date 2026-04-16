@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { STRUCTURED_DATA_EXAMPLES, UNSTRUCTURED_DATA_EXAMPLES, DATA_FORMAT_COMPARISON } from '../../constants';
 
+/**
+ * セクション3: データの種類と Cloud Storage
+ * 構造化・非構造化・半構造化データと Cloud Storage について解説します。
+ * @returns JSX.Element
+ */
 export const Section3: React.FC = () => {
     return (
         <div id="s3" className="sgap">

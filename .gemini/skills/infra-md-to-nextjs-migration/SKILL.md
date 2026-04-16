@@ -143,8 +143,8 @@ export function SectionN() {
                 {/* ASCIIの代わりにSVGを利用 */}
                 <DiagramSVG />
 
-                <div className={styles.ctableWrap} tabIndex={0} aria-label="データテーブル">
-                    <table className={styles.ctable}>
+                <div className="ctable-wrap" tabIndex={0} aria-label="データテーブル">
+                    <table className="ctable">
                         <thead>
                             <tr><th scope="col">列1</th><th scope="col">列2</th></tr>
                         </thead>

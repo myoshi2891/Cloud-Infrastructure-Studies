@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { USE_CASES_EXAMPLES } from '../../constants';
 
+/**
+ * セクション11: 業界別のデータ活用ユースケース
+ * 小売、製造、金融、医療などの業界におけるデータ活用の例について解説します。
+ * @returns JSX.Element
+ */
 export const Section11: React.FC = () => {
     return (
         <div id="s11" className="sgap">

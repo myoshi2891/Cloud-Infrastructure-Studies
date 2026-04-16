@@ -7,17 +7,23 @@ import styles from './DiagramSVG.module.css';
  * アクセシビリティに配慮したSVGラッパーとして機能します。
  * 
  * @param viewBox - SVGのビューボックス（例: "0 0 600 300"）
- * @param ariaLabel - SVG要素のアクセシビリティラベル
+ * @param ariaLabel - SVG要素のアクセシビリティラベル（decorative=falseの場合は必須）
+ * @param decorative - 画像が装飾的であるかどうか。falseの場合はariaLabelが必須。デフォルトはfalse。
  * @param children - SVG内部に描画されるReact要素
  * @returns ラップされたSVG要素
  */
 interface DiagramSVGProps {
     viewBox: string;
     ariaLabel?: string;
+    decorative?: boolean;
     children: React.ReactNode;
 }
 
-export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, children }) => {
+export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, decorative = false, children }) => {
+    if (!decorative && !ariaLabel) {
+        throw new Error('DiagramSVG requires an ariaLabel when not marked as decorative.');
+    }
+
     return (
         <div className={styles.diagramSvg}>
             <svg 
@@ -26,9 +32,9 @@ export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, chil
                 height="100%" 
                 fill="none" 
                 stroke="currentColor"
-                {...(ariaLabel ? { role: 'img', 'aria-label': ariaLabel } : { 'aria-hidden': 'true' })}
+                {...(decorative ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label': ariaLabel! })}
             >
-                {ariaLabel && <title>{ariaLabel}</title>}
+                {!decorative && ariaLabel && <title>{ariaLabel}</title>}
                 {children}
             </svg>
         </div>

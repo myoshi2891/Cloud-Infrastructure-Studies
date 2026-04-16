@@ -109,9 +109,9 @@ export const Section4: React.FC = () => (
                 }
             ].map((section) => (
                 <React.Fragment key={section.title}>
-                    <div className={styles.stitle}>{section.title}</div>
+                    <h3 className={styles.stitle}>{section.title}</h3>
                     <p className={styles.tdesc}><strong>定義</strong>: {section.definition}<strong>{section.boldPart}</strong>{section.tail}</p>
-                    <div className={styles.stitle}>特徴とメリット・デメリット</div>
+                    <h3 className={styles.stitle}>特徴とメリット・デメリット</h3>
                     <TableComponent
                         headers={['項目', '内容']}
                         rows={section.features}
@@ -122,7 +122,7 @@ export const Section4: React.FC = () => (
                             </tr>
                         )}
                     />
-                    <div className={styles.stitle}>Google Cloud でのサービス例</div>
+                    <h3 className={styles.stitle}>Google Cloud でのサービス例</h3>
                     <TableComponent
                         headers={['サービス', '説明']}
                         rows={section.services}
@@ -140,5 +140,5 @@ export const Section4: React.FC = () => (
             <a href="https://cloud.google.com/learn/what-is-paas" target="_blank" rel="noreferrer">https://cloud.google.com/learn/what-is-paas</a><br />
             <a href="https://cloud.google.com/learn/what-is-saas" target="_blank" rel="noreferrer">https://cloud.google.com/learn/what-is-saas</a></p>
         </SectionCard>
-    </div>
-);
+        </div>
+        );

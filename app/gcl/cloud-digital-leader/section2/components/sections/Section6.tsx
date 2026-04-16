@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { SQL_VS_SPANNER, BIGQUERY_FEATURES, DATABASE_COMPARISON, DATABASE_DECISION_MATRIX } from '../../constants';
 
+/**
+ * セクション6: データベースの選択
+ * RDBとNoSQL、および Cloud SQL, Spanner などのデータベースサービスについて解説します。
+ * @returns JSX.Element
+ */
 export const Section6: React.FC = () => {
     return (
         <div id="s6" className="sgap">
@@ -81,7 +86,7 @@ export const Section6: React.FC = () => {
                 </DiagramSVG>
 
                 <h3 className="stitle mt-6">6.3 Cloud Spanner（グローバル分散 RDBMS）</h3>
-                <DiagramSVG viewBox="0 0 600 240">
+                <DiagramSVG viewBox="0 0 700 200" ariaLabel="Cloud Spanner features diagram">
                     <rect x="10" y="10" width="580" height="220" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">Cloud Spanner とは:</text>
                     <text x="40" y="65" fill="currentColor" fontSize="14">- 世界唯一のグローバルに分散した、強一貫性を持つリレーショナル DB</text>
@@ -186,7 +191,7 @@ export const Section6: React.FC = () => {
                 />
 
                 <h3 className="stitle mt-6">6.7 Memorystore（インメモリ DB）</h3>
-                <DiagramSVG viewBox="0 0 600 180">
+                <DiagramSVG viewBox="0 0 600 180" ariaLabel="Memorystore features diagram">
                     <rect x="10" y="10" width="580" height="160" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">Memorystore とは:</text>
                     <text x="40" y="65" fill="currentColor" fontSize="14">- マネージドな Redis / Memcached</text>
