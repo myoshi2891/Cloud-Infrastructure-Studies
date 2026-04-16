@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { PUBSUB_USECASES, DATAFLOW_USECASES } from '../../constants';
 
+/**
+ * セクション8: データパイプライン
+ * Pub/Sub, Dataflow, Dataproc などのデータ処理パイプラインについて解説します。
+ * @returns JSX.Element
+ */
 export const Section8: React.FC = () => {
     return (
         <div id="s8" className="sgap">

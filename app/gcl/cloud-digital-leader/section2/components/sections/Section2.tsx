@@ -19,7 +19,7 @@ export const Section2: React.FC = () => {
                 単体では価値が低くても、<strong>分析・組み合わせ・活用</strong>することで
                 ビジネス上の洞察（インサイト）と価値を生み出します。</p>
 
-                <DiagramSVG viewBox="0 0 700 200">
+                <DiagramSVG viewBox="0 0 700 200" ariaLabel="データから意思決定への流れを示す図: データ、情報、知識、知恵、意思決定">
                     <rect x="10" y="10" width="120" height="40" rx="4" stroke="var(--color-primary, currentColor)" fill="transparent" />
                     <text x="70" y="35" textAnchor="middle" fill="currentColor">データ</text>
                     <path d="M 140 30 L 160 30" stroke="currentColor" markerEnd="url(#arrow)" />
@@ -139,4 +139,4 @@ export const Section2: React.FC = () => {
             </SectionCard>
         </div>
     );
-};
+};;

@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { PRIVACY_TECHNIQUES } from '../../constants';
 
+/**
+ * セクション10: データガバナンスとプライバシー
+ * Dataplex や Sensitive Data Protection など、データの保護と管理について解説します。
+ * @returns JSX.Element
+ */
 export const Section10: React.FC = () => {
     return (
         <div id="s10" className="sgap">
@@ -57,7 +62,7 @@ export const Section10: React.FC = () => {
                 </DiagramSVG>
 
                 <h3 className="stitle mt-6">10.4 Sensitive Data Protection（機密データ保護）</h3>
-                <DiagramSVG viewBox="0 0 700 200">
+                <DiagramSVG viewBox="0 0 700 200" ariaLabel="Sensitive Data Protection protection methods: Inspection, Pseudonymization, De-identification, Masking, Tokenization">
                     <rect x="10" y="10" width="680" height="180" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">Sensitive Data Protection（旧 Cloud DLP）とは:</text>
                     <text x="40" y="65" fill="currentColor" fontSize="14">- テキスト・画像・構造化データ内の機密情報を自動検出・保護するサービス</text>
@@ -115,7 +120,7 @@ export const Section10: React.FC = () => {
 
                 <blockquote className="sec-quote">
                     <p className="tdesc">📎 <strong>参照</strong>:<br/>
-                    <a href="https://cloud.google.com/dataplex/docs">https://cloud.google.com/dataplex/docs</a><br/>
+                    <a href="https://cloud.google.com/dataplex">https://cloud.google.com/dataplex/docs</a><br/>
                     <a href="https://cloud.google.com/dlp/docs">https://cloud.google.com/dlp/docs</a><br/>
                     <a href="https://cloud.google.com/bigquery/docs/column-level-security-intro">https://cloud.google.com/bigquery/docs/column-level-security-intro</a></p>
                 </blockquote>

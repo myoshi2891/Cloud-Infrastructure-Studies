@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, TableComponent } from '../index';
 import { SECTION2_REFERENCES } from '../../constants';
 
+/**
+ * セクション13: 包括的調査および実践的アーキテクチャガイド
+ * CDL試験の Section 2 に関連する実践的なアーキテクチャ例と用語解説を提供します。
+ * @returns JSX.Element
+ */
 export const Section13: React.FC = () => {
     return (
         <div id="s13" className="sgap">
@@ -25,7 +30,7 @@ export const Section13: React.FC = () => {
                 />
                 <hr className="sec-hr" />
                 <p className="tdesc"><em>本ガイドは Google Cloud Digital Leader（CDL）試験の Section 2 に特化した学習資料です。</em><br/>
-                <em>試験の最新情報は必ず公式サイト（<a href="https://cloud.google.com/learn/certification/cloud-digital-leader">https://cloud.google.com/learn/certification/cloud-digital-leader</a>）でご確認ください。</em></p>
+                <em>試験の最新情報は必ず公式サイト（<a href="https://cloud.google.com/learn/certification/cloud-digital-leader" target="_blank" rel="noopener noreferrer">Cloud Digital Leader 認定</a>）でご確認ください。</em></p>
             </SectionCard>
 
             <SectionCard id="gcdl-2-13" idNumber="Deep Dive" title="データからAIへのイノベーション基盤 (Data-to-AI Lifecycle)">

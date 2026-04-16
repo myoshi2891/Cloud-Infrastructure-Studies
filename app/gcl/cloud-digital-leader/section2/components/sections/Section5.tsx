@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { STORAGE_CLASSES, DATA_MANAGEMENT_SOLUTIONS } from '../../constants';
 
+/**
+ * セクション5: Cloud Storage
+ * Cloud Storage のストレージクラスとベストプラクティスを解説します。
+ * @returns JSX.Element
+ */
 export const Section5: React.FC = () => {
     return (
         <div id="s5" className="sgap">
@@ -133,7 +138,9 @@ export const Section5: React.FC = () => {
                     <p className="tdesc">📎 <strong>参照</strong>:<br/>
                     <a href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a><br/>
                     <a href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a><br/>
-                    <a href="https://cloud.google.com/storage/docs/best-practices">https://cloud.google.com/storage/docs/best-practices</a></p>
+                    <a href="https://cloud.google.com/storage/docs/best-practices">https://cloud.google.com/storage/docs/best-practices</a><br/>
+                    <a href="https://oneuptime.com/blog/post/2026-02-17-how-to-optimize-cloud-storage-costs-by-using-the-right-storage-class">OneUptime: How to Optimize Cloud Storage Costs by Using the Right Storage Class</a>
+                    </p>
                 </blockquote>
                 <hr className="sec-hr" />
             </SectionCard>

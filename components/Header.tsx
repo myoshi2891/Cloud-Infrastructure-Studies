@@ -329,6 +329,7 @@ export function Header() {
                             href="/gcl/cloud-digital-leader/section2"
                             label="Section 2"
                             desc="データ トランスフォーメーションの探求"
+                            ariaLabel="Section 2 — データ トランスフォーメーションの探求"
                             onClick={() => setOpenMenu(null)}
                         />
                     </div>

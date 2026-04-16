@@ -1,0 +1,46 @@
+.sgap {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+.secHead {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.secNum {
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-background);
+    background: var(--color-primary);
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.sn1 { background: var(--color-primary); }
+
+.secHeadTxt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.secTitle {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-foreground);
+    line-height: 1.3;
+}

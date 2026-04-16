@@ -2,6 +2,11 @@ import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { LOOKER_FEATURES, LOOKER_VS_STUDIO } from '../../constants';
 
+/**
+ * セクション7: データ分析と可視化
+ * Looker や Looker Studio を用いたデータの可視化と分析について解説します。
+ * @returns JSX.Element
+ */
 export const Section7: React.FC = () => {
     return (
         <div id="s7" className="sgap">
@@ -111,7 +116,9 @@ Looker Studio を選ぶ場合:
                     <p className="tdesc">📎 <strong>参照</strong>:<br/>
                     <a href="https://cloud.google.com/looker/docs">https://cloud.google.com/looker/docs</a><br/>
                     <a href="https://lookerstudio.google.com/">https://lookerstudio.google.com/</a><br/>
-                    <a href="https://cloud.google.com/bigquery/docs/bi-engine-intro">https://cloud.google.com/bigquery/docs/bi-engine-intro</a></p>
+                    <a href="https://cloud.google.com/bigquery/docs/bi-engine-intro">https://cloud.google.com/bigquery/docs/bi-engine-intro</a><br/>
+                    <a href="https://cloud.google.com/blog/products/data-analytics/analyze-data-across-clouds-with-bigquery-omni">Analyze data across clouds with BigQuery Omni</a><br/>
+                    <a href="https://www.squareshift.co/post/optimizing-looker-performance-for-large-scale-data-workloads">Optimizing Looker Performance</a></p>
                 </blockquote>
                 <hr className="sec-hr" />
             </SectionCard>

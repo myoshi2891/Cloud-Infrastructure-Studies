@@ -1,17 +1,22 @@
 import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { SUB_TOPICS } from '../../constants';
+import styles from './Section1.module.css';
 
-export const Section1: React.FC = () => {
-    return (
-        <div id="s1" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn1">01</div>
-                <div className="sec-head-txt">
-                    <h2 className="sec-title">Section 2 の出題範囲と学習ポイント</h2>
-                </div>
+/**
+ * セクション1: 出題範囲と学習ポイント
+ * Section 1 の概要およびサブトピック一覧を表示します。
+ * @returns JSX.Element
+ */
+export const Section1: React.FC = () => (
+    <div id="s1" className={styles.sgap}>
+        <div className={styles.secHead}>
+            <div className={`${styles.secNum} ${styles.sn1}`}>01</div>
+            <div className={styles.secHeadTxt}>
+                <h2 className={styles.secTitle}>Section 2 の出題範囲と学習ポイント</h2>
             </div>
-            <SectionCard id="cdl-2-1" idNumber="1" title="Section 2 の出題範囲と学習ポイント">
+        </div>
+        <SectionCard id="cdl-2-1" idNumber="1" title="Section 2 の出題範囲と学習ポイント">
                 <h3 className="stitle">1.1 試験における Section 2 の位置づけ</h3>
                 <p className="tdesc">
                     Google Cloud Digital Leader（CDL）試験の Section 2 は
@@ -44,6 +49,5 @@ export const Section1: React.FC = () => {
                 />
                 <hr className="sec-hr" />
             </SectionCard>
-        </div>
-    );
-};
+            </div>
+            );

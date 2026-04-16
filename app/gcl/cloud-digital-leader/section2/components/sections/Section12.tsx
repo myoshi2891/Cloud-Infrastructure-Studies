@@ -1,14 +1,20 @@
 import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { CONFUSION_POINTS } from '../../constants';
+import styles from './Section12.module.css';
 
+/**
+ * セクション12: Section 2 試験対策まとめ
+ * 最重要用語や頻出の問題パターンについて解説します。
+ * @returns JSX.Element
+ */
 export const Section12: React.FC = () => {
     return (
-        <div id="s12" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn12">12</div>
-                <div className="sec-head-txt">
-                    <h2 className="sec-title">Section 2 総まとめ・頻出問題パターン</h2>
+        <div id="s12" className={styles.sgap}>
+            <div className={styles.secHead}>
+                <div className={`${styles.secNum} ${styles.sn12}`}>12</div>
+                <div className={styles.secHeadTxt}>
+                    <h2 className={styles.secTitle}>Section 2 試験対策まとめ</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-12" idNumber="12" title="Section 2 総まとめ・頻出問題パターン">
@@ -41,8 +47,8 @@ export const Section12: React.FC = () => {
                     <text x="170" y="120" fill="currentColor" fontSize="14">（グローバル展開・強一貫性・水平スケール）</text>
                 </DiagramSVG>
 
-                <h4 className="stitle mt-6">パターン 2: ストレージクラス選択</h4>
-                <DiagramSVG viewBox="0 0 700 160">
+                <h4 className="stitle-sub">パターン 2: ストレージクラス選択</h4>
+                <DiagramSVG viewBox="0 0 800 200" ariaLabel="Storage class selection: Archive for 7-year retention">
                     <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">問題:</text>
                     <text x="75" y="40" fill="currentColor" fontSize="14">「規制上 7 年間保持が必要で、年に 1 回の監査時のみアクセス。最も安いクラスは？」</text>
@@ -105,4 +111,4 @@ export const Section12: React.FC = () => {
             </SectionCard>
         </div>
     );
-};
+};;

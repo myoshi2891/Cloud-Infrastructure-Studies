@@ -1,6 +1,11 @@
 import React from 'react';
 import { SectionCard, DiagramSVG } from '../index';
 
+/**
+ * セクション9: データアーキテクチャパターン
+ * データウェアハウス、データレイクなどのアーキテクチャ設計について解説します。
+ * @returns JSX.Element
+ */
 export const Section9: React.FC = () => {
     return (
         <div id="s9" className="sgap">
