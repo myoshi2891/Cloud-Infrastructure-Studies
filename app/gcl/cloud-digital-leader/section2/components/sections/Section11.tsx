@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Section11.module.css';
+import baseStyles from './SectionBase.module.css';
 
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 
@@ -12,16 +13,16 @@ import { USE_CASES_EXAMPLES } from '../../constants';
  */
 export const Section11: React.FC = () => {
     return (
-        <div id="s11" className={styles.sgap}>
-            <div className={styles.secHead}>
-                <div className={`${styles.secNum} ${styles.sn11}`}>11</div>
-                <div className={styles.secHeadTxt}>
-                    <h2 className={styles.secTitle}>ビジネスユースケース別 データ活用パターン</h2>
+        <div id="s11" className={baseStyles.sgap}>
+            <div className={baseStyles.secHead}>
+                <div className={`${baseStyles.secNum} ${styles.sn11}`}>11</div>
+                <div className={baseStyles.secHeadTxt}>
+                    <h2 className={baseStyles.secTitle}>ビジネスユースケース別 データ活用パターン</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-11" idNumber="11" title="ビジネスユースケース別 データ活用パターン">
-                <h3 className={styles.stitle}>11.1 小売・EC 業界でのデータ活用</h3>
-                <DiagramSVG viewBox="0 0 700 180">
+                <h3 className={baseStyles.stitle}>11.1 小売・EC 業界でのデータ活用</h3>
+                <DiagramSVG viewBox="0 0 700 180" ariaLabel="小売・EC 業界のデータ活用図: POS/Webログ/在庫データ → BigQuery/Vertex AI → 需要予測・自動発注。顧客レビュー → Natural Language API → 品質改善。商品画像 → Vision API → 不良品自動検出">
                     <rect x="10" y="10" width="680" height="160" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">課題: 売上を伸ばしたい・在庫ロスを減らしたい</text>
                     
@@ -31,7 +32,7 @@ export const Section11: React.FC = () => {
                     <text x="40" y="145" fill="currentColor" fontSize="14">商品画像 → Vision API → 不良品自動検出</text>
                 </DiagramSVG>
 
-                <h4 className={`${styles.stitle} mt-6`}>具体的な活用例</h4>
+                <h4 className={`${baseStyles.stitle} mt-6`}>具体的な活用例</h4>
                 <TableComponent
                     headers={['課題', 'データ', 'GCP サービス', '効果']}
                     rows={USE_CASES_EXAMPLES}
@@ -45,8 +46,8 @@ export const Section11: React.FC = () => {
                     )}
                 />
 
-                <h3 className={`${styles.stitle} mt-6`}>11.2 製造業でのデータ活用</h3>
-                <DiagramSVG viewBox="0 0 700 160">
+                <h3 className={`${baseStyles.stitle} mt-6`}>11.2 製造業でのデータ活用</h3>
+                <DiagramSVG viewBox="0 0 700 160" ariaLabel="製造業のデータ活用図: IoT センサーデータ → Pub/Sub → Dataflow → BigQuery → Vertex AI → 設備の故障を2週間前に予測し計画外停止を削減">
                     <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">課題: 品質不良を減らしたい・設備ダウンタイムを削減したい</text>
                     
@@ -55,8 +56,8 @@ export const Section11: React.FC = () => {
                     <text x="40" y="110" fill="currentColor" fontSize="14">設備の故障を2週間前に予測（予兆検知モデル）、計画外停止を削減</text>
                 </DiagramSVG>
 
-                <h3 className={`${styles.stitle} mt-6`}>11.3 金融業でのデータ活用</h3>
-                <DiagramSVG viewBox="0 0 700 160">
+                <h3 className={`${baseStyles.stitle} mt-6`}>11.3 金融業でのデータ活用</h3>
+                <DiagramSVG viewBox="0 0 700 160" ariaLabel="金融業のデータ活用図: 取引データ（毎秒数万件）→ Pub/Sub → Dataflow → Vertex AI → 1ミリ秒以内に正常承認または不正取引停止の判定">
                     <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">課題: 不正取引を即座に検知したい</text>
                     
@@ -65,7 +66,7 @@ export const Section11: React.FC = () => {
                     <text x="40" y="110" fill="currentColor" fontSize="14">1ミリ秒以内に判定し、正常なら承認、不正なら即座に取引停止</text>
                 </DiagramSVG>
 
-                <h3 className={`${styles.stitle} mt-6`}>11.4 医療業界でのデータ活用</h3>
+                <h3 className={`${baseStyles.stitle} mt-6`}>11.4 医療業界でのデータ活用</h3>
                 <pre className="code-block"><code className="language-text">{`課題: 診断精度を上げたい・業務効率化
 
 医療画像（レントゲン・CT・MRI）
@@ -82,7 +83,7 @@ Vertex AI（医療画像 AI / Medical Imaging）
   - 医療データは HIPAA（米国）・個人情報保護法の対象
   - Google Cloud は HIPAA BAA（事業提携契約）に対応
   - データ暗号化・アクセスログが必須`}</code></pre>
-                <hr className={styles.secHr} />
+                <hr className={baseStyles.secHr} />
             </SectionCard>
         </div>
     );

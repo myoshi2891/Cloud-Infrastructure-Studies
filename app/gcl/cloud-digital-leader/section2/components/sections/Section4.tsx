@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useId } from 'react';
 import styles from './Section4.module.css';
+import baseStyles from './SectionBase.module.css';
 
 import { SectionCard, DiagramSVG } from '../index';
 
@@ -9,20 +10,21 @@ import { SectionCard, DiagramSVG } from '../index';
  * @returns JSX.Element
  */
 export const Section4: React.FC = () => {
+    const markerId = useId();
     return (
-        <div id="s4" className={styles.sgap}>
-            <div className={styles.secHead}>
-                <div className={`${styles.secNum} ${styles.sn4}`}>04</div>
-                <div className={styles.secHeadTxt}>
-                    <h2 className={styles.secTitle}>データのライフサイクルとパイプライン</h2>
+        <div id="s4" className={baseStyles.sgap}>
+            <div className={baseStyles.secHead}>
+                <div className={`${baseStyles.secNum} ${styles.sn4}`}>04</div>
+                <div className={baseStyles.secHeadTxt}>
+                    <h2 className={baseStyles.secTitle}>データのライフサイクルとパイプライン</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-4" idNumber="4" title="データのライフサイクルとパイプライン">
-                <h3 className={styles.stitle}>4.1 データライフサイクルの全体像</h3>
-                <p className={styles.tdesc}>データは「生まれてから消えるまで」に複数のステージを経ます。
+                <h3 className={baseStyles.stitle}>4.1 データライフサイクルの全体像</h3>
+                <p className={baseStyles.tdesc}>データは「生まれてから消えるまで」に複数のステージを経ます。
                 各ステージに適切な Google Cloud サービスを対応させることが重要です。</p>
 
-                <DiagramSVG viewBox="0 0 700 250">
+                <DiagramSVG viewBox="0 0 700 250" ariaLabel="データライフサイクル図: 収集・取り込み (Pub/Sub, Transfer Service) → 処理・変換 (Dataflow, Dataproc) → 保存 (BigQuery, Cloud SQL, Bigtable) → 分析 (BigQuery, Vertex AI) → 可視化 (Looker)">
                     <rect x="10" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="70" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">収集・取り込み</text>
                     <text x="70" y="80" textAnchor="middle" fill="currentColor" fontSize="12" opacity="0.8">Ingest</text>
@@ -30,7 +32,7 @@ export const Section4: React.FC = () => {
                     <text x="70" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Transfer</text>
                     <text x="70" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Service</text>
                     <text x="70" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Storage</text>
-                    <path d="M 130 115 L 150 115" stroke="currentColor" markerEnd="url(#arrow)" />
+                    <path d="M 130 115 L 150 115" stroke="currentColor" markerEnd={`url(#${markerId})`} />
 
                     <rect x="150" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="210" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">処理・変換</text>
@@ -39,7 +41,7 @@ export const Section4: React.FC = () => {
                     <text x="210" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Dataproc</text>
                     <text x="210" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Cloud Run</text>
                     <text x="210" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Cloud Functions</text>
-                    <path d="M 270 115 L 290 115" stroke="currentColor" markerEnd="url(#arrow)" />
+                    <path d="M 270 115 L 290 115" stroke="currentColor" markerEnd={`url(#${markerId})`} />
 
                     <rect x="290" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="350" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">保存・格納</text>
@@ -48,7 +50,7 @@ export const Section4: React.FC = () => {
                     <text x="350" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Cloud SQL</text>
                     <text x="350" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Cloud Storage</text>
                     <text x="350" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Bigtable</text>
-                    <path d="M 410 115 L 430 115" stroke="currentColor" markerEnd="url(#arrow)" />
+                    <path d="M 410 115 L 430 115" stroke="currentColor" markerEnd={`url(#${markerId})`} />
 
                     <rect x="430" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="490" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">分析・クエリ</text>
@@ -57,7 +59,7 @@ export const Section4: React.FC = () => {
                     <text x="490" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Vertex AI</text>
                     <text x="490" y="150" textAnchor="middle" fill="currentColor" fontSize="12">BigQuery ML</text>
                     <text x="490" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Looker</text>
-                    <path d="M 550 115 L 570 115" stroke="currentColor" markerEnd="url(#arrow)" />
+                    <path d="M 550 115 L 570 115" stroke="currentColor" markerEnd={`url(#${markerId})`} />
 
                     <rect x="570" y="40" width="120" height="150" rx="8" stroke="var(--color-secondary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="630" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">可視化・活用</text>
@@ -67,14 +69,14 @@ export const Section4: React.FC = () => {
                     <text x="630" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Gemini</text>
                     
                     <defs>
-                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <marker id={markerId} markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
                             <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
                         </marker>
                     </defs>
                 </DiagramSVG>
 
-                <h3 className={`${styles.stitle} mt-6`}>4.2 バッチ処理 vs ストリーミング処理</h3>
-                <p className={styles.tdesc}>データの処理方式には主に 2 種類あります。
+                <h3 className={`${baseStyles.stitle} mt-6`}>4.2 バッチ処理 vs ストリーミング処理</h3>
+                <p className={baseStyles.tdesc}>データの処理方式には主に 2 種類あります。
                 どちらを選ぶかはビジネス要件によって決まります。</p>
 
                 <pre className="code-block"><code className="language-text">{`バッチ処理（Batch Processing）:
@@ -124,7 +126,7 @@ export const Section4: React.FC = () => {
 ハイブリッド（Lambda/Kappa アーキテクチャ）:
   - 両方が必要な場合（過去の分析+リアルタイム監視）
   - Dataflow は同一コードでバッチ・ストリーミング両対応`}</code></pre>
-                <hr className={styles.secHr} />
+                <hr className={baseStyles.secHr} />
             </SectionCard>
         </div>
     );
