@@ -1,6 +1,5 @@
 import React from 'react';
-import { SectionCard } from '../SectionCard';
-import { DiagramSVG } from '../../../../../../components/DiagramSVG';
+import { SectionCard, DiagramSVG } from '../index';
 
 export const Section9: React.FC = () => {
     return (
@@ -12,135 +11,124 @@ export const Section9: React.FC = () => {
                 </div>
             </div>
             <SectionCard id="cdl-2-9" idNumber="9" title="スマートアナリティクスの全体アーキテクチャ">
-                
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">9.1 データアーキテクチャの全体像</h3>
-<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">データレイクとデータウェアハウス</h4>
-<pre class="code-block"><code className="language-text">データレイク（Data Lake）:
-
+                <h3 className="stitle">9.1 データアーキテクチャの全体像</h3>
+                <h4 className="stitle mt-4">データレイクとデータウェアハウス</h4>
+                <pre className="code-block"><code className="language-text">{`データレイク（Data Lake）:
   - あらゆる形式の生データを大量に保管する場所
   - スキーマ定義なし（スキーマオンリード）
   - Cloud Storage が中心
   - 将来の使い方を決めていないデータも保存できる
-  - 例: 全ログ・全画像・全音声ファイルをとりあえず保存
 
 データウェアハウス（Data Warehouse）:
-
   - 分析のために構造化・整理されたデータを格納する場所
   - スキーマ定義あり（スキーマオンライト）
   - BigQuery が中心
   - BI・レポート・分析に最適化されている
-  - 例: 売上・顧客・在庫データを分析用に整形して保存
 
 データレイクハウス（Data Lakehouse）:
-
   - データレイクの柔軟性 + データウェアハウスの分析性能を兼ね備える
   - BigQuery のストレージに生データも分析データも保存
-  - Google Cloud ではこのアーキテクチャを推奨
-</code></pre>
-<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">9.2 代表的なデータパイプラインアーキテクチャ</h3>
-<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">パターン A: バッチ分析パイプライン</h4>
-` }} />
-            
+  - Google Cloud ではこのアーキテクチャを推奨`}</code></pre>
 
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`[データソース]          [転送・変換]         [分析・可視化]
+                <h3 className="stitle mt-6">9.2 代表的なデータパイプラインアーキテクチャ</h3>
+                <h4 className="stitle mt-4">パターン A: バッチ分析パイプライン</h4>
+                <DiagramSVG viewBox="0 0 700 160">
+                    <text x="30" y="30" fill="currentColor" fontWeight="bold">[データソース]</text>
+                    <text x="230" y="30" fill="currentColor" fontWeight="bold">[転送・変換]</text>
+                    <text x="430" y="30" fill="currentColor" fontWeight="bold">[分析・可視化]</text>
 
-業務DB（Cloud SQL）  ──► Dataflow     ──► BigQuery ──► Looker
-ファイル（GCS）      ──► (日次バッチ)  ──►           ──► Looker Studio
-外部データ           ──►              ──►
+                    <rect x="30" y="50" width="100" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="80" y="70" textAnchor="middle" fill="currentColor" fontSize="12">業務DB</text>
+                    
+                    <path d="M 140 65 L 210 65" stroke="currentColor" markerEnd="url(#arrow)" />
+                    
+                    <rect x="230" y="50" width="100" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="280" y="70" textAnchor="middle" fill="currentColor" fontSize="12">Dataflow</text>
 
-特徴:
+                    <path d="M 340 65 L 410 65" stroke="currentColor" markerEnd="url(#arrow)" />
 
-  - 毎晩深夜に前日分のデータを一括処理
-  - コストを最適化できる
-  - リアルタイム性は不要な分析に最適
-`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
+                    <rect x="430" y="50" width="100" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="480" y="70" textAnchor="middle" fill="currentColor" fontSize="12">BigQuery</text>
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">パターン B: リアルタイムストリーミングパイプライン</h4>
-` }} />
-            
+                    <path d="M 540 65 L 590 65" stroke="currentColor" markerEnd="url(#arrow)" />
 
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`[イベント発生]        [ストリーミング]       [リアルタイム分析]
+                    <rect x="600" y="50" width="80" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="640" y="70" textAnchor="middle" fill="currentColor" fontSize="12">Looker</text>
 
-IoT デバイス    ──► Pub/Sub ──► Dataflow ──► BigQuery ──► Looker
-Web クリック    ──►           ──►           ──►
-注文・決済      ──►           ──►           ──►
+                    <text x="30" y="110" fill="currentColor" fontSize="13">特徴:</text>
+                    <text x="40" y="130" fill="currentColor" fontSize="13">- 毎晩深夜に前日分のデータを一括処理。コスト最適。リアルタイム性不要な分析に最適。</text>
 
-特徴:
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                </DiagramSVG>
 
-  - データが発生した瞬間から分析に反映
-  - 不正検知・IoT監視・リアルタイムダッシュボードに最適
-  - バッチより複雑でコストも高い
-`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
+                <h4 className="stitle mt-4">パターン B: リアルタイムストリーミングパイプライン</h4>
+                <DiagramSVG viewBox="0 0 700 160">
+                    <text x="30" y="30" fill="currentColor" fontWeight="bold">[イベント発生]</text>
+                    <text x="180" y="30" fill="currentColor" fontWeight="bold">[ストリーミング]</text>
+                    <text x="480" y="30" fill="currentColor" fontWeight="bold">[リアルタイム分析]</text>
 
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">パターン C: ハイブリッドパイプライン（最も一般的）</h4>
-` }} />
-            
+                    <rect x="30" y="50" width="100" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="80" y="70" textAnchor="middle" fill="currentColor" fontSize="12">IoT/Webログ</text>
+                    
+                    <path d="M 140 65 L 160 65" stroke="currentColor" markerEnd="url(#arrow)" />
+                    
+                    <rect x="180" y="50" width="90" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="225" y="70" textAnchor="middle" fill="currentColor" fontSize="12">Pub/Sub</text>
 
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`リアルタイム:
-IoT/ログ → Pub/Sub → Dataflow → BigQuery（ホットデータ）
-                                      ↓
-                               統合分析テーブル ──► Looker
-                                      ↑
-バッチ:
-Cloud SQL → Dataflow → BigQuery（コールドデータ）
-GCS       → Dataproc →`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
+                    <path d="M 280 65 L 300 65" stroke="currentColor" markerEnd="url(#arrow)" />
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">9.3 データメッシュ（Data Mesh）の考え方</h3>
-` }} />
-            
+                    <rect x="320" y="50" width="90" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="365" y="70" textAnchor="middle" fill="currentColor" fontSize="12">Dataflow</text>
 
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`データメッシュとは:
+                    <path d="M 420 65 L 460 65" stroke="currentColor" markerEnd="url(#arrow)" />
 
-  - データを各ビジネスドメイン（部門）が所有・管理する考え方
-  - 中央集権的なデータチームに頼らず、各部門がデータを提供・消費する
-  - Dataplex がデータメッシュ実装を支援する Google Cloud のサービス
+                    <rect x="480" y="50" width="90" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="525" y="70" textAnchor="middle" fill="currentColor" fontSize="12">BigQuery</text>
 
-従来（中央集権型）:
-  各部門 → データエンジニアリングチーム（ボトルネック！）→ 全社分析
+                    <path d="M 580 65 L 610 65" stroke="currentColor" markerEnd="url(#arrow)" />
 
-データメッシュ型:
-  営業部門 ──→ 自部門のデータを公開
-  製造部門 ──→ 自部門のデータを公開  → Dataplex で統一管理 → 全社分析
-  財務部門 ──→ 自部門のデータを公開`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
+                    <rect x="620" y="50" width="70" height="30" rx="4" stroke="currentColor" fill="transparent" />
+                    <text x="655" y="70" textAnchor="middle" fill="currentColor" fontSize="12">Looker</text>
 
-                <div dangerouslySetInnerHTML={{ __html: `<blockquote class="border-l-4 border-[var(--color-primary)] pl-4 italic text-[var(--color-muted)] mb-4">
-<p class="tdesc mb-4 leading-relaxed">📎 <strong>参照</strong>:
-<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices">https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices</a>
-<a class="text-blue-400 hover:text-blue-300 underline" href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></p>
-</blockquote>
-<hr class="my-8 border-[var(--color-border)]" />
-` }} />
-            
+                    <text x="30" y="110" fill="currentColor" fontSize="13">特徴:</text>
+                    <text x="40" y="130" fill="currentColor" fontSize="13">- データが発生した瞬間から分析に反映。不正検知やIoT監視に最適。コストは高め。</text>
+
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                </DiagramSVG>
+
+                <h4 className="stitle mt-4">パターン C: ハイブリッドパイプライン（最も一般的）</h4>
+                <p className="tdesc">リアルタイム（ホットデータ）とバッチ（コールドデータ）の両方を BigQuery に統合して分析。</p>
+
+                <h3 className="stitle mt-6">9.3 データメッシュ（Data Mesh）の考え方</h3>
+                <DiagramSVG viewBox="0 0 600 240">
+                    <rect x="10" y="10" width="580" height="220" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="30" y="40" fill="currentColor" fontWeight="bold">データメッシュとは:</text>
+                    <text x="40" y="65" fill="currentColor" fontSize="14">- データを各部門が所有・管理し、公開する考え方</text>
+                    <text x="40" y="85" fill="currentColor" fontSize="14">- 中央のデータチームのボトルネックを解消</text>
+                    <text x="40" y="105" fill="currentColor" fontSize="14">- Dataplex がデータメッシュ実装を支援</text>
+                    
+                    <text x="30" y="135" fill="var(--color-destructive, red)" fontWeight="bold">従来型:</text>
+                    <text x="40" y="155" fill="currentColor" fontSize="14">各部門 → [中央データチーム（ボトルネック）] → 全社分析</text>
+
+                    <text x="30" y="185" fill="var(--color-secondary, green)" fontWeight="bold">データメッシュ型:</text>
+                    <text x="40" y="205" fill="currentColor" fontSize="14">各部門がデータ公開 → [Dataplexで統一管理] → 全社分析</text>
+                </DiagramSVG>
+
+                <blockquote className="sec-quote">
+                    <p className="tdesc">📎 <strong>参照</strong>:<br/>
+                    <a href="https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices">https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices</a><br/>
+                    <a href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></p>
+                </blockquote>
+                <hr className="sec-hr" />
             </SectionCard>
-            
         </div>
     );
 };

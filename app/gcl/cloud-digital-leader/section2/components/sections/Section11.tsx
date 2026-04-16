@@ -1,6 +1,6 @@
 import React from 'react';
-import { SectionCard } from '../SectionCard';
-import { DiagramSVG } from '../../../../../../components/DiagramSVG';
+import { SectionCard, DiagramSVG, TableComponent } from '../index';
+import { USE_CASES_EXAMPLES } from '../../constants';
 
 export const Section11: React.FC = () => {
     return (
@@ -12,126 +12,53 @@ export const Section11: React.FC = () => {
                 </div>
             </div>
             <SectionCard id="cdl-2-11" idNumber="11" title="ビジネスユースケース別 データ活用パターン">
-                
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">11.1 小売・EC 業界でのデータ活用</h3>
-` }} />
-            
+                <h3 className="stitle">11.1 小売・EC 業界でのデータ活用</h3>
+                <DiagramSVG viewBox="0 0 700 180">
+                    <rect x="10" y="10" width="680" height="160" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="30" y="40" fill="currentColor" fontWeight="bold">課題: 売上を伸ばしたい・在庫ロスを減らしたい</text>
+                    
+                    <text x="30" y="80" fill="currentColor" fontWeight="bold">データ活用の全体像:</text>
+                    <text x="40" y="105" fill="currentColor" fontSize="14">POS/Webログ/在庫データ → BigQuery/Vertex AI → 需要予測・自動発注</text>
+                    <text x="40" y="125" fill="currentColor" fontSize="14">顧客レビュー → Natural Language API → 品質改善施策</text>
+                    <text x="40" y="145" fill="currentColor" fontSize="14">商品画像 → Vision API → 不良品自動検出</text>
+                </DiagramSVG>
 
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`課題: 売上を伸ばしたい・在庫ロスを減らしたい
+                <h4 className="stitle mt-6">具体的な活用例</h4>
+                <TableComponent
+                    headers={['課題', 'データ', 'GCP サービス', '効果']}
+                    rows={USE_CASES_EXAMPLES}
+                    renderRow={(row, i) => (
+                        <tr key={i}>
+                            <td><strong>{row.problem}</strong></td>
+                            <td>{row.data}</td>
+                            <td>{row.gcpService}</td>
+                            <td>{row.effect}</td>
+                        </tr>
+                    )}
+                />
 
-データ活用の全体像:
+                <h3 className="stitle mt-6">11.2 製造業でのデータ活用</h3>
+                <DiagramSVG viewBox="0 0 700 160">
+                    <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="30" y="40" fill="currentColor" fontWeight="bold">課題: 品質不良を減らしたい・設備ダウンタイムを削減したい</text>
+                    
+                    <text x="40" y="70" fill="currentColor" fontSize="14">IoT センサーデータ → Pub/Sub → Dataflow → BigQuery → Vertex AI</text>
+                    <text x="40" y="90" fill="currentColor" fontSize="14">↓</text>
+                    <text x="40" y="110" fill="currentColor" fontSize="14">設備の故障を2週間前に予測（予兆検知モデル）、計画外停止を削減</text>
+                </DiagramSVG>
 
-[データ収集]           [分析・AI]              [ビジネス効果]
+                <h3 className="stitle mt-6">11.3 金融業でのデータ活用</h3>
+                <DiagramSVG viewBox="0 0 700 160">
+                    <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="30" y="40" fill="currentColor" fontWeight="bold">課題: 不正取引を即座に検知したい</text>
+                    
+                    <text x="40" y="70" fill="currentColor" fontSize="14">取引データ（毎秒数万件） → Pub/Sub → Dataflow → Vertex AI</text>
+                    <text x="40" y="90" fill="currentColor" fontSize="14">↓</text>
+                    <text x="40" y="110" fill="currentColor" fontSize="14">1ミリ秒以内に判定し、正常なら承認、不正なら即座に取引停止</text>
+                </DiagramSVG>
 
-POS データ       →  BigQuery      →  Looker      → 売上ダッシュボード
-Web 行動ログ     →  Vertex AI     →            → パーソナライズ推薦
-在庫データ       →  BigQuery ML   →            → 需要予測・自動発注
-顧客レビュー     →  NL API        →            → 品質改善施策
-画像（商品）     →  Vision API    →            → 不良品自動検出`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
-
-                <div dangerouslySetInnerHTML={{ __html: `<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">具体的な活用例</h4>
-<div class="ctable-wrap overflow-x-auto my-4 border border-[var(--color-border)] rounded-md" tabIndex="0"><table class="ctable w-full text-left border-collapse">
-<thead>
-<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">課題</th>
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">データ</th>
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">GCP サービス</th>
-<th scope="col" class="p-3 font-semibold bg-[var(--color-muted)]/20">効果</th>
-</tr>
-</thead>
-<tbody><tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]">顧客離脱を予測したい</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">購買履歴・行動ログ</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery ML + Vertex AI</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">離脱 3 週間前に介入できる</td>
-</tr>
-<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]">在庫を最適化したい</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">POS・天気・カレンダー</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">BigQuery + Vertex AI</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">欠品率 30% 削減</td>
-</tr>
-<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]">レコメンドを改善したい</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">閲覧・購買履歴</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">Recommendations AI</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">CV率 15% 向上</td>
-</tr>
-<tr class="border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-muted)]/10 transition-colors">
-<td class="p-3 align-top leading-relaxed text-[13px]">レビューを分析したい</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">顧客レビューテキスト</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">Natural Language API</td>
-<td class="p-3 align-top leading-relaxed text-[13px]">製品改善サイクル短縮</td>
-</tr>
-</tbody></table></div>
-<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">11.2 製造業でのデータ活用</h3>
-` }} />
-            
-
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`課題: 品質不良を減らしたい・設備ダウンタイムを削減したい
-
-IoT センサーデータ（温度・振動・圧力）
-    ↓
-Pub/Sub（リアルタイム取り込み）
-    ↓
-Dataflow（異常値フィルタリング・集計）
-    ↓
-BigQuery（履歴データ蓄積） → Vertex AI（予兆検知モデル）
-    ↓
-アラート発報 → 設備保全チームへ通知
-
-効果:
-  ✅ 設備の故障を 2 週間前に予測
-  ✅ 計画外停止を 40% 削減
-  ✅ 保全コストの最適化`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
-
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">11.3 金融業でのデータ活用</h3>
-` }} />
-            
-
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`課題: 不正取引を即座に検知したい
-
-取引データ（毎秒数万件）
-    ↓
-Pub/Sub（ストリーミング取り込み）
-    ↓
-Dataflow（リアルタイム特徴量計算）
-    ↓
-Vertex AI（不正検知モデル・1ミリ秒以内に判定）
-    ↓
-✅ 正常 → 決済承認
-❌ 不正 → 取引停止・アラート
-
-BigQuery に全データを蓄積 → モデルの継続的な改善
-
-効果:
-  ✅ 不正検知率が大幅向上
-  ✅ 正常取引の誤検知を削減
-  ✅ リアルタイム（1秒以内）の判定`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
-
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">11.4 医療業界でのデータ活用</h3>
-<pre class="code-block"><code className="language-text">課題: 診断精度を上げたい・業務効率化
+                <h3 className="stitle mt-6">11.4 医療業界でのデータ活用</h3>
+                <pre className="code-block"><code className="language-text">{`課題: 診断精度を上げたい・業務効率化
 
 医療画像（レントゲン・CT・MRI）
     ↓
@@ -144,16 +71,11 @@ Vertex AI（医療画像 AI / Medical Imaging）
 診断支援・所見の自動生成
 
 注意事項:
-
   - 医療データは HIPAA（米国）・個人情報保護法の対象
-  - Google Cloud は HIPAA BAA（事業提携契約）に対応（利用には BAA の締結が必須であり、顧客側の構成・運用責任が前提）
-  - データ暗号化・アクセスログが必須
-</code></pre>
-<hr class="my-8 border-[var(--color-border)]" />
-` }} />
-            
+  - Google Cloud は HIPAA BAA（事業提携契約）に対応
+  - データ暗号化・アクセスログが必須`}</code></pre>
+                <hr className="sec-hr" />
             </SectionCard>
-            
         </div>
     );
 };

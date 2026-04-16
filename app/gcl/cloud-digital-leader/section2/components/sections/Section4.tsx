@@ -1,6 +1,5 @@
 import React from 'react';
-import { SectionCard } from '../SectionCard';
-import { DiagramSVG } from '../../../../../../components/DiagramSVG';
+import { SectionCard, DiagramSVG } from '../index';
 
 export const Section4: React.FC = () => {
     return (
@@ -12,40 +11,69 @@ export const Section4: React.FC = () => {
                 </div>
             </div>
             <SectionCard id="cdl-2-4" idNumber="4" title="データのライフサイクルとパイプライン">
-                
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">4.1 データライフサイクルの全体像</h3>
-<p class="tdesc mb-4 leading-relaxed">データは「生まれてから消えるまで」に複数のステージを経ます。
-各ステージに適切な Google Cloud サービスを対応させることが重要です。</p>
-` }} />
-            
+                <h3 className="stitle">4.1 データライフサイクルの全体像</h3>
+                <p className="tdesc">データは「生まれてから消えるまで」に複数のステージを経ます。
+                各ステージに適切な Google Cloud サービスを対応させることが重要です。</p>
 
-                <div>
-                    <DiagramSVG viewBox="0 0 800 400">
-                        <text x="10" y="20" fill="currentColor" style={{fontFamily: 'monospace', whiteSpace: 'pre', fontSize: '14px'}}>
-                            {`データライフサイクル:
+                <DiagramSVG viewBox="0 0 700 250">
+                    <rect x="10" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="70" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">収集・取り込み</text>
+                    <text x="70" y="80" textAnchor="middle" fill="currentColor" fontSize="12" opacity="0.8">Ingest</text>
+                    <text x="70" y="110" textAnchor="middle" fill="currentColor" fontSize="12">Pub/Sub</text>
+                    <text x="70" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Transfer</text>
+                    <text x="70" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Service</text>
+                    <text x="70" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Storage</text>
+                    <path d="M 130 115 L 150 115" stroke="currentColor" markerEnd="url(#arrow)" />
 
-[収集・取り込み]  →  [処理・変換]  →  [保存・格納]  →  [分析・クエリ]  →  [可視化・活用]
-   Ingest              Process           Store              Analyze            Visualize
+                    <rect x="150" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="210" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">処理・変換</text>
+                    <text x="210" y="80" textAnchor="middle" fill="currentColor" fontSize="12" opacity="0.8">Process</text>
+                    <text x="210" y="110" textAnchor="middle" fill="currentColor" fontSize="12">Dataflow</text>
+                    <text x="210" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Dataproc</text>
+                    <text x="210" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Cloud Run</text>
+                    <text x="210" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Cloud Functions</text>
+                    <path d="M 270 115 L 290 115" stroke="currentColor" markerEnd="url(#arrow)" />
 
-  Pub/Sub           Dataflow           BigQuery           BigQuery           Looker
-  Transfer          Dataproc           Cloud SQL          Vertex AI          Looker Studio
-  Service           Cloud Run          Cloud Storage      BigQuery ML        Gemini
-  Storage           Cloud Functions    Bigtable           Looker
-  Transfer          Datastream         Firestore          Looker Studio
-  Appliance`}
-                        </text>
-                    </DiagramSVG>
-                </div>
-            
+                    <rect x="290" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="350" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">保存・格納</text>
+                    <text x="350" y="80" textAnchor="middle" fill="currentColor" fontSize="12" opacity="0.8">Store</text>
+                    <text x="350" y="110" textAnchor="middle" fill="currentColor" fontSize="12">BigQuery</text>
+                    <text x="350" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Cloud SQL</text>
+                    <text x="350" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Cloud Storage</text>
+                    <text x="350" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Bigtable</text>
+                    <path d="M 410 115 L 430 115" stroke="currentColor" markerEnd="url(#arrow)" />
 
-                <div dangerouslySetInnerHTML={{ __html: `<h3 class="stitle text-[var(--color-primary)] mb-2 mt-6">4.2 バッチ処理 vs ストリーミング処理</h3>
-<p class="tdesc mb-4 leading-relaxed">データの処理方式には主に 2 種類あります。
-どちらを選ぶかはビジネス要件によって決まります。</p>
-<pre class="code-block"><code className="language-text">バッチ処理（Batch Processing）:
+                    <rect x="430" y="40" width="120" height="150" rx="8" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="490" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">分析・クエリ</text>
+                    <text x="490" y="80" textAnchor="middle" fill="currentColor" fontSize="12" opacity="0.8">Analyze</text>
+                    <text x="490" y="110" textAnchor="middle" fill="currentColor" fontSize="12">BigQuery</text>
+                    <text x="490" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Vertex AI</text>
+                    <text x="490" y="150" textAnchor="middle" fill="currentColor" fontSize="12">BigQuery ML</text>
+                    <text x="490" y="170" textAnchor="middle" fill="currentColor" fontSize="12">Looker</text>
+                    <path d="M 550 115 L 570 115" stroke="currentColor" markerEnd="url(#arrow)" />
+
+                    <rect x="570" y="40" width="120" height="150" rx="8" stroke="var(--color-secondary, currentColor)" fill="var(--color-background, transparent)" />
+                    <text x="630" y="60" textAnchor="middle" fill="currentColor" fontWeight="bold">可視化・活用</text>
+                    <text x="630" y="80" textAnchor="middle" fill="currentColor" fontSize="12" opacity="0.8">Visualize</text>
+                    <text x="630" y="110" textAnchor="middle" fill="currentColor" fontSize="12">Looker</text>
+                    <text x="630" y="130" textAnchor="middle" fill="currentColor" fontSize="12">Looker Studio</text>
+                    <text x="630" y="150" textAnchor="middle" fill="currentColor" fontSize="12">Gemini</text>
+                    
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                </DiagramSVG>
+
+                <h3 className="stitle mt-6">4.2 バッチ処理 vs ストリーミング処理</h3>
+                <p className="tdesc">データの処理方式には主に 2 種類あります。
+                どちらを選ぶかはビジネス要件によって決まります。</p>
+
+                <pre className="code-block"><code className="language-text">{`バッチ処理（Batch Processing）:
   定義: データをある程度溜めてから、まとめて一括処理する
 
   例:
-
     - 毎晩深夜に前日の全取引データを集計する
     - 月末に請求書を一括生成する
     - 週次で顧客行動レポートを生成する
@@ -61,7 +89,6 @@ export const Section4: React.FC = () => {
   定義: データが発生したその瞬間に即座に処理する
 
   例:
-
     - クレジットカード不正検知（取引直後に判定）
     - 株式取引の価格更新（ミリ秒単位）
     - IoT センサーの異常値をリアルタイムで検知
@@ -72,35 +99,26 @@ export const Section4: React.FC = () => {
     ✅ 問題を即座に検知・対応できる
     ❌ バッチより複雑・コストが高い
 
-  GCP サービス: Pub/Sub + Dataflow
-</code></pre>
-<h4 class="stitle text-[var(--color-foreground)] font-semibold mt-4 mb-2">✅ ベストプラクティス: 処理方式の選択</h4>
-<pre class="code-block"><code className="language-yaml">バッチ処理を選ぶ場合:
+  GCP サービス: Pub/Sub + Dataflow`}</code></pre>
 
+                <h4 className="stitle mt-4">✅ ベストプラクティス: 処理方式の選択</h4>
+                <pre className="code-block"><code className="language-yaml">{`バッチ処理を選ぶ場合:
   - データの鮮度が数時間〜1日遅れても許容できる
   - コストを最小化したい
   - 大量の履歴データを分析したい
-
   例: 月次売上レポート・DWH へのデータ投入
 
 ストリーミングを選ぶ場合:
-
   - 数秒以内のリアルタイム性が必要
   - 異常・不正をすぐに検知する必要がある
   - 顧客体験がリアルタイム性に依存している
-
   例: 不正検知・IoT 監視・リアルタイムダッシュボード
 
 ハイブリッド（Lambda/Kappa アーキテクチャ）:
-
   - 両方が必要な場合（過去の分析+リアルタイム監視）
-  - Dataflow は同一コードでバッチ・ストリーミング両対応
-</code></pre>
-<hr class="my-8 border-[var(--color-border)]" />
-` }} />
-            
+  - Dataflow は同一コードでバッチ・ストリーミング両対応`}</code></pre>
+                <hr className="sec-hr" />
             </SectionCard>
-            
         </div>
     );
 };
