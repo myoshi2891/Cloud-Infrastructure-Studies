@@ -1,7 +1,9 @@
 import React from 'react';
-import { SectionCard, DiagramSVG, TableComponent } from '../index';
-import { CONFUSION_POINTS } from '../../constants';
 import styles from './Section12.module.css';
+
+import { SectionCard, DiagramSVG, TableComponent } from '../index';
+
+import { CONFUSION_POINTS } from '../../constants';
 
 /**
  * セクション12: Section 2 試験対策まとめ
@@ -18,7 +20,7 @@ export const Section12: React.FC = () => {
                 </div>
             </div>
             <SectionCard id="cdl-2-12" idNumber="12" title="Section 2 総まとめ・頻出問題パターン">
-                <h3 className="stitle">12.1 最重要用語の一問一答</h3>
+                <h3 className={styles.stitle}>12.1 最重要用語の一問一答</h3>
                 <DiagramSVG viewBox="0 0 700 240">
                     <rect x="10" y="10" width="680" height="220" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontSize="13">Q: BigQuery を一言で表すと？</text>
@@ -34,7 +36,7 @@ export const Section12: React.FC = () => {
                     <text x="30" y="210" fill="currentColor" fontSize="13">A: 匿名化=再識別不可能（GDPR 対象外）、仮名化=再識別可能（GDPR 対象）</text>
                 </DiagramSVG>
 
-                <h3 className="stitle mt-6">12.2 よく出る問題パターンと解法</h3>
+                <h3 className={`${styles.stitle} mt-6`}>12.2 よく出る問題パターンと解法</h3>
                 <h4 className="stitle mt-4">パターン 1: データベース選択</h4>
                 <DiagramSVG viewBox="0 0 700 160">
                     <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
@@ -47,7 +49,7 @@ export const Section12: React.FC = () => {
                     <text x="170" y="120" fill="currentColor" fontSize="14">（グローバル展開・強一貫性・水平スケール）</text>
                 </DiagramSVG>
 
-                <h4 className="stitle-sub">パターン 2: ストレージクラス選択</h4>
+                <h4 className={styles.stitleSub}>パターン 2: ストレージクラス選択</h4>
                 <DiagramSVG viewBox="0 0 800 200" ariaLabel="Storage class selection: Archive for 7-year retention">
                     <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">問題:</text>
@@ -58,7 +60,7 @@ export const Section12: React.FC = () => {
                     <text x="30" y="120" fill="currentColor" fontWeight="bold">答え: Archive</text>
                 </DiagramSVG>
 
-                <h4 className="stitle mt-6">パターン 3: データパイプライン選択</h4>
+                <h4 className={`${styles.stitle} mt-6`}>パターン 3: データパイプライン選択</h4>
                 <DiagramSVG viewBox="0 0 700 160">
                     <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">問題:</text>
@@ -69,7 +71,7 @@ export const Section12: React.FC = () => {
                     <text x="30" y="120" fill="currentColor" fontWeight="bold">答え: Pub/Sub → Dataflow → Vertex AI</text>
                 </DiagramSVG>
 
-                <h4 className="stitle mt-6">パターン 4: BI ツール選択</h4>
+                <h4 className={`${styles.stitle} mt-6`}>パターン 4: BI ツール選択</h4>
                 <DiagramSVG viewBox="0 0 700 160">
                     <rect x="10" y="10" width="680" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">問題:</text>
@@ -80,7 +82,7 @@ export const Section12: React.FC = () => {
                     <text x="30" y="120" fill="currentColor" fontWeight="bold">答え: Looker</text>
                 </DiagramSVG>
 
-                <h3 className="stitle mt-6">12.3 混同しやすいポイントの整理</h3>
+                <h3 className={`${styles.stitle} mt-6`}>12.3 混同しやすいポイントの整理</h3>
                 <TableComponent
                     headers={['混同パターン', '正しい理解']}
                     rows={CONFUSION_POINTS}
@@ -92,7 +94,7 @@ export const Section12: React.FC = () => {
                     )}
                 />
 
-                <h3 className="stitle mt-6">12.4 Section 2 チェックリスト</h3>
+                <h3 className={`${styles.stitle} mt-6`}>12.4 Section 2 チェックリスト</h3>
                 <pre className="code-block"><code className="language-text">{`試験前の最終確認:
 
 □ 構造化・半構造化・非構造化データの違いと例を説明できる
@@ -107,7 +109,7 @@ export const Section12: React.FC = () => {
 □ 匿名化・仮名化・差分プライバシーの違いを説明できる
 □ Dataplex と Sensitive Data Protection の役割を説明できる
 □ データガバナンスとはなにか、なぜ重要かを説明できる`}</code></pre>
-                <hr className="sec-hr" />
+                <hr className={styles.secHr} />
             </SectionCard>
         </div>
     );

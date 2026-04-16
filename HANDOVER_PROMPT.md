@@ -17,14 +17,13 @@
 ## スタイル・実装規約（厳守）
 
 - **コンポーネント分割**: `app/gcl/cloud-digital-leader/sectionN/components/sections/` に分割する。
-- **スタイリング**: インラインの Tailwind クラスを極力避け、以下のプロジェクト標準クラスを `dangerouslySetInnerHTML` 内の HTML タグに付与する。
-  - `class="stitle"`: サブタイトル
-  - `class="tdesc"`: 説明文
-  - `class="ctable-wrap" tabIndex="0"`: テーブル外枠（スクロール用）
-  - `class="ctable"`: テーブル本体
-  - `class="code-block"`: コードブロック
-  - `class="list-disc list-outside ml-6 mb-4"`: 箇条書き
-- **共通パーツ**: 図解には `components/DiagramSVG.tsx` を使用し、ASCII 図解を置き換える。
+- **スタイリング**: インラインの Tailwind クラスを極力避け、CSS Modules を活用する。Markdown からの移行時は `dangerouslySetInnerHTML` を避け、可能な限り構造化された JSX コンポーネント（`TableComponent`, `DiagramSVG` 等）に変換すること。やむを得ず HTML を直接扱う場合は必ずサニタイズを行う。
+  - `.stitle`: サブタイトル
+  - `.tdesc`: 説明文
+  - `.ctable-wrap` / `.ctable`: テーブルスタイル
+  - `.code-block`: コードブロック
+  - `.list-disc`: 箇条書き
+- **共通パーツ**: 図解には `components/DiagramSVG.tsx` を使用し、ASCII 図解を置き換える。`ariaLabel` は必須（装飾目的以外）。
 - **データ管理**: リンクや定数は `constants.ts` に集約し、コンポーネントを肥大化させない。
 
 ## 次回のタスク（提案）

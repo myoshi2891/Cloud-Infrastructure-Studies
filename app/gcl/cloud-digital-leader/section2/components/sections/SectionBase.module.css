@@ -1,0 +1,66 @@
+.sgap {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+.secHead {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.secNum {
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-background);
+    background: var(--color-primary);
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.secHeadTxt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.secTitle {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-foreground);
+    line-height: 1.3;
+}
+
+.stitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.tdesc {
+    font-size: 1rem;
+    color: var(--color-muted-foreground);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.secHr {
+    margin: 2.5rem 0;
+    border: none;
+    border-top: 1px solid var(--color-border);
+}

@@ -35,9 +35,11 @@
     transition: all 0.2s ease;
 }
 
-.snavLink:hover {
+.snavLink:hover,
+.snavLink:focus-visible {
     background: rgba(255, 255, 255, 0.05);
     color: var(--color-foreground);
+    outline: none;
 }
 
 .snavNum {

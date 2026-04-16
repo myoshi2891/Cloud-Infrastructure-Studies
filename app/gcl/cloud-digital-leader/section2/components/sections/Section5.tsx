@@ -1,5 +1,8 @@
 import React from 'react';
+import styles from './Section5.module.css';
+
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
+
 import { STORAGE_CLASSES, DATA_MANAGEMENT_SOLUTIONS } from '../../constants';
 
 /**
@@ -9,17 +12,17 @@ import { STORAGE_CLASSES, DATA_MANAGEMENT_SOLUTIONS } from '../../constants';
  */
 export const Section5: React.FC = () => {
     return (
-        <div id="s5" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn5">05</div>
-                <div className="sec-head-txt">
-                    <h2 className="sec-title">Google Cloud のデータストレージサービス</h2>
+        <div id="s5" className={styles.sgap}>
+            <div className={styles.secHead}>
+                <div className={`${styles.secNum} ${styles.sn5}`}>05</div>
+                <div className={styles.secHeadTxt}>
+                    <h2 className={styles.secTitle}>Google Cloud のデータストレージサービス</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-5" idNumber="5" title="Google Cloud のデータストレージサービス">
-                <h3 className="stitle">5.1 Cloud Storage（オブジェクトストレージ）</h3>
+                <h3 className={styles.stitle}>5.1 Cloud Storage（オブジェクトストレージ）</h3>
                 <h4 className="stitle mt-4">Cloud Storage とは</h4>
-                <p className="tdesc"><strong>Cloud Storage</strong> は、あらゆる種類のファイル（オブジェクト）を
+                <p className={styles.tdesc}><strong>Cloud Storage</strong> は、あらゆる種類のファイル（オブジェクト）を
                 インターネット経由で保存・取得できるストレージサービスです。</p>
 
                 <pre className="code-block"><code className="language-text">{`Cloud Storage の特徴:
@@ -39,7 +42,7 @@ export const Section5: React.FC = () => {
   - データレイクの基盤`}</code></pre>
 
                 <h4 className="stitle mt-4">Cloud Storage の 4 つのストレージクラス</h4>
-                <p className="tdesc">ストレージクラスは「アクセス頻度」と「コスト」のバランスで選択します。</p>
+                <p className={styles.tdesc}>ストレージクラスは「アクセス頻度」と「コスト」のバランスで選択します。</p>
 
                 <DiagramSVG viewBox="0 0 700 220">
                     <text x="350" y="30" textAnchor="middle" fill="currentColor" fontSize="14">アクセス頻度</text>
@@ -105,7 +108,7 @@ export const Section5: React.FC = () => {
                         </tr>
                     )}
                 />
-                <p className="tdesc">※ 価格はリージョンにより異なります — 表は us-central1 の参考値です。最新情報は<a href="https://cloud.google.com/storage/pricing">公式の料金ページ</a>をご確認ください。</p>
+                <p className={styles.tdesc}>※ 価格はリージョンにより異なります — 表は us-central1 の参考値です。最新情報は<a href="https://cloud.google.com/storage/pricing">公式の料金ページ</a>をご確認ください。</p>
 
                 <h4 className="stitle mt-4">Cloud Storage のライフサイクル管理</h4>
                 <DiagramSVG viewBox="0 0 600 200">
@@ -135,20 +138,20 @@ export const Section5: React.FC = () => {
   - Recommender の提案を定期的に確認する`}</code></pre>
 
                 <blockquote className="sec-quote">
-                    <p className="tdesc">📎 <strong>参照</strong>:<br/>
+                    <p className={styles.tdesc}>📎 <strong>参照</strong>:<br/>
                     <a href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a><br/>
                     <a href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a><br/>
                     <a href="https://cloud.google.com/storage/docs/best-practices">https://cloud.google.com/storage/docs/best-practices</a><br/>
                     <a href="https://oneuptime.com/blog/post/2026-02-17-how-to-optimize-cloud-storage-costs-by-using-the-right-storage-class">OneUptime: How to Optimize Cloud Storage Costs by Using the Right Storage Class</a>
                     </p>
                 </blockquote>
-                <hr className="sec-hr" />
+                <hr className={styles.secHr} />
             </SectionCard>
             
             <SectionCard id="gcdl-2-5" idNumber="Deep Dive" title="オブジェクトストレージの最適化：Cloud Storage">
-                <p className="tdesc"><strong>2.2 Google Cloud データマネジメントソリューション</strong></p>
-                <p className="tdesc">CDL試験では、ビジネスのユースケースに応じて最適なデータ管理製品を選択する能力が求められる。これには、データベース、データウェアハウス、データレイクといった基本概念の明確な区別が含まれる。</p>
-                <p className="tdesc">以下の表は、データ管理の主要な3つの概念の違いを明確に示したものである。</p>
+                <p className={styles.tdesc}><strong>2.2 Google Cloud データマネジメントソリューション</strong></p>
+                <p className={styles.tdesc}>CDL試験では、ビジネスのユースケースに応じて最適なデータ管理製品を選択する能力が求められる。これには、データベース、データウェアハウス、データレイクといった基本概念の明確な区別が含まれる。</p>
+                <p className={styles.tdesc}>以下の表は、データ管理の主要な3つの概念の違いを明確に示したものである。</p>
 
                 <TableComponent
                     headers={['アーキテクチャ', '定義と主な目的', 'データ形式とスキーマ要件', 'Google Cloudの該当サービス']}
@@ -163,13 +166,13 @@ export const Section5: React.FC = () => {
                     )}
                 />
 
-                <p className="tdesc">最近のトレンドとして、データレイクの柔軟性とデータウェアハウスの管理機能（ACIDトランザクションや高度なSQLサポート）を融合させた「データレイクハウス（Data Lakehouse）」という概念も普及しており、Google CloudではBigQueryの拡張機能（BigLake等）がこの領域をカバーしている。</p>
+                <p className={styles.tdesc}>最近のトレンドとして、データレイクの柔軟性とデータウェアハウスの管理機能（ACIDトランザクションや高度なSQLサポート）を融合させた「データレイクハウス（Data Lakehouse）」という概念も普及しており、Google CloudではBigQueryの拡張機能（BigLake等）がこの領域をカバーしている。</p>
                 
-                <h3 className="stitle mt-6">オブジェクトストレージの最適化：Cloud Storage</h3>
-                <p className="tdesc">Cloud Storageは、あらゆる量の非構造化データを保存し、必要な頻度で取得できるフルマネージドのオブジェクトストレージサービスである。クラウドのコスト最適化において、Cloud Storageの適切な「ストレージクラス」の選択は極めて重要である。Google Cloudは、データのアクセス頻度と保存期間の要件に応じて、4つの主要なストレージクラスを提供している。</p>
-                <p className="tdesc">第一の「Standard Storage」は、頻繁にアクセスされるホットデータ、アクティブなアプリケーションのバックエンド、ウェブサイトのコンテンツ配信などに最適である。ストレージ単価は他のクラスより高いものの、データの取得コストが無料であり、最低保存期間の要件もない。第二の「Nearline Storage」は、平均して月に1回以下の頻度でアクセスされるデータのバックアップや、長期保存されるマルチメディアコンテンツに適している。最低保存期間は30日である。第三の「Coldline Storage」は、四半期に1回以下の頻度でアクセスされるデータ向けであり、最低保存期間は90日に設定されている。第四の「Archive Storage」は、法令遵守のための監査ログ保存や災害復旧（DR）用途など、1年に1回未満しかアクセスされないデータの長期保管に最適である。ストレージ単価は最も安価であるが、データ取得時の課金が最も高く、最低保存期間は365日に設定されている。</p>
-                <p className="tdesc">Cloud Storageを運用する際のベストプラクティスとして、ライフサイクルルールの積極的な活用が挙げられる。データの価値やアクセスパターンは時間とともに変化する。ある時点では頻繁にアクセスされていたStandardクラスのデータも、半年後には全くアクセスされなくなることがある。バケットごとに適切なライフサイクルポリシーを設定し、一定期間経過後に自動的にNearlineやArchiveへと移行させることで、ユーザーは意識することなく大幅なコスト削減を実現できる。</p>
-                <p className="tdesc">また、Googleアカウントを持たない外部のユーザーに対して、安全かつ一時的にオブジェクトへのアクセス（読み取りやアップロード）を許可したい場合は、「署名付きURL（Signed URLs）」を使用することがベストプラクティスである。これにより、IAMアカウントを個別に作成することなく、有効期限付きのセキュアなアクセス経路を提供できる。</p>
+                <h3 className={`${styles.stitle} mt-6`}>オブジェクトストレージの最適化：Cloud Storage</h3>
+                <p className={styles.tdesc}>Cloud Storageは、あらゆる量の非構造化データを保存し、必要な頻度で取得できるフルマネージドのオブジェクトストレージサービスである。クラウドのコスト最適化において、Cloud Storageの適切な「ストレージクラス」の選択は極めて重要である。Google Cloudは、データのアクセス頻度と保存期間の要件に応じて、4つの主要なストレージクラスを提供している。</p>
+                <p className={styles.tdesc}>第一の「Standard Storage」は、頻繁にアクセスされるホットデータ、アクティブなアプリケーションのバックエンド、ウェブサイトのコンテンツ配信などに最適である。ストレージ単価は他のクラスより高いものの、データの取得コストが無料であり、最低保存期間の要件もない。第二の「Nearline Storage」は、平均して月に1回以下の頻度でアクセスされるデータのバックアップや、長期保存されるマルチメディアコンテンツに適している。最低保存期間は30日である。第三の「Coldline Storage」は、四半期に1回以下の頻度でアクセスされるデータ向けであり、最低保存期間は90日に設定されている。第四の「Archive Storage」は、法令遵守のための監査ログ保存や災害復旧（DR）用途など、1年に1回未満しかアクセスされないデータの長期保管に最適である。ストレージ単価は最も安価であるが、データ取得時の課金が最も高く、最低保存期間は365日に設定されている。</p>
+                <p className={styles.tdesc}>Cloud Storageを運用する際のベストプラクティスとして、ライフサイクルルールの積極的な活用が挙げられる。データの価値やアクセスパターンは時間とともに変化する。ある時点では頻繁にアクセスされていたStandardクラスのデータも、半年後には全くアクセスされなくなることがある。バケットごとに適切なライフサイクルポリシーを設定し、一定期間経過後に自動的にNearlineやArchiveへと移行させることで、ユーザーは意識することなく大幅なコスト削減を実現できる。</p>
+                <p className={styles.tdesc}>また、Googleアカウントを持たない外部のユーザーに対して、安全かつ一時的にオブジェクトへのアクセス（読み取りやアップロード）を許可したい場合は、「署名付きURL（Signed URLs）」を使用することがベストプラクティスである。これにより、IAMアカウントを個別に作成することなく、有効期限付きのセキュアなアクセス経路を提供できる。</p>
             </SectionCard>
         </div>
     );

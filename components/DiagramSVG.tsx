@@ -21,8 +21,11 @@ interface DiagramSVGProps {
 
 export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, decorative = false, children }) => {
     if (!decorative && !ariaLabel) {
-        throw new Error('DiagramSVG requires an ariaLabel when not marked as decorative.');
+        console.warn('DiagramSVG requires an ariaLabel when not marked as decorative.');
     }
+
+    const fallbackAriaLabel = ariaLabel ?? '';
+    const isHidden = decorative || !fallbackAriaLabel;
 
     return (
         <div className={styles.diagramSvg}>
@@ -32,9 +35,9 @@ export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, deco
                 height="100%" 
                 fill="none" 
                 stroke="currentColor"
-                {...(decorative ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label': ariaLabel! })}
+                {...(isHidden ? { 'aria-hidden': 'true' } : { role: 'img', 'aria-label': fallbackAriaLabel })}
             >
-                {!decorative && ariaLabel && <title>{ariaLabel}</title>}
+                {!isHidden && fallbackAriaLabel && <title>{fallbackAriaLabel}</title>}
                 {children}
             </svg>
         </div>

@@ -1,4 +1,6 @@
 import React from 'react';
+import styles from './Section4.module.css';
+
 import { SectionCard, DiagramSVG } from '../index';
 
 /**
@@ -8,16 +10,16 @@ import { SectionCard, DiagramSVG } from '../index';
  */
 export const Section4: React.FC = () => {
     return (
-        <div id="s4" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn4">04</div>
-                <div className="sec-head-txt">
-                    <h2 className="sec-title">データのライフサイクルとパイプライン</h2>
+        <div id="s4" className={styles.sgap}>
+            <div className={styles.secHead}>
+                <div className={`${styles.secNum} ${styles.sn4}`}>04</div>
+                <div className={styles.secHeadTxt}>
+                    <h2 className={styles.secTitle}>データのライフサイクルとパイプライン</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-4" idNumber="4" title="データのライフサイクルとパイプライン">
-                <h3 className="stitle">4.1 データライフサイクルの全体像</h3>
-                <p className="tdesc">データは「生まれてから消えるまで」に複数のステージを経ます。
+                <h3 className={styles.stitle}>4.1 データライフサイクルの全体像</h3>
+                <p className={styles.tdesc}>データは「生まれてから消えるまで」に複数のステージを経ます。
                 各ステージに適切な Google Cloud サービスを対応させることが重要です。</p>
 
                 <DiagramSVG viewBox="0 0 700 250">
@@ -71,8 +73,8 @@ export const Section4: React.FC = () => {
                     </defs>
                 </DiagramSVG>
 
-                <h3 className="stitle mt-6">4.2 バッチ処理 vs ストリーミング処理</h3>
-                <p className="tdesc">データの処理方式には主に 2 種類あります。
+                <h3 className={`${styles.stitle} mt-6`}>4.2 バッチ処理 vs ストリーミング処理</h3>
+                <p className={styles.tdesc}>データの処理方式には主に 2 種類あります。
                 どちらを選ぶかはビジネス要件によって決まります。</p>
 
                 <pre className="code-block"><code className="language-text">{`バッチ処理（Batch Processing）:
@@ -122,7 +124,7 @@ export const Section4: React.FC = () => {
 ハイブリッド（Lambda/Kappa アーキテクチャ）:
   - 両方が必要な場合（過去の分析+リアルタイム監視）
   - Dataflow は同一コードでバッチ・ストリーミング両対応`}</code></pre>
-                <hr className="sec-hr" />
+                <hr className={styles.secHr} />
             </SectionCard>
         </div>
     );

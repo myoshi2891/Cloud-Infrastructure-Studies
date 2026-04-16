@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './SectionCard.module.css';
 
 /**
  * SectionCard component for rendering content blocks.
@@ -22,12 +23,12 @@ interface SectionCardProps {
 
 export const SectionCard: React.FC<SectionCardProps> = ({ id, idNumber, title, description, children }) => {
     return (
-        <div className="tcard" id={id}>
-            <h3 className="ttitle">
-                <span className="tid">{idNumber}</span>
+        <div className={styles.tcard} id={id}>
+            <h3 className={styles.ttitle}>
+                <span className={styles.tid}>{idNumber}</span>
                 {title}
             </h3>
-            {description && <p className="tdesc">{description}</p>}
+            {description && <p className={styles.tdesc}>{description}</p>}
             {children}
         </div>
     );

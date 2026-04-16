@@ -1,25 +1,28 @@
 import React from 'react';
+import styles from './Section2.module.css';
+
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
+
 import { TRADITIONAL_VS_DATADRIVEN, ANALYSIS_LEVELS } from '../../constants';
 
 export const Section2: React.FC = () => {
     return (
-        <div id="s2" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn2">02</div>
-                <div className="sec-head-txt">
-                    <h2 className="sec-title">データとは何か？ビジネスにおけるデータの価値</h2>
+        <div id="s2" className={styles.sgap}>
+            <div className={styles.secHead}>
+                <div className={`${styles.secNum} ${styles.sn2}`}>02</div>
+                <div className={styles.secHeadTxt}>
+                    <h2 className={styles.secTitle}>データとは何か？ビジネスにおけるデータの価値</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-2" idNumber="2" title="データとは何か？ビジネスにおけるデータの価値">
                 
-                <h3 className="stitle">2.1 「データ」の本質的な意味</h3>
-                <p className="tdesc"><strong>データ</strong>とは、事実・数値・文字・画像・音声など、
+                <h3 className={styles.stitle}>2.1 「データ」の本質的な意味</h3>
+                <p className={styles.tdesc}><strong>データ</strong>とは、事実・数値・文字・画像・音声など、
                 何らかの情報を記録したものです。
                 単体では価値が低くても、<strong>分析・組み合わせ・活用</strong>することで
                 ビジネス上の洞察（インサイト）と価値を生み出します。</p>
 
-                <DiagramSVG viewBox="0 0 700 200" ariaLabel="データから意思決定への流れを示す図: データ、情報、知識、知恵、意思決定">
+                <DiagramSVG viewBox="0 0 800 200" ariaLabel="データから意思決定への流れを示す図: データ、情報、知識、知恵、意思決定">
                     <rect x="10" y="10" width="120" height="40" rx="4" stroke="var(--color-primary, currentColor)" fill="transparent" />
                     <text x="70" y="35" textAnchor="middle" fill="currentColor">データ</text>
                     <path d="M 140 30 L 160 30" stroke="currentColor" markerEnd="url(#arrow)" />
@@ -53,8 +56,8 @@ export const Section2: React.FC = () => {
                     </defs>
                 </DiagramSVG>
 
-                <h3 className="stitle mt-6">2.2 データドリブン経営とは</h3>
-                <p className="tdesc"><strong>データドリブン経営</strong>とは、経験・勘・感覚ではなく、
+                <h3 className={`${styles.stitle} mt-6`}>2.2 データドリブン経営とは</h3>
+                <p className={styles.tdesc}><strong>データドリブン経営</strong>とは、経験・勘・感覚ではなく、
                 <strong>データと分析に基づいて意思決定</strong>を行う経営スタイルです。</p>
 
                 <h4 className="stitle mt-4">従来型経営 vs データドリブン経営の比較</h4>
@@ -70,8 +73,8 @@ export const Section2: React.FC = () => {
                     )}
                 />
 
-                <h3 className="stitle mt-6">2.3 データが生み出す 4 種類のビジネス価値</h3>
-                <p className="tdesc">データ分析には4つのレベルがあります。
+                <h3 className={`${styles.stitle} mt-6`}>2.3 データが生み出す 4 種類のビジネス価値</h3>
+                <p className={styles.tdesc}>データ分析には4つのレベルがあります。
                 上位レベルほど高い価値を生み出しますが、より高度な技術が必要です。</p>
 
                 <DiagramSVG viewBox="0 0 600 240">
@@ -115,27 +118,27 @@ export const Section2: React.FC = () => {
                 />
 
                 <blockquote className="sec-quote">
-                    <p className="tdesc">📎 <strong>参照</strong>: Google Cloud データ分析ソリューション<br/>
+                    <p className={styles.tdesc}>📎 <strong>参照</strong>: Google Cloud データ分析ソリューション<br/>
                     <a href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a><br/>
                     <a href="https://cloud.google.com/bigquery/docs/introduction">https://cloud.google.com/bigquery/docs/introduction</a></p>
                 </blockquote>
-                <hr className="sec-hr" />
+                <hr className={styles.secHr} />
             </SectionCard>
             
             <SectionCard id="gcdl-2-2" idNumber="Deep Dive" title="データの価値 (The Value of Data)">
-                <h3 className="stitle">Google Cloud Digital Leader: セクション 2「データ トランスフォーメーションの探求」完全解説レポート</h3>
+                <h3 className={styles.stitle}>Google Cloud Digital Leader: セクション 2「データ トランスフォーメーションの探求」完全解説レポート</h3>
                 <h4 className="stitle mt-4">はじめに：データトランスフォーメーションとクラウドのパラダイムシフト</h4>
-                <p className="tdesc">現代のエンタープライズビジネスにおいて、データは単なる記録の蓄積から、組織の競争優位性を決定づける中核的な戦略資産へと進化を遂げている。Google Cloud Digital Leader（CDL）認定試験は、クラウドテクノロジーの基礎と、Google Cloudのコア製品が組織の目標達成にどのように貢献するかを実証するための資格である。<br/>
+                <p className={styles.tdesc}>現代のエンタープライズビジネスにおいて、データは単なる記録の蓄積から、組織の競争優位性を決定づける中核的な戦略資産へと進化を遂げている。Google Cloud Digital Leader（CDL）認定試験は、クラウドテクノロジーの基礎と、Google Cloudのコア製品が組織の目標達成にどのように貢献するかを実証するための資格である。<br/>
                 この試験全体の約16%を占める「セクション 2: Google Cloud によるデータ トランスフォーメーションの探求（Exploring Data Transformation with Google Cloud）」は、データからビジネス価値を解き放ち、新たな顧客体験を創出するためのアーキテクチャとベストプラクティスの理解を問う非常に重要な領域である。</p>
-                <p className="tdesc">オンプレミス環境からクラウドへの移行は、単なるインフラストラクチャの置き換えではない。これは、多額の初期投資を必要とする資本的支出（CapEx）から、使用した分だけ支払う運用支出（OpEx）への財務的なシフトを意味し、総所有コスト（TCO）の最適化とビジネスの俊敏性向上をもたらす。本レポートでは、CDL試験のセクション2の公式ガイドラインに沿って、「2.1 データの価値」「2.2 Google Cloud データマネジメントソリューション」「2.3 データの有用性とアクセシビリティの向上」という3つの主要テーマをステップバイステップで詳細に解説する。世界トップクラスのインフラエンジニアの視点から、各テクノロジーの背後にあるメカニズム、アーキテクチャの選定基準、そして本番環境で必須となるベストプラクティスを、初学者にも理解しやすい物語性のある構造で網羅的に提示する。</p>
+                <p className={styles.tdesc}>オンプレミス環境からクラウドへの移行は、単なるインフラストラクチャの置き換えではない。これは、多額の初期投資を必要とする資本的支出（CapEx）から、使用した分だけ支払う運用支出（OpEx）への財務的なシフトを意味し、総所有コスト（TCO）の最適化とビジネスの俊敏性向上をもたらす。本レポートでは、CDL試験のセクション2の公式ガイドラインに沿って、「2.1 データの価値」「2.2 Google Cloud データマネジメントソリューション」「2.3 データの有用性とアクセシビリティの向上」という3つの主要テーマをステップバイステップで詳細に解説する。世界トップクラスのインフラエンジニアの視点から、各テクノロジーの背後にあるメカニズム、アーキテクチャの選定基準、そして本番環境で必須となるベストプラクティスを、初学者にも理解しやすい物語性のある構造で網羅的に提示する。</p>
                 
-                <h4 className="stitle mt-6">2.1 データの価値 (The Value of Data)</h4>
-                <p className="tdesc">組織のデジタルトランスフォーメーションにおいて、データはビジネスインサイトを生成し、データ駆動型の意思決定を推進し、最終的に新しい価値を創造するという本質的な役割（Intrinsic Role）を担っている。従来のサイロ化されたシステムでは、データの収集や統合に膨大な時間とリソースが費やされ、真の分析に到達する前にプロジェクトが停滞することが多かった。クラウドテクノロジーは、構造化データからこれまで未活用だった非構造化データに至るまで、あらゆる種類のデータから価値を引き出すスケーラブルなインフラを提供する。</p>
+                <h4 className={`${styles.stitle} mt-6`}>2.1 データの価値 (The Value of Data)</h4>
+                <p className={styles.tdesc}>組織のデジタルトランスフォーメーションにおいて、データはビジネスインサイトを生成し、データ駆動型の意思決定を推進し、最終的に新しい価値を創造するという本質的な役割（Intrinsic Role）を担っている。従来のサイロ化されたシステムでは、データの収集や統合に膨大な時間とリソースが費やされ、真の分析に到達する前にプロジェクトが停滞することが多かった。クラウドテクノロジーは、構造化データからこれまで未活用だった非構造化データに至るまで、あらゆる種類のデータから価値を引き出すスケーラブルなインフラを提供する。</p>
                 
                 <h4 className="stitle mt-4">データバリューチェーンの概念とライフサイクル</h4>
-                <p className="tdesc">データが価値を生み出すプロセスは、工場の組み立てライン（Assembly Line）に例えられる。未加工の原材料である生データがライン上を移動するにつれて、様々なシステムによって処理と文脈の付加が行われ、最終的に人間や機械が具体的な行動を起こすためのインサイトへと変換される。この連続的な価値創造のプロセスは「データバリューチェーン」と呼ばれ、主に4つのライフサイクルステージで構成される。</p>
-                <p className="tdesc">第一のステージは「取り込み（Ingest）」である。アプリケーションのログ、IoTデバイスからのストリーミングデータ、オンプレミス環境からのバッチデータなど、多種多様なソースからクラウド上にデータを収集する。このフェーズでは、Cloud Pub/Subによるリアルタイムメッセージングや、Storage Transfer Serviceなどが活用される。第二のステージは「保存（Store）」であり、取り込んだデータを耐久性が高くアクセス容易なフォーマットで保持する。オブジェクトデータであればCloud Storage、構造化されたトランザクションデータであればCloud SQLやCloud Spannerが選択される。</p>
-                <p className="tdesc">第三のステージは「処理と分析（Process and Analyze）」である。蓄積された生データをクレンジングし、正規化し、分析可能な形式に変換する。Cloud Dataflowを使用したサーバーレスのストリーム処理やバッチ処理、あるいはCloud DataprocによるHadoop/Sparkエコシステムの活用がこれに該当する。そして処理されたデータは、BigQueryなどの分析システムに格納される。最後の第四ステージが「探索と可視化（Explore and Visualize）」である。分析結果をダッシュボードやレポートに変換し、関係者が直感的にビジネスの現状を把握し、インサイトを引き出せるようにする。LookerやLooker Studioがこのフェーズの中核を担う。この一連のライフサイクルを最適化することで、企業はデータから迅速かつ継続的に価値を引き出すことが可能となる。</p>
+                <p className={styles.tdesc}>データが価値を生み出すプロセスは、工場の組み立てライン（Assembly Line）に例えられる。未加工の原材料である生データがライン上を移動するにつれて、様々なシステムによって処理と文脈の付加が行われ、最終的に人間や機械が具体的な行動を起こすためのインサイトへと変換される。この連続的な価値創造のプロセスは「データバリューチェーン」と呼ばれ、主に4つのライフサイクルステージで構成される。</p>
+                <p className={styles.tdesc}>第一のステージは「取り込み（Ingest）」である。アプリケーションのログ、IoTデバイスからのストリーミングデータ、オンプレミス環境からのバッチデータなど、多種多様なソースからクラウド上にデータを収集する。このフェーズでは、Cloud Pub/Subによるリアルタイムメッセージングや、Storage Transfer Serviceなどが活用される。第二のステージは「保存（Store）」であり、取り込んだデータを耐久性が高くアクセス容易なフォーマットで保持する。オブジェクトデータであればCloud Storage、構造化されたトランザクションデータであればCloud SQLやCloud Spannerが選択される。</p>
+                <p className={styles.tdesc}>第三のステージは「処理と分析（Process and Analyze）」である。蓄積された生データをクレンジングし、正規化し、分析可能な形式に変換する。Cloud Dataflowを使用したサーバーレスのストリーム処理やバッチ処理、あるいはCloud DataprocによるHadoop/Sparkエコシステムの活用がこれに該当する。そして処理されたデータは、BigQueryなどの分析システムに格納される。最後の第四ステージが「探索と可視化（Explore and Visualize）」である。分析結果をダッシュボードやレポートに変換し、関係者が直感的にビジネスの現状を把握し、インサイトを引き出せるようにする。LookerやLooker Studioがこのフェーズの中核を担う。この一連のライフサイクルを最適化することで、企業はデータから迅速かつ継続的に価値を引き出すことが可能となる。</p>
             </SectionCard>
         </div>
     );

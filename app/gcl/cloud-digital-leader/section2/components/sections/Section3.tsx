@@ -1,5 +1,8 @@
 import React from 'react';
+import styles from './Section3.module.css';
+
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
+
 import { STRUCTURED_DATA_EXAMPLES, UNSTRUCTURED_DATA_EXAMPLES, DATA_FORMAT_COMPARISON } from '../../constants';
 
 /**
@@ -9,23 +12,23 @@ import { STRUCTURED_DATA_EXAMPLES, UNSTRUCTURED_DATA_EXAMPLES, DATA_FORMAT_COMPA
  */
 export const Section3: React.FC = () => {
     return (
-        <div id="s3" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn3">03</div>
-                <div className="sec-head-txt">
-                    <h2 className="sec-title">データの種類と特性</h2>
+        <div id="s3" className={styles.sgap}>
+            <div className={styles.secHead}>
+                <div className={`${styles.secNum} ${styles.sn3}`}>03</div>
+                <div className={styles.secHeadTxt}>
+                    <h2 className={styles.secTitle}>データの種類と特性</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-3" idNumber="3" title="データの種類と特性">
-                <h3 className="stitle">3.1 3 種類のデータ形式</h3>
-                <p className="tdesc">データは形式によって 3 種類に分類されます。
+                <h3 className={styles.stitle}>3.1 3 種類のデータ形式</h3>
+                <p className={styles.tdesc}>データは形式によって 3 種類に分類されます。
                 試験では「どのデータ形式にどのサービスが適切か」が問われます。</p>
                 <pre className="code-block"><code className="language-text">{`世界中のデータの内訳（概算）:
   構造化データ:    約 10〜20%
   半構造化データ:  約 10〜15%
   非構造化データ:  約 70〜80%   ← 最も多い！`}</code></pre>
 
-                <h3 className="stitle mt-6">3.2 構造化データ（Structured Data）</h3>
+                <h3 className={`${styles.stitle} mt-6`}>3.2 構造化データ（Structured Data）</h3>
                 <h4 className="stitle mt-4">定義と特徴</h4>
                 <pre className="code-block"><code className="language-text">{`構造化データとは:
 
@@ -52,7 +55,7 @@ export const Section3: React.FC = () => {
                     )}
                 />
 
-                <h3 className="stitle mt-6">3.3 非構造化データ（Unstructured Data）</h3>
+                <h3 className={`${styles.stitle} mt-6`}>3.3 非構造化データ（Unstructured Data）</h3>
                 <h4 className="stitle mt-4">定義と特徴</h4>
                 <DiagramSVG viewBox="0 0 600 200">
                     <rect x="10" y="10" width="580" height="180" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
@@ -80,7 +83,7 @@ export const Section3: React.FC = () => {
                     )}
                 />
 
-                <h3 className="stitle mt-6">3.4 半構造化データ（Semi-Structured Data）</h3>
+                <h3 className={`${styles.stitle} mt-6`}>3.4 半構造化データ（Semi-Structured Data）</h3>
                 <h4 className="stitle mt-4">定義と特徴</h4>
                 <pre className="code-block"><code className="language-text">{`半構造化データとは:
 
@@ -104,7 +107,7 @@ export const Section3: React.FC = () => {
   ✅ スキーマが柔軟（フィールドの追加・変更が容易）
   ✅ BigQuery や Firestore で直接扱える`}</code></pre>
 
-                <h3 className="stitle mt-6">3.5 データ形式の比較まとめ</h3>
+                <h3 className={`${styles.stitle} mt-6`}>3.5 データ形式の比較まとめ</h3>
                 <TableComponent
                     headers={['比較項目', '構造化', '半構造化', '非構造化']}
                     rows={DATA_FORMAT_COMPARISON}
@@ -119,16 +122,16 @@ export const Section3: React.FC = () => {
                 />
 
                 <blockquote className="sec-quote">
-                    <p className="tdesc">📎 <strong>参照</strong>:<br/>
+                    <p className={styles.tdesc}>📎 <strong>参照</strong>:<br/>
                     <a href="https://cloud.google.com/learn/what-is-structured-data">https://cloud.google.com/learn/what-is-structured-data</a><br/>
                     <a href="https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data">https://cloud.google.com/blog/topics/developers-practitioners/what-is-unstructured-data</a></p>
                 </blockquote>
-                <hr className="sec-hr" />
+                <hr className={styles.secHr} />
             </SectionCard>
             
             <SectionCard id="gcdl-2-3" idNumber="Deep Dive" title="データの種類と価値創造のアプローチ">
-                <h3 className="stitle mt-6">データの種類と価値創造のアプローチ</h3>
-                <p className="tdesc">企業がデータから新たな価値を創造するためには、主に3つのアプローチが存在する。一つ目は「現在のデータ（Current Data）」の活用である。既存のトランザクションデータや顧客行動履歴を深掘りすることで、業務の最適化やパーソナライゼーションを実現する。二つ目は「新しいデータ（New Data）」の収集である。これまで取得していなかったウェブサイトのクリックストリームや、製品に組み込まれたセンサーからのテレメトリデータを新たに収集し、未知の顧客ニーズや機器の故障予測モデルを構築する。三つ目は「外部データ（External Data）」の調達である。Google Cloud Public Datasetsなどを通じて公開されている気象データ、人口統計、市場トレンドなどの外部データセットを自社の内部データと結合することで、分析のコンテキストを劇的に拡張し、より精度の高い予測を可能にする。</p>
+                <h3 className={`${styles.stitle} mt-6`}>データの種類と価値創造のアプローチ</h3>
+                <p className={styles.tdesc}>企業がデータから新たな価値を創造するためには、主に3つのアプローチが存在する。一つ目は「現在のデータ（Current Data）」の活用である。既存のトランザクションデータや顧客行動履歴を深掘りすることで、業務の最適化やパーソナライゼーションを実現する。二つ目は「新しいデータ（New Data）」の収集である。これまで取得していなかったウェブサイトのクリックストリームや、製品に組み込まれたセンサーからのテレメトリデータを新たに収集し、未知の顧客ニーズや機器の故障予測モデルを構築する。三つ目は「外部データ（External Data）」の調達である。Google Cloud Public Datasetsなどを通じて公開されている気象データ、人口統計、市場トレンドなどの外部データセットを自社の内部データと結合することで、分析のコンテキストを劇的に拡張し、より精度の高い予測を可能にする。</p>
             </SectionCard>
         </div>
     );

@@ -1,4 +1,6 @@
 import React from 'react';
+import styles from './Section9.module.css';
+
 import { SectionCard, DiagramSVG } from '../index';
 
 /**
@@ -8,15 +10,15 @@ import { SectionCard, DiagramSVG } from '../index';
  */
 export const Section9: React.FC = () => {
     return (
-        <div id="s9" className="sgap">
-            <div className="sec-head">
-                <div className="sec-num sn9">09</div>
-                <div className="sec-head-txt">
-                    <h2 className="sec-title">スマートアナリティクスの全体アーキテクチャ</h2>
+        <div id="s9" className={styles.sgap}>
+            <div className={styles.secHead}>
+                <div className={`${styles.secNum} ${styles.sn9}`}>09</div>
+                <div className={styles.secHeadTxt}>
+                    <h2 className={styles.secTitle}>スマートアナリティクスの全体アーキテクチャ</h2>
                 </div>
             </div>
             <SectionCard id="cdl-2-9" idNumber="9" title="スマートアナリティクスの全体アーキテクチャ">
-                <h3 className="stitle">9.1 データアーキテクチャの全体像</h3>
+                <h3 className={styles.stitle}>9.1 データアーキテクチャの全体像</h3>
                 <h4 className="stitle mt-4">データレイクとデータウェアハウス</h4>
                 <pre className="code-block"><code className="language-text">{`データレイク（Data Lake）:
   - あらゆる形式の生データを大量に保管する場所
@@ -35,7 +37,7 @@ export const Section9: React.FC = () => {
   - BigQuery のストレージに生データも分析データも保存
   - Google Cloud ではこのアーキテクチャを推奨`}</code></pre>
 
-                <h3 className="stitle mt-6">9.2 代表的なデータパイプラインアーキテクチャ</h3>
+                <h3 className={`${styles.stitle} mt-6`}>9.2 代表的なデータパイプラインアーキテクチャ</h3>
                 <h4 className="stitle mt-4">パターン A: バッチ分析パイプライン</h4>
                 <DiagramSVG viewBox="0 0 700 160">
                     <text x="30" y="30" fill="currentColor" fontWeight="bold">[データソース]</text>
@@ -110,9 +112,9 @@ export const Section9: React.FC = () => {
                 </DiagramSVG>
 
                 <h4 className="stitle mt-4">パターン C: ハイブリッドパイプライン（最も一般的）</h4>
-                <p className="tdesc">リアルタイム（ホットデータ）とバッチ（コールドデータ）の両方を BigQuery に統合して分析。</p>
+                <p className={styles.tdesc}>リアルタイム（ホットデータ）とバッチ（コールドデータ）の両方を BigQuery に統合して分析。</p>
 
-                <h3 className="stitle mt-6">9.3 データメッシュ（Data Mesh）の考え方</h3>
+                <h3 className={`${styles.stitle} mt-6`}>9.3 データメッシュ（Data Mesh）の考え方</h3>
                 <DiagramSVG viewBox="0 0 600 240">
                     <rect x="10" y="10" width="580" height="220" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="40" fill="currentColor" fontWeight="bold">データメッシュとは:</text>
@@ -128,11 +130,11 @@ export const Section9: React.FC = () => {
                 </DiagramSVG>
 
                 <blockquote className="sec-quote">
-                    <p className="tdesc">📎 <strong>参照</strong>:<br/>
+                    <p className={styles.tdesc}>📎 <strong>参照</strong>:<br/>
                     <a href="https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices">https://cloud.google.com/architecture/data-lifecycle-cloud-best-practices</a><br/>
                     <a href="https://cloud.google.com/solutions/smart-analytics">https://cloud.google.com/solutions/smart-analytics</a></p>
                 </blockquote>
-                <hr className="sec-hr" />
+                <hr className={styles.secHr} />
             </SectionCard>
         </div>
     );

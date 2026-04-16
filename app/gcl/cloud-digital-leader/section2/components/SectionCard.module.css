@@ -1,0 +1,47 @@
+.tcard {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.tcard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 4px 0 0 4px;
+}
+
+.ttitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.tid {
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: 1rem;
+    color: var(--color-background);
+    background: var(--color-primary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 800;
+}
+
+.tdesc {
+    font-size: 1rem;
+    color: var(--color-muted-foreground);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
