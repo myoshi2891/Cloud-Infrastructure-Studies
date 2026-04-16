@@ -4,7 +4,6 @@ import styles from './Section12.module.css';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 
 import { CONFUSION_POINTS } from '../../constants';
-
 /**
  * セクション12: Section 2 試験対策まとめ
  * 最重要用語や頻出の問題パターンについて解説します。
@@ -113,4 +112,4 @@ export const Section12: React.FC = () => {
             </SectionCard>
         </div>
     );
-};;
+};

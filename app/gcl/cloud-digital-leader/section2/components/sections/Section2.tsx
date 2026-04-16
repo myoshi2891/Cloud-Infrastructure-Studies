@@ -142,4 +142,4 @@ export const Section2: React.FC = () => {
             </SectionCard>
         </div>
     );
-};;
+};

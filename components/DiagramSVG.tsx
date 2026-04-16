@@ -26,7 +26,6 @@ export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, deco
 
     const fallbackAriaLabel = ariaLabel ?? '';
     const isHidden = decorative || !fallbackAriaLabel;
-
     return (
         <div className={styles.diagramSvg}>
             <svg 
