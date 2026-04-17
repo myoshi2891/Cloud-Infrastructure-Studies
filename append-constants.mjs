@@ -86,4 +86,8 @@ export const CONFUSION_POINTS: ConfusionPoint[] = [
     { pattern: 'Pub/Sub = Dataflow', truth: 'Pub/Sub はメッセージング（配信）、Dataflow はデータ処理（変換）' },
 ];
 `;
-fs.appendFileSync(file, data);
+
+if (!fs.existsSync(file) || !fs.readFileSync(file, 'utf8').includes('export type ManagementComparison')) {
+    fs.appendFileSync(file, data);
+}
+

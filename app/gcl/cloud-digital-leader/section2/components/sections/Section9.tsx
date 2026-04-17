@@ -7,7 +7,8 @@ import { SectionCard, DiagramSVG } from '../index';
 /**
  * セクション9: データアーキテクチャパターン
  * データウェアハウス、データレイクなどのアーキテクチャ設計について解説します。
- * @returns JSX.Element
+ * @component
+ * @returns {JSX.Element}
  */
 export const Section9: React.FC = () => {
     const markerId = useId();

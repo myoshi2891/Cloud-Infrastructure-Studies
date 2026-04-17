@@ -21,7 +21,7 @@ describe('Home ページ', () => {
         const firstCard = container.querySelector('.card-ace');
         expect(firstCard).toBeInTheDocument();
         const domainLinks = (firstCard as HTMLElement).querySelectorAll('.home-domain-link');
-        expect(domainLinks).toHaveLength(EXAMS[0]!.domains!.length);
+        expect(domainLinks).toHaveLength(EXAMS[0]!.domains.length);
     });
 
     it('ドメインリンクに home-domain-link クラスが付与されること', () => {
