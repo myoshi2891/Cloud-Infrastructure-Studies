@@ -1,0 +1,70 @@
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 24px 56px;
+    text-align: center;
+    background:
+        radial-gradient(ellipse 60% 45% at 20% 50%, var(--cdl-gradient-blue) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 45% at 80% 50%, var(--cdl-gradient-green) 0%, transparent 60%),
+        linear-gradient(135deg, var(--cdl-bg) 0%, var(--cdl-gradient-dark-1) 50%, var(--cdl-gradient-dark-2) 100%);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.heroEyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cdl-eyebrow-bg);
+    border: 1px solid var(--cdl-eyebrow-border);
+    border-radius: 999px;
+    padding: 4px 16px;
+    font-size: 12px;
+    color: var(--color-primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.heroSub {
+    font-size: 16px;
+    color: var(--color-muted-foreground);
+    max-width: 640px;
+    margin: 0 auto 28px;
+}
+
+.heroMeta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+}
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentcolor;
+}
+
+.dotBlue { background: var(--color-primary); }
+.dotRed { background: var(--cdl-red); }
+.dotGreen { background: var(--cdl-green); }
+
+@media (max-width: 640px) {
+    .hero {
+        padding: 48px 16px 36px;
+    }
+}

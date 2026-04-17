@@ -105,7 +105,7 @@ describe('Header', () => {
         render(<Header />);
         const button = screen.getByRole('button', { name: /generative ai leader/i });
         fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /section 1/i });
+        const link = screen.getAllByRole('link', { name: /section 1/i })[0];
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section1');
     });
 
@@ -113,7 +113,7 @@ describe('Header', () => {
         render(<Header />);
         const button = screen.getByRole('button', { name: /generative ai leader/i });
         fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /section 2/i });
+        const link = screen.getAllByRole('link', { name: /section 2/i })[0];
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section2');
     });
 
@@ -155,7 +155,7 @@ describe('Header', () => {
         render(<Header />);
         const button = screen.getByRole('button', { name: /cloud digital leader/i });
         fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /cloud digital leader 認定試験/i });
+        const link = screen.getByRole('link', { name: /cloud digital leader 概要/i });
         expect(link).toHaveAttribute('href', '/gcl/cloud-digital-leader');
     });
 

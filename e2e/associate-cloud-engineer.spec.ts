@@ -22,7 +22,7 @@ test.describe('Associate Cloud Engineer ページ', () => {
     test('hero セクションに試験メタデータが表示されること', async ({ page }) => {
         await expect(page.locator('.hero')).toBeVisible();
         await expect(page.locator('text=2 時間')).toBeVisible();
-        await expect(page.locator('text=$125')).toBeVisible();
+        await expect(page.locator('text=$125').first()).toBeVisible();
     });
 
     test('4つのセクション見出しが表示されること', async ({ page }) => {

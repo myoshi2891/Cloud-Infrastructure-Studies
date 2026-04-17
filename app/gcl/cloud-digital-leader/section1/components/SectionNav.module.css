@@ -1,0 +1,54 @@
+.snav {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(6, 8, 16, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.snav::-webkit-scrollbar { display: none; }
+
+.snavInner {
+    display: flex;
+    gap: 4px;
+    padding: 8px 16px;
+    width: max-content;
+    min-width: 100%;
+}
+
+.snavLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-muted-foreground);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.snavLink:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-foreground);
+}
+
+.snavLink:focus-visible {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-foreground);
+    outline: 2px solid var(--color-primary, #4285f4);
+    outline-offset: 2px;
+}
+
+.snavNum {
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: 11px;
+    color: var(--color-primary);
+    opacity: 0.8;
+}

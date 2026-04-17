@@ -1,0 +1,44 @@
+.sgap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.secHead {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.secNum {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--cdl-cyan, #00bcd4);
+}
+
+.secHeadTxt {
+    display: flex;
+    flex-direction: column;
+}
+
+.secTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.tdesc {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-foreground, #3c4043);
+    margin-bottom: 1rem;
+}
+
+.stitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}

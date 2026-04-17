@@ -1,14 +1,20 @@
 import React from 'react';
 import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { IAAS_FEATURES, IAAS_SERVICES, PAAS_FEATURES, PAAS_SERVICES, SAAS_FEATURES, SAAS_SERVICES } from '../../constants';
+import styles from './Section4.module.css';
 
+/**
+ * セクション4: クラウドサービスモデル
+ * IaaS / PaaS / SaaS の責任分界点について解説します。
+ * @returns セクション4のReact要素
+ */
 export const Section4: React.FC = () => (
-    <div id="s4" className="sgap">
-        <div className="sec-head">
-            <div className="sec-num sn4">04</div>
-            <div className="sec-head-txt">
-                <h2 className="sec-title">クラウドサービスモデル</h2>
-                <p className="tdesc">IaaS / PaaS / SaaS の責任分界点</p>
+    <div id="s4" className={styles.sgap}>
+        <div className={styles.secHead}>
+            <div className={styles.secNum}>04</div>
+            <div className={styles.secHeadTxt}>
+                <h2 className={styles.secTitle}>クラウドサービスモデル</h2>
+                <p className={styles.tdesc}>IaaS / PaaS / SaaS の責任分界点</p>
             </div>
         </div>
 
@@ -18,8 +24,8 @@ export const Section4: React.FC = () => (
             title="サービスモデルの全体像"
             description="クラウドサービスは「どこまで Google が管理してくれるか」によって 3 つに分類されます。"
         >
-            <div className="stitle">責任の分担</div>
-            <DiagramSVG viewBox="0 0 650 300">
+            <div className={styles.stitle}>責任の分担</div>
+            <DiagramSVG viewBox="0 0 650 300" ariaLabel="サービスモデルごとの責任分界点">
                 <text x="120" y="30" fill="currentColor" fontSize="12" fontWeight="bold">オンプレミス</text>
                 <text x="240" y="30" fill="currentColor" fontSize="12" fontWeight="bold">IaaS</text>
                 <text x="360" y="30" fill="currentColor" fontSize="12" fontWeight="bold">PaaS</text>
@@ -103,9 +109,9 @@ export const Section4: React.FC = () => (
                 }
             ].map((section) => (
                 <React.Fragment key={section.title}>
-                    <div className="stitle">{section.title}</div>
-                    <p className="tdesc"><strong>定義</strong>: {section.definition}<strong>{section.boldPart}</strong>{section.tail}</p>
-                    <div className="stitle">特徴とメリット・デメリット</div>
+                    <h3 className={styles.stitle}>{section.title}</h3>
+                    <p className={styles.tdesc}><strong>定義</strong>: {section.definition}<strong>{section.boldPart}</strong>{section.tail}</p>
+                    <h3 className={styles.stitle}>特徴とメリット・デメリット</h3>
                     <TableComponent
                         headers={['項目', '内容']}
                         rows={section.features}
@@ -116,7 +122,7 @@ export const Section4: React.FC = () => (
                             </tr>
                         )}
                     />
-                    <div className="stitle">Google Cloud でのサービス例</div>
+                    <h3 className={styles.stitle}>Google Cloud でのサービス例</h3>
                     <TableComponent
                         headers={['サービス', '説明']}
                         rows={section.services}
@@ -129,10 +135,10 @@ export const Section4: React.FC = () => (
                     />
                 </React.Fragment>
             ))}
-            <p className="tdesc">📎 <strong>参照</strong>: Google Cloud のサービスモデル解説<br />
+            <p className={styles.tdesc}>📎 <strong>参照</strong>: Google Cloud のサービスモデル解説<br />
             <a href="https://cloud.google.com/learn/what-is-iaas" target="_blank" rel="noreferrer">https://cloud.google.com/learn/what-is-iaas</a><br />
             <a href="https://cloud.google.com/learn/what-is-paas" target="_blank" rel="noreferrer">https://cloud.google.com/learn/what-is-paas</a><br />
             <a href="https://cloud.google.com/learn/what-is-saas" target="_blank" rel="noreferrer">https://cloud.google.com/learn/what-is-saas</a></p>
         </SectionCard>
-    </div>
-);
+        </div>
+        );

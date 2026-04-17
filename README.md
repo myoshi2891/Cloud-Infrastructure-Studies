@@ -99,7 +99,3 @@ gemini skills install infra-md-to-nextjs-migration.skill --scope workspace
 ```
 
 ※ インストール後、Gemini CLI の対話セッションで `/skills reload` を実行して有効化してください。
-d-to-nextjs-migration.skill --scope workspace
-```
-
-※ インストール後、Gemini CLI の対話セッションで `/skills reload` を実行して有効化してください。

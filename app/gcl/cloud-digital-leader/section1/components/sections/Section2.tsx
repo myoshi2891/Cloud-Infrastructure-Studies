@@ -3,6 +3,10 @@ import { SectionCard, DiagramSVG, TableComponent } from '../index';
 import { ON_PREMISE_ISSUES } from '../../constants';
 import styles from './Section2.module.css';
 
+/**
+ * セクション2: なぜ今クラウドなのか？デジタルトランスフォーメーションの本質
+ * @returns セクション2のReact要素
+ */
 export const Section2: React.FC = () => (
     <div id="s2" className={styles.sgap}>
         <div className={styles.secHead}>
@@ -43,8 +47,8 @@ export const Section2: React.FC = () => (
                 </g>
             </DiagramSVG>
 
-            <div className={styles.stitle}>2.2 なぜ今クラウドが必要なのか？</div>
-            <div className={styles.stitle}>従来のオンプレミス環境が抱える 5 つの課題</div>
+            <h3 className={styles.stitle}>2.2 なぜ今クラウドが必要なのか？</h3>
+            <h3 className={styles.stitle}>従来のオンプレミス環境が抱える 5 つの課題</h3>
             <TableComponent
                 headers={['課題', '説明', 'ビジネスへの影響']}
                 rows={ON_PREMISE_ISSUES}
@@ -57,7 +61,7 @@ export const Section2: React.FC = () => (
                 )}
             />
 
-            <div className={styles.stitle}>クラウドが解決できること</div>
+            <h3 className={styles.stitle}>クラウドが解決できること</h3>
             <DiagramSVG viewBox="0 0 600 200" ariaLabel="オンプレミス対クラウド比較">
                 <text x="10" y="20" fill="currentColor" fontSize="14" fontWeight="bold">課題: 「新しいサービスを来週リリースしたい」</text>
                 <text x="50" y="50" fill="currentColor" fontSize="14" fontWeight="bold">オンプレミス</text>
@@ -95,7 +99,7 @@ export const Section2: React.FC = () => (
                 </defs>
             </DiagramSVG>
 
-            <div className={styles.stitle}>2.3 クラウドが DX を加速する 3 つのメカニズム</div>
+            <h3 className={styles.stitle}>2.3 クラウドが DX を加速する 3 つのメカニズム</h3>
             <DiagramSVG viewBox="0 0 600 220" ariaLabel="クラウドがDXを加速するメカニズム">
                 <g transform="translate(10, 20)">
                     <text x="0" y="0" fill="var(--color-primary)" fontSize="14" fontWeight="bold">メカニズム 1: スピードと俊敏性</text>

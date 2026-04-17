@@ -22,7 +22,7 @@ test.describe('Generative AI Leader ページ', () => {
     test('hero セクションに試験メタデータが表示されること', async ({ page }) => {
         await expect(page.locator('.hero')).toBeVisible();
         await expect(page.locator('text=90 分')).toBeVisible();
-        await expect(page.locator('text=$99')).toBeVisible();
+        await expect(page.locator('text=$99').first()).toBeVisible();
     });
 
     test('4つのセクション見出しが表示されること', async ({ page }) => {

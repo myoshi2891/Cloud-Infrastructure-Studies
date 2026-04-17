@@ -325,6 +325,13 @@ export function Header() {
                             desc="デジタルトランスフォーメーションと Google Cloud"
                             onClick={() => setOpenMenu(null)}
                         />
+                        <DropdownItem
+                            href="/gcl/cloud-digital-leader/section2"
+                            label="Section 2"
+                            desc="データ トランスフォーメーションの探求"
+                            ariaLabel="Section 2 — データ トランスフォーメーションの探求"
+                            onClick={() => setOpenMenu(null)}
+                        />
                     </div>
                 </div>
             </div>

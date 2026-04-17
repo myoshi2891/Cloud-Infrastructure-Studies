@@ -72,7 +72,7 @@ describe('ACE Domain 4 Page', () => {
         render(<Domain4Page />);
         expect(screen.getByText(/権限借用（Impersonation）と PAM/)).toBeDefined();
         expect(screen.getByText(/alice は自分の権限ではなく SA を借用して作業/)).toBeDefined();
-        expect(screen.getByText(/Privileged Access Manager/)).toBeDefined();
+        expect(screen.getAllByText(/Privileged Access Manager/)[0]).toBeDefined();
     });
 
     it('renders Chapter 11 content correctly', () => {
@@ -98,7 +98,7 @@ describe('ACE Domain 4 Page', () => {
 
     it('renders Chapter 14 content correctly', () => {
         render(<Domain4Page />);
-        expect(screen.getByText(/Identity-Aware Proxy \(IAP\)/)).toBeDefined();
+        expect(screen.getAllByText(/Identity-Aware Proxy \(IAP\)/)[0]).toBeDefined();
         expect(screen.getAllByText(/VPN なしで VM や GKE ノードに安全に接続できます/)[0]).toBeDefined();
         expect(screen.getByText(/IAP による SSH \/ TCP トンネリング/)).toBeDefined();
     });
