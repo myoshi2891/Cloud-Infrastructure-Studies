@@ -9,7 +9,7 @@ fi
 
 # ソースコード関連のファイルが変更されたかチェック (Next.js プロジェクトの主要拡張子)
 HAS_SOURCE_CHANGES=0
-if echo "$CHANGED_FILES" | grep -E '\.(ts|tsx|js|mjs|css)$' > /dev/null; then
+if echo "$CHANGED_FILES" | grep -E '\.(ts|tsx|js|jsx|mjs|cjs|css|py|tf|sh|yml|yaml|mdx)$' > /dev/null; then
     HAS_SOURCE_CHANGES=1
 fi
 
@@ -22,7 +22,7 @@ fi
 # コードの変更はあるが、ドキュメントの変更がない場合に警告を出す
 if [ "$HAS_SOURCE_CHANGES" -eq 1 ] && [ "$HAS_DOC_CHANGES" -eq 0 ]; then
     echo ""
-    echo -e "\033[1;33m⚠️ 【警告】コードの変更がマージ（またはpull）されましたが、仕様書 (SKILL.md, GEMINI.md 等) が更新されていません！\033[0m"
-    echo -e "\033[1;33m⚠️ 仕様の変更や新たなピットフォール（注意点）をドキュメントに追記する必要がないか精査してください。\033[0m"
+    echo -e "\033[1;33m⚠️ 【警告】コードの変更がマージ（またはpull）されましたが、仕様書 (SKILL.md, GEMINI.md 等) が更新されていません！\033[0m" >&2
+    echo -e "\033[1;33m⚠️ 仕様の変更や新たなピットフォール（注意点）をドキュメントに追記する必要がないか精査してください。\033[0m" >&2
     echo ""
 fi
