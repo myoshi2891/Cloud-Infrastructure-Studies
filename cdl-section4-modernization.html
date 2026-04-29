@@ -1,0 +1,3860 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CDL Section 4 | インフラ＆アプリのモダナイゼーション 完全攻略ガイド</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+            :root {
+                --ink: #0e1117;
+                --paper: #f7f4ef;
+                --cream: #ede9e0;
+                --sand: #d9d2c5;
+                --terracotta: #c4593a;
+                --rust: #9e3d24;
+                --sage: #4a7a5c;
+                --forest: #2d5240;
+                --sky: #3a6fa0;
+                --navy: #1e3f6e;
+                --amber: #d4882a;
+                --gold: #b8701c;
+                --plum: #6b3f7a;
+                --mauve: #4e2e5a;
+                --text-main: #1a1a1a;
+                --text-sub: #4a4541;
+                --text-muted: #7a7470;
+                --border: #c8c0b4;
+                --border-light: #e0dbd2;
+                --shadow: rgba(14, 17, 23, 0.08);
+                --shadow-deep: rgba(14, 17, 23, 0.18);
+                --ff-display: 'Fraunces', Georgia, serif;
+                --ff-body: 'DM Sans', sans-serif;
+                --ff-mono: 'DM Mono', monospace;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                background: var(--paper);
+                color: var(--text-main);
+                font-family: var(--ff-body);
+                font-size: 1rem;
+                line-height: 1.75;
+                overflow-x: hidden;
+            }
+
+            /* ── HERO ─────────────────────────────────────── */
+            .hero {
+                position: relative;
+                min-height: 100vh;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                overflow: hidden;
+                background: var(--ink);
+            }
+            .hero-left {
+                padding: 5rem 4rem 5rem 5rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                position: relative;
+                z-index: 2;
+            }
+            .hero-right {
+                background: var(--terracotta);
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .hero-right::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(255, 255, 255, 0.05) 20px,
+                    rgba(255, 255, 255, 0.05) 21px
+                );
+            }
+            .hero-right-inner {
+                position: relative;
+                z-index: 1;
+                padding: 3rem;
+                text-align: center;
+            }
+            .hero-right-num {
+                font-family: var(--ff-display);
+                font-size: clamp(8rem, 16vw, 14rem);
+                font-weight: 900;
+                color: rgba(255, 255, 255, 0.15);
+                line-height: 1;
+                letter-spacing: -0.05em;
+            }
+            .hero-right-label {
+                font-family: var(--ff-display);
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: rgba(255, 255, 255, 0.9);
+                margin-top: -1rem;
+                letter-spacing: 0.02em;
+            }
+            .hero-eyebrow {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: var(--terracotta);
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+            }
+            .hero-eyebrow::before {
+                content: '';
+                display: block;
+                width: 24px;
+                height: 1px;
+                background: var(--terracotta);
+            }
+            .hero-title {
+                font-family: var(--ff-display);
+                font-size: clamp(2.2rem, 4vw, 3.8rem);
+                font-weight: 900;
+                color: #fff;
+                line-height: 1.1;
+                margin-bottom: 1.5rem;
+                letter-spacing: -0.02em;
+            }
+            .hero-title em {
+                font-style: italic;
+                color: var(--amber);
+            }
+            .hero-desc {
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.6);
+                max-width: 460px;
+                margin-bottom: 3rem;
+                line-height: 1.8;
+            }
+            .hero-pills {
+                display: flex;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+            .hero-pill {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.35rem 0.8rem;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 100px;
+                color: rgba(255, 255, 255, 0.75);
+                letter-spacing: 0.04em;
+            }
+            .hero-stats {
+                position: absolute;
+                bottom: 3rem;
+                left: 5rem;
+                display: flex;
+                gap: 3rem;
+            }
+            .hero-stat-num {
+                font-family: var(--ff-display);
+                font-size: 2.4rem;
+                font-weight: 700;
+                color: var(--amber);
+                line-height: 1;
+            }
+            .hero-stat-label {
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.45);
+                margin-top: 0.2rem;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+            }
+
+            /* ── NAV ──────────────────────────────────────── */
+            .sticky-nav {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: var(--ink);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                padding: 0.7rem 3rem;
+                display: flex;
+                gap: 0.3rem;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            .nav-logo {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                color: var(--terracotta);
+                font-weight: 700;
+                margin-right: 1.5rem;
+                white-space: nowrap;
+            }
+            .sticky-nav a {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.5);
+                text-decoration: none;
+                padding: 0.3rem 0.7rem;
+                border-radius: 4px;
+                transition: all 0.2s;
+                letter-spacing: 0.03em;
+                white-space: nowrap;
+            }
+            .sticky-nav a:hover {
+                color: #fff;
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            /* ── LAYOUT ───────────────────────────────────── */
+            .container {
+                max-width: 1120px;
+                margin: 0 auto;
+                padding: 0 2.5rem;
+            }
+            .section {
+                padding: 6rem 0;
+            }
+            .section + .section {
+                border-top: 1px solid var(--border-light);
+            }
+            .section-alt {
+                background: var(--cream);
+            }
+            .section-dark {
+                background: var(--ink);
+                color: #fff;
+            }
+
+            /* ── SECTION HEADERS ─────────────────────────── */
+            .sh {
+                margin-bottom: 3.5rem;
+            }
+            .sh-tag {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                color: var(--terracotta);
+                margin-bottom: 0.6rem;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+            .sh-tag::before {
+                content: '';
+                display: block;
+                width: 16px;
+                height: 1px;
+                background: var(--terracotta);
+            }
+            .section-dark .sh-tag {
+                color: var(--amber);
+            }
+            .section-dark .sh-tag::before {
+                background: var(--amber);
+            }
+            .sh-title {
+                font-family: var(--ff-display);
+                font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+                font-weight: 900;
+                line-height: 1.15;
+                letter-spacing: -0.02em;
+                margin-bottom: 0.8rem;
+            }
+            .sh-desc {
+                color: var(--text-sub);
+                max-width: 620px;
+                font-size: 1rem;
+            }
+            .section-dark .sh-title {
+                color: #fff;
+            }
+            .section-dark .sh-desc {
+                color: rgba(255, 255, 255, 0.55);
+            }
+
+            /* ── GRIDS ────────────────────────────────────── */
+            .g2 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 1.5rem;
+            }
+            .g3 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+                gap: 1.5rem;
+            }
+            .g4 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                gap: 1.2rem;
+            }
+
+            /* ── CARDS ────────────────────────────────────── */
+            .card {
+                background: #fff;
+                border: 1px solid var(--border-light);
+                border-radius: 12px;
+                padding: 1.8rem;
+                transition: all 0.25s;
+                position: relative;
+                overflow: hidden;
+            }
+            .card:hover {
+                border-color: var(--border);
+                box-shadow: 0 12px 32px var(--shadow-deep);
+                transform: translateY(-3px);
+            }
+            .card-dark {
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 1.8rem;
+                transition: all 0.25s;
+            }
+            .card-dark:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateY(-2px);
+            }
+            .card-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            .card-title {
+                font-family: var(--ff-display);
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 0.6rem;
+                letter-spacing: -0.01em;
+            }
+            .card-body {
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.75;
+            }
+            .card-dark .card-title {
+                color: #fff;
+            }
+            .card-dark .card-body {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            /* ── SUBSECTION TITLE ─────────────────────────── */
+            .sub-title {
+                font-family: var(--ff-display);
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin: 2.5rem 0 1.2rem;
+                padding-left: 1rem;
+                border-left: 3px solid var(--terracotta);
+                letter-spacing: -0.01em;
+                line-height: 1.3;
+            }
+            .section-dark .sub-title {
+                color: #fff;
+                border-color: var(--amber);
+            }
+
+            /* ── THE 7 Rs TABLE ──────────────────────────── */
+            .rs-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+            }
+            .rs-table th {
+                background: var(--ink);
+                color: #fff;
+                font-family: var(--ff-display);
+                font-weight: 700;
+                padding: 0.9rem 1.2rem;
+                text-align: left;
+                font-size: 1rem;
+            }
+            .rs-table td {
+                padding: 0.85rem 1.2rem;
+                border-bottom: 1px solid var(--border-light);
+                vertical-align: top;
+                color: var(--text-sub);
+            }
+            .rs-table tr:hover td {
+                background: var(--cream);
+            }
+            .rs-table td:first-child {
+                font-family: var(--ff-display);
+                font-weight: 700;
+                color: var(--text-main);
+                font-size: 1rem;
+            }
+            .rs-table td:nth-child(2) {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--terracotta);
+                white-space: nowrap;
+            }
+            .rs-table-wrap {
+                border: 1px solid var(--border-light);
+                border-radius: 12px;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            /* ── COMPUTE DECISION FLOW ───────────────────── */
+            .flow-wrap {
+                background: var(--ink);
+                border-radius: 16px;
+                padding: 2.5rem;
+                overflow-x: auto;
+            }
+            .flow-row {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                margin-bottom: 0.6rem;
+                flex-wrap: wrap;
+            }
+            .flow-q {
+                display: inline-flex;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.07);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                color: rgba(255, 255, 255, 0.9);
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+            .flow-ans {
+                display: inline-flex;
+                align-items: center;
+                background: var(--terracotta);
+                color: #fff;
+                border-radius: 8px;
+                padding: 0.5rem 1.1rem;
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+            .flow-ans-sage {
+                background: var(--sage);
+            }
+            .flow-ans-sky {
+                background: var(--sky);
+            }
+            .flow-ans-amber {
+                background: var(--amber);
+            }
+            .flow-ans-plum {
+                background: var(--plum);
+            }
+            .flow-arrow {
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 1rem;
+            }
+            .flow-label {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.4);
+                letter-spacing: 0.06em;
+            }
+
+            /* ── COMPARISON TABLE ────────────────────────── */
+            .cmp-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                font-size: 1rem;
+                overflow-x: auto;
+            }
+            .cmp-table th {
+                padding: 0.85rem 1rem;
+                background: var(--cream);
+                font-family: var(--ff-display);
+                font-weight: 700;
+                text-align: left;
+                font-size: 1rem;
+                border-bottom: 2px solid var(--border);
+            }
+            .cmp-table td {
+                padding: 0.8rem 1rem;
+                border-bottom: 1px solid var(--border-light);
+                color: var(--text-sub);
+                vertical-align: top;
+            }
+            .cmp-table tr:hover td {
+                background: rgba(245, 242, 238, 0.6);
+            }
+            .cmp-table td:first-child {
+                font-family: var(--ff-display);
+                font-weight: 700;
+                color: var(--text-main);
+                font-size: 1rem;
+            }
+            .cmp-wrap {
+                border: 1px solid var(--border-light);
+                border-radius: 12px;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            /* ── BEST PRACTICE BOX ───────────────────────── */
+            .bp {
+                background: linear-gradient(
+                    135deg,
+                    rgba(74, 122, 92, 0.08),
+                    rgba(45, 82, 64, 0.05)
+                );
+                border: 1px solid rgba(74, 122, 92, 0.25);
+                border-left: 4px solid var(--sage);
+                border-radius: 10px;
+                padding: 1.4rem 1.8rem;
+                margin-top: 1.5rem;
+            }
+            .bp-title {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--forest);
+                margin-bottom: 0.7rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .bp ul {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.45rem;
+            }
+            .bp li {
+                font-size: 1rem;
+                color: var(--text-sub);
+                padding-left: 1.3rem;
+                position: relative;
+                line-height: 1.65;
+            }
+            .bp li::before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: var(--sage);
+                font-weight: 700;
+            }
+
+            /* ── WARN BOX ─────────────────────────────────── */
+            .warn {
+                background: rgba(212, 136, 42, 0.07);
+                border: 1px solid rgba(212, 136, 42, 0.25);
+                border-left: 4px solid var(--amber);
+                border-radius: 10px;
+                padding: 1.2rem 1.5rem;
+                margin-top: 1rem;
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.7;
+            }
+            .warn strong {
+                color: var(--gold);
+            }
+
+            /* ── INFO BOX ─────────────────────────────────── */
+            .info {
+                background: rgba(58, 111, 160, 0.07);
+                border: 1px solid rgba(58, 111, 160, 0.22);
+                border-left: 4px solid var(--sky);
+                border-radius: 10px;
+                padding: 1.2rem 1.5rem;
+                margin-top: 1rem;
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.7;
+            }
+            .info strong {
+                color: var(--navy);
+            }
+
+            /* ── SOURCE BOX ───────────────────────────────── */
+            .src {
+                background: rgba(107, 63, 122, 0.06);
+                border: 1px solid rgba(107, 63, 122, 0.18);
+                border-radius: 10px;
+                padding: 1rem 1.4rem;
+                margin-top: 1.8rem;
+            }
+            .src-label {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--plum);
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                margin-bottom: 0.5rem;
+            }
+            .src a {
+                display: block;
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: rgba(107, 63, 122, 0.8);
+                text-decoration: none;
+                word-break: break-all;
+                line-height: 1.7;
+                transition: color 0.2s;
+            }
+            .src a:hover {
+                color: var(--plum);
+                text-decoration: underline;
+            }
+
+            /* ── BADGES ───────────────────────────────────── */
+            .badge {
+                display: inline-block;
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.18rem 0.6rem;
+                border-radius: 100px;
+                font-weight: 500;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+            .badge-r {
+                background: rgba(196, 89, 58, 0.12);
+                color: var(--rust);
+                border: 1px solid rgba(196, 89, 58, 0.25);
+            }
+            .badge-g {
+                background: rgba(74, 122, 92, 0.12);
+                color: var(--forest);
+                border: 1px solid rgba(74, 122, 92, 0.25);
+            }
+            .badge-b {
+                background: rgba(58, 111, 160, 0.12);
+                color: var(--navy);
+                border: 1px solid rgba(58, 111, 160, 0.25);
+            }
+            .badge-a {
+                background: rgba(212, 136, 42, 0.12);
+                color: var(--gold);
+                border: 1px solid rgba(212, 136, 42, 0.25);
+            }
+            .badge-p {
+                background: rgba(107, 63, 122, 0.12);
+                color: var(--mauve);
+                border: 1px solid rgba(107, 63, 122, 0.25);
+            }
+
+            /* ── EXAM TAG ─────────────────────────────────── */
+            .exam-tag {
+                display: inline-block;
+                background: rgba(196, 89, 58, 0.12);
+                border: 1px solid rgba(196, 89, 58, 0.3);
+                color: var(--rust);
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.12rem 0.45rem;
+                border-radius: 3px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-left: 0.5rem;
+                vertical-align: middle;
+            }
+
+            /* ── STEP FLOW ────────────────────────────────── */
+            .steps {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+            .step {
+                display: flex;
+                gap: 1.5rem;
+                position: relative;
+            }
+            .step:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                left: 21px;
+                top: 48px;
+                bottom: -8px;
+                width: 1px;
+                background: linear-gradient(to bottom, var(--border), transparent);
+            }
+            .step-n {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: var(--terracotta);
+                color: #fff;
+                font-family: var(--ff-display);
+                font-weight: 700;
+                font-size: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                margin-top: 0.1rem;
+            }
+            .step-c {
+                padding-bottom: 2rem;
+                flex: 1;
+            }
+            .step-h {
+                font-family: var(--ff-display);
+                font-size: 1.05rem;
+                font-weight: 700;
+                margin-bottom: 0.4rem;
+            }
+            .step-p {
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.7;
+            }
+
+            /* ── HIGHLIGHT BOX ────────────────────────────── */
+            .hl-box {
+                background: var(--ink);
+                border-radius: 14px;
+                padding: 2rem 2.2rem;
+                color: #fff;
+                position: relative;
+                overflow: hidden;
+            }
+            .hl-box::before {
+                content: '';
+                position: absolute;
+                top: -50px;
+                right: -50px;
+                width: 200px;
+                height: 200px;
+                background: radial-gradient(circle, rgba(196, 89, 58, 0.3), transparent 70%);
+                pointer-events: none;
+            }
+            .hl-box-title {
+                font-family: var(--ff-display);
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: var(--amber);
+                margin-bottom: 0.6rem;
+            }
+            .hl-box p {
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.7);
+                line-height: 1.8;
+            }
+
+            /* ── CHECKLIST ────────────────────────────────── */
+            .checklist {
+                display: flex;
+                flex-direction: column;
+                gap: 0.45rem;
+            }
+            .cl-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.8rem;
+                padding: 0.65rem 0.9rem;
+                background: rgba(255, 255, 255, 0.5);
+                border: 1px solid var(--border-light);
+                border-radius: 7px;
+                font-size: 1rem;
+                color: var(--text-sub);
+                transition: all 0.2s;
+            }
+            .cl-item:hover {
+                background: #fff;
+                border-color: var(--border);
+                color: var(--text-main);
+            }
+            .cl-box {
+                width: 18px;
+                height: 18px;
+                border: 2px solid var(--terracotta);
+                border-radius: 3px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                color: var(--terracotta);
+            }
+
+            /* ── PATTERN CARD ─────────────────────────────── */
+            .ptn-card {
+                background: #fff;
+                border: 1px solid var(--border-light);
+                border-radius: 12px;
+                overflow: hidden;
+                transition: all 0.25s;
+            }
+            .ptn-card:hover {
+                border-color: var(--border);
+                box-shadow: 0 8px 24px var(--shadow-deep);
+                transform: translateY(-2px);
+            }
+            .ptn-header {
+                padding: 1.2rem 1.5rem;
+                border-bottom: 1px solid var(--border-light);
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+            }
+            .ptn-num {
+                width: 32px;
+                height: 32px;
+                background: var(--terracotta);
+                color: #fff;
+                border-radius: 6px;
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .ptn-title {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+            }
+            .ptn-body {
+                padding: 1.2rem 1.5rem;
+            }
+            .ptn-q {
+                font-size: 1rem;
+                color: var(--text-sub);
+                margin-bottom: 0.8rem;
+                line-height: 1.65;
+                font-style: italic;
+            }
+            .ptn-ans {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            .ptn-ans li {
+                color: var(--text-sub);
+                margin-left: 1.2rem;
+                margin-bottom: 0.3rem;
+            }
+            .ptn-result {
+                margin-top: 0.8rem;
+                padding: 0.6rem 0.9rem;
+                background: var(--cream);
+                border-radius: 7px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--forest);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .ptn-result::before {
+                content: '→';
+                color: var(--terracotta);
+                font-weight: 700;
+            }
+
+            /* ── SRE METRICS ──────────────────────────────── */
+            .sre-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1.2rem;
+            }
+            .sre-card {
+                background: #fff;
+                border: 1px solid var(--border-light);
+                border-radius: 12px;
+                padding: 1.5rem;
+                transition: all 0.25s;
+            }
+            .sre-card:hover {
+                background: var(--cream);
+                border-color: var(--border);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px var(--shadow-deep);
+            }
+            .sre-abbr {
+                font-family: var(--ff-display);
+                font-size: 1.6rem;
+                font-weight: 900;
+                color: var(--terracotta);
+                margin-bottom: 0.3rem;
+            }
+            .sre-name {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--text-muted);
+                margin-bottom: 0.6rem;
+                letter-spacing: 0.04em;
+            }
+            .sre-desc {
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.65;
+            }
+
+            /* ── API VALUE DIAGRAM ────────────────────────── */
+            .api-diagram {
+                background: var(--ink);
+                border-radius: 14px;
+                padding: 2rem;
+                text-align: center;
+            }
+            .api-row {
+                display: flex;
+                justify-content: center;
+                gap: 0.7rem;
+                flex-wrap: wrap;
+                margin-bottom: 0.7rem;
+            }
+            .api-box {
+                background: rgba(255, 255, 255, 0.07);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.8);
+                white-space: nowrap;
+            }
+            .api-layer {
+                width: 100%;
+                padding: 0.6rem 1rem;
+                border-radius: 8px;
+                font-family: var(--ff-display);
+                font-weight: 700;
+                font-size: 1rem;
+                margin: 0.4rem 0;
+            }
+            .api-layer-main {
+                background: var(--terracotta);
+                color: #fff;
+            }
+            .api-layer-sub {
+                background: rgba(212, 136, 42, 0.2);
+                border: 1px solid rgba(212, 136, 42, 0.3);
+                color: var(--amber);
+            }
+            .api-connector {
+                color: rgba(255, 255, 255, 0.3);
+                font-size: 1.2rem;
+                margin: 0.2rem 0;
+            }
+
+            /* ── FOOTER ───────────────────────────────────── */
+            footer {
+                background: var(--ink);
+                padding: 3.5rem 2.5rem;
+                text-align: center;
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 1rem;
+            }
+            footer a {
+                color: var(--terracotta);
+                text-decoration: none;
+            }
+            footer .footer-title {
+                font-family: var(--ff-display);
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: rgba(255, 255, 255, 0.85);
+                margin-bottom: 0.8rem;
+            }
+            .footer-links {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 1.2rem 0;
+            }
+
+            /* ── ANIMATIONS ───────────────────────────────── */
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .fade-up {
+                opacity: 0;
+            }
+            .fade-up.visible {
+                animation: fadeUp 0.55s ease forwards;
+            }
+
+            /* ── CODE ─────────────────────────────────────── */
+            code {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                background: rgba(196, 89, 58, 0.1);
+                color: var(--rust);
+                padding: 0.1em 0.4em;
+                border-radius: 3px;
+            }
+
+            /* ── RESPONSIVE ───────────────────────────────── */
+            @media (max-width: 768px) {
+                .hero {
+                    grid-template-columns: 1fr;
+                }
+                .hero-right {
+                    display: none;
+                }
+                .hero-left {
+                    padding: 4rem 1.5rem;
+                }
+                .hero-stats {
+                    position: static;
+                    margin-top: 2rem;
+                }
+                .rs-table {
+                    font-size: 1rem;
+                }
+                .container {
+                    padding: 0 1.2rem;
+                }
+                .sticky-nav {
+                    padding: 0.6rem 1rem;
+                }
+            }
+
+            /* anthos section special style */
+            .anthos-box {
+                background: linear-gradient(135deg, #0e1117 0%, #1a2035 100%);
+                border-radius: 16px;
+                padding: 2.5rem;
+                color: #fff;
+                position: relative;
+                overflow: hidden;
+            }
+            .anthos-box::after {
+                content: '';
+                position: absolute;
+                bottom: -60px;
+                right: -60px;
+                width: 220px;
+                height: 220px;
+                background: radial-gradient(circle, rgba(74, 122, 92, 0.25), transparent 70%);
+            }
+            .anthos-point {
+                display: flex;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+            .anthos-point:last-child {
+                border-bottom: none;
+            }
+            .anthos-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: 8px;
+                background: rgba(255, 255, 255, 0.07);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                flex-shrink: 0;
+            }
+            .anthos-point-h {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--amber);
+                margin-bottom: 0.25rem;
+            }
+            .anthos-point-d {
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.6);
+                line-height: 1.65;
+            }
+
+            /* spot vm highlight */
+            .spot-hl {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            .spot-col {
+                border-radius: 12px;
+                padding: 1.5rem;
+            }
+            .spot-col-old {
+                background: rgba(196, 89, 58, 0.08);
+                border: 1px solid rgba(196, 89, 58, 0.2);
+            }
+            .spot-col-new {
+                background: rgba(74, 122, 92, 0.08);
+                border: 1px solid rgba(74, 122, 92, 0.2);
+            }
+            .spot-col-title {
+                font-family: var(--ff-display);
+                font-weight: 700;
+                font-size: 1rem;
+                margin-bottom: 0.6rem;
+            }
+            .spot-col-old .spot-col-title {
+                color: var(--rust);
+            }
+            .spot-col-new .spot-col-title {
+                color: var(--forest);
+            }
+            .spot-col li {
+                font-size: 1rem;
+                color: var(--text-sub);
+                margin-left: 1.2rem;
+                margin-bottom: 0.35rem;
+                line-height: 1.65;
+            }
+
+            @media (max-width: 600px) {
+                .spot-hl {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- ═══════════════ HERO ═══════════════ -->
+        <div class="hero">
+            <div class="hero-left">
+                <div class="hero-eyebrow">Google Cloud Digital Leader</div>
+                <h1 class="hero-title">
+                    <em>モダナイゼーション</em>で<br />
+                    ビジネスを進化させる
+                </h1>
+                <p class="hero-desc">
+                    Section 4「Modernize Infrastructure and Applications with Google
+                    Cloud」の完全攻略ガイド。
+                    移行戦略・コンテナ・サーバーレス・DevOps・ハイブリッドクラウドまで初学者向けに詳解します。
+                </p>
+                <div class="hero-pills">
+                    <span class="hero-pill">7つのR移行戦略</span>
+                    <span class="hero-pill">Compute Engine</span>
+                    <span class="hero-pill">GKE / Autopilot</span>
+                    <span class="hero-pill">Cloud Run</span>
+                    <span class="hero-pill">Anthos / GKE Enterprise</span>
+                    <span class="hero-pill">SRE & DevOps</span>
+                </div>
+                <div class="hero-stats">
+                    <div>
+                        <div class="hero-stat-num">~17%</div>
+                        <div class="hero-stat-label">試験配点比率</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">7</div>
+                        <div class="hero-stat-label">移行戦略の R</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">5+</div>
+                        <div class="hero-stat-label">コンピューティング選択肢</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-right-inner">
+                    <div class="hero-right-num">4</div>
+                    <div class="hero-right-label">Section</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ NAV ═══════════════ -->
+        <nav class="sticky-nav">
+            <span class="nav-logo">CDL § 4</span>
+            <a href="#overview">概要</a>
+            <a href="#migration">移行戦略</a>
+            <a href="#compute">コンピュート選択</a>
+            <a href="#containers">コンテナ/GKE</a>
+            <a href="#serverless">サーバーレス</a>
+            <a href="#network">ネットワーク</a>
+            <a href="#hybrid">ハイブリッド</a>
+            <a href="#devops">DevOps/SRE</a>
+            <a href="#api">API管理</a>
+            <a href="#cost">コスト最適化</a>
+            <a href="#checklist">試験対策</a>
+        </nav>
+
+        <!-- ═══════════════ OVERVIEW ═══════════════ -->
+        <section id="overview" class="section">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">Section 4 Overview</div>
+                    <h2 class="sh-title">Section 4 の全体像と学習ポイント</h2>
+                    <p class="sh-desc">
+                        試験ガイドに基づく出題範囲と、モダナイゼーションがなぜビジネスに不可欠かを理解しましょう。
+                    </p>
+                </div>
+
+                <div class="g3 fade-up">
+                    <div class="card" style="border-top: 3px solid var(--terracotta)">
+                        <div class="card-icon" style="background: rgba(196, 89, 58, 0.1)">🏗️</div>
+                        <div class="card-title">4.1 クラウドのモダナイゼーションと移行</div>
+                        <div class="card-body">
+                            7つのR移行戦略・CAMP フレームワーク・ワークロードの評価と分類。Rehost /
+                            Replatform / Refactor の違いが頻出。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-r">移行戦略</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--sage)">
+                        <div class="card-icon" style="background: rgba(74, 122, 92, 0.1)">⚙️</div>
+                        <div class="card-title">4.2 クラウドにおけるコンピューティング</div>
+                        <div class="card-body">
+                            Compute Engine・GKE・Cloud Run・App Engine・Cloud Functions
+                            の選択基準と使い分け。Spot VM のコスト最適化も必須。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-g">サービス選択</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--sky)">
+                        <div class="card-icon" style="background: rgba(58, 111, 160, 0.1)">📦</div>
+                        <div class="card-title">4.3 コンテナとオーケストレーション</div>
+                        <div class="card-body">
+                            VM とコンテナの違い・Kubernetes の概念・GKE Autopilot vs Standard
+                            の使い分け。マイクロサービスのビジネス価値。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-b">コンテナ</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--amber)">
+                        <div class="card-icon" style="background: rgba(212, 136, 42, 0.1)">🌐</div>
+                        <div class="card-title">4.4 API の戦略的価値</div>
+                        <div class="card-body">
+                            Apigee API Management
+                            による収益化・セキュリティ・レガシーシステムの抽象化。エコシステム構築の考え方。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-a">API管理</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--plum)">
+                        <div class="card-icon" style="background: rgba(107, 63, 122, 0.1)">☁️</div>
+                        <div class="card-title">4.5 ハイブリッド＆マルチクラウド</div>
+                        <div class="card-body">
+                            GKE
+                            Enterprise（旧Anthos）による統合管理・複数クラウドを選ぶビジネス上の理由・オンプレとクラウドの接続方法。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-p">ハイブリッド</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--terracotta)">
+                        <div class="card-icon" style="background: rgba(196, 89, 58, 0.1)">🔄</div>
+                        <div class="card-title">4.6 SRE と DevOps の原則</div>
+                        <div class="card-body">
+                            DevOps 文化・CI/CD パイプライン・SLO/SLA/SLI
+                            の概念・エラーバジェット・DORA メトリクスの理解。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-r">DevOps</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info" style="margin-top: 2rem">
+                    <strong>📌 試験の重要ポイント：</strong>
+                    Section 4 は試験全体の約 17% を占めます。
+                    <strong>「なぜそのサービスを選ぶのか」という選択の根拠</strong>と、
+                    <strong>移行戦略の各手法（7つのR）の違い</strong>が特に重要です。
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 公式ソース</div>
+                    <a
+                        href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf"
+                        >Cloud Digital Leader Exam Guide (Official PDF)</a
+                    >
+                    <a href="https://cloud.google.com/learn/certification/cloud-digital-leader"
+                        >https://cloud.google.com/learn/certification/cloud-digital-leader</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ MIGRATION ═══════════════ -->
+        <section id="migration" class="section section-alt">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.1 Migration Strategy</div>
+                    <h2 class="sh-title">クラウドのモダナイゼーションと移行戦略</h2>
+                    <p class="sh-desc">
+                        7つのR・CAMP フレームワーク・移行の判断基準を体系的に理解しましょう。
+                    </p>
+                </div>
+
+                <!-- WHY MODERNIZE -->
+                <div class="sub-title">なぜモダナイゼーションが必要か</div>
+                <div class="g3 fade-up" style="margin-bottom: 2rem">
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(196, 89, 58, 0.1)">🐢</div>
+                        <div class="card-title">俊敏性の欠如</div>
+                        <div class="card-body">
+                            新機能リリースに数ヶ月かかり、ビジネスチャンスを逃す。テスト・デプロイが手動で時間がかかる。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(212, 136, 42, 0.1)">📈</div>
+                        <div class="card-title">スケーラビリティの限界</div>
+                        <div class="card-body">
+                            トラフィック増加に対応できずサービス停止。ハードウェアの調達期間が必要で機動力がない。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(74, 122, 92, 0.1)">💰</div>
+                        <div class="card-title">高い運用コスト</div>
+                        <div class="card-body">
+                            老朽インフラのメンテナンスに多大なリソース。使っていないサーバーの維持費も固定コストとして発生。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7 Rs -->
+                <div class="sub-title">7つのR移行戦略<span class="exam-tag">最重要</span></div>
+                <div class="rs-table-wrap fade-up" style="margin-bottom: 1.5rem">
+                    <table class="rs-table">
+                        <thead>
+                            <tr>
+                                <th>戦略名</th>
+                                <th>別名</th>
+                                <th>内容</th>
+                                <th>コード変更</th>
+                                <th>適用ケース</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rehost（リホスト）</td>
+                                <td>Lift & Shift</td>
+                                <td>
+                                    コードを変えずそのままクラウドへ移行。VMをGCE上にそのまま展開する。
+                                </td>
+                                <td><span class="badge badge-g">なし</span></td>
+                                <td>レガシー移行・DC契約満了の迅速な移行</td>
+                            </tr>
+                            <tr>
+                                <td>Replatform（リプラットフォーム）</td>
+                                <td>Lift & Optimize</td>
+                                <td>
+                                    アーキテクチャを維持しつつ一部をマネージドサービスへ置き換え。例：自社PostgreSQL
+                                    → Cloud SQL。
+                                </td>
+                                <td><span class="badge badge-a">一部</span></td>
+                                <td>運用負荷削減・コード変更最小化</td>
+                            </tr>
+                            <tr>
+                                <td>Refactor（リファクタリング）</td>
+                                <td>Move & Improve</td>
+                                <td>
+                                    クラウドネイティブ機能を活用するためアーキテクチャを再設計。モノリス→マイクロサービス化。
+                                </td>
+                                <td><span class="badge badge-r">大規模</span></td>
+                                <td>スケーラビリティ・俊敏性の最大化</td>
+                            </tr>
+                            <tr>
+                                <td>Rebuild / Re-architect</td>
+                                <td>Reimagine</td>
+                                <td>
+                                    既存コードを破棄して最新技術でゼロから再構築。長期的に最大の価値を生み出す。
+                                </td>
+                                <td><span class="badge badge-r">完全</span></td>
+                                <td>コードベースが陳腐化・完全刷新が必要</td>
+                            </tr>
+                            <tr>
+                                <td>Repurchase（再購入）</td>
+                                <td>Drop & Shop</td>
+                                <td>
+                                    自社システムを廃止してSaaS（Google
+                                    Workspace・Salesforce等）に移行する。
+                                </td>
+                                <td><span class="badge badge-g">不要</span></td>
+                                <td>既製SaaSで要件を満たせる場合</td>
+                            </tr>
+                            <tr>
+                                <td>Retire（廃止）</td>
+                                <td>—</td>
+                                <td>
+                                    価値を生み出していない・重複しているシステムを安全にシャットダウン。コスト削減に直結。
+                                </td>
+                                <td><span class="badge badge-g">不要</span></td>
+                                <td>利用率が極めて低いシステム</td>
+                            </tr>
+                            <tr>
+                                <td>Retain（保持）</td>
+                                <td>Revisit</td>
+                                <td>
+                                    現時点でのクラウド移行が見合わないワークロードをオンプレに残す。将来の再評価を前提とする。
+                                </td>
+                                <td><span class="badge badge-g">不要</span></td>
+                                <td>データ主権規制・レガシーHW依存</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warn">
+                    <strong>⚠️ 試験頻出の違い：</strong>
+                    「<strong>Retain（保持）</strong>」はデータ主権や規制上の理由でクラウドに移行できない場合に
+                    <em>意図的にオンプレに残す</em>戦略です。「諦め」ではなく戦略的な選択です。
+                    一方「<strong>Retire（廃止）</strong>」は価値がないシステムを削除することでコスト削減する積極的な手法です。
+                </div>
+
+                <!-- CAMP -->
+                <div class="sub-title">CAMP（Cloud Application Modernization Program）</div>
+                <div class="g2 fade-up">
+                    <div class="card">
+                        <div class="card-title" style="margin-bottom: 1.2rem">
+                            CAMP の 4 フェーズ
+                        </div>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-n">1</div>
+                                <div class="step-c">
+                                    <div class="step-h">評価（Assess）</div>
+                                    <div class="step-p">
+                                        StratoZone・CAST・mFit・migVisor などのツールで IT
+                                        資産を自動ディスカバリし、クラウド適合性を分析する。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-n">2</div>
+                                <div class="step-c">
+                                    <div class="step-h">分析（Analyze）</div>
+                                    <div class="step-p">
+                                        依存関係・ビジネス価値・技術的負債を評価し、各ワークロードへの最適な移行戦略（7つのR）を決定する。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-n">3</div>
+                                <div class="step-c">
+                                    <div class="step-h">計画と実行（Plan & Execute）</div>
+                                    <div class="step-p">
+                                        優先度に基づいた段階的な移行。ビッグバンではなく小さなウェーブで反復的に実施し、リスクを最小化する。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-n">4</div>
+                                <div class="step-c">
+                                    <div class="step-h">測定と反復（Measure & Iterate）</div>
+                                    <div class="step-p">
+                                        DORA
+                                        メトリクスなどで効果を測定し、継続的に改善サイクルを回す。モダナイゼーションは一度で終わらない。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="hl-box" style="margin-bottom: 1.5rem">
+                            <div class="hl-box-title">🎯 モダナイゼーションの 3 段階</div>
+                            <p style="margin-bottom: 0.6rem">
+                                <strong style="color: #fff">Stage 1 — リフト＆シフト：</strong
+                                >オンプレ VM をそのままクラウドへ。最速・最低リスク。
+                            </p>
+                            <p style="margin-bottom: 0.6rem">
+                                <strong style="color: #fff">Stage 2 — クラウド最適化：</strong
+                                >マネージドサービス・コンテナ化・オートスケーリングを活用。
+                            </p>
+                            <p>
+                                <strong style="color: #fff">Stage 3 — クラウドネイティブ：</strong
+                                >マイクロサービス・サーバーレス・DevOps・CI/CD で最大の価値。
+                            </p>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス：移行戦略の選択</div>
+                            <ul>
+                                <li>
+                                    まず Stage 1（Rehost）で素早くクラウドへ移行し Quick Win
+                                    を獲得する。
+                                </li>
+                                <li>
+                                    ビジネス価値の高いシステムから優先的に Stage
+                                    3（クラウドネイティブ）へ移行する。
+                                </li>
+                                <li>
+                                    移行前に必ず
+                                    Retire（廃止）できるシステムを特定してコストを削減する。
+                                </li>
+                                <li>
+                                    データ主権・規制上の制約があるシステムは Retain
+                                    戦略を明示的に採用する。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/learn/cloud-migration"
+                        >https://cloud.google.com/learn/cloud-migration</a
+                    >
+                    <a
+                        href="https://services.google.com/fh/files/misc/cloud_application_modernization_program_whitepaper.pdf"
+                        >https://services.google.com/fh/files/misc/cloud_application_modernization_program_whitepaper.pdf</a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/architecture/migration-to-gcp-getting-started"
+                        >https://docs.cloud.google.com/architecture/migration-to-gcp-getting-started</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ COMPUTE ═══════════════ -->
+        <section id="compute" class="section">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.2 Computing Options</div>
+                    <h2 class="sh-title">
+                        コンピューティングサービスの選択<span class="exam-tag">最重要</span>
+                    </h2>
+                    <p class="sh-desc">
+                        制御要件・アーキテクチャ構造・チームのスキルセットに基づいて最適なサービスを選択します。
+                    </p>
+                </div>
+
+                <!-- DECISION FLOW -->
+                <div class="sub-title">コンピューティング選択デシジョンツリー</div>
+                <div class="flow-wrap fade-up" style="margin-bottom: 2rem">
+                    <div
+                        style="
+                            font-family: var(--ff-mono);
+                            font-size: 1rem;
+                            color: rgba(255, 255, 255, 0.4);
+                            margin-bottom: 1.2rem;
+                            letter-spacing: 0.08em;
+                            text-transform: uppercase;
+                        "
+                    >
+                        意思決定フロー
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-q">OS・カーネルレベルの完全制御が必要？</div>
+                        <div class="flow-arrow">→ YES →</div>
+                        <div class="flow-ans">Compute Engine (IaaS VM)</div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div
+                            style="
+                                width: 180px;
+                                text-align: right;
+                                color: rgba(255, 255, 255, 0.35);
+                                font-size: 1rem;
+                                padding-right: 0.5rem;
+                            "
+                        >
+                            ↓ NO
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-q">
+                            コンテナ化 + Kubernetes オーケストレーションが必要？
+                        </div>
+                        <div class="flow-arrow">→ YES →</div>
+                        <div class="flow-ans flow-ans-sky">GKE（Standard / Autopilot）</div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div
+                            style="
+                                width: 280px;
+                                text-align: right;
+                                color: rgba(255, 255, 255, 0.35);
+                                font-size: 1rem;
+                                padding-right: 0.5rem;
+                            "
+                        >
+                            ↓ NO
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-q">コンテナ化済み HTTP アプリを手軽にデプロイしたい？</div>
+                        <div class="flow-arrow">→ YES →</div>
+                        <div class="flow-ans flow-ans-sage">Cloud Run（サーバーレスコンテナ）</div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div
+                            style="
+                                width: 320px;
+                                text-align: right;
+                                color: rgba(255, 255, 255, 0.35);
+                                font-size: 1rem;
+                                padding-right: 0.5rem;
+                            "
+                        >
+                            ↓ NO
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-q">イベント駆動の小さな関数（単一処理）を実行したい？</div>
+                        <div class="flow-arrow">→ YES →</div>
+                        <div class="flow-ans flow-ans-amber">Cloud Run Functions（FaaS）</div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div
+                            style="
+                                width: 360px;
+                                text-align: right;
+                                color: rgba(255, 255, 255, 0.35);
+                                font-size: 1rem;
+                                padding-right: 0.5rem;
+                            "
+                        >
+                            ↓ それ以外
+                        </div>
+                    </div>
+
+                    <div class="flow-row">
+                        <div class="flow-ans flow-ans-plum">App Engine（PaaS Webアプリ）</div>
+                    </div>
+                </div>
+
+                <!-- COMPUTE COMPARISON -->
+                <div class="sub-title">コンピューティングサービス比較表</div>
+                <div class="cmp-wrap fade-up" style="margin-bottom: 2rem">
+                    <table class="cmp-table">
+                        <thead>
+                            <tr>
+                                <th>サービス</th>
+                                <th>抽象化レベル</th>
+                                <th>管理負荷</th>
+                                <th>スケーリング</th>
+                                <th>課金モデル</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🖥️ Compute Engine</td>
+                                <td>IaaS（VM）</td>
+                                <td>高（OS管理必要）</td>
+                                <td>手動＋MIG</td>
+                                <td>VM稼働時間（秒単位）</td>
+                                <td>レガシー移行・GPU・特殊OS</td>
+                            </tr>
+                            <tr>
+                                <td>☸️ GKE Standard</td>
+                                <td>CaaS（コンテナ）</td>
+                                <td>中（ノード管理）</td>
+                                <td>Kubernetes自動</td>
+                                <td>ノードVM+管理プレーン</td>
+                                <td>複雑なマイクロサービス・GPU ML</td>
+                            </tr>
+                            <tr>
+                                <td>🤖 GKE Autopilot</td>
+                                <td>CaaS（マネージド）</td>
+                                <td>低（Google管理）</td>
+                                <td>Kubernetes自動</td>
+                                <td>Pod リソース単位</td>
+                                <td>K8s を楽に使いたい・小規模チーム</td>
+                            </tr>
+                            <tr>
+                                <td>🚀 Cloud Run</td>
+                                <td>サーバーレスコンテナ</td>
+                                <td>最低</td>
+                                <td>自動（0〜N）</td>
+                                <td>リクエスト処理時のみ</td>
+                                <td>HTTP API・Web アプリ・マイクロサービス</td>
+                            </tr>
+                            <tr>
+                                <td>⚡ Cloud Run Functions</td>
+                                <td>FaaS（関数）</td>
+                                <td>最低</td>
+                                <td>自動（0〜N）</td>
+                                <td>実行時のみ完全従量課金</td>
+                                <td>イベント処理・Webhook・軽量タスク</td>
+                            </tr>
+                            <tr>
+                                <td>📱 App Engine</td>
+                                <td>PaaS</td>
+                                <td>低</td>
+                                <td>自動</td>
+                                <td>インスタンス稼働時間</td>
+                                <td>既存Webアプリ・モバイルバックエンド</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- SPOT VM -->
+                <div class="sub-title">
+                    Spot VM によるコスト最適化<span class="exam-tag">頻出</span>
+                </div>
+                <div class="spot-hl fade-up" style="margin-bottom: 1.5rem">
+                    <div class="spot-col spot-col-old">
+                        <div class="spot-col-title">❌ Preemptible VM（非推奨・旧方式）</div>
+                        <ul>
+                            <li>最大 24 時間で強制終了される</li>
+                            <li>Google がリソース必要時に 30 秒前通知でシャットダウン</li>
+                            <li>標準価格から最大 80% 割引</li>
+                            <li>段階的に非推奨化・Spot VM へ移行推奨</li>
+                        </ul>
+                    </div>
+                    <div class="spot-col spot-col-new">
+                        <div class="spot-col-title">✅ Spot VM（現在推奨）</div>
+                        <ul>
+                            <li>
+                                <strong>24 時間制限を撤廃</strong>（リソースがあれば無期限稼働）
+                            </li>
+                            <li>Google がリソース必要時に 30 秒前通知でシャットダウン</li>
+                            <li>標準価格から最大 <strong>91% 割引</strong></li>
+                            <li>フォールトトレラントなワークロードに最適</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <strong>💡 Spot VM に適したワークロード：</strong>
+                    HPC・機械学習バッチトレーニング・CI/CD
+                    ビルドジョブ・ゲノム解析・大規模データ処理パイプライン。
+                    処理途中で終了しても再開できる「チェックポイント設計」と組み合わせることが必須のベストプラクティスです。
+                </div>
+
+                <!-- MIG -->
+                <div class="sub-title">Managed Instance Group（MIG）</div>
+                <div class="g4 fade-up">
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(196, 89, 58, 0.1)">📈</div>
+                        <div class="card-title">オートスケーリング</div>
+                        <div class="card-body">
+                            CPU 使用率・リクエスト数に応じて VM
+                            数を自動増減。ピーク時の急増に対応しつつ、閑散期のコストを最小化。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(74, 122, 92, 0.1)">🔧</div>
+                        <div class="card-title">自動ヒーリング</div>
+                        <div class="card-body">
+                            ヘルスチェックで異常 VM
+                            を検知して自動削除・再作成。人間が介入しなくてもサービス稼働を維持。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(58, 111, 160, 0.1)">🌍</div>
+                        <div class="card-title">リージョナル MIG</div>
+                        <div class="card-body">
+                            複数ゾーンに VM を分散配置。1
+                            ゾーンが障害になっても他ゾーンで継続稼働。本番環境の必須設定。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(212, 136, 42, 0.1)">🔄</div>
+                        <div class="card-title">ローリングアップデート</div>
+                        <div class="card-body">
+                            新バージョンへの更新を順次実施。サービスを停止せずに無停止アップデートが可能。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp">
+                    <div class="bp-title">✅ ベストプラクティス：Compute Engine</div>
+                    <ul>
+                        <li>
+                            本番 VM はリージョナル MIG + ヘルスチェック +
+                            ロードバランサーの組み合わせで高可用性を確保する。
+                        </li>
+                        <li>
+                            安定したワークロードには Committed Use Discount（CUD）を適用（最大 57%
+                            割引）。
+                        </li>
+                        <li>
+                            バッチ処理・ML 学習・CI/CD ビルドジョブは Spot VM でコストを最大 91%
+                            削減。
+                        </li>
+                        <li>
+                            開発環境の VM は Instance Schedules
+                            で業務時間外（夜間・週末）に自動停止してコスト削減。
+                        </li>
+                        <li>
+                            Recommender
+                            の提案を定期的に確認して過剰プロビジョニングを修正する（右サイズ化）。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a
+                        href="https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option"
+                        >https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option</a
+                    >
+                    <a href="https://cloud.google.com/compute/docs/instances/spot"
+                        >https://cloud.google.com/compute/docs/instances/spot</a
+                    >
+                    <a
+                        href="https://cloud.google.com/blog/topics/cost-management/rethinking-your-vm-strategy-spot-vms"
+                        >https://cloud.google.com/blog/topics/cost-management/rethinking-your-vm-strategy-spot-vms</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ CONTAINERS ═══════════════ -->
+        <section id="containers" class="section section-alt">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.3 Containers & Kubernetes</div>
+                    <h2 class="sh-title">コンテナと GKE（Google Kubernetes Engine）</h2>
+                    <p class="sh-desc">
+                        VM とコンテナの違い・Kubernetes の役割・GKE の 2
+                        つのモードを理解しましょう。
+                    </p>
+                </div>
+
+                <!-- VM vs Container -->
+                <div class="sub-title">VM とコンテナの比較<span class="exam-tag">頻出</span></div>
+                <div class="g2 fade-up" style="margin-bottom: 2rem">
+                    <div class="card" style="border-left: 3px solid var(--terracotta)">
+                        <div class="card-title">🖥️ 仮想マシン（VM）</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            物理サーバー上にハイパーバイザーを構築し、各VMが独自のゲスト OS
+                            を持つ仮想化技術。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li style="margin-bottom: 0.3rem">⏱️ 起動に数分かかる</li>
+                            <li style="margin-bottom: 0.3rem">💾 数GB のサイズ（ゲストOS込み）</li>
+                            <li style="margin-bottom: 0.3rem">
+                                🔒 完全な分離（強固なセキュリティ）
+                            </li>
+                            <li>⚙️ OS レベルの完全制御が可能</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--sage)">
+                        <div class="card-title">📦 コンテナ</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            ホスト OS
+                            のカーネルを共有しつつ、アプリと依存関係のみをパッケージ化した軽量な実行環境。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li style="margin-bottom: 0.3rem">⚡ 起動がミリ秒単位（超高速）</li>
+                            <li style="margin-bottom: 0.3rem">🪶 数 MB〜数百 MB（軽量）</li>
+                            <li style="margin-bottom: 0.3rem">
+                                🌍 環境の一貫性（どこでも同じ動作）
+                            </li>
+                            <li>📦 高密度デプロイ（リソース効率化）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Microservices -->
+                <div class="sub-title">マイクロサービスアーキテクチャのビジネス価値</div>
+                <div class="g3 fade-up" style="margin-bottom: 2rem">
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(58, 111, 160, 0.1)">🎯</div>
+                        <div class="card-title">独立したデプロイ</div>
+                        <div class="card-body">
+                            各サービスを他に影響なく個別にデプロイ・更新できる。リリースの頻度と速度が劇的に向上する。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(74, 122, 92, 0.1)">🔬</div>
+                        <div class="card-title">部分的なスケーリング</div>
+                        <div class="card-body">
+                            需要が高いサービスのみをスケールアウト。例：EC
+                            サイトの決済サービスだけをセール時に拡張。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(196, 89, 58, 0.1)">🛡️</div>
+                        <div class="card-title">障害の局所化</div>
+                        <div class="card-body">
+                            あるサービスが障害でも他のサービスは動き続ける。システム全体のダウンリスクが大幅に低下。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GKE MODES -->
+                <div class="sub-title">
+                    GKE Autopilot vs Standard<span class="exam-tag">最重要</span>
+                </div>
+                <div class="g2 fade-up" style="margin-bottom: 1.5rem">
+                    <div
+                        class="card"
+                        style="
+                            background: linear-gradient(
+                                135deg,
+                                rgba(74, 122, 92, 0.06),
+                                rgba(45, 82, 64, 0.03)
+                            );
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-start;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            <div class="card-title" style="margin-bottom: 0">🤖 GKE Autopilot</div>
+                            <span class="badge badge-g">Google 推奨</span>
+                        </div>
+                        <div class="card-body" style="margin-bottom: 1rem">
+                            ノードのプロビジョニング・スケーリング・アップグレード・セキュリティをすべて
+                            Google が管理。開発者は Pod だけを意識すればよい。
+                        </div>
+                        <div
+                            style="
+                                font-size: 1rem;
+                                margin-bottom: 0.6rem;
+                                color: var(--forest);
+                                font-weight: 600;
+                            "
+                        >
+                            ✅ 向いているケース
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    margin-bottom: 0.25rem;
+                                    padding-left: 1rem;
+                                    position: relative;
+                                "
+                            >
+                                <span style="position: absolute; left: 0">›</span>
+                                インフラ管理工数を最小化したい
+                            </li>
+                            <li
+                                style="
+                                    margin-bottom: 0.25rem;
+                                    padding-left: 1rem;
+                                    position: relative;
+                                "
+                            >
+                                <span style="position: absolute; left: 0">›</span>
+                                少人数チーム・スタートアップ
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0">›</span> GKE
+                                のベストプラクティスに自動準拠
+                            </li>
+                        </ul>
+                        <div
+                            style="
+                                margin-top: 0.8rem;
+                                padding: 0.6rem;
+                                background: rgba(74, 122, 92, 0.08);
+                                border-radius: 6px;
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--forest);
+                            "
+                        >
+                            課金: Pod が消費する vCPU / メモリ / ストレージ単位
+                        </div>
+                    </div>
+                    <div
+                        class="card"
+                        style="
+                            background: linear-gradient(
+                                135deg,
+                                rgba(58, 111, 160, 0.06),
+                                rgba(30, 63, 110, 0.03)
+                            );
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: flex-start;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            <div class="card-title" style="margin-bottom: 0">⚙️ GKE Standard</div>
+                            <span class="badge badge-b">細粒度制御</span>
+                        </div>
+                        <div class="card-body" style="margin-bottom: 1rem">
+                            ユーザーがノードプールを直接管理。特殊なハードウェア設定やカスタム OS
+                            が必要な場合に選択。
+                        </div>
+                        <div
+                            style="
+                                font-size: 1rem;
+                                margin-bottom: 0.6rem;
+                                color: var(--navy);
+                                font-weight: 600;
+                            "
+                        >
+                            ✅ 向いているケース
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    margin-bottom: 0.25rem;
+                                    padding-left: 1rem;
+                                    position: relative;
+                                "
+                            >
+                                <span style="position: absolute; left: 0">›</span>
+                                <strong>GPU ノードプール</strong>が必要（ML 学習）
+                            </li>
+                            <li
+                                style="
+                                    margin-bottom: 0.25rem;
+                                    padding-left: 1rem;
+                                    position: relative;
+                                "
+                            >
+                                <span style="position: absolute; left: 0">›</span>
+                                カーネルパラメータを細かく調整が必要
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0">›</span>
+                                大規模チームが専用の CI/CD パイプライン運用
+                            </li>
+                        </ul>
+                        <div
+                            style="
+                                margin-top: 0.8rem;
+                                padding: 0.6rem;
+                                background: rgba(58, 111, 160, 0.08);
+                                border-radius: 6px;
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--navy);
+                            "
+                        >
+                            課金: ノード VM の稼働時間 + 管理プレーン
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warn">
+                    <strong>⚠️ 試験頻出の引っかけ：</strong>
+                    「GPU を使った ML モデル学習を GKE で実行し、ノードプールを細かく設定したい」→
+                    <strong>GKE Standard</strong> が正解です。Autopilot は GPU
+                    の詳細設定が限定的で、 ノード管理を完全に Google に委任するため GPU
+                    ノードプールの細かな制御には向きません。
+                </div>
+
+                <div class="bp">
+                    <div class="bp-title">✅ ベストプラクティス：GKE</div>
+                    <ul>
+                        <li>
+                            新規プロジェクトは
+                            <strong>Autopilot をデフォルト</strong
+                            >で選択し、特別な要件がある場合のみ Standard へ。
+                        </li>
+                        <li>
+                            Workload Identity
+                            を使用してサービスアカウントキーをコンテナ内に置かない（最重要セキュリティ対策）。
+                        </li>
+                        <li>
+                            本番は
+                            <strong>リージョナルクラスタ</strong
+                            >（3ゾーン分散）で耐障害性を確保する。
+                        </li>
+                        <li>
+                            Non-Critical ワークロードに Spot ノードプールを活用してコストを最大 60%
+                            削減する。
+                        </li>
+                        <li>
+                            Liveness/Readiness Probe を必ず設定して異常 Pod を自動検知・排除する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/kubernetes-engine/docs"
+                        >https://cloud.google.com/kubernetes-engine/docs</a
+                    >
+                    <a
+                        href="https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview"
+                        >https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview</a
+                    >
+                    <a href="https://cloud.google.com/kubernetes-engine/docs/best-practices"
+                        >https://cloud.google.com/kubernetes-engine/docs/best-practices</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ SERVERLESS ═══════════════ -->
+        <section id="serverless" class="section">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.3 Serverless Computing</div>
+                    <h2 class="sh-title">サーバーレスコンピューティング</h2>
+                    <p class="sh-desc">
+                        Cloud Run・Cloud Functions・App Engine の違いと適切な選択基準を理解します。
+                    </p>
+                </div>
+
+                <div class="g3 fade-up" style="margin-bottom: 2rem">
+                    <div class="card" style="border-top: 3px solid var(--terracotta)">
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 0.6rem;
+                            "
+                        >
+                            <div
+                                class="card-icon"
+                                style="background: rgba(196, 89, 58, 0.1); margin-bottom: 0"
+                            >
+                                🚀
+                            </div>
+                            <span class="badge badge-r">推奨デフォルト</span>
+                        </div>
+                        <div class="card-title">Cloud Run</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            コンテナをサーバーレスで実行するフルマネージドプラットフォーム。HTTP/gRPC/WebSocket
+                            に対応。任意の言語で動作。
+                        </div>
+                        <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem">
+                            主な特徴：
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.2rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                >
+                                ゼロスケール（アイドル時コストゼロ）
+                            </li>
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.2rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                >
+                                トラフィック分割でカナリアデプロイ
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                >
+                                Cloud Run Jobs でバッチ処理も対応
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-r">Web API</span>
+                            <span class="badge badge-r" style="margin-left: 0.3rem">ML推論</span>
+                            <span class="badge badge-r" style="margin-left: 0.3rem">Webhook</span>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 3px solid var(--amber)">
+                        <div class="card-icon" style="background: rgba(212, 136, 42, 0.1)">⚡</div>
+                        <div class="card-title">Cloud Run Functions</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            イベント駆動の FaaS（Function as a
+                            Service）。特定のイベント発生時のみ単一の関数を実行する。旧 Cloud
+                            Functions の後継。
+                        </div>
+                        <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem">
+                            トリガー種別：
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.2rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--amber)"
+                                    >›</span
+                                >
+                                Cloud Storage（ファイルアップロード）
+                            </li>
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.2rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--amber)"
+                                    >›</span
+                                >
+                                Pub/Sub（メッセージ受信）
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--amber)"
+                                    >›</span
+                                >
+                                HTTP・Firebase・Eventarc
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-a">画像処理</span>
+                            <span class="badge badge-a" style="margin-left: 0.3rem">通知送信</span>
+                            <span class="badge badge-a" style="margin-left: 0.3rem"
+                                >データ変換</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 3px solid var(--sky)">
+                        <div class="card-icon" style="background: rgba(58, 111, 160, 0.1)">📱</div>
+                        <div class="card-title">App Engine</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            10年以上の実績を持つ Web アプリ向けの
+                            PaaS。ソースコードをアップロードするだけでデプロイ可能。Standard /
+                            Flexible 環境を提供。
+                        </div>
+                        <div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem">
+                            環境の選択：
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.2rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--sky)"
+                                    >›</span
+                                >
+                                Standard: 特定言語ランタイム・超高速スケール
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--sky)"
+                                    >›</span
+                                >
+                                Flexible: Docker コンテナで任意ランタイム
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-b">既存Webアプリ</span>
+                            <span class="badge badge-b" style="margin-left: 0.3rem"
+                                >モバイルBE</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLOUD RUN vs FUNCTIONS -->
+                <div class="hl-box fade-up" style="margin-bottom: 1.5rem">
+                    <div class="hl-box-title">
+                        ⚡ Cloud Run と Cloud Functions の使い分け（試験頻出）
+                    </div>
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 1.5rem;
+                            margin-top: 0.8rem;
+                        "
+                    >
+                        <div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    color: var(--terracotta);
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                Cloud Run を選ぶとき
+                            </div>
+                            <ul
+                                style="
+                                    list-style: none;
+                                    font-size: 1rem;
+                                    color: rgba(255, 255, 255, 0.65);
+                                "
+                            >
+                                <li
+                                    style="
+                                        padding-left: 1rem;
+                                        position: relative;
+                                        margin-bottom: 0.3rem;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            position: absolute;
+                                            left: 0;
+                                            color: var(--terracotta);
+                                        "
+                                        >›</span
+                                    >
+                                    コンテナ化された HTTP API / Web アプリ
+                                </li>
+                                <li
+                                    style="
+                                        padding-left: 1rem;
+                                        position: relative;
+                                        margin-bottom: 0.3rem;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            position: absolute;
+                                            left: 0;
+                                            color: var(--terracotta);
+                                        "
+                                        >›</span
+                                    >
+                                    複数エンドポイントを持つアプリ
+                                </li>
+                                <li style="padding-left: 1rem; position: relative">
+                                    <span
+                                        style="
+                                            position: absolute;
+                                            left: 0;
+                                            color: var(--terracotta);
+                                        "
+                                        >›</span
+                                    >
+                                    常時起動・WebSocket・gRPC が必要
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    color: var(--amber);
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                Cloud Functions を選ぶとき
+                            </div>
+                            <ul
+                                style="
+                                    list-style: none;
+                                    font-size: 1rem;
+                                    color: rgba(255, 255, 255, 0.65);
+                                "
+                            >
+                                <li
+                                    style="
+                                        padding-left: 1rem;
+                                        position: relative;
+                                        margin-bottom: 0.3rem;
+                                    "
+                                >
+                                    <span style="position: absolute; left: 0; color: var(--amber)"
+                                        >›</span
+                                    >
+                                    特定イベント（ファイル保存・メッセージ受信）への反応
+                                </li>
+                                <li
+                                    style="
+                                        padding-left: 1rem;
+                                        position: relative;
+                                        margin-bottom: 0.3rem;
+                                    "
+                                >
+                                    <span style="position: absolute; left: 0; color: var(--amber)"
+                                        >›</span
+                                    >
+                                    単一の処理・「接着剤」的な役割
+                                </li>
+                                <li style="padding-left: 1rem; position: relative">
+                                    <span style="position: absolute; left: 0; color: var(--amber)"
+                                        >›</span
+                                    >
+                                    完全にオンデマンド・ゼロスケール優先
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp">
+                    <div class="bp-title">✅ ベストプラクティス：サーバーレス</div>
+                    <ul>
+                        <li>
+                            新規アプリケーションのデプロイには
+                            <strong>Cloud Run をデフォルトの選択肢</strong>として検討する（Google
+                            も推奨）。
+                        </li>
+                        <li>
+                            Cold Start が問題の場合は最小インスタンス数を 1
+                            以上に設定（コストはかかるがレイテンシを安定させる）。
+                        </li>
+                        <li>
+                            Cloud Run Jobs でスケジュールバッチを実装し、常時起動 VM を不要にする。
+                        </li>
+                        <li>
+                            シークレット（API キー等）はコードに直書きせず
+                            <strong>Secret Manager</strong> から環境変数として注入する。
+                        </li>
+                        <li>
+                            Cloud Functions は「1 関数 = 1
+                            タスク」の単一責務の原則を守り、複雑な処理は Cloud Run へ。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/run/docs"
+                        >https://cloud.google.com/run/docs</a
+                    >
+                    <a href="https://cloud.google.com/functions/docs"
+                        >https://cloud.google.com/functions/docs</a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/appengine/migration-center/run/compare-gae-with-run"
+                        >https://docs.cloud.google.com/appengine/migration-center/run/compare-gae-with-run</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ NETWORK ═══════════════ -->
+        <section id="network" class="section section-alt">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.4 Networking</div>
+                    <h2 class="sh-title">
+                        ネットワークサービスとハイブリッド接続<span class="exam-tag">頻出</span>
+                    </h2>
+                    <p class="sh-desc">
+                        VPC・ロードバランサー・CDN・Cloud VPN・Cloud Interconnect
+                        の役割と選択基準を理解します。
+                    </p>
+                </div>
+
+                <div class="sub-title">VPC（Virtual Private Cloud）の基本</div>
+                <div class="g2 fade-up" style="margin-bottom: 1.5rem">
+                    <div class="card">
+                        <div class="card-title">Google Cloud VPC の特徴</div>
+                        <div class="card-body" style="margin-bottom: 1rem">
+                            他社クラウドと異なり、<strong>1 つの VPC がグローバルに広がる</strong
+                            >。東京リージョンと大阪リージョンの VM が同じ VPC
+                            内でプライベート通信可能。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.3rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                >
+                                サブネットで IP アドレス範囲を分割（本番・開発・テストの分離）
+                            </li>
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.3rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                >
+                                ファイアウォールルールで送受信トラフィックを細かく制御
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                >
+                                Private Google Access で外部 IP なしで GCP サービスにアクセス
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Shared VPC（共有 VPC）</div>
+                        <div class="card-body" style="margin-bottom: 1rem">
+                            ホストプロジェクトの VPC
+                            を複数のサービスプロジェクトで共有。ネットワーク管理を中央集権化しながら各チームは独立して開発できる。
+                        </div>
+                        <div
+                            style="
+                                font-size: 1rem;
+                                font-weight: 600;
+                                color: var(--sage);
+                                margin-bottom: 0.4rem;
+                            "
+                        >
+                            メリット：
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.25rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--sage)"
+                                    >✓</span
+                                >
+                                ファイアウォールポリシーをセキュリティチームが一元管理
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--sage)"
+                                    >✓</span
+                                >
+                                各プロジェクトは独立したコスト管理を維持
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CONNECTIVITY COMPARISON -->
+                <div class="sub-title">
+                    オンプレミスとの接続方法の選択<span class="exam-tag">最重要</span>
+                </div>
+                <div class="g2 fade-up" style="margin-bottom: 1.5rem">
+                    <div class="card" style="border-left: 3px solid var(--sky)">
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 0.6rem;
+                            "
+                        >
+                            <div class="card-title" style="margin-bottom: 0">🔒 Cloud VPN</div>
+                            <span class="badge badge-b">低コスト</span>
+                        </div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            インターネット経由で IPsec 暗号化トンネルを作成。HA VPN は冗長トンネルで
+                            SLA 99.99% を実現。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.25rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--sky)"
+                                    >✓</span
+                                >
+                                物理専用線不要・低コスト・迅速な設定
+                            </li>
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.25rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >✗</span
+                                >
+                                インターネット品質に依存（帯域保証なし）
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >✗</span
+                                >
+                                大量データ転送・低レイテンシ要件には不向き
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem; font-size: 1rem; color: var(--sky)">
+                            → 小規模・テスト・非クリティカルなハイブリッド接続
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--sage)">
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 0.6rem;
+                            "
+                        >
+                            <div class="card-title" style="margin-bottom: 0">
+                                🔗 Cloud Interconnect
+                            </div>
+                            <span class="badge badge-g">エンタープライズ</span>
+                        </div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            オンプレと Google Cloud を物理的な専用線で接続。Dedicated（直接）と
+                            Partner（キャリア経由）の 2 種類。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.25rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--sage)"
+                                    >✓</span
+                                >
+                                低レイテンシ・高帯域・安定した専用線品質
+                            </li>
+                            <li
+                                style="
+                                    padding-left: 1rem;
+                                    position: relative;
+                                    margin-bottom: 0.25rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--sage)"
+                                    >✓</span
+                                >
+                                アウトバウンドデータ転送コストが安価
+                            </li>
+                            <li style="padding-left: 1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >✗</span
+                                >
+                                コストが高い・設定に時間がかかる
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem; font-size: 1rem; color: var(--sage)">
+                            → 大容量・ミッションクリティカル・金融・医療系
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warn">
+                    <strong>⚠️ 試験頻出の選択問題：</strong>
+                    「金融機関が 1 日に数十 TB を転送、低レイテンシ・安定性が必要」→
+                    <strong>Cloud Interconnect（Dedicated）</strong>が正解。
+                    「小規模企業がオンプレとクラウドをコストを抑えてつなぎたい」→
+                    <strong>Cloud VPN（HA VPN）</strong>が正解。
+                </div>
+
+                <!-- LB TYPES -->
+                <div class="sub-title">Cloud Load Balancing の種類</div>
+                <div class="g4 fade-up">
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(196, 89, 58, 0.1)">🌐</div>
+                        <div class="card-title" style="font-size: 1rem">
+                            グローバル外部<br />HTTP(S) LB
+                        </div>
+                        <div class="card-body" style="font-size: 1rem">
+                            世界中のユーザーへ最低レイテンシ配信。Google Premium Tier。SSL 終端・URL
+                            マッピング・Cloud Armor 統合。
+                        </div>
+                        <div style="margin-top: 0.6rem">
+                            <span class="badge badge-r">グローバルWebアプリ</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(74, 122, 92, 0.1)">🏠</div>
+                        <div class="card-title" style="font-size: 1rem">
+                            内部<br />HTTP(S) LB
+                        </div>
+                        <div class="card-body" style="font-size: 1rem">
+                            VPC
+                            内部のトラフィックのみを分散（外部から見えない）。マイクロサービス間通信の負荷分散に最適。
+                        </div>
+                        <div style="margin-top: 0.6rem">
+                            <span class="badge badge-g">マイクロサービス</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(58, 111, 160, 0.1)">⚡</div>
+                        <div class="card-title" style="font-size: 1rem">
+                            外部 TCP/UDP<br />NLB
+                        </div>
+                        <div class="card-body" style="font-size: 1rem">
+                            L4 での高性能ロードバランシング。HTTP
+                            以外のプロトコル（ゲームサーバー等）・超低レイテンシが必要な場合。
+                        </div>
+                        <div style="margin-top: 0.6rem">
+                            <span class="badge badge-b">ゲームサーバー</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(212, 136, 42, 0.1)">🚀</div>
+                        <div class="card-title" style="font-size: 1rem">Cloud CDN</div>
+                        <div class="card-body" style="font-size: 1rem">
+                            100 以上のエッジロケーションでキャッシュ配信。レイテンシを最大 95%
+                            削減し、オリジンサーバー負荷を大幅軽減。
+                        </div>
+                        <div style="margin-top: 0.6rem">
+                            <span class="badge badge-a">静的コンテンツ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp">
+                    <div class="bp-title">✅ ベストプラクティス：ネットワーク</div>
+                    <ul>
+                        <li>
+                            VM には原則として外部 IP を付与せず、<strong>Cloud NAT</strong>
+                            でアウトバウンドのみを許可する（攻撃面を最小化）。
+                        </li>
+                        <li>
+                            グローバルな Web アプリには
+                            <strong>グローバル HTTP(S) LB + Cloud CDN + Cloud Armor</strong>
+                            を組み合わせて配信。
+                        </li>
+                        <li>
+                            マイクロサービス間通信には
+                            <strong>内部 HTTP(S) LB</strong>
+                            で外部に公開しない安全な負荷分散を実現する。
+                        </li>
+                        <li>
+                            Shared VPC
+                            でネットワーク管理を中央集権化し、各チームのセキュリティポリシーを統一する。
+                        </li>
+                        <li>
+                            VPC Flow Logs
+                            を有効化してネットワークトラフィックを記録し、セキュリティ監査の基盤を整える。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/vpc/docs"
+                        >https://cloud.google.com/vpc/docs</a
+                    >
+                    <a href="https://cloud.google.com/load-balancing/docs"
+                        >https://cloud.google.com/load-balancing/docs</a
+                    >
+                    <a href="https://cloud.google.com/interconnect/docs"
+                        >https://cloud.google.com/interconnect/docs</a
+                    >
+                    <a href="https://cloud.google.com/vpn/docs"
+                        >https://cloud.google.com/vpn/docs</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ HYBRID ═══════════════ -->
+        <section id="hybrid" class="section section-alt">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.5 Hybrid & Multi-Cloud</div>
+                    <h2 class="sh-title">ハイブリッド＆マルチクラウド管理</h2>
+                    <p class="sh-desc">
+                        GKE Enterprise（旧
+                        Anthos）によるマルチ環境統合管理の仕組みを理解しましょう。
+                    </p>
+                </div>
+
+                <!-- WHY MULTICLOUD -->
+                <div class="sub-title">マルチクラウド戦略を選ぶ理由</div>
+                <div class="g3 fade-up" style="margin-bottom: 2rem">
+                    <div class="card" style="border-top: 3px solid var(--amber)">
+                        <div
+                            class="card-icon"
+                            style="background: rgba(212, 136, 42, 0.12); font-size: 1.5rem"
+                        >
+                            🔓
+                        </div>
+                        <div class="card-title">ベンダーロックイン回避</div>
+                        <div class="card-body">
+                            特定プロバイダーへの過度な依存を防ぎ、価格交渉力を維持する。大規模障害時のビジネス継続性（BDR）も確保できる。
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--sage)">
+                        <div
+                            class="card-icon"
+                            style="background: rgba(74, 122, 92, 0.12); font-size: 1.5rem"
+                        >
+                            ⚖️
+                        </div>
+                        <div class="card-title">データ主権とコンプライアンス</div>
+                        <div class="card-body">
+                            個人情報・金融データを法規制により自国の自社データセンターに保持（Retain）しつつ、新システムはクラウドで構築する。
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--sky)">
+                        <div
+                            class="card-icon"
+                            style="background: rgba(58, 111, 160, 0.12); font-size: 1.5rem"
+                        >
+                            💼
+                        </div>
+                        <div class="card-title">既存投資の保護</div>
+                        <div class="card-body">
+                            既存 DC
+                            への大規模な設備投資（CAPEX）の減価償却が完了するまで活用しつつ、新アプリはクラウドで展開。投資対効果を最大化。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GKE ENTERPRISE -->
+                <div class="sub-title">
+                    GKE Enterprise（旧 Anthos）によるサイロの打破<span class="exam-tag"
+                        >最重要</span
+                    >
+                </div>
+                <div class="anthos-box fade-up" style="margin-bottom: 1.5rem">
+                    <div
+                        style="
+                            display: flex;
+                            gap: 1rem;
+                            align-items: flex-start;
+                            margin-bottom: 1.5rem;
+                        "
+                    >
+                        <div style="font-size: 2.5rem">🌐</div>
+                        <div>
+                            <div
+                                style="
+                                    font-family: var(--ff-display);
+                                    font-size: 1.4rem;
+                                    font-weight: 700;
+                                    color: #fff;
+                                    margin-bottom: 0.3rem;
+                                "
+                            >
+                                GKE Enterprise
+                            </div>
+                            <div style="font-size: 1rem; color: rgba(255, 255, 255, 0.55)">
+                                オンプレ・Google Cloud・AWS・Azure のコンテナワークロードを<strong
+                                    style="color: rgba(255, 255, 255, 0.85)"
+                                    >単一の管理画面（Single Pane of Glass）</strong
+                                >から一元管理する統合コントロールプレーン
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anthos-point">
+                        <div class="anthos-icon">🔑</div>
+                        <div>
+                            <div class="anthos-point-h">アイデンティティの標準化</div>
+                            <div class="anthos-point-d">
+                                Connect Gateway で AWS・Azure 上のクラスタへのアクセス認証を Google
+                                Cloud IAM に統一。環境ごとに異なるアクセス管理を一元化する。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anthos-point">
+                        <div class="anthos-icon">📋</div>
+                        <div>
+                            <div class="anthos-point-h">Anthos Config Management（GitOps）</div>
+                            <div class="anthos-point-d">
+                                Git
+                                リポジトリからすべてのクラスタにセキュリティポリシー・RBAC・設定を自動同期。環境間の設定ドリフトとコンプライアンス違反を防止する。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anthos-point">
+                        <div class="anthos-icon">🔄</div>
+                        <div>
+                            <div class="anthos-point-h">統一された CI/CD パイプライン</div>
+                            <div class="anthos-point-d">
+                                インフラの差異を GKE Enterprise
+                                が抽象化するため、開発チームは単一のパイプラインでどのクラウド環境にもデプロイできる。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="anthos-point">
+                        <div class="anthos-icon">🕸️</div>
+                        <div>
+                            <div class="anthos-point-h">
+                                Anthos Service Mesh（サービスメッシュ）
+                            </div>
+                            <div class="anthos-point-d">
+                                Istio
+                                ベースのサービスメッシュでマイクロサービス間通信を可視化・制御。mTLS
+                                で全通信を自動暗号化し、ゼロトラストネットワークを実現。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <strong>💡 Google Distributed Cloud：</strong>
+                    Google
+                    のインフラ・ソフトウェアをそのまま自社データセンターに設置するオプション。
+                    工場・病院・銀行など、データをオンプレに置く必要があるユースケースや、
+                    超低レイテンシが必要なエッジコンピューティングシナリオに対応します。
+                </div>
+
+                <div class="bp">
+                    <div class="bp-title">✅ ベストプラクティス：ハイブリッド / マルチクラウド</div>
+                    <ul>
+                        <li>
+                            ハイブリッド環境の複雑さを増やす前に、各環境に残す<strong>ビジネス上の明確な理由</strong>を定義する。
+                        </li>
+                        <li>
+                            Anthos Config Management で<strong
+                                >セキュリティポリシーを Git で一元管理</strong
+                            >し、全クラスタに均一に適用する。
+                        </li>
+                        <li>
+                            Connect Gateway でアクセス認証を
+                            <strong>IAM に統一</strong>し、環境ごとの認証管理のサイロを排除する。
+                        </li>
+                        <li>
+                            クロスクラウドの通信には暗号化を必須とし、Anthos Service Mesh の mTLS
+                            を活用する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs"
+                        >https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs</a
+                    >
+                    <a href="https://cloud.google.com/anthos/docs"
+                        >https://cloud.google.com/anthos/docs</a
+                    >
+                    <a href="https://services.google.com/fh/files/blogs/anthos_white_paper.pdf"
+                        >https://services.google.com/fh/files/blogs/anthos_white_paper.pdf</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ DEVOPS ═══════════════ -->
+        <section id="devops" class="section">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.6 DevOps & SRE</div>
+                    <h2 class="sh-title">DevOps と SRE の原則<span class="exam-tag">頻出</span></h2>
+                    <p class="sh-desc">
+                        CI/CD パイプライン・SLO/SLA/SLI・エラーバジェット・DORA
+                        メトリクスを理解します。
+                    </p>
+                </div>
+
+                <!-- CI/CD PIPELINE -->
+                <div class="sub-title">
+                    CI/CD パイプライン（継続的インテグレーション / 継続的デリバリー）
+                </div>
+                <div class="g2 fade-up" style="margin-bottom: 2rem">
+                    <div class="card">
+                        <div class="card-title" style="margin-bottom: 1.2rem">
+                            Google Cloud の CI/CD ツールチェーン
+                        </div>
+                        <div class="steps">
+                            <div class="step">
+                                <div
+                                    class="step-n"
+                                    style="
+                                        background: var(--terracotta);
+                                        font-size: 1rem;
+                                        width: 40px;
+                                        height: 40px;
+                                    "
+                                >
+                                    ①
+                                </div>
+                                <div class="step-c">
+                                    <div class="step-h">Secure Source Manager（ソース管理）</div>
+                                    <div class="step-p">
+                                        GitHub 互換の Git リポジトリ。IAM で GCP 権限と統合。Cloud
+                                        Build と緊密に統合されたマネージドソースコード管理。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div
+                                    class="step-n"
+                                    style="
+                                        background: var(--sky);
+                                        font-size: 1rem;
+                                        width: 40px;
+                                        height: 40px;
+                                    "
+                                >
+                                    ②
+                                </div>
+                                <div class="step-c">
+                                    <div class="step-h">Cloud Build（自動ビルド・テスト）</div>
+                                    <div class="step-p">
+                                        コミットをトリガーに自動ビルド・ユニットテスト・セキュリティスキャン・コンテナイメージ作成を実行。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div
+                                    class="step-n"
+                                    style="
+                                        background: var(--sage);
+                                        font-size: 1rem;
+                                        width: 40px;
+                                        height: 40px;
+                                    "
+                                >
+                                    ③
+                                </div>
+                                <div class="step-c">
+                                    <div class="step-h">Artifact Registry（イメージ保管）</div>
+                                    <div class="step-p">
+                                        コンテナイメージを安全に保管。<strong>脆弱性スキャンを自動実行</strong>し、Binary
+                                        Authorization でセキュアなイメージのみデプロイを許可。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div
+                                    class="step-n"
+                                    style="
+                                        background: var(--amber);
+                                        font-size: 1rem;
+                                        width: 40px;
+                                        height: 40px;
+                                    "
+                                >
+                                    ④
+                                </div>
+                                <div class="step-c">
+                                    <div class="step-h">Cloud Deploy（継続的デリバリー）</div>
+                                    <div class="step-p">
+                                        dev → staging → production
+                                        のデプロイパイプライン。<strong>本番前の人間による承認ワークフロー</strong>・カナリアデプロイ・自動ロールバック。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="hl-box" style="margin-bottom: 1.5rem">
+                            <div class="hl-box-title">🔄 DevOps の本質</div>
+                            <p>
+                                開発（「早く新機能をリリース」）と運用（「安定性を維持」）の壁を打破し、自動化・継続的フィードバック・責任の共有を通じてソフトウェアのデリバリーを加速させる<strong
+                                    style="color: var(--amber)"
+                                    >文化的ムーブメント</strong
+                                >。
+                            </p>
+                        </div>
+                        <div class="card">
+                            <div class="card-title" style="margin-bottom: 0.8rem">
+                                DORA 4 つのキーメトリクス
+                            </div>
+                            <ul
+                                style="list-style: none; font-size: 1rem; color: var(--text-sub)"
+                            >
+                                <li
+                                    style="
+                                        padding: 0.5rem 0;
+                                        border-bottom: 1px solid var(--border-light);
+                                    "
+                                >
+                                    📊 <strong>デプロイ頻度</strong> —
+                                    本番へのデプロイ回数（高いほど良い）
+                                </li>
+                                <li
+                                    style="
+                                        padding: 0.5rem 0;
+                                        border-bottom: 1px solid var(--border-light);
+                                    "
+                                >
+                                    ⏱️ <strong>変更リードタイム</strong> —
+                                    コミットから本番まで（短いほど良い）
+                                </li>
+                                <li
+                                    style="
+                                        padding: 0.5rem 0;
+                                        border-bottom: 1px solid var(--border-light);
+                                    "
+                                >
+                                    ❌ <strong>変更失敗率</strong> —
+                                    デプロイが失敗する割合（低いほど良い）
+                                </li>
+                                <li style="padding: 0.5rem 0">
+                                    🔧 <strong>平均復旧時間 (MTTR)</strong> —
+                                    障害から回復まで（短いほど良い）
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SRE CONCEPTS -->
+                <div class="sub-title">SRE の重要概念<span class="exam-tag">頻出</span></div>
+                <div class="sre-grid fade-up" style="margin-bottom: 1.5rem">
+                    <div class="sre-card">
+                        <div class="sre-abbr">SLI</div>
+                        <div class="sre-name">Service Level Indicator（指標）</div>
+                        <div class="sre-desc">
+                            実際に測定するメトリクス。エラー率・レイテンシ・可用性の実測値。「実際に何%稼働していたか」。
+                        </div>
+                    </div>
+                    <div class="sre-card">
+                        <div class="sre-abbr">SLO</div>
+                        <div class="sre-name">Service Level Objective（目標）</div>
+                        <div class="sre-desc">
+                            組織内部の目標値。SLA より高い基準に設定。例：「内部目標は 99.95%
+                            可用性」。
+                        </div>
+                    </div>
+                    <div class="sre-card">
+                        <div class="sre-abbr">SLA</div>
+                        <div class="sre-name">Service Level Agreement（契約）</div>
+                        <div class="sre-desc">
+                            ユーザーへの公式な約束・契約。SLO より低く設定。例：「99.9%
+                            を下回った場合は返金する」。
+                        </div>
+                    </div>
+                    <div class="sre-card">
+                        <div class="sre-abbr">Error<br />Budget</div>
+                        <div class="sre-name">エラーバジェット（許容停止量）</div>
+                        <div class="sre-desc">
+                            SLO が 99.9% なら 0.1% = 月間約 43
+                            分まで停止が許容される「予算」。残っていれば新機能デプロイ可、枯渇しそうなら安定化優先。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <strong>💡 SRE と DevOps の関係：</strong>
+                    「<code>class SRE implements interface DevOps</code>」。 SRE は DevOps
+                    の抽象的な理念を、具体的なソフトウェアエンジニアリングの実践を通じてシステム運用に適用したものです。
+                    両者は競合する戦略ではなく、<strong>同じコインの裏表</strong>です。
+                </div>
+
+                <div class="bp">
+                    <div class="bp-title">✅ ベストプラクティス：DevOps / CI/CD / SRE</div>
+                    <ul>
+                        <li>
+                            本番デプロイは必ず
+                            <strong>Cloud Deploy の承認ワークフロー</strong
+                            >を通じて実施し、手動デプロイを排除する。
+                        </li>
+                        <li>
+                            Artifact Registry の<strong>脆弱性スキャン</strong>と Binary
+                            Authorization でセキュアなイメージのみデプロイを許可（Shift-Left
+                            Security）。
+                        </li>
+                        <li>
+                            SLO
+                            を設定し、<strong>エラーバジェット</strong>に基づいてリリース速度と安定性のバランスをデータで管理する。
+                        </li>
+                        <li>
+                            Infrastructure as Code（Terraform）でインフラをコード化し、<strong
+                                >GitOps</strong
+                            >
+                            で設定変更を管理する。
+                        </li>
+                        <li>
+                            DORA
+                            メトリクスを定期的に測定し、組織のソフトウェアデリバリー能力を継続的に改善する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/build/docs"
+                        >https://cloud.google.com/build/docs</a
+                    >
+                    <a href="https://cloud.google.com/deploy/docs"
+                        >https://cloud.google.com/deploy/docs</a
+                    >
+                    <a href="https://cloud.google.com/artifact-registry/docs"
+                        >https://cloud.google.com/artifact-registry/docs</a
+                    >
+                    <a href="https://sre.google/sre-book/table-of-contents/"
+                        >https://sre.google/sre-book/table-of-contents/</a
+                    >
+                    <a href="https://cloud.google.com/sre">https://cloud.google.com/sre</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ API ═══════════════ -->
+        <section id="api" class="section section-alt">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">4.4 API Management</div>
+                    <h2 class="sh-title">API の戦略的価値と Apigee</h2>
+                    <p class="sh-desc">
+                        API をビジネス資産として捉え、Apigee
+                        による収益化・セキュリティ・ガバナンスを理解します。
+                    </p>
+                </div>
+
+                <!-- API DIAGRAM -->
+                <div class="api-diagram fade-up" style="margin-bottom: 2rem">
+                    <div
+                        style="
+                            font-family: var(--ff-mono);
+                            font-size: 1rem;
+                            color: rgba(255, 255, 255, 0.35);
+                            margin-bottom: 1rem;
+                            letter-spacing: 0.1em;
+                            text-transform: uppercase;
+                        "
+                    >
+                        API ファーストアーキテクチャ
+                    </div>
+                    <div class="api-row">
+                        <div class="api-box">Web App</div>
+                        <div class="api-box">モバイル App</div>
+                        <div class="api-box">パートナー API</div>
+                        <div class="api-box">IoT デバイス</div>
+                    </div>
+                    <div class="api-connector">↕ REST / gRPC</div>
+                    <div class="api-layer api-layer-main">
+                        Apigee API Management
+                        レイヤー（認証・認可・レート制限・モニタリング・収益化）
+                    </div>
+                    <div class="api-connector">↕</div>
+                    <div class="api-row">
+                        <div class="api-box">レガシーシステム（メインフレーム）</div>
+                        <div class="api-box">Cloud Run（マイクロサービス）</div>
+                        <div class="api-box">GKE（コンテナ）</div>
+                    </div>
+                    <div
+                        style="
+                            font-size: 1rem;
+                            color: rgba(255, 255, 255, 0.4);
+                            margin-top: 0.8rem;
+                        "
+                    >
+                        バックエンドに変更を加えずに、API レイヤーで制御・収益化が可能
+                    </div>
+                </div>
+
+                <div class="g2 fade-up" style="margin-bottom: 1.5rem">
+                    <div class="card">
+                        <div class="card-title">API のビジネス価値</div>
+                        <div class="card-body" style="margin-bottom: 1rem">
+                            API
+                            は単なる技術インターフェースではなく、データやサービスを収益化可能な「デジタル資産」として活用できます。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding-left: 1.2rem;
+                                    position: relative;
+                                    margin-bottom: 0.4rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                ><strong>エコシステム拡大：</strong>外部開発者・パートナーが API
+                                を使って新アプリを構築 → 自社ビジネスエコシステムが成長
+                            </li>
+                            <li
+                                style="
+                                    padding-left: 1.2rem;
+                                    position: relative;
+                                    margin-bottom: 0.4rem;
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                ><strong>レガシーの抽象化：</strong>古いバックエンドを API でラップ
+                                → フロントエンドを中断せずにバックエンドを段階的に移行
+                            </li>
+                            <li style="padding-left: 1.2rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--terracotta)"
+                                    >›</span
+                                ><strong>収益化：</strong>API
+                                利用量に応じた従量課金モデルやレベニューシェアを実装
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Apigee の主な機能</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            50 種類以上の組み込みポリシーで API
+                            トラフィックをプロキシレイヤーで制御。バックエンドにコード変更不要。
+                        </div>
+                        <div class="g2" style="gap: 0.8rem">
+                            <div>
+                                <div
+                                    style="
+                                        font-size: 1rem;
+                                        font-weight: 700;
+                                        color: var(--terracotta);
+                                        margin-bottom: 0.4rem;
+                                    "
+                                >
+                                    🔐 セキュリティ
+                                </div>
+                                <ul
+                                    style="
+                                        list-style: none;
+                                        font-size: 1rem;
+                                        color: var(--text-sub);
+                                    "
+                                >
+                                    <li style="margin-bottom: 0.2rem">OAuth 2.0・API キー認証</li>
+                                    <li style="margin-bottom: 0.2rem">レート制限・クォータ管理</li>
+                                    <li>ML ボット検出（Advanced API Security）</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div
+                                    style="
+                                        font-size: 1rem;
+                                        font-weight: 700;
+                                        color: var(--sage);
+                                        margin-bottom: 0.4rem;
+                                    "
+                                >
+                                    💰 収益化
+                                </div>
+                                <ul
+                                    style="
+                                        list-style: none;
+                                        font-size: 1rem;
+                                        color: var(--text-sub);
+                                    "
+                                >
+                                    <li style="margin-bottom: 0.2rem">
+                                        従量課金 Rate Plans の設定
+                                    </li>
+                                    <li style="margin-bottom: 0.2rem">レベニューシェア機能</li>
+                                    <li>開発者ポータル（自動オンボーディング）</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <strong>🔐 WAAP（Web Application and API Protection）：</strong>
+                    Apigee + <strong>Cloud Armor</strong>（OWASP Top 10 防御・DDoS 緩和）+
+                    <strong>reCAPTCHA Enterprise</strong> を組み合わせることで、
+                    エッジからアプリケーション層まで多層防御の API
+                    セキュリティアーキテクチャを構築できます。
+                </div>
+
+                <div class="bp">
+                    <div class="bp-title">✅ ベストプラクティス：API 管理</div>
+                    <ul>
+                        <li>
+                            レガシーシステムをいきなり廃止しようとせず、<strong
+                                >Apigee で API ファサード</strong
+                            >を設けてフロントエンドを守りながら段階移行する。
+                        </li>
+                        <li>
+                            Advanced API Security で<strong>シャドウ API（管理外の API）</strong
+                            >を発見し、組織の脆弱性を可視化する。
+                        </li>
+                        <li>
+                            開発者ポータルで外部パートナーの<strong>セルフサービスオンボーディング</strong>を実現し、API
+                            エコシステムを拡大する。
+                        </li>
+                        <li>
+                            API 利用統計を分析して<strong>使われていない API の廃止</strong
+                            >と収益性の高い API の投資優先度付けを行う。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/apigee">https://cloud.google.com/apigee</a>
+                    <a href="https://cloud.google.com/endpoints/docs"
+                        >https://cloud.google.com/endpoints/docs</a
+                    >
+                    <a
+                        href="https://cloud.google.com/files/apigee/apigee-definite-guide-to-api-management-ebook.pdf"
+                        >https://cloud.google.com/files/apigee/apigee-definite-guide-to-api-management-ebook.pdf</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ COST ═══════════════ -->
+        <section id="cost" class="section">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">Cost Optimization</div>
+                    <h2 class="sh-title">コスト最適化の実践（FinOps）</h2>
+                    <p class="sh-desc">
+                        クラウドコストを可視化・最適化・継続管理するためのツールとベストプラクティス。
+                    </p>
+                </div>
+
+                <div class="g4 fade-up" style="margin-bottom: 1.5rem">
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(196, 89, 58, 0.1)">🎯</div>
+                        <div class="card-title" style="font-size: 1rem">適切なサービス選択</div>
+                        <div class="card-body" style="font-size: 1rem">
+                            IaaS より
+                            PaaS・サーバーレスでインフラ管理コストを削減。適切なマシンタイプで過剰スペックを回避。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(74, 122, 92, 0.1)">📏</div>
+                        <div class="card-title" style="font-size: 1rem">適切なサイジング</div>
+                        <div class="card-body" style="font-size: 1rem">
+                            Recommender
+                            が実際の使用量を分析して最適化提案を自動表示。過剰プロビジョニングを解消する。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(58, 111, 160, 0.1)">📈</div>
+                        <div class="card-title" style="font-size: 1rem">
+                            需要に合わせたスケーリング
+                        </div>
+                        <div class="card-body" style="font-size: 1rem">
+                            オートスケーリングで使用量に応じて増減。開発 VM は夜間・週末に Instance
+                            Schedules で自動停止。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(212, 136, 42, 0.1)">💳</div>
+                        <div class="card-title" style="font-size: 1rem">最適な価格モデル</div>
+                        <div class="card-body" style="font-size: 1rem">
+                            CUD（最大57%割引）・Spot
+                            VM（最大91%割引）・SUD（自動適用・最大30%）を組み合わせる。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warn">
+                    <strong>⚠️ FinOps の重要性：</strong>
+                    クラウドコストの管理は IT 部門だけの問題ではありません。FinOps（Finance +
+                    DevOps）では、
+                    <strong>技術・財務・ビジネスチームが共同でクラウドコストを管理する文化</strong
+                    >を醸成します。
+                    すべてのリソースにラベル（env・team・cost-center）を付与し、BigQuery
+                    でチーム別コストを可視化することが基本です。
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/cost-management/docs/best-practices"
+                        >https://cloud.google.com/cost-management/docs/best-practices</a
+                    >
+                    <a href="https://cloud.google.com/recommender/docs"
+                        >https://cloud.google.com/recommender/docs</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ CHECKLIST ═══════════════ -->
+        <section id="checklist" class="section section-alt">
+            <div class="container">
+                <div class="sh fade-up">
+                    <div class="sh-tag">Exam Preparation</div>
+                    <h2 class="sh-title">試験直前チェックリスト＆頻出パターン</h2>
+                    <p class="sh-desc">
+                        CDL 試験 Section 4
+                        の重要ポイントを確認し、頻出問題パターンで理解を深めましょう。
+                    </p>
+                </div>
+
+                <!-- CHECKLIST -->
+                <div class="sub-title">Section 4 チェックリスト</div>
+                <div class="g2 fade-up" style="margin-bottom: 2.5rem">
+                    <div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--terracotta);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            移行戦略・モダナイゼーション
+                        </div>
+                        <div class="checklist" style="margin-bottom: 1.5rem">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                7つのR（Rehost/Replatform/Refactor/Rebuild/Repurchase/Retire/Retain）を具体例で説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Retain（保持）とRetire（廃止）の違いを明確に説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                「Lift & Shift ＝ Rehost」と「Move and Improve ＝
+                                Refactor」の対応関係を理解している
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                CAMP フレームワークの 4 フェーズを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                モダナイゼーションの 3 段階（Stage 1-3）を説明できる
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--terracotta);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            コンピューティング
+                        </div>
+                        <div class="checklist">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                コンピューティングサービス選択のデシジョンツリーを即答できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                VM とコンテナの違いをビジネス価値を含めて説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                GKE Autopilot vs Standard の使い分け（GPU
+                                が必要→Standard）を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Spot VM が「最大 91%
+                                割引・中断可能ワークロード向け」であることを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Cloud Run と Cloud Functions の違いと使い分けを説明できる
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--terracotta);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            ネットワーク・ハイブリッド
+                        </div>
+                        <div class="checklist" style="margin-bottom: 1.5rem">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Cloud VPN（安価・インターネット経由）と Cloud
+                                Interconnect（専用線・高コスト）の選択基準を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Shared VPC の目的（ネットワーク中央集権化）を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                GKE Enterprise（旧
+                                Anthos）がマルチクラウドを「単一の管理画面」で統合管理することを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                マルチクラウドを選ぶ 3
+                                つのビジネス理由（ロックイン回避・データ主権・投資保護）を説明できる
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--terracotta);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            DevOps / SRE / API
+                        </div>
+                        <div class="checklist">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                CI/CD パイプライン（Cloud Build → Artifact Registry → Cloud
+                                Deploy）を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                SLI・SLO・SLA・エラーバジェットの違いを説明できる（SLA < SLO
+                                の関係）
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                DORA の 4 つのメトリクスを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Apigee がレガシーシステムの「API
+                                ファサード」として機能することを説明できる
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXAM PATTERNS -->
+                <div class="sub-title">頻出問題パターンと解法</div>
+                <div class="g2 fade-up">
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">01</div>
+                            <div class="ptn-title">コンピューティングサービスの選択</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「急激なトラフィックの増減があるモバイルアプリの API
+                                バックエンドを構築したい。Node.js
+                                コンテナで開発。インフラ管理工数を最小化したい。」
+                            </div>
+                            <div class="ptn-ans">
+                                <ol>
+                                    <li>Node.js コンテナ → コンテナサービスを使用</li>
+                                    <li>インフラ管理を最小化 → サーバーレス</li>
+                                    <li>
+                                        HTTP API + 急激な増減 → Cloud Run の 0〜N スケーリングが最適
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="ptn-result">答え：Cloud Run（サーバーレスコンテナ）</div>
+                        </div>
+                    </div>
+
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">02</div>
+                            <div class="ptn-title">ハイブリッド接続の選択</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「金融機関が基幹システム（オンプレ）と Google Cloud
+                                の分析基盤を接続したい。1日に数十 TB
+                                のデータを転送。低レイテンシ・高帯域・安定性が必要。」
+                            </div>
+                            <div class="ptn-ans">
+                                <ol>
+                                    <li>大量データ（数十 TB）→ 高帯域が必要</li>
+                                    <li>低レイテンシ・安定性 → インターネット経由は不適切</li>
+                                    <li>物理専用線 → Dedicated Interconnect が正解</li>
+                                </ol>
+                            </div>
+                            <div class="ptn-result">答え：Dedicated Interconnect</div>
+                        </div>
+                    </div>
+
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">03</div>
+                            <div class="ptn-title">移行戦略の選択</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「オンプレの PostgreSQL
+                                データベースをクラウドへ移行したい。アーキテクチャはそのままで、OS
+                                やパッチ管理の運用負荷を削減したい。」
+                            </div>
+                            <div class="ptn-ans">
+                                <ol>
+                                    <li>アーキテクチャはそのまま → 大規模なコード変更なし</li>
+                                    <li>マネージドサービスへの置き換え → Cloud SQL</li>
+                                    <li>運用負荷削減 = Replatform（一部最適化）</li>
+                                </ol>
+                            </div>
+                            <div class="ptn-result">答え：Replatform（Lift & Optimize）</div>
+                        </div>
+                    </div>
+
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">04</div>
+                            <div class="ptn-title">GKE モードの選択</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「ML エンジニアチームが GPU を使ったモデル学習ジョブを GKE
+                                で実行したい。GPU ノードプールの設定を細かく制御する必要がある。」
+                            </div>
+                            <div class="ptn-ans">
+                                <ol>
+                                    <li>GPU ノードが必要 → 特殊なノード設定が必要</li>
+                                    <li>細かいノード制御 → Autopilot では制限がある</li>
+                                    <li>カスタムノードプール管理 → Standard が必要</li>
+                                </ol>
+                            </div>
+                            <div class="ptn-result">答え：GKE Standard（細粒度制御）</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONFUSION TABLE -->
+                <div class="sub-title" style="margin-top: 3rem">混同しやすいポイントの整理</div>
+                <div class="cmp-wrap fade-up">
+                    <table class="cmp-table">
+                        <thead>
+                            <tr>
+                                <th>混同パターン</th>
+                                <th>✅ 正しい理解</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cloud Run = Cloud Functions</td>
+                                <td>
+                                    Cloud Run はコンテナ化されたアプリ全体、Cloud Functions
+                                    はイベント駆動の関数（コード片）。HTTP API → Cloud
+                                    Run、ファイルアップロード処理 → Cloud Functions
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Autopilot = サーバーレス</td>
+                                <td>
+                                    Autopilot はノード管理を Google に委任するが Kubernetes
+                                    を使用。Cloud Run がサーバーレス。Autopilot
+                                    はコンテナを常時稼働できる
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cloud VPN = Cloud Interconnect</td>
+                                <td>
+                                    VPN はインターネット経由（安価・低帯域）、Interconnect
+                                    は物理専用線（高コスト・高帯域・低レイテンシ）。大量データ・低レイテンシ
+                                    → Interconnect
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Anthos = GKE</td>
+                                <td>
+                                    GKE は Google Cloud 上の Kubernetes サービス。Anthos（GKE
+                                    Enterprise）はオンプレ・AWS・Azure
+                                    も含む多環境を統合管理するプラットフォーム
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SLO = SLA</td>
+                                <td>
+                                    SLO は組織内目標（高い）、SLA はユーザーへの契約（SLO
+                                    より低く設定）。SLA を破ると返金等のペナルティが発生する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Retire（廃止）= Retain（保持）</td>
+                                <td>
+                                    Retire はビジネス価値のないシステムを削除してコスト削減。Retain
+                                    はデータ主権・規制上の理由で意図的にオンプレに残す戦略的選択
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Rehost = Refactor</td>
+                                <td>
+                                    Rehost（Lift &
+                                    Shift）はコード変更なしのそのまま移行。Refactor（Move &
+                                    Improve）はクラウドネイティブになるようアーキテクチャを再設計する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ FOOTER ═══════════════ -->
+        <footer>
+            <div class="container">
+                <div class="footer-title">
+                    Google Cloud Digital Leader — Section 4 完全攻略ガイド
+                </div>
+                <p style="margin-bottom: 1rem">
+                    本ガイドは
+                    <a
+                        href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf"
+                        >Cloud Digital Leader 公式試験ガイド</a
+                    >
+                    に完全対応しています。
+                </p>
+                <div class="footer-links">
+                    <a href="https://cloud.google.com/learn/certification/cloud-digital-leader"
+                        >CDL 認定ページ</a
+                    >
+                    <span style="color: rgba(255, 255, 255, 0.15)">|</span>
+                    <a href="https://cloud.google.com/solutions/application-modernization"
+                        >アプリ モダナイゼーション</a
+                    >
+                    <span style="color: rgba(255, 255, 255, 0.15)">|</span>
+                    <a href="https://cloud.google.com/run/docs">Cloud Run Docs</a>
+                    <span style="color: rgba(255, 255, 255, 0.15)">|</span>
+                    <a href="https://cloud.google.com/kubernetes-engine/docs">GKE Docs</a>
+                    <span style="color: rgba(255, 255, 255, 0.15)">|</span>
+                    <a href="https://sre.google/sre-book/table-of-contents/">Google SRE Book</a>
+                    <span style="color: rgba(255, 255, 255, 0.15)">|</span>
+                    <a href="https://cloud.google.com/apigee">Apigee</a>
+                </div>
+                <p style="font-size: 1rem">
+                    ※本ガイドは学習目的で作成されました。試験の最新情報は必ず公式ページでご確認ください。
+                </p>
+            </div>
+        </footer>
+
+        <script>
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('visible');
+                            observer.unobserve(e.target);
+                        }
+                    });
+                },
+                { threshold: 0.08 },
+            );
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.sticky-nav a');
+            window.addEventListener('scroll', () => {
+                let cur = '';
+                sections.forEach((s) => {
+                    if (window.scrollY >= s.offsetTop - 80) cur = s.id;
+                });
+                navLinks.forEach((a) => {
+                    a.style.color = '';
+                    a.style.background = '';
+                    if (a.getAttribute('href') === `#${cur}`) {
+                        a.style.color = '#fff';
+                        a.style.background = 'rgba(196,89,58,0.2)';
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
