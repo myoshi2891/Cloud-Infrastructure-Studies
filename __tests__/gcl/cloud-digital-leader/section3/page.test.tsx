@@ -34,4 +34,14 @@ describe('Cloud Digital Leader Section 3 Page', () => {
         expect(screen.getByText('AutoML の革命的な点')).toBeInTheDocument();
         expect(screen.getByText(/BigQuery ML の革命的な価値/)).toBeInTheDocument();
     });
+
+    it('renders Section 4: RESPONSIBLE AI', () => {
+        render(<Page />);
+        expect(
+            screen.getByRole('heading', { level: 2, name: /責任ある AI/i })
+        ).toBeInTheDocument();
+        expect(screen.getByText(/なぜ責任ある AI が必要か/)).toBeInTheDocument();
+        expect(screen.getByText('試験直前チェックリスト')).toBeInTheDocument();
+        expect(screen.getByText('よく出る問題パターンと解法')).toBeInTheDocument();
+    });
 });

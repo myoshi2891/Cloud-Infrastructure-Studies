@@ -7,3 +7,7 @@ export * from './Section3_AutoML';
 export * from './Section3_VertexAI';
 export * from './Section3_BQML';
 export * from './Section3_TensorFlow';
+export * from './Section4';
+export * from './Section4_Responsible';
+export * from './Section4_Checklist';
+export * from './Section4_Patterns';
