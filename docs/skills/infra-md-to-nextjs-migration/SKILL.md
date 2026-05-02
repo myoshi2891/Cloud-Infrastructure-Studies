@@ -40,7 +40,7 @@ app/
 移行規模が大きい場合（複数セクション・新ページ作成など）はプランモード（`enter_plan_mode`）を使用して計画を立てる。
 **プランモード使用時は以下を必須とする:**
 
-1. **計画 MD ファイルを作成する** (`docs/plans/<exam>-nextjs-migration.md`)
+1. **計画および進捗を MIGRATION_PROGRESS.md に作成・更新する**
     - 他の AI エージェントが後続処理を引き継げる粒度で記述する
     - フェーズ一覧・各フェーズの成果物・完了基準を明記する
 2. **フェーズ単位でコミットする**
@@ -262,10 +262,8 @@ Markdown内の「参考やリンク」セクション（公式ドキュメント
 
 ## 進捗の確認
 
-セッションをまたぐ場合は対象ページの移行計画書を確認する。
-計画 MD が存在しない場合は、プランモードで作成してから実装を開始する。
+セッションをまたぐ場合は、必ずルートディレクトリの `MIGRATION_PROGRESS.md` を確認・更新し、進捗とコンテキストを引き継ぐこと。
 
-既存の計画 MD:
+既存の進行状況管理:
 
-- CDL: `docs/plans/cdl-nextjs-migration.md`
-- AWS（将来）: `docs/plans/aws-<exam>-nextjs-migration.md`
+- MIGRATION_PROGRESS.md
