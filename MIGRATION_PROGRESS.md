@@ -1,6 +1,7 @@
 # Migration Progress
 
-HTMLファイルから Next.js / React コンポーネントへの移行作業の進捗を管理するファイルです。
+HTMLファイルから Next.js / React コンポーネントへの移行作業の進捗と引き継ぎコンテキストを管理する**統合ファイル（Single Source of Truth）**です。
+※ `HANDOVER_*.md` や `docs/plans/` に分散していた進捗・計画はすべてこのファイルおよび `GEMINI.md` の運用ルールに統合されました。
 各セッションの終了前にこのファイルを更新し、コンテキストを引き継ぎます。
 
 ## 現在地
