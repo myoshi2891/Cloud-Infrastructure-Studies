@@ -1,0 +1,3604 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Google Cloud Digital Leader | Section 3: AI によるイノベーション 完全攻略ガイド
+        </title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+            :root {
+                --bg-primary: #060a14;
+                --bg-secondary: #0b1220;
+                --bg-card: #0f1829;
+                --bg-card-hover: #162035;
+                --accent-blue: #4285f4;
+                --accent-teal: #00bcd4;
+                --accent-green: #34a853;
+                --accent-yellow: #fbbc04;
+                --accent-red: #ea4335;
+                --accent-purple: #7c4dff;
+                --text-primary: #e8edf5;
+                --text-secondary: #c0d9ff;
+                --text-muted: #9fcdff;
+                --border: #1e2d45;
+                --border-glow: rgba(66, 133, 244, 0.3);
+                --glow-blue: rgba(66, 133, 244, 0.15);
+                --glow-teal: rgba(0, 188, 212, 0.15);
+                --font-display: 'Syne', sans-serif;
+                --font-body: 'Noto Sans JP', sans-serif;
+                --font-mono: 'IBM Plex Mono', monospace;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                font-family: var(--font-body);
+                font-weight: 400;
+                font-size: 1rem;
+                line-height: 1.7;
+                overflow-x: hidden;
+            }
+
+            /* ─── HERO ─────────────────────────────────────────────── */
+            .hero {
+                position: relative;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 4rem 2rem;
+                overflow: hidden;
+            }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        ellipse 80% 60% at 50% 0%,
+                        rgba(66, 133, 244, 0.18) 0%,
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        ellipse 50% 40% at 80% 80%,
+                        rgba(0, 188, 212, 0.12) 0%,
+                        transparent 50%
+                    ),
+                    radial-gradient(
+                        ellipse 40% 30% at 20% 70%,
+                        rgba(124, 77, 255, 0.1) 0%,
+                        transparent 50%
+                    );
+                pointer-events: none;
+            }
+
+            .hero-grid {
+                position: absolute;
+                inset: 0;
+                background-image:
+                    linear-gradient(rgba(66, 133, 244, 0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(66, 133, 244, 0.05) 1px, transparent 1px);
+                background-size: 48px 48px;
+                mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+            }
+
+            .hero-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(66, 133, 244, 0.12);
+                border: 1px solid rgba(66, 133, 244, 0.3);
+                color: var(--accent-blue);
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                padding: 0.4rem 1rem;
+                border-radius: 100px;
+                margin-bottom: 2rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                animation: fadeDown 0.6s ease both;
+            }
+
+            .hero-badge::before {
+                content: '';
+                width: 7px;
+                height: 7px;
+                background: var(--accent-blue);
+                border-radius: 50%;
+                box-shadow: 0 0 10px var(--accent-blue);
+                animation: pulse 2s ease-in-out infinite;
+            }
+
+            .hero-title {
+                font-family: var(--font-display);
+                font-size: clamp(2.4rem, 6vw, 4.5rem);
+                font-weight: 800;
+                line-height: 1.1;
+                margin-bottom: 1rem;
+                animation: fadeDown 0.7s 0.1s ease both;
+            }
+
+            .hero-title .highlight {
+                background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .hero-subtitle {
+                font-size: 1.15rem;
+                color: var(--text-secondary);
+                max-width: 640px;
+                margin-bottom: 3rem;
+                animation: fadeDown 0.7s 0.2s ease both;
+            }
+
+            .hero-stats {
+                display: flex;
+                gap: 2.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                animation: fadeDown 0.7s 0.3s ease both;
+            }
+
+            .stat {
+                text-align: center;
+            }
+
+            .stat-number {
+                font-family: var(--font-display);
+                font-size: 2.2rem;
+                font-weight: 800;
+                background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .stat-label {
+                font-size: 1rem;
+                color: var(--text-muted);
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+
+            /* ─── NAV ─────────────────────────────────────────────── */
+            .nav {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: rgba(6, 10, 20, 0.85);
+                backdrop-filter: blur(16px);
+                border-bottom: 1px solid var(--border);
+                padding: 0.85rem 2rem;
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav a {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                color: var(--text-muted);
+                text-decoration: none;
+                padding: 0.35rem 0.85rem;
+                border-radius: 6px;
+                border: 1px solid transparent;
+                transition: all 0.2s;
+                letter-spacing: 0.03em;
+            }
+
+            .nav a:hover {
+                color: var(--accent-blue);
+                border-color: rgba(66, 133, 244, 0.3);
+                background: rgba(66, 133, 244, 0.08);
+            }
+
+            /* ─── LAYOUT ─────────────────────────────────────────── */
+            .container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0 2rem;
+            }
+
+            section {
+                padding: 5rem 0;
+            }
+
+            /* ─── SECTION HEADERS ────────────────────────────────── */
+            .section-header {
+                margin-bottom: 3rem;
+            }
+
+            .section-tag {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                color: var(--accent-teal);
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-bottom: 0.6rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .section-tag::before {
+                content: '';
+                display: block;
+                width: 20px;
+                height: 1px;
+                background: var(--accent-teal);
+            }
+
+            .section-title {
+                font-family: var(--font-display);
+                font-size: clamp(1.8rem, 4vw, 2.6rem);
+                font-weight: 700;
+                line-height: 1.2;
+                margin-bottom: 1rem;
+            }
+
+            .section-desc {
+                color: var(--text-secondary);
+                max-width: 640px;
+                font-size: 1rem;
+            }
+
+            /* ─── CARDS ──────────────────────────────────────────── */
+            .card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 2rem;
+                transition: all 0.3s;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .card:hover {
+                border-color: var(--border-glow);
+                background: var(--bg-card-hover);
+                transform: translateY(-3px);
+                box-shadow:
+                    0 20px 40px rgba(0, 0, 0, 0.3),
+                    0 0 40px var(--glow-blue);
+            }
+
+            .card:hover::before {
+                opacity: 1;
+            }
+
+            .card-icon {
+                width: 52px;
+                height: 52px;
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.6rem;
+                margin-bottom: 1.2rem;
+                flex-shrink: 0;
+            }
+
+            .card-title {
+                font-family: var(--font-display);
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin-bottom: 0.7rem;
+            }
+
+            .card-desc {
+                color: var(--text-secondary);
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+
+            .grid-2 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+            }
+            .grid-3 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            .grid-4 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1.2rem;
+            }
+
+            /* ─── HIERARCHY DIAGRAM ───────────────────────────────── */
+            .hierarchy {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 2.5rem;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .hierarchy::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(
+                    ellipse 60% 60% at 50% 50%,
+                    rgba(66, 133, 244, 0.04) 0%,
+                    transparent 70%
+                );
+                pointer-events: none;
+            }
+
+            .hierarchy-title {
+                font-family: var(--font-display);
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+
+            .hier-wrap {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+                align-items: center;
+            }
+
+            .hier-level {
+                border-radius: 12px;
+                border: 1px solid;
+                text-align: center;
+                padding: 0.9rem 1.5rem;
+                transition: transform 0.2s;
+                cursor: default;
+                width: 100%;
+            }
+
+            .hier-level:hover {
+                transform: scale(1.02);
+            }
+
+            .hier-level .lname {
+                font-family: var(--font-display);
+                font-weight: 700;
+                font-size: 1rem;
+            }
+
+            .hier-level .ldesc {
+                font-size: 1rem;
+                opacity: 0.7;
+                margin-top: 0.2rem;
+            }
+
+            .hl-ai {
+                background: rgba(66, 133, 244, 0.1);
+                border-color: rgba(66, 133, 244, 0.4);
+                color: #82b1ff;
+                max-width: 100%;
+            }
+            .hl-ml {
+                background: rgba(0, 188, 212, 0.1);
+                border-color: rgba(0, 188, 212, 0.4);
+                color: #80deea;
+                max-width: 88%;
+            }
+            .hl-dl {
+                background: rgba(52, 168, 83, 0.1);
+                border-color: rgba(52, 168, 83, 0.4);
+                color: #a5d6a7;
+                max-width: 76%;
+            }
+            .hl-gen {
+                background: rgba(251, 188, 4, 0.1);
+                border-color: rgba(251, 188, 4, 0.4);
+                color: #ffe082;
+                max-width: 64%;
+            }
+            .hl-llm {
+                background: rgba(234, 67, 53, 0.1);
+                border-color: rgba(234, 67, 53, 0.4);
+                color: #ef9a9a;
+                max-width: 52%;
+            }
+
+            .hier-arrow {
+                color: var(--text-muted);
+                font-size: 1.2rem;
+            }
+
+            /* ─── ML APPROACHES ──────────────────────────────────── */
+            .ml-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                overflow: hidden;
+            }
+
+            .ml-card-header {
+                padding: 1.5rem 2rem;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .ml-icon {
+                width: 46px;
+                height: 46px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.4rem;
+                flex-shrink: 0;
+            }
+
+            .ml-card-body {
+                padding: 1.5rem 2rem;
+            }
+
+            .ml-card-title {
+                font-family: var(--font-display);
+                font-size: 1.1rem;
+                font-weight: 700;
+            }
+
+            .ml-card-sub {
+                font-size: 1rem;
+                color: var(--text-muted);
+                margin-top: 0.2rem;
+            }
+
+            /* ─── API TABLE ───────────────────────────────────────── */
+            .api-grid {
+                display: grid;
+                gap: 1.2rem;
+            }
+
+            .api-row {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 1.5rem 2rem;
+                display: grid;
+                grid-template-columns: 60px 1fr 1fr 1fr;
+                gap: 1.5rem;
+                align-items: start;
+                transition: all 0.25s;
+            }
+
+            .api-row:hover {
+                border-color: var(--border-glow);
+                background: var(--bg-card-hover);
+                transform: translateX(4px);
+            }
+
+            .api-emoji {
+                font-size: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 52px;
+                height: 52px;
+                background: rgba(255, 255, 255, 0.04);
+                border-radius: 12px;
+            }
+
+            .api-name {
+                font-family: var(--font-display);
+                font-size: 1rem;
+                font-weight: 700;
+                margin-bottom: 0.3rem;
+            }
+
+            .api-en {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                color: var(--accent-teal);
+                margin-bottom: 0.4rem;
+            }
+
+            .api-summary {
+                font-size: 1rem;
+                color: var(--text-secondary);
+            }
+
+            .api-col-title {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                margin-bottom: 0.5rem;
+            }
+
+            .api-list {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+
+            .api-list li {
+                font-size: 1rem;
+                color: var(--text-secondary);
+                padding-left: 1.1rem;
+                position: relative;
+            }
+
+            .api-list li::before {
+                content: '›';
+                position: absolute;
+                left: 0;
+                color: var(--accent-blue);
+            }
+
+            /* ─── COMPARISON TABLE ───────────────────────────────── */
+            .compare-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                overflow: hidden;
+                border-radius: 14px;
+                border: 1px solid var(--border);
+                font-size: 1rem;
+            }
+
+            .compare-table th {
+                background: rgba(66, 133, 244, 0.12);
+                color: var(--accent-blue);
+                font-family: var(--font-display);
+                font-weight: 700;
+                padding: 1rem 1.2rem;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+                font-size: 1rem;
+            }
+
+            .compare-table td {
+                padding: 0.9rem 1.2rem;
+                border-bottom: 1px solid rgba(30, 45, 69, 0.6);
+                color: var(--text-secondary);
+                vertical-align: top;
+            }
+
+            .compare-table tr:last-child td {
+                border-bottom: none;
+            }
+            .compare-table tr:hover td {
+                background: rgba(66, 133, 244, 0.04);
+                color: var(--text-primary);
+            }
+
+            .compare-table td:first-child {
+                color: var(--text-primary);
+                font-weight: 500;
+                font-family: var(--font-mono);
+                font-size: 1rem;
+            }
+
+            /* ─── BEST PRACTICES ─────────────────────────────────── */
+            .bp-box {
+                background: linear-gradient(
+                    135deg,
+                    rgba(52, 168, 83, 0.08),
+                    rgba(0, 188, 212, 0.06)
+                );
+                border: 1px solid rgba(52, 168, 83, 0.25);
+                border-left: 4px solid var(--accent-green);
+                border-radius: 12px;
+                padding: 1.5rem 2rem;
+                margin-top: 1.5rem;
+            }
+
+            .bp-title {
+                font-family: var(--font-display);
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--accent-green);
+                margin-bottom: 0.8rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .bp-list {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .bp-list li {
+                font-size: 1rem;
+                color: var(--text-secondary);
+                padding-left: 1.4rem;
+                position: relative;
+            }
+
+            .bp-list li::before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: var(--accent-green);
+                font-weight: 700;
+            }
+
+            /* ─── WARNING BOX ────────────────────────────────────── */
+            .warn-box {
+                background: rgba(251, 188, 4, 0.06);
+                border: 1px solid rgba(251, 188, 4, 0.25);
+                border-left: 4px solid var(--accent-yellow);
+                border-radius: 12px;
+                padding: 1.2rem 1.5rem;
+                margin-top: 1rem;
+                font-size: 1rem;
+                color: var(--text-secondary);
+            }
+
+            .warn-box strong {
+                color: var(--accent-yellow);
+            }
+
+            /* ─── INFO BOX ───────────────────────────────────────── */
+            .info-box {
+                background: rgba(66, 133, 244, 0.06);
+                border: 1px solid rgba(66, 133, 244, 0.2);
+                border-left: 4px solid var(--accent-blue);
+                border-radius: 12px;
+                padding: 1.2rem 1.5rem;
+                margin-top: 1rem;
+                font-size: 1rem;
+                color: var(--text-secondary);
+            }
+
+            .info-box strong {
+                color: var(--accent-blue);
+            }
+
+            /* ─── SOURCE BOX ─────────────────────────────────────── */
+            .source-box {
+                background: rgba(124, 77, 255, 0.06);
+                border: 1px solid rgba(124, 77, 255, 0.2);
+                border-radius: 10px;
+                padding: 1rem 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            .source-title {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                color: var(--accent-purple);
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                margin-bottom: 0.6rem;
+            }
+
+            .source-links {
+                display: flex;
+                flex-direction: column;
+                gap: 0.35rem;
+            }
+
+            .source-links a {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                color: rgba(124, 77, 255, 0.8);
+                text-decoration: none;
+                word-break: break-all;
+                transition: color 0.2s;
+            }
+
+            .source-links a:hover {
+                color: var(--accent-purple);
+                text-decoration: underline;
+            }
+
+            /* ─── BADGES ─────────────────────────────────────────── */
+            .badge {
+                display: inline-block;
+                padding: 0.2rem 0.65rem;
+                border-radius: 100px;
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                font-weight: 500;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+
+            .badge-blue {
+                background: rgba(66, 133, 244, 0.15);
+                color: var(--accent-blue);
+                border: 1px solid rgba(66, 133, 244, 0.3);
+            }
+            .badge-green {
+                background: rgba(52, 168, 83, 0.15);
+                color: var(--accent-green);
+                border: 1px solid rgba(52, 168, 83, 0.3);
+            }
+            .badge-yellow {
+                background: rgba(251, 188, 4, 0.15);
+                color: var(--accent-yellow);
+                border: 1px solid rgba(251, 188, 4, 0.3);
+            }
+            .badge-red {
+                background: rgba(234, 67, 53, 0.15);
+                color: var(--accent-red);
+                border: 1px solid rgba(234, 67, 53, 0.3);
+            }
+            .badge-teal {
+                background: rgba(0, 188, 212, 0.15);
+                color: var(--accent-teal);
+                border: 1px solid rgba(0, 188, 212, 0.3);
+            }
+            .badge-purple {
+                background: rgba(124, 77, 255, 0.15);
+                color: var(--accent-purple);
+                border: 1px solid rgba(124, 77, 255, 0.3);
+            }
+
+            /* ─── STEP FLOW ──────────────────────────────────────── */
+            .step-flow {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .step-item {
+                display: flex;
+                gap: 1.5rem;
+                position: relative;
+            }
+
+            .step-item:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                left: 22px;
+                top: 52px;
+                bottom: -12px;
+                width: 1px;
+                background: linear-gradient(to bottom, var(--accent-blue), transparent);
+            }
+
+            .step-num {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: rgba(66, 133, 244, 0.15);
+                border: 2px solid rgba(66, 133, 244, 0.4);
+                color: var(--accent-blue);
+                font-family: var(--font-display);
+                font-weight: 700;
+                font-size: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                margin-top: 0.2rem;
+            }
+
+            .step-content {
+                padding-bottom: 2rem;
+                flex: 1;
+            }
+
+            .step-title {
+                font-family: var(--font-display);
+                font-size: 1.05rem;
+                font-weight: 700;
+                margin-bottom: 0.4rem;
+            }
+
+            .step-desc {
+                font-size: 1rem;
+                color: var(--text-secondary);
+            }
+
+            /* ─── DECISION TREE ──────────────────────────────────── */
+            .decision-tree {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 2rem;
+                overflow-x: auto;
+            }
+
+            .dt-node {
+                display: inline-flex;
+                align-items: center;
+                background: rgba(66, 133, 244, 0.1);
+                border: 1px solid rgba(66, 133, 244, 0.3);
+                color: var(--accent-blue);
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .dt-answer {
+                display: inline-flex;
+                align-items: center;
+                background: rgba(52, 168, 83, 0.1);
+                border: 1px solid rgba(52, 168, 83, 0.3);
+                color: var(--accent-green);
+                border-radius: 8px;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            .dt-row {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .dt-arrow {
+                color: var(--text-muted);
+                font-size: 1.2rem;
+            }
+            .dt-label {
+                font-size: 1rem;
+                color: var(--text-muted);
+                font-style: italic;
+            }
+
+            /* ─── RESPONSIBLE AI ─────────────────────────────────── */
+            .rai-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.2rem;
+            }
+
+            .rai-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 1.5rem;
+                transition: all 0.3s;
+            }
+
+            .rai-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            }
+
+            .rai-icon {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .rai-name {
+                font-family: var(--font-display);
+                font-size: 1.05rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+
+            .rai-desc {
+                font-size: 1rem;
+                color: var(--text-secondary);
+                line-height: 1.6;
+            }
+
+            /* ─── TRADEOFF MATRIX ────────────────────────────────── */
+            .tradeoff-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 4px;
+                font-size: 1rem;
+            }
+
+            .tradeoff-table th {
+                background: var(--bg-card);
+                padding: 0.8rem 1rem;
+                text-align: center;
+                font-family: var(--font-display);
+                font-weight: 700;
+                color: var(--text-primary);
+                border-radius: 8px;
+                font-size: 1rem;
+            }
+
+            .tradeoff-table td {
+                background: var(--bg-card);
+                padding: 0.7rem 1rem;
+                text-align: center;
+                color: var(--text-secondary);
+                border-radius: 8px;
+                vertical-align: middle;
+                font-size: 1rem;
+            }
+
+            .tradeoff-table td:first-child {
+                text-align: left;
+                color: var(--text-primary);
+                font-weight: 600;
+                font-family: var(--font-display);
+            }
+
+            .dot-high {
+                color: var(--accent-green);
+                font-size: 1rem;
+            }
+            .dot-mid {
+                color: var(--accent-yellow);
+                font-size: 1rem;
+            }
+            .dot-low {
+                color: var(--accent-red);
+                font-size: 1rem;
+            }
+
+            /* ─── SECTION DIVIDER ────────────────────────────────── */
+            .section-divider {
+                height: 1px;
+                background: linear-gradient(90deg, transparent, var(--border), transparent);
+                margin: 0;
+            }
+
+            /* ─── FOOTER ─────────────────────────────────────────── */
+            footer {
+                background: var(--bg-secondary);
+                border-top: 1px solid var(--border);
+                padding: 3rem 2rem;
+                text-align: center;
+                color: var(--text-muted);
+                font-size: 1rem;
+            }
+
+            footer a {
+                color: var(--accent-blue);
+                text-decoration: none;
+            }
+
+            /* ─── ANIMATIONS ─────────────────────────────────────── */
+            @keyframes fadeDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-16px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.4;
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .animate-in {
+                opacity: 0;
+                animation: fadeIn 0.6s ease forwards;
+            }
+
+            /* ─── RESPONSIVE ─────────────────────────────────────── */
+            @media (max-width: 768px) {
+                .api-row {
+                    grid-template-columns: 1fr;
+                }
+                .api-emoji {
+                    display: none;
+                }
+                .nav {
+                    padding: 0.7rem 1rem;
+                }
+                .nav a {
+                    font-size: 1rem;
+                    padding: 0.3rem 0.6rem;
+                }
+                .tradeoff-table {
+                    font-size: 1rem;
+                }
+                .tradeoff-table td,
+                .tradeoff-table th {
+                    padding: 0.5rem 0.6rem;
+                }
+            }
+
+            /* ─── CHECKLIST ──────────────────────────────────────── */
+            .checklist {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .check-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.8rem;
+                padding: 0.7rem 1rem;
+                background: rgba(255, 255, 255, 0.02);
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.04);
+                font-size: 1rem;
+                color: var(--text-secondary);
+                transition: all 0.2s;
+            }
+
+            .check-item:hover {
+                background: rgba(66, 133, 244, 0.05);
+                border-color: rgba(66, 133, 244, 0.15);
+                color: var(--text-primary);
+            }
+
+            .check-box {
+                width: 20px;
+                height: 20px;
+                border: 2px solid var(--accent-blue);
+                border-radius: 4px;
+                flex-shrink: 0;
+                margin-top: 1px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                color: var(--accent-blue);
+            }
+
+            /* tag label */
+            .exam-tag {
+                display: inline-block;
+                background: rgba(234, 67, 53, 0.15);
+                border: 1px solid rgba(234, 67, 53, 0.3);
+                color: var(--accent-red);
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                padding: 0.15rem 0.5rem;
+                border-radius: 4px;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-left: 0.4rem;
+                vertical-align: middle;
+            }
+
+            .tpu-highlight {
+                background: linear-gradient(
+                    135deg,
+                    rgba(251, 188, 4, 0.08),
+                    rgba(234, 67, 53, 0.06)
+                );
+                border: 1px solid rgba(251, 188, 4, 0.2);
+                border-radius: 14px;
+                padding: 1.8rem 2rem;
+            }
+
+            .subsection-title {
+                font-family: var(--font-display);
+                font-size: 1.35rem;
+                font-weight: 700;
+                margin: 2.5rem 0 1rem;
+                padding-left: 1rem;
+                border-left: 3px solid var(--accent-blue);
+                line-height: 1.3;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                background: rgba(66, 133, 244, 0.12);
+                color: var(--accent-teal);
+                padding: 0.1em 0.4em;
+                border-radius: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- HERO -->
+        <div class="hero">
+            <div class="hero-grid"></div>
+            <div class="hero-badge">📋 Google Cloud Certification Study Guide</div>
+            <h1 class="hero-title">
+                Section 3:<br />
+                <span class="highlight"
+                    >Innovating with Google Cloud<br />Artificial Intelligence</span
+                >
+            </h1>
+            <p class="hero-subtitle">
+                Cloud Digital Leader（CDL）試験 Section 3 の完全攻略ガイド。<br />
+                AI/ML の基礎から Google Cloud のサービス選定まで、初学者でもわかりやすく解説します。
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">~16%</div>
+                    <div class="stat-label">試験の配点比率</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">サブセクション</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">主要 AI API</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">責任ある AI 原則</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STICKY NAV -->
+        <nav class="nav">
+            <a href="#overview">概要</a>
+            <a href="#fundamentals">3.1 基礎</a>
+            <a href="#solutions">3.2 ソリューション</a>
+            <a href="#building">3.3 実装</a>
+            <a href="#apis">事前学習済みAPI</a>
+            <a href="#automl">AutoML</a>
+            <a href="#vertexai">Vertex AI</a>
+            <a href="#bqml">BigQuery ML</a>
+            <a href="#tensorflow">TensorFlow/TPU</a>
+            <a href="#responsible">責任あるAI</a>
+            <a href="#checklist">試験対策</a>
+        </nav>
+
+        <!-- OVERVIEW -->
+        <section id="overview">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">EXAM OVERVIEW</div>
+                    <h2 class="section-title">Section 3 の全体像</h2>
+                    <p class="section-desc">
+                        試験ガイドに基づく出題範囲と、学習の全体像を把握しましょう。
+                        本ページは公式試験ガイドに完全対応しています。
+                    </p>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card" style="border-top: 3px solid var(--accent-blue)">
+                        <div class="card-icon" style="background: rgba(66, 133, 244, 0.12)">🧠</div>
+                        <div class="card-title">3.1 AI と ML の基礎</div>
+                        <div class="card-desc">
+                            AI・ML の定義、データアナリティクスとの違い、ML が解決できる課題、
+                            ビジネス価値、データ品質の重要性、説明可能・責任ある AI。
+                        </div>
+                        <div style="margin-top: 1rem">
+                            <span class="badge badge-blue">定義と概念</span>
+                            <span class="badge badge-teal" style="margin-left: 0.3rem"
+                                >ビジネス価値</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 3px solid var(--accent-teal)">
+                        <div class="card-icon" style="background: rgba(0, 188, 212, 0.12)">⚙️</div>
+                        <div class="card-title">3.2 Google Cloud AI/ML ソリューション</div>
+                        <div class="card-desc">
+                            事前学習済み API・AutoML・カスタムモデルのトレードオフ（スピード、労力、
+                            差別化、必要な専門知識）と、適切なソリューションの選択。
+                        </div>
+                        <div style="margin-top: 1rem">
+                            <span class="badge badge-teal">選択と比較</span>
+                            <span class="badge badge-yellow" style="margin-left: 0.3rem"
+                                >トレードオフ</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 3px solid var(--accent-green)">
+                        <div class="card-icon" style="background: rgba(52, 168, 83, 0.12)">🏗️</div>
+                        <div class="card-title">
+                            3.3 Google Cloud AI/ML ソリューションの構築・活用
+                        </div>
+                        <div class="card-desc">
+                            BigQuery ML、事前学習済み API（Vision, NL, Translation, Speech）、
+                            AutoML、Vertex AI、TensorFlow、Cloud TPU の詳細。
+                        </div>
+                        <div style="margin-top: 1rem">
+                            <span class="badge badge-green">実装詳細</span>
+                            <span class="badge badge-purple" style="margin-left: 0.3rem"
+                                >各サービス</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>📌 試験の重要ポイント：</strong>
+                    Section 3 は試験全体の約 16% を占めます。各 Google Cloud AI サービスの
+                    <strong>違いと使い分け</strong>、そして AI/ML の基礎概念の理解が特に重要です。
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 公式ソース</div>
+                    <div class="source-links">
+                        <a
+                            href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf"
+                        >
+                            Cloud Digital Leader Exam Guide (Official PDF) — Section 3 p.3–4
+                        </a>
+                        <a href="https://cloud.google.com/learn/certification/cloud-digital-leader">
+                            https://cloud.google.com/learn/certification/cloud-digital-leader
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 3.1 FUNDAMENTALS -->
+        <section id="fundamentals">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">3.1 AI AND ML FUNDAMENTALS</div>
+                    <h2 class="section-title">AI と ML の基礎概念</h2>
+                    <p class="section-desc">
+                        AI・ML の定義から、ビジネス価値、データ品質の重要性まで。
+                        試験で頻出の基礎概念を体系的に理解しましょう。
+                    </p>
+                </div>
+
+                <!-- HIERARCHY DIAGRAM -->
+                <div class="hierarchy" style="margin-bottom: 2rem">
+                    <div class="hierarchy-title">AI 技術の包含関係（最重要！）</div>
+                    <div class="hier-wrap">
+                        <div class="hier-level hl-ai">
+                            <div class="lname">🌐 AI（人工知能 / Artificial Intelligence）</div>
+                            <div class="ldesc">
+                                「人間の知的行動をコンピュータで模倣する」技術の総称
+                            </div>
+                        </div>
+                        <div class="hier-arrow">▼</div>
+                        <div class="hier-level hl-ml">
+                            <div class="lname">📊 ML（機械学習 / Machine Learning）</div>
+                            <div class="ldesc">
+                                「データからパターンを自動学習する」— AI のサブフィールド
+                            </div>
+                        </div>
+                        <div class="hier-arrow">▼</div>
+                        <div class="hier-level hl-dl">
+                            <div class="lname">🧬 深層学習（Deep Learning）</div>
+                            <div class="ldesc">
+                                「多層ニューラルネットワーク」— ML のサブフィールド
+                            </div>
+                        </div>
+                        <div class="hier-arrow">▼</div>
+                        <div class="hier-level hl-gen">
+                            <div class="lname">✨ 生成 AI（Generative AI）</div>
+                            <div class="ldesc">
+                                「新しいコンテンツ（テキスト・画像・動画）を生成」— DL のサブセット
+                            </div>
+                        </div>
+                        <div class="hier-arrow">▼</div>
+                        <div class="hier-level hl-llm">
+                            <div class="lname">💬 LLM（大規模言語モデル）</div>
+                            <div class="ldesc">
+                                「テキスト生成に特化した超大規模モデル」（例：Gemini、GPT-4）
+                            </div>
+                        </div>
+                    </div>
+                    <div class="warn-box" style="margin-top: 1.5rem">
+                        <strong>⚠️ 試験の落とし穴：</strong>
+                        「生成 AI ＝ LLM」は<strong>誤り</strong>です。LLM
+                        はテキスト生成専用ですが、 生成 AI
+                        には画像生成（Imagen）・動画生成（Veo）・音楽生成なども含まれます。
+                    </div>
+                </div>
+
+                <!-- AI vs DATA ANALYTICS -->
+                <h3 class="subsection-title">
+                    AI/ML とデータアナリティクスの違い<span class="exam-tag">頻出</span>
+                </h3>
+
+                <div class="card" style="overflow-x: auto">
+                    <table class="compare-table" style="min-width: 580px">
+                        <thead>
+                            <tr>
+                                <th>技術領域</th>
+                                <th>時間的焦点</th>
+                                <th>分析の性質</th>
+                                <th>主な出力</th>
+                                <th>ビジネス上の役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>📈 データアナリティクス / BI</td>
+                                <td>過去〜現在</td>
+                                <td>記述的・診断的</td>
+                                <td>レポート・ダッシュボード・KPI</td>
+                                <td>「何が起きたか」を人間が理解して意思決定</td>
+                            </tr>
+                            <tr>
+                                <td>🔮 機械学習（ML）</td>
+                                <td>現在〜未来</td>
+                                <td>予測的</td>
+                                <td>スコア・予測値・確率</td>
+                                <td>「将来何が起きるか」を自動予測してプロセス自動化</td>
+                            </tr>
+                            <tr>
+                                <td>🤖 AI / 生成 AI</td>
+                                <td>未来の行動創造</td>
+                                <td>処方的・生成的</td>
+                                <td>自動応答・コンテンツ・エージェント行動</td>
+                                <td>「どう行動すべきか」をシステムが自律判断・実行</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- BUSINESS VALUE -->
+                <h3 class="subsection-title">
+                    ML がビジネスに創出する価値<span class="exam-tag">頻出</span>
+                </h3>
+                <div class="grid-3" style="margin-bottom: 1.5rem">
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(66, 133, 244, 0.12)">🗄️</div>
+                        <div class="card-title">大規模データセットからのパターン抽出</div>
+                        <div class="card-desc">
+                            人間が認知できる変数の数には限界がありますが、ML
+                            アルゴリズムはペタバイト規模のデータポイント間の
+                            微細な相関関係を瞬時に発見し、予測モデルに変換します。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(0, 188, 212, 0.12)">📈</div>
+                        <div class="card-title">ビジネス意思決定のスケーリング</div>
+                        <div class="card-desc">
+                            不正検知・商品推奨・品質管理など、数百万回のトランザクションに対するリアルタイムかつ高精度な
+                            意思決定を属人的なリソースに依存せずにスケールさせます。
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(52, 168, 83, 0.12)">🔓</div>
+                        <div class="card-title">非構造化データの解放</div>
+                        <div class="card-desc">
+                            企業データの大部分（画像・音声・動画・テキスト）は従来の RDB
+                            では分析困難でした。 ML
+                            はこれらの非構造化データから文脈・意味を抽出し、新たな洞察の源泉として活用します。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DATA QUALITY -->
+                <h3 class="subsection-title">
+                    高品質データの重要性<span class="exam-tag">頻出</span>
+                </h3>
+                <div
+                    class="card"
+                    style="
+                        background: linear-gradient(
+                            135deg,
+                            rgba(251, 188, 4, 0.05),
+                            rgba(234, 67, 53, 0.04)
+                        );
+                    "
+                >
+                    <div
+                        style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem"
+                    >
+                        <div style="font-size: 2.5rem">🗑️</div>
+                        <div>
+                            <div
+                                style="
+                                    font-family: var(--font-display);
+                                    font-size: 1.4rem;
+                                    font-weight: 800;
+                                    color: var(--accent-yellow);
+                                "
+                            >
+                                Garbage In, Garbage Out（GIGO の法則）
+                            </div>
+                            <div style="color: var(--text-secondary); font-size: 1rem">
+                                「ゴミを入れればゴミが出る」— ML 品質はデータ品質に直結します
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-4">
+                        <div
+                            style="
+                                text-align: center;
+                                padding: 1rem;
+                                background: rgba(255, 255, 255, 0.03);
+                                border-radius: 10px;
+                            "
+                        >
+                            <div style="font-size: 1.5rem; margin-bottom: 0.4rem">📦</div>
+                            <div
+                                style="font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem"
+                            >
+                                十分な量
+                            </div>
+                            <div style="font-size: 1rem; color: var(--text-muted)">
+                                学習データが少ないと精度が出ない
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                text-align: center;
+                                padding: 1rem;
+                                background: rgba(255, 255, 255, 0.03);
+                                border-radius: 10px;
+                            "
+                        >
+                            <div style="font-size: 1.5rem; margin-bottom: 0.4rem">✅</div>
+                            <div
+                                style="font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem"
+                            >
+                                高品質・正確
+                            </div>
+                            <div style="font-size: 1rem; color: var(--text-muted)">
+                                ノイズ・誤りが少ないデータ
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                text-align: center;
+                                padding: 1rem;
+                                background: rgba(255, 255, 255, 0.03);
+                                border-radius: 10px;
+                            "
+                        >
+                            <div style="font-size: 1.5rem; margin-bottom: 0.4rem">🌍</div>
+                            <div
+                                style="font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem"
+                            >
+                                多様性
+                            </div>
+                            <div style="font-size: 1rem; color: var(--text-muted)">
+                                バイアスを排除した多様なデータ
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                text-align: center;
+                                padding: 1rem;
+                                background: rgba(255, 255, 255, 0.03);
+                                border-radius: 10px;
+                            "
+                        >
+                            <div style="font-size: 1.5rem; margin-bottom: 0.4rem">🎯</div>
+                            <div
+                                style="font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem"
+                            >
+                                目的との関連性
+                            </div>
+                            <div style="font-size: 1rem; color: var(--text-muted)">
+                                ユースケースに関連したデータ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ML APPROACHES -->
+                <h3 class="subsection-title">
+                    機械学習の 3 つのアプローチ<span class="exam-tag">頻出</span>
+                </h3>
+                <div class="grid-3">
+                    <div class="ml-card">
+                        <div class="ml-card-header" style="background: rgba(66, 133, 244, 0.06)">
+                            <div class="ml-icon" style="background: rgba(66, 133, 244, 0.15)">
+                                👨‍🏫
+                            </div>
+                            <div>
+                                <div class="ml-card-title">教師あり学習</div>
+                                <div class="ml-card-sub">Supervised Learning</div>
+                            </div>
+                        </div>
+                        <div class="ml-card-body">
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--text-secondary);
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                <strong style="color: var(--text-primary)">定義：</strong
+                                >正解ラベルが付いたデータを使って学習。
+                                「先生（ラベル）」が「生徒（モデル）」を指導するイメージ。
+                            </p>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin-bottom: 0.5rem;
+                                    color: var(--accent-blue);
+                                "
+                            >
+                                タスク種別：
+                            </p>
+                            <ul class="api-list" style="margin-bottom: 1rem">
+                                <li>
+                                    <strong>分類（Classification）</strong> — スパム判定・画像分類
+                                </li>
+                                <li><strong>回帰（Regression）</strong> — 売上予測・不動産価格</li>
+                            </ul>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin-bottom: 0.5rem;
+                                    color: var(--accent-blue);
+                                "
+                            >
+                                ビジネス活用例：
+                            </p>
+                            <ul class="api-list">
+                                <li>顧客の離脱（解約）予測</li>
+                                <li>クレジットカード不正検知</li>
+                                <li>医療画像による疾患診断支援</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="ml-card">
+                        <div class="ml-card-header" style="background: rgba(0, 188, 212, 0.06)">
+                            <div class="ml-icon" style="background: rgba(0, 188, 212, 0.15)">
+                                🔍
+                            </div>
+                            <div>
+                                <div class="ml-card-title">教師なし学習</div>
+                                <div class="ml-card-sub">Unsupervised Learning</div>
+                            </div>
+                        </div>
+                        <div class="ml-card-body">
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--text-secondary);
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                <strong style="color: var(--text-primary)">定義：</strong
+                                >ラベルなしのデータからパターン・構造を自動発見。
+                                「先生」なしで生徒が自分でルールを見つけるイメージ。
+                            </p>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin-bottom: 0.5rem;
+                                    color: var(--accent-teal);
+                                "
+                            >
+                                タスク種別：
+                            </p>
+                            <ul class="api-list" style="margin-bottom: 1rem">
+                                <li><strong>クラスタリング</strong> — 顧客セグメント自動分類</li>
+                                <li><strong>異常検知</strong> — 不正アクセス検知</li>
+                            </ul>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin-bottom: 0.5rem;
+                                    color: var(--accent-teal);
+                                "
+                            >
+                                ビジネス活用例：
+                            </p>
+                            <ul class="api-list">
+                                <li>顧客ペルソナの自動分類</li>
+                                <li>レコメンドエンジン</li>
+                                <li>ネットワーク侵入検知</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="ml-card">
+                        <div class="ml-card-header" style="background: rgba(52, 168, 83, 0.06)">
+                            <div class="ml-icon" style="background: rgba(52, 168, 83, 0.15)">
+                                🎮
+                            </div>
+                            <div>
+                                <div class="ml-card-title">強化学習</div>
+                                <div class="ml-card-sub">Reinforcement Learning</div>
+                            </div>
+                        </div>
+                        <div class="ml-card-body">
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--text-secondary);
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                <strong style="color: var(--text-primary)">定義：</strong
+                                >エージェントが環境と対話しながら
+                                「報酬の最大化」を試行錯誤で学習。ゲーム攻略 AI のイメージ。
+                            </p>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin-bottom: 0.5rem;
+                                    color: var(--accent-green);
+                                "
+                            >
+                                タスク種別：
+                            </p>
+                            <ul class="api-list" style="margin-bottom: 1rem">
+                                <li><strong>最適制御</strong> — ロボット制御・自動運転</li>
+                                <li><strong>RLHF</strong> — 人間フィードバックによる LLM 改善</li>
+                            </ul>
+                            <p
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 600;
+                                    margin-bottom: 0.5rem;
+                                    color: var(--accent-green);
+                                "
+                            >
+                                ビジネス活用例：
+                            </p>
+                            <ul class="api-list">
+                                <li>データセンターの電力最適化</li>
+                                <li>Gemini モデルの品質向上（RLHF）</li>
+                                <li>広告入札の自動最適化</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a href="https://cloud.google.com/learn/what-is-artificial-intelligence"
+                            >https://cloud.google.com/learn/what-is-artificial-intelligence</a
+                        >
+                        <a
+                            href="https://developers.google.com/machine-learning/glossary/fundamentals"
+                            >https://developers.google.com/machine-learning/glossary/fundamentals</a
+                        >
+                        <a href="https://cloud.google.com/responsible-ai"
+                            >https://cloud.google.com/responsible-ai</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 3.2 SOLUTIONS -->
+        <section id="solutions">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">3.2 AI AND ML SOLUTIONS</div>
+                    <h2 class="section-title">Google Cloud AI/ML ソリューションの選択</h2>
+                    <p class="section-desc">
+                        スピード・労力・差別化・必要な専門知識のトレードオフに基づいて、 最適な
+                        AI/ML ソリューションを選択する方法を学びます。
+                    </p>
+                </div>
+
+                <!-- TRADEOFF TABLE -->
+                <h3 class="subsection-title">
+                    4 つのトレードオフ要因<span class="exam-tag">最重要</span>
+                </h3>
+                <div class="card" style="overflow-x: auto; margin-bottom: 2rem">
+                    <table class="tradeoff-table" style="min-width: 600px">
+                        <thead>
+                            <tr>
+                                <th>ソリューション</th>
+                                <th>スピード 🚀</th>
+                                <th>労力（工数）💪</th>
+                                <th>差別化 🏆</th>
+                                <th>必要な専門知識 👨‍💻</th>
+                                <th>適用場面</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🔌 事前学習済み API</td>
+                                <td><span class="dot-high">●●●</span> 即座</td>
+                                <td><span class="dot-high">低 ●</span></td>
+                                <td><span class="dot-low">低 ●</span></td>
+                                <td><span class="dot-high">不要 ●</span></td>
+                                <td>汎用タスク（翻訳・感情分析・OCR）</td>
+                            </tr>
+                            <tr>
+                                <td>🤖 AutoML</td>
+                                <td><span class="dot-mid">●●○</span> 数時間〜1日</td>
+                                <td><span class="dot-mid">中 ●●</span></td>
+                                <td><span class="dot-mid">中 ●●</span></td>
+                                <td><span class="dot-mid">最小限 ●●</span></td>
+                                <td>自社データでカスタムモデルが必要（ML知識なし）</td>
+                            </tr>
+                            <tr>
+                                <td>🏗️ カスタムモデル（Vertex AI）</td>
+                                <td><span class="dot-low">●○○</span> 数週間〜</td>
+                                <td><span class="dot-low">高 ●●●</span></td>
+                                <td><span class="dot-high">高 ●●●</span></td>
+                                <td><span class="dot-low">ML エンジニア必須 ●●●</span></td>
+                                <td>競合優位性のために独自モデルが必要</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- DECISION TREE -->
+                <h3 class="subsection-title">AI/ML ソリューション選択デシジョンツリー</h3>
+                <div class="decision-tree">
+                    <div class="dt-row">
+                        <div class="dt-node">AI 機能が必要</div>
+                        <div class="dt-arrow">→</div>
+                        <div class="dt-node">自社独自のデータで学習が必要？</div>
+                    </div>
+                    <div style="display: flex; gap: 3rem; flex-wrap: wrap; margin-left: 2rem">
+                        <div>
+                            <div
+                                style="
+                                    color: var(--accent-red);
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                NO（汎用タスクで十分）
+                            </div>
+                            <div class="dt-row">
+                                <div class="dt-answer">🔌 事前学習済み API</div>
+                            </div>
+                            <div style="color: var(--text-muted); font-size: 1rem">
+                                Vision / NL / Translation / Speech API
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    color: var(--accent-green);
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                YES（カスタムが必要）
+                            </div>
+                            <div class="dt-row">
+                                <div class="dt-node">ML の専門知識がある？</div>
+                            </div>
+                            <div
+                                style="
+                                    display: flex;
+                                    gap: 2rem;
+                                    flex-wrap: wrap;
+                                    margin-top: 0.5rem;
+                                "
+                            >
+                                <div>
+                                    <div
+                                        style="
+                                            color: var(--accent-red);
+                                            font-size: 1rem;
+                                            margin-bottom: 0.3rem;
+                                        "
+                                    >
+                                        NO
+                                    </div>
+                                    <div class="dt-answer">🤖 AutoML</div>
+                                </div>
+                                <div>
+                                    <div
+                                        style="
+                                            color: var(--accent-green);
+                                            font-size: 1rem;
+                                            margin-bottom: 0.3rem;
+                                        "
+                                    >
+                                        YES
+                                    </div>
+                                    <div class="dt-answer">🏗️ Vertex AI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-box">
+                    <div class="bp-title">✅ ベストプラクティス：ソリューション選択の原則</div>
+                    <ul class="bp-list">
+                        <li>
+                            まず事前学習済み API
+                            から試す（コスト・時間が最小）。精度が不十分であれば AutoML を検討。
+                        </li>
+                        <li>
+                            AutoML でも要件を満たせない場合のみ Vertex AI（カスタムモデル）へ進む。
+                        </li>
+                        <li>「差別化がコアバリューとなる領域のみ」カスタムモデルに投資する。</li>
+                        <li>
+                            既存の BigQuery データがある場合は BigQuery ML でデータ移動なしに ML
+                            を実行する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a
+                            href="https://cloud.google.com/architecture/choose-a-machine-learning-approach"
+                            >https://cloud.google.com/architecture/choose-a-machine-learning-approach</a
+                        >
+                        <a
+                            href="https://cloud.google.com/blog/topics/developers-practitioners/pick-your-aiml-path-google-cloud"
+                            >https://cloud.google.com/blog/topics/developers-practitioners/pick-your-aiml-path-google-cloud</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 3.3 BUILDING -->
+        <section id="building">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">3.3 BUILDING AND USING AI/ML SOLUTIONS</div>
+                    <h2 class="section-title">Google Cloud AI/ML ソリューションの構築・活用</h2>
+                    <p class="section-desc">
+                        各サービスの具体的な機能・ユースケース・ベストプラクティスを詳解します。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRE-TRAINED APIS -->
+        <section id="apis" style="padding-top: 0">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">PRE-TRAINED APIs</div>
+                    <h2 class="section-title">
+                        事前学習済み API<span class="exam-tag">頻出</span>
+                    </h2>
+                    <p class="section-desc">
+                        Google が膨大なデータで事前に学習済みのモデルを API として提供。 ML
+                        知識不要で即座に高度な AI 機能を利用できます。
+                    </p>
+                </div>
+
+                <div class="api-grid">
+                    <!-- Vision API -->
+                    <div class="api-row">
+                        <div class="api-emoji">👁️</div>
+                        <div>
+                            <div class="api-name">Cloud Vision API</div>
+                            <div class="api-en">Cloud Vision API</div>
+                            <div class="api-summary">
+                                画像から情報を自動抽出する画像認識
+                                API。OCR・物体検出・コンテンツモデレーションに対応。
+                            </div>
+                        </div>
+                        <div>
+                            <div class="api-col-title">主な機能</div>
+                            <ul class="api-list">
+                                <li>ラベル検出（物体の自動タグ付け）</li>
+                                <li>OCR（画像内のテキスト抽出）</li>
+                                <li>顔検出（感情・属性分析）</li>
+                                <li>物体検出と位置特定</li>
+                                <li>不適切コンテンツの自動検出</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="api-col-title">ビジネス活用例</div>
+                            <ul class="api-list">
+                                <li>EC 商品画像の自動タグ付け</li>
+                                <li>製造ラインの外観検査自動化</li>
+                                <li>書類・伝票のデジタル化（OCR）</li>
+                                <li>SNS の不適切コンテンツ自動削除</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Natural Language API -->
+                    <div class="api-row">
+                        <div class="api-emoji">💬</div>
+                        <div>
+                            <div class="api-name">Cloud Natural Language API</div>
+                            <div class="api-en">Natural Language API</div>
+                            <div class="api-summary">
+                                テキストから感情・エンティティ・構造を自動抽出する自然言語処理 API。
+                            </div>
+                        </div>
+                        <div>
+                            <div class="api-col-title">主な機能</div>
+                            <ul class="api-list">
+                                <li>感情分析（ポジ/ネガ/中立の判定）</li>
+                                <li>エンティティ抽出（人名・地名・組織名）</li>
+                                <li>構文解析（品詞・文構造の分析）</li>
+                                <li>コンテンツ分類（700 以上のカテゴリ）</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="api-col-title">ビジネス活用例</div>
+                            <ul class="api-list">
+                                <li>カスタマーレビューの感情自動分析</li>
+                                <li>ソーシャルリスニング（ブランド評判監視）</li>
+                                <li>サポートチケットの自動カテゴリ分類</li>
+                                <li>ニュース・文書の自動タグ付け</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Translation API -->
+                    <div class="api-row">
+                        <div class="api-emoji">🌐</div>
+                        <div>
+                            <div class="api-name">Cloud Translation API</div>
+                            <div class="api-en">Cloud Translation API</div>
+                            <div class="api-summary">
+                                130 以上の言語間で高品質な機械翻訳を提供。PDF・Word
+                                のレイアウトを保ちながら翻訳も可能。
+                            </div>
+                        </div>
+                        <div>
+                            <div class="api-col-title">主な機能</div>
+                            <ul class="api-list">
+                                <li>130 以上の言語間翻訳</li>
+                                <li>自動言語検出</li>
+                                <li>ドキュメント翻訳（PDF/Word レイアウト保持）</li>
+                                <li>Glossary（ブランド固有の翻訳ルール）</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="api-col-title">ビジネス活用例</div>
+                            <ul class="api-list">
+                                <li>グローバル EC サイトの自動多言語化</li>
+                                <li>多言語カスタマーサポート</li>
+                                <li>グローバル企業の社内文書翻訳自動化</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Speech-to-Text -->
+                    <div class="api-row">
+                        <div class="api-emoji">🎙️</div>
+                        <div>
+                            <div class="api-name">Speech-to-Text API</div>
+                            <div class="api-en">Speech-to-Text API</div>
+                            <div class="api-summary">
+                                125
+                                以上の言語の音声をテキストに変換。リアルタイム・バッチ処理の両対応。
+                            </div>
+                        </div>
+                        <div>
+                            <div class="api-col-title">主な機能</div>
+                            <ul class="api-list">
+                                <li>125 以上の言語・方言に対応</li>
+                                <li>リアルタイム & バッチ処理</li>
+                                <li>話者分離（誰が話しているか識別）</li>
+                                <li>ノイズ除去・自動句読点挿入</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="api-col-title">ビジネス活用例</div>
+                            <ul class="api-list">
+                                <li>コールセンター通話の自動文字起こし</li>
+                                <li>会議・インタビューの自動議事録</li>
+                                <li>動画・ポッドキャストの字幕自動生成</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Text-to-Speech -->
+                    <div class="api-row">
+                        <div class="api-emoji">🔊</div>
+                        <div>
+                            <div class="api-name">Text-to-Speech API</div>
+                            <div class="api-en">Text-to-Speech API</div>
+                            <div class="api-summary">
+                                40 以上の言語・220
+                                以上の音声で人間に近い自然な音声を生成する音声合成 API。
+                            </div>
+                        </div>
+                        <div>
+                            <div class="api-col-title">主な機能</div>
+                            <ul class="api-list">
+                                <li>220 以上の音声で自然な音声合成</li>
+                                <li>感情・速度・ピッチのカスタマイズ</li>
+                                <li>SSML（音声合成マークアップ）対応</li>
+                                <li>Studio 音声（より自然・感情豊か）</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="api-col-title">ビジネス活用例</div>
+                            <ul class="api-list">
+                                <li>IVR（電話の自動音声応答）システム</li>
+                                <li>視覚障害者向けアクセシビリティ</li>
+                                <li>eLearning コンテンツの音声ナレーション</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-box">
+                    <div class="bp-title">✅ ベストプラクティス：事前学習済み API</div>
+                    <ul class="bp-list">
+                        <li>
+                            汎用的なタスクは必ず事前学習済み API
+                            を最初に試す（コスト・時間が最小）。
+                        </li>
+                        <li>
+                            Vision API は高解像度の画像（最低 640x480
+                            以上）を使用するほど精度が向上。
+                        </li>
+                        <li>
+                            Translation API では Glossary
+                            機能で業界固有の専門用語・ブランド名の翻訳精度を向上させる。
+                        </li>
+                        <li>
+                            Speech-to-Text
+                            は業界特化モデル（医療・通話など）を選択することでノイズ環境でも精度が向上。
+                        </li>
+                        <li>
+                            月間の無料枠を最大活用し、キャッシュ機能で重複リクエストを削減してコストを最適化する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a href="https://cloud.google.com/vision/docs"
+                            >https://cloud.google.com/vision/docs</a
+                        >
+                        <a href="https://cloud.google.com/natural-language/docs"
+                            >https://cloud.google.com/natural-language/docs</a
+                        >
+                        <a href="https://cloud.google.com/translate/docs"
+                            >https://cloud.google.com/translate/docs</a
+                        >
+                        <a href="https://cloud.google.com/speech-to-text/docs"
+                            >https://cloud.google.com/speech-to-text/docs</a
+                        >
+                        <a href="https://cloud.google.com/text-to-speech/docs"
+                            >https://cloud.google.com/text-to-speech/docs</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- AUTOML -->
+        <section id="automl">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">AUTOML</div>
+                    <h2 class="section-title">
+                        AutoML（ノーコード ML）<span class="exam-tag">頻出</span>
+                    </h2>
+                    <p class="section-desc">
+                        ML の専門知識がなくても、自社固有データからカスタム ML
+                        モデルを構築できるサービス。
+                        「自動化された機械学習」という革命的なアプローチです。
+                    </p>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title" style="margin-bottom: 1rem">
+                            AutoML の革命的な点
+                        </div>
+                        <div style="margin-bottom: 1.2rem">
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--accent-red);
+                                    font-weight: 700;
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                ❌ 従来のカスタム ML 開発（数週間〜数ヶ月）
+                            </div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--text-secondary);
+                                    padding: 0.8rem;
+                                    background: rgba(234, 67, 53, 0.05);
+                                    border-radius: 8px;
+                                    font-family: var(--font-mono);
+                                "
+                            >
+                                データ収集 → 前処理 → 特徴量エンジニアリング →<br />
+                                モデル選択 → ハイパーパラメータ調整 → 評価 → デプロイ<br />
+                                <span
+                                    style="
+                                        color: var(--text-muted);
+                                        font-style: italic;
+                                        font-family: var(--font-body);
+                                    "
+                                    >（ML エンジニアが担当）</span
+                                >
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--accent-green);
+                                    font-weight: 700;
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                ✅ AutoML（数時間〜1日）
+                            </div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--text-secondary);
+                                    padding: 0.8rem;
+                                    background: rgba(52, 168, 83, 0.05);
+                                    border-radius: 8px;
+                                    font-family: var(--font-mono);
+                                "
+                            >
+                                データをアップロード → トレーニング開始ボタン → 完成！<br />
+                                <span
+                                    style="
+                                        color: var(--text-muted);
+                                        font-style: italic;
+                                        font-family: var(--font-body);
+                                    "
+                                    >（ML 知識不要）</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title" style="margin-bottom: 1rem">
+                            AutoML が自動実行すること
+                        </div>
+                        <ul class="bp-list">
+                            <li>最適なモデルアーキテクチャの自動選択</li>
+                            <li>
+                                ハイパーパラメータの自動チューニング（Neural Architecture Search）
+                            </li>
+                            <li>データ拡張（Data Augmentation）の自動適用</li>
+                            <li>クロスバリデーションによる過学習防止</li>
+                            <li>モデルの評価指標（精度・AUC 等）の自動計算</li>
+                            <li>REST API エンドポイントとしての自動デプロイ</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- AutoML Types -->
+                <h3 class="subsection-title">AutoML の種類と用途</h3>
+                <div class="grid-3">
+                    <div class="card" style="border-left: 3px solid var(--accent-blue)">
+                        <div style="font-size: 1.8rem; margin-bottom: 0.7rem">🖼️</div>
+                        <div class="card-title">AutoML Vision</div>
+                        <div class="card-desc">
+                            画像の分類・物体検出・セグメンテーションモデルを構築。
+                            <strong>製造ラインの外観検査・医療画像診断・品質管理</strong>に活用。
+                            エッジデバイス（Edge TPU）へのエクスポートも可能。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-blue">画像</span>
+                            <span class="badge badge-teal" style="margin-left: 0.3rem"
+                                >物体検出</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left: 3px solid var(--accent-teal)">
+                        <div style="font-size: 1.8rem; margin-bottom: 0.7rem">📄</div>
+                        <div class="card-title">AutoML Natural Language</div>
+                        <div class="card-desc">
+                            業界特有の専門用語・文脈を含むテキストの分類・エンティティ抽出。
+                            <strong>法律契約書の自動審査・医療記録からの症状抽出</strong>に活用。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-teal">テキスト</span>
+                            <span class="badge badge-blue" style="margin-left: 0.3rem">分類</span>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-left: 3px solid var(--accent-green)">
+                        <div style="font-size: 1.8rem; margin-bottom: 0.7rem">📊</div>
+                        <div class="card-title">AutoML Tables</div>
+                        <div class="card-desc">
+                            表形式データ（CSV）を入力とし、勾配ブースティングやディープラーニングを自動適用。
+                            <strong>顧客離脱予測・売上予測・需要予測</strong>に活用。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-green">表形式</span>
+                            <span class="badge badge-yellow" style="margin-left: 0.3rem">予測</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AutoML vs Pre-trained -->
+                <h3 class="subsection-title">
+                    AutoML を選ぶべき判断基準<span class="exam-tag">試験問題頻出</span>
+                </h3>
+                <div class="card">
+                    <div class="grid-2">
+                        <div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    color: var(--accent-red);
+                                    margin-bottom: 0.8rem;
+                                "
+                            >
+                                ❌ 事前学習済み API では不十分な場合
+                            </div>
+                            <ul class="api-list">
+                                <li>自社製品固有の不良品を検出したい（汎用モデルでは対応不可）</li>
+                                <li>業界特有の専門用語・略語の理解が必要</li>
+                                <li>競合他社との差別化のために独自モデルが必要</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    font-weight: 700;
+                                    color: var(--accent-green);
+                                    margin-bottom: 0.8rem;
+                                "
+                            >
+                                ✅ AutoML が最適な場合
+                            </div>
+                            <ul class="api-list">
+                                <li>ML エンジニアが社内にいない・少ない</li>
+                                <li>ノーコードで独自モデルを作りたい</li>
+                                <li>プロトタイピングで予測可能性を素早く検証したい</li>
+                                <li>自社固有のラベル付きデータを持っている</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-box">
+                    <div class="bp-title">✅ ベストプラクティス：AutoML</div>
+                    <ul class="bp-list">
+                        <li>
+                            画像データは最低 1,000 枚/ラベル（絶対最小は 100
+                            枚）を準備する。本番環境での精度には 1,000 枚以上を推奨。
+                        </li>
+                        <li>
+                            学習データは実際の推論環境（照明・解像度・角度）を忠実に再現した画像を使用する。
+                        </li>
+                        <li>
+                            「人間が見ても区別できないラベル」は AI
+                            でも判別困難。人間が視覚的に分類できるタスクであることが前提。
+                        </li>
+                        <li>
+                            モデルのデプロイ先として、クラウド API とエッジデバイス（Edge
+                            TPU）の両方を検討する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a href="https://cloud.google.com/automl/docs"
+                            >https://cloud.google.com/automl/docs</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/vertex-ai/docs/image-data/classification/prepare-data"
+                            >https://docs.cloud.google.com/vertex-ai/docs/image-data/classification/prepare-data</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/vertex-ai/docs/beginner/beginners-guide"
+                            >https://docs.cloud.google.com/vertex-ai/docs/beginner/beginners-guide</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- VERTEX AI -->
+        <section id="vertexai">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">VERTEX AI</div>
+                    <h2 class="section-title">
+                        Vertex AI（カスタムモデル / 統合 ML プラットフォーム）
+                    </h2>
+                    <p class="section-desc">
+                        ML ライフサイクル全体（データ準備 → 学習 → 評価 → デプロイ → 監視）を
+                        一つのプラットフォームで管理できる Google Cloud の統合 ML 基盤。
+                    </p>
+                </div>
+
+                <div class="grid-2" style="margin-bottom: 2rem">
+                    <div
+                        class="card"
+                        style="
+                            background: linear-gradient(
+                                135deg,
+                                rgba(66, 133, 244, 0.08),
+                                rgba(0, 188, 212, 0.05)
+                            );
+                        "
+                    >
+                        <div
+                            style="
+                                font-size: 1rem;
+                                font-weight: 700;
+                                color: var(--accent-blue);
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            🏗️ Vertex AI が解決する課題
+                        </div>
+                        <p
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-secondary);
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            多くの企業では AI プロジェクトの 70% 以上が PoC 段階で停滞します
+                            （<strong style="color: var(--accent-yellow)">AI Pilot Purgatory</strong
+                            >）。 データサイエンティストとエンジニアのワークフローがサイロ化し、
+                            インフラのスケーリングやセキュリティ対応が追いつかないことが主因です。
+                        </p>
+                        <p style="font-size: 1rem; color: var(--text-secondary)">
+                            Vertex AI はこれらのワークフローを<strong
+                                style="color: var(--text-primary)"
+                                >統一された環境で統合</strong
+                            >し、 エンタープライズグレードのガバナンスとコンプライアンス（SOC
+                            2、HIPAA 準拠など）を提供します。
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <div
+                            style="
+                                font-size: 1rem;
+                                font-weight: 700;
+                                color: var(--accent-teal);
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            ⚙️ カスタムモデルが必要な場面
+                        </div>
+                        <ul class="api-list">
+                            <li>AutoML では精度・柔軟性が不十分な場合</li>
+                            <li>独自のモデルアーキテクチャが必要な場合</li>
+                            <li>ハイパーパラメータの細かな調整が必要な場合</li>
+                            <li>GPU/TPU による大規模分散学習が必要な場合</li>
+                            <li>
+                                マルチモーダル入力（画像+構造化データ）を処理する特殊なアーキテクチャが必要な場合
+                            </li>
+                            <li>競合との差別化が AI の精度・アーキテクチャにかかっている場合</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Vertex AI Components -->
+                <h3 class="subsection-title">Vertex AI の主要コンポーネント</h3>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(66, 133, 244, 0.12)">📒</div>
+                        <div class="card-title">Vertex AI Workbench</div>
+                        <div class="card-desc">
+                            JupyterLab 環境でデータ分析・モデル開発を実施。GPU/TPU サポート付き。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-blue">開発環境</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(0, 188, 212, 0.12)">🏋️</div>
+                        <div class="card-title">Vertex AI Training</div>
+                        <div class="card-desc">
+                            TensorFlow・PyTorch
+                            など任意フレームワークでカスタムモデルの分散学習を実行。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-teal">学習</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(251, 188, 4, 0.12)">🗃️</div>
+                        <div class="card-title">Model Garden</div>
+                        <div class="card-desc">
+                            200
+                            以上のモデルを一箇所で探索・試用・デプロイ。Gemini・オープンソース・パートナーモデルを含む。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-yellow">モデルカタログ</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(52, 168, 83, 0.12)">🗄️</div>
+                        <div class="card-title">Model Registry</div>
+                        <div class="card-desc">
+                            全モデルのバージョン・系譜を一元管理。AutoML・カスタム・BigQuery ML
+                            モデルを統合管理。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-green">バージョン管理</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(124, 77, 255, 0.12)">🚀</div>
+                        <div class="card-title">Vertex AI Prediction</div>
+                        <div class="card-desc">
+                            オンライン推論（リアルタイム API
+                            エンドポイント）とバッチ推論の両方をサポート。オートスケーリング対応。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-purple">推論・デプロイ</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style="background: rgba(234, 67, 53, 0.12)">📡</div>
+                        <div class="card-title">Model Monitoring</div>
+                        <div class="card-desc">
+                            本番データのドリフト（データ分布の変化）を自動検知してアラートを発報。モデルの性能劣化を早期発見。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge badge-red">運用監視</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-box">
+                    <div class="bp-title">✅ ベストプラクティス：Vertex AI</div>
+                    <ul class="bp-list">
+                        <li>
+                            <strong>Vertex AI Experiments</strong>
+                            で複数モデル・パラメータを比較管理し、再現性を確保する。
+                        </li>
+                        <li>
+                            <strong>Feature Store</strong>
+                            で特徴量を一元管理し、学習・推論データの一致を保証する（Training-Serving
+                            Skew を防止）。
+                        </li>
+                        <li>
+                            <strong>Model Registry</strong>
+                            でモデルのバージョン管理を必ず実施し、ロールバックできる状態を維持する。
+                        </li>
+                        <li>
+                            <strong>Model Monitoring</strong>
+                            を必ず有効化し、データドリフトを自動検知して再学習をトリガーする。
+                        </li>
+                        <li>
+                            学習ジョブには
+                            <strong>Spot VM（最大 60% コスト削減）</strong>
+                            を耐障害性ワークロードに活用する。
+                        </li>
+                        <li>
+                            推論エンドポイントはオートスケーリングを設定し、最小インスタンス数を適切に設定してアイドリングコストを削減する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a href="https://cloud.google.com/vertex-ai/docs"
+                            >https://cloud.google.com/vertex-ai/docs</a
+                        >
+                        <a
+                            href="https://cloud.google.com/vertex-ai/docs/model-garden/explore-models"
+                            >https://cloud.google.com/vertex-ai/docs/model-garden/explore-models</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/vertex-ai/docs/start/introduction-unified-platform"
+                            >https://docs.cloud.google.com/vertex-ai/docs/start/introduction-unified-platform</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- BIGQUERY ML -->
+        <section id="bqml">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">BIGQUERY ML</div>
+                    <h2 class="section-title">
+                        BigQuery ML（SQL でモデル構築）<span class="exam-tag">頻出</span>
+                    </h2>
+                    <p class="section-desc">
+                        標準 SQL クエリを使用するだけで、BigQuery のデータウェアハウス内で直接 ML
+                        モデルを作成・実行できる革新的なアプローチ。
+                    </p>
+                </div>
+
+                <div class="grid-2" style="margin-bottom: 2rem">
+                    <div
+                        class="card"
+                        style="
+                            background: linear-gradient(
+                                135deg,
+                                rgba(66, 133, 244, 0.07),
+                                rgba(0, 0, 0, 0)
+                            );
+                        "
+                    >
+                        <div
+                            style="
+                                font-size: 1rem;
+                                color: var(--accent-blue);
+                                font-weight: 700;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            💡 BigQuery ML の革命的な価値
+                        </div>
+                        <div class="step-flow">
+                            <div class="step-item">
+                                <div class="step-num">1</div>
+                                <div class="step-content">
+                                    <div class="step-title">データ移動コストをゼロに</div>
+                                    <div class="step-desc">
+                                        BigQuery 内のデータをそのまま ML 学習に活用。ETL
+                                        プロセスや外部コンピュートへのデータ転送が不要。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-num">2</div>
+                                <div class="step-content">
+                                    <div class="step-title">SQL のみで ML を実現</div>
+                                    <div class="step-desc">
+                                        Python・TensorFlow の知識不要。既存の SQL
+                                        スキルを持つデータアナリストが直接 ML
+                                        モデルを構築・実行できる。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-num">3</div>
+                                <div class="step-content">
+                                    <div class="step-title">セキュリティとガバナンスの統一</div>
+                                    <div class="step-desc">
+                                        機密データが BigQuery
+                                        の境界を越えないため、コンプライアンス要件を満たしながら ML
+                                        を運用できる。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div
+                            style="
+                                font-size: 1rem;
+                                color: var(--accent-teal);
+                                font-weight: 700;
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            📊 対応モデルタイプと用途
+                        </div>
+                        <table class="compare-table">
+                            <thead>
+                                <tr>
+                                    <th>モデルタイプ</th>
+                                    <th>タスク</th>
+                                    <th>活用例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>線形回帰</td>
+                                    <td>数値予測</td>
+                                    <td>売上予測・LTV 推定</td>
+                                </tr>
+                                <tr>
+                                    <td>ロジスティック回帰</td>
+                                    <td>分類</td>
+                                    <td>不正検知・解約予測</td>
+                                </tr>
+                                <tr>
+                                    <td>K-means クラスタリング</td>
+                                    <td>セグメンテーション</td>
+                                    <td>顧客グループ自動分類</td>
+                                </tr>
+                                <tr>
+                                    <td>行列分解</td>
+                                    <td>推奨</td>
+                                    <td>商品レコメンドエンジン</td>
+                                </tr>
+                                <tr>
+                                    <td>時系列予測（ARIMA）</td>
+                                    <td>需要予測</td>
+                                    <td>在庫・需要の最適化</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- BigQuery ML SQL Example -->
+                <div class="card" style="background: var(--bg-secondary)">
+                    <div
+                        style="
+                            font-family: var(--font-mono);
+                            font-size: 1rem;
+                            color: var(--text-muted);
+                            margin-bottom: 0.8rem;
+                        "
+                    >
+                        SQL — BigQuery ML モデル作成の例
+                    </div>
+                    <pre
+                        style="
+                            font-family: var(--font-mono);
+                            font-size: 1rem;
+                            color: var(--text-secondary);
+                            overflow-x: auto;
+                            line-height: 1.8;
+                        "
+                    ><span style="color:#7c4dff;">CREATE OR REPLACE MODEL</span> <span style="color:#00bcd4;">`myproject.mydataset.churn_model`</span>
+<span style="color:#7c4dff;">OPTIONS</span>(
+  model_type = <span style="color:#fbbc04;">'logistic_reg'</span>,
+  input_label_cols = [<span style="color:#fbbc04;">'churned'</span>]
+) AS
+<span style="color:#7c4dff;">SELECT</span>
+  purchase_count,
+  last_purchase_days_ago,
+  avg_order_value,
+  churned <span style="color:#546e8a;">-- 正解ラベル（0 or 1）</span>
+<span style="color:#7c4dff;">FROM</span> <span style="color:#00bcd4;">`myproject.mydataset.customer_features`</span>;</pre>
+                </div>
+
+                <div class="info-box" style="margin-top: 1.5rem">
+                    <strong>🔗 Vertex AI との連携：</strong>
+                    BigQuery ML で学習したモデルを
+                    <strong>Vertex AI Model Registry</strong> に登録することで、
+                    バッチ予測だけでなく REST
+                    エンドポイントを通じたリアルタイム推論もウェブアプリケーションに統合できます。
+                </div>
+
+                <div class="bp-box">
+                    <div class="bp-title">✅ ベストプラクティス：BigQuery ML</div>
+                    <ul class="bp-list">
+                        <li>
+                            すでに BigQuery にデータがある場合は必ず BigQuery ML
+                            を最初に試す（データ移動コストがゼロ）。
+                        </li>
+                        <li>
+                            <code>ML.EVALUATE</code> 関数でモデル精度を評価し、<code
+                                >ML.EXPLAIN_PREDICT</code
+                            >
+                            で予測の根拠を可視化する。
+                        </li>
+                        <li>
+                            時系列予測は ARIMA モデルを使用し、季節性・トレンドを自動考慮させる。
+                        </li>
+                        <li>
+                            コスト管理のため、BigQuery
+                            の予約（スロット予約）と従量課金モデルを適切に使い分ける。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a href="https://docs.cloud.google.com/bigquery/docs/bqml-introduction"
+                            >https://docs.cloud.google.com/bigquery/docs/bqml-introduction</a
+                        >
+                        <a
+                            href="https://cloud.google.com/blog/products/data-analytics/how-to-use-bigquery-machine-learning"
+                            >https://cloud.google.com/blog/products/data-analytics/how-to-use-bigquery-machine-learning</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- TENSORFLOW & TPU -->
+        <section id="tensorflow">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">TENSORFLOW & CLOUD TPU</div>
+                    <h2 class="section-title">
+                        TensorFlow と Cloud TPU<span class="exam-tag">試験出題範囲</span>
+                    </h2>
+                    <p class="section-desc">
+                        試験ガイドに明示されている TensorFlow と Cloud TPU について、
+                        その定義とビジネス価値を理解しましょう。
+                    </p>
+                </div>
+
+                <div class="grid-2">
+                    <div class="tpu-highlight">
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+                                margin-bottom: 1.2rem;
+                            "
+                        >
+                            <div style="font-size: 2.5rem">🔷</div>
+                            <div>
+                                <div
+                                    style="
+                                        font-family: var(--font-display);
+                                        font-size: 1.2rem;
+                                        font-weight: 700;
+                                    "
+                                >
+                                    TensorFlow
+                                </div>
+                                <div
+                                    style="
+                                        font-size: 1rem;
+                                        color: var(--text-muted);
+                                        font-family: var(--font-mono);
+                                    "
+                                >
+                                    End-to-End Open Source ML Framework
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem"
+                        >
+                            <span class="badge badge-yellow">オープンソース</span>
+                            <span class="badge badge-blue">Google 開発</span>
+                            <span class="badge badge-green">エンドツーエンド</span>
+                        </div>
+                        <ul class="api-list">
+                            <li>Google が開発・オープンソース化した ML フレームワーク</li>
+                            <li>
+                                ML モデルの構築・学習・デプロイまでのエンドツーエンドのツールセット
+                            </li>
+                            <li>Keras による高レベル API で素早くプロトタイピング可能</li>
+                            <li>モバイル・エッジデバイスへの展開（TensorFlow Lite）に対応</li>
+                            <li>業界標準として幅広い企業・研究機関で採用</li>
+                        </ul>
+                        <div class="info-box" style="margin-top: 1rem">
+                            <strong>📌 試験ポイント：</strong>
+                            TensorFlow は「エンドツーエンドのオープンソース ML ツールセット」として
+                            定義されています。Google
+                            が開発し、オープンソースとして公開されている点が重要です。
+                        </div>
+                    </div>
+
+                    <div
+                        class="tpu-highlight"
+                        style="
+                            background: linear-gradient(
+                                135deg,
+                                rgba(234, 67, 53, 0.08),
+                                rgba(251, 188, 4, 0.06)
+                            );
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 1rem;
+                                margin-bottom: 1.2rem;
+                            "
+                        >
+                            <div style="font-size: 2.5rem">⚡</div>
+                            <div>
+                                <div
+                                    style="
+                                        font-family: var(--font-display);
+                                        font-size: 1.2rem;
+                                        font-weight: 700;
+                                    "
+                                >
+                                    Cloud TPU
+                                </div>
+                                <div
+                                    style="
+                                        font-size: 1rem;
+                                        color: var(--text-muted);
+                                        font-family: var(--font-mono);
+                                    "
+                                >
+                                    Tensor Processing Unit
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem"
+                        >
+                            <span class="badge badge-red">Google 専有ハードウェア</span>
+                            <span class="badge badge-yellow">ML 最適化</span>
+                        </div>
+                        <ul class="api-list">
+                            <li>
+                                <strong>Google が独自設計・開発した ML 専用ハードウェア</strong>
+                            </li>
+                            <li>TensorFlow ワークロードとML性能に最適化されたプロセッサ</li>
+                            <li>GPU と比較して ML の学習・推論を大幅に高速化</li>
+                            <li>Gemini などの大規模言語モデルの学習にも使用</li>
+                            <li>Google Cloud からマネージドサービスとして提供</li>
+                        </ul>
+                        <div class="warn-box" style="margin-top: 1rem">
+                            <strong>⚠️ 試験の重要ポイント：</strong>
+                            TPU は「TensorFlow と ML 性能に最適化された
+                            <strong>Google 専有（プロプライエタリ）ハードウェア</strong>」です。
+                            GPU（汎用）とは異なり、ML ワークロード専用に設計されています。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-box">
+                    <div class="bp-title">✅ ベストプラクティス：TensorFlow と Cloud TPU</div>
+                    <ul class="bp-list">
+                        <li>
+                            大規模なモデル学習（Gemini レベル）には Cloud TPU
+                            を活用することで学習時間とコストを大幅削減。
+                        </li>
+                        <li>
+                            TensorFlow は Keras API を使って素早くプロトタイプを作成し、Vertex AI
+                            Training で本番学習を実行。
+                        </li>
+                        <li>
+                            エッジデバイス向けには TensorFlow Lite
+                            を使用してモデルを軽量化・最適化する。
+                        </li>
+                        <li>
+                            TPU と GPU
+                            のコスト・性能を比較し、ワークロードに最適なアクセラレータを選択する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a href="https://www.tensorflow.org/">https://www.tensorflow.org/</a>
+                        <a href="https://cloud.google.com/tpu/docs/intro-to-tpu"
+                            >https://cloud.google.com/tpu/docs/intro-to-tpu</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- RESPONSIBLE AI -->
+        <section id="responsible">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">RESPONSIBLE AI</div>
+                    <h2 class="section-title">
+                        責任ある AI（Responsible AI）<span class="exam-tag">頻出</span>
+                    </h2>
+                    <p class="section-desc">
+                        AI の倫理的・公平・透明な利用のための原則と Google の取り組み。
+                        試験では「Google の AI 原則」と「6 つの核心原則」が重要です。
+                    </p>
+                </div>
+
+                <!-- WHAT PROBLEMS -->
+                <h3 class="subsection-title">なぜ責任ある AI が必要か</h3>
+                <div class="grid-3" style="margin-bottom: 2rem">
+                    <div class="card" style="border-left: 3px solid var(--accent-red)">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem">⚖️</div>
+                        <div class="card-title" style="font-size: 1rem">差別・偏見（Bias）</div>
+                        <div class="card-desc" style="font-size: 1rem">
+                            AI が学習データに含まれる偏りを引き継ぐ。<br />
+                            例：採用 AI が過去の男性偏重データから学習 → 女性応募者を不当に低評価。
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-yellow)">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem">🫧</div>
+                        <div class="card-title" style="font-size: 1rem">
+                            ハルシネーション（幻覚）
+                        </div>
+                        <div class="card-desc" style="font-size: 1rem">
+                            LLM が事実と異なる内容を自信を持って生成する。<br />
+                            例：医療 AI が誤った治療法を提案 → 患者への危害リスク。
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-purple)">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem">🔒</div>
+                        <div class="card-title" style="font-size: 1rem">プライバシー侵害</div>
+                        <div class="card-desc" style="font-size: 1rem">
+                            学習データに含まれる個人情報の漏洩リスク。<br />
+                            例：AI が個人情報を不適切に学習・再現してしまう。
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-blue)">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem">🎭</div>
+                        <div class="card-title" style="font-size: 1rem">不正利用・悪用</div>
+                        <div class="card-desc" style="font-size: 1rem">
+                            フェイクニュース・ディープフェイク・詐欺コンテンツの大量生成。<br />
+                            サイバー攻撃の自動化・強化。
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-teal)">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem">📦</div>
+                        <div class="card-title" style="font-size: 1rem">
+                            透明性の欠如（ブラックボックス）
+                        </div>
+                        <div class="card-desc" style="font-size: 1rem">
+                            AI の判断根拠を説明できない。<br />
+                            例：ローン否認・人事評価に AI を使う場合、理由を説明できない →
+                            規制違反リスク。
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--accent-green)">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem">🌐</div>
+                        <div class="card-title" style="font-size: 1rem">アクセス格差</div>
+                        <div class="card-desc" style="font-size: 1rem">
+                            AI の恩恵が特定の集団にのみ享受される。<br />
+                            障害者・少数民族・低所得者が AI サービスを利用しづらい設計。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6 PRINCIPLES -->
+                <h3 class="subsection-title">
+                    責任ある AI の 6 核心原則<span class="exam-tag">最重要</span>
+                </h3>
+                <div class="rai-grid">
+                    <div class="rai-card" style="border-top: 3px solid var(--accent-blue)">
+                        <div class="rai-icon">⚖️</div>
+                        <div class="rai-name">① 公平性（Fairness）</div>
+                        <div class="rai-desc">
+                            人種・性別・年齢・宗教等で差別的な出力をしない。
+                            偏りを検出・排除する仕組みを設計段階から組み込む。
+                            多様なデータセットと評価指標を使用してバイアスを継続的に測定する。
+                        </div>
+                    </div>
+                    <div class="rai-card" style="border-top: 3px solid var(--accent-green)">
+                        <div class="rai-icon">🛡️</div>
+                        <div class="rai-name">② 信頼性と安全性</div>
+                        <div class="rai-desc">
+                            設計通りの動作をし、安全性が確保されていること。
+                            誤動作・悪用を防ぐフェイルセーフ機能を組み込む。
+                            継続的なテストとモニタリングで予期しない動作を防止する。
+                        </div>
+                    </div>
+                    <div class="rai-card" style="border-top: 3px solid var(--accent-teal)">
+                        <div class="rai-icon">🔐</div>
+                        <div class="rai-name">③ プライバシーとセキュリティ</div>
+                        <div class="rai-desc">
+                            個人データを最小限に収集し、適切に保護する。
+                            ユーザーが自分のデータをコントロールできる仕組みを提供する。
+                            データ収集の目的と範囲を透明に開示する。
+                        </div>
+                    </div>
+                    <div class="rai-card" style="border-top: 3px solid var(--accent-yellow)">
+                        <div class="rai-icon">♿</div>
+                        <div class="rai-name">④ 包括性とアクセシビリティ</div>
+                        <div class="rai-desc">
+                            すべての人（障害者・少数者を含む）が等しく AI
+                            の恩恵を受けられるよう設計する。
+                            多様なユーザーニーズを考慮したインクルーシブな設計を実践する。
+                        </div>
+                    </div>
+                    <div class="rai-card" style="border-top: 3px solid var(--accent-purple)">
+                        <div class="rai-icon">🔍</div>
+                        <div class="rai-name">⑤ 透明性と説明可能性（XAI）</div>
+                        <div class="rai-desc">
+                            AI がどのように動作するかを理解・説明できること。
+                            判断の根拠を示せること（Vertex Explainable AI の活用）。 ユーザーに AI
+                            が使われていることを明示する。
+                        </div>
+                    </div>
+                    <div class="rai-card" style="border-top: 3px solid var(--accent-red)">
+                        <div class="rai-icon">📋</div>
+                        <div class="rai-name">⑥ 説明責任（Accountability）</div>
+                        <div class="rai-desc">
+                            AI の判断・行動に対して責任を持つ人間・組織が存在すること。
+                            Human-in-the-Loop の設計で重要な決定には人間のレビューを必須化する。
+                            監査可能なログと透明性レポートを維持する。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HALLUCINATION -->
+                <h3 class="subsection-title">ハルシネーション（AI の幻覚）と対策</h3>
+                <div
+                    class="card"
+                    style="
+                        background: linear-gradient(
+                            135deg,
+                            rgba(251, 188, 4, 0.06),
+                            rgba(234, 67, 53, 0.04)
+                        );
+                    "
+                >
+                    <div style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem">
+                        🫧 なぜハルシネーションが起きるか
+                    </div>
+                    <p
+                        style="
+                            font-size: 1rem;
+                            color: var(--text-secondary);
+                            margin-bottom: 1.5rem;
+                        "
+                    >
+                        LLM は「次のトークンを確率的に予測」する仕組みのため、「正確な事実」ではなく
+                        「<strong style="color: var(--text-primary)">もっともらしい文章</strong
+                        >」を生成します。 学習データに誤りが含まれる場合もその誤りを学習します。
+                    </p>
+                    <div class="grid-2">
+                        <div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--accent-red);
+                                    font-weight: 700;
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                ❌ ハルシネーションの例
+                            </div>
+                            <ul class="api-list">
+                                <li>実在しない人物の業績を自信満々に回答</li>
+                                <li>誤った医療情報・薬の副作用の回答</li>
+                                <li>実際には動かないコードを正しいと提示</li>
+                                <li>法律条文の誤った引用</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    font-size: 1rem;
+                                    color: var(--accent-green);
+                                    font-weight: 700;
+                                    margin-bottom: 0.5rem;
+                                "
+                            >
+                                ✅ 対策方法
+                            </div>
+                            <ul class="api-list">
+                                <li>RAG（外部知識ベースからの検索）で根拠ある回答を生成</li>
+                                <li>グラウンディング（Google Search との接続）</li>
+                                <li>Human-in-the-Loop（重要な決定に人間のレビュー）</li>
+                                <li>回答の確信度スコアを表示して不確かな場合は明示</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bp-box">
+                    <div class="bp-title">✅ ベストプラクティス：責任ある AI の実装</div>
+                    <ul class="bp-list">
+                        <li>
+                            <strong>設計フェーズ：</strong>多様なバックグラウンドを持つチームで AI
+                            を設計し、ユースケースごとにリスクアセスメントを実施。
+                        </li>
+                        <li>
+                            <strong>開発フェーズ：</strong
+                            >学習データのバイアス分析を必ず実施し、Vertex AI
+                            の公平性指標で複数の人口属性グループで評価。
+                        </li>
+                        <li>
+                            <strong>デプロイフェーズ：</strong
+                            >高リスク決定（医療診断・融資審査）には Human-in-the-Loop を必須化。
+                        </li>
+                        <li>
+                            <strong>運用フェーズ：</strong
+                            >定期的なバイアス監査・公平性レビューを実施し、ユーザーのフィードバックを継続的に取り込む。
+                        </li>
+                        <li>
+                            AI が生成したコンテンツはユーザーに明示する（「このメッセージは AI
+                            が生成しました」）。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="source-box">
+                    <div class="source-title">📎 参考ソース</div>
+                    <div class="source-links">
+                        <a href="https://ai.google/responsibility/principles/"
+                            >https://ai.google/responsibility/principles/</a
+                        >
+                        <a href="https://cloud.google.com/responsible-ai"
+                            >https://cloud.google.com/responsible-ai</a
+                        >
+                        <a href="https://cloud.google.com/vertex-ai/docs/explainable-ai/overview"
+                            >https://cloud.google.com/vertex-ai/docs/explainable-ai/overview</a
+                        >
+                        <a
+                            href="https://developers.google.com/machine-learning/guides/intro-responsible-ai"
+                            >https://developers.google.com/machine-learning/guides/intro-responsible-ai</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- EXAM CHECKLIST -->
+        <section id="checklist">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">EXAM PREPARATION</div>
+                    <h2 class="section-title">試験直前チェックリスト</h2>
+                    <p class="section-desc">
+                        CDL 試験 Section 3 の頻出ポイントを確認しましょう。
+                        すべての項目を自分の言葉で説明できるかどうかがポイントです。
+                    </p>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <h3 class="subsection-title" style="margin-top: 0">3.1 AI/ML 基礎</h3>
+                        <div class="checklist">
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                AI ⊃ ML ⊃ 深層学習 ⊃ 生成 AI ⊃ LLM の包含関係を図で説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                「生成 AI ≠ LLM」の違いを具体例で説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                AI/ML とデータアナリティクス・BI の時間的焦点の違いを説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                ML がビジネスに創出する 3
+                                つの価値（大規模データ・スケーリング・非構造化データ）を説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                GIGO の法則と高品質データの 4 つの条件を説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                教師あり・教師なし・強化学習の定義と具体例を言える
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                責任ある AI の 6 原則をすべて列挙できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                ハルシネーションの定義と主な対策方法を説明できる
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="subsection-title" style="margin-top: 0">
+                            3.2 ソリューション選択
+                        </h3>
+                        <div class="checklist">
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                4
+                                つのトレードオフ要因（スピード・労力・差別化・専門知識）を比較できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                「事前学習済み API → AutoML → Vertex AI」の選択基準を説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                「自社独自データが必要か」「ML
+                                専門知識があるか」でどのサービスを選ぶかを即答できる
+                            </div>
+                        </div>
+
+                        <h3 class="subsection-title">3.3 各サービスの詳細</h3>
+                        <div class="checklist">
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                Vision / NL / Translation / Speech-to-Text / Text-to-Speech API
+                                の用途を言える
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                AutoML
+                                の「ノーコードでカスタムモデルを構築できる」点を具体例で説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                BigQuery ML が「SQL でデータ移動なしに ML
+                                を実行できる」点を説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                Vertex AI
+                                がビジネス差別化のために「フル制御のカスタムモデル」を可能にする点を説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                TensorFlow が「エンドツーエンドのオープンソース ML
+                                ツールセット」であることを説明できる
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box">✓</div>
+                                Cloud TPU が「Google 専有・TensorFlow と ML
+                                に最適化されたハードウェア」であることを説明できる
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMMON EXAM PATTERNS -->
+                <h3 class="subsection-title" style="margin-top: 3rem">
+                    よく出る問題パターンと解法
+                </h3>
+                <div class="grid-2">
+                    <div class="card" style="border-left: 3px solid var(--accent-blue)">
+                        <div
+                            style="
+                                font-family: var(--font-mono);
+                                font-size: 1rem;
+                                color: var(--accent-blue);
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            PATTERN 01 — AI サービスの選択
+                        </div>
+                        <p
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-secondary);
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            「製造業の顧客が製品の外観不良を AI で検出したい。ML
+                            の専門知識がないが、
+                            自社固有の不良パターンがある。どのサービスが最適か？」
+                        </p>
+                        <div
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-muted);
+                                margin-bottom: 0.5rem;
+                            "
+                        >
+                            考え方：
+                        </div>
+                        <ul class="api-list" style="margin-bottom: 0.8rem">
+                            <li>自社固有データが必要 → 事前学習済み API では不十分</li>
+                            <li>ML 知識がない → Vertex AI（フルコード）ではない</li>
+                            <li>
+                                画像データ・ノーコード →
+                                <strong style="color: var(--accent-green)"
+                                    >AutoML Vision が正解</strong
+                                >
+                            </li>
+                        </ul>
+                        <span class="badge badge-green">答え：AutoML Vision</span>
+                    </div>
+
+                    <div class="card" style="border-left: 3px solid var(--accent-teal)">
+                        <div
+                            style="
+                                font-family: var(--font-mono);
+                                font-size: 1rem;
+                                color: var(--accent-teal);
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            PATTERN 02 — BigQuery ML
+                        </div>
+                        <p
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-secondary);
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            「BigQuery にデータがあり、データアナリストが SQL
+                            で顧客の解約予測モデルを 作りたい。最も効率的な方法は？」
+                        </p>
+                        <div
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-muted);
+                                margin-bottom: 0.5rem;
+                            "
+                        >
+                            考え方：
+                        </div>
+                        <ul class="api-list" style="margin-bottom: 0.8rem">
+                            <li>すでに BigQuery にデータあり → データ移動不要</li>
+                            <li>SQL アナリストが実行 → ML 専門知識不要</li>
+                            <li>
+                                →
+                                <strong style="color: var(--accent-green)"
+                                    >BigQuery ML が最適</strong
+                                >
+                            </li>
+                        </ul>
+                        <span class="badge badge-teal">答え：BigQuery ML</span>
+                    </div>
+
+                    <div class="card" style="border-left: 3px solid var(--accent-green)">
+                        <div
+                            style="
+                                font-family: var(--font-mono);
+                                font-size: 1rem;
+                                color: var(--accent-green);
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            PATTERN 03 — 責任ある AI
+                        </div>
+                        <p
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-secondary);
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            「採用システムに AI を導入したい。AI
+                            の判断が応募者に不当な影響を与えないよう、 どの責任ある AI
+                            の原則を最も重視すべきか？」
+                        </p>
+                        <div
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-muted);
+                                margin-bottom: 0.5rem;
+                            "
+                        >
+                            考え方：
+                        </div>
+                        <ul class="api-list" style="margin-bottom: 0.8rem">
+                            <li>採用における不当な扱い → 差別・バイアスの問題</li>
+                            <li>
+                                人種・性別・年齢等の差別 →
+                                <strong style="color: var(--accent-green)"
+                                    >公平性（Fairness）が正解</strong
+                                >
+                            </li>
+                        </ul>
+                        <span class="badge badge-green">答え：公平性（Fairness）</span>
+                    </div>
+
+                    <div class="card" style="border-left: 3px solid var(--accent-yellow)">
+                        <div
+                            style="
+                                font-family: var(--font-mono);
+                                font-size: 1rem;
+                                color: var(--accent-yellow);
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            PATTERN 04 — TensorFlow / TPU
+                        </div>
+                        <p
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-secondary);
+                                margin-bottom: 1rem;
+                            "
+                        >
+                            「Google Cloud の Cloud TPU とは何か？」
+                        </p>
+                        <div
+                            style="
+                                font-size: 1rem;
+                                color: var(--text-muted);
+                                margin-bottom: 0.5rem;
+                            "
+                        >
+                            正解の要素：
+                        </div>
+                        <ul class="api-list" style="margin-bottom: 0.8rem">
+                            <li>
+                                Google が独自設計した
+                                <strong>プロプライエタリ（専有）ハードウェア</strong>
+                            </li>
+                            <li>TensorFlow と ML ワークロードの <strong>性能に最適化</strong></li>
+                            <li>汎用 GPU とは異なり <strong>ML 専用</strong>に設計</li>
+                        </ul>
+                        <span class="badge badge-yellow"
+                            >答え：Google 専有の ML 最適化ハードウェア</span
+                        >
+                    </div>
+                </div>
+
+                <!-- CONFUSION PREVENTION -->
+                <h3 class="subsection-title">混同しやすいポイントの整理</h3>
+                <div class="card" style="overflow-x: auto">
+                    <table class="compare-table" style="min-width: 560px">
+                        <thead>
+                            <tr>
+                                <th>混同パターン</th>
+                                <th>✅ 正しい理解</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>生成 AI ＝ LLM</td>
+                                <td>
+                                    LLM はテキスト生成専門。生成 AI
+                                    は画像・動画・音声なども含む広い概念
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>AutoML ＝ Vertex AI</td>
+                                <td>
+                                    AutoML はノーコードの ML 構築ツール、Vertex AI はフル機能の ML
+                                    プラットフォーム（AutoML を内包）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>TensorFlow ＝ Cloud TPU</td>
+                                <td>
+                                    TensorFlow はソフトウェアフレームワーク、Cloud TPU は ML
+                                    専用ハードウェア（別の概念）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>AI ＝ ML</td>
+                                <td>ML は AI のサブフィールド。AI ⊃ ML（AI の方が広い概念）</td>
+                            </tr>
+                            <tr>
+                                <td>BigQuery ML ＝ Vertex AI</td>
+                                <td>
+                                    BigQuery ML は SQL でデータ移動なしに ML を実行、Vertex AI
+                                    はフル ML ライフサイクル管理
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>教師なし学習 ＝ 正解不要</td>
+                                <td>
+                                    正解ラベルが不要なだけで、データ品質・量は同様に重要。クラスタリング等でパターンを自動発見
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="container">
+                <p
+                    style="
+                        margin-bottom: 0.8rem;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        color: var(--text-primary);
+                    "
+                >
+                    Google Cloud Digital Leader — Section 3 完全攻略ガイド
+                </p>
+                <p style="margin-bottom: 1.2rem">
+                    本ガイドは
+                    <a
+                        href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf"
+                        >Google Cloud Digital Leader 公式試験ガイド</a
+                    >
+                    に完全対応しています。
+                </p>
+                <div
+                    style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+                        font-size: 1rem;
+                    "
+                >
+                    <a href="https://cloud.google.com/learn/certification/cloud-digital-leader"
+                        >CDL 認定ページ</a
+                    >
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/vertex-ai/docs">Vertex AI Docs</a>
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://ai.google/responsibility/principles/">Google AI 原則</a>
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/automl/docs">AutoML Docs</a>
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/responsible-ai">Responsible AI</a>
+                </div>
+                <p style="font-size: 1rem; color: var(--text-muted)">
+                    ※本ガイドは学習目的で作成されました。試験の最新情報は必ず公式ページでご確認ください。
+                </p>
+            </div>
+        </footer>
+
+        <script>
+            // Intersection Observer for scroll animations
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.animation = 'fadeIn 0.6s ease forwards';
+                        }
+                    });
+                },
+                { threshold: 0.1 },
+            );
+
+            document
+                .querySelectorAll('.card, .ml-card, .api-row, .rai-card, .check-item')
+                .forEach((el) => {
+                    el.style.opacity = '0';
+                    observer.observe(el);
+                });
+
+            // Active nav highlight
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach((section) => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) current = section.getAttribute('id');
+                });
+                navLinks.forEach((link) => {
+                    link.style.color = '';
+                    link.style.borderColor = '';
+                    link.style.background = '';
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.style.color = 'var(--accent-blue)';
+                        link.style.borderColor = 'rgba(66,133,244,0.3)';
+                        link.style.background = 'rgba(66,133,244,0.08)';
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
