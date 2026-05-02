@@ -53,32 +53,6 @@
     font-size: 0.8rem;
 }
 
-.compareTable {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-.compareTable th {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1rem;
-    font-weight: 600;
-    border-bottom: 2px solid var(--color-border);
-    color: var(--color-text-primary);
-    white-space: nowrap;
-}
-
-.compareTable td {
-    padding: 1rem;
-    border-bottom: 1px solid var(--color-border);
-    color: var(--color-text-secondary);
-    vertical-align: top;
-}
-
-.compareTable tr:last-child td {
-    border-bottom: none;
-}
-
 .mlCard {
     background: var(--color-bg-card);
     border: 1px solid var(--color-border);

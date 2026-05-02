@@ -2,6 +2,10 @@ import React from 'react';
 import baseStyles from './SectionBase.module.css';
 import styles from './Section4.module.css';
 
+/**
+ * Section4_Checklist: Section 3 試験対策のチェックリストコンポーネント
+ * @returns JSX.Element
+ */
 export const Section4_Checklist: React.FC = () => {
     return (
         <div id="checklist">

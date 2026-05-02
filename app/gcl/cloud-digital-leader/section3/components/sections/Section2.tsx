@@ -22,7 +22,7 @@ export const Section2: React.FC = () => {
                 <h3 className={baseStyles.subsectionTitle}>
                     4 つのトレードオフ要因<span className={baseStyles.examTag}>最重要</span>
                 </h3>
-                <div className={baseStyles.card} style={{ overflowX: 'auto', marginBottom: '2rem' }}>
+                <div className={`${baseStyles.card} overflow-x-auto mb-8`}>
                     <table className={styles.tradeoffTable} style={{ minWidth: '600px' }}>
                         <thead>
                             <tr>
@@ -71,67 +71,34 @@ export const Section2: React.FC = () => {
                         <div className={styles.dtArrow}>→</div>
                         <div className={styles.dtNode}>自社独自のデータで学習が必要？</div>
                     </div>
-                    <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', marginLeft: '2rem' }}>
+                    <div className="flex gap-12 flex-wrap ml-8">
                         <div>
-                            <div
-                                style={{
-                                    color: 'var(--color-accent-red)',
-                                    fontSize: '1rem',
-                                    fontWeight: 700,
-                                    marginBottom: '0.5rem'
-                                }}
-                            >
+                            <div className="text-[var(--color-accent-red)] text-base font-bold mb-2">
                                 NO（汎用タスクで十分）
                             </div>
                             <div className={styles.dtRow}>
                                 <div className={styles.dtAnswer}>🔌 事前学習済み API</div>
                             </div>
-                            <div style={{ color: 'var(--color-text-muted)', fontSize: '1rem' }}>
+                            <div className="text-[var(--color-text-muted)] text-base">
                                 Vision / NL / Translation / Speech API
                             </div>
                         </div>
                         <div>
-                            <div
-                                style={{
-                                    color: 'var(--color-accent-green)',
-                                    fontSize: '1rem',
-                                    fontWeight: 700,
-                                    marginBottom: '0.5rem'
-                                }}
-                            >
+                            <div className="text-[var(--color-accent-green)] text-base font-bold mb-2">
                                 YES（カスタムが必要）
                             </div>
                             <div className={styles.dtRow}>
                                 <div className={styles.dtNode}>ML の専門知識がある？</div>
                             </div>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    gap: '2rem',
-                                    flexWrap: 'wrap',
-                                    marginTop: '0.5rem'
-                                }}
-                            >
+                            <div className="flex gap-8 flex-wrap mt-2">
                                 <div>
-                                    <div
-                                        style={{
-                                            color: 'var(--color-accent-red)',
-                                            fontSize: '1rem',
-                                            marginBottom: '0.3rem'
-                                        }}
-                                    >
+                                    <div className="text-[var(--color-accent-red)] text-base mb-1">
                                         NO
                                     </div>
                                     <div className={styles.dtAnswer}>🤖 AutoML</div>
                                 </div>
                                 <div>
-                                    <div
-                                        style={{
-                                            color: 'var(--color-accent-green)',
-                                            fontSize: '1rem',
-                                            marginBottom: '0.3rem'
-                                        }}
-                                    >
+                                    <div className="text-[var(--color-accent-green)] text-base mb-1">
                                         YES
                                     </div>
                                     <div className={styles.dtAnswer}>🏗️ Vertex AI</div>

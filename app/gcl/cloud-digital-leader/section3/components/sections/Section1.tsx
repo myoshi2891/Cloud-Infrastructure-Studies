@@ -1,6 +1,7 @@
 import React from 'react';
 import baseStyles from './SectionBase.module.css';
 import styles from './Section1.module.css';
+import compareStyles from './Compare.module.css';
 
 /**
  * Section1: AI と ML の基礎概念
@@ -19,7 +20,7 @@ export const Section1: React.FC = () => {
                 </div>
 
                 {/* HIERARCHY DIAGRAM */}
-                <div className={styles.hierarchy} style={{ marginBottom: '2rem' }}>
+                <div className={`${styles.hierarchy} mb-8`}>
                     <div className={styles.hierarchyTitle}>AI 技術の包含関係（最重要！）</div>
                     <div className={styles.hierWrap}>
                         <div className={`${styles.hierLevel} ${styles.hlAi}`}>
@@ -57,7 +58,7 @@ export const Section1: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={baseStyles.warnBox} style={{ marginTop: '1.5rem' }}>
+                    <div className={`${baseStyles.warnBox} mt-6`}>
                         <strong>⚠️ 試験の落とし穴：</strong>
                         「生成 AI ＝ LLM」は<strong>誤り</strong>です。LLM
                         はテキスト生成専用ですが、 生成 AI
@@ -70,8 +71,8 @@ export const Section1: React.FC = () => {
                     AI/ML とデータアナリティクスの違い<span className={baseStyles.examTag}>頻出</span>
                 </h3>
 
-                <div className={baseStyles.card} style={{ overflowX: 'auto', marginBottom: '2rem' }}>
-                    <table className={styles.compareTable} style={{ minWidth: '580px' }}>
+                <div className={`${baseStyles.card} overflow-x-auto mb-8`}>
+                    <table className={compareStyles.compareTable} style={{ minWidth: '580px' }}>
                         <thead>
                             <tr>
                                 <th>技術領域</th>
@@ -111,9 +112,9 @@ export const Section1: React.FC = () => {
                 <h3 className={baseStyles.subsectionTitle}>
                     ML がビジネスに創出する価値<span className={baseStyles.examTag}>頻出</span>
                 </h3>
-                <div className={baseStyles.grid3} style={{ marginBottom: '1.5rem' }}>
+                <div className={`${baseStyles.grid3} mb-6`}>
                     <div className={baseStyles.card}>
-                        <div className={baseStyles.cardIcon} style={{ background: 'rgba(66, 133, 244, 0.12)' }}>🗄️</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>🗄️</div>
                         <div className={baseStyles.cardTitle}>大規模データセットからのパターン抽出</div>
                         <div className={baseStyles.cardDesc}>
                             人間が認知できる変数の数には限界がありますが、ML
@@ -122,7 +123,7 @@ export const Section1: React.FC = () => {
                         </div>
                     </div>
                     <div className={baseStyles.card}>
-                        <div className={baseStyles.cardIcon} style={{ background: 'rgba(0, 188, 212, 0.12)' }}>📈</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>📈</div>
                         <div className={baseStyles.cardTitle}>ビジネス意思決定のスケーリング</div>
                         <div className={baseStyles.cardDesc}>
                             不正検知・商品推奨・品質管理など、数百万回のトランザクションに対するリアルタイムかつ高精度な
@@ -130,7 +131,7 @@ export const Section1: React.FC = () => {
                         </div>
                     </div>
                     <div className={baseStyles.card}>
-                        <div className={baseStyles.cardIcon} style={{ background: 'rgba(52, 168, 83, 0.12)' }}>🔓</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>🔓</div>
                         <div className={baseStyles.cardTitle}>非構造化データの解放</div>
                         <div className={baseStyles.cardDesc}>
                             企業データの大部分（画像・音声・動画・テキスト）は従来の RDB
@@ -144,93 +145,52 @@ export const Section1: React.FC = () => {
                 <h3 className={baseStyles.subsectionTitle}>
                     高品質データの重要性<span className={baseStyles.examTag}>頻出</span>
                 </h3>
-                <div
-                    className={baseStyles.card}
-                    style={{
-                        background: 'linear-gradient(135deg, rgba(251, 188, 4, 0.05), rgba(234, 67, 53, 0.04))',
-                        marginBottom: '2rem'
-                    }}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-                        <div style={{ fontSize: '2.5rem' }}>🗑️</div>
+                <div className={`${baseStyles.card} bg-[var(--color-bg-secondary)] mb-8`}>
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="text-4xl">🗑️</div>
                         <div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--font-display)',
-                                    fontSize: '1.4rem',
-                                    fontWeight: 800,
-                                    color: 'var(--color-accent-orange, #fbbc04)'
-                                }}
-                            >
+                            <div className="font-display text-2xl font-extrabold text-[var(--color-accent-orange)]">
                                 Garbage In, Garbage Out（GIGO の法則）
                             </div>
-                            <div style={{ color: 'var(--color-text-secondary)', fontSize: '1rem' }}>
+                            <div className="text-[var(--color-text-secondary)] text-base">
                                 「ゴミを入れればゴミが出る」— ML 品質はデータ品質に直結します
                             </div>
                         </div>
                     </div>
                     <div className={baseStyles.grid4}>
-                        <div
-                            style={{
-                                textAlign: 'center',
-                                padding: '1rem',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                                borderRadius: '10px'
-                            }}
-                        >
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.4rem' }}>📦</div>
-                            <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.3rem' }}>
+                        <div className="text-center p-4 bg-white/5 rounded-xl">
+                            <div className="text-2xl mb-1">📦</div>
+                            <div className="text-base font-semibold mb-1">
                                 十分な量
                             </div>
-                            <div style={{ fontSize: '1rem', color: 'var(--color-text-muted)' }}>
+                            <div className="text-base text-[var(--color-text-muted)]">
                                 学習データが少ないと精度が出ない
                             </div>
                         </div>
-                        <div
-                            style={{
-                                textAlign: 'center',
-                                padding: '1rem',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                                borderRadius: '10px'
-                            }}
-                        >
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.4rem' }}>✅</div>
-                            <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.3rem' }}>
+                        <div className="text-center p-4 bg-white/5 rounded-xl">
+                            <div className="text-2xl mb-1">✅</div>
+                            <div className="text-base font-semibold mb-1">
                                 高品質・正確
                             </div>
-                            <div style={{ fontSize: '1rem', color: 'var(--color-text-muted)' }}>
+                            <div className="text-base text-[var(--color-text-muted)]">
                                 ノイズ・誤りが少ないデータ
                             </div>
                         </div>
-                        <div
-                            style={{
-                                textAlign: 'center',
-                                padding: '1rem',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                                borderRadius: '10px'
-                            }}
-                        >
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.4rem' }}>🌍</div>
-                            <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.3rem' }}>
+                        <div className="text-center p-4 bg-white/5 rounded-xl">
+                            <div className="text-2xl mb-1">🌍</div>
+                            <div className="text-base font-semibold mb-1">
                                 多様性
                             </div>
-                            <div style={{ fontSize: '1rem', color: 'var(--color-text-muted)' }}>
+                            <div className="text-base text-[var(--color-text-muted)]">
                                 バイアスを排除した多様なデータ
                             </div>
                         </div>
-                        <div
-                            style={{
-                                textAlign: 'center',
-                                padding: '1rem',
-                                background: 'rgba(255, 255, 255, 0.03)',
-                                borderRadius: '10px'
-                            }}
-                        >
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.4rem' }}>🎯</div>
-                            <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.3rem' }}>
+                        <div className="text-center p-4 bg-white/5 rounded-xl">
+                            <div className="text-2xl mb-1">🎯</div>
+                            <div className="text-base font-semibold mb-1">
                                 目的との関連性
                             </div>
-                            <div style={{ fontSize: '1rem', color: 'var(--color-text-muted)' }}>
+                            <div className="text-base text-[var(--color-text-muted)]">
                                 ユースケースに関連したデータ
                             </div>
                         </div>
@@ -243,27 +203,27 @@ export const Section1: React.FC = () => {
                 </h3>
                 <div className={baseStyles.grid3}>
                     <div className={styles.mlCard}>
-                        <div className={styles.mlCardHeader} style={{ background: 'rgba(66, 133, 244, 0.06)' }}>
-                            <div className={styles.mlIcon} style={{ background: 'rgba(66, 133, 244, 0.15)' }}>👨‍🏫</div>
+                        <div className={`${styles.mlCardHeader} bg-[var(--color-bg-secondary)]`}>
+                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`}>👨‍🏫</div>
                             <div>
                                 <div className={styles.mlCardTitle}>教師あり学習</div>
                                 <div className={styles.mlCardSub}>Supervised Learning</div>
                             </div>
                         </div>
                         <div className={styles.mlCardBody}>
-                            <p style={{ fontSize: '1rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
-                                <strong style={{ color: 'var(--color-text-primary)' }}>定義：</strong>
+                            <p className="text-base text-[var(--color-text-secondary)] mb-4">
+                                <strong className="text-[var(--color-text-primary)]">定義：</strong>
                                 正解ラベルが付いたデータを使って学習。
                                 「先生（ラベル）」が「生徒（モデル）」を指導するイメージ。
                             </p>
-                            <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-accent-blue)' }}>
+                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-blue)]">
                                 タスク種別：
                             </p>
-                            <ul className={styles.apiList} style={{ marginBottom: '1rem' }}>
+                            <ul className={`${styles.apiList} mb-4`}>
                                 <li><strong>分類（Classification）</strong> — スパム判定・画像分類</li>
                                 <li><strong>回帰（Regression）</strong> — 売上予測・不動産価格</li>
                             </ul>
-                            <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-accent-blue)' }}>
+                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-blue)]">
                                 ビジネス活用例：
                             </p>
                             <ul className={styles.apiList}>
@@ -275,27 +235,27 @@ export const Section1: React.FC = () => {
                     </div>
 
                     <div className={styles.mlCard}>
-                        <div className={styles.mlCardHeader} style={{ background: 'rgba(0, 188, 212, 0.06)' }}>
-                            <div className={styles.mlIcon} style={{ background: 'rgba(0, 188, 212, 0.15)' }}>🔍</div>
+                        <div className={`${styles.mlCardHeader} bg-[var(--color-bg-secondary)]`}>
+                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`}>🔍</div>
                             <div>
                                 <div className={styles.mlCardTitle}>教師なし学習</div>
                                 <div className={styles.mlCardSub}>Unsupervised Learning</div>
                             </div>
                         </div>
                         <div className={styles.mlCardBody}>
-                            <p style={{ fontSize: '1rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
-                                <strong style={{ color: 'var(--color-text-primary)' }}>定義：</strong>
+                            <p className="text-base text-[var(--color-text-secondary)] mb-4">
+                                <strong className="text-[var(--color-text-primary)]">定義：</strong>
                                 ラベルなしのデータからパターン・構造を自動発見。
                                 「先生」なしで生徒が自分でルールを見つけるイメージ。
                             </p>
-                            <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-accent-cyan, #00bcd4)' }}>
+                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-cyan)]">
                                 タスク種別：
                             </p>
-                            <ul className={styles.apiList} style={{ marginBottom: '1rem' }}>
+                            <ul className={`${styles.apiList} mb-4`}>
                                 <li><strong>クラスタリング</strong> — 顧客セグメント自動分類</li>
                                 <li><strong>異常検知</strong> — 不正アクセス検知</li>
                             </ul>
-                            <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-accent-cyan, #00bcd4)' }}>
+                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-cyan)]">
                                 ビジネス活用例：
                             </p>
                             <ul className={styles.apiList}>
@@ -307,27 +267,27 @@ export const Section1: React.FC = () => {
                     </div>
 
                     <div className={styles.mlCard}>
-                        <div className={styles.mlCardHeader} style={{ background: 'rgba(52, 168, 83, 0.06)' }}>
-                            <div className={styles.mlIcon} style={{ background: 'rgba(52, 168, 83, 0.15)' }}>🎮</div>
+                        <div className={`${styles.mlCardHeader} bg-[var(--color-bg-secondary)]`}>
+                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`}>🎮</div>
                             <div>
                                 <div className={styles.mlCardTitle}>強化学習</div>
                                 <div className={styles.mlCardSub}>Reinforcement Learning</div>
                             </div>
                         </div>
                         <div className={styles.mlCardBody}>
-                            <p style={{ fontSize: '1rem', color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
-                                <strong style={{ color: 'var(--color-text-primary)' }}>定義：</strong>
+                            <p className="text-base text-[var(--color-text-secondary)] mb-4">
+                                <strong className="text-[var(--color-text-primary)]">定義：</strong>
                                 エージェントが環境と対話しながら
                                 「報酬の最大化」を試行錯誤で学習。ゲーム攻略 AI のイメージ。
                             </p>
-                            <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-accent-green)' }}>
+                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-green)]">
                                 タスク種別：
                             </p>
-                            <ul className={styles.apiList} style={{ marginBottom: '1rem' }}>
+                            <ul className={`${styles.apiList} mb-4`}>
                                 <li><strong>最適制御</strong> — ロボット制御・自動運転</li>
                                 <li><strong>RLHF</strong> — 人間フィードバックによる LLM 改善</li>
                             </ul>
-                            <p style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--color-accent-green)' }}>
+                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-green)]">
                                 ビジネス活用例：
                             </p>
                             <ul className={styles.apiList}>

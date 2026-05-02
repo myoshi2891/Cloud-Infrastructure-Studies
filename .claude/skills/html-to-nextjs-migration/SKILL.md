@@ -76,12 +76,12 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 
 ### Phase 3: Create Page-Specific CSS File
 
-1. Create `app/<page-name>.css` for styles unique to this page
+1. Create `app/<page-slug>/page.css` (or alongside the component) for styles unique to this page
 2. Do NOT use `@layer components` — use plain CSS selectors for proper specificity over Tailwind preflight
 3. Replace all HTML-local CSS variables with project `@theme` tokens (with fallbacks)
 4. Rename keyframes from camelCase to kebab-case (e.g., `fadeUp` → `fade-up`)
 5. Place `@keyframes` definitions that are page-specific in the page CSS, not globals
-6. Import the CSS at the top of the page component: `import '../<page-name>.css';`
+6. Import the CSS at the top of the page component: `import './page.css';`
 
 #### CSS Pitfalls Checklist (learned from code reviews)
 
@@ -212,3 +212,5 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 - **Pages are server-rendered** — no `useState`, `useEffect`, or client-side interactivity unless explicitly needed (use `'use client'` directive)
 - **Always update Header.tsx and CLAUDE.md** when adding a new page
 - **Always use fallback values** for CSS vars that may not be defined: `var(--radius-DEFAULT, 12px)`
+: `var(--radius-DEFAULT, 12px)`
+EFAULT, 12px)`

@@ -2,6 +2,10 @@ import React from 'react';
 import baseStyles from './SectionBase.module.css';
 import styles from './Section3.module.css';
 
+/**
+ * Section3_TensorFlow: TensorFlow と Cloud TPU の概要と特徴を解説するコンポーネント
+ * @returns JSX.Element
+ */
 export const Section3_TensorFlow: React.FC = () => {
     return (
         <div id="tensorflow">
@@ -19,18 +23,18 @@ export const Section3_TensorFlow: React.FC = () => {
 
                 <div className={baseStyles.grid2}>
                     <div className={styles.tpuHighlight}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.2rem' }}>
-                            <div style={{ fontSize: '2.5rem' }}>🔷</div>
+                        <div className="flex items-center gap-4 mb-5">
+                            <div className="text-4xl">🔷</div>
                             <div>
-                                <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 700 }}>
+                                <div className="font-display text-xl font-bold">
                                     TensorFlow
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                <div className="text-base text-[var(--color-text-muted)] font-mono">
                                     End-to-End Open Source ML Framework
                                 </div>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+                        <div className="flex gap-2 flex-wrap mb-4">
                             <span className={`${baseStyles.badge} ${baseStyles.badgeYellow}`}>オープンソース</span>
                             <span className={`${baseStyles.badge} ${baseStyles.badgeBlue}`}>Google 開発</span>
                             <span className={`${baseStyles.badge} ${baseStyles.badgeGreen}`}>エンドツーエンド</span>
@@ -42,19 +46,19 @@ export const Section3_TensorFlow: React.FC = () => {
                         </ul>
                     </div>
 
-                    <div className={styles.tpuHighlight} style={{ background: 'linear-gradient(135deg, rgba(234, 67, 53, 0.08), rgba(251, 188, 4, 0.06))' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.2rem' }}>
-                            <div style={{ fontSize: '2.5rem' }}>⚡</div>
+                    <div className={styles.tpuHighlight}>
+                        <div className="flex items-center gap-4 mb-5">
+                            <div className="text-4xl">⚡</div>
                             <div>
-                                <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 700 }}>
+                                <div className="font-display text-xl font-bold">
                                     Cloud TPU
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                <div className="text-base text-[var(--color-text-muted)] font-mono">
                                     Tensor Processing Unit
                                 </div>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+                        <div className="flex gap-2 flex-wrap mb-4">
                             <span className={`${baseStyles.badge} ${baseStyles.badgeRed}`}>Google 専有ハードウェア</span>
                             <span className={`${baseStyles.badge} ${baseStyles.badgeYellow}`}>ML 最適化</span>
                         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import baseStyles from './SectionBase.module.css';
 import styles from './Section3.module.css';
+import compareStyles from './Compare.module.css';
 
 export const Section3_BQML: React.FC = () => {
     return (
@@ -47,7 +48,7 @@ export const Section3_BQML: React.FC = () => {
                         <div style={{ fontSize: '1rem', color: 'var(--color-accent-cyan, #00bcd4)', fontWeight: 700, marginBottom: '1rem' }}>
                             📊 対応モデルタイプと用途
                         </div>
-                        <table className={styles.compareTable}>
+                        <table className={compareStyles.compareTable}>
                             <thead>
                                 <tr>
                                     <th>モデルタイプ</th>
@@ -79,8 +80,8 @@ export const Section3_BQML: React.FC = () => {
                     <div className="code-block" style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', color: 'var(--color-text-secondary)', overflowX: 'auto', lineHeight: 1.8 }}>
                         <div className="code-line"><span style={{ color: '#7c4dff' }}>CREATE OR REPLACE MODEL</span> <span style={{ color: '#00bcd4' }}>`myproject.mydataset.churn_model`</span></div>
                         <div className="code-line"><span style={{ color: '#7c4dff' }}>OPTIONS</span>(</div>
-                        <div className="code-line">  model_type = <span style={{ color: '#fbbc04' }}>'logistic_reg'</span>,</div>
-                        <div className="code-line">  input_label_cols = [<span style={{ color: '#fbbc04' }}>'churned'</span>]</div>
+                        <div className="code-line">  model_type = <span style={{ color: '#fbbc04' }}>{"'logistic_reg'"}</span>,</div>
+                        <div className="code-line">  input_label_cols = [<span style={{ color: '#fbbc04' }}>{"'churned'"}</span>]</div>
                         <div className="code-line">) AS</div>
                         <div className="code-line"><span style={{ color: '#7c4dff' }}>SELECT</span></div>
                         <div className="code-line">  purchase_count,</div>

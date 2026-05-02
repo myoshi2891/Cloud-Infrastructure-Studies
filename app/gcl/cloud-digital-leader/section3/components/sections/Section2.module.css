@@ -5,7 +5,7 @@
 }
 
 .tradeoffTable th {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--color-bg-secondary);
     padding: 1rem;
     font-weight: 600;
     border-bottom: 2px solid var(--color-border);
@@ -25,7 +25,7 @@
 }
 
 .dotHigh { color: var(--color-accent-green); }
-.dotMid { color: var(--color-accent-orange, #fbbc04); }
+.dotMid { color: var(--color-accent-orange); }
 .dotLow { color: var(--color-accent-red); }
 
 .decisionTree {
@@ -45,7 +45,7 @@
 }
 
 .dtNode {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     padding: 0.8rem 1.5rem;
     border-radius: 8px;
@@ -59,7 +59,7 @@
 }
 
 .dtAnswer {
-    background: rgba(66, 133, 244, 0.1);
+    background: var(--color-bg-secondary);
     border: 1px solid var(--color-accent-blue);
     color: var(--color-accent-blue);
     padding: 0.8rem 1.5rem;

@@ -2,6 +2,10 @@ import React from 'react';
 import baseStyles from './SectionBase.module.css';
 import styles from './Section3.module.css';
 
+/**
+ * Section3_Apis: 事前学習済み API の概要とビジネス活用例を解説するコンポーネント
+ * @returns JSX.Element
+ */
 export const Section3_Apis: React.FC = () => {
     return (
         <div id="apis" style={{ paddingTop: 0 }}>

@@ -2,9 +2,13 @@ import React from 'react';
 import baseStyles from './SectionBase.module.css';
 import styles from './Section4.module.css';
 
+/**
+ * Section4_Responsible: 責任ある AI の原則とGoogleの取り組みを解説するコンポーネント
+ * @returns JSX.Element
+ */
 export const Section4_Responsible: React.FC = () => {
     return (
-        <div id="responsible">
+        <div id="responsible-section4-resp">
             <div className={baseStyles.container}>
                 <div className={baseStyles.sectionHeader}>
                     <div className={baseStyles.sectionTag}>RESPONSIBLE AI</div>

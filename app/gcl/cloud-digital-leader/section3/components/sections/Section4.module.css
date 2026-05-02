@@ -17,7 +17,7 @@
 
 .raiCard:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px var(--color-shadow);
 }
 
 .raiIcon {
@@ -65,7 +65,7 @@
 .checkBox {
     width: 24px;
     height: 24px;
-    background: rgba(52, 168, 83, 0.1);
+    background: var(--color-bg-secondary);
     color: var(--color-accent-green);
     border-radius: 6px;
     display: flex;

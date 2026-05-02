@@ -35,7 +35,6 @@ export const Section3: React.FC = () => {
             <div className={baseStyles.sectionDivider}></div>
             
             <Section3_TensorFlow />
-            <div className={baseStyles.sectionDivider}></div>
 
         </section>
     );
