@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { SectionHero, SectionNav } from './components';
-import { Section0 } from './components/sections';
+import { Section0, Section1 } from './components/sections';
 import { HERO_BADGES, NAV_LINKS } from './constants';
 
 export const metadata: Metadata = {
@@ -29,6 +29,7 @@ export default function Section3Page() {
             <div className="wrapper">
                 <main className="page-main sgap">
                     <Section0 />
+                    <Section1 />
                 </main>
             </div>
             

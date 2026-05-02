@@ -9,4 +9,12 @@ describe('Cloud Digital Leader Section 3 Page', () => {
             screen.getByRole('heading', { level: 1, name: /Innovating with Google Cloud/i })
         ).toBeInTheDocument();
     });
+
+    it('renders Section 1: AI AND ML FUNDAMENTALS', () => {
+        render(<Page />);
+        expect(
+            screen.getByRole('heading', { level: 2, name: /AI と ML の基礎概念/i })
+        ).toBeInTheDocument();
+        expect(screen.getByText('AI 技術の包含関係（最重要！）')).toBeInTheDocument();
+    });
 });
