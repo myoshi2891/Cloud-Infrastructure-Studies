@@ -25,4 +25,13 @@ describe('Cloud Digital Leader Section 3 Page', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('AI/ML ソリューション選択デシジョンツリー')).toBeInTheDocument();
     });
+
+    it('renders Section 3: BUILDING AND USING AI/ML SOLUTIONS', () => {
+        render(<Page />);
+        expect(
+            screen.getByRole('heading', { level: 2, name: /Google Cloud AI\/ML ソリューションの構築・活用/i })
+        ).toBeInTheDocument();
+        expect(screen.getByText('AutoML の革命的な点')).toBeInTheDocument();
+        expect(screen.getByText(/BigQuery ML の革命的な価値/)).toBeInTheDocument();
+    });
 });

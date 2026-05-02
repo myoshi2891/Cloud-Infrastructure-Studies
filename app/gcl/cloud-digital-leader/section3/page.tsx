@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { SectionHero, SectionNav } from './components';
-import { Section0, Section1, Section2 } from './components/sections';
+import { Section0, Section1, Section2, Section3 } from './components/sections';
 import { HERO_BADGES, NAV_LINKS } from './constants';
 
 export const metadata: Metadata = {
@@ -31,6 +31,7 @@ export default function Section3Page() {
                     <Section0 />
                     <Section1 />
                     <Section2 />
+                    <Section3 />
                 </main>
             </div>
             
