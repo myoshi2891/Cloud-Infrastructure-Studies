@@ -77,6 +77,9 @@ Aws/                                # AWS資料アーカイブ
 ## 制約事項
 
 - `litellm` / `dspy` の追加禁止（脆弱性懸念）
+- **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。
+- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。
+- **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。
+- **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-bg-primary` など）を厳格に使用すること。独自のローカル変数定義は避ける。
 - 新ページを `app/gcl/` に追加した場合、`components/Header.tsx` のナビゲーションも更新すること
 - ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）
-
