@@ -1,0 +1,3213 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CDL Section 5 | Trust & Security with Google Cloud 完全攻略ガイド</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+            :root {
+                --midnight: #060d1a;
+                --deep: #0a1628;
+                --navy: #0f2040;
+                --slate: #1a3060;
+                --steel: #1e4080;
+                --gold: #c8a84b;
+                --gold-light: #e2c870;
+                --gold-dim: #8a7030;
+                --teal: #20c997;
+                --teal-dim: #0f8060;
+                --red: #e05050;
+                --red-dim: #8b2020;
+                --amber: #f0a030;
+                --amber-dim: #905a10;
+                --sky: #4090d0;
+                --sky-dim: #204878;
+                --text: #e8edf5;
+                --text-sub: #a4bee1;
+                --text-muted: #7c9ee8;
+                --border: rgba(200, 168, 75, 0.15);
+                --border-bright: rgba(200, 168, 75, 0.35);
+                --glow: rgba(200, 168, 75, 0.08);
+                --ff-display: 'Playfair Display', Georgia, serif;
+                --ff-body: 'Outfit', sans-serif;
+                --ff-mono: 'JetBrains Mono', monospace;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                background: var(--midnight);
+                color: var(--text);
+                font-family: var(--ff-body);
+                font-weight: 400;
+                line-height: 1.75;
+                overflow-x: hidden;
+            }
+
+            /* ── ANIMATED GRID BG ── */
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background-image:
+                    linear-gradient(rgba(200, 168, 75, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(200, 168, 75, 0.03) 1px, transparent 1px);
+                background-size: 60px 60px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            /* ── HERO ── */
+            .hero {
+                position: relative;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 6rem 2rem 4rem;
+                overflow: hidden;
+                z-index: 1;
+            }
+            .hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(
+                    ellipse 80% 70% at 50% 40%,
+                    rgba(200, 168, 75, 0.08) 0%,
+                    rgba(32, 100, 200, 0.05) 40%,
+                    transparent 70%
+                );
+                pointer-events: none;
+            }
+            .hero-shield {
+                position: relative;
+                width: 100px;
+                height: 100px;
+                margin: 0 auto 2rem;
+            }
+            .hero-shield svg {
+                width: 100%;
+                height: 100%;
+                filter: drop-shadow(0 0 20px rgba(200, 168, 75, 0.4));
+            }
+            .hero-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(200, 168, 75, 0.1);
+                border: 1px solid var(--border-bright);
+                color: var(--gold);
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.35rem 0.9rem;
+                border-radius: 100px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-bottom: 1.5rem;
+                animation: fadeDown 0.6s ease both;
+            }
+            .hero-title {
+                font-family: var(--ff-display);
+                font-size: clamp(2.4rem, 6vw, 4.5rem);
+                font-weight: 900;
+                line-height: 1.1;
+                margin-bottom: 1.2rem;
+                animation: fadeDown 0.7s 0.1s ease both;
+            }
+            .hero-title .gold {
+                color: var(--gold);
+                font-style: italic;
+            }
+            .hero-subtitle {
+                font-size: 1.05rem;
+                color: var(--text-sub);
+                max-width: 580px;
+                margin: 0 auto 3rem;
+                animation: fadeDown 0.7s 0.2s ease both;
+                line-height: 1.8;
+            }
+            .hero-stats {
+                display: flex;
+                gap: 3rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                animation: fadeDown 0.7s 0.3s ease both;
+                margin-bottom: 3rem;
+            }
+            .stat {
+                text-align: center;
+            }
+            .stat-n {
+                font-family: var(--ff-display);
+                font-size: 2.4rem;
+                font-weight: 700;
+                color: var(--gold);
+                line-height: 1;
+            }
+            .stat-l {
+                font-size: 1rem;
+                color: var(--text-muted);
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                margin-top: 0.2rem;
+            }
+            .hero-tags {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                animation: fadeDown 0.7s 0.4s ease both;
+            }
+            .hero-tag {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--text-sub);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.03);
+                padding: 0.3rem 0.75rem;
+                border-radius: 100px;
+                letter-spacing: 0.04em;
+            }
+
+            /* ── NAV ── */
+            .nav {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: rgba(6, 13, 26, 0.92);
+                backdrop-filter: blur(16px);
+                border-bottom: 1px solid var(--border);
+                padding: 0.7rem 2rem;
+                display: flex;
+                gap: 0.3rem;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            .nav-logo {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                color: var(--gold);
+                font-weight: 700;
+                margin-right: 1.5rem;
+                white-space: nowrap;
+                font-style: italic;
+            }
+            .nav a {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--text-muted);
+                text-decoration: none;
+                padding: 0.28rem 0.65rem;
+                border-radius: 4px;
+                transition: all 0.2s;
+                letter-spacing: 0.03em;
+                white-space: nowrap;
+            }
+            .nav a:hover {
+                color: var(--gold);
+                background: var(--glow);
+            }
+
+            /* ── LAYOUT ── */
+            .container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0 2rem;
+            }
+            .section {
+                padding: 5.5rem 0;
+                position: relative;
+                z-index: 1;
+            }
+            .section + .section {
+                border-top: 1px solid var(--border);
+            }
+
+            /* ── SECTION HEADERS ── */
+            .sh {
+                margin-bottom: 3rem;
+            }
+            .sh-tag {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 0.6rem;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+            .sh-tag::before {
+                content: '';
+                display: block;
+                width: 20px;
+                height: 1px;
+                background: var(--gold);
+            }
+            .sh-title {
+                font-family: var(--ff-display);
+                font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+                font-weight: 900;
+                line-height: 1.15;
+                letter-spacing: -0.01em;
+                margin-bottom: 0.8rem;
+            }
+            .sh-desc {
+                color: var(--text-sub);
+                max-width: 640px;
+                font-size: 1rem;
+            }
+
+            /* ── GRIDS ── */
+            .g2 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 1.4rem;
+            }
+            .g3 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+                gap: 1.4rem;
+            }
+            .g4 {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                gap: 1.2rem;
+            }
+
+            /* ── CARDS ── */
+            .card {
+                background: var(--deep);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 1.8rem;
+                transition: all 0.3s;
+                position: relative;
+                overflow: hidden;
+            }
+            .card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            .card:hover {
+                border-color: var(--border-bright);
+                background: var(--navy);
+                transform: translateY(-3px);
+                box-shadow:
+                    0 16px 40px rgba(0, 0, 0, 0.4),
+                    0 0 40px var(--glow);
+            }
+            .card:hover::before {
+                opacity: 1;
+            }
+            .card-icon {
+                font-size: 1.8rem;
+                margin-bottom: 0.9rem;
+            }
+            .card-title {
+                font-family: var(--ff-display);
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 0.6rem;
+            }
+            .card-body {
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.75;
+            }
+
+            /* ── SUB TITLE ── */
+            .sub-title {
+                font-family: var(--ff-display);
+                font-size: 1.45rem;
+                font-weight: 700;
+                margin: 2.5rem 0 1.2rem;
+                padding-left: 1rem;
+                border-left: 3px solid var(--gold);
+                letter-spacing: -0.01em;
+                line-height: 1.3;
+            }
+
+            /* ── BADGES ── */
+            .badge {
+                display: inline-block;
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.16rem 0.55rem;
+                border-radius: 100px;
+                font-weight: 500;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                vertical-align: middle;
+            }
+            .b-gold {
+                background: rgba(200, 168, 75, 0.12);
+                color: var(--gold);
+                border: 1px solid rgba(200, 168, 75, 0.3);
+            }
+            .b-teal {
+                background: rgba(32, 201, 151, 0.1);
+                color: var(--teal);
+                border: 1px solid rgba(32, 201, 151, 0.25);
+            }
+            .b-red {
+                background: rgba(224, 80, 80, 0.1);
+                color: var(--red);
+                border: 1px solid rgba(224, 80, 80, 0.25);
+            }
+            .b-sky {
+                background: rgba(64, 144, 208, 0.1);
+                color: var(--sky);
+                border: 1px solid rgba(64, 144, 208, 0.25);
+            }
+            .b-amber {
+                background: rgba(240, 160, 48, 0.1);
+                color: var(--amber);
+                border: 1px solid rgba(240, 160, 48, 0.25);
+            }
+
+            .exam-tag {
+                display: inline-block;
+                background: rgba(224, 80, 80, 0.12);
+                border: 1px solid rgba(224, 80, 80, 0.3);
+                color: var(--red);
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.1rem 0.42rem;
+                border-radius: 3px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-left: 0.5rem;
+            }
+
+            /* ── INFO / WARN / BP BOXES ── */
+            .box {
+                border-radius: 10px;
+                padding: 1.3rem 1.6rem;
+                margin-top: 1.2rem;
+                font-size: 1rem;
+                line-height: 1.75;
+            }
+            .box-warn {
+                background: rgba(240, 160, 48, 0.07);
+                border: 1px solid rgba(240, 160, 48, 0.2);
+                border-left: 4px solid var(--amber);
+                color: var(--text-sub);
+            }
+            .box-warn strong {
+                color: var(--amber);
+            }
+            .box-info {
+                background: rgba(64, 144, 208, 0.07);
+                border: 1px solid rgba(64, 144, 208, 0.2);
+                border-left: 4px solid var(--sky);
+                color: var(--text-sub);
+            }
+            .box-info strong {
+                color: var(--sky);
+            }
+            .box-bp {
+                background: rgba(32, 201, 151, 0.07);
+                border: 1px solid rgba(32, 201, 151, 0.18);
+                border-left: 4px solid var(--teal);
+            }
+            .box-bp .bp-title {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--teal);
+                margin-bottom: 0.7rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .box-bp ul {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.45rem;
+            }
+            .box-bp li {
+                font-size: 1rem;
+                color: var(--text-sub);
+                padding-left: 1.3rem;
+                position: relative;
+                line-height: 1.65;
+            }
+            .box-bp li::before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: var(--teal);
+                font-weight: 700;
+            }
+
+            /* ── SOURCE BOX ── */
+            .src {
+                background: rgba(200, 168, 75, 0.05);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 1rem 1.4rem;
+                margin-top: 1.8rem;
+            }
+            .src-label {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--gold-dim);
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                margin-bottom: 0.5rem;
+            }
+            .src a {
+                display: block;
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: rgba(200, 168, 75, 0.65);
+                text-decoration: none;
+                word-break: break-all;
+                line-height: 1.7;
+                transition: color 0.2s;
+            }
+            .src a:hover {
+                color: var(--gold);
+                text-decoration: underline;
+            }
+
+            /* ── SHARED RESPONSIBILITY TABLE ── */
+            .sr-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+            }
+            .sr-table th {
+                background: rgba(200, 168, 75, 0.1);
+                color: var(--gold);
+                font-family: var(--ff-display);
+                font-weight: 700;
+                padding: 0.85rem 1.1rem;
+                text-align: left;
+                border-bottom: 1px solid var(--border-bright);
+                font-size: 1rem;
+            }
+            .sr-table td {
+                padding: 0.75rem 1.1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                color: var(--text-sub);
+                vertical-align: middle;
+            }
+            .sr-table tr:hover td {
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .sr-table td:first-child {
+                font-weight: 600;
+                color: var(--text);
+            }
+            .sr-wrap {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            /* ── IAM ROLE TABLE ── */
+            .role-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+            }
+            .role-table th {
+                background: var(--deep);
+                color: var(--text-sub);
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+            .role-table td {
+                padding: 0.8rem 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                color: var(--text-sub);
+                vertical-align: top;
+                font-size: 1rem;
+            }
+            .role-table tr:hover td {
+                background: rgba(200, 168, 75, 0.03);
+            }
+            .role-table td:first-child {
+                font-family: var(--ff-display);
+                font-weight: 700;
+                color: var(--text);
+            }
+            .role-wrap {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            /* ── ENCRYPTION TIMELINE ── */
+            .enc-row {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .enc-item {
+                background: var(--deep);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 1.5rem;
+                display: grid;
+                grid-template-columns: 60px 1fr;
+                gap: 1.2rem;
+                align-items: start;
+                transition: all 0.25s;
+            }
+            .enc-item:hover {
+                border-color: var(--border-bright);
+                background: var(--navy);
+            }
+            .enc-num {
+                width: 52px;
+                height: 52px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--ff-display);
+                font-size: 1.4rem;
+                font-weight: 700;
+                flex-shrink: 0;
+            }
+            .enc-title {
+                font-family: var(--ff-display);
+                font-size: 1.05rem;
+                font-weight: 700;
+                margin-bottom: 0.4rem;
+            }
+            .enc-desc {
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.7;
+            }
+
+            /* ── KMS TABLE ── */
+            .kms-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                font-size: 1rem;
+            }
+            .kms-table th {
+                background: rgba(200, 168, 75, 0.08);
+                color: var(--gold);
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid var(--border-bright);
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+            .kms-table td {
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                color: var(--text-sub);
+                vertical-align: top;
+                line-height: 1.65;
+                font-size: 1rem;
+            }
+            .kms-table tr:hover td {
+                background: rgba(200, 168, 75, 0.03);
+            }
+            .kms-table td:first-child {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 1rem;
+                white-space: nowrap;
+            }
+            .kms-wrap {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            /* ── DEFENSE LAYERS ── */
+            .layers {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .layer {
+                border-radius: 10px;
+                padding: 1rem 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 1.2rem;
+                transition: all 0.2s;
+                cursor: default;
+            }
+            .layer:hover {
+                transform: translateX(6px);
+            }
+            .layer-num {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--text-muted);
+                width: 24px;
+                flex-shrink: 0;
+                text-align: center;
+            }
+            .layer-icon {
+                font-size: 1.3rem;
+                flex-shrink: 0;
+                width: 32px;
+                text-align: center;
+            }
+            .layer-name {
+                font-weight: 600;
+                font-size: 1rem;
+                margin-bottom: 0.15rem;
+            }
+            .layer-desc {
+                font-size: 1rem;
+                color: var(--text-sub);
+            }
+
+            /* ── AUDIT LOG TABLE ── */
+            .audit-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+            }
+            .audit-table th {
+                background: rgba(15, 32, 64, 0.8);
+                color: var(--text-sub);
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+            .audit-table td {
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                color: var(--text-sub);
+                vertical-align: top;
+                line-height: 1.65;
+            }
+            .audit-table tr:hover td {
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .audit-table td:first-child {
+                font-weight: 700;
+                color: var(--text);
+                font-size: 1rem;
+            }
+            .audit-wrap {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            /* ── DLP METHODS ── */
+            .dlp-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            .dlp-card {
+                background: var(--deep);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 1.3rem;
+                transition: all 0.25s;
+            }
+            .dlp-card:hover {
+                border-color: var(--border-bright);
+                background: var(--navy);
+                transform: translateY(-2px);
+            }
+            .dlp-name {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+            .dlp-desc {
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.65;
+            }
+            .dlp-example {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                margin-top: 0.6rem;
+                padding: 0.45rem 0.7rem;
+                border-radius: 6px;
+                background: rgba(0, 0, 0, 0.3);
+            }
+
+            /* ── PATTERN CARDS ── */
+            .ptn-card {
+                background: var(--deep);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                transition: all 0.25s;
+            }
+            .ptn-card:hover {
+                border-color: var(--border-bright);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+                transform: translateY(-2px);
+            }
+            .ptn-header {
+                padding: 1.1rem 1.5rem;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                background: rgba(200, 168, 75, 0.05);
+            }
+            .ptn-num {
+                width: 30px;
+                height: 30px;
+                background: var(--gold-dim);
+                color: #fff;
+                border-radius: 6px;
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .ptn-title {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--text);
+            }
+            .ptn-body {
+                padding: 1.2rem 1.5rem;
+            }
+            .ptn-q {
+                font-size: 1rem;
+                color: var(--text-sub);
+                margin-bottom: 0.8rem;
+                line-height: 1.65;
+                font-style: italic;
+            }
+            .ptn-steps {
+                list-style: none;
+                font-size: 1rem;
+                color: var(--text-sub);
+            }
+            .ptn-steps li {
+                padding: 0.25rem 0 0.25rem 1.2rem;
+                position: relative;
+            }
+            .ptn-steps li::before {
+                content: '›';
+                position: absolute;
+                left: 0;
+                color: var(--gold);
+                font-weight: 700;
+            }
+            .ptn-result {
+                margin-top: 0.8rem;
+                padding: 0.6rem 0.9rem;
+                background: rgba(200, 168, 75, 0.08);
+                border-radius: 7px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--gold);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .ptn-result::before {
+                content: '→';
+                color: var(--gold-dim);
+            }
+
+            /* ── CONFUSION TABLE ── */
+            .conf-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+            }
+            .conf-table th {
+                background: rgba(200, 168, 75, 0.08);
+                color: var(--gold);
+                font-family: var(--ff-display);
+                font-weight: 700;
+                padding: 0.85rem 1.1rem;
+                text-align: left;
+                border-bottom: 1px solid var(--border-bright);
+                font-size: 1rem;
+            }
+            .conf-table td {
+                padding: 0.8rem 1.1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                color: var(--text-sub);
+                vertical-align: top;
+                line-height: 1.65;
+            }
+            .conf-table tr:hover td {
+                background: rgba(200, 168, 75, 0.03);
+            }
+            .conf-table td:first-child {
+                font-weight: 600;
+                color: var(--text);
+                white-space: nowrap;
+            }
+            .conf-wrap {
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                overflow-x: auto;
+            }
+
+            /* ── CHECKLIST ── */
+            .checklist {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+            .cl-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.8rem;
+                padding: 0.6rem 0.9rem;
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 7px;
+                font-size: 1rem;
+                color: var(--text-sub);
+                transition: all 0.2s;
+            }
+            .cl-item:hover {
+                background: rgba(200, 168, 75, 0.05);
+                border-color: var(--border);
+                color: var(--text);
+            }
+            .cl-box {
+                width: 18px;
+                height: 18px;
+                border: 2px solid var(--gold-dim);
+                border-radius: 3px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                color: var(--gold);
+            }
+
+            /* ── ZERO TRUST DIAGRAM ── */
+            .zt-diagram {
+                background: var(--deep);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 2rem;
+            }
+            .zt-compare {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            .zt-col {
+                border-radius: 10px;
+                padding: 1.4rem;
+            }
+            .zt-col-old {
+                background: rgba(224, 80, 80, 0.06);
+                border: 1px solid rgba(224, 80, 80, 0.2);
+            }
+            .zt-col-new {
+                background: rgba(32, 201, 151, 0.06);
+                border: 1px solid rgba(32, 201, 151, 0.2);
+            }
+            .zt-col-title {
+                font-family: var(--ff-display);
+                font-size: 1rem;
+                font-weight: 700;
+                margin-bottom: 0.8rem;
+            }
+            .zt-col-old .zt-col-title {
+                color: var(--red);
+            }
+            .zt-col-new .zt-col-title {
+                color: var(--teal);
+            }
+            .zt-col li {
+                font-size: 1rem;
+                color: var(--text-sub);
+                margin-left: 1.1rem;
+                margin-bottom: 0.3rem;
+                line-height: 1.6;
+            }
+
+            /* ── COMPLIANCE GRID ── */
+            .comp-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 1.2rem;
+            }
+            .comp-card {
+                background: var(--deep);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 1.4rem;
+                transition: all 0.25s;
+            }
+            .comp-card:hover {
+                border-color: var(--border-bright);
+                background: var(--navy);
+                transform: translateY(-2px);
+            }
+            .comp-abbr {
+                font-family: var(--ff-display);
+                font-size: 1.5rem;
+                font-weight: 900;
+                color: var(--gold);
+                line-height: 1;
+                margin-bottom: 0.25rem;
+            }
+            .comp-name {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                color: var(--text-muted);
+                margin-bottom: 0.7rem;
+            }
+            .comp-desc {
+                font-size: 1rem;
+                color: var(--text-sub);
+                line-height: 1.65;
+            }
+
+            /* ── CODE ── */
+            code {
+                font-family: var(--ff-mono);
+                font-size: 1rem;
+                background: rgba(200, 168, 75, 0.1);
+                color: var(--gold-light);
+                padding: 0.1em 0.4em;
+                border-radius: 3px;
+            }
+
+            /* ── FOOTER ── */
+            footer {
+                background: var(--deep);
+                border-top: 1px solid var(--border);
+                padding: 3.5rem 2rem;
+                text-align: center;
+                color: var(--text-muted);
+                font-size: 1rem;
+                position: relative;
+                z-index: 1;
+            }
+            footer a {
+                color: var(--gold-dim);
+                text-decoration: none;
+            }
+            .footer-title {
+                font-family: var(--ff-display);
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: var(--text-sub);
+                margin-bottom: 0.8rem;
+                font-style: italic;
+            }
+            .footer-links {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 1.2rem 0;
+            }
+
+            /* ── ANIMATIONS ── */
+            @keyframes fadeDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-14px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .fade-in {
+                opacity: 0;
+            }
+            .fade-in.visible {
+                animation: fadeUp 0.55s ease forwards;
+            }
+
+            @media (max-width: 768px) {
+                .zt-compare {
+                    grid-template-columns: 1fr;
+                }
+                .container {
+                    padding: 0 1.2rem;
+                }
+                .nav {
+                    padding: 0.6rem 1rem;
+                }
+            }
+
+            /* Layer colors */
+            .l8 {
+                background: rgba(200, 168, 75, 0.08);
+                border: 1px solid rgba(200, 168, 75, 0.15);
+            }
+            .l7 {
+                background: rgba(32, 201, 151, 0.07);
+                border: 1px solid rgba(32, 201, 151, 0.12);
+            }
+            .l6 {
+                background: rgba(64, 144, 208, 0.07);
+                border: 1px solid rgba(64, 144, 208, 0.12);
+            }
+            .l5 {
+                background: rgba(240, 160, 48, 0.07);
+                border: 1px solid rgba(240, 160, 48, 0.12);
+            }
+            .l4 {
+                background: rgba(150, 100, 220, 0.07);
+                border: 1px solid rgba(150, 100, 220, 0.12);
+            }
+            .l3 {
+                background: rgba(224, 80, 80, 0.07);
+                border: 1px solid rgba(224, 80, 80, 0.12);
+            }
+            .l2 {
+                background: rgba(100, 180, 100, 0.07);
+                border: 1px solid rgba(100, 180, 100, 0.12);
+            }
+            .l1 {
+                background: rgba(80, 140, 200, 0.07);
+                border: 1px solid rgba(80, 140, 200, 0.12);
+            }
+
+            .l8 .layer-name {
+                color: var(--gold-light);
+            }
+            .l7 .layer-name {
+                color: var(--teal);
+            }
+            .l6 .layer-name {
+                color: var(--sky);
+            }
+            .l5 .layer-name {
+                color: var(--amber);
+            }
+            .l4 .layer-name {
+                color: #a080e0;
+            }
+            .l3 .layer-name {
+                color: var(--red);
+            }
+            .l2 .layer-name {
+                color: #80c080;
+            }
+            .l1 .layer-name {
+                color: #60b0e0;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- ════ HERO ════ -->
+        <div class="hero">
+            <div class="hero-shield">
+                <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M50 5 L90 22 L90 60 C90 85 70 105 50 115 C30 105 10 85 10 60 L10 22 Z"
+                        fill="rgba(200,168,75,0.15)"
+                        stroke="rgba(200,168,75,0.6)"
+                        stroke-width="2"
+                    />
+                    <path
+                        d="M50 20 L75 32 L75 60 C75 78 63 93 50 100 C37 93 25 78 25 60 L25 32 Z"
+                        fill="rgba(200,168,75,0.08)"
+                        stroke="rgba(200,168,75,0.3)"
+                        stroke-width="1.5"
+                    />
+                    <text
+                        x="50"
+                        y="67"
+                        text-anchor="middle"
+                        font-size="28"
+                        fill="rgba(200,168,75,0.9)"
+                    >
+                        🔐
+                    </text>
+                </svg>
+            </div>
+            <div class="hero-badge">☁️ Google Cloud Digital Leader — Section 5</div>
+            <h1 class="hero-title">
+                <span class="gold">Trust &</span> Security<br />with Google Cloud
+            </h1>
+            <p class="hero-subtitle">
+                責任共有モデル・ゼロトラスト・IAM・暗号化・ネットワークセキュリティ・コンプライアンス・データプライバシーまで、セキュリティの全体像を初学者向けに詳解します。
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-n">~17%</div>
+                    <div class="stat-l">試験配点比率</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-n">8</div>
+                    <div class="stat-l">防御レイヤー</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-n">3</div>
+                    <div class="stat-l">暗号化の状態</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-n">10+</div>
+                    <div class="stat-l">頻出トピック</div>
+                </div>
+            </div>
+            <div class="hero-tags">
+                <span class="hero-tag">責任共有モデル</span>
+                <span class="hero-tag">ゼロトラスト / BeyondCorp</span>
+                <span class="hero-tag">IAM・最小権限</span>
+                <span class="hero-tag">Cloud KMS・CMEK</span>
+                <span class="hero-tag">VPC SC・Cloud Armor・IAP</span>
+                <span class="hero-tag">Security Command Center</span>
+                <span class="hero-tag">Sensitive Data Protection</span>
+                <span class="hero-tag">GDPR・HIPAA・PCI DSS</span>
+            </div>
+        </div>
+
+        <!-- ════ NAV ════ -->
+        <nav class="nav">
+            <span class="nav-logo">§5 Security</span>
+            <a href="#overview">概要</a>
+            <a href="#shared">責任共有</a>
+            <a href="#zerotrust">ゼロトラスト</a>
+            <a href="#iam">IAM</a>
+            <a href="#encryption">暗号化</a>
+            <a href="#network">ネットワーク</a>
+            <a href="#monitoring">監視・検出</a>
+            <a href="#compliance">コンプライアンス</a>
+            <a href="#dlp">データ保護</a>
+            <a href="#checklist">試験対策</a>
+        </nav>
+
+        <!-- ════ OVERVIEW ════ -->
+        <section id="overview" class="section">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">Section 5 Overview</div>
+                    <h2 class="sh-title">Section 5 の全体像</h2>
+                    <p class="sh-desc">
+                        試験ガイドに基づく出題範囲と、多層防御アーキテクチャの全体像を把握しましょう。
+                    </p>
+                </div>
+
+                <div class="g3 fade-in">
+                    <div class="card" style="border-top: 3px solid var(--gold)">
+                        <div class="card-icon">🏛️</div>
+                        <div class="card-title">5.1 クラウドセキュリティの基礎</div>
+                        <div class="card-body">
+                            責任共有モデル（Shared Responsibility）・ゼロトラスト / BeyondCorp・CIA
+                            トライアド・多層防御（Defense in Depth）の概念。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-gold">基礎概念</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--teal)">
+                        <div class="card-icon">🔑</div>
+                        <div class="card-title">5.2 IAM とアクセス管理</div>
+                        <div class="card-body">
+                            Identity and Access Management・3
+                            種のロール・最小権限の原則・サービスアカウントの安全管理・Cloud
+                            Identity。
+                        </div>
+                        <div style="margin-top: 0.8rem"><span class="badge b-teal">IAM</span></div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--sky)">
+                        <div class="card-icon">🔒</div>
+                        <div class="card-title">5.3 暗号化とデータ保護</div>
+                        <div class="card-body">
+                            保存中・転送中・使用中の暗号化・Google-Managed Keys / CMEK / CSEK・Cloud
+                            KMS・Cloud HSM・Confidential Computing。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-sky">暗号化</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--amber)">
+                        <div class="card-icon">🛡️</div>
+                        <div class="card-title">5.4 ネットワークセキュリティ</div>
+                        <div class="card-body">
+                            Cloud Armor（DDoS/WAF）・Cloud IAP（ゼロトラスト）・VPC Service
+                            Controls（データ流出防止）・ファイアウォールルール。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-amber">ネットワーク</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--red)">
+                        <div class="card-icon">👁️</div>
+                        <div class="card-title">5.5 脅威検出・セキュリティ監視</div>
+                        <div class="card-body">
+                            Security Command Center・Cloud Audit Logs（4 種類）・Cloud
+                            IDS・Chronicle（SIEM）の役割と使い分け。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-red">監視・検出</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--teal)">
+                        <div class="card-icon">📋</div>
+                        <div class="card-title">5.6 コンプライアンス・DLP</div>
+                        <div class="card-body">
+                            GDPR・HIPAA・PCI DSS・Sensitive Data Protection
+                            の保護手法（匿名化・仮名化・トークン化）とコンプライアンス認証。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-teal">コンプライアンス</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-info" style="margin-top: 2rem">
+                    <strong>📌 試験の重要ポイント：</strong>
+                    Section 5 は試験全体の約 17% を占めます。
+                    <strong>「誰が何に責任を持つか（責任共有モデル）」</strong>と
+                    <strong>「各セキュリティサービスの役割の違い」</strong>が特に頻出です。
+                </div>
+
+                <!-- DEFENSE IN DEPTH -->
+                <div class="sub-title" style="margin-top: 3rem">
+                    多層防御（Defense in Depth）<span class="exam-tag">頻出</span>
+                </div>
+                <div class="layers fade-in">
+                    <div class="layer l8">
+                        <span class="layer-num">8</span><span class="layer-icon">💾</span>
+                        <div>
+                            <div class="layer-name">データ層</div>
+                            <div class="layer-desc">
+                                AES-256 暗号化（保存中・転送中・使用中）・Cloud KMS・CMEK・Sensitive
+                                Data Protection
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layer l7">
+                        <span class="layer-num">7</span><span class="layer-icon">🆔</span>
+                        <div>
+                            <div class="layer-name">アイデンティティ層</div>
+                            <div class="layer-desc">
+                                IAM・MFA・Cloud
+                                Identity・BeyondCorp・サービスアカウント管理・Workload Identity
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layer l6">
+                        <span class="layer-num">6</span><span class="layer-icon">🖥️</span>
+                        <div>
+                            <div class="layer-name">アプリケーション層</div>
+                            <div class="layer-desc">
+                                脆弱性スキャン・Web Security Scanner・Binary
+                                Authorization（承認済みコンテナのみ実行）
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layer l5">
+                        <span class="layer-num">5</span><span class="layer-icon">📱</span>
+                        <div>
+                            <div class="layer-name">エンドポイント層</div>
+                            <div class="layer-desc">
+                                Chrome Enterprise・BeyondCorp Enterprise・デバイス管理・Endpoint
+                                Verification
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layer l4">
+                        <span class="layer-num">4</span><span class="layer-icon">🌐</span>
+                        <div>
+                            <div class="layer-name">ネットワーク層</div>
+                            <div class="layer-desc">
+                                VPC・ファイアウォール・Cloud Armor（WAF/DDoS）・VPC Service
+                                Controls・Cloud IAP・Cloud NAT
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layer l3">
+                        <span class="layer-num">3</span><span class="layer-icon">⚙️</span>
+                        <div>
+                            <div class="layer-name">インフラ層</div>
+                            <div class="layer-desc">
+                                Shielded VM・Confidential VM・OS Login・VM Manager（パッチ管理）
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layer l2">
+                        <span class="layer-num">2</span><span class="layer-icon">🗄️</span>
+                        <div>
+                            <div class="layer-name">ストレージ層</div>
+                            <div class="layer-desc">
+                                保存データの暗号化（デフォルト AES-256）・CMEK・Cloud HSM
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layer l1">
+                        <span class="layer-num">1</span><span class="layer-icon">🏢</span>
+                        <div>
+                            <div class="layer-name">ハードウェア / DC 層</div>
+                            <div class="layer-desc">
+                                Titan チップ（改ざん防止）・物理セキュリティ（24/7
+                                監視）・廃棄ドライブの物理破壊
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 公式ソース</div>
+                    <a
+                        href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf"
+                        >Cloud Digital Leader Exam Guide (Official PDF)</a
+                    >
+                    <a href="https://cloud.google.com/security/overview"
+                        >https://cloud.google.com/security/overview</a
+                    >
+                    <a href="https://docs.cloud.google.com/docs/security/infrastructure/design"
+                        >https://docs.cloud.google.com/docs/security/infrastructure/design</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ SHARED RESPONSIBILITY ════ -->
+        <section id="shared" class="section" style="background: rgba(10, 22, 40, 0.5)">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.1 Shared Responsibility</div>
+                    <h2 class="sh-title">責任共有モデル<span class="exam-tag">最重要</span></h2>
+                    <p class="sh-desc">
+                        Google
+                        とユーザーがセキュリティ責任をどう分担するかを理解します。サービスモデルによって境界線が変わります。
+                    </p>
+                </div>
+
+                <div class="sr-wrap fade-in" style="margin-bottom: 1.5rem">
+                    <table class="sr-table">
+                        <thead>
+                            <tr>
+                                <th>責任領域</th>
+                                <th>SaaS（例: Google Workspace）</th>
+                                <th>PaaS（例: Cloud SQL）</th>
+                                <th>IaaS（例: Compute Engine）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>データ・コンテンツ</td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                            </tr>
+                            <tr>
+                                <td>ユーザー管理・IAM</td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                            </tr>
+                            <tr>
+                                <td>アプリケーション</td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                            </tr>
+                            <tr>
+                                <td>OS・ランタイム</td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-amber">ユーザー</span></td>
+                            </tr>
+                            <tr>
+                                <td>仮想化・ハイパーバイザー</td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-teal">Google</span></td>
+                            </tr>
+                            <tr>
+                                <td>ネットワーク・ハードウェア</td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-teal">Google</span></td>
+                            </tr>
+                            <tr>
+                                <td>データセンター物理セキュリティ</td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-teal">Google</span></td>
+                                <td><span class="badge b-teal">Google</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="g2 fade-in">
+                    <div class="card" style="border-left: 3px solid var(--teal)">
+                        <div class="card-title">✅ Google が常に守るもの</div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding: 0.35rem 0 0.35rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--teal)"
+                                    >›</span
+                                >データセンターへの物理的な侵入防止
+                            </li>
+                            <li
+                                style="
+                                    padding: 0.35rem 0 0.35rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--teal)"
+                                    >›</span
+                                >ハードウェアの完全性（Titan チップ）
+                            </li>
+                            <li
+                                style="
+                                    padding: 0.35rem 0 0.35rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--teal)"
+                                    >›</span
+                                >ネットワークインフラへの攻撃対策
+                            </li>
+                            <li style="padding: 0.35rem 0 0.35rem 1.2rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--teal)"
+                                    >›</span
+                                >ハイパーバイザーの脆弱性対応
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--amber)">
+                        <div class="card-title">⚠️ ユーザーが常に守るもの</div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding: 0.35rem 0 0.35rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--amber)"
+                                    >›</span
+                                >誰がデータにアクセスできるか（IAM 設定）
+                            </li>
+                            <li
+                                style="
+                                    padding: 0.35rem 0 0.35rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--amber)"
+                                    >›</span
+                                >データの分類と適切な保護設定
+                            </li>
+                            <li
+                                style="
+                                    padding: 0.35rem 0 0.35rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--amber)"
+                                    >›</span
+                                >アプリケーションのセキュリティ
+                            </li>
+                            <li style="padding: 0.35rem 0 0.35rem 1.2rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--amber)"
+                                    >›</span
+                                >エンドユーザーの認証・認可設定
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="box box-warn" style="margin-top: 1.5rem">
+                    <strong>⚠️ 試験頻出の引っかけ：</strong>
+                    「Google Cloud はセキュアだから、ユーザーは何もしなくていい」→
+                    <strong>誤り！</strong>
+                    データへのアクセス制御（IAM）・データの保護設定・アプリのセキュリティは常にユーザーの責任です。
+                    Google
+                    は<em>インフラ</em>を守りますが、<em>データとアクセス管理</em>はユーザーの責任です。
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a
+                        href="https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate"
+                        >https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate</a
+                    >
+                    <a href="https://cloud.google.com/security/shared-fate"
+                        >https://cloud.google.com/security/shared-fate</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ ZERO TRUST ════ -->
+        <section id="zerotrust" class="section">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.2 Zero Trust / BeyondCorp</div>
+                    <h2 class="sh-title">
+                        ゼロトラストセキュリティ<span class="exam-tag">頻出</span>
+                    </h2>
+                    <p class="sh-desc">
+                        「Never Trust, Always
+                        Verify（決して信頼せず、常に検証する）」という現代のセキュリティアーキテクチャの基本思想。
+                    </p>
+                </div>
+
+                <div class="zt-diagram fade-in" style="margin-bottom: 2rem">
+                    <div
+                        style="
+                            font-family: var(--ff-mono);
+                            font-size: 1rem;
+                            color: var(--text-muted);
+                            margin-bottom: 1.5rem;
+                            letter-spacing: 0.1em;
+                            text-transform: uppercase;
+                        "
+                    >
+                        従来の境界型セキュリティ vs ゼロトラスト
+                    </div>
+                    <div class="zt-compare">
+                        <div class="zt-col zt-col-old">
+                            <div class="zt-col-title">❌ 従来の「城とお堀」モデル</div>
+                            <ul>
+                                <li>社内ネットワーク内にいる = 信頼できる</li>
+                                <li>ファイアウォールで外部を遮断</li>
+                                <li>一度侵入されると内部を自由に移動（横移動）</li>
+                                <li>テレワーク・クラウド時代には「社内」という概念が崩壊</li>
+                                <li>内部犯行・認証情報窃取に無防備</li>
+                            </ul>
+                        </div>
+                        <div class="zt-col zt-col-new">
+                            <div class="zt-col-title">✅ ゼロトラスト（BeyondCorp）</div>
+                            <ul>
+                                <li>ネットワークの場所は信頼の根拠にならない</li>
+                                <li>アクセスのたびに「誰が・どのデバイスで・何に」を検証</li>
+                                <li>リソースごとに最小限のアクセス権を付与</li>
+                                <li>すべてのアクセスがログ記録される</li>
+                                <li>デバイスの健全性・ユーザー認証・コンテキストを総合判断</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sub-title">Google の BeyondCorp 実装サービス</div>
+                <div class="g3 fade-in">
+                    <div class="card" style="border-top: 3px solid var(--gold)">
+                        <div class="card-icon">🚪</div>
+                        <div class="card-title">Cloud Identity-Aware Proxy（IAP）</div>
+                        <div class="card-body">
+                            VPN
+                            なしで社内アプリへのセキュアなアクセスを実現。アプリ単位でユーザーを認証・認可し、すべてのアクセスをログ記録。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-gold">ゼロトラストの中心</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--teal)">
+                        <div class="card-icon">📋</div>
+                        <div class="card-title">Context-Aware Access</div>
+                        <div class="card-body">
+                            場所・デバイス・時間帯などのコンテキストに応じてアクセスを制御。「管理されたデバイスからのみ本番へアクセス可」などを実装。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-teal">条件付きアクセス</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-top: 3px solid var(--sky)">
+                        <div class="card-icon">🏢</div>
+                        <div class="card-title">BeyondCorp Enterprise</div>
+                        <div class="card-body">
+                            企業全体のゼロトラスト導入を支援するマネージドプラットフォーム。デバイス検証・ユーザー認証・アクセスポリシーを統合管理。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-sky">エンタープライズ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/beyondcorp"
+                        >https://cloud.google.com/beyondcorp</a
+                    >
+                    <a href="https://cloud.google.com/iap/docs"
+                        >https://cloud.google.com/iap/docs</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ IAM ════ -->
+        <section id="iam" class="section" style="background: rgba(10, 22, 40, 0.5)">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.3 Identity and Access Management</div>
+                    <h2 class="sh-title">
+                        IAM（アイデンティティとアクセス管理）<span class="exam-tag">最重要</span>
+                    </h2>
+                    <p class="sh-desc">
+                        「誰が（Who）・何に（Resource）・何ができるか（Permission）」を制御するクラウドセキュリティの中核システム。
+                    </p>
+                </div>
+
+                <div class="g3 fade-in" style="margin-bottom: 2rem">
+                    <div
+                        class="card"
+                        style="
+                            background: rgba(200, 168, 75, 0.06);
+                            border-color: rgba(200, 168, 75, 0.2);
+                        "
+                    >
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--gold);
+                                margin-bottom: 0.7rem;
+                            "
+                        >
+                            PRINCIPAL / 主体（誰が）
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li style="margin-bottom: 0.4rem">
+                                👤 Google アカウント（個人ユーザー）
+                            </li>
+                            <li style="margin-bottom: 0.4rem">
+                                👥 Google グループ
+                                <span class="badge b-teal" style="font-size: 1rem">推奨</span>
+                            </li>
+                            <li style="margin-bottom: 0.4rem">
+                                🤖 サービスアカウント（アプリ・VM）
+                            </li>
+                            <li style="margin-bottom: 0.4rem">🌐 Cloud Identity ドメイン</li>
+                            <li style="color: var(--red)">
+                                ⚠️ allUsers / allAuthenticatedUsers（公開設定 — 原則使用禁止）
+                            </li>
+                        </ul>
+                    </div>
+                    <div
+                        class="card"
+                        style="
+                            background: rgba(32, 201, 151, 0.05);
+                            border-color: rgba(32, 201, 151, 0.15);
+                        "
+                    >
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--teal);
+                                margin-bottom: 0.7rem;
+                            "
+                        >
+                            ROLE / ロール（何ができるか）
+                        </div>
+                        <div style="font-size: 1rem; color: var(--text-sub)">
+                            <div style="margin-bottom: 0.5rem">
+                                <span class="badge b-red">非推奨</span>
+                                <strong style="color: var(--text)">基本ロール</strong> — Owner /
+                                Editor / Viewer<br /><span style="font-size: 1rem"
+                                    >プロジェクト全体に広すぎる権限。本番環境では使用禁止。</span
+                                >
+                            </div>
+                            <div style="margin-bottom: 0.5rem">
+                                <span class="badge b-teal">推奨</span>
+                                <strong style="color: var(--text)">事前定義ロール</strong
+                                ><br /><span style="font-size: 1rem"
+                                    >特定サービスに最適化。Google が管理・更新。</span
+                                >
+                            </div>
+                            <div>
+                                <span class="badge b-sky">精密</span>
+                                <strong style="color: var(--text)">カスタムロール</strong
+                                ><br /><span style="font-size: 1rem"
+                                    >必要な権限だけを独自に組み合わせ。最小権限の徹底実現。</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="card"
+                        style="
+                            background: rgba(64, 144, 208, 0.05);
+                            border-color: rgba(64, 144, 208, 0.15);
+                        "
+                    >
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--sky);
+                                margin-bottom: 0.7rem;
+                            "
+                        >
+                            RESOURCE / リソース（何に対して）
+                        </div>
+                        <div style="font-size: 1rem; color: var(--text-sub)">
+                            <div style="margin-bottom: 0.4rem">
+                                🏢 組織（Organization）— 全体に継承
+                            </div>
+                            <div style="margin-bottom: 0.4rem">📁 フォルダ（Folder）— 部門単位</div>
+                            <div style="margin-bottom: 0.4rem">
+                                📂 プロジェクト（Project）— アプリ単位
+                            </div>
+                            <div>⚙️ 個別リソース（VM・バケット・DB）</div>
+                            <div
+                                style="
+                                    margin-top: 0.7rem;
+                                    font-size: 1rem;
+                                    color: var(--text-muted);
+                                    font-style: italic;
+                                "
+                            >
+                                ⚠️ 権限は上位から下位へ継承。下位では取り消せない。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROLE COMPARISON -->
+                <div class="sub-title">
+                    3 種類のロール詳細比較<span class="exam-tag">頻出</span>
+                </div>
+                <div class="role-wrap fade-in" style="margin-bottom: 1.5rem">
+                    <table class="role-table">
+                        <thead>
+                            <tr>
+                                <th>種類</th>
+                                <th>権限の範囲</th>
+                                <th>管理主体</th>
+                                <th>推奨度</th>
+                                <th>使い所</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    基本ロール<br /><code style="font-size: 1rem"
+                                        >Owner/Editor/Viewer</code
+                                    >
+                                </td>
+                                <td>プロジェクト全体に広範な権限。非常に粗い粒度。</td>
+                                <td>Google</td>
+                                <td><span class="badge b-red">本番禁止</span></td>
+                                <td>テスト環境・サンドボックスのみ</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    事前定義ロール<br /><code style="font-size: 1rem"
+                                        >roles/bigquery.dataViewer</code
+                                    >
+                                </td>
+                                <td>特定サービスの特定操作に最適化された細かい権限セット</td>
+                                <td>Google（自動更新）</td>
+                                <td><span class="badge b-teal">推奨</span></td>
+                                <td>ほとんどのユースケース</td>
+                            </tr>
+                            <tr>
+                                <td>カスタムロール</td>
+                                <td>ユーザーが個別権限を選んで組み合わせた独自ロール</td>
+                                <td>ユーザー（手動管理）</td>
+                                <td><span class="badge b-sky">精密制御</span></td>
+                                <td>特殊なコンプライアンス要件</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- SERVICE ACCOUNT -->
+                <div class="sub-title">
+                    サービスアカウントの安全管理<span class="exam-tag">頻出</span>
+                </div>
+                <div class="g2 fade-in">
+                    <div class="card" style="border-left: 3px solid var(--red)">
+                        <div class="card-title">❌ サービスアカウントキーの危険性</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            JSON
+                            キーファイルは有効期限なしの認証情報。漏洩すると攻撃者が任意の時間・場所から
+                            GCP にアクセス可能。コードリポジトリへの誤コミットが最大リスク。
+                        </div>
+                        <div class="box box-warn" style="margin-top: 0.5rem; font-size: 1rem">
+                            <strong>組織ポリシーで禁止推奨：</strong>
+                            <code>constraints/iam.disableServiceAccountKeyCreation</code>
+                        </div>
+                    </div>
+                    <div class="card" style="border-left: 3px solid var(--teal)">
+                        <div class="card-title">✅ キーなしの代替認証手法</div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li
+                                style="
+                                    padding: 0.4rem 0 0.4rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--teal)"
+                                    >①</span
+                                ><strong style="color: var(--text)"
+                                    >Application Default Credentials（ADC）</strong
+                                >
+                                — VM・Cloud Run は自動認証
+                            </li>
+                            <li
+                                style="
+                                    padding: 0.4rem 0 0.4rem 1.2rem;
+                                    position: relative;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                                "
+                            >
+                                <span style="position: absolute; left: 0; color: var(--teal)"
+                                    >②</span
+                                ><strong style="color: var(--text)"
+                                    >Workload Identity（GKE）</strong
+                                >
+                                — Pod に SA を直接紐付け
+                            </li>
+                            <li style="padding: 0.4rem 0 0.4rem 1.2rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--teal)"
+                                    >③</span
+                                ><strong style="color: var(--text)"
+                                    >Workload Identity Federation</strong
+                                >
+                                — AWS・GitHub Actions との連携（短期トークン）
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="box box-bp" style="margin-top: 1.5rem">
+                    <div class="bp-title">✅ ベストプラクティス：IAM</div>
+                    <ul>
+                        <li>
+                            基本ロール（Owner/Editor/Viewer）は本番環境で<strong>絶対に使用しない</strong>。事前定義ロールを使う。
+                        </li>
+                        <li>
+                            個人ではなく<strong>グループにロールを付与</strong>する（メンバー変更時の管理効率化）。
+                        </li>
+                        <li>最小権限の原則：タスクに必要な最小限のロールのみを付与する。</li>
+                        <li>IAM Recommender で過剰権限を定期的に検出・削除する。</li>
+                        <li>
+                            サービスアカウントキーの作成を組織ポリシーで禁止し、ADC / Workload
+                            Identity を使用する。
+                        </li>
+                        <li>Admin Activity 監査ログで権限変更を継続的に監視する。</li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/iam/docs/overview"
+                        >https://cloud.google.com/iam/docs/overview</a
+                    >
+                    <a href="https://cloud.google.com/iam/docs/best-practices"
+                        >https://cloud.google.com/iam/docs/best-practices</a
+                    >
+                    <a href="https://cloud.google.com/iam/docs/service-account-overview"
+                        >https://cloud.google.com/iam/docs/service-account-overview</a
+                    >
+                    <a href="https://cloud.google.com/iam/docs/workload-identity-federation"
+                        >https://cloud.google.com/iam/docs/workload-identity-federation</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ ENCRYPTION ════ -->
+        <section id="encryption" class="section">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.4 Encryption & Data Protection</div>
+                    <h2 class="sh-title">暗号化とデータ保護<span class="exam-tag">最重要</span></h2>
+                    <p class="sh-desc">
+                        データの 3 つの状態での暗号化と、Cloud KMS
+                        による鍵管理オプションを理解します。
+                    </p>
+                </div>
+
+                <!-- 3 STATES -->
+                <div class="sub-title">データの 3 つの状態と暗号化</div>
+                <div class="enc-row fade-in" style="margin-bottom: 2rem">
+                    <div class="enc-item">
+                        <div
+                            class="enc-num"
+                            style="background: rgba(200, 168, 75, 0.15); color: var(--gold)"
+                        >
+                            ①
+                        </div>
+                        <div>
+                            <div class="enc-title" style="color: var(--gold)">
+                                保存中（Data at Rest）
+                            </div>
+                            <div class="enc-desc">
+                                ストレージ（ディスク・データベース）に保存された状態のデータ。例：Cloud
+                                Storage・BigQuery・Persistent Disk のデータ。<br /><strong
+                                    style="color: var(--gold)"
+                                    >Google のデフォルト：AES-256
+                                    で全データを自動暗号化（追加設定・費用不要）</strong
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="enc-item">
+                        <div
+                            class="enc-num"
+                            style="background: rgba(64, 144, 208, 0.15); color: var(--sky)"
+                        >
+                            ②
+                        </div>
+                        <div>
+                            <div class="enc-title" style="color: var(--sky)">
+                                転送中（Data in Transit）
+                            </div>
+                            <div class="enc-desc">
+                                ネットワーク経由で移動中のデータ。例：ブラウザから Cloud Storage
+                                へのアップロード・サービス間 API 通信。<br /><strong
+                                    style="color: var(--sky)"
+                                    >Google のデフォルト：TLS 1.2
+                                    以上で全通信を自動暗号化。内部通信は ALTS を使用。</strong
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="enc-item">
+                        <div
+                            class="enc-num"
+                            style="background: rgba(32, 201, 151, 0.15); color: var(--teal)"
+                        >
+                            ③
+                        </div>
+                        <div>
+                            <div class="enc-title" style="color: var(--teal)">
+                                使用中（Data in Use）
+                            </div>
+                            <div class="enc-desc">
+                                メモリ（RAM）上で処理されている状態のデータ。従来は平文のままだった唯一の状態。<br /><strong
+                                    style="color: var(--teal)"
+                                    >Confidential VM・Confidential GKE Nodes で AMD SEV
+                                    技術を使いメモリも暗号化。</strong
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-info">
+                    <strong>🔑 重要な試験ポイント：</strong>
+                    Google Cloud
+                    は<strong>保存中・転送中のデータを追加設定なしでデフォルト暗号化</strong>します。
+                    「使用中」のデータを暗号化するのは
+                    <strong>Confidential VM</strong> の特徴です（AMD SEV 技術）。
+                </div>
+
+                <!-- KMS OPTIONS -->
+                <div class="sub-title" style="margin-top: 2.5rem">
+                    Cloud KMS：暗号鍵管理の 3 段階<span class="exam-tag">頻出</span>
+                </div>
+                <div class="kms-wrap fade-in" style="margin-bottom: 1.5rem">
+                    <table class="kms-table">
+                        <thead>
+                            <tr>
+                                <th>管理方式</th>
+                                <th>鍵の管理主体</th>
+                                <th>コスト</th>
+                                <th>主なユースケース</th>
+                                <th>使用例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    🔑 Google-Managed Keys<br /><span
+                                        style="font-size: 1rem; color: var(--text-muted)"
+                                        >（デフォルト）</span
+                                    >
+                                </td>
+                                <td>Google が自動管理・ローテーション</td>
+                                <td>無料</td>
+                                <td>一般的なワークロード。追加設定不要。</td>
+                                <td>ほとんどのケースで十分</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    🗝️ CMEK<br /><span
+                                        style="font-size: 1rem; color: var(--text-muted)"
+                                        >Customer-Managed Encryption Keys</span
+                                    >
+                                </td>
+                                <td>
+                                    ユーザーが Cloud KMS で管理。鍵の無効化・削除をユーザーが制御。
+                                </td>
+                                <td>KMS 利用料</td>
+                                <td>
+                                    規制業界（金融・医療・政府）。鍵を無効化するとデータへのアクセス不可。
+                                </td>
+                                <td>コンプライアンス必須の場合</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    🔐 CSEK<br /><span
+                                        style="font-size: 1rem; color: var(--text-muted)"
+                                        >Customer-Supplied Encryption Keys</span
+                                    >
+                                </td>
+                                <td>
+                                    ユーザーが Google Cloud 外で鍵を管理。リクエストのたびに提供。
+                                </td>
+                                <td>高い管理コスト</td>
+                                <td>鍵を Google に一切渡したくない最高セキュリティ要件。</td>
+                                <td>極めて機密性の高いデータ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="g3 fade-in">
+                    <div class="card">
+                        <div class="card-icon">🔒</div>
+                        <div class="card-title">Cloud HSM</div>
+                        <div class="card-body">
+                            FIPS 140-2 Level 3
+                            認証のハードウェアセキュリティモジュール。物理的に改ざん困難なハードウェアで鍵を保護。PCI
+                            DSS・HIPAA 等の規制で必要な場合。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-gold">最高レベル保護</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💻</div>
+                        <div class="card-title">Confidential VM</div>
+                        <div class="card-body">
+                            処理中（メモリ上）のデータも暗号化。AMD SEV（Secure Encrypted
+                            Virtualization）技術を使用。Google
+                            のハイパーバイザーもメモリを読めない。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-teal">使用中も保護</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🗝️</div>
+                        <div class="card-title">Secret Manager</div>
+                        <div class="card-body">
+                            API
+                            キー・パスワード・証明書などの機密情報を安全に管理。コードへのハードコード禁止。バージョン管理・アクセス制御・監査ログ付き。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-sky">シークレット管理</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-bp" style="margin-top: 1.5rem">
+                    <div class="bp-title">✅ ベストプラクティス：暗号化</div>
+                    <ul>
+                        <li>一般ワークロード → Google-Managed Keys（デフォルト・無料）で十分。</li>
+                        <li>
+                            規制対応（金融・医療・GDPR）→ <strong>CMEK</strong> で Cloud KMS
+                            により鍵をユーザー管理する。
+                        </li>
+                        <li>
+                            鍵を Google に渡したくない極秘要件 →
+                            CSEK（管理コストと要件を慎重に評価）。
+                        </li>
+                        <li>
+                            処理中のデータも保護が必要 → <strong>Confidential VM</strong> を使用。
+                        </li>
+                        <li>
+                            API キー・パスワードはコードに直書きせず、必ず
+                            <strong>Secret Manager</strong> を使用。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/security/encryption/default-encryption"
+                        >https://cloud.google.com/security/encryption/default-encryption</a
+                    >
+                    <a href="https://cloud.google.com/kms/docs"
+                        >https://cloud.google.com/kms/docs</a
+                    >
+                    <a href="https://cloud.google.com/confidential-computing/confidential-vm/docs"
+                        >https://cloud.google.com/confidential-computing/confidential-vm/docs</a
+                    >
+                    <a href="https://cloud.google.com/secret-manager/docs"
+                        >https://cloud.google.com/secret-manager/docs</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ NETWORK SECURITY ════ -->
+        <section id="network" class="section" style="background: rgba(10, 22, 40, 0.5)">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.5 Network Security</div>
+                    <h2 class="sh-title">
+                        ネットワークセキュリティ<span class="exam-tag">最重要</span>
+                    </h2>
+                    <p class="sh-desc">
+                        Cloud Armor・Cloud IAP・VPC Service Controls
+                        の役割の違いを正確に理解することが試験の鍵です。
+                    </p>
+                </div>
+
+                <div class="g3 fade-in" style="margin-bottom: 2rem">
+                    <div class="card" style="border-top: 3px solid var(--red)">
+                        <div class="card-icon">⚔️</div>
+                        <div class="card-title">Cloud Armor</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            <strong style="color: var(--text)"
+                                >DDoS 防御 + WAF（Web Application Firewall）</strong
+                            ><br />グローバルロードバランサーの手前でトラフィックをフィルタリング。Google
+                            のグローバルネットワークのエッジで攻撃を遮断。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--red)">›</span
+                                >L3/L4 DDoS を自動的に検知・緩和
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--red)">›</span
+                                >OWASP Top 10 の WAF ルールを適用
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--red)">›</span
+                                >IP・地域ベースのブロック・レート制限
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--red)">›</span
+                                >Adaptive Protection（ML で攻撃自動検出）
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-red">外部攻撃を防御</span>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 3px solid var(--gold)">
+                        <div class="card-icon">🚪</div>
+                        <div class="card-title">Cloud IAP（Identity-Aware Proxy）</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            <strong style="color: var(--text)"
+                                >VPN 不要のゼロトラストアクセス制御</strong
+                            ><br />アプリ単位で認証・認可を実施。すべてのアクセスをログ記録。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--gold)"
+                                    >›</span
+                                >VPN なしで社内アプリへセキュアアクセス
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--gold)"
+                                    >›</span
+                                >アクセスのたびに Google 認証 + MFA
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--gold)"
+                                    >›</span
+                                >IAM で誰がアクセスできるかを細かく制御
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--gold)"
+                                    >›</span
+                                >SSH・RDP への TCP トンネリングにも対応
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-gold">ゼロトラスト実装</span>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 3px solid var(--sky)">
+                        <div class="card-icon">🏰</div>
+                        <div class="card-title">VPC Service Controls（VPC SC）</div>
+                        <div class="card-body" style="margin-bottom: 0.8rem">
+                            <strong style="color: var(--text)"
+                                >データ流出（Exfiltration）防止の境界線</strong
+                            ><br />GCP
+                            サービスの周囲にセキュリティ境界を作成。たとえ認証情報を盗まれても境界外からのアクセスをブロック。
+                        </div>
+                        <ul style="list-style: none; font-size: 1rem; color: var(--text-sub)">
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--sky)">›</span
+                                >BigQuery・Cloud Storage 等の周りに境界
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--sky)">›</span
+                                >認証情報盗難後の外部コピーを物理的にブロック
+                            </li>
+                            <li style="padding: 0.25rem 0 0.25rem 1.1rem; position: relative">
+                                <span style="position: absolute; left: 0; color: var(--sky)">›</span
+                                >本番適用前に Dry Run モードで影響確認
+                            </li>
+                        </ul>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-sky">データ流出防止</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-warn">
+                    <strong>⚠️ 試験頻出：3 サービスの役割の違い</strong><br />
+                    <strong>Cloud Armor</strong>：外部からの攻撃（DDoS・WAF）を<em>ブロック</em>する
+                    → 外部攻撃防御<br />
+                    <strong>Cloud IAP</strong>：アクセスのたびに<em>認証・認可</em>する →
+                    ゼロトラストアクセス制御<br />
+                    <strong>VPC Service Controls</strong>：データを境界内に<em>閉じ込める</em> →
+                    内部からのデータ流出防止
+                </div>
+
+                <div class="box box-bp" style="margin-top: 1.2rem">
+                    <div class="bp-title">✅ ベストプラクティス：ネットワークセキュリティ</div>
+                    <ul>
+                        <li>
+                            すべての本番 ALB（Application Load Balancer）に
+                            <strong>Cloud Armor</strong> を設定する。
+                        </li>
+                        <li>
+                            SSH・RDP へのアクセスは
+                            <strong>Cloud IAP</strong> 経由のみに限定し、VPN・外部 IP を不要にする。
+                        </li>
+                        <li>
+                            機密データを含む BigQuery・Cloud Storage には
+                            <strong>VPC SC</strong> を適用する（Dry Run で確認後に本番適用）。
+                        </li>
+                        <li>VM に外部 IP を付けず、Cloud NAT でアウトバウンドのみを確保する。</li>
+                        <li>
+                            VPC フローログを有効化してネットワークトラフィックを記録・監査する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/armor/docs"
+                        >https://cloud.google.com/armor/docs</a
+                    >
+                    <a href="https://cloud.google.com/iap/docs"
+                        >https://cloud.google.com/iap/docs</a
+                    >
+                    <a href="https://cloud.google.com/vpc-service-controls/docs"
+                        >https://cloud.google.com/vpc-service-controls/docs</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ MONITORING ════ -->
+        <section id="monitoring" class="section">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.6 Threat Detection & Security Monitoring</div>
+                    <h2 class="sh-title">脅威検出とセキュリティ監視</h2>
+                    <p class="sh-desc">
+                        Security Command Center・監査ログの 4 種類・Cloud IDS・Chronicle
+                        の役割と使い分けを理解します。
+                    </p>
+                </div>
+
+                <div class="sub-title">
+                    Cloud 監査ログの 4 種類<span class="exam-tag">最重要</span>
+                </div>
+                <div class="audit-wrap fade-in" style="margin-bottom: 2rem">
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th>ログ種別</th>
+                                <th>記録内容</th>
+                                <th>デフォルト</th>
+                                <th>料金</th>
+                                <th>保持期間</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>① Admin Activity<br />（管理アクティビティ）</td>
+                                <td>
+                                    リソース作成・削除・IAM 変更・設定変更など「設定を変えた」操作
+                                </td>
+                                <td>
+                                    <span class="badge b-teal">常に有効</span><br /><span
+                                        style="font-size: 1rem"
+                                        >無効化不可</span
+                                    >
+                                </td>
+                                <td>無料</td>
+                                <td>400 日</td>
+                            </tr>
+                            <tr>
+                                <td>② Data Access<br />（データアクセス）</td>
+                                <td>
+                                    BigQuery クエリ・Cloud Storage
+                                    ダウンロードなど「データを読み書きした」操作
+                                </td>
+                                <td>
+                                    <span class="badge b-red">デフォルト無効</span><br /><span
+                                        style="font-size: 1rem"
+                                        >要有効化</span
+                                    >
+                                </td>
+                                <td>有料（大量）</td>
+                                <td>30 日</td>
+                            </tr>
+                            <tr>
+                                <td>③ System Event<br />（システムイベント）</td>
+                                <td>
+                                    Google
+                                    システムによる自動操作（ライブマイグレーション・自動スケーリング等）
+                                </td>
+                                <td><span class="badge b-teal">常に有効</span></td>
+                                <td>無料</td>
+                                <td>400 日</td>
+                            </tr>
+                            <tr>
+                                <td>④ Policy Denied<br />（ポリシー拒否）</td>
+                                <td>VPC Service Controls でブロックされたアクセスの記録</td>
+                                <td><span class="badge b-red">要有効化</span></td>
+                                <td>有料</td>
+                                <td>30 日</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="box box-warn">
+                    <strong>⚠️ 試験頻出の区別：</strong>
+                    <strong>Admin Activity</strong
+                    >（管理アクティビティ）は「<em>設定を変えた</em>」操作 → 常に有効・無料。
+                    <strong>Data Access</strong
+                    >（データアクセス）は「<em>データを読み書きした</em>」操作 →
+                    デフォルト無効・有効化が必要・有料。 機密データを扱うサービスでは必ず Data
+                    Access ログを有効化する。
+                </div>
+
+                <!-- SCC -->
+                <div class="sub-title" style="margin-top: 2.5rem">
+                    Security Command Center（SCC）
+                </div>
+                <div class="g2 fade-in">
+                    <div class="card">
+                        <div class="card-title">🎯 SCC が自動検出するもの</div>
+                        <div style="font-size: 1rem; color: var(--text-sub)">
+                            <div
+                                style="
+                                    margin-bottom: 0.6rem;
+                                    padding-bottom: 0.6rem;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                                "
+                            >
+                                <strong style="color: var(--amber)"
+                                    >設定ミス（Misconfiguration）</strong
+                                ><br />
+                                公開されている Cloud Storage バケット・外部 IP の不適切な
+                                VM・弱いファイアウォールルール・MFA が未設定の特権ユーザー
+                            </div>
+                            <div
+                                style="
+                                    margin-bottom: 0.6rem;
+                                    padding-bottom: 0.6rem;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                                "
+                            >
+                                <strong style="color: var(--red)">アクティブな脅威</strong><br />
+                                マルウェアの実行・異常な API
+                                コール（クリプトマイニング）・侵害された認証情報の利用・データ流出の試み
+                            </div>
+                            <div>
+                                <strong style="color: var(--sky)">脆弱性</strong><br />
+                                脆弱なソフトウェアバージョン・CVE（既知の脆弱性）・コンテナイメージの脆弱性
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔍 他のセキュリティツールとの違い</div>
+                        <div style="font-size: 1rem; color: var(--text-sub)">
+                            <div
+                                style="
+                                    margin-bottom: 0.7rem;
+                                    padding-bottom: 0.7rem;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                                "
+                            >
+                                <span
+                                    class="badge b-red"
+                                    style="margin-bottom: 0.3rem; display: inline-block"
+                                    >SCC</span
+                                ><br />
+                                GCP 全体の脅威・設定ミス・脆弱性を<strong style="color: var(--text)"
+                                    >一元可視化</strong
+                                >するダッシュボード。CSPM（Cloud Security Posture Management）。
+                            </div>
+                            <div
+                                style="
+                                    margin-bottom: 0.7rem;
+                                    padding-bottom: 0.7rem;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                                "
+                            >
+                                <span
+                                    class="badge b-teal"
+                                    style="margin-bottom: 0.3rem; display: inline-block"
+                                    >Cloud IDS</span
+                                ><br />
+                                ネットワークトラフィックを<strong style="color: var(--text)"
+                                    >監視・検知</strong
+                                >（アラートのみ）。Palo Alto 脅威インテリジェンス活用。
+                            </div>
+                            <div>
+                                <span
+                                    class="badge b-gold"
+                                    style="margin-bottom: 0.3rem; display: inline-block"
+                                    >Chronicle</span
+                                ><br />
+                                Google スケールの SIEM / SOAR。ペタバイトのセキュリティログを<strong
+                                    style="color: var(--text)"
+                                    >超高速分析</strong
+                                >。脅威ハンティング。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-bp" style="margin-top: 1.5rem">
+                    <div class="bp-title">✅ ベストプラクティス：セキュリティ監視</div>
+                    <ul>
+                        <li>
+                            機密データを扱うサービスでは
+                            <strong>Data Access 監査ログを必ず有効化</strong>する。
+                        </li>
+                        <li>
+                            ログシンクで BigQuery へエクスポートして長期保存・SQL 分析を可能にする。
+                        </li>
+                        <li>
+                            <strong>Security Command Center</strong>
+                            を有効化してセキュリティ状況を継続的に自動スキャンする。
+                        </li>
+                        <li>
+                            SCC
+                            の検出結果（Findings）に対するアラートを設定し、高リスク項目を迅速に修正する。
+                        </li>
+                        <li>
+                            Cloud Armor + Cloud IDS
+                            の組み合わせで「ブロック」と「監視」の多層防御を構築する。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/security-command-center/docs"
+                        >https://cloud.google.com/security-command-center/docs</a
+                    >
+                    <a href="https://cloud.google.com/logging/docs/audit"
+                        >https://cloud.google.com/logging/docs/audit</a
+                    >
+                    <a href="https://cloud.google.com/intrusion-detection-system/docs"
+                        >https://cloud.google.com/intrusion-detection-system/docs</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ COMPLIANCE ════ -->
+        <section id="compliance" class="section" style="background: rgba(10, 22, 40, 0.5)">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.7 Compliance & Regulations</div>
+                    <h2 class="sh-title">コンプライアンスと規制対応</h2>
+                    <p class="sh-desc">
+                        GDPR・HIPAA・PCI DSS の要点と、Google Cloud
+                        のコンプライアンス認証・支援サービスを理解します。
+                    </p>
+                </div>
+
+                <div class="comp-grid fade-in" style="margin-bottom: 2rem">
+                    <div class="comp-card">
+                        <div class="comp-abbr">GDPR</div>
+                        <div class="comp-name">EU 一般データ保護規則</div>
+                        <div class="comp-desc">
+                            EU 居住者のデータを扱う全企業に適用（EU 外の企業も対象）。<br />削除権・アクセス権・ポータビリティ権。<br />違反時は最大
+                            2,000 万ユーロ or 売上の 4%。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-teal">EU データ保護</span>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-abbr">HIPAA</div>
+                        <div class="comp-name">米国医療情報保護法</div>
+                        <div class="comp-desc">
+                            PHI（医療情報）を扱う米国の医療機関・保険会社に適用。<br />Google Cloud
+                            は BAA（Business Associate Agreement）を提供。<br />Cloud Healthcare API
+                            が HIPAA 対応。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-sky">医療情報保護</span>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-abbr">PCI<br />DSS</div>
+                        <div class="comp-name">クレジットカード業界基準</div>
+                        <div class="comp-desc">
+                            カード情報を扱う全企業に適用。Visa / Mastercard 等が策定。<br />Google
+                            Cloud の多くのサービスが PCI DSS Level 1 認定。<br />暗号化・アクセス制御・監査ログが要件。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-amber">決済セキュリティ</span>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-abbr">ISO<br />27001</div>
+                        <div class="comp-name">情報セキュリティ管理</div>
+                        <div class="comp-desc">
+                            情報セキュリティ管理の国際規格。<br />ISO
+                            27017（クラウドセキュリティ）<br />ISO 27018（クラウド個人情報保護）<br />Google
+                            Cloud は認証取得済み。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-gold">国際規格</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="g2 fade-in">
+                    <div class="card">
+                        <div class="card-title">📑 Compliance Reports Manager</div>
+                        <div class="card-body">
+                            Google Cloud のコンプライアンス認証文書（SOC レポート・ISO
+                            認証書等）をセルフサービスでダウンロードできるツール。監査担当者への証拠提出が数分で完了。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <a
+                                href="https://cloud.google.com/security/compliance/compliance-reports-manager"
+                                style="
+                                    color: var(--gold);
+                                    font-size: 1rem;
+                                    font-family: var(--ff-mono);
+                                "
+                                >cloud.google.com/security/compliance →</a
+                            >
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔒 Assured Workloads</div>
+                        <div class="card-body">
+                            規制要件（FedRAMP・HIPAA
+                            等）に適合した論理的な境界をクリックで構築。データ保管地域の強制・担当者アクセス制限・暗号化コントロールを自動化。
+                        </div>
+                        <div style="margin-top: 0.8rem">
+                            <span class="badge b-teal">コンプライアンス自動化</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-info" style="margin-top: 1.5rem">
+                    <strong>🌏 データ主権とリージョン選択：</strong>
+                    EU のデータは EU リージョン（<code>europe-west1</code>
+                    等）、日本のデータは日本リージョン（<code>asia-northeast1</code> 東京）に保管。
+                    組織ポリシー
+                    <code>constraints/gcp.resourceLocations</code>
+                    で指定リージョン以外でのリソース作成を禁止することで GDPR
+                    等のデータ主権要件に対応できます。
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/security/compliance"
+                        >https://cloud.google.com/security/compliance</a
+                    >
+                    <a href="https://cloud.google.com/privacy/gdpr"
+                        >https://cloud.google.com/privacy/gdpr</a
+                    >
+                    <a href="https://cloud.google.com/security/compliance/pci-dss"
+                        >https://cloud.google.com/security/compliance/pci-dss</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ DLP ════ -->
+        <section id="dlp" class="section">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">5.8 Data Privacy & Sensitive Data Protection</div>
+                    <h2 class="sh-title">
+                        データプライバシーと Sensitive Data Protection<span class="exam-tag"
+                            >頻出</span
+                        >
+                    </h2>
+                    <p class="sh-desc">
+                        匿名化・仮名化・トークン化の違い（再識別可否・GDPR
+                        適用有無）が試験で最も問われるポイントです。
+                    </p>
+                </div>
+
+                <div class="box box-info" style="margin-bottom: 1.5rem">
+                    <strong>Sensitive Data Protection（旧 Cloud DLP）とは：</strong>
+                    テキスト・画像・構造化データ内の機密情報を自動検出・分類・保護するサービス。 150
+                    以上の組み込み情報タイプ（PII・医療情報・認証情報など）に対応。
+                </div>
+
+                <div class="sub-title">
+                    7 つの保護手法<span class="exam-tag">試験で最頻出</span>
+                </div>
+                <div class="dlp-grid fade-in">
+                    <div class="dlp-card">
+                        <div class="dlp-name" style="color: var(--sky)">① 検出</div>
+                        <div class="dlp-desc">
+                            どこに機密データがあるかを<strong>発見するだけ</strong>。BigQuery
+                            の全テーブルをスキャンして PII を含む列を特定。
+                        </div>
+                        <div class="dlp-example" style="color: var(--text-muted)">
+                            変更なし → 場所の把握のみ
+                        </div>
+                    </div>
+                    <div class="dlp-card">
+                        <div class="dlp-name" style="color: var(--amber)">② マスキング</div>
+                        <div class="dlp-desc">
+                            一部を「*」や「X」で<strong>置き換え</strong>。末尾のみ表示などで必要最小限を残す。
+                        </div>
+                        <div class="dlp-example" style="color: var(--amber)">
+                            090-1234-5678 → ***-****-5678
+                        </div>
+                    </div>
+                    <div class="dlp-card">
+                        <div class="dlp-name" style="color: var(--gold)">③ 仮名化 ⚠️</div>
+                        <div class="dlp-desc">
+                            識別子を仮の識別子に置換。<strong>変換テーブルで元に戻せる</strong>（再識別可能）。GDPR
+                            引き続き適用。
+                        </div>
+                        <div class="dlp-example" style="color: var(--gold)">
+                            田中太郎 → UID-a7f3k
+                        </div>
+                    </div>
+                    <div class="dlp-card">
+                        <div class="dlp-name" style="color: var(--teal)">④ 匿名化 ✅</div>
+                        <div class="dlp-desc">
+                            識別情報を<strong>完全に除去・元に戻せない</strong>。GDPR
+                            規制対象外になる。研究データの公開に最適。
+                        </div>
+                        <div class="dlp-example" style="color: var(--teal)">
+                            田中太郎・渋谷区 → 30代男性・東京都内
+                        </div>
+                    </div>
+                    <div class="dlp-card">
+                        <div class="dlp-name" style="color: var(--sky)">⑤ トークン化</div>
+                        <div class="dlp-desc">
+                            値を<strong>ランダムなトークンに置換</strong>。同じ形式・長さを保つことも可能。PCI
+                            DSS のカードデータに最適。
+                        </div>
+                        <div class="dlp-example" style="color: var(--sky)">
+                            4111-xxxx → TOKEN-ab3f8x
+                        </div>
+                    </div>
+                    <div class="dlp-card">
+                        <div class="dlp-name" style="color: var(--red)">⑥ 暗号化</div>
+                        <div class="dlp-desc">
+                            暗号化キーで暗号化。<strong>鍵があれば復号可能</strong>。鍵管理が重要。Cloud
+                            KMS と組み合わせる。
+                        </div>
+                        <div class="dlp-example" style="color: var(--red)">
+                            090-1234-5678 → 3f8a…9d2c
+                        </div>
+                    </div>
+                    <div class="dlp-card">
+                        <div class="dlp-name" style="color: #a080e0">⑦ 日付シフト</div>
+                        <div class="dlp-desc">
+                            日付をランダムにずらす。<strong>統計的特性を保ちつつ</strong>個人を特定できなくする。医療・研究データに活用。
+                        </div>
+                        <div class="dlp-example" style="color: #a080e0">
+                            2024-01-15 → 2024-03-27（±数ヶ月）
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box box-warn" style="margin-top: 1.5rem">
+                    <strong>⚠️ 試験の超頻出：匿名化 vs 仮名化の違い</strong><br />
+                    <strong>匿名化（Anonymization）</strong>：再識別不可能 → GDPR
+                    規制対象外。データを公開・共有したい場合。<br />
+                    <strong>仮名化（Pseudonymization）</strong>：変換テーブルで再識別可能 → GDPR
+                    引き続き適用。開発・テスト環境で本番データを使いたい場合。
+                </div>
+
+                <div class="g3 fade-in" style="margin-top: 1.5rem">
+                    <div class="card">
+                        <div class="card-title" style="font-size: 1rem">開発・テスト環境</div>
+                        <div class="card-body">
+                            本番データを使う必要がある場合 →
+                            <strong style="color: var(--gold)">仮名化</strong
+                            ><br />元データへの変換が可能なため、後から正式データでの検証もできる
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title" style="font-size: 1rem">
+                            データの公開・研究利用
+                        </div>
+                        <div class="card-body">
+                            外部に公開・第三者と共有する場合 →
+                            <strong style="color: var(--teal)">匿名化</strong><br />GDPR
+                            対象外になるため、規制の制約なしに活用できる
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title" style="font-size: 1rem">PCI DSS・決済データ</div>
+                        <div class="card-body">
+                            クレジットカード番号の保護 →
+                            <strong style="color: var(--sky)">トークン化</strong
+                            ><br />同じ形式・長さを維持しつつ実際のカード番号を隠蔽
+                        </div>
+                    </div>
+                </div>
+
+                <div class="src">
+                    <div class="src-label">📎 参考ソース</div>
+                    <a href="https://cloud.google.com/sensitive-data-protection/docs"
+                        >https://cloud.google.com/sensitive-data-protection/docs</a
+                    >
+                    <a
+                        href="https://cloud.google.com/sensitive-data-protection/docs/pseudonymization"
+                        >https://cloud.google.com/sensitive-data-protection/docs/pseudonymization</a
+                    >
+                    <a href="https://cloud.google.com/privacy">https://cloud.google.com/privacy</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ CHECKLIST ════ -->
+        <section id="checklist" class="section" style="background: rgba(10, 22, 40, 0.5)">
+            <div class="container">
+                <div class="sh fade-in">
+                    <div class="sh-tag">Exam Preparation</div>
+                    <h2 class="sh-title">試験直前チェックリスト＆頻出パターン</h2>
+                    <p class="sh-desc">
+                        Section 5 の重要ポイントを確認し、頻出問題パターンで理解を深めましょう。
+                    </p>
+                </div>
+
+                <div class="g2 fade-in" style="margin-bottom: 2.5rem">
+                    <div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--gold);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            基礎・責任共有・ゼロトラスト
+                        </div>
+                        <div class="checklist" style="margin-bottom: 1.5rem">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                責任共有モデルで Google
+                                とユーザーがそれぞれ何に責任を持つか説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                ゼロトラスト・BeyondCorp
+                                の「ネットワーク内でも信頼しない」概念を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                多層防御（Defense in Depth）の 8 層を大まかに説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Cloud IAP が「VPN
+                                不要のゼロトラストアクセス制御」であることを説明できる
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--gold);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            IAM
+                        </div>
+                        <div class="checklist" style="margin-bottom: 1.5rem">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                基本ロール（Owner/Editor/Viewer）を本番環境で使ってはいけない理由を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                事前定義ロール・カスタムロールの違いと使い分けを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                サービスアカウントキーのリスクと ADC・Workload Identity
+                                の代替手法を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                最小権限の原則の重要性を説明できる
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--gold);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            暗号化・ネットワーク
+                        </div>
+                        <div class="checklist" style="margin-bottom: 1.5rem">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                暗号化の 3 状態（保存中・転送中・使用中）と Google
+                                のデフォルト対応を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Google-Managed / CMEK / CSEK の違いと選択基準を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Confidential VM が「使用中のデータも暗号化」することを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Cloud Armor・Cloud IAP・VPC SC の役割の違いを即答できる
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                font-family: var(--ff-mono);
+                                font-size: 1rem;
+                                color: var(--gold);
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                margin-bottom: 0.8rem;
+                            "
+                        >
+                            監視・コンプライアンス・DLP
+                        </div>
+                        <div class="checklist">
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                監査ログの 4 種類（Admin Activity / Data Access / System Event /
+                                Policy Denied）を説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                Admin Activity（常時有効・無料）と Data
+                                Access（要有効化・有料）の違いを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                匿名化（再識別不可・GDPR 対象外）と仮名化（再識別可能・GDPR
+                                対象）の違いを説明できる
+                            </div>
+                            <div class="cl-item">
+                                <div class="cl-box">✓</div>
+                                GDPR・HIPAA・PCI DSS の概要とそれぞれの適用対象を説明できる
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXAM PATTERNS -->
+                <div class="sub-title">頻出問題パターンと解法</div>
+                <div class="g2 fade-in">
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">01</div>
+                            <div class="ptn-title">責任共有モデル</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「Cloud SQL を使用する企業で顧客の個人情報が漏洩した。Google
+                                と企業はそれぞれ何に責任を持つか？」
+                            </div>
+                            <ol class="ptn-steps">
+                                <li>Cloud SQL は PaaS → OS・エンジンは Google が管理</li>
+                                <li>データへのアクセス制御（IAM）はユーザーの責任</li>
+                                <li>個人情報の内容・アクセス管理はユーザーの責任</li>
+                            </ol>
+                            <div class="ptn-result">
+                                Google はインフラ保護、企業はデータとアクセス管理に責任
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">02</div>
+                            <div class="ptn-title">暗号化鍵の選択</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「金融機関が GCP
+                                に顧客データを保存。規制で『鍵は自社が管理しなければならない』と定められている。」
+                            </div>
+                            <ol class="ptn-steps">
+                                <li>「自社が鍵を管理」→ Google-Managed では不可</li>
+                                <li>Cloud KMS でユーザーが鍵を作成・管理 → CMEK が適切</li>
+                                <li>CSEK は管理コストが高い・今回は不要</li>
+                            </ol>
+                            <div class="ptn-result">
+                                答え：CMEK（Customer-Managed Encryption Keys）+ Cloud KMS
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">03</div>
+                            <div class="ptn-title">匿名化 vs 仮名化</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「医療研究機関が患者データを研究に使用したい。患者を特定できないようにしつつ
+                                GDPR 規制対象外にしたい。」
+                            </div>
+                            <ol class="ptn-steps">
+                                <li>GDPR 対象外にしたい → 再識別不可能であること</li>
+                                <li>仮名化は再識別可能 → GDPR 引き続き適用される</li>
+                                <li>匿名化は再識別不可能 → GDPR 対象外になる</li>
+                            </ol>
+                            <div class="ptn-result">
+                                答え：匿名化（Anonymization / De-identification）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ptn-card">
+                        <div class="ptn-header">
+                            <div class="ptn-num">04</div>
+                            <div class="ptn-title">VPC SC の活用</div>
+                        </div>
+                        <div class="ptn-body">
+                            <div class="ptn-q">
+                                「BigQuery
+                                に機密データを保存。社員のアカウントが侵害されても、外部プロジェクトへのデータエクスポートを防ぎたい。」
+                            </div>
+                            <ol class="ptn-steps">
+                                <li>認証情報が盗まれても境界外へのデータ移動を防ぎたい</li>
+                                <li>ファイアウォールや IAM だけでは認証情報盗難後は防げない</li>
+                                <li>VPC SC がデータの外部流出を境界で防止する</li>
+                            </ol>
+                            <div class="ptn-result">
+                                答え：VPC Service Controls（データ流出防止）
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONFUSION TABLE -->
+                <div class="sub-title" style="margin-top: 3rem">混同しやすいポイントの整理</div>
+                <div class="conf-wrap fade-in">
+                    <table class="conf-table">
+                        <thead>
+                            <tr>
+                                <th>混同パターン</th>
+                                <th>✅ 正しい理解</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cloud Armor = Cloud IAP</td>
+                                <td>
+                                    Cloud Armor は外部攻撃（DDoS/WAF）を<em>ブロック</em>。Cloud IAP
+                                    はアクセスのたびに<em>認証・認可</em>するゼロトラスト実装。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CMEK = CSEK</td>
+                                <td>
+                                    CMEK は Cloud KMS に鍵を保管（ユーザーが管理）。CSEK は GCP
+                                    外で管理（リクエストのたびにユーザーが提供）。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>匿名化 = 仮名化</td>
+                                <td>
+                                    匿名化は再識別不可（GDPR
+                                    対象外）。仮名化は変換テーブルで再識別可能（GDPR
+                                    引き続き適用）。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Admin Activity = Data Access ログ</td>
+                                <td>
+                                    Admin Activity は「設定変更」（常時有効・無料）。Data Access
+                                    は「データの読み書き」（デフォルト無効・有料）。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>VPC SC = ファイアウォール</td>
+                                <td>
+                                    ファイアウォールは L4 の通信制御。VPC SC
+                                    は認証済みアクセスも含む API
+                                    アクセスの境界制御（データ流出防止）。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SCC = Cloud Logging</td>
+                                <td>
+                                    SCC は脅威・設定ミスの<em>可視化と検出</em>。Cloud Logging
+                                    はログの<em>収集・保存・分析</em>基盤。
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Google が全て守る</td>
+                                <td>
+                                    Google
+                                    はインフラを守るが、データとアクセス管理（IAM）はユーザーの責任（責任共有モデル）。
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ FOOTER ════ -->
+        <footer>
+            <div class="container">
+                <div class="footer-title">
+                    Google Cloud Digital Leader — Section 5 完全攻略ガイド
+                </div>
+                <p style="margin-bottom: 1rem">
+                    本ガイドは
+                    <a
+                        href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf"
+                        >Cloud Digital Leader 公式試験ガイド</a
+                    >
+                    に完全対応しています。
+                </p>
+                <div class="footer-links">
+                    <a href="https://cloud.google.com/learn/certification/cloud-digital-leader"
+                        >CDL 認定ページ</a
+                    >
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/security/overview">Security Overview</a>
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/iam/docs">IAM Docs</a>
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/kms/docs">Cloud KMS</a>
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/security-command-center/docs">SCC Docs</a>
+                    <span style="color: var(--border)">|</span>
+                    <a href="https://cloud.google.com/sensitive-data-protection/docs">DLP Docs</a>
+                </div>
+                <p style="font-size: 1rem">
+                    ※本ガイドは学習目的で作成されました。試験の最新情報は必ず公式ページでご確認ください。
+                </p>
+            </div>
+        </footer>
+
+        <script>
+            const obs = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('visible');
+                            obs.unobserve(e.target);
+                        }
+                    });
+                },
+                { threshold: 0.08 },
+            );
+            document.querySelectorAll('.fade-in').forEach((el) => obs.observe(el));
+
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav a');
+            window.addEventListener('scroll', () => {
+                let cur = '';
+                sections.forEach((s) => {
+                    if (window.scrollY >= s.offsetTop - 80) cur = s.id;
+                });
+                navLinks.forEach((a) => {
+                    a.style.color = '';
+                    a.style.background = '';
+                    if (a.getAttribute('href') === `#${cur}`) {
+                        a.style.color = 'var(--gold)';
+                        a.style.background = 'var(--glow)';
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
