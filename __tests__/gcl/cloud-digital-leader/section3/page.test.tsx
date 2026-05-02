@@ -17,4 +17,12 @@ describe('Cloud Digital Leader Section 3 Page', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('AI 技術の包含関係（最重要！）')).toBeInTheDocument();
     });
+
+    it('renders Section 2: AI AND ML SOLUTIONS', () => {
+        render(<Page />);
+        expect(
+            screen.getByRole('heading', { level: 2, name: /Google Cloud AI\/ML ソリューションの選択/i })
+        ).toBeInTheDocument();
+        expect(screen.getByText('AI/ML ソリューション選択デシジョンツリー')).toBeInTheDocument();
+    });
 });
