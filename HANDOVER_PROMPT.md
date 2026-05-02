@@ -3,42 +3,37 @@
 ## プロジェクト概要
 
 - **プロジェクト名**: Cloud Infrastructure Studies
-- **目的**: クラウド試験対策用 Markdown 資料の Next.js (App Router) への移行
+- **目的**: 学習資料（HTML/Markdown）の Next.js (App Router) への移行
 - **現在の進捗**:
-  - Google Cloud Digital Leader (CDL) Section 1: 完了
-  - Google Cloud Digital Leader (CDL) Section 2: 完了（本セッションで完了）
+  - Google Cloud Digital Leader (CDL) Section 1 & 2: 完了
+  - Google Cloud Digital Leader (CDL) Section 3: **着手中 (Section 0 完了)**
+  - コーディング規約の強化: 完了（Client/Server 境界, コードブロック改行, 表形式構造化）
 
 ## 現在の作業状態
 
-- `Section 2: Google Cloud によるデータ トランスフォーメーションの探求` の移行が完了しました。
-- 13個のセクションコンポーネント (`Section1.tsx` 〜 `Section13.tsx`) に分割し、詳細な解説 (gcdl) も統合済みです。
-- 全ての変更はローカルにコミットされており、ビルド (`bun run build`) およびテスト (`bun run test`) は GREEN です。
+- `Section 3: Innovating with Google Cloud Artificial Intelligence` の移行を開始しました。
+- **実装済み**: `Section0.tsx` (概要セクション)、`SectionBase.module.css` (共通スタイル)、`page.tsx`, `layout.tsx`, `constants.ts` の初期構成。
+- **最新コミット**: `edf6fdf` (feat(gcl/cdl/S3): add initial page structure and tests for AI Innovation)
+- **テスト**: `__tests__/gcl/cloud-digital-leader/section3/page.test.tsx` がパスすることを確認済み。
 
 ## スタイル・実装規約（厳守）
 
-- **コンポーネント分割**: `app/gcl/cloud-digital-leader/sectionN/components/sections/` に分割する。
-- **スタイリング**: インラインの Tailwind クラスを極力避け、CSS Modules を活用する。Markdown からの移行時は `dangerouslySetInnerHTML` を避け、可能な限り構造化された JSX コンポーネント（`TableComponent`, `DiagramSVG` 等）に変換すること。やむを得ず HTML を直接扱う場合は必ずサニタイズを行う。
-  - `.stitle`: サブタイトル
-  - `.tdesc`: 説明文
-  - `.ctable-wrap` / `.ctable`: テーブルスタイル
-  - `.code-block`: コードブロック
-  - `.list-disc`: 箇条書き
-- **共通パーツ**: 図解には `components/DiagramSVG.tsx` を使用し、ASCII 図解を置き換える。`ariaLabel` は必須（装飾目的以外）。
-- **データ管理**: リンクや定数は `constants.ts` に集約し、コンポーネントを肥大化させない。
+- **TDD 実装**: 必ずテストを作成・実行しながらステップバイステップで進める。
+- **コンポーネント分割**: 各セクションを `components/sections/SectionN.tsx` に分割し、`SectionBase.module.css` を適用する。
+- **Client/Server 境界**: 状態を持つ UI（アンカーナビ等）は `'use client'` コンポーネントとして切り出し、`page.tsx` は Server Component を維持する。
+- **コードブロック**: 各行を `<div className="code-line">...</div>` でラップし、`{"\n"}` は使用しない。
+- **表形式データの構造化**: スペース揃えのデータは必ず `<table>` 要素に変換する。
+- **CSS 変数**: `globals.css` の3層トークン（例: `--color-bg-primary`, `--color-accent-blue`）を厳格に使用する。
 
-## 次回のタスク（提案）
+## 次回のタスク
 
-1. **Section 3: AI によるイノベーションの推進** の移行。
-   - ソースファイル: `cdl-section3-ai-innovation.md`, `gcdl-section3-ai-innovation.md`
-2. 移行手順:
-   - `app/gcl/cloud-digital-leader/section3/` ディレクトリ作成。
-   - `Section2` の構成（`layout.tsx`, `page.tsx`, `constants.ts`, `components/`）をテンプレートとしてコピー。
-   - `Section2` で確立した「詳細解説 (gcdl) を構造化ガイド (cdl) にマージする」手法でコンポーネントを作成。
-   - `__tests__/gcl/cloud-digital-leader/section3/page.test.tsx` の作成とテスト実行。
+1. **Section 3: Section 1 (Fundamentals) 以降の移行**
+   - ソースファイル: `cdl-section3-ai-innovation.html`
+   - 手順: `HANDOVER_CDL_S3.md` の「残タスク」に従い、`Section1.tsx` から順次実装。
+2. **ナビゲーションの更新**: 全セクション完了後、`components/Header.tsx` にリンクを追加。
 
 ## 起動用プロンプト案
->
-> 以下の資料をもとに、Next.js のアプリケーションに `Section 3: AI によるイノベーションの推進` の画面を追加してください。
-> - `cdl-section3-ai-innovation.md`
-> - `gcdl-section3-ai-innovation.md`
-> 実装パターンは `app/gcl/cloud-digital-leader/section2/` を参考にし、`GEMINI.md` の規約とスタイル（`stitle`, `tdesc`, `ctable` 等の適用）を遵守してください。
+
+> `HANDOVER_CDL_S3.md` を読み、`cdl-section3-ai-innovation.html` の Next.js 移行を **Section 1 (Fundamentals)** から再開してください。
+> すでに Section 0 は実装済みで、コミット `edf6fdf` が最新です。
+> `SectionBase.module.css` を活用し、最新のコーディング規約（Client/Server 境界、コードブロックの改行処理等）を遵守しながら、TDD で実装を進めてください。

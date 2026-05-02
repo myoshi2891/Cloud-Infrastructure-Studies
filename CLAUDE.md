@@ -40,6 +40,13 @@ app/
       genai-leader.css              # Sapphire テーマ（ページ固有）
       constants.ts                  # 共通定数（作成日など）
       section{1-4}/page.tsx         # 各セクションページ
+    cloud-digital-leader/
+      section{1-2}/page.tsx         # CDL セクションページ
+      section3/
+        page.tsx                    # Section 3: AI によるイノベーション
+        section3.css                # ページ固有スタイル
+        constants.ts                # Section 3 固有定数
+        components/sections/        # 分割されたセクションコンポーネント
 
 components/
   Header.tsx                        # ナビゲーション（新ページ追加時はここも更新）
