@@ -1,0 +1,200 @@
+/* Section 0 specific styles */
+.section {
+    padding: 4rem 0;
+}
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.sh {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+.shTag {
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-accent-terracotta, #c4593a);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+.shTitle {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-text-primary, #1a1a1a);
+    margin-bottom: 1.2rem;
+}
+.shDesc {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary, #4a4541);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Grid Layouts */
+.g3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Cards */
+.card {
+    background: var(--color-bg-primary, #fff);
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    display: flex;
+    flex-direction: column;
+}
+.cardIcon {
+    font-size: 1.8rem;
+    margin-bottom: 0.9rem;
+}
+.cardTitle {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+}
+.cardBody {
+    color: var(--color-text-secondary, #4a4541);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex: 1;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    font-weight: 600;
+}
+.badgeGold { background: rgba(212, 136, 42, 0.1); color: #d4882a; }
+.badgeTeal { background: rgba(74, 122, 92, 0.1); color: #4a7a5c; }
+.badgeSky { background: rgba(58, 111, 160, 0.1); color: #3a6fa0; }
+.badgeAmber { background: rgba(196, 89, 58, 0.1); color: #c4593a; }
+.badgeRed { background: rgba(107, 63, 122, 0.1); color: #6b3f7a; }
+
+/* Sub Title */
+.subTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 3rem 0 1.5rem;
+    border-bottom: 2px solid var(--color-border-light, #e0dbd2);
+    padding-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+.examTag {
+    font-size: 0.8rem;
+    background: rgba(196, 89, 58, 0.1);
+    color: #c4593a;
+    padding: 2px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 0.8rem;
+}
+
+/* Info Box */
+.infoBox {
+    background: rgba(58, 111, 160, 0.08);
+    border-left: 4px solid #3a6fa0;
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+    margin-top: 2rem;
+    color: var(--color-text-secondary, #4a4541);
+}
+
+/* Source links */
+.src {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border-light, #e0dbd2);
+}
+.srcLabel {
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 0.9rem;
+    color: var(--color-text-muted, #7a7470);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+.src a {
+    display: block;
+    color: var(--color-accent-blue, #3a6fa0);
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    word-break: break-all;
+}
+.src a:hover {
+    text-decoration: underline;
+}
+
+/* Defense Layers */
+.layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.layer {
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+.layerNum {
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 1rem;
+    color: var(--color-text-muted, #7a7470);
+    width: 24px;
+    flex-shrink: 0;
+    text-align: center;
+}
+.layerIcon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    width: 32px;
+    text-align: center;
+}
+.layerName {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.15rem;
+}
+.layerDesc {
+    font-size: 1rem;
+    color: var(--color-text-secondary, #4a4541);
+}
+
+/* Layer specific colors - translating dark theme to light theme appropriately */
+.l8 { background: rgba(212, 136, 42, 0.08); border: 1px solid rgba(212, 136, 42, 0.15); }
+.l8 .layerName { color: #d4882a; }
+
+.l7 { background: rgba(74, 122, 92, 0.07); border: 1px solid rgba(74, 122, 92, 0.12); }
+.l7 .layerName { color: #4a7a5c; }
+
+.l6 { background: rgba(58, 111, 160, 0.07); border: 1px solid rgba(58, 111, 160, 0.12); }
+.l6 .layerName { color: #3a6fa0; }
+
+.l5 { background: rgba(196, 89, 58, 0.07); border: 1px solid rgba(196, 89, 58, 0.12); }
+.l5 .layerName { color: #c4593a; }
+
+.l4 { background: rgba(107, 63, 122, 0.07); border: 1px solid rgba(107, 63, 122, 0.12); }
+.l4 .layerName { color: #6b3f7a; }
+
+.l3 { background: rgba(224, 80, 80, 0.07); border: 1px solid rgba(224, 80, 80, 0.12); }
+.l3 .layerName { color: #e05050; } /* Keeping some distinct colors */
+
+.l2 { background: rgba(100, 180, 100, 0.07); border: 1px solid rgba(100, 180, 100, 0.12); }
+.l2 .layerName { color: #409040; }
+
+.l1 { background: rgba(80, 140, 200, 0.07); border: 1px solid rgba(80, 140, 200, 0.12); }
+.l1 .layerName { color: #3070a0; }
