@@ -27,9 +27,10 @@ describe('Cloud Digital Leader - Section 5 Page', () => {
         expect(screen.getByRole('heading', { level: 2, name: /ゼロトラストと BeyondCorp/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /IAM（アイデンティティとアクセス管理）/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /暗号化とデータ保護/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /ネットワークセキュリティ/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /脅威検出とセキュリティ監視/ })).toBeInTheDocument();
         
         // Placeholder tests to fail until implemented
-        expect(screen.getByRole('heading', { level: 2, name: /Placeholder 3/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /Placeholder 4/ })).toBeInTheDocument();
     });
 });
