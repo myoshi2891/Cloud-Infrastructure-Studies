@@ -42,6 +42,7 @@
     --color-theme-cdl-fg: hsl(160 70% 65%);
 
     /* Layer 2: 共有プリミティブ */
+    --font-display: 'DM Sans', sans-serif;
     --font-body: 'Noto Sans JP', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 

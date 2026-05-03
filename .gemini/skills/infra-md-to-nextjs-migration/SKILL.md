@@ -204,10 +204,10 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 - **アクセシビリティとDocstrings**: コンポーネントへの ARIA 属性の付与や Docstrings の追加を行うこと。
 - **SVGの活用と制約**: ASCIIベースのダイアグラムは必ず専用のSVGコンポーネント (`DiagramSVG.tsx` など) に置き換えること。これには `ariaLabel="..."` または `decorative={true}` のいずれかの指定が型レベルで強制されているため、適切に付与すること。
 - **`litellm` / `dspy` 追加禁止**（脆弱性懸念）
-- **Client/Server コンポーネント境界**: ページ固有のアンカーナビ（IntersectionObserver を伴うスクロールスパイ等）など、状態やブラウザ API に依存するロジックが必要な場合は、`'use client'` ディレクティブを含む専用コンポーネント（例: `NavBar.tsx`）として切り出すこと。これにより、メインの `page.tsx` を Server Component として維持する。
+- **Client/Server コンポーネント境界**: ページ固有のアンカーナビ（IntersectionObserver を伴うスクロールスパイ等）など、状態やブラウザ API に依存するロジックが必要な場合は、`'use client'` ディレクティブを含む専用コンポーネント（例: `NavBar.tsx`）として切り出すこと。これにより、メインの `page.tsx` を Server Component として維持する。この際、(1) Client コンポーネント内でサーバー専用 API (`fs`, `cookies`, `headers` 等) を参照してはならない、(2) Server コンポーネントから Client コンポーネントに渡す Props は JSON シリアライズ可能なものに限定する、という 2 つのルールを厳守すること。
 - **コードブロック内の改行 (`.code-block`)**: JSX 変換時、コード内の改行に `{"\n"}` を 使用してはならない（`white-space: normal` 環境ではスペースとして正規化されるため）。各 行は必ず `<div className="code-line">...</div>` でラップすること。また `.code-line` には `white-space: pre` 等を適用してインデントを保持し、`map` 等で生成する際は安定した React `key` を必ず付与すること。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデシジョンテーブルや行 列データは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。変換の際はセマンティックなマークアップとして必ず `<thead>` を含め、各見出しセルには `<th scope="col">` を使用すること。
-- **CSS変数・テーマトークンの適用**: `globals.css` に定義された3層アーキテクチャの CSS 変数（例: `--color-bg-primary`, `--color-text-primary`, `--color-accent-blue`）を厳格に使用すること。コンポーネントのスコープ内で新しいカスタムプロパティ（`--*`）を定義することは明示的に禁止する。必ずプロジェクト標準のトークンにマッピングすること。
+- **CSS変数・テーマトークンの適用**: `globals.css` に定義された3層アーキテクチャの CSS 変数（例: `--color-background`, `--color-foreground`, `--color-primary`）を厳格に使用すること。コンポーネントのスコープ内で新しいカスタムプロパティ（`--*`）を定義することは明示的に禁止する。必ずプロジェクト標準のトークンにマッピングすること。
 
 ---
 

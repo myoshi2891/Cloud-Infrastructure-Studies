@@ -121,7 +121,7 @@ describe('Header', () => {
         render(<Header />);
         const button = screen.getByRole('button', { name: /generative ai leader/i });
         fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /section 3/i });
+        const link = screen.getAllByRole('link', { name: /section 3/i })[0];
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section3');
     });
 
@@ -129,7 +129,7 @@ describe('Header', () => {
         render(<Header />);
         const button = screen.getByRole('button', { name: /generative ai leader/i });
         fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /section 4/i });
+        const link = screen.getAllByRole('link', { name: /section 4/i })[0];
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section4');
     });
 

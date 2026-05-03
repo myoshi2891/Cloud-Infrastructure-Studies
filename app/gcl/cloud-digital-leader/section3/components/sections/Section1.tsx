@@ -72,7 +72,7 @@ export const Section1: React.FC = () => {
                 </h3>
 
                 <div className={`${baseStyles.card} overflow-x-auto mb-8`}>
-                    <table className={compareStyles.compareTable} style={{ minWidth: '580px' }}>
+                    <table className={`${compareStyles.compareTable} min-w-[580px]`}>
                         <thead>
                             <tr>
                                 <th>技術領域</th>

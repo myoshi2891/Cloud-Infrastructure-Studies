@@ -39,12 +39,12 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 
 | HTML Variable | Project Token | Notes |
 | --- | --- | --- |
-| Background vars | `--color-bg-primary` / `--color-bg-secondary` / `--color-bg-card` |  |
-| Text vars | `--color-text-primary` / `--color-text-secondary` / `--color-text-muted` |  |
-| Accent colors | `--color-accent-{blue,cyan,green,yellow,orange,red,purple,pink}` |  |
-| Border vars | `--color-border` / `--color-border-bright` |  |
-| Radius `--r` / `--rs` / `--r-sm` | `--radius-DEFAULT` (12px) / `--radius-sm` (8px) | Always add fallback: `var(--radius-DEFAULT, 12px)` |
-| Shadow vars | `--shadow-DEFAULT` / `--shadow-glow-blue` / `--shadow-glow-cyan` |  |
+| Background vars | `--color-background` / `--color-card` |  |
+| Text vars | `--color-foreground` / `--color-muted-foreground` / `--color-muted` |  |
+| Accent colors | `--color-primary` / `--color-theme-{genai,ace,cdl}-fg` |  |
+| Border vars | `--color-border` |  |
+| Radius `--r` / `--rs` / `--r-sm` | `--radius-lg` (16px) / `--radius-md` (10px) / `--radius-sm` (4px) | Always add fallback: `var(--radius-lg, 16px)` |
+| Shadow vars | N/A | Use Tailwind shadow classes (shadow-lg, shadow-xl, etc.) |
 | Font display | `--font-display` | Resolved by next/font/google in layout.tsx |
 | Font body | `--font-body` | Resolved by next/font/google in layout.tsx |
 | Font mono | `--font-mono` | Resolved by next/font/google in layout.tsx |
@@ -53,23 +53,23 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 
 | HTML Variable | Project Token | Notes |
 | --- | --- | --- |
-| `--cream` | `--color-bg-primary` | Light → dark theme conversion |
-| `--cream2` | `--color-bg-secondary` |  |
-| `--cream3` | `--color-bg-card` |  |
-| `--ink` | `--color-text-primary` | Inverted from dark-on-light |
-| `--ink2` / `--ink3` | `--color-text-secondary` |  |
-| `--ink4` | `--color-text-muted` |  |
-| `--green` / `--green2` | `--color-accent-green` | Unify variations |
-| `--green3` | N/A | Use `rgba(104, 211, 145, alpha)` |
-| `--amber` | `--color-accent-orange` |  |
-| `--red` | `--color-accent-red` |  |
-| `--blue` | `--color-accent-blue` |  |
-| `--purple` | `--color-accent-purple` |  |
+| `--cream` | `--color-background` | Light → dark theme conversion |
+| `--cream2` | `--color-card` |  |
+| `--cream3` | `--color-card` |  |
+| `--ink` | `--color-foreground` | Inverted from dark-on-light |
+| `--ink2` / `--ink3` | `--color-muted-foreground` |  |
+| `--ink4` | `--color-muted` |  |
+| `--green` / `--green2` | `--color-primary` | Or use theme-specific primary |
+| `--green3` | N/A | Replace `var(--green3)` with `rgba(104, 211, 145, <alpha>)` where `<alpha>` is taken from the HTML’s original opacity/rgba alpha usage (use a numeric value). |
+| `--amber` | `--color-brand-end` | Or specific brand accent |
+| `--red` | `--color-theme-cdl-fg` | Example mapping for CDL theme |
+| `--blue` | `--color-primary` |  |
+| `--purple` | `--color-theme-genai-fg` | Example mapping for GenAI theme |
 | `--border` | `--color-border` |  |
-| `--border2` | `--color-border-bright` |  |
-| `--r` | `--radius-DEFAULT` | 12px |
-| `--rs` | `--radius-sm` | 8px |
-| `--font-display` (`Playfair Display`) | `--font-display` (Sora) | Font replacement |
+| `--border2` | `--color-border` |  |
+| `--r` | `--radius-lg` | 16px |
+| `--rs` | `--radius-md` | 10px |
+| `--font-display` (`Playfair Display`) | `--font-display` (DM Sans) | Font replacement |
 | `--font-body` (`Plus Jakarta Sans`) | `--font-body` (Noto Sans JP) | Font replacement |
 
 **Critical**: The project uses a **unified dark theme**. Light-theme HTML pages must be re-themed to match the dark color system. Do not attempt to preserve the original light color scheme.
@@ -91,7 +91,7 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 | z-index duplication | `nav { z-index: 100; }` in CSS + `z-50` in JSX | Single source: Tailwind `z-50` in JSX only |
 | Responsive outside @media | `.box { grid-template-columns: 1fr; }` at root | Wrap in `@media (max-width: 768px) { ... }` |
 | KeyFrame naming | `@keyframes fadeUp` | `@keyframes fade-up` |
-| Undefined CSS vars | `var(--r)` | `var(--radius-DEFAULT, 12px)` |
+| Undefined CSS vars | `var(--r)` | `var(--radius-lg, 16px)` |
 | Vendor scrollbar only | `::-webkit-scrollbar` (WebKit) | Add `scrollbar-width: none` (Firefox) |
 
 ### Phase 4: Convert HTML to TSX
@@ -116,7 +116,7 @@ export default function PageName() {
 }
 ```
 
-1. **Do NOT add `<main>` wrapper** — `layout.tsx` already wraps `{children}` in a `<div>` (app/layout.tsx)
+1. **Do NOT add `<main>` wrapper** — `layout.tsx` places `{children}` directly under the `<body>` tag (not wrapped in a `<div>`) (app/layout.tsx)
 2. **Convert attributes**: `class` → `className`, `for` → `htmlFor`
 3. **Inline styles**: `style="font-family: var(--font-display)"` → `style={{ fontFamily: 'var(--font-display)' }}`
 4. **Self-closing tags**: `<img>` → `<img />`, `<br>` → `<br />`, `<hr>` → `<hr />`
@@ -153,10 +153,10 @@ If a page-specific CSS file was created, also document it.
 
 #### Build Verification
 
+Use bun for all command execution (required by project policy).
+
 ```bash
 rm -rf .next && bun run build
-# npm 環境の場合:  rm -rf .next && npm run build
-# pnpm 環境の場合: rm -rf .next && pnpm run build
 ```
 
 Common build failures:
@@ -211,6 +211,4 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 - **Never use camelCase for `@keyframes` names** — use kebab-case
 - **Pages are server-rendered** — no `useState`, `useEffect`, or client-side interactivity unless explicitly needed (use `'use client'` directive)
 - **Always update Header.tsx and CLAUDE.md** when adding a new page
-- **Always use fallback values** for CSS vars that may not be defined: `var(--radius-DEFAULT, 12px)`
-: `var(--radius-DEFAULT, 12px)`
-EFAULT, 12px)`
+- **Always use fallback values** for CSS vars that may not be defined: `var(--radius-lg, 16px)`
