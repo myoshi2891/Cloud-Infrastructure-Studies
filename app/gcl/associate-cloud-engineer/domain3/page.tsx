@@ -2072,7 +2072,7 @@ except Exception:
                         <span>シグナル</span><span>GCP ツール</span><span>問いに答える</span><span>例</span>
                     </div>
                     <div className="ctable-row"><span>Metrics（メトリクス）</span><span>Cloud Monitoring</span><span>「何が」起きているか（定量的）</span><span>CPU 80%、エラーレート 0.5%</span></div>
-                    <div className="ctable-row"><span>Logs（ログ）</span><span>Cloud Logging</span><span>「何が」起きたか（イベント記録）</span><span>"Error: DB connection refused"</span></div>
+                    <div className="ctable-row"><span>Logs（ログ）</span><span>Cloud Logging</span><span>「何が」起きたか（イベント記録）</span><span>&quot;Error: DB connection refused&quot;</span></div>
                     <div className="ctable-row"><span>Traces（トレース）</span><span>Cloud Trace</span><span>「どこで」遅延が発生しているか</span><span>Service B が 2.5 秒かかっている</span></div>
                     <div className="ctable-row"><span>Profiles（プロファイル）</span><span>Cloud Profiler</span><span>「なぜ」遅いか（コードレベル）</span><span>process_large_array() が CPU の 60% を消費</span></div>
                 </div>

@@ -518,7 +518,7 @@ GCP API (Secret Manager, Cloud Storage など) にアクセス`}</pre>
                     <span className="cmd">gcloud</span>{' '}iam service-accounts add-iam-policy-binding \{'\n'}
                     {'  '}GSA_NAME@PROJECT_ID.iam.gserviceaccount.com \{'\n'}
                     {'  '}<span className="flag">--role</span>{' '}roles/iam.workloadIdentityUser \{'\n'}
-                    {'  '}<span className="flag">--member</span>{' '}{'`'}"serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]"{'`'}
+                    {'  '}<span className="flag">--member</span>{' '}{'`'}&quot;serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]&quot;{'`'}
                 </pre>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}><strong>Binary Authorization（コンテナ整合性の保証）</strong></p>
                 <pre className="codeblock">{`CI/CD パイプラインで署名

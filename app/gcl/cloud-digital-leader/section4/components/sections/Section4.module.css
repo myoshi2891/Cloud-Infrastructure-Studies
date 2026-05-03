@@ -3,7 +3,7 @@
     padding: 4rem 0;
 }
 .sectionAlt {
-    background-color: var(--color-bg-tertiary, #ede9e0);
+    background-color: var(--color-muted);
 }
 .container {
     max-width: 1000px;
@@ -18,7 +18,7 @@
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-accent-terracotta, #c4593a);
+    color: var(--cdl-red);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1rem;
@@ -26,12 +26,12 @@
 .shTitle {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     font-weight: 700;
-    color: var(--color-text-primary, #1a1a1a);
+    color: var(--color-accent-foreground);
     margin-bottom: 1.2rem;
 }
 .shDesc {
     font-size: 1.1rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
@@ -41,7 +41,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin: 3rem 0 1.5rem;
-    border-bottom: 2px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.8rem;
     display: flex;
     align-items: center;
@@ -62,10 +62,10 @@
 
 /* Cards */
 .card {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     padding: 1.8rem;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     display: flex;
     flex-direction: column;
 }
@@ -85,7 +85,7 @@
     margin-bottom: 0.8rem;
 }
 .cardBody {
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     font-size: 0.95rem;
     line-height: 1.6;
     flex: 1;
@@ -93,8 +93,8 @@
 
 /* Info and Warn Boxes */
 .warn {
-    background: rgba(212, 136, 42, 0.08);
-    border-left: 4px solid #d4882a;
+    background: color-mix(in srgb, var(--cdl-yellow) 8%, transparent);
+    border-left: 4px solid var(--cdl-yellow);
     padding: 1.5rem;
     border-radius: 0 8px 8px 0;
     margin-bottom: 2rem;
@@ -104,18 +104,18 @@
 .src {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--color-border-light, #e0dbd2);
+    border-top: 1px solid var(--color-border);
 }
 .srcLabel {
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 0.9rem;
-    color: var(--color-text-muted, #7a7470);
+    color: var(--color-muted-foreground);
     margin-bottom: 1rem;
     text-transform: uppercase;
 }
 .src a {
     display: block;
-    color: var(--color-accent-blue, #3a6fa0);
+    color: var(--color-accent-blue, var(--cdl-blue));
     text-decoration: none;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
@@ -127,10 +127,10 @@
 
 /* Checklist */
 .checklist {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.05));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 5%, transparent));
 }
 .clItem {
     display: flex;
@@ -147,8 +147,8 @@
     width: 24px;
     height: 24px;
     border-radius: 6px;
-    background: rgba(74, 122, 92, 0.1);
-    color: #4a7a5c;
+    background: color-mix(in srgb, var(--cdl-green) 10%, transparent);
+    color: var(--cdl-green);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,25 +157,25 @@
 
 /* Pattern Cards */
 .ptnCard {
-    background: var(--color-text-primary, #1a1a1a);
-    color: var(--color-bg-primary, #fff);
+    background: var(--color-accent-foreground);
+    color: var(--color-card);
     border-radius: 12px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 .ptnHeader {
-    background: rgba(255, 255, 255, 0.05);
+    background: color-mix(in srgb, var(--color-accent-foreground) 5%, transparent);
     padding: 1.2rem 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent-foreground) 10%, transparent);
 }
 .ptnNum {
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-weight: 700;
-    color: var(--color-accent-terracotta, #c4593a);
+    color: var(--cdl-red);
     font-size: 1.2rem;
 }
 .ptnTitle {
@@ -193,11 +193,11 @@
     line-height: 1.6;
     margin-bottom: 1.5rem;
     padding-left: 1.2rem;
-    border-left: 3px solid var(--color-accent-sky, #3a6fa0);
+    border-left: 3px solid var(--cdl-blue);
 }
 .ptnAns {
     font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in srgb, var(--color-accent-foreground) 70%, transparent);
     margin-bottom: 1.5rem;
     flex: 1;
 }
@@ -209,20 +209,20 @@
     margin-bottom: 0.5rem;
 }
 .ptnResult {
-    background: rgba(74, 122, 92, 0.15);
-    color: #4a7a5c; /* Lighter sage green for dark background */
+    background: color-mix(in srgb, var(--cdl-green) 15%, transparent);
+    color: var(--cdl-green); /* Lighter sage green for dark background */
     padding: 1rem;
     border-radius: 8px;
     font-weight: 700;
     text-align: center;
-    border: 1px solid rgba(74, 122, 92, 0.3);
+    border: 1px solid color-mix(in srgb, var(--cdl-green) 30%, transparent);
 }
 
 /* Comparison Wrapper */
 .cmpWrap {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     overflow-x: auto;
 }
 .cmpTable {
@@ -231,16 +231,16 @@
     min-width: 600px;
 }
 .cmpTable th {
-    background: rgba(14, 17, 23, 0.03);
+    background: color-mix(in srgb, var(--color-background) 3%, transparent);
     padding: 1.2rem;
     text-align: left;
     font-weight: 700;
-    border-bottom: 2px solid var(--color-border-light, #e0dbd2);
-    color: var(--color-text-primary, #1a1a1a);
+    border-bottom: 2px solid var(--color-border);
+    color: var(--color-accent-foreground);
 }
 .cmpTable td {
     padding: 1.2rem;
-    border-bottom: 1px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 1px solid var(--color-border);
     line-height: 1.6;
     font-size: 0.95rem;
     vertical-align: top;
@@ -250,7 +250,7 @@
 }
 .cmpTable td:first-child {
     font-weight: 700;
-    color: var(--color-accent-terracotta, #c4593a);
+    color: var(--cdl-red);
     width: 30%;
 }
 
@@ -260,3 +260,31 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Border modifiers */
+.borderRed { border-top: 3px solid var(--cdl-red); }
+.borderBlue { border-top: 3px solid var(--cdl-blue); }
+.borderGreen { border-top: 3px solid var(--cdl-green); }
+.borderYellow { border-top: 3px solid var(--cdl-yellow); }
+.borderPurple { border-top: 3px solid var(--cdl-purple); }
+.borderSky { border-top: 3px solid var(--cdl-sky); }
+.borderAmber { border-top: 3px solid var(--cdl-amber); }
+.borderTeal { border-top: 3px solid var(--cdl-teal); }
+
+.borderLeftRed { border-left: 3px solid var(--cdl-red); }
+.borderLeftBlue { border-left: 3px solid var(--cdl-blue); }
+.borderLeftGreen { border-left: 3px solid var(--cdl-green); }
+.borderLeftYellow { border-left: 3px solid var(--cdl-yellow); }
+.borderLeftSky { border-left: 3px solid var(--cdl-sky); }
+.borderLeftTeal { border-left: 3px solid var(--cdl-teal); }
+
+/* Background modifiers */
+.bgRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); }
+.bgBlue { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); }
+.bgGreen { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); }
+.bgYellow { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); }
+.bgPurple { background: color-mix(in srgb, var(--cdl-purple) 10%, transparent); }
+.bgSky { background: color-mix(in srgb, var(--cdl-sky) 10%, transparent); }
+.bgTeal { background: color-mix(in srgb, var(--cdl-teal) 10%, transparent); }
+.bgAmber { background: color-mix(in srgb, var(--cdl-amber) 10%, transparent); }

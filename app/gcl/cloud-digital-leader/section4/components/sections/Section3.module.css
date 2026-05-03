@@ -3,7 +3,7 @@
     padding: 4rem 0;
 }
 .sectionAlt {
-    background-color: var(--color-bg-tertiary, #ede9e0);
+    background-color: var(--color-muted);
 }
 .container {
     max-width: 1000px;
@@ -18,7 +18,7 @@
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-accent-terracotta, #c4593a);
+    color: var(--cdl-red);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1rem;
@@ -26,12 +26,12 @@
 .shTitle {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     font-weight: 700;
-    color: var(--color-text-primary, #1a1a1a);
+    color: var(--color-accent-foreground);
     margin-bottom: 1.2rem;
 }
 .shDesc {
     font-size: 1.1rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
@@ -41,7 +41,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin: 3rem 0 1.5rem;
-    border-bottom: 2px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.8rem;
     display: flex;
     align-items: center;
@@ -50,8 +50,8 @@
 
 .examTag {
     font-size: 0.8rem;
-    background: rgba(196, 89, 58, 0.1);
-    color: #c4593a;
+    background: color-mix(in srgb, var(--cdl-red) 10%, transparent);
+    color: var(--cdl-red);
     padding: 2px 8px;
     border-radius: 4px;
     vertical-align: middle;
@@ -67,10 +67,10 @@
 
 /* Cards */
 .card {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     padding: 1.8rem;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     display: flex;
     flex-direction: column;
 }
@@ -80,7 +80,7 @@
     margin-bottom: 0.8rem;
 }
 .cardBody {
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     font-size: 0.95rem;
     line-height: 1.6;
     flex: 1;
@@ -88,8 +88,8 @@
 
 /* Info Box */
 .info {
-    background: rgba(58, 111, 160, 0.08);
-    border-left: 4px solid #3a6fa0;
+    background: color-mix(in srgb, var(--cdl-blue) 8%, transparent);
+    border-left: 4px solid var(--cdl-blue);
     padding: 1.5rem;
     border-radius: 0 8px 8px 0;
     margin-bottom: 2rem;
@@ -97,8 +97,8 @@
 
 /* Highlight Box */
 .hlBox {
-    background: var(--color-text-primary, #1a1a1a);
-    color: var(--color-bg-primary, #fff);
+    background: var(--color-accent-foreground);
+    color: var(--color-card);
     padding: 2rem;
     border-radius: 12px;
 }
@@ -106,13 +106,13 @@
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
-    color: var(--color-accent-amber, #d4882a);
+    color: var(--cdl-yellow);
 }
 
 /* Best Practices Box */
 .bp {
-    background: var(--color-bg-primary, #fff);
-    border: 1px solid var(--color-border-light, #e0dbd2);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     padding: 1.8rem;
     border-radius: 12px;
 }
@@ -120,7 +120,7 @@
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: #4a7a5c;
+    color: var(--cdl-green);
 }
 .bp ul {
     list-style: none;
@@ -138,7 +138,7 @@
     content: "✓";
     position: absolute;
     left: 0;
-    color: #4a7a5c;
+    color: var(--cdl-green);
     font-weight: 700;
 }
 
@@ -146,18 +146,18 @@
 .src {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--color-border-light, #e0dbd2);
+    border-top: 1px solid var(--color-border);
 }
 .srcLabel {
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 0.9rem;
-    color: var(--color-text-muted, #7a7470);
+    color: var(--color-muted-foreground);
     margin-bottom: 1rem;
     text-transform: uppercase;
 }
 .src a {
     display: block;
-    color: var(--color-accent-blue, #3a6fa0);
+    color: var(--color-accent-blue, var(--cdl-blue));
     text-decoration: none;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
@@ -185,8 +185,15 @@
     font-weight: 700;
     font-family: var(--ff-mono, 'DM Mono', monospace);
     flex-shrink: 0;
-    color: #fff;
+    color: var(--color-card);
+    font-size: 1rem;
+    width: 40px;
+    height: 40px;
 }
+.stepRed { background: var(--cdl-red); }
+.stepBlue { background: var(--cdl-blue); }
+.stepGreen { background: var(--cdl-green); }
+.stepYellow { background: var(--cdl-yellow); }
 .stepH {
     font-weight: 700;
     font-size: 1.1rem;
@@ -194,7 +201,7 @@
 }
 .stepP {
     font-size: 0.95rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     line-height: 1.6;
 }
 
@@ -205,21 +212,21 @@
     gap: 1.5rem;
 }
 .sreCard {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    border-top: 4px solid var(--color-accent-sky, #3a6fa0);
+    border-top: 4px solid var(--cdl-blue);
 }
 .sreAbbr {
     font-size: 2.5rem;
     font-family: var(--ff-display, 'Fraunces', Georgia, serif);
     font-weight: 700;
-    color: var(--color-accent-sky, #3a6fa0);
+    color: var(--cdl-blue);
     margin-bottom: 0.5rem;
     line-height: 1.1;
 }
@@ -227,11 +234,11 @@
     font-weight: 700;
     font-size: 1rem;
     margin-bottom: 1rem;
-    color: var(--color-text-primary, #1a1a1a);
+    color: var(--color-accent-foreground);
 }
 .sreDesc {
     font-size: 0.9rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     line-height: 1.5;
 }
 
@@ -249,28 +256,28 @@
     flex-wrap: wrap;
 }
 .apiBox {
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--color-accent-foreground) 10%, transparent);
     padding: 0.8rem 1.2rem;
     border-radius: 8px;
-    color: #fff;
+    color: var(--color-card);
     font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid color-mix(in srgb, var(--color-accent-foreground) 20%, transparent);
 }
 .apiConnector {
     font-size: 1.5rem;
-    color: var(--color-accent-terracotta, #c4593a);
+    color: var(--cdl-red);
     margin: 1rem 0;
     font-family: var(--ff-mono, 'DM Mono', monospace);
 }
 .apiLayerMain {
-    background: linear-gradient(135deg, var(--color-accent-terracotta, #c4593a), var(--color-accent-amber, #d4882a));
-    color: #fff;
+    background: linear-gradient(135deg, var(--cdl-red), var(--cdl-yellow));
+    color: var(--color-card);
     padding: 1.2rem 2rem;
     border-radius: 8px;
     font-weight: 700;
     font-size: 1.1rem;
     display: inline-block;
-    box-shadow: 0 4px 12px rgba(196, 89, 58, 0.3);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--cdl-red) 30%, transparent);
 }
 
 /* Responsive */
@@ -279,3 +286,31 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Border modifiers */
+.borderRed { border-top: 3px solid var(--cdl-red); }
+.borderBlue { border-top: 3px solid var(--cdl-blue); }
+.borderGreen { border-top: 3px solid var(--cdl-green); }
+.borderYellow { border-top: 3px solid var(--cdl-yellow); }
+.borderPurple { border-top: 3px solid var(--cdl-purple); }
+.borderSky { border-top: 3px solid var(--cdl-sky); }
+.borderAmber { border-top: 3px solid var(--cdl-amber); }
+.borderTeal { border-top: 3px solid var(--cdl-teal); }
+
+.borderLeftRed { border-left: 3px solid var(--cdl-red); }
+.borderLeftBlue { border-left: 3px solid var(--cdl-blue); }
+.borderLeftGreen { border-left: 3px solid var(--cdl-green); }
+.borderLeftYellow { border-left: 3px solid var(--cdl-yellow); }
+.borderLeftSky { border-left: 3px solid var(--cdl-sky); }
+.borderLeftTeal { border-left: 3px solid var(--cdl-teal); }
+
+/* Background modifiers */
+.bgRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); }
+.bgBlue { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); }
+.bgGreen { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); }
+.bgYellow { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); }
+.bgPurple { background: color-mix(in srgb, var(--cdl-purple) 10%, transparent); }
+.bgSky { background: color-mix(in srgb, var(--cdl-sky) 10%, transparent); }
+.bgTeal { background: color-mix(in srgb, var(--cdl-teal) 10%, transparent); }
+.bgAmber { background: color-mix(in srgb, var(--cdl-amber) 10%, transparent); }

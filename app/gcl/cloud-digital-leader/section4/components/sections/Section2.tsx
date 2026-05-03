@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './Section2.module.css';
 
+/**
+ * Section2 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section2 の JSX
+ */
 export const Section2 = () => {
     return (
         <>
@@ -15,7 +22,7 @@ export const Section2 = () => {
                     </div>
 
                     <div className={styles.g3} style={{ marginBottom: '2rem' }}>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-terracotta, #c4593a)' }}>
+                        <div className={`${styles.card} ${styles.borderRed}`}>
                             <div
                                 style={{
                                     display: 'flex',
@@ -24,8 +31,8 @@ export const Section2 = () => {
                                 }}
                             >
                                 <div
-                                    className={styles.cardIcon}
-                                    style={{ background: 'rgba(196, 89, 58, 0.1)', marginBottom: 0 }}
+                                    className={styles.cardIcon} aria-hidden="true"
+                                    style={{ background: 'color-mix(in srgb, var(--cdl-red) 10%, transparent)', marginBottom: 0 }}
                                 >
                                     🚀
                                 </div>
@@ -39,7 +46,7 @@ export const Section2 = () => {
                             <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.4rem' }}>
                                 主な特徴：
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1rem',
@@ -47,7 +54,7 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                     ゼロスケール（アイドル時コストゼロ）
                                 </li>
                                 <li
@@ -57,11 +64,11 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                     トラフィック分割でカナリアデプロイ
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                     Cloud Run Jobs でバッチ処理も対応
                                 </li>
                             </ul>
@@ -72,8 +79,8 @@ export const Section2 = () => {
                             </div>
                         </div>
 
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-amber, #d4882a)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(212, 136, 42, 0.1)' }}>⚡</div>
+                        <div className={`${styles.card} ${styles.borderYellow}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">⚡</div>
                             <div className={styles.cardTitle}>Cloud Run Functions</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 イベント駆動の FaaS（Function as a
@@ -83,7 +90,7 @@ export const Section2 = () => {
                             <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.4rem' }}>
                                 トリガー種別：
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1rem',
@@ -91,7 +98,7 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-amber, #d4882a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>
                                     Cloud Storage（ファイルアップロード）
                                 </li>
                                 <li
@@ -101,11 +108,11 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-amber, #d4882a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>
                                     Pub/Sub（メッセージ受信）
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-amber, #d4882a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>
                                     HTTP・Firebase・Eventarc
                                 </li>
                             </ul>
@@ -116,8 +123,8 @@ export const Section2 = () => {
                             </div>
                         </div>
 
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-sky, #3a6fa0)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(58, 111, 160, 0.1)' }}>📱</div>
+                        <div className={`${styles.card} ${styles.borderBlue}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">📱</div>
                             <div className={styles.cardTitle}>App Engine</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 10年以上の実績を持つ Web アプリ向けの
@@ -127,7 +134,7 @@ export const Section2 = () => {
                             <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.4rem' }}>
                                 環境の選択：
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1rem',
@@ -135,11 +142,11 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-sky, #3a6fa0)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-blue)' }}>›</span>
                                     Standard: 特定言語ランタイム・超高速スケール
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-sky, #3a6fa0)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-blue)' }}>›</span>
                                     Flexible: Docker コンテナで任意ランタイム
                                 </li>
                             </ul>
@@ -168,7 +175,7 @@ export const Section2 = () => {
                                     style={{
                                         fontSize: '1rem',
                                         fontWeight: 700,
-                                        color: 'var(--color-accent-terracotta, #c4593a)',
+                                        color: 'var(--cdl-red)',
                                         marginBottom: '0.5rem',
                                     }}
                                 >
@@ -178,7 +185,7 @@ export const Section2 = () => {
                                     style={{
                                         listStyle: 'none',
                                         fontSize: '1rem',
-                                        color: 'rgba(255, 255, 255, 0.65)',
+                                        color: 'color-mix(in srgb, var(--color-accent-foreground) 65%, transparent)',
                                         padding: 0,
                                         margin: 0
                                     }}
@@ -190,7 +197,7 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                        <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                         コンテナ化された HTTP API / Web アプリ
                                     </li>
                                     <li
@@ -200,11 +207,11 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                        <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                         複数エンドポイントを持つアプリ
                                     </li>
                                     <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                        <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                         常時起動・WebSocket・gRPC が必要
                                     </li>
                                 </ul>
@@ -214,7 +221,7 @@ export const Section2 = () => {
                                     style={{
                                         fontSize: '1rem',
                                         fontWeight: 700,
-                                        color: 'var(--color-accent-amber, #d4882a)',
+                                        color: 'var(--cdl-yellow)',
                                         marginBottom: '0.5rem',
                                     }}
                                 >
@@ -224,7 +231,7 @@ export const Section2 = () => {
                                     style={{
                                         listStyle: 'none',
                                         fontSize: '1rem',
-                                        color: 'rgba(255, 255, 255, 0.65)',
+                                        color: 'color-mix(in srgb, var(--color-accent-foreground) 65%, transparent)',
                                         padding: 0,
                                         margin: 0
                                     }}
@@ -236,7 +243,7 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-amber, #d4882a)' }}>›</span>
+                                        <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>
                                         特定イベント（ファイル保存・メッセージ受信）への反応
                                     </li>
                                     <li
@@ -246,11 +253,11 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-amber, #d4882a)' }}>›</span>
+                                        <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>
                                         単一の処理・「接着剤」的な役割
                                     </li>
                                     <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-amber, #d4882a)' }}>›</span>
+                                        <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>
                                         完全にオンデマンド・ゼロスケール優先
                                     </li>
                                 </ul>
@@ -323,7 +330,7 @@ export const Section2 = () => {
                                 他社クラウドと異なり、<strong>1 つの VPC がグローバルに広がる</strong>。東京リージョンと大阪リージョンの VM が同じ VPC
                                 内でプライベート通信可能。
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1rem',
@@ -331,7 +338,7 @@ export const Section2 = () => {
                                         marginBottom: '0.3rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                     サブネットで IP アドレス範囲を分割（本番・開発・テストの分離）
                                 </li>
                                 <li
@@ -341,11 +348,11 @@ export const Section2 = () => {
                                         marginBottom: '0.3rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                     ファイアウォールルールで送受信トラフィックを細かく制御
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span>
                                     Private Google Access で外部 IP なしで GCP サービスにアクセス
                                 </li>
                             </ul>
@@ -360,13 +367,13 @@ export const Section2 = () => {
                                 style={{
                                     fontSize: '1rem',
                                     fontWeight: 600,
-                                    color: 'var(--color-accent-sage, #4a7a5c)',
+                                    color: 'var(--cdl-green)',
                                     marginBottom: '0.4rem',
                                 }}
                             >
                                 メリット：
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1rem',
@@ -374,11 +381,11 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-sage, #4a7a5c)' }}>✓</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>✓</span>
                                     ファイアウォールポリシーをセキュリティチームが一元管理
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-sage, #4a7a5c)' }}>✓</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>✓</span>
                                     各プロジェクトは独立したコスト管理を維持
                                 </li>
                             </ul>
@@ -390,7 +397,7 @@ export const Section2 = () => {
                         オンプレミスとの接続方法の選択<span className={styles.examTag}>最重要</span>
                     </div>
                     <div className={styles.g2} style={{ marginBottom: '1.5rem' }}>
-                        <div className={styles.card} style={{ borderLeft: '3px solid var(--color-accent-sky, #3a6fa0)' }}>
+                        <div className={`${styles.card} ${styles.borderLeftBlue}`}>
                             <div
                                 style={{
                                     display: 'flex',
@@ -405,7 +412,7 @@ export const Section2 = () => {
                                 インターネット経由で IPsec 暗号化トンネルを作成。HA VPN は冗長トンネルで
                                 SLA 99.99% を実現。
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1rem',
@@ -413,7 +420,7 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-sky, #3a6fa0)' }}>✓</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-blue)' }}>✓</span>
                                     物理専用線不要・低コスト・迅速な設定
                                 </li>
                                 <li
@@ -423,19 +430,19 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>✗</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>✗</span>
                                     インターネット品質に依存（帯域保証なし）
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>✗</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>✗</span>
                                     大量データ転送・低レイテンシ要件には不向き
                                 </li>
                             </ul>
-                            <div style={{ marginTop: '0.8rem', fontSize: '1rem', color: 'var(--color-accent-sky, #3a6fa0)' }}>
+                            <div style={{ marginTop: '0.8rem', fontSize: '1rem', color: 'var(--cdl-blue)' }}>
                                 → 小規模・テスト・非クリティカルなハイブリッド接続
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderLeft: '3px solid var(--color-accent-sage, #4a7a5c)' }}>
+                        <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <div
                                 style={{
                                     display: 'flex',
@@ -452,7 +459,7 @@ export const Section2 = () => {
                                 オンプレと Google Cloud を物理的な専用線で接続。Dedicated（直接）と
                                 Partner（キャリア経由）の 2 種類。
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1rem',
@@ -460,7 +467,7 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-sage, #4a7a5c)' }}>✓</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>✓</span>
                                     低レイテンシ・高帯域・安定した専用線品質
                                 </li>
                                 <li
@@ -470,15 +477,15 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-sage, #4a7a5c)' }}>✓</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>✓</span>
                                     アウトバウンドデータ転送コストが安価
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>✗</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>✗</span>
                                     コストが高い・設定に時間がかかる
                                 </li>
                             </ul>
-                            <div style={{ marginTop: '0.8rem', fontSize: '1rem', color: 'var(--color-accent-sage, #4a7a5c)' }}>
+                            <div style={{ marginTop: '0.8rem', fontSize: '1rem', color: 'var(--cdl-green)' }}>
                                 → 大容量・ミッションクリティカル・金融・医療系
                             </div>
                         </div>
@@ -496,7 +503,7 @@ export const Section2 = () => {
                     <div className={styles.subTitle}>Cloud Load Balancing の種類</div>
                     <div className={styles.g4}>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(196, 89, 58, 0.1)' }}>🌐</div>
+                            <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🌐</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 グローバル外部<br />HTTP(S) LB
                             </div>
@@ -509,7 +516,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(74, 122, 92, 0.1)' }}>🏠</div>
+                            <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">🏠</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 内部<br />HTTP(S) LB
                             </div>
@@ -522,7 +529,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(58, 111, 160, 0.1)' }}>⚡</div>
+                            <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">⚡</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 外部 TCP/UDP<br />NLB
                             </div>
@@ -535,7 +542,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(212, 136, 42, 0.1)' }}>🚀</div>
+                            <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">🚀</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>Cloud CDN</div>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 100 以上のエッジロケーションでキャッシュ配信。レイテンシを最大 95%
@@ -607,10 +614,10 @@ export const Section2 = () => {
                     {/* WHY MULTICLOUD */}
                     <div className={styles.subTitle}>マルチクラウド戦略を選ぶ理由</div>
                     <div className={styles.g3} style={{ marginBottom: '2rem' }}>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-amber, #d4882a)' }}>
+                        <div className={`${styles.card} ${styles.borderYellow}`}>
                             <div
-                                className={styles.cardIcon}
-                                style={{ background: 'rgba(212, 136, 42, 0.12)', fontSize: '1.5rem' }}
+                                className={styles.cardIcon} aria-hidden="true"
+                                style={{ background: 'color-mix(in srgb, var(--cdl-yellow) 12%, transparent)', fontSize: '1.5rem' }}
                             >
                                 🔓
                             </div>
@@ -619,10 +626,10 @@ export const Section2 = () => {
                                 特定プロバイダーへの過度な依存を防ぎ、価格交渉力を維持する。大規模障害時のビジネス継続性（BDR）も確保できる。
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-sage, #4a7a5c)' }}>
+                        <div className={`${styles.card} ${styles.borderGreen}`}>
                             <div
-                                className={styles.cardIcon}
-                                style={{ background: 'rgba(74, 122, 92, 0.12)', fontSize: '1.5rem' }}
+                                className={styles.cardIcon} aria-hidden="true"
+                                style={{ background: 'color-mix(in srgb, var(--cdl-green) 12%, transparent)', fontSize: '1.5rem' }}
                             >
                                 ⚖️
                             </div>
@@ -631,10 +638,10 @@ export const Section2 = () => {
                                 個人情報・金融データを法規制により自国の自社データセンターに保持（Retain）しつつ、新システムはクラウドで構築する。
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-sky, #3a6fa0)' }}>
+                        <div className={`${styles.card} ${styles.borderBlue}`}>
                             <div
-                                className={styles.cardIcon}
-                                style={{ background: 'rgba(58, 111, 160, 0.12)', fontSize: '1.5rem' }}
+                                className={styles.cardIcon} aria-hidden="true"
+                                style={{ background: 'color-mix(in srgb, var(--cdl-blue) 12%, transparent)', fontSize: '1.5rem' }}
                             >
                                 💼
                             </div>
@@ -666,15 +673,15 @@ export const Section2 = () => {
                                         fontFamily: 'var(--ff-display, \'Fraunces\', Georgia, serif)',
                                         fontSize: '1.4rem',
                                         fontWeight: 700,
-                                        color: '#fff',
+                                        color: 'var(--color-card)',
                                         marginBottom: '0.3rem',
                                     }}
                                 >
                                     GKE Enterprise
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.55)' }}>
+                                <div style={{ fontSize: '1rem', color: 'color-mix(in srgb, var(--color-accent-foreground) 55%, transparent)' }}>
                                     オンプレ・Google Cloud・AWS・Azure のコンテナワークロードを<strong
-                                        style={{ color: 'rgba(255, 255, 255, 0.85)' }}
+                                        style={{ color: 'color-mix(in srgb, var(--color-accent-foreground) 85%, transparent)' }}
                                     >単一の管理画面（Single Pane of Glass）</strong>から一元管理する統合コントロールプレーン
                                 </div>
                             </div>

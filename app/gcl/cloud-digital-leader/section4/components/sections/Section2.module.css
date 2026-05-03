@@ -3,7 +3,7 @@
     padding: 4rem 0;
 }
 .sectionAlt {
-    background-color: var(--color-bg-tertiary, #ede9e0);
+    background-color: var(--color-muted);
 }
 .container {
     max-width: 1000px;
@@ -18,7 +18,7 @@
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-accent-terracotta, #c4593a);
+    color: var(--cdl-red);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1rem;
@@ -26,12 +26,12 @@
 .shTitle {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     font-weight: 700;
-    color: var(--color-text-primary, #1a1a1a);
+    color: var(--color-accent-foreground);
     margin-bottom: 1.2rem;
 }
 .shDesc {
     font-size: 1.1rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
@@ -41,7 +41,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin: 3rem 0 1.5rem;
-    border-bottom: 2px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.8rem;
     display: flex;
     align-items: center;
@@ -50,8 +50,8 @@
 
 .examTag {
     font-size: 0.8rem;
-    background: rgba(196, 89, 58, 0.1);
-    color: #c4593a;
+    background: color-mix(in srgb, var(--cdl-red) 10%, transparent);
+    color: var(--cdl-red);
     padding: 2px 8px;
     border-radius: 4px;
     vertical-align: middle;
@@ -67,11 +67,11 @@
     font-weight: 600;
     font-family: var(--ff-mono, 'DM Mono', monospace);
 }
-.badgeR { background: rgba(196, 89, 58, 0.1); color: #c4593a; }
-.badgeG { background: rgba(74, 122, 92, 0.1); color: #4a7a5c; }
-.badgeB { background: rgba(58, 111, 160, 0.1); color: #3a6fa0; }
-.badgeA { background: rgba(212, 136, 42, 0.1); color: #d4882a; }
-.badgeP { background: rgba(107, 63, 122, 0.1); color: #6b3f7a; }
+.badgeR { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); }
+.badgeG { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); color: var(--cdl-green); }
+.badgeB { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); color: var(--cdl-blue); }
+.badgeA { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); color: var(--cdl-yellow); }
+.badgeP { background: color-mix(in srgb, var(--cdl-purple) 10%, transparent); color: var(--cdl-purple); }
 
 /* Grid Layouts */
 .g2 {
@@ -92,10 +92,10 @@
 
 /* Cards */
 .card {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     padding: 1.8rem;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     display: flex;
     flex-direction: column;
 }
@@ -115,7 +115,7 @@
     margin-bottom: 0.8rem;
 }
 .cardBody {
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     font-size: 0.95rem;
     line-height: 1.6;
     flex: 1;
@@ -123,15 +123,15 @@
 
 /* Info Box */
 .info {
-    background: rgba(58, 111, 160, 0.08);
-    border-left: 4px solid #3a6fa0;
+    background: color-mix(in srgb, var(--cdl-blue) 8%, transparent);
+    border-left: 4px solid var(--cdl-blue);
     padding: 1.5rem;
     border-radius: 0 8px 8px 0;
     margin-bottom: 2rem;
 }
 .warn {
-    background: rgba(212, 136, 42, 0.08);
-    border-left: 4px solid #d4882a;
+    background: color-mix(in srgb, var(--cdl-yellow) 8%, transparent);
+    border-left: 4px solid var(--cdl-yellow);
     padding: 1.5rem;
     border-radius: 0 8px 8px 0;
     margin-bottom: 2rem;
@@ -139,8 +139,8 @@
 
 /* Highlight Box */
 .hlBox {
-    background: var(--color-text-primary, #1a1a1a);
-    color: var(--color-bg-primary, #fff);
+    background: var(--color-accent-foreground);
+    color: var(--color-card);
     padding: 2rem;
     border-radius: 12px;
 }
@@ -148,13 +148,13 @@
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
-    color: var(--color-accent-amber, #d4882a);
+    color: var(--cdl-yellow);
 }
 
 /* Best Practices Box */
 .bp {
-    background: var(--color-bg-primary, #fff);
-    border: 1px solid var(--color-border-light, #e0dbd2);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     padding: 1.8rem;
     border-radius: 12px;
 }
@@ -162,7 +162,7 @@
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: #4a7a5c;
+    color: var(--cdl-green);
 }
 .bp ul {
     list-style: none;
@@ -180,7 +180,7 @@
     content: "✓";
     position: absolute;
     left: 0;
-    color: #4a7a5c;
+    color: var(--cdl-green);
     font-weight: 700;
 }
 
@@ -188,18 +188,18 @@
 .src {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--color-border-light, #e0dbd2);
+    border-top: 1px solid var(--color-border);
 }
 .srcLabel {
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 0.9rem;
-    color: var(--color-text-muted, #7a7470);
+    color: var(--color-muted-foreground);
     margin-bottom: 1rem;
     text-transform: uppercase;
 }
 .src a {
     display: block;
-    color: var(--color-accent-blue, #3a6fa0);
+    color: var(--color-accent-blue, var(--cdl-blue));
     text-decoration: none;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
@@ -211,14 +211,14 @@
 
 /* Anthos Box */
 .anthosBox {
-    background: var(--color-text-primary, #1a1a1a);
-    color: var(--color-bg-primary, #fff);
+    background: var(--color-accent-foreground);
+    color: var(--color-card);
     padding: 2.5rem;
     border-radius: 12px;
 }
 .anthosPoint {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--color-accent-foreground) 5%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-accent-foreground) 10%, transparent);
     border-radius: 8px;
     padding: 1.2rem;
     margin-bottom: 1rem;
@@ -227,7 +227,7 @@
 }
 .anthosIcon {
     font-size: 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--color-accent-foreground) 10%, transparent);
     width: 48px;
     height: 48px;
     display: flex;
@@ -240,12 +240,12 @@
     font-weight: 700;
     font-size: 1.1rem;
     margin-bottom: 0.4rem;
-    color: var(--color-accent-amber, #d4882a);
+    color: var(--cdl-yellow);
 }
 .anthosPointD {
     font-size: 0.95rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in srgb, var(--color-accent-foreground) 70%, transparent);
 }
 
 /* Responsive */
@@ -254,3 +254,31 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Border modifiers */
+.borderRed { border-top: 3px solid var(--cdl-red); }
+.borderBlue { border-top: 3px solid var(--cdl-blue); }
+.borderGreen { border-top: 3px solid var(--cdl-green); }
+.borderYellow { border-top: 3px solid var(--cdl-yellow); }
+.borderPurple { border-top: 3px solid var(--cdl-purple); }
+.borderSky { border-top: 3px solid var(--cdl-sky); }
+.borderAmber { border-top: 3px solid var(--cdl-amber); }
+.borderTeal { border-top: 3px solid var(--cdl-teal); }
+
+.borderLeftRed { border-left: 3px solid var(--cdl-red); }
+.borderLeftBlue { border-left: 3px solid var(--cdl-blue); }
+.borderLeftGreen { border-left: 3px solid var(--cdl-green); }
+.borderLeftYellow { border-left: 3px solid var(--cdl-yellow); }
+.borderLeftSky { border-left: 3px solid var(--cdl-sky); }
+.borderLeftTeal { border-left: 3px solid var(--cdl-teal); }
+
+/* Background modifiers */
+.bgRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); }
+.bgBlue { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); }
+.bgGreen { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); }
+.bgYellow { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); }
+.bgPurple { background: color-mix(in srgb, var(--cdl-purple) 10%, transparent); }
+.bgSky { background: color-mix(in srgb, var(--cdl-sky) 10%, transparent); }
+.bgTeal { background: color-mix(in srgb, var(--cdl-teal) 10%, transparent); }
+.bgAmber { background: color-mix(in srgb, var(--cdl-amber) 10%, transparent); }

@@ -375,7 +375,7 @@ function Chapter3() {
                 <pre className="codeblock">
                     <span className="comment"># プロジェクトの作成</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects create PROJECT_ID \{'\n'}
-                    {'  '}<span className="flag">--name=</span><span className="val">"My Webapp Prod"</span> \{'\n'}
+                    {'  '}<span className="flag">--name=</span><span className="val">&quot;My Webapp Prod&quot;</span> \{'\n'}
                     {'  '}<span className="flag">--folder=</span>FOLDER_ID{'\n'}
                     {'\n'}
                     <span className="comment"># 作成後、そのプロジェクトをデフォルトに設定</span>{'\n'}
@@ -678,11 +678,11 @@ function Chapter5() {
                     <span className="comment"># ----- IAM 操作 -----</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects get-iam-policy PROJECT_ID{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects add-iam-policy-binding PROJECT_ID \{'\n'}
-                    {'  '}<span className="flag">--member=</span><span className="val">"user:alice@example.com"</span> \{'\n'}
-                    {'  '}<span className="flag">--role=</span><span className="val">"roles/editor"</span>{'\n'}
+                    {'  '}<span className="flag">--member=</span><span className="val">&quot;user:alice@example.com&quot;</span> \{'\n'}
+                    {'  '}<span className="flag">--role=</span><span className="val">&quot;roles/editor&quot;</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects remove-iam-policy-binding PROJECT_ID \{'\n'}
-                    {'  '}<span className="flag">--member=</span><span className="val">"user:alice@example.com"</span> \{'\n'}
-                    {'  '}<span className="flag">--role=</span><span className="val">"roles/editor"</span>{'\n'}
+                    {'  '}<span className="flag">--member=</span><span className="val">&quot;user:alice@example.com&quot;</span> \{'\n'}
+                    {'  '}<span className="flag">--role=</span><span className="val">&quot;roles/editor&quot;</span>{'\n'}
                     {'\n'}
                     <span className="comment"># ----- API 管理 -----</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}services enable compute.googleapis.com{'\n'}
@@ -905,7 +905,7 @@ function Chapter7() {
                     <span className="comment"># gcloud で予算を作成する例</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}billing budgets create \{'\n'}
                     {'  '}<span className="flag">--billing-account=</span>BILLING_ACCOUNT_ID \{'\n'}
-                    {'  '}<span className="flag">--display-name=</span><span className="val">"Monthly Prod Budget"</span> \{'\n'}
+                    {'  '}<span className="flag">--display-name=</span><span className="val">&quot;Monthly Prod Budget&quot;</span> \{'\n'}
                     {'  '}<span className="flag">--budget-amount=</span>1000USD \{'\n'}
                     {'  '}<span className="flag">--threshold-rule=</span>percent=0.5 \{'\n'}
                     {'  '}<span className="flag">--threshold-rule=</span>percent=0.9 \{'\n'}
@@ -1012,12 +1012,12 @@ VM が大量に起動 → 攻撃が終わっても請求は発生！`}</pre>
                 <pre className="codeblock">
                     <span className="comment"># Cloud Armor のセキュリティポリシーを作成</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}compute security-policies create my-ddos-policy \{'\n'}
-                    {'  '}<span className="flag">--description=</span><span className="val">"DDoS protection policy"</span>{'\n'}
+                    {'  '}<span className="flag">--description=</span><span className="val">&quot;DDoS protection policy&quot;</span>{'\n'}
                     {'\n'}
                     <span className="comment"># レート制限ルールを追加（1IPあたり1000リクエスト/分）</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}compute security-policies rules create 1000 \{'\n'}
                     {'  '}<span className="flag">--security-policy=</span>my-ddos-policy \{'\n'}
-                    {'  '}<span className="flag">--expression=</span><span className="val">"true"</span> \{'\n'}
+                    {'  '}<span className="flag">--expression=</span><span className="val">&quot;true&quot;</span> \{'\n'}
                     {'  '}<span className="flag">--action=</span>rate-based-ban \{'\n'}
                     {'  '}<span className="flag">--rate-limit-threshold-count=</span>1000 \{'\n'}
                     {'  '}<span className="flag">--rate-limit-threshold-interval-sec=</span>60 \{'\n'}
@@ -1037,7 +1037,7 @@ VM が大量に起動 → 攻撃が終わっても請求は発生！`}</pre>
                 <div className="src">
                     <div className="srct">参照リソース</div>
                     <a href="https://docs.cloud.google.com/billing/docs/how-to/budgets" target="_blank" rel="noopener noreferrer">https://docs.cloud.google.com/billing/docs/how-to/budgets</a>
-                    <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; 'Caps' in Google Cloud (Medium)</a>
+                    <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; &apos;Caps&apos; in Google Cloud (Medium)</a>
                 </div>
             </div>
 
@@ -1548,7 +1548,7 @@ IAM: 「誰が」VM を作成できるか → ユーザーへの権限付与
                 <a href="https://docs.cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications" target="_blank" rel="noopener noreferrer">Set up programmatic notifications | Cloud Billing</a>
                 <a href="https://cloud.google.com/resource-manager/docs/creating-managing-folders" target="_blank" rel="noopener noreferrer">Creating and managing folders - Google Cloud Documentation</a>
                 <a href="https://cloud.google.com/docs/enterprise/best-practices-for-enterprise-organizations" target="_blank" rel="noopener noreferrer">Best practices for enterprise organizations | Google Cloud</a>
-                <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; 'Caps' in Google Cloud (Medium)</a>
+                <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; &apos;Caps&apos; in Google Cloud (Medium)</a>
             </div>
         </div>
     );

@@ -61,7 +61,7 @@ export const Section10: React.FC = () => {
                     
                     <text x="30" y="135" fill="currentColor" fontWeight="bold">使用例:</text>
                     <text x="40" y="155" fill="currentColor" fontSize="14">「顧客の購買履歴データが欲しい」</text>
-                    <text x="50" y="175" fill="currentColor" fontSize="14">→ Universal Catalog で "購買" を検索 → BigQuery のテーブル発見</text>
+                    <text x="50" y="175" fill="currentColor" fontSize="14">→ Universal Catalog で &quot;購買&quot; を検索 → BigQuery のテーブル発見</text>
                     <text x="50" y="195" fill="currentColor" fontSize="14">→ IAM ポリシーを通じて適切なアクセス権を申請</text>
                 </DiagramSVG>
 
@@ -96,7 +96,7 @@ export const Section10: React.FC = () => {
                     <text x="40" y="220" fill="currentColor" fontSize="14">統計的なノイズを加えて個人の情報を保護。集団全体の傾向は分析できる。</text>
                 </DiagramSVG>
 
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['手法', '再識別の可能性', 'GDPR 対象', '主な用途']}
                     rows={PRIVACY_TECHNIQUES}
                     renderRow={(row, i) => (

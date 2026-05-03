@@ -1,6 +1,14 @@
 import React from 'react';
 import styles from './Section3.module.css';
+import { DiagramSVG } from '../index';
 
+/**
+ * Section3 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section3 の JSX
+ */
 export const Section3 = () => {
     return (
         <>
@@ -27,13 +35,7 @@ export const Section3 = () => {
                             <div className={styles.steps}>
                                 <div className={styles.step}>
                                     <div
-                                        className={styles.stepN}
-                                        style={{
-                                            background: 'var(--color-accent-terracotta, #c4593a)',
-                                            fontSize: '1rem',
-                                            width: '40px',
-                                            height: '40px',
-                                        }}
+                                        className={`${styles.stepN} ${styles.stepRed}`} aria-hidden="true"
                                     >
                                         ①
                                     </div>
@@ -47,13 +49,7 @@ export const Section3 = () => {
                                 </div>
                                 <div className={styles.step}>
                                     <div
-                                        className={styles.stepN}
-                                        style={{
-                                            background: 'var(--color-accent-sky, #3a6fa0)',
-                                            fontSize: '1rem',
-                                            width: '40px',
-                                            height: '40px',
-                                        }}
+                                        className={`${styles.stepN} ${styles.stepBlue}`} aria-hidden="true"
                                     >
                                         ②
                                     </div>
@@ -66,13 +62,7 @@ export const Section3 = () => {
                                 </div>
                                 <div className={styles.step}>
                                     <div
-                                        className={styles.stepN}
-                                        style={{
-                                            background: 'var(--color-accent-sage, #4a7a5c)',
-                                            fontSize: '1rem',
-                                            width: '40px',
-                                            height: '40px',
-                                        }}
+                                        className={`${styles.stepN} ${styles.stepGreen}`} aria-hidden="true"
                                     >
                                         ③
                                     </div>
@@ -86,13 +76,7 @@ export const Section3 = () => {
                                 </div>
                                 <div className={styles.step}>
                                     <div
-                                        className={styles.stepN}
-                                        style={{
-                                            background: 'var(--color-accent-amber, #d4882a)',
-                                            fontSize: '1rem',
-                                            width: '40px',
-                                            height: '40px',
-                                        }}
+                                        className={`${styles.stepN} ${styles.stepYellow}`} aria-hidden="true"
                                     >
                                         ④
                                     </div>
@@ -109,9 +93,9 @@ export const Section3 = () => {
                         <div>
                             <div className={styles.hlBox} style={{ marginBottom: '1.5rem' }}>
                                 <div className={styles.hlBoxTitle}>🔄 DevOps の本質</div>
-                                <p style={{ color: 'var(--color-bg-primary, #fff)', lineHeight: '1.6', marginBottom: 0 }}>
+                                <p style={{ color: 'var(--color-card)', lineHeight: '1.6', marginBottom: 0 }}>
                                     開発（「早く新機能をリリース」）と運用（「安定性を維持」）の壁を打破し、自動化・継続的フィードバック・責任の共有を通じてソフトウェアのデリバリーを加速させる<strong
-                                        style={{ color: 'var(--color-accent-amber, #d4882a)' }}
+                                        style={{ color: 'var(--cdl-yellow)' }}
                                     >文化的ムーブメント</strong>。
                                 </p>
                             </div>
@@ -120,12 +104,12 @@ export const Section3 = () => {
                                     DORA 4 つのキーメトリクス
                                 </div>
                                 <ul
-                                    style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}
+                                    style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}
                                 >
                                     <li
                                         style={{
                                             padding: '0.5rem 0',
-                                            borderBottom: '1px solid var(--color-border-light, #e0dbd2)',
+                                            borderBottom: '1px solid var(--color-border)',
                                         }}
                                     >
                                         📊 <strong>デプロイ頻度</strong> —
@@ -134,7 +118,7 @@ export const Section3 = () => {
                                     <li
                                         style={{
                                             padding: '0.5rem 0',
-                                            borderBottom: '1px solid var(--color-border-light, #e0dbd2)',
+                                            borderBottom: '1px solid var(--color-border)',
                                         }}
                                     >
                                         ⏱️ <strong>変更リードタイム</strong> —
@@ -143,7 +127,7 @@ export const Section3 = () => {
                                     <li
                                         style={{
                                             padding: '0.5rem 0',
-                                            borderBottom: '1px solid var(--color-border-light, #e0dbd2)',
+                                            borderBottom: '1px solid var(--color-border)',
                                         }}
                                     >
                                         ❌ <strong>変更失敗率</strong> —
@@ -196,7 +180,7 @@ export const Section3 = () => {
 
                     <div className={styles.info}>
                         <strong>💡 SRE と DevOps の関係：</strong>
-                        「<code style={{ fontFamily: 'var(--ff-mono, "DM Mono", monospace)', background: 'rgba(255,255,255,0.2)', padding: '2px 4px', borderRadius: '4px' }}>class SRE implements interface DevOps</code>」。 SRE は DevOps
+                        「<code style={{ fontFamily: 'var(--ff-mono, "DM Mono", monospace)', background: 'color-mix(in srgb, var(--color-accent-foreground) 20%, transparent)', padding: '2px 4px', borderRadius: '4px' }}>class SRE implements interface DevOps</code>」。 SRE は DevOps
                         の抽象的な理念を、具体的なソフトウェアエンジニアリングの実践を通じてシステム運用に適用したものです。
                         両者は競合する戦略ではなく、<strong>同じコインの裏表</strong>です。
                     </div>
@@ -259,46 +243,53 @@ export const Section3 = () => {
                     </div>
 
                     {/* API DIAGRAM */}
-                    <div className={styles.apiDiagram} style={{ marginBottom: '2rem' }}>
-                        <div
-                            style={{
-                                fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                fontSize: '1rem',
-                                color: 'rgba(255, 255, 255, 0.35)',
-                                marginBottom: '1rem',
-                                letterSpacing: '0.1em',
-                                textTransform: 'uppercase',
-                            }}
-                        >
-                            API ファーストアーキテクチャ
-                        </div>
-                        <div className={styles.apiRow}>
-                            <div className={styles.apiBox}>Web App</div>
-                            <div className={styles.apiBox}>モバイル App</div>
-                            <div className={styles.apiBox}>パートナー API</div>
-                            <div className={styles.apiBox}>IoT デバイス</div>
-                        </div>
-                        <div className={styles.apiConnector}>↕ REST / gRPC</div>
-                        <div className={styles.apiLayerMain}>
-                            Apigee API Management
-                            レイヤー（認証・認可・レート制限・モニタリング・収益化）
-                        </div>
-                        <div className={styles.apiConnector}>↕</div>
-                        <div className={styles.apiRow}>
-                            <div className={styles.apiBox}>レガシーシステム（メインフレーム）</div>
-                            <div className={styles.apiBox}>Cloud Run（マイクロサービス）</div>
-                            <div className={styles.apiBox}>GKE（コンテナ）</div>
-                        </div>
-                        <div
-                            style={{
-                                fontSize: '1rem',
-                                color: 'rgba(255, 255, 255, 0.4)',
-                                marginTop: '0.8rem',
-                            }}
-                        >
-                            バックエンドに変更を加えずに、API レイヤーで制御・収益化が可能
-                        </div>
-                    </div>
+                    <DiagramSVG viewBox="0 0 800 350" ariaLabel="API ファーストアーキテクチャ: クライアント層（Web、モバイル、パートナー、IoT）とバックエンド層（レガシーシステム、Cloud Run、GKE）の間にApigeeレイヤーが位置し、認証やレート制限を一元管理する">
+                        <text x="20" y="30" fill="var(--color-muted-foreground)" fontSize="14" fontFamily="monospace" letterSpacing="2">API ファーストアーキテクチャ</text>
+
+                        {/* Top Row: Clients */}
+                        <g transform="translate(40, 60)">
+                            <rect x="0" y="0" width="160" height="40" rx="4" fill="var(--color-card)" stroke="var(--color-border)" />
+                            <text x="80" y="25" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">Web App</text>
+
+                            <rect x="180" y="0" width="160" height="40" rx="4" fill="var(--color-card)" stroke="var(--color-border)" />
+                            <text x="260" y="25" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">モバイル App</text>
+
+                            <rect x="360" y="0" width="160" height="40" rx="4" fill="var(--color-card)" stroke="var(--color-border)" />
+                            <text x="440" y="25" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">パートナー API</text>
+
+                            <rect x="540" y="0" width="160" height="40" rx="4" fill="var(--color-card)" stroke="var(--color-border)" />
+                            <text x="620" y="25" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">IoT デバイス</text>
+                        </g>
+
+                        {/* Connector 1 */}
+                        <path d="M 400 100 L 400 130" stroke="var(--color-border)" strokeWidth="2" strokeDasharray="4 4" />
+                        <text x="415" y="120" fill="var(--color-muted-foreground)" fontSize="12">↕ REST / gRPC</text>
+
+                        {/* Apigee Layer */}
+                        <g transform="translate(40, 130)">
+                            <rect x="0" y="0" width="720" height="60" rx="8" fill="color-mix(in srgb, var(--cdl-cyan) 10%, transparent)" stroke="var(--cdl-cyan)" strokeWidth="2" />
+                            <text x="360" y="25" fill="var(--cdl-cyan)" fontSize="16" textAnchor="middle" fontWeight="bold">Apigee API Management レイヤー</text>
+                            <text x="360" y="45" fill="color-mix(in srgb, var(--cdl-cyan) 80%, transparent)" fontSize="12" textAnchor="middle">（認証・認可・レート制限・モニタリング・収益化）</text>
+                        </g>
+
+                        {/* Connector 2 */}
+                        <path d="M 400 190 L 400 220" stroke="var(--color-border)" strokeWidth="2" strokeDasharray="4 4" />
+                        <text x="415" y="210" fill="var(--color-muted-foreground)" fontSize="12">↕</text>
+
+                        {/* Bottom Row: Backends */}
+                        <g transform="translate(70, 220)">
+                            <rect x="0" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--color-muted) 50%, transparent)" stroke="var(--color-border)" />
+                            <text x="100" y="25" fill="var(--color-muted-foreground)" fontSize="14" textAnchor="middle">レガシーシステム</text>
+
+                            <rect x="230" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--cdl-green) 10%, transparent)" stroke="var(--cdl-green)" />
+                            <text x="330" y="25" fill="var(--cdl-green)" fontSize="14" textAnchor="middle">Cloud Run (マイクロサービス)</text>
+
+                            <rect x="460" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--cdl-blue) 10%, transparent)" stroke="var(--cdl-blue)" />
+                            <text x="560" y="25" fill="var(--cdl-blue)" fontSize="14" textAnchor="middle">GKE (コンテナ)</text>
+                        </g>
+
+                        <text x="400" y="300" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">バックエンドに変更を加えずに、API レイヤーで制御・収益化が可能</text>
+                    </DiagramSVG>
 
                     <div className={styles.g2} style={{ marginBottom: '1.5rem' }}>
                         <div className={styles.card}>
@@ -307,7 +298,7 @@ export const Section3 = () => {
                                 API
                                 は単なる技術インターフェースではなく、データやサービスを収益化可能な「デジタル資産」として活用できます。
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         paddingLeft: '1.2rem',
@@ -315,7 +306,7 @@ export const Section3 = () => {
                                         marginBottom: '0.4rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span><strong>エコシステム拡大：</strong>外部開発者・パートナーが API
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span><strong>エコシステム拡大：</strong>外部開発者・パートナーが API
                                     を使って新アプリを構築 → 自社ビジネスエコシステムが成長
                                 </li>
                                 <li
@@ -325,11 +316,11 @@ export const Section3 = () => {
                                         marginBottom: '0.4rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span><strong>レガシーの抽象化：</strong>古いバックエンドを API でラップ
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span><strong>レガシーの抽象化：</strong>古いバックエンドを API でラップ
                                     → フロントエンドを中断せずにバックエンドを段階的に移行
                                 </li>
                                 <li style={{ paddingLeft: '1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-accent-terracotta, #c4593a)' }}>›</span><strong>収益化：</strong>API
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span><strong>収益化：</strong>API
                                     利用量に応じた従量課金モデルやレベニューシェアを実装
                                 </li>
                             </ul>
@@ -346,7 +337,7 @@ export const Section3 = () => {
                                         style={{
                                             fontSize: '1rem',
                                             fontWeight: 700,
-                                            color: 'var(--color-accent-terracotta, #c4593a)',
+                                            color: 'var(--cdl-red)',
                                             marginBottom: '0.4rem',
                                         }}
                                     >
@@ -356,7 +347,7 @@ export const Section3 = () => {
                                         style={{
                                             listStyle: 'none',
                                             fontSize: '1rem',
-                                            color: 'var(--color-text-secondary, #4a4541)',
+                                            color: 'var(--color-muted-foreground)',
                                             padding: 0,
                                             margin: 0
                                         }}
@@ -371,7 +362,7 @@ export const Section3 = () => {
                                         style={{
                                             fontSize: '1rem',
                                             fontWeight: 700,
-                                            color: 'var(--color-accent-sage, #4a7a5c)',
+                                            color: 'var(--cdl-green)',
                                             marginBottom: '0.4rem',
                                         }}
                                     >
@@ -381,7 +372,7 @@ export const Section3 = () => {
                                         style={{
                                             listStyle: 'none',
                                             fontSize: '1rem',
-                                            color: 'var(--color-text-secondary, #4a4541)',
+                                            color: 'var(--color-muted-foreground)',
                                             padding: 0,
                                             margin: 0
                                         }}

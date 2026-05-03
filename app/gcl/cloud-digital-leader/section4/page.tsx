@@ -20,7 +20,7 @@ export default function Section4Page() {
             
             <SectionHero
                 eyebrow="Cloud Digital Leader · Section 4"
-                title={<><em>モダナイゼーション</em>で<br/><span className="highlight">ビジネスを進化させる</span></>}
+                title={<><em>モダナイゼーション</em>で<br/><span className="section4Highlight">ビジネスを進化させる</span></>}
                 subtitle="Section 4「Modernize Infrastructure and Applications with Google Cloud」の完全攻略ガイド。移行戦略・コンテナ・サーバーレス・DevOps・ハイブリッドクラウドまで初学者向けに詳解します。"
                 badges={HERO_BADGES}
             />

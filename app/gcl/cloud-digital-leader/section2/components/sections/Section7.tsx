@@ -55,7 +55,7 @@ export const Section7: React.FC = () => {
                 </DiagramSVG>
 
                 <h4 className={`${baseStyles.stitle} mt-6`}>Looker の主な機能</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['機能', '説明', 'ビジネス価値']}
                     rows={LOOKER_FEATURES}
                     renderRow={(row, i) => (
@@ -91,7 +91,7 @@ export const Section7: React.FC = () => {
                 <h3 className={`${baseStyles.stitle} mt-6`}>7.3 Looker vs Looker Studio の比較</h3>
                 <p className={baseStyles.tdesc}>試験で最もよく問われる比較ポイント!</p>
 
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['比較項目', 'Looker', 'Looker Studio']}
                     rows={LOOKER_VS_STUDIO}
                     renderRow={(row, i) => (

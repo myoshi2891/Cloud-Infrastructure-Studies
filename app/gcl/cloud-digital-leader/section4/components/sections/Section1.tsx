@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Section1.module.css';
 import { TableComponent } from '../TableComponent';
+import { DiagramSVG } from '../index';
 
 const COMPUTE_COMPARISON = [
     { service: '🖥️ Compute Engine', abstraction: 'IaaS（VM）', management: '高（OS管理必要）', scaling: '手動＋MIG', billing: 'VM稼働時間（秒単位）', usage: 'レガシー移行・GPU・特殊OS' },
@@ -11,6 +12,13 @@ const COMPUTE_COMPARISON = [
     { service: '📱 App Engine', abstraction: 'PaaS', management: '低', scaling: '自動', billing: 'インスタンス稼働時間', usage: '既存Webアプリ・モバイルバックエンド' },
 ];
 
+/**
+ * Section1 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section1 の JSX
+ */
 export const Section1 = () => {
     return (
         <>
@@ -27,112 +35,74 @@ export const Section1 = () => {
                     </div>
 
                     {/* DECISION FLOW */}
+                    {/* DECISION FLOW */}
                     <div className={styles.subTitle}>コンピューティング選択デシジョンツリー</div>
-                    <div className={styles.flowWrap} style={{ marginBottom: '2rem' }}>
-                        <div
-                            style={{
-                                fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                fontSize: '1rem',
-                                color: 'rgba(255, 255, 255, 0.4)',
-                                marginBottom: '1.2rem',
-                                letterSpacing: '0.08em',
-                                textTransform: 'uppercase',
-                            }}
-                        >
-                            意思決定フロー
-                        </div>
+                    <DiagramSVG viewBox="0 0 800 450" ariaLabel="コンピューティング選択デシジョンツリー: OS制御が必要ならCompute Engine、K8sが必要ならGKE、HTTPコンテナならCloud Run、イベント駆動ならCloud Run Functions、それ以外はApp Engine">
+                        <text x="30" y="40" fill="var(--color-muted-foreground)" fontSize="14" fontFamily="monospace" letterSpacing="2">意思決定フロー</text>
+                        
+                        {/* Node 1 */}
+                        <rect x="30" y="70" width="350" height="40" rx="6" fill="var(--color-card)" stroke="var(--color-border)" />
+                        <text x="205" y="95" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">OS・カーネルレベルの完全制御が必要？</text>
+                        <path d="M 380 90 L 410 90 L 410 90" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="395" y="85" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
+                        <rect x="430" y="70" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-blue) 10%, transparent)" stroke="var(--cdl-blue)" />
+                        <text x="540" y="95" fill="var(--cdl-blue)" fontSize="14" textAnchor="middle" fontWeight="bold">Compute Engine (IaaS VM)</text>
+                        
+                        {/* Path 1 to 2 */}
+                        <path d="M 205 110 L 205 140" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="220" y="130" fill="var(--color-muted-foreground)" fontSize="12">NO</text>
+                        
+                        {/* Node 2 */}
+                        <rect x="30" y="150" width="350" height="40" rx="6" fill="var(--color-card)" stroke="var(--color-border)" />
+                        <text x="205" y="175" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">K8sオーケストレーションが必要？</text>
+                        <path d="M 380 170 L 410 170" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="395" y="165" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
+                        <rect x="430" y="150" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-cyan) 10%, transparent)" stroke="var(--cdl-cyan)" />
+                        <text x="540" y="175" fill="var(--cdl-cyan)" fontSize="14" textAnchor="middle" fontWeight="bold">GKE (Standard / Autopilot)</text>
 
-                        <div className={styles.flowRow}>
-                            <div className={styles.flowQ}>OS・カーネルレベルの完全制御が必要？</div>
-                            <div className={styles.flowArrow}>→ YES →</div>
-                            <div className={styles.flowAns}>Compute Engine (IaaS VM)</div>
-                        </div>
+                        {/* Path 2 to 3 */}
+                        <path d="M 205 190 L 205 220" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="220" y="210" fill="var(--color-muted-foreground)" fontSize="12">NO</text>
 
-                        <div className={styles.flowRow}>
-                            <div
-                                style={{
-                                    width: '180px',
-                                    textAlign: 'right',
-                                    color: 'rgba(255, 255, 255, 0.35)',
-                                    fontSize: '1rem',
-                                    paddingRight: '0.5rem',
-                                }}
-                            >
-                                ↓ NO
-                            </div>
-                        </div>
+                        {/* Node 3 */}
+                        <rect x="30" y="230" width="350" height="40" rx="6" fill="var(--color-card)" stroke="var(--color-border)" />
+                        <text x="205" y="255" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">HTTPコンテナを手軽にデプロイ？</text>
+                        <path d="M 380 250 L 410 250" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="395" y="245" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
+                        <rect x="430" y="230" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-green) 10%, transparent)" stroke="var(--cdl-green)" />
+                        <text x="540" y="255" fill="var(--cdl-green)" fontSize="14" textAnchor="middle" fontWeight="bold">Cloud Run (サーバーレス)</text>
 
-                        <div className={styles.flowRow}>
-                            <div className={styles.flowQ}>
-                                コンテナ化 + Kubernetes オーケストレーションが必要？
-                            </div>
-                            <div className={styles.flowArrow}>→ YES →</div>
-                            <div className={`${styles.flowAns} ${styles.flowAnsSky}`}>GKE（Standard / Autopilot）</div>
-                        </div>
+                        {/* Path 3 to 4 */}
+                        <path d="M 205 270 L 205 300" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="220" y="290" fill="var(--color-muted-foreground)" fontSize="12">NO</text>
 
-                        <div className={styles.flowRow}>
-                            <div
-                                style={{
-                                    width: '280px',
-                                    textAlign: 'right',
-                                    color: 'rgba(255, 255, 255, 0.35)',
-                                    fontSize: '1rem',
-                                    paddingRight: '0.5rem',
-                                }}
-                            >
-                                ↓ NO
-                            </div>
-                        </div>
+                        {/* Node 4 */}
+                        <rect x="30" y="310" width="350" height="40" rx="6" fill="var(--color-card)" stroke="var(--color-border)" />
+                        <text x="205" y="335" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">イベント駆動の小さな関数を実行？</text>
+                        <path d="M 380 330 L 410 330" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="395" y="325" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
+                        <rect x="430" y="310" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-yellow) 10%, transparent)" stroke="var(--cdl-yellow)" />
+                        <text x="540" y="335" fill="var(--cdl-yellow)" fontSize="14" textAnchor="middle" fontWeight="bold">Cloud Run Functions</text>
 
-                        <div className={styles.flowRow}>
-                            <div className={styles.flowQ}>コンテナ化済み HTTP アプリを手軽にデプロイしたい？</div>
-                            <div className={styles.flowArrow}>→ YES →</div>
-                            <div className={`${styles.flowAns} ${styles.flowAnsSage}`}>Cloud Run（サーバーレスコンテナ）</div>
-                        </div>
+                        {/* Path 4 to 5 */}
+                        <path d="M 205 350 L 205 380" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
+                        <text x="220" y="370" fill="var(--color-muted-foreground)" fontSize="12">それ以外</text>
 
-                        <div className={styles.flowRow}>
-                            <div
-                                style={{
-                                    width: '320px',
-                                    textAlign: 'right',
-                                    color: 'rgba(255, 255, 255, 0.35)',
-                                    fontSize: '1rem',
-                                    paddingRight: '0.5rem',
-                                }}
-                            >
-                                ↓ NO
-                            </div>
-                        </div>
+                        {/* Node 5 */}
+                        <rect x="20" y="390" width="370" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-purple) 10%, transparent)" stroke="var(--cdl-purple)" />
+                        <text x="205" y="415" fill="var(--cdl-purple)" fontSize="14" textAnchor="middle" fontWeight="bold">App Engine (PaaS Webアプリ)</text>
 
-                        <div className={styles.flowRow}>
-                            <div className={styles.flowQ}>イベント駆動の小さな関数（単一処理）を実行したい？</div>
-                            <div className={styles.flowArrow}>→ YES →</div>
-                            <div className={`${styles.flowAns} ${styles.flowAnsAmber}`}>Cloud Run Functions（FaaS）</div>
-                        </div>
-
-                        <div className={styles.flowRow}>
-                            <div
-                                style={{
-                                    width: '360px',
-                                    textAlign: 'right',
-                                    color: 'rgba(255, 255, 255, 0.35)',
-                                    fontSize: '1rem',
-                                    paddingRight: '0.5rem',
-                                }}
-                            >
-                                ↓ それ以外
-                            </div>
-                        </div>
-
-                        <div className={styles.flowRow}>
-                            <div className={`${styles.flowAns} ${styles.flowAnsPlum}`}>App Engine（PaaS Webアプリ）</div>
-                        </div>
-                    </div>
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-border)" />
+                            </marker>
+                        </defs>
+                    </DiagramSVG>
 
                     {/* COMPUTE COMPARISON */}
                     <div className={styles.subTitle}>コンピューティングサービス比較表</div>
                     <div className={styles.cmpWrap} style={{ marginBottom: '2rem' }}>
-                        <TableComponent
+                        <TableComponent getRowKey={(row, i) => i}
                             headers={['サービス', '抽象化レベル', '管理負荷', 'スケーリング', '課金モデル', '主な用途']}
                             rows={COMPUTE_COMPARISON}
                             renderRow={(row, i) => (
@@ -186,7 +156,7 @@ export const Section1 = () => {
                     <div className={styles.subTitle}>Managed Instance Group（MIG）</div>
                     <div className={styles.g4}>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(196, 89, 58, 0.1)' }}>📈</div>
+                            <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">📈</div>
                             <div className={styles.cardTitle}>オートスケーリング</div>
                             <div className={styles.cardBody}>
                                 CPU 使用率・リクエスト数に応じて VM
@@ -194,7 +164,7 @@ export const Section1 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(74, 122, 92, 0.1)' }}>🔧</div>
+                            <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">🔧</div>
                             <div className={styles.cardTitle}>自動ヒーリング</div>
                             <div className={styles.cardBody}>
                                 ヘルスチェックで異常 VM
@@ -202,7 +172,7 @@ export const Section1 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(58, 111, 160, 0.1)' }}>🌍</div>
+                            <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">🌍</div>
                             <div className={styles.cardTitle}>リージョナル MIG</div>
                             <div className={styles.cardBody}>
                                 複数ゾーンに VM を分散配置。1
@@ -210,7 +180,7 @@ export const Section1 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(212, 136, 42, 0.1)' }}>🔄</div>
+                            <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">🔄</div>
                             <div className={styles.cardTitle}>ローリングアップデート</div>
                             <div className={styles.cardBody}>
                                 新バージョンへの更新を順次実施。サービスを停止せずに無停止アップデートが可能。
@@ -279,13 +249,13 @@ export const Section1 = () => {
                     {/* VM vs Container */}
                     <div className={styles.subTitle}>VM とコンテナの比較<span className={styles.examTag}>頻出</span></div>
                     <div className={styles.g2} style={{ marginBottom: '2rem' }}>
-                        <div className={styles.card} style={{ borderLeft: '3px solid var(--color-accent-terracotta, #c4593a)' }}>
+                        <div className={`${styles.card} ${styles.borderLeftRed}`}>
                             <div className={styles.cardTitle}>🖥️ 仮想マシン（VM）</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 物理サーバー上にハイパーバイザーを構築し、各VMが独自のゲスト OS
                                 を持つ仮想化技術。
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ marginBottom: '0.3rem', fontSize: '1rem' }}>⏱️ 起動に数分かかる</li>
                                 <li style={{ marginBottom: '0.3rem' }}>💾 数GB のサイズ（ゲストOS込み）</li>
                                 <li style={{ marginBottom: '0.3rem' }}>
@@ -294,13 +264,13 @@ export const Section1 = () => {
                                 <li>⚙️ OS レベルの完全制御が可能</li>
                             </ul>
                         </div>
-                        <div className={styles.card} style={{ borderLeft: '3px solid var(--color-accent-sage, #4a7a5c)' }}>
+                        <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <div className={styles.cardTitle}>📦 コンテナ</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 ホスト OS
                                 のカーネルを共有しつつ、アプリと依存関係のみをパッケージ化した軽量な実行環境。
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ marginBottom: '0.3rem', fontSize: '1rem' }}>⚡ 起動がミリ秒単位（超高速）</li>
                                 <li style={{ marginBottom: '0.3rem' }}>🪶 数 MB〜数百 MB（軽量）</li>
                                 <li style={{ marginBottom: '0.3rem' }}>
@@ -315,14 +285,14 @@ export const Section1 = () => {
                     <div className={styles.subTitle}>マイクロサービスアーキテクチャのビジネス価値</div>
                     <div className={styles.g3} style={{ marginBottom: '2rem' }}>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(58, 111, 160, 0.1)' }}>🎯</div>
+                            <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">🎯</div>
                             <div className={styles.cardTitle}>独立したデプロイ</div>
                             <div className={styles.cardBody}>
                                 各サービスを他に影響なく個別にデプロイ・更新できる。リリースの頻度と速度が劇的に向上する。
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(74, 122, 92, 0.1)' }}>🔬</div>
+                            <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">🔬</div>
                             <div className={styles.cardTitle}>部分的なスケーリング</div>
                             <div className={styles.cardBody}>
                                 需要が高いサービスのみをスケールアウト。例：EC
@@ -330,7 +300,7 @@ export const Section1 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(196, 89, 58, 0.1)' }}>🛡️</div>
+                            <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🛡️</div>
                             <div className={styles.cardTitle}>障害の局所化</div>
                             <div className={styles.cardBody}>
                                 あるサービスが障害でも他のサービスは動き続ける。システム全体のダウンリスクが大幅に低下。
@@ -346,7 +316,7 @@ export const Section1 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'linear-gradient(135deg, rgba(74, 122, 92, 0.06), rgba(45, 82, 64, 0.03))'
+                                background: 'linear-gradient(135deg, color-mix(in srgb, var(--cdl-green) 6%, transparent), color-mix(in srgb, var(--cdl-green) 3%, transparent))'
                             }}
                         >
                             <div
@@ -368,13 +338,13 @@ export const Section1 = () => {
                                 style={{
                                     fontSize: '1rem',
                                     marginBottom: '0.6rem',
-                                    color: 'var(--color-accent-sage, #4a7a5c)',
+                                    color: 'var(--cdl-green)',
                                     fontWeight: 600
                                 }}
                             >
                                 ✅ 向いているケース
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         marginBottom: '0.25rem',
@@ -404,11 +374,11 @@ export const Section1 = () => {
                                 style={{
                                     marginTop: '0.8rem',
                                     padding: '0.6rem',
-                                    background: 'rgba(74, 122, 92, 0.08)',
+                                    background: 'color-mix(in srgb, var(--cdl-green) 8%, transparent)',
                                     borderRadius: '6px',
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--color-accent-sage, #4a7a5c)'
+                                    color: 'var(--cdl-green)'
                                 }}
                             >
                                 課金: Pod が消費する vCPU / メモリ / ストレージ単位
@@ -417,7 +387,7 @@ export const Section1 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'linear-gradient(135deg, rgba(58, 111, 160, 0.06), rgba(30, 63, 110, 0.03))'
+                                background: 'linear-gradient(135deg, color-mix(in srgb, var(--cdl-blue) 6%, transparent), color-mix(in srgb, var(--cdl-blue) 3%, transparent))'
                             }}
                         >
                             <div
@@ -439,13 +409,13 @@ export const Section1 = () => {
                                 style={{
                                     fontSize: '1rem',
                                     marginBottom: '0.6rem',
-                                    color: 'var(--color-accent-sky, #3a6fa0)',
+                                    color: 'var(--cdl-blue)',
                                     fontWeight: 600
                                 }}
                             >
                                 ✅ 向いているケース
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         marginBottom: '0.25rem',
@@ -475,11 +445,11 @@ export const Section1 = () => {
                                 style={{
                                     marginTop: '0.8rem',
                                     padding: '0.6rem',
-                                    background: 'rgba(58, 111, 160, 0.08)',
+                                    background: 'color-mix(in srgb, var(--cdl-blue) 8%, transparent)',
                                     borderRadius: '6px',
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--color-accent-sky, #3a6fa0)'
+                                    color: 'var(--cdl-blue)'
                                 }}
                             >
                                 課金: ノード VM の稼働時間 + 管理プレーン

@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './Section4.module.css';
 
+/**
+ * Section4 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section4 の JSX
+ */
 export const Section4 = () => {
     return (
         <>
@@ -16,7 +23,7 @@ export const Section4 = () => {
 
                     <div className={styles.g4} style={{ marginBottom: '1.5rem' }}>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(196, 89, 58, 0.1)' }}>🎯</div>
+                            <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🎯</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>適切なサービス選択</div>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 IaaS より
@@ -24,7 +31,7 @@ export const Section4 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(74, 122, 92, 0.1)' }}>📏</div>
+                            <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">📏</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>適切なサイジング</div>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 Recommender
@@ -32,7 +39,7 @@ export const Section4 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(58, 111, 160, 0.1)' }}>📈</div>
+                            <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">📈</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 需要に合わせたスケーリング
                             </div>
@@ -42,7 +49,7 @@ export const Section4 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(212, 136, 42, 0.1)' }}>💳</div>
+                            <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">💳</div>
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>最適な価格モデル</div>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 CUD（最大57%割引）・Spot
@@ -91,7 +98,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--color-accent-terracotta, #c4593a)',
+                                    color: 'var(--cdl-red)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -126,7 +133,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--color-accent-terracotta, #c4593a)',
+                                    color: 'var(--cdl-red)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -164,7 +171,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--color-accent-terracotta, #c4593a)',
+                                    color: 'var(--cdl-red)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -197,7 +204,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--color-accent-terracotta, #c4593a)',
+                                    color: 'var(--cdl-red)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -328,8 +335,8 @@ export const Section4 = () => {
                         <table className={styles.cmpTable}>
                             <thead>
                                 <tr>
-                                    <th>混同パターン</th>
-                                    <th>✅ 正しい理解</th>
+                                    <th scope="col">混同パターン</th>
+                                    <th scope="col">✅ 正しい理解</th>
                                 </tr>
                             </thead>
                             <tbody>

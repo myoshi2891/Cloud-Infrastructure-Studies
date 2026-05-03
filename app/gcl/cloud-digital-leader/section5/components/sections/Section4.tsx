@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './Section4.module.css';
 
+/**
+ * Section4 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section4 の JSX
+ */
 export const Section4 = () => {
     return (
         <>
@@ -77,7 +84,7 @@ export const Section4 = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     style={{
-                                        color: '#d4882a',
+                                        color: 'var(--cdl-yellow)',
                                         fontSize: '1rem',
                                         fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
                                         textDecoration: 'none'
@@ -100,7 +107,7 @@ export const Section4 = () => {
                     </div>
 
                     <div className={styles.infoBox} style={{ marginTop: '1.5rem' }}>
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>🌏 データ主権とリージョン選択：</strong>
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>🌏 データ主権とリージョン選択：</strong>
                         EU のデータは EU リージョン（<code style={{ background: 'rgba(0,0,0,0.05)', padding: '2px 4px', borderRadius: '3px' }}>europe-west1</code>
                         等）、日本のデータは日本リージョン（<code style={{ background: 'rgba(0,0,0,0.05)', padding: '2px 4px', borderRadius: '3px' }}>asia-northeast1</code> 東京）に保管。
                         組織ポリシー
@@ -139,7 +146,7 @@ export const Section4 = () => {
                     </div>
 
                     <div className={styles.infoBox} style={{ marginBottom: '1.5rem' }}>
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Sensitive Data Protection（旧 Cloud DLP）とは：</strong>
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Sensitive Data Protection（旧 Cloud DLP）とは：</strong>
                         テキスト・画像・構造化データ内の機密情報を自動検出・分類・保護するサービス。 150
                         以上の組み込み情報タイプ（PII・医療情報・認証情報など）に対応。
                     </div>
@@ -148,81 +155,81 @@ export const Section4 = () => {
                         7 つの保護手法<span className={styles.examTag}>試験で最頻出</span>
                     </div>
                     <div className={styles.dlpGrid}>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: '#3a6fa0' }}>
-                            <div className={styles.dlpName} style={{ color: '#3a6fa0' }}>① 検出</div>
+                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--cdl-blue)' }}>
+                            <div className={styles.dlpName} style={{ color: 'var(--cdl-blue)' }}>① 検出</div>
                             <div className={styles.dlpDesc}>
-                                どこに機密データがあるかを<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>発見するだけ</strong>。BigQuery
+                                どこに機密データがあるかを<strong style={{ color: 'var(--color-accent-foreground)' }}>発見するだけ</strong>。BigQuery
                                 の全テーブルをスキャンして PII を含む列を特定。
                             </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-text-muted, #7a7470)' }}>
+                            <div className={styles.dlpExample} style={{ color: 'var(--color-muted-foreground)' }}>
                                 変更なし → 場所の把握のみ
                             </div>
                         </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: '#c4593a' }}>
-                            <div className={styles.dlpName} style={{ color: '#c4593a' }}>② マスキング</div>
+                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--cdl-red)' }}>
+                            <div className={styles.dlpName} style={{ color: 'var(--cdl-red)' }}>② マスキング</div>
                             <div className={styles.dlpDesc}>
-                                一部を「*」や「X」で<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>置き換え</strong>。末尾のみ表示などで必要最小限を残す。
+                                一部を「*」や「X」で<strong style={{ color: 'var(--color-accent-foreground)' }}>置き換え</strong>。末尾のみ表示などで必要最小限を残す。
                             </div>
-                            <div className={styles.dlpExample} style={{ color: '#c4593a' }}>
+                            <div className={styles.dlpExample} style={{ color: 'var(--cdl-red)' }}>
                                 090-1234-5678 → ***-****-5678
                             </div>
                         </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: '#d4882a' }}>
-                            <div className={styles.dlpName} style={{ color: '#d4882a' }}>③ 仮名化 ⚠️</div>
+                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--cdl-yellow)' }}>
+                            <div className={styles.dlpName} style={{ color: 'var(--cdl-yellow)' }}>③ 仮名化 ⚠️</div>
                             <div className={styles.dlpDesc}>
-                                識別子を仮の識別子に置換。<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>変換テーブルで元に戻せる</strong>（再識別可能）。GDPR
+                                識別子を仮の識別子に置換。<strong style={{ color: 'var(--color-accent-foreground)' }}>変換テーブルで元に戻せる</strong>（再識別可能）。GDPR
                                 引き続き適用。
                             </div>
-                            <div className={styles.dlpExample} style={{ color: '#d4882a' }}>
+                            <div className={styles.dlpExample} style={{ color: 'var(--cdl-yellow)' }}>
                                 田中太郎 → UID-a7f3k
                             </div>
                         </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: '#4a7a5c' }}>
-                            <div className={styles.dlpName} style={{ color: '#4a7a5c' }}>④ 匿名化 ✅</div>
+                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--cdl-green)' }}>
+                            <div className={styles.dlpName} style={{ color: 'var(--cdl-green)' }}>④ 匿名化 ✅</div>
                             <div className={styles.dlpDesc}>
-                                識別情報を<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>完全に除去・元に戻せない</strong>。GDPR
+                                識別情報を<strong style={{ color: 'var(--color-accent-foreground)' }}>完全に除去・元に戻せない</strong>。GDPR
                                 規制対象外になる。研究データの公開に最適。
                             </div>
-                            <div className={styles.dlpExample} style={{ color: '#4a7a5c' }}>
+                            <div className={styles.dlpExample} style={{ color: 'var(--cdl-green)' }}>
                                 田中太郎・渋谷区 → 30代男性・東京都内
                             </div>
                         </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: '#3a6fa0' }}>
-                            <div className={styles.dlpName} style={{ color: '#3a6fa0' }}>⑤ トークン化</div>
+                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--cdl-blue)' }}>
+                            <div className={styles.dlpName} style={{ color: 'var(--cdl-blue)' }}>⑤ トークン化</div>
                             <div className={styles.dlpDesc}>
-                                値を<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>ランダムなトークンに置換</strong>。同じ形式・長さを保つことも可能。PCI
+                                値を<strong style={{ color: 'var(--color-accent-foreground)' }}>ランダムなトークンに置換</strong>。同じ形式・長さを保つことも可能。PCI
                                 DSS のカードデータに最適。
                             </div>
-                            <div className={styles.dlpExample} style={{ color: '#3a6fa0' }}>
+                            <div className={styles.dlpExample} style={{ color: 'var(--cdl-blue)' }}>
                                 4111-xxxx → TOKEN-ab3f8x
                             </div>
                         </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: '#e05050' }}>
-                            <div className={styles.dlpName} style={{ color: '#e05050' }}>⑥ 暗号化</div>
+                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--cdl-red)' }}>
+                            <div className={styles.dlpName} style={{ color: 'var(--cdl-red)' }}>⑥ 暗号化</div>
                             <div className={styles.dlpDesc}>
-                                暗号化キーで暗号化。<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>鍵があれば復号可能</strong>。鍵管理が重要。Cloud
+                                暗号化キーで暗号化。<strong style={{ color: 'var(--color-accent-foreground)' }}>鍵があれば復号可能</strong>。鍵管理が重要。Cloud
                                 KMS と組み合わせる。
                             </div>
-                            <div className={styles.dlpExample} style={{ color: '#e05050' }}>
+                            <div className={styles.dlpExample} style={{ color: 'var(--cdl-red)' }}>
                                 090-1234-5678 → 3f8a…9d2c
                             </div>
                         </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: '#6b3f7a' }}>
-                            <div className={styles.dlpName} style={{ color: '#6b3f7a' }}>⑦ 日付シフト</div>
+                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--cdl-purple)' }}>
+                            <div className={styles.dlpName} style={{ color: 'var(--cdl-purple)' }}>⑦ 日付シフト</div>
                             <div className={styles.dlpDesc}>
-                                日付をランダムにずらす。<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>統計的特性を保ちつつ</strong>個人を特定できなくする。医療・研究データに活用。
+                                日付をランダムにずらす。<strong style={{ color: 'var(--color-accent-foreground)' }}>統計的特性を保ちつつ</strong>個人を特定できなくする。医療・研究データに活用。
                             </div>
-                            <div className={styles.dlpExample} style={{ color: '#6b3f7a' }}>
+                            <div className={styles.dlpExample} style={{ color: 'var(--cdl-purple)' }}>
                                 2024-01-15 → 2024-03-27（±数ヶ月）
                             </div>
                         </div>
                     </div>
 
                     <div className={styles.warnBox} style={{ marginTop: '1.5rem' }}>
-                        <strong style={{ color: '#e05050' }}>⚠️ 試験の超頻出：匿名化 vs 仮名化の違い</strong><br />
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>匿名化（Anonymization）</strong>：再識別不可能 → GDPR
+                        <strong style={{ color: 'var(--cdl-red)' }}>⚠️ 試験の超頻出：匿名化 vs 仮名化の違い</strong><br />
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>匿名化（Anonymization）</strong>：再識別不可能 → GDPR
                         規制対象外。データを公開・共有したい場合。<br />
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>仮名化（Pseudonymization）</strong>：変換テーブルで再識別可能 → GDPR
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>仮名化（Pseudonymization）</strong>：変換テーブルで再識別可能 → GDPR
                         引き続き適用。開発・テスト環境で本番データを使いたい場合。
                     </div>
 
@@ -231,7 +238,7 @@ export const Section4 = () => {
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>開発・テスト環境</div>
                             <div className={styles.cardBody}>
                                 本番データを使う必要がある場合 →
-                                <strong style={{ color: '#d4882a' }}>仮名化</strong><br />元データへの変換が可能なため、後から正式データでの検証もできる
+                                <strong style={{ color: 'var(--cdl-yellow)' }}>仮名化</strong><br />元データへの変換が可能なため、後から正式データでの検証もできる
                             </div>
                         </div>
                         <div className={styles.card}>
@@ -240,7 +247,7 @@ export const Section4 = () => {
                             </div>
                             <div className={styles.cardBody}>
                                 外部に公開・第三者と共有する場合 →
-                                <strong style={{ color: '#4a7a5c' }}>匿名化</strong><br />GDPR
+                                <strong style={{ color: 'var(--cdl-green)' }}>匿名化</strong><br />GDPR
                                 対象外になるため、規制の制約なしに活用できる
                             </div>
                         </div>
@@ -248,7 +255,7 @@ export const Section4 = () => {
                             <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>PCI DSS・決済データ</div>
                             <div className={styles.cardBody}>
                                 クレジットカード番号の保護 →
-                                <strong style={{ color: '#3a6fa0' }}>トークン化</strong><br />同じ形式・長さを維持しつつ実際のカード番号を隠蔽
+                                <strong style={{ color: 'var(--cdl-blue)' }}>トークン化</strong><br />同じ形式・長さを維持しつつ実際のカード番号を隠蔽
                             </div>
                         </div>
                     </div>
@@ -286,7 +293,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
                                     fontSize: '1rem',
-                                    color: '#d4882a',
+                                    color: 'var(--cdl-yellow)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -319,7 +326,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
                                     fontSize: '1rem',
-                                    color: '#d4882a',
+                                    color: 'var(--cdl-yellow)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -352,7 +359,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
                                     fontSize: '1rem',
-                                    color: '#d4882a',
+                                    color: 'var(--cdl-yellow)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -383,7 +390,7 @@ export const Section4 = () => {
                                 style={{
                                     fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
                                     fontSize: '1rem',
-                                    color: '#d4882a',
+                                    color: 'var(--cdl-yellow)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
                                     marginBottom: '0.8rem',
@@ -509,8 +516,8 @@ export const Section4 = () => {
                         <table className={styles.confTable}>
                             <thead>
                                 <tr>
-                                    <th>混同パターン</th>
-                                    <th>✅ 正しい理解</th>
+                                    <th scope="col">混同パターン</th>
+                                    <th scope="col">✅ 正しい理解</th>
                                 </tr>
                             </thead>
                             <tbody>

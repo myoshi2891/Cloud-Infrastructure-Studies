@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './Section0.module.css';
 
+/**
+ * Section0 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section0 の JSX
+ */
 export const Section0 = () => {
     return (
         <section id="overview" className={styles.section}>
@@ -14,8 +21,8 @@ export const Section0 = () => {
                 </div>
 
                 <div className={styles.g3}>
-                    <div className={styles.card} style={{ borderTop: '3px solid #d4882a' }}>
-                        <div className={styles.cardIcon}>🏛️</div>
+                    <div className={`${styles.card} ${styles.borderYellow}`}>
+                        <div className={styles.cardIcon} aria-hidden="true">🏛️</div>
                         <div className={styles.cardTitle}>5.1 クラウドセキュリティの基礎</div>
                         <div className={styles.cardBody}>
                             責任共有モデル（Shared Responsibility）・ゼロトラスト / BeyondCorp・CIA
@@ -25,8 +32,8 @@ export const Section0 = () => {
                             <span className={`${styles.badge} ${styles.badgeGold}`}>基礎概念</span>
                         </div>
                     </div>
-                    <div className={styles.card} style={{ borderTop: '3px solid #4a7a5c' }}>
-                        <div className={styles.cardIcon}>🔑</div>
+                    <div className={`${styles.card} ${styles.borderGreen}`}>
+                        <div className={styles.cardIcon} aria-hidden="true">🔑</div>
                         <div className={styles.cardTitle}>5.2 IAM とアクセス管理</div>
                         <div className={styles.cardBody}>
                             Identity and Access Management・3
@@ -37,8 +44,8 @@ export const Section0 = () => {
                             <span className={`${styles.badge} ${styles.badgeTeal}`}>IAM</span>
                         </div>
                     </div>
-                    <div className={styles.card} style={{ borderTop: '3px solid #3a6fa0' }}>
-                        <div className={styles.cardIcon}>🔒</div>
+                    <div className={`${styles.card} ${styles.borderBlue}`}>
+                        <div className={styles.cardIcon} aria-hidden="true">🔒</div>
                         <div className={styles.cardTitle}>5.3 暗号化とデータ保護</div>
                         <div className={styles.cardBody}>
                             保存中・転送中・使用中の暗号化・Google-Managed Keys / CMEK / CSEK・Cloud
@@ -48,8 +55,8 @@ export const Section0 = () => {
                             <span className={`${styles.badge} ${styles.badgeSky}`}>暗号化</span>
                         </div>
                     </div>
-                    <div className={styles.card} style={{ borderTop: '3px solid #c4593a' }}>
-                        <div className={styles.cardIcon}>🛡️</div>
+                    <div className={`${styles.card} ${styles.borderRed}`}>
+                        <div className={styles.cardIcon} aria-hidden="true">🛡️</div>
                         <div className={styles.cardTitle}>5.4 ネットワークセキュリティ</div>
                         <div className={styles.cardBody}>
                             Cloud Armor（DDoS/WAF）・Cloud IAP（ゼロトラスト）・VPC Service
@@ -59,8 +66,8 @@ export const Section0 = () => {
                             <span className={`${styles.badge} ${styles.badgeAmber}`}>ネットワーク</span>
                         </div>
                     </div>
-                    <div className={styles.card} style={{ borderTop: '3px solid #6b3f7a' }}>
-                        <div className={styles.cardIcon}>👁️</div>
+                    <div className={`${styles.card} ${styles.borderPurple}`}>
+                        <div className={styles.cardIcon} aria-hidden="true">👁️</div>
                         <div className={styles.cardTitle}>5.5 脅威検出・セキュリティ監視</div>
                         <div className={styles.cardBody}>
                             Security Command Center・Cloud Audit Logs（4 種類）・Cloud
@@ -70,8 +77,8 @@ export const Section0 = () => {
                             <span className={`${styles.badge} ${styles.badgeRed}`}>監視・検出</span>
                         </div>
                     </div>
-                    <div className={styles.card} style={{ borderTop: '3px solid #4a7a5c' }}>
-                        <div className={styles.cardIcon}>📋</div>
+                    <div className={`${styles.card} ${styles.borderGreen}`}>
+                        <div className={styles.cardIcon} aria-hidden="true">📋</div>
                         <div className={styles.cardTitle}>5.6 コンプライアンス・DLP</div>
                         <div className={styles.cardBody}>
                             GDPR・HIPAA・PCI DSS・Sensitive Data Protection

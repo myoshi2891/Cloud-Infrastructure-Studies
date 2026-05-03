@@ -17,7 +17,7 @@ export const Section13: React.FC = () => (
             idNumber="13.1"
             title="比較レポート"
         >
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['比較項目', 'オンプレミス', 'クラウド']}
                 rows={ON_PREMISE_VS_CLOUD_COMPARISON}
                 renderRow={(row, i) => (

@@ -33,7 +33,7 @@ export const Section11: React.FC = () => {
                 </DiagramSVG>
 
                 <h4 className={`${baseStyles.stitle} mt-6`}>具体的な活用例</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['課題', 'データ', 'GCP サービス', '効果']}
                     rows={USE_CASES_EXAMPLES}
                     renderRow={(row, i) => (

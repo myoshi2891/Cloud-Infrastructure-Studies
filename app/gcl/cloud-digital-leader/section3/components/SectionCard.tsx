@@ -28,7 +28,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({ id, idNumber, title, d
                 <span className={styles.tid}>{idNumber}</span>
                 {title}
             </h3>
-            {description && <p className={styles.tdesc}>{description}</p>}
+            {description && <div className={styles.tdesc}>{description}</div>}
             {children}
         </div>
     );

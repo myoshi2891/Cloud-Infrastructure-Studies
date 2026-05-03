@@ -2,34 +2,43 @@ import React from 'react';
 import styles from '../../../../../components/DiagramSVG.module.css';
 
 /**
- * SVGダイアグラムを表示するためのコンポーネント
- * 
- * アクセシビリティに配慮したSVGラッパーとして機能します。
- * 
- * @param viewBox - SVGのビューボックス（例: "0 0 600 300"）
- * @param ariaLabel - SVG要素のアクセシビリティラベル
- * @param children - SVG内部に描画されるReact要素
- * @returns ラップされたSVG要素
+ * SVGダイアグラムを表示するためのアクセシブルなコンポーネント。
+ *
+ * Discriminated Union 型により、`decorative={true}` でない限り `ariaLabel` が必須となり、
+ * コンパイル時に無ラベルの非装飾的SVGを検出できます。
  */
-interface DiagramSVGProps {
-    viewBox: string;
-    ariaLabel?: string;
-    children: React.ReactNode;
-}
+export type DiagramSVGProps =
+    | {
+          viewBox: string;
+          children: React.ReactNode;
+          /** 装飾的な画像（スクリーンリーダーから隠す）として扱う場合は true を指定 */
+          decorative: true;
+          ariaLabel?: never;
+      }
+    | {
+          viewBox: string;
+          children: React.ReactNode;
+          decorative?: false;
+          /** スクリーンリーダー向けの説明ラベル（decorative でない場合は必須） */
+          ariaLabel: string;
+      };
 
-export const DiagramSVG: React.FC<DiagramSVGProps> = ({ viewBox, ariaLabel, children }) => {
+export const DiagramSVG: React.FC<DiagramSVGProps> = (props) => {
+    const isHidden = props.decorative === true;
     return (
         <div className={styles.diagramSvg}>
-            <svg 
-                viewBox={viewBox} 
-                width="100%" 
-                height="100%" 
-                fill="none" 
+            <svg
+                viewBox={props.viewBox}
+                width="100%"
+                height="100%"
+                fill="none"
                 stroke="currentColor"
-                {...(ariaLabel ? { role: 'img', 'aria-label': ariaLabel } : { 'aria-hidden': 'true' })}
+                {...(isHidden
+                    ? { 'aria-hidden': 'true' }
+                    : { role: 'img', 'aria-label': props.ariaLabel })}
             >
-                {ariaLabel && <title>{ariaLabel}</title>}
-                {children}
+                {!isHidden && <title>{props.ariaLabel}</title>}
+                {props.children}
             </svg>
         </div>
     );

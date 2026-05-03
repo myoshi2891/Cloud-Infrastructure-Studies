@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './Section1.module.css';
 
+/**
+ * Section1 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section1 の JSX
+ */
 export const Section1 = () => {
     return (
         <>
@@ -19,10 +26,10 @@ export const Section1 = () => {
                         <table className={styles.srTable}>
                             <thead>
                                 <tr>
-                                    <th>責任領域</th>
-                                    <th>SaaS（例: Google Workspace）</th>
-                                    <th>PaaS（例: Cloud SQL）</th>
-                                    <th>IaaS（例: Compute Engine）</th>
+                                    <th scope="col">責任領域</th>
+                                    <th scope="col">SaaS（例: Google Workspace）</th>
+                                    <th scope="col">PaaS（例: Cloud SQL）</th>
+                                    <th scope="col">IaaS（例: Compute Engine）</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,37 +80,37 @@ export const Section1 = () => {
                     </div>
 
                     <div className={styles.g2}>
-                        <div className={styles.card} style={{ borderLeft: '3px solid #4a7a5c' }}>
+                        <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <div className={styles.cardTitle}>✅ Google が常に守るもの</div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#4a7a5c' }}>›</span>データセンターへの物理的な侵入防止
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>データセンターへの物理的な侵入防止
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#4a7a5c' }}>›</span>ハードウェアの完全性（Titan チップ）
+                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>ハードウェアの完全性（Titan チップ）
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#4a7a5c' }}>›</span>ネットワークインフラへの攻撃対策
+                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>ネットワークインフラへの攻撃対策
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#4a7a5c' }}>›</span>ハイパーバイザーの脆弱性対応
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>ハイパーバイザーの脆弱性対応
                                 </li>
                             </ul>
                         </div>
-                        <div className={styles.card} style={{ borderLeft: '3px solid #d4882a' }}>
+                        <div className={`${styles.card} ${styles.borderLeftYellow}`}>
                             <div className={styles.cardTitle}>⚠️ ユーザーが常に守るもの</div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#d4882a' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#d4882a' }}>›</span>データの分類と適切な保護設定
+                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>データの分類と適切な保護設定
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#d4882a' }}>›</span>アプリケーションのセキュリティ
+                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>アプリケーションのセキュリティ
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#d4882a' }}>›</span>エンドユーザーの認証・認可設定
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>エンドユーザーの認証・認可設定
                                 </li>
                             </ul>
                         </div>
@@ -112,7 +119,7 @@ export const Section1 = () => {
                     <div className={styles.warnBox} style={{ marginTop: '1.5rem' }}>
                         <strong>⚠️ 試験頻出の引っかけ：</strong>
                         「Google Cloud はセキュアだから、ユーザーは何もしなくていい」→
-                        <strong style={{ color: '#d4882a' }}>誤り！</strong>
+                        <strong style={{ color: 'var(--cdl-yellow)' }}>誤り！</strong>
                         データへのアクセス制御（IAM）・データの保護設定・アプリのセキュリティは常にユーザーの責任です。
                         Google
                         は<em>インフラ</em>を守りますが、<em>データとアクセス管理</em>はユーザーの責任です。
@@ -151,7 +158,7 @@ export const Section1 = () => {
                             style={{
                                 fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                 fontSize: '1rem',
-                                color: 'rgba(255, 255, 255, 0.5)',
+                                color: 'color-mix(in srgb, var(--color-accent-foreground) 50%, transparent)',
                                 marginBottom: '1.5rem',
                                 letterSpacing: '0.1em',
                                 textTransform: 'uppercase',
@@ -185,8 +192,8 @@ export const Section1 = () => {
 
                     <div className={styles.subTitle}>Google の BeyondCorp 実装サービス</div>
                     <div className={styles.g3}>
-                        <div className={styles.card} style={{ borderTop: '3px solid #d4882a' }}>
-                            <div className={styles.cardIcon}>🚪</div>
+                        <div className={`${styles.card} ${styles.borderYellow}`}>
+                            <div className={styles.cardIcon} aria-hidden="true">🚪</div>
                             <div className={styles.cardTitle}>Cloud Identity-Aware Proxy（IAP）</div>
                             <div className={styles.cardBody}>
                                 VPN
@@ -196,8 +203,8 @@ export const Section1 = () => {
                                 <span className={`${styles.badge} ${styles.badgeGold}`}>ゼロトラストの中心</span>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid #4a7a5c' }}>
-                            <div className={styles.cardIcon}>📋</div>
+                        <div className={`${styles.card} ${styles.borderGreen}`}>
+                            <div className={styles.cardIcon} aria-hidden="true">📋</div>
                             <div className={styles.cardTitle}>Context-Aware Access</div>
                             <div className={styles.cardBody}>
                                 場所・デバイス・時間帯などのコンテキストに応じてアクセスを制御。「管理されたデバイスからのみ本番へアクセス可」などを実装。
@@ -206,8 +213,8 @@ export const Section1 = () => {
                                 <span className={`${styles.badge} ${styles.badgeTeal}`}>条件付きアクセス</span>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid #3a6fa0' }}>
-                            <div className={styles.cardIcon}>🏢</div>
+                        <div className={`${styles.card} ${styles.borderBlue}`}>
+                            <div className={styles.cardIcon} aria-hidden="true">🏢</div>
                             <div className={styles.cardTitle}>BeyondCorp Enterprise</div>
                             <div className={styles.cardBody}>
                                 企業全体のゼロトラスト導入を支援するマネージドプラットフォーム。デバイス検証・ユーザー認証・アクセスポリシーを統合管理。

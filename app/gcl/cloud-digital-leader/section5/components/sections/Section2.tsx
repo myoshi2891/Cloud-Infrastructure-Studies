@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './Section2.module.css';
 
+/**
+ * Section2 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section2 の JSX
+ */
 export const Section2 = () => {
     return (
         <>
@@ -20,21 +27,21 @@ export const Section2 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'rgba(212, 136, 42, 0.06)',
-                                borderColor: 'rgba(212, 136, 42, 0.2)',
+                                background: 'color-mix(in srgb, var(--cdl-yellow) 6%, transparent)',
+                                borderColor: 'color-mix(in srgb, var(--cdl-yellow) 20%, transparent)',
                             }}
                         >
                             <div
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: '#d4882a',
+                                    color: 'var(--cdl-yellow)',
                                     marginBottom: '0.7rem',
                                 }}
                             >
                                 PRINCIPAL / 主体（誰が）
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ marginBottom: '0.4rem' }}>
                                     👤 Google アカウント（個人ユーザー）
                                 </li>
@@ -46,7 +53,7 @@ export const Section2 = () => {
                                     🤖 サービスアカウント（アプリ・VM）
                                 </li>
                                 <li style={{ marginBottom: '0.4rem' }}>🌐 Cloud Identity ドメイン</li>
-                                <li style={{ color: '#e05050' }}>
+                                <li style={{ color: 'var(--cdl-red)' }}>
                                     ⚠️ allUsers / allAuthenticatedUsers（公開設定 — 原則使用禁止）
                                 </li>
                             </ul>
@@ -54,34 +61,34 @@ export const Section2 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'rgba(74, 122, 92, 0.05)',
-                                borderColor: 'rgba(74, 122, 92, 0.15)',
+                                background: 'color-mix(in srgb, var(--cdl-green) 5%, transparent)',
+                                borderColor: 'color-mix(in srgb, var(--cdl-green) 15%, transparent)',
                             }}
                         >
                             <div
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: '#4a7a5c',
+                                    color: 'var(--cdl-green)',
                                     marginBottom: '0.7rem',
                                 }}
                             >
                                 ROLE / ロール（何ができるか）
                             </div>
-                            <div style={{ fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)' }}>
+                            <div style={{ fontSize: '1rem', color: 'var(--color-muted-foreground)' }}>
                                 <div style={{ marginBottom: '0.5rem' }}>
                                     <span className={`${styles.badge} ${styles.badgeRed}`}>非推奨</span>
-                                    <strong style={{ color: 'var(--color-text-primary, #1a1a1a)', marginLeft: '0.5rem' }}>基本ロール</strong> — Owner / Editor / Viewer<br />
+                                    <strong style={{ color: 'var(--color-accent-foreground)', marginLeft: '0.5rem' }}>基本ロール</strong> — Owner / Editor / Viewer<br />
                                     <span style={{ fontSize: '0.95rem' }}>プロジェクト全体に広すぎる権限。本番環境では使用禁止。</span>
                                 </div>
                                 <div style={{ marginBottom: '0.5rem' }}>
                                     <span className={`${styles.badge} ${styles.badgeTeal}`}>推奨</span>
-                                    <strong style={{ color: 'var(--color-text-primary, #1a1a1a)', marginLeft: '0.5rem' }}>事前定義ロール</strong><br />
+                                    <strong style={{ color: 'var(--color-accent-foreground)', marginLeft: '0.5rem' }}>事前定義ロール</strong><br />
                                     <span style={{ fontSize: '0.95rem' }}>特定サービスに最適化。Google が管理・更新。</span>
                                 </div>
                                 <div>
                                     <span className={`${styles.badge} ${styles.badgeSky}`}>精密</span>
-                                    <strong style={{ color: 'var(--color-text-primary, #1a1a1a)', marginLeft: '0.5rem' }}>カスタムロール</strong><br />
+                                    <strong style={{ color: 'var(--color-accent-foreground)', marginLeft: '0.5rem' }}>カスタムロール</strong><br />
                                     <span style={{ fontSize: '0.95rem' }}>必要な権限だけを独自に組み合わせ。最小権限の徹底実現。</span>
                                 </div>
                             </div>
@@ -89,21 +96,21 @@ export const Section2 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'rgba(58, 111, 160, 0.05)',
-                                borderColor: 'rgba(58, 111, 160, 0.15)',
+                                background: 'color-mix(in srgb, var(--cdl-blue) 5%, transparent)',
+                                borderColor: 'color-mix(in srgb, var(--cdl-blue) 15%, transparent)',
                             }}
                         >
                             <div
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: '#3a6fa0',
+                                    color: 'var(--cdl-blue)',
                                     marginBottom: '0.7rem',
                                 }}
                             >
                                 RESOURCE / リソース（何に対して）
                             </div>
-                            <div style={{ fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)' }}>
+                            <div style={{ fontSize: '1rem', color: 'var(--color-muted-foreground)' }}>
                                 <div style={{ marginBottom: '0.4rem' }}>🏢 組織（Organization）— 全体に継承</div>
                                 <div style={{ marginBottom: '0.4rem' }}>📁 フォルダ（Folder）— 部門単位</div>
                                 <div style={{ marginBottom: '0.4rem' }}>📂 プロジェクト（Project）— アプリ単位</div>
@@ -112,7 +119,7 @@ export const Section2 = () => {
                                     style={{
                                         marginTop: '0.7rem',
                                         fontSize: '0.95rem',
-                                        color: 'var(--color-text-muted, #7a7470)',
+                                        color: 'var(--color-muted-foreground)',
                                         fontStyle: 'italic',
                                     }}
                                 >
@@ -130,18 +137,18 @@ export const Section2 = () => {
                         <table className={styles.roleTable}>
                             <thead>
                                 <tr>
-                                    <th>種類</th>
-                                    <th>権限の範囲</th>
-                                    <th>管理主体</th>
-                                    <th>推奨度</th>
-                                    <th>使い所</th>
+                                    <th scope="col">種類</th>
+                                    <th scope="col">権限の範囲</th>
+                                    <th scope="col">管理主体</th>
+                                    <th scope="col">推奨度</th>
+                                    <th scope="col">使い所</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
                                         基本ロール<br />
-                                        <code style={{ fontSize: '0.95rem', background: 'rgba(224, 80, 80, 0.1)', padding: '2px 4px', borderRadius: '3px', color: '#e05050' }}>Owner/Editor/Viewer</code>
+                                        <code style={{ fontSize: '0.95rem', background: 'color-mix(in srgb, var(--cdl-red) 10%, transparent)', padding: '2px 4px', borderRadius: '3px', color: 'var(--cdl-red)' }}>Owner/Editor/Viewer</code>
                                     </td>
                                     <td>プロジェクト全体に広範な権限。非常に粗い粒度。</td>
                                     <td>Google</td>
@@ -151,7 +158,7 @@ export const Section2 = () => {
                                 <tr>
                                     <td>
                                         事前定義ロール<br />
-                                        <code style={{ fontSize: '0.95rem', background: 'rgba(74, 122, 92, 0.1)', padding: '2px 4px', borderRadius: '3px', color: '#4a7a5c' }}>roles/bigquery.dataViewer</code>
+                                        <code style={{ fontSize: '0.95rem', background: 'color-mix(in srgb, var(--cdl-green) 10%, transparent)', padding: '2px 4px', borderRadius: '3px', color: 'var(--cdl-green)' }}>roles/bigquery.dataViewer</code>
                                     </td>
                                     <td>特定サービスの特定操作に最適化された細かい権限セット</td>
                                     <td>Google（自動更新）</td>
@@ -174,7 +181,7 @@ export const Section2 = () => {
                         サービスアカウントの安全管理<span className={styles.examTag}>頻出</span>
                     </div>
                     <div className={styles.g2}>
-                        <div className={styles.card} style={{ borderLeft: '3px solid #e05050' }}>
+                        <div className={`${styles.card} ${styles.borderLeftRed}`}>
                             <div className={styles.cardTitle}>❌ サービスアカウントキーの危険性</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 JSON
@@ -183,25 +190,25 @@ export const Section2 = () => {
                             </div>
                             <div className={styles.warnBox} style={{ marginTop: '0.5rem', fontSize: '0.95rem', padding: '1rem' }}>
                                 <strong>組織ポリシーで禁止推奨：</strong><br />
-                                <code style={{ fontFamily: 'var(--ff-mono, "DM Mono", monospace)', background: 'rgba(255,255,255,0.5)', padding: '2px 4px', borderRadius: '3px', marginTop: '0.4rem', display: 'inline-block' }}>constraints/iam.disableServiceAccountKeyCreation</code>
+                                <code style={{ fontFamily: 'var(--ff-mono, "DM Mono", monospace)', background: 'color-mix(in srgb, var(--color-accent-foreground) 50%, transparent)', padding: '2px 4px', borderRadius: '3px', marginTop: '0.4rem', display: 'inline-block' }}>constraints/iam.disableServiceAccountKeyCreation</code>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderLeft: '3px solid #4a7a5c' }}>
+                        <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <div className={styles.cardTitle}>✅ キーなしの代替認証手法</div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-text-secondary, #4a4541)', padding: 0, margin: 0 }}>
-                                <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#4a7a5c' }}>①</span>
-                                    <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Application Default Credentials（ADC）</strong>
+                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                                <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>①</span>
+                                    <strong style={{ color: 'var(--color-accent-foreground)' }}>Application Default Credentials（ADC）</strong>
                                     <br />— VM・Cloud Run は自動認証
                                 </li>
-                                <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border-light, #e0dbd2)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#4a7a5c' }}>②</span>
-                                    <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Workload Identity（GKE）</strong>
+                                <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>②</span>
+                                    <strong style={{ color: 'var(--color-accent-foreground)' }}>Workload Identity（GKE）</strong>
                                     <br />— Pod に SA を直接紐付け
                                 </li>
                                 <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: '#4a7a5c' }}>③</span>
-                                    <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Workload Identity Federation</strong>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>③</span>
+                                    <strong style={{ color: 'var(--color-accent-foreground)' }}>Workload Identity Federation</strong>
                                     <br />— AWS・GitHub Actions との連携（短期トークン）
                                 </li>
                             </ul>
@@ -263,18 +270,18 @@ export const Section2 = () => {
                         <div className={styles.encItem}>
                             <div
                                 className={styles.encNum}
-                                style={{ background: 'rgba(212, 136, 42, 0.15)', color: '#d4882a' }}
+                                style={{ background: 'color-mix(in srgb, var(--cdl-yellow) 15%, transparent)', color: 'var(--cdl-yellow)' }}
                             >
                                 ①
                             </div>
                             <div>
-                                <div className={styles.encTitle} style={{ color: '#d4882a' }}>
+                                <div className={styles.encTitle} style={{ color: 'var(--cdl-yellow)' }}>
                                     保存中（Data at Rest）
                                 </div>
                                 <div className={styles.encDesc}>
                                     ストレージ（ディスク・データベース）に保存された状態のデータ。例：Cloud
                                     Storage・BigQuery・Persistent Disk のデータ。<br />
-                                    <strong style={{ color: '#d4882a' }}>
+                                    <strong style={{ color: 'var(--cdl-yellow)' }}>
                                         Google のデフォルト：AES-256
                                         で全データを自動暗号化（追加設定・費用不要）
                                     </strong>
@@ -284,18 +291,18 @@ export const Section2 = () => {
                         <div className={styles.encItem}>
                             <div
                                 className={styles.encNum}
-                                style={{ background: 'rgba(58, 111, 160, 0.15)', color: '#3a6fa0' }}
+                                style={{ background: 'color-mix(in srgb, var(--cdl-blue) 15%, transparent)', color: 'var(--cdl-blue)' }}
                             >
                                 ②
                             </div>
                             <div>
-                                <div className={styles.encTitle} style={{ color: '#3a6fa0' }}>
+                                <div className={styles.encTitle} style={{ color: 'var(--cdl-blue)' }}>
                                     転送中（Data in Transit）
                                 </div>
                                 <div className={styles.encDesc}>
                                     ネットワーク経由で移動中のデータ。例：ブラウザから Cloud Storage
                                     へのアップロード・サービス間 API 通信。<br />
-                                    <strong style={{ color: '#3a6fa0' }}>
+                                    <strong style={{ color: 'var(--cdl-blue)' }}>
                                         Google のデフォルト：TLS 1.2
                                         以上で全通信を自動暗号化。内部通信は ALTS を使用。
                                     </strong>
@@ -305,17 +312,17 @@ export const Section2 = () => {
                         <div className={styles.encItem}>
                             <div
                                 className={styles.encNum}
-                                style={{ background: 'rgba(74, 122, 92, 0.15)', color: '#4a7a5c' }}
+                                style={{ background: 'color-mix(in srgb, var(--cdl-green) 15%, transparent)', color: 'var(--cdl-green)' }}
                             >
                                 ③
                             </div>
                             <div>
-                                <div className={styles.encTitle} style={{ color: '#4a7a5c' }}>
+                                <div className={styles.encTitle} style={{ color: 'var(--cdl-green)' }}>
                                     使用中（Data in Use）
                                 </div>
                                 <div className={styles.encDesc}>
                                     メモリ（RAM）上で処理されている状態のデータ。従来は平文のままだった唯一の状態。<br />
-                                    <strong style={{ color: '#4a7a5c' }}>
+                                    <strong style={{ color: 'var(--cdl-green)' }}>
                                         Confidential VM・Confidential GKE Nodes で AMD SEV
                                         技術を使いメモリも暗号化。
                                     </strong>
@@ -340,18 +347,18 @@ export const Section2 = () => {
                         <table className={styles.kmsTable}>
                             <thead>
                                 <tr>
-                                    <th>管理方式</th>
-                                    <th>鍵の管理主体</th>
-                                    <th>コスト</th>
-                                    <th>主なユースケース</th>
-                                    <th>使用例</th>
+                                    <th scope="col">管理方式</th>
+                                    <th scope="col">鍵の管理主体</th>
+                                    <th scope="col">コスト</th>
+                                    <th scope="col">主なユースケース</th>
+                                    <th scope="col">使用例</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
                                         🔑 Google-Managed Keys<br />
-                                        <span style={{ fontSize: '0.9rem', color: 'var(--color-text-muted, #7a7470)', fontWeight: 'normal' }}>
+                                        <span style={{ fontSize: '0.9rem', color: 'var(--color-muted-foreground)', fontWeight: 'normal' }}>
                                             （デフォルト）
                                         </span>
                                     </td>
@@ -363,7 +370,7 @@ export const Section2 = () => {
                                 <tr>
                                     <td>
                                         🗝️ CMEK<br />
-                                        <span style={{ fontSize: '0.9rem', color: 'var(--color-text-muted, #7a7470)', fontWeight: 'normal' }}>
+                                        <span style={{ fontSize: '0.9rem', color: 'var(--color-muted-foreground)', fontWeight: 'normal' }}>
                                             Customer-Managed Encryption Keys
                                         </span>
                                     </td>
@@ -379,7 +386,7 @@ export const Section2 = () => {
                                 <tr>
                                     <td>
                                         🔐 CSEK<br />
-                                        <span style={{ fontSize: '0.9rem', color: 'var(--color-text-muted, #7a7470)', fontWeight: 'normal' }}>
+                                        <span style={{ fontSize: '0.9rem', color: 'var(--color-muted-foreground)', fontWeight: 'normal' }}>
                                             Customer-Supplied Encryption Keys
                                         </span>
                                     </td>
@@ -396,7 +403,7 @@ export const Section2 = () => {
 
                     <div className={styles.g3} style={{ marginTop: '1.5rem' }}>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon}>🔒</div>
+                            <div className={styles.cardIcon} aria-hidden="true">🔒</div>
                             <div className={styles.cardTitle}>Cloud HSM</div>
                             <div className={styles.cardBody}>
                                 FIPS 140-2 Level 3
@@ -408,7 +415,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon}>💻</div>
+                            <div className={styles.cardIcon} aria-hidden="true">💻</div>
                             <div className={styles.cardTitle}>Confidential VM</div>
                             <div className={styles.cardBody}>
                                 処理中（メモリ上）のデータも暗号化。AMD SEV（Secure Encrypted
@@ -420,7 +427,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon}>🗝️</div>
+                            <div className={styles.cardIcon} aria-hidden="true">🗝️</div>
                             <div className={styles.cardTitle}>Secret Manager</div>
                             <div className={styles.cardBody}>
                                 API

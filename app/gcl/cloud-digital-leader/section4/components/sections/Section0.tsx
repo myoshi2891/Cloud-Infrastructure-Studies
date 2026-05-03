@@ -12,6 +12,13 @@ const MIGRATION_STRATEGIES = [
     { name: 'Retain（保持）', alias: 'Revisit', desc: '現時点でのクラウド移行が見合わないワークロードをオンプレに残す。将来の再評価を前提とする。', codeChange: '不要', codeChangeClass: styles.badgeG, useCase: 'データ主権規制・レガシーHW依存' },
 ];
 
+/**
+ * Section0 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section0 の JSX
+ */
 export const Section0 = () => {
     return (
         <>
@@ -26,8 +33,8 @@ export const Section0 = () => {
                     </div>
 
                     <div className={styles.g3}>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-terracotta, #c4593a)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(196, 89, 58, 0.1)' }}>🏗️</div>
+                        <div className={`${styles.card} ${styles.borderRed}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🏗️</div>
                             <div className={styles.cardTitle}>4.1 クラウドのモダナイゼーションと移行</div>
                             <div className={styles.cardBody}>
                                 7つのR移行戦略・CAMP フレームワーク・ワークロードの評価と分類。Rehost /
@@ -37,8 +44,8 @@ export const Section0 = () => {
                                 <span className={`${styles.badge} ${styles.badgeR}`}>移行戦略</span>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-sage, #4a7a5c)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(74, 122, 92, 0.1)' }}>⚙️</div>
+                        <div className={`${styles.card} ${styles.borderGreen}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">⚙️</div>
                             <div className={styles.cardTitle}>4.2 クラウドにおけるコンピューティング</div>
                             <div className={styles.cardBody}>
                                 Compute Engine・GKE・Cloud Run・App Engine・Cloud Functions
@@ -48,8 +55,8 @@ export const Section0 = () => {
                                 <span className={`${styles.badge} ${styles.badgeG}`}>サービス選択</span>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-sky, #3a6fa0)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(58, 111, 160, 0.1)' }}>📦</div>
+                        <div className={`${styles.card} ${styles.borderBlue}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">📦</div>
                             <div className={styles.cardTitle}>4.3 コンテナとオーケストレーション</div>
                             <div className={styles.cardBody}>
                                 VM とコンテナの違い・Kubernetes の概念・GKE Autopilot vs Standard
@@ -59,8 +66,8 @@ export const Section0 = () => {
                                 <span className={`${styles.badge} ${styles.badgeB}`}>コンテナ</span>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-amber, #d4882a)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(212, 136, 42, 0.1)' }}>🌐</div>
+                        <div className={`${styles.card} ${styles.borderYellow}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">🌐</div>
                             <div className={styles.cardTitle}>4.4 API の戦略的価値</div>
                             <div className={styles.cardBody}>
                                 Apigee API Management
@@ -70,8 +77,8 @@ export const Section0 = () => {
                                 <span className={`${styles.badge} ${styles.badgeA}`}>API管理</span>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-plum, #6b3f7a)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(107, 63, 122, 0.1)' }}>☁️</div>
+                        <div className={`${styles.card} ${styles.borderPurple}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgPurple}`} aria-hidden="true">☁️</div>
                             <div className={styles.cardTitle}>4.5 ハイブリッド＆マルチクラウド</div>
                             <div className={styles.cardBody}>
                                 GKE
@@ -81,8 +88,8 @@ export const Section0 = () => {
                                 <span className={`${styles.badge} ${styles.badgeP}`}>ハイブリッド</span>
                             </div>
                         </div>
-                        <div className={styles.card} style={{ borderTop: '3px solid var(--color-accent-terracotta, #c4593a)' }}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(196, 89, 58, 0.1)' }}>🔄</div>
+                        <div className={`${styles.card} ${styles.borderRed}`}>
+                            <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🔄</div>
                             <div className={styles.cardTitle}>4.6 SRE と DevOps の原則</div>
                             <div className={styles.cardBody}>
                                 DevOps 文化・CI/CD パイプライン・SLO/SLA/SLI
@@ -127,21 +134,21 @@ export const Section0 = () => {
                     <div className={styles.subTitle}>なぜモダナイゼーションが必要か</div>
                     <div className={styles.g3} style={{ marginBottom: '2rem' }}>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(196, 89, 58, 0.1)' }}>🐢</div>
+                            <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🐢</div>
                             <div className={styles.cardTitle}>俊敏性の欠如</div>
                             <div className={styles.cardBody}>
                                 新機能リリースに数ヶ月かかり、ビジネスチャンスを逃す。テスト・デプロイが手動で時間がかかる。
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(212, 136, 42, 0.1)' }}>📈</div>
+                            <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">📈</div>
                             <div className={styles.cardTitle}>スケーラビリティの限界</div>
                             <div className={styles.cardBody}>
                                 トラフィック増加に対応できずサービス停止。ハードウェアの調達期間が必要で機動力がない。
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardIcon} style={{ background: 'rgba(74, 122, 92, 0.1)' }}>💰</div>
+                            <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">💰</div>
                             <div className={styles.cardTitle}>高い運用コスト</div>
                             <div className={styles.cardBody}>
                                 老朽インフラのメンテナンスに多大なリソース。使っていないサーバーの維持費も固定コストとして発生。
@@ -154,7 +161,7 @@ export const Section0 = () => {
                         7つのR移行戦略<span className={styles.examTag}>最重要</span>
                     </div>
                     <div className={styles.rsTableWrap}>
-                        <TableComponent
+                        <TableComponent getRowKey={(row, i) => i}
                             headers={['戦略名', '別名', '内容', 'コード変更', '適用ケース']}
                             rows={MIGRATION_STRATEGIES}
                             renderRow={(row, i) => (
@@ -185,7 +192,7 @@ export const Section0 = () => {
                             </div>
                             <div className={styles.steps}>
                                 <div className={styles.step}>
-                                    <div className={styles.stepN}>1</div>
+                                    <div className={styles.stepN} aria-hidden="true">1</div>
                                     <div>
                                         <div className={styles.stepH}>評価（Assess）</div>
                                         <div className={styles.stepP}>
@@ -195,7 +202,7 @@ export const Section0 = () => {
                                     </div>
                                 </div>
                                 <div className={styles.step}>
-                                    <div className={styles.stepN}>2</div>
+                                    <div className={styles.stepN} aria-hidden="true">2</div>
                                     <div>
                                         <div className={styles.stepH}>分析（Analyze）</div>
                                         <div className={styles.stepP}>
@@ -204,7 +211,7 @@ export const Section0 = () => {
                                     </div>
                                 </div>
                                 <div className={styles.step}>
-                                    <div className={styles.stepN}>3</div>
+                                    <div className={styles.stepN} aria-hidden="true">3</div>
                                     <div>
                                         <div className={styles.stepH}>計画と実行（Plan & Execute）</div>
                                         <div className={styles.stepP}>
@@ -213,7 +220,7 @@ export const Section0 = () => {
                                     </div>
                                 </div>
                                 <div className={styles.step}>
-                                    <div className={styles.stepN}>4</div>
+                                    <div className={styles.stepN} aria-hidden="true">4</div>
                                     <div>
                                         <div className={styles.stepH}>測定と反復（Measure & Iterate）</div>
                                         <div className={styles.stepP}>

@@ -5,6 +5,7 @@ interface TableComponentProps<T> {
     headers: string[];
     rows: T[];
     renderRow: (row: T, index: number) => React.ReactNode;
+    getRowKey: (row: T, index: number) => React.Key;
 }
 
 /**
@@ -12,10 +13,11 @@ interface TableComponentProps<T> {
  *
  * @param headers - Ordered list of column header labels rendered into the table head
  * @param rows - Array of row data items rendered into the table body
- * @param renderRow - Called for each row with `(row, index)` and should return the React node for that row; apply keys on the returned node if needed
+ * @param renderRow - Called for each row with `(row, index)` and should return the React node for that row
+ * @param getRowKey - Called for each row to provide a unique React key
  * @returns The table wrapped in a container `div`
  */
-export function TableComponent<T>({ headers, rows, renderRow }: TableComponentProps<T>) {
+export function TableComponent<T>({ headers, rows, renderRow, getRowKey }: TableComponentProps<T>) {
     return (
         <div className={styles.tableWrap}>
             <table className={styles.table}>
@@ -26,7 +28,13 @@ export function TableComponent<T>({ headers, rows, renderRow }: TableComponentPr
                         ))}
                     </tr>
                 </thead>
-                <tbody>{rows.map((row, i) => renderRow(row, i))}</tbody>
+                <tbody>
+                    {rows.map((row, i) => (
+                        <React.Fragment key={getRowKey(row, i)}>
+                            {renderRow(row, i)}
+                        </React.Fragment>
+                    ))}
+                </tbody>
             </table>
         </div>
     );

@@ -3,7 +3,7 @@
     padding: 4rem 0;
 }
 .sectionAlt {
-    background-color: var(--color-bg-tertiary, #ede9e0);
+    background-color: var(--color-muted);
 }
 .container {
     max-width: 1000px;
@@ -18,7 +18,7 @@
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-accent-terracotta, #c4593a);
+    color: var(--cdl-red);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1rem;
@@ -26,12 +26,12 @@
 .shTitle {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     font-weight: 700;
-    color: var(--color-text-primary, #1a1a1a);
+    color: var(--color-accent-foreground);
     margin-bottom: 1.2rem;
 }
 .shDesc {
     font-size: 1.1rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
@@ -42,7 +42,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin: 3rem 0 1.5rem;
-    border-bottom: 2px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.8rem;
     display: flex;
     align-items: center;
@@ -50,8 +50,8 @@
 }
 .examTag {
     font-size: 0.8rem;
-    background: rgba(196, 89, 58, 0.1);
-    color: #c4593a;
+    background: color-mix(in srgb, var(--cdl-red) 10%, transparent);
+    color: var(--cdl-red);
     padding: 2px 8px;
     border-radius: 4px;
     vertical-align: middle;
@@ -72,10 +72,10 @@
 
 /* Cards */
 .card {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     padding: 1.8rem;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     display: flex;
     flex-direction: column;
 }
@@ -85,7 +85,7 @@
     margin-bottom: 0.6rem;
 }
 .cardBody {
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     font-size: 0.95rem;
     line-height: 1.6;
     flex: 1;
@@ -100,28 +100,28 @@
     border-radius: 100px;
     font-weight: 600;
 }
-.badgeGold { background: rgba(212, 136, 42, 0.1); color: #d4882a; border: 1px solid rgba(212, 136, 42, 0.2); }
-.badgeTeal { background: rgba(74, 122, 92, 0.1); color: #4a7a5c; border: 1px solid rgba(74, 122, 92, 0.2); }
-.badgeSky { background: rgba(58, 111, 160, 0.1); color: #3a6fa0; border: 1px solid rgba(58, 111, 160, 0.2); }
-.badgeAmber { background: rgba(196, 89, 58, 0.1); color: #c4593a; border: 1px solid rgba(196, 89, 58, 0.2); }
-.badgeRed { background: rgba(224, 80, 80, 0.1); color: #e05050; border: 1px solid rgba(224, 80, 80, 0.2); }
+.badgeGold { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); color: var(--cdl-yellow); border: 1px solid color-mix(in srgb, var(--cdl-yellow) 20%, transparent); }
+.badgeTeal { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); color: var(--cdl-green); border: 1px solid color-mix(in srgb, var(--cdl-green) 20%, transparent); }
+.badgeSky { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); color: var(--cdl-blue); border: 1px solid color-mix(in srgb, var(--cdl-blue) 20%, transparent); }
+.badgeAmber { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); border: 1px solid color-mix(in srgb, var(--cdl-red) 20%, transparent); }
+.badgeRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); border: 1px solid color-mix(in srgb, var(--cdl-red) 20%, transparent); }
 
 /* Boxes */
 .infoBox {
-    background: rgba(58, 111, 160, 0.08);
-    border-left: 4px solid #3a6fa0;
+    background: color-mix(in srgb, var(--cdl-blue) 8%, transparent);
+    border-left: 4px solid var(--cdl-blue);
     padding: 1.5rem;
     border-radius: 0 8px 8px 0;
     margin-top: 2rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
 }
 .warnBox {
-    background: rgba(224, 80, 80, 0.08);
-    border-left: 4px solid #e05050;
+    background: color-mix(in srgb, var(--cdl-red) 8%, transparent);
+    border-left: 4px solid var(--cdl-red);
     padding: 1.5rem;
     border-radius: 0 8px 8px 0;
     margin-top: 1.5rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     line-height: 1.6;
 }
 
@@ -129,18 +129,18 @@
 .src {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--color-border-light, #e0dbd2);
+    border-top: 1px solid var(--color-border);
 }
 .srcLabel {
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 0.9rem;
-    color: var(--color-text-muted, #7a7470);
+    color: var(--color-muted-foreground);
     margin-bottom: 1rem;
     text-transform: uppercase;
 }
 .src a {
     display: block;
-    color: var(--color-accent-blue, #3a6fa0);
+    color: var(--color-accent-blue, var(--cdl-blue));
     text-decoration: none;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
@@ -157,8 +157,8 @@
     gap: 1.5rem;
 }
 .compCard {
-    background: var(--color-bg-primary, #fff);
-    border: 1px solid var(--color-border-light, #e0dbd2);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.5rem;
     display: flex;
@@ -170,18 +170,18 @@
     font-family: var(--ff-display, 'Playfair Display', Georgia, serif);
     line-height: 1;
     margin-bottom: 0.5rem;
-    color: var(--color-text-primary, #1a1a1a);
+    color: var(--color-accent-foreground);
 }
 .compName {
     font-weight: 700;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     margin-bottom: 0.8rem;
     padding-bottom: 0.8rem;
-    border-bottom: 1px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 1px solid var(--color-border);
 }
 .compDesc {
     font-size: 0.95rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     flex: 1;
     line-height: 1.6;
 }
@@ -194,11 +194,11 @@
     margin-bottom: 2rem;
 }
 .dlpCard {
-    background: var(--color-bg-primary, #fff);
-    border-left: 3px solid var(--color-border-light, #e0dbd2);
+    background: var(--color-card);
+    border-left: 3px solid var(--color-border);
     padding: 1.2rem;
     border-radius: 0 10px 10px 0;
-    box-shadow: 0 2px 8px var(--color-shadow, rgba(14, 17, 23, 0.04));
+    box-shadow: 0 2px 8px var(--color-shadow, color-mix(in srgb, var(--color-background) 4%, transparent));
 }
 .dlpName {
     font-weight: 700;
@@ -207,7 +207,7 @@
 }
 .dlpDesc {
     font-size: 0.95rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     margin-bottom: 0.8rem;
     line-height: 1.5;
 }
@@ -221,19 +221,19 @@
 
 /* Checklist */
 .checklist {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     padding: 1.5rem;
-    border: 1px solid var(--color-border-light, #e0dbd2);
+    border: 1px solid var(--color-border);
 }
 .clItem {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
     padding: 0.6rem 0;
-    border-bottom: 1px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 1px solid var(--color-border);
     font-size: 1rem;
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     line-height: 1.5;
 }
 .clItem:last-child {
@@ -243,8 +243,8 @@
     width: 24px;
     height: 24px;
     border-radius: 6px;
-    background: rgba(74, 122, 92, 0.1);
-    color: #4a7a5c;
+    background: color-mix(in srgb, var(--cdl-green) 10%, transparent);
+    color: var(--cdl-green);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -255,10 +255,10 @@
 
 /* Exam Patterns */
 .ptnCard {
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 12px var(--color-shadow, rgba(14, 17, 23, 0.08));
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     display: flex;
     flex-direction: column;
 }
@@ -267,13 +267,13 @@
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.5rem;
-    background: var(--color-bg-tertiary, #ede9e0);
-    border-bottom: 1px solid var(--color-border-light, #e0dbd2);
+    background: var(--color-muted);
+    border-bottom: 1px solid var(--color-border);
 }
 .ptnNum {
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-weight: 700;
-    color: #d4882a;
+    color: var(--cdl-yellow);
     font-size: 1.2rem;
 }
 .ptnTitle {
@@ -290,12 +290,12 @@
     font-weight: 600;
     margin-bottom: 1rem;
     padding-bottom: 1rem;
-    border-bottom: 1px dashed var(--color-border-light, #e0dbd2);
+    border-bottom: 1px dashed var(--color-border);
     line-height: 1.5;
-    color: var(--color-text-primary, #1a1a1a);
+    color: var(--color-accent-foreground);
 }
 .ptnSteps {
-    color: var(--color-text-secondary, #4a4541);
+    color: var(--color-muted-foreground);
     padding-left: 1.2rem;
     margin-bottom: 1.2rem;
     font-size: 0.95rem;
@@ -306,8 +306,8 @@
     margin-bottom: 0.4rem;
 }
 .ptnResult {
-    background: rgba(74, 122, 92, 0.08);
-    color: #4a7a5c;
+    background: color-mix(in srgb, var(--cdl-green) 8%, transparent);
+    color: var(--cdl-green);
     padding: 0.8rem;
     border-radius: 6px;
     font-weight: 600;
@@ -317,10 +317,10 @@
 
 /* Confusion Table */
 .confWrap {
-    border: 1px solid var(--color-border-light, #e0dbd2);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
     overflow-x: auto;
-    background: var(--color-bg-primary, #fff);
+    background: var(--color-card);
 }
 .confTable {
     width: 100%;
@@ -328,17 +328,17 @@
     font-size: 1rem;
 }
 .confTable th {
-    background: var(--color-bg-tertiary, #ede9e0);
-    color: var(--color-text-secondary, #4a4541);
+    background: var(--color-muted);
+    color: var(--color-muted-foreground);
     font-weight: 700;
     padding: 1rem 1.2rem;
     text-align: left;
-    border-bottom: 2px solid var(--color-border-light, #e0dbd2);
+    border-bottom: 2px solid var(--color-border);
 }
 .confTable td {
     padding: 1rem 1.2rem;
-    border-bottom: 1px solid var(--color-border-light, #e0dbd2);
-    color: var(--color-text-secondary, #4a4541);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-muted-foreground);
     vertical-align: top;
     line-height: 1.6;
 }
@@ -347,7 +347,7 @@
 }
 .confTable td:first-child {
     font-weight: 600;
-    color: #d4882a;
+    color: var(--cdl-yellow);
     width: 35%;
 }
 
@@ -357,3 +357,31 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Border modifiers */
+.borderRed { border-top: 3px solid var(--cdl-red); }
+.borderBlue { border-top: 3px solid var(--cdl-blue); }
+.borderGreen { border-top: 3px solid var(--cdl-green); }
+.borderYellow { border-top: 3px solid var(--cdl-yellow); }
+.borderPurple { border-top: 3px solid var(--cdl-purple); }
+.borderSky { border-top: 3px solid var(--cdl-sky); }
+.borderAmber { border-top: 3px solid var(--cdl-amber); }
+.borderTeal { border-top: 3px solid var(--cdl-teal); }
+
+.borderLeftRed { border-left: 3px solid var(--cdl-red); }
+.borderLeftBlue { border-left: 3px solid var(--cdl-blue); }
+.borderLeftGreen { border-left: 3px solid var(--cdl-green); }
+.borderLeftYellow { border-left: 3px solid var(--cdl-yellow); }
+.borderLeftSky { border-left: 3px solid var(--cdl-sky); }
+.borderLeftTeal { border-left: 3px solid var(--cdl-teal); }
+
+/* Background modifiers */
+.bgRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); }
+.bgBlue { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); }
+.bgGreen { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); }
+.bgYellow { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); }
+.bgPurple { background: color-mix(in srgb, var(--cdl-purple) 10%, transparent); }
+.bgSky { background: color-mix(in srgb, var(--cdl-sky) 10%, transparent); }
+.bgTeal { background: color-mix(in srgb, var(--cdl-teal) 10%, transparent); }
+.bgAmber { background: color-mix(in srgb, var(--cdl-amber) 10%, transparent); }

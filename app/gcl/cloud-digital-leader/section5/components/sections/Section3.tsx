@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './Section3.module.css';
 
+/**
+ * Section3 コンポーネント
+ * 
+ * Cloud Digital Leader のセクションコンテンツを表示します。
+ * 
+ * @returns {JSX.Element} Section3 の JSX
+ */
 export const Section3 = () => {
     return (
         <>
@@ -18,11 +25,11 @@ export const Section3 = () => {
                     </div>
 
                     <div className={styles.g3} style={{ marginBottom: '2rem' }}>
-                        <div className={styles.card} style={{ borderTop: '3px solid #e05050' }}>
-                            <div className={styles.cardIcon}>⚔️</div>
+                        <div className={`${styles.card} ${styles.borderRed}`}>
+                            <div className={styles.cardIcon} aria-hidden="true">⚔️</div>
                             <div className={styles.cardTitle}>Cloud Armor</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
-                                <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>
+                                <strong style={{ color: 'var(--color-accent-foreground)' }}>
                                     DDoS 防御 + WAF（Web Application Firewall）
                                 </strong>
                                 <br />グローバルロードバランサーの手前でトラフィックをフィルタリング。Google
@@ -39,11 +46,11 @@ export const Section3 = () => {
                             </div>
                         </div>
 
-                        <div className={styles.card} style={{ borderTop: '3px solid #d4882a' }}>
-                            <div className={styles.cardIcon}>🚪</div>
+                        <div className={`${styles.card} ${styles.borderYellow}`}>
+                            <div className={styles.cardIcon} aria-hidden="true">🚪</div>
                             <div className={styles.cardTitle}>Cloud IAP（Identity-Aware Proxy）</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
-                                <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>
+                                <strong style={{ color: 'var(--color-accent-foreground)' }}>
                                     VPN 不要のゼロトラストアクセス制御
                                 </strong>
                                 <br />アプリ単位で認証・認可を実施。すべてのアクセスをログ記録。
@@ -59,11 +66,11 @@ export const Section3 = () => {
                             </div>
                         </div>
 
-                        <div className={styles.card} style={{ borderTop: '3px solid #3a6fa0' }}>
-                            <div className={styles.cardIcon}>🏰</div>
+                        <div className={`${styles.card} ${styles.borderBlue}`}>
+                            <div className={styles.cardIcon} aria-hidden="true">🏰</div>
                             <div className={styles.cardTitle}>VPC Service Controls（VPC SC）</div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
-                                <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>
+                                <strong style={{ color: 'var(--color-accent-foreground)' }}>
                                     データ流出（Exfiltration）防止の境界線
                                 </strong>
                                 <br />GCP
@@ -82,11 +89,11 @@ export const Section3 = () => {
 
                     <div className={styles.warnBox}>
                         <strong>⚠️ 試験頻出：3 サービスの役割の違い</strong><br />
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Cloud Armor</strong>：外部からの攻撃（DDoS・WAF）を<em>ブロック</em>する
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Cloud Armor</strong>：外部からの攻撃（DDoS・WAF）を<em>ブロック</em>する
                         → 外部攻撃防御<br />
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Cloud IAP</strong>：アクセスのたびに<em>認証・認可</em>する →
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Cloud IAP</strong>：アクセスのたびに<em>認証・認可</em>する →
                         ゼロトラストアクセス制御<br />
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>VPC Service Controls</strong>：データを境界内に<em>閉じ込める</em> →
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>VPC Service Controls</strong>：データを境界内に<em>閉じ込める</em> →
                         内部からのデータ流出防止
                     </div>
 
@@ -145,11 +152,11 @@ export const Section3 = () => {
                         <table className={styles.auditTable}>
                             <thead>
                                 <tr>
-                                    <th>ログ種別</th>
-                                    <th>記録内容</th>
-                                    <th>デフォルト</th>
-                                    <th>料金</th>
-                                    <th>保持期間</th>
+                                    <th scope="col">ログ種別</th>
+                                    <th scope="col">記録内容</th>
+                                    <th scope="col">デフォルト</th>
+                                    <th scope="col">料金</th>
+                                    <th scope="col">保持期間</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -201,8 +208,8 @@ export const Section3 = () => {
 
                     <div className={styles.warnBox}>
                         <strong>⚠️ 試験頻出の区別：</strong>
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Admin Activity</strong>（管理アクティビティ）は「<em>設定を変えた</em>」操作 → 常に有効・無料。
-                        <strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>Data Access</strong>（データアクセス）は「<em>データを読み書きした</em>」操作 →
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Admin Activity</strong>（管理アクティビティ）は「<em>設定を変えた</em>」操作 → 常に有効・無料。
+                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Data Access</strong>（データアクセス）は「<em>データを読み書きした</em>」操作 →
                         デフォルト無効・有効化が必要・有料。 機密データを扱うサービスでは必ず Data
                         Access ログを有効化する。
                     </div>
@@ -214,37 +221,37 @@ export const Section3 = () => {
                     <div className={styles.g2}>
                         <div className={styles.card}>
                             <div className={styles.cardTitle}>🎯 SCC が自動検出するもの</div>
-                            <div style={{ fontSize: '0.95rem', color: 'var(--color-text-secondary, #4a4541)' }}>
+                            <div style={{ fontSize: '0.95rem', color: 'var(--color-muted-foreground)' }}>
                                 <div className={styles.sccItem}>
-                                    <strong style={{ color: '#d4882a' }}>設定ミス（Misconfiguration）</strong><br />
+                                    <strong style={{ color: 'var(--cdl-yellow)' }}>設定ミス（Misconfiguration）</strong><br />
                                     公開されている Cloud Storage バケット・外部 IP の不適切な
                                     VM・弱いファイアウォールルール・MFA が未設定の特権ユーザー
                                 </div>
                                 <div className={styles.sccItem}>
-                                    <strong style={{ color: '#e05050' }}>アクティブな脅威</strong><br />
+                                    <strong style={{ color: 'var(--cdl-red)' }}>アクティブな脅威</strong><br />
                                     マルウェアの実行・異常な API
                                     コール（クリプトマイニング）・侵害された認証情報の利用・データ流出の試み
                                 </div>
                                 <div>
-                                    <strong style={{ color: '#3a6fa0' }}>脆弱性</strong><br />
+                                    <strong style={{ color: 'var(--cdl-blue)' }}>脆弱性</strong><br />
                                     脆弱なソフトウェアバージョン・CVE（既知の脆弱性）・コンテナイメージの脆弱性
                                 </div>
                             </div>
                         </div>
                         <div className={styles.card}>
                             <div className={styles.cardTitle}>🔍 他のセキュリティツールとの違い</div>
-                            <div style={{ fontSize: '0.95rem', color: 'var(--color-text-secondary, #4a4541)' }}>
+                            <div style={{ fontSize: '0.95rem', color: 'var(--color-muted-foreground)' }}>
                                 <div className={styles.sccItem}>
                                     <span className={`${styles.badge} ${styles.badgeRed}`} style={{ marginBottom: '0.3rem' }}>SCC</span><br />
-                                    GCP 全体の脅威・設定ミス・脆弱性を<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>一元可視化</strong>するダッシュボード。CSPM（Cloud Security Posture Management）。
+                                    GCP 全体の脅威・設定ミス・脆弱性を<strong style={{ color: 'var(--color-accent-foreground)' }}>一元可視化</strong>するダッシュボード。CSPM（Cloud Security Posture Management）。
                                 </div>
                                 <div className={styles.sccItem}>
                                     <span className={`${styles.badge} ${styles.badgeTeal}`} style={{ marginBottom: '0.3rem' }}>Cloud IDS</span><br />
-                                    ネットワークトラフィックを<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>監視・検知</strong>（アラートのみ）。Palo Alto 脅威インテリジェンス活用。
+                                    ネットワークトラフィックを<strong style={{ color: 'var(--color-accent-foreground)' }}>監視・検知</strong>（アラートのみ）。Palo Alto 脅威インテリジェンス活用。
                                 </div>
                                 <div>
                                     <span className={`${styles.badge} ${styles.badgeGold}`} style={{ marginBottom: '0.3rem' }}>Chronicle</span><br />
-                                    Google スケールの SIEM / SOAR。ペタバイトのセキュリティログを<strong style={{ color: 'var(--color-text-primary, #1a1a1a)' }}>超高速分析</strong>。脅威ハンティング。
+                                    Google スケールの SIEM / SOAR。ペタバイトのセキュリティログを<strong style={{ color: 'var(--color-accent-foreground)' }}>超高速分析</strong>。脅威ハンティング。
                                 </div>
                             </div>
                         </div>

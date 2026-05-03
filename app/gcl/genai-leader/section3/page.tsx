@@ -357,7 +357,7 @@ function Section32() {
                                 <span className="str">&quot;次の文章を日本語に翻訳してください：The weather is nice today.&quot;</span><br />
                                 <span className="kw">Output:</span>{' '}
                                 <span className="str">&quot;今日は天気がいいですね。&quot;</span><br />
-                                <span className="comment">// 例示なし。モデルの事前知識だけで回答。</span>
+                                <span className="comment">{"// 例示なし。モデルの事前知識だけで回答。"}</span>
                             </div>
                             <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--muted)' }}>
                                 <strong style={{ color: 'var(--text)' }}>適用場面：</strong>明確で単純なタスク（翻訳・要約・分類）、モデルが十分に学習済みのドメイン
@@ -375,10 +375,10 @@ function Section32() {
                             <strong>ワンショット：1つの例示を与えてからタスクを実行</strong>
                             <p>1つの入出力ペアを例として示してからタスクを依頼する。出力フォーマットを厳密に指定したい場合に特に有効。モデルがパターンを学習して同形式で応答する。</p>
                             <div className="pt-ex">
-                                <span className="comment">// 例示（1件）</span><br />
+                                <span className="comment">{"// 例示（1件）"}</span><br />
                                 <span className="kw">Input:</span>{' '}<span className="str">&quot;東京&quot;</span>{' '}→{' '}
                                 <span className="kw">Output:</span>{' '}<span className="str">&quot;首都 / 日本 / 1380万人&quot;</span><br />
-                                <span className="comment">// タスク</span><br />
+                                <span className="comment">{"// タスク"}</span><br />
                                 <span className="kw">Input:</span>{' '}<span className="str">&quot;大阪&quot;</span>{' '}→{' '}
                                 <span className="kw">Output:</span>{' '}<span className="str">???</span>
                             </div>
@@ -398,11 +398,11 @@ function Section32() {
                             <strong>フューショット：複数の例示（2〜8件）で精度を向上させる</strong>
                             <p>複数の入出力ペアを例として提供することで、モデルが期待されるパターンをより正確に把握できる。Few-shot は In-Context Learning（文脈内学習）の代表的な技法。</p>
                             <div className="pt-ex">
-                                <span className="comment">// 例示3件：感情分類タスク</span><br />
+                                <span className="comment">{"// 例示3件：感情分類タスク"}</span><br />
                                 <span className="str">&quot;この商品は最高！&quot;</span>{' '}→{' '}<span className="kw">ポジティブ</span><br />
                                 <span className="str">&quot;遅延が多くて困った&quot;</span>{' '}→{' '}<span className="kw">ネガティブ</span><br />
                                 <span className="str">&quot;普通の品質でした&quot;</span>{' '}→{' '}<span className="kw">ニュートラル</span><br />
-                                <span className="comment">// タスク</span><br />
+                                <span className="comment">{"// タスク"}</span><br />
                                 <span className="str">&quot;梱包が丁寧で感動した&quot;</span>{' '}→{' '}<span className="fn">???</span>
                             </div>
                             <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--muted)' }}>
@@ -421,10 +421,10 @@ function Section32() {
                             <strong>ロールプロンプティング：AIに特定の役割・ペルソナを与える</strong>
                             <p>モデルに専門家・キャラクター・特定の視点を持つ人物として振る舞うよう指示する。役割を明確に設定することで、その専門分野に特化した質・スタイルの回答を引き出せる。</p>
                             <div className="pt-ex">
-                                <span className="comment">// システムプロンプト</span><br />
+                                <span className="comment">{"// システムプロンプト"}</span><br />
                                 <span className="kw">Role:</span>{' '}<span className="str">&quot;あなたは15年以上の経験を持つ上級セキュリティエンジニアです。&quot;</span><br />
                                 <span className="str">&quot;技術的な正確さを最優先し、平易な言葉で説明してください。&quot;</span><br />
-                                <span className="comment">// ユーザー入力</span><br />
+                                <span className="comment">{"// ユーザー入力"}</span><br />
                                 <span className="kw">User:</span>{' '}<span className="str">&quot;ゼロトラストアーキテクチャを実装する際の注意点は？&quot;</span>
                             </div>
                             <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--muted)' }}>
@@ -443,13 +443,13 @@ function Section32() {
                             <strong>プロンプトチェーニング：複雑なタスクを複数ステップに分解して連鎖させる</strong>
                             <p>1つのプロンプトで解決できない複雑なタスクを、複数の小さなステップに分割して順番に実行する手法。前のステップの出力を次のステップの入力に使用する。</p>
                             <div className="pt-ex">
-                                <span className="comment">// Step 1: 文章を要約</span><br />
+                                <span className="comment">{"// Step 1: 文章を要約"}</span><br />
                                 <span className="kw">Prompt 1:</span>{' '}<span className="str">&quot;以下の長文を3行で要約してください：{'{'}raw_text{'}'}&quot;</span><br />
                                 <span className="num">→ summary_text</span><br /><br />
-                                <span className="comment">// Step 2: 要約から課題を抽出</span><br />
+                                <span className="comment">{"// Step 2: 要約から課題を抽出"}</span><br />
                                 <span className="kw">Prompt 2:</span>{' '}<span className="str">&quot;以下の要約から主要な課題を箇条書きで抽出：{'{'}summary_text{'}'}&quot;</span><br />
                                 <span className="num">→ issues_list</span><br /><br />
-                                <span className="comment">// Step 3: 解決策を提案</span><br />
+                                <span className="comment">{"// Step 3: 解決策を提案"}</span><br />
                                 <span className="kw">Prompt 3:</span>{' '}<span className="str">&quot;以下の課題に対する解決策を提案：{'{'}issues_list{'}'}&quot;</span>
                             </div>
                             <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--muted)' }}>
@@ -468,11 +468,11 @@ function Section32() {
                             <strong>思考の連鎖（CoT）：ステップバイステップで推論プロセスを可視化させる</strong>
                             <p>「ステップバイステップで考えてください（Let&apos;s think step by step）」という指示で、モデルが中間の推論ステップを明示的に記述しながら解答する手法。複雑な論理問題・数学・多段階推論で精度が大幅に向上する。</p>
                             <div className="pt-ex">
-                                <span className="comment">// Zero-shot CoT の例</span><br />
+                                <span className="comment">{"// Zero-shot CoT の例"}</span><br />
                                 <span className="kw">Prompt:</span>{' '}<span className="str">&quot;太郎は50個のリンゴを持っています。20個を花子に渡し、&quot;</span><br />
                                 <span className="str">&quot;残りの半分を次郎に渡しました。太郎に残るリンゴは何個？&quot;</span><br />
                                 <span className="str">&quot;ステップバイステップで考えてください。&quot;</span><br /><br />
-                                <span className="comment">// モデルの出力例</span><br />
+                                <span className="comment">{"// モデルの出力例"}</span><br />
                                 <span className="num">Step 1: 50 - 20 = 30個（花子に渡した後）</span><br />
                                 <span className="num">Step 2: 30 ÷ 2 = 15個（次郎に渡した後）</span><br />
                                 <span className="num">Answer: 15個</span>
@@ -998,7 +998,7 @@ function Section33() {
                 </div>
 
                 <div className="codeblock">
-                    <span className="comment">// Vertex AI Python SDK でのサンプリングパラメータ設定例</span><br />
+                    <span className="comment">{"// Vertex AI Python SDK でのサンプリングパラメータ設定例"}</span><br />
                     <span className="fn">from</span>{' '}<span className="kw">vertexai.generative_models</span>{' '}<span className="fn">import</span>{' '}GenerativeModel, GenerationConfig<br /><br />
                     model = GenerativeModel(<span className="str">&quot;gemini-1.5-pro-002&quot;</span>)<br /><br />
                     config = GenerationConfig(<br />

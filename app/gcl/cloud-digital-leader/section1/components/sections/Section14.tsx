@@ -17,7 +17,7 @@ export const Section14: React.FC = () => (
             idNumber="14.1"
             title="参照リソース"
         >
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['タイトル', 'URL']}
                 rows={GCDL_REFERENCES}
                 renderRow={(row, i) => (
