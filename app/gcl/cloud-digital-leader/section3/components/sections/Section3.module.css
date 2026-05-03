@@ -18,7 +18,7 @@
 
 .apiRow:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px var(--color-shadow);
     border-color: var(--color-border-bright);
 }
 
@@ -35,7 +35,7 @@
     justify-content: center;
     width: 60px;
     height: 60px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg-white-05);
     border-radius: 12px;
 }
 
@@ -106,7 +106,7 @@
     width: 32px;
     height: 32px;
     background: var(--color-accent-blue);
-    color: white;
+    color: var(--color-primary-foreground);
     border-radius: 50%;
     display: flex;
     align-items: center;

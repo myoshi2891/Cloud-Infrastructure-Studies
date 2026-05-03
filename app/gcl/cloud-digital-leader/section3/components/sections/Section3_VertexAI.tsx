@@ -1,5 +1,4 @@
 import React from 'react';
-import baseStyles from './SectionBase.module.css';
 
 /**
  * Section3_VertexAI: Vertex AI プラットフォームの機能と特長を解説するコンポーネント

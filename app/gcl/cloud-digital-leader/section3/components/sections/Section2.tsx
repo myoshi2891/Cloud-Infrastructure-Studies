@@ -23,15 +23,15 @@ export const Section2: React.FC = () => {
                     4 つのトレードオフ要因<span className={baseStyles.examTag}>最重要</span>
                 </h3>
                 <div className={`${baseStyles.card} overflow-x-auto mb-8`}>
-                    <table className={styles.tradeoffTable} style={{ minWidth: '600px' }}>
+                    <table className={`${styles.tradeoffTable} min-w-[600px]`}>
                         <thead>
                             <tr>
-                                <th>ソリューション</th>
-                                <th>スピード 🚀</th>
-                                <th>労力（工数）💪</th>
-                                <th>差別化 🏆</th>
-                                <th>必要な専門知識 👨‍💻</th>
-                                <th>適用場面</th>
+                                <th scope="col">ソリューション</th>
+                                <th scope="col">スピード 🚀</th>
+                                <th scope="col">労力（工数）💪</th>
+                                <th scope="col">差別化 🏆</th>
+                                <th scope="col">必要な専門知識 👨‍💻</th>
+                                <th scope="col">適用場面</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -25,6 +25,8 @@
     --color-ring: #4f8ef7;
     --color-primary: #4f8ef7;
     --color-primary-foreground: #ffffff;
+    --color-shadow: rgba(0, 0, 0, 0.4);
+    --color-bg-white-05: rgba(255, 255, 255, 0.05);
 
     /* Header & Brand Theme Tokens */
     --color-brand-start: hsl(220 100% 62%);

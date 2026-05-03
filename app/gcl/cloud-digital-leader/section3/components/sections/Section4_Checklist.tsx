@@ -21,7 +21,7 @@ export const Section4_Checklist: React.FC = () => {
 
                 <div className={baseStyles.grid2}>
                     <div>
-                        <h3 className={baseStyles.subsectionTitle} style={{ marginTop: 0 }}>3.1 AI/ML 基礎</h3>
+                        <h3 className={`${baseStyles.subsectionTitle} mt-0`}>3.1 AI/ML 基礎</h3>
                         <div className={styles.checklist}>
                             <div className={styles.checkItem}>
                                 <div className={styles.checkBox}>✓</div>
@@ -60,7 +60,7 @@ export const Section4_Checklist: React.FC = () => {
                     </div>
 
                     <div>
-                        <h3 className={baseStyles.subsectionTitle} style={{ marginTop: 0 }}>
+                        <h3 className={`${baseStyles.subsectionTitle} mt-0`}>
                             3.2 ソリューション選択
                         </h3>
                         <div className={styles.checklist}>

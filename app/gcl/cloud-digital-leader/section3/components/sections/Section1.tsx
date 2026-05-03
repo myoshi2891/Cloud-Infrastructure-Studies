@@ -75,11 +75,11 @@ export const Section1: React.FC = () => {
                     <table className={`${compareStyles.compareTable} min-w-[580px]`}>
                         <thead>
                             <tr>
-                                <th>技術領域</th>
-                                <th>時間的焦点</th>
-                                <th>分析の性質</th>
-                                <th>主な出力</th>
-                                <th>ビジネス上の役割</th>
+                                <th scope="col">技術領域</th>
+                                <th scope="col">時間的焦点</th>
+                                <th scope="col">分析の性質</th>
+                                <th scope="col">主な出力</th>
+                                <th scope="col">ビジネス上の役割</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -303,13 +303,13 @@ export const Section1: React.FC = () => {
                     <div className={baseStyles.sourceTitle}>📎 参考ソース</div>
                     <div className={baseStyles.sourceLinks}>
                         <a href="https://cloud.google.com/learn/what-is-artificial-intelligence" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/learn/what-is-artificial-intelligence
+                            Google Cloud: AI とは何か
                         </a>
                         <a href="https://developers.google.com/machine-learning/glossary/fundamentals" target="_blank" rel="noopener noreferrer">
-                            https://developers.google.com/machine-learning/glossary/fundamentals
+                            Google Developers: ML 用語集 — 基礎
                         </a>
                         <a href="https://cloud.google.com/responsible-ai" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/responsible-ai
+                            Google Cloud: 責任ある AI
                         </a>
                     </div>
                 </div>
