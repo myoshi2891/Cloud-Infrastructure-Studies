@@ -30,6 +30,7 @@ describe('Cloud Digital Leader - Section 4 Page', () => {
         expect(screen.getByRole('heading', { level: 2, name: /ハイブリッド＆マルチクラウド管理/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /DevOps と SRE の原則/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /API の戦略的価値と Apigee/ })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { level: 2, name: /コスト最適化と試験対策/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /コスト最適化の実践/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /試験直前チェックリスト＆頻出パターン/ })).toBeInTheDocument();
     });
 });
