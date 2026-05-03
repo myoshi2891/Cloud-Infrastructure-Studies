@@ -140,8 +140,8 @@ export const Section4_Responsible: React.FC = () => {
                 <div className={baseStyles.sourceBox}>
                     <div className={baseStyles.sourceTitle}>📎 参考ソース</div>
                     <div className={baseStyles.sourceLinks}>
-                        <a href="https://ai.google/responsibility/principles/" target="_blank" rel="noopener noreferrer">https://ai.google/responsibility/principles/</a>
-                        <a href="https://cloud.google.com/responsible-ai" target="_blank" rel="noopener noreferrer">https://cloud.google.com/responsible-ai</a>
+                        <a href="https://ai.google/responsibility/principles/" target="_blank" rel="noopener noreferrer">Google AI: 責任ある AI の原則</a>
+                        <a href="https://cloud.google.com/responsible-ai" target="_blank" rel="noopener noreferrer">Google Cloud: 責任ある AI</a>
                     </div>
                 </div>
             </div>

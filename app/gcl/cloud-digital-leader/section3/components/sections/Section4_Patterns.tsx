@@ -104,8 +104,8 @@ export const Section4_Patterns: React.FC = () => {
                     <table className="w-full min-w-[560px] text-left border-collapse">
                         <thead>
                             <tr>
-                                <th className="p-4 border-b-2 border-[var(--color-border)]">混同パターン</th>
-                                <th className="p-4 border-b-2 border-[var(--color-border)]">✅ 正しい理解</th>
+                                <th scope="col" className="p-4 border-b-2 border-[var(--color-border)]">混同パターン</th>
+                                <th scope="col" className="p-4 border-b-2 border-[var(--color-border)]">✅ 正しい理解</th>
                             </tr>
                         </thead>
                         <tbody>
