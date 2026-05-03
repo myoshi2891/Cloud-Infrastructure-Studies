@@ -1,0 +1,7 @@
+/* Section 4 specific styles */
+.highlight {
+    background: linear-gradient(135deg, var(--color-accent-amber, #d4882a), var(--color-accent-terracotta, #c4593a));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
