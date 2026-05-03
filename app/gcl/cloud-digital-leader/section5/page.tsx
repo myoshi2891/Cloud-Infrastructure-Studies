@@ -1,5 +1,6 @@
 import { Section0 } from './components/sections/Section0';
 import { Section1 } from './components/sections/Section1';
+import { Section2 } from './components/sections/Section2';
 
 export default function Section5Page() {
     return (
@@ -32,11 +33,9 @@ export default function Section5Page() {
             {/* SECTIONS */}
             <Section0 />
             <Section1 />
+            <Section2 />
             
             {/* Placeholders for upcoming sections */}
-            <section id="placeholder2" style={{ padding: '4rem 2rem', textAlign: 'center', backgroundColor: 'var(--color-bg-tertiary, #ede9e0)' }}>
-                <h2>Placeholder 2</h2>
-            </section>
             <section id="placeholder3" style={{ padding: '4rem 2rem', textAlign: 'center' }}>
                 <h2>Placeholder 3</h2>
             </section>
