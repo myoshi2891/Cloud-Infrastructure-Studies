@@ -4,6 +4,11 @@ import { Section2 } from './components/sections/Section2';
 import { Section3 } from './components/sections/Section3';
 import { Section4 } from './components/sections/Section4';
 
+/**
+ * Renders the "§5 Security" page layout, including a hero header, a sticky in-page navigation bar, and the section content blocks.
+ *
+ * @returns A JSX element representing the complete Section 5 Security page layout
+ */
 export default function Section5Page() {
     return (
         <main style={{ background: 'var(--color-bg-primary, #fff)', color: 'var(--color-text-primary, #1a1a1a)', minHeight: '100vh', paddingBottom: '4rem' }}>
