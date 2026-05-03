@@ -2,6 +2,7 @@ import { Section0 } from './components/sections/Section0';
 import { Section1 } from './components/sections/Section1';
 import { Section2 } from './components/sections/Section2';
 import { Section3 } from './components/sections/Section3';
+import { Section4 } from './components/sections/Section4';
 
 export default function Section5Page() {
     return (
@@ -36,11 +37,7 @@ export default function Section5Page() {
             <Section1 />
             <Section2 />
             <Section3 />
-            
-            {/* Placeholders for upcoming sections */}
-            <section id="placeholder4" style={{ padding: '4rem 2rem', textAlign: 'center', backgroundColor: 'var(--color-bg-tertiary, #ede9e0)' }}>
-                <h2>Placeholder 4</h2>
-            </section>
+            <Section4 />
         </main>
     );
 }

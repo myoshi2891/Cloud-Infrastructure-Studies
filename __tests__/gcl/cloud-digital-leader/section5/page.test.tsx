@@ -6,7 +6,7 @@ describe('Cloud Digital Leader - Section 5 Page', () => {
     it('renders the hero section with correct title', () => {
         render(<Section5Page />);
         // The actual text from the HTML hero section
-        const titleElement = screen.getByRole('heading', { level: 1, name: /Trust and Security/i });
+        const titleElement = screen.getByRole('heading', { level: 1, name: /Trust & Security/i });
         expect(titleElement).toBeInTheDocument();
     });
 
@@ -29,8 +29,8 @@ describe('Cloud Digital Leader - Section 5 Page', () => {
         expect(screen.getByRole('heading', { level: 2, name: /暗号化とデータ保護/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /ネットワークセキュリティ/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /脅威検出とセキュリティ監視/ })).toBeInTheDocument();
-        
-        // Placeholder tests to fail until implemented
-        expect(screen.getByRole('heading', { level: 2, name: /Placeholder 4/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /コンプライアンスと規制対応/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /データプライバシーと Sensitive Data Protection/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /試験直前チェックリスト＆頻出パターン/ })).toBeInTheDocument();
     });
 });
