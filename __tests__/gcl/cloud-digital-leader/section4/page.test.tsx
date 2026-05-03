@@ -23,7 +23,8 @@ describe('Cloud Digital Leader - Section 4 Page', () => {
         
         // Verify each section is rendered by checking for headings
         expect(screen.getByRole('heading', { level: 2, name: /Section 4 の全体像と学習ポイント/ })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { level: 2, name: /仮想マシンとコンテナ/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /コンピューティングサービスの選択/ })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 2, name: /コンテナと GKE/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /サーバーレスとハイブリッド/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /DevOps と API管理/ })).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 2, name: /コスト最適化と試験対策/ })).toBeInTheDocument();
