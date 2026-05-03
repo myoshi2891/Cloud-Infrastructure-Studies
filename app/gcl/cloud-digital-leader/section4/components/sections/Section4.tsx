@@ -94,16 +94,7 @@ export const Section4 = () => {
                     <div className={styles.subTitle}>Section 4 チェックリスト</div>
                     <div className={styles.g2} style={{ marginBottom: '2.5rem' }}>
                         <div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-red)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.clCategory}>
                                 移行戦略・モダナイゼーション
                             </div>
                             <div className={styles.checklist} style={{ marginBottom: '1.5rem' }}>
@@ -129,16 +120,7 @@ export const Section4 = () => {
                                     モダナイゼーションの 3 段階（Stage 1-3）を説明できる
                                 </div>
                             </div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-red)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.clCategory}>
                                 コンピューティング
                             </div>
                             <div className={styles.checklist}>
@@ -167,16 +149,7 @@ export const Section4 = () => {
                             </div>
                         </div>
                         <div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-red)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.clCategory}>
                                 ネットワーク・ハイブリッド
                             </div>
                             <div className={styles.checklist} style={{ marginBottom: '1.5rem' }}>
@@ -200,16 +173,7 @@ export const Section4 = () => {
                                     つのビジネス理由（ロックイン回避・データ主権・投資保護）を説明できる
                                 </div>
                             </div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-red)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.clCategory}>
                                 DevOps / SRE / API
                             </div>
                             <div className={styles.checklist}>
@@ -259,7 +223,7 @@ export const Section4 = () => {
                                         </li>
                                     </ol>
                                 </div>
-                                <div className={styles.ptnResult} style={{ color: '#8fbc8f' }}>答え：Cloud Run（サーバーレスコンテナ）</div>
+                                <div className={styles.ptnResult}>答え：Cloud Run（サーバーレスコンテナ）</div>
                             </div>
                         </div>
 
@@ -281,7 +245,7 @@ export const Section4 = () => {
                                         <li>物理専用線 → Dedicated Interconnect が正解</li>
                                     </ol>
                                 </div>
-                                <div className={styles.ptnResult} style={{ color: '#8fbc8f' }}>答え：Dedicated Interconnect</div>
+                                <div className={styles.ptnResult}>答え：Dedicated Interconnect</div>
                             </div>
                         </div>
 
@@ -303,7 +267,7 @@ export const Section4 = () => {
                                         <li>運用負荷削減 = Replatform（一部最適化）</li>
                                     </ol>
                                 </div>
-                                <div className={styles.ptnResult} style={{ color: '#8fbc8f' }}>答え：Replatform（Lift & Optimize）</div>
+                                <div className={styles.ptnResult}>答え：Replatform（Lift & Optimize）</div>
                             </div>
                         </div>
 
@@ -324,7 +288,7 @@ export const Section4 = () => {
                                         <li>カスタムノードプール管理 → Standard が必要</li>
                                     </ol>
                                 </div>
-                                <div className={styles.ptnResult} style={{ color: '#8fbc8f' }}>答え：GKE Standard（細粒度制御）</div>
+                                <div className={styles.ptnResult}>答え：GKE Standard（細粒度制御）</div>
                             </div>
                         </div>
                     </div>

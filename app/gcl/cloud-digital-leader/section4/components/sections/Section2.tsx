@@ -666,7 +666,7 @@ export const Section2 = () => {
                                 marginBottom: '1.5rem',
                             }}
                         >
-                            <div style={{ fontSize: '2.5rem' }}>🌐</div>
+                            <div style={{ fontSize: '2.5rem' }} aria-hidden="true">🌐</div>
                             <div>
                                 <div
                                     style={{
@@ -687,7 +687,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.anthosPoint}>
-                            <div className={styles.anthosIcon}>🔑</div>
+                            <div className={styles.anthosIcon} aria-hidden="true">🔑</div>
                             <div>
                                 <div className={styles.anthosPointH}>アイデンティティの標準化</div>
                                 <div className={styles.anthosPointD}>
@@ -697,7 +697,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.anthosPoint}>
-                            <div className={styles.anthosIcon}>📋</div>
+                            <div className={styles.anthosIcon} aria-hidden="true">📋</div>
                             <div>
                                 <div className={styles.anthosPointH}>Anthos Config Management（GitOps）</div>
                                 <div className={styles.anthosPointD}>
@@ -707,7 +707,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.anthosPoint}>
-                            <div className={styles.anthosIcon}>🔄</div>
+                            <div className={styles.anthosIcon} aria-hidden="true">🔄</div>
                             <div>
                                 <div className={styles.anthosPointH}>統一された CI/CD パイプライン</div>
                                 <div className={styles.anthosPointD}>
@@ -717,7 +717,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={styles.anthosPoint}>
-                            <div className={styles.anthosIcon}>🕸️</div>
+                            <div className={styles.anthosIcon} aria-hidden="true">🕸️</div>
                             <div>
                                 <div className={styles.anthosPointH}>
                                     Anthos Service Mesh（サービスメッシュ）

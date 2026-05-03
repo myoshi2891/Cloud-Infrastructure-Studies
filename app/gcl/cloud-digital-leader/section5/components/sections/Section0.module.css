@@ -79,7 +79,7 @@
 .badgeTeal { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); color: var(--cdl-green); }
 .badgeSky { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); color: var(--cdl-blue); }
 .badgeAmber { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); }
-.badgeRed { background: color-mix(in srgb, var(--cdl-purple) 10%, transparent); color: var(--cdl-purple); }
+.badgeRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); }
 
 /* Sub Title */
 .subTitle {

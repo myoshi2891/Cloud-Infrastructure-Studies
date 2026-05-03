@@ -1,4 +1,15 @@
 /* Section 4 specific styles */
+
+/* Checklist category label */
+.clCategory {
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 1rem;
+    color: var(--cdl-red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+}
+
 .section {
     padding: 4rem 0;
 }

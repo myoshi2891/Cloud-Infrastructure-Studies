@@ -221,7 +221,7 @@
 }
 .ztCol li {
     font-size: 1rem;
-    color: color-mix(in srgb, var(--color-accent-foreground) 80%, transparent);
+    color: var(--color-card);
     position: relative;
     padding-left: 1.2rem;
     margin-bottom: 0.5rem;

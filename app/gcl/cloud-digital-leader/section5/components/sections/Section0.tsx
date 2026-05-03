@@ -103,7 +103,7 @@ export const Section0 = () => {
                 </div>
                 <div className={styles.layers}>
                     <div className={`${styles.layer} ${styles.l8}`}>
-                        <span className={styles.layerNum}>8</span><span className={styles.layerIcon}>💾</span>
+                        <span className={styles.layerNum}>8</span><span className={styles.layerIcon} aria-hidden="true">💾</span>
                         <div>
                             <div className={styles.layerName}>データ層</div>
                             <div className={styles.layerDesc}>
@@ -113,7 +113,7 @@ export const Section0 = () => {
                         </div>
                     </div>
                     <div className={`${styles.layer} ${styles.l7}`}>
-                        <span className={styles.layerNum}>7</span><span className={styles.layerIcon}>🆔</span>
+                        <span className={styles.layerNum}>7</span><span className={styles.layerIcon} aria-hidden="true">🆔</span>
                         <div>
                             <div className={styles.layerName}>アイデンティティ層</div>
                             <div className={styles.layerDesc}>
@@ -123,7 +123,7 @@ export const Section0 = () => {
                         </div>
                     </div>
                     <div className={`${styles.layer} ${styles.l6}`}>
-                        <span className={styles.layerNum}>6</span><span className={styles.layerIcon}>🖥️</span>
+                        <span className={styles.layerNum}>6</span><span className={styles.layerIcon} aria-hidden="true">🖥️</span>
                         <div>
                             <div className={styles.layerName}>アプリケーション層</div>
                             <div className={styles.layerDesc}>
@@ -133,7 +133,7 @@ export const Section0 = () => {
                         </div>
                     </div>
                     <div className={`${styles.layer} ${styles.l5}`}>
-                        <span className={styles.layerNum}>5</span><span className={styles.layerIcon}>📱</span>
+                        <span className={styles.layerNum}>5</span><span className={styles.layerIcon} aria-hidden="true">📱</span>
                         <div>
                             <div className={styles.layerName}>エンドポイント層</div>
                             <div className={styles.layerDesc}>
@@ -143,7 +143,7 @@ export const Section0 = () => {
                         </div>
                     </div>
                     <div className={`${styles.layer} ${styles.l4}`}>
-                        <span className={styles.layerNum}>4</span><span className={styles.layerIcon}>🌐</span>
+                        <span className={styles.layerNum}>4</span><span className={styles.layerIcon} aria-hidden="true">🌐</span>
                         <div>
                             <div className={styles.layerName}>ネットワーク層</div>
                             <div className={styles.layerDesc}>
@@ -153,7 +153,7 @@ export const Section0 = () => {
                         </div>
                     </div>
                     <div className={`${styles.layer} ${styles.l3}`}>
-                        <span className={styles.layerNum}>3</span><span className={styles.layerIcon}>⚙️</span>
+                        <span className={styles.layerNum}>3</span><span className={styles.layerIcon} aria-hidden="true">⚙️</span>
                         <div>
                             <div className={styles.layerName}>インフラ層</div>
                             <div className={styles.layerDesc}>
@@ -162,7 +162,7 @@ export const Section0 = () => {
                         </div>
                     </div>
                     <div className={`${styles.layer} ${styles.l2}`}>
-                        <span className={styles.layerNum}>2</span><span className={styles.layerIcon}>🗄️</span>
+                        <span className={styles.layerNum}>2</span><span className={styles.layerIcon} aria-hidden="true">🗄️</span>
                         <div>
                             <div className={styles.layerName}>ストレージ層</div>
                             <div className={styles.layerDesc}>
@@ -171,7 +171,7 @@ export const Section0 = () => {
                         </div>
                     </div>
                     <div className={`${styles.layer} ${styles.l1}`}>
-                        <span className={styles.layerNum}>1</span><span className={styles.layerIcon}>🏢</span>
+                        <span className={styles.layerNum}>1</span><span className={styles.layerIcon} aria-hidden="true">🏢</span>
                         <div>
                             <div className={styles.layerName}>ハードウェア / DC 層</div>
                             <div className={styles.layerDesc}>

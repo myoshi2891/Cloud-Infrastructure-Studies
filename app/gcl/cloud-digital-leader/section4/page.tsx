@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { SectionHero, SectionNav } from './components';
 import { Section0, Section1, Section2, Section3, Section4 } from './components/sections';
 import { HERO_BADGES, NAV_LINKS } from './constants';
-import './section4.css';
+import styles from './section4.module.css';
 
 export const metadata: Metadata = {
     title: 'Section 4: インフラ＆アプリのモダナイゼーション 完全攻略ガイド | Cloud Digital Leader',
@@ -20,7 +20,7 @@ export default function Section4Page() {
             
             <SectionHero
                 eyebrow="Cloud Digital Leader · Section 4"
-                title={<><em>モダナイゼーション</em>で<br/><span className="section4Highlight">ビジネスを進化させる</span></>}
+                title={<><em>モダナイゼーション</em>で<br/><span className={styles.section4Highlight}>ビジネスを進化させる</span></>}
                 subtitle="Section 4「Modernize Infrastructure and Applications with Google Cloud」の完全攻略ガイド。移行戦略・コンテナ・サーバーレス・DevOps・ハイブリッドクラウドまで初学者向けに詳解します。"
                 badges={HERO_BADGES}
             />

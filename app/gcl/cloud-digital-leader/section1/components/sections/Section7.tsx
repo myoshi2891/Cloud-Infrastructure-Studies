@@ -17,7 +17,7 @@ export const Section7: React.FC = () => (
             idNumber="7.1"
             title="戦略の比較"
         >
-            <TableComponent getRowKey={(row, i) => i}
+            <TableComponent getRowKey={(row) => row.strategy}
                 headers={['戦略', '変更規模', 'スピード', 'コスト', 'リスク', 'クラウド活用度']}
                 rows={MIGRATION_STRATEGY_COMPARISON}
                 renderRow={(row) => (

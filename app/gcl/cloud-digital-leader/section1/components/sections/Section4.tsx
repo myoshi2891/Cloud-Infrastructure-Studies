@@ -112,7 +112,7 @@ export const Section4: React.FC = () => (
                     <h3 className={styles.stitle}>{section.title}</h3>
                     <p className={styles.tdesc}><strong>定義</strong>: {section.definition}<strong>{section.boldPart}</strong>{section.tail}</p>
                     <h3 className={styles.stitle}>特徴とメリット・デメリット</h3>
-                    <TableComponent getRowKey={(row, i) => i}
+                    <TableComponent getRowKey={(row) => row.item}
                         headers={['項目', '内容']}
                         rows={section.features}
                         renderRow={(row) => (
@@ -123,7 +123,7 @@ export const Section4: React.FC = () => (
                         )}
                     />
                     <h3 className={styles.stitle}>Google Cloud でのサービス例</h3>
-                    <TableComponent getRowKey={(row, i) => i}
+                    <TableComponent getRowKey={(row) => row.service}
                         headers={['サービス', '説明']}
                         rows={section.services}
                         renderRow={(row) => (

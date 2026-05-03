@@ -83,11 +83,11 @@ export const Section12: React.FC = () => {
                 </DiagramSVG>
 
                 <h3 className={`${baseStyles.stitle} mt-6`}>12.3 混同しやすいポイントの整理</h3>
-                <TableComponent getRowKey={(row, i) => i}
+                <TableComponent getRowKey={(row) => row.pattern}
                     headers={['混同パターン', '正しい理解']}
                     rows={CONFUSION_POINTS}
-                    renderRow={(row, i) => (
-                        <tr key={i}>
+                    renderRow={(row) => (
+                        <tr key={row.pattern}>
                             <td><strong>{row.pattern}</strong></td>
                             <td>{row.truth}</td>
                         </tr>

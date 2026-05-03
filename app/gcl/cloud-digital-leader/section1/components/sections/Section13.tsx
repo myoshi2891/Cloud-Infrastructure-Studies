@@ -17,11 +17,11 @@ export const Section13: React.FC = () => (
             idNumber="13.1"
             title="比較レポート"
         >
-            <TableComponent getRowKey={(row, i) => i}
+            <TableComponent getRowKey={(row) => row.item}
                 headers={['比較項目', 'オンプレミス', 'クラウド']}
                 rows={ON_PREMISE_VS_CLOUD_COMPARISON}
-                renderRow={(row, i) => (
-                    <tr key={i}>
+                renderRow={(row) => (
+                    <tr key={row.item}>
                         <td><strong>{row.item}</strong></td>
                         <td>{row.onPremise}</td>
                         <td>{row.cloud}</td>

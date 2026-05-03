@@ -214,9 +214,19 @@
 .dlpExample {
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 0.9rem;
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--color-muted);
     padding: 0.5rem 0.8rem;
     border-radius: 6px;
+}
+
+/* Checklist category subheading */
+.checklistSubHeading {
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 1rem;
+    color: var(--cdl-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
 }
 
 /* Checklist */

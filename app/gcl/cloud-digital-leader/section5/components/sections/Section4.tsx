@@ -289,16 +289,7 @@ export const Section4 = () => {
 
                     <div className={styles.g2} style={{ marginBottom: '2.5rem' }}>
                         <div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-yellow)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.checklistSubHeading}>
                                 基礎・責任共有・ゼロトラスト
                             </div>
                             <div className={styles.checklist} style={{ marginBottom: '1.5rem' }}>
@@ -322,16 +313,7 @@ export const Section4 = () => {
                                     不要のゼロトラストアクセス制御」であることを説明できる
                                 </div>
                             </div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-yellow)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.checklistSubHeading}>
                                 IAM
                             </div>
                             <div className={styles.checklist} style={{ marginBottom: '1.5rem' }}>
@@ -355,16 +337,7 @@ export const Section4 = () => {
                             </div>
                         </div>
                         <div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-yellow)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.checklistSubHeading}>
                                 暗号化・ネットワーク
                             </div>
                             <div className={styles.checklist} style={{ marginBottom: '1.5rem' }}>
@@ -386,16 +359,7 @@ export const Section4 = () => {
                                     Cloud Armor・Cloud IAP・VPC SC の役割の違いを即答できる
                                 </div>
                             </div>
-                            <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--cdl-yellow)',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    marginBottom: '0.8rem',
-                                }}
-                            >
+                            <div className={styles.checklistSubHeading}>
                                 監視・コンプライアンス・DLP
                             </div>
                             <div className={styles.checklist}>

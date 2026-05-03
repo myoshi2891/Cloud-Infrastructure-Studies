@@ -1,16 +1,13 @@
 import React from 'react';
 import styles from './Section0.module.css';
 import { TableComponent } from '../TableComponent';
+import { MIGRATION_STRATEGIES } from '../../constants';
 
-const MIGRATION_STRATEGIES = [
-    { name: 'Rehost（リホスト）', alias: 'Lift & Shift', desc: 'コードを変えずそのままクラウドへ移行。VMをGCE上にそのまま展開する。', codeChange: 'なし', codeChangeClass: styles.badgeG, useCase: 'レガシー移行・DC契約満了の迅速な移行' },
-    { name: 'Replatform（リプラットフォーム）', alias: 'Lift & Optimize', desc: 'アーキテクチャを維持しつつ一部をマネージドサービスへ置き換え。例：自社PostgreSQL → Cloud SQL。', codeChange: '一部', codeChangeClass: styles.badgeA, useCase: '運用負荷削減・コード変更最小化' },
-    { name: 'Refactor（リファクタリング）', alias: 'Move & Improve', desc: 'クラウドネイティブ機能を活用するためアーキテクチャを再設計。モノリス→マイクロサービス化。', codeChange: '大規模', codeChangeClass: styles.badgeR, useCase: 'スケーラビリティ・俊敏性の最大化' },
-    { name: 'Rebuild / Re-architect', alias: 'Reimagine', desc: '既存コードを破棄して最新技術でゼロから再構築。長期的に最大の価値を生み出す。', codeChange: '完全', codeChangeClass: styles.badgeR, useCase: 'コードベースが陳腐化・完全刷新が必要' },
-    { name: 'Repurchase（再購入）', alias: 'Drop & Shop', desc: '自社システムを廃止してSaaS（Google Workspace・Salesforce等）に移行する。', codeChange: '不要', codeChangeClass: styles.badgeG, useCase: '既製SaaSで要件を満たせる場合' },
-    { name: 'Retire（廃止）', alias: '—', desc: '価値を生み出していない・重複しているシステムを安全にシャットダウン。コスト削減に直結。', codeChange: '不要', codeChangeClass: styles.badgeG, useCase: '利用率が極めて低いシステム' },
-    { name: 'Retain（保持）', alias: 'Revisit', desc: '現時点でのクラウド移行が見合わないワークロードをオンプレに残す。将来の再評価を前提とする。', codeChange: '不要', codeChangeClass: styles.badgeG, useCase: 'データ主権規制・レガシーHW依存' },
-];
+const BADGE_CLASS_MAP = {
+    badgeG: styles.badgeG,
+    badgeA: styles.badgeA,
+    badgeR: styles.badgeR,
+} as const;
 
 /**
  * Section0 コンポーネント
@@ -169,7 +166,7 @@ export const Section0 = () => {
                                     <td>{row.name}</td>
                                     <td>{row.alias}</td>
                                     <td>{row.desc}</td>
-                                    <td><span className={`${styles.badge} ${row.codeChangeClass}`}>{row.codeChange}</span></td>
+                                    <td><span className={`${styles.badge} ${BADGE_CLASS_MAP[row.codeChangeClass]}`}>{row.codeChange}</span></td>
                                     <td>{row.useCase}</td>
                                 </tr>
                             )}
