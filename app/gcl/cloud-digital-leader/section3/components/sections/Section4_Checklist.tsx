@@ -37,8 +37,7 @@ export const Section4_Checklist: React.FC = () => {
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                ML がビジネスに創出する 3
-                                つの価値（大規模データ・スケーリング・非構造化データ）を説明できる
+                                ML がビジネスに創出する 3 つの価値（大規模データ・スケーリング・非構造化データ）を説明できる
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
@@ -66,8 +65,7 @@ export const Section4_Checklist: React.FC = () => {
                         <ul className={styles.checklist}>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                4
-                                つのトレードオフ要因（スピード・労力・差別化・専門知識）を比較できる
+                                4 つのトレードオフ要因（スピード・労力・差別化・専門知識）を比較できる
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
@@ -75,8 +73,7 @@ export const Section4_Checklist: React.FC = () => {
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                「自社独自データが必要か」「ML
-                                専門知識があるか」でどのサービスを選ぶかを即答できる
+                                「自社独自データが必要か」「ML 専門知識があるか」でどのサービスを選ぶかを即答できる
                             </li>
                         </ul>
 
@@ -89,18 +86,15 @@ export const Section4_Checklist: React.FC = () => {
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                AutoML
-                                の「ノーコードでカスタムモデルを構築できる」点を具体例で説明できる
+                                AutoML の「ノーコードでカスタムモデルを構築できる」点を具体例で説明できる
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                BigQuery ML が「SQL でデータ移動なしに ML
-                                を実行できる」点を説明できる
+                                BigQuery ML が「SQL でデータ移動なしに ML を実行できる」点を説明できる
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                Vertex AI
-                                がビジネス差別化のために「フル制御のカスタムモデル」を可能にする点を説明できる
+                                Vertex AI がビジネス差別化のために「フル制御のカスタムモデル」を可能にする点を説明できる
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
@@ -108,8 +102,7 @@ export const Section4_Checklist: React.FC = () => {
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                Cloud TPU が「Google 専有・TensorFlow と ML
-                                に最適化されたハードウェア」であることを説明できる
+                                Cloud TPU が「Google 専有・TensorFlow と ML に最適化されたハードウェア」であることを説明できる
                             </li>
                         </ul>
                     </div>

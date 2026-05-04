@@ -11,7 +11,7 @@ import styles from './Section1.module.css';
 export const Section1 = () => {
     return (
         <>
-            <section id="shared" className={`${styles.section} ${styles.sectionAlt}`}>
+            <section id="shared" aria-labelledby="shared-heading" className={`${styles.section} ${styles.sectionAlt}`}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.1 Shared Responsibility</div>
@@ -84,16 +84,16 @@ export const Section1 = () => {
                             <div className={styles.cardTitle}>✅ Google が常に守るもの</div>
                             <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>データセンターへの物理的な侵入防止
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>データセンターへの物理的な侵入防止
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハードウェアの完全性（Titan チップ）
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハードウェアの完全性（Titan チップ）
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ネットワークインフラへの攻撃対策
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ネットワークインフラへの攻撃対策
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハイパーバイザーの脆弱性対応
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハイパーバイザーの脆弱性対応
                                 </li>
                             </ul>
                         </div>

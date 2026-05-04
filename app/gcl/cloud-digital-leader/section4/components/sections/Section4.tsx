@@ -94,10 +94,10 @@ export const Section4 = () => {
                     <h3 className={styles.subTitle} aria-label="Section 4 チェックリスト">Section 4 チェックリスト</h3>
                     <div className={styles.g2} style={{ marginBottom: '2.5rem' }}>
                         <div>
-                            <div className={styles.clCategory}>
+                            <h4 className={styles.clCategory}>
                                 移行戦略・モダナイゼーション
-                            </div>
-                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="チェックリスト">
+                            </h4>
+                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="移行戦略・モダナイゼーション チェックリスト">
                                 <li className={styles.clItem}>
                                     <div className={styles.clBox} aria-hidden="true">✓</div>
                                     7つのR（Rehost/Replatform/Refactor/Rebuild/Repurchase/Retire/Retain）を具体例で説明できる
@@ -120,10 +120,10 @@ export const Section4 = () => {
                                     モダナイゼーションの 3 段階（Stage 1-3）を説明できる
                                 </li>
                             </ul>
-                            <div className={styles.clCategory}>
+                            <h4 className={styles.clCategory}>
                                 コンピューティング
-                            </div>
-                            <ul className={styles.checklist} aria-label="チェックリスト">
+                            </h4>
+                            <ul className={styles.checklist} aria-label="コンピューティング チェックリスト">
                                 <li className={styles.clItem}>
                                     <div className={styles.clBox} aria-hidden="true">✓</div>
                                     コンピューティングサービス選択のデシジョンツリーを即答できる
@@ -149,10 +149,10 @@ export const Section4 = () => {
                             </ul>
                         </div>
                         <div>
-                            <div className={styles.clCategory}>
+                            <h4 className={styles.clCategory}>
                                 ネットワーク・ハイブリッド
-                            </div>
-                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="ネットワーク・ハイブリッドのチェックリスト">
+                            </h4>
+                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="ネットワーク・ハイブリッド チェックリスト">
                                 <li className={styles.clItem}>
                                     <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Cloud VPN（安価・インターネット経由）と Cloud
@@ -173,10 +173,10 @@ export const Section4 = () => {
                                     つのビジネス理由（ロックイン回避・データ主権・投資保護）を説明できる
                                 </li>
                             </ul>
-                            <div className={styles.clCategory}>
+                            <h4 className={styles.clCategory}>
                                 DevOps / SRE / API
-                            </div>
-                            <ul className={styles.checklist} aria-label="チェックリスト">
+                            </h4>
+                            <ul className={styles.checklist} aria-label="DevOps / SRE / API チェックリスト">
                                 <li className={styles.clItem}>
                                     <div className={styles.clBox} aria-hidden="true">✓</div>
                                     CI/CD パイプライン（Cloud Build → Artifact Registry → Cloud
