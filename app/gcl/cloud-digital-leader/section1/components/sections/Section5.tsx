@@ -19,7 +19,7 @@ export const Section5: React.FC = () => (
             description="クラウドを「どこに・どのように展開するか」を定義したモデルです。"
         >
             <div className="stitle">4 つのデプロイメントモデル</div>
-            <DiagramSVG viewBox="0 0 600 160">
+            <DiagramSVG viewBox="0 0 600 160" decorative={true}>
                 <g transform="translate(20, 20)">
                     <rect x="0" y="0" width="160" height="30" rx="4" fill="var(--color-primary)" fillOpacity="0.1" stroke="var(--color-primary)" />
                     <text x="10" y="20" fill="currentColor" fontSize="13" fontWeight="bold">パブリッククラウド</text>
@@ -41,7 +41,7 @@ export const Section5: React.FC = () => (
             </DiagramSVG>
 
             <div className="stitle">5.2 デプロイメントモデルの比較</div>
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['比較項目', 'パブリック', 'プライベート', 'ハイブリッド', 'マルチ']}
                 rows={DEPLOYMENT_COMPARISON}
                 renderRow={(row, i) => (

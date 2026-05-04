@@ -1,5 +1,18 @@
 import React from 'react';
+import styles from './SectionCard.module.css';
 
+/**
+ * SectionCard component for rendering content blocks.
+ *
+ * Wraps section content in a stylized card with an optional description and a numbered heading.
+ *
+ * @param id - The HTML id attribute for the card wrapper
+ * @param idNumber - The section number to display in the heading
+ * @param title - The main heading title of the card
+ * @param description - An optional description rendered inside a container div below the heading
+ * @param children - The main content elements inside the card
+ * @returns A JSX element containing the formatted section card
+ */
 interface SectionCardProps {
     id: string;
     idNumber: string;
@@ -10,12 +23,12 @@ interface SectionCardProps {
 
 export const SectionCard: React.FC<SectionCardProps> = ({ id, idNumber, title, description, children }) => {
     return (
-        <div className="tcard" id={id}>
-            <div className="ttitle">
-                <span className="tid">{idNumber}</span>
+        <div className={styles.tcard} id={id}>
+            <h3 className={styles.ttitle}>
+                <span className={styles.tid}>{idNumber}</span>
                 {title}
-            </div>
-            {description && <p className="tdesc">{description}</p>}
+            </h3>
+            {description && <div className={styles.tdesc}>{description}</div>}
             {children}
         </div>
     );

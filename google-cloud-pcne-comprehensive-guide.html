@@ -1,0 +1,4048 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Google Cloud Professional Cloud Network Engineer — 完全試験対策ガイド</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #0a0f1e;
+                --bg2: #0d1628;
+                --bg3: #111e35;
+                --bg4: #162240;
+                --card: #111e35;
+                --card2: #0e1830;
+                --border: #1e3a5f;
+                --border2: #254875;
+                --cyan: #00d4ff;
+                --cyan2: #00a8cc;
+                --cyan-dim: rgba(0, 212, 255, 0.12);
+                --cyan-glow: rgba(0, 212, 255, 0.06);
+                --blue: #4499ff;
+                --blue2: #2277ee;
+                --blue-dim: rgba(68, 153, 255, 0.12);
+                --green: #00e5a0;
+                --green2: #00b87d;
+                --green-dim: rgba(0, 229, 160, 0.1);
+                --orange: #ff8c42;
+                --orange-dim: rgba(255, 140, 66, 0.12);
+                --purple: #a78bfa;
+                --purple-dim: rgba(167, 139, 250, 0.12);
+                --red: #ff5757;
+                --red-dim: rgba(255, 87, 87, 0.12);
+                --yellow: #ffd166;
+                --yellow-dim: rgba(255, 209, 102, 0.1);
+                --text: #e2eaf7;
+                --text2: #9ab0cc;
+                --text3: #5e7a9a;
+                --mono: 'IBM Plex Mono', monospace;
+                --sans: 'IBM Plex Sans JP', 'IBM Plex Sans', sans-serif;
+                --radius: 10px;
+                --radius-lg: 16px;
+            }
+
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                font-family: var(--sans);
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.75;
+                font-size: 15px;
+                min-height: 100vh;
+            }
+
+            /* ── SCROLLBAR ── */
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: var(--bg);
+            }
+            ::-webkit-scrollbar-thumb {
+                background: var(--border2);
+                border-radius: 3px;
+            }
+
+            /* ── LAYOUT ── */
+            .wrapper {
+                display: flex;
+                min-height: 100vh;
+            }
+
+            /* ── SIDEBAR ── */
+            .sidebar {
+                width: 280px;
+                flex-shrink: 0;
+                background: var(--bg2);
+                border-right: 1px solid var(--border);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar-header {
+                padding: 24px 20px 16px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .sidebar-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 12px;
+            }
+
+            .gcp-icon {
+                width: 32px;
+                height: 32px;
+                background: linear-gradient(
+                    135deg,
+                    #4285f4 0%,
+                    #34a853 50%,
+                    #fbbc04 75%,
+                    #ea4335 100%
+                );
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                color: white;
+                font-weight: 600;
+                flex-shrink: 0;
+            }
+
+            .sidebar-title {
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text);
+                line-height: 1.3;
+            }
+
+            .exam-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: var(--cyan-dim);
+                border: 1px solid rgba(0, 212, 255, 0.25);
+                color: var(--cyan);
+                font-size: 11px;
+                font-weight: 500;
+                padding: 3px 10px;
+                border-radius: 20px;
+                font-family: var(--mono);
+            }
+
+            .sidebar-nav {
+                padding: 16px 12px;
+                flex: 1;
+            }
+
+            .nav-section-label {
+                font-size: 10px;
+                font-weight: 600;
+                color: var(--text3);
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                padding: 8px 8px 4px;
+            }
+
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 10px;
+                border-radius: 8px;
+                color: var(--text2);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 400;
+                transition: all 0.18s ease;
+                margin-bottom: 2px;
+                cursor: pointer;
+            }
+
+            .nav-item:hover {
+                background: var(--bg4);
+                color: var(--text);
+            }
+
+            .nav-item.active {
+                background: var(--cyan-dim);
+                color: var(--cyan);
+                border: 1px solid rgba(0, 212, 255, 0.2);
+            }
+
+            .nav-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+
+            .nav-pct {
+                margin-left: auto;
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text3);
+                background: var(--bg3);
+                padding: 1px 7px;
+                border-radius: 10px;
+            }
+
+            .sidebar-info {
+                padding: 16px;
+                border-top: 1px solid var(--border);
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .info-chip {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 8px 10px;
+                text-align: center;
+            }
+
+            .info-chip-val {
+                font-family: var(--mono);
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--cyan);
+                display: block;
+            }
+
+            .info-chip-label {
+                font-size: 10px;
+                color: var(--text3);
+                display: block;
+            }
+
+            /* ── MAIN CONTENT ── */
+            .main {
+                flex: 1;
+                overflow-x: hidden;
+                min-width: 0;
+            }
+
+            /* ── HERO ── */
+            .hero {
+                background: linear-gradient(160deg, #0d1628 0%, #0a1520 40%, #050c18 100%);
+                padding: 60px 60px 50px;
+                border-bottom: 1px solid var(--border);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: -80px;
+                right: -80px;
+                width: 500px;
+                height: 500px;
+                background: radial-gradient(circle, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
+                pointer-events: none;
+            }
+
+            .hero::after {
+                content: '';
+                position: absolute;
+                bottom: -60px;
+                left: 20%;
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, rgba(68, 153, 255, 0.04) 0%, transparent 60%);
+                pointer-events: none;
+            }
+
+            .hero-eyebrow {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .eyebrow-tag {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--cyan);
+                background: var(--cyan-dim);
+                border: 1px solid rgba(0, 212, 255, 0.2);
+                padding: 3px 12px;
+                border-radius: 20px;
+            }
+
+            .hero-title {
+                font-size: 38px;
+                font-weight: 600;
+                line-height: 1.15;
+                color: #ffffff;
+                margin-bottom: 16px;
+                letter-spacing: -0.02em;
+            }
+
+            .hero-title .accent {
+                color: var(--cyan);
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+                color: var(--text2);
+                max-width: 620px;
+                margin-bottom: 32px;
+                line-height: 1.7;
+            }
+
+            .hero-stats {
+                display: flex;
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+
+            .hero-stat {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                color: var(--text2);
+            }
+
+            .hero-stat-dot {
+                color: var(--cyan);
+                font-size: 10px;
+            }
+
+            /* ── SECTION ── */
+            .section {
+                padding: 48px 60px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .section:last-child {
+                border-bottom: none;
+            }
+
+            .section-header {
+                display: flex;
+                align-items: flex-start;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            .section-number {
+                font-family: var(--mono);
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--text3);
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                padding: 4px 10px;
+                border-radius: 20px;
+                white-space: nowrap;
+                margin-top: 4px;
+            }
+
+            .section-title {
+                font-size: 24px;
+                font-weight: 600;
+                color: #fff;
+                letter-spacing: -0.01em;
+                line-height: 1.3;
+            }
+
+            .section-desc {
+                font-size: 15px;
+                color: var(--text2);
+                margin-top: 8px;
+                max-width: 720px;
+                line-height: 1.75;
+            }
+
+            /* ── CARDS ── */
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 16px;
+                margin-bottom: 28px;
+            }
+
+            .card {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+                padding: 22px 24px;
+                transition: border-color 0.2s;
+            }
+
+            .card:hover {
+                border-color: var(--border2);
+            }
+
+            .card-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                margin-bottom: 14px;
+                flex-shrink: 0;
+            }
+
+            .card-title {
+                font-size: 15px;
+                font-weight: 600;
+                color: #fff;
+                margin-bottom: 8px;
+            }
+
+            .card-body {
+                font-size: 13.5px;
+                color: var(--text2);
+                line-height: 1.7;
+            }
+
+            /* ── TOPIC BLOCK ── */
+            .topic-block {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+                margin-bottom: 20px;
+                overflow: hidden;
+            }
+
+            .topic-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 22px;
+                border-bottom: 1px solid var(--border);
+                cursor: pointer;
+                user-select: none;
+                transition: background 0.15s;
+            }
+
+            .topic-header:hover {
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            .topic-badge {
+                font-family: var(--mono);
+                font-size: 11px;
+                padding: 2px 9px;
+                border-radius: 20px;
+                font-weight: 500;
+                flex-shrink: 0;
+            }
+
+            .topic-title {
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--text);
+                flex: 1;
+            }
+
+            .topic-chevron {
+                color: var(--text3);
+                font-size: 12px;
+                transition: transform 0.2s;
+            }
+
+            .topic-block.open .topic-chevron {
+                transform: rotate(180deg);
+            }
+
+            .topic-content {
+                padding: 0 22px;
+                max-height: 0;
+                overflow: hidden;
+                transition:
+                    max-height 0.4s ease,
+                    padding 0.3s;
+            }
+
+            .topic-block.open .topic-content {
+                max-height: 9999px;
+                padding: 22px;
+            }
+
+            /* ── COMPARISON TABLE ── */
+            .compare-table-wrap {
+                overflow-x: auto;
+                margin: 20px 0;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border);
+            }
+
+            .compare-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13.5px;
+                min-width: 600px;
+            }
+
+            .compare-table th {
+                background: var(--bg4);
+                color: var(--text2);
+                font-weight: 500;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                padding: 12px 16px;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .compare-table td {
+                padding: 12px 16px;
+                border-bottom: 1px solid rgba(30, 58, 95, 0.5);
+                color: var(--text);
+                vertical-align: top;
+            }
+
+            .compare-table tr:last-child td {
+                border-bottom: none;
+            }
+            .compare-table tr:hover td {
+                background: rgba(255, 255, 255, 0.015);
+            }
+
+            .compare-table td:first-child {
+                font-weight: 500;
+                color: var(--cyan);
+                font-family: var(--mono);
+                font-size: 12.5px;
+                white-space: nowrap;
+            }
+
+            /* ── CHECKLIST ── */
+            .checklist {
+                display: grid;
+                gap: 8px;
+                margin: 16px 0;
+            }
+
+            .checklist-item {
+                display: flex;
+                gap: 10px;
+                align-items: flex-start;
+                font-size: 13.5px;
+                color: var(--text2);
+                padding: 10px 14px;
+                background: var(--bg);
+                border-radius: 8px;
+                border: 1px solid var(--border);
+            }
+
+            .checklist-item::before {
+                content: '✓';
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--green);
+                background: var(--green-dim);
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            /* ── CODE BLOCK ── */
+            .code-block {
+                background: #050d1a;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 18px 20px;
+                font-family: var(--mono);
+                font-size: 12.5px;
+                color: #9ecbff;
+                overflow-x: auto;
+                margin: 14px 0;
+                line-height: 1.65;
+            }
+
+            .code-block .comment {
+                color: #5e7a9a;
+            }
+            .code-block .keyword {
+                color: var(--cyan);
+            }
+            .code-block .string {
+                color: var(--green);
+            }
+            .code-block .flag {
+                color: var(--orange);
+            }
+
+            /* ── ALERT BOXES ── */
+            .alert {
+                display: flex;
+                gap: 12px;
+                padding: 14px 18px;
+                border-radius: var(--radius);
+                margin: 16px 0;
+                font-size: 13.5px;
+                line-height: 1.65;
+            }
+
+            .alert-icon {
+                font-size: 16px;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            .alert-tip {
+                background: var(--cyan-dim);
+                border: 1px solid rgba(0, 212, 255, 0.2);
+                color: var(--text);
+            }
+            .alert-warn {
+                background: var(--yellow-dim);
+                border: 1px solid rgba(255, 209, 102, 0.2);
+                color: var(--text);
+            }
+            .alert-danger {
+                background: var(--red-dim);
+                border: 1px solid rgba(255, 87, 87, 0.2);
+                color: var(--text);
+            }
+            .alert-info {
+                background: var(--blue-dim);
+                border: 1px solid rgba(68, 153, 255, 0.2);
+                color: var(--text);
+            }
+            .alert-success {
+                background: var(--green-dim);
+                border: 1px solid rgba(0, 229, 160, 0.2);
+                color: var(--text);
+            }
+
+            /* ── ARCHITECTURE DIAGRAM ── */
+            .arch-diagram {
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+                padding: 28px;
+                margin: 20px 0;
+                font-family: var(--mono);
+                font-size: 12.5px;
+                color: var(--text2);
+                white-space: pre;
+                overflow-x: auto;
+                line-height: 1.6;
+            }
+
+            /* ── TAGS ── */
+            .tag {
+                display: inline-block;
+                font-family: var(--mono);
+                font-size: 11px;
+                font-weight: 500;
+                padding: 2px 9px;
+                border-radius: 20px;
+                margin: 2px;
+            }
+
+            .tag-cyan {
+                background: var(--cyan-dim);
+                color: var(--cyan);
+                border: 1px solid rgba(0, 212, 255, 0.2);
+            }
+            .tag-green {
+                background: var(--green-dim);
+                color: var(--green);
+                border: 1px solid rgba(0, 229, 160, 0.2);
+            }
+            .tag-orange {
+                background: var(--orange-dim);
+                color: var(--orange);
+                border: 1px solid rgba(255, 140, 66, 0.2);
+            }
+            .tag-purple {
+                background: var(--purple-dim);
+                color: var(--purple);
+                border: 1px solid rgba(167, 139, 250, 0.2);
+            }
+            .tag-red {
+                background: var(--red-dim);
+                color: var(--red);
+                border: 1px solid rgba(255, 87, 87, 0.2);
+            }
+            .tag-blue {
+                background: var(--blue-dim);
+                color: var(--blue);
+                border: 1px solid rgba(68, 153, 255, 0.2);
+            }
+
+            /* ── SOURCE LINK ── */
+            .source-list {
+                display: grid;
+                gap: 8px;
+                margin: 16px 0;
+            }
+
+            .source-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 14px;
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                text-decoration: none;
+                color: var(--text2);
+                font-size: 13px;
+                transition: all 0.15s;
+            }
+
+            .source-item:hover {
+                border-color: var(--border2);
+                color: var(--cyan);
+                background: var(--cyan-dim);
+            }
+
+            .source-item-icon {
+                font-size: 14px;
+                flex-shrink: 0;
+            }
+            .source-item-url {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text3);
+                margin-top: 2px;
+            }
+
+            /* ── FLOW STEPS ── */
+            .flow-steps {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                margin: 16px 0;
+            }
+
+            .flow-step {
+                display: flex;
+                gap: 16px;
+                align-items: flex-start;
+                padding: 16px 0;
+                position: relative;
+            }
+
+            .flow-step:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                left: 17px;
+                top: 48px;
+                bottom: -8px;
+                width: 2px;
+                background: var(--border);
+            }
+
+            .flow-step-num {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--mono);
+                font-size: 13px;
+                font-weight: 600;
+                flex-shrink: 0;
+            }
+
+            .flow-step-content {
+                flex: 1;
+                padding-top: 5px;
+            }
+
+            .flow-step-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #fff;
+                margin-bottom: 4px;
+            }
+
+            .flow-step-body {
+                font-size: 13px;
+                color: var(--text2);
+                line-height: 1.65;
+            }
+
+            /* ── PILL BADGES ── */
+            .sla-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                font-family: var(--mono);
+                font-size: 12px;
+                font-weight: 600;
+                padding: 3px 10px;
+                border-radius: 20px;
+            }
+
+            /* ── HEADING STYLES ── */
+            h3 {
+                font-size: 17px;
+                font-weight: 600;
+                color: #fff;
+                margin: 28px 0 14px;
+                letter-spacing: -0.01em;
+            }
+
+            h4 {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--text);
+                margin: 20px 0 10px;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: var(--text2);
+            }
+
+            p {
+                color: var(--text2);
+                margin-bottom: 12px;
+                font-size: 14.5px;
+                line-height: 1.75;
+            }
+
+            strong {
+                color: var(--text);
+                font-weight: 600;
+            }
+            code {
+                font-family: var(--mono);
+                font-size: 12.5px;
+                background: var(--bg);
+                border: 1px solid var(--border);
+                padding: 1px 6px;
+                border-radius: 5px;
+                color: var(--cyan);
+            }
+
+            /* ── CONFUSION TABLE ── */
+            .confusion-table-wrap {
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                margin: 16px 0;
+            }
+
+            /* ── RESPONSIVE ── */
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .hero {
+                    padding: 36px 24px 30px;
+                }
+                .section {
+                    padding: 36px 24px;
+                }
+                .hero-title {
+                    font-size: 26px;
+                }
+            }
+
+            /* ── PROGRESS BAR ── */
+            .section-weight-bar {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .weight-label {
+                font-family: var(--mono);
+                font-size: 12px;
+                color: var(--text3);
+                white-space: nowrap;
+            }
+
+            .weight-track {
+                flex: 1;
+                height: 4px;
+                background: var(--border);
+                border-radius: 2px;
+                overflow: hidden;
+            }
+
+            .weight-fill {
+                height: 100%;
+                border-radius: 2px;
+                transition: width 0.6s ease;
+            }
+
+            .weight-pct {
+                font-family: var(--mono);
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            /* ── HIGHLIGHT BOX ── */
+            .highlight-box {
+                background: linear-gradient(
+                    135deg,
+                    rgba(0, 212, 255, 0.04) 0%,
+                    rgba(68, 153, 255, 0.04) 100%
+                );
+                border: 1px solid rgba(0, 212, 255, 0.15);
+                border-radius: var(--radius-lg);
+                padding: 20px 24px;
+                margin: 20px 0;
+            }
+
+            /* ── VS COMPARE ── */
+            .vs-grid {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                gap: 16px;
+                align-items: start;
+                margin: 16px 0;
+            }
+
+            .vs-card {
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+                padding: 18px 20px;
+            }
+
+            .vs-label {
+                font-family: var(--mono);
+                font-size: 10px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--text3);
+                margin-bottom: 10px;
+            }
+
+            .vs-divider {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text3);
+                margin-top: 40px;
+            }
+
+            /* ── FOOTER ── */
+            .footer {
+                padding: 32px 60px;
+                border-top: 1px solid var(--border);
+                text-align: center;
+                color: var(--text3);
+                font-size: 13px;
+            }
+
+            .footer a {
+                color: var(--cyan);
+                text-decoration: none;
+            }
+            .footer a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <!-- ════════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════ -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <div class="gcp-icon">G</div>
+                        <div class="sidebar-title">Professional Cloud<br />Network Engineer</div>
+                    </div>
+                    <div class="exam-badge">&#9675; PCNE 2026</div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <div class="nav-section-label">試験概要</div>
+                    <a class="nav-item" href="#overview">
+                        <span class="nav-dot" style="background: #00d4ff"></span>試験の全体像
+                    </a>
+
+                    <div class="nav-section-label">出題セクション</div>
+                    <a class="nav-item" href="#s1">
+                        <span class="nav-dot" style="background: #4499ff"></span>S1:
+                        VPCネットワーク設計
+                        <span class="nav-pct">21%</span>
+                    </a>
+                    <a class="nav-item" href="#s2">
+                        <span class="nav-dot" style="background: #00e5a0"></span>S2:
+                        ハイブリッド接続
+                        <span class="nav-pct">23%</span>
+                    </a>
+                    <a class="nav-item" href="#s3">
+                        <span class="nav-dot" style="background: #ff8c42"></span>S3:
+                        ロードバランシング
+                        <span class="nav-pct">19%</span>
+                    </a>
+                    <a class="nav-item" href="#s4">
+                        <span class="nav-dot" style="background: #a78bfa"></span>S4:
+                        CDN・DNS・IP管理
+                        <span class="nav-pct">15%</span>
+                    </a>
+                    <a class="nav-item" href="#s5">
+                        <span class="nav-dot" style="background: #ff5757"></span>S5:
+                        ネットワークセキュリティ
+                        <span class="nav-pct">12%</span>
+                    </a>
+                    <a class="nav-item" href="#s6">
+                        <span class="nav-dot" style="background: #ffd166"></span>S6:
+                        監視・トラブルシュート
+                        <span class="nav-pct">10%</span>
+                    </a>
+
+                    <div class="nav-section-label">まとめ</div>
+                    <a class="nav-item" href="#cheatsheet">
+                        <span class="nav-dot" style="background: #00d4ff"></span
+                        >試験攻略チートシート
+                    </a>
+                    <a class="nav-item" href="#confusion">
+                        <span class="nav-dot" style="background: #ffd166"></span
+                        >混同しやすいポイント
+                    </a>
+                </nav>
+
+                <div class="sidebar-info">
+                    <div class="info-chip">
+                        <span class="info-chip-val">120分</span>
+                        <span class="info-chip-label">試験時間</span>
+                    </div>
+                    <div class="info-chip">
+                        <span class="info-chip-val">50-60問</span>
+                        <span class="info-chip-label">問題数</span>
+                    </div>
+                    <div class="info-chip">
+                        <span class="info-chip-val">$200</span>
+                        <span class="info-chip-label">受験料</span>
+                    </div>
+                    <div class="info-chip">
+                        <span class="info-chip-val">2年間</span>
+                        <span class="info-chip-label">有効期間</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ════════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════════ -->
+            <main class="main">
+                <!-- ── HERO ── -->
+                <section class="hero" id="overview">
+                    <div class="hero-eyebrow">
+                        <span class="eyebrow-tag">Google Cloud Certification</span>
+                        <span class="eyebrow-tag">Professional Level</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Professional Cloud<br />
+                        <span class="accent">Network Engineer</span><br />
+                        完全試験対策ガイド
+                    </h1>
+                    <p class="hero-subtitle">
+                        ネットワーク初学者から中級者まで対応。VPC設計からハイブリッド接続、ロードバランシング、セキュリティ、監視まで、
+                        試験に出るすべての技術領域をステップバイステップで解説します。
+                        各サービスのベストプラクティスと根拠URLを完全収録。
+                    </p>
+                    <div class="hero-stats">
+                        <span class="hero-stat"
+                            ><span class="hero-stat-dot">◆</span> 試験時間: 120分</span
+                        >
+                        <span class="hero-stat"
+                            ><span class="hero-stat-dot">◆</span> 問題数: 50〜60問</span
+                        >
+                        <span class="hero-stat"
+                            ><span class="hero-stat-dot">◆</span> 受験料: $200</span
+                        >
+                        <span class="hero-stat"
+                            ><span class="hero-stat-dot">◆</span> 推奨経験: 3年以上</span
+                        >
+                        <span class="hero-stat"
+                            ><span class="hero-stat-dot">◆</span> 更新: 2年ごと</span
+                        >
+                    </div>
+                </section>
+
+                <!-- ──────────────────────────────────────────────
+     試験概要セクション
+────────────────────────────────────────────── -->
+                <section class="section">
+                    <div class="section-header">
+                        <span class="section-number">INTRO</span>
+                        <div>
+                            <div class="section-title">試験の全体像と準備方法</div>
+                            <div class="section-desc">
+                                PCNEは、Google
+                                Cloudのネットワークインフラを設計・実装・管理・最適化する能力を証明する上級資格です。
+                                単なる操作知識でなく、アーキテクチャ設計の判断力が問われます。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 出題配点バー -->
+                    <h3>出題セクション別 配点</h3>
+                    <div style="display: grid; gap: 10px; margin: 16px 0 28px">
+                        <div>
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 5px;
+                                    font-size: 13px;
+                                "
+                            >
+                                <span style="color: var(--text)">S1: VPCネットワーク設計</span>
+                                <span style="font-family: var(--mono); color: var(--cyan)"
+                                    >~21%</span
+                                >
+                            </div>
+                            <div class="weight-track">
+                                <div
+                                    class="weight-fill"
+                                    style="width: 21%; background: var(--blue)"
+                                ></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 5px;
+                                    font-size: 13px;
+                                "
+                            >
+                                <span style="color: var(--text)"
+                                    >S2: ハイブリッド接続・ネットワーク相互接続</span
+                                >
+                                <span style="font-family: var(--mono); color: var(--cyan)"
+                                    >~23%</span
+                                >
+                            </div>
+                            <div class="weight-track">
+                                <div
+                                    class="weight-fill"
+                                    style="width: 23%; background: var(--green)"
+                                ></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 5px;
+                                    font-size: 13px;
+                                "
+                            >
+                                <span style="color: var(--text)"
+                                    >S3: ロードバランシングとトラフィック管理</span
+                                >
+                                <span style="font-family: var(--mono); color: var(--cyan)"
+                                    >~19%</span
+                                >
+                            </div>
+                            <div class="weight-track">
+                                <div
+                                    class="weight-fill"
+                                    style="width: 19%; background: var(--orange)"
+                                ></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 5px;
+                                    font-size: 13px;
+                                "
+                            >
+                                <span style="color: var(--text)">S4: CDN・DNS・IPアドレス管理</span>
+                                <span style="font-family: var(--mono); color: var(--cyan)"
+                                    >~15%</span
+                                >
+                            </div>
+                            <div class="weight-track">
+                                <div
+                                    class="weight-fill"
+                                    style="width: 15%; background: var(--purple)"
+                                ></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 5px;
+                                    font-size: 13px;
+                                "
+                            >
+                                <span style="color: var(--text)"
+                                    >S5: ネットワークセキュリティの設計と実装</span
+                                >
+                                <span style="font-family: var(--mono); color: var(--cyan)"
+                                    >~12%</span
+                                >
+                            </div>
+                            <div class="weight-track">
+                                <div
+                                    class="weight-fill"
+                                    style="width: 12%; background: var(--red)"
+                                ></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin-bottom: 5px;
+                                    font-size: 13px;
+                                "
+                            >
+                                <span style="color: var(--text)">S6: ネットワーク操作と監視</span>
+                                <span style="font-family: var(--mono); color: var(--cyan)"
+                                    >~10%</span
+                                >
+                            </div>
+                            <div class="weight-track">
+                                <div
+                                    class="weight-fill"
+                                    style="width: 10%; background: var(--yellow)"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 学習ステップ -->
+                    <h3>推奨学習ステップ</h3>
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <div
+                                class="flow-step-num"
+                                style="
+                                    background: var(--cyan-dim);
+                                    color: var(--cyan);
+                                    border: 1px solid rgba(0, 212, 255, 0.3);
+                                "
+                            >
+                                1
+                            </div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">公式試験ガイドを熟読する（必須）</div>
+                                <div class="flow-step-body">
+                                    試験範囲の正式定義を確認。本ガイドと照らし合わせながら学習計画を立てる。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div
+                                class="flow-step-num"
+                                style="
+                                    background: var(--blue-dim);
+                                    color: var(--blue);
+                                    border: 1px solid rgba(68, 153, 255, 0.3);
+                                "
+                            >
+                                2
+                            </div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">
+                                    Cloud Skills Boost のPCNEラーニングパスを修了
+                                </div>
+                                <div class="flow-step-body">
+                                    体系的な動画学習と実践演習。GCPのネットワーキング基礎から始められる。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div
+                                class="flow-step-num"
+                                style="
+                                    background: var(--green-dim);
+                                    color: var(--green);
+                                    border: 1px solid rgba(0, 229, 160, 0.3);
+                                "
+                            >
+                                3
+                            </div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">ハンズオンラボで実際に操作する</div>
+                                <div class="flow-step-body">
+                                    VPC・Cloud VPN・Cloud
+                                    Interconnect・ロードバランサーの実際の構築体験が合否を分ける。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div
+                                class="flow-step-num"
+                                style="
+                                    background: var(--orange-dim);
+                                    color: var(--orange);
+                                    border: 1px solid rgba(255, 140, 66, 0.3);
+                                "
+                            >
+                                4
+                            </div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">
+                                    公式サンプル問題・模擬試験で実力測定
+                                </div>
+                                <div class="flow-step-body">
+                                    弱点を可視化して集中補強。シナリオベースの設問形式に慣れる。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div
+                                class="flow-step-num"
+                                style="
+                                    background: var(--purple-dim);
+                                    color: var(--purple);
+                                    border: 1px solid rgba(167, 139, 250, 0.3);
+                                "
+                            >
+                                5
+                            </div>
+                            <div class="flow-step-content">
+                                <div class="flow-step-title">
+                                    弱点分野を公式ドキュメントで補強して試験登録
+                                </div>
+                                <div class="flow-step-body">
+                                    本ガイドの各セクションの「参照URL」から公式ドキュメントを直接確認する。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="source-list">
+                        <a
+                            class="source-item"
+                            href="https://cloud.google.com/learn/certification/cloud-network-engineer"
+                            target="_blank"
+                        >
+                            <span class="source-item-icon">🔗</span>
+                            <div>
+                                <div>公式試験ページ — Professional Cloud Network Engineer</div>
+                                <div class="source-item-url">
+                                    cloud.google.com/learn/certification/cloud-network-engineer
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="source-item"
+                            href="https://cloud.google.com/learn/certification/guides/cloud-network-engineer"
+                            target="_blank"
+                        >
+                            <span class="source-item-icon">📄</span>
+                            <div>
+                                <div>公式試験ガイド（出題範囲の詳細）</div>
+                                <div class="source-item-url">
+                                    cloud.google.com/learn/certification/guides/cloud-network-engineer
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="source-item"
+                            href="https://services.google.com/fh/files/misc/042426_professional_cloud_network_engineer_exam_guide_english.pdf"
+                            target="_blank"
+                        >
+                            <span class="source-item-icon">📑</span>
+                            <div>
+                                <div>最新試験ガイド PDF（英語・2024年4月版）</div>
+                                <div class="source-item-url">
+                                    services.google.com/fh/files/misc/042426_...exam_guide_english.pdf
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     S1: VPCネットワーク設計
+══════════════════════════════════════════════ -->
+                <section class="section" id="s1">
+                    <div class="section-header">
+                        <span class="section-number">SECTION 1</span>
+                        <div>
+                            <div class="section-title" style="color: var(--blue)">
+                                VPCネットワークの設計・実装
+                            </div>
+                            <div class="section-desc">
+                                全試験の約21%を占める最重要セクション。VPCの基本概念、サブネット設計、ファイアウォール、
+                                ピアリング、Shared VPC、Private Accessまで幅広く出題される。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-weight-bar">
+                        <span class="weight-label">配点ウェイト</span>
+                        <div class="weight-track" style="max-width: 300px">
+                            <div
+                                class="weight-fill"
+                                style="width: 21%; background: var(--blue)"
+                            ></div>
+                        </div>
+                        <span class="weight-pct" style="color: var(--blue)">~21%</span>
+                        <span class="tag tag-blue">VPC</span>
+                        <span class="tag tag-blue">Firewall</span>
+                        <span class="tag tag-blue">Peering</span>
+                        <span class="tag tag-blue">Shared VPC</span>
+                        <span class="tag tag-blue">Cloud NAT</span>
+                    </div>
+
+                    <!-- 1.1 VPCの概念 -->
+                    <div class="topic-block open" id="t-vpc">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-blue">1.1</span>
+                            <span class="topic-title"
+                                >VPCの根本概念 ─ グローバルスコープとモード選択</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <p>
+                                Google Cloud
+                                VPCは<strong>グローバルリソース</strong>です。他のクラウド（AWSなど）ではVPCがリージョンに紐づきますが、GCPでは1つのVPCが複数リージョンにまたがります。これにより、リージョン間のルーティングが自動化され、アーキテクチャが大幅に簡素化されます。
+                            </p>
+
+                            <div class="arch-diagram">
+                                ┌──────────── 単一グローバルVPC (example-vpc)
+                                ──────────────────────┐ │ │ │ us-central1 europe-west1
+                                asia-northeast1 │ │ subnet: 10.0.1.0/24 subnet: 10.0.2.0/24 subnet:
+                                10.0.3.0/24 │ │ │ │ ↕ Googleのプレミアムバックボーンで自動接続 ↕ │ │
+                                │
+                                └────────────────────────────────────────────────────────────────────┘
+                                ▶ サブネットはリージョンスコープ（ゾーンをまたぐ） ▶
+                                VPC自体はグローバルスコープ（リージョンをまたぐ）
+                            </div>
+
+                            <h3>Auto Mode vs Custom Mode</h3>
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>モード</th>
+                                            <th>サブネット作成</th>
+                                            <th>CIDRレンジ</th>
+                                            <th>推奨用途</th>
+                                            <th>本番環境</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Auto Mode</td>
+                                            <td>全リージョンに自動作成</td>
+                                            <td>10.128.0.0/9（固定）</td>
+                                            <td>学習・プロトタイプ・PoC</td>
+                                            <td><span class="tag tag-red">❌ 非推奨</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Custom Mode</td>
+                                            <td>手動で設計・作成</td>
+                                            <td>任意のRFC1918レンジ</td>
+                                            <td>本番・エンタープライズ</td>
+                                            <td><span class="tag tag-green">✓ 推奨</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="alert alert-warn">
+                                <span class="alert-icon">⚠</span>
+                                <div>
+                                    <strong>Auto Modeを本番禁止の理由：</strong>
+                                    10.128.0.0/9が固定されるため、オンプレミスのCIDRと重複しやすく、ハイブリッド接続を後から追加するときに大きな問題が発生します。最初からCustom
+                                    Modeを使うのが鉄則です。
+                                </div>
+                            </div>
+
+                            <h3>CIDR設計のベストプラクティス</h3>
+                            <div class="arch-diagram">
+                                <span class="comment"
+                                    ># RFC 1918 プライベートIPレンジの使い分け</span
+                                >
+                                10.0.0.0/8 → 大規模組織（16,777,214ホスト） ←
+                                <span class="keyword">最もよく使用</span>
+                                172.16.0.0/12 → 中規模組織（1,048,574ホスト） 192.168.0.0/16 →
+                                小規模組織（65,534ホスト）
+
+                                <span class="comment"
+                                    >#
+                                    環境ごとのVPC設計例（将来の拡張を見越して余裕を持たせる）</span
+                                >
+                                Production VPC: us-central1 → 10.1.0.0/16 (65,534ホスト) web-subnet
+                                → 10.1.1.0/24 (254ホスト) app-subnet → 10.1.2.0/24 (254ホスト)
+                                db-subnet → 10.1.3.0/24 (254ホスト) europe-west1 → 10.2.0.0/16
+                                asia-northeast1 → 10.3.0.0/16 Staging VPC: 10.10.0.0/16 Development
+                                VPC: 10.20.0.0/16
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    本番環境では必ず<strong>Custom Mode VPC</strong>を使用する（Auto
+                                    Modeは絶対禁止）
+                                </div>
+                                <div class="checklist-item">
+                                    環境ごとにVPCを分離する（prod / staging / dev で別VPC）
+                                </div>
+                                <div class="checklist-item">
+                                    オンプレミスCIDRとの重複を設計初期から排除する
+                                </div>
+                                <div class="checklist-item">
+                                    将来のリージョン拡張・サブネット追加を見越してCIDRに余裕を持たせる
+                                </div>
+                                <div class="checklist-item">
+                                    GKE利用時はセカンダリレンジ（Pod/Service用）を事前計画する
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/vpc"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>VPC ネットワークの概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/vpc
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/architecture/best-practices-vpc-design"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">📋</span>
+                                    <div>
+                                        <div>VPC設計のベストプラクティスと参照アーキテクチャ</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/architecture/best-practices-vpc-design
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.2 ファイアウォールルール -->
+                    <div class="topic-block" id="t-fw">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-blue">1.2</span>
+                            <span class="topic-title"
+                                >VPCファイアウォールルール ─
+                                ステートフル・優先度・階層型ポリシー</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <p>
+                                GCPのファイアウォールは<strong>ステートフル</strong>です。インバウンドを許可すれば戻りトラフィックは自動的に許可されます。また、ルールはVMの外側（vNICレベル）で適用されるため、OSのiptablesとは独立して動作します。
+                            </p>
+
+                            <h3>ターゲット指定の3つの方法</h3>
+                            <div class="card-grid">
+                                <div class="card" style="border-color: rgba(0, 229, 160, 0.3)">
+                                    <div class="card-icon" style="background: var(--green-dim)">
+                                        🏷
+                                    </div>
+                                    <div class="card-title">方法1: ネットワークタグ</div>
+                                    <div class="card-body">
+                                        VMにタグ（例:
+                                        <code>web-server</code
+                                        >）を付与し、そのタグを持つVMにルールを適用。シンプルだが誰でもタグを付けられるためセキュリティは低め。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(0, 212, 255, 0.3)">
+                                    <div class="card-icon" style="background: var(--cyan-dim)">
+                                        🔐
+                                    </div>
+                                    <div class="card-title">方法2: サービスアカウント（推奨）</div>
+                                    <div class="card-body">
+                                        VMに割り当てたService
+                                        Accountでルールを制御。SA付与にはIAM権限が必要なため、タグより安全。エンタープライズ環境では優先使用。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(68, 153, 255, 0.3)">
+                                    <div class="card-icon" style="background: var(--blue-dim)">
+                                        🌐
+                                    </div>
+                                    <div class="card-title">方法3: ネットワーク全体</div>
+                                    <div class="card-body">
+                                        ターゲットを指定しない場合はVPC内の全VMに適用される。細粒度制御には不向き。基本的なベースラインルールにのみ使用。
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3>ルール優先度と評価順序</h3>
+                            <div class="arch-diagram">
+                                <span class="comment"
+                                    ># 優先度: 数値が小さいほど高優先度 (範囲: 0〜65535)</span
+                                >
+
+                                Priority 100: DENY → src: 10.0.0.5/32, port: 22 ← 先に評価される
+                                Priority 200: ALLOW → src: 10.0.0.0/24, port: 22 Result: 10.0.0.5
+                                からのSSH → DENY (Priority 100 がマッチ) 10.0.0.1 からのSSH → ALLOW
+                                (Priority 100 はマッチせず、Priority 200 がマッチ) 10.9.9.9
+                                からのSSH → DENY (暗黙のDENY: priority 65535)
+
+                                <span class="comment"># デフォルトの暗黙ルール（変更不可）</span>
+                                - 全Egress（外向き）ALLOW priority: 65535 - 全Ingress（内向き）DENY
+                                priority: 65535
+                            </div>
+
+                            <h3>
+                                階層型ファイアウォールポリシー（Hierarchical Firewall Policies）
+                            </h3>
+                            <p>
+                                組織レベルでファイアウォールを一元管理できる強力な機能。評価順序は
+                                <strong>組織 → フォルダ → プロジェクト（VPCルール）</strong>
+                                の順です。
+                            </p>
+                            <div class="arch-diagram">
+                                <span class="comment"># 評価順序（上から下へ）</span>
+
+                                [組織レベルポリシー] Rule: DENY malicious IPs → "DENY"ならここで終了
+                                Rule: GOTO_NEXT → 下位に評価を委譲 ↓
+                                [フォルダレベルポリシー（部門別）] Rule: ALLOW internal tools → 適用
+                                Rule: GOTO_NEXT ↓ [プロジェクト VPCファイアウォールルール] Rule:
+                                ALLOW HTTP/HTTPS → 適用
+                            </div>
+
+                            <div class="alert alert-tip">
+                                <span class="alert-icon">💡</span>
+                                <div>
+                                    <strong>試験ポイント：</strong>
+                                    <code>GOTO_NEXT</code>
+                                    アクションを設定した場合のみ下位に評価が移ります。上位で
+                                    <code>ALLOW</code> または
+                                    <code>DENY</code> が決まれば、下位のルールは評価されません。
+                                </div>
+                            </div>
+
+                            <h3>サービスアカウントベースのFWルール例</h3>
+                            <div class="code-block">
+                                <span class="comment"
+                                    ># アプリ層→DB層への通信のみ許可（SAベース）</span
+                                >
+                                gcloud compute firewall-rules create
+                                <span class="string">allow-app-to-db</span> \
+                                <span class="flag">--direction</span>=INGRESS \
+                                <span class="flag">--network</span>=my-vpc \
+                                <span class="flag">--action</span>=ALLOW \
+                                <span class="flag">--rules</span>=tcp:5432 \
+                                <span class="flag">--source-service-accounts</span
+                                >=app-sa@project.iam.gserviceaccount.com \
+                                <span class="flag">--target-service-accounts</span
+                                >=db-sa@project.iam.gserviceaccount.com
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    <strong>最小権限の原則</strong>:
+                                    必要なポートのみ開放、デフォルト拒否を維持
+                                </div>
+                                <div class="checklist-item">
+                                    タグよりも<strong>サービスアカウントベース</strong>のルールを優先する
+                                </div>
+                                <div class="checklist-item">
+                                    全ルールで<strong>ファイアウォールログを有効化</strong>する（セキュリティ監査・トラブルシュート）
+                                </div>
+                                <div class="checklist-item">
+                                    <strong>階層型ポリシー</strong
+                                    >で組織全体のベースラインを設定し、プロジェクトルールで細分化する
+                                </div>
+                                <div class="checklist-item">
+                                    SSHはIAP（35.235.240.0/20）経由のみ許可し、0.0.0.0/0は絶対に開けない
+                                </div>
+                                <div class="checklist-item">
+                                    ヘルスチェック用IP範囲（35.191.0.0/16,
+                                    130.211.0.0/22）を必ず許可する
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/firewalls"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>VPCファイアウォールルール</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/firewalls
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/firewall-policies"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>階層型ファイアウォールポリシー</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/firewall-policies
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.3 VPCピアリング vs Shared VPC -->
+                    <div class="topic-block" id="t-peer">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-blue">1.3</span>
+                            <span class="topic-title"
+                                >VPCピアリング vs Shared VPC ─ 設計パターンの選択</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <h3>VPCピアリング（VPC Network Peering）</h3>
+                            <p>
+                                異なるVPC間でプライベートIPを使って直接通信する仕組み。<strong>両方向に設定が必要</strong>です。
+                            </p>
+
+                            <div class="alert alert-danger">
+                                <span class="alert-icon">🚫</span>
+                                <div>
+                                    <strong>推移的ルーティングは不可：</strong>
+                                    A↔B、B↔Cとピアリングしても、AとCは通信できません。A-C間にも直接ピアリングが必要です。試験で最も多く問われる制約です。
+                                </div>
+                            </div>
+
+                            <div class="arch-diagram">
+                                <span class="comment"># 推移的ルーティング（これはできない）</span>
+                                VPC-A ──ピアリング── VPC-B ──ピアリング── VPC-C A→B: OK | B→C: OK |
+                                <span class="keyword">A→C: NG ❌</span>
+
+                                <span class="comment"># 解決策：A-C間にも直接ピアリングを設定</span>
+                                VPC-A ──ピアリング── VPC-B └────────ピアリング────────→ VPC-C
+                            </div>
+
+                            <h3>Shared VPC（共有VPC）</h3>
+                            <p>
+                                ホストプロジェクトのVPCを複数のサービスプロジェクトで共有する仕組み。ネットワーク管理を中央集権化できます。
+                            </p>
+                            <div class="arch-diagram">
+                                ┌── Host Project（ネットワーク専用プロジェクト）──────────────────┐
+                                │ VPC: company-vpc / サブネット・FW・VPN・Interconnect を管理 │
+                                └──────────────────────────────────────────────────────────────────┘
+                                ↕ Shared VPC ↕ Shared VPC ┌── Service Project A ─────┐ ┌── Service
+                                Project B ─────┐ │ チームA のVMをデプロイ │ │ チームB のVMをデプロイ
+                                │ │ Host VPCのサブネット使用 │ │ Host VPCのサブネット使用 │
+                                └──────────────────────────┘ └──────────────────────────┘
+                            </div>
+
+                            <h3>どちらを使うべきか？</h3>
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>観点</th>
+                                            <th>VPC Peering</th>
+                                            <th>Shared VPC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>対象組織</td>
+                                            <td>異なる組織間・パートナー連携</td>
+                                            <td>同一組織内の複数プロジェクト</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ネットワーク管理</td>
+                                            <td>各VPCが独立して管理</td>
+                                            <td>ホストプロジェクトが一元管理</td>
+                                        </tr>
+                                        <tr>
+                                            <td>推移的ルーティング</td>
+                                            <td><span class="tag tag-red">不可</span></td>
+                                            <td>
+                                                <span class="tag tag-green">可能</span>（同一VPC内）
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>CIDR重複</td>
+                                            <td>重複不可（設計注意）</td>
+                                            <td>共有VPCなので問題なし</td>
+                                        </tr>
+                                        <tr>
+                                            <td>推奨場面</td>
+                                            <td>異組織間接続</td>
+                                            <td>企業内の部門間分離（推奨）</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    大企業・マルチプロジェクト環境では<strong>Shared VPC</strong
+                                    >を標準として採用する
+                                </div>
+                                <div class="checklist-item">
+                                    Host
+                                    ProjectはVPC専用プロジェクトとして独立させる（他のリソースは置かない）
+                                </div>
+                                <div class="checklist-item">
+                                    サービスプロジェクトへの権限は<strong>サブネット単位</strong>でroles/compute.networkUserを付与
+                                </div>
+                                <div class="checklist-item">
+                                    組織ポリシーでShared VPC外のVPC作成を制限してガバナンスを確保
+                                </div>
+                                <div class="checklist-item">
+                                    ピアリング設計時はCIDR重複を事前に徹底チェックする
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/vpc-peering"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>VPCネットワークピアリング</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/vpc-peering
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/shared-vpc"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Shared VPC（共有VPC）</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/shared-vpc
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.4 Cloud NAT & Private Access -->
+                    <div class="topic-block" id="t-nat">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-blue">1.4</span>
+                            <span class="topic-title"
+                                >Cloud NAT・Private Google Access・Private Service Connect</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <h3>Cloud NAT</h3>
+                            <p>
+                                外部IPを持たないVMがインターネットへ<strong>アウトバウンド通信</strong>できるようにするマネージドNATサービス。インバウンド接続は一切不可です。
+                            </p>
+
+                            <div class="alert alert-warn">
+                                <span class="alert-icon">⚠</span>
+                                <div>
+                                    <strong>試験頻出：</strong> Cloud
+                                    NATは<strong>アウトバウンドのみ</strong>です。「外部からVMへの接続」に使えると思い込む誤りが多発します。受信接続が必要な場合はロードバランサーか外部IPを使います。
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <span class="comment"
+                                    ># 1. Cloud Routerを作成（NAT必須の依存関係）</span
+                                >
+                                gcloud compute routers create
+                                <span class="string">my-router</span> \
+                                <span class="flag">--network</span>=my-vpc \
+                                <span class="flag">--region</span>=us-central1
+
+                                <span class="comment"># 2. Cloud NAT Gatewayを作成</span>
+                                gcloud compute routers nats create
+                                <span class="string">my-nat</span> \
+                                <span class="flag">--router</span>=my-router \
+                                <span class="flag">--auto-allocate-nat-external-ips</span> \
+                                <span class="flag">--nat-all-subnet-ip-ranges</span> \
+                                <span class="flag">--region</span>=us-central1
+                            </div>
+
+                            <h3>Private Google Access</h3>
+                            <p>
+                                外部IPを持たないVMが、Googleサービス（GCS・BigQuery等）へアクセスできる機能。サブネット設定で有効化するだけです。
+                            </p>
+                            <div class="arch-diagram">
+                                通常: VM(外部IPなし) → インターネット経由 → Google Public API ↑
+                                外部IPがないと到達不可！ PGA有効時: VM(外部IPなし) → 199.36.153.8/30
+                                → Google内部ネットワーク → GCS/BQ
+
+                                <span class="comment"># 設定コマンド（サブネットで有効化）</span>
+                                gcloud compute networks subnets update
+                                <span class="string">my-subnet</span> \
+                                <span class="flag">--enable-private-ip-google-access</span> \
+                                <span class="flag">--region</span>=us-central1
+                            </div>
+
+                            <h3>Private Service Connect（PSC）</h3>
+                            <p>
+                                マネージドサービス（Cloud
+                                SQL・GCS等）へVPCピアリングなしでプライベートアクセスできる機能。シンプルなエンドポイント経由で接続します。
+                            </p>
+
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>機能</th>
+                                            <th>Private Google Access</th>
+                                            <th>Private Service Connect</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>用途</td>
+                                            <td>Google標準API（GCS・BQ等）へのアクセス</td>
+                                            <td>マネージドサービス・サードパーティへの接続</td>
+                                        </tr>
+                                        <tr>
+                                            <td>設定</td>
+                                            <td>サブネット設定で有効化のみ</td>
+                                            <td>ForwardingRule + ServiceAttachmentが必要</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IP管理</td>
+                                            <td>自社VPC内からGoogleのAPI IPへ</td>
+                                            <td>自社VPC内の任意IPでサービスに接続</td>
+                                        </tr>
+                                        <tr>
+                                            <td>VPCピアリング</td>
+                                            <td>不要</td>
+                                            <td>不要（PSC自体がピアリングを代替）</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    全サブネットで<strong>Private Google Accessを有効化</strong
+                                    >する（外部IPなしVMのGCPサービスアクセス確保）
+                                </div>
+                                <div class="checklist-item">
+                                    <strong>Dynamic Port Allocation</strong
+                                    >を使用してNATポートを効率的に利用する
+                                </div>
+                                <div class="checklist-item">
+                                    本番環境では<strong>予約外部IP</strong>をCloud
+                                    NATに割り当てる（IP変動を防ぐ）
+                                </div>
+                                <div class="checklist-item">
+                                    マネージドサービスへのアクセスはPSCを優先（VPC
+                                    Peeringより管理コスト低）
+                                </div>
+                                <div class="checklist-item">
+                                    NATログを有効化してポート枯渇を監視する
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/nat/docs/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Cloud NAT の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/nat/docs/overview
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/private-google-access"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Private Google Access</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/private-google-access
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/private-service-connect"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Private Service Connect</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/private-service-connect
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     S2: ハイブリッド接続
+══════════════════════════════════════════════ -->
+                <section class="section" id="s2">
+                    <div class="section-header">
+                        <span class="section-number">SECTION 2</span>
+                        <div>
+                            <div class="section-title" style="color: var(--green)">
+                                ハイブリッド接続とネットワーク相互接続
+                            </div>
+                            <div class="section-desc">
+                                試験最大配点（約23%）のセクション。Cloud VPN・Interconnect・Cloud
+                                Routerの選択基準と
+                                設定方法、SLAの違いが頻出。シナリオベースで「どの接続方式を選ぶか」が問われる。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-weight-bar">
+                        <span class="weight-label">配点ウェイト</span>
+                        <div class="weight-track" style="max-width: 300px">
+                            <div
+                                class="weight-fill"
+                                style="width: 23%; background: var(--green)"
+                            ></div>
+                        </div>
+                        <span class="weight-pct" style="color: var(--green)">~23%</span>
+                        <span class="tag tag-green">HA VPN</span>
+                        <span class="tag tag-green">Dedicated IC</span>
+                        <span class="tag tag-green">Partner IC</span>
+                        <span class="tag tag-green">Cloud Router</span>
+                        <span class="tag tag-green">BGP</span>
+                    </div>
+
+                    <!-- 2.1 接続方式の全体比較 -->
+                    <div class="topic-block open">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-green">2.1</span>
+                            <span class="topic-title"
+                                >接続方式の全体比較 ─ 帯域・コスト・SLAで選択する</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>接続方式</th>
+                                            <th>帯域幅</th>
+                                            <th>経路</th>
+                                            <th>SLA</th>
+                                            <th>暗号化</th>
+                                            <th>コスト</th>
+                                            <th>推奨場面</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>HA VPN</td>
+                                            <td>最大 3Gbps/トンネル</td>
+                                            <td>インターネット経由</td>
+                                            <td>
+                                                <span
+                                                    class="sla-badge"
+                                                    style="
+                                                        background: var(--green-dim);
+                                                        color: var(--green);
+                                                    "
+                                                    >99.99%</span
+                                                >
+                                            </td>
+                                            <td>IPsec（必須）</td>
+                                            <td>低コスト</td>
+                                            <td>帯域が少なく、コスト優先の場合</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Classic VPN</td>
+                                            <td>最大 3Gbps/トンネル</td>
+                                            <td>インターネット経由</td>
+                                            <td>
+                                                <span
+                                                    class="sla-badge"
+                                                    style="
+                                                        background: var(--orange-dim);
+                                                        color: var(--orange);
+                                                    "
+                                                    >99.9%</span
+                                                >
+                                            </td>
+                                            <td>IPsec（必須）</td>
+                                            <td>低コスト</td>
+                                            <td><span class="tag tag-red">新規非推奨</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Partner Interconnect</td>
+                                            <td>50Mbps〜50Gbps</td>
+                                            <td>パートナー専用線</td>
+                                            <td>
+                                                <span
+                                                    class="sla-badge"
+                                                    style="
+                                                        background: var(--green-dim);
+                                                        color: var(--green);
+                                                    "
+                                                    >99.9〜99.99%</span
+                                                >
+                                            </td>
+                                            <td>なし（追加可能）</td>
+                                            <td>中コスト</td>
+                                            <td>Googleコロケ外・小〜中帯域</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dedicated Interconnect</td>
+                                            <td>10G / 100G × 最大8回線</td>
+                                            <td>Googleと直接専用線</td>
+                                            <td>
+                                                <span
+                                                    class="sla-badge"
+                                                    style="
+                                                        background: var(--green-dim);
+                                                        color: var(--green);
+                                                    "
+                                                    >99.9〜99.99%</span
+                                                >
+                                            </td>
+                                            <td>なし（VPN追加可能）</td>
+                                            <td>高コスト</td>
+                                            <td>大帯域・低レイテンシ必須</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="alert alert-tip">
+                                <span class="alert-icon">💡</span>
+                                <div>
+                                    <strong>選択の判断基準：</strong><br />
+                                    ① 大帯域（数十Gbps以上）+ 低レイテンシ必須 →
+                                    <strong>Dedicated Interconnect</strong><br />
+                                    ② Googleコロケ施設に物理接続できない →
+                                    <strong>Partner Interconnect</strong><br />
+                                    ③ コスト優先・帯域が3Gbps以下で十分 → <strong>HA VPN</strong
+                                    ><br />
+                                    ④ Classic VPNは新規構築で使わないこと（99.9% SLAのみ）
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.2 HA VPN -->
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-green">2.2</span>
+                            <span class="topic-title"
+                                >HA VPN ─ 99.99% SLAを実現する高可用性VPN設計</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <p>
+                                HA VPN（High Availability VPN）は<strong>99.99% SLA</strong
+                                >を提供します。2つの独立したインターフェースに2本のトンネルを張り、BGPで動的ルーティングを行います。
+                            </p>
+
+                            <div class="arch-diagram">
+                                オンプレ VPN GW Google HA VPN GW ┌──────────────────┐
+                                ┌──────────────────┐ │ Interface 0 │──tunnel1──│ Interface 0 │ ←
+                                独立した外部IP │ (IP: x.x.x.x) │ │ (IP: a.a.a.a) │ │ │ │ │ │
+                                Interface 1 │──tunnel2──│ Interface 1 │ ← 独立した外部IP │ (IP:
+                                y.y.y.y) │ │ (IP: b.b.b.b) │ └──────────────────┘
+                                └──────────────────┘ →
+                                どちらかのトンネルが落ちても自動フェイルオーバー → BGP（Cloud
+                                Router）がルートを自動更新
+                            </div>
+
+                            <div class="code-block">
+                                <span class="comment"># Step1: HA VPN Gatewayを作成</span> gcloud
+                                compute vpn-gateways create
+                                <span class="string">my-ha-vpn-gw</span> \
+                                <span class="flag">--network</span>=my-vpc \
+                                <span class="flag">--region</span>=us-central1
+
+                                <span class="comment"># Step2: Cloud Routerを作成（BGP用）</span>
+                                gcloud compute routers create
+                                <span class="string">my-vpn-router</span> \
+                                <span class="flag">--network</span>=my-vpc \
+                                <span class="flag">--region</span>=us-central1 \
+                                <span class="flag">--asn</span>=65001
+
+                                <span class="comment"># Step3: 外部VPN GWを定義（オンプレ側）</span>
+                                gcloud compute external-vpn-gateways create
+                                <span class="string">on-prem-gw</span> \
+                                <span class="flag">--interfaces</span> 0=ON_PREM_IP_0,1=ON_PREM_IP_1
+
+                                <span class="comment"
+                                    ># Step4: トンネル2本を作成（冗長化必須）</span
+                                >
+                                gcloud compute vpn-tunnels create
+                                <span class="string">tunnel-1</span> \
+                                <span class="flag">--vpn-gateway</span>=my-ha-vpn-gw \
+                                <span class="flag">--interface</span>=0 \
+                                <span class="flag">--peer-external-gateway</span>=on-prem-gw \
+                                <span class="flag">--peer-external-gateway-interface</span>=0 \
+                                <span class="flag">--shared-secret</span>=MY_STRONG_SECRET \
+                                <span class="flag">--ike-version</span>=2 \
+                                <span class="flag">--router</span>=my-vpn-router \
+                                <span class="flag">--region</span>=us-central1
+
+                                <span class="comment"># tunnel-2も同様に作成（--interface=1）</span>
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    <strong>新規VPN構築は必ずHA VPN</strong>を使用（Classic
+                                    VPNは非推奨）
+                                </div>
+                                <div class="checklist-item">
+                                    <strong>IKEv2</strong>を使用（IKEv1より安全で効率的）
+                                </div>
+                                <div class="checklist-item">
+                                    Pre-Shared Keyは強力なものを使用（gcloud自動生成推奨）
+                                </div>
+                                <div class="checklist-item">
+                                    BGP（動的ルーティング）を必ず設定する（静的ルートは管理コストが高い）
+                                </div>
+                                <div class="checklist-item">
+                                    帯域不足の場合はECMP（等コストマルチパス）でトンネルをスケールする
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Cloud VPN の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-connectivity/docs/vpn/concepts/overview
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>HA VPN の作成手順</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.3 Dedicated Interconnect -->
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-green">2.3</span>
+                            <span class="topic-title"
+                                >Cloud Interconnect ─ 専用線による99.99%冗長設計</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <p>
+                                <strong>Dedicated Interconnect</strong
+                                >はGoogleのコロケーション施設に物理的に直接接続する専用線サービスです。10Gbps/100Gbps単位で回線を確保します。
+                            </p>
+
+                            <div class="arch-diagram">
+                                お客様データセンター ┌──────────────────────┐ │ お客様ルーター │ │
+                                (BGP: ASN 65002) │ └──────────┬───────────┘ │
+                                専用物理回線（10G/100G） ┌──────────┴───────────┐ │ Google Meet-Me │
+                                ← Googleが指定するコロケーション施設 │ Location (Equinix等) │
+                                └──────────┬───────────┘ │ Google内部ネットワーク
+                                ┌──────────┴───────────┐ │ Google Cloud VPC │ │ (VLAN
+                                Attachment経由) │ └──────────────────────┘
+                            </div>
+
+                            <h3>99.99% SLA冗長構成（本番環境必須）</h3>
+                            <div class="arch-diagram">
+                                Metro-A（物理的拠点A） Metro-B（物理的拠点B） ┌────────────────────┐
+                                ┌────────────────────┐ │ Interconnect 1 (10G)│ │ Interconnect 3
+                                (10G)│ │ Interconnect 2 (10G)│ │ Interconnect 4 (10G)│
+                                └────────────────────┘ └────────────────────┘ ↕ VLAN Attachment ↕
+                                VLAN Attachment ↕ Cloud Router (BGP) ↕ Cloud Router (BGP) ↕ Cloud
+                                VPC ↕ Cloud VPC → Metro-A が完全停止してもMetro-Bで継続 =
+                                <span class="keyword">99.99% SLA</span> → 同一Metro内2本のみ = 99.9%
+                                SLA（非推奨）
+                            </div>
+
+                            <h3>VLAN Attachmentとは</h3>
+                            <p>
+                                1本の物理専用線を論理的に複数に分割する仕組み（VLAN）。各アタッチメントが1つのVPCに対応し、1本の回線で複数のVPCに接続できます。
+                            </p>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    本番環境は<strong>99.99% SLA構成</strong>（異なる2 Metro × 2回線
+                                    = 合計4回線）
+                                </div>
+                                <div class="checklist-item">
+                                    VLAN Attachmentを使ってVPCごとに論理分離する
+                                </div>
+                                <div class="checklist-item">
+                                    BGPでルートを動的管理する（Cloud Router必須）
+                                </div>
+                                <div class="checklist-item">
+                                    暗号化が必要な場合はHA VPN over Interconnectを使用
+                                </div>
+                                <div class="checklist-item">
+                                    帯域使用率を監視し80%超えでアラートを設定
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Cloud Interconnect の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-connectivity/docs/interconnect/concepts/overview
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">📋</span>
+                                    <div>
+                                        <div>Cloud Interconnect ベストプラクティス</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-connectivity/docs/interconnect/concepts/ha-vpn-interconnect"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>HA VPN over Cloud Interconnect（暗号化）</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-connectivity/docs/interconnect/concepts/ha-vpn-interconnect
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.4 Cloud Router & BGP -->
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-green">2.4</span>
+                            <span class="topic-title"
+                                >Cloud Router と BGP ─ 動的ルーティングの仕組みと設定</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <p>
+                                Cloud RouterはBGP（Border Gateway
+                                Protocol）セッションを管理し、オンプレとGCP間でルートを自動交換します。<strong>データプレーンのトラフィック自体は通過しません</strong>（コントロールプレーンのみ）。
+                            </p>
+
+                            <div class="arch-diagram">
+                                GCP Cloud Router (ASN: 65001) オンプレBGPルーター (ASN: 65002) ↕ BGP
+                                Session ↕ ルート広告: GCP → オンプレ: 10.0.0.0/24, 10.0.1.0/24 ←
+                                VPCサブネット オンプレ → GCP: 192.168.0.0/16 ← オンプレCIDR
+                            </div>
+
+                            <h3>動的ルーティングモードの選択</h3>
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>モード</th>
+                                            <th>ルートの適用範囲</th>
+                                            <th>用途</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Regional</td>
+                                            <td>
+                                                学習したルートを同一リージョンのサブネットにのみ適用
+                                            </td>
+                                            <td>リージョン内に閉じた構成・コスト最適化</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Global（推奨）</td>
+                                            <td>全リージョンの全サブネットに学習ルートを反映</td>
+                                            <td>マルチリージョン構成・HA設計</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="alert alert-tip">
+                                <span class="alert-icon">💡</span>
+                                <div>
+                                    <strong>BGP MED (Multi-Exit Discriminator)：</strong>
+                                    複数のBGPパスがある場合に、どのパスを優先するかを制御する属性。MEDが小さい方が優先されます。アクティブ/スタンバイの制御に活用します。
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-connectivity/docs/router/concepts/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Cloud Router の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-connectivity/docs/router/concepts/overview
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-connectivity/docs/router/how-to/create-network-set-modes"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>ルーティングモードの設定</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-connectivity/docs/router/how-to/create-network-set-modes
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     S3: ロードバランシング
+══════════════════════════════════════════════ -->
+                <section class="section" id="s3">
+                    <div class="section-header">
+                        <span class="section-number">SECTION 3</span>
+                        <div>
+                            <div class="section-title" style="color: var(--orange)">
+                                ロードバランシングとトラフィック管理
+                            </div>
+                            <div class="section-desc">
+                                約19%を占める重要セクション。6種類のLBを状況に応じて選択できるかが問われる。
+                                Global vs Regional、Proxy型 vs Passthrough型の違いが最重要。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-weight-bar">
+                        <span class="weight-label">配点ウェイト</span>
+                        <div class="weight-track" style="max-width: 300px">
+                            <div
+                                class="weight-fill"
+                                style="width: 19%; background: var(--orange)"
+                            ></div>
+                        </div>
+                        <span class="weight-pct" style="color: var(--orange)">~19%</span>
+                        <span class="tag tag-orange">Global LB</span>
+                        <span class="tag tag-orange">Regional LB</span>
+                        <span class="tag tag-orange">Passthrough</span>
+                        <span class="tag tag-orange">NEG</span>
+                        <span class="tag tag-orange">Cloud CDN</span>
+                    </div>
+
+                    <!-- 3.1 LB選択フロー -->
+                    <div class="topic-block open">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-orange">3.1</span>
+                            <span class="topic-title">ロードバランサー選択の決定フロー</span>
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="arch-diagram">
+                                <span class="comment"># ロードバランサー選択フローチャート</span>
+
+                                トラフィックの方向は？ ├── 外部（インターネット → GCP） │ ├──
+                                HTTP/HTTPS トラフィック？ │ │ ├── グローバル配信が必要？ →
+                                <span class="keyword">Global External HTTP(S) LB (L7)</span> │ │ └──
+                                リージョン内で十分？ →
+                                <span class="keyword">Regional External HTTP(S) LB (L7)</span> │ └──
+                                TCP/UDP/その他プロトコル？ │ ├── グローバル・静的IP必要？ →
+                                <span class="keyword">External TCP/SSL Proxy LB (L4 Proxy)</span> │
+                                └── クライアントIPを保持したい？ →
+                                <span class="keyword">External Network LB (L4 Passthrough)</span> │
+                                └── 内部（VPC内 → VPC内） ├── HTTP/HTTPS トラフィック？ →
+                                <span class="keyword">Internal HTTP(S) LB (L7)</span> └── TCP/UDP？
+                                → <span class="keyword">Internal TCP/UDP LB (L4 Passthrough)</span>
+                            </div>
+
+                            <h3>主要ロードバランサー比較表</h3>
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>LB名</th>
+                                            <th>スコープ</th>
+                                            <th>レイヤー</th>
+                                            <th>プロトコル</th>
+                                            <th>Cloud Armor</th>
+                                            <th>クライアントIP</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Global External HTTP(S) LB</td>
+                                            <td><span class="tag tag-cyan">グローバル</span></td>
+                                            <td>L7</td>
+                                            <td>HTTP/HTTPS/HTTP2/gRPC</td>
+                                            <td><span class="tag tag-green">✓ 対応</span></td>
+                                            <td>X-Forwarded-For</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Regional External HTTP(S) LB</td>
+                                            <td><span class="tag tag-blue">リージョン</span></td>
+                                            <td>L7</td>
+                                            <td>HTTP/HTTPS</td>
+                                            <td><span class="tag tag-green">✓ 対応</span></td>
+                                            <td>X-Forwarded-For</td>
+                                        </tr>
+                                        <tr>
+                                            <td>External TCP/SSL Proxy LB</td>
+                                            <td><span class="tag tag-cyan">グローバル</span></td>
+                                            <td>L4 Proxy</td>
+                                            <td>TCP / SSL</td>
+                                            <td><span class="tag tag-red">✗ 不可</span></td>
+                                            <td>Proxy Protocol</td>
+                                        </tr>
+                                        <tr>
+                                            <td>External Network LB</td>
+                                            <td><span class="tag tag-blue">リージョン</span></td>
+                                            <td>L4 Pass</td>
+                                            <td>TCP / UDP</td>
+                                            <td><span class="tag tag-red">✗ 不可</span></td>
+                                            <td>
+                                                <span class="tag tag-green">ネイティブ保持</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Internal HTTP(S) LB</td>
+                                            <td><span class="tag tag-blue">リージョン</span></td>
+                                            <td>L7</td>
+                                            <td>HTTP/HTTPS</td>
+                                            <td><span class="tag tag-green">✓ 対応</span></td>
+                                            <td>X-Forwarded-For</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Internal TCP/UDP LB</td>
+                                            <td><span class="tag tag-blue">リージョン</span></td>
+                                            <td>L4 Pass</td>
+                                            <td>TCP / UDP</td>
+                                            <td><span class="tag tag-red">✗ 不可</span></td>
+                                            <td>
+                                                <span class="tag tag-green">ネイティブ保持</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="alert alert-warn">
+                                <span class="alert-icon">⚠</span>
+                                <div>
+                                    <strong>試験頻出：</strong>
+                                    <strong>Cloud ArmorはProxy型LBにのみ対応</strong
+                                    >します。Passthrough型（Network LB, Internal
+                                    TCP/UDP）には使えません。クライアントIPを保持したい場合はNetwork
+                                    LBを選びますが、DDoS/WAF保護はできません。
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/load-balancing/docs/choosing-load-balancer"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>ロードバランサーの選択ガイド</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/load-balancing/docs/choosing-load-balancer
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.2 Global HTTPS LB -->
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-orange">3.2</span>
+                            <span class="topic-title"
+                                >Global External HTTP(S) LB ─ URLMapとNEGの設計</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="arch-diagram">
+                                ┌── ユーザー（世界中） ──────────────────────────────────────────┐ │
+                                ↓ Anycast IP（単一グローバルIP） │ │ 最も近いGoogle PoP（Point of
+                                Presence）で終端 │ │ ↓ SSL/TLS終端 │ │ ┌── URL
+                                Map（ルーティングルール）──────────────────────────┐ │ │ │ /api/* →
+                                Backend Service A (us-central1 MIG) │ │ │ │ /static/* → Cloud
+                                Storage (CDNキャッシュ) │ │ │ │ /* → Backend Service B
+                                (マルチリージョン) │ │ │
+                                └────────────────────────────────────────────────────────── │ │
+                                └──────────────────────────────────────────────────────────────────┘
+                            </div>
+
+                            <h3>コンポーネント構成</h3>
+                            <div class="flow-steps">
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--orange-dim);
+                                            color: var(--orange);
+                                            border: 1px solid rgba(255, 140, 66, 0.3);
+                                        "
+                                    >
+                                        1
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">Forwarding Rule</div>
+                                        <div class="flow-step-body">
+                                            外部IPとポート（80/443）を定義。グローバルIPの場合はAnycastとして機能。
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--orange-dim);
+                                            color: var(--orange);
+                                            border: 1px solid rgba(255, 140, 66, 0.3);
+                                        "
+                                    >
+                                        2
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">Target HTTP(S) Proxy</div>
+                                        <div class="flow-step-body">
+                                            SSL証明書を管理し、URL
+                                            Mapにトラフィックを渡す。HTTPSの場合はSSL終端もここで行う。
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--orange-dim);
+                                            color: var(--orange);
+                                            border: 1px solid rgba(255, 140, 66, 0.3);
+                                        "
+                                    >
+                                        3
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">URL Map</div>
+                                        <div class="flow-step-body">
+                                            ホスト名・URLパスに基づいてバックエンドサービスへルーティング。高度なトラフィック制御が可能。
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--orange-dim);
+                                            color: var(--orange);
+                                            border: 1px solid rgba(255, 140, 66, 0.3);
+                                        "
+                                    >
+                                        4
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">
+                                            Backend Service + Health Check
+                                        </div>
+                                        <div class="flow-step-body">
+                                            バックエンド（MIG・NEG・GCS）の設定と死活監視。セッション維持・タイムアウト設定もここで行う。
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3>NEG（Network Endpoint Groups）の種類</h3>
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>NEGの種類</th>
+                                            <th>エンドポイント</th>
+                                            <th>主な用途</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Zonal NEG</td>
+                                            <td>GKE Pod・特定ゾーンのVM</td>
+                                            <td>GKEとの統合（コンテナへの直接転送）</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Serverless NEG</td>
+                                            <td>Cloud Run・Cloud Functions・App Engine</td>
+                                            <td>サーバーレスサービスをLBのバックエンドに</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Internet NEG</td>
+                                            <td>オンプレ・他クラウドのエンドポイント</td>
+                                            <td>ハイブリッドLB構成</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hybrid NEG</td>
+                                            <td>Interconnect/VPN経由の外部エンドポイント</td>
+                                            <td>オンプレサービスへの転送</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    マルチリージョンバックエンドで高可用性を実現する
+                                </div>
+                                <div class="checklist-item">
+                                    Cloud CDNと組み合わせて静的コンテンツをキャッシュする
+                                </div>
+                                <div class="checklist-item">
+                                    Cloud ArmorでWAF・DDoS保護を必ず有効化する
+                                </div>
+                                <div class="checklist-item">
+                                    SSL PolicyでTLS 1.2以上を強制する（古いバージョンを無効化）
+                                </div>
+                                <div class="checklist-item">
+                                    Google管理SSL証明書（Managed Certificate）を使用して自動更新する
+                                </div>
+                                <div class="checklist-item">
+                                    ヘルスチェックのIPレンジ（35.191.0.0/16,
+                                    130.211.0.0/22）をFWルールで許可する
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/load-balancing/docs/https"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Global External HTTP(S) Load Balancer</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/load-balancing/docs/https
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/load-balancing/docs/health-checks"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>ヘルスチェックの概要と設定</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/load-balancing/docs/health-checks
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/cdn/docs/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Cloud CDN の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/cdn/docs/overview
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     S4: CDN・DNS・IPアドレス管理
+══════════════════════════════════════════════ -->
+                <section class="section" id="s4">
+                    <div class="section-header">
+                        <span class="section-number">SECTION 4</span>
+                        <div>
+                            <div class="section-title" style="color: var(--purple)">
+                                CDN・DNS・IPアドレス管理
+                            </div>
+                            <div class="section-desc">
+                                約15%を占めるセクション。Cloud
+                                DNSのゾーン種別と転送設定、IPアドレスの
+                                エフェメラル/静的の違い、グローバル/リージョンのスコープが頻出。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-weight-bar">
+                        <span class="weight-label">配点ウェイト</span>
+                        <div class="weight-track" style="max-width: 300px">
+                            <div
+                                class="weight-fill"
+                                style="width: 15%; background: var(--purple)"
+                            ></div>
+                        </div>
+                        <span class="weight-pct" style="color: var(--purple)">~15%</span>
+                        <span class="tag tag-purple">Cloud DNS</span>
+                        <span class="tag tag-purple">DNS転送</span>
+                        <span class="tag tag-purple">静的IP</span>
+                        <span class="tag tag-purple">Anycast</span>
+                    </div>
+
+                    <div class="topic-block open">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-purple">4.1</span>
+                            <span class="topic-title"
+                                >Cloud DNS ─ パブリック/プライベートゾーンと転送設定</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ゾーン種別</th>
+                                            <th>公開範囲</th>
+                                            <th>用途</th>
+                                            <th>アクセス元</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>パブリックゾーン</td>
+                                            <td>インターネット全体</td>
+                                            <td>外部公開ドメインのDNS管理</td>
+                                            <td>誰でも</td>
+                                        </tr>
+                                        <tr>
+                                            <td>プライベートゾーン</td>
+                                            <td>指定VPCのみ</td>
+                                            <td>内部サービスのDNS解決</td>
+                                            <td>紐づけたVPCのみ</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3>DNS転送の2方向</h3>
+                            <div class="arch-diagram">
+                                <span class="comment"># アウトバウンド転送（GCP → オンプレ）</span>
+                                GCPリソース が onprem.example.com を解決したい → Cloud
+                                DNSの転送ゾーンに onprem.example.com: 192.168.1.10 を設定 → GCP →
+                                Interconnect/VPN → オンプレDNSサーバー（192.168.1.10）
+
+                                <span class="comment"># インバウンド転送（オンプレ → GCP）</span>
+                                オンプレホストが vpc.example.com を解決したい → Cloud
+                                DNSのインバウンドポリシーを有効化 → オンプレ → Interconnect/VPN →
+                                35.199.192.0/19（GCP DNS）
+
+                                <span class="comment"
+                                    ># 注意:
+                                    オンプレのFWで35.199.192.0/19からの通信を許可すること</span
+                                >
+                            </div>
+
+                            <h3>DNSピアリング</h3>
+                            <p>
+                                複数VPC間でプライベートゾーンを共有できます。ハブ＆スポーク構成でHub
+                                VPCのDNSをスポークVPCから参照する際に活用します。
+                            </p>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    内部サービスは<strong>プライベートゾーン</strong>でDNS管理を集中化する
+                                </div>
+                                <div class="checklist-item">
+                                    <strong>DNSピアリング</strong>でVPC間の名前解決を統合する
+                                </div>
+                                <div class="checklist-item">
+                                    <strong>転送ゾーン</strong>でオンプレのDNSと統合する
+                                </div>
+                                <div class="checklist-item">
+                                    パブリックゾーンは<strong>DNSSEC</strong>で完全性を保護する
+                                </div>
+                                <div class="checklist-item">
+                                    変更頻度に応じてTTLを適切に設定する（短すぎるとDNSトラフィック増加）
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/dns/docs/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Cloud DNS の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/dns/docs/overview
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/dns/docs/best-practices"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">📋</span>
+                                    <div>
+                                        <div>Cloud DNS ベストプラクティス</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/dns/docs/best-practices
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-purple">4.2</span>
+                            <span class="topic-title"
+                                >IPアドレス管理 ─ エフェメラル・静的・グローバル・リージョン</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>種別</th>
+                                            <th>永続性</th>
+                                            <th>コスト</th>
+                                            <th>用途</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>エフェメラルIP</td>
+                                            <td>VM停止・削除で変わる</td>
+                                            <td>追加コストなし</td>
+                                            <td>開発・テスト環境</td>
+                                        </tr>
+                                        <tr>
+                                            <td>静的IP（リージョン）</td>
+                                            <td>予約して永続化</td>
+                                            <td>未使用時に課金あり</td>
+                                            <td>リージョンLB・VM・Cloud NAT</td>
+                                        </tr>
+                                        <tr>
+                                            <td>静的IP（グローバル）</td>
+                                            <td>予約して永続化</td>
+                                            <td>未使用時に課金あり</td>
+                                            <td>Global LB（Anycast）</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="alert alert-warn">
+                                <span class="alert-icon">⚠</span>
+                                <div>
+                                    <strong>注意：</strong>
+                                    静的IPを予約したまま<strong>VMやLBに割り当てていない</strong>場合、課金が発生します。使わない静的IPは解放してください。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     S5: ネットワークセキュリティ
+══════════════════════════════════════════════ -->
+                <section class="section" id="s5">
+                    <div class="section-header">
+                        <span class="section-number">SECTION 5</span>
+                        <div>
+                            <div class="section-title" style="color: var(--red)">
+                                ネットワークセキュリティ設計と実装
+                            </div>
+                            <div class="section-desc">
+                                約12%を占めるセクション。Cloud Armor・VPC Service
+                                Controls・IAP・SSL/TLSの組み合わせが頻出。
+                                「どのサービスを使えばデータ漏洩を防げるか」が問われる。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-weight-bar">
+                        <span class="weight-label">配点ウェイト</span>
+                        <div class="weight-track" style="max-width: 300px">
+                            <div
+                                class="weight-fill"
+                                style="width: 12%; background: var(--red)"
+                            ></div>
+                        </div>
+                        <span class="weight-pct" style="color: var(--red)">~12%</span>
+                        <span class="tag tag-red">Cloud Armor</span>
+                        <span class="tag tag-red">VPC SC</span>
+                        <span class="tag tag-red">IAP</span>
+                        <span class="tag tag-red">SSL Policy</span>
+                    </div>
+
+                    <!-- Cloud Armor -->
+                    <div class="topic-block open">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-red">5.1</span>
+                            <span class="topic-title"
+                                >Cloud Armor ─ WAF・DDoS・Rate Limiting・Adaptive Protection</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="card-grid">
+                                <div class="card" style="border-color: rgba(255, 87, 87, 0.2)">
+                                    <div class="card-icon" style="background: var(--red-dim)">
+                                        🛡
+                                    </div>
+                                    <div class="card-title">DDoS防御</div>
+                                    <div class="card-body">
+                                        L3/L4のボリューム攻撃（SYN Flood・UDP
+                                        Flood）をGoogleインフラレベルで自動緩和。ユーザー設定不要。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(255, 87, 87, 0.2)">
+                                    <div class="card-icon" style="background: var(--red-dim)">
+                                        🔍
+                                    </div>
+                                    <div class="card-title">WAF（L7）</div>
+                                    <div class="card-body">
+                                        SQLインジェクション・XSSなどOWASPトップ10対策。事前設定ルール（Preconfigured
+                                        Rules）を有効化するだけ。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(255, 87, 87, 0.2)">
+                                    <div class="card-icon" style="background: var(--red-dim)">
+                                        ⚡
+                                    </div>
+                                    <div class="card-title">Rate Limiting</div>
+                                    <div class="card-body">
+                                        単一IPからの過剰リクエストを制限。スロットリング（503）またはリダイレクトで対応。大量リクエスト攻撃に有効。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(255, 87, 87, 0.2)">
+                                    <div class="card-icon" style="background: var(--red-dim)">
+                                        🤖
+                                    </div>
+                                    <div class="card-title">Adaptive Protection</div>
+                                    <div class="card-body">
+                                        AIがトラフィックパターンを分析し、L7
+                                        DDoS攻撃を自動検出して防御ルールを推奨。有効化を強く推奨。
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-block">
+                                <span class="comment"># セキュリティポリシー作成</span> gcloud
+                                compute security-policies create
+                                <span class="string">my-security-policy</span> \
+                                <span class="flag">--description</span>="WAF and DDoS protection
+                                policy"
+
+                                <span class="comment"># OWASP SQLインジェクションルール追加</span>
+                                gcloud compute security-policies rules create
+                                <span class="keyword">300</span> \
+                                <span class="flag">--security-policy</span>=my-security-policy \
+                                <span class="flag">--expression</span
+                                >="evaluatePreconfiguredWaf('<span class="string"
+                                    >sqli-v422-stable</span
+                                >')" \ <span class="flag">--action</span>=deny-403
+
+                                <span class="comment"># 特定IPをブロック</span>
+                                gcloud compute security-policies rules create
+                                <span class="keyword">100</span> \
+                                <span class="flag">--security-policy</span>=my-security-policy \
+                                <span class="flag">--src-ip-ranges</span>=1.2.3.4/32 \
+                                <span class="flag">--action</span>=deny-403
+
+                                <span class="comment"># バックエンドサービスにポリシーを適用</span>
+                                gcloud compute backend-services update
+                                <span class="string">my-backend</span> \
+                                <span class="flag">--security-policy</span>=my-security-policy \
+                                <span class="flag">--global</span>
+                            </div>
+
+                            <div class="alert alert-tip">
+                                <span class="alert-icon">💡</span>
+                                <div>
+                                    <strong>プレビューモードを活用：</strong>
+                                    本番環境に適用する前に<code>--action=deny-403</code>を<code
+                                        >--action=allow --preview</code
+                                    >に変えてログを確認し、正規トラフィックがブロックされないかをテストします。
+                                </div>
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    全外部LBに<strong>Cloud Armorセキュリティポリシーを適用</strong
+                                    >する（必須）
+                                </div>
+                                <div class="checklist-item">
+                                    <strong>Adaptive Protection</strong
+                                    >を有効化してAI自動検出を活用する
+                                </div>
+                                <div class="checklist-item">
+                                    OWASPの事前設定ルールをすべて有効化する
+                                </div>
+                                <div class="checklist-item">
+                                    本番適用前に<strong>プレビューモード</strong>で誤ブロックを確認する
+                                </div>
+                                <div class="checklist-item">
+                                    ログを有効化してアタックパターンを継続的に分析する
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/armor/docs/cloud-armor-overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Cloud Armor の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/armor/docs/cloud-armor-overview
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/armor/docs/best-practices"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">📋</span>
+                                    <div>
+                                        <div>Cloud Armor ベストプラクティス</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/armor/docs/best-practices
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VPC SC -->
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-red">5.2</span>
+                            <span class="topic-title"
+                                >VPC Service Controls ─ データ漏洩（Exfiltration）防止</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <p>
+                                <strong>VPC Service Controls（VPC SC）</strong
+                                >は、GCPのAPIサービス（BigQuery・GCS・KMS等）の周囲に<strong>仮想的なセキュリティ境界</strong>を作成し、境界外からのAPIアクセスを遮断します。IAMだけでは防げない<strong>データの持ち出しを防止</strong>します。
+                            </p>
+
+                            <div class="arch-diagram">
+                                ┌── Service Perimeter（サービス境界）──────────────────────────────┐
+                                │ │ │ Project A Project B BigQuery API (保護対象) │ │ (境界内)
+                                (境界内) GCS・KMS・Pub/Sub 等 │ │ ↓ VPC-A ↓ VPC-B ↕ │ │ (Trusted)
+                                (Trusted) ← 境界内からのみアクセス可 │ │ │
+                                └────────────────────────────────────────────────────────────────────┘
+                                ↑ 境界外（インターネット・他プロジェクト・他組織）からのAPI呼び出し
+                                → <span class="keyword">全て拒否</span>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <span class="alert-icon">ℹ</span>
+                                <div>
+                                    <strong>アクセスレベルで例外を許可：</strong>
+                                    境界外のユーザー・システムに条件付きアクセスを許可できます。条件例：特定のIPレンジ、MFA使用済み、特定のデバイス状態（Access
+                                    Context Manager）。
+                                </div>
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    機密データ（個人情報・金融データ）を扱うプロジェクトに必ず適用する
+                                </div>
+                                <div class="checklist-item">
+                                    まず<strong>ドライランモード</strong>で境界を設定し、正規トラフィックへの影響を確認する
+                                </div>
+                                <div class="checklist-item">
+                                    Access Context Managerでアクセスレベルを細かく管理する
+                                </div>
+                                <div class="checklist-item">
+                                    Ingress/Egressポリシーで必要な例外のみ許可する
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc-service-controls/docs/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>VPC Service Controls の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc-service-controls/docs/overview
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IAP -->
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-red">5.3</span>
+                            <span class="topic-title"
+                                >Identity-Aware Proxy（IAP）─ VPNなしのゼロトラストアクセス</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <p>
+                                IAPを使えば<strong>パブリックIPを持たないVMにも</strong>、VPNなしで安全にSSH/RDP接続できます。Google
+                                Accountと IAMで認証・認可を一元管理します。
+                            </p>
+
+                            <div class="arch-diagram">
+                                従来のVPNアクセス（複雑・管理コスト高）: ユーザー → [VPN接続] →
+                                [踏み台サーバー] → [VM]
+                                IAPを使ったアクセス（シンプル・ゼロトラスト）: ユーザー → [HTTPS] →
+                                [IAP（Googleが認証）] → [VM] ↑ Google Account + IAM ポリシーで制御
+                                （MFA・デバイス状態も条件に設定可能）
+                            </div>
+
+                            <div class="code-block">
+                                <span class="comment"
+                                    ># IAP経由でSSH接続（ポート22を外部に開けない！）</span
+                                >
+                                gcloud compute ssh <span class="string">my-vm</span> \
+                                <span class="flag">--tunnel-through-iap</span> \
+                                <span class="flag">--project</span>=my-project \
+                                <span class="flag">--zone</span>=us-central1-a
+
+                                <span class="comment"
+                                    ># 必要なFWルール: IAPのCIDR範囲のみSSHを許可</span
+                                >
+                                gcloud compute firewall-rules create
+                                <span class="string">allow-iap-ssh</span> \
+                                <span class="flag">--network</span>=my-vpc \
+                                <span class="flag">--action</span>=ALLOW \
+                                <span class="flag">--rules</span>=tcp:22 \
+                                <span class="flag">--source-ranges</span>=35.235.240.0/20 \
+                                <span class="comment"># IAPのIP範囲</span>
+                                <span class="flag">--target-tags</span>=iap-ssh-target
+                            </div>
+
+                            <h3>✅ ベストプラクティス</h3>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    SSH/RDPは外部からの直接アクセスを廃止し、<strong>IAP経由のみ</strong>に限定する
+                                </div>
+                                <div class="checklist-item">
+                                    管理画面・内部ツールへのアクセスはすべてIAPで保護する
+                                </div>
+                                <div class="checklist-item">
+                                    BeyondCorp
+                                    Enterpriseと統合してデバイス状態・場所を条件に追加する
+                                </div>
+                                <div class="checklist-item">
+                                    IAPのIPレンジ（35.235.240.0/20）以外からのSSHを全拒否する
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/iap/docs/concepts-overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>IAP の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/iap/docs/concepts-overview
+                                        </div>
+                                    </div>
+                                </a>
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/iap/docs/tcp-forwarding-overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>IAP TCP転送の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/iap/docs/tcp-forwarding-overview
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     S6: 監視・トラブルシューティング
+══════════════════════════════════════════════ -->
+                <section class="section" id="s6">
+                    <div class="section-header">
+                        <span class="section-number">SECTION 6</span>
+                        <div>
+                            <div class="section-title" style="color: var(--yellow)">
+                                ネットワーク監視・トラブルシューティング
+                            </div>
+                            <div class="section-desc">
+                                約10%を占めるセクション。Network Intelligence Centerの5ツール、VPC
+                                Flow Logs、 Packet Mirroringの使い方と使い分けが問われる。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-weight-bar">
+                        <span class="weight-label">配点ウェイト</span>
+                        <div class="weight-track" style="max-width: 300px">
+                            <div
+                                class="weight-fill"
+                                style="width: 10%; background: var(--yellow)"
+                            ></div>
+                        </div>
+                        <span class="weight-pct" style="color: var(--yellow)">~10%</span>
+                        <span class="tag tag-orange">VPC Flow Logs</span>
+                        <span class="tag tag-orange">Connectivity Test</span>
+                        <span class="tag tag-orange">Firewall Insights</span>
+                        <span class="tag tag-orange">Packet Mirroring</span>
+                    </div>
+
+                    <div class="topic-block open">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-orange">6.1</span>
+                            <span class="topic-title"
+                                >Network Intelligence Center ─ 5つの診断ツール</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="card-grid">
+                                <div class="card" style="border-color: rgba(255, 209, 102, 0.2)">
+                                    <div class="card-icon" style="background: var(--yellow-dim)">
+                                        🔌
+                                    </div>
+                                    <div class="card-title">Connectivity Tests</div>
+                                    <div class="card-body">
+                                        2点間の接続性を<strong>仮想的なパケットトレース</strong>で分析。FW・ルート・NATの問題を即特定。実際にパケットを送らないのがポイント。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(255, 209, 102, 0.2)">
+                                    <div class="card-icon" style="background: var(--yellow-dim)">
+                                        📊
+                                    </div>
+                                    <div class="card-title">Performance Dashboard</div>
+                                    <div class="card-body">
+                                        ゾーン間・リージョン間のレイテンシ・パケット損失をリアルタイム表示。Googleの基準値との比較も可能。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(255, 209, 102, 0.2)">
+                                    <div class="card-icon" style="background: var(--yellow-dim)">
+                                        🔎
+                                    </div>
+                                    <div class="card-title">Firewall Insights</div>
+                                    <div class="card-body">
+                                        使われていないFWルールを検出。Shadow
+                                        Rules（上位ルールに隠れているルール）の発見。過剰権限の整理に活用。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(255, 209, 102, 0.2)">
+                                    <div class="card-icon" style="background: var(--yellow-dim)">
+                                        🌐
+                                    </div>
+                                    <div class="card-title">Network Topology</div>
+                                    <div class="card-body">
+                                        VPC・サブネット・VMの接続関係を可視化。トラフィックフロー・帯域使用量を直感的に把握できる。
+                                    </div>
+                                </div>
+                                <div class="card" style="border-color: rgba(255, 209, 102, 0.2)">
+                                    <div class="card-icon" style="background: var(--yellow-dim)">
+                                        ⚙
+                                    </div>
+                                    <div class="card-title">Network Analyzer</div>
+                                    <div class="card-body">
+                                        VPCネットワーク設定を自動分析。問題点・ベストプラクティス違反を自動検出し、改善推奨を提示。
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/network-intelligence-center/docs/overview"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>Network Intelligence Center の概要</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/network-intelligence-center/docs/overview
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="topic-block">
+                        <div class="topic-header" onclick="toggleTopic(this)">
+                            <span class="topic-badge tag-orange">6.2</span>
+                            <span class="topic-title"
+                                >VPC Flow Logs・FWログ・Packet Mirroring ─ 使い分け</span
+                            >
+                            <span class="topic-chevron">▼</span>
+                        </div>
+                        <div class="topic-content">
+                            <div class="compare-table-wrap">
+                                <table class="compare-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ツール</th>
+                                            <th>何を記録するか</th>
+                                            <th>主な用途</th>
+                                            <th>コスト</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>VPC Flow Logs</td>
+                                            <td>
+                                                サブネット内の全トラフィック（サンプリング）<br />src/dst
+                                                IP・ポート・バイト数
+                                            </td>
+                                            <td>セキュリティ監査・コスト分析・コンプライアンス</td>
+                                            <td>サンプリングレートと容量に比例</td>
+                                        </tr>
+                                        <tr>
+                                            <td>FWルールログ</td>
+                                            <td>FWルールに一致したトラフィックのALLOW/DENY</td>
+                                            <td>FWデバッグ・セキュリティ侵害調査</td>
+                                            <td>ルールごとに有効化</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Packet Mirroring</td>
+                                            <td>対象VMの全パケット内容（コピー）</td>
+                                            <td>IDS・深層パケット検査・詳細デバッグ</td>
+                                            <td>高（全パケットコピー）</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="code-block">
+                                <span class="comment"
+                                    ># VPC Flow Logsの有効化（サブネット単位）</span
+                                >
+                                gcloud compute networks subnets update
+                                <span class="string">my-subnet</span> \
+                                <span class="flag">--enable-flow-logs</span> \
+                                <span class="flag">--logging-aggregation-interval</span
+                                >=INTERVAL_5_SEC \
+                                <span class="flag">--logging-flow-sampling</span>=0.5 \
+                                <span class="comment"># 50%サンプリング</span>
+                                <span class="flag">--logging-metadata</span>=INCLUDE_ALL_METADATA \
+                                <span class="flag">--region</span>=us-central1
+                            </div>
+
+                            <h3>トラブルシューティング手順（試験頻出）</h3>
+                            <div class="flow-steps">
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--yellow-dim);
+                                            color: var(--yellow);
+                                            border: 1px solid rgba(255, 209, 102, 0.3);
+                                        "
+                                    >
+                                        1
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">
+                                            Connectivity Testで問題箇所を絞り込む
+                                        </div>
+                                        <div class="flow-step-body">
+                                            仮想パケットトレースでFW・ルーティング・NATのどこで問題が発生しているか確認する。
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--yellow-dim);
+                                            color: var(--yellow);
+                                            border: 1px solid rgba(255, 209, 102, 0.3);
+                                        "
+                                    >
+                                        2
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">
+                                            FWルールを確認（ログを参照）
+                                        </div>
+                                        <div class="flow-step-body">
+                                            送信元/宛先のIP・ポートが許可されているか確認。暗黙のDENYに引っかかっていないかを確認。
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--yellow-dim);
+                                            color: var(--yellow);
+                                            border: 1px solid rgba(255, 209, 102, 0.3);
+                                        "
+                                    >
+                                        3
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">ルーティングを確認</div>
+                                        <div class="flow-step-body">
+                                            正しいネクストホップにルートが設定されているか確認。VPN/Interconnectトンネルがアップか、BGPセッションが確立しているかを確認。
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div
+                                        class="flow-step-num"
+                                        style="
+                                            background: var(--yellow-dim);
+                                            color: var(--yellow);
+                                            border: 1px solid rgba(255, 209, 102, 0.3);
+                                        "
+                                    >
+                                        4
+                                    </div>
+                                    <div class="flow-step-content">
+                                        <div class="flow-step-title">アプリケーション側を確認</div>
+                                        <div class="flow-step-body">
+                                            サービスが起動しているか、正しいポートでリスニングしているか、ヘルスチェックを通過しているかを確認。
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="source-list">
+                                <a
+                                    class="source-item"
+                                    href="https://cloud.google.com/vpc/docs/using-flow-logs"
+                                    target="_blank"
+                                >
+                                    <span class="source-item-icon">🔗</span>
+                                    <div>
+                                        <div>VPC Flow Logs の使用方法</div>
+                                        <div class="source-item-url">
+                                            cloud.google.com/vpc/docs/using-flow-logs
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     試験攻略チートシート
+══════════════════════════════════════════════ -->
+                <section class="section" id="cheatsheet">
+                    <div class="section-header">
+                        <span class="section-number">SUMMARY</span>
+                        <div>
+                            <div class="section-title" style="color: var(--cyan)">
+                                試験攻略チートシート ─ 頻出サービス早見表
+                            </div>
+                            <div class="section-desc">
+                                試験直前に確認すべきキーワードとサービスの紐付けを一覧にまとめました。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="compare-table-wrap">
+                        <table class="compare-table">
+                            <thead>
+                                <tr>
+                                    <th>サービス</th>
+                                    <th>最重要キーワード</th>
+                                    <th>主な用途</th>
+                                    <th>よく混同されるポイント</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>VPC</td>
+                                    <td>グローバルスコープ / Custom Mode</td>
+                                    <td>ネットワーク基盤</td>
+                                    <td>VPCはグローバル、サブネットはリージョン</td>
+                                </tr>
+                                <tr>
+                                    <td>Shared VPC</td>
+                                    <td>Host Project / Service Project / 集中管理</td>
+                                    <td>企業内ネットワーク統合</td>
+                                    <td>異組織間はVPC Peering（Shared VPCは同一組織のみ）</td>
+                                </tr>
+                                <tr>
+                                    <td>VPC Peering</td>
+                                    <td>推移的ルーティング不可 / CIDR重複不可</td>
+                                    <td>VPC間プライベート通信</td>
+                                    <td>A-B-CでAとCは通信不可（推移的ルーティング禁止）</td>
+                                </tr>
+                                <tr>
+                                    <td>HA VPN</td>
+                                    <td>99.99% SLA / BGP必須 / 2トンネル</td>
+                                    <td>オンプレとの暗号化接続</td>
+                                    <td>Classic VPN は99.9% SLA（新規非推奨）</td>
+                                </tr>
+                                <tr>
+                                    <td>Dedicated IC</td>
+                                    <td>専用線 / 10G or 100G / Meet-Me Location</td>
+                                    <td>大帯域オンプレ接続</td>
+                                    <td>Googleコロケ施設に直接接続できない場合はPartner IC</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Router</td>
+                                    <td>BGP / 動的ルーティング / データ通過なし</td>
+                                    <td>ルート交換エンジン</td>
+                                    <td>データプレーンは通過しない（コントロールプレーンのみ）</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud NAT</td>
+                                    <td>アウトバウンドのみ / 外部IP不要</td>
+                                    <td>プライベートVM→インターネット</td>
+                                    <td>インバウンド接続は絶対に不可</td>
+                                </tr>
+                                <tr>
+                                    <td>Global HTTP(S) LB</td>
+                                    <td>L7 / Anycast / URL Map / CDN連携</td>
+                                    <td>Webアプリグローバル配信</td>
+                                    <td>Cloud ArmorはProxy型のみ対応</td>
+                                </tr>
+                                <tr>
+                                    <td>Network LB</td>
+                                    <td>L4 Passthrough / クライアントIP保持</td>
+                                    <td>非HTTP・UDP・クライアントIP必要</td>
+                                    <td>Cloud Armor使用不可（Passthrough型のため）</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Armor</td>
+                                    <td>WAF / DDoS / OWASP / Rate Limiting</td>
+                                    <td>Webセキュリティ</td>
+                                    <td>外部Application LBにのみ適用可能</td>
+                                </tr>
+                                <tr>
+                                    <td>VPC SC</td>
+                                    <td>Service Perimeter / データ漏洩防止 / Exfiltration</td>
+                                    <td>高セキュリティ環境のAPI保護</td>
+                                    <td>IAMだけでは防げないデータ持ち出しを防ぐ</td>
+                                </tr>
+                                <tr>
+                                    <td>IAP</td>
+                                    <td>VPNなし / ゼロトラスト / 35.235.240.0/20</td>
+                                    <td>セキュアな管理アクセス</td>
+                                    <td>踏み台サーバーを代替する（外部IP不要）</td>
+                                </tr>
+                                <tr>
+                                    <td>Connectivity Test</td>
+                                    <td>仮想パケットトレース / 疎通確認</td>
+                                    <td>トラブルシューティング</td>
+                                    <td>実際にパケットを送らない（仮想的な分析）</td>
+                                </tr>
+                                <tr>
+                                    <td>Private Google Access</td>
+                                    <td>外部IPなし / GCPサービスアクセス</td>
+                                    <td>セキュアなGCPサービス利用</td>
+                                    <td>サブネット設定で有効化するだけ（簡単）</td>
+                                </tr>
+                                <tr>
+                                    <td>PSC</td>
+                                    <td>プライベートエンドポイント / ピアリング不要</td>
+                                    <td>マネージドサービスへの接続</td>
+                                    <td>VPC Peeringより管理がシンプル</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ══════════════════════════════════════════════
+     混同しやすいポイント
+══════════════════════════════════════════════ -->
+                <section class="section" id="confusion">
+                    <div class="section-header">
+                        <span class="section-number">TRAPS</span>
+                        <div>
+                            <div class="section-title" style="color: var(--yellow)">
+                                混同しやすいポイント ─ 試験の落とし穴
+                            </div>
+                            <div class="section-desc">
+                                受験者が誤りやすい概念の対比をまとめました。試験直前に必ず確認してください。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; gap: 14px">
+                        <div class="highlight-box">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    margin-bottom: 12px;
+                                "
+                            >
+                                <span style="font-size: 16px">❌</span>
+                                <strong>「VPCはリージョンスコープだ」</strong>
+                            </div>
+                            <p style="margin: 0">
+                                VPC自体は<strong>グローバルスコープ</strong>です。リージョンスコープなのは<strong>サブネット</strong>です。1つのVPCが複数リージョンにまたがれるのがGCPの特徴です。
+                            </p>
+                        </div>
+
+                        <div class="highlight-box">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    margin-bottom: 12px;
+                                "
+                            >
+                                <span style="font-size: 16px">❌</span>
+                                <strong>「Cloud VPN（全般）は99.99% SLA」</strong>
+                            </div>
+                            <p style="margin: 0">
+                                <strong>HA VPN</strong>が99.99% SLAです。<strong>Classic VPN</strong
+                                >は99.9% SLAです。新規構築ではHA VPNを使用してください。
+                            </p>
+                        </div>
+
+                        <div class="highlight-box">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    margin-bottom: 12px;
+                                "
+                            >
+                                <span style="font-size: 16px">❌</span>
+                                <strong>「Cloud NATでインバウンド接続も受けられる」</strong>
+                            </div>
+                            <p style="margin: 0">
+                                Cloud
+                                NATは<strong>アウトバウンドのみ</strong>です。外部からの受信接続はできません。受信が必要な場合はロードバランサーや外部IPを使用します。
+                            </p>
+                        </div>
+
+                        <div class="highlight-box">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    margin-bottom: 12px;
+                                "
+                            >
+                                <span style="font-size: 16px">❌</span>
+                                <strong>「VPC PeeringでA-B-Cがつながれば全VPCが通信できる」</strong>
+                            </div>
+                            <p style="margin: 0">
+                                推移的ルーティングは<strong>不可</strong>です。A→B→CとピアリングしてもAとCは通信できません。A-C間にも直接ピアリングが必要です。
+                            </p>
+                        </div>
+
+                        <div class="highlight-box">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    margin-bottom: 12px;
+                                "
+                            >
+                                <span style="font-size: 16px">❌</span>
+                                <strong>「Cloud ArmorはすべてのLBで使える」</strong>
+                            </div>
+                            <p style="margin: 0">
+                                Cloud ArmorはProxy型LB（Application LB・TCP Proxy
+                                LB等）にのみ対応します。<strong
+                                    >Passthrough型（Network LB・Internal TCP/UDP
+                                    LB）では使えません</strong
+                                >。
+                            </p>
+                        </div>
+
+                        <div class="highlight-box">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    margin-bottom: 12px;
+                                "
+                            >
+                                <span style="font-size: 16px">❌</span>
+                                <strong
+                                    >「Dedicated
+                                    InterconnectはどこでもGoogleと直接接続できる」</strong
+                                >
+                            </div>
+                            <p style="margin: 0">
+                                Dedicated InterconnectはGoogleが指定する<strong
+                                    >コロケーション施設（Meet-Me Location）</strong
+                                >に物理接続できる場合のみ利用可能です。施設に接続できない場合はPartner
+                                Interconnectを使用します。
+                            </p>
+                        </div>
+
+                        <div class="highlight-box">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                    margin-bottom: 12px;
+                                "
+                            >
+                                <span style="font-size: 16px">❌</span>
+                                <strong>「IAMポリシーだけでデータ漏洩を完全に防げる」</strong>
+                            </div>
+                            <p style="margin: 0">
+                                IAMはユーザーのアクセス権限を制御しますが、正規ユーザーによるデータ持ち出し（Exfiltration）は防げません。<strong
+                                    >VPC Service Controls</strong
+                                >でAPIの境界を設定することでデータ漏洩を防止します。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 試験当日の戦略 -->
+                    <h3 style="margin-top: 36px">試験当日の解答戦略</h3>
+                    <div class="card-grid">
+                        <div class="card">
+                            <div class="card-icon" style="background: var(--cyan-dim)">🎯</div>
+                            <div class="card-title">最もシンプルな解決策を選ぶ</div>
+                            <div class="card-body">
+                                複雑な構成より管理が簡単なソリューションが正解になりやすい。「これをしなくてもあれで解決できる」という選択肢を探す。
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon" style="background: var(--green-dim)">☁</div>
+                            <div class="card-title">マネージドサービスを優先</div>
+                            <div class="card-body">
+                                自分で管理するより「Googleが管理するマネージドサービス」を選ぶのが基本方針。運用コストが低く、SLAも高い。
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon" style="background: var(--orange-dim)">🔄</div>
+                            <div class="card-title">冗長性・HAの要件を必ず確認</div>
+                            <div class="card-body">
+                                99.99% SLAが必要ならHA
+                                VPN・Interconnect複数Metro。SLAの数字と対応する構成を暗記する。
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon" style="background: var(--purple-dim)">💰</div>
+                            <div class="card-title">コストと要件のバランス</div>
+                            <div class="card-body">
+                                Dedicated
+                                Interconnectが必須かVPNで十分かを見極める。帯域・レイテンシ要件が鍵になる。
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon" style="background: var(--red-dim)">🔐</div>
+                            <div class="card-title">セキュリティは最小権限</div>
+                            <div class="card-body">
+                                最も限定的なアクセスを許可するソリューションを選ぶ。「最小権限の原則」が常に正しい方向を示す。
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon" style="background: var(--yellow-dim)">📡</div>
+                            <div class="card-title">帯域要件で接続方式を選ぶ</div>
+                            <div class="card-body">
+                                大帯域→Interconnect、中帯域→Partner
+                                IC、小帯域/コスト優先→VPN。この3段階の判断軸を常に意識する。
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- フッター -->
+                <footer class="footer">
+                    <p>
+                        本ガイドはGoogle Cloud Professional Cloud Network
+                        Engineer（PCNE）試験の対策学習資料です。<br />
+                        試験の最新情報・サービス仕様は必ず
+                        <a
+                            href="https://cloud.google.com/learn/certification/cloud-network-engineer"
+                            target="_blank"
+                            >公式サイト</a
+                        >および
+                        <a
+                            href="https://services.google.com/fh/files/misc/042426_professional_cloud_network_engineer_exam_guide_english.pdf"
+                            target="_blank"
+                            >公式試験ガイドPDF</a
+                        >
+                        でご確認ください。
+                    </p>
+                    <p style="margin-top: 8px; font-size: 11px">
+                        作成: 2026年5月 ｜ 対象: PCNE 2024年版試験ガイド
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script>
+            function toggleTopic(header) {
+                const block = header.parentElement;
+                block.classList.toggle('open');
+            }
+
+            // Smooth scroll for sidebar links
+            document.querySelectorAll('a[href^="#"]').forEach((link) => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.querySelector(link.getAttribute('href'));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            // Highlight active nav item on scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            navItems.forEach((item) => item.classList.remove('active'));
+                            const active = document.querySelector(
+                                `.nav-item[href="#${entry.target.id}"]`,
+                            );
+                            if (active) active.classList.add('active');
+                        }
+                    });
+                },
+                { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' },
+            );
+
+            sections.forEach((s) => observer.observe(s));
+        </script>
+    </body>
+</html>

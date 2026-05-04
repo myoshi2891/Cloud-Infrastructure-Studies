@@ -40,7 +40,7 @@ app/
 移行規模が大きい場合（複数セクション・新ページ作成など）はプランモード（`enter_plan_mode`）を使用して計画を立てる。
 **プランモード使用時は以下を必須とする:**
 
-1. **計画 MD ファイルを作成する** (`docs/plans/<exam>-nextjs-migration.md`)
+1. **計画および進捗を MIGRATION_PROGRESS.md に作成・更新する**
     - 他の AI エージェントが後続処理を引き継げる粒度で記述する
     - フェーズ一覧・各フェーズの成果物・完了基準を明記する
 2. **フェーズ単位でコミットする**
@@ -204,6 +204,10 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 - **アクセシビリティとDocstrings**: コンポーネントへの ARIA 属性の付与や Docstrings の追加を行うこと。
 - **SVGの活用と制約**: ASCIIベースのダイアグラムは必ず専用のSVGコンポーネント (`DiagramSVG.tsx` など) に置き換えること。これには `ariaLabel="..."` または `decorative={true}` のいずれかの指定が型レベルで強制されているため、適切に付与すること。
 - **`litellm` / `dspy` 追加禁止**（脆弱性懸念）
+- **Client/Server コンポーネント境界**: ページ固有のアンカーナビ（IntersectionObserver を伴うスクロールスパイ等）など、状態やブラウザ API に依存するロジックが必要な場合は、`'use client'` ディレクティブを含む専用コンポーネント（例: `NavBar.tsx`）として切り出すこと。これにより、メインの `page.tsx` を Server Component として維持する。
+- **コードブロック内の改行 (`.code-block`)**: JSX 変換時、コード内の改行に `{"\n"}` を使用してはならない（`white-space: normal` 環境ではスペースとして正規化されるため）。各行は必ず `<div className="code-line">...</div>` でラップすること。
+- **表形式データの構造化**: テキストのスペース揃えで列を表現したデシジョンテーブルや行列データは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。
+- **CSS変数・テーマトークンの適用**: `globals.css` に定義された3層アーキテクチャの CSS 変数（例: `--color-background`, `--color-foreground`, `--color-primary`）を厳格に使用すること。独自のローカル変数定義は避け、必ずプロジェクト標準のトークンにマッピングする。
 
 ---
 
@@ -258,10 +262,8 @@ Markdown内の「参考やリンク」セクション（公式ドキュメント
 
 ## 進捗の確認
 
-セッションをまたぐ場合は対象ページの移行計画書を確認する。
-計画 MD が存在しない場合は、プランモードで作成してから実装を開始する。
+セッションをまたぐ場合は、必ずルートディレクトリの `MIGRATION_PROGRESS.md` を確認・更新し、進捗とコンテキストを引き継ぐこと。
 
-既存の計画 MD:
+既存の進行状況管理:
 
-- CDL: `docs/plans/cdl-nextjs-migration.md`
-- AWS（将来）: `docs/plans/aws-<exam>-nextjs-migration.md`
+- MIGRATION_PROGRESS.md

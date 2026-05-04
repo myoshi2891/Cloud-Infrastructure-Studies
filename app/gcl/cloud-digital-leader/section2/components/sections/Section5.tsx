@@ -97,7 +97,7 @@ export const Section5: React.FC = () => {
                     </defs>
                 </DiagramSVG>
 
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['クラス', '月次保存コスト', '取得コスト', '最小保存期間', '適したユースケース']}
                     rows={STORAGE_CLASSES}
                     renderRow={(row, i) => (
@@ -155,7 +155,7 @@ export const Section5: React.FC = () => {
                 <p className={baseStyles.tdesc}>CDL試験では、ビジネスのユースケースに応じて最適なデータ管理製品を選択する能力が求められる。これには、データベース、データウェアハウス、データレイクといった基本概念の明確な区別が含まれる。</p>
                 <p className={baseStyles.tdesc}>以下の表は、データ管理の主要な3つの概念の違いを明確に示したものである。</p>
 
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['アーキテクチャ', '定義と主な目的', 'データ形式とスキーマ要件', 'Google Cloudの該当サービス']}
                     rows={DATA_MANAGEMENT_SOLUTIONS}
                     renderRow={(row, i) => (

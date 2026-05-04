@@ -1,0 +1,270 @@
+/* Section 1 specific styles */
+.section {
+    padding: 4rem 0;
+}
+.sectionAlt {
+    background-color: var(--color-muted);
+}
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.sh {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+.shTag {
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--cdl-red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+.shTitle {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-accent-foreground);
+    margin-bottom: 1.2rem;
+}
+.shDesc {
+    font-size: 1.1rem;
+    color: var(--color-muted-foreground);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Sub Title */
+.subTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 3rem 0 1.5rem;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+.examTag {
+    font-size: 0.8rem;
+    background: color-mix(in srgb, var(--cdl-red) 10%, transparent);
+    color: var(--cdl-red);
+    padding: 2px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 0.8rem;
+}
+
+/* Grid Layouts */
+.g2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+.g3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Cards */
+.card {
+    background: var(--color-card);
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
+    display: flex;
+    flex-direction: column;
+}
+.cardIcon {
+    font-size: 1.8rem;
+    margin-bottom: 0.9rem;
+}
+.cardTitle {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+}
+.cardBody {
+    color: var(--color-muted-foreground);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex: 1;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    font-weight: 600;
+}
+.badgeGold { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); color: var(--cdl-yellow); border: 1px solid color-mix(in srgb, var(--cdl-yellow) 20%, transparent); }
+.badgeTeal { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); color: var(--cdl-green); border: 1px solid color-mix(in srgb, var(--cdl-green) 20%, transparent); }
+.badgeSky { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); color: var(--cdl-blue); border: 1px solid color-mix(in srgb, var(--cdl-blue) 20%, transparent); }
+.badgeAmber { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); border: 1px solid color-mix(in srgb, var(--cdl-red) 20%, transparent); }
+
+/* Warn Box */
+.warnBox {
+    background: color-mix(in srgb, var(--cdl-yellow) 8%, transparent);
+    border-left: 4px solid var(--cdl-yellow);
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+    margin-top: 1.5rem;
+    color: var(--color-muted-foreground);
+}
+
+/* Source links */
+.src {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+}
+.srcLabel {
+    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-size: 0.9rem;
+    color: var(--color-muted-foreground);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+.src a {
+    display: block;
+    color: var(--color-accent-blue, var(--cdl-blue));
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    word-break: break-all;
+}
+.src a:hover {
+    text-decoration: underline;
+}
+
+/* Shared Responsibility Table */
+.srWrap {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    background: var(--color-card);
+}
+.srTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+}
+.srTable th {
+    background: color-mix(in srgb, var(--cdl-yellow) 8%, transparent);
+    color: var(--cdl-yellow);
+    font-weight: 700;
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--color-border);
+}
+.srTable td {
+    padding: 0.75rem 1.1rem;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-muted-foreground);
+    vertical-align: middle;
+}
+.srTable tr:last-child td {
+    border-bottom: none;
+}
+.srTable td:first-child {
+    font-weight: 600;
+    color: var(--color-accent-foreground);
+}
+
+/* Zero Trust Diagram */
+.ztDiagram {
+    background: var(--color-accent-foreground); /* Dark background for contrast */
+    border-radius: 14px;
+    padding: 2rem;
+    color: var(--color-card);
+}
+.ztCompare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+.ztCol {
+    border-radius: 10px;
+    padding: 1.4rem;
+}
+.ztColOld {
+    background: color-mix(in srgb, var(--cdl-red) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cdl-red) 20%, transparent);
+}
+.ztColNew {
+    background: color-mix(in srgb, var(--cdl-cyan) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cdl-cyan) 20%, transparent);
+}
+.ztColTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+.ztColOld .ztColTitle {
+    color: var(--cdl-red);
+}
+.ztColNew .ztColTitle {
+    color: var(--cdl-green); /* Teal */
+}
+.ztCol ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.ztCol li {
+    font-size: 1rem;
+    color: var(--color-card);
+    position: relative;
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+.ztCol li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: inherit;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .g2, .ztCompare {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Border modifiers */
+.borderRed { border-top: 3px solid var(--cdl-red); }
+.borderBlue { border-top: 3px solid var(--cdl-blue); }
+.borderGreen { border-top: 3px solid var(--cdl-green); }
+.borderYellow { border-top: 3px solid var(--cdl-yellow); }
+.borderPurple { border-top: 3px solid var(--cdl-purple); }
+.borderSky { border-top: 3px solid var(--cdl-sky); }
+.borderAmber { border-top: 3px solid var(--cdl-amber); }
+.borderTeal { border-top: 3px solid var(--cdl-teal); }
+
+.borderLeftRed { border-left: 3px solid var(--cdl-red); }
+.borderLeftBlue { border-left: 3px solid var(--cdl-blue); }
+.borderLeftGreen { border-left: 3px solid var(--cdl-green); }
+.borderLeftYellow { border-left: 3px solid var(--cdl-yellow); }
+.borderLeftSky { border-left: 3px solid var(--cdl-sky); }
+.borderLeftTeal { border-left: 3px solid var(--cdl-teal); }
+
+/* Background modifiers */
+.bgRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); }
+.bgBlue { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); }
+.bgGreen { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); }
+.bgYellow { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); }
+.bgPurple { background: color-mix(in srgb, var(--cdl-purple) 10%, transparent); }
+.bgSky { background: color-mix(in srgb, var(--cdl-sky) 10%, transparent); }
+.bgTeal { background: color-mix(in srgb, var(--cdl-teal) 10%, transparent); }
+.bgAmber { background: color-mix(in srgb, var(--cdl-amber) 10%, transparent); }

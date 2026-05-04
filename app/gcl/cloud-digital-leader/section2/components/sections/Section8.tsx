@@ -69,7 +69,7 @@ export const Section8: React.FC = () => {
                 </DiagramSVG>
 
                 <h4 className={`${baseStyles.stitle} mt-6`}>Pub/Sub のユースケース</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['ユースケース', '説明']}
                     rows={PUBSUB_USECASES}
                     renderRow={(row, i) => (
@@ -99,7 +99,7 @@ export const Section8: React.FC = () => {
   Cloud SQL  →   フォーマット変換        →   Pub/Sub`}</code></pre>
 
                 <h4 className="stitle mt-4">Dataflow のユースケース</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['ユースケース', 'バッチ/ストリーミング', '説明']}
                     rows={DATAFLOW_USECASES}
                     renderRow={(row, i) => (

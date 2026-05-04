@@ -17,7 +17,7 @@ export const Section12: React.FC = () => (
             idNumber="12.1"
             title="学習チェックリスト"
         >
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['混同パターン', '正しい理解']}
                 rows={CONFUSION_POINTS}
                 renderRow={(row, i) => (

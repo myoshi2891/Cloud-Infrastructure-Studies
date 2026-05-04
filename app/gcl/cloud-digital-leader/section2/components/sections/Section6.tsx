@@ -107,7 +107,7 @@ export const Section6: React.FC = () => {
                 </DiagramSVG>
 
                 <h4 className="stitle mt-4">Cloud SQL vs Cloud Spanner の比較</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['比較項目', 'Cloud SQL', 'Cloud Spanner']}
                     rows={SQL_VS_SPANNER}
                     renderRow={(row, i) => (
@@ -183,7 +183,7 @@ export const Section6: React.FC = () => {
   - クラスタリングを活用（よく使うカラムでソート）`}</code></pre>
 
                 <h4 className="stitle mt-4">BigQuery の独自機能</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['機能', '説明', 'ユースケース']}
                     rows={BIGQUERY_FEATURES}
                     renderRow={(row, i) => (
@@ -215,7 +215,7 @@ export const Section6: React.FC = () => {
   - 完全 PostgreSQL 互換（既存のコード・ツールがそのまま動く）`}</code></pre>
 
                 <h3 className={`${baseStyles.stitle} mt-6`}>6.9 全データベースサービスの比較まとめ</h3>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['サービス', 'タイプ', '規模', '主な用途', 'キーワード']}
                     rows={DATABASE_COMPARISON}
                     renderRow={(row, i) => (
@@ -256,7 +256,7 @@ export const Section6: React.FC = () => {
                 <p className={baseStyles.tdesc}>モバイルアプリケーションやウェブアプリケーションのバックエンドとして設計されているのが「Firestore」である。Firestoreは、サーバーレスのフルマネージド・ドキュメント型NoSQLデータベースであり、柔軟な階層型データ構造（ドキュメントとコレクション）をサポートしている。クライアントとデータベース間でデータをリアルタイムに同期する機能や、ネットワーク接続が切断された状態でもアプリケーションが動作し続けるオフラインサポート機能を内蔵しているため、チャットアプリ、マルチプレイヤーゲーム、モバイル向けの商品カタログなどに最適である。</p>
 
                 <h3 className={`${baseStyles.stitle} mt-6`}>データベース選定のデシジョン・マトリクス</h3>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['要件の特性', 'データモデルと整合性', '推奨されるGoogle Cloudサービス', '主なユースケース']}
                     rows={DATABASE_DECISION_MATRIX}
                     renderRow={(row, i) => (

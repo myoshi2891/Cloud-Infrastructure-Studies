@@ -14,6 +14,11 @@ vi.mock('next/font/google', () => ({
         style: { fontFamily: 'JetBrains Mono' },
         variable: '--font-mono',
     }),
+    DM_Sans: () => ({
+        className: 'mock-dm-sans',
+        style: { fontFamily: 'DM Sans' },
+        variable: '--font-display',
+    }),
     Fraunces: () => ({
         className: 'mock-fraunces',
         style: { fontFamily: 'Fraunces' },

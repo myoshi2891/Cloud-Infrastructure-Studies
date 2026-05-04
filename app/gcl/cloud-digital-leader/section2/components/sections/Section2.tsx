@@ -68,7 +68,7 @@ export const Section2: React.FC = () => {
                 <strong>データと分析に基づいて意思決定</strong>を行う経営スタイルです。</p>
 
                 <h4 className="stitle mt-4">従来型経営 vs データドリブン経営の比較</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['比較項目', '従来型（経験・勘）', 'データドリブン']}
                     rows={TRADITIONAL_VS_DATADRIVEN}
                     renderRow={(row, i) => (
@@ -111,7 +111,7 @@ export const Section2: React.FC = () => {
                 </DiagramSVG>
 
                 <h4 className="stitle mt-4">各分析レベルの具体例（EC サイトの場合）</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['レベル', '問い', '分析の例', '使うツール']}
                     rows={ANALYSIS_LEVELS}
                     renderRow={(row, i) => (

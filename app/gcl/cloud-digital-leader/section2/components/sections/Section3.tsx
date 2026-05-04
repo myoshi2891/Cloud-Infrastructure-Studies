@@ -44,7 +44,7 @@ export const Section3: React.FC = () => {
   ❌ 非構造化データのような柔軟な表現は難しい`}</code></pre>
 
                 <h4 className="stitle mt-4">構造化データの具体例</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['データ種別', '具体例', '格納先（GCP）']}
                     rows={STRUCTURED_DATA_EXAMPLES}
                     renderRow={(row, i) => (
@@ -71,7 +71,7 @@ export const Section3: React.FC = () => {
                 </DiagramSVG>
 
                 <h4 className="stitle mt-4">非構造化データの具体例</h4>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['データ種別', '具体例', '格納先（GCP）', '分析方法']}
                     rows={UNSTRUCTURED_DATA_EXAMPLES}
                     renderRow={(row, i) => (
@@ -109,7 +109,7 @@ export const Section3: React.FC = () => {
   ✅ BigQuery や Firestore で直接扱える`}</code></pre>
 
                 <h3 className={`${baseStyles.stitle} mt-6`}>3.5 データ形式の比較まとめ</h3>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['比較項目', '構造化', '半構造化', '非構造化']}
                     rows={DATA_FORMAT_COMPARISON}
                     renderRow={(row, i) => (
