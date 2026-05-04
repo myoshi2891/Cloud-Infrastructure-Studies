@@ -227,7 +227,7 @@
 }
 .anthosIcon {
     font-size: 1.5rem;
-    background: color-mix(in srgb, var(--color-accent-foreground) 10%, transparent);
+    background: color-mix(in srgb, var(--color-card) 10%, transparent);
     width: 48px;
     height: 48px;
     display: flex;

@@ -40,6 +40,16 @@
     --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
     --color-theme-cdl-fg: hsl(160 70% 65%);
 
+    /* CDL Specific Tokens */
+    --cdl-red: hsl(0 80% 65%);
+    --cdl-green: hsl(140 60% 50%);
+    --cdl-blue: hsl(210 90% 65%);
+    --cdl-yellow: hsl(45 90% 55%);
+    --cdl-purple: hsl(270 70% 65%);
+    --cdl-sky: hsl(190 90% 65%);
+    --cdl-amber: hsl(30 90% 55%);
+    --cdl-teal: hsl(170 70% 45%);
+
     /* Layer 2: 共有プリミティブ */
     --color-shadow: rgba(0, 0, 0, 0.4);
     --color-surface-subtle: rgba(255, 255, 255, 0.05);

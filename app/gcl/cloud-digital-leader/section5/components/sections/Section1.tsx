@@ -101,16 +101,16 @@ export const Section1 = () => {
                             <div className={styles.cardTitle}>⚠️ ユーザーが常に守るもの</div>
                             <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>データの分類と適切な保護設定
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>データの分類と適切な保護設定
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>アプリケーションのセキュリティ
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>アプリケーションのセキュリティ
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>エンドユーザーの認証・認可設定
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>エンドユーザーの認証・認可設定
                                 </li>
                             </ul>
                         </div>
@@ -140,11 +140,11 @@ export const Section1 = () => {
                 </div>
             </section>
 
-            <section id="zerotrust" className={styles.section}>
+            <section id="zerotrust" aria-labelledby="zerotrust-heading" className={styles.section}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.2 Zero Trust / BeyondCorp</div>
-                        <h2 className={styles.shTitle}>
+                        <h2 id="zerotrust-heading" className={styles.shTitle}>
                             ゼロトラストと BeyondCorp<span className={styles.examTag}>頻出</span>
                         </h2>
                         <p className={styles.shDesc}>

@@ -104,8 +104,7 @@ export const Section4_Checklist: React.FC = () => {
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>
-                                TensorFlow が「エンドツーエンドのオープンソース ML
-                                ツールセット」であることを説明できる
+                                TensorFlow が「エンドツーエンドのオープンソース ML ツールセット」であることを説明できる
                             </li>
                             <li className={styles.checkItem}>
                                 <span className={styles.checkBox} aria-hidden="true">✓</span>

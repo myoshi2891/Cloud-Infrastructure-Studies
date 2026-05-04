@@ -185,7 +185,7 @@ export const Section2 = () => {
                                     style={{
                                         listStyle: 'none',
                                         fontSize: '1rem',
-                                        color: 'color-mix(in srgb, var(--color-accent-foreground) 65%, transparent)',
+                                        color: 'var(--color-card)',
                                         padding: 0,
                                         margin: 0
                                     }}
@@ -231,7 +231,7 @@ export const Section2 = () => {
                                     style={{
                                         listStyle: 'none',
                                         fontSize: '1rem',
-                                        color: 'color-mix(in srgb, var(--color-accent-foreground) 65%, transparent)',
+                                        color: 'var(--color-card)',
                                         padding: 0,
                                         margin: 0
                                     }}
@@ -293,17 +293,17 @@ export const Section2 = () => {
 
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
-                        <a href="https://cloud.google.com/run/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/run/docs
+                        <a href="https://cloud.google.com/run/docs" target="_blank" rel="noopener noreferrer" aria-label="Cloud Run ドキュメント">
+                            Cloud Run ドキュメント
                         </a>
-                        <a href="https://cloud.google.com/functions/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/functions/docs
+                        <a href="https://cloud.google.com/functions/docs" target="_blank" rel="noopener noreferrer" aria-label="Cloud Functions ドキュメント">
+                            Cloud Functions ドキュメント
                         </a>
                         <a
                             href="https://docs.cloud.google.com/appengine/migration-center/run/compare-gae-with-run"
-                            target="_blank" rel="noopener noreferrer"
+                            target="_blank" rel="noopener noreferrer" aria-label="App Engine と Cloud Run の比較"
                         >
-                            https://docs.cloud.google.com/appengine/migration-center/run/compare-gae-with-run
+                            App Engine と Cloud Run の比較
                         </a>
                     </div>
                 </div>
@@ -761,14 +761,14 @@ export const Section2 = () => {
 
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
-                        <a href="https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs" target="_blank" rel="noopener noreferrer">
-                            https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs
+                        <a href="https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs" target="_blank" rel="noopener noreferrer" aria-label="GKE マルチクラウド ドキュメント">
+                            GKE マルチクラウド ドキュメント
                         </a>
-                        <a href="https://cloud.google.com/anthos/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/anthos/docs
+                        <a href="https://cloud.google.com/anthos/docs" target="_blank" rel="noopener noreferrer" aria-label="Anthos ドキュメント">
+                            Anthos ドキュメント
                         </a>
-                        <a href="https://services.google.com/fh/files/blogs/anthos_white_paper.pdf" target="_blank" rel="noopener noreferrer">
-                            https://services.google.com/fh/files/blogs/anthos_white_paper.pdf
+                        <a href="https://services.google.com/fh/files/blogs/anthos_white_paper.pdf" target="_blank" rel="noopener noreferrer" aria-label="Anthos ホワイトペーパー">
+                            Anthos ホワイトペーパー
                         </a>
                     </div>
                 </div>

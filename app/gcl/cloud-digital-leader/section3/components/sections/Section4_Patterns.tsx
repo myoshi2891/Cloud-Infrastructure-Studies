@@ -60,7 +60,7 @@ export const Section4_Patterns: React.FC = () => {
                             PATTERN 03 — 責任ある AI
                         </div>
                         <p className="text-base text-[var(--color-text-secondary)] mb-4">
-                            「採用システムに AI を導入したい。AI の判断が応募者に不当な影響を与えないよう、 どの責任ある AI の原則を最も重視すべきか？」
+                            「採用システムに AI を導入したい。AI の判断が応募者に不当な影響を与えないよう、どの責任ある AI の原則を最も重視すべきか？」
                         </p>
                         <div className="text-base text-[var(--color-text-muted)] mb-2">
                             考え方：
@@ -99,7 +99,7 @@ export const Section4_Patterns: React.FC = () => {
 
                 <h3 className={baseStyles.subsectionTitle}>混同しやすいポイントの整理</h3>
                 <div className={`${baseStyles.card} overflow-x-auto`}>
-                    <table className="w-full min-w-[560px] text-left border-collapse">
+                    <table className="w-full min-w-[560px] text-left border-collapse" aria-label="混同しやすいポイントの整理テーブル">
                         <thead>
                             <tr>
                                 <th scope="col" className="p-4 border-b-2 border-[var(--color-border)]">混同パターン</th>

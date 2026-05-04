@@ -78,7 +78,7 @@
 .badgeGold { background: color-mix(in srgb, var(--cdl-yellow) 10%, transparent); color: var(--cdl-yellow); }
 .badgeTeal { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); color: var(--cdl-green); }
 .badgeSky { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); color: var(--cdl-blue); }
-.badgeAmber { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); }
+.badgeAmber { background: color-mix(in srgb, var(--cdl-amber) 10%, transparent); color: var(--cdl-amber); }
 .badgeRed { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); }
 
 /* Sub Title */
@@ -190,11 +190,11 @@
 .l4 { background: color-mix(in srgb, var(--cdl-purple) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-purple) 12%, transparent); }
 .l4 .layerName { color: var(--cdl-purple); }
 
-.l3 { background: color-mix(in srgb, var(--cdl-red) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-red) 12%, transparent); }
-.l3 .layerName { color: var(--cdl-red); } /* Keeping some distinct colors */
+.l3 { background: color-mix(in srgb, var(--cdl-amber) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-amber) 12%, transparent); }
+.l3 .layerName { color: var(--cdl-amber); } /* Distinct color */
 
-.l2 { background: color-mix(in srgb, var(--cdl-green) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-green) 12%, transparent); }
-.l2 .layerName { color: var(--cdl-green); }
+.l2 { background: color-mix(in srgb, var(--cdl-teal) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-teal) 12%, transparent); }
+.l2 .layerName { color: var(--cdl-teal); }
 
 .l1 { background: color-mix(in srgb, var(--cdl-sky) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-sky) 12%, transparent); }
 .l1 .layerName { color: var(--cdl-sky); }

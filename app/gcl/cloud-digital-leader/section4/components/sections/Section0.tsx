@@ -267,14 +267,14 @@ export const Section0 = () => {
 
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
-                        <a href="https://cloud.google.com/learn/cloud-migration" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/learn/cloud-migration
+                        <a href="https://cloud.google.com/learn/cloud-migration" target="_blank" rel="noopener noreferrer" aria-label="クラウド移行に関する学習リソース">
+                            クラウド移行に関する学習リソース
                         </a>
-                        <a href="https://services.google.com/fh/files/misc/cloud_application_modernization_program_whitepaper.pdf" target="_blank" rel="noopener noreferrer">
-                            https://services.google.com/fh/files/misc/cloud_application_modernization_program_whitepaper.pdf
+                        <a href="https://services.google.com/fh/files/misc/cloud_application_modernization_program_whitepaper.pdf" target="_blank" rel="noopener noreferrer" aria-label="CAMP ホワイトペーパー">
+                            CAMP ホワイトペーパー
                         </a>
-                        <a href="https://docs.cloud.google.com/architecture/migration-to-gcp-getting-started" target="_blank" rel="noopener noreferrer">
-                            https://docs.cloud.google.com/architecture/migration-to-gcp-getting-started
+                        <a href="https://docs.cloud.google.com/architecture/migration-to-gcp-getting-started" target="_blank" rel="noopener noreferrer" aria-label="Google Cloud への移行スタートガイド">
+                            Google Cloud への移行スタートガイド
                         </a>
                     </div>
                 </div>

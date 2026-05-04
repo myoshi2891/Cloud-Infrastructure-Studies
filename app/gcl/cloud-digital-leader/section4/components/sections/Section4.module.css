@@ -2,7 +2,7 @@
 
 /* Checklist category label */
 .clCategory {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 1rem;
     color: var(--cdl-red);
     text-transform: uppercase;
@@ -26,7 +26,7 @@
     margin-bottom: 3.5rem;
 }
 .shTag {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
     color: var(--cdl-red);
@@ -124,7 +124,7 @@
     border-top: 1px solid var(--color-border);
 }
 .srcLabel {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 0.9rem;
     color: var(--color-muted-foreground);
     margin-bottom: 1rem;
@@ -144,6 +144,8 @@
 
 /* Checklist */
 .checklist {
+    list-style: none;
+    margin: 0;
     background: var(--color-card);
     border-radius: 12px;
     padding: 1.5rem;
@@ -190,7 +192,7 @@
     border-bottom: 1px solid color-mix(in srgb, var(--color-accent-foreground) 10%, transparent);
 }
 .ptnNum {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-weight: 700;
     color: var(--cdl-red);
     font-size: 1.2rem;

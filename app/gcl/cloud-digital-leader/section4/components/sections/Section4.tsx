@@ -91,117 +91,117 @@ export const Section4 = () => {
                     </div>
 
                     {/* CHECKLIST */}
-                    <div className={styles.subTitle}>Section 4 チェックリスト</div>
+                    <h3 className={styles.subTitle} aria-label="Section 4 チェックリスト">Section 4 チェックリスト</h3>
                     <div className={styles.g2} style={{ marginBottom: '2.5rem' }}>
                         <div>
                             <div className={styles.clCategory}>
                                 移行戦略・モダナイゼーション
                             </div>
-                            <div className={styles.checklist} style={{ marginBottom: '1.5rem' }}>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="チェックリスト">
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     7つのR（Rehost/Replatform/Refactor/Rebuild/Repurchase/Retire/Retain）を具体例で説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Retain（保持）とRetire（廃止）の違いを明確に説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     「Lift & Shift ＝ Rehost」と「Move and Improve ＝
                                     Refactor」の対応関係を理解している
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     CAMP フレームワークの 4 フェーズを説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     モダナイゼーションの 3 段階（Stage 1-3）を説明できる
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
                             <div className={styles.clCategory}>
                                 コンピューティング
                             </div>
-                            <div className={styles.checklist}>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                            <ul className={styles.checklist} aria-label="チェックリスト">
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     コンピューティングサービス選択のデシジョンツリーを即答できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     VM とコンテナの違いをビジネス価値を含めて説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     GKE Autopilot vs Standard の使い分け（GPU
                                     が必要→Standard）を説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Spot VM が「最大 91%
                                     割引・中断可能ワークロード向け」であることを説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Cloud Run と Cloud Functions の違いと使い分けを説明できる
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
                         </div>
                         <div>
                             <div className={styles.clCategory}>
                                 ネットワーク・ハイブリッド
                             </div>
-                            <div className={styles.checklist} style={{ marginBottom: '1.5rem' }}>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="チェックリスト">
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Cloud VPN（安価・インターネット経由）と Cloud
                                     Interconnect（専用線・高コスト）の選択基準を説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Shared VPC の目的（ネットワーク中央集権化）を説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     GKE Enterprise（旧
                                     Anthos）がマルチクラウドを「単一の管理画面」で統合管理することを説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     マルチクラウドを選ぶ 3
                                     つのビジネス理由（ロックイン回避・データ主権・投資保護）を説明できる
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
                             <div className={styles.clCategory}>
                                 DevOps / SRE / API
                             </div>
-                            <div className={styles.checklist}>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                            <ul className={styles.checklist} aria-label="チェックリスト">
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     CI/CD パイプライン（Cloud Build → Artifact Registry → Cloud
                                     Deploy）を説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     SLI・SLO・SLA・エラーバジェットの違いを説明できる（SLA &lt; SLO
                                     の関係）
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     DORA の 4 つのメトリクスを説明できる
-                                </div>
-                                <div className={styles.clItem}>
-                                    <div className={styles.clBox}>✓</div>
+                                </li>
+                                <li className={styles.clItem}>
+                                    <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Apigee がレガシーシステムの「API
                                     ファサード」として機能することを説明できる
-                                </div>
-                            </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
                     {/* EXAM PATTERNS */}
-                    <div className={styles.subTitle}>頻出問題パターンと解法</div>
+                    <h3 className={styles.subTitle} aria-label="頻出問題パターンと解法">頻出問題パターンと解法</h3>
                     <div className={styles.g2}>
                         <div className={styles.ptnCard}>
                             <div className={styles.ptnHeader}>
@@ -294,7 +294,7 @@ export const Section4 = () => {
                     </div>
 
                     {/* CONFUSION TABLE */}
-                    <div className={styles.subTitle} style={{ marginTop: '3rem' }}>混同しやすいポイントの整理</div>
+                    <h3 className={styles.subTitle} aria-label="混同しやすいポイントの整理" style={{ marginTop: '3rem' }}>混同しやすいポイントの整理</h3>
                     <div className={styles.cmpWrap}>
                         <table className={styles.cmpTable}>
                             <thead>

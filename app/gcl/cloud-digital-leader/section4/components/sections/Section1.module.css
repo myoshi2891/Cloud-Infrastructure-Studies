@@ -15,7 +15,7 @@
     margin-bottom: 3.5rem;
 }
 .shTag {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
     color: var(--cdl-red);
@@ -65,7 +65,7 @@
     border-radius: 100px;
     font-size: 0.85rem;
     font-weight: 600;
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
 }
 .badgeR { background: color-mix(in srgb, var(--cdl-red) 10%, transparent); color: var(--cdl-red); }
 .badgeG { background: color-mix(in srgb, var(--cdl-green) 10%, transparent); color: var(--cdl-green); }
@@ -144,7 +144,7 @@
     border-top: 1px solid var(--color-border);
 }
 .srcLabel {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 0.9rem;
     color: var(--color-muted-foreground);
     margin-bottom: 1rem;
@@ -216,7 +216,7 @@
     font-weight: 500;
 }
 .flowArrow {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
     color: color-mix(in srgb, var(--color-accent-foreground) 40%, transparent);
     flex-shrink: 0;
 }
