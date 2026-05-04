@@ -347,7 +347,15 @@ function Chapter2() {
     );
 }
 
-/* ── Chapter 3: プロジェクト管理 ── */
+/**
+ * Renders the Chapter 3 section describing project creation and management.
+ *
+ * Includes three creation methods (Console, gcloud CLI, Terraform), the project
+ * lifecycle with the 30-day deletion grace period and recovery command examples,
+ * and default project-related quota information and references.
+ *
+ * @returns The React element containing Chapter 3 content for the page
+ */
 function Chapter3() {
     return (
         <div id="ch3" className="sgap">
@@ -582,7 +590,11 @@ Project レベル: ポリシー A, B が有効
     );
 }
 
-/* ── Chapter 5: gcloud CLI ── */
+/**
+ * Renders the Chapter 5 section covering gcloud CLI installation, initialization, configuration management, authentication (ADC), commonly used commands, and enterprise best practices for multi-environment operations.
+ *
+ * @returns The JSX element containing the Chapter 5 content.
+ */
 function Chapter5() {
     return (
         <div id="ch5" className="sgap">
@@ -858,7 +870,13 @@ function Chapter6() {
     );
 }
 
-/* ── Chapter 7: 予算・アラート・自動コスト制御 ── */
+/**
+ * Render Chapter 7 content covering budgets, alert thresholds, and programmatic cost-control patterns.
+ *
+ * This presentational component displays budget structure and scoping, the three-tier alert model, guidance that budgets do not automatically stop resources, an example Pub/Sub → Cloud Functions automation (with Python snippets) for stopping resources or unlinking billing, security risks that cause unexpected costs (and mitigations), Cloud Armor examples, best practices, and reference links.
+ *
+ * @returns A JSX element containing the Chapter 7 section (id="ch7") with explanatory text, code examples, tables, and resource links.
+ */
 function Chapter7() {
     return (
         <div id="ch7" className="sgap">
@@ -1371,7 +1389,13 @@ resource "google_project_service" "apis" {
     );
 }
 
-/* ── Chapter 10: 試験対策まとめ ── */
+/**
+ * Render the Chapter 10 summary section for Domain 1, including common exam question patterns,
+ * a glossary of important terms, a pre-exam checklist, recommended study resources, and enterprise
+ * takeaways.
+ *
+ * @returns The React element containing the Chapter 10 content for the page.
+ */
 function Chapter10() {
     return (
         <div id="ch10" className="sgap">

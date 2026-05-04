@@ -448,7 +448,13 @@ Google がキャパシティを必要とした時に「プリエンプト（強�
     );
 }
 
-/* ── Section 4: コンテナとKubernetes (GKE) ── */
+/**
+ * Renders Section 4 (コンテナと Kubernetes - GKE) of the ACE study guide.
+ *
+ * The section covers GKE Autopilot vs Standard modes, Workload Identity (with a gcloud example), Binary Authorization, and the Security Posture Dashboard, presented as static JSX (tables, code blocks, and guidance).
+ *
+ * @returns The JSX element for the GKE section content.
+ */
 function S4GKE() {
     return (
         <div id="s4" className="sgap">
@@ -1379,7 +1385,11 @@ Gemini が以下を自動分析:
     );
 }
 
-/* ── Section 11: 試験直前チェックリスト ── */
+/**
+ * Renders Section 11: the pre-exam checklist, recommended study resources, and an enterprise-focused conclusion.
+ *
+ * @returns A JSX element containing checklist items for Domains 1–4, a table and list of recommended resource links, and summary paragraphs targeted at enterprise practices.
+ */
 function S11Checklist() {
     return (
         <div id="s11" className="sgap">

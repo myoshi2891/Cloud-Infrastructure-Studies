@@ -33,6 +33,12 @@ export const metadata: Metadata = {
     description: 'Google Cloud 認定試験学習ガイド',
 };
 
+/**
+ * Root layout component that applies configured fonts and wraps page content with site Header and Footer.
+ *
+ * @param children - The page content to render between the Header and Footer.
+ * @returns A React element representing the HTML root with font CSS variables applied and a body containing the Header, `children`, and Footer.
+ */
 export default function RootLayout({
     children,
 }: Readonly<{

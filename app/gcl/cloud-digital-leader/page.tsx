@@ -119,6 +119,13 @@ Step 4: cp.certmetrics.com/google から試験を予約
     );
 }
 
+/**
+ * Renders the "DX・クラウド基礎" page section covering digital transformation and Google Cloud fundamentals.
+ *
+ * The rendered content includes subsections 1.1–1.8: NIST's five cloud characteristics, IaaS/PaaS/SaaS responsibility diagram and guidance, deployment models, DX's three pillars, CapEx vs OpEx, Google Cloud strengths, service-model responsibility table, and the Cloud Adoption Framework — composed of tables, illustrative SVGs, and concise best-practice notes.
+ *
+ * @returns A JSX element for the section with id "s1" containing subsections 1.1 through 1.8.
+ */
 function Section1() {
     return (
         <div id="s1" className="sgap">
@@ -576,6 +583,11 @@ NoSQLが必要か？
     );
 }
 
+/**
+ * Render the "Infrastructure and Modernization" section covering migration strategies (6R), compute (Compute Engine, GKE, Cloud Run, App Engine), networking, managed-service responsibility, microservices, GKE Enterprise (hybrid/multicloud), and Apigee.
+ *
+ * @returns A JSX.Element containing the section markup with root id "s3".
+ */
 function Section3() {
     return (
         <div id="s3" className="sgap">
@@ -864,6 +876,14 @@ function Section3() {
     );
 }
 
+/**
+ * Renders the "Security & Operations" section (anchor `#s4`) of the Cloud Digital Leader page,
+ * including resource hierarchy, IAM, security services, compliance, observability, cost management,
+ * Shared Responsibility/Shared Fate, BeyondCorp, CMEK/data residency, support tiers, Active Assist,
+ * SRE/DR and sustainability content.
+ *
+ * @returns The JSX element representing the Security & Operations section of the page.
+ */
 function Section4() {
     return (
         <div id="s4" className="sgap">
