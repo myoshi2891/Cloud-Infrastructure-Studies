@@ -4,9 +4,9 @@
     padding: 72px 24px 56px;
     text-align: center;
     background:
-        radial-gradient(ellipse 60% 45% at 20% 50%, rgba(66, 133, 244, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 45% at 80% 50%, rgba(52, 168, 83, 0.10) 0%, transparent 60%),
-        linear-gradient(135deg, var(--cdl-bg) 0%, #0a1020 50%, #0c1530 100%);
+        radial-gradient(ellipse 60% 45% at 20% 50%, color-mix(in srgb, var(--color-cdl-info) 12%, transparent) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 45% at 80% 50%, color-mix(in srgb, var(--color-cdl-success) 10%, transparent) 0%, transparent 60%),
+        linear-gradient(135deg, var(--color-background) 0%, var(--color-bg-secondary) 100%);
     border-bottom: 1px solid var(--color-border);
 }
 
@@ -14,12 +14,12 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(66, 133, 244, 0.10);
-    border: 1px solid rgba(66, 133, 244, 0.25);
+    background: color-mix(in srgb, var(--color-cdl-info) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-cdl-info) 25%, transparent);
     border-radius: 999px;
     padding: 4px 16px;
     font-size: 12px;
-    color: var(--color-primary);
+    color: var(--color-cdl-info);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 20px;
