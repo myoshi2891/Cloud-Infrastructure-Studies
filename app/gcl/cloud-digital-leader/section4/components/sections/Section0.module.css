@@ -76,6 +76,11 @@
     flex: 1;
 }
 
+/* Badge wrapper */
+.cardBadge {
+    margin-top: 0.8rem;
+}
+
 /* Badges */
 .badge {
     display: inline-flex;

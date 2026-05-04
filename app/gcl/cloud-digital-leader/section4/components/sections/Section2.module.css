@@ -245,7 +245,7 @@
 .anthosPointD {
     font-size: 0.95rem;
     line-height: 1.6;
-    color: color-mix(in srgb, var(--color-accent-foreground) 70%, transparent);
+    color: var(--color-card);
 }
 
 /* Responsive */

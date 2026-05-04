@@ -1,7 +1,5 @@
 import React from 'react';
 import baseStyles from './SectionBase.module.css';
-import styles from './Section4.module.css';
-import compareStyles from './Compare.module.css';
 
 /**
  * Section4_Patterns: よく出る問題パターンと解法を解説するコンポーネント
@@ -41,7 +39,7 @@ export const Section4_Patterns: React.FC = () => {
                             PATTERN 02 — BigQuery ML
                         </div>
                         <p className="text-base text-[var(--color-text-secondary)] mb-4">
-                            「BigQuery にデータがあり、データアナリストが SQL で顧客の解約予測モデルを 作りたい。最も効率的な方法は？」
+                            「BigQuery にデータがあり、データアナリストが SQL で顧客の解約予測モデルを作りたい。最も効率的な方法は？」
                         </p>
                         <div className="text-base text-[var(--color-text-muted)] mb-2">
                             考え方：

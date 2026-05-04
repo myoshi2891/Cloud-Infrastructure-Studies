@@ -193,11 +193,11 @@
 .l3 { background: color-mix(in srgb, var(--cdl-red) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-red) 12%, transparent); }
 .l3 .layerName { color: var(--cdl-red); } /* Keeping some distinct colors */
 
-.l2 { background: rgba(100, 180, 100, 0.07); border: 1px solid rgba(100, 180, 100, 0.12); }
-.l2 .layerName { color: #409040; }
+.l2 { background: color-mix(in srgb, var(--cdl-green) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-green) 12%, transparent); }
+.l2 .layerName { color: var(--cdl-green); }
 
-.l1 { background: rgba(80, 140, 200, 0.07); border: 1px solid rgba(80, 140, 200, 0.12); }
-.l1 .layerName { color: #3070a0; }
+.l1 { background: color-mix(in srgb, var(--cdl-sky) 7%, transparent); border: 1px solid color-mix(in srgb, var(--cdl-sky) 12%, transparent); }
+.l1 .layerName { color: var(--cdl-sky); }
 
 
 /* Border modifiers */

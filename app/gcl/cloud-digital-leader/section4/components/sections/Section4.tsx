@@ -24,34 +24,34 @@ export const Section4 = () => {
                     <div className={styles.g4} style={{ marginBottom: '1.5rem' }}>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🎯</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>適切なサービス選択</div>
-                            <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
+                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>適切なサービス選択</div>
+                            <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 IaaS より
                                 PaaS・サーバーレスでインフラ管理コストを削減。適切なマシンタイプで過剰スペックを回避。
                             </div>
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">📏</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>適切なサイジング</div>
-                            <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
+                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>適切なサイジング</div>
+                            <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 Recommender
                                 が実際の使用量を分析して最適化提案を自動表示。過剰プロビジョニングを解消する。
                             </div>
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">📈</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
+                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>
                                 需要に合わせたスケーリング
                             </div>
-                            <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
+                            <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 オートスケーリングで使用量に応じて増減。開発 VM は夜間・週末に Instance
                                 Schedules で自動停止。
                             </div>
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">💳</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>最適な価格モデル</div>
-                            <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
+                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>最適な価格モデル</div>
+                            <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 CUD（最大57%割引）・Spot
                                 VM（最大91%割引）・SUD（自動適用・最大30%）を組み合わせる。
                             </div>

@@ -41,11 +41,22 @@ app/
       constants.ts                  # 共通定数（作成日など）
       section{1-4}/page.tsx         # 各セクションページ
     cloud-digital-leader/
+      cdl.css                       # CDL 共通テーマ（--cdl-* トークン定義）
       section{1-2}/page.tsx         # CDL セクションページ
       section3/
         page.tsx                    # Section 3: AI によるイノベーション
-        section3.css                # ページ固有スタイル
+        section3.css                # ページ固有スタイル（plain CSS）
         constants.ts                # Section 3 固有定数
+        components/sections/        # 分割されたセクションコンポーネント
+      section4/
+        page.tsx                    # Section 4: インフラ&アプリのモダナイゼーション
+        section4.module.css         # ページ固有スタイル（CSS Modules）
+        constants.ts                # Section 4 固有定数（NAV_LINKS, MIGRATION_STRATEGIES）
+        components/sections/        # 分割されたセクションコンポーネント
+      section5/
+        page.tsx                    # Section 5: セキュリティ＆コンプライアンス
+        section5.module.css         # ページ固有スタイル（CSS Modules）
+        constants.ts                # Section 5 固有定数
         components/sections/        # 分割されたセクションコンポーネント
 
 components/

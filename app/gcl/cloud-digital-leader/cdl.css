@@ -17,8 +17,14 @@
     --cdl-red:         #ea4335;
     --cdl-yellow:      #fbbc04;
     --cdl-green:       #34a853;
+    /* section4 グラデーション用トークン */
+    --color-accent-amber:      #d4882a;
+    --color-accent-terracotta: #c4593a;
     /* 追加アクセント */
     --cdl-cyan:        #00bcd4;
+    --cdl-teal:        #009688;
+    --cdl-sky:         #0288d1;
+    --cdl-amber:       #ff8f00;
     --cdl-purple:      #9c27b0;
     --cdl-indigo:      #5c6bc0;
     --cdl-text:        #c8d0e4;

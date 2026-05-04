@@ -679,9 +679,9 @@ export const Section2 = () => {
                                 >
                                     GKE Enterprise
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'color-mix(in srgb, var(--color-accent-foreground) 55%, transparent)' }}>
+                                <div style={{ fontSize: '1rem', color: 'var(--color-card)' }}>
                                     オンプレ・Google Cloud・AWS・Azure のコンテナワークロードを<strong
-                                        style={{ color: 'color-mix(in srgb, var(--color-accent-foreground) 85%, transparent)' }}
+                                        style={{ color: 'var(--color-card)' }}
                                     >単一の管理画面（Single Pane of Glass）</strong>から一元管理する統合コントロールプレーン
                                 </div>
                             </div>

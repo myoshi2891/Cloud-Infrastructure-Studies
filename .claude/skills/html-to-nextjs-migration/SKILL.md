@@ -71,6 +71,7 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 | `--rs` | `--radius-md` | 10px |
 | `--font-display` (`Playfair Display`) | `--font-display` (DM Sans) | Font replacement |
 | `--font-body` (`Plus Jakarta Sans`) | `--font-body` (Noto Sans JP) | Font replacement |
+| `--font-mono` (`Sora` / `Source Code Pro`) | `--font-mono` (JetBrains Mono) | Font replacement |
 
 **Critical**: The project uses a **unified dark theme**. Light-theme HTML pages must be re-themed to match the dark color system. Do not attempt to preserve the original light color scheme.
 
@@ -102,9 +103,9 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 4. **Wrap** page content in a React component:
 
 ```tsx
-import '../<page-name>.css';
+import './page.css';
 
-export default function PageName() {
+export default function PageSlugPage() {
   return (
     <>
       <section className="hero" id="top">

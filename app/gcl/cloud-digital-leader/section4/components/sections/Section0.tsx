@@ -37,7 +37,7 @@ export const Section0 = () => {
                                 7つのR移行戦略・CAMP フレームワーク・ワークロードの評価と分類。Rehost /
                                 Replatform / Refactor の違いが頻出。
                             </div>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.cardBadge}>
                                 <span className={`${styles.badge} ${styles.badgeR}`}>移行戦略</span>
                             </div>
                         </div>
@@ -48,7 +48,7 @@ export const Section0 = () => {
                                 Compute Engine・GKE・Cloud Run・App Engine・Cloud Functions
                                 の選択基準と使い分け。Spot VM のコスト最適化も必須。
                             </div>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.cardBadge}>
                                 <span className={`${styles.badge} ${styles.badgeG}`}>サービス選択</span>
                             </div>
                         </div>
@@ -59,7 +59,7 @@ export const Section0 = () => {
                                 VM とコンテナの違い・Kubernetes の概念・GKE Autopilot vs Standard
                                 の使い分け。マイクロサービスのビジネス価値。
                             </div>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.cardBadge}>
                                 <span className={`${styles.badge} ${styles.badgeB}`}>コンテナ</span>
                             </div>
                         </div>
@@ -70,7 +70,7 @@ export const Section0 = () => {
                                 Apigee API Management
                                 による収益化・セキュリティ・レガシーシステムの抽象化。エコシステム構築の考え方。
                             </div>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.cardBadge}>
                                 <span className={`${styles.badge} ${styles.badgeA}`}>API管理</span>
                             </div>
                         </div>
@@ -81,7 +81,7 @@ export const Section0 = () => {
                                 GKE
                                 Enterprise（旧Anthos）による統合管理・複数クラウドを選ぶビジネス上の理由・オンプレとクラウドの接続方法。
                             </div>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.cardBadge}>
                                 <span className={`${styles.badge} ${styles.badgeP}`}>ハイブリッド</span>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ export const Section0 = () => {
                                 DevOps 文化・CI/CD パイプライン・SLO/SLA/SLI
                                 の概念・エラーバジェット・DORA メトリクスの理解。
                             </div>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.cardBadge}>
                                 <span className={`${styles.badge} ${styles.badgeR}`}>DevOps</span>
                             </div>
                         </div>

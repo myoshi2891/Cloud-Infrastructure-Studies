@@ -35,7 +35,6 @@ export const Section1 = () => {
                     </div>
 
                     {/* DECISION FLOW */}
-                    {/* DECISION FLOW */}
                     <div className={styles.subTitle}>コンピューティング選択デシジョンツリー</div>
                     <DiagramSVG viewBox="0 0 800 450" ariaLabel="コンピューティング選択デシジョンツリー: OS制御が必要ならCompute Engine、K8sが必要ならGKE、HTTPコンテナならCloud Run、イベント駆動ならCloud Run Functions、それ以外はApp Engine">
                         <text x="30" y="40" fill="var(--color-muted-foreground)" fontSize="14" fontFamily="monospace" letterSpacing="2">意思決定フロー</text>

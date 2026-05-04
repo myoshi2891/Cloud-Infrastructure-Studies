@@ -95,11 +95,17 @@
     font-size: 1.2rem;
     margin-bottom: 0.8rem;
 }
+.cardTitleSm {
+    font-size: 1rem;
+}
 .cardBody {
     color: var(--color-muted-foreground);
     font-size: 0.95rem;
     line-height: 1.6;
     flex: 1;
+}
+.cardBodySm {
+    font-size: 1rem;
 }
 
 /* Info and Warn Boxes */
@@ -208,7 +214,7 @@
 }
 .ptnAns {
     font-size: 0.95rem;
-    color: color-mix(in srgb, var(--color-accent-foreground) 70%, transparent);
+    color: color-mix(in srgb, var(--color-card) 70%, transparent);
     margin-bottom: 1.5rem;
     flex: 1;
 }

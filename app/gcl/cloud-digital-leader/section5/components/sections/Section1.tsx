@@ -158,7 +158,7 @@ export const Section1 = () => {
                             style={{
                                 fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                 fontSize: '1rem',
-                                color: 'color-mix(in srgb, var(--color-accent-foreground) 50%, transparent)',
+                                color: 'var(--color-card)',
                                 marginBottom: '1.5rem',
                                 letterSpacing: '0.1em',
                                 textTransform: 'uppercase',

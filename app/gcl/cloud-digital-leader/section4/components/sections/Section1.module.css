@@ -197,7 +197,7 @@
 
 /* Flow Chart */
 .flowWrap {
-    background: var(--color-bg-secondary, #1e1e1e); /* Assuming dark background for flow */
+    background: var(--color-bg-secondary, var(--color-card));
     padding: 2.5rem;
     border-radius: 12px;
 }
