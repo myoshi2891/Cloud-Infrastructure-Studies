@@ -131,10 +131,10 @@ export const Section1 = () => {
                             href="https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate"
                             target="_blank" rel="noopener noreferrer"
                         >
-                            https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate
+                            Shared responsibilities and shared fate on Google Cloud（Cloud Architecture Center）
                         </a>
                         <a href="https://cloud.google.com/security/shared-fate" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/security/shared-fate
+                            Google Cloud Shared Fate
                         </a>
                     </div>
                 </div>
@@ -228,10 +228,10 @@ export const Section1 = () => {
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
                         <a href="https://cloud.google.com/beyondcorp" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/beyondcorp
+                            Google Cloud: BeyondCorp
                         </a>
                         <a href="https://cloud.google.com/iap/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/iap/docs
+                            Cloud Identity-Aware Proxy (IAP) Documentation
                         </a>
                     </div>
                 </div>

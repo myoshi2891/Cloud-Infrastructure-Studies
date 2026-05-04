@@ -259,7 +259,7 @@ Google Workspace の Section 2：コアサービスの管理は、試験全体�
 2. **エディションによる機能制限を把握する:** 例えば、DLP やセキュリティサンドボックス、Gemini の一部機能は、Business Starter などの下位エディションでは利用できない。設問に記載されたエディションを注意深く読み、実現可能な解決策を選択する必要がある 。
 3. **トラブルシューティングとの連携:** 本セクションで学んだ設定が原因でメールが届かない、ファイルが共有できないといったトラブルが発生した際、どの「監査ログ」を確認し、どの「設定」を修正すべきかという、Section 6（Troubleshooting）との繋がりを常に意識すべきである 。
 
-Google Workspace は常に進化を続けている。新しい機能（特に Gemini や AppSheet 関連）が次々と追加される中で、管理者に求められるのは「不変の原理原則（最小権限、多層防御、データ整合性）」を理解した上で、柔軟に最新のツールを使いこなす姿勢である。本報告書が、貴殿の試験合格、そして世界トップクラスのインフラエンジニアへの第一歩となることを切に願っている。
+Google Workspace は常に進化を続けている。新しい機能（特に Gemini や AppSheet 関連）が次々と追加される中で、管理者に求められるのは「不変の原理原則（最小権限、多層防御、データ整合性）」を理解した上で、柔軟に最新のツールを使いこなす姿勢である。本報告書が、貴殿の試験合格、そしてインフラエンジニアへの第一歩となることを切に願っている。
 
 [**services.google.com**Associate Google Workspace Administrator](https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf)
 [**bgiriaicloud.medium.com**Certification — Google Workspace Administrator Exam: Step-by-Step Guide to Successfully Pass | by Biswanath Giri](https://bgiriaicloud.medium.com/certification-google-workspace-administrator-exam-step-by-step-guide-to-successfully-pass-d438a0636fff)
