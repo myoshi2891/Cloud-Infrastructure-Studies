@@ -74,3 +74,19 @@
     font-weight: 700;
     flex-shrink: 0;
 }
+
+/* Border accent variants for "Why" cards */
+.borderAccentRed    { border-left: 3px solid var(--color-accent-red); }
+.borderAccentYellow { border-left: 3px solid var(--color-accent-yellow); }
+.borderAccentPurple { border-left: 3px solid var(--color-accent-purple); }
+.borderAccentBlue   { border-left: 3px solid var(--color-accent-blue); }
+.borderAccentCyan   { border-left: 3px solid var(--color-accent-cyan); }
+.borderAccentGreen  { border-left: 3px solid var(--color-accent-green); }
+
+/* Border-top accent variants for principle cards */
+.raiCardBlue   { border-top: 3px solid var(--color-accent-blue); }
+.raiCardGreen  { border-top: 3px solid var(--color-accent-green); }
+.raiCardCyan   { border-top: 3px solid var(--color-accent-cyan); }
+.raiCardYellow { border-top: 3px solid var(--color-accent-yellow); }
+.raiCardPurple { border-top: 3px solid var(--color-accent-purple); }
+.raiCardRed    { border-top: 3px solid var(--color-accent-red); }

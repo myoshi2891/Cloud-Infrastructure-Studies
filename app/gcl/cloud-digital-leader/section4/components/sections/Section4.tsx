@@ -152,7 +152,7 @@ export const Section4 = () => {
                             <div className={styles.clCategory}>
                                 ネットワーク・ハイブリッド
                             </div>
-                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="チェックリスト">
+                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="ネットワーク・ハイブリッドのチェックリスト">
                                 <li className={styles.clItem}>
                                     <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Cloud VPN（安価・インターネット経由）と Cloud

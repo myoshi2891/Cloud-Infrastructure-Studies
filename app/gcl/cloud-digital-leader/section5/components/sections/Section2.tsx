@@ -27,15 +27,15 @@ export const Section2 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'color-mix(in srgb, var(--cdl-yellow) 6%, transparent)',
-                                borderColor: 'color-mix(in srgb, var(--cdl-yellow) 20%, transparent)',
+                                background: 'color-mix(in srgb, var(--color-cdl-warning) 6%, transparent)',
+                                borderColor: 'color-mix(in srgb, var(--color-cdl-warning) 20%, transparent)',
                             }}
                         >
                             <div
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--cdl-yellow)',
+                                    color: 'var(--color-cdl-warning)',
                                     marginBottom: '0.7rem',
                                 }}
                             >
@@ -53,7 +53,7 @@ export const Section2 = () => {
                                     🤖 サービスアカウント（アプリ・VM）
                                 </li>
                                 <li style={{ marginBottom: '0.4rem' }}>🌐 Cloud Identity ドメイン</li>
-                                <li style={{ color: 'var(--cdl-red)' }}>
+                                <li style={{ color: 'var(--color-cdl-error)' }}>
                                     ⚠️ allUsers / allAuthenticatedUsers（公開設定 — 原則使用禁止）
                                 </li>
                             </ul>
@@ -61,15 +61,15 @@ export const Section2 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'color-mix(in srgb, var(--cdl-green) 5%, transparent)',
-                                borderColor: 'color-mix(in srgb, var(--cdl-green) 15%, transparent)',
+                                background: 'color-mix(in srgb, var(--color-cdl-success) 5%, transparent)',
+                                borderColor: 'color-mix(in srgb, var(--color-cdl-success) 15%, transparent)',
                             }}
                         >
                             <div
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--cdl-green)',
+                                    color: 'var(--color-cdl-success)',
                                     marginBottom: '0.7rem',
                                 }}
                             >
@@ -96,15 +96,15 @@ export const Section2 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'color-mix(in srgb, var(--cdl-blue) 5%, transparent)',
-                                borderColor: 'color-mix(in srgb, var(--cdl-blue) 15%, transparent)',
+                                background: 'color-mix(in srgb, var(--color-cdl-info) 5%, transparent)',
+                                borderColor: 'color-mix(in srgb, var(--color-cdl-info) 15%, transparent)',
                             }}
                         >
                             <div
                                 style={{
                                     fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--cdl-blue)',
+                                    color: 'var(--color-cdl-info)',
                                     marginBottom: '0.7rem',
                                 }}
                             >
@@ -148,7 +148,7 @@ export const Section2 = () => {
                                 <tr>
                                     <td>
                                         基本ロール<br />
-                                        <code style={{ fontSize: '0.95rem', background: 'color-mix(in srgb, var(--cdl-red) 10%, transparent)', padding: '2px 4px', borderRadius: '3px', color: 'var(--cdl-red)' }}>Owner/Editor/Viewer</code>
+                                        <code style={{ fontSize: '0.95rem', background: 'color-mix(in srgb, var(--color-cdl-error) 10%, transparent)', padding: '2px 4px', borderRadius: '3px', color: 'var(--color-cdl-error)' }}>Owner/Editor/Viewer</code>
                                     </td>
                                     <td>プロジェクト全体に広範な権限。非常に粗い粒度。</td>
                                     <td>Google</td>
@@ -158,7 +158,7 @@ export const Section2 = () => {
                                 <tr>
                                     <td>
                                         事前定義ロール<br />
-                                        <code style={{ fontSize: '0.95rem', background: 'color-mix(in srgb, var(--cdl-green) 10%, transparent)', padding: '2px 4px', borderRadius: '3px', color: 'var(--cdl-green)' }}>roles/bigquery.dataViewer</code>
+                                        <code style={{ fontSize: '0.95rem', background: 'color-mix(in srgb, var(--color-cdl-success) 10%, transparent)', padding: '2px 4px', borderRadius: '3px', color: 'var(--color-cdl-success)' }}>roles/bigquery.dataViewer</code>
                                     </td>
                                     <td>特定サービスの特定操作に最適化された細かい権限セット</td>
                                     <td>Google（自動更新）</td>
@@ -197,17 +197,17 @@ export const Section2 = () => {
                             <div className={styles.cardTitle}>✅ キーなしの代替認証手法</div>
                             <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>①</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>①</span>
                                     <strong style={{ color: 'var(--color-accent-foreground)' }}>Application Default Credentials（ADC）</strong>
                                     <br />— VM・Cloud Run は自動認証
                                 </li>
                                 <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>②</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>②</span>
                                     <strong style={{ color: 'var(--color-accent-foreground)' }}>Workload Identity（GKE）</strong>
                                     <br />— Pod に SA を直接紐付け
                                 </li>
                                 <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>③</span>
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>③</span>
                                     <strong style={{ color: 'var(--color-accent-foreground)' }}>Workload Identity Federation</strong>
                                     <br />— AWS・GitHub Actions との連携（短期トークン）
                                 </li>
@@ -270,18 +270,18 @@ export const Section2 = () => {
                         <div className={styles.encItem}>
                             <div
                                 className={styles.encNum}
-                                style={{ background: 'color-mix(in srgb, var(--cdl-yellow) 15%, transparent)', color: 'var(--cdl-yellow)' }}
+                                style={{ background: 'color-mix(in srgb, var(--color-cdl-warning) 15%, transparent)', color: 'var(--color-cdl-warning)' }}
                             >
                                 ①
                             </div>
                             <div>
-                                <div className={styles.encTitle} style={{ color: 'var(--cdl-yellow)' }}>
+                                <div className={styles.encTitle} style={{ color: 'var(--color-cdl-warning)' }}>
                                     保存中（Data at Rest）
                                 </div>
                                 <div className={styles.encDesc}>
                                     ストレージ（ディスク・データベース）に保存された状態のデータ。例：Cloud
                                     Storage・BigQuery・Persistent Disk のデータ。<br />
-                                    <strong style={{ color: 'var(--cdl-yellow)' }}>
+                                    <strong style={{ color: 'var(--color-cdl-warning)' }}>
                                         Google のデフォルト：AES-256
                                         で全データを自動暗号化（追加設定・費用不要）
                                     </strong>
@@ -291,18 +291,18 @@ export const Section2 = () => {
                         <div className={styles.encItem}>
                             <div
                                 className={styles.encNum}
-                                style={{ background: 'color-mix(in srgb, var(--cdl-blue) 15%, transparent)', color: 'var(--cdl-blue)' }}
+                                style={{ background: 'color-mix(in srgb, var(--color-cdl-info) 15%, transparent)', color: 'var(--color-cdl-info)' }}
                             >
                                 ②
                             </div>
                             <div>
-                                <div className={styles.encTitle} style={{ color: 'var(--cdl-blue)' }}>
+                                <div className={styles.encTitle} style={{ color: 'var(--color-cdl-info)' }}>
                                     転送中（Data in Transit）
                                 </div>
                                 <div className={styles.encDesc}>
                                     ネットワーク経由で移動中のデータ。例：ブラウザから Cloud Storage
                                     へのアップロード・サービス間 API 通信。<br />
-                                    <strong style={{ color: 'var(--cdl-blue)' }}>
+                                    <strong style={{ color: 'var(--color-cdl-info)' }}>
                                         Google のデフォルト：TLS 1.2
                                         以上で全通信を自動暗号化。内部通信は ALTS を使用。
                                     </strong>
@@ -312,17 +312,17 @@ export const Section2 = () => {
                         <div className={styles.encItem}>
                             <div
                                 className={styles.encNum}
-                                style={{ background: 'color-mix(in srgb, var(--cdl-green) 15%, transparent)', color: 'var(--cdl-green)' }}
+                                style={{ background: 'color-mix(in srgb, var(--color-cdl-success) 15%, transparent)', color: 'var(--color-cdl-success)' }}
                             >
                                 ③
                             </div>
                             <div>
-                                <div className={styles.encTitle} style={{ color: 'var(--cdl-green)' }}>
+                                <div className={styles.encTitle} style={{ color: 'var(--color-cdl-success)' }}>
                                     使用中（Data in Use）
                                 </div>
                                 <div className={styles.encDesc}>
                                     メモリ（RAM）上で処理されている状態のデータ。従来は平文のままだった唯一の状態。<br />
-                                    <strong style={{ color: 'var(--cdl-green)' }}>
+                                    <strong style={{ color: 'var(--color-cdl-success)' }}>
                                         Confidential VM・Confidential GKE Nodes で AMD SEV
                                         技術を使いメモリも暗号化。
                                     </strong>

@@ -20,6 +20,6 @@ describe('Section4_Checklist', () => {
         
         // Check list items
         const listItems = screen.getAllByRole('listitem');
-        expect(listItems.length).toBeGreaterThan(0);
+        expect(listItems).toHaveLength(17);
     });
 });

@@ -44,8 +44,8 @@ export const Section1 = () => {
                         <text x="205" y="95" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">OS・カーネルレベルの完全制御が必要？</text>
                         <path d="M 380 90 L 410 90 L 410 90" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
                         <text x="395" y="85" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
-                        <rect x="430" y="70" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-blue) 10%, transparent)" stroke="var(--cdl-blue)" />
-                        <text x="540" y="95" fill="var(--cdl-blue)" fontSize="14" textAnchor="middle" fontWeight="bold">Compute Engine (IaaS VM)</text>
+                        <rect x="430" y="70" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--color-cdl-info) 10%, transparent)" stroke="var(--color-cdl-info)" />
+                        <text x="540" y="95" fill="var(--color-cdl-info)" fontSize="14" textAnchor="middle" fontWeight="bold">Compute Engine (IaaS VM)</text>
                         
                         {/* Path 1 to 2 */}
                         <path d="M 205 110 L 205 140" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
@@ -68,8 +68,8 @@ export const Section1 = () => {
                         <text x="205" y="255" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">HTTPコンテナを手軽にデプロイ？</text>
                         <path d="M 380 250 L 410 250" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
                         <text x="395" y="245" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
-                        <rect x="430" y="230" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-green) 10%, transparent)" stroke="var(--cdl-green)" />
-                        <text x="540" y="255" fill="var(--cdl-green)" fontSize="14" textAnchor="middle" fontWeight="bold">Cloud Run (サーバーレス)</text>
+                        <rect x="430" y="230" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--color-cdl-success) 10%, transparent)" stroke="var(--color-cdl-success)" />
+                        <text x="540" y="255" fill="var(--color-cdl-success)" fontSize="14" textAnchor="middle" fontWeight="bold">Cloud Run (サーバーレス)</text>
 
                         {/* Path 3 to 4 */}
                         <path d="M 205 270 L 205 300" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
@@ -80,16 +80,16 @@ export const Section1 = () => {
                         <text x="205" y="335" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">イベント駆動の小さな関数を実行？</text>
                         <path d="M 380 330 L 410 330" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
                         <text x="395" y="325" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
-                        <rect x="430" y="310" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-yellow) 10%, transparent)" stroke="var(--cdl-yellow)" />
-                        <text x="540" y="335" fill="var(--cdl-yellow)" fontSize="14" textAnchor="middle" fontWeight="bold">Cloud Run Functions</text>
+                        <rect x="430" y="310" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--color-cdl-warning) 10%, transparent)" stroke="var(--color-cdl-warning)" />
+                        <text x="540" y="335" fill="var(--color-cdl-warning)" fontSize="14" textAnchor="middle" fontWeight="bold">Cloud Run Functions</text>
 
                         {/* Path 4 to 5 */}
                         <path d="M 205 350 L 205 380" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
                         <text x="220" y="370" fill="var(--color-muted-foreground)" fontSize="12">それ以外</text>
 
                         {/* Node 5 */}
-                        <rect x="20" y="390" width="370" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-purple) 10%, transparent)" stroke="var(--cdl-purple)" />
-                        <text x="205" y="415" fill="var(--cdl-purple)" fontSize="14" textAnchor="middle" fontWeight="bold">App Engine (PaaS Webアプリ)</text>
+                        <rect x="20" y="390" width="370" height="40" rx="6" fill="color-mix(in srgb, var(--color-cdl-accent) 10%, transparent)" stroke="var(--color-cdl-accent)" />
+                        <text x="205" y="415" fill="var(--color-cdl-accent)" fontSize="14" textAnchor="middle" fontWeight="bold">App Engine (PaaS Webアプリ)</text>
 
                         <defs>
                             <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -189,7 +189,7 @@ export const Section1 = () => {
 
                     <div className={styles.bp}>
                         <div className={styles.bpTitle}>✅ ベストプラクティス：Compute Engine</div>
-                        <ul>
+                        <ul role="list" aria-label="Compute Engine best practices">
                             <li>
                                 本番 VM はリージョナル MIG + ヘルスチェック +
                                 ロードバランサーの組み合わせで高可用性を確保する。
@@ -315,7 +315,7 @@ export const Section1 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'linear-gradient(135deg, color-mix(in srgb, var(--cdl-green) 6%, transparent), color-mix(in srgb, var(--cdl-green) 3%, transparent))'
+                                background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-cdl-success) 6%, transparent), color-mix(in srgb, var(--color-cdl-success) 3%, transparent))'
                             }}
                         >
                             <div
@@ -337,7 +337,7 @@ export const Section1 = () => {
                                 style={{
                                     fontSize: '1rem',
                                     marginBottom: '0.6rem',
-                                    color: 'var(--cdl-green)',
+                                    color: 'var(--color-cdl-success)',
                                     fontWeight: 600
                                 }}
                             >
@@ -373,11 +373,11 @@ export const Section1 = () => {
                                 style={{
                                     marginTop: '0.8rem',
                                     padding: '0.6rem',
-                                    background: 'color-mix(in srgb, var(--cdl-green) 8%, transparent)',
+                                    background: 'color-mix(in srgb, var(--color-cdl-success) 8%, transparent)',
                                     borderRadius: '6px',
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
+                                    fontFamily: 'var(--font-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--cdl-green)'
+                                    color: 'var(--color-cdl-success)'
                                 }}
                             >
                                 課金: Pod が消費する vCPU / メモリ / ストレージ単位
@@ -386,7 +386,7 @@ export const Section1 = () => {
                         <div
                             className={styles.card}
                             style={{
-                                background: 'linear-gradient(135deg, color-mix(in srgb, var(--cdl-blue) 6%, transparent), color-mix(in srgb, var(--cdl-blue) 3%, transparent))'
+                                background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-cdl-info) 6%, transparent), color-mix(in srgb, var(--color-cdl-info) 3%, transparent))'
                             }}
                         >
                             <div
@@ -408,13 +408,13 @@ export const Section1 = () => {
                                 style={{
                                     fontSize: '1rem',
                                     marginBottom: '0.6rem',
-                                    color: 'var(--cdl-blue)',
+                                    color: 'var(--color-cdl-info)',
                                     fontWeight: 600
                                 }}
                             >
                                 ✅ 向いているケース
                             </div>
-                            <ul role="list" aria-label="特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="GKE Standardの特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         marginBottom: '0.25rem',
@@ -444,11 +444,11 @@ export const Section1 = () => {
                                 style={{
                                     marginTop: '0.8rem',
                                     padding: '0.6rem',
-                                    background: 'color-mix(in srgb, var(--cdl-blue) 8%, transparent)',
+                                    background: 'color-mix(in srgb, var(--color-cdl-info) 8%, transparent)',
                                     borderRadius: '6px',
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
+                                    fontFamily: 'var(--font-mono, \'DM Mono\', monospace)',
                                     fontSize: '1rem',
-                                    color: 'var(--cdl-blue)'
+                                    color: 'var(--color-cdl-info)'
                                 }}
                             >
                                 課金: ノード VM の稼働時間 + 管理プレーン
@@ -509,3 +509,4 @@ export const Section1 = () => {
         </>
     );
 };
+

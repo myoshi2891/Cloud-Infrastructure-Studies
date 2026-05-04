@@ -95,7 +95,7 @@ export const Section3 = () => {
                                 <div className={styles.hlBoxTitle}>🔄 DevOps の本質</div>
                                 <p style={{ color: 'var(--color-card)', lineHeight: '1.6', marginBottom: 0 }}>
                                     開発（「早く新機能をリリース」）と運用（「安定性を維持」）の壁を打破し、自動化・継続的フィードバック・責任の共有を通じてソフトウェアのデリバリーを加速させる<strong
-                                        style={{ color: 'var(--cdl-yellow)' }}
+                                        style={{ color: 'var(--color-cdl-warning)' }}
                                     >文化的ムーブメント</strong>。
                                 </p>
                             </div>
@@ -281,11 +281,11 @@ export const Section3 = () => {
                             <rect x="0" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--color-muted) 50%, transparent)" stroke="var(--color-border)" />
                             <text x="100" y="25" fill="var(--color-muted-foreground)" fontSize="14" textAnchor="middle">レガシーシステム</text>
 
-                            <rect x="230" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--cdl-green) 10%, transparent)" stroke="var(--cdl-green)" />
-                            <text x="330" y="25" fill="var(--cdl-green)" fontSize="14" textAnchor="middle">Cloud Run (マイクロサービス)</text>
+                            <rect x="230" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--color-cdl-success) 10%, transparent)" stroke="var(--color-cdl-success)" />
+                            <text x="330" y="25" fill="var(--color-cdl-success)" fontSize="14" textAnchor="middle">Cloud Run (マイクロサービス)</text>
 
-                            <rect x="460" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--cdl-blue) 10%, transparent)" stroke="var(--cdl-blue)" />
-                            <text x="560" y="25" fill="var(--cdl-blue)" fontSize="14" textAnchor="middle">GKE (コンテナ)</text>
+                            <rect x="460" y="0" width="200" height="40" rx="4" fill="color-mix(in srgb, var(--color-cdl-info) 10%, transparent)" stroke="var(--color-cdl-info)" />
+                            <text x="560" y="25" fill="var(--color-cdl-info)" fontSize="14" textAnchor="middle">GKE (コンテナ)</text>
                         </g>
 
                         <text x="400" y="300" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">バックエンドに変更を加えずに、API レイヤーで制御・収益化が可能</text>
@@ -306,7 +306,7 @@ export const Section3 = () => {
                                         marginBottom: '0.4rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span><strong>エコシステム拡大：</strong>外部開発者・パートナーが API
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span><strong>エコシステム拡大：</strong>外部開発者・パートナーが API
                                     を使って新アプリを構築 → 自社ビジネスエコシステムが成長
                                 </li>
                                 <li
@@ -316,11 +316,11 @@ export const Section3 = () => {
                                         marginBottom: '0.4rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span><strong>レガシーの抽象化：</strong>古いバックエンドを API でラップ
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span><strong>レガシーの抽象化：</strong>古いバックエンドを API でラップ
                                     → フロントエンドを中断せずにバックエンドを段階的に移行
                                 </li>
                                 <li style={{ paddingLeft: '1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-red)' }}>›</span><strong>収益化：</strong>API
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span><strong>収益化：</strong>API
                                     利用量に応じた従量課金モデルやレベニューシェアを実装
                                 </li>
                             </ul>
@@ -337,7 +337,7 @@ export const Section3 = () => {
                                         style={{
                                             fontSize: '1rem',
                                             fontWeight: 700,
-                                            color: 'var(--cdl-red)',
+                                            color: 'var(--color-cdl-error)',
                                             marginBottom: '0.4rem',
                                         }}
                                     >
@@ -362,7 +362,7 @@ export const Section3 = () => {
                                         style={{
                                             fontSize: '1rem',
                                             fontWeight: 700,
-                                            color: 'var(--cdl-green)',
+                                            color: 'var(--color-cdl-success)',
                                             marginBottom: '0.4rem',
                                         }}
                                     >

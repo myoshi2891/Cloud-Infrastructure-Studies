@@ -114,7 +114,7 @@ export const Section1: React.FC = () => {
                 </h3>
                 <div className={`${baseStyles.grid3} mb-6`}>
                     <div className={baseStyles.card}>
-                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>🗄️</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`} aria-hidden="true">🗄️</div>
                         <div className={baseStyles.cardTitle}>大規模データセットからのパターン抽出</div>
                         <div className={baseStyles.cardDesc}>
                             人間が認知できる変数の数には限界がありますが、ML
@@ -123,7 +123,7 @@ export const Section1: React.FC = () => {
                         </div>
                     </div>
                     <div className={baseStyles.card}>
-                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>📈</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`} aria-hidden="true">📈</div>
                         <div className={baseStyles.cardTitle}>ビジネス意思決定のスケーリング</div>
                         <div className={baseStyles.cardDesc}>
                             不正検知・商品推奨・品質管理など、数百万回のトランザクションに対するリアルタイムかつ高精度な
@@ -131,7 +131,7 @@ export const Section1: React.FC = () => {
                         </div>
                     </div>
                     <div className={baseStyles.card}>
-                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>🔓</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`} aria-hidden="true">🔓</div>
                         <div className={baseStyles.cardTitle}>非構造化データの解放</div>
                         <div className={baseStyles.cardDesc}>
                             企業データの大部分（画像・音声・動画・テキスト）は従来の RDB
@@ -147,7 +147,7 @@ export const Section1: React.FC = () => {
                 </h3>
                 <div className={`${baseStyles.card} bg-[var(--color-bg-secondary)] mb-8`}>
                     <div className="flex items-center gap-4 mb-6">
-                        <div className="text-4xl">🗑️</div>
+                        <div className="text-4xl" aria-hidden="true">🗑️</div>
                         <div>
                             <div className="font-display text-2xl font-extrabold text-[var(--color-accent-orange)]">
                                 Garbage In, Garbage Out（GIGO の法則）
@@ -159,7 +159,7 @@ export const Section1: React.FC = () => {
                     </div>
                     <div className={baseStyles.grid4}>
                         <div className="text-center p-4 bg-white/5 rounded-xl">
-                            <div className="text-2xl mb-1">📦</div>
+                            <div className="text-2xl mb-1" aria-hidden="true">📦</div>
                             <div className="text-base font-semibold mb-1">
                                 十分な量
                             </div>
@@ -168,7 +168,7 @@ export const Section1: React.FC = () => {
                             </div>
                         </div>
                         <div className="text-center p-4 bg-white/5 rounded-xl">
-                            <div className="text-2xl mb-1">✅</div>
+                            <div className="text-2xl mb-1" aria-hidden="true">✅</div>
                             <div className="text-base font-semibold mb-1">
                                 高品質・正確
                             </div>
@@ -177,7 +177,7 @@ export const Section1: React.FC = () => {
                             </div>
                         </div>
                         <div className="text-center p-4 bg-white/5 rounded-xl">
-                            <div className="text-2xl mb-1">🌍</div>
+                            <div className="text-2xl mb-1" aria-hidden="true">🌍</div>
                             <div className="text-base font-semibold mb-1">
                                 多様性
                             </div>
@@ -186,7 +186,7 @@ export const Section1: React.FC = () => {
                             </div>
                         </div>
                         <div className="text-center p-4 bg-white/5 rounded-xl">
-                            <div className="text-2xl mb-1">🎯</div>
+                            <div className="text-2xl mb-1" aria-hidden="true">🎯</div>
                             <div className="text-base font-semibold mb-1">
                                 目的との関連性
                             </div>
@@ -204,7 +204,7 @@ export const Section1: React.FC = () => {
                 <div className={baseStyles.grid3}>
                     <div className={styles.mlCard}>
                         <div className={`${styles.mlCardHeader} bg-[var(--color-bg-secondary)]`}>
-                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`}>👨‍🏫</div>
+                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`} aria-hidden="true">👨‍🏫</div>
                             <div>
                                 <div className={styles.mlCardTitle}>教師あり学習</div>
                                 <div className={styles.mlCardSub}>Supervised Learning</div>
@@ -236,7 +236,7 @@ export const Section1: React.FC = () => {
 
                     <div className={styles.mlCard}>
                         <div className={`${styles.mlCardHeader} bg-[var(--color-bg-secondary)]`}>
-                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`}>🔍</div>
+                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`} aria-hidden="true">🔍</div>
                             <div>
                                 <div className={styles.mlCardTitle}>教師なし学習</div>
                                 <div className={styles.mlCardSub}>Unsupervised Learning</div>
@@ -268,7 +268,7 @@ export const Section1: React.FC = () => {
 
                     <div className={styles.mlCard}>
                         <div className={`${styles.mlCardHeader} bg-[var(--color-bg-secondary)]`}>
-                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`}>🎮</div>
+                            <div className={`${styles.mlIcon} bg-[var(--color-bg-secondary)]`} aria-hidden="true">🎮</div>
                             <div>
                                 <div className={styles.mlCardTitle}>強化学習</div>
                                 <div className={styles.mlCardSub}>Reinforcement Learning</div>

@@ -15,7 +15,7 @@ export const Section1 = () => {
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.1 Shared Responsibility</div>
-                        <h2 className={styles.shTitle}>責任共有モデル<span className={styles.examTag}>最重要</span></h2>
+                        <h2 id="shared-heading" className={styles.shTitle}>責任共有モデル<span className={styles.examTag}>最重要</span></h2>
                         <p className={styles.shDesc}>
                             Google
                             とユーザーがセキュリティ責任をどう分担するかを理解します。サービスモデルによって境界線が変わります。
@@ -84,16 +84,16 @@ export const Section1 = () => {
                             <div className={styles.cardTitle}>✅ Google が常に守るもの</div>
                             <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>データセンターへの物理的な侵入防止
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>データセンターへの物理的な侵入防止
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>ハードウェアの完全性（Titan チップ）
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハードウェアの完全性（Titan チップ）
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>ネットワークインフラへの攻撃対策
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ネットワークインフラへの攻撃対策
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--cdl-green)' }}>›</span>ハイパーバイザーの脆弱性対応
+                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハイパーバイザーの脆弱性対応
                                 </li>
                             </ul>
                         </div>
@@ -101,16 +101,16 @@ export const Section1 = () => {
                             <div className={styles.cardTitle}>⚠️ ユーザーが常に守るもの</div>
                             <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>データの分類と適切な保護設定
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>データの分類と適切な保護設定
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>アプリケーションのセキュリティ
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>アプリケーションのセキュリティ
                                 </li>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--cdl-yellow)' }}>›</span>エンドユーザーの認証・認可設定
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>エンドユーザーの認証・認可設定
                                 </li>
                             </ul>
                         </div>
@@ -119,7 +119,7 @@ export const Section1 = () => {
                     <div className={styles.warnBox} style={{ marginTop: '1.5rem' }}>
                         <strong>⚠️ 試験頻出の引っかけ：</strong>
                         「Google Cloud はセキュアだから、ユーザーは何もしなくていい」→
-                        <strong style={{ color: 'var(--cdl-yellow)' }}>誤り！</strong>
+                        <strong style={{ color: 'var(--color-cdl-warning)' }}>誤り！</strong>
                         データへのアクセス制御（IAM）・データの保護設定・アプリのセキュリティは常にユーザーの責任です。
                         Google
                         は<em>インフラ</em>を守りますが、<em>データとアクセス管理</em>はユーザーの責任です。
@@ -190,7 +190,7 @@ export const Section1 = () => {
                         </div>
                     </div>
 
-                    <div className={styles.subTitle}>Google の BeyondCorp 実装サービス</div>
+                    <h3 className={styles.subTitle}>Google の BeyondCorp 実装サービス</h3>
                     <div className={styles.g3}>
                         <div className={`${styles.card} ${styles.borderYellow}`}>
                             <div className={styles.cardIcon} aria-hidden="true">🚪</div>

@@ -223,17 +223,17 @@ export const Section3 = () => {
                             <div className={styles.cardTitle}>🎯 SCC が自動検出するもの</div>
                             <div style={{ fontSize: '0.95rem', color: 'var(--color-muted-foreground)' }}>
                                 <div className={styles.sccItem}>
-                                    <strong style={{ color: 'var(--cdl-yellow)' }}>設定ミス（Misconfiguration）</strong><br />
+                                    <strong style={{ color: 'var(--color-cdl-warning)' }}>設定ミス（Misconfiguration）</strong><br />
                                     公開されている Cloud Storage バケット・外部 IP の不適切な
                                     VM・弱いファイアウォールルール・MFA が未設定の特権ユーザー
                                 </div>
                                 <div className={styles.sccItem}>
-                                    <strong style={{ color: 'var(--cdl-red)' }}>アクティブな脅威</strong><br />
+                                    <strong style={{ color: 'var(--color-cdl-error)' }}>アクティブな脅威</strong><br />
                                     マルウェアの実行・異常な API
                                     コール（クリプトマイニング）・侵害された認証情報の利用・データ流出の試み
                                 </div>
                                 <div>
-                                    <strong style={{ color: 'var(--cdl-blue)' }}>脆弱性</strong><br />
+                                    <strong style={{ color: 'var(--color-cdl-info)' }}>脆弱性</strong><br />
                                     脆弱なソフトウェアバージョン・CVE（既知の脆弱性）・コンテナイメージの脆弱性
                                 </div>
                             </div>

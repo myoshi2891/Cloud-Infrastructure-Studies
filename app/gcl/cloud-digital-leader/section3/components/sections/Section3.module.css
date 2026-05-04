@@ -9,7 +9,7 @@
     display: grid;
     grid-template-columns: auto 1fr 1fr 1fr;
     gap: 1.5rem;
-    background: var(--color-bg-card);
+    background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.5rem;
@@ -19,7 +19,7 @@
 .apiRow:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px var(--color-shadow);
-    border-color: var(--color-border-bright);
+    border-color: var(--color-ring);
 }
 
 @media (max-width: 900px) {
@@ -50,20 +50,20 @@
 .apiEn {
     font-family: var(--font-mono);
     font-size: 0.9rem;
-    color: var(--color-text-muted);
+    color: var(--color-muted-foreground);
     margin-bottom: 0.8rem;
 }
 
 .apiSummary {
     font-size: 1rem;
-    color: var(--color-text-secondary);
+    color: var(--color-muted-foreground);
     line-height: 1.6;
 }
 
 .apiColTitle {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: var(--color-foreground);
     margin-bottom: 0.8rem;
     padding-bottom: 0.4rem;
     border-bottom: 1px solid var(--color-border);
@@ -79,7 +79,7 @@
 
 .apiList li {
     font-size: 0.95rem;
-    color: var(--color-text-secondary);
+    color: var(--color-muted-foreground);
     position: relative;
     padding-left: 1.2rem;
 }
@@ -123,17 +123,17 @@
 .stepTitle {
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--color-text-primary);
+    color: var(--color-foreground);
     margin-bottom: 0.4rem;
 }
 
 .stepDesc {
     font-size: 0.95rem;
-    color: var(--color-text-secondary);
+    color: var(--color-muted-foreground);
 }
 
 .tpuHighlight {
-    background: var(--color-bg-secondary);
+    background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 2rem;

@@ -13,19 +13,19 @@
     --cdl-border:      #1e2a4a;
     --cdl-border-bright: #2e3e6a;
     /* Google Cloud 公式4色 */
-    --cdl-blue:        #4285f4;
-    --cdl-red:         #ea4335;
-    --cdl-yellow:      #fbbc04;
-    --cdl-green:       #34a853;
+    --color-cdl-info:        #4285f4;
+    --color-cdl-error:         #ea4335;
+    --color-cdl-warning:      #fbbc04;
+    --color-cdl-success:       #34a853;
     /* section4 グラデーション用トークン */
     --color-accent-amber:      #d4882a;
     --color-accent-terracotta: #c4593a;
     /* 追加アクセント */
     --cdl-cyan:        #00bcd4;
-    --cdl-teal:        #009688;
-    --cdl-sky:         #0288d1;
-    --cdl-amber:       #ff8f00;
-    --cdl-purple:      #9c27b0;
+    --color-cdl-teal:        #009688;
+    --color-cdl-sky:         #0288d1;
+    --color-cdl-amber:       #ff8f00;
+    --color-cdl-accent:      #9c27b0;
     --cdl-indigo:      #5c6bc0;
     --cdl-text:        #c8d0e4;
     --cdl-text-muted:  #8890a8;
@@ -42,7 +42,7 @@
     --color-accent:           var(--cdl-surface3);
     --color-accent-foreground: var(--cdl-text-bright);
     --color-border:           var(--cdl-border);
-    --color-primary:          var(--cdl-blue);
+    --color-primary:          var(--color-cdl-info);
     --color-primary-foreground: #ffffff;
 }
 
@@ -138,9 +138,9 @@
 }
 
 .cdl-page .hero-badge .dot-blue   { background: var(--color-primary); }
-.cdl-page .hero-badge .dot-red    { background: var(--cdl-red); }
-.cdl-page .hero-badge .dot-yellow { background: var(--cdl-yellow); }
-.cdl-page .hero-badge .dot-green  { background: var(--cdl-green); }
+.cdl-page .hero-badge .dot-red    { background: var(--color-cdl-error); }
+.cdl-page .hero-badge .dot-yellow { background: var(--color-cdl-warning); }
+.cdl-page .hero-badge .dot-green  { background: var(--color-cdl-success); }
 
 /* ─── Google 4色ロゴ装飾 ─────────────────────────────────────────── */
 .cdl-page .g-dots {
@@ -156,10 +156,10 @@
     border-radius: 50%;
 }
 
-.cdl-page .g-blue   { background: var(--cdl-blue); }
-.cdl-page .g-red    { background: var(--cdl-red); }
-.cdl-page .g-yellow { background: var(--cdl-yellow); }
-.cdl-page .g-green  { background: var(--cdl-green); }
+.cdl-page .g-blue   { background: var(--color-cdl-info); }
+.cdl-page .g-red    { background: var(--color-cdl-error); }
+.cdl-page .g-yellow { background: var(--color-cdl-warning); }
+.cdl-page .g-green  { background: var(--color-cdl-success); }
 
 /* ─── Sticky Nav ─────────────────────────────────────────────────── */
 .cdl-page .snav {
@@ -246,11 +246,11 @@
     border: 1px solid rgba(66, 133, 244, 0.25);
 }
 
-.cdl-page .sec-num.sn-red    { background: rgba(234, 67, 53, 0.12); color: var(--cdl-red); border-color: rgba(234, 67, 53, 0.25); }
-.cdl-page .sec-num.sn-yellow { background: rgba(251, 188, 4, 0.12); color: var(--cdl-yellow); border-color: rgba(251, 188, 4, 0.25); }
-.cdl-page .sec-num.sn-green  { background: rgba(52, 168, 83, 0.12); color: var(--cdl-green); border-color: rgba(52, 168, 83, 0.25); }
+.cdl-page .sec-num.sn-red    { background: rgba(234, 67, 53, 0.12); color: var(--color-cdl-error); border-color: rgba(234, 67, 53, 0.25); }
+.cdl-page .sec-num.sn-yellow { background: rgba(251, 188, 4, 0.12); color: var(--color-cdl-warning); border-color: rgba(251, 188, 4, 0.25); }
+.cdl-page .sec-num.sn-green  { background: rgba(52, 168, 83, 0.12); color: var(--color-cdl-success); border-color: rgba(52, 168, 83, 0.25); }
 .cdl-page .sec-num.sn-cyan   { background: rgba(0, 188, 212, 0.12); color: var(--cdl-cyan); border-color: rgba(0, 188, 212, 0.25); }
-.cdl-page .sec-num.sn-purple { background: rgba(156, 39, 176, 0.12); color: var(--cdl-purple); border-color: rgba(156, 39, 176, 0.25); }
+.cdl-page .sec-num.sn-purple { background: rgba(156, 39, 176, 0.12); color: var(--color-cdl-accent); border-color: rgba(156, 39, 176, 0.25); }
 
 .cdl-page .sec-head-txt { flex: 1; }
 
@@ -399,7 +399,7 @@
 .cdl-page .bp {
     background: rgba(52, 168, 83, 0.06);
     border: 1px solid rgba(52, 168, 83, 0.20);
-    border-left: 3px solid var(--cdl-green);
+    border-left: 3px solid var(--color-cdl-success);
     border-radius: 8px;
     padding: 16px 18px;
     margin-bottom: 14px;
@@ -408,7 +408,7 @@
 .cdl-page .bpt {
     font-size: 11px;
     font-weight: 700;
-    color: var(--cdl-green);
+    color: var(--color-cdl-success);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 10px;
@@ -433,7 +433,7 @@
 .cdl-page .wb {
     background: rgba(251, 188, 4, 0.06);
     border: 1px solid rgba(251, 188, 4, 0.20);
-    border-left: 3px solid var(--cdl-yellow);
+    border-left: 3px solid var(--color-cdl-warning);
     border-radius: 8px;
     padding: 14px 18px;
     margin-bottom: 14px;
@@ -442,7 +442,7 @@
 .cdl-page .wbt {
     font-size: 11px;
     font-weight: 700;
-    color: var(--cdl-yellow);
+    color: var(--color-cdl-warning);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 8px;
@@ -509,10 +509,10 @@
 .cdl-page .codeblock .comment { color: #3a4880; }
 .cdl-page .codeblock .cmd     { color: var(--color-primary); font-weight: 600; }
 .cdl-page .codeblock .flag    { color: var(--cdl-cyan); }
-.cdl-page .codeblock .val     { color: var(--cdl-green); }
-.cdl-page .codeblock .str     { color: var(--cdl-yellow); }
-.cdl-page .codeblock .kw      { color: var(--cdl-purple); font-weight: 600; }
-.cdl-page .codeblock .fn      { color: var(--cdl-red); }
+.cdl-page .codeblock .val     { color: var(--color-cdl-success); }
+.cdl-page .codeblock .str     { color: var(--color-cdl-warning); }
+.cdl-page .codeblock .kw      { color: var(--color-cdl-accent); font-weight: 600; }
+.cdl-page .codeblock .fn      { color: var(--color-cdl-error); }
 .cdl-page .codeblock .num     { color: var(--cdl-cyan); }
 
 /* ─── Subsection Title ────────────────────────────────────────────── */

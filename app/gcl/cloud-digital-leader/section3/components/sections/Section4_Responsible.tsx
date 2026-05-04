@@ -22,55 +22,55 @@ export const Section4_Responsible: React.FC = () => {
                 </div>
 
                 <h3 className={baseStyles.subsectionTitle}>なぜ責任ある AI が必要か</h3>
-                <div className={baseStyles.grid3} style={{ marginBottom: '2rem' }}>
-                    <div className={baseStyles.card} style={{ borderLeft: '3px solid var(--color-accent-red)' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>⚖️</div>
-                        <div className={baseStyles.cardTitle} style={{ fontSize: '1rem' }}>差別・偏見（Bias）</div>
-                        <div className={baseStyles.cardDesc} style={{ fontSize: '1rem' }}>
+                <div className={`${baseStyles.grid3} mb-8`}>
+                    <div className={`${baseStyles.card} ${styles.borderAccentRed}`}>
+                        <div className="text-2xl mb-2">⚖️</div>
+                        <div className={`${baseStyles.cardTitle} text-base`}>差別・偏見（Bias）</div>
+                        <div className={`${baseStyles.cardDesc} text-base`}>
                             AI が学習データに含まれる偏りを引き継ぐ。<br />
                             例：採用 AI が過去の男性偏重データから学習 → 女性応募者を不当に低評価。
                         </div>
                     </div>
-                    <div className={baseStyles.card} style={{ borderLeft: '3px solid var(--color-accent-yellow)' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🫧</div>
-                        <div className={baseStyles.cardTitle} style={{ fontSize: '1rem' }}>
+                    <div className={`${baseStyles.card} ${styles.borderAccentYellow}`}>
+                        <div className="text-2xl mb-2">🫧</div>
+                        <div className={`${baseStyles.cardTitle} text-base`}>
                             ハルシネーション（幻覚）
                         </div>
-                        <div className={baseStyles.cardDesc} style={{ fontSize: '1rem' }}>
+                        <div className={`${baseStyles.cardDesc} text-base`}>
                             LLM が事実と異なる内容を自信を持って生成する。<br />
                             例：医療 AI が誤った治療法を提案 → 患者への危害リスク。
                         </div>
                     </div>
-                    <div className={baseStyles.card} style={{ borderLeft: '3px solid var(--color-accent-purple)' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🔒</div>
-                        <div className={baseStyles.cardTitle} style={{ fontSize: '1rem' }}>プライバシー侵害</div>
-                        <div className={baseStyles.cardDesc} style={{ fontSize: '1rem' }}>
+                    <div className={`${baseStyles.card} ${styles.borderAccentPurple}`}>
+                        <div className="text-2xl mb-2">🔒</div>
+                        <div className={`${baseStyles.cardTitle} text-base`}>プライバシー侵害</div>
+                        <div className={`${baseStyles.cardDesc} text-base`}>
                             学習データに含まれる個人情報の漏洩リスク。<br />
                             例：AI が個人情報を不適切に学習・再現してしまう。
                         </div>
                     </div>
-                    <div className={baseStyles.card} style={{ borderLeft: '3px solid var(--color-accent-blue)' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🎭</div>
-                        <div className={baseStyles.cardTitle} style={{ fontSize: '1rem' }}>不正利用・悪用</div>
-                        <div className={baseStyles.cardDesc} style={{ fontSize: '1rem' }}>
+                    <div className={`${baseStyles.card} ${styles.borderAccentBlue}`}>
+                        <div className="text-2xl mb-2">🎭</div>
+                        <div className={`${baseStyles.cardTitle} text-base`}>不正利用・悪用</div>
+                        <div className={`${baseStyles.cardDesc} text-base`}>
                             フェイクニュース・ディープフェイク・詐欺コンテンツの大量生成。<br />
                             サイバー攻撃の自動化・強化。
                         </div>
                     </div>
-                    <div className={baseStyles.card} style={{ borderLeft: '3px solid var(--color-accent-cyan)' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>📦</div>
-                        <div className={baseStyles.cardTitle} style={{ fontSize: '1rem' }}>
+                    <div className={`${baseStyles.card} ${styles.borderAccentCyan}`}>
+                        <div className="text-2xl mb-2">📦</div>
+                        <div className={`${baseStyles.cardTitle} text-base`}>
                             透明性の欠如（ブラックボックス）
                         </div>
-                        <div className={baseStyles.cardDesc} style={{ fontSize: '1rem' }}>
+                        <div className={`${baseStyles.cardDesc} text-base`}>
                             AI の判断根拠を説明できない。<br />
                             例：ローン否認・人事評価に AI を使う場合、理由を説明できない → 規制違反リスク。
                         </div>
                     </div>
-                    <div className={baseStyles.card} style={{ borderLeft: '3px solid var(--color-accent-green)' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🌐</div>
-                        <div className={baseStyles.cardTitle} style={{ fontSize: '1rem' }}>アクセス格差</div>
-                        <div className={baseStyles.cardDesc} style={{ fontSize: '1rem' }}>
+                    <div className={`${baseStyles.card} ${styles.borderAccentGreen}`}>
+                        <div className="text-2xl mb-2">🌐</div>
+                        <div className={`${baseStyles.cardTitle} text-base`}>アクセス格差</div>
+                        <div className={`${baseStyles.cardDesc} text-base`}>
                             AI の恩恵が特定の集団にのみ享受される。<br />
                             障害者・少数民族・低所得者が AI サービスを利用しづらい設計。
                         </div>
@@ -81,7 +81,7 @@ export const Section4_Responsible: React.FC = () => {
                     責任ある AI の 6 核心原則<span className={baseStyles.examTag}>最重要</span>
                 </h3>
                 <div className={styles.raiGrid}>
-                    <div className={styles.raiCard} style={{ borderTop: '3px solid var(--color-accent-blue)' }}>
+                    <div className={`${styles.raiCard} ${styles.raiCardBlue}`}>
                         <div className={styles.raiIcon}>⚖️</div>
                         <div className={styles.raiName}>① 公平性（Fairness）</div>
                         <div className={styles.raiDesc}>
@@ -90,7 +90,7 @@ export const Section4_Responsible: React.FC = () => {
                             多様なデータセットと評価指標を使用してバイアスを継続的に測定する。
                         </div>
                     </div>
-                    <div className={styles.raiCard} style={{ borderTop: '3px solid var(--color-accent-green)' }}>
+                    <div className={`${styles.raiCard} ${styles.raiCardGreen}`}>
                         <div className={styles.raiIcon}>🛡️</div>
                         <div className={styles.raiName}>② 信頼性と安全性</div>
                         <div className={styles.raiDesc}>
@@ -99,7 +99,7 @@ export const Section4_Responsible: React.FC = () => {
                             継続的なテストとモニタリングで予期しない動作を防止する。
                         </div>
                     </div>
-                    <div className={styles.raiCard} style={{ borderTop: '3px solid var(--color-accent-cyan)' }}>
+                    <div className={`${styles.raiCard} ${styles.raiCardCyan}`}>
                         <div className={styles.raiIcon}>🔐</div>
                         <div className={styles.raiName}>③ プライバシーとセキュリティ</div>
                         <div className={styles.raiDesc}>
@@ -108,7 +108,7 @@ export const Section4_Responsible: React.FC = () => {
                             データ収集の目的と範囲を透明に開示する。
                         </div>
                     </div>
-                    <div className={styles.raiCard} style={{ borderTop: '3px solid var(--color-accent-yellow)' }}>
+                    <div className={`${styles.raiCard} ${styles.raiCardYellow}`}>
                         <div className={styles.raiIcon}>♿</div>
                         <div className={styles.raiName}>④ 包括性とアクセシビリティ</div>
                         <div className={styles.raiDesc}>
@@ -117,7 +117,7 @@ export const Section4_Responsible: React.FC = () => {
                             多様なユーザーニーズを考慮したインクルーシブな設計を実践する。
                         </div>
                     </div>
-                    <div className={styles.raiCard} style={{ borderTop: '3px solid var(--color-accent-purple)' }}>
+                    <div className={`${styles.raiCard} ${styles.raiCardPurple}`}>
                         <div className={styles.raiIcon}>🔍</div>
                         <div className={styles.raiName}>⑤ 透明性と説明可能性（XAI）</div>
                         <div className={styles.raiDesc}>
@@ -126,7 +126,7 @@ export const Section4_Responsible: React.FC = () => {
                             が使われていることを明示する。
                         </div>
                     </div>
-                    <div className={styles.raiCard} style={{ borderTop: '3px solid var(--color-accent-red)' }}>
+                    <div className={`${styles.raiCard} ${styles.raiCardRed}`}>
                         <div className={styles.raiIcon}>📋</div>
                         <div className={styles.raiName}>⑥ 説明責任（Accountability）</div>
                         <div className={styles.raiDesc}>

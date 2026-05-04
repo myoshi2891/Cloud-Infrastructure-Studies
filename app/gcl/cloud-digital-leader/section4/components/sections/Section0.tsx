@@ -110,8 +110,8 @@ export const Section0 = () => {
                         <a href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf" target="_blank" rel="noopener noreferrer">
                             Cloud Digital Leader Exam Guide (Official PDF)
                         </a>
-                        <a href="https://cloud.google.com/learn/certification/cloud-digital-leader" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/learn/certification/cloud-digital-leader
+                        <a href="https://cloud.google.com/learn/certification/cloud-digital-leader" target="_blank" rel="noopener noreferrer" aria-label="Cloud Digital Leader 認定資格">
+                            Cloud Digital Leader 認定資格
                         </a>
                     </div>
                 </div>
@@ -128,7 +128,7 @@ export const Section0 = () => {
                     </div>
 
                     {/* WHY MODERNIZE */}
-                    <div className={styles.subTitle}>なぜモダナイゼーションが必要か</div>
+                    <h3 className={styles.subTitle}>なぜモダナイゼーションが必要か</h3>
                     <div className={styles.g3} style={{ marginBottom: '2rem' }}>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🐢</div>
@@ -154,9 +154,7 @@ export const Section0 = () => {
                     </div>
 
                     {/* 7 Rs */}
-                    <div className={styles.subTitle}>
-                        7つのR移行戦略<span className={styles.examTag}>最重要</span>
-                    </div>
+                    <h3 className={styles.subTitle}>7つのR移行戦略<span className={styles.examTag}>最重要</span></h3>
                     <div className={styles.rsTableWrap}>
                         <TableComponent getRowKey={(row, i) => i}
                             headers={['戦略名', '別名', '内容', 'コード変更', '適用ケース']}
@@ -181,7 +179,7 @@ export const Section0 = () => {
                     </div>
 
                     {/* CAMP */}
-                    <div className={styles.subTitle}>CAMP（Cloud Application Modernization Program）</div>
+                    <h3 className={styles.subTitle}>CAMP（Cloud Application Modernization Program）</h3>
                     <div className={styles.g2}>
                         <div className={styles.card}>
                             <div className={styles.cardTitle} style={{ marginBottom: '1.2rem' }}>

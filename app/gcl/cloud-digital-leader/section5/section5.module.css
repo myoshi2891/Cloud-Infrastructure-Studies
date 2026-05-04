@@ -18,7 +18,7 @@
 }
 
 .heroAccent {
-    color: var(--cdl-red);
+    color: var(--color-cdl-error);
 }
 
 .heroDesc {
@@ -44,5 +44,5 @@
 
 .navLabel {
     font-weight: bold;
-    color: var(--cdl-red);
+    color: var(--color-cdl-error);
 }
