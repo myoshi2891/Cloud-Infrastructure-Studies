@@ -229,11 +229,11 @@ export const Section2 = () => {
             </section>
 
             {/* ENCRYPTION */}
-            <section id="encryption" className={styles.section}>
+            <section id="encryption" aria-labelledby="encryption-heading" className={styles.section}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.4 Encryption & Data Protection</div>
-                        <h2 className={styles.shTitle}>暗号化とデータ保護<span className={styles.examTag}>最重要</span></h2>
+                        <h2 id="encryption-heading" className={styles.shTitle}>暗号化とデータ保護<span className={styles.examTag}>最重要</span></h2>
                         <p className={styles.shDesc}>
                             データの 3 つの状態での暗号化と、Cloud KMS
                             による鍵管理オプションを理解します。
