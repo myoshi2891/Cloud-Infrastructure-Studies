@@ -5,12 +5,12 @@
 .cardListRed li::before { color: var(--color-cdl-error); }
 .cardListGold li::before { color: var(--color-cdl-warning); }
 .cardListSky li::before { color: var(--color-cdl-info); }
-.bpBox { background: color-mix(in srgb, var(--color-cdl-success) 8%, transparent); border-left: 4px solid var(--color-cdl-success); padding: 1.5rem; border-radius: 0 8px 8px 0; margin-top: 1.5rem; color: var(--color-muted-foreground); }
+.bpBox { background: color-mix(in srgb, var(--color-cdl-success) 8%, transparent); border-left: 4px solid var(--color-cdl-success); padding: 1.5rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-top: 1.5rem; color: var(--color-muted-foreground); }
 .bpTitle { font-size: 1.1rem; font-weight: 700; color: var(--color-cdl-success); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
 .bpBox ul { list-style: none; padding: 0; margin: 0; }
 .bpBox li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; line-height: 1.6; }
 .bpBox li::before { content: "✓"; position: absolute; left: 0; color: var(--color-cdl-success); font-weight: bold; }
-.auditWrap { border: 1px solid var(--color-border); border-radius: 12px; overflow-x: auto; margin-bottom: 1.5rem; background: var(--color-card); }
+.auditWrap { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow-x: auto; margin-bottom: 1.5rem; background: var(--color-card); }
 .auditTable { width: 100%; border-collapse: collapse; font-size: 1rem; }
 .auditTable th { background: var(--color-muted); color: var(--color-muted-foreground); font-family: var(--font-mono, 'DM Mono', monospace); font-weight: 600; padding: 0.85rem 1.1rem; text-align: left; border-bottom: 2px solid var(--color-border); text-transform: uppercase; letter-spacing: 0.04em; }
 .auditTable td { padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted-foreground); vertical-align: top; line-height: 1.65; }
