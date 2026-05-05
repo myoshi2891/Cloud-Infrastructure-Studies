@@ -297,7 +297,13 @@ function Section31() {
     );
 }
 
-/* ── Section 3.2: プロンプトエンジニアリング技術 ── */
+/**
+ * Renders the "3.2 プロンプトエンジニアリング技術" section containing explanations, examples, and best-practices for prompt engineering techniques.
+ *
+ * The section includes an overview with exam-oriented metrics, seven prompt techniques (Zero-shot, One-shot, Few-shot, Role Prompting, Prompt Chaining, Chain-of-Thought, ReAct) with examples and application notes, a checklist of prompt-design principles, a comparative table of techniques, and reference links.
+ *
+ * @returns A JSX element representing the complete subsection content for Section 3.2
+ */
 function Section32() {
     return (
         <section id="s32">
@@ -597,7 +603,18 @@ function Section32() {
     );
 }
 
-/* ── Section 3.3: グラウンディング技術と RAG ── */
+/**
+ * Renders the "3.3 グラウンディング技術と RAG" page section covering grounding concepts, the three grounding data sources, the RAG pipeline, Google Cloud RAG offerings, and model sampling parameters.
+ *
+ * This component returns static JSX that presents explanatory cards for:
+ * - Grounding essentials and its impact on hallucinations
+ * - First‑party, third‑party, and world data grounding strategies
+ * - A stepwise RAG (ingestion → embedding → retrieval → augmentation/generation) workflow
+ * - Vertex AI Search, RAG API, and Grounding with Google Search comparisons and guidance
+ * - Sampling parameters (temperature, top_p, max_output_tokens, safety_settings, token_count, stop_sequences) with recommended settings and a Python SDK example
+ *
+ * @returns The React <section> element containing the complete Section 3.3 content.
+ */
 function Section33() {
     return (
         <section id="s33">

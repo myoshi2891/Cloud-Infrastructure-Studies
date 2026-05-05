@@ -1,10 +1,10 @@
 import React from 'react';
 
 /**
- * Layout component that renders its `children` directly without adding wrappers or styling.
+ * Renders the provided children directly without adding wrappers or styling.
  *
- * @param {React.ReactNode} children - Elements to be rendered inside the layout
- * @returns {JSX.Element} A React fragment containing `children`
+ * @param children - Elements to render inside the layout
+ * @returns A JSX fragment containing `children`
  */
 export default function CDLSection4Layout({
     children,

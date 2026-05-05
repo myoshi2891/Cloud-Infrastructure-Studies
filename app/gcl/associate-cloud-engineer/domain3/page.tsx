@@ -1964,6 +1964,11 @@ ORDER BY
     );
 }
 
+/**
+ * Renders the Chapter 15 section covering Cloud Trace, Cloud Profiler, Error Reporting, and the four observability signals.
+ *
+ * @returns The React element containing the Chapter 15 content and examples
+ */
 function Chapter15() {
     return (
         <div id="ch15" className="sgap">
