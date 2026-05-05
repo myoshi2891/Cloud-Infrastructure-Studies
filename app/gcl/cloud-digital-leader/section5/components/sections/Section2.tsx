@@ -264,7 +264,7 @@ export const Section2 = () => {
                     </div>
 
                     {/* 3 STATES */}
-                    <div className={styles.subTitle}>データの 3 つの状態と暗号化</div>
+                    <h3 className={styles.subTitle}>データの 3 つの状態と暗号化</h3>
                     <div className={styles.encRow} style={{ marginBottom: '2rem' }}>
                         <div className={styles.encItem}>
                             <div

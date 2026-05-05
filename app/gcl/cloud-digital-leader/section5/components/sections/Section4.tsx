@@ -387,7 +387,7 @@ export const Section4 = () => {
                     </div>
 
                     {/* EXAM PATTERNS */}
-                    <div className={styles.subTitle}>頻出問題パターンと解法</div>
+                    <h3 className={styles.subTitle}>頻出問題パターンと解法</h3>
                     <div className={styles.g2}>
                         <div className={styles.ptnCard}>
                             <div className={styles.ptnHeader}>
