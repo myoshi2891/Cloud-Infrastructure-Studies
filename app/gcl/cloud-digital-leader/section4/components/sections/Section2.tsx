@@ -420,7 +420,7 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-info)' }}>✓</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-info)' }}>✓</span>
                                     物理専用線不要・低コスト・迅速な設定
                                 </li>
                                 <li
