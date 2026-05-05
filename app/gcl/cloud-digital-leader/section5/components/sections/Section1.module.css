@@ -200,8 +200,8 @@
     border: 1px solid color-mix(in srgb, var(--color-cdl-error) 20%, transparent);
 }
 .ztColNew {
-    background: color-mix(in srgb, var(--cdl-cyan) 6%, transparent);
-    border: 1px solid color-mix(in srgb, var(--cdl-cyan) 20%, transparent);
+    background: color-mix(in srgb, var(--color-cdl-sky) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-cdl-sky) 20%, transparent);
 }
 .ztColTitle {
     font-size: 1.1rem;

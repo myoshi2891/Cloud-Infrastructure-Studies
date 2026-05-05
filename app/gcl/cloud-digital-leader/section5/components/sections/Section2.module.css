@@ -18,7 +18,7 @@
     font-family: var(--ff-mono, 'DM Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-cdl-error);
+    color: var(--color-cdl-amber);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 1rem;
@@ -50,8 +50,8 @@
 }
 .examTag {
     font-size: 0.8rem;
-    background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent);
-    color: var(--color-cdl-error);
+    background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent);
+    color: var(--color-cdl-amber);
     padding: 2px 8px;
     border-radius: 4px;
     vertical-align: middle;
@@ -107,13 +107,13 @@
 .badgeGold { background: color-mix(in srgb, var(--color-cdl-warning) 10%, transparent); color: var(--color-cdl-warning); border: 1px solid color-mix(in srgb, var(--color-cdl-warning) 20%, transparent); }
 .badgeTeal { background: color-mix(in srgb, var(--color-cdl-success) 10%, transparent); color: var(--color-cdl-success); border: 1px solid color-mix(in srgb, var(--color-cdl-success) 20%, transparent); }
 .badgeSky { background: color-mix(in srgb, var(--color-cdl-info) 10%, transparent); color: var(--color-cdl-info); border: 1px solid color-mix(in srgb, var(--color-cdl-info) 20%, transparent); }
-.badgeAmber { background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent); color: var(--color-cdl-error); border: 1px solid color-mix(in srgb, var(--color-cdl-error) 20%, transparent); }
-.badgeRed { background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent); color: var(--color-cdl-error); border: 1px solid color-mix(in srgb, var(--color-cdl-error) 20%, transparent); }
+.badgeAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); color: var(--color-cdl-amber); border: 1px solid color-mix(in srgb, var(--color-cdl-amber) 20%, transparent); }
+.badgeRed { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); color: var(--color-cdl-amber); border: 1px solid color-mix(in srgb, var(--color-cdl-amber) 20%, transparent); }
 
 /* Boxes */
 .warnBox {
-    background: color-mix(in srgb, var(--color-cdl-error) 8%, transparent);
-    border-left: 4px solid var(--color-cdl-error);
+    background: color-mix(in srgb, var(--color-cdl-amber) 8%, transparent);
+    border-left: 4px solid var(--color-cdl-amber);
     padding: 1.5rem;
     border-radius: 0 8px 8px 0;
     margin-top: 1.5rem;
@@ -315,7 +315,7 @@
 
 
 /* Border modifiers */
-.borderRed { border-top: 3px solid var(--color-cdl-error); }
+.borderRed { border-top: 3px solid var(--color-cdl-amber); }
 .borderBlue { border-top: 3px solid var(--color-cdl-info); }
 .borderGreen { border-top: 3px solid var(--color-cdl-success); }
 .borderYellow { border-top: 3px solid var(--color-cdl-warning); }
@@ -324,7 +324,7 @@
 .borderAmber { border-top: 3px solid var(--color-cdl-amber); }
 .borderTeal { border-top: 3px solid var(--color-cdl-teal); }
 
-.borderLeftRed { border-left: 3px solid var(--color-cdl-error); }
+.borderLeftRed { border-left: 3px solid var(--color-cdl-amber); }
 .borderLeftBlue { border-left: 3px solid var(--color-cdl-info); }
 .borderLeftGreen { border-left: 3px solid var(--color-cdl-success); }
 .borderLeftYellow { border-left: 3px solid var(--color-cdl-warning); }
@@ -332,7 +332,7 @@
 .borderLeftTeal { border-left: 3px solid var(--color-cdl-teal); }
 
 /* Background modifiers */
-.bgRed { background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent); }
+.bgRed { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); }
 .bgBlue { background: color-mix(in srgb, var(--color-cdl-info) 10%, transparent); }
 .bgGreen { background: color-mix(in srgb, var(--color-cdl-success) 10%, transparent); }
 .bgYellow { background: color-mix(in srgb, var(--color-cdl-warning) 10%, transparent); }

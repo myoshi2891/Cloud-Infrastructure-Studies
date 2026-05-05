@@ -244,7 +244,7 @@
 
 /* API Diagram (Placeholder visualization based on HTML inline styles) */
 .apiDiagram {
-    background: var(--color-bg-secondary, #1e1e1e);
+    background: var(--color-muted);
     padding: 2.5rem;
     border-radius: 12px;
     text-align: center;

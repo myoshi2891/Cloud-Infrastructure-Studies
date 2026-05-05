@@ -260,7 +260,7 @@
     border: 1px solid color-mix(in srgb, var(--color-cdl-success) 20%, transparent);
 }
 .spotColTitle {
-    font-family: var(--ff-display, 'Fraunces', Georgia, serif);
+    font-family: var(--font-display, 'Fraunces', Georgia, serif);
     font-weight: 700;
     font-size: 1rem;
     margin-bottom: 0.6rem;

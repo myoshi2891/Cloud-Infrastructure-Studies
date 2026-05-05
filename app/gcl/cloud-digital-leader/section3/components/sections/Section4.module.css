@@ -29,13 +29,13 @@
     font-family: var(--font-display);
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--color-text-primary);
+    color: var(--color-foreground);
     margin-bottom: 0.8rem;
 }
 
 .raiDesc {
     font-size: 0.95rem;
-    color: var(--color-text-secondary);
+    color: var(--color-muted-foreground);
     line-height: 1.6;
 }
 
@@ -53,7 +53,7 @@
     padding: 1rem 0;
     border-bottom: 1px solid var(--color-border);
     font-size: 1rem;
-    color: var(--color-text-secondary);
+    color: var(--color-muted-foreground);
     line-height: 1.5;
 }
 
@@ -66,7 +66,7 @@
     width: 24px;
     height: 24px;
     background: var(--color-bg-secondary);
-    color: var(--color-accent-green);
+    color: var(--color-cdl-success);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -81,11 +81,11 @@
 .borderAccentPurple { border-left: 3px solid var(--color-accent-purple); }
 .borderAccentBlue   { border-left: 3px solid var(--color-accent-blue); }
 .borderAccentCyan   { border-left: 3px solid var(--color-accent-cyan); }
-.borderAccentGreen  { border-left: 3px solid var(--color-accent-green); }
+.borderAccentGreen  { border-left: 3px solid var(--color-cdl-success); }
 
 /* Border-top accent variants for principle cards */
 .raiCardBlue   { border-top: 3px solid var(--color-accent-blue); }
-.raiCardGreen  { border-top: 3px solid var(--color-accent-green); }
+.raiCardGreen  { border-top: 3px solid var(--color-cdl-success); }
 .raiCardCyan   { border-top: 3px solid var(--color-accent-cyan); }
 .raiCardYellow { border-top: 3px solid var(--color-accent-yellow); }
 .raiCardPurple { border-top: 3px solid var(--color-accent-purple); }
