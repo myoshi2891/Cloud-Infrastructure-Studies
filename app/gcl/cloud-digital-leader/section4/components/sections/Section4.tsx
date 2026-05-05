@@ -70,10 +70,10 @@ export const Section4 = () => {
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
                         <a href="https://cloud.google.com/cost-management/docs/best-practices" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/cost-management/docs/best-practices
+                            Google Cloud cost management best practices
                         </a>
                         <a href="https://cloud.google.com/recommender/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/recommender/docs
+                            Google Cloud Recommender documentation
                         </a>
                     </div>
                 </div>

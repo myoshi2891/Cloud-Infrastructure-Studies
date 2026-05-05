@@ -492,16 +492,16 @@ export const Section1 = () => {
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
                         <a href="https://cloud.google.com/kubernetes-engine/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/kubernetes-engine/docs
+                            Google Kubernetes Engine (GKE) documentation
                         </a>
                         <a
                             href="https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview"
                             target="_blank" rel="noopener noreferrer"
                         >
-                            https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview
+                            GKE Autopilot overview
                         </a>
                         <a href="https://cloud.google.com/kubernetes-engine/docs/best-practices" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/kubernetes-engine/docs/best-practices
+                            GKE best practices
                         </a>
                     </div>
                 </div>
