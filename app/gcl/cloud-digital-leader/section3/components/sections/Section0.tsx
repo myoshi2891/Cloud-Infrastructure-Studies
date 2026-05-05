@@ -19,7 +19,7 @@ export const Section0: React.FC = () => {
 
                 <div className={baseStyles.grid3}>
                     <div className={`${baseStyles.card} border-t-[3px] border-[var(--color-accent-blue)]`}>
-                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>🧠</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-muted)]`}>🧠</div>
                         <div className={baseStyles.cardTitle}>3.1 AI と ML の基礎</div>
                         <div className={baseStyles.cardDesc}>
                             AI・ML の定義、データアナリティクスとの違い、ML が解決できる課題、
@@ -32,7 +32,7 @@ export const Section0: React.FC = () => {
                     </div>
 
                     <div className={`${baseStyles.card} border-t-[3px] border-[var(--color-accent-cyan)]`}>
-                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>⚙️</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-muted)]`}>⚙️</div>
                         <div className={baseStyles.cardTitle}>3.2 Google Cloud AI/ML ソリューション</div>
                         <div className={baseStyles.cardDesc}>
                             事前学習済み API・AutoML・カスタムモデルのトレードオフ（スピード、労力、
@@ -45,7 +45,7 @@ export const Section0: React.FC = () => {
                     </div>
 
                     <div className={`${baseStyles.card} border-t-[3px] border-[var(--color-accent-green)]`}>
-                        <div className={`${baseStyles.cardIcon} bg-[var(--color-bg-secondary)]`}>🏗️</div>
+                        <div className={`${baseStyles.cardIcon} bg-[var(--color-muted)]`}>🏗️</div>
                         <div className={baseStyles.cardTitle}>3.3 Google Cloud AI/ML ソリューションの構築・活用</div>
                         <div className={baseStyles.cardDesc}>
                             BigQuery ML、事前学習済み API（Vision, NL, Translation, Speech）、

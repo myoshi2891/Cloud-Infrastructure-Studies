@@ -29,7 +29,7 @@ export const Section3_AutoML: React.FC = () => {
                             <div className="text-base text-[var(--color-accent-red)] font-bold mb-2">
                                 ❌ 従来のカスタム ML 開発（数週間〜数ヶ月）
                             </div>
-                            <div className="text-base text-[var(--color-text-secondary)] p-3 bg-[var(--color-bg-secondary)] rounded-lg font-mono">
+                            <div className="text-base text-[var(--color-text-secondary)] p-3 bg-[var(--color-muted)] rounded-lg font-mono">
                                 データ収集 → 前処理 → 特徴量エンジニアリング →<br />
                                 モデル選択 → ハイパーパラメータ調整 → 評価 → デプロイ<br />
                             </div>
@@ -38,7 +38,7 @@ export const Section3_AutoML: React.FC = () => {
                             <div className="text-base text-[var(--color-accent-green)] font-bold mb-2">
                                 ✅ AutoML（数時間〜1日）
                             </div>
-                            <div className="text-base text-[var(--color-text-secondary)] p-3 bg-[var(--color-bg-secondary)] rounded-lg font-mono">
+                            <div className="text-base text-[var(--color-text-secondary)] p-3 bg-[var(--color-muted)] rounded-lg font-mono">
                                 データをアップロード → トレーニング開始ボタン → 完成！<br />
                             </div>
                         </div>
