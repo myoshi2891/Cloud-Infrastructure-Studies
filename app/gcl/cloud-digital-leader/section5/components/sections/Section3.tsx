@@ -122,13 +122,13 @@ export const Section3 = () => {
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
                         <a href="https://cloud.google.com/armor/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/armor/docs
+                            Cloud Armor documentation
                         </a>
                         <a href="https://cloud.google.com/iap/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/iap/docs
+                            Identity-Aware Proxy documentation
                         </a>
                         <a href="https://cloud.google.com/vpc-service-controls/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/vpc-service-controls/docs
+                            VPC Service Controls documentation
                         </a>
                     </div>
                 </div>
