@@ -21,7 +21,7 @@ export const Section1 = () => {
                         </p>
                     </div>
 
-                    <div className={`${styles.srWrap} ${styles.srWrap}`}>
+                    <div className={styles.srWrap}>
                         <table className={styles.srTable}>
                             <thead>
                                 <tr>
