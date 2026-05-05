@@ -56,8 +56,8 @@ export const Section1 = () => {
                         <text x="205" y="175" fill="var(--color-foreground)" fontSize="14" textAnchor="middle">K8sオーケストレーションが必要？</text>
                         <path d="M 380 170 L 410 170" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />
                         <text x="395" y="165" fill="var(--color-muted-foreground)" fontSize="12" textAnchor="middle">YES</text>
-                        <rect x="430" y="150" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--cdl-cyan) 10%, transparent)" stroke="var(--cdl-cyan)" />
-                        <text x="540" y="175" fill="var(--cdl-cyan)" fontSize="14" textAnchor="middle" fontWeight="bold">GKE (Standard / Autopilot)</text>
+                        <rect x="430" y="150" width="220" height="40" rx="6" fill="color-mix(in srgb, var(--color-cdl-sky) 10%, transparent)" stroke="var(--color-cdl-sky)" />
+                        <text x="540" y="175" fill="var(--color-cdl-sky)" fontSize="14" textAnchor="middle" fontWeight="bold">GKE (Standard / Autopilot)</text>
 
                         {/* Path 2 to 3 */}
                         <path d="M 205 190 L 205 220" stroke="var(--color-border)" strokeWidth="2" markerEnd="url(#arrow)" />

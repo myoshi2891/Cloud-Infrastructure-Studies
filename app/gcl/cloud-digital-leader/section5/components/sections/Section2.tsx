@@ -40,7 +40,7 @@ export const Section2 = () => {
                             >
                                 PRINCIPAL / 主体（誰が）
                             </div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="Principals list" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ marginBottom: '0.4rem' }}>
                                     👤 Google アカウント（個人ユーザー）
                                 </li>
@@ -194,7 +194,7 @@ export const Section2 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <div className={styles.cardTitle}>✅ キーなしの代替認証手法</div>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="Keyless authentication alternatives" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
                                     <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>①</span>
                                     <strong style={{ color: 'var(--color-accent-foreground)' }}>Application Default Credentials（ADC）</strong>
@@ -216,7 +216,7 @@ export const Section2 = () => {
 
                     <div className={styles.bpBox}>
                         <div className={styles.bpTitle}>✅ ベストプラクティス：IAM</div>
-                        <ul>
+                        <ul role="list" aria-label="IAM best practices">
                             <li>
                                 基本ロール（Owner/Editor/Viewer）は本番環境で<strong>絶対に使用しない</strong>。事前定義ロールを使う。
                             </li>
@@ -440,7 +440,7 @@ export const Section2 = () => {
 
                     <div className={styles.bpBox}>
                         <div className={styles.bpTitle}>✅ ベストプラクティス：暗号化</div>
-                        <ul>
+                        <ul role="list" aria-label="Encryption best practices">
                             <li>一般ワークロード → Google-Managed Keys（デフォルト・無料）で十分。</li>
                             <li>
                                 規制対応（金融・医療・GDPR）→ <strong>CMEK</strong> で Cloud KMS

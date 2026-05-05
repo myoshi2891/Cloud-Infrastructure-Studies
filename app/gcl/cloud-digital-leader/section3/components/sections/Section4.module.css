@@ -6,7 +6,7 @@
 }
 
 .raiCard {
-    background: var(--color-bg-card);
+    background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.8rem;
@@ -40,7 +40,7 @@
 }
 
 .checklist {
-    background: var(--color-bg-card);
+    background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.5rem;
@@ -65,7 +65,7 @@
 .checkBox {
     width: 24px;
     height: 24px;
-    background: var(--color-bg-secondary);
+    background: var(--color-muted);
     color: var(--color-cdl-success);
     border-radius: 6px;
     display: flex;

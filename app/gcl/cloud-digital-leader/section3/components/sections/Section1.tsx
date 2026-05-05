@@ -29,28 +29,28 @@ export const Section1: React.FC = () => {
                                 「人間の知的行動をコンピュータで模倣する」技術の総称
                             </div>
                         </div>
-                        <div className={styles.hierArrow}>▼</div>
+                        <div className={styles.hierArrow} aria-hidden="true">▼</div>
                         <div className={`${styles.hierLevel} ${styles.hlMl}`}>
                             <div className={styles.lname}>📊 ML（機械学習 / Machine Learning）</div>
                             <div className={styles.ldesc}>
                                 「データからパターンを自動学習する」— AI のサブフィールド
                             </div>
                         </div>
-                        <div className={styles.hierArrow}>▼</div>
+                        <div className={styles.hierArrow} aria-hidden="true">▼</div>
                         <div className={`${styles.hierLevel} ${styles.hlDl}`}>
                             <div className={styles.lname}>🧬 深層学習（Deep Learning）</div>
                             <div className={styles.ldesc}>
                                 「多層ニューラルネットワーク」— ML のサブフィールド
                             </div>
                         </div>
-                        <div className={styles.hierArrow}>▼</div>
+                        <div className={styles.hierArrow} aria-hidden="true">▼</div>
                         <div className={`${styles.hierLevel} ${styles.hlGen}`}>
                             <div className={styles.lname}>✨ 生成 AI（Generative AI）</div>
                             <div className={styles.ldesc}>
                                 「新しいコンテンツ（テキスト・画像・動画）を生成」— DL のサブセット
                             </div>
                         </div>
-                        <div className={styles.hierArrow}>▼</div>
+                        <div className={styles.hierArrow} aria-hidden="true">▼</div>
                         <div className={`${styles.hierLevel} ${styles.hlLlm}`}>
                             <div className={styles.lname}>💬 LLM（大規模言語モデル）</div>
                             <div className={styles.ldesc}>
@@ -71,8 +71,9 @@ export const Section1: React.FC = () => {
                     AI/ML とデータアナリティクスの違い<span className={baseStyles.examTag}>頻出</span>
                 </h3>
 
-                <div className={`${baseStyles.card} overflow-x-auto mb-8`}>
-                    <table className={`${compareStyles.compareTable} min-w-[580px]`}>
+                <div className={`${baseStyles.card} mb-8`}>
+                    <div className="overflow-x-auto">
+                        <table className={`${compareStyles.compareTable} min-w-[580px]`}>
                         <thead>
                             <tr>
                                 <th scope="col">技術領域</th>
@@ -106,6 +107,7 @@ export const Section1: React.FC = () => {
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
 
                 {/* BUSINESS VALUE */}
@@ -149,10 +151,10 @@ export const Section1: React.FC = () => {
                     <div className="flex items-center gap-4 mb-6">
                         <div className="text-4xl" aria-hidden="true">🗑️</div>
                         <div>
-                            <div className="font-display text-2xl font-extrabold text-[var(--color-accent-orange)]">
+                            <div className="font-display text-2xl font-extrabold text-[var(--color-cdl-warning)]">
                                 Garbage In, Garbage Out（GIGO の法則）
                             </div>
-                            <div className="text-[var(--color-text-secondary)] text-base">
+                            <div className="text-[var(--color-muted-foreground)] text-base">
                                 「ゴミを入れればゴミが出る」— ML 品質はデータ品質に直結します
                             </div>
                         </div>
@@ -163,7 +165,7 @@ export const Section1: React.FC = () => {
                             <div className="text-base font-semibold mb-1">
                                 十分な量
                             </div>
-                            <div className="text-base text-[var(--color-text-muted)]">
+                            <div className="text-base text-[var(--color-muted-foreground)]">
                                 学習データが少ないと精度が出ない
                             </div>
                         </div>
@@ -172,7 +174,7 @@ export const Section1: React.FC = () => {
                             <div className="text-base font-semibold mb-1">
                                 高品質・正確
                             </div>
-                            <div className="text-base text-[var(--color-text-muted)]">
+                            <div className="text-base text-[var(--color-muted-foreground)]">
                                 ノイズ・誤りが少ないデータ
                             </div>
                         </div>
@@ -181,7 +183,7 @@ export const Section1: React.FC = () => {
                             <div className="text-base font-semibold mb-1">
                                 多様性
                             </div>
-                            <div className="text-base text-[var(--color-text-muted)]">
+                            <div className="text-base text-[var(--color-muted-foreground)]">
                                 バイアスを排除した多様なデータ
                             </div>
                         </div>
@@ -190,7 +192,7 @@ export const Section1: React.FC = () => {
                             <div className="text-base font-semibold mb-1">
                                 目的との関連性
                             </div>
-                            <div className="text-base text-[var(--color-text-muted)]">
+                            <div className="text-base text-[var(--color-muted-foreground)]">
                                 ユースケースに関連したデータ
                             </div>
                         </div>
@@ -211,19 +213,19 @@ export const Section1: React.FC = () => {
                             </div>
                         </div>
                         <div className={styles.mlCardBody}>
-                            <p className="text-base text-[var(--color-text-secondary)] mb-4">
-                                <strong className="text-[var(--color-text-primary)]">定義：</strong>
+                            <p className="text-base text-[var(--color-muted-foreground)] mb-4">
+                                <strong className="text-[var(--color-foreground)]">定義：</strong>
                                 正解ラベルが付いたデータを使って学習。
                                 「先生（ラベル）」が「生徒（モデル）」を指導するイメージ。
                             </p>
-                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-blue)]">
+                            <p className="text-base font-semibold mb-2 text-[var(--color-cdl-info)]">
                                 タスク種別：
                             </p>
                             <ul className={`${styles.apiList} mb-4`}>
                                 <li><strong>分類（Classification）</strong> — スパム判定・画像分類</li>
                                 <li><strong>回帰（Regression）</strong> — 売上予測・不動産価格</li>
                             </ul>
-                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-blue)]">
+                            <p className="text-base font-semibold mb-2 text-[var(--color-cdl-info)]">
                                 ビジネス活用例：
                             </p>
                             <ul className={styles.apiList}>
@@ -243,19 +245,19 @@ export const Section1: React.FC = () => {
                             </div>
                         </div>
                         <div className={styles.mlCardBody}>
-                            <p className="text-base text-[var(--color-text-secondary)] mb-4">
-                                <strong className="text-[var(--color-text-primary)]">定義：</strong>
+                            <p className="text-base text-[var(--color-muted-foreground)] mb-4">
+                                <strong className="text-[var(--color-foreground)]">定義：</strong>
                                 ラベルなしのデータからパターン・構造を自動発見。
                                 「先生」なしで生徒が自分でルールを見つけるイメージ。
                             </p>
-                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-cyan)]">
+                            <p className="text-base font-semibold mb-2 text-[var(--color-cdl-teal)]">
                                 タスク種別：
                             </p>
                             <ul className={`${styles.apiList} mb-4`}>
                                 <li><strong>クラスタリング</strong> — 顧客セグメント自動分類</li>
                                 <li><strong>異常検知</strong> — 不正アクセス検知</li>
                             </ul>
-                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-cyan)]">
+                            <p className="text-base font-semibold mb-2 text-[var(--color-cdl-teal)]">
                                 ビジネス活用例：
                             </p>
                             <ul className={styles.apiList}>
@@ -275,19 +277,19 @@ export const Section1: React.FC = () => {
                             </div>
                         </div>
                         <div className={styles.mlCardBody}>
-                            <p className="text-base text-[var(--color-text-secondary)] mb-4">
-                                <strong className="text-[var(--color-text-primary)]">定義：</strong>
+                            <p className="text-base text-[var(--color-muted-foreground)] mb-4">
+                                <strong className="text-[var(--color-foreground)]">定義：</strong>
                                 エージェントが環境と対話しながら
                                 「報酬の最大化」を試行錯誤で学習。ゲーム攻略 AI のイメージ。
                             </p>
-                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-green)]">
+                            <p className="text-base font-semibold mb-2 text-[var(--color-cdl-success)]">
                                 タスク種別：
                             </p>
                             <ul className={`${styles.apiList} mb-4`}>
                                 <li><strong>最適制御</strong> — ロボット制御・自動運転</li>
                                 <li><strong>RLHF</strong> — 人間フィードバックによる LLM 改善</li>
                             </ul>
-                            <p className="text-base font-semibold mb-2 text-[var(--color-accent-green)]">
+                            <p className="text-base font-semibold mb-2 text-[var(--color-cdl-success)]">
                                 ビジネス活用例：
                             </p>
                             <ul className={styles.apiList}>

@@ -50,7 +50,7 @@
 
 /* ─── CARDS ──────────────────────────────────────────── */
 .card {
-    background: var(--color-bg-card);
+    background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 16px;
     padding: 2rem;
@@ -72,8 +72,8 @@
 }
 
 .card:hover {
-    border-color: var(--color-border-bright);
-    background: var(--color-bg-secondary);
+    border-color: var(--color-border);
+    background: var(--color-muted);
     transform: translateY(-3px);
     box-shadow:
         0 20px 40px var(--color-shadow),
@@ -206,7 +206,7 @@
 
 /* ─── SOURCE BOX ─────────────────────────────────────── */
 .sourceBox {
-    background: var(--color-bg-secondary);
+    background: var(--color-muted);
     border: 1px solid var(--color-border);
     border-radius: 10px;
     padding: 1rem 1.5rem;

@@ -98,7 +98,7 @@ export const Section0 = () => {
                         </div>
                     </div>
 
-                    <div className={styles.info} style={{ marginTop: '2rem' }}>
+                    <div className={`${styles.info} ${styles.infoTopSpacing}`}>
                         <strong>📌 試験の重要ポイント：</strong>
                         Section 4 は試験全体の約 17% を占めます。
                         <strong>「なぜそのサービスを選ぶのか」という選択の根拠</strong>と、
@@ -129,24 +129,24 @@ export const Section0 = () => {
 
                     {/* WHY MODERNIZE */}
                     <h3 className={styles.subTitle}>なぜモダナイゼーションが必要か</h3>
-                    <div className={styles.g3} style={{ marginBottom: '2rem' }}>
+                    <div className={`${styles.g3} ${styles.g3BottomSpacing}`}>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🐢</div>
-                            <div className={styles.cardTitle}>俊敏性の欠如</div>
+                            <h4 className={styles.cardTitle}>俊敏性の欠如</h4>
                             <div className={styles.cardBody}>
                                 新機能リリースに数ヶ月かかり、ビジネスチャンスを逃す。テスト・デプロイが手動で時間がかかる。
                             </div>
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">📈</div>
-                            <div className={styles.cardTitle}>スケーラビリティの限界</div>
+                            <h4 className={styles.cardTitle}>スケーラビリティの限界</h4>
                             <div className={styles.cardBody}>
                                 トラフィック増加に対応できずサービス停止。ハードウェアの調達期間が必要で機動力がない。
                             </div>
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">💰</div>
-                            <div className={styles.cardTitle}>高い運用コスト</div>
+                            <h4 className={styles.cardTitle}>高い運用コスト</h4>
                             <div className={styles.cardBody}>
                                 老朽インフラのメンテナンスに多大なリソース。使っていないサーバーの維持費も固定コストとして発生。
                             </div>
@@ -182,7 +182,7 @@ export const Section0 = () => {
                     <h3 className={styles.subTitle}>CAMP（Cloud Application Modernization Program）</h3>
                     <div className={styles.g2}>
                         <div className={styles.card}>
-                            <h4 className={styles.cardTitle} style={{ marginBottom: '1.2rem' }}>
+                            <h4 className={`${styles.cardTitle} ${styles.campTitleBottom}`}>
                                 CAMP の 4 フェーズ
                             </h4>
                             <div className={styles.steps}>
@@ -227,7 +227,7 @@ export const Section0 = () => {
                             </div>
                         </div>
                         <div>
-                            <div className={styles.hlBox} style={{ marginBottom: '1.5rem' }}>
+                            <div className={`${styles.hlBox} ${styles.hlBoxBottom}`}>
                                 <h4 className={styles.hlBoxTitle}>🎯 モダナイゼーションの 3 段階</h4>
                                 <p className={styles.hlBoxText}>
                                     <strong className={styles.hlBoxTextStrong}>Stage 1 — リフト＆シフト：</strong>オンプレ VM をそのままクラウドへ。最速・最低リスク。
@@ -235,7 +235,7 @@ export const Section0 = () => {
                                 <p className={styles.hlBoxText}>
                                     <strong className={styles.hlBoxTextStrong}>Stage 2 — クラウド最適化：</strong>マネージドサービス・コンテナ化・オートスケーリングを活用。
                                 </p>
-                                <p className={styles.hlBoxText} style={{ marginBottom: 0 }}>
+                                <p className={`${styles.hlBoxText} ${styles.hlBoxTextLast}`}>
                                     <strong className={styles.hlBoxTextStrong}>Stage 3 — クラウドネイティブ：</strong>マイクロサービス・サーバーレス・DevOps・CI/CD で最大の価値。
                                 </p>
                             </div>

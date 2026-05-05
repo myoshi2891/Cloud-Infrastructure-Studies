@@ -38,7 +38,7 @@ export const Section2 = () => {
                                 </div>
                                 <span className={`${styles.badge} ${styles.badgeR}`}>推奨デフォルト</span>
                             </div>
-                            <div className={styles.cardTitle}>Cloud Run</div>
+                            <h3 className={styles.cardTitle}>Cloud Run</h3>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 コンテナをサーバーレスで実行するフルマネージドプラットフォーム。HTTP/gRPC/WebSocket
                                 に対応。任意の言語で動作。
@@ -81,7 +81,7 @@ export const Section2 = () => {
 
                         <div className={`${styles.card} ${styles.borderYellow}`}>
                             <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">⚡</div>
-                            <div className={styles.cardTitle}>Cloud Run Functions</div>
+                            <h3 className={styles.cardTitle}>Cloud Run Functions</h3>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 イベント駆動の FaaS（Function as a
                                 Service）。特定のイベント発生時のみ単一の関数を実行する。旧 Cloud
@@ -125,7 +125,7 @@ export const Section2 = () => {
 
                         <div className={`${styles.card} ${styles.borderBlue}`}>
                             <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">📱</div>
-                            <div className={styles.cardTitle}>App Engine</div>
+                            <h3 className={styles.cardTitle}>App Engine</h3>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 10年以上の実績を持つ Web アプリ向けの
                                 PaaS。ソースコードをアップロードするだけでデプロイ可能。Standard /
@@ -325,7 +325,7 @@ export const Section2 = () => {
                     <h3 className={styles.subTitle}>VPC（Virtual Private Cloud）の基本</h3>
                     <div className={styles.g2} style={{ marginBottom: '1.5rem' }}>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle}>Google Cloud VPC の特徴</div>
+                            <h4 className={styles.cardTitle}>Google Cloud VPC の特徴</h4>
                             <div className={styles.cardBody} style={{ marginBottom: '1rem' }}>
                                 他社クラウドと異なり、<strong>1 つの VPC がグローバルに広がる</strong>。東京リージョンと大阪リージョンの VM が同じ VPC
                                 内でプライベート通信可能。
@@ -358,7 +358,7 @@ export const Section2 = () => {
                             </ul>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle}>Shared VPC（共有 VPC）</div>
+                            <h4 className={styles.cardTitle}>Shared VPC（共有 VPC）</h4>
                             <div className={styles.cardBody} style={{ marginBottom: '1rem' }}>
                                 ホストプロジェクトの VPC
                                 を複数のサービスプロジェクトで共有。ネットワーク管理を中央集権化しながら各チームは独立して開発できる。
@@ -405,7 +405,7 @@ export const Section2 = () => {
                                     marginBottom: '0.6rem',
                                 }}
                             >
-                                <div className={styles.cardTitle} style={{ marginBottom: 0 }}>🔒 Cloud VPN</div>
+                                <h4 className={styles.cardTitle} style={{ marginBottom: 0 }}>🔒 Cloud VPN</h4>
                                 <span className={`${styles.badge} ${styles.badgeB}`}>低コスト</span>
                             </div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
@@ -450,9 +450,9 @@ export const Section2 = () => {
                                     marginBottom: '0.6rem',
                                 }}
                             >
-                                <div className={styles.cardTitle} style={{ marginBottom: 0 }}>
+                                <h4 className={styles.cardTitle} style={{ marginBottom: 0 }}>
                                     🔗 Cloud Interconnect
-                                </div>
+                                </h4>
                                 <span className={`${styles.badge} ${styles.badgeG}`}>エンタープライズ</span>
                             </div>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
@@ -504,9 +504,9 @@ export const Section2 = () => {
                     <div className={styles.g4}>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🌐</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
+                            <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 グローバル外部<br />HTTP(S) LB
-                            </div>
+                            </h4>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 世界中のユーザーへ最低レイテンシ配信。Google Premium Tier。SSL 終端・URL
                                 マッピング・Cloud Armor 統合。
@@ -517,9 +517,9 @@ export const Section2 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">🏠</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
+                            <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 内部<br />HTTP(S) LB
-                            </div>
+                            </h4>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 VPC
                                 内部のトラフィックのみを分散（外部から見えない）。マイクロサービス間通信の負荷分散に最適。
@@ -530,9 +530,9 @@ export const Section2 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">⚡</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
+                            <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 外部 TCP/UDP<br />NLB
-                            </div>
+                            </h4>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 L4 での高性能ロードバランシング。HTTP
                                 以外のプロトコル（ゲームサーバー等）・超低レイテンシが必要な場合。
@@ -543,7 +543,7 @@ export const Section2 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">🚀</div>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>Cloud CDN</div>
+                            <h4 className={styles.cardTitle} style={{ fontSize: '1rem' }}>Cloud CDN</h4>
                             <div className={styles.cardBody} style={{ fontSize: '1rem' }}>
                                 100 以上のエッジロケーションでキャッシュ配信。レイテンシを最大 95%
                                 削減し、オリジンサーバー負荷を大幅軽減。
@@ -621,7 +621,7 @@ export const Section2 = () => {
                             >
                                 🔓
                             </div>
-                            <div className={styles.cardTitle}>ベンダーロックイン回避</div>
+                            <h4 className={styles.cardTitle}>ベンダーロックイン回避</h4>
                             <div className={styles.cardBody}>
                                 特定プロバイダーへの過度な依存を防ぎ、価格交渉力を維持する。大規模障害時のビジネス継続性（BDR）も確保できる。
                             </div>
@@ -633,7 +633,7 @@ export const Section2 = () => {
                             >
                                 ⚖️
                             </div>
-                            <div className={styles.cardTitle}>データ主権とコンプライアンス</div>
+                            <h4 className={styles.cardTitle}>データ主権とコンプライアンス</h4>
                             <div className={styles.cardBody}>
                                 個人情報・金融データを法規制により自国の自社データセンターに保持（Retain）しつつ、新システムはクラウドで構築する。
                             </div>
@@ -645,7 +645,7 @@ export const Section2 = () => {
                             >
                                 💼
                             </div>
-                            <div className={styles.cardTitle}>既存投資の保護</div>
+                            <h4 className={styles.cardTitle}>既存投資の保護</h4>
                             <div className={styles.cardBody}>
                                 既存 DC
                                 への大規模な設備投資（CAPEX）の減価償却が完了するまで活用しつつ、新アプリはクラウドで展開。投資対効果を最大化。

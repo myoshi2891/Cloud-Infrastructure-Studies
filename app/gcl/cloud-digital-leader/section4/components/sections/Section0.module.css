@@ -288,3 +288,9 @@
 .bgSky { background: color-mix(in srgb, var(--color-cdl-sky) 10%, transparent); }
 .bgTeal { background: color-mix(in srgb, var(--color-cdl-teal) 10%, transparent); }
 .bgAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); }
+
+.infoTopSpacing { margin-top: 2rem; }
+.g3BottomSpacing { margin-bottom: 2rem; }
+.campTitleBottom { margin-bottom: 1.2rem; }
+.hlBoxBottom { margin-bottom: 1.5rem; }
+.hlBoxTextLast { margin-bottom: 0; }

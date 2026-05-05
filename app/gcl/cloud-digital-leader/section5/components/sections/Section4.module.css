@@ -9,15 +9,15 @@
 .dlpCard { background: var(--color-card); border-left: 3px solid var(--color-border); padding: 1.2rem; border-radius: 0 10px 10px 0; box-shadow: 0 2px 8px var(--color-shadow, color-mix(in srgb, var(--color-background) 4%, transparent)); }
 .dlpName { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
 .dlpDesc { font-size: 0.95rem; color: var(--color-muted-foreground); margin-bottom: 0.8rem; line-height: 1.5; }
-.dlpExample { font-family: var(--ff-mono, 'DM Mono', monospace); font-size: 0.9rem; background: var(--color-muted); padding: 0.5rem 0.8rem; border-radius: 6px; }
-.checklistSubHeading { font-family: var(--ff-mono, 'DM Mono', monospace); font-size: 1rem; color: var(--color-cdl-warning); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+.dlpExample { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 0.9rem; background: var(--color-muted); padding: 0.5rem 0.8rem; border-radius: 6px; }
+.checklistSubHeading { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 1rem; color: var(--color-cdl-warning); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
 .checklist { background: var(--color-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--color-border); }
 .clItem { display: flex; align-items: flex-start; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--color-border); font-size: 1rem; color: var(--color-muted-foreground); line-height: 1.5; }
 .clItem:last-child { border-bottom: none; }
 .clBox { width: 24px; height: 24px; border-radius: 6px; background: color-mix(in srgb, var(--color-cdl-success) 10%, transparent); color: var(--color-cdl-success); display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; margin-top: 0.1rem; }
 .ptnCard { background: var(--color-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent)); display: flex; flex-direction: column; }
 .ptnHeader { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--color-muted); border-bottom: 1px solid var(--color-border); }
-.ptnNum { font-family: var(--ff-mono, 'DM Mono', monospace); font-weight: 700; color: var(--color-cdl-warning); font-size: 1.2rem; }
+.ptnNum { font-family: var(--font-mono, 'DM Mono', monospace); font-weight: 700; color: var(--color-cdl-warning); font-size: 1.2rem; }
 .ptnTitle { font-weight: 700; font-size: 1.1rem; }
 .ptnBody { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
 .ptnQ { font-weight: 600; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--color-border); line-height: 1.5; color: var(--color-accent-foreground); }
@@ -30,4 +30,4 @@
 .confTable td { padding: 1rem 1.2rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted-foreground); vertical-align: top; line-height: 1.6; }
 .confTable tr:last-child td { border-bottom: none; }
 .confTable td:first-child { font-weight: 600; color: var(--color-cdl-warning); width: 35%; }
-.inlineCode { background: var(--color-muted); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: var(--ff-mono, 'DM Mono', monospace); font-size: 0.9em; }
+.inlineCode { background: var(--color-muted); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: var(--font-mono, 'DM Mono', monospace); font-size: 0.9em; }

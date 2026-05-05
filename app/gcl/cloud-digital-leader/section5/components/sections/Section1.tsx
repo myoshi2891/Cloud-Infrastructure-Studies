@@ -22,7 +22,7 @@ export const Section1 = () => {
                         </p>
                     </div>
 
-                    <div className={styles.srWrap} style={{ marginBottom: '1.5rem' }}>
+                    <div className={`${styles.srWrap} ${styles.srWrap}`}>
                         <table className={styles.srTable}>
                             <thead>
                                 <tr>
@@ -82,44 +82,44 @@ export const Section1 = () => {
                     <div className={styles.g2}>
                         <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <h3 className={styles.cardTitle}>✅ Google が常に守るもの</h3>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>データセンターへの物理的な侵入防止
+                            <ul className={styles.ulList}>
+                                <li className={styles.liItem}>
+                                    <span aria-hidden="true" className={styles.liSpanSuccess}>›</span>データセンターへの物理的な侵入防止
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハードウェアの完全性（Titan チップ）
+                                <li className={styles.liItem}>
+                                    <span aria-hidden="true" className={styles.liSpanSuccess}>›</span>ハードウェアの完全性（Titan チップ）
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ネットワークインフラへの攻撃対策
+                                <li className={styles.liItem}>
+                                    <span aria-hidden="true" className={styles.liSpanSuccess}>›</span>ネットワークインフラへの攻撃対策
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>ハイパーバイザーの脆弱性対応
+                                <li className={styles.liItemLast}>
+                                    <span aria-hidden="true" className={styles.liSpanSuccess}>›</span>ハイパーバイザーの脆弱性対応
                                 </li>
                             </ul>
                         </div>
                         <div className={`${styles.card} ${styles.borderLeftYellow}`}>
                             <h3 className={styles.cardTitle}>⚠️ ユーザーが常に守るもの</h3>
-                            <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
+                            <ul className={styles.ulList}>
+                                <li className={styles.liItem}>
+                                    <span aria-hidden="true" className={styles.liSpanWarn}>›</span>誰がデータにアクセスできるか（IAM 設定）
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>データの分類と適切な保護設定
+                                <li className={styles.liItem}>
+                                    <span aria-hidden="true" className={styles.liSpanWarn}>›</span>データの分類と適切な保護設定
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>アプリケーションのセキュリティ
+                                <li className={styles.liItem}>
+                                    <span aria-hidden="true" className={styles.liSpanWarn}>›</span>アプリケーションのセキュリティ
                                 </li>
-                                <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative' }}>
-                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>エンドユーザーの認証・認可設定
+                                <li className={styles.liItemLast}>
+                                    <span aria-hidden="true" className={styles.liSpanWarn}>›</span>エンドユーザーの認証・認可設定
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-                    <div className={styles.warnBox} style={{ marginTop: '1.5rem' }}>
+                    <div className={`${styles.warnBox} ${styles.wbMt}`}>
                         <strong>⚠️ 試験頻出の引っかけ：</strong>
                         「Google Cloud はセキュアだから、ユーザーは何もしなくていい」→
-                        <strong style={{ color: 'var(--color-cdl-warning)' }}>誤り！</strong>
+                        <strong className={styles.wbSpan}>誤り！</strong>
                         データへのアクセス制御（IAM）・データの保護設定・アプリのセキュリティは常にユーザーの責任です。
                         Google
                         は<em>インフラ</em>を守りますが、<em>データとアクセス管理</em>はユーザーの責任です。
@@ -153,17 +153,8 @@ export const Section1 = () => {
                         </p>
                     </div>
 
-                    <div className={styles.ztDiagram} style={{ marginBottom: '2rem' }}>
-                        <div
-                            style={{
-                                fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                fontSize: '1rem',
-                                color: 'var(--color-card)',
-                                marginBottom: '1.5rem',
-                                letterSpacing: '0.1em',
-                                textTransform: 'uppercase',
-                            }}
-                        >
+                    <div className={`${styles.ztDiagram} ${styles.ztDiag}`}>
+                        <div className={styles.ztDiagTitle}>
                             従来の境界型セキュリティ vs ゼロトラスト
                         </div>
                         <div className={styles.ztCompare}>

@@ -307,3 +307,7 @@
 .bgSky { background: color-mix(in srgb, var(--color-cdl-sky) 10%, transparent); }
 .bgTeal { background: color-mix(in srgb, var(--color-cdl-teal) 10%, transparent); }
 .bgAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); }
+
+.mb15 { margin-bottom: 1.5rem; }
+.mb25 { margin-bottom: 2.5rem; }
+.mt30 { margin-top: 3rem; }

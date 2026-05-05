@@ -21,7 +21,7 @@ export const Section4 = () => {
                         </p>
                     </div>
 
-                    <div className={styles.g4} style={{ marginBottom: '1.5rem' }}>
+                    <div className={`${styles.g4} ${styles.mb15}`}>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🎯</div>
                             <h3 className={`${styles.cardTitle} ${styles.cardTitleSm}`}>適切なサービス選択</h3>
@@ -92,12 +92,12 @@ export const Section4 = () => {
 
                     {/* CHECKLIST */}
                     <h3 className={styles.subTitle} aria-label="Section 4 チェックリスト">Section 4 チェックリスト</h3>
-                    <div className={styles.g2} style={{ marginBottom: '2.5rem' }}>
+                    <div className={`${styles.g2} ${styles.mb25}`}>
                         <div>
                             <h4 className={styles.clCategory}>
                                 移行戦略・モダナイゼーション
                             </h4>
-                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="移行戦略・モダナイゼーション チェックリスト">
+                            <ul className={`${styles.checklist} ${styles.mb15}`} aria-label="移行戦略・モダナイゼーション チェックリスト">
                                 <li className={styles.clItem}>
                                     <div className={styles.clBox} aria-hidden="true">✓</div>
                                     7つのR（Rehost/Replatform/Refactor/Rebuild/Repurchase/Retire/Retain）を具体例で説明できる
@@ -152,7 +152,7 @@ export const Section4 = () => {
                             <h4 className={styles.clCategory}>
                                 ネットワーク・ハイブリッド
                             </h4>
-                            <ul className={styles.checklist} style={{ marginBottom: '1.5rem' }} aria-label="ネットワーク・ハイブリッド チェックリスト">
+                            <ul className={`${styles.checklist} ${styles.mb15}`} aria-label="ネットワーク・ハイブリッド チェックリスト">
                                 <li className={styles.clItem}>
                                     <div className={styles.clBox} aria-hidden="true">✓</div>
                                     Cloud VPN（安価・インターネット経由）と Cloud
@@ -294,7 +294,7 @@ export const Section4 = () => {
                     </div>
 
                     {/* CONFUSION TABLE */}
-                    <h3 className={styles.subTitle} aria-label="混同しやすいポイントの整理" style={{ marginTop: '3rem' }}>混同しやすいポイントの整理</h3>
+                    <h3 className={`${styles.subTitle} ${styles.mt30}`} aria-label="混同しやすいポイントの整理">混同しやすいポイントの整理</h3>
                     <div className={styles.cmpWrap}>
                         <table className={styles.cmpTable}>
                             <thead>

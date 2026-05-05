@@ -24,12 +24,12 @@ export const Section3 = () => {
                         </p>
                     </div>
 
-                    <div className={styles.g3} style={{ marginBottom: '2rem' }}>
+                    <div className={`${styles.g3} ${styles.mb20}`}>
                         <div className={`${styles.card} ${styles.borderRed}`}>
                             <div className={styles.cardIcon} aria-hidden="true">⚔️</div>
                             <div className={styles.cardTitle}>Cloud Armor</div>
-                            <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
-                                <strong style={{ color: 'var(--color-accent-foreground)' }}>
+                            <div className={`${styles.cardBody} ${styles.mb08}`}>
+                                <strong className={styles.accFg}>
                                     DDoS 防御 + WAF（Web Application Firewall）
                                 </strong>
                                 <br />グローバルロードバランサーの手前でトラフィックをフィルタリング。Google
@@ -41,7 +41,7 @@ export const Section3 = () => {
                                 <li>IP・地域ベースのブロック・レート制限</li>
                                 <li>Adaptive Protection（ML で攻撃自動検出）</li>
                             </ul>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.mt08}>
                                 <span className={`${styles.badge} ${styles.badgeRed}`}>外部攻撃を防御</span>
                             </div>
                         </div>
@@ -49,8 +49,8 @@ export const Section3 = () => {
                         <div className={`${styles.card} ${styles.borderYellow}`}>
                             <div className={styles.cardIcon} aria-hidden="true">🚪</div>
                             <div className={styles.cardTitle}>Cloud IAP（Identity-Aware Proxy）</div>
-                            <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
-                                <strong style={{ color: 'var(--color-accent-foreground)' }}>
+                            <div className={`${styles.cardBody} ${styles.mb08}`}>
+                                <strong className={styles.accFg}>
                                     VPN 不要のゼロトラストアクセス制御
                                 </strong>
                                 <br />アプリ単位で認証・認可を実施。すべてのアクセスをログ記録。
@@ -61,7 +61,7 @@ export const Section3 = () => {
                                 <li>IAM で誰がアクセスできるかを細かく制御</li>
                                 <li>SSH・RDP への TCP トンネリングにも対応</li>
                             </ul>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.mt08}>
                                 <span className={`${styles.badge} ${styles.badgeGold}`}>ゼロトラスト実装</span>
                             </div>
                         </div>
@@ -69,8 +69,8 @@ export const Section3 = () => {
                         <div className={`${styles.card} ${styles.borderBlue}`}>
                             <div className={styles.cardIcon} aria-hidden="true">🏰</div>
                             <div className={styles.cardTitle}>VPC Service Controls（VPC SC）</div>
-                            <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
-                                <strong style={{ color: 'var(--color-accent-foreground)' }}>
+                            <div className={`${styles.cardBody} ${styles.mb08}`}>
+                                <strong className={styles.accFg}>
                                     データ流出（Exfiltration）防止の境界線
                                 </strong>
                                 <br />GCP
@@ -81,7 +81,7 @@ export const Section3 = () => {
                                 <li>認証情報盗難後の外部コピーを物理的にブロック</li>
                                 <li>本番適用前に Dry Run モードで影響確認</li>
                             </ul>
-                            <div style={{ marginTop: '0.8rem' }}>
+                            <div className={styles.mt08}>
                                 <span className={`${styles.badge} ${styles.badgeSky}`}>データ流出防止</span>
                             </div>
                         </div>
@@ -89,11 +89,11 @@ export const Section3 = () => {
 
                     <div className={styles.warnBox}>
                         <strong>⚠️ 試験頻出：3 サービスの役割の違い</strong><br />
-                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Cloud Armor</strong>：外部からの攻撃（DDoS・WAF）を<em>ブロック</em>する
+                        <strong className={styles.accFg}>Cloud Armor</strong>：外部からの攻撃（DDoS・WAF）を<em>ブロック</em>する
                         → 外部攻撃防御<br />
-                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Cloud IAP</strong>：アクセスのたびに<em>認証・認可</em>する →
+                        <strong className={styles.accFg}>Cloud IAP</strong>：アクセスのたびに<em>認証・認可</em>する →
                         ゼロトラストアクセス制御<br />
-                        <strong style={{ color: 'var(--color-accent-foreground)' }}>VPC Service Controls</strong>：データを境界内に<em>閉じ込める</em> →
+                        <strong className={styles.accFg}>VPC Service Controls</strong>：データを境界内に<em>閉じ込める</em> →
                         内部からのデータ流出防止
                     </div>
 
@@ -148,7 +148,7 @@ export const Section3 = () => {
                     <h3 className={styles.subTitle}>
                         Cloud 監査ログの 4 種類<span className={styles.examTag}>最重要</span>
                     </h3>
-                    <div className={styles.auditWrap} style={{ marginBottom: '2rem' }}>
+                    <div className={`${styles.auditWrap} ${styles.mb20}`}>
                         <table className={styles.auditTable}>
                             <thead>
                                 <tr>
@@ -167,7 +167,7 @@ export const Section3 = () => {
                                     </td>
                                     <td>
                                         <span className={`${styles.badge} ${styles.badgeTeal}`}>常に有効</span><br />
-                                        <span style={{ fontSize: '0.9rem' }}>無効化不可</span>
+                                        <span className={styles.fs09}>無効化不可</span>
                                     </td>
                                     <td>無料</td>
                                     <td>400 日</td>
@@ -180,7 +180,7 @@ export const Section3 = () => {
                                     </td>
                                     <td>
                                         <span className={`${styles.badge} ${styles.badgeRed}`}>デフォルト無効</span><br />
-                                        <span style={{ fontSize: '0.9rem' }}>要有効化</span>
+                                        <span className={styles.fs09}>要有効化</span>
                                     </td>
                                     <td>有料（大量）</td>
                                     <td>30 日</td>
@@ -208,14 +208,14 @@ export const Section3 = () => {
 
                     <div className={styles.warnBox}>
                         <strong>⚠️ 試験頻出の区別：</strong>
-                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Admin Activity</strong>（管理アクティビティ）は「<em>設定を変えた</em>」操作 → 常に有効・無料。
-                        <strong style={{ color: 'var(--color-accent-foreground)' }}>Data Access</strong>（データアクセス）は「<em>データを読み書きした</em>」操作 →
+                        <strong className={styles.accFg}>Admin Activity</strong>（管理アクティビティ）は「<em>設定を変えた</em>」操作 → 常に有効・無料。
+                        <strong className={styles.accFg}>Data Access</strong>（データアクセス）は「<em>データを読み書きした</em>」操作 →
                         デフォルト無効・有効化が必要・有料。 機密データを扱うサービスでは必ず Data
                         Access ログを有効化する。
                     </div>
 
                     {/* SCC */}
-                    <h3 className={styles.subTitle} style={{ marginTop: '2.5rem' }}>
+                    <h3 className={`${styles.subTitle} ${styles.mt25}`}>
                         Security Command Center（SCC）
                     </h3>
                     <div className={styles.g2}>
@@ -243,15 +243,15 @@ export const Section3 = () => {
                             <div style={{ fontSize: '0.95rem', color: 'var(--color-muted-foreground)' }}>
                                 <div className={styles.sccItem}>
                                     <span className={`${styles.badge} ${styles.badgeRed}`} style={{ marginBottom: '0.3rem' }}>SCC</span><br />
-                                    GCP 全体の脅威・設定ミス・脆弱性を<strong style={{ color: 'var(--color-accent-foreground)' }}>一元可視化</strong>するダッシュボード。CSPM（Cloud Security Posture Management）。
+                                    GCP 全体の脅威・設定ミス・脆弱性を<strong className={styles.accFg}>一元可視化</strong>するダッシュボード。CSPM（Cloud Security Posture Management）。
                                 </div>
                                 <div className={styles.sccItem}>
                                     <span className={`${styles.badge} ${styles.badgeTeal}`} style={{ marginBottom: '0.3rem' }}>Cloud IDS</span><br />
-                                    ネットワークトラフィックを<strong style={{ color: 'var(--color-accent-foreground)' }}>監視・検知</strong>（アラートのみ）。Palo Alto 脅威インテリジェンス活用。
+                                    ネットワークトラフィックを<strong className={styles.accFg}>監視・検知</strong>（アラートのみ）。Palo Alto 脅威インテリジェンス活用。
                                 </div>
                                 <div>
                                     <span className={`${styles.badge} ${styles.badgeGold}`} style={{ marginBottom: '0.3rem' }}>Chronicle</span><br />
-                                    Google スケールの SIEM / SOAR。ペタバイトのセキュリティログを<strong style={{ color: 'var(--color-accent-foreground)' }}>超高速分析</strong>。脅威ハンティング。
+                                    Google スケールの SIEM / SOAR。ペタバイトのセキュリティログを<strong className={styles.accFg}>超高速分析</strong>。脅威ハンティング。
                                 </div>
                             </div>
                         </div>

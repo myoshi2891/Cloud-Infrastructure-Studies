@@ -268,3 +268,14 @@
 .bgSky { background: color-mix(in srgb, var(--color-cdl-sky) 10%, transparent); }
 .bgTeal { background: color-mix(in srgb, var(--color-cdl-teal) 10%, transparent); }
 .bgAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); }
+
+.srWrap { margin-bottom: 1.5rem; }
+.ulList { list-style: none; font-size: 1rem; color: var(--color-muted-foreground); padding: 0; margin: 0; }
+.liItem { padding: 0.35rem 0 0.35rem 1.2rem; position: relative; border-bottom: 1px solid var(--color-border); }
+.liItemLast { padding: 0.35rem 0 0.35rem 1.2rem; position: relative; }
+.liSpanSuccess { position: absolute; left: 0; color: var(--color-cdl-success); }
+.liSpanWarn { position: absolute; left: 0; color: var(--color-cdl-warning); }
+.wbMt { margin-top: 1.5rem; }
+.wbSpan { color: var(--color-cdl-warning); }
+.ztDiag { margin-bottom: 2rem; }
+.ztDiagTitle { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 1rem; color: var(--color-card); margin-bottom: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase; }

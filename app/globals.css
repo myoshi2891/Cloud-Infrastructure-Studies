@@ -101,3 +101,8 @@ body {
     background: var(--color-theme-cdl-bg);
     color: var(--color-theme-cdl-fg);
 }
+
+.code-line {
+    white-space: pre-wrap;
+    font-family: var(--font-mono);
+}
