@@ -184,12 +184,12 @@
     flex-direction: column;
 }
 .ptnHeader {
-    background: color-mix(in srgb, var(--color-card) 5%, transparent);
+    background: color-mix(in srgb, var(--color-card) 5%, var(--color-accent-foreground));
     padding: 1.2rem 1.5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-card) 10%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-card) 10%, var(--color-accent-foreground));
 }
 .ptnNum {
     font-family: var(--font-mono);

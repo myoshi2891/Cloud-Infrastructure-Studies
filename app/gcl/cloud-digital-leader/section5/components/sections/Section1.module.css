@@ -134,7 +134,7 @@
 }
 .src a {
     display: block;
-    color: var(--color-accent-blue, var(--color-cdl-info));
+    color: var(--color-cdl-info);
     text-decoration: none;
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
