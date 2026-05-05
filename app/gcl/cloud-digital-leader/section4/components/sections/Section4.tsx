@@ -24,7 +24,7 @@ export const Section4 = () => {
                     <div className={styles.g4} style={{ marginBottom: '1.5rem' }}>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🎯</div>
-                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>適切なサービス選択</div>
+                            <h3 className={`${styles.cardTitle} ${styles.cardTitleSm}`}>適切なサービス選択</h3>
                             <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 IaaS より
                                 PaaS・サーバーレスでインフラ管理コストを削減。適切なマシンタイプで過剰スペックを回避。
@@ -32,7 +32,7 @@ export const Section4 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">📏</div>
-                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>適切なサイジング</div>
+                            <h3 className={`${styles.cardTitle} ${styles.cardTitleSm}`}>適切なサイジング</h3>
                             <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 Recommender
                                 が実際の使用量を分析して最適化提案を自動表示。過剰プロビジョニングを解消する。
@@ -40,9 +40,9 @@ export const Section4 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">📈</div>
-                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>
+                            <h3 className={`${styles.cardTitle} ${styles.cardTitleSm}`}>
                                 需要に合わせたスケーリング
-                            </div>
+                            </h3>
                             <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 オートスケーリングで使用量に応じて増減。開発 VM は夜間・週末に Instance
                                 Schedules で自動停止。
@@ -50,7 +50,7 @@ export const Section4 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">💳</div>
-                            <div className={`${styles.cardTitle} ${styles.cardTitleSm}`}>最適な価格モデル</div>
+                            <h3 className={`${styles.cardTitle} ${styles.cardTitleSm}`}>最適な価格モデル</h3>
                             <div className={`${styles.cardBody} ${styles.cardBodySm}`}>
                                 CUD（最大57%割引）・Spot
                                 VM（最大91%割引）・SUD（自動適用・最大30%）を組み合わせる。
@@ -206,7 +206,7 @@ export const Section4 = () => {
                         <div className={styles.ptnCard}>
                             <div className={styles.ptnHeader}>
                                 <div className={styles.ptnNum}>01</div>
-                                <div className={styles.ptnTitle}>コンピューティングサービスの選択</div>
+                                <h4 className={styles.ptnTitle}>コンピューティングサービスの選択</h4>
                             </div>
                             <div className={styles.ptnBody}>
                                 <div className={styles.ptnQ}>
@@ -230,7 +230,7 @@ export const Section4 = () => {
                         <div className={styles.ptnCard}>
                             <div className={styles.ptnHeader}>
                                 <div className={styles.ptnNum}>02</div>
-                                <div className={styles.ptnTitle}>ハイブリッド接続の選択</div>
+                                <h4 className={styles.ptnTitle}>ハイブリッド接続の選択</h4>
                             </div>
                             <div className={styles.ptnBody}>
                                 <div className={styles.ptnQ}>
@@ -252,7 +252,7 @@ export const Section4 = () => {
                         <div className={styles.ptnCard}>
                             <div className={styles.ptnHeader}>
                                 <div className={styles.ptnNum}>03</div>
-                                <div className={styles.ptnTitle}>移行戦略の選択</div>
+                                <h4 className={styles.ptnTitle}>移行戦略の選択</h4>
                             </div>
                             <div className={styles.ptnBody}>
                                 <div className={styles.ptnQ}>
@@ -274,7 +274,7 @@ export const Section4 = () => {
                         <div className={styles.ptnCard}>
                             <div className={styles.ptnHeader}>
                                 <div className={styles.ptnNum}>04</div>
-                                <div className={styles.ptnTitle}>GKE モードの選択</div>
+                                <h4 className={styles.ptnTitle}>GKE モードの選択</h4>
                             </div>
                             <div className={styles.ptnBody}>
                                 <div className={styles.ptnQ}>

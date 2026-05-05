@@ -81,7 +81,7 @@ export const Section1 = () => {
 
                     <div className={styles.g2}>
                         <div className={`${styles.card} ${styles.borderLeftGreen}`}>
-                            <div className={styles.cardTitle}>✅ Google が常に守るもの</div>
+                            <h3 className={styles.cardTitle}>✅ Google が常に守るもの</h3>
                             <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
                                     <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>›</span>データセンターへの物理的な侵入防止
@@ -98,7 +98,7 @@ export const Section1 = () => {
                             </ul>
                         </div>
                         <div className={`${styles.card} ${styles.borderLeftYellow}`}>
-                            <div className={styles.cardTitle}>⚠️ ユーザーが常に守るもの</div>
+                            <h3 className={styles.cardTitle}>⚠️ ユーザーが常に守るもの</h3>
                             <ul style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.35rem 0 0.35rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
                                     <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>誰がデータにアクセスできるか（IAM 設定）
@@ -168,7 +168,7 @@ export const Section1 = () => {
                         </div>
                         <div className={styles.ztCompare}>
                             <div className={`${styles.ztCol} ${styles.ztColOld}`}>
-                                <div className={styles.ztColTitle}>❌ 従来の「城とお堀」モデル</div>
+                                <h3 className={styles.ztColTitle}>❌ 従来の「城とお堀」モデル</h3>
                                 <ul>
                                     <li>社内ネットワーク内にいる = 信頼できる</li>
                                     <li>ファイアウォールで外部を遮断</li>
@@ -178,7 +178,7 @@ export const Section1 = () => {
                                 </ul>
                             </div>
                             <div className={`${styles.ztCol} ${styles.ztColNew}`}>
-                                <div className={styles.ztColTitle}>✅ ゼロトラスト（BeyondCorp）</div>
+                                <h3 className={styles.ztColTitle}>✅ ゼロトラスト（BeyondCorp）</h3>
                                 <ul>
                                     <li>ネットワークの場所は信頼の根拠にならない</li>
                                     <li>アクセスのたびに「誰が・どのデバイスで・何に」を検証</li>
@@ -194,7 +194,7 @@ export const Section1 = () => {
                     <div className={styles.g3}>
                         <div className={`${styles.card} ${styles.borderYellow}`}>
                             <div className={styles.cardIcon} aria-hidden="true">🚪</div>
-                            <div className={styles.cardTitle}>Cloud Identity-Aware Proxy（IAP）</div>
+                            <h4 className={styles.cardTitle}>Cloud Identity-Aware Proxy（IAP）</h4>
                             <div className={styles.cardBody}>
                                 VPN
                                 なしで社内アプリへのセキュアなアクセスを実現。アプリ単位でユーザーを認証・認可し、すべてのアクセスをログ記録。
@@ -205,7 +205,7 @@ export const Section1 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderGreen}`}>
                             <div className={styles.cardIcon} aria-hidden="true">📋</div>
-                            <div className={styles.cardTitle}>Context-Aware Access</div>
+                            <h4 className={styles.cardTitle}>Context-Aware Access</h4>
                             <div className={styles.cardBody}>
                                 場所・デバイス・時間帯などのコンテキストに応じてアクセスを制御。「管理されたデバイスからのみ本番へアクセス可」などを実装。
                             </div>
@@ -215,7 +215,7 @@ export const Section1 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderBlue}`}>
                             <div className={styles.cardIcon} aria-hidden="true">🏢</div>
-                            <div className={styles.cardTitle}>BeyondCorp Enterprise</div>
+                            <h4 className={styles.cardTitle}>BeyondCorp Enterprise</h4>
                             <div className={styles.cardBody}>
                                 企業全体のゼロトラスト導入を支援するマネージドプラットフォーム。デバイス検証・ユーザー認証・アクセスポリシーを統合管理。
                             </div>

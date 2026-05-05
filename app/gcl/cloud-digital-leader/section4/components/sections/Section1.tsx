@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Section1.module.css';
-import { TableComponent } from '../TableComponent';
-import { DiagramSVG } from '../index';
+import { TableComponent } from '@/app/gcl/cloud-digital-leader/components/shared/TableComponent';
+import { DiagramSVG } from '@/components/DiagramSVG';
 
 const COMPUTE_COMPARISON = [
     { service: '🖥️ Compute Engine', abstraction: 'IaaS（VM）', management: '高（OS管理必要）', scaling: '手動＋MIG', billing: 'VM稼働時間（秒単位）', usage: 'レガシー移行・GPU・特殊OS' },
@@ -254,7 +254,7 @@ export const Section1 = () => {
                                 物理サーバー上にハイパーバイザーを構築し、各VMが独自のゲスト OS
                                 を持つ仮想化技術。
                             </div>
-                            <ul role="list" aria-label="特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="仮想マシン（VM）の特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ marginBottom: '0.3rem', fontSize: '1rem' }}>⏱️ 起動に数分かかる</li>
                                 <li style={{ marginBottom: '0.3rem' }}>💾 数GB のサイズ（ゲストOS込み）</li>
                                 <li style={{ marginBottom: '0.3rem' }}>
@@ -269,7 +269,7 @@ export const Section1 = () => {
                                 ホスト OS
                                 のカーネルを共有しつつ、アプリと依存関係のみをパッケージ化した軽量な実行環境。
                             </div>
-                            <ul role="list" aria-label="特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="コンテナの特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ marginBottom: '0.3rem', fontSize: '1rem' }}>⚡ 起動がミリ秒単位（超高速）</li>
                                 <li style={{ marginBottom: '0.3rem' }}>🪶 数 MB〜数百 MB（軽量）</li>
                                 <li style={{ marginBottom: '0.3rem' }}>
@@ -343,7 +343,7 @@ export const Section1 = () => {
                             >
                                 ✅ 向いているケース
                             </div>
-                            <ul role="list" aria-label="特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="GKE Autopilotの特徴リスト" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li
                                     style={{
                                         marginBottom: '0.25rem',
@@ -466,7 +466,7 @@ export const Section1 = () => {
 
                     <div className={styles.bp}>
                         <div className={styles.bpTitle}>✅ ベストプラクティス：GKE</div>
-                        <ul>
+                        <ul role="list" aria-label="GKE best practices">
                             <li>
                                 新規プロジェクトは
                                 <strong>Autopilot をデフォルト</strong>で選択し、特別な要件がある場合のみ Standard へ。

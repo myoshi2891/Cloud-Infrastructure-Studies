@@ -32,7 +32,7 @@ export const Section0 = () => {
                     <div className={styles.g3}>
                         <div className={`${styles.card} ${styles.borderRed}`}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🏗️</div>
-                            <div className={styles.cardTitle}>4.1 クラウドのモダナイゼーションと移行</div>
+                            <h3 className={styles.cardTitle}>4.1 クラウドのモダナイゼーションと移行</h3>
                             <div className={styles.cardBody}>
                                 7つのR移行戦略・CAMP フレームワーク・ワークロードの評価と分類。Rehost /
                                 Replatform / Refactor の違いが頻出。
@@ -43,7 +43,7 @@ export const Section0 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderGreen}`}>
                             <div className={`${styles.cardIcon} ${styles.bgGreen}`} aria-hidden="true">⚙️</div>
-                            <div className={styles.cardTitle}>4.2 クラウドにおけるコンピューティング</div>
+                            <h3 className={styles.cardTitle}>4.2 クラウドにおけるコンピューティング</h3>
                             <div className={styles.cardBody}>
                                 Compute Engine・GKE・Cloud Run・App Engine・Cloud Functions
                                 の選択基準と使い分け。Spot VM のコスト最適化も必須。
@@ -54,7 +54,7 @@ export const Section0 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderBlue}`}>
                             <div className={`${styles.cardIcon} ${styles.bgBlue}`} aria-hidden="true">📦</div>
-                            <div className={styles.cardTitle}>4.3 コンテナとオーケストレーション</div>
+                            <h3 className={styles.cardTitle}>4.3 コンテナとオーケストレーション</h3>
                             <div className={styles.cardBody}>
                                 VM とコンテナの違い・Kubernetes の概念・GKE Autopilot vs Standard
                                 の使い分け。マイクロサービスのビジネス価値。
@@ -65,7 +65,7 @@ export const Section0 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderYellow}`}>
                             <div className={`${styles.cardIcon} ${styles.bgYellow}`} aria-hidden="true">🌐</div>
-                            <div className={styles.cardTitle}>4.4 API の戦略的価値</div>
+                            <h3 className={styles.cardTitle}>4.4 API の戦略的価値</h3>
                             <div className={styles.cardBody}>
                                 Apigee API Management
                                 による収益化・セキュリティ・レガシーシステムの抽象化。エコシステム構築の考え方。
@@ -76,7 +76,7 @@ export const Section0 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderPurple}`}>
                             <div className={`${styles.cardIcon} ${styles.bgPurple}`} aria-hidden="true">☁️</div>
-                            <div className={styles.cardTitle}>4.5 ハイブリッド＆マルチクラウド</div>
+                            <h3 className={styles.cardTitle}>4.5 ハイブリッド＆マルチクラウド</h3>
                             <div className={styles.cardBody}>
                                 GKE
                                 Enterprise（旧Anthos）による統合管理・複数クラウドを選ぶビジネス上の理由・オンプレとクラウドの接続方法。
@@ -87,7 +87,7 @@ export const Section0 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderRed}`}>
                             <div className={`${styles.cardIcon} ${styles.bgRed}`} aria-hidden="true">🔄</div>
-                            <div className={styles.cardTitle}>4.6 SRE と DevOps の原則</div>
+                            <h3 className={styles.cardTitle}>4.6 SRE と DevOps の原則</h3>
                             <div className={styles.cardBody}>
                                 DevOps 文化・CI/CD パイプライン・SLO/SLA/SLI
                                 の概念・エラーバジェット・DORA メトリクスの理解。
@@ -182,9 +182,9 @@ export const Section0 = () => {
                     <h3 className={styles.subTitle}>CAMP（Cloud Application Modernization Program）</h3>
                     <div className={styles.g2}>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle} style={{ marginBottom: '1.2rem' }}>
+                            <h4 className={styles.cardTitle} style={{ marginBottom: '1.2rem' }}>
                                 CAMP の 4 フェーズ
-                            </div>
+                            </h4>
                             <div className={styles.steps}>
                                 <div className={styles.step}>
                                     <div className={styles.stepN} aria-hidden="true">1</div>
@@ -228,7 +228,7 @@ export const Section0 = () => {
                         </div>
                         <div>
                             <div className={styles.hlBox} style={{ marginBottom: '1.5rem' }}>
-                                <div className={styles.hlBoxTitle}>🎯 モダナイゼーションの 3 段階</div>
+                                <h4 className={styles.hlBoxTitle}>🎯 モダナイゼーションの 3 段階</h4>
                                 <p className={styles.hlBoxText}>
                                     <strong className={styles.hlBoxTextStrong}>Stage 1 — リフト＆シフト：</strong>オンプレ VM をそのままクラウドへ。最速・最低リスク。
                                 </p>
@@ -240,7 +240,7 @@ export const Section0 = () => {
                                 </p>
                             </div>
                             <div className={styles.bp}>
-                                <div className={styles.bpTitle}>✅ ベストプラクティス：移行戦略の選択</div>
+                                <h4 className={styles.bpTitle}>✅ ベストプラクティス：移行戦略の選択</h4>
                                 <ul>
                                     <li>
                                         まず Stage 1（Rehost）で素早くクラウドへ移行し Quick Win

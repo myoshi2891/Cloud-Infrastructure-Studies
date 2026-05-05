@@ -61,7 +61,7 @@ export const Section1: React.FC = () => {
                     <div className={`${baseStyles.warnBox} mt-6`}>
                         <strong>⚠️ 試験の落とし穴：</strong>
                         「生成 AI ＝ LLM」は<strong>誤り</strong>です。LLM
-                        はテキスト生成専用ですが、 生成 AI
+                        はテキスト生成専用ですが、生成 AI
                         には画像生成（Imagen）・動画生成（Veo）・音楽生成なども含まれます。
                     </div>
                 </div>

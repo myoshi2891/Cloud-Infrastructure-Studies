@@ -393,9 +393,9 @@ export const Section2 = () => {
                     </div>
 
                     {/* CONNECTIVITY COMPARISON */}
-                    <div className={styles.subTitle}>
+                    <h3 className={styles.subTitle}>
                         オンプレミスとの接続方法の選択<span className={styles.examTag}>最重要</span>
-                    </div>
+                    </h3>
                     <div className={styles.g2} style={{ marginBottom: '1.5rem' }}>
                         <div className={`${styles.card} ${styles.borderLeftBlue}`}>
                             <div
@@ -654,9 +654,9 @@ export const Section2 = () => {
                     </div>
 
                     {/* GKE ENTERPRISE */}
-                    <div className={styles.subTitle}>
+                    <h3 className={styles.subTitle}>
                         GKE Enterprise（旧 Anthos）によるサイロの打破<span className={styles.examTag}>最重要</span>
-                    </div>
+                    </h3>
                     <div className={styles.anthosBox} style={{ marginBottom: '1.5rem' }}>
                         <div
                             style={{

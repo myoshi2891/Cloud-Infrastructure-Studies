@@ -24,7 +24,7 @@ export const Section4_Responsible: React.FC = () => {
                 <h3 className={baseStyles.subsectionTitle}>なぜ責任ある AI が必要か</h3>
                 <div className={`${baseStyles.grid3} mb-8`}>
                     <div className={`${baseStyles.card} ${styles.borderAccentRed}`}>
-                        <div className="text-2xl mb-2">⚖️</div>
+                        <div className="text-2xl mb-2" aria-hidden="true">⚖️</div>
                         <div className={`${baseStyles.cardTitle} text-base`}>差別・偏見（Bias）</div>
                         <div className={`${baseStyles.cardDesc} text-base`}>
                             AI が学習データに含まれる偏りを引き継ぐ。<br />
@@ -32,7 +32,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${baseStyles.card} ${styles.borderAccentYellow}`}>
-                        <div className="text-2xl mb-2">🫧</div>
+                        <div className="text-2xl mb-2" aria-hidden="true">🫧</div>
                         <div className={`${baseStyles.cardTitle} text-base`}>
                             ハルシネーション（幻覚）
                         </div>
@@ -42,7 +42,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${baseStyles.card} ${styles.borderAccentPurple}`}>
-                        <div className="text-2xl mb-2">🔒</div>
+                        <div className="text-2xl mb-2" aria-hidden="true">🔒</div>
                         <div className={`${baseStyles.cardTitle} text-base`}>プライバシー侵害</div>
                         <div className={`${baseStyles.cardDesc} text-base`}>
                             学習データに含まれる個人情報の漏洩リスク。<br />
@@ -50,7 +50,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${baseStyles.card} ${styles.borderAccentBlue}`}>
-                        <div className="text-2xl mb-2">🎭</div>
+                        <div className="text-2xl mb-2" aria-hidden="true">🎭</div>
                         <div className={`${baseStyles.cardTitle} text-base`}>不正利用・悪用</div>
                         <div className={`${baseStyles.cardDesc} text-base`}>
                             フェイクニュース・ディープフェイク・詐欺コンテンツの大量生成。<br />
@@ -58,7 +58,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${baseStyles.card} ${styles.borderAccentCyan}`}>
-                        <div className="text-2xl mb-2">📦</div>
+                        <div className="text-2xl mb-2" aria-hidden="true">📦</div>
                         <div className={`${baseStyles.cardTitle} text-base`}>
                             透明性の欠如（ブラックボックス）
                         </div>
@@ -68,7 +68,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${baseStyles.card} ${styles.borderAccentGreen}`}>
-                        <div className="text-2xl mb-2">🌐</div>
+                        <div className="text-2xl mb-2" aria-hidden="true">🌐</div>
                         <div className={`${baseStyles.cardTitle} text-base`}>アクセス格差</div>
                         <div className={`${baseStyles.cardDesc} text-base`}>
                             AI の恩恵が特定の集団にのみ享受される。<br />
@@ -82,7 +82,7 @@ export const Section4_Responsible: React.FC = () => {
                 </h3>
                 <div className={styles.raiGrid}>
                     <div className={`${styles.raiCard} ${styles.raiCardBlue}`}>
-                        <div className={styles.raiIcon}>⚖️</div>
+                        <div className={styles.raiIcon} aria-hidden="true">⚖️</div>
                         <div className={styles.raiName}>① 公平性（Fairness）</div>
                         <div className={styles.raiDesc}>
                             人種・性別・年齢・宗教等で差別的な出力をしない。
@@ -91,7 +91,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${styles.raiCard} ${styles.raiCardGreen}`}>
-                        <div className={styles.raiIcon}>🛡️</div>
+                        <div className={styles.raiIcon} aria-hidden="true">🛡️</div>
                         <div className={styles.raiName}>② 信頼性と安全性</div>
                         <div className={styles.raiDesc}>
                             設計通りの動作をし、安全性が確保されていること。
@@ -100,7 +100,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${styles.raiCard} ${styles.raiCardCyan}`}>
-                        <div className={styles.raiIcon}>🔐</div>
+                        <div className={styles.raiIcon} aria-hidden="true">🔐</div>
                         <div className={styles.raiName}>③ プライバシーとセキュリティ</div>
                         <div className={styles.raiDesc}>
                             個人データを最小限に収集し、適切に保護する。
@@ -109,7 +109,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${styles.raiCard} ${styles.raiCardYellow}`}>
-                        <div className={styles.raiIcon}>♿</div>
+                        <div className={styles.raiIcon} aria-hidden="true">♿</div>
                         <div className={styles.raiName}>④ 包括性とアクセシビリティ</div>
                         <div className={styles.raiDesc}>
                             すべての人（障害者・少数者を含む）が等しく AI
@@ -118,7 +118,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${styles.raiCard} ${styles.raiCardPurple}`}>
-                        <div className={styles.raiIcon}>🔍</div>
+                        <div className={styles.raiIcon} aria-hidden="true">🔍</div>
                         <div className={styles.raiName}>⑤ 透明性と説明可能性（XAI）</div>
                         <div className={styles.raiDesc}>
                             AI がどのように動作するかを理解・説明できること。
@@ -127,7 +127,7 @@ export const Section4_Responsible: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${styles.raiCard} ${styles.raiCardRed}`}>
-                        <div className={styles.raiIcon}>📋</div>
+                        <div className={styles.raiIcon} aria-hidden="true">📋</div>
                         <div className={styles.raiName}>⑥ 説明責任（Accountability）</div>
                         <div className={styles.raiDesc}>
                             AI の判断・行動に対して責任を持つ人間・組織が存在すること。

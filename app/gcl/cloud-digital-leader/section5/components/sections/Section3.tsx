@@ -145,9 +145,9 @@ export const Section3 = () => {
                         </p>
                     </div>
 
-                    <div className={styles.subTitle}>
+                    <h3 className={styles.subTitle}>
                         Cloud 監査ログの 4 種類<span className={styles.examTag}>最重要</span>
-                    </div>
+                    </h3>
                     <div className={styles.auditWrap} style={{ marginBottom: '2rem' }}>
                         <table className={styles.auditTable}>
                             <thead>
@@ -215,9 +215,9 @@ export const Section3 = () => {
                     </div>
 
                     {/* SCC */}
-                    <div className={styles.subTitle} style={{ marginTop: '2.5rem' }}>
+                    <h3 className={styles.subTitle} style={{ marginTop: '2.5rem' }}>
                         Security Command Center（SCC）
-                    </div>
+                    </h3>
                     <div className={styles.g2}>
                         <div className={styles.card}>
                             <div className={styles.cardTitle}>🎯 SCC が自動検出するもの</div>

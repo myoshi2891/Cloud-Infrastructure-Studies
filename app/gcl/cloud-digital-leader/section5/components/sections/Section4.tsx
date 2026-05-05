@@ -108,10 +108,10 @@ export const Section4 = () => {
 
                     <div className={styles.infoBox} style={{ marginTop: '1.5rem' }}>
                         <strong style={{ color: 'var(--color-accent-foreground)' }}>🌏 データ主権とリージョン選択：</strong>
-                        EU のデータは EU リージョン（<code style={{ background: 'rgba(0,0,0,0.05)', padding: '2px 4px', borderRadius: '3px' }}>europe-west1</code>
-                        等）、日本のデータは日本リージョン（<code style={{ background: 'rgba(0,0,0,0.05)', padding: '2px 4px', borderRadius: '3px' }}>asia-northeast1</code> 東京）に保管。
+                        EU のデータは EU リージョン（<code className={styles.inlineCode}>europe-west1</code>
+                        等）、日本のデータは日本リージョン（<code className={styles.inlineCode}>asia-northeast1</code> 東京）に保管。
                         組織ポリシー
-                        <code style={{ background: 'rgba(0,0,0,0.05)', padding: '2px 4px', borderRadius: '3px' }}>constraints/gcp.resourceLocations</code>
+                        <code className={styles.inlineCode}>constraints/gcp.resourceLocations</code>
                         で指定リージョン以外でのリソース作成を禁止することで GDPR
                         等のデータ主権要件に対応できます。
                     </div>
@@ -151,9 +151,9 @@ export const Section4 = () => {
                         以上の組み込み情報タイプ（PII・医療情報・認証情報など）に対応。
                     </div>
 
-                    <div className={styles.subTitle}>
+                    <h3 className={styles.subTitle}>
                         7 つの保護手法<span className={styles.examTag}>試験で最頻出</span>
-                    </div>
+                    </h3>
                     <div className={styles.dlpGrid}>
                         <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-info)' }}>
                             <div className={styles.dlpName} style={{ color: 'var(--color-cdl-info)' }}>① 検出</div>
@@ -475,7 +475,7 @@ export const Section4 = () => {
                     </div>
 
                     {/* CONFUSION TABLE */}
-                    <div className={styles.subTitle} style={{ marginTop: '3rem' }}>混同しやすいポイントの整理</div>
+                    <h3 className={styles.subTitle} style={{ marginTop: '3rem' }}>混同しやすいポイントの整理</h3>
                     <div className={styles.confWrap}>
                         <table className={styles.confTable}>
                             <thead>

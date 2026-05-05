@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './Section2.module.css';
+import styles from '@/app/gcl/cloud-digital-leader/section5/components/sections/Section2.module.css';
 
 /**
  * Section2 コンポーネント
