@@ -103,6 +103,6 @@ body {
 }
 
 .code-line {
-    white-space: pre-wrap;
+    white-space: pre;
     font-family: var(--font-mono);
 }

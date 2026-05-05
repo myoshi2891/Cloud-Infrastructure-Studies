@@ -107,7 +107,7 @@
 .badgeGold { background: color-mix(in srgb, var(--color-cdl-warning) 10%, transparent); color: var(--color-cdl-warning); border: 1px solid color-mix(in srgb, var(--color-cdl-warning) 20%, transparent); }
 .badgeTeal { background: color-mix(in srgb, var(--color-cdl-success) 10%, transparent); color: var(--color-cdl-success); border: 1px solid color-mix(in srgb, var(--color-cdl-success) 20%, transparent); }
 .badgeSky { background: color-mix(in srgb, var(--color-cdl-info) 10%, transparent); color: var(--color-cdl-info); border: 1px solid color-mix(in srgb, var(--color-cdl-info) 20%, transparent); }
-.badgeAmber { background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent); color: var(--color-cdl-error); border: 1px solid color-mix(in srgb, var(--color-cdl-error) 20%, transparent); }
+.badgeAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); color: var(--color-cdl-amber); border: 1px solid color-mix(in srgb, var(--color-cdl-amber) 20%, transparent); }
 .badgeRed { background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent); color: var(--color-cdl-error); border: 1px solid color-mix(in srgb, var(--color-cdl-error) 20%, transparent); }
 
 /* Boxes */
@@ -321,7 +321,7 @@
 .borderYellow { border-top: 3px solid var(--color-cdl-warning); }
 .borderPurple { border-top: 3px solid var(--color-cdl-accent); }
 .borderSky { border-top: 3px solid var(--color-cdl-sky); }
-.borderAmber { border-top: 3px solid var(--color-cdl-error); }
+.borderAmber { border-top: 3px solid var(--color-cdl-amber); }
 .borderTeal { border-top: 3px solid var(--color-cdl-teal); }
 
 .borderLeftRed { border-left: 3px solid var(--color-cdl-error); }
@@ -339,4 +339,4 @@
 .bgPurple { background: color-mix(in srgb, var(--color-cdl-accent) 10%, transparent); }
 .bgSky { background: color-mix(in srgb, var(--color-cdl-sky) 10%, transparent); }
 .bgTeal { background: color-mix(in srgb, var(--color-cdl-teal) 10%, transparent); }
-.bgAmber { background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent); }
+.bgAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); }

@@ -1,7 +1,6 @@
-import React from 'react';
-import styles from './Section0.module.css';
-import { TableComponent } from '../TableComponent';
-import { MIGRATION_STRATEGIES } from '../../constants';
+import styles from '@/app/gcl/cloud-digital-leader/section4/components/sections/Section0.module.css';
+import { TableComponent } from '@/app/gcl/cloud-digital-leader/components/shared/TableComponent';
+import { MIGRATION_STRATEGIES } from '@/app/gcl/cloud-digital-leader/section4/constants';
 
 const BADGE_CLASS_MAP = {
     badgeG: styles.badgeG,

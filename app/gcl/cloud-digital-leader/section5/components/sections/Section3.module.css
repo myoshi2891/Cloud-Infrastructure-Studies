@@ -23,5 +23,5 @@
 .mt08 { margin-top: 0.8rem; }
 .mt25 { margin-top: 2.5rem; }
 .accFg { color: var(--color-accent-foreground); }
-.fs09 { fontSize: 0.9rem; }
-.fwN { fontWeight: normal; }
+.fs09 { font-size: 0.9rem; }
+.fwN { font-weight: normal; }

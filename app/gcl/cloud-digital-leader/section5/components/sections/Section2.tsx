@@ -10,11 +10,11 @@ import styles from '@/app/gcl/cloud-digital-leader/section5/components/sections/
 export const Section2 = () => {
     return (
         <>
-            <section id="iam" className={`${styles.section} ${styles.sectionAlt}`}>
+            <section id="iam" aria-labelledby="iam-heading" className={`${styles.section} ${styles.sectionAlt}`}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.3 Identity and Access Management</div>
-                        <h2 className={styles.shTitle}>
+                        <h2 id="iam-heading" className={styles.shTitle}>
                             IAM（アイデンティティとアクセス管理）<span className={styles.examTag}>最重要</span>
                         </h2>
                         <p className={styles.shDesc}>
@@ -31,12 +31,7 @@ export const Section2 = () => {
                             }}
                         >
                             <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--color-cdl-warning)',
-                                    marginBottom: '0.7rem',
-                                }}
+                                className={styles.warningMono}
                             >
                                 PRINCIPAL / 主体（誰が）
                             </div>
@@ -65,12 +60,7 @@ export const Section2 = () => {
                             }}
                         >
                             <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--color-cdl-success)',
-                                    marginBottom: '0.7rem',
-                                }}
+                                className={styles.successMono}
                             >
                                 ROLE / ロール（何ができるか）
                             </div>
@@ -100,12 +90,7 @@ export const Section2 = () => {
                             }}
                         >
                             <div
-                                style={{
-                                    fontFamily: 'var(--ff-mono, \'DM Mono\', monospace)',
-                                    fontSize: '1rem',
-                                    color: 'var(--color-cdl-info)',
-                                    marginBottom: '0.7rem',
-                                }}
+                                className={styles.infoMono}
                             >
                                 RESOURCE / リソース（何に対して）
                             </div>
@@ -129,9 +114,9 @@ export const Section2 = () => {
                     </div>
 
                     {/* ROLE COMPARISON */}
-                    <div className={styles.subTitle}>
+                    <h3 className={styles.subTitle} aria-label="3 種類のロール詳細比較">
                         3 種類のロール詳細比較<span className={styles.examTag}>頻出</span>
-                    </div>
+                    </h3>
                     <div className={styles.roleWrap}>
                         <table className={styles.roleTable}>
                             <thead>
@@ -176,12 +161,12 @@ export const Section2 = () => {
                     </div>
 
                     {/* SERVICE ACCOUNT */}
-                    <div className={styles.subTitle}>
+                    <h3 className={styles.subTitle} aria-label="サービスアカウントの安全管理">
                         サービスアカウントの安全管理<span className={styles.examTag}>頻出</span>
-                    </div>
+                    </h3>
                     <div className={styles.g2}>
                         <div className={`${styles.card} ${styles.borderLeftRed}`}>
-                            <div className={styles.cardTitle}>❌ サービスアカウントキーの危険性</div>
+                            <h4 className={styles.cardTitle}>❌ サービスアカウントキーの危険性</h4>
                             <div className={styles.cardBody} style={{ marginBottom: '0.8rem' }}>
                                 JSON
                                 キーファイルは有効期限なしの認証情報。漏洩すると攻撃者が任意の時間・場所から
@@ -193,7 +178,7 @@ export const Section2 = () => {
                             </div>
                         </div>
                         <div className={`${styles.card} ${styles.borderLeftGreen}`}>
-                            <div className={styles.cardTitle}>✅ キーなしの代替認証手法</div>
+                            <h4 className={styles.cardTitle}>✅ キーなしの代替認証手法</h4>
                             <ul role="list" aria-label="Keyless authentication alternatives" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
                                     <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>①</span>
@@ -215,7 +200,7 @@ export const Section2 = () => {
                     </div>
 
                     <div className={styles.bpBox}>
-                        <div className={styles.bpTitle}>✅ ベストプラクティス：IAM</div>
+                        <h3 className={styles.bpTitle} aria-label="ベストプラクティス：IAM">✅ ベストプラクティス：IAM</h3>
                         <ul role="list" aria-label="IAM best practices">
                             <li>
                                 基本ロール（Owner/Editor/Viewer）は本番環境で<strong>絶対に使用しない</strong>。事前定義ロールを使う。
@@ -235,18 +220,10 @@ export const Section2 = () => {
 
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
-                        <a href="https://cloud.google.com/iam/docs/overview" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/iam/docs/overview
-                        </a>
-                        <a href="https://cloud.google.com/iam/docs/best-practices" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/iam/docs/best-practices
-                        </a>
-                        <a href="https://cloud.google.com/iam/docs/service-account-overview" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/iam/docs/service-account-overview
-                        </a>
-                        <a href="https://cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/iam/docs/workload-identity-federation
-                        </a>
+                        <a href="https://cloud.google.com/iam/docs/overview" target="_blank" rel="noopener noreferrer">Cloud IAM overview</a>
+                        <a href="https://cloud.google.com/iam/docs/best-practices" target="_blank" rel="noopener noreferrer">IAM best practices</a>
+                        <a href="https://cloud.google.com/iam/docs/service-account-overview" target="_blank" rel="noopener noreferrer">Service Accounts overview</a>
+                        <a href="https://cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer">Workload Identity Federation</a>
                     </div>
                 </div>
             </section>
@@ -339,9 +316,9 @@ export const Section2 = () => {
                     </div>
 
                     {/* KMS OPTIONS */}
-                    <div className={styles.subTitle} style={{ marginTop: '2.5rem' }}>
+                    <h3 className={`${styles.subTitle} ${styles.marginTopLarge}`} aria-label="Cloud KMS：暗号鍵管理の 3 段階">
                         Cloud KMS：暗号鍵管理の 3 段階<span className={styles.examTag}>頻出</span>
-                    </div>
+                    </h3>
                     <div className={styles.kmsWrap}>
                         <table className={styles.kmsTable}>
                             <thead>
@@ -403,7 +380,7 @@ export const Section2 = () => {
                     <div className={styles.g3} style={{ marginTop: '1.5rem' }}>
                         <div className={styles.card}>
                             <div className={styles.cardIcon} aria-hidden="true">🔒</div>
-                            <div className={styles.cardTitle}>Cloud HSM</div>
+                            <h4 className={styles.cardTitle}>Cloud HSM</h4>
                             <div className={styles.cardBody}>
                                 FIPS 140-2 Level 3
                                 認証のハードウェアセキュリティモジュール。物理的に改ざん困難なハードウェアで鍵を保護。PCI
@@ -415,7 +392,7 @@ export const Section2 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={styles.cardIcon} aria-hidden="true">💻</div>
-                            <div className={styles.cardTitle}>Confidential VM</div>
+                            <h4 className={styles.cardTitle}>Confidential VM</h4>
                             <div className={styles.cardBody}>
                                 処理中（メモリ上）のデータも暗号化。AMD SEV（Secure Encrypted
                                 Virtualization）技術を使用。Google
@@ -427,7 +404,7 @@ export const Section2 = () => {
                         </div>
                         <div className={styles.card}>
                             <div className={styles.cardIcon} aria-hidden="true">🗝️</div>
-                            <div className={styles.cardTitle}>Secret Manager</div>
+                            <h4 className={styles.cardTitle}>Secret Manager</h4>
                             <div className={styles.cardBody}>
                                 API
                                 キー・パスワード・証明書などの機密情報を安全に管理。コードへのハードコード禁止。バージョン管理・アクセス制御・監査ログ付き。
@@ -439,7 +416,7 @@ export const Section2 = () => {
                     </div>
 
                     <div className={styles.bpBox}>
-                        <div className={styles.bpTitle}>✅ ベストプラクティス：暗号化</div>
+                        <h3 className={styles.bpTitle} aria-label="ベストプラクティス：暗号化">✅ ベストプラクティス：暗号化</h3>
                         <ul role="list" aria-label="Encryption best practices">
                             <li>一般ワークロード → Google-Managed Keys（デフォルト・無料）で十分。</li>
                             <li>
@@ -462,18 +439,10 @@ export const Section2 = () => {
 
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
-                        <a href="https://cloud.google.com/security/encryption/default-encryption" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/security/encryption/default-encryption
-                        </a>
-                        <a href="https://cloud.google.com/kms/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/kms/docs
-                        </a>
-                        <a href="https://cloud.google.com/confidential-computing/confidential-vm/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/confidential-computing/confidential-vm/docs
-                        </a>
-                        <a href="https://cloud.google.com/secret-manager/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/secret-manager/docs
-                        </a>
+                        <a href="https://cloud.google.com/security/encryption/default-encryption" target="_blank" rel="noopener noreferrer">Default encryption at rest</a>
+                        <a href="https://cloud.google.com/kms/docs" target="_blank" rel="noopener noreferrer">Cloud KMS documentation</a>
+                        <a href="https://cloud.google.com/confidential-computing/confidential-vm/docs" target="_blank" rel="noopener noreferrer">Confidential VM documentation</a>
+                        <a href="https://cloud.google.com/secret-manager/docs" target="_blank" rel="noopener noreferrer">Secret Manager documentation</a>
                     </div>
                 </div>
             </section>

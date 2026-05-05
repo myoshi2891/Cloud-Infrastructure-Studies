@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './Section1.module.css';
+import styles from '@/app/gcl/cloud-digital-leader/section5/components/sections/Section1.module.css';
 
 /**
  * Section1 コンポーネント
@@ -160,7 +159,7 @@ export const Section1 = () => {
                         <div className={styles.ztCompare}>
                             <div className={`${styles.ztCol} ${styles.ztColOld}`}>
                                 <h3 className={styles.ztColTitle}>❌ 従来の「城とお堀」モデル</h3>
-                                <ul>
+                                <ul role="list" aria-label="Castle and Moat characteristics">
                                     <li>社内ネットワーク内にいる = 信頼できる</li>
                                     <li>ファイアウォールで外部を遮断</li>
                                     <li>一度侵入されると内部を自由に移動（横移動）</li>
@@ -170,7 +169,7 @@ export const Section1 = () => {
                             </div>
                             <div className={`${styles.ztCol} ${styles.ztColNew}`}>
                                 <h3 className={styles.ztColTitle}>✅ ゼロトラスト（BeyondCorp）</h3>
-                                <ul>
+                                <ul role="list" aria-label="Zero Trust characteristics">
                                     <li>ネットワークの場所は信頼の根拠にならない</li>
                                     <li>アクセスのたびに「誰が・どのデバイスで・何に」を検証</li>
                                     <li>リソースごとに最小限のアクセス権を付与</li>

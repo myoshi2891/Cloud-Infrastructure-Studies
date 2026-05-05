@@ -8,7 +8,7 @@
 .raiCard {
     background: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 1.8rem;
     position: relative;
     overflow: hidden;
@@ -42,7 +42,7 @@
 .checklist {
     background: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -67,7 +67,7 @@
     height: 24px;
     background: var(--color-muted);
     color: var(--color-cdl-success);
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,17 +76,17 @@
 }
 
 /* Border accent variants for "Why" cards */
-.borderAccentRed    { border-left: 3px solid var(--color-accent-red); }
-.borderAccentYellow { border-left: 3px solid var(--color-accent-yellow); }
-.borderAccentPurple { border-left: 3px solid var(--color-accent-purple); }
-.borderAccentBlue   { border-left: 3px solid var(--color-accent-blue); }
-.borderAccentCyan   { border-left: 3px solid var(--color-accent-cyan); }
+.borderAccentRed    { border-left: 3px solid var(--color-cdl-error); }
+.borderAccentYellow { border-left: 3px solid var(--color-cdl-warning); }
+.borderAccentPurple { border-left: 3px solid var(--color-cdl-accent); }
+.borderAccentBlue   { border-left: 3px solid var(--color-cdl-info); }
+.borderAccentCyan   { border-left: 3px solid var(--color-cdl-sky); }
 .borderAccentGreen  { border-left: 3px solid var(--color-cdl-success); }
 
 /* Border-top accent variants for principle cards */
-.raiCardBlue   { border-top: 3px solid var(--color-accent-blue); }
+.raiCardBlue   { border-top: 3px solid var(--color-cdl-info); }
 .raiCardGreen  { border-top: 3px solid var(--color-cdl-success); }
-.raiCardCyan   { border-top: 3px solid var(--color-accent-cyan); }
-.raiCardYellow { border-top: 3px solid var(--color-accent-yellow); }
-.raiCardPurple { border-top: 3px solid var(--color-accent-purple); }
-.raiCardRed    { border-top: 3px solid var(--color-accent-red); }
+.raiCardCyan   { border-top: 3px solid var(--color-cdl-sky); }
+.raiCardYellow { border-top: 3px solid var(--color-cdl-warning); }
+.raiCardPurple { border-top: 3px solid var(--color-cdl-accent); }
+.raiCardRed    { border-top: 3px solid var(--color-cdl-error); }

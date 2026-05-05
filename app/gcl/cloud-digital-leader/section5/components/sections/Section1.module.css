@@ -15,7 +15,7 @@
     margin-bottom: 3.5rem;
 }
 .shTag {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'DM Mono', monospace);
     font-size: 1rem;
     font-weight: 500;
     color: var(--color-cdl-error);
@@ -98,7 +98,7 @@
 /* Badges */
 .badge {
     display: inline-block;
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'DM Mono', monospace);
     font-size: 0.85rem;
     padding: 0.2rem 0.6rem;
     border-radius: 100px;
@@ -107,7 +107,7 @@
 .badgeGold { background: color-mix(in srgb, var(--color-cdl-warning) 10%, transparent); color: var(--color-cdl-warning); border: 1px solid color-mix(in srgb, var(--color-cdl-warning) 20%, transparent); }
 .badgeTeal { background: color-mix(in srgb, var(--color-cdl-success) 10%, transparent); color: var(--color-cdl-success); border: 1px solid color-mix(in srgb, var(--color-cdl-success) 20%, transparent); }
 .badgeSky { background: color-mix(in srgb, var(--color-cdl-info) 10%, transparent); color: var(--color-cdl-info); border: 1px solid color-mix(in srgb, var(--color-cdl-info) 20%, transparent); }
-.badgeAmber { background: color-mix(in srgb, var(--color-cdl-error) 10%, transparent); color: var(--color-cdl-error); border: 1px solid color-mix(in srgb, var(--color-cdl-error) 20%, transparent); }
+.badgeAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); color: var(--color-cdl-amber); border: 1px solid color-mix(in srgb, var(--color-cdl-amber) 20%, transparent); }
 
 /* Warn Box */
 .warnBox {
@@ -126,7 +126,7 @@
     border-top: 1px solid var(--color-border);
 }
 .srcLabel {
-    font-family: var(--ff-mono, 'DM Mono', monospace);
+    font-family: var(--font-mono, 'DM Mono', monospace);
     font-size: 0.9rem;
     color: var(--color-muted-foreground);
     margin-bottom: 1rem;

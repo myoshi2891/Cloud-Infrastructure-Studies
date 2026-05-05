@@ -124,7 +124,7 @@ export const Section1 = () => {
                     <div className={styles.spotHl} style={{ marginBottom: '1.5rem' }}>
                         <div className={`${styles.spotCol} ${styles.spotColOld}`}>
                             <div className={styles.spotColTitle}>❌ Preemptible VM（非推奨・旧方式）</div>
-                            <ul>
+                            <ul role="list" aria-label="Preemptible VM 特徴">
                                 <li>最大 24 時間で強制終了される</li>
                                 <li>Google がリソース必要時に 30 秒前通知でシャットダウン</li>
                                 <li>標準価格から最大 80% 割引</li>
@@ -133,7 +133,7 @@ export const Section1 = () => {
                         </div>
                         <div className={`${styles.spotCol} ${styles.spotColNew}`}>
                             <div className={styles.spotColTitle}>✅ Spot VM（現在推奨）</div>
-                            <ul>
+                            <ul role="list" aria-label="Spot VM 特徴">
                                 <li>
                                     <strong>24 時間制限を撤廃</strong>（リソースがあれば無期限稼働）
                                 </li>

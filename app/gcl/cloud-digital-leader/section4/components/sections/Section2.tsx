@@ -54,7 +54,7 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                     ゼロスケール（アイドル時コストゼロ）
                                 </li>
                                 <li
@@ -64,11 +64,11 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                     トラフィック分割でカナリアデプロイ
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                     Cloud Run Jobs でバッチ処理も対応
                                 </li>
                             </ul>
@@ -98,7 +98,7 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
                                     Cloud Storage（ファイルアップロード）
                                 </li>
                                 <li
@@ -108,11 +108,11 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
                                     Pub/Sub（メッセージ受信）
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
                                     HTTP・Firebase・Eventarc
                                 </li>
                             </ul>
@@ -142,11 +142,11 @@ export const Section2 = () => {
                                         marginBottom: '0.2rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-info)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-info)' }}>›</span>
                                     Standard: 特定言語ランタイム・超高速スケール
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-info)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-info)' }}>›</span>
                                     Flexible: Docker コンテナで任意ランタイム
                                 </li>
                             </ul>
@@ -197,7 +197,7 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                        <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                         コンテナ化された HTTP API / Web アプリ
                                     </li>
                                     <li
@@ -207,11 +207,11 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                        <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                         複数エンドポイントを持つアプリ
                                     </li>
                                     <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                        <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                         常時起動・WebSocket・gRPC が必要
                                     </li>
                                 </ul>
@@ -243,7 +243,7 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
+                                        <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
                                         特定イベント（ファイル保存・メッセージ受信）への反応
                                     </li>
                                     <li
@@ -253,11 +253,11 @@ export const Section2 = () => {
                                             marginBottom: '0.3rem',
                                         }}
                                     >
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
+                                        <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
                                         単一の処理・「接着剤」的な役割
                                     </li>
                                     <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                        <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
+                                        <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-warning)' }}>›</span>
                                         完全にオンデマンド・ゼロスケール優先
                                     </li>
                                 </ul>
@@ -338,7 +338,7 @@ export const Section2 = () => {
                                         marginBottom: '0.3rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                     サブネットで IP アドレス範囲を分割（本番・開発・テストの分離）
                                 </li>
                                 <li
@@ -348,11 +348,11 @@ export const Section2 = () => {
                                         marginBottom: '0.3rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                     ファイアウォールルールで送受信トラフィックを細かく制御
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>›</span>
                                     Private Google Access で外部 IP なしで GCP サービスにアクセス
                                 </li>
                             </ul>

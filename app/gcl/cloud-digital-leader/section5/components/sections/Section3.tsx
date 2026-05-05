@@ -98,7 +98,7 @@ export const Section3 = () => {
                     </div>
 
                     <div className={styles.bpBox}>
-                        <div className={styles.bpTitle}>✅ ベストプラクティス：ネットワークセキュリティ</div>
+                        <h4 className={styles.bpTitle} aria-label="ベストプラクティス: ネットワークセキュリティ">✅ ベストプラクティス：ネットワークセキュリティ</h4>
                         <ul>
                             <li>
                                 すべての本番 ALB（Application Load Balancer）に
@@ -221,36 +221,36 @@ export const Section3 = () => {
                     <div className={styles.g2}>
                         <div className={styles.card}>
                             <div className={styles.cardTitle}>🎯 SCC が自動検出するもの</div>
-                            <div style={{ fontSize: '0.95rem', color: 'var(--color-muted-foreground)' }}>
+                            <div className={styles.infoText}>
                                 <div className={styles.sccItem}>
-                                    <strong style={{ color: 'var(--color-cdl-warning)' }}>設定ミス（Misconfiguration）</strong><br />
+                                    <strong className={styles.warningText}>設定ミス（Misconfiguration）</strong><br />
                                     公開されている Cloud Storage バケット・外部 IP の不適切な
                                     VM・弱いファイアウォールルール・MFA が未設定の特権ユーザー
                                 </div>
                                 <div className={styles.sccItem}>
-                                    <strong style={{ color: 'var(--color-cdl-error)' }}>アクティブな脅威</strong><br />
+                                    <strong className={styles.errorText}>アクティブな脅威</strong><br />
                                     マルウェアの実行・異常な API
                                     コール（クリプトマイニング）・侵害された認証情報の利用・データ流出の試み
                                 </div>
                                 <div>
-                                    <strong style={{ color: 'var(--color-cdl-info)' }}>脆弱性</strong><br />
+                                    <strong className={styles.infoTextC}>脆弱性</strong><br />
                                     脆弱なソフトウェアバージョン・CVE（既知の脆弱性）・コンテナイメージの脆弱性
                                 </div>
                             </div>
                         </div>
                         <div className={styles.card}>
                             <div className={styles.cardTitle}>🔍 他のセキュリティツールとの違い</div>
-                            <div style={{ fontSize: '0.95rem', color: 'var(--color-muted-foreground)' }}>
+                            <div className={styles.infoText}>
                                 <div className={styles.sccItem}>
-                                    <span className={`${styles.badge} ${styles.badgeRed}`} style={{ marginBottom: '0.3rem' }}>SCC</span><br />
+                                    <span className={`${styles.badge} ${styles.badgeRed} ${styles.badgeMargin}`}>SCC</span><br />
                                     GCP 全体の脅威・設定ミス・脆弱性を<strong className={styles.accFg}>一元可視化</strong>するダッシュボード。CSPM（Cloud Security Posture Management）。
                                 </div>
                                 <div className={styles.sccItem}>
-                                    <span className={`${styles.badge} ${styles.badgeTeal}`} style={{ marginBottom: '0.3rem' }}>Cloud IDS</span><br />
+                                    <span className={`${styles.badge} ${styles.badgeTeal} ${styles.badgeMargin}`}>Cloud IDS</span><br />
                                     ネットワークトラフィックを<strong className={styles.accFg}>監視・検知</strong>（アラートのみ）。Palo Alto 脅威インテリジェンス活用。
                                 </div>
                                 <div>
-                                    <span className={`${styles.badge} ${styles.badgeGold}`} style={{ marginBottom: '0.3rem' }}>Chronicle</span><br />
+                                    <span className={`${styles.badge} ${styles.badgeGold} ${styles.badgeMargin}`}>Chronicle</span><br />
                                     Google スケールの SIEM / SOAR。ペタバイトのセキュリティログを<strong className={styles.accFg}>超高速分析</strong>。脅威ハンティング。
                                 </div>
                             </div>
@@ -258,7 +258,7 @@ export const Section3 = () => {
                     </div>
 
                     <div className={styles.bpBox}>
-                        <div className={styles.bpTitle}>✅ ベストプラクティス：セキュリティ監視</div>
+                        <h4 className={styles.bpTitle} aria-label="ベストプラクティス: セキュリティ監視">✅ ベストプラクティス：セキュリティ監視</h4>
                         <ul>
                             <li>
                                 機密データを扱うサービスでは
@@ -284,15 +284,9 @@ export const Section3 = () => {
 
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
-                        <a href="https://cloud.google.com/security-command-center/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/security-command-center/docs
-                        </a>
-                        <a href="https://cloud.google.com/logging/docs/audit" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/logging/docs/audit
-                        </a>
-                        <a href="https://cloud.google.com/intrusion-detection-system/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/intrusion-detection-system/docs
-                        </a>
+                        <a href="https://cloud.google.com/security-command-center/docs" target="_blank" rel="noopener noreferrer">Security Command Center documentation</a>
+                        <a href="https://cloud.google.com/logging/docs/audit" target="_blank" rel="noopener noreferrer">Cloud Audit Logs documentation</a>
+                        <a href="https://cloud.google.com/intrusion-detection-system/docs" target="_blank" rel="noopener noreferrer">Cloud IDS documentation</a>
                     </div>
                 </div>
             </section>
