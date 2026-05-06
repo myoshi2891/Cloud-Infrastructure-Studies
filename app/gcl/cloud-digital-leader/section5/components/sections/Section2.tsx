@@ -174,7 +174,7 @@ export const Section2 = () => {
                             </div>
                             <div className={styles.warnBox} style={{ marginTop: '0.5rem', fontSize: '0.95rem', padding: '1rem' }}>
                                 <strong>組織ポリシーで禁止推奨：</strong><br />
-                                <code style={{ fontFamily: 'var(--ff-mono, "DM Mono", monospace)', background: 'color-mix(in srgb, var(--color-accent-foreground) 50%, transparent)', padding: '2px 4px', borderRadius: '3px', marginTop: '0.4rem', display: 'inline-block' }}>constraints/iam.disableServiceAccountKeyCreation</code>
+                                <code style={{ fontFamily: 'var(--font-mono, "DM Mono", monospace)', background: 'color-mix(in srgb, var(--color-cdl-error) 10%, transparent)', padding: '2px 4px', borderRadius: '3px', marginTop: '0.4rem', display: 'inline-block', color: 'var(--color-cdl-error)' }}>constraints/iam.disableServiceAccountKeyCreation</code>
                             </div>
                         </div>
                         <div className={`${styles.card} ${styles.borderLeftGreen}`}>

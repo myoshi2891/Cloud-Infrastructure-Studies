@@ -18,9 +18,10 @@ export const metadata: Metadata = {
  */
 export default function Section5Page() {
     return (
-        <main className={styles.section5Main}>
-            {/* HERO */}
-            <div className={styles.hero}>
+        <div className="cdl-page">
+            <main className={styles.section5Main}>
+                {/* HERO */}
+                <div className={styles.hero}>
                 <h1 className={styles.heroTitle}>
                     <span className={styles.heroAccent}>Trust &</span> Security<br />with Google Cloud
                 </h1>
@@ -51,5 +52,6 @@ export default function Section5Page() {
             <Section3 />
             <Section4 />
         </main>
+        </div>
     );
 }

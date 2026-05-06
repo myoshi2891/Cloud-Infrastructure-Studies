@@ -1,5 +1,8 @@
 import React from 'react';
-import styles from './Section4.module.css';
+import sharedStyles from './SharedSection.module.css';
+import localStyles from './Section4.module.css';
+
+const styles = { ...sharedStyles, ...localStyles };
 
 /**
  * Section4 コンポーネント
