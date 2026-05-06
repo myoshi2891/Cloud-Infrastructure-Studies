@@ -10,6 +10,23 @@
 .dlpName { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
 .dlpDesc { font-size: 0.95rem; color: var(--color-muted-foreground); margin-bottom: 0.8rem; line-height: 1.5; }
 .dlpExample { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 0.9rem; background: var(--color-muted); padding: 0.5rem 0.8rem; border-radius: 6px; }
+
+/* DLP card variant classes */
+.dlpCardInfo    { border-left-color: var(--color-cdl-info); }
+.dlpCardInfo    .dlpName    { color: var(--color-cdl-info); }
+.dlpCardInfo    .dlpExample { color: var(--color-cdl-info); }
+.dlpCardError   { border-left-color: var(--color-cdl-error); }
+.dlpCardError   .dlpName    { color: var(--color-cdl-error); }
+.dlpCardError   .dlpExample { color: var(--color-cdl-error); }
+.dlpCardWarning { border-left-color: var(--color-cdl-warning); }
+.dlpCardWarning .dlpName    { color: var(--color-cdl-warning); }
+.dlpCardWarning .dlpExample { color: var(--color-cdl-warning); }
+.dlpCardSuccess { border-left-color: var(--color-cdl-success); }
+.dlpCardSuccess .dlpName    { color: var(--color-cdl-success); }
+.dlpCardSuccess .dlpExample { color: var(--color-cdl-success); }
+.dlpCardAccent  { border-left-color: var(--color-cdl-accent); }
+.dlpCardAccent  .dlpName    { color: var(--color-cdl-accent); }
+.dlpCardAccent  .dlpExample { color: var(--color-cdl-accent); }
 .checklistSubHeading { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 1rem; color: var(--color-cdl-warning); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
 .checklist { background: var(--color-card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--color-border); }
 .clItem { display: flex; align-items: flex-start; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--color-border); font-size: 1rem; color: var(--color-muted-foreground); line-height: 1.5; }

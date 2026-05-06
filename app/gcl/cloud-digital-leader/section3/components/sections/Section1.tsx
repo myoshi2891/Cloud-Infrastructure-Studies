@@ -21,7 +21,7 @@ export const Section1: React.FC = () => {
 
                 {/* HIERARCHY DIAGRAM */}
                 <div className={`${styles.hierarchy} mb-8`}>
-                    <div className={styles.hierarchyTitle}>AI 技術の包含関係（最重要！）</div>
+                    <h3 className={styles.hierarchyTitle}>AI 技術の包含関係（最重要！）</h3>
                     <div className={styles.hierWrap}>
                         <div className={`${styles.hierLevel} ${styles.hlAi}`}>
                             <div className={styles.lname}><span aria-hidden="true">🌐</span> AI（人工知能 / Artificial Intelligence）</div>
@@ -59,7 +59,7 @@ export const Section1: React.FC = () => {
                         </div>
                     </div>
                     <div className={`${baseStyles.warnBox} mt-6`}>
-                        <strong>⚠️ 試験の落とし穴：</strong>
+                        <strong><span aria-hidden="true">⚠️</span> 試験の落とし穴：</strong>
                         「生成 AI ＝ LLM」は<strong>誤り</strong>です。LLM
                         はテキスト生成専用ですが、生成 AI
                         には画像生成（Imagen）・動画生成（Veo）・音楽生成なども含まれます。
@@ -302,7 +302,7 @@ export const Section1: React.FC = () => {
                 </div>
 
                 <div className={baseStyles.sourceBox}>
-                    <div className={baseStyles.sourceTitle}>📎 参考ソース</div>
+                    <div className={baseStyles.sourceTitle}><span aria-hidden="true">📎</span> 参考ソース</div>
                     <div className={baseStyles.sourceLinks}>
                         <a href="https://cloud.google.com/learn/what-is-artificial-intelligence" target="_blank" rel="noopener noreferrer">
                             Google Cloud: AI とは何か

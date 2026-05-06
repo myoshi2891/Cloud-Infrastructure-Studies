@@ -223,7 +223,7 @@ export const Section3 = () => {
                     </h3>
                     <div className={styles.g2}>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle}>🎯 SCC が自動検出するもの</div>
+                            <h4 className={styles.cardTitle}>🎯 SCC が自動検出するもの</h4>
                             <div className={styles.infoText}>
                                 <div className={styles.sccItem}>
                                     <strong className={styles.warningText}>設定ミス（Misconfiguration）</strong><br />
@@ -242,7 +242,7 @@ export const Section3 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle}>🔍 他のセキュリティツールとの違い</div>
+                            <h4 className={styles.cardTitle}>🔍 他のセキュリティツールとの違い</h4>
                             <div className={styles.infoText}>
                                 <div className={styles.sccItem}>
                                     <span className={`${styles.badge} ${styles.badgeRed} ${styles.badgeMargin}`}>SCC</span><br />

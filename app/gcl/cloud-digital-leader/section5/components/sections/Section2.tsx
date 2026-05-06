@@ -114,7 +114,7 @@ export const Section2 = () => {
                     </div>
 
                     {/* ROLE COMPARISON */}
-                    <h3 className={styles.subTitle} aria-label="3 種類のロール詳細比較">
+                    <h3 className={styles.subTitle}>
                         3 種類のロール詳細比較<span className={styles.examTag} aria-hidden="true">頻出</span>
                     </h3>
                     <div className={styles.roleWrap}>
@@ -161,7 +161,7 @@ export const Section2 = () => {
                     </div>
 
                     {/* SERVICE ACCOUNT */}
-                    <h3 className={styles.subTitle} aria-label="サービスアカウントの安全管理">
+                    <h3 className={styles.subTitle}>
                         サービスアカウントの安全管理<span className={styles.examTag} aria-hidden="true">頻出</span>
                     </h3>
                     <div className={styles.g2}>

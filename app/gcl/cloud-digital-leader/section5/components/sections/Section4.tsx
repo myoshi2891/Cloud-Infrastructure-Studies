@@ -155,78 +155,65 @@ export const Section4 = () => {
                     </div>
 
                     <h3 className={styles.subTitle}>
-                        7 つの保護手法<span className={styles.examTag}>試験で最頻出</span>
+                        7 つの保護手法<span className={styles.examTag} aria-hidden="true">試験で最頻出</span>
                     </h3>
-                    <div className={styles.dlpGrid}>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-info)' }}>
-                            <div className={styles.dlpName} style={{ color: 'var(--color-cdl-info)' }}>① 検出</div>
-                            <div className={styles.dlpDesc}>
-                                どこに機密データがあるかを<strong style={{ color: 'var(--color-accent-foreground)' }}>発見するだけ</strong>。BigQuery
-                                の全テーブルをスキャンして PII を含む列を特定。
+                    {(() => {
+                        const dlpData = [
+                            {
+                                variant: styles.dlpCardInfo,
+                                name: '① 検出',
+                                desc: (<>どこに機密データがあるかを<strong>発見するだけ</strong>。BigQueryの全テーブルをスキャンして PII を含む列を特定。</>),
+                                example: '変更なし → 場所の把握のみ',
+                            },
+                            {
+                                variant: styles.dlpCardError,
+                                name: '② マスキング',
+                                desc: (<>一部を「*」や「X」で<strong>置き換え</strong>。末尾のみ表示などで必要最小限を残す。</>),
+                                example: '090-1234-5678 → ***-****-5678',
+                            },
+                            {
+                                variant: styles.dlpCardWarning,
+                                name: '③ 仮名化 ⚠️',
+                                desc: (<>識別子を仮の識別子に置換。<strong>変換テーブルで元に戻せる</strong>（再識別可能）。GDPR 引き続き適用。</>),
+                                example: '田中太郎 → UID-a7f3k',
+                            },
+                            {
+                                variant: styles.dlpCardSuccess,
+                                name: '④ 匿名化 ✅',
+                                desc: (<>識別情報を<strong>完全に除去・元に戻せない</strong>。GDPR 規制対象外になる。研究データの公開に最適。</>),
+                                example: '田中太郎・渋谷区 → 30代男性・東京都内',
+                            },
+                            {
+                                variant: styles.dlpCardInfo,
+                                name: '⑤ トークン化',
+                                desc: (<>値を<strong>ランダムなトークンに置換</strong>。同じ形式・長さを保つことも可能。PCI DSS のカードデータに最適。</>),
+                                example: '4111-xxxx → TOKEN-ab3f8x',
+                            },
+                            {
+                                variant: styles.dlpCardError,
+                                name: '⑥ 暗号化',
+                                desc: (<>暗号化キーで暗号化。<strong>鍵があれば復号可能</strong>。鍵管理が重要。Cloud KMS と組み合わせる。</>),
+                                example: '090-1234-5678 → 3f8a…9d2c',
+                            },
+                            {
+                                variant: styles.dlpCardAccent,
+                                name: '⑦ 日付シフト',
+                                desc: (<>日付をランダムにずらす。<strong>統計的特性を保ちつつ</strong>個人を特定できなくする。医療・研究データに活用。</>),
+                                example: '2024-01-15 → 2024-03-27（±数ヶ月）',
+                            },
+                        ] as const;
+                        return (
+                            <div className={styles.dlpGrid}>
+                                {dlpData.map(({ variant, name, desc, example }) => (
+                                    <div key={name} className={`${styles.dlpCard} ${variant}`}>
+                                        <div className={styles.dlpName}>{name}</div>
+                                        <div className={styles.dlpDesc}>{desc}</div>
+                                        <div className={styles.dlpExample}>{example}</div>
+                                    </div>
+                                ))}
                             </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-muted-foreground)' }}>
-                                変更なし → 場所の把握のみ
-                            </div>
-                        </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-error)' }}>
-                            <div className={styles.dlpName} style={{ color: 'var(--color-cdl-error)' }}>② マスキング</div>
-                            <div className={styles.dlpDesc}>
-                                一部を「*」や「X」で<strong style={{ color: 'var(--color-accent-foreground)' }}>置き換え</strong>。末尾のみ表示などで必要最小限を残す。
-                            </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-cdl-error)' }}>
-                                090-1234-5678 → ***-****-5678
-                            </div>
-                        </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-warning)' }}>
-                            <div className={styles.dlpName} style={{ color: 'var(--color-cdl-warning)' }}>③ 仮名化 ⚠️</div>
-                            <div className={styles.dlpDesc}>
-                                識別子を仮の識別子に置換。<strong style={{ color: 'var(--color-accent-foreground)' }}>変換テーブルで元に戻せる</strong>（再識別可能）。GDPR
-                                引き続き適用。
-                            </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-cdl-warning)' }}>
-                                田中太郎 → UID-a7f3k
-                            </div>
-                        </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-success)' }}>
-                            <div className={styles.dlpName} style={{ color: 'var(--color-cdl-success)' }}>④ 匿名化 ✅</div>
-                            <div className={styles.dlpDesc}>
-                                識別情報を<strong style={{ color: 'var(--color-accent-foreground)' }}>完全に除去・元に戻せない</strong>。GDPR
-                                規制対象外になる。研究データの公開に最適。
-                            </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-cdl-success)' }}>
-                                田中太郎・渋谷区 → 30代男性・東京都内
-                            </div>
-                        </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-info)' }}>
-                            <div className={styles.dlpName} style={{ color: 'var(--color-cdl-info)' }}>⑤ トークン化</div>
-                            <div className={styles.dlpDesc}>
-                                値を<strong style={{ color: 'var(--color-accent-foreground)' }}>ランダムなトークンに置換</strong>。同じ形式・長さを保つことも可能。PCI
-                                DSS のカードデータに最適。
-                            </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-cdl-info)' }}>
-                                4111-xxxx → TOKEN-ab3f8x
-                            </div>
-                        </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-error)' }}>
-                            <div className={styles.dlpName} style={{ color: 'var(--color-cdl-error)' }}>⑥ 暗号化</div>
-                            <div className={styles.dlpDesc}>
-                                暗号化キーで暗号化。<strong style={{ color: 'var(--color-accent-foreground)' }}>鍵があれば復号可能</strong>。鍵管理が重要。Cloud
-                                KMS と組み合わせる。
-                            </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-cdl-error)' }}>
-                                090-1234-5678 → 3f8a…9d2c
-                            </div>
-                        </div>
-                        <div className={styles.dlpCard} style={{ borderLeftColor: 'var(--color-cdl-accent)' }}>
-                            <div className={styles.dlpName} style={{ color: 'var(--color-cdl-accent)' }}>⑦ 日付シフト</div>
-                            <div className={styles.dlpDesc}>
-                                日付をランダムにずらす。<strong style={{ color: 'var(--color-accent-foreground)' }}>統計的特性を保ちつつ</strong>個人を特定できなくする。医療・研究データに活用。
-                            </div>
-                            <div className={styles.dlpExample} style={{ color: 'var(--color-cdl-accent)' }}>
-                                2024-01-15 → 2024-03-27（±数ヶ月）
-                            </div>
-                        </div>
-                    </div>
+                        );
+                    })()}
 
                     <div className={styles.warnBox} style={{ marginTop: '1.5rem' }}>
                         <strong style={{ color: 'var(--color-cdl-error)' }}>⚠️ 試験の超頻出：匿名化 vs 仮名化の違い</strong><br />
