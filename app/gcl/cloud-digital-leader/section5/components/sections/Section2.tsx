@@ -35,7 +35,7 @@ export const Section2 = () => {
                             >
                                 PRINCIPAL / 主体（誰が）
                             </div>
-                            <ul role="list" aria-label="Principals list" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="主体の種類の一覧" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ marginBottom: '0.4rem' }}>
                                     👤 Google アカウント（個人ユーザー）
                                 </li>
@@ -179,7 +179,7 @@ export const Section2 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <h4 className={styles.cardTitle}>✅ キーなしの代替認証手法</h4>
-                            <ul role="list" aria-label="Keyless authentication alternatives" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
+                            <ul role="list" aria-label="キーなしの代替認証手法" style={{ listStyle: 'none', fontSize: '1rem', color: 'var(--color-muted-foreground)', padding: 0, margin: 0 }}>
                                 <li style={{ padding: '0.4rem 0 0.4rem 1.2rem', position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
                                     <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>①</span>
                                     <strong style={{ color: 'var(--color-accent-foreground)' }}>Application Default Credentials（ADC）</strong>
@@ -201,7 +201,7 @@ export const Section2 = () => {
 
                     <div className={styles.bpBox}>
                         <h3 className={styles.bpTitle} aria-label="ベストプラクティス：IAM">✅ ベストプラクティス：IAM</h3>
-                        <ul role="list" aria-label="IAM best practices">
+                        <ul role="list" aria-label="IAM のベストプラクティス">
                             <li>
                                 基本ロール（Owner/Editor/Viewer）は本番環境で<strong>絶対に使用しない</strong>。事前定義ロールを使う。
                             </li>
