@@ -219,16 +219,16 @@ export const Section1 = () => {
                             href="https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option"
                             target="_blank" rel="noopener noreferrer"
                         >
-                            https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option
+                            Google Cloud コンピューティングオプションの選択ガイド
                         </a>
                         <a href="https://cloud.google.com/compute/docs/instances/spot" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/compute/docs/instances/spot
+                            Spot VM ドキュメント
                         </a>
                         <a
                             href="https://cloud.google.com/blog/topics/cost-management/rethinking-your-vm-strategy-spot-vms"
                             target="_blank" rel="noopener noreferrer"
                         >
-                            https://cloud.google.com/blog/topics/cost-management/rethinking-your-vm-strategy-spot-vms
+                            VM 戦略の再考：Spot VM
                         </a>
                     </div>
                 </div>
