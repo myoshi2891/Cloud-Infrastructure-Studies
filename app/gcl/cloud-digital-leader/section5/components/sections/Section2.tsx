@@ -417,7 +417,7 @@ export const Section2 = () => {
 
                     <div className={styles.bpBox}>
                         <h3 className={styles.bpTitle} aria-label="ベストプラクティス：暗号化">✅ ベストプラクティス：暗号化</h3>
-                        <ul role="list" aria-label="Encryption best practices">
+                        <ul role="list" aria-label="暗号化のベストプラクティス">
                             <li>一般ワークロード → Google-Managed Keys（デフォルト・無料）で十分。</li>
                             <li>
                                 規制対応（金融・医療・GDPR）→ <strong>CMEK</strong> で Cloud KMS
