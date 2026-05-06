@@ -119,6 +119,13 @@ Step 4: cp.certmetrics.com/google から試験を予約
     );
 }
 
+/**
+ * Renders the "DX・クラウド基礎" page section covering digital transformation and Google Cloud fundamentals.
+ *
+ * The rendered content includes subsections 1.1–1.8: NIST's five cloud characteristics, IaaS/PaaS/SaaS responsibility diagram and guidance, deployment models, DX's three pillars, CapEx vs OpEx, Google Cloud strengths, service-model responsibility table, and the Cloud Adoption Framework — composed of tables, illustrative SVGs, and concise best-practice notes.
+ *
+ * @returns A JSX element for the section with id "s1" containing subsections 1.1 through 1.8.
+ */
 function Section1() {
     return (
         <div id="s1" className="sgap">
@@ -162,7 +169,7 @@ function Section1() {
                     {/* 列ヘッダ */}
                     {[{ x: 80, label: 'IaaS' }, { x: 280, label: 'PaaS' }, { x: 480, label: 'SaaS' }].map(col => (
                         <g key={col.label}>
-                            <rect x={col.x - 80} y={4} width={160} height={32} rx={6} fill="var(--cdl-blue)" opacity={0.9} />
+                            <rect x={col.x - 80} y={4} width={160} height={32} rx={6} fill="var(--color-cdl-info)" opacity={0.9} />
                             <text x={col.x} y={24} textAnchor="middle" fill="#fff" fontSize={14} fontWeight="bold">{col.label}</text>
                         </g>
                     ))}
@@ -180,7 +187,7 @@ function Section1() {
                                 <text x={8} y={row.y + 22} fill="var(--color-muted)" fontSize={11}>{row.layer}</text>
                                 {cells.map((owner, ci) => {
                                     const cx = ci * 200 + 80;
-                                    const fill = owner === 'USER' ? 'var(--cdl-blue)' : 'var(--cdl-green)';
+                                    const fill = owner === 'USER' ? 'var(--color-cdl-info)' : 'var(--color-cdl-success)';
                                     return (
                                         <g key={ci}>
                                             <rect x={cx - 72} y={row.y + 4} width={144} height={30} rx={4} fill={fill} opacity={0.75} />
@@ -259,9 +266,9 @@ function Section1() {
                 <div className="ttitle"><span className="tid">1.4</span>Google Cloud の DX を加速する3つの柱</div>
                 <svg viewBox="0 0 640 180" className="cdl-svg" aria-label="DX の3つの柱" role="img">
                     {[
-                        { x: 80, color: 'var(--cdl-blue)', title: 'インフラの近代化', items: ['オンプレ → クラウドへ移行', 'レガシーシステムの刷新', 'コスト削減・俊敏性向上'] },
-                        { x: 280, color: 'var(--cdl-green)', title: 'データとAIの活用', items: ['データドリブン意思決定', 'AI/ML で業務自動化・予測', 'リアルタイム分析基盤'] },
-                        { x: 480, color: 'var(--cdl-purple)', title: 'スマートアナリティクス', items: ['ビジネスインテリジェンス', '顧客インサイトの取得', '新ビジネスモデルの創出'] },
+                        { x: 80, color: 'var(--color-cdl-info)', title: 'インフラの近代化', items: ['オンプレ → クラウドへ移行', 'レガシーシステムの刷新', 'コスト削減・俊敏性向上'] },
+                        { x: 280, color: 'var(--color-cdl-success)', title: 'データとAIの活用', items: ['データドリブン意思決定', 'AI/ML で業務自動化・予測', 'リアルタイム分析基盤'] },
+                        { x: 480, color: 'var(--color-cdl-accent)', title: 'スマートアナリティクス', items: ['ビジネスインテリジェンス', '顧客インサイトの取得', '新ビジネスモデルの創出'] },
                     ].map(col => (
                         <g key={col.title}>
                             <rect x={col.x - 75} y={4} width={150} height={172} rx={8} fill={col.color} opacity={0.15} stroke={col.color} strokeWidth={1.5} />
@@ -514,11 +521,11 @@ NoSQLが必要か？
                 <div className="ttitle"><span className="tid">2.5</span>スマートアナリティクスのアーキテクチャ</div>
                 <svg viewBox="0 0 700 160" className="cdl-svg" aria-label="スマートアナリティクスアーキテクチャ" role="img">
                     {[
-                        { x: 50, label: 'データソース', sub: 'IoT・Webログ', color: 'var(--cdl-blue)' },
+                        { x: 50, label: 'データソース', sub: 'IoT・Webログ', color: 'var(--color-cdl-info)' },
                         { x: 180, label: 'データ取り込み', sub: 'Pub/Sub', color: 'var(--cdl-cyan)' },
-                        { x: 310, label: '処理・変換', sub: 'Dataflow / Dataproc', color: 'var(--cdl-green)' },
-                        { x: 450, label: '格納', sub: 'BigQuery / Bigtable', color: 'var(--cdl-yellow)' },
-                        { x: 580, label: '分析・可視化', sub: 'Looker / Vertex AI', color: 'var(--cdl-purple)' },
+                        { x: 310, label: '処理・変換', sub: 'Dataflow / Dataproc', color: 'var(--color-cdl-success)' },
+                        { x: 450, label: '格納', sub: 'BigQuery / Bigtable', color: 'var(--color-cdl-warning)' },
+                        { x: 580, label: '分析・可視化', sub: 'Looker / Vertex AI', color: 'var(--color-cdl-accent)' },
                     ].map((stage, i, arr) => (
                         <g key={stage.label}>
                             <rect x={stage.x - 55} y={30} width={110} height={64} rx={8} fill={stage.color} opacity={0.6} stroke={stage.color} strokeWidth={1.5} />
@@ -576,6 +583,11 @@ NoSQLが必要か？
     );
 }
 
+/**
+ * Render the "Infrastructure and Modernization" section covering migration strategies (6R), compute (Compute Engine, GKE, Cloud Run, App Engine), networking, managed-service responsibility, microservices, GKE Enterprise (hybrid/multicloud), and Apigee.
+ *
+ * @returns A JSX.Element containing the section markup with root id "s3".
+ */
 function Section3() {
     return (
         <div id="s3" className="sgap">
@@ -660,13 +672,13 @@ function Section3() {
                 {/* コンテナ vs VM SVG */}
                 <svg viewBox="0 0 560 200" className="cdl-svg" aria-label="コンテナ vs VM 比較図" role="img">
                     {/* VM 側 */}
-                    <rect x={10} y={10} width={240} height={180} rx={8} fill="var(--cdl-red)" opacity={0.1} stroke="var(--cdl-red)" strokeWidth={1.5} />
-                    <text x={130} y={30} textAnchor="middle" fill="var(--cdl-red)" fontSize={13} fontWeight="bold">従来の VM</text>
+                    <rect x={10} y={10} width={240} height={180} rx={8} fill="var(--color-cdl-error)" opacity={0.1} stroke="var(--color-cdl-error)" strokeWidth={1.5} />
+                    <text x={130} y={30} textAnchor="middle" fill="var(--color-cdl-error)" fontSize={13} fontWeight="bold">従来の VM</text>
                     {[
-                        { label: 'App A', y: 44, bg: 'var(--cdl-blue)' },
-                        { label: 'バイナリ / Lib', y: 76, bg: 'var(--cdl-blue)' },
-                        { label: 'ゲストOS', y: 108, bg: 'var(--cdl-red)' },
-                        { label: 'Hypervisor', y: 140, bg: 'var(--cdl-red)' },
+                        { label: 'App A', y: 44, bg: 'var(--color-cdl-info)' },
+                        { label: 'バイナリ / Lib', y: 76, bg: 'var(--color-cdl-info)' },
+                        { label: 'ゲストOS', y: 108, bg: 'var(--color-cdl-error)' },
+                        { label: 'Hypervisor', y: 140, bg: 'var(--color-cdl-error)' },
                         { label: 'ホストOS / HW', y: 162, bg: '#555' },
                     ].map(layer => (
                         <g key={layer.label}>
@@ -677,12 +689,12 @@ function Section3() {
                     <text x={130} y={194} textAnchor="middle" fill="var(--color-muted)" fontSize={10}>重くて起動が遅い</text>
 
                     {/* コンテナ側 */}
-                    <rect x={310} y={10} width={240} height={180} rx={8} fill="var(--cdl-green)" opacity={0.1} stroke="var(--cdl-green)" strokeWidth={1.5} />
-                    <text x={430} y={30} textAnchor="middle" fill="var(--cdl-green)" fontSize={13} fontWeight="bold">コンテナ</text>
+                    <rect x={310} y={10} width={240} height={180} rx={8} fill="var(--color-cdl-success)" opacity={0.1} stroke="var(--color-cdl-success)" strokeWidth={1.5} />
+                    <text x={430} y={30} textAnchor="middle" fill="var(--color-cdl-success)" fontSize={13} fontWeight="bold">コンテナ</text>
                     {[
-                        { label: 'App A | App B', y: 44, bg: 'var(--cdl-blue)' },
-                        { label: 'バイナリ / Lib', y: 76, bg: 'var(--cdl-blue)' },
-                        { label: 'Container Runtime', y: 108, bg: 'var(--cdl-green)' },
+                        { label: 'App A | App B', y: 44, bg: 'var(--color-cdl-info)' },
+                        { label: 'バイナリ / Lib', y: 76, bg: 'var(--color-cdl-info)' },
+                        { label: 'Container Runtime', y: 108, bg: 'var(--color-cdl-success)' },
                         { label: 'ホストOS / HW', y: 140, bg: '#555' },
                     ].map(layer => (
                         <g key={layer.label}>
@@ -779,10 +791,10 @@ function Section3() {
                 <p className="card-desc"><strong>マネージドサービス</strong>とは、インフラの管理（パッチ適用・スケーリング・バックアップ等）を Google が代わりに行うサービス。</p>
                 <svg viewBox="0 0 680 200" className="cdl-svg" aria-label="マネージドサービスの責任分担" role="img">
                     {[
-                        { x: 70, label: 'オンプレミス', layers: ['アプリ', 'ランタイム', 'OS', 'ミドルウェア', '仮想化', 'HW'], userCount: 6, color: 'var(--cdl-red)' },
-                        { x: 230, label: 'IaaS (GCE)', layers: ['アプリ', 'ランタイム', 'OS', 'ミドルウェア [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 4, color: 'var(--cdl-yellow)' },
-                        { x: 400, label: 'PaaS (App Eng)', layers: ['アプリ', 'ランタイム [GCP]', 'OS [GCP]', 'MW [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 2, color: 'var(--cdl-blue)' },
-                        { x: 580, label: 'サーバーレス', layers: ['アプリ', 'ランタイム [GCP]', 'OS [GCP]', 'MW [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 1, color: 'var(--cdl-green)' },
+                        { x: 70, label: 'オンプレミス', layers: ['アプリ', 'ランタイム', 'OS', 'ミドルウェア', '仮想化', 'HW'], userCount: 6, color: 'var(--color-cdl-error)' },
+                        { x: 230, label: 'IaaS (GCE)', layers: ['アプリ', 'ランタイム', 'OS', 'ミドルウェア [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 4, color: 'var(--color-cdl-warning)' },
+                        { x: 400, label: 'PaaS (App Eng)', layers: ['アプリ', 'ランタイム [GCP]', 'OS [GCP]', 'MW [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 2, color: 'var(--color-cdl-info)' },
+                        { x: 580, label: 'サーバーレス', layers: ['アプリ', 'ランタイム [GCP]', 'OS [GCP]', 'MW [GCP]', '仮想化 [GCP]', 'HW [GCP]'], userCount: 1, color: 'var(--color-cdl-success)' },
                     ].map(col => (
                         <g key={col.label}>
                             <text x={col.x} y={16} textAnchor="middle" fill="var(--color-foreground)" fontSize={10} fontWeight="bold">{col.label}</text>
@@ -864,6 +876,14 @@ function Section3() {
     );
 }
 
+/**
+ * Renders the "Security & Operations" section (anchor `#s4`) of the Cloud Digital Leader page,
+ * including resource hierarchy, IAM, security services, compliance, observability, cost management,
+ * Shared Responsibility/Shared Fate, BeyondCorp, CMEK/data residency, support tiers, Active Assist,
+ * SRE/DR and sustainability content.
+ *
+ * @returns The JSX element representing the Security & Operations section of the page.
+ */
 function Section4() {
     return (
         <div id="s4" className="sgap">
@@ -881,12 +901,12 @@ function Section4() {
                 <p className="card-desc">Google Cloud は<strong>多層防御（Defense in Depth）</strong>とゼロトラストセキュリティの考え方を基本とします。</p>
                 <svg viewBox="0 0 580 280" className="cdl-svg" aria-label="セキュリティ7層構造" role="img">
                     {[
-                        { label: 'Layer 7: データ', sub: '暗号化・DLP・アクセス制御', color: 'var(--cdl-purple)', y: 20 },
-                        { label: 'Layer 6: ユーザー', sub: 'IAM・MFA・Cloud Identity', color: 'var(--cdl-blue)', y: 58 },
+                        { label: 'Layer 7: データ', sub: '暗号化・DLP・アクセス制御', color: 'var(--color-cdl-accent)', y: 20 },
+                        { label: 'Layer 6: ユーザー', sub: 'IAM・MFA・Cloud Identity', color: 'var(--color-cdl-info)', y: 58 },
                         { label: 'Layer 5: アプリ', sub: '脆弱性スキャン・Container Analysis', color: 'var(--cdl-cyan)', y: 96 },
-                        { label: 'Layer 4: エンドポイント', sub: 'Chrome Enterprise・BeyondCorp', color: 'var(--cdl-green)', y: 134 },
-                        { label: 'Layer 3: ネットワーク', sub: 'VPC・ファイアウォール・Cloud Armor', color: 'var(--cdl-yellow)', y: 172 },
-                        { label: 'Layer 2: インフラ', sub: 'Shielded VMs・Confidential Computing', color: 'var(--cdl-red)', y: 210 },
+                        { label: 'Layer 4: エンドポイント', sub: 'Chrome Enterprise・BeyondCorp', color: 'var(--color-cdl-success)', y: 134 },
+                        { label: 'Layer 3: ネットワーク', sub: 'VPC・ファイアウォール・Cloud Armor', color: 'var(--color-cdl-warning)', y: 172 },
+                        { label: 'Layer 2: インフラ', sub: 'Shielded VMs・Confidential Computing', color: 'var(--color-cdl-error)', y: 210 },
                         { label: 'Layer 1: ハードウェア', sub: 'Titan チップ・物理セキュリティ', color: '#666', y: 248 },
                     ].map((layer, i) => {
                         const width = 560 - i * 24;

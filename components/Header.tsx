@@ -332,6 +332,24 @@ export function Header() {
                             ariaLabel="Section 2 — データ トランスフォーメーションの探求"
                             onClick={() => setOpenMenu(null)}
                         />
+                        <DropdownItem
+                            href="/gcl/cloud-digital-leader/section3"
+                            label="Section 3"
+                            desc="AI によるイノベーション"
+                            onClick={() => setOpenMenu(null)}
+                        />
+                        <DropdownItem
+                            href="/gcl/cloud-digital-leader/section4"
+                            label="Section 4"
+                            desc="モダナイゼーション"
+                            onClick={() => setOpenMenu(null)}
+                        />
+                        <DropdownItem
+                            href="/gcl/cloud-digital-leader/section5"
+                            label="Section 5"
+                            desc="信頼性とセキュリティ"
+                            onClick={() => setOpenMenu(null)}
+                        />
                     </div>
                 </div>
             </div>

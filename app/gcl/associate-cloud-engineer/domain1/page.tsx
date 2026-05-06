@@ -347,7 +347,15 @@ function Chapter2() {
     );
 }
 
-/* ── Chapter 3: プロジェクト管理 ── */
+/**
+ * Renders the Chapter 3 section describing project creation and management.
+ *
+ * Includes three creation methods (Console, gcloud CLI, Terraform), the project
+ * lifecycle with the 30-day deletion grace period and recovery command examples,
+ * and default project-related quota information and references.
+ *
+ * @returns The React element containing Chapter 3 content for the page
+ */
 function Chapter3() {
     return (
         <div id="ch3" className="sgap">
@@ -375,7 +383,7 @@ function Chapter3() {
                 <pre className="codeblock">
                     <span className="comment"># プロジェクトの作成</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects create PROJECT_ID \{'\n'}
-                    {'  '}<span className="flag">--name=</span><span className="val">"My Webapp Prod"</span> \{'\n'}
+                    {'  '}<span className="flag">--name=</span><span className="val">&quot;My Webapp Prod&quot;</span> \{'\n'}
                     {'  '}<span className="flag">--folder=</span>FOLDER_ID{'\n'}
                     {'\n'}
                     <span className="comment"># 作成後、そのプロジェクトをデフォルトに設定</span>{'\n'}
@@ -582,7 +590,11 @@ Project レベル: ポリシー A, B が有効
     );
 }
 
-/* ── Chapter 5: gcloud CLI ── */
+/**
+ * Renders the Chapter 5 section covering gcloud CLI installation, initialization, configuration management, authentication (ADC), commonly used commands, and enterprise best practices for multi-environment operations.
+ *
+ * @returns The JSX element containing the Chapter 5 content.
+ */
 function Chapter5() {
     return (
         <div id="ch5" className="sgap">
@@ -678,11 +690,11 @@ function Chapter5() {
                     <span className="comment"># ----- IAM 操作 -----</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects get-iam-policy PROJECT_ID{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects add-iam-policy-binding PROJECT_ID \{'\n'}
-                    {'  '}<span className="flag">--member=</span><span className="val">"user:alice@example.com"</span> \{'\n'}
-                    {'  '}<span className="flag">--role=</span><span className="val">"roles/editor"</span>{'\n'}
+                    {'  '}<span className="flag">--member=</span><span className="val">&quot;user:alice@example.com&quot;</span> \{'\n'}
+                    {'  '}<span className="flag">--role=</span><span className="val">&quot;roles/editor&quot;</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}projects remove-iam-policy-binding PROJECT_ID \{'\n'}
-                    {'  '}<span className="flag">--member=</span><span className="val">"user:alice@example.com"</span> \{'\n'}
-                    {'  '}<span className="flag">--role=</span><span className="val">"roles/editor"</span>{'\n'}
+                    {'  '}<span className="flag">--member=</span><span className="val">&quot;user:alice@example.com&quot;</span> \{'\n'}
+                    {'  '}<span className="flag">--role=</span><span className="val">&quot;roles/editor&quot;</span>{'\n'}
                     {'\n'}
                     <span className="comment"># ----- API 管理 -----</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}services enable compute.googleapis.com{'\n'}
@@ -858,7 +870,13 @@ function Chapter6() {
     );
 }
 
-/* ── Chapter 7: 予算・アラート・自動コスト制御 ── */
+/**
+ * Render Chapter 7 content covering budgets, alert thresholds, and programmatic cost-control patterns.
+ *
+ * This presentational component displays budget structure and scoping, the three-tier alert model, guidance that budgets do not automatically stop resources, an example Pub/Sub → Cloud Functions automation (with Python snippets) for stopping resources or unlinking billing, security risks that cause unexpected costs (and mitigations), Cloud Armor examples, best practices, and reference links.
+ *
+ * @returns A JSX element containing the Chapter 7 section (id="ch7") with explanatory text, code examples, tables, and resource links.
+ */
 function Chapter7() {
     return (
         <div id="ch7" className="sgap">
@@ -905,7 +923,7 @@ function Chapter7() {
                     <span className="comment"># gcloud で予算を作成する例</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}billing budgets create \{'\n'}
                     {'  '}<span className="flag">--billing-account=</span>BILLING_ACCOUNT_ID \{'\n'}
-                    {'  '}<span className="flag">--display-name=</span><span className="val">"Monthly Prod Budget"</span> \{'\n'}
+                    {'  '}<span className="flag">--display-name=</span><span className="val">&quot;Monthly Prod Budget&quot;</span> \{'\n'}
                     {'  '}<span className="flag">--budget-amount=</span>1000USD \{'\n'}
                     {'  '}<span className="flag">--threshold-rule=</span>percent=0.5 \{'\n'}
                     {'  '}<span className="flag">--threshold-rule=</span>percent=0.9 \{'\n'}
@@ -1012,12 +1030,12 @@ VM が大量に起動 → 攻撃が終わっても請求は発生！`}</pre>
                 <pre className="codeblock">
                     <span className="comment"># Cloud Armor のセキュリティポリシーを作成</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}compute security-policies create my-ddos-policy \{'\n'}
-                    {'  '}<span className="flag">--description=</span><span className="val">"DDoS protection policy"</span>{'\n'}
+                    {'  '}<span className="flag">--description=</span><span className="val">&quot;DDoS protection policy&quot;</span>{'\n'}
                     {'\n'}
                     <span className="comment"># レート制限ルールを追加（1IPあたり1000リクエスト/分）</span>{'\n'}
                     <span className="cmd">gcloud</span>{' '}compute security-policies rules create 1000 \{'\n'}
                     {'  '}<span className="flag">--security-policy=</span>my-ddos-policy \{'\n'}
-                    {'  '}<span className="flag">--expression=</span><span className="val">"true"</span> \{'\n'}
+                    {'  '}<span className="flag">--expression=</span><span className="val">&quot;true&quot;</span> \{'\n'}
                     {'  '}<span className="flag">--action=</span>rate-based-ban \{'\n'}
                     {'  '}<span className="flag">--rate-limit-threshold-count=</span>1000 \{'\n'}
                     {'  '}<span className="flag">--rate-limit-threshold-interval-sec=</span>60 \{'\n'}
@@ -1037,7 +1055,7 @@ VM が大量に起動 → 攻撃が終わっても請求は発生！`}</pre>
                 <div className="src">
                     <div className="srct">参照リソース</div>
                     <a href="https://docs.cloud.google.com/billing/docs/how-to/budgets" target="_blank" rel="noopener noreferrer">https://docs.cloud.google.com/billing/docs/how-to/budgets</a>
-                    <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; 'Caps' in Google Cloud (Medium)</a>
+                    <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; &apos;Caps&apos; in Google Cloud (Medium)</a>
                 </div>
             </div>
 
@@ -1371,7 +1389,13 @@ resource "google_project_service" "apis" {
     );
 }
 
-/* ── Chapter 10: 試験対策まとめ ── */
+/**
+ * Render the Chapter 10 summary section for Domain 1, including common exam question patterns,
+ * a glossary of important terms, a pre-exam checklist, recommended study resources, and enterprise
+ * takeaways.
+ *
+ * @returns The React element containing the Chapter 10 content for the page.
+ */
 function Chapter10() {
     return (
         <div id="ch10" className="sgap">
@@ -1548,7 +1572,7 @@ IAM: 「誰が」VM を作成できるか → ユーザーへの権限付与
                 <a href="https://docs.cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications" target="_blank" rel="noopener noreferrer">Set up programmatic notifications | Cloud Billing</a>
                 <a href="https://cloud.google.com/resource-manager/docs/creating-managing-folders" target="_blank" rel="noopener noreferrer">Creating and managing folders - Google Cloud Documentation</a>
                 <a href="https://cloud.google.com/docs/enterprise/best-practices-for-enterprise-organizations" target="_blank" rel="noopener noreferrer">Best practices for enterprise organizations | Google Cloud</a>
-                <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; 'Caps' in Google Cloud (Medium)</a>
+                <a href="https://medium.com/qodea/budget-alerts-caps-in-google-cloud-76ff71929b42" target="_blank" rel="noopener noreferrer">Budget Alerts &amp; &apos;Caps&apos; in Google Cloud (Medium)</a>
             </div>
         </div>
     );

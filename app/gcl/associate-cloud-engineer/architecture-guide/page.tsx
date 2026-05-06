@@ -448,7 +448,13 @@ Google がキャパシティを必要とした時に「プリエンプト（強�
     );
 }
 
-/* ── Section 4: コンテナとKubernetes (GKE) ── */
+/**
+ * Renders Section 4 (コンテナと Kubernetes - GKE) of the ACE study guide.
+ *
+ * The section covers GKE Autopilot vs Standard modes, Workload Identity (with a gcloud example), Binary Authorization, and the Security Posture Dashboard, presented as static JSX (tables, code blocks, and guidance).
+ *
+ * @returns The JSX element for the GKE section content.
+ */
 function S4GKE() {
     return (
         <div id="s4" className="sgap">
@@ -518,7 +524,7 @@ GCP API (Secret Manager, Cloud Storage など) にアクセス`}</pre>
                     <span className="cmd">gcloud</span>{' '}iam service-accounts add-iam-policy-binding \{'\n'}
                     {'  '}GSA_NAME@PROJECT_ID.iam.gserviceaccount.com \{'\n'}
                     {'  '}<span className="flag">--role</span>{' '}roles/iam.workloadIdentityUser \{'\n'}
-                    {'  '}<span className="flag">--member</span>{' '}{'`'}"serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]"{'`'}
+                    {'  '}<span className="flag">--member</span>{' '}&quot;serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]&quot;
                 </pre>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}><strong>Binary Authorization（コンテナ整合性の保証）</strong></p>
                 <pre className="codeblock">{`CI/CD パイプラインで署名
@@ -1379,7 +1385,11 @@ Gemini が以下を自動分析:
     );
 }
 
-/* ── Section 11: 試験直前チェックリスト ── */
+/**
+ * Renders Section 11: the pre-exam checklist, recommended study resources, and an enterprise-focused conclusion.
+ *
+ * @returns A JSX element containing checklist items for Domains 1–4, a table and list of recommended resource links, and summary paragraphs targeted at enterprise practices.
+ */
 function S11Checklist() {
     return (
         <div id="s11" className="sgap">
@@ -1470,7 +1480,7 @@ function S11Checklist() {
                     本ガイドで詳述した通り、適切なリソース階層の設計とIAMによる最小特権の徹底、予算アラートやBigQueryエクスポートを通じた厳格なコスト管理は、クラウドジャーニーの基礎である。GKE Autopilotの採用による運用オーバーヘッドの削減とセキュリティ態勢の向上、Shared VPCとCloud DNSによるセキュアなネットワークトポロジの構築、そしてTerraformを用いたインフラストラクチャの状態管理とCI/CDパイプラインの統合は、スケーラブルなエンタープライズソリューションを実現するための核心技術である。
                 </p>
                 <p style={{ fontSize: '14px', marginBottom: '0' }}>
-                    さらに、Ops AgentやManaged Service for Prometheusを通じたオブザーバビリティの確立と、Gemini Cloud AssistなどのAI駆動型ツールによるプロアクティブな障害調査およびコスト最適化は、現代のクラウドエンジニアにとって不可欠なスキルセットとなっている。これらのベストプラクティスと技術的洞察を日常のオペレーションに統合することで、エンジニアはGoogle Cloud環境における強固なガバナンスとアジリティを両立させ、ビジネス要件を満たす世界トップクラスのインフラストラクチャを継続的に提供することが可能となる。
+                    さらに、Ops AgentやManaged Service for Prometheusを通じたオブザーバビリティの確立と、Gemini Cloud AssistなどのAI駆動型ツールによるプロアクティブな障害調査およびコスト最適化は、現代のクラウドエンジニアにとって不可欠なスキルセットとなっている。これらのベストプラクティスと技術的洞察を日常のオペレーションに統合することで、エンジニアはGoogle Cloud環境における強固なガバナンスとアジリティを両立させ、ビジネス要件を満たすインフラストラクチャを継続的に提供することが可能となる。
                 </p>
             </div>
 

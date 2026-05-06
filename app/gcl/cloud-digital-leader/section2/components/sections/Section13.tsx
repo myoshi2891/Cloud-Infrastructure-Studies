@@ -21,7 +21,7 @@ export const Section13: React.FC = () => {
                 </div>
             </div>
             <SectionCard id="cdl-2-13" idNumber="13" title="公式参照リソース一覧">
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['カテゴリ', 'リソース', 'URL']}
                     rows={SECTION2_REFERENCES}
                     renderRow={(row, i) => (

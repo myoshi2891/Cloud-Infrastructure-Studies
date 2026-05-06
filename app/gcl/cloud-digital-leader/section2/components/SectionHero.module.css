@@ -60,9 +60,9 @@
 }
 
 .dotBlue { background: var(--color-primary); }
-.dotRed { background: var(--cdl-red); }
-.dotYellow { background: var(--cdl-yellow); }
-.dotGreen { background: var(--cdl-green); }
+.dotRed { background: var(--color-cdl-error); }
+.dotYellow { background: var(--color-cdl-warning); }
+.dotGreen { background: var(--color-cdl-success); }
 
 @media (max-width: 640px) {
     .hero {

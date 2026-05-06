@@ -17,7 +17,7 @@ export const Section11: React.FC = () => (
             idNumber="11.1"
             title="ソリューション一覧"
         >
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['課題', 'ソリューション', '効果']}
                 rows={DX_SOLUTIONS}
                 renderRow={(row, i) => (

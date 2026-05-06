@@ -1,0 +1,92 @@
+.raiGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.raiCard {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.raiCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px var(--color-shadow);
+}
+
+.raiIcon {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.raiName {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    margin-bottom: 0.8rem;
+}
+
+.raiDesc {
+    font-size: 0.95rem;
+    color: var(--color-muted-foreground);
+    line-height: 1.6;
+}
+
+.checklist {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.checkItem {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 1rem;
+    color: var(--color-muted-foreground);
+    line-height: 1.5;
+}
+
+.checkItem:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.checkBox {
+    width: 24px;
+    height: 24px;
+    background: var(--color-muted);
+    color: var(--color-cdl-success);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Border accent variants for "Why" cards */
+.borderAccentRed    { border-left: 3px solid var(--color-cdl-error); }
+.borderAccentYellow { border-left: 3px solid var(--color-cdl-warning); }
+.borderAccentPurple { border-left: 3px solid var(--color-cdl-accent); }
+.borderAccentBlue   { border-left: 3px solid var(--color-cdl-info); }
+.borderAccentCyan   { border-left: 3px solid var(--color-cdl-sky); }
+.borderAccentGreen  { border-left: 3px solid var(--color-cdl-success); }
+
+/* Border-top accent variants for principle cards */
+.raiCardBlue   { border-top: 3px solid var(--color-cdl-info); }
+.raiCardGreen  { border-top: 3px solid var(--color-cdl-success); }
+.raiCardCyan   { border-top: 3px solid var(--color-cdl-sky); }
+.raiCardYellow { border-top: 3px solid var(--color-cdl-warning); }
+.raiCardPurple { border-top: 3px solid var(--color-cdl-accent); }
+.raiCardRed    { border-top: 3px solid var(--color-cdl-error); }

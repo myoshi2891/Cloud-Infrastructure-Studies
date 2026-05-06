@@ -16,7 +16,7 @@ export const Section9: React.FC = () => (
             idNumber="9.1"
             title="インフラ構造"
         >
-            <DiagramSVG viewBox="0 0 400 180">
+            <DiagramSVG viewBox="0 0 400 180" decorative={true}>
                 <rect x="10" y="10" width="250" height="30" rx="4" fill="var(--color-primary)" fillOpacity="0.1" />
                 <text x="20" y="30" fill="currentColor" fontSize="14" fontWeight="bold">グローバル (Global)</text>
                 <path d="M 40 40 L 40 55 L 50 55" stroke="var(--color-muted)" />

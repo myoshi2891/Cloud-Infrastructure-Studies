@@ -17,7 +17,7 @@ export const Section8: React.FC = () => (
             idNumber="8.1"
             title="強みまとめ"
         >
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['強み', 'キーワード']}
                 rows={GOOGLE_CLOUD_STRENGTHS}
                 renderRow={(row, i) => (

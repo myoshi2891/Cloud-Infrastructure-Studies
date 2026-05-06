@@ -24,7 +24,7 @@ export const Section1: React.FC = () => (
                 </p>
 
                 <div className="stitle mt-6">Section 2 で問われる主なこと:</div>
-                <DiagramSVG viewBox="0 0 600 240">
+                <DiagramSVG viewBox="0 0 600 240" decorative={true}>
                     <rect x="10" y="10" width="580" height="220" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                     <text x="30" y="45" fill="currentColor" fontSize="14">① データの種類（構造化・非構造化）とビジネス価値の違い</text>
                     <text x="30" y="75" fill="currentColor" fontSize="14">② データのライフサイクル（収集→保存→処理→分析→活用）</text>
@@ -36,7 +36,7 @@ export const Section1: React.FC = () => (
                 </DiagramSVG>
 
                 <h3 className="stitle mt-6">1.2 Section 2 のサブトピック一覧</h3>
-                <TableComponent
+                <TableComponent getRowKey={(row, i) => i}
                     headers={['#', 'サブトピック', '重要度']}
                     rows={SUB_TOPICS}
                     renderRow={(row, i) => (

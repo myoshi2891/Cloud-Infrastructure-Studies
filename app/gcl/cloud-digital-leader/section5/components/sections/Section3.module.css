@@ -1,0 +1,33 @@
+/* Section 3 specific styles */
+.cardList { list-style: none; padding: 0; margin: 0; font-size: 0.95rem; color: var(--color-muted-foreground); }
+.cardList li { padding: 0.35rem 0 0.35rem 1.2rem; position: relative; line-height: 1.5; }
+.cardList li::before { content: "›"; position: absolute; left: 0; font-weight: bold; }
+.cardListRed li::before { color: var(--color-cdl-error); }
+.cardListGold li::before { color: var(--color-cdl-warning); }
+.cardListSky li::before { color: var(--color-cdl-info); }
+.bpBox { background: color-mix(in srgb, var(--color-cdl-success) 8%, transparent); border-left: 4px solid var(--color-cdl-success); padding: 1.5rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-top: 1.5rem; color: var(--color-muted-foreground); }
+.bpTitle { font-size: 1.1rem; font-weight: 700; color: var(--color-cdl-success); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+.bpBox ul { list-style: none; padding: 0; margin: 0; }
+.bpBox li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; line-height: 1.6; }
+.bpBox li::before { content: "✓"; position: absolute; left: 0; color: var(--color-cdl-success); font-weight: bold; }
+.auditWrap { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow-x: auto; margin-bottom: 1.5rem; background: var(--color-card); }
+.auditTable { width: 100%; border-collapse: collapse; font-size: 1rem; }
+.auditTable th { background: var(--color-muted); color: var(--color-muted-foreground); font-family: var(--font-mono, 'DM Mono', monospace); font-weight: 600; padding: 0.85rem 1.1rem; text-align: left; border-bottom: 2px solid var(--color-border); text-transform: uppercase; letter-spacing: 0.04em; }
+.auditTable td { padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--color-border); color: var(--color-muted-foreground); vertical-align: top; line-height: 1.65; }
+.auditTable tr:last-child td { border-bottom: none; }
+.auditTable td:first-child { font-weight: 700; color: var(--color-accent-foreground); white-space: nowrap; }
+.sccItem { margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--color-border); }
+.sccItem:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.mb20 { margin-bottom: 2rem; }
+.mb08 { margin-bottom: 0.8rem; }
+.mt08 { margin-top: 0.8rem; }
+.mt25 { margin-top: 2.5rem; }
+.accFg { color: var(--color-accent-foreground); }
+.fs09 { font-size: 0.9rem; }
+.fwN { font-weight: normal; }
+/* Utility classes referenced by Section3.tsx via merged styles */
+.badgeMargin { margin-bottom: 0.5rem; }
+.errorText { color: var(--color-cdl-error); }
+.infoText { color: var(--color-muted-foreground); line-height: 1.6; }
+.infoTextC { color: var(--color-cdl-info); }
+.warningText { color: var(--color-cdl-warning); }

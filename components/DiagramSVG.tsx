@@ -17,7 +17,7 @@ import styles from './DiagramSVG.module.css';
  * <DiagramSVG viewBox="0 0 600 300" decorative>…</DiagramSVG>
  * ```
  */
-type DiagramSVGProps =
+export type DiagramSVGProps =
     | {
           viewBox: string;
           children: React.ReactNode;

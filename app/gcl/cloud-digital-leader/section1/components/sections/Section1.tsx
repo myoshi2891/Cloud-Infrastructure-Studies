@@ -24,7 +24,7 @@ export const Section1: React.FC = () => (
             }
         >
             <div className="stitle">試験で問われること:</div>
-            <DiagramSVG viewBox="0 0 600 160">
+            <DiagramSVG viewBox="0 0 600 160" ariaLabel="試験で問われること: ①クラウドの必要性 ②基本概念 ③最適戦略 ④Google Cloud の差別化 ⑤DX推進">
                 <rect x="10" y="10" width="580" height="140" rx="8" strokeWidth="2" stroke="var(--color-primary, currentColor)" fill="var(--color-background, transparent)" />
                 <text x="30" y="45" fill="currentColor" fontSize="14">① クラウドがなぜ必要か（ビジネス的意義）</text>
                 <text x="30" y="70" fill="currentColor" fontSize="14">② クラウドの基本概念を正確に理解しているか</text>
@@ -33,7 +33,7 @@ export const Section1: React.FC = () => (
             </DiagramSVG>
 
             <div className="stitle">1.2 Section 1 のサブトピック一覧</div>
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['#', 'サブトピック', '重要度']}
                 rows={SUB_TOPICS}
                 renderRow={(row, i) => (

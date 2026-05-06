@@ -18,7 +18,7 @@ export const Section6: React.FC = () => (
             title="CapEx と OpEx"
         >
             <div className="stitle">比較詳細</div>
-            <TableComponent
+            <TableComponent getRowKey={(row, i) => i}
                 headers={['比較項目', 'CapEx（オンプレ）', 'OpEx（クラウド）']}
                 rows={CAPEX_OPEX_COMPARISON}
                 renderRow={(row, i) => (
@@ -30,7 +30,7 @@ export const Section6: React.FC = () => (
                 )}
             />
             <div className="stitle">財務上の変化</div>
-            <DiagramSVG viewBox="0 0 600 240">
+            <DiagramSVG viewBox="0 0 600 240" decorative={true}>
                 <rect x="10" y="30" width="280" height="150" rx="8" stroke="var(--color-muted)" fill="var(--color-background)" />
                 <text x="20" y="20" fill="currentColor" fontSize="14" fontWeight="bold">移行前 (CapEx 中心・固定費)</text>
                 <text x="30" y="60" fill="currentColor" fontSize="13">サーバー減価償却: 3,000万円</text>
