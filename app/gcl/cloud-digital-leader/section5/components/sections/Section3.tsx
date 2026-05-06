@@ -14,12 +14,12 @@ const styles = { ...sharedStyles, ...localStyles };
 export const Section3 = () => {
     return (
         <>
-            <section id="network" className={`${styles.section} ${styles.sectionAlt}`}>
+            <section id="network" aria-labelledby="network-heading" className={`${styles.section} ${styles.sectionAlt}`}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.5 Network Security</div>
-                        <h2 className={styles.shTitle}>
-                            ネットワークセキュリティ<span className={styles.examTag}>最重要</span>
+                        <h2 id="network-heading" className={styles.shTitle}>
+                            ネットワークセキュリティ<span className={styles.examTag} aria-hidden="true">最重要</span>
                         </h2>
                         <p className={styles.shDesc}>
                             Cloud Armor・Cloud IAP・VPC Service Controls
@@ -30,7 +30,7 @@ export const Section3 = () => {
                     <div className={`${styles.g3} ${styles.mb20}`}>
                         <div className={`${styles.card} ${styles.borderRed}`}>
                             <div className={styles.cardIcon} aria-hidden="true">⚔️</div>
-                            <div className={styles.cardTitle}>Cloud Armor</div>
+                            <h3 className={styles.cardTitle}>Cloud Armor</h3>
                             <div className={`${styles.cardBody} ${styles.mb08}`}>
                                 <strong className={styles.accFg}>
                                     DDoS 防御 + WAF（Web Application Firewall）
@@ -51,7 +51,7 @@ export const Section3 = () => {
 
                         <div className={`${styles.card} ${styles.borderYellow}`}>
                             <div className={styles.cardIcon} aria-hidden="true">🚪</div>
-                            <div className={styles.cardTitle}>Cloud IAP（Identity-Aware Proxy）</div>
+                            <h3 className={styles.cardTitle}>Cloud IAP（Identity-Aware Proxy）</h3>
                             <div className={`${styles.cardBody} ${styles.mb08}`}>
                                 <strong className={styles.accFg}>
                                     VPN 不要のゼロトラストアクセス制御
@@ -71,7 +71,7 @@ export const Section3 = () => {
 
                         <div className={`${styles.card} ${styles.borderBlue}`}>
                             <div className={styles.cardIcon} aria-hidden="true">🏰</div>
-                            <div className={styles.cardTitle}>VPC Service Controls（VPC SC）</div>
+                            <h3 className={styles.cardTitle}>VPC Service Controls（VPC SC）</h3>
                             <div className={`${styles.cardBody} ${styles.mb08}`}>
                                 <strong className={styles.accFg}>
                                     データ流出（Exfiltration）防止の境界線
@@ -101,8 +101,8 @@ export const Section3 = () => {
                     </div>
 
                     <div className={styles.bpBox}>
-                        <h4 className={styles.bpTitle} aria-label="ベストプラクティス: ネットワークセキュリティ">✅ ベストプラクティス：ネットワークセキュリティ</h4>
-                        <ul>
+                        <h3 className={styles.bpTitle} aria-label="ベストプラクティス: ネットワークセキュリティ">✅ ベストプラクティス：ネットワークセキュリティ</h3>
+                        <ul role="list" aria-label="ネットワークセキュリティのベストプラクティス">
                             <li>
                                 すべての本番 ALB（Application Load Balancer）に
                                 <strong>Cloud Armor</strong> を設定する。
@@ -137,11 +137,11 @@ export const Section3 = () => {
                 </div>
             </section>
 
-            <section id="monitoring" className={styles.section}>
+            <section id="monitoring" aria-labelledby="monitoring-heading" className={styles.section}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.6 Threat Detection & Security Monitoring</div>
-                        <h2 className={styles.shTitle}>脅威検出とセキュリティ監視</h2>
+                        <h2 id="monitoring-heading" className={styles.shTitle}>脅威検出とセキュリティ監視</h2>
                         <p className={styles.shDesc}>
                             Security Command Center・監査ログの 4 種類・Cloud IDS・Chronicle
                             の役割と使い分けを理解します。
@@ -262,7 +262,7 @@ export const Section3 = () => {
 
                     <div className={styles.bpBox}>
                         <h4 className={styles.bpTitle} aria-label="ベストプラクティス: セキュリティ監視">✅ ベストプラクティス：セキュリティ監視</h4>
-                        <ul>
+                        <ul role="list" aria-label="セキュリティ監視のベストプラクティス">
                             <li>
                                 機密データを扱うサービスでは
                                 <strong>Data Access 監査ログを必ず有効化</strong>する。
