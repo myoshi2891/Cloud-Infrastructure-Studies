@@ -70,8 +70,8 @@ export const Section0: React.FC = () => {
                         <a href="https://services.google.com/fh/files/misc/cloud_digital_leader_exam_guide_english.pdf" target="_blank" rel="noopener noreferrer">
                             Cloud Digital Leader Exam Guide (Official PDF) — Section 3 p.3–4
                         </a>
-                        <a href="https://cloud.google.com/learn/certification/cloud-digital-leader" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/learn/certification/cloud-digital-leader
+                        <a href="https://cloud.google.com/learn/certification/cloud-digital-leader" target="_blank" rel="noopener noreferrer" aria-label="Cloud Digital Leader certification — Google Cloud">
+                            Cloud Digital Leader certification — Google Cloud
                         </a>
                     </div>
                 </div>

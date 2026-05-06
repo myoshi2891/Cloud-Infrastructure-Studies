@@ -381,11 +381,11 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
                                     ファイアウォールポリシーをセキュリティチームが一元管理
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
                                     各プロジェクトは独立したコスト管理を維持
                                 </li>
                             </ul>
@@ -467,7 +467,7 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
                                     低レイテンシ・高帯域・安定した専用線品質
                                 </li>
                                 <li
@@ -477,7 +477,7 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-success)' }}>✓</span>
                                     アウトバウンドデータ転送コストが安価
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>

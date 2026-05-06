@@ -74,7 +74,7 @@
 /* Cards */
 .card {
     background: var(--color-card);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 1.8rem;
     box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     display: flex;
@@ -83,7 +83,7 @@
 .cardIcon {
     width: 48px;
     height: 48px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -113,7 +113,7 @@
     background: color-mix(in srgb, var(--color-cdl-warning) 8%, transparent);
     border-left: 4px solid var(--color-cdl-warning);
     padding: 1.5rem;
-    border-radius: 0 8px 8px 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     margin-bottom: 2rem;
 }
 
@@ -147,7 +147,7 @@
     list-style: none;
     margin: 0;
     background: var(--color-card);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 1.5rem;
     box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 5%, transparent));
 }
@@ -165,7 +165,7 @@
     flex-shrink: 0;
     width: 24px;
     height: 24px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     background: color-mix(in srgb, var(--color-cdl-success) 10%, transparent);
     color: var(--color-cdl-success);
     display: flex;
@@ -178,7 +178,7 @@
 .ptnCard {
     background: var(--color-accent-foreground);
     color: var(--color-card);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -231,7 +231,7 @@
     background: color-mix(in srgb, var(--color-cdl-success) 15%, transparent);
     color: var(--color-cdl-success); /* Lighter sage green for dark background */
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-weight: 700;
     text-align: center;
     border: 1px solid color-mix(in srgb, var(--color-cdl-success) 30%, transparent);
@@ -240,7 +240,7 @@
 /* Comparison Wrapper */
 .cmpWrap {
     background: var(--color-card);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent));
     overflow-x: auto;
 }

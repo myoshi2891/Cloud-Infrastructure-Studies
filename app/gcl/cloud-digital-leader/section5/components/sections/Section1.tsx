@@ -81,7 +81,7 @@ export const Section1 = () => {
                     <div className={styles.g2}>
                         <div className={`${styles.card} ${styles.borderLeftGreen}`}>
                             <h3 className={styles.cardTitle}>✅ Google が常に守るもの</h3>
-                            <ul className={styles.ulList}>
+                            <ul className={styles.ulList} role="list">
                                 <li className={styles.liItem}>
                                     <span aria-hidden="true" className={styles.liSpanSuccess}>›</span>データセンターへの物理的な侵入防止
                                 </li>
@@ -98,7 +98,7 @@ export const Section1 = () => {
                         </div>
                         <div className={`${styles.card} ${styles.borderLeftYellow}`}>
                             <h3 className={styles.cardTitle}>⚠️ ユーザーが常に守るもの</h3>
-                            <ul className={styles.ulList}>
+                            <ul className={styles.ulList} role="list">
                                 <li className={styles.liItem}>
                                     <span aria-hidden="true" className={styles.liSpanWarn}>›</span>誰がデータにアクセスできるか（IAM 設定）
                                 </li>
@@ -159,7 +159,7 @@ export const Section1 = () => {
                         <div className={styles.ztCompare}>
                             <div className={`${styles.ztCol} ${styles.ztColOld}`}>
                                 <h3 className={styles.ztColTitle}>❌ 従来の「城とお堀」モデル</h3>
-                                <ul role="list" aria-label="Castle and Moat characteristics">
+                                <ul role="list" aria-label="城と堀の特徴">
                                     <li>社内ネットワーク内にいる = 信頼できる</li>
                                     <li>ファイアウォールで外部を遮断</li>
                                     <li>一度侵入されると内部を自由に移動（横移動）</li>
@@ -169,7 +169,7 @@ export const Section1 = () => {
                             </div>
                             <div className={`${styles.ztCol} ${styles.ztColNew}`}>
                                 <h3 className={styles.ztColTitle}>✅ ゼロトラスト（BeyondCorp）</h3>
-                                <ul role="list" aria-label="Zero Trust characteristics">
+                                <ul role="list" aria-label="ゼロトラストの特徴">
                                     <li>ネットワークの場所は信頼の根拠にならない</li>
                                     <li>アクセスのたびに「誰が・どのデバイスで・何に」を検証</li>
                                     <li>リソースごとに最小限のアクセス権を付与</li>

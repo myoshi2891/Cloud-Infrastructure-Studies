@@ -269,7 +269,6 @@
 .bgTeal { background: color-mix(in srgb, var(--color-cdl-teal) 10%, transparent); }
 .bgAmber { background: color-mix(in srgb, var(--color-cdl-amber) 10%, transparent); }
 
-.srWrap { margin-bottom: 1.5rem; }
 .ulList { list-style: none; font-size: 1rem; color: var(--color-muted-foreground); padding: 0; margin: 0; }
 .liItem { padding: 0.35rem 0 0.35rem 1.2rem; position: relative; border-bottom: 1px solid var(--color-border); }
 .liItemLast { padding: 0.35rem 0 0.35rem 1.2rem; position: relative; }

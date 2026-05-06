@@ -1,23 +1,27 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Section4_Responsible } from '@/app/gcl/cloud-digital-leader/section3/components/sections/Section4_Responsible';
 
 describe('Section4_Responsible Component', () => {
-    it('renders the section title and tag correctly', () => {
+    beforeEach(() => {
         render(<Section4_Responsible />);
+    });
+
+    afterEach(() => {
+        cleanup();
+    });
+
+    it('renders the section title and tag correctly', () => {
         expect(screen.getByText('RESPONSIBLE AI')).toBeInTheDocument();
         expect(screen.getByText(/責任ある AI（Responsible AI）/)).toBeInTheDocument();
     });
 
     it('renders the subsection titles correctly', () => {
-        render(<Section4_Responsible />);
         expect(screen.getByText('なぜ責任ある AI が必要か')).toBeInTheDocument();
         expect(screen.getByText(/責任ある AI の 6 核心原則/)).toBeInTheDocument();
     });
 
-    it('renders the six problem cards', () => {
-        render(<Section4_Responsible />);
+    describe('problem cards', () => {
         const problemTitles = [
             '差別・偏見（Bias）',
             'ハルシネーション（幻覚）',
@@ -27,13 +31,12 @@ describe('Section4_Responsible Component', () => {
             'アクセス格差'
         ];
 
-        problemTitles.forEach(title => {
+        it.each(problemTitles)('renders the problem card: %s', (title) => {
             expect(screen.getByText(title)).toBeInTheDocument();
         });
     });
 
-    it('renders the six core principle cards', () => {
-        render(<Section4_Responsible />);
+    describe('core principle cards', () => {
         const principleTitles = [
             '① 公平性（Fairness）',
             '② 信頼性と安全性',
@@ -43,7 +46,7 @@ describe('Section4_Responsible Component', () => {
             '⑥ 説明責任（Accountability）'
         ];
 
-        principleTitles.forEach(title => {
+        it.each(principleTitles)('renders the principle card: %s', (title) => {
             expect(screen.getByText(title)).toBeInTheDocument();
         });
     });

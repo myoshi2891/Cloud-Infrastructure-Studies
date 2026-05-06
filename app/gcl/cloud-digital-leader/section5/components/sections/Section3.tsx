@@ -1,5 +1,8 @@
 import React from 'react';
-import styles from './Section3.module.css';
+import sharedStyles from './SharedSection.module.css';
+import localStyles from './Section3.module.css';
+
+const styles = { ...sharedStyles, ...localStyles };
 
 /**
  * Section3 コンポーネント

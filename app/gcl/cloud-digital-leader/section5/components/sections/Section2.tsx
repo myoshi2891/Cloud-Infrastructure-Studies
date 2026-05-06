@@ -15,7 +15,7 @@ export const Section2 = () => {
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.3 Identity and Access Management</div>
                         <h2 id="iam-heading" className={styles.shTitle}>
-                            IAM（アイデンティティとアクセス管理）<span className={styles.examTag}>最重要</span>
+                            IAM（アイデンティティとアクセス管理）<span className={styles.examTag} aria-hidden="true">最重要</span>
                         </h2>
                         <p className={styles.shDesc}>
                             「誰が（Who）・何に（Resource）・何ができるか（Permission）」を制御するクラウドセキュリティの中核システム。
@@ -115,7 +115,7 @@ export const Section2 = () => {
 
                     {/* ROLE COMPARISON */}
                     <h3 className={styles.subTitle} aria-label="3 種類のロール詳細比較">
-                        3 種類のロール詳細比較<span className={styles.examTag}>頻出</span>
+                        3 種類のロール詳細比較<span className={styles.examTag} aria-hidden="true">頻出</span>
                     </h3>
                     <div className={styles.roleWrap}>
                         <table className={styles.roleTable}>
@@ -162,7 +162,7 @@ export const Section2 = () => {
 
                     {/* SERVICE ACCOUNT */}
                     <h3 className={styles.subTitle} aria-label="サービスアカウントの安全管理">
-                        サービスアカウントの安全管理<span className={styles.examTag}>頻出</span>
+                        サービスアカウントの安全管理<span className={styles.examTag} aria-hidden="true">頻出</span>
                     </h3>
                     <div className={styles.g2}>
                         <div className={`${styles.card} ${styles.borderLeftRed}`}>
@@ -233,7 +233,7 @@ export const Section2 = () => {
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.4 Encryption & Data Protection</div>
-                        <h2 id="encryption-heading" className={styles.shTitle}>暗号化とデータ保護<span className={styles.examTag}>最重要</span></h2>
+                        <h2 id="encryption-heading" className={styles.shTitle}>暗号化とデータ保護<span className={styles.examTag} aria-hidden="true">最重要</span></h2>
                         <p className={styles.shDesc}>
                             データの 3 つの状態での暗号化と、Cloud KMS
                             による鍵管理オプションを理解します。
@@ -317,7 +317,7 @@ export const Section2 = () => {
 
                     {/* KMS OPTIONS */}
                     <h3 className={`${styles.subTitle} ${styles.marginTopLarge}`} aria-label="Cloud KMS：暗号鍵管理の 3 段階">
-                        Cloud KMS：暗号鍵管理の 3 段階<span className={styles.examTag}>頻出</span>
+                        Cloud KMS：暗号鍵管理の 3 段階<span className={styles.examTag} aria-hidden="true">頻出</span>
                     </h3>
                     <div className={styles.kmsWrap}>
                         <table className={styles.kmsTable}>

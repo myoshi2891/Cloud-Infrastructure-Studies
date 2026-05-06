@@ -99,7 +99,7 @@ export const Section1: React.FC = () => {
                                 <td>「将来何が起きるか」を自動予測してプロセス自動化</td>
                             </tr>
                             <tr>
-                                <td>🤖 AI / 生成 AI</td>
+                                <td><span aria-hidden="true">🤖</span> AI / 生成 AI</td>
                                 <td>未来の行動創造</td>
                                 <td>処方的・生成的</td>
                                 <td>自動応答・コンテンツ・エージェント行動</td>

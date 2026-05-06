@@ -26,20 +26,20 @@ export const Section3_AutoML: React.FC = () => {
                             AutoML の革命的な点
                         </div>
                         <div className="mb-5">
-                            <div className="text-base text-[var(--color-accent-red)] font-bold mb-2">
+                            <div className="text-base text-(--color-accent-red) font-bold mb-2">
                                 ❌ 従来のカスタム ML 開発（数週間〜数ヶ月）
                             </div>
-                            <div className="text-base text-[var(--color-text-secondary)] p-3 bg-[var(--color-muted)] rounded-lg font-mono">
-                                データ収集 → 前処理 → 特徴量エンジニアリング →<br />
-                                モデル選択 → ハイパーパラメータ調整 → 評価 → デプロイ<br />
+                            <div className="text-base text-(--color-text-secondary) p-3 bg-(--color-muted) rounded-lg font-mono">
+                                <div className="code-line">データ収集 → 前処理 → 特徴量エンジニアリング →</div>
+                                <div className="code-line">モデル選択 → ハイパーパラメータ調整 → 評価 → デプロイ</div>
                             </div>
                         </div>
                         <div>
-                            <div className="text-base text-[var(--color-accent-green)] font-bold mb-2">
+                            <div className="text-base text-(--color-accent-green) font-bold mb-2">
                                 ✅ AutoML（数時間〜1日）
                             </div>
-                            <div className="text-base text-[var(--color-text-secondary)] p-3 bg-[var(--color-muted)] rounded-lg font-mono">
-                                データをアップロード → トレーニング開始ボタン → 完成！<br />
+                            <div className="text-base text-(--color-text-secondary) p-3 bg-(--color-muted) rounded-lg font-mono">
+                                <div className="code-line">データをアップロード → トレーニング開始ボタン → 完成！</div>
                             </div>
                         </div>
                     </div>
