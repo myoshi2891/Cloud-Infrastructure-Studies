@@ -430,11 +430,11 @@ export const Section2 = () => {
                                         marginBottom: '0.25rem',
                                     }}
                                 >
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>✗</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>✗</span>
                                     インターネット品質に依存（帯域保証なし）
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>✗</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>✗</span>
                                     大量データ転送・低レイテンシ要件には不向き
                                 </li>
                             </ul>
@@ -481,7 +481,7 @@ export const Section2 = () => {
                                     アウトバウンドデータ転送コストが安価
                                 </li>
                                 <li style={{ paddingLeft: '1rem', position: 'relative' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>✗</span>
+                                    <span aria-hidden="true" style={{ position: 'absolute', left: 0, color: 'var(--color-cdl-error)' }}>✗</span>
                                     コストが高い・設定に時間がかかる
                                 </li>
                             </ul>
