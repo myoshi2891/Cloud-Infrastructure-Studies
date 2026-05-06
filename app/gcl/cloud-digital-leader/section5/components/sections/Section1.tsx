@@ -14,7 +14,7 @@ export const Section1 = () => {
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.1 Shared Responsibility</div>
-                        <h2 id="shared-heading" className={styles.shTitle}>責任共有モデル<span className={styles.examTag}>最重要</span></h2>
+                        <h2 id="shared-heading" className={styles.shTitle}>責任共有モデル<span className={styles.examTag} aria-hidden="true">最重要</span></h2>
                         <p className={styles.shDesc}>
                             Google
                             とユーザーがセキュリティ責任をどう分担するかを理解します。サービスモデルによって境界線が変わります。
@@ -144,7 +144,7 @@ export const Section1 = () => {
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.2 Zero Trust / BeyondCorp</div>
                         <h2 id="zerotrust-heading" className={styles.shTitle}>
-                            ゼロトラストと BeyondCorp<span className={styles.examTag}>頻出</span>
+                            ゼロトラストと BeyondCorp<span className={styles.examTag} aria-hidden="true">頻出</span>
                         </h2>
                         <p className={styles.shDesc}>
                             「Never Trust, Always
