@@ -18,7 +18,7 @@ export const Section0: React.FC = () => {
                 </div>
 
                 <div className={baseStyles.grid3}>
-                    <div className={`${baseStyles.card} border-t-[3px] border-[var(--color-accent-blue)]`}>
+                    <div className={`${baseStyles.card} border-t-[3px] border-[var(--gcl-theme-Laboratory)]`}>
                         <div className={`${baseStyles.cardIcon} bg-[var(--color-muted)]`}>🧠</div>
                         <div className={baseStyles.cardTitle}>3.1 AI と ML の基礎</div>
                         <div className={baseStyles.cardDesc}>
@@ -31,7 +31,7 @@ export const Section0: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className={`${baseStyles.card} border-t-[3px] border-[var(--color-accent-cyan)]`}>
+                    <div className={`${baseStyles.card} border-t-[3px] border-[var(--gcl-theme-Laboratory)]`}>
                         <div className={`${baseStyles.cardIcon} bg-[var(--color-muted)]`}>⚙️</div>
                         <div className={baseStyles.cardTitle}>3.2 Google Cloud AI/ML ソリューション</div>
                         <div className={baseStyles.cardDesc}>
@@ -44,7 +44,7 @@ export const Section0: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className={`${baseStyles.card} border-t-[3px] border-[var(--color-accent-green)]`}>
+                    <div className={`${baseStyles.card} border-t-[3px] border-[var(--gcl-theme-Laboratory)]`}>
                         <div className={`${baseStyles.cardIcon} bg-[var(--color-muted)]`}>🏗️</div>
                         <div className={baseStyles.cardTitle}>3.3 Google Cloud AI/ML ソリューションの構築・活用</div>
                         <div className={baseStyles.cardDesc}>
