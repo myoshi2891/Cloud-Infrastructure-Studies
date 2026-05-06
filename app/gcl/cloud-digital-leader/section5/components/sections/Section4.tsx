@@ -14,11 +14,11 @@ const styles = { ...sharedStyles, ...localStyles };
 export const Section4 = () => {
     return (
         <>
-            <section id="compliance" className={`${styles.section} ${styles.sectionAlt}`}>
+            <section id="compliance" aria-labelledby="compliance-heading" className={`${styles.section} ${styles.sectionAlt}`}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.7 Compliance & Regulations</div>
-                        <h2 className={styles.shTitle}>コンプライアンスと規制対応</h2>
+                        <h2 id="compliance-heading" className={styles.shTitle}>コンプライアンスと規制対応</h2>
                         <p className={styles.shDesc}>
                             GDPR・HIPAA・PCI DSS の要点と、Google Cloud
                             のコンプライアンス認証・支援サービスを理解します。
@@ -76,7 +76,7 @@ export const Section4 = () => {
 
                     <div className={styles.g2}>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle}>📑 Compliance Reports Manager</div>
+                            <h3 className={styles.cardTitle}>📑 Compliance Reports Manager</h3>
                             <div className={styles.cardBody}>
                                 Google Cloud のコンプライアンス認証文書（SOC レポート・ISO
                                 認証書等）をセルフサービスでダウンロードできるツール。監査担当者への証拠提出が数分で完了。
@@ -89,7 +89,7 @@ export const Section4 = () => {
                                     style={{
                                         color: 'var(--color-cdl-warning)',
                                         fontSize: '1rem',
-                                        fontFamily: 'var(--ff-mono, "DM Mono", monospace)',
+                                        fontFamily: 'var(--font-mono)',
                                         textDecoration: 'none'
                                     }}
                                 >
@@ -98,7 +98,7 @@ export const Section4 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle}>🔒 Assured Workloads</div>
+                            <h3 className={styles.cardTitle}>🔒 Assured Workloads</h3>
                             <div className={styles.cardBody}>
                                 規制要件（FedRAMP・HIPAA
                                 等）に適合した論理的な境界をクリックで構築。データ保管地域の強制・担当者アクセス制限・暗号化コントロールを自動化。
@@ -122,25 +122,25 @@ export const Section4 = () => {
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
                         <a href="https://cloud.google.com/security/compliance" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/security/compliance
+                            Google Cloud Security &amp; Compliance
                         </a>
                         <a href="https://cloud.google.com/privacy/gdpr" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/privacy/gdpr
+                            GDPR on Google Cloud
                         </a>
                         <a href="https://cloud.google.com/security/compliance/pci-dss" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/security/compliance/pci-dss
+                            PCI DSS on Google Cloud
                         </a>
                     </div>
                 </div>
             </section>
 
             {/* DLP */}
-            <section id="dlp" className={styles.section}>
+            <section id="dlp" aria-labelledby="dlp-heading" className={styles.section}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>5.8 Data Privacy & Sensitive Data Protection</div>
-                        <h2 className={styles.shTitle}>
-                            データプライバシーと Sensitive Data Protection<span className={styles.examTag}>頻出</span>
+                        <h2 id="dlp-heading" className={styles.shTitle}>
+                            データプライバシーと Sensitive Data Protection<span className={styles.examTag} aria-hidden="true">頻出</span>
                         </h2>
                         <p className={styles.shDesc}>
                             匿名化・仮名化・トークン化の違い（再識別可否・GDPR
@@ -238,16 +238,16 @@ export const Section4 = () => {
 
                     <div className={styles.g3} style={{ marginTop: '1.5rem' }}>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>開発・テスト環境</div>
+                            <h3 className={styles.cardTitle} style={{ fontSize: '1rem' }}>開発・テスト環境</h3>
                             <div className={styles.cardBody}>
                                 本番データを使う必要がある場合 →
                                 <strong style={{ color: 'var(--color-cdl-warning)' }}>仮名化</strong><br />元データへの変換が可能なため、後から正式データでの検証もできる
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>
+                            <h3 className={styles.cardTitle} style={{ fontSize: '1rem' }}>
                                 データの公開・研究利用
-                            </div>
+                            </h3>
                             <div className={styles.cardBody}>
                                 外部に公開・第三者と共有する場合 →
                                 <strong style={{ color: 'var(--color-cdl-success)' }}>匿名化</strong><br />GDPR
@@ -255,7 +255,7 @@ export const Section4 = () => {
                             </div>
                         </div>
                         <div className={styles.card}>
-                            <div className={styles.cardTitle} style={{ fontSize: '1rem' }}>PCI DSS・決済データ</div>
+                            <h3 className={styles.cardTitle} style={{ fontSize: '1rem' }}>PCI DSS・決済データ</h3>
                             <div className={styles.cardBody}>
                                 クレジットカード番号の保護 →
                                 <strong style={{ color: 'var(--color-cdl-info)' }}>トークン化</strong><br />同じ形式・長さを維持しつつ実際のカード番号を隠蔽
@@ -266,25 +266,25 @@ export const Section4 = () => {
                     <div className={styles.src}>
                         <div className={styles.srcLabel}>📎 参考ソース</div>
                         <a href="https://cloud.google.com/sensitive-data-protection/docs" target="_blank" rel="noopener noreferrer">
-                            https://cloud.google.com/sensitive-data-protection/docs
+                            Sensitive Data Protection ドキュメント
                         </a>
                         <a
                             href="https://cloud.google.com/sensitive-data-protection/docs/pseudonymization"
                             target="_blank" rel="noopener noreferrer"
                         >
-                            https://cloud.google.com/sensitive-data-protection/docs/pseudonymization
+                            仮名化（DLP）ガイド
                         </a>
-                        <a href="https://cloud.google.com/privacy" target="_blank" rel="noopener noreferrer">https://cloud.google.com/privacy</a>
+                        <a href="https://cloud.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Cloud プライバシーセンター</a>
                     </div>
                 </div>
             </section>
 
             {/* CHECKLIST */}
-            <section id="checklist" className={`${styles.section} ${styles.sectionAlt}`}>
+            <section id="checklist" aria-labelledby="checklist-heading" className={`${styles.section} ${styles.sectionAlt}`}>
                 <div className={styles.container}>
                     <div className={styles.sh}>
                         <div className={styles.shTag}>Exam Preparation</div>
-                        <h2 className={styles.shTitle}>試験直前チェックリスト＆頻出パターン</h2>
+                        <h2 id="checklist-heading" className={styles.shTitle}>試験直前チェックリスト＆頻出パターン</h2>
                         <p className={styles.shDesc}>
                             Section 5 の重要ポイントを確認し、頻出問題パターンで理解を深めましょう。
                         </p>
