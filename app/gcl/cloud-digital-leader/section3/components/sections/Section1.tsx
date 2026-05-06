@@ -5,6 +5,8 @@ import compareStyles from './Compare.module.css';
 
 /**
  * Section1: AI と ML の基礎概念
+ *
+ * @returns {React.ReactElement} AI と ML の基礎概念セクションを表す React 要素
  */
 export const Section1: React.FC = () => {
     return (
@@ -137,7 +139,7 @@ export const Section1: React.FC = () => {
                         <div className={baseStyles.cardTitle}>非構造化データの解放</div>
                         <div className={baseStyles.cardDesc}>
                             企業データの大部分（画像・音声・動画・テキスト）は従来の RDB
-                            では分析困難でした。 ML
+                            では分析困難でした。ML
                             はこれらの非構造化データから文脈・意味を抽出し、新たな洞察の源泉として活用します。
                         </div>
                     </div>

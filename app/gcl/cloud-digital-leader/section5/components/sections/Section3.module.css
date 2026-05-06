@@ -25,3 +25,9 @@
 .accFg { color: var(--color-accent-foreground); }
 .fs09 { font-size: 0.9rem; }
 .fwN { font-weight: normal; }
+/* Utility classes referenced by Section3.tsx via merged styles */
+.badgeMargin { margin-bottom: 0.5rem; }
+.errorText { color: var(--color-cdl-error); }
+.infoText { color: var(--color-muted-foreground); line-height: 1.6; }
+.infoTextC { color: var(--color-cdl-info); }
+.warningText { color: var(--color-cdl-warning); }

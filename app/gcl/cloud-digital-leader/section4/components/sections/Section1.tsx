@@ -3,13 +3,24 @@ import styles from './Section1.module.css';
 import { TableComponent } from '@/app/gcl/cloud-digital-leader/components/shared/TableComponent';
 import { DiagramSVG } from '@/components/DiagramSVG';
 
-const COMPUTE_COMPARISON = [
-    { service: '🖥️ Compute Engine', abstraction: 'IaaS（VM）', management: '高（OS管理必要）', scaling: '手動＋MIG', billing: 'VM稼働時間（秒単位）', usage: 'レガシー移行・GPU・特殊OS' },
-    { service: '☸️ GKE Standard', abstraction: 'CaaS（コンテナ）', management: '中（ノード管理）', scaling: 'Kubernetes自動', billing: 'ノードVM+管理プレーン', usage: '複雑なマイクロサービス・GPU ML' },
-    { service: '🤖 GKE Autopilot', abstraction: 'CaaS（マネージド）', management: '低（Google管理）', scaling: 'Kubernetes自動', billing: 'Pod リソース単位', usage: 'K8s を楽に使いたい・小規模チーム' },
-    { service: '🚀 Cloud Run', abstraction: 'サーバーレスコンテナ', management: '最低', scaling: '自動（0〜N）', billing: 'リクエスト処理時のみ', usage: 'HTTP API・Web アプリ・マイクロサービス' },
-    { service: '⚡ Cloud Run Functions', abstraction: 'FaaS（関数）', management: '最低', scaling: '自動（0〜N）', billing: '実行時のみ完全従量課金', usage: 'イベント処理・Webhook・軽量タスク' },
-    { service: '📱 App Engine', abstraction: 'PaaS', management: '低', scaling: '自動', billing: 'インスタンス稼働時間', usage: '既存Webアプリ・モバイルバックエンド' },
+/** COMPUTE_COMPARISON テーブルの行データ形状 */
+interface ComputeComparisonRow {
+    id: string;
+    service: string;
+    abstraction: string;
+    management: string;
+    scaling: string;
+    billing: string;
+    usage: string;
+}
+
+const COMPUTE_COMPARISON: ComputeComparisonRow[] = [
+    { id: 'compute-engine', service: '🖥️ Compute Engine', abstraction: 'IaaS（VM）', management: '高（OS管理必要）', scaling: '手動＋MIG', billing: 'VM稼働時間（秒単位）', usage: 'レガシー移行・GPU・特殊OS' },
+    { id: 'gke-standard', service: '☸️ GKE Standard', abstraction: 'CaaS（コンテナ）', management: '中（ノード管理）', scaling: 'Kubernetes自動', billing: 'ノードVM+管理プレーン', usage: '複雑なマイクロサービス・GPU ML' },
+    { id: 'gke-autopilot', service: '🤖 GKE Autopilot', abstraction: 'CaaS（マネージド）', management: '低（Google管理）', scaling: 'Kubernetes自動', billing: 'Pod リソース単位', usage: 'K8s を楽に使いたい・小規模チーム' },
+    { id: 'cloud-run', service: '🚀 Cloud Run', abstraction: 'サーバーレスコンテナ', management: '最低', scaling: '自動（0〜N）', billing: 'リクエスト処理時のみ', usage: 'HTTP API・Web アプリ・マイクロサービス' },
+    { id: 'cloud-run-functions', service: '⚡ Cloud Run Functions', abstraction: 'FaaS（関数）', management: '最低', scaling: '自動（0〜N）', billing: '実行時のみ完全従量課金', usage: 'イベント処理・Webhook・軽量タスク' },
+    { id: 'app-engine', service: '📱 App Engine', abstraction: 'PaaS', management: '低', scaling: '自動', billing: 'インスタンス稼働時間', usage: '既存Webアプリ・モバイルバックエンド' },
 ];
 
 /**
@@ -101,11 +112,11 @@ export const Section1 = () => {
                     {/* COMPUTE COMPARISON */}
                     <div className={styles.subTitle}>コンピューティングサービス比較表</div>
                     <div className={styles.cmpWrap} style={{ marginBottom: '2rem' }}>
-                        <TableComponent getRowKey={(row, i) => i}
+                        <TableComponent getRowKey={(row) => row.id}
                             headers={['サービス', '抽象化レベル', '管理負荷', 'スケーリング', '課金モデル', '主な用途']}
                             rows={COMPUTE_COMPARISON}
-                            renderRow={(row, i) => (
-                                <tr key={i}>
+                            renderRow={(row) => (
+                                <tr key={row.id}>
                                     <td>{row.service}</td>
                                     <td>{row.abstraction}</td>
                                     <td>{row.management}</td>

@@ -5,6 +5,54 @@ import localStyles from './Section4.module.css';
 const styles = { ...sharedStyles, ...localStyles };
 
 /**
+ * DLP（7つの保護手法）カードのデータ。モジュールスコープで定義しレンダーごとの再生成を防ぐ。
+ */
+const dlpData = [
+    {
+        variant: 'dlpCardInfo',
+        name: '① 検出',
+        desc: (<>どこに機密データがあるかを<strong>発見するだけ</strong>。BigQueryの全テーブルをスキャンして PII を含む列を特定。</>),
+        example: '変更なし → 場所の把握のみ',
+    },
+    {
+        variant: 'dlpCardError',
+        name: '② マスキング',
+        desc: (<>一部を「*」や「X」で<strong>置き換え</strong>。末尾のみ表示などで必要最小限を残す。</>),
+        example: '090-1234-5678 → ***-****-5678',
+    },
+    {
+        variant: 'dlpCardWarning',
+        name: '③ 仮名化 ⚠️',
+        desc: (<>識別子を仮の識別子に置換。<strong>変換テーブルで元に戻せる</strong>（再識別可能）。GDPR 引き続き適用。</>),
+        example: '田中太郎 → UID-a7f3k',
+    },
+    {
+        variant: 'dlpCardSuccess',
+        name: '④ 匿名化 ✅',
+        desc: (<>識別情報を<strong>完全に除去・元に戻せない</strong>。GDPR 規制対象外になる。研究データの公開に最適。</>),
+        example: '田中太郎・渋谷区 → 30代男性・東京都内',
+    },
+    {
+        variant: 'dlpCardInfo',
+        name: '⑤ トークン化',
+        desc: (<>値を<strong>ランダムなトークンに置換</strong>。同じ形式・長さを保つことも可能。PCI DSS のカードデータに最適。</>),
+        example: '4111-xxxx → TOKEN-ab3f8x',
+    },
+    {
+        variant: 'dlpCardError',
+        name: '⑥ 暗号化',
+        desc: (<>暗号化キーで暗号化。<strong>鍵があれば復号可能</strong>。鍵管理が重要。Cloud KMS と組み合わせる。</>),
+        example: '090-1234-5678 → 3f8a…9d2c',
+    },
+    {
+        variant: 'dlpCardAccent',
+        name: '⑦ 日付シフト',
+        desc: (<>日付をランダムにずらす。<strong>統計的特性を保ちつつ</strong>個人を特定できなくする。医療・研究データに活用。</>),
+        example: '2024-01-15 → 2024-03-27（±数ヶ月）',
+    },
+] as const;
+
+/**
  * Section4 コンポーネント
  * 
  * Cloud Digital Leader のセクションコンテンツを表示します。
@@ -157,63 +205,15 @@ export const Section4 = () => {
                     <h3 className={styles.subTitle}>
                         7 つの保護手法<span className={styles.examTag} aria-hidden="true">試験で最頻出</span>
                     </h3>
-                    {(() => {
-                        const dlpData = [
-                            {
-                                variant: styles.dlpCardInfo,
-                                name: '① 検出',
-                                desc: (<>どこに機密データがあるかを<strong>発見するだけ</strong>。BigQueryの全テーブルをスキャンして PII を含む列を特定。</>),
-                                example: '変更なし → 場所の把握のみ',
-                            },
-                            {
-                                variant: styles.dlpCardError,
-                                name: '② マスキング',
-                                desc: (<>一部を「*」や「X」で<strong>置き換え</strong>。末尾のみ表示などで必要最小限を残す。</>),
-                                example: '090-1234-5678 → ***-****-5678',
-                            },
-                            {
-                                variant: styles.dlpCardWarning,
-                                name: '③ 仮名化 ⚠️',
-                                desc: (<>識別子を仮の識別子に置換。<strong>変換テーブルで元に戻せる</strong>（再識別可能）。GDPR 引き続き適用。</>),
-                                example: '田中太郎 → UID-a7f3k',
-                            },
-                            {
-                                variant: styles.dlpCardSuccess,
-                                name: '④ 匿名化 ✅',
-                                desc: (<>識別情報を<strong>完全に除去・元に戻せない</strong>。GDPR 規制対象外になる。研究データの公開に最適。</>),
-                                example: '田中太郎・渋谷区 → 30代男性・東京都内',
-                            },
-                            {
-                                variant: styles.dlpCardInfo,
-                                name: '⑤ トークン化',
-                                desc: (<>値を<strong>ランダムなトークンに置換</strong>。同じ形式・長さを保つことも可能。PCI DSS のカードデータに最適。</>),
-                                example: '4111-xxxx → TOKEN-ab3f8x',
-                            },
-                            {
-                                variant: styles.dlpCardError,
-                                name: '⑥ 暗号化',
-                                desc: (<>暗号化キーで暗号化。<strong>鍵があれば復号可能</strong>。鍵管理が重要。Cloud KMS と組み合わせる。</>),
-                                example: '090-1234-5678 → 3f8a…9d2c',
-                            },
-                            {
-                                variant: styles.dlpCardAccent,
-                                name: '⑦ 日付シフト',
-                                desc: (<>日付をランダムにずらす。<strong>統計的特性を保ちつつ</strong>個人を特定できなくする。医療・研究データに活用。</>),
-                                example: '2024-01-15 → 2024-03-27（±数ヶ月）',
-                            },
-                        ] as const;
-                        return (
-                            <div className={styles.dlpGrid}>
-                                {dlpData.map(({ variant, name, desc, example }) => (
-                                    <div key={name} className={`${styles.dlpCard} ${variant}`}>
-                                        <div className={styles.dlpName}>{name}</div>
-                                        <div className={styles.dlpDesc}>{desc}</div>
-                                        <div className={styles.dlpExample}>{example}</div>
-                                    </div>
-                                ))}
+                    <div className={styles.dlpGrid}>
+                        {dlpData.map(({ variant, name, desc, example }) => (
+                            <div key={name} className={`${styles.dlpCard} ${styles[variant as keyof typeof styles]}`}>
+                                <div className={styles.dlpName}>{name}</div>
+                                <div className={styles.dlpDesc}>{desc}</div>
+                                <div className={styles.dlpExample}>{example}</div>
                             </div>
-                        );
-                    })()}
+                        ))}
+                    </div>
 
                     <div className={styles.warnBox} style={{ marginTop: '1.5rem' }}>
                         <strong style={{ color: 'var(--color-cdl-error)' }}>⚠️ 試験の超頻出：匿名化 vs 仮名化の違い</strong><br />

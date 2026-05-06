@@ -316,7 +316,7 @@ export const Section2 = () => {
                     </div>
 
                     {/* KMS OPTIONS */}
-                    <h3 className={`${styles.subTitle} ${styles.marginTopLarge}`} aria-label="Cloud KMS：暗号鍵管理の 3 段階">
+                    <h3 className={`${styles.subTitle} ${styles.marginTopLarge}`}>
                         Cloud KMS：暗号鍵管理の 3 段階<span className={styles.examTag} aria-hidden="true">頻出</span>
                     </h3>
                     <div className={styles.kmsWrap}>

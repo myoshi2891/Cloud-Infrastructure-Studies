@@ -6,7 +6,7 @@
 .compName { font-weight: 700; color: var(--color-muted-foreground); margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--color-border); }
 .compDesc { font-size: 0.95rem; color: var(--color-muted-foreground); flex: 1; line-height: 1.6; }
 .dlpGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-.dlpCard { background: var(--color-card); border-left: 3px solid var(--color-border); padding: 1.2rem; border-radius: 0 10px 10px 0; box-shadow: 0 2px 8px var(--color-shadow, color-mix(in srgb, var(--color-background) 4%, transparent)); }
+.dlpCard { background: var(--color-card); border-left: 3px solid var(--color-border); padding: 1.2rem; border-radius: 0 10px 10px 0; box-shadow: 0 2px 8px var(--color-shadow, rgba(0, 0, 0, 0.08)); }
 .dlpName { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
 .dlpDesc { font-size: 0.95rem; color: var(--color-muted-foreground); margin-bottom: 0.8rem; line-height: 1.5; }
 .dlpExample { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 0.9rem; background: var(--color-muted); padding: 0.5rem 0.8rem; border-radius: 6px; }
@@ -32,7 +32,7 @@
 .clItem { display: flex; align-items: flex-start; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--color-border); font-size: 1rem; color: var(--color-muted-foreground); line-height: 1.5; }
 .clItem:last-child { border-bottom: none; }
 .clBox { width: 24px; height: 24px; border-radius: 6px; background: color-mix(in srgb, var(--color-cdl-success) 10%, transparent); color: var(--color-cdl-success); display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; margin-top: 0.1rem; }
-.ptnCard { background: var(--color-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px var(--color-shadow, color-mix(in srgb, var(--color-background) 8%, transparent)); display: flex; flex-direction: column; }
+.ptnCard { background: var(--color-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px var(--color-shadow, rgba(0, 0, 0, 0.08)); display: flex; flex-direction: column; }
 .ptnHeader { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--color-muted); border-bottom: 1px solid var(--color-border); }
 .ptnNum { font-family: var(--font-mono, 'DM Mono', monospace); font-weight: 700; color: var(--color-cdl-warning); font-size: 1.2rem; }
 .ptnTitle { font-weight: 700; font-size: 1.1rem; }

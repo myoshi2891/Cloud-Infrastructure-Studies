@@ -38,7 +38,7 @@ export const Section3 = () => {
                                 <br />グローバルロードバランサーの手前でトラフィックをフィルタリング。Google
                                 のグローバルネットワークのエッジで攻撃を遮断。
                             </div>
-                            <ul className={`${styles.cardList} ${styles.cardListRed}`}>
+                            <ul role="list" aria-label="Cloud Armor の機能一覧" className={`${styles.cardList} ${styles.cardListRed}`}>
                                 <li>L3/L4 DDoS を自動的に検知・緩和</li>
                                 <li>OWASP Top 10 の WAF ルールを適用</li>
                                 <li>IP・地域ベースのブロック・レート制限</li>
@@ -58,7 +58,7 @@ export const Section3 = () => {
                                 </strong>
                                 <br />アプリ単位で認証・認可を実施。すべてのアクセスをログ記録。
                             </div>
-                            <ul className={`${styles.cardList} ${styles.cardListGold}`}>
+                            <ul role="list" aria-label="Cloud IAP の機能一覧" className={`${styles.cardList} ${styles.cardListGold}`}>
                                 <li>VPN なしで社内アプリへセキュアアクセス</li>
                                 <li>アクセスのたびに Google 認証 + MFA</li>
                                 <li>IAM で誰がアクセスできるかを細かく制御</li>
@@ -79,7 +79,7 @@ export const Section3 = () => {
                                 <br />GCP
                                 サービスの周囲にセキュリティ境界を作成。たとえ認証情報を盗まれても境界外からのアクセスをブロック。
                             </div>
-                            <ul className={`${styles.cardList} ${styles.cardListSky}`}>
+                            <ul role="list" aria-label="VPC Service Controls の機能一覧" className={`${styles.cardList} ${styles.cardListSky}`}>
                                 <li>BigQuery・Cloud Storage 等の周りに境界</li>
                                 <li>認証情報盗難後の外部コピーを物理的にブロック</li>
                                 <li>本番適用前に Dry Run モードで影響確認</li>
