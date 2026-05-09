@@ -1,11 +1,21 @@
 import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 
+/**
+ * Renders the Section 6 - Part 6 (Sustainability and Green Cloud) component for the Cloud Digital Leader guide.
+ * It provides content on Google Cloud's environmental efforts, Carbon Footprint reporting, and sustainability best practices.
+ * 
+ * Accessibility: The root section element has an `aria-labelledby` linking it to the section title for screen readers.
+ * Interactive links use standard `href` and `target="_blank"` with `rel="noopener noreferrer"`.
+ * 
+ * @returns {React.ReactElement} The section component containing sustainability educational content.
+ * @remarks This component has no props and no side effects.
+ */
 export function Section6() {
     return (
-        <section className={sharedStyles.section} id="s6">
+        <section className={sharedStyles.section} id="s6" aria-labelledby="s6-title">
             <div className={sharedStyles.sectionLabel}>Section 6 — Part 6</div>
-            <h2 className={sharedStyles.sectionTitle}>サステナビリティと<br />グリーンクラウド</h2>
+            <h2 className={sharedStyles.sectionTitle} id="s6-title">サステナビリティと<br />グリーンクラウド</h2>
             <p className={sharedStyles.sectionDesc}>
                 Google Cloud の環境への取り組みと、クラウドを活用した IT システムのサステナビリティ（持続可能性）向上について学びます。
             </p>
@@ -16,7 +26,7 @@ export function Section6() {
                     <span aria-hidden="true">🌱</span> Google の環境への取り組み <span className={`${sharedStyles.tag} ${sharedStyles.tagBlue}`}>企業の責任</span>
                 </h3>
                 <p>Google は、企業活動における環境負荷を最小限に抑えるための野心的な目標を掲げています。</p>
-                <div className="table-wrapper" style={{ marginTop: '1.5rem' }}>
+                <div className={`table-wrapper ${sharedStyles.tableWrapperMt}`}>
                     <table>
                         <thead>
                             <tr>
@@ -58,7 +68,7 @@ export function Section6() {
                     <li>GCP の推奨事項（Active Assist）と連携し、不要なリソース（アイドル状態の VM など）を削除して排出量とコストの両方を削減する提案を行う</li>
                 </ul>
 
-                <div className="table-wrapper" style={{ marginTop: '1.5rem' }}>
+                <div className={`table-wrapper ${sharedStyles.tableWrapperMt}`}>
                     <table>
                         <thead>
                             <tr>

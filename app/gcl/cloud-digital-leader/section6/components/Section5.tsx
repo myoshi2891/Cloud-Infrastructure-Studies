@@ -2,6 +2,16 @@ import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 import { DiagramSVG } from '@/components/DiagramSVG';
 
+/**
+ * Section5 コンポーネントは、Cloud Digital Leader ガイドの「Section 6 - Part 5（信頼性・可用性の設計原則）」を描画します。
+ * 高可用性（HA）、ディザスタリカバリ（DR）、インシデント管理フロー、DevOps と SRE の関係について説明します。
+ *
+ * @example
+ * // ページコンポーネント内での使用例
+ * <Section5 />
+ *
+ * @returns {React.ReactElement} 信頼性設計の学習コンテンツを含むセクションの JSX 要素
+ */
 export function Section5() {
     return (
         <section className={sharedStyles.section} id="s5">

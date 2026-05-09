@@ -1,6 +1,13 @@
 import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 
+/**
+ * Renders the Section 6 - Part 3 (Cloud Monitoring) component for the Cloud Digital Leader guide.
+ * It provides a comprehensive overview of Google Cloud Monitoring services, observability signals, and Ops Agent.
+ *
+ * @returns {React.ReactElement} The section containing Cloud Monitoring educational content.
+ * @remarks This component does not take any props and has no side effects.
+ */
 export function Section3() {
     return (
         <section className={sharedStyles.section} id="s3">

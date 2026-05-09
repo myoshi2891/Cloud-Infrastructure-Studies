@@ -224,3 +224,7 @@
     font-weight: 600;
     color: var(--color-foreground);
 }
+
+.tableWrapperMt {
+    margin-top: 1.5rem;
+}

@@ -2,6 +2,14 @@ import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 import { DiagramSVG } from '@/components/DiagramSVG';
 
+/**
+ * Renders the Section 6 - Part 4 (Cloud Logging and Audit) of the Cloud Digital Leader guide.
+ * Explains Cloud Logging, audit log types, and log routing/export best practices.
+ *
+ * @param props - This component accepts no props.
+ * @returns {JSX.Element} The rendered section element with logging and audit content.
+ * @remarks Uses DiagramSVG component for visual flow representation. No side effects.
+ */
 export function Section4() {
     return (
         <section className={sharedStyles.section} id="s4">

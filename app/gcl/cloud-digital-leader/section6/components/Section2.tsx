@@ -1,6 +1,12 @@
 import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 
+/**
+ * Renders the Section 6 - Part 2 (SRE Principles and Operational Excellence) of the Cloud Digital Leader guide.
+ * This component provides information on Site Reliability Engineering, SLI/SLO/SLA, Error Budgets, and Toil.
+ *
+ * @returns {React.ReactElement} The rendered section component containing SRE principles content.
+ */
 export function Section2() {
     return (
         <section className={sharedStyles.section} id="s2">

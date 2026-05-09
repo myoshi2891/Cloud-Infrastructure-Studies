@@ -45,7 +45,9 @@ Step 7 (Part 6 Sustainability) が TDD で実装済みです。
 - [ ] 最終的な調整と統合。
 
 ---
+
 (以下、過去の履歴)
 
 ## 2026-05-03: Cloud Digital Leader Section 4 & 5 品質改善タスク (完了)
+
 ...
