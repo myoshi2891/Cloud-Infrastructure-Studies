@@ -137,26 +137,29 @@ export function Section6() {
                 <h3>
                     <span aria-hidden="true">🔗</span> 公式リソース
                 </h3>
-                <ul className={sharedStyles.linkList}>
-                    <li>
-                        <a href="https://cloud.google.com/sustainability" target="_blank" rel="noopener noreferrer">
-                            Google Cloud サステナビリティ公式ページ
+                <div className={sharedStyles.sources}>
+                    <a className={sharedStyles.sourceLink} href="https://cloud.google.com/sustainability" target="_blank" rel="noopener noreferrer">
+                        <span className={sharedStyles.sourceIcon} aria-hidden="true">🔗</span>
+                        <div className={sharedStyles.sourceText}>
+                            <strong>Google Cloud サステナビリティ公式ページ</strong>
                             <span className={sharedStyles.sourceUrl}>https://cloud.google.com/sustainability</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://cloud.google.com/carbon-footprint" target="_blank" rel="noopener noreferrer">
-                            Carbon Footprint ツール — ドキュメント
+                        </div>
+                    </a>
+                    <a className={sharedStyles.sourceLink} href="https://cloud.google.com/carbon-footprint" target="_blank" rel="noopener noreferrer">
+                        <span className={sharedStyles.sourceIcon} aria-hidden="true">🔗</span>
+                        <div className={sharedStyles.sourceText}>
+                            <strong>Carbon Footprint ツール — ドキュメント</strong>
                             <span className={sharedStyles.sourceUrl}>https://cloud.google.com/carbon-footprint</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://sustainability.google/reports/" target="_blank" rel="noopener noreferrer">
-                            Google 環境サステナビリティ年次報告書
+                        </div>
+                    </a>
+                    <a className={sharedStyles.sourceLink} href="https://sustainability.google/reports/" target="_blank" rel="noopener noreferrer">
+                        <span className={sharedStyles.sourceIcon} aria-hidden="true">🔗</span>
+                        <div className={sharedStyles.sourceText}>
+                            <strong>Google 環境サステナビリティ年次報告書</strong>
                             <span className={sharedStyles.sourceUrl}>https://sustainability.google/reports/</span>
-                        </a>
-                    </li>
-                </ul>
+                        </div>
+                    </a>
+                </div>
             </div>
         </section>
     );
