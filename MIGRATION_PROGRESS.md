@@ -4,17 +4,17 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** `fac1c9b` feat(cdl/s6): implement Section 3 Cloud Monitoring with TDD
-- **次の作業:** CDL Section 6 Part 4 Cloud Logging (Section4.tsx) の移行
-- **テスト数:** 229件パス (Section 6: layout, page, Section1〜3 を含む全テスト)
+- **最新 HEAD:** `3972971` feat(cdl/s6): implement Section 4 Cloud Logging with TDD
+- **次の作業:** CDL Section 6 Part 5 Reliability (Section5.tsx) の移行
+- **テスト数:** 235件パス (Section 6: layout, page, Section1〜4 を含む全テスト)
 - **ビルド:** 成功
-- **最終更新日時(UTC):** 2026-05-09T02:00:00Z
+- **最終更新日時(UTC):** 2026-05-09T02:08:00Z
 
 ## 次回セッションでの再開プロンプト
 
-CDL Section 6 の移行を Step 4 まで完了しました。
-Step 4 (Part 3 Cloud Monitoring) が TDD で実装済みです。
-次は Step 5: Part 4 Cloud Logging (Section4.tsx) の移行から再開してください。
+CDL Section 6 の移行を Step 5 まで完了しました。
+Step 5 (Part 4 Cloud Logging) が TDD で実装済みです。
+次は Step 6: Part 5 Reliability (Section5.tsx) の移行から再開してください。
 
 ---
 
@@ -38,11 +38,15 @@ Step 4 (Part 3 Cloud Monitoring) が TDD で実装済みです。
   - `Section3.tsx` を TDD で実装。
   - Ops Agent 重要性やオブザーバビリティ4シグナルのマークアップを移行。
   - `page.tsx` に `Section3` を統合。
+- **Step 5: Part 4 - Cloud Logging**:
+  - `Section4.tsx` を TDD で実装。
+  - Cloud Logging のルーティングフロー（DiagramSVG）、監査ログの表を移行。
+  - `page.tsx` に `Section4` を統合。
 
 ### 次のステップ
 
-- [ ] Step 5: Part 4 - Cloud Logging (`Section4.tsx`) の移行。
-- [ ] 残りのセクション（Part 5〜7）の段階的移行。
+- [ ] Step 6: Part 5 - Reliability (`Section5.tsx`) の移行。
+- [ ] 残りのセクション（Part 6〜7）の段階的移行。
 
 ---
 (以下、過去の履歴)
