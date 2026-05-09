@@ -4,17 +4,17 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** `3972971` feat(cdl/s6): implement Section 4 Cloud Logging with TDD
-- **次の作業:** CDL Section 6 Part 5 Reliability (Section5.tsx) の移行
-- **テスト数:** 235件パス (Section 6: layout, page, Section1〜4 を含む全テスト)
+- **最新 HEAD:** `97faa28` feat(cdl/s6): implement Section 5 Reliability with TDD
+- **次の作業:** CDL Section 6 Part 6 Sustainability (Section6.tsx) の移行
+- **テスト数:** 240件パス (Section 6: layout, page, Section1〜5 を含む全テスト)
 - **ビルド:** 成功
-- **最終更新日時(UTC):** 2026-05-09T02:08:00Z
+- **最終更新日時(UTC):** 2026-05-09T02:15:00Z
 
 ## 次回セッションでの再開プロンプト
 
-CDL Section 6 の移行を Step 5 まで完了しました。
-Step 5 (Part 4 Cloud Logging) が TDD で実装済みです。
-次は Step 6: Part 5 Reliability (Section5.tsx) の移行から再開してください。
+CDL Section 6 の移行を Step 6 まで完了しました。
+Step 6 (Part 5 Reliability) が TDD で実装済みです。
+次は Step 7: Part 6 Sustainability (Section6.tsx) の移行から再開してください。
 
 ---
 
@@ -42,11 +42,15 @@ Step 5 (Part 4 Cloud Logging) が TDD で実装済みです。
   - `Section4.tsx` を TDD で実装。
   - Cloud Logging のルーティングフロー（DiagramSVG）、監査ログの表を移行。
   - `page.tsx` に `Section4` を統合。
+- **Step 6: Part 5 - Reliability**:
+  - `Section5.tsx` を TDD で実装。
+  - 信頼性の重要概念（HA、RPO/RTO等）、インシデント管理フロー（DiagramSVG）、DevOps vs SRE の関係を移行。
+  - `page.tsx` に `Section5` を統合。
 
 ### 次のステップ
 
-- [ ] Step 6: Part 5 - Reliability (`Section5.tsx`) の移行。
-- [ ] 残りのセクション（Part 6〜7）の段階的移行。
+- [ ] Step 7: Part 6 - Sustainability (`Section6.tsx`) の移行。
+- [ ] 最終的な調整と統合。
 
 ---
 (以下、過去の履歴)
