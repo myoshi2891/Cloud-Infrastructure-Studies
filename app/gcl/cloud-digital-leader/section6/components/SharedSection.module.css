@@ -8,7 +8,7 @@
 }
 
 .sectionLabel {
-    font-family: 'DM Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.9rem;
     letter-spacing: 0.1em;
     color: var(--cdl-blue);
@@ -63,7 +63,7 @@
     border-radius: 12px;
     font-weight: 600;
     white-space: nowrap;
-    font-family: 'DM Mono', monospace;
+    font-family: var(--font-mono);
 }
 
 .tagBlue { background: color-mix(in srgb, var(--cdl-blue) 10%, transparent); color: var(--cdl-blue); border: 1px solid color-mix(in srgb, var(--cdl-blue) 20%, transparent); }
@@ -126,7 +126,7 @@
 }
 
 .tipLabel {
-    font-family: 'DM Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 1rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -227,4 +227,24 @@
 
 .tableWrapperMt {
     margin-top: 1.5rem;
+}
+
+.diagramWrapper {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.diagramWrapperScrollable {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+}
+
+.linkList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }

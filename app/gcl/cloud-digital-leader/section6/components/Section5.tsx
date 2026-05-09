@@ -71,7 +71,7 @@ export function Section5() {
                     <span aria-hidden="true">🚨</span> インシデント管理フロー <span className={`${sharedStyles.tag} ${sharedStyles.tagOrange}`}>運用プロセス</span>
                 </h3>
                 <p>インシデント（サービス障害）への対応には標準化されたプロセスが必要です。</p>
-                <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem', overflowX: 'auto' }}>
+                <div className={sharedStyles.diagramWrapperScrollable}>
                     <DiagramSVG viewBox="0 0 1000 120" ariaLabel="インシデント管理フロー: 検知から事後分析までの5ステップ">
                         <rect x="20" y="30" width="160" height="60" rx="8" fill="var(--color-card)" stroke="var(--cdl-blue)" strokeWidth="2" />
                         <text x="100" y="55" textAnchor="middle" fill="var(--color-foreground)" fontSize="14" fontWeight="bold">01 検知 (Detect)</text>

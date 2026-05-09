@@ -27,7 +27,7 @@ export function Section4() {
                 <p>
                     Cloud Logging は Google Cloud 上のあらゆるサービスからログを収集・保存・検索・エクスポートするフルマネージドのログ管理サービスです。GCP サービスのログは自動的に収集され、VM 内のアプリログは Ops Agent 経由で収集します。
                 </p>
-                <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                <div className={sharedStyles.diagramWrapper}>
                     <DiagramSVG viewBox="0 0 800 120" ariaLabel="Cloud Logging のログ収集とルーティングフロー: SOURCEからCOLLECT、ROUTEを経てDESTへ">
                         <rect x="10" y="30" width="160" height="60" rx="8" fill="var(--color-card)" stroke="var(--cdl-blue)" strokeWidth="2" />
                         <text x="90" y="55" textAnchor="middle" fill="var(--color-foreground)" fontSize="14" fontWeight="bold">SOURCE (発生源)</text>
