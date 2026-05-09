@@ -1,5 +1,7 @@
 import { HERO_BADGES, NAV_LINKS } from './constants';
 import styles from './section6.module.css';
+import { Section1 } from './components/Section1';
+import { Section2 } from './components/Section2';
 
 /**
  * Renders the "Section 6: Scaling with Google Cloud Operations" page layout,
@@ -41,7 +43,8 @@ export default function Section6Page() {
                 </nav>
 
                 {/* SECTIONS */}
-                {/* Sections will be added here in subsequent steps */}
+                <Section1 />
+                <Section2 />
             </main>
         </div>
     );

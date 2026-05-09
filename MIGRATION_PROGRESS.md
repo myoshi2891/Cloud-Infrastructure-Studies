@@ -5,16 +5,16 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **最新 HEAD:** `504187e` feat(cdl/s6): setup base layout, page skeleton and constants
-- **次の作業:** CDL Section 6 Part 2 SRE Principles (Section2.tsx) の移行
-- **テスト数:** 8件パス (Section 6: layout, page, Section1)
+- **次の作業:** CDL Section 6 Part 3 Cloud Monitoring (Section3.tsx) の移行
+- **テスト数:** 14件パス (Section 6: layout, page, Section1, Section2)
 - **ビルド:** 成功
-- **最終更新日時(UTC):** 2026-05-08T20:10:00Z
+- **最終更新日時(UTC):** 2026-05-09T10:30:00Z
 
 ## 次回セッションでの再開プロンプト
 
-CDL Section 6 の移行を Step 2 まで完了しました。
-Step 1 (Base/Constants) および Step 2 (Part 1 Financial Governance) が TDD で実装済みです。
-次は Step 3: Part 2 SRE Principles の移行から再開してください。
+CDL Section 6 の移行を Step 3 まで完了しました。
+Step 3 (Part 2 SRE Principles) が TDD で実装済みです。
+次は Step 4: Part 3 Cloud Monitoring (Section3.tsx) の移行から再開してください。
 
 ---
 
@@ -30,10 +30,13 @@ Step 1 (Base/Constants) および Step 2 (Part 1 Financial Governance) が TDD �
   - `TableComponent` によるコスト管理ツール一覧の構築。
   - `DiagramSVG` による請求構造および自動コスト制御アーキテクチャの描画。
   - JSDoc 追加、アクセシビリティ対応（aria-hidden, scope="col"）。
+- **Step 3: Part 2 - SRE Principles**:
+  - `Section2.tsx` を TDD で実装。
+  - SLA/SLO/SLIテーブルおよびToil等SRE固有概念のマークアップとスタイリングを移行。
+  - `page.tsx` に `Section1` と `Section2` を統合。
 
 ### 次のステップ
 
-- [ ] Step 3: Part 2 - SRE Principles (`Section2.tsx`) の移行。
 - [ ] Step 4: Part 3 - Cloud Monitoring (`Section3.tsx`) の移行。
 - [ ] 残りのセクション（Part 4〜7）の段階的移行。
 
