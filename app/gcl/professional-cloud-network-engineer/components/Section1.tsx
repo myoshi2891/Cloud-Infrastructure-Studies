@@ -2,9 +2,13 @@ import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 
 /**
- * Renders Section 1 (VPC ネットワークの設計・実装) for the PCNE guide.
+ * Renders the Section 1 content covering VPC design and implementation for the PCNE guide.
  *
- * @returns {React.ReactElement} The section component
+ * This component returns a semantic `<section>` (id="s1") containing accessible headings, explanatory text,
+ * comparison tables, tips, and cards for subsections 1.1–1.4 (VPC concepts, firewall rules, peering vs Shared VPC,
+ * and private communication controls such as Cloud NAT, Private Google Access, and Private Service Connect).
+ *
+ * @returns The React element for Section 1 of the guide
  */
 export function Section1() {
     return (

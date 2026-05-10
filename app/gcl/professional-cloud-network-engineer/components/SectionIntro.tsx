@@ -2,9 +2,9 @@ import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 
 /**
- * Renders the INTRO (Exam Overview & Prep) section for the PCNE guide.
+ * Renders the INTRO section presenting the PCNE exam overview and preparation guidance.
  *
- * @returns {React.ReactElement} The section component
+ * @returns The section element containing the exam description, a score breakdown for S1–S6, recommended learning steps, and links to official resources.
  */
 export function SectionIntro() {
     return (

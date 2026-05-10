@@ -2,9 +2,9 @@ import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 
 /**
- * Renders Section 2 (ハイブリッド接続とネットワーク相互接続) for the PCNE guide.
+ * Render the "Section 2" content block describing hybrid connectivity and network interconnect options for the PCNE guide.
  *
- * @returns {React.ReactElement} The section component
+ * @returns The React element for Section 2, including headers, comparison tables, best-practice notes, and exam tips.
  */
 export function Section2() {
     return (
