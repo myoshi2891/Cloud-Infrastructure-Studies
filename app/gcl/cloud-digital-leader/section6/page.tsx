@@ -6,6 +6,7 @@ import { Section3 } from './components/Section3';
 import { Section4 } from './components/Section4';
 import { Section5 } from './components/Section5';
 import { Section6 } from './components/Section6';
+import { Section7 } from './components/Section7';
 
 /**
  * Renders the "Section 6: Scaling with Google Cloud Operations" page layout,
@@ -53,6 +54,7 @@ export default function Section6Page() {
                 <Section4 />
                 <Section5 />
                 <Section6 />
+                <Section7 />
             </main>
         </div>
     );

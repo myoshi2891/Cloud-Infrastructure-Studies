@@ -5,22 +5,24 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 /**
- * Renders the sticky top navigation bar with dropdowns for Generative AI Leader, Associate Cloud Engineer, and Cloud Digital Leader.
+ * Renders a sticky top navigation bar with center-aligned dropdown menus for site sections.
  *
- * Manages which dropdown is open, closes menus when the user clicks outside or presses Escape, and ensures selecting a dropdown link closes its parent menu.
+ * Manages which dropdown is open, closes an open menu when the user clicks outside it or presses Escape,
+ * and closes the parent menu when a dropdown link is selected.
  *
- * @returns The header's JSX element containing the home link and center-aligned dropdown navigation
+ * @returns The header JSX element containing the brand/home link and centered dropdown navigation
  */
 export function Header() {
-    const [openMenu, setOpenMenu] = useState<'genai' | 'ace' | 'cdl' | null>(null);
+    const [openMenu, setOpenMenu] = useState<'genai' | 'ace' | 'cdl' | 'pcne' | null>(null);
     const genAiRef = useRef<HTMLDivElement>(null);
     const aceRef = useRef<HTMLDivElement>(null);
     const cdlRef = useRef<HTMLDivElement>(null);
+    const pcneRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (openMenu === null) return;
 
-        const refMap = { genai: genAiRef, ace: aceRef, cdl: cdlRef } as const;
+        const refMap = { genai: genAiRef, ace: aceRef, cdl: cdlRef, pcne: pcneRef } as const;
 
         const handleClickOutside = (e: MouseEvent) => {
             const ref = refMap[openMenu];
@@ -348,6 +350,75 @@ export function Header() {
                             href="/gcl/cloud-digital-leader/section5"
                             label="Section 5"
                             desc="信頼性とセキュリティ"
+                            onClick={() => setOpenMenu(null)}
+                        />
+                        <DropdownItem
+                            href="/gcl/cloud-digital-leader/section6"
+                            label="Section 6"
+                            desc="Scaling with Operations"
+                            onClick={() => setOpenMenu(null)}
+                        />
+                    </div>
+                </div>
+
+                {/* Professional Cloud Network Engineer */}
+                <div
+                    className="relative"
+                    ref={pcneRef}
+                    onMouseEnter={() => setOpenMenu('pcne')}
+                    onMouseLeave={() => setOpenMenu(null)}
+                >
+                    <button
+                        type="button"
+                        onClick={() => setOpenMenu((v) => (v === 'pcne' ? null : 'pcne'))}
+                        aria-haspopup="true"
+                        aria-expanded={openMenu === 'pcne'}
+                        className={cn(
+                            'flex items-center gap-2.5 rounded-xl px-5 py-3 font-medium transition-all duration-150',
+                            openMenu === 'pcne'
+                                ? 'bg-white/8 text-[var(--color-foreground)]'
+                                : 'text-[var(--color-muted-foreground)] hover:bg-white/5 hover:text-[var(--color-foreground)]',
+                        )}
+                    >
+                        <span
+                            className="icon-theme-pcne flex h-4 w-4 items-center justify-center rounded text-[10px]"
+                            aria-hidden
+                        >
+                            🖧
+                        </span>
+                        Professional Cloud Network Engineer
+                        <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            aria-hidden
+                            className={cn(
+                                'transition-transform duration-150',
+                                openMenu === 'pcne' && 'rotate-180',
+                            )}
+                        >
+                            <path
+                                d="M2 4l4 4 4-4"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
+
+                    <div
+                        className={cn(
+                            'invisible absolute right-0 top-full z-50 mt-2 flex w-[24rem] origin-top-right flex-col gap-1.5 rounded-xl border border-white/[0.08] bg-[#0e1117]/95 p-4 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-150',
+                            openMenu === 'pcne' && 'visible opacity-100',
+                        )}
+                    >
+                        <DropdownItem
+                            href="/gcl/professional-cloud-network-engineer"
+                            label="概要"
+                            desc="Professional Cloud Network Engineer とは"
+                            ariaLabel="Professional Cloud Network Engineer 概要"
                             onClick={() => setOpenMenu(null)}
                         />
                     </div>
