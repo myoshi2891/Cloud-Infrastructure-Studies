@@ -21,59 +21,59 @@ export function SectionIntro() {
                 <h3>
                     <span aria-hidden="true">📊</span> 出題セクション別 配点
                 </h3>
-                <div style={{ display: 'grid', gap: '10px', margin: '16px 0 28px' }}>
-                    <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '1rem' }}>
-                            <span style={{ color: 'var(--color-foreground)' }}>S1: VPCネットワーク設計</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~21%</span>
+                <div className={sharedStyles.weightRow}>
+                    <div className={sharedStyles.weightItem}>
+                        <div className={sharedStyles.weightHeader}>
+                            <span className={sharedStyles.weightLabel}>S1: VPCネットワーク設計</span>
+                            <span className={sharedStyles.weightPercent}>~21%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS1}`} style={{ width: '21%' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS1} ${sharedStyles.weightW21}`}></div>
                         </div>
                     </div>
-                    <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '1rem' }}>
-                            <span style={{ color: 'var(--color-foreground)' }}>S2: ハイブリッド接続・ネットワーク相互接続</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~23%</span>
+                    <div className={sharedStyles.weightItem}>
+                        <div className={sharedStyles.weightHeader}>
+                            <span className={sharedStyles.weightLabel}>S2: ハイブリッド接続・ネットワーク相互接続</span>
+                            <span className={sharedStyles.weightPercent}>~23%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS2}`} style={{ width: '23%' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS2} ${sharedStyles.weightW23}`}></div>
                         </div>
                     </div>
-                    <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '1rem' }}>
-                            <span style={{ color: 'var(--color-foreground)' }}>S3: ロードバランシングとトラフィック管理</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~19%</span>
+                    <div className={sharedStyles.weightItem}>
+                        <div className={sharedStyles.weightHeader}>
+                            <span className={sharedStyles.weightLabel}>S3: ロードバランシングとトラフィック管理</span>
+                            <span className={sharedStyles.weightPercent}>~19%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS3}`} style={{ width: '19%' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS3} ${sharedStyles.weightW19}`}></div>
                         </div>
                     </div>
-                    <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '1rem' }}>
-                            <span style={{ color: 'var(--color-foreground)' }}>S4: CDN・DNS・IPアドレス管理</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~15%</span>
+                    <div className={sharedStyles.weightItem}>
+                        <div className={sharedStyles.weightHeader}>
+                            <span className={sharedStyles.weightLabel}>S4: CDN・DNS・IPアドレス管理</span>
+                            <span className={sharedStyles.weightPercent}>~15%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS4}`} style={{ width: '15%' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS4} ${sharedStyles.weightW15}`}></div>
                         </div>
                     </div>
-                    <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '1rem' }}>
-                            <span style={{ color: 'var(--color-foreground)' }}>S5: ネットワークセキュリティの設計と実装</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~12%</span>
+                    <div className={sharedStyles.weightItem}>
+                        <div className={sharedStyles.weightHeader}>
+                            <span className={sharedStyles.weightLabel}>S5: ネットワークセキュリティの設計と実装</span>
+                            <span className={sharedStyles.weightPercent}>~12%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS5}`} style={{ width: '12%' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS5} ${sharedStyles.weightW12}`}></div>
                         </div>
                     </div>
-                    <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '1rem' }}>
-                            <span style={{ color: 'var(--color-foreground)' }}>S6: ネットワーク操作と監視</span>
-                            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~10%</span>
+                    <div className={sharedStyles.weightItem}>
+                        <div className={sharedStyles.weightHeader}>
+                            <span className={sharedStyles.weightLabel}>S6: ネットワーク操作と監視</span>
+                            <span className={sharedStyles.weightPercent}>~10%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS6}`} style={{ width: '10%' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS6} ${sharedStyles.weightW10}`}></div>
                         </div>
                     </div>
                 </div>

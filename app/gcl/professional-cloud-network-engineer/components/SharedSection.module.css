@@ -52,7 +52,7 @@
     border-radius: 12px;
     padding: 32px;
     margin-bottom: 32px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--color-foreground) 2%, transparent);
 }
 
 .detailBlock h3 {
@@ -266,6 +266,34 @@
 .weightFillS4 { background: color-mix(in srgb, var(--color-primary) 55%, transparent); }
 .weightFillS5 { background: color-mix(in srgb, var(--color-primary) 40%, transparent); }
 .weightFillS6 { background: color-mix(in srgb, var(--color-primary) 25%, transparent); }
+
+.weightRow {
+    display: grid;
+    gap: 10px;
+    margin: 16px 0 28px;
+}
+.weightItem {
+    /* Container for each section's weight bar */
+}
+.weightHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+.weightLabel {
+    color: var(--color-foreground);
+}
+.weightPercent {
+    font-family: var(--font-mono);
+    color: var(--color-primary);
+}
+.weightW21 { width: 21%; }
+.weightW23 { width: 23%; }
+.weightW19 { width: 19%; }
+.weightW15 { width: 15%; }
+.weightW12 { width: 12%; }
+.weightW10 { width: 10%; }
 
 .flowSteps {
     display: flex;
