@@ -4,21 +4,20 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** `97faa28` feat(cdl/s6): implement Section 6 Sustainability with TDD
-- **次の作業:** CDL Section 6 Part 7 Exam Preparation (Section7.tsx) の移行
-- **テスト数:** 246件パス (Section 6: layout, page, Section1〜6 を含む全テスト)
-- **ビルド:** 成功
-- **最終更新日時(UTC):** 2026-05-09T10:15:00Z
+- **最新 HEAD:** (Commit Pending) feat(cdl/s6): implement Section 7 Exam Preparation with TDD
+- **次の作業:** Cloud Digital Leader の全セクション移行完了。必要に応じた他のセクションへの移行、または全体の見直し。
+- **テスト数:** 250件パス (Section 6: layout, page, Section1〜7 を含む全テスト)
+- **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
+- **最終更新日時(UTC):** 2026-05-10T02:30:00Z
 
 ## 次回セッションでの再開プロンプト
 
-CDL Section 6 の移行を Step 7 まで完了しました。
-Step 7 (Part 6 Sustainability) が TDD で実装済みです。
-次は Step 8: Part 7 Exam Preparation (Section7.tsx) の移行から再開してください。
+Cloud Digital Leader Section 6 の移行がすべて完了しました（E2Eテストはスキップ）。
+次は他のセクション（Generative AI Leaderの残りなど）の移行、もしくは全体の品質改善から再開してください。
 
 ---
 
-## 2026-05-08: Cloud Digital Leader Section 6 Migration (In Progress)
+## 2026-05-08: Cloud Digital Leader Section 6 Migration (完了)
 
 ### 完了済み
 
@@ -38,11 +37,15 @@ Step 7 (Part 6 Sustainability) が TDD で実装済みです。
 - **Step 7: Part 6 - Sustainability**:
   - `Section6.tsx` を TDD で実装。Google の環境目標（24/7 カーボンフリー）、Carbon Footprint レポート、Scope 1/2/3 の定義、クラウド移行の環境メリットを移行。
   - `page.tsx` に `Section6` を統合。
+- **Step 8: Part 7 - Exam Preparation**:
+  - `Section7.tsx` を TDD で実装。頻出問題パターン、キーワードマップ、推奨学習リソースを移行。
+  - `page.tsx` に `Section7` を統合。
+- **最終調整**:
+  - E2E検証はスキップし、本番ビルドの成功を確認。
 
 ### 次のステップ
 
-- [ ] Step 8: Part 7 - Exam Preparation (`Section7.tsx`) の移行。
-- [ ] 最終的な調整と統合。
+- [ ] (なし) Section 6 は完了。
 
 ---
 
