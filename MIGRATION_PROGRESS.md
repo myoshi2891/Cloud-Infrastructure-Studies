@@ -4,15 +4,15 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** (Commit Pending) feat(pcne): base setup and constants
-- **次の作業:** PCNE Step 1: Base Setup & Constants
-- **テスト数:** 250件パス 
+- **最新 HEAD:** (Commit Pending) feat(pcne): implement Section Intro with TDD
+- **次の作業:** PCNE Step 3: Section 1 (VPC ネットワークの設計・実装)
+- **テスト数:** 256件パス 
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
 - **最終更新日時(UTC):** 2026-05-10T02:40:00Z
 
 ## 次回セッションでの再開プロンプト
 
-Professional Cloud Network Engineer (PCNE) の移行の Step 1 (Base Setup & Constants) を開始してください。
+Professional Cloud Network Engineer (PCNE) の移行の Step 3 (Section 1: VPC ネットワークの設計・実装) を開始してください。
 
 ---
 
@@ -23,11 +23,14 @@ Professional Cloud Network Engineer (PCNE) の移行の Step 1 (Base Setup & Con
 - **Step 1: Base Setup & Constants**: 
   - `constants.ts`, `layout.tsx`, `page.tsx`, `pcne.module.css` を作成。
   - Heroセクション、スティッキーナビゲーションの実装。
+- **Step 2: INTRO (試験の全体像と準備方法)**:
+  - `SectionIntro.tsx` を TDD で実装。
+  - 出題配点バー、推奨学習ステップ、公式リソースを移行。
 
 ### 次のステップ
 
 - [x] **Step 1: Base Setup & Constants**: `constants.ts`, `layout.tsx`, `page.tsx`, `pcne.module.css`
-- [ ] **Step 2: INTRO (試験の全体像と準備方法)**
+- [x] **Step 2: INTRO (試験の全体像と準備方法)**
 - [ ] **Step 3: Section 1 (VPC ネットワークの設計・実装)**
 - [ ] **Step 4: Section 2 (ハイブリッド・マルチクラウド接続)**
 - [ ] **Step 5: Section 3 (ロードバランシングと最適化)**
