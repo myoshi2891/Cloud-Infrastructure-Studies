@@ -4,16 +4,37 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** (Commit Pending) feat(cdl/s6): implement Section 7 Exam Preparation with TDD
-- **次の作業:** Cloud Digital Leader の全セクション移行完了。必要に応じた他のセクションへの移行、または全体の見直し。
-- **テスト数:** 250件パス (Section 6: layout, page, Section1〜7 を含む全テスト)
+- **最新 HEAD:** (Commit Pending) feat(pcne): base setup and constants
+- **次の作業:** PCNE Step 1: Base Setup & Constants
+- **テスト数:** 250件パス 
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
-- **最終更新日時(UTC):** 2026-05-10T02:30:00Z
+- **最終更新日時(UTC):** 2026-05-10T02:40:00Z
 
 ## 次回セッションでの再開プロンプト
 
-Cloud Digital Leader Section 6 の移行がすべて完了しました（E2Eテストはスキップ）。
-次は他のセクション（Generative AI Leaderの残りなど）の移行、もしくは全体の品質改善から再開してください。
+Professional Cloud Network Engineer (PCNE) の移行の Step 1 (Base Setup & Constants) を開始してください。
+
+---
+
+## 2026-05-10: Professional Cloud Network Engineer Migration (In Progress)
+
+### 完了済み
+
+- **Step 1: Base Setup & Constants**: 
+  - `constants.ts`, `layout.tsx`, `page.tsx`, `pcne.module.css` を作成。
+  - Heroセクション、スティッキーナビゲーションの実装。
+
+### 次のステップ
+
+- [x] **Step 1: Base Setup & Constants**: `constants.ts`, `layout.tsx`, `page.tsx`, `pcne.module.css`
+- [ ] **Step 2: INTRO (試験の全体像と準備方法)**
+- [ ] **Step 3: Section 1 (VPC ネットワークの設計・実装)**
+- [ ] **Step 4: Section 2 (ハイブリッド・マルチクラウド接続)**
+- [ ] **Step 5: Section 3 (ロードバランシングと最適化)**
+- [ ] **Step 6: Section 4 (ネットワークサービスとDNS)**
+- [ ] **Step 7: Section 5 (ネットワークセキュリティ)**
+- [ ] **Step 8: Section 6 (監視・トラブルシュート)**
+- [ ] **Step 9: まとめ (試験攻略チートシート & 混同しやすいポイント)**
 
 ---
 
