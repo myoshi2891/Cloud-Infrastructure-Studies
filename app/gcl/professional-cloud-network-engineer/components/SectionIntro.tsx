@@ -28,7 +28,7 @@ export function SectionIntro() {
                             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~21%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={sharedStyles.weightFill} style={{ width: '21%', background: '#4f8ef7' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS1}`} style={{ width: '21%' }}></div>
                         </div>
                     </div>
                     <div>
@@ -37,7 +37,7 @@ export function SectionIntro() {
                             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~23%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={sharedStyles.weightFill} style={{ width: '23%', background: '#4caf50' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS2}`} style={{ width: '23%' }}></div>
                         </div>
                     </div>
                     <div>
@@ -46,7 +46,7 @@ export function SectionIntro() {
                             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~19%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={sharedStyles.weightFill} style={{ width: '19%', background: '#ff9800' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS3}`} style={{ width: '19%' }}></div>
                         </div>
                     </div>
                     <div>
@@ -55,7 +55,7 @@ export function SectionIntro() {
                             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~15%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={sharedStyles.weightFill} style={{ width: '15%', background: '#9c27b0' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS4}`} style={{ width: '15%' }}></div>
                         </div>
                     </div>
                     <div>
@@ -64,7 +64,7 @@ export function SectionIntro() {
                             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~12%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={sharedStyles.weightFill} style={{ width: '12%', background: '#f44336' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS5}`} style={{ width: '12%' }}></div>
                         </div>
                     </div>
                     <div>
@@ -73,7 +73,7 @@ export function SectionIntro() {
                             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary)' }}>~10%</span>
                         </div>
                         <div className={sharedStyles.weightTrack}>
-                            <div className={sharedStyles.weightFill} style={{ width: '10%', background: '#ffeb3b' }}></div>
+                            <div className={`${sharedStyles.weightFill} ${sharedStyles.weightFillS6}`} style={{ width: '10%' }}></div>
                         </div>
                     </div>
                 </div>
@@ -86,35 +86,35 @@ export function SectionIntro() {
                 </h3>
                 <div className={sharedStyles.flowSteps}>
                     <div className={sharedStyles.flowStep}>
-                        <div className={sharedStyles.flowStepNum} style={{ background: 'color-mix(in srgb, #4f8ef7 15%, transparent)', color: '#4f8ef7', border: '1px solid color-mix(in srgb, #4f8ef7 30%, transparent)' }}>1</div>
+                        <div className={`${sharedStyles.flowStepNum} ${sharedStyles.flowStepNumS1}`}>1</div>
                         <div>
                             <div className={sharedStyles.flowStepTitle}>公式試験ガイドを熟読する（必須）</div>
                             <div className={sharedStyles.flowStepBody}>試験範囲の正式定義を確認。本ガイドと照らし合わせながら学習計画を立てる。</div>
                         </div>
                     </div>
                     <div className={sharedStyles.flowStep}>
-                        <div className={sharedStyles.flowStepNum} style={{ background: 'color-mix(in srgb, #4caf50 15%, transparent)', color: '#4caf50', border: '1px solid color-mix(in srgb, #4caf50 30%, transparent)' }}>2</div>
+                        <div className={`${sharedStyles.flowStepNum} ${sharedStyles.flowStepNumS2}`}>2</div>
                         <div>
                             <div className={sharedStyles.flowStepTitle}>Cloud Skills Boost のPCNEラーニングパスを修了</div>
                             <div className={sharedStyles.flowStepBody}>体系的な動画学習と実践演習。GCPのネットワーキング基礎から始められる。</div>
                         </div>
                     </div>
                     <div className={sharedStyles.flowStep}>
-                        <div className={sharedStyles.flowStepNum} style={{ background: 'color-mix(in srgb, #ff9800 15%, transparent)', color: '#ff9800', border: '1px solid color-mix(in srgb, #ff9800 30%, transparent)' }}>3</div>
+                        <div className={`${sharedStyles.flowStepNum} ${sharedStyles.flowStepNumS3}`}>3</div>
                         <div>
                             <div className={sharedStyles.flowStepTitle}>ハンズオンラボで実際に操作する</div>
                             <div className={sharedStyles.flowStepBody}>VPC・Cloud VPN・Cloud Interconnect・ロードバランサーの実際の構築体験が合否を分ける。</div>
                         </div>
                     </div>
                     <div className={sharedStyles.flowStep}>
-                        <div className={sharedStyles.flowStepNum} style={{ background: 'color-mix(in srgb, #9c27b0 15%, transparent)', color: '#9c27b0', border: '1px solid color-mix(in srgb, #9c27b0 30%, transparent)' }}>4</div>
+                        <div className={`${sharedStyles.flowStepNum} ${sharedStyles.flowStepNumS4}`}>4</div>
                         <div>
                             <div className={sharedStyles.flowStepTitle}>公式サンプル問題・模擬試験で実力測定</div>
                             <div className={sharedStyles.flowStepBody}>弱点を可視化して集中補強。シナリオベースの設問形式に慣れる。</div>
                         </div>
                     </div>
                     <div className={sharedStyles.flowStep}>
-                        <div className={sharedStyles.flowStepNum} style={{ background: 'color-mix(in srgb, #f44336 15%, transparent)', color: '#f44336', border: '1px solid color-mix(in srgb, #f44336 30%, transparent)' }}>5</div>
+                        <div className={`${sharedStyles.flowStepNum} ${sharedStyles.flowStepNumS5}`}>5</div>
                         <div>
                             <div className={sharedStyles.flowStepTitle}>弱点分野を公式ドキュメントで補強して試験登録</div>
                             <div className={sharedStyles.flowStepBody}>本ガイドの各セクションの「参照URL」から公式ドキュメントを直接確認する。</div>

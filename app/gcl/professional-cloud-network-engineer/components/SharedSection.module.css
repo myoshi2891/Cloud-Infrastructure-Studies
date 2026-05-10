@@ -260,6 +260,12 @@
     height: 100%;
     border-radius: 4px;
 }
+.weightFillS1 { background: var(--color-primary); }
+.weightFillS2 { background: color-mix(in srgb, var(--color-primary) 85%, transparent); }
+.weightFillS3 { background: color-mix(in srgb, var(--color-primary) 70%, transparent); }
+.weightFillS4 { background: color-mix(in srgb, var(--color-primary) 55%, transparent); }
+.weightFillS5 { background: color-mix(in srgb, var(--color-primary) 40%, transparent); }
+.weightFillS6 { background: color-mix(in srgb, var(--color-primary) 25%, transparent); }
 
 .flowSteps {
     display: flex;
@@ -285,6 +291,11 @@
     font-weight: 700;
     font-family: var(--font-mono);
     flex-shrink: 0;
+}
+.flowStepNumS1, .flowStepNumS2, .flowStepNumS3, .flowStepNumS4, .flowStepNumS5 {
+    background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+    color: var(--color-primary);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 .flowStepTitle {
     font-weight: 600;
