@@ -25,125 +25,80 @@ export function Section7() {
                 </h3>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '8px' }}>
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 01 — 財務ガバナンス
+                    {[
+                        {
+                            id: '01',
+                            title: '財務ガバナンス',
+                            question: '「予算の上限に達したらどうなるか？」',
+                            answer: <>✅ 正解：<strong>通知が届くだけでリソースは停止しない</strong>。自動停止には Pub/Sub + Cloud Functions が必要。</>
+                        },
+                        {
+                            id: '02',
+                            title: 'Cloud Monitoring',
+                            question: '「VM のメモリ使用量を監視するために必要なものは？」',
+                            answer: <>✅ 正解：<strong>Ops Agent のインストール</strong>。CPU/ネットワークは自動収集だが、メモリはエージェントが必要。</>
+                        },
+                        {
+                            id: '03',
+                            title: '監査ログ',
+                            question: '「Cloud Storage のオブジェクト読み取りを記録したい」',
+                            answer: <>✅ 正解：<strong>データアクセス監査ログを手動で有効化</strong>する。デフォルトでは無効（有料のため）。</>
+                        },
+                        {
+                            id: '04',
+                            title: 'SRE 概念',
+                            question: '「SLO と SLA の違いは？」',
+                            answer: <>✅ 正解：<strong>SLO は内部目標値（より高い）、SLA は顧客との契約値（より低い）</strong>。SLO 未達でも SLA 内なら違約金は発生しない。</>
+                        },
+                        {
+                            id: '05',
+                            title: 'ログエクスポート',
+                            question: '「コストを最小化しながらログを7年間保管したい」',
+                            answer: <>✅ 正解：<strong>Cloud Storage の Coldline へのシンク設定</strong>。BigQuery は分析向きで割高。</>
+                        },
+                        {
+                            id: '06',
+                            title: 'Toil',
+                            question: '「SRE において Toil とは何か？」',
+                            answer: <>✅ 正解：<strong>手作業・繰り返し・自動化できる運用作業</strong>。SRE は Toil を 50% 以下に保ち、残りを自動化・開発に充てる。</>
+                        },
+                        {
+                            id: '07',
+                            title: 'サステナビリティ',
+                            question: '「Google Cloud 利用のCO₂排出量を確認するツールは？」',
+                            answer: <>✅ 正解：<strong>Carbon Footprint ツール</strong>（Cloud Console 内）。プロジェクト・リージョン・サービス別に可視化できる。</>
+                        },
+                        {
+                            id: '08',
+                            title: 'コスト最適化',
+                            question: '「バッチ処理のコストを最大限に削減したい」',
+                            answer: <>✅ 正解：<strong>Spot VM の使用</strong>（最大91%割引）。停止されてもよいバッチ・ML トレーニングが適用対象。</>
+                        },
+                        {
+                            id: '09',
+                            title: 'DevOps vs SRE',
+                            question: '「DevOps と SRE の関係を最もよく表しているのは？」',
+                            answer: <>✅ 正解：<strong>「SRE は DevOps の具体的な実装（クラス）である」</strong>。DevOps が目標・文化、SRE がその実現手法。</>
+                        },
+                        {
+                            id: '10',
+                            title: 'Error Budget',
+                            question: '「エラーバジェットを使い果たしそうな時、SRE チームはどうすべきか？」',
+                            answer: <>✅ 正解：<strong>新機能のリリースを停止して信頼性改善に集中する</strong>。バジェットが残っている間は機能開発を優先できる。</>
+                        }
+                    ].map(pattern => (
+                        <div key={pattern.id} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
+                            <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
+                                PATTERN {pattern.id} — {pattern.title}
+                            </div>
+                            <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
+                                {pattern.question}
+                            </p>
+                            <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
+                                {pattern.answer}
+                            </p>
                         </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「予算の上限に達したらどうなるか？」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>通知が届くだけでリソースは停止しない</strong>。自動停止には Pub/Sub + Cloud Functions が必要。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 02 — Cloud Monitoring
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「VM のメモリ使用量を監視するために必要なものは？」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>Ops Agent のインストール</strong>。CPU/ネットワークは自動収集だが、メモリはエージェントが必要。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 03 — 監査ログ
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「Cloud Storage のオブジェクト読み取りを記録したい」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>データアクセス監査ログを手動で有効化</strong>する。デフォルトでは無効（有料のため）。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 04 — SRE 概念
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「SLO と SLA の違いは？」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>SLO は内部目標値（より高い）、SLA は顧客との契約値（より低い）</strong>。SLO 未達でも SLA 内なら違約金は発生しない。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 05 — ログエクスポート
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「コストを最小化しながらログを7年間保管したい」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>Cloud Storage の Coldline へのシンク設定</strong>。BigQuery は分析向きで割高。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 06 — Toil
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「SRE において Toil とは何か？」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>手作業・繰り返し・自動化できる運用作業</strong>。SRE は Toil を 50% 以下に保ち、残りを自動化・開発に充てる。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 07 — サステナビリティ
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「Google Cloud 利用のCO₂排出量を確認するツールは？」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>Carbon Footprint ツール</strong>（Cloud Console 内）。プロジェクト・リージョン・サービス別に可視化できる。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 08 — コスト最適化
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「バッチ処理のコストを最大化して削減したい」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>Spot VM の使用</strong>（最大91%割引）。停止されてもよいバッチ・ML トレーニングが適用対象。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 09 — DevOps vs SRE
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「DevOps と SRE の関係を最もよく表しているのは？」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>「SRE は DevOps の具体的な実装（クラス）である」</strong>。DevOps が目標・文化、SRE がその実現手法。
-                        </p>
-                    </div>
-
-                    <div style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
-                        <div style={{ fontFamily: '"DM Mono", monospace', fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: '8px' }}>
-                            PATTERN 10 — Error Budget
-                        </div>
-                        <p style={{ fontSize: '1rem', color: '#c8deff', marginBottom: '6px', fontWeight: 500 }}>
-                            「エラーバジェットを使い果たしそうな時、SRE チームはどうすべきか？」
-                        </p>
-                        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-                            ✅ 正解：<strong>新機能のリリースを停止して信頼性改善に集中する</strong>。バジェットが残っている間は機能開発を優先できる。
-                        </p>
-                    </div>
+                    ))}
                 </div>
             </div>
 

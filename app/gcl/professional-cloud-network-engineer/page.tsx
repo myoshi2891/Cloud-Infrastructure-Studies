@@ -15,7 +15,7 @@ export default function PcnePage() {
         <div className="pcne-page">
             <main className={styles.pcneMain}>
                 {/* HERO */}
-                <div className={styles.hero} id="overview">
+                <div className={styles.hero} id="hero-overview">
                     <div className={styles.heroBadge}>Professional Cloud Network Engineer</div>
                     <h1 className={styles.heroTitle}>
                         Professional Cloud<br />

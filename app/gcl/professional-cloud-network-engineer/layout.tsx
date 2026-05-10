@@ -1,3 +1,4 @@
+import './pcne.module.css'; // Import PCNE theme CSS
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

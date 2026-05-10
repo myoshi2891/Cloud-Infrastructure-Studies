@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import PcnePage from '../../../app/gcl/professional-cloud-network-engineer/page';
+import PcnePage from '@/app/gcl/professional-cloud-network-engineer/page';
 
 describe('Professional Cloud Network Engineer - Page', () => {
     it('renders the hero section correctly', () => {
         render(<PcnePage />);
-        expect(screen.getByRole('heading', { name: /Professional Cloud.*Network Engineer.*完全試験対策ガイド/s, level: 1 })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Professional Cloud[\s\S]*Network Engineer[\s\S]*完全試験対策ガイド/, level: 1 })).toBeInTheDocument();
         expect(screen.getByText('Professional Cloud Network Engineer')).toBeInTheDocument();
         expect(screen.getByText(/ネットワーク初学者から中級者まで対応。VPC設計から/)).toBeInTheDocument();
     });

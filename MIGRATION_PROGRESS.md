@@ -6,7 +6,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **最新 HEAD:** (Commit Pending) feat(pcne): implement Section 2 with TDD
 - **次の作業:** PCNE Step 5: Section 3 (ロードバランシングと最適化)
-- **テスト数:** 266件パス 
+- **テスト数:** 266件パス
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
 - **最終更新日時(UTC):** 2026-05-10T02:55:00Z
 
@@ -20,7 +20,7 @@ Professional Cloud Network Engineer (PCNE) の移行の Step 5 (Section 3: ロ�
 
 ### 完了済み
 
-- **Step 1: Base Setup & Constants**: 
+- **Step 1: Base Setup & Constants**:
   - `constants.ts`, `layout.tsx`, `page.tsx`, `pcne.module.css` を作成。
   - Heroセクション、スティッキーナビゲーションの実装。
 - **Step 2: INTRO (試験の全体像と準備方法)**:
@@ -51,7 +51,7 @@ Professional Cloud Network Engineer (PCNE) の移行の Step 5 (Section 3: ロ�
 
 ### 完了済み
 
-- **Step 1: Base Setup & Constants**: 
+- **Step 1: Base Setup & Constants**:
   - `constants.ts`, `layout.tsx`, `page.tsx`, `section6.module.css` を作成。
   - Heroセクション、スティッキーナビゲーションの実装。
 - **Step 2: Part 1 - Financial Governance**:

@@ -10,7 +10,7 @@ export function Section2() {
     return (
         <section className={sharedStyles.section} id="s2" aria-labelledby="s2-title">
             <div className={sharedStyles.sectionLabel}>Section 2 (23%)</div>
-            <h2 className={sharedStyles.sectionTitle} id="s2-title" style={{ color: '#4caf50' }}>
+            <h2 className={sharedStyles.sectionTitle} id="s2-title" style={{ color: 'var(--color-primary)' }}>
                 ハイブリッド接続とネットワーク相互接続
             </h2>
             <p className={sharedStyles.sectionDesc}>
