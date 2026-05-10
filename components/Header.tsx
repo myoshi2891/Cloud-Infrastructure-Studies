@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 /**
- * Renders the sticky top navigation bar with dropdowns for Generative AI Leader, Associate Cloud Engineer, and Cloud Digital Leader.
+ * Renders a sticky top navigation bar with center-aligned dropdown menus for site sections.
  *
- * Manages which dropdown is open, closes menus when the user clicks outside or presses Escape, and ensures selecting a dropdown link closes its parent menu.
+ * Manages which dropdown is open, closes an open menu when the user clicks outside it or presses Escape,
+ * and closes the parent menu when a dropdown link is selected.
  *
- * @returns The header's JSX element containing the home link and center-aligned dropdown navigation
+ * @returns The header JSX element containing the brand/home link and centered dropdown navigation
  */
 export function Header() {
     const [openMenu, setOpenMenu] = useState<'genai' | 'ace' | 'cdl' | 'pcne' | null>(null);

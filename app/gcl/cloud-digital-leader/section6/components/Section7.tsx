@@ -2,14 +2,11 @@ import React from 'react';
 import sharedStyles from './SharedSection.module.css';
 
 /**
- * Renders the Section 6 - Part 7 (Exam Preparation) component for the Cloud Digital Leader guide.
- * It provides a checklist, top 10 frequent patterns, keyword map, and official resources for exam preparation.
- * 
- * Accessibility: The root section element has an `aria-labelledby` linking it to the section title for screen readers.
- * Interactive links use standard `href` and `target="_blank"` with `rel="noopener noreferrer"`.
- * 
- * @returns {React.ReactElement} The section component containing exam preparation content.
- * @remarks This component has no props and no side effects.
+ * Renders the exam-preparation section for Section 6 of the Cloud Digital Leader guide.
+ *
+ * The section includes a checklist, a "頻出問題パターン TOP 10" block, a keyword map table, and links to official study resources. This component accepts no props and has no side effects.
+ *
+ * @returns A React element containing the Section 6 — Part 7 exam-preparation content.
  */
 export function Section7() {
     return (
