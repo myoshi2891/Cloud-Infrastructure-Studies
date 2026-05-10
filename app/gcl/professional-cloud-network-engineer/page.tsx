@@ -2,6 +2,7 @@ import { HERO_BADGES, NAV_LINKS } from './constants';
 import styles from './pcne.module.css';
 import { SectionIntro } from './components/SectionIntro';
 import { Section1 } from './components/Section1';
+import { Section2 } from './components/Section2';
 
 /**
  * Renders the "Professional Cloud Network Engineer" page layout,
@@ -55,6 +56,7 @@ export default function PcnePage() {
                 {/* SECTIONS */}
                 <SectionIntro />
                 <Section1 />
+                <Section2 />
                 {/* Sections will be added here step by step */}
             </main>
         </div>

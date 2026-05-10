@@ -4,15 +4,15 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** (Commit Pending) feat(pcne): implement Section 1 with TDD
-- **次の作業:** PCNE Step 4: Section 2 (ハイブリッド・マルチクラウド接続)
-- **テスト数:** 261件パス 
+- **最新 HEAD:** (Commit Pending) feat(pcne): implement Section 2 with TDD
+- **次の作業:** PCNE Step 5: Section 3 (ロードバランシングと最適化)
+- **テスト数:** 266件パス 
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
-- **最終更新日時(UTC):** 2026-05-10T02:47:00Z
+- **最終更新日時(UTC):** 2026-05-10T02:55:00Z
 
 ## 次回セッションでの再開プロンプト
 
-Professional Cloud Network Engineer (PCNE) の移行の Step 4 (Section 2: ハイブリッド・マルチクラウド接続) を開始してください。
+Professional Cloud Network Engineer (PCNE) の移行の Step 5 (Section 3: ロードバランシングと最適化) を開始してください。
 
 ---
 
@@ -29,13 +29,16 @@ Professional Cloud Network Engineer (PCNE) の移行の Step 4 (Section 2: ハ�
 - **Step 3: Section 1 (VPC ネットワークの設計・実装)**:
   - `Section1.tsx` を TDD で実装。
   - VPCモード比較、ファイアウォールルール、VPCピアリングとShared VPCの違い、Cloud NAT・PGA・PSCの比較を移行。
+- **Step 4: Section 2 (ハイブリッド・マルチクラウド接続)**:
+  - `Section2.tsx` を TDD で実装。
+  - VPN/Interconnectの比較、HA VPN、Dedicated Interconnect の SLA要件、Cloud Router と BGP を移行。
 
 ### 次のステップ
 
 - [x] **Step 1: Base Setup & Constants**: `constants.ts`, `layout.tsx`, `page.tsx`, `pcne.module.css`
 - [x] **Step 2: INTRO (試験の全体像と準備方法)**
 - [x] **Step 3: Section 1 (VPC ネットワークの設計・実装)**
-- [ ] **Step 4: Section 2 (ハイブリッド・マルチクラウド接続)**
+- [x] **Step 4: Section 2 (ハイブリッド・マルチクラウド接続)**
 - [ ] **Step 5: Section 3 (ロードバランシングと最適化)**
 - [ ] **Step 6: Section 4 (ネットワークサービスとDNS)**
 - [ ] **Step 7: Section 5 (ネットワークセキュリティ)**
