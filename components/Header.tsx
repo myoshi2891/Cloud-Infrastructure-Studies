@@ -352,6 +352,12 @@ export function Header() {
                             desc="信頼性とセキュリティ"
                             onClick={() => setOpenMenu(null)}
                         />
+                        <DropdownItem
+                            href="/gcl/cloud-digital-leader/section6"
+                            label="Section 6"
+                            desc="Scaling with Operations"
+                            onClick={() => setOpenMenu(null)}
+                        />
                     </div>
                 </div>
 
@@ -413,24 +419,6 @@ export function Header() {
                             label="概要"
                             desc="Professional Cloud Network Engineer とは"
                             ariaLabel="Professional Cloud Network Engineer 概要"
-                            onClick={() => setOpenMenu(null)}
-                        />
-                        <DropdownItem
-                            href="/gcl/professional-cloud-network-engineer#s1"
-                            label="Section 1"
-                            desc="VPC ネットワークの設計・実装"
-                            onClick={() => setOpenMenu(null)}
-                        />
-                        <DropdownItem
-                            href="/gcl/professional-cloud-network-engineer#s2"
-                            label="Section 2"
-                            desc="ハイブリッド接続とネットワーク相互接続"
-                            onClick={() => setOpenMenu(null)}
-                        />
-                        <DropdownItem
-                            href="/gcl/professional-cloud-network-engineer#s3"
-                            label="Section 3"
-                            desc="ロードバランシングと最適化"
                             onClick={() => setOpenMenu(null)}
                         />
                     </div>
