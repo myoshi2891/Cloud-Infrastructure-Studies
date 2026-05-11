@@ -1,58 +1,13 @@
-# MIGRATION_PROGRESS.md セッション終了前同期ルール
+# 移行作業ワークフロー・同期ルール
 
-HTMLからNext.js/Reactへの移行作業セッションでは、**セッションのコンテキストが肥大化する前に**、必ず以下を実行してセッションを終えること。
+## 🚨 プロジェクトの鉄則
 
-## 🚨 最重要禁止事項（このプロジェクト特有の絶対ルール）
+1. **ツールのパラメータ確認 (自己レビュー義務)**: ツールを呼び出す前に、必ず thought ブロック内で必須パラメータが揃っているか確認すること。
+2. **ステップごとの確定 (コミット義務)**: 1つの実装・テストが完了するごとに、必ず `git add` と `git commit` を行い作業を確定させること。
+3. **HTMLファイルのアーカイブ**: 移行が完全に完了したファイルのみ `Gcl_Archive/` へ移動すること。移行前のファイルをアーカイブしないこと。
 
-**元となる HTML ファイルの削除は「絶対禁止」です。**
-移行作業が完了したセクションやファイルであっても、`rm` コマンド等での削除は絶対に行わないでください。
+## 現在の PCNE 移行状況
 
-## 現在地
-
-- **最新 HEAD:** `97faa28` feat(cdl/s6): implement Section 6 Sustainability with TDD
-- **次の作業:** CDL Section 6 Part 7 Exam Preparation (Section7.tsx) の移行
-- **テスト数:** 246件パス (Section 6: layout, page, Section1〜6 を含む全テスト)
-- **ビルド:** 成功
-- **最終更新日時(UTC):** 2026-05-09T10:15:00Z
-
-## 次回セッションでの再開プロンプト
-
-CDL Section 6 の移行を Step 7 まで完了しました。
-Step 7 (Part 6 Sustainability) が TDD で実装済みです。
-次は Step 8: Part 7 Exam Preparation (Section7.tsx) の移行から再開してください。
-
----
-
-## 2026-05-08: Cloud Digital Leader Section 6 Migration (In Progress)
-
-### 完了済み
-
-- **Step 1: Base Setup & Constants**:
-  - `constants.ts`, `layout.tsx`, `page.tsx`, `section6.module.css` を作成。
-  - Heroセクション、スティッキーナビゲーションの実装。
-- **Step 2: Part 1 - Financial Governance**:
-  - `Section1.tsx` を TDD で実装.
-- **Step 3: Part 2 - SRE Principles**:
-  - `Section2.tsx` を TDD で実装.
-- **Step 4: Part 3 - Cloud Monitoring**:
-  - `Section3.tsx` を TDD で実装.
-- **Step 5: Part 4 - Cloud Logging**:
-  - `Section4.tsx` を TDD で実装.
-- **Step 6: Part 5 - Reliability**:
-  - `Section5.tsx` を TDD で実装.
-- **Step 7: Part 6 - Sustainability**:
-  - `Section6.tsx` を TDD で実装。Google の環境目標（24/7 カーボンフリー）、Carbon Footprint レポート、Scope 1/2/3 の定義、クラウド移行の環境メリットを移行。
-  - `page.tsx` に `Section6` を統合。
-
-### 次のステップ
-
-- [ ] Step 8: Part 7 - Exam Preparation (`Section7.tsx`) の移行。
-- [ ] 最終的な調整と統合。
-
----
-
-(以下、過去の履歴)
-
-## 2026-05-03: Cloud Digital Leader Section 4 & 5 品質改善タスク (完了)
-
-...
+- **HEAD**: 84b9366 (fix: keep un-migrated step-by-step guide in root)
+- **ステータス**: Comprehensive Guide 完了。Step-by-step Guide 未完了。
+- **次の作業**: `google-cloud-pcne-step-by-step-guide.html` の移行。
