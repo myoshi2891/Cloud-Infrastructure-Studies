@@ -1168,7 +1168,15 @@ NEG の設定例（Cloud Run をバックエンドに）:
     --network=my-vpc \
     --action=ALLOW \
     --direction=INGRESS \
-    --source-ranges=35.191.0.0/16,130.211.0.0/22,209.85.152.0/22,209.85.204.0/22,2600:2d00:1:1::/64,2600:2d00:1:b029::/64,2600:1901:8001::/48 \
+    --source-ranges=35.191.0.0/16,130.211.0.0/22,209.85.152.0/22,209.85.204.0/22 \
+    --target-tags=backend-vm \
+    --rules=tcp:80
+
+  gcloud compute firewall-rules create allow-health-check-ipv6 \
+    --network=my-vpc \
+    --action=ALLOW \
+    --direction=INGRESS \
+    --source-ipv6-ranges=2600:2d00:1:1::/64,2600:2d00:1:b029::/64,2600:1901:8001::/48 \
     --target-tags=backend-vm \
     --rules=tcp:80
 ```
@@ -1377,8 +1385,8 @@ Google Cloud の IPv6:
   - グローバルLBでのIPv6対応
 
   IPv6 有効化:
-  gcloud compute networks subnets update my-subnet \
-    --enable-ipv6-access \
+  gcloud beta compute networks subnets update my-subnet \
+    --stack-type=IPV4_IPV6 \
     --ipv6-access-type=EXTERNAL \
     --region=us-central1
 ```

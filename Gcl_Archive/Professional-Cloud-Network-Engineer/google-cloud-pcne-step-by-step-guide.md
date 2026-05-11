@@ -213,6 +213,7 @@ Google Cloud Certified Professional Cloud Network Engineer 認定試験は、単
 - [Cloud Network Address Translation | Google Cloud](https://cloud.google.com/nat)
 - [Best practices for running Cloud NAT | Google Cloud Blog](https://cloud.google.com/blog/products/networking/6-best-practices-for-running-cloud-nat)
 - [Cloud NAT rules | Google Cloud Documentation](https://docs.cloud.google.com/nat/docs/nat-rules-overview)
+
 ## Virtual Private Cloud
 
 ### Cloud Architecture Center

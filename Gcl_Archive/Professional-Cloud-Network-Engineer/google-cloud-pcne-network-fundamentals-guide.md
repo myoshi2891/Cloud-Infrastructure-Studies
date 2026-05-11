@@ -1443,9 +1443,9 @@ TLSハンドシェイクの流れ:
 
 GCPとの関連:
   Google マネージド証明書: Google が証明書の発行・更新を自動化
-  → デフォルトは Google Public CA、取得不可時は Let's Encrypt にフォールバック
+  → CAA DNSレコードに基づいて発行CAを選択（pki.goog および/または letsencrypt.org）
   → 有効期間は90日、有効期限の約1ヶ月前に自動更新開始
-  → CAA DNSレコードで発行CAを制御可能
+  → CAAレコードで許可されたCAの中から選択されるため、特定のCAに限定可能
   → LBに適用するだけ（管理不要）
 ```
 
@@ -1461,15 +1461,16 @@ TLSバージョンの変遷（試験に関連）:
   TLS 1.3: 最新・最高速・最高セキュリティ（推奨）
 
 Cloud LBのSSLポリシー:
-  Compatible: TLS 1.0以上（最も広い互換性、安全性低い）
-  Modern:     TLS 1.2以上（推奨・一般的な選択）
-  Restricted: TLS 1.2+（プロファイルで各 TLS バージョン向けに暗号スイートを制御。TLS 1.3 標準暗号スイート TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256 は有効）
-  Custom:     手動で暗号スイートを指定
+  COMPATIBLE: TLS 1.0以上（最も広い互換性、安全性低い）
+  MODERN:     TLS 1.2以上（推奨・一般的な選択）
+  RESTRICTED: TLS 1.2+（プロファイルで各 TLS バージョン向けに暗号スイートを制御。TLS 1.3 標準暗号スイート TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384, TLS_CHACHA20_POLY1305_SHA256 は有効）
+  FIPS_202205: FIPS検証済みの暗号スイートを使用（FIPSコンプライアンス要件向け）
+  CUSTOM:     手動で暗号スイートを指定
 
 推奨設定:
-  一般的なWebサービス → Modern (TLS 1.2以上)
-  金融・医療等コンプライアンス → Restricted (TLS 1.2+)
-  最新ブラウザのみ対象 (TLS 1.3専用) → RESTRICTED プロファイルで最小TLSバージョンを1.3に設定 (Modern等では不可)
+  一般的なWebサービス → MODERN (TLS 1.2以上)
+  金融・医療等コンプライアンス → RESTRICTED または FIPS_202205 (TLS 1.2+)
+  最新ブラウザのみ対象 (TLS 1.3専用) → RESTRICTED プロファイルで最小TLSバージョンを1.3に設定 (MODERN等では不可)
 
 暗号スイートの例（TLS 1.2）:
   TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
