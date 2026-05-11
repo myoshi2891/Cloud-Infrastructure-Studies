@@ -54,10 +54,10 @@
 推奨学習ステップ:
 
 Step 1: 公式試験ガイドを熟読する（必須）
-  └── https://cloud.google.com/learn/certification/cloud-network-engineer
+  └── https://cloud.google.com/learn/certification/cloud-network-engineer/
 
 Step 2: Cloud Skills Boost の PCNE ラーニングパスを修了
-  └── https://www.cloudskillsboost.google/paths/14
+  └── https://www.skills.google/paths/14
 
 Step 3: ハンズオンラボで実際に操作する
   └── VPC・Cloud VPN・Cloud Interconnect・LB の構築
@@ -71,8 +71,8 @@ Step 6: 試験登録
 ```
 
 > 📎 **公式リソース**
-> 試験ページ: <https://cloud.google.com/learn/certification/cloud-network-engineer>
-> 試験ガイド: <https://cloud.google.com/learn/certification/guides/cloud-network-engineer>
+> 試験ページ: <https://cloud.google.com/learn/certification/cloud-network-engineer/>
+> 試験ガイド: <https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf>
 
 ---
 
@@ -730,9 +730,9 @@ gcloud compute routers add-bgp-peer my-vpn-router \
 
 BGP のASN（Autonomous System Number）:
   Google Cloud の事前予約 ASN:
-    16550  → Google Peering
-    15169  → Google LLC
-  お客様が使用できる Private ASN:
+    16550  → Google Peering（Partner Interconnect用。Cloud Routerで設定可能）
+    15169  → Google LLC のグローバル ASN（Cloud Routerでは設定不可）
+  お客様が使用できる Private ASN（Cloud RouterはRFC 6996のプライベートASNのみサポート）:
     64512〜65534  (2バイトPrivate ASN)
     4200000000〜4294967294 (4バイトPrivate ASN)
 ```
@@ -1154,10 +1154,15 @@ NEG の設定例（Cloud Run をバックエンドに）:
   - gRPC: gRPCヘルスチェックプロトコル
 
 ファイアウォールルール（必須）:
-  Google のヘルスチェックIPレンジからのアクセスを許可:
+  Google のヘルスチェックIPレンジからのアクセスを許可（ロードバランサーの種類によって範囲が異なります）:
 
   - 35.191.0.0/16
   - 130.211.0.0/22
+  - 209.85.152.0/22
+  - 209.85.204.0/22
+  - 2600:2d00:1:1::/64
+  - 2600:2d00:1:b029::/64
+  - 2600:1901:8001::/48
 
   gcloud compute firewall-rules create allow-health-check \
     --network=my-vpc \
@@ -2071,34 +2076,34 @@ Multi-Region HA Design:
 
 | カテゴリ               | リソース                        | URL                                                                                                |
 | ---------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **試験情報**           | PCNE 試験概要ページ             | <https://cloud.google.com/learn/certification/cloud-network-engineer>                              |
-| **試験情報**           | 試験ガイド                      | <https://cloud.google.com/learn/certification/guides/cloud-network-engineer>                       |
-| **VPC基礎**            | VPC概要                         | <https://cloud.google.com/vpc/docs/vpc>                                                            |
-| **VPC基礎**            | サブネット                      | <https://cloud.google.com/vpc/docs/subnets>                                                        |
-| **VPC基礎**            | ファイアウォールルール          | <https://cloud.google.com/vpc/docs/firewalls>                                                      |
-| **VPC基礎**            | 階層型FWポリシー                | <https://cloud.google.com/vpc/docs/firewall-policies>                                              |
-| **VPC基礎**            | VPCピアリング                   | <https://cloud.google.com/vpc/docs/vpc-peering>                                                    |
-| **VPC基礎**            | Shared VPC                      | <https://cloud.google.com/vpc/docs/shared-vpc>                                                     |
-| **VPC基礎**            | Private Google Access           | <https://cloud.google.com/vpc/docs/private-google-access>                                          |
-| **VPC基礎**            | Private Service Connect         | <https://cloud.google.com/vpc/docs/private-service-connect>                                        |
-| **VPC基礎**            | Cloud NAT                       | <https://cloud.google.com/nat/docs/overview>                                                       |
-| **ハイブリッド**       | Cloud VPN 概要                  | <https://cloud.google.com/network-connectivity/docs/vpn/concepts/overview>                         |
-| **ハイブリッド**       | HA VPN 作成                     | <https://cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn>                    |
-| **ハイブリッド**       | Cloud Interconnect 概要         | <https://cloud.google.com/network-connectivity/docs/interconnect/concepts/overview>                |
-| **ハイブリッド**       | Interconnect ベストプラクティス | <https://cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices>          |
-| **ハイブリッド**       | Cloud Router 概要               | <https://cloud.google.com/network-connectivity/docs/router/concepts/overview>                      |
-| **ハイブリッド**       | NCC 概要                        | <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview> |
-| **ロードバランシング** | LB 概要                         | <https://cloud.google.com/load-balancing/docs/load-balancing-overview>                             |
-| **ロードバランシング** | Global HTTP(S) LB               | <https://cloud.google.com/load-balancing/docs/https>                                               |
-| **ロードバランシング** | Health Check                    | <https://cloud.google.com/load-balancing/docs/health-checks>                                       |
-| **CDN**                | Cloud CDN 概要                  | <https://cloud.google.com/cdn/docs/overview>                                                       |
-| **DNS**                | Cloud DNS 概要                  | <https://cloud.google.com/dns/docs/overview>                                                       |
-| **セキュリティ**       | Cloud Armor 概要                | <https://cloud.google.com/armor/docs/cloud-armor-overview>                                         |
-| **セキュリティ**       | VPC Service Controls 概要       | <https://cloud.google.com/vpc-service-controls/docs/overview>                                      |
-| **セキュリティ**       | IAP 概要                        | <https://cloud.google.com/iap/docs/concepts-overview>                                              |
-| **セキュリティ**       | ルート                          | <https://cloud.google.com/vpc/docs/routes>                                                         |
-| **監視**               | VPC Flow Logs                   | <https://cloud.google.com/vpc/docs/using-flow-logs>                                                |
-| **監視**               | Network Intelligence Center     | <https://cloud.google.com/network-intelligence-center/docs/overview>                               |
+| **試験情報**           | PCNE 試験概要ページ             | <https://cloud.google.com/learn/certification/cloud-network-engineer/>                              |
+| **試験情報**           | 試験ガイド                      | <https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf>                       |
+| **VPC基礎**            | VPC概要                         | <https://docs.cloud.google.com/vpc/docs/vpc>                                                            |
+| **VPC基礎**            | サブネット                      | <https://docs.cloud.google.com/vpc/docs/subnets>                                                        |
+| **VPC基礎**            | ファイアウォールルール          | <https://docs.cloud.google.com/vpc/docs/firewalls>                                                      |
+| **VPC基礎**            | 階層型FWポリシー                | <https://docs.cloud.google.com/vpc/docs/firewall-policies>                                              |
+| **VPC基礎**            | VPCピアリング                   | <https://docs.cloud.google.com/vpc/docs/vpc-peering>                                                    |
+| **VPC基礎**            | Shared VPC                      | <https://docs.cloud.google.com/vpc/docs/shared-vpc>                                                     |
+| **VPC基礎**            | Private Google Access           | <https://docs.cloud.google.com/vpc/docs/private-google-access>                                          |
+| **VPC基礎**            | Private Service Connect         | <https://docs.cloud.google.com/vpc/docs/private-service-connect>                                        |
+| **VPC基礎**            | Cloud NAT                       | <https://docs.cloud.google.com/nat/docs/overview>                                                       |
+| **ハイブリッド**       | Cloud VPN 概要                  | <https://docs.cloud.google.com/network-connectivity/docs/vpn/concepts/overview>                         |
+| **ハイブリッド**       | HA VPN 作成                     | <https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/creating-ha-vpn>                    |
+| **ハイブリッド**       | Cloud Interconnect 概要         | <https://docs.cloud.google.com/network-connectivity/docs/interconnect/concepts/overview>                |
+| **ハイブリッド**       | Interconnect ベストプラクティス | <https://docs.cloud.google.com/network-connectivity/docs/interconnect/concepts/best-practices>          |
+| **ハイブリッド**       | Cloud Router 概要               | <https://docs.cloud.google.com/network-connectivity/docs/router/concepts/overview>                      |
+| **ハイブリッド**       | NCC 概要                        | <https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/overview> |
+| **ロードバランシング** | LB 概要                         | <https://docs.cloud.google.com/load-balancing/docs/load-balancing-overview>                             |
+| **ロードバランシング** | Global HTTP(S) LB               | <https://docs.cloud.google.com/load-balancing/docs/https>                                               |
+| **ロードバランシング** | Health Check                    | <https://docs.cloud.google.com/load-balancing/docs/health-checks>                                       |
+| **CDN**                | Cloud CDN 概要                  | <https://docs.cloud.google.com/cdn/docs/overview>                                                       |
+| **DNS**                | Cloud DNS 概要                  | <https://docs.cloud.google.com/dns/docs/overview>                                                       |
+| **セキュリティ**       | Cloud Armor 概要                | <https://docs.cloud.google.com/armor/docs/cloud-armor-overview>                                         |
+| **セキュリティ**       | VPC Service Controls 概要       | <https://docs.cloud.google.com/vpc-service-controls/docs/overview>                                      |
+| **セキュリティ**       | IAP 概要                        | <https://docs.cloud.google.com/iap/docs/concepts-overview>                                              |
+| **セキュリティ**       | ルート                          | <https://docs.cloud.google.com/vpc/docs/routes>                                                         |
+| **監視**               | VPC Flow Logs                   | <https://docs.cloud.google.com/vpc/docs/using-flow-logs>                                                |
+| **監視**               | Network Intelligence Center     | <https://docs.cloud.google.com/network-intelligence-center/docs/overview>                               |
 
 ---
 

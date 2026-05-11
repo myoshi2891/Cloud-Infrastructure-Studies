@@ -28,7 +28,7 @@ VPCを作成する際、初学者が直面する最初の選択が「自動（Au
 | **VPCネットワークピアリング** | プロジェクトごとの分散管理（異なる組織間でも接続可能） | 非対応（A-B間、B-C間でピアリングしても、A-C間は通信不可） | チームごとに完全なネットワークの自律性が必要な場合や、サードパーティSaaSとの連携に最適。推移性がないため、大規模になると管理オーバーヘッドが指数関数的に増大する。 |
 | **Network Connectivity Center (NCC)** | ハブ＆スポークモデルによるグローバルな接続管理 | 対応（最大250のVPCネットワークを単一のハブに接続可能） | 複雑なVPCピアリングのメッシュを排除し、マルチクラウドや大規模なオンプレミス接続を集約する。次世代ファイアウォールの挿入など、トラフィック制御の中枢として機能する。 |
 
-初学者は、共有VPCを利用することで、各サービスプロジェクトが個別にハイブリッド接続を構築する手間を省き、ホストプロジェクトに集約された単一のCloud Interconnect接続をすべてのVMが透過的に利用できるというメカニズムを理解する必要がある。また、Google Cloudの 設計では「プロジェクトごとに1つのVPCネットワークを作成する」ことが推奨されている。これは、Cloud Routerやファイアウォールルールなどのリソースクォータがプロジェクト単位で適用されるため、クォータの引き上げ要求と容量計画を正確にマッピングしやすくするためである。
+初学者は、共有VPCを利用することで、各サービスプロジェクトが個別にハイブリッド接続を構築する手間を省き、ホストプロジェクトに集約された単一のCloud Interconnect接続をすべてのVMが透過的に利用できるというメカニズムを理解する必要がある。また、Google Cloudの設計では「プロジェクトごとに1つのVPCネットワークを作成する」ことが推奨されている。これは、Cloud Routerやファイアウォールルールなどのリソースクォータがプロジェクト単位で適用されるため、クォータの引き上げ要求と容量計画を正確にマッピングしやすくするためである。
 
 ## **ステップ2：ハイブリッドおよびマルチクラウドネットワークの構成（出題範囲：セクション4）**
 
@@ -194,7 +194,7 @@ Google Cloud Certified Professional Cloud Network Engineer 認定試験は、単
 
 ### **公式ドキュメント（Official documentation）**
 
-| Learn |
+## Learn
 
 - [Cloud NAT explained! | Google Cloud Blog](https://cloud.google.com/blog/topics/developers-practitioners/cloud-nat-explained)
 - [Best practices and reference architectures for VPC design | Google Cloud Documentation](https://docs.cloud.google.com/architecture/best-practices-vpc-design)
@@ -208,14 +208,15 @@ Google Cloud Certified Professional Cloud Network Engineer 認定試験は、単
 - [DNS zones overview | Google Cloud Documentation](https://docs.cloud.google.com/dns/docs/zones/zones-overview)
 - [Best practices for Cloud DNS | Google Cloud Documentation](https://docs.cloud.google.com/dns/docs/best-practices)
 
-| Cloud DNS |
+## Cloud DNS
 
 - [Cloud Network Address Translation | Google Cloud](https://cloud.google.com/nat)
 - [Best practices for running Cloud NAT | Google Cloud Blog](https://cloud.google.com/blog/products/networking/6-best-practices-for-running-cloud-nat)
 - [Cloud NAT rules | Google Cloud Documentation](https://docs.cloud.google.com/nat/docs/nat-rules-overview)
 
-| Virtual Private Cloud |
-| Cloud Architecture Center |
+## Virtual Private Cloud
+
+## Cloud Architecture Center
 
 - [Best practices for GKE networking | Google Cloud Documentation](https://cloud.google.com/kubernetes-engine/docs/best-practices/networking)
 - [Cloud Armor Network Security | Google Cloud](https://cloud.google.com/security/products/armor)
@@ -223,10 +224,6 @@ Google Cloud Certified Professional Cloud Network Engineer 認定試験は、単
 - [VPC Service Controls | Google Cloud](https://cloud.google.com/security/vpc-service-controls)
 - [Best practices for enabling VPC Service Controls | Google Cloud Documentation](https://docs.cloud.google.com/vpc-service-controls/docs/enable)
 - [Packet Mirroring: Visualize and protect your cloud network | Google Cloud Blog](https://cloud.google.com/blog/products/networking/packet-mirroring-visualize-and-protect-your-cloud-network)
-
-| Virtual Private Cloud |
-| Virtual Private Cloud |
-
 - [Network Intelligence Center | Google Cloud](https://cloud.google.com/network-intelligence-center)
 - [Network Intelligence Center | Google Cloud Documentation](https://docs.cloud.google.com/network-intelligence-center/docs)
 - [Network Observability | Google Cloud](https://cloud.google.com/solutions/observability)
