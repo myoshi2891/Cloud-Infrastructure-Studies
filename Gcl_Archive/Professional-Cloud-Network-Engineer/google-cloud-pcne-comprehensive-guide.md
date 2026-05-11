@@ -1176,7 +1176,7 @@ NEG の設定例（Cloud Run をバックエンドに）:
     --network=my-vpc \
     --action=ALLOW \
     --direction=INGRESS \
-    --source-ipv6-ranges=2600:2d00:1:1::/64,2600:2d00:1:b029::/64,2600:1901:8001::/48 \
+    --source-ranges=2600:2d00:1:1::/64,2600:2d00:1:b029::/64,2600:1901:8001::/48 \
     --target-tags=backend-vm \
     --rules=tcp:80
 ```
