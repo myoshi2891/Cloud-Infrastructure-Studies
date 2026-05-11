@@ -102,7 +102,7 @@ Google Cloud Armor は、外部 Application Load Balancer に関連付けられ�
 
 ### **4.2 VPC Service Controls (VPC SC) とデータ漏洩対策**
 
-VPC Service Controls は、Google Cloud のマネージドサービス（Cloud Storage、BigQuery など）の周囲に仮想的な境界を作成する 。これにより、IAM ポリシーだけでは防げない「データの持ち出し（エグルトレーション）」を防止できる。
+VPC Service Controls は、Google Cloud のマネージドサービス（Cloud Storage、BigQuery など）の周囲に仮想的な境界を作成する 。これにより、IAM ポリシーだけでは防げない「データの持ち出し（データ流出／exfiltration）」を防止できる。
 
 設計における重要なステップは、まず「ドライランモード」で境界を設定し、正規のトラフィックがブロックされないかを確認することである 。境界を越えた通信が必要な場合は、インプレスポリシーとエグレスポリシーを使用して、特定の条件（特定のユーザー、特定の VPC、信頼されたデバイスなど）に基づいて例外を許可する。
 
