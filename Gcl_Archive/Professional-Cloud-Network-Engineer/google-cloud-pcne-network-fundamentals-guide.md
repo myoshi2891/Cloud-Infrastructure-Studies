@@ -667,10 +667,11 @@ UDPを使うプロトコル（速度優先）:
   DNS      → 名前解決（遅延より速度が重要）
   DHCP     → IPアドレスの自動割り当て
   NTP      → 時刻同期
-  VoIP     → 音声通話（少々の欠落より遅延が困る）
-  動画配信  → リアルタイムストリーミング
   QUIC/HTTP3 → 次世代HTTP（UDPベースで高速化）
-  DNS over HTTPS/TLS → 暗号化DNS
+
+TCP/暗号化DNS（参考）:
+  DNS over TLS (DoT) → TCP/853
+  DNS over HTTPS (DoH) → TCP/443
 
 ファイアウォールの注意点:
   UDPはコネクションレス → セッション概念がない
@@ -1885,7 +1886,8 @@ GCPのSLA（参考）:
   Classic VPN:        99.9% （年間 8.76時間以内の停止）
   Dedicated Interconnect (HA構成): 99.99%
   Cloud Spanner:      99.999%（Five Nines！）
-  Compute Engine（単一ゾーン）: 99.99%
+  Compute Engine（マルチゾーン/MIG）: 99.99%
+  Compute Engine（単一インスタンス/単一ゾーン）: 99.5%
   GKE Autopilot:      99.95%
 ```
 
