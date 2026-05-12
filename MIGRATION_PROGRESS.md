@@ -26,12 +26,15 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - **Step 2: Section 1 (VPC ネットワークの設計と計画)**:
   - `Section1.tsx` を TDD で実装。
   - ネットワークティアの選択、VPCの設計（共有VPC、ピアリング等）、ハイブリッド接続（Dedicated Interconnect, HA VPN等）、GKEネットワーク設計を移行。
+- **Step 3: Section 2 (VPCネットワークの実装)**:
+  - `Section2.tsx` を TDD で実装。
+  - VPC構成（コマンド含む）、VPCルーティング、Network Connectivity Center (NCC) 構成、GKEクラスタ実装を移行。
 
 ### 次のステップ
 
 - [x] **Step 1: Base Setup & Constants**
 - [x] **Step 2: Section 1 (VPC ネットワークの設計と計画)**
-- [ ] **Step 3: Section 2 (VPCネットワークの実装)**
+- [x] **Step 3: Section 2 (VPCネットワークの実装)**
 - [ ] **Step 4: Section 3 (マネージドネットワークサービスの構成)**
 - [ ] **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**
 - [ ] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
