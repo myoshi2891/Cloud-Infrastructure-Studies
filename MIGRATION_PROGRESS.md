@@ -16,6 +16,26 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 
 ---
 
+## 2026-05-12: PCNE Step-by-Step Guide Migration (進行中)
+
+### 完了済み
+
+- **Step 1: Base Setup & Constants**:
+  - `constants.ts`, `layout.tsx`, `page.tsx`, `pcne-step.module.css` を作成。
+  - Heroセクション、スティッキーナビゲーションの実装。
+
+### 次のステップ
+
+- [x] **Step 1: Base Setup & Constants**
+- [ ] **Step 2: Section 1 (VPC ネットワークの設計と計画)**
+- [ ] **Step 3: Section 2 (VPCネットワークの実装)**
+- [ ] **Step 4: Section 3 (マネージドネットワークサービスの構成)**
+- [ ] **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**
+- [ ] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
+- [ ] **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**
+
+---
+
 ## 2026-05-10: Professional Cloud Network Engineer Migration (完了)
 
 ### 完了済み
