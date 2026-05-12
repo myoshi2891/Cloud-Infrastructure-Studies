@@ -23,9 +23,16 @@ describe('PCNE Step-by-Step - Section 4', () => {
         expect(subsections[3]).toHaveTextContent(/4.4 ハイブリッド接続でのNCC構成/);
     });
 
-    it('renders the code block correctly', () => {
+    it('renders the code block with proper structure', () => {
         render(<Section4 />);
-        expect(screen.getByText(/# HA VPNゲートウェイの作成/)).toBeInTheDocument();
+        
+        const codeBlock = screen.getByText(/# HA VPNゲートウェイの作成/).closest('.code-block');
+        expect(codeBlock).toBeInTheDocument();
+        
+        // Ensure it contains code lines
+        const codeLines = codeBlock?.querySelectorAll('.code-line');
+        expect(codeLines && codeLines.length).toBeGreaterThan(0);
+        
         expect(screen.getByText(/gcloud compute vpn-gateways create ha-vpn-gw/)).toBeInTheDocument();
     });
 });

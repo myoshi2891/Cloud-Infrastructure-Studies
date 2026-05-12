@@ -23,9 +23,15 @@ describe('PCNE Step-by-Step - Section 2', () => {
         expect(subsections[3]).toHaveTextContent(/2.4 GKEクラスタの構成と管理/);
     });
 
-    it('renders the code block correctly', () => {
+    it('renders the code block with proper structure', () => {
         render(<Section2 />);
-        expect(screen.getByText(/# カスタムモードVPCの作成/)).toBeInTheDocument();
+        
+        const codeBlock = screen.getByText(/# カスタムモードVPCの作成/).closest('.code-block');
+        expect(codeBlock).toBeInTheDocument();
+        
+        const codeLines = codeBlock?.querySelectorAll('.code-line');
+        expect(codeLines && codeLines.length).toBeGreaterThan(0);
+        
         expect(screen.getByText(/gcloud compute networks create my-vpc/)).toBeInTheDocument();
     });
 });
