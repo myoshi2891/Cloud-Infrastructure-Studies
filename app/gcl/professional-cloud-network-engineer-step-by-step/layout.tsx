@@ -6,11 +6,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Layout wrapper for PCNE step pages.
+ * Wraps PCNE step pages in a vertical flex container.
  *
- * @param props - The component props.
- * @param props.children - The child components to render.
- * @returns {JSX.Element} The rendered layout.
+ * @returns The layout element that renders the provided `children` inside a div with `flex flex-col` styling.
  */
 export default function PcneStepLayout({ children }: { children: React.ReactNode }) {
     return <div className="flex flex-col">{children}</div>;
