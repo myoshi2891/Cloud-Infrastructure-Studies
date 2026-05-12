@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -14,5 +13,5 @@ export const metadata: Metadata = {
  * @returns {JSX.Element} The rendered layout.
  */
 export default function PcneStepLayout({ children }: { children: React.ReactNode }) {
-    return <div className="layout-container">{children}</div>;
+    return <div className="flex flex-col">{children}</div>;
 }

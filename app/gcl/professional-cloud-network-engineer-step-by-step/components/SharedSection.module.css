@@ -74,8 +74,8 @@
     font-family: var(--font-mono);
 }
 
-.tagBlue { background: color-mix(in srgb, var(--color-primary) 10%, transparent); color: var(--color-primary); border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent); }
-.tagOrange { background: color-mix(in srgb, var(--color-primary) 10%, transparent); color: var(--color-primary); border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent); }
+.tagBlue { background: color-mix(in srgb, var(--color-blue-500) 10%, transparent); color: var(--color-blue-500); border: 1px solid color-mix(in srgb, var(--color-blue-500) 20%, transparent); }
+.tagOrange { background: color-mix(in srgb, var(--color-orange-500) 10%, transparent); color: var(--color-orange-500); border: 1px solid color-mix(in srgb, var(--color-orange-500) 20%, transparent); }
 
 .highlight {
     background: color-mix(in srgb, var(--color-primary) 10%, transparent);

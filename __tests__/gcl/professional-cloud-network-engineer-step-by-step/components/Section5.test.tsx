@@ -8,8 +8,8 @@ describe('PCNE Step-by-Step - Section 5', () => {
     });
 
     it('renders the section title correctly', () => {
-        const title = screen.getByRole('heading', { level: 2 });
-        expect(title.textContent).toContain('ネットワーク運用、監視、トラブルシューティング');
+        const title = screen.getByRole('heading', { level: 2, name: 'ネットワーク運用、監視、トラブルシューティング' });
+        expect(title).toHaveTextContent('ネットワーク運用、監視、トラブルシューティング');
     });
 
     it('renders all three subsections', () => {
