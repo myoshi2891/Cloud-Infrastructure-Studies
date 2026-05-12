@@ -12,13 +12,15 @@ describe('PCNE Step-by-Step - Section 4', () => {
         expect(title).toBeInTheDocument();
     });
 
-    it('renders all four subsections', () => {
+    it('renders all four subsections in order', () => {
         render(<Section4 />);
         
-        expect(screen.getByText(/4.1 Cloud Interconnectの構成/)).toBeInTheDocument();
-        expect(screen.getByText(/4.2 サイト間IPsec VPNの構成/)).toBeInTheDocument();
-        expect(screen.getByText(/4.3 Cloud Routerの構成/)).toBeInTheDocument();
-        expect(screen.getByText(/4.4 ハイブリッド接続でのNCC構成/)).toBeInTheDocument();
+        const subsections = screen.getAllByRole('heading', { level: 3 });
+        expect(subsections).toHaveLength(4);
+        expect(subsections[0]).toHaveTextContent(/4.1 Cloud Interconnectの構成/);
+        expect(subsections[1]).toHaveTextContent(/4.2 サイト間IPsec VPNの構成/);
+        expect(subsections[2]).toHaveTextContent(/4.3 Cloud Routerの構成/);
+        expect(subsections[3]).toHaveTextContent(/4.4 ハイブリッド接続でのNCC構成/);
     });
 
     it('renders the code block correctly', () => {

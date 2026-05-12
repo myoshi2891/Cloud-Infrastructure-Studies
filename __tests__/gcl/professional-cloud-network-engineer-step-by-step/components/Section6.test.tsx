@@ -12,13 +12,15 @@ describe('PCNE Step-by-Step - Section 6', () => {
         expect(title).toBeInTheDocument();
     });
 
-    it('renders all four subsections', () => {
+    it('renders all four subsections in order', () => {
         render(<Section6 />);
         
-        expect(screen.getByText(/6.1 Google Cloud Armorポリシーの構成/)).toBeInTheDocument();
-        expect(screen.getByText(/6.2 Cloud NGFWポリシーとVPCファイアウォールルールの構成と管理/)).toBeInTheDocument();
-        expect(screen.getByText(/6.3 インターネットエグレストラフィックの保護/)).toBeInTheDocument();
-        expect(screen.getByText(/6.4 自己管理型NVAとパケットミラーリングの構成/)).toBeInTheDocument();
+        const subsections = screen.getAllByRole('heading', { level: 3 });
+        expect(subsections).toHaveLength(4);
+        expect(subsections[0]).toHaveTextContent(/6.1 Google Cloud Armorポリシーの構成/);
+        expect(subsections[1]).toHaveTextContent(/6.2 Cloud NGFWポリシーとVPCファイアウォールルールの構成と管理/);
+        expect(subsections[2]).toHaveTextContent(/6.3 インターネットエグレストラフィックの保護/);
+        expect(subsections[3]).toHaveTextContent(/6.4 自己管理型NVAとパケットミラーリングの構成/);
     });
 
     it('renders the NGFW comparison table', () => {

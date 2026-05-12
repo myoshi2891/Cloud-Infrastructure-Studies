@@ -12,13 +12,15 @@ describe('PCNE Step-by-Step - Section 2', () => {
         expect(title).toBeInTheDocument();
     });
 
-    it('renders all four subsections', () => {
+    it('renders all four subsections in order', () => {
         render(<Section2 />);
         
-        expect(screen.getByText(/2.1 VPCの構成/)).toBeInTheDocument();
-        expect(screen.getByText(/2.2 VPCルーティングの構成/)).toBeInTheDocument();
-        expect(screen.getByText(/2.3 Network Connectivity Center（NCC）の構成/)).toBeInTheDocument();
-        expect(screen.getByText(/2.4 GKEクラスタの構成と管理/)).toBeInTheDocument();
+        const subsections = screen.getAllByRole('heading', { level: 3 });
+        expect(subsections).toHaveLength(4);
+        expect(subsections[0]).toHaveTextContent(/2.1 VPCの構成/);
+        expect(subsections[1]).toHaveTextContent(/2.2 VPCルーティングの構成/);
+        expect(subsections[2]).toHaveTextContent(/2.3 Network Connectivity Center（NCC）の構成/);
+        expect(subsections[3]).toHaveTextContent(/2.4 GKEクラスタの構成と管理/);
     });
 
     it('renders the code block correctly', () => {

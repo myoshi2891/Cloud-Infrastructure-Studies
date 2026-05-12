@@ -15,10 +15,12 @@ describe('PCNE Step-by-Step - Section 3', () => {
         expect(title).toBeInTheDocument();
     });
 
-    it('renders all three subsections', () => {
-        expect(screen.getByRole('heading', { name: /3.1 ロードバランシングの構成/, level: 3 })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /3.2 Cloud CDNの構成/, level: 3 })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /3.3 Cloud DNSの構成/, level: 3 })).toBeInTheDocument();
+    it('renders all three subsections in order', () => {
+        const subsections = screen.getAllByRole('heading', { level: 3 });
+        expect(subsections).toHaveLength(3);
+        expect(subsections[0]).toHaveTextContent(/3.1 ロードバランシングの構成/);
+        expect(subsections[1]).toHaveTextContent(/3.2 Cloud CDNの構成/);
+        expect(subsections[2]).toHaveTextContent(/3.3 Cloud DNSの構成/);
     });
 
     it('renders the comparison table for load balancers', () => {

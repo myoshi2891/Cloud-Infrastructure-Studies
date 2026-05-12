@@ -12,13 +12,15 @@ describe('PCNE Step-by-Step - Section 1', () => {
         expect(title).toBeInTheDocument();
     });
 
-    it('renders all four subsections', () => {
+    it('renders all four subsections in order', () => {
         render(<Section1 />);
         
-        expect(screen.getByRole('heading', { name: /1.1 全体ネットワークアーキテクチャの設計/ })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /1.2 VPCネットワークの設計/ })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /1.3 レジリエントでパフォーマントなハイブリッド\/マルチクラウドネットワーク設計/ })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /1.4 GKE（Google Kubernetes Engine）向けネットワーク設計/ })).toBeInTheDocument();
+        const subsections = screen.getAllByRole('heading', { level: 3 });
+        expect(subsections).toHaveLength(4);
+        expect(subsections[0]).toHaveTextContent(/1.1 全体ネットワークアーキテクチャの設計/);
+        expect(subsections[1]).toHaveTextContent(/1.2 VPCネットワークの設計/);
+        expect(subsections[2]).toHaveTextContent(/1.3 レジリエントでパフォーマントなハイブリッド\/マルチクラウドネットワーク設計/);
+        expect(subsections[3]).toHaveTextContent(/1.4 GKE（Google Kubernetes Engine）向けネットワーク設計/);
     });
 
     it('renders the comparison table for hybrid connectivity', () => {

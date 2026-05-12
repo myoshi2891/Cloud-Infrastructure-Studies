@@ -12,10 +12,12 @@ describe('PCNE Step-by-Step - Section 5', () => {
         expect(title).toHaveTextContent('ネットワーク運用、監視、トラブルシューティング');
     });
 
-    it('renders all three subsections', () => {
-        expect(screen.getByText(/5.1 ロギングとモニタリング/)).toBeInTheDocument();
-        expect(screen.getByText(/5.2 接続問題のトラブルシューティング/)).toBeInTheDocument();
-        expect(screen.getByText(/5.3 Network Intelligence Centerによる監視と診断/)).toBeInTheDocument();
+    it('renders all three subsections in order', () => {
+        const subsections = screen.getAllByRole('heading', { level: 3 });
+        expect(subsections).toHaveLength(3);
+        expect(subsections[0]).toHaveTextContent(/5.1 ロギングとモニタリング（Cloud Observability）/);
+        expect(subsections[1]).toHaveTextContent(/5.2 接続問題のトラブルシューティング/);
+        expect(subsections[2]).toHaveTextContent(/5.3 Network Intelligence Centerによる監視と診断/);
     });
 
     it('renders the observability comparison table', () => {
