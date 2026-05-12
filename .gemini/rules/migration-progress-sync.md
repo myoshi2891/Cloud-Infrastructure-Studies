@@ -9,5 +9,5 @@
 ## 現在の PCNE 移行状況
 
 - **HEAD**: 84b9366 (fix: keep un-migrated step-by-step guide in root)
-- **ステータス**: Comprehensive Guide 完了。Step-by-step Guide 未完了。
-- **次の作業**: `google-cloud-pcne-step-by-step-guide.html` の移行。
+- **ステータス**: Comprehensive Guide 完了。Step-by-step Guide 完了。
+- **次の作業**: PCNE の E2E テスト実装、または他セクションの移行。

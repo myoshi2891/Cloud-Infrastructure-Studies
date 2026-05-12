@@ -16,7 +16,7 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 
 ---
 
-## 2026-05-12: PCNE Step-by-Step Guide Migration (進行中)
+## 2026-05-12: PCNE Step-by-Step Guide Migration (完了)
 
 ### 完了済み
 

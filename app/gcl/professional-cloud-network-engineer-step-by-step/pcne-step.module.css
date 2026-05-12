@@ -14,9 +14,9 @@
 .heroBadge {
     display: inline-block;
     padding: 6px 16px;
-    background: rgba(0, 212, 255, 0.1);
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
     color: var(--color-primary);
-    border: 1px solid rgba(0, 212, 255, 0.2);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
     border-radius: 100px;
     font-size: 0.875rem;
     font-weight: 600;
@@ -34,7 +34,7 @@
 
 .heroAccent {
     color: var(--color-primary);
-    background: linear-gradient(90deg, #00d4ff, #4ade80);
+    background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -95,7 +95,7 @@
     position: sticky;
     top: 64px;
     z-index: 10;
-    background: rgba(8, 14, 30, 0.85);
+    background: color-mix(in srgb, var(--color-background) 85%, transparent);
     backdrop-filter: blur(12px);
     border: 1px solid var(--color-border);
     border-radius: 100px;
@@ -127,7 +127,7 @@
 
 .navSticky a:hover {
     color: var(--color-foreground);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-surface-subtle);
 }
 
 @media (max-width: 768px) {

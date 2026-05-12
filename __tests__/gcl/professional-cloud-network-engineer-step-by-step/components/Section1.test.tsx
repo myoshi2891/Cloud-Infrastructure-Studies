@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Section1 } from '../../../../app/gcl/professional-cloud-network-engineer-step-by-step/components/Section1';
+import { Section1 } from '@/app/gcl/professional-cloud-network-engineer-step-by-step/components/Section1';
 
 describe('PCNE Step-by-Step - Section 1', () => {
     it('renders the section title correctly', () => {
@@ -20,7 +20,7 @@ describe('PCNE Step-by-Step - Section 1', () => {
 
     it('renders the comparison table for hybrid connectivity', () => {
         render(<Section1 />);
-        expect(screen.getAllByRole('columnheader', { name: '接続方式' }).length).toBeGreaterThan(0);
+        expect(screen.getByRole('columnheader', { name: '接続方式' })).toBeInTheDocument();
         expect(screen.getByRole('cell', { name: 'Dedicated Interconnect' })).toBeInTheDocument();
         expect(screen.getByRole('cell', { name: 'HA VPN' })).toBeInTheDocument();
     });
