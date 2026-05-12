@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import Domain4Page from '../../../../app/gcl/associate-cloud-engineer/domain4/page';
+import Domain4Page from '@/app/gcl/associate-cloud-engineer/domain4/page';
 
 describe('ACE Domain 4 Page', () => {
     it('renders the page title and hero section correctly', () => {

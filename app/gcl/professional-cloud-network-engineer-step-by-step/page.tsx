@@ -1,42 +1,39 @@
 import { HERO_BADGES, NAV_LINKS } from './constants';
-import styles from './pcne.module.css';
-import { SectionIntro } from './components/SectionIntro';
+import styles from './pcne-step.module.css';
 import { Section1 } from './components/Section1';
 import { Section2 } from './components/Section2';
 import { Section3 } from './components/Section3';
 import { Section4 } from './components/Section4';
 import { Section5 } from './components/Section5';
 import { Section6 } from './components/Section6';
-import { SectionSummary } from './components/SectionSummary';
 
 /**
- * Renders the "Professional Cloud Network Engineer" page layout,
+ * Renders the "Professional Cloud Network Engineer" Step-by-Step guide layout,
  * including a hero header, a sticky in-page navigation bar, and the section content blocks.
  *
- * @returns A JSX element representing the complete PCNE page layout
+ * @returns A JSX element representing the complete PCNE step-by-step page layout
  */
-export default function PcnePage() {
+export default function PcneStepByStepPage() {
     return (
-        <div className="pcne-page">
+        <div className="pcne-step-page">
             <main className={styles.pcneMain}>
                 {/* HERO */}
                 <div className={styles.hero} id="hero-overview">
-                    <div className={styles.heroBadge}>Professional Cloud Network Engineer</div>
+                    <div className={styles.heroBadge}>Certification Exam Guide</div>
                     <h1 className={styles.heroTitle}>
-                        Professional Cloud<br />
-                        <span className={styles.heroAccent}>Network Engineer</span><br />
-                        完全試験対策ガイド
+                        Google Cloud<br />
+                        <span className={styles.heroAccent}>PCNE</span><br />
+                        完全攻略ガイド
                     </h1>
                     <p className={styles.heroDesc}>
-                        ネットワーク初学者から中級者まで対応。VPC設計からハイブリッド接続、ロードバランシング、セキュリティ、監視まで、試験に出るすべての技術領域をステップバイステップで解説します。
+                        Professional Cloud Network Engineer 認定試験の全出題範囲を、初学者でもわかるようにステップバイステップで解説。各項目の技術的背景、ベストプラクティス、および参照URLを完全網羅。
                     </p>
 
                     <div className={styles.heroStats}>
-                        <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 試験時間: 120分</span>
-                        <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 問題数: 50〜60問</span>
+                        <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 出題セクション: 6</span>
+                        <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 試験問題数: 50〜60</span>
+                        <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 試験時間: 2h</span>
                         <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 受験料: $200</span>
-                        <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 推奨経験: 3年以上</span>
-                        <span className={styles.heroStat}><span className={styles.heroStatDot}>◆</span> 更新: 2年ごと</span>
                     </div>
 
                     <div className={styles.heroTags}>
@@ -59,14 +56,12 @@ export default function PcnePage() {
                 </nav>
 
                 {/* SECTIONS */}
-                <SectionIntro />
                 <Section1 />
                 <Section2 />
                 <Section3 />
                 <Section4 />
                 <Section5 />
                 <Section6 />
-                <SectionSummary />
             </main>
         </div>
     );

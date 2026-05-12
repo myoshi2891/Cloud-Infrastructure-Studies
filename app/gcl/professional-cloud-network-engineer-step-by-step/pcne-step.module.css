@@ -1,0 +1,141 @@
+.pcneMain {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+}
+
+/* ── Hero ── */
+.hero {
+    padding: 80px 0 60px;
+    text-align: center;
+}
+
+.heroBadge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    color: var(--color-primary);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: 0.05em;
+}
+
+.heroTitle {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    color: var(--color-foreground);
+}
+
+.heroAccent {
+    color: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-brand-text-start), var(--color-brand-text-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.heroDesc {
+    font-size: 1.125rem;
+    color: var(--color-muted-foreground);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+}
+
+.heroStats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.heroStat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: var(--color-foreground);
+    font-weight: 500;
+}
+
+.heroStatDot {
+    color: var(--color-primary);
+}
+
+.heroTags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.heroTag {
+    display: inline-flex;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    color: var(--color-muted-foreground);
+}
+
+/* ── Sticky Nav ── */
+.navSticky {
+    position: sticky;
+    top: 64px;
+    z-index: 10;
+    background: color-mix(in srgb, var(--color-background) 85%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.navLabel {
+    font-weight: 700;
+    color: var(--color-primary);
+    padding-right: 16px;
+    border-right: 1px solid var(--color-border);
+}
+
+.navSticky a {
+    color: var(--color-muted-foreground);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.navSticky a:hover {
+    color: var(--color-foreground);
+    background: var(--color-surface-subtle);
+}
+
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 2.25rem;
+    }
+    
+    .navSticky {
+        border-radius: 12px;
+    }
+}

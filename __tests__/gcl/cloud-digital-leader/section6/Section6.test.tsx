@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Section6 } from '../../../../app/gcl/cloud-digital-leader/section6/components/Section6';
+import { Section6 } from '@/app/gcl/cloud-digital-leader/section6/components/Section6';
 
 describe('CDL Section 6 - Section 6 (Sustainability)', () => {
     it('renders the section title correctly', () => {

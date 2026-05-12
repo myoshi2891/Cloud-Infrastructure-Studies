@@ -75,8 +75,8 @@
     font-family: var(--font-mono);
 }
 
-.tagBlue { background: color-mix(in srgb, var(--color-primary) 10%, transparent); color: var(--color-primary); border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent); }
-.tagOrange { background: color-mix(in srgb, var(--color-primary) 10%, transparent); color: var(--color-primary); border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent); }
+.tagBlue { background: color-mix(in srgb, var(--color-blue-500) 10%, transparent); color: var(--color-blue-500); border: 1px solid color-mix(in srgb, var(--color-blue-500) 20%, transparent); }
+.tagOrange { background: color-mix(in srgb, var(--color-orange-500) 10%, transparent); color: var(--color-orange-500); border: 1px solid color-mix(in srgb, var(--color-orange-500) 20%, transparent); }
 
 .highlight {
     background: color-mix(in srgb, var(--color-primary) 10%, transparent);
@@ -249,6 +249,75 @@
     overflow-x: auto;
 }
 
+/* Missing styles from Step-by-Step components */
+.subHeading {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    margin-bottom: 16px;
+    margin-top: 24px;
+}
+
+.list {
+    list-style: disc;
+    padding-left: 24px;
+    margin-bottom: 24px;
+    color: var(--color-foreground);
+    line-height: 1.6;
+}
+
+.list li {
+    margin-bottom: 8px;
+}
+
+.list li strong {
+    color: var(--color-foreground);
+}
+
+.bestPracticeList {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.bestPracticeList li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    color: var(--color-foreground);
+    line-height: 1.6;
+}
+
+.bestPracticeList li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.infoBox {
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    border-left: 4px solid var(--color-primary);
+    padding: 16px;
+    border-radius: 4px;
+    margin: 24px 0;
+    color: var(--color-foreground);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.warningBox {
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    border-left: 4px solid var(--color-primary);
+    padding: 16px;
+    border-radius: 4px;
+    margin: 24px 0;
+    color: var(--color-foreground);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
 /* PCNE Specific classes */
 .weightTrack {
     height: 8px;
@@ -321,7 +390,7 @@
     font-family: var(--font-mono);
     flex-shrink: 0;
 }
-.flowStepNumS1, .flowStepNumS2, .flowStepNumS3, .flowStepNumS4, .flowStepNumS5 {
+.flowStepNumS1, .flowStepNumS2, .flowStepNumS3, .flowStepNumS4, .flowStepNumS5, .flowStepNumS6 {
     background: color-mix(in srgb, var(--color-primary) 15%, transparent);
     color: var(--color-primary);
     border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);

@@ -4,19 +4,62 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** (Commit Pending) feat(pcne): implement Section 2 with TDD
-- **次の作業:** PCNE Step 5: Section 3 (ロードバランシングと最適化)
-- **テスト数:** 266件パス
+- **最新 HEAD:** d1808e8586f9908d8e58b6911326267273398734 docs: update MIGRATION_PROGRESS.md with latest HEAD SHA
+- **次の作業:** PCNEのE2Eテスト作成（Playwright）など、必要に応じた対応
+- **テスト数:** 311件パス
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
-- **最終更新日時(UTC):** 2026-05-10T02:55:00Z
+- **最終更新日時(UTC):** 2026-05-12T04:00:00Z
 
 ## 次回セッションでの再開プロンプト
 
-Professional Cloud Network Engineer (PCNE) の移行の Step 5 (Section 3: ロードバランシングと最適化) を開始してください。
+PCNE移行が完了しました。引き続き、E2Eテストの実装や他のタスクについて指示してください。
 
 ---
 
-## 2026-05-10: Professional Cloud Network Engineer Migration (In Progress)
+## 2026-05-12: PCNE Step-by-Step Guide Migration (完了)
+
+### 完了済み
+
+- **Step 1: Base Setup & Constants**:
+  - `constants.ts`, `layout.tsx`, `page.tsx`, `pcne-step.module.css` を作成。
+  - Heroセクション、スティッキーナビゲーションの実装。
+- **Step 2: Section 1 (VPC ネットワークの設計と計画)**:
+  - `Section1.tsx` を TDD で実装。
+  - ネットワークティアの選択、VPCの設計（共有VPC、ピアリング等）、ハイブリッド接続（Dedicated Interconnect, HA VPN等）、GKEネットワーク設計を移行。
+- **Step 3: Section 2 (VPCネットワークの実装)**:
+  - `Section2.tsx` を TDD で実装。
+  - VPC構成（コマンド含む）、VPCルーティング、Network Connectivity Center (NCC) 構成、GKEクラスタ実装を移行。
+- **Step 4: Section 3 (マネージドネットワークサービスの構成)**:
+  - `Section3.tsx` を TDD で実装。
+  - ロードバランシング、Cloud CDN、Cloud DNSの構成とベストプラクティスを移行。
+- **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**:
+  - `Section4.tsx` を TDD で実装。
+  - Cloud Interconnect、サイト間IPsec VPN（コマンド含む）、Cloud RouterのBGP/BFD構成、ハイブリッドNCC構成を移行。
+- **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**:
+  - `Section5.tsx` を TDD で実装。
+  - Cloud Observability（ログ・メトリクス）、トラブルシューティング手法、Network Intelligence Centerの各機能比較を移行。
+- **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**:
+  - `Section6.tsx` を TDD で実装。
+  - Cloud Armor、Cloud NGFW（階層型ポリシー）、Cloud NAT/Secure Web Proxy、自己管理型NVAとパケットミラーリングを移行。
+- **Step 8: Archiving and Final Verification**:
+  - 全セクションの統合確認。
+  - E2Eテストはスキップし、ビルド成功を確認。
+  - `google-cloud-pcne-step-by-step-guide.html` を `Gcl_Archive/Professional-Cloud-Network-Engineer/` へアーカイブ。
+
+### 次のステップ
+
+- [x] **Step 1: Base Setup & Constants**
+- [x] **Step 2: Section 1 (VPC ネットワークの設計と計画)**
+- [x] **Step 3: Section 2 (VPCネットワークの実装)**
+- [x] **Step 4: Section 3 (マネージドネットワークサービスの構成)**
+- [x] **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**
+- [x] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
+- [x] **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**
+- [x] **Step 8: Archiving and Final Verification**
+
+---
+
+## 2026-05-10: Professional Cloud Network Engineer Migration (完了)
 
 ### 完了済み
 
@@ -32,6 +75,22 @@ Professional Cloud Network Engineer (PCNE) の移行の Step 5 (Section 3: ロ�
 - **Step 4: Section 2 (ハイブリッド・マルチクラウド接続)**:
   - `Section2.tsx` を TDD で実装。
   - VPN/Interconnectの比較、HA VPN、Dedicated Interconnect の SLA要件、Cloud Router と BGP を移行。
+- **Step 5: Section 3 (ロードバランシングと最適化)**:
+  - `Section3.tsx` を TDD で実装。
+  - DiagramSVGを用いたフローチャートとアーキテクチャ図の実装。
+  - ロードバランサー選択基準、主要LB比較、Global HTTPS LBの構成、NEGの種類、ベストプラクティスを移行。
+- **Step 6: Section 4 (ネットワークサービスとDNS)**:
+  - `Section4.tsx` を TDD で実装。
+  - Cloud DNSのパブリック/プライベートゾーン比較、DNS転送の双方向アーキテクチャ図 (DiagramSVG)、IPアドレス管理（静的/エフェメラル）の比較を移行。
+- **Step 7: Section 5 (ネットワークセキュリティ)**:
+  - `Section5.tsx` を TDD で実装。
+  - Cloud Armorの4機能（DDoS, WAF, Rate Limiting, Adaptive Protection）、VPC Service Controlsのサービス境界アーキテクチャ、IAPによるVPNレス接続の比較図を移行。
+- **Step 8: Section 6 (監視・トラブルシュート)**:
+  - `Section6.tsx` を TDD で実装。
+  - Network Intelligence Center の 5 ツール、VPC Flow Logs・Packet Mirroring の使い分け表、トラブルシューティングの 4 ステップを移行。
+- **Step 9: まとめ (試験攻略チートシート & 混同しやすいポイント)**:
+  - `SectionSummary.tsx` を TDD で実装。
+  - チートシート、TRAPS（混同しやすいポイント）、試験当日の解答戦略を移行。
 
 ### 次のステップ
 
@@ -39,11 +98,11 @@ Professional Cloud Network Engineer (PCNE) の移行の Step 5 (Section 3: ロ�
 - [x] **Step 2: INTRO (試験の全体像と準備方法)**
 - [x] **Step 3: Section 1 (VPC ネットワークの設計・実装)**
 - [x] **Step 4: Section 2 (ハイブリッド・マルチクラウド接続)**
-- [ ] **Step 5: Section 3 (ロードバランシングと最適化)**
-- [ ] **Step 6: Section 4 (ネットワークサービスとDNS)**
-- [ ] **Step 7: Section 5 (ネットワークセキュリティ)**
-- [ ] **Step 8: Section 6 (監視・トラブルシュート)**
-- [ ] **Step 9: まとめ (試験攻略チートシート & 混同しやすいポイント)**
+- [x] **Step 5: Section 3 (ロードバランシングと最適化)**
+- [x] **Step 6: Section 4 (ネットワークサービスとDNS)**
+- [x] **Step 7: Section 5 (ネットワークセキュリティ)**
+- [x] **Step 8: Section 6 (監視・トラブルシュート)**
+- [x] **Step 9: まとめ (試験攻略チートシート & 混同しやすいポイント)**
 
 ---
 

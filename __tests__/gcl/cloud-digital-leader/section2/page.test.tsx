@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Section2Page from '../../../../app/gcl/cloud-digital-leader/section2/page';
+import Section2Page from '@/app/gcl/cloud-digital-leader/section2/page';
 
 describe('Section 2 Page (Cloud Digital Leader)', () => {
     it('renders all 13 sections', () => {

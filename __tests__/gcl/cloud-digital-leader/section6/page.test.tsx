@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import Section6Page from '../../../../app/gcl/cloud-digital-leader/section6/page';
+import Section6Page from '@/app/gcl/cloud-digital-leader/section6/page';
 
 describe('Section6Page', () => {
     it('renders hero title', () => {

@@ -421,6 +421,13 @@ export function Header() {
                             ariaLabel="Professional Cloud Network Engineer 概要"
                             onClick={() => setOpenMenu(null)}
                         />
+                        <DropdownItem
+                            href="/gcl/professional-cloud-network-engineer-step-by-step"
+                            label="ステップバイステップ ガイド"
+                            desc="PCNE 完全攻略ガイド"
+                            ariaLabel="PCNE ステップバイステップ完全攻略ガイド"
+                            onClick={() => setOpenMenu(null)}
+                        />
                     </div>
                 </div>
             </div>

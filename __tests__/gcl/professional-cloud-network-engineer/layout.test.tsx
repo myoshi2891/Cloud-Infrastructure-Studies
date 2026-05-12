@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import Layout, { metadata } from '../../../app/gcl/professional-cloud-network-engineer/layout';
+import Layout, { metadata } from '@/app/gcl/professional-cloud-network-engineer/layout';
 
 describe('Professional Cloud Network Engineer - Layout', () => {
     it('should have the correct metadata', () => {
