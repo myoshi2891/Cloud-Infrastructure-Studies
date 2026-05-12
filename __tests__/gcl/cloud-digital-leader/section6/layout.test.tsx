@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import Section6Layout from '../../../../app/gcl/cloud-digital-leader/section6/layout';
+import Section6Layout from '@/app/gcl/cloud-digital-leader/section6/layout';
 
 describe('Section6Layout', () => {
     it('renders the children', () => {

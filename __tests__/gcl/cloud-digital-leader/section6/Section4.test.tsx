@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Section4 } from '../../../../app/gcl/cloud-digital-leader/section6/components/Section4';
+import { Section4 } from '@/app/gcl/cloud-digital-leader/section6/components/Section4';
 
 describe('CDL Section 6 - Section 4 (Cloud Logging)', () => {
     it('renders the section title correctly', () => {

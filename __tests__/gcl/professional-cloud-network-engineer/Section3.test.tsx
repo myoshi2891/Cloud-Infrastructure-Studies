@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Section3 } from '../../../app/gcl/professional-cloud-network-engineer/components/Section3';
+import { Section3 } from '@/app/gcl/professional-cloud-network-engineer/components/Section3';
 
 describe('Professional Cloud Network Engineer - Section3', () => {
     it('renders the section title correctly', () => {

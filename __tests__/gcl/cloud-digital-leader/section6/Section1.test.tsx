@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { Section1 } from '../../../../app/gcl/cloud-digital-leader/section6/components/Section1';
+import { Section1 } from '@/app/gcl/cloud-digital-leader/section6/components/Section1';
 
 describe('Section1 Financial Governance', () => {
     it('renders the section title', () => {
