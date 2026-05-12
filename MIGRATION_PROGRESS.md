@@ -29,13 +29,16 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - **Step 3: Section 2 (VPCネットワークの実装)**:
   - `Section2.tsx` を TDD で実装。
   - VPC構成（コマンド含む）、VPCルーティング、Network Connectivity Center (NCC) 構成、GKEクラスタ実装を移行。
+- **Step 4: Section 3 (マネージドネットワークサービスの構成)**:
+  - `Section3.tsx` を TDD で実装。
+  - ロードバランシング、Cloud CDN、Cloud DNSの構成とベストプラクティスを移行。
 
 ### 次のステップ
 
 - [x] **Step 1: Base Setup & Constants**
 - [x] **Step 2: Section 1 (VPC ネットワークの設計と計画)**
 - [x] **Step 3: Section 2 (VPCネットワークの実装)**
-- [ ] **Step 4: Section 3 (マネージドネットワークサービスの構成)**
+- [x] **Step 4: Section 3 (マネージドネットワークサービスの構成)**
 - [ ] **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**
 - [ ] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
 - [ ] **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**
