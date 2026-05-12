@@ -117,10 +117,8 @@ playwright-report/
 
 .claude/skills
 Aws/archive/
-Gcl_Archive/*
+Gcl_Archive/
 tsconfig.tsbuildinfo
 infra-md-to-nextjs-migration.skill
 .gemini
 docs/skills
-.gitignore
-google-cloud-pcne-step-by-step-guide.md
