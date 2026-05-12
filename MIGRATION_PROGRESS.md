@@ -4,11 +4,11 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** 3162a0d0aa2a97167b3e8dbbe79beb19ff2de3ca feat(pcne): implement Section Summary with TDD (PCNE Migration Complete)
+- **最新 HEAD:** 8c88e40b78ebe12cfb1dad4e61b210225df543d6 docs: update MIGRATION_PROGRESS.md with latest HEAD and test results
 - **次の作業:** PCNEのE2Eテスト作成（Playwright）など、必要に応じた対応
-- **テスト数:** 293件パス
+- **テスト数:** 311件パス
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
-- **最終更新日時(UTC):** 2026-05-11T12:00:00Z
+- **最終更新日時(UTC):** 2026-05-12T04:00:00Z
 
 ## 次回セッションでの再開プロンプト
 
