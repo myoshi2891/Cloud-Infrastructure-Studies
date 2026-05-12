@@ -38,6 +38,9 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**:
   - `Section5.tsx` を TDD で実装。
   - Cloud Observability（ログ・メトリクス）、トラブルシューティング手法、Network Intelligence Centerの各機能比較を移行。
+- **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**:
+  - `Section6.tsx` を TDD で実装。
+  - Cloud Armor、Cloud NGFW（階層型ポリシー）、Cloud NAT/Secure Web Proxy、自己管理型NVAとパケットミラーリングを移行。
 
 ### 次のステップ
 
@@ -47,7 +50,8 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - [x] **Step 4: Section 3 (マネージドネットワークサービスの構成)**
 - [x] **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**
 - [x] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
-- [ ] **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**
+- [x] **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**
+- [ ] **Step 8: Archiving and Final Verification**
 
 ---
 
