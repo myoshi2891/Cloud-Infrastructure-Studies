@@ -35,6 +35,9 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**:
   - `Section4.tsx` を TDD で実装。
   - Cloud Interconnect、サイト間IPsec VPN（コマンド含む）、Cloud RouterのBGP/BFD構成、ハイブリッドNCC構成を移行。
+- **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**:
+  - `Section5.tsx` を TDD で実装。
+  - Cloud Observability（ログ・メトリクス）、トラブルシューティング手法、Network Intelligence Centerの各機能比較を移行。
 
 ### 次のステップ
 
@@ -43,7 +46,7 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - [x] **Step 3: Section 2 (VPCネットワークの実装)**
 - [x] **Step 4: Section 3 (マネージドネットワークサービスの構成)**
 - [x] **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**
-- [ ] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
+- [x] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
 - [ ] **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**
 
 ---
