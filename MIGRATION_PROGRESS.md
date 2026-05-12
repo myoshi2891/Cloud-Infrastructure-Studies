@@ -41,6 +41,10 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**:
   - `Section6.tsx` を TDD で実装。
   - Cloud Armor、Cloud NGFW（階層型ポリシー）、Cloud NAT/Secure Web Proxy、自己管理型NVAとパケットミラーリングを移行。
+- **Step 8: Archiving and Final Verification**:
+  - 全セクションの統合確認。
+  - E2Eテストはスキップし、ビルド成功を確認。
+  - `google-cloud-pcne-step-by-step-guide.html` を `Gcl_Archive/Professional-Cloud-Network-Engineer/` へアーカイブ。
 
 ### 次のステップ
 
@@ -51,7 +55,7 @@ PCNE移行が完了しました。引き続き、E2Eテストの実装や他の�
 - [x] **Step 5: Section 4 (ハイブリッド/マルチクラウドネットワーク接続の構成と実装)**
 - [x] **Step 6: Section 5 (ネットワーク運用、監視、トラブルシューティング)**
 - [x] **Step 7: Section 6 (クラウドネットワークセキュリティの構成と実装)**
-- [ ] **Step 8: Archiving and Final Verification**
+- [x] **Step 8: Archiving and Final Verification**
 
 ---
 
