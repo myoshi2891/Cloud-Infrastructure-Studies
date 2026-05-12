@@ -1,5 +1,6 @@
 import { HERO_BADGES, NAV_LINKS } from './constants';
 import styles from './pcne-step.module.css';
+import { Section1 } from './components/Section1';
 
 /**
  * Renders the "Professional Cloud Network Engineer" Step-by-Step guide layout,
@@ -50,7 +51,7 @@ export default function PcneStepByStepPage() {
                 </nav>
 
                 {/* SECTIONS */}
-                {/* <Section1 /> */}
+                <Section1 />
                 {/* <Section2 /> */}
                 {/* <Section3 /> */}
                 {/* <Section4 /> */}
