@@ -4,7 +4,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** 98fe30e5e5c37da22ffc7c93328a7360563e9598 docs: update MIGRATION_PROGRESS.md with latest HEAD SHA
+- **最新 HEAD:** 5ca2464c32d1798f6681f18f646ef0848c9de9aa docs: update MIGRATION_PROGRESS.md with latest HEAD SHA after test improvements
 - **次の作業:** PCNEのE2Eテスト作成（Playwright）など、必要に応じた対応
 - **テスト数:** 311件パス
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
