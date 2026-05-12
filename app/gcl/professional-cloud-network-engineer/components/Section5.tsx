@@ -3,7 +3,13 @@ import sharedStyles from './SharedSection.module.css';
 import { DiagramSVG } from '@/components/DiagramSVG';
 
 /**
- * Render the "Section 5" content block describing Network Security design and implementation for the PCNE guide.
+ * Render the Section 5 content block for the PCNE Network Security guide.
+ *
+ * This is a static, presentational React component that outputs the full Section 5 markup:
+ * headers, descriptive paragraphs, Cloud Armor/VPC Service Controls/IAP subsections, diagrams,
+ * example command snippets, tips, and best-practice lists.
+ *
+ * @returns A JSX element containing the Section 5 markup for network security design and implementation
  */
 export function Section5() {
     return (
