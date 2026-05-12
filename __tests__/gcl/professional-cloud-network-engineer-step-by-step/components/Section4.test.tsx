@@ -5,8 +5,11 @@ import { Section4 } from '@/app/gcl/professional-cloud-network-engineer-step-by-
 describe('PCNE Step-by-Step - Section 4', () => {
     it('renders the section title correctly', () => {
         render(<Section4 />);
-        const title = screen.getByRole('heading', { level: 2 });
-        expect(title.textContent).toContain('ハイブリッド/マルチクラウドネットワーク接続の構成と実装');
+        const title = screen.getByRole('heading', { 
+            level: 2, 
+            name: /ハイブリッド\/マルチクラウドネットワーク接続の構成と実装/
+        });
+        expect(title).toBeInTheDocument();
     });
 
     it('renders all four subsections', () => {

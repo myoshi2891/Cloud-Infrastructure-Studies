@@ -5,8 +5,11 @@ import { Section2 } from '@/app/gcl/professional-cloud-network-engineer-step-by-
 describe('PCNE Step-by-Step - Section 2', () => {
     it('renders the section title correctly', () => {
         render(<Section2 />);
-        const title = screen.getByRole('heading', { level: 2 });
-        expect(title.textContent).toContain('VPCネットワークの実装');
+        const title = screen.getByRole('heading', { 
+            level: 2, 
+            name: /VPCネットワークの実装/
+        });
+        expect(title).toBeInTheDocument();
     });
 
     it('renders all four subsections', () => {
