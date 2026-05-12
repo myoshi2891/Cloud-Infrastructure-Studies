@@ -389,7 +389,7 @@
     font-family: var(--font-mono);
     flex-shrink: 0;
 }
-.flowStepNumS1, .flowStepNumS2, .flowStepNumS3, .flowStepNumS4, .flowStepNumS5 {
+.flowStepNumS1, .flowStepNumS2, .flowStepNumS3, .flowStepNumS4, .flowStepNumS5, .flowStepNumS6 {
     background: color-mix(in srgb, var(--color-primary) 15%, transparent);
     color: var(--color-primary);
     border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
