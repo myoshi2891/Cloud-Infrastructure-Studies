@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Section5 } from '../../../../app/gcl/professional-cloud-network-engineer-step-by-step/components/Section5';
+import { Section5 } from '@/app/gcl/professional-cloud-network-engineer-step-by-step/components/Section5';
 
 describe('PCNE Step-by-Step - Section 5', () => {
     beforeEach(() => {
