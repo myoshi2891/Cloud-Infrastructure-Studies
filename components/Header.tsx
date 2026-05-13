@@ -462,7 +462,7 @@ export function Header() {
                         >
                             💼
                         </span>
-                        AGWA
+                        Associate Google Workspace Administrator
                         <svg
                             width="12"
                             height="12"

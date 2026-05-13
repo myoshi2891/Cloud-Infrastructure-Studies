@@ -179,7 +179,7 @@ export default function AgwaPage() {
                     {/*  Domain grid  */}
                     <h2
                         style={{
-                            fontFamily: 'var(--font-display)',
+                            fontFamily: "var(--font-display, 'DM Serif Display', Georgia, serif)",
                             fontSize: '20px',
                             marginBottom: '1rem',
                         }}
@@ -5019,14 +5019,14 @@ export default function AgwaPage() {
                     <div className="footer">
                         <div>
                             Associate Google Workspace Administrator 完全試験対策ガイド
-                            <span style={{ color: 'var(--border2)', margin: '0 6px' }}>|</span>
+                            <span style={{ color: 'var(--color-border)', margin: '0 6px' }}>|</span>
                             <a
                                 href="https://cloud.google.com/learn/certification/associate-google-workspace-administrator"
                                 target="_blank"
                             >
                                 公式試験ページ
                             </a>
-                            <span style={{ color: 'var(--border2)', margin: '0 6px' }}>|</span>
+                            <span style={{ color: 'var(--color-border)', margin: '0 6px' }}>|</span>
                             <a
                                 href="https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf"
                                 target="_blank"
