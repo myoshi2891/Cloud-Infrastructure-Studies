@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './agwa.css';
+import ScrollSpy from './ScrollSpy';
 
 export const metadata: Metadata = {
     title: 'AGWA Guide',
@@ -5040,7 +5041,7 @@ export default function AgwaPage() {
                 </main>
             </div>
 
-            {/* Script logic for active sidebar links moved out for Next.js */}
+            <ScrollSpy />
         </>
     );
 }
