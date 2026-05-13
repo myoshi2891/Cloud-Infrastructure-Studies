@@ -77,7 +77,7 @@ export default function AgwaSection1Page() {
                     {/* 作成方法比較 */}
                     <div className="card">
                         <h3>ユーザーアカウント作成方法の比較 <span className="tag">試験頻出</span></h3>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '16px' }}>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '16px' }}>
                             組織の規模・技術スタックに応じて最適な手法を選択する。
                         </p>
                         <div className="tbl-wrap">
@@ -181,7 +181,7 @@ export default function AgwaSection1Page() {
                     {/* GCDS */}
                     <div className="card">
                         <h3>GCDS（Google Cloud Directory Sync）詳解 <span className="tag">重要</span></h3>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '20px' }}>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '20px' }}>
                             オンプレミスAD/LDAPとGoogle Workspaceを継続的に同期させるツール。
                         </p>
 
@@ -314,7 +314,7 @@ export default function AgwaSection1Page() {
                                     <tr>
                                         <td>
                                             <strong>データ移行サービス</strong><br /><span
-                                                style={{ fontSize: '1rem', color: 'var(--text-dim)' }}
+                                                style={{ fontSize: '1.1rem', color: 'var(--text-dim)' }}
                                             >Admin コンソール内</span>
                                         </td>
                                         <td>Exchange, M365, Gmail(他組織), IMAP</td>
@@ -324,7 +324,7 @@ export default function AgwaSection1Page() {
                                     <tr>
                                         <td>
                                             <strong>GWMME</strong><br /><span
-                                                style={{ fontSize: '1rem', color: 'var(--text-dim)' }}
+                                                style={{ fontSize: '1.1rem', color: 'var(--text-dim)' }}
                                             >Google Workspace Migration for Microsoft Exchange</span>
                                         </td>
                                         <td>Microsoft Exchange オンプレミス</td>
@@ -449,7 +449,7 @@ export default function AgwaSection1Page() {
                             アカウント状態管理 — 停止・削除・アーカイブ
                             <span className="tag">試験最頻出</span>
                         </h3>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '20px' }}>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '20px' }}>
                             退職者処理において正しい状態を選択することがコスト最適化とデータ保護の鍵。
                         </p>
 
@@ -517,7 +517,7 @@ export default function AgwaSection1Page() {
                                 >
                                     🔒 Step 1<br /><small>即時アクション</small>
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
+                                <div style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>
                                     パスワードリセット・ログインセッション無効化・モバイルデバイスワイプ
                                 </div>
                             </div>
@@ -532,7 +532,7 @@ export default function AgwaSection1Page() {
                                 >
                                     ⏸ Step 2<br /><small>暫定対応</small>
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
+                                <div style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>
                                     アカウントを「停止」、メール転送・受信トレイ委任で業務引き継ぎ確認
                                 </div>
                             </div>
@@ -547,7 +547,7 @@ export default function AgwaSection1Page() {
                                 >
                                     📂 Step 3<br /><small>データ移転</small>
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
+                                <div style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>
                                     Driveデータの所有権を後任者・管理アカウントに移転（マイドライブのみ対象）
                                 </div>
                             </div>
@@ -562,7 +562,7 @@ export default function AgwaSection1Page() {
                                 >
                                     📦 Step 4<br /><small>最終処理</small>
                                 </div>
-                                <div style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
+                                <div style={{ fontSize: '1.1rem', color: 'var(--text-muted)' }}>
                                     データ保持必要 &rarr; アーカイブ / 不要 &rarr; 削除（ライセンス回収）
                                 </div>
                             </div>
@@ -728,7 +728,7 @@ export default function AgwaSection1Page() {
 
                 <div className="card">
                     <h3>OU の概念とポリシー継承メカニズム</h3>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '20px' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '20px' }}>
                         OUはツリー状の階層構造で、上位OUのポリシーは下位OUに<strong>自動的に継承</strong>される。
                     </p>
 
@@ -780,7 +780,7 @@ export default function AgwaSection1Page() {
                                 x="430"
                                 y="32"
                                 textAnchor="middle"
-                                fill="#94a3b8"
+                                fill="#cbd5e1"
                                 fontSize="12"
                                 fontFamily="'DM Mono',monospace"
                                 letterSpacing="2"
@@ -809,7 +809,7 @@ export default function AgwaSection1Page() {
                             >
                                 example.com（ルート）
                             </text>
-                            <text x="430" y="91" textAnchor="middle" fill="#4285F4" fontSize="11">
+                            <text x="430" y="91" textAnchor="middle" fill="#4285F4" fontSize="13">
                                 デフォルトポリシー適用 ／ 最上位
                             </text>
 
@@ -864,7 +864,7 @@ export default function AgwaSection1Page() {
                                 y="182"
                                 textAnchor="middle"
                                 fill="#34d399"
-                                fontSize="13"
+                                fontSize="15"
                                 fontWeight="600"
                             >
                                 /本社
@@ -873,8 +873,8 @@ export default function AgwaSection1Page() {
                                 x="190"
                                 y="198"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                             >
                                 継承 ＋ 本社固有設定
                             </text>
@@ -895,7 +895,7 @@ export default function AgwaSection1Page() {
                                 y="182"
                                 textAnchor="middle"
                                 fill="#34d399"
-                                fontSize="13"
+                                fontSize="15"
                                 fontWeight="600"
                             >
                                 /支社A
@@ -904,8 +904,8 @@ export default function AgwaSection1Page() {
                                 x="430"
                                 y="198"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                             >
                                 継承（ルートのポリシーをそのまま適用）
                             </text>
@@ -926,7 +926,7 @@ export default function AgwaSection1Page() {
                                 y="182"
                                 textAnchor="middle"
                                 fill="#a78bfa"
-                                fontSize="13"
+                                fontSize="15"
                                 fontWeight="600"
                             >
                                 /特殊アカウント
@@ -935,8 +935,8 @@ export default function AgwaSection1Page() {
                                 x="710"
                                 y="198"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                             >
                                 例外ポリシー適用（独立管理）
                             </text>
@@ -1013,8 +1013,8 @@ export default function AgwaSection1Page() {
                                 x="120"
                                 y="304"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                             >
                                 外部共有ポリシーを上書き
                             </text>
@@ -1044,8 +1044,8 @@ export default function AgwaSection1Page() {
                                 x="310"
                                 y="304"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                             >
                                 継承（本社設定を適用）
                             </text>
@@ -1066,7 +1066,7 @@ export default function AgwaSection1Page() {
                                 y="288"
                                 textAnchor="middle"
                                 fill="#a78bfa"
-                                fontSize="11"
+                                fontSize="13"
                                 fontWeight="600"
                             >
                                 /サービスアカウント
@@ -1075,8 +1075,8 @@ export default function AgwaSection1Page() {
                                 x="640"
                                 y="304"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                             >
                                 SA 専用ポリシー
                             </text>
@@ -1097,12 +1097,12 @@ export default function AgwaSection1Page() {
                                 y="288"
                                 textAnchor="middle"
                                 fill="#a78bfa"
-                                fontSize="10"
+                                fontSize="12"
                                 fontWeight="600"
                             >
                                 /会議室
                             </text>
-                            <text x="780" y="304" textAnchor="middle" fill="#64748b" fontSize="9">
+                            <text x="780" y="304" textAnchor="middle" fill="#94a3b8" fontSize="9">
                                 リソース用
                             </text>
 
@@ -1144,8 +1144,8 @@ export default function AgwaSection1Page() {
                                 x="120"
                                 y="408"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                             >
                                 さらに上書き可能
                             </text>
@@ -1164,8 +1164,8 @@ export default function AgwaSection1Page() {
                             <text
                                 x="50"
                                 y="461"
-                                fill="#64748b"
-                                fontSize="10"
+                                fill="#94a3b8"
+                                fontSize="12"
                                 fontFamily="'DM Mono',monospace"
                             >
                                 凡例：
@@ -1181,7 +1181,7 @@ export default function AgwaSection1Page() {
                                 stroke="#4285F4"
                                 strokeWidth="1.5"
                             />
-                            <text x="118" y="461" fill="#94a3b8" fontSize="10">
+                            <text x="118" y="461" fill="#cbd5e1" fontSize="12">
                                 ルート（基準ポリシー）
                             </text>
 
@@ -1195,7 +1195,7 @@ export default function AgwaSection1Page() {
                                 stroke="#34d399"
                                 strokeWidth="1.5"
                             />
-                            <text x="278" y="461" fill="#94a3b8" fontSize="10">
+                            <text x="278" y="461" fill="#cbd5e1" fontSize="12">
                                 継承（Inherit）
                             </text>
 
@@ -1209,7 +1209,7 @@ export default function AgwaSection1Page() {
                                 stroke="#fbbf24"
                                 strokeWidth="1.5"
                             />
-                            <text x="408" y="461" fill="#94a3b8" fontSize="10">
+                            <text x="408" y="461" fill="#cbd5e1" fontSize="12">
                                 上書き（Override）
                             </text>
 
@@ -1223,7 +1223,7 @@ export default function AgwaSection1Page() {
                                 stroke="#a78bfa"
                                 strokeWidth="1.5"
                             />
-                            <text x="548" y="461" fill="#94a3b8" fontSize="10">
+                            <text x="548" y="461" fill="#cbd5e1" fontSize="12">
                                 例外OU（Exception）
                             </text>
 
@@ -1238,7 +1238,7 @@ export default function AgwaSection1Page() {
                                 strokeDasharray="4 2"
                                 markerEnd="url(#arrow)"
                             />
-                            <text x="710" y="461" fill="#94a3b8" fontSize="10">
+                            <text x="710" y="461" fill="#cbd5e1" fontSize="12">
                                 ポリシー継承の方向
                             </text>
 
@@ -1253,13 +1253,13 @@ export default function AgwaSection1Page() {
                                 stroke="rgba(248,113,113,0.25)"
                                 strokeWidth="1.5"
                             />
-                            <text x="460" y="393" fill="#f87171" fontSize="11" fontWeight="700">
+                            <text x="460" y="393" fill="#f87171" fontSize="13" fontWeight="700">
                                 ⚠ 重要な制約
                             </text>
-                            <text x="460" y="409" fill="#94a3b8" fontSize="11">
+                            <text x="460" y="409" fill="#cbd5e1" fontSize="13">
                                 ・ユーザーは 1つの OU にのみ 属することができる
                             </text>
-                            <text x="460" y="424" fill="#94a3b8" fontSize="11">
+                            <text x="460" y="424" fill="#cbd5e1" fontSize="13">
                                 ・下位 OU で設定を上書きすると、その子孫に引き継がれる
                             </text>
                         </svg>
@@ -1613,7 +1613,7 @@ export default function AgwaSection1Page() {
                         style={{
                             marginTop: 0,
                             marginBottom: '16px',
-                            fontSize: '1rem',
+                            fontSize: '1.1rem',
                             color: 'var(--text-muted)',
                         }}
                     >
@@ -1915,7 +1915,7 @@ export default function AgwaSection1Page() {
                                 x="430"
                                 y="28"
                                 textAnchor="middle"
-                                fill="#94a3b8"
+                                fill="#cbd5e1"
                                 fontSize="12"
                                 fontFamily="'DM Mono',monospace"
                                 letterSpacing="2"
@@ -1957,12 +1957,12 @@ export default function AgwaSection1Page() {
                                 y="73"
                                 textAnchor="middle"
                                 fill="#ffffff"
-                                fontSize="13"
+                                fontSize="15"
                                 fontWeight="700"
                             >
                                 🏢 建物
                             </text>
-                            <text x="105" y="86" textAnchor="middle" fill="#4285F4" fontSize="10">
+                            <text x="105" y="86" textAnchor="middle" fill="#4285F4" fontSize="12">
                                 Building
                             </text>
 
@@ -1970,8 +1970,8 @@ export default function AgwaSection1Page() {
                                 x="105"
                                 y="116"
                                 textAnchor="middle"
-                                fill="#94a3b8"
-                                fontSize="11"
+                                fill="#cbd5e1"
+                                fontSize="13"
                                 fontWeight="600"
                             >
                                 東京本社ビル
@@ -1984,18 +1984,18 @@ export default function AgwaSection1Page() {
                                 stroke="rgba(255,255,255,0.06)"
                                 strokeWidth="1"
                             />
-                            <text x="36" y="140" fill="#64748b" fontSize="10">📍 住所</text>
-                            <text x="36" y="155" fill="#94a3b8" fontSize="10">
+                            <text x="36" y="140" fill="#94a3b8" fontSize="12">📍 住所</text>
+                            <text x="36" y="155" fill="#cbd5e1" fontSize="12">
                                 〒100-0000 東京都...
                             </text>
-                            <text x="36" y="172" fill="#64748b" fontSize="10">🗺 緯度・経度</text>
-                            <text x="36" y="187" fill="#94a3b8" fontSize="10">
+                            <text x="36" y="172" fill="#94a3b8" fontSize="12">🗺 緯度・経度</text>
+                            <text x="36" y="187" fill="#cbd5e1" fontSize="12">
                                 35.6762, 139.6503
                             </text>
-                            <text x="36" y="204" fill="#64748b" fontSize="10">🏢 フロア数</text>
-                            <text x="36" y="219" fill="#94a3b8" fontSize="10">10F</text>
-                            <text x="36" y="240" fill="#64748b" fontSize="10">🔑 建物ID</text>
-                            <text x="36" y="255" fill="#94a3b8" fontSize="10">tokyo-hq</text>
+                            <text x="36" y="204" fill="#94a3b8" fontSize="12">🏢 フロア数</text>
+                            <text x="36" y="219" fill="#cbd5e1" fontSize="12">10F</text>
+                            <text x="36" y="240" fill="#94a3b8" fontSize="12">🔑 建物ID</text>
+                            <text x="36" y="255" fill="#cbd5e1" fontSize="12">tokyo-hq</text>
 
                             {/* Arrow 1&rarr;2 */}
                             <line
@@ -2041,12 +2041,12 @@ export default function AgwaSection1Page() {
                                 y="73"
                                 textAnchor="middle"
                                 fill="#ffffff"
-                                fontSize="13"
+                                fontSize="15"
                                 fontWeight="700"
                             >
                                 📐 フロア
                             </text>
-                            <text x="304" y="86" textAnchor="middle" fill="#34A853" fontSize="10">
+                            <text x="304" y="86" textAnchor="middle" fill="#34A853" fontSize="12">
                                 Floor
                             </text>
 
@@ -2054,8 +2054,8 @@ export default function AgwaSection1Page() {
                                 x="304"
                                 y="116"
                                 textAnchor="middle"
-                                fill="#94a3b8"
-                                fontSize="11"
+                                fill="#cbd5e1"
+                                fontSize="13"
                                 fontWeight="600"
                             >
                                 10F / A棟
@@ -2068,12 +2068,12 @@ export default function AgwaSection1Page() {
                                 stroke="rgba(255,255,255,0.06)"
                                 strokeWidth="1"
                             />
-                            <text x="240" y="140" fill="#64748b" fontSize="10">🏷 フロア名</text>
-                            <text x="240" y="155" fill="#94a3b8" fontSize="10">10F</text>
-                            <text x="240" y="172" fill="#64748b" fontSize="10">📌 セクション</text>
-                            <text x="240" y="187" fill="#94a3b8" fontSize="10">A棟 / B棟</text>
-                            <text x="240" y="204" fill="#64748b" fontSize="10">🏢 所属建物</text>
-                            <text x="240" y="219" fill="#94a3b8" fontSize="10">tokyo-hq</text>
+                            <text x="240" y="140" fill="#94a3b8" fontSize="12">🏷 フロア名</text>
+                            <text x="240" y="155" fill="#cbd5e1" fontSize="12">10F</text>
+                            <text x="240" y="172" fill="#94a3b8" fontSize="12">📌 セクション</text>
+                            <text x="240" y="187" fill="#cbd5e1" fontSize="12">A棟 / B棟</text>
+                            <text x="240" y="204" fill="#94a3b8" fontSize="12">🏢 所属建物</text>
+                            <text x="240" y="219" fill="#cbd5e1" fontSize="12">tokyo-hq</text>
 
                             {/* Arrow 2&rarr;3 */}
                             <line
@@ -2119,12 +2119,12 @@ export default function AgwaSection1Page() {
                                 y="73"
                                 textAnchor="middle"
                                 fill="#ffffff"
-                                fontSize="13"
+                                fontSize="15"
                                 fontWeight="700"
                             >
                                 📅 リソース
                             </text>
-                            <text x="518" y="86" textAnchor="middle" fill="#FBBC05" fontSize="10">
+                            <text x="518" y="86" textAnchor="middle" fill="#FBBC05" fontSize="12">
                                 Resource（予約対象）
                             </text>
 
@@ -2132,8 +2132,8 @@ export default function AgwaSection1Page() {
                                 x="518"
                                 y="116"
                                 textAnchor="middle"
-                                fill="#94a3b8"
-                                fontSize="11"
+                                fill="#cbd5e1"
+                                fontSize="13"
                                 fontWeight="600"
                             >
                                 会議室A-10F（定員12名）
@@ -2146,14 +2146,14 @@ export default function AgwaSection1Page() {
                                 stroke="rgba(255,255,255,0.06)"
                                 strokeWidth="1"
                             />
-                            <text x="434" y="140" fill="#64748b" fontSize="10">📛 リソース名</text>
-                            <text x="434" y="155" fill="#94a3b8" fontSize="10">会議室A-10F</text>
-                            <text x="434" y="172" fill="#64748b" fontSize="10">👥 収容人数</text>
-                            <text x="434" y="187" fill="#94a3b8" fontSize="10">12名</text>
-                            <text x="434" y="204" fill="#64748b" fontSize="10">🔒 予約権限</text>
-                            <text x="434" y="219" fill="#94a3b8" fontSize="10">自動承認</text>
-                            <text x="434" y="240" fill="#64748b" fontSize="10">🔑 リソースID</text>
-                            <text x="434" y="255" fill="#94a3b8" fontSize="10">room-10f-a</text>
+                            <text x="434" y="140" fill="#94a3b8" fontSize="12">📛 リソース名</text>
+                            <text x="434" y="155" fill="#cbd5e1" fontSize="12">会議室A-10F</text>
+                            <text x="434" y="172" fill="#94a3b8" fontSize="12">👥 収容人数</text>
+                            <text x="434" y="187" fill="#cbd5e1" fontSize="12">12名</text>
+                            <text x="434" y="204" fill="#94a3b8" fontSize="12">🔒 予約権限</text>
+                            <text x="434" y="219" fill="#cbd5e1" fontSize="12">自動承認</text>
+                            <text x="434" y="240" fill="#94a3b8" fontSize="12">🔑 リソースID</text>
+                            <text x="434" y="255" fill="#cbd5e1" fontSize="12">room-10f-a</text>
 
                             {/* Arrow 3&rarr;4 */}
                             <line
@@ -2199,12 +2199,12 @@ export default function AgwaSection1Page() {
                                 y="73"
                                 textAnchor="middle"
                                 fill="#ffffff"
-                                fontSize="13"
+                                fontSize="15"
                                 fontWeight="700"
                             >
                                 ⭐ フィーチャー
                             </text>
-                            <text x="746" y="86" textAnchor="middle" fill="#EA4335" fontSize="10">
+                            <text x="746" y="86" textAnchor="middle" fill="#EA4335" fontSize="12">
                                 Features（設備情報）
                             </text>
 
@@ -2232,7 +2232,7 @@ export default function AgwaSection1Page() {
                                 y="123"
                                 textAnchor="middle"
                                 fill="#34d399"
-                                fontSize="11"
+                                fontSize="13"
                             >
                                 📹 ビデオ会議設備
                             </text>
@@ -2252,7 +2252,7 @@ export default function AgwaSection1Page() {
                                 y="151"
                                 textAnchor="middle"
                                 fill="#34d399"
-                                fontSize="11"
+                                fontSize="13"
                             >
                                 📋 ホワイトボード
                             </text>
@@ -2272,7 +2272,7 @@ export default function AgwaSection1Page() {
                                 y="179"
                                 textAnchor="middle"
                                 fill="#34d399"
-                                fontSize="11"
+                                fontSize="13"
                             >
                                 📽 プロジェクター
                             </text>
@@ -2292,7 +2292,7 @@ export default function AgwaSection1Page() {
                                 y="207"
                                 textAnchor="middle"
                                 fill="#34d399"
-                                fontSize="11"
+                                fontSize="13"
                             >
                                 ♿ バリアフリー
                             </text>
@@ -2312,12 +2312,12 @@ export default function AgwaSection1Page() {
                                 y="235"
                                 textAnchor="middle"
                                 fill="#34d399"
-                                fontSize="11"
+                                fontSize="13"
                             >
                                 📞 電話会議
                             </text>
 
-                            <text x="668" y="258" fill="#64748b" fontSize="10">
+                            <text x="668" y="258" fill="#94a3b8" fontSize="12">
                                 * カレンダー絞り込み検索に利用
                             </text>
 
@@ -2326,8 +2326,8 @@ export default function AgwaSection1Page() {
                                 x="430"
                                 y="295"
                                 textAnchor="middle"
-                                fill="#64748b"
-                                fontSize="11"
+                                fill="#94a3b8"
+                                fontSize="13"
                             >
                                 リソース作成は Admin コンソール &rarr; ディレクトリ &rarr; 建物とリソース
                                 から。50件以上は CSV 一括インポートを活用。
@@ -2557,7 +2557,7 @@ export default function AgwaSection1Page() {
                             <div
                                 style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-dim)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.08em',
@@ -2568,7 +2568,7 @@ export default function AgwaSection1Page() {
                             </div>
                             <p
                                 style={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     marginBottom: '8px',
                                 }}
@@ -2576,7 +2576,7 @@ export default function AgwaSection1Page() {
                                 「Microsoft
                                 Exchange（オンプレミス、社員500名）からメール・カレンダー・連絡先を移行したい。最適なツールは？」
                             </p>
-                            <div style={{ fontSize: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem' }}>
                                 <span className="badge green">正解</span> 大規模・複雑な要件 &rarr;
                                 <strong>Google Workspace Migrate</strong> / 標準的な移行 &rarr;
                                 <strong>GWMME</strong> / シンプル &rarr;
@@ -2597,7 +2597,7 @@ export default function AgwaSection1Page() {
                             <div
                                 style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-dim)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.08em',
@@ -2608,14 +2608,14 @@ export default function AgwaSection1Page() {
                             </div>
                             <p
                                 style={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     marginBottom: '8px',
                                 }}
                             >
                                 「退職者のアカウントを、法的要件で2年間データ保持が必要。コスト最小化したい。」
                             </p>
-                            <div style={{ fontSize: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem' }}>
                                 <span className="badge green">正解</span> 即時停止 &rarr; Drive所有権移転 &rarr;
                                 <strong>Archived Userライセンスに変更</strong> +
                                 Vaultで保持ルール設定<br /><span className="badge red">誤答</span>
@@ -2636,7 +2636,7 @@ export default function AgwaSection1Page() {
                             <div
                                 style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-dim)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.08em',
@@ -2647,14 +2647,14 @@ export default function AgwaSection1Page() {
                             </div>
                             <p
                                 style={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     marginBottom: '8px',
                                 }}
                             >
                                 「財務部門はDriveの外部共有を禁止、他は許可したい。最適なOU設計は？」
                             </p>
-                            <div style={{ fontSize: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem' }}>
                                 <span className="badge green">正解</span> ルート組織:
                                 外部共有【許可】(デフォルト) &rarr; 財務部OU: 外部共有【禁止】(上書き)
                             </div>
@@ -2672,7 +2672,7 @@ export default function AgwaSection1Page() {
                             <div
                                 style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-dim)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.08em',
@@ -2683,14 +2683,14 @@ export default function AgwaSection1Page() {
                             </div>
                             <p
                                 style={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     marginBottom: '8px',
                                 }}
                             >
                                 「support@example.com宛のメールをチームで管理。担当者割り当てと解決済み管理が必要。」
                             </p>
-                            <div style={{ fontSize: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem' }}>
                                 <span className="badge green">正解</span>
                                 <strong>Collaborative Inbox</strong> &rarr;
                                 メールの割り当て・ステータス管理ができる<br /><span
@@ -2711,7 +2711,7 @@ export default function AgwaSection1Page() {
                             <div
                                 style={{
                                     fontFamily: "'DM Mono', monospace",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-dim)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.08em',
@@ -2722,7 +2722,7 @@ export default function AgwaSection1Page() {
                             </div>
                             <p
                                 style={{
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     marginBottom: '8px',
                                 }}
@@ -2730,7 +2730,7 @@ export default function AgwaSection1Page() {
                                 「example.com に加えて example.co.jp
                                 も使いたい。既存ユーザーが両方で受信できるようにしたい。追加ライセンスコストは不要にしたい。」
                             </p>
-                            <div style={{ fontSize: '1rem' }}>
+                            <div style={{ fontSize: '1.1rem' }}>
                                 <span className="badge green">正解</span>
                                 <strong>ドメインエイリアス</strong>として example.co.jp を追加 &rarr;
                                 追加ライセンス不要、既存ユーザーに自動付与<br /><span
@@ -2768,7 +2768,7 @@ export default function AgwaSection1Page() {
                                 style={{
                                     color: '#4285f4',
                                     fontFamily: "'Syne', sans-serif",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     fontWeight: 700,
                                 }}
                             >
@@ -2789,99 +2789,119 @@ export default function AgwaSection1Page() {
                                     border: '1px solid rgba(66, 133, 244, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                 }}
                             >
-                                <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>GCDSの役割と同期方向（AD/LDAP&rarr;Google）
-                            </div>
+                                    <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        GCDSの役割と同期方向（AD/LDAP&rarr;Google）
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(66, 133, 244, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                 }}
                             >
-                                <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>GWMMEとデータ移行サービスの使い分け
-                            </div>
+                                    <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        GWMMEとデータ移行サービスの使い分け
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(66, 133, 244, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                 }}
                             >
-                                <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>停止・削除・アーカイブの違いを説明できる
-                            </div>
+                                    <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        停止・削除・アーカイブの違いを説明できる
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(66, 133, 244, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                 }}
                             >
-                                <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>削除後の復元可能期間は<strong style={{ color: '#4285f4' }}>20日</strong>
-                            </div>
+                                    <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        削除後の復元可能期間は<strong style={{ color: '#4285f4' }}>20日</strong>
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(66, 133, 244, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                 }}
                             >
-                                <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>Drive所有権移転の制限（共有ドライブは対象外）
-                            </div>
+                                    <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        Drive所有権移転の制限（共有ドライブは対象外）
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(66, 133, 244, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                 }}
                             >
-                                <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>SAML SSO の
-                                SP-Initiated / IdP-Initiated の違い
-                            </div>
+                                    <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        SAML SSOの SP-Initiated / IdP-Initiated の違い
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(66, 133, 244, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                 }}
                             >
-                                <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>アーカイブライセンスでコスト削減しつつデータ保持
-                            </div>
+                                    <span style={{ color: '#4285f4', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        アーカイブライセンスでコスト削減しつつデータ保持
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
@@ -2908,7 +2928,7 @@ export default function AgwaSection1Page() {
                                 style={{
                                     color: '#34a853',
                                     fontFamily: "'Syne', sans-serif",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     fontWeight: 700,
                                 }}
                             >
@@ -2929,62 +2949,72 @@ export default function AgwaSection1Page() {
                                     border: '1px solid rgba(52, 168, 83, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>ポリシーは上位
-                                OU から下位 OU へ<strong style={{ color: '#34a853' }}>自動継承</strong>される
-                            </div>
+                                    <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        ポリシーは上位OUから下位OUへ<strong style={{ color: '#34a853' }}>自動継承</strong>される
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(52, 168, 83, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>OUは「物理的な組織図」ではなく<strong style={{ color: '#34a853' }}>ポリシーの差異</strong>で設計する
-                            </div>
+                                    <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        OUは「物理的な組織図」ではなく<strong style={{ color: '#34a853' }}>ポリシーの差異</strong>で設計する
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(52, 168, 83, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>OU
-                                階層は最大<strong style={{ color: '#34a853' }}>5階層以内</strong>を推奨（深すぎると管理困難）
-                            </div>
+                                    <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        OU階層は最大<strong style={{ color: '#34a853' }}>5階層以内</strong>を推奨（深すぎると管理困難）
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(52, 168, 83, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>ユーザーは常に<strong style={{ color: '#34a853' }}>1つのOUにのみ</strong>属せる（複数不可）
-                            </div>
+                                    <span style={{ color: '#34a853', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        ユーザーは常に<strong style={{ color: '#34a853' }}>1つのOUにのみ</strong>属せる（複数不可）
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
@@ -3011,7 +3041,7 @@ export default function AgwaSection1Page() {
                                 style={{
                                     color: '#fbbc05',
                                     fontFamily: "'Syne', sans-serif",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     fontWeight: 700,
                                 }}
                             >
@@ -3032,80 +3062,90 @@ export default function AgwaSection1Page() {
                                     border: '1px solid rgba(251, 188, 5, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>4タイプの使い分け（配信リスト / Collaborative Inbox / セキュリティ
-                                / 動的）
-                            </div>
+                                    <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        4タイプの使い分け（配信リスト / Collaborative Inbox / セキュリティ / 動的）
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(251, 188, 5, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span><strong style={{ color: '#fbbc05' }}>Collaborative Inbox</strong> =
-                                担当者割り当て + 未解決/解決済みステータス管理
-                            </div>
+                                    <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        <strong style={{ color: '#fbbc05' }}>Collaborative Inbox</strong> = 担当者割り当て + 未解決/解決済みステータス管理
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(251, 188, 5, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span><strong style={{ color: '#fbbc05' }}>動的グループ</strong> は Enterprise
-                                エディションまたは Cloud Identity Premium が必要
-                            </div>
+                                    <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        <strong style={{ color: '#fbbc05' }}>動的グループ</strong>は Enterprise エディションまたは Cloud Identity Premium が必要
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(251, 188, 5, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>セキュリティグループは<strong style={{ color: '#fbbc05' }}>一度設定すると通常グループに戻せない</strong>（不可逆）
-                            </div>
+                                    <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        セキュリティグループは<strong style={{ color: '#fbbc05' }}>一度設定すると通常グループに戻せない</strong>（不可逆）
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(251, 188, 5, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>設定グループ（アクセスグループ）の設定は<strong
-                                    style={{ color: '#fbbc05' }}
-                                >OU設定より優先</strong>される
-                            </div>
+                                    <span style={{ color: '#fbbc05', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        設定グループ（アクセスグループ）の設定は<strong style={{ color: '#fbbc05' }}>OU設定より優先</strong>される
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
@@ -3132,7 +3172,7 @@ export default function AgwaSection1Page() {
                                 style={{
                                     color: '#ea4335',
                                     fontFamily: "'Syne', sans-serif",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     fontWeight: 700,
                                 }}
                             >
@@ -3153,49 +3193,54 @@ export default function AgwaSection1Page() {
                                     border: '1px solid rgba(234, 67, 53, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#ea4335', flexShrink: 0 }}>✓</span><strong style={{ color: '#ea4335' }}>ドメインエイリアス</strong> =
-                                無料・既存ユーザーに自動付与（受信箱は共有）
-                            </div>
+                                    <span style={{ color: '#ea4335', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        <strong style={{ color: '#ea4335' }}>ドメインエイリアス</strong> = 無料・既存ユーザーに自動付与（受信箱は共有）
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(234, 67, 53, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#ea4335', flexShrink: 0 }}>✓</span><strong style={{ color: '#ea4335' }}>セカンダリドメイン</strong> =
-                                独立ユーザー作成可・ライセンス追加必要
-                            </div>
+                                    <span style={{ color: '#ea4335', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        <strong style={{ color: '#ea4335' }}>セカンダリドメイン</strong> = 独立ユーザー作成可・ライセンス追加必要
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(234, 67, 53, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#ea4335', flexShrink: 0 }}>✓</span>ドメイン確認は
-                                <strong style={{ color: '#ea4335' }}>TXT レコード</strong>
-                                の追加が推奨（CNAME より影響が小さい）
-                            </div>
+                                    <span style={{ color: '#ea4335', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        ドメイン確認は<strong style={{ color: '#ea4335' }}>TXT レコード</strong>の追加が推奨（CNAME より影響が小さい）
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
@@ -3222,7 +3267,7 @@ export default function AgwaSection1Page() {
                                 style={{
                                     color: '#a78bfa',
                                     fontFamily: "'Syne', sans-serif",
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     fontWeight: 700,
                                 }}
                             >
@@ -3243,61 +3288,72 @@ export default function AgwaSection1Page() {
                                     border: '1px solid rgba(167, 139, 250, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span><strong style={{ color: '#a78bfa' }}>建物 &rarr; フロア &rarr; リソース &rarr; フィーチャー</strong>
-                                の4階層構造
-                            </div>
+                                    <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        <strong style={{ color: '#a78bfa' }}>建物 &rarr; フロア &rarr; リソース &rarr; フィーチャー</strong>の4階層構造
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(167, 139, 250, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span>50件以上のリソース作成は<strong style={{ color: '#a78bfa' }}>CSV 一括インポート</strong>を活用
-                            </div>
+                                    <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        50件以上のリソース作成は<strong style={{ color: '#a78bfa' }}>CSV 一括インポート</strong>を活用
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(167, 139, 250, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span>予約権限は<strong style={{ color: '#a78bfa' }}>4レベル</strong>（無制限・自動承認・手動承認・オーナーのみ）
-                            </div>
+                                    <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        予約権限は<strong style={{ color: '#a78bfa' }}>4レベル</strong>（無制限・自動承認・手動承認・オーナーのみ）
+                                    </div>
+                                </div>
                             <div
                                 style={{
                                     background: 'var(--surface2)',
                                     border: '1px solid rgba(167, 139, 250, 0.12)',
                                     borderRadius: '8px',
                                     padding: '8px 12px',
-                                    fontSize: '1rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--text-muted)',
                                     display: 'flex',
                                     gap: '8px',
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span>フィーチャーを標準化してカレンダーの<strong style={{ color: '#a78bfa' }}>絞り込み検索</strong>を最適化
-                            </div>
+                                    <span style={{ color: '#a78bfa', flexShrink: 0 }}>✓</span>
+                                    <div style={{ flex: 1 }}>
+                                        フィーチャーを標準化してカレンダーの<strong style={{ color: '#a78bfa' }}>絞り込み検索</strong>を最適化
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>

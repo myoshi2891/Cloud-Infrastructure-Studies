@@ -426,8 +426,8 @@ export default function AgwaPage() {
                                         width="780"
                                         height="320"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Root node  */}
@@ -437,14 +437,14 @@ export default function AgwaPage() {
                                         width="200"
                                         height="38"
                                         rx="8"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="390"
                                         y="42"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="13"
                                     >
@@ -498,15 +498,15 @@ export default function AgwaPage() {
                                         width="180"
                                         height="34"
                                         rx="7"
-                                        fill="#e8f5ee"
-                                        stroke="#1a6b4a"
+                                        fill="var(--color-theme-agwa-bg)"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="155"
                                         y="112"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                     >
                                         🏢 本社
@@ -518,15 +518,15 @@ export default function AgwaPage() {
                                         width="180"
                                         height="34"
                                         rx="7"
-                                        fill="#e8f5ee"
-                                        stroke="#1a6b4a"
+                                        fill="var(--color-theme-agwa-bg)"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="390"
                                         y="112"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                     >
                                         🏢 支社A
@@ -538,15 +538,15 @@ export default function AgwaPage() {
                                         width="190"
                                         height="34"
                                         rx="7"
-                                        fill="#e8f0fb"
-                                        stroke="#5c3fa8"
+                                        fill="rgba(var(--color-primary-rgb), 0.1)"
+                                        stroke="var(--color-tip)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="635"
                                         y="112"
                                         textAnchor="middle"
-                                        fill="#3a2470"
+                                        fill="var(--color-tip)"
                                         fontWeight="600"
                                     >
                                         ⚙️ 特殊アカウント
@@ -599,15 +599,15 @@ export default function AgwaPage() {
                                         width="106"
                                         height="32"
                                         rx="6"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="75"
                                         y="182"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         📊 営業部
@@ -618,15 +618,15 @@ export default function AgwaPage() {
                                         width="106"
                                         height="32"
                                         rx="6"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="155"
                                         y="182"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         💻 開発部
@@ -637,15 +637,15 @@ export default function AgwaPage() {
                                         width="106"
                                         height="32"
                                         rx="6"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="235"
                                         y="182"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         📋 管理部
@@ -690,15 +690,15 @@ export default function AgwaPage() {
                                         width="106"
                                         height="32"
                                         rx="6"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="335"
                                         y="182"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         📊 営業部
@@ -709,15 +709,15 @@ export default function AgwaPage() {
                                         width="106"
                                         height="32"
                                         rx="6"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="448"
                                         y="182"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         💻 開発部
@@ -762,7 +762,7 @@ export default function AgwaPage() {
                                         width="120"
                                         height="32"
                                         rx="6"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         stroke="#c8b8f0"
                                         strokeWidth="1.5"
                                     />
@@ -770,7 +770,7 @@ export default function AgwaPage() {
                                         x="576"
                                         y="182"
                                         textAnchor="middle"
-                                        fill="#3a2470"
+                                        fill="var(--color-tip)"
                                         fontSize="12"
                                     >
                                         🤖 サービスアカウント
@@ -781,7 +781,7 @@ export default function AgwaPage() {
                                         width="120"
                                         height="32"
                                         rx="6"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         stroke="#c8b8f0"
                                         strokeWidth="1.5"
                                     />
@@ -789,7 +789,7 @@ export default function AgwaPage() {
                                         x="700"
                                         y="182"
                                         textAnchor="middle"
-                                        fill="#3a2470"
+                                        fill="var(--color-tip)"
                                         fontSize="12"
                                     >
                                         🏠 会議室リソース
@@ -801,7 +801,7 @@ export default function AgwaPage() {
                                         width="380"
                                         height="54"
                                         rx="8"
-                                        fill="#fff8e8"
+                                        fill="rgba(var(--color-warning-rgb), 0.15)"
                                         stroke="#f0c08a"
                                         strokeWidth="1.5"
                                     />
@@ -809,7 +809,7 @@ export default function AgwaPage() {
                                         x="390"
                                         y="261"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -819,7 +819,7 @@ export default function AgwaPage() {
                                         x="390"
                                         y="280"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="12"
                                     >
                                         上位 OU のポリシーは配下の全ノードに自動適用される
@@ -833,7 +833,6 @@ export default function AgwaPage() {
                                     style={{
                                         margin: '0',
                                         paddingLeft: '1.25rem',
-                                        color: '#0d4a30',
                                     }}
                                 >
                                     <li>
@@ -920,8 +919,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="200"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Condition box  */}
@@ -931,15 +930,15 @@ export default function AgwaPage() {
                                         width="280"
                                         height="80"
                                         rx="8"
-                                        fill="#e8f0fb"
-                                        stroke="#1d5fa8"
+                                        fill="rgba(var(--color-primary-rgb), 0.1)"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="160"
                                         y="54"
                                         textAnchor="middle"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -949,7 +948,7 @@ export default function AgwaPage() {
                                         x="160"
                                         y="76"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="12"
                                     >
                                         department = &quot;Engineering&quot;
@@ -958,19 +957,19 @@ export default function AgwaPage() {
                                         x="160"
                                         y="96"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="12"
                                     >
                                         AND location = &quot;Tokyo&quot;
                                     </text>
                                     {/*  Arrow right  */}
-                                    <polygon points="316,70 316,58 340,70 316,82" fill="#1d5fa8" />
+                                    <polygon points="316,70 316,58 340,70 316,82" fill="var(--color-primary)" />
                                     <line
                                         x1="300"
                                         y1="70"
                                         x2="316"
                                         y2="70"
-                                        stroke="#1d5fa8"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="2"
                                     />
                                     {/*  Auto sync box  */}
@@ -980,15 +979,15 @@ export default function AgwaPage() {
                                         width="160"
                                         height="80"
                                         rx="8"
-                                        fill="#e8f5ee"
-                                        stroke="#1a6b4a"
+                                        fill="var(--color-theme-agwa-bg)"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="420"
                                         y="64"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -998,7 +997,7 @@ export default function AgwaPage() {
                                         x="420"
                                         y="84"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         人事システムの
@@ -1007,19 +1006,19 @@ export default function AgwaPage() {
                                         x="420"
                                         y="100"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         属性変更と連動
                                     </text>
                                     {/*  Arrow right  */}
-                                    <polygon points="516,70 516,58 540,70 516,82" fill="#1a6b4a" />
+                                    <polygon points="516,70 516,58 540,70 516,82" fill="var(--color-theme-agwa-fg)" />
                                     <line
                                         x1="500"
                                         y1="70"
                                         x2="516"
                                         y2="70"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="2"
                                     />
                                     {/*  Group result  */}
@@ -1029,15 +1028,15 @@ export default function AgwaPage() {
                                         width="178"
                                         height="100"
                                         rx="8"
-                                        fill="#fff"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="629"
                                         y="45"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -1047,7 +1046,7 @@ export default function AgwaPage() {
                                         x="629"
                                         y="65"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         Yamada (Eng, Tokyo) ✅
@@ -1056,7 +1055,7 @@ export default function AgwaPage() {
                                         x="629"
                                         y="82"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         Tanaka (Eng, Tokyo) ✅
@@ -1065,7 +1064,7 @@ export default function AgwaPage() {
                                         x="629"
                                         y="99"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-muted)"
                                         fontSize="12"
                                     >
                                         Sato (Sales, Tokyo) ✗
@@ -1077,7 +1076,7 @@ export default function AgwaPage() {
                                         width="700"
                                         height="42"
                                         rx="7"
-                                        fill="#fff8e8"
+                                        fill="rgba(var(--color-warning-rgb), 0.15)"
                                         stroke="#f0c08a"
                                         strokeWidth="1"
                                     />
@@ -1085,7 +1084,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="158"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="12"
                                         fontWeight="600"
                                     >
@@ -1096,7 +1095,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="174"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         管理者が手動でメンバーを操作する必要なし —
@@ -1204,8 +1203,8 @@ export default function AgwaPage() {
                                         width="720"
                                         height="130"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Step 1  */}
@@ -1215,14 +1214,14 @@ export default function AgwaPage() {
                                         width="180"
                                         height="70"
                                         rx="8"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="110"
                                         y="48"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="22"
                                     >
                                         🏢
@@ -1231,7 +1230,7 @@ export default function AgwaPage() {
                                         x="110"
                                         y="68"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="13"
                                     >
@@ -1247,13 +1246,13 @@ export default function AgwaPage() {
                                         例：東京本社
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="211,55 211,45 228,55 211,65" fill="#1a6b4a" />
+                                    <polygon points="211,55 211,45 228,55 211,65" fill="var(--color-theme-agwa-fg)" />
                                     <line
                                         x1="200"
                                         y1="55"
                                         x2="211"
                                         y2="55"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 2  */}
@@ -1263,14 +1262,14 @@ export default function AgwaPage() {
                                         width="180"
                                         height="70"
                                         rx="8"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="318"
                                         y="48"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="22"
                                     >
                                         🔢
@@ -1279,7 +1278,7 @@ export default function AgwaPage() {
                                         x="318"
                                         y="68"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="13"
                                     >
@@ -1295,13 +1294,13 @@ export default function AgwaPage() {
                                         例：3F
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="419,55 419,45 436,55 419,65" fill="#1d5fa8" />
+                                    <polygon points="419,55 419,45 436,55 419,65" fill="var(--color-primary)" />
                                     <line
                                         x1="408"
                                         y1="55"
                                         x2="419"
                                         y2="55"
-                                        stroke="#1d5fa8"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 3  */}
@@ -1311,14 +1310,14 @@ export default function AgwaPage() {
                                         width="264"
                                         height="70"
                                         rx="8"
-                                        fill="#5c3fa8"
+                                        fill="var(--color-tip)"
                                         stroke="none"
                                     />
                                     <text
                                         x="568"
                                         y="48"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="22"
                                     >
                                         📅
@@ -1327,7 +1326,7 @@ export default function AgwaPage() {
                                         x="568"
                                         y="68"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="13"
                                     >
@@ -1347,7 +1346,7 @@ export default function AgwaPage() {
                                         x="360"
                                         y="118"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         Admin コンソール → ディレクトリ → 建物とリソース の順に作成
@@ -1462,8 +1461,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="170"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Record display  */}
@@ -1494,7 +1493,7 @@ export default function AgwaPage() {
                                         y1="54"
                                         x2="80"
                                         y2="72"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                         strokeDasharray="4,3"
                                     />
@@ -1504,15 +1503,15 @@ export default function AgwaPage() {
                                         width="120"
                                         height="48"
                                         rx="6"
-                                        fill="#e8f5ee"
-                                        stroke="#1a6b4a"
+                                        fill="var(--color-theme-agwa-bg)"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="80"
                                         y="93"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -1522,7 +1521,7 @@ export default function AgwaPage() {
                                         x="80"
                                         y="110"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         SPFバージョン宣言
@@ -1533,7 +1532,7 @@ export default function AgwaPage() {
                                         y1="54"
                                         x2="300"
                                         y2="72"
-                                        stroke="#1d5fa8"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="1.5"
                                         strokeDasharray="4,3"
                                     />
@@ -1543,15 +1542,15 @@ export default function AgwaPage() {
                                         width="200"
                                         height="48"
                                         rx="6"
-                                        fill="#e8f0fb"
-                                        stroke="#1d5fa8"
+                                        fill="rgba(var(--color-primary-rgb), 0.1)"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="300"
                                         y="93"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -1561,7 +1560,7 @@ export default function AgwaPage() {
                                         x="300"
                                         y="110"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="11"
                                     >
                                         GmailのIPを許可リストに含める
@@ -1572,7 +1571,7 @@ export default function AgwaPage() {
                                         y1="54"
                                         x2="608"
                                         y2="72"
-                                        stroke="#b85c00"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                         strokeDasharray="4,3"
                                     />
@@ -1582,15 +1581,15 @@ export default function AgwaPage() {
                                         width="256"
                                         height="48"
                                         rx="6"
-                                        fill="#fef3e8"
-                                        stroke="#b85c00"
+                                        fill="rgba(var(--color-warning-rgb), 0.1)"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="608"
                                         y="90"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -1600,7 +1599,7 @@ export default function AgwaPage() {
                                         x="608"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         -all（ハードフェイル）= より厳格
@@ -1609,7 +1608,7 @@ export default function AgwaPage() {
                                         x="608"
                                         y="120"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         それ以外のIPは拒否/隔離
@@ -1621,7 +1620,7 @@ export default function AgwaPage() {
                                         width="700"
                                         height="26"
                                         rx="6"
-                                        fill="#e8f5ee"
+                                        fill="var(--color-theme-agwa-bg)"
                                         stroke="#b8dfc9"
                                         strokeWidth="1"
                                     />
@@ -1629,7 +1628,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="153"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="12"
                                     >
                                         ✅ ベストプラクティス:
@@ -1652,8 +1651,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="160"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Step 1: none  */}
@@ -1663,15 +1662,15 @@ export default function AgwaPage() {
                                         width="210"
                                         height="96"
                                         rx="8"
-                                        fill="#e8f0fb"
-                                        stroke="#1d5fa8"
+                                        fill="rgba(var(--color-primary-rgb), 0.1)"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="125"
                                         y="50"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="18"
                                     >
                                         🔍
@@ -1680,7 +1679,7 @@ export default function AgwaPage() {
                                         x="125"
                                         y="72"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontWeight="600"
                                     >
                                         Step 1: p=none
@@ -1689,7 +1688,7 @@ export default function AgwaPage() {
                                         x="125"
                                         y="90"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="11"
                                     >
                                         監視のみ
@@ -1698,7 +1697,7 @@ export default function AgwaPage() {
                                         x="125"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="11"
                                     >
                                         レポートを受信・分析
@@ -1707,19 +1706,19 @@ export default function AgwaPage() {
                                         x="125"
                                         y="114"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         （数週間〜数ヶ月）
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="242,72 242,62 260,72 242,82" fill="#b85c00" />
+                                    <polygon points="242,72 242,62 260,72 242,82" fill="var(--color-warning)" />
                                     <line
                                         x1="230"
                                         y1="72"
                                         x2="242"
                                         y2="72"
-                                        stroke="#b85c00"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 2: quarantine  */}
@@ -1729,15 +1728,15 @@ export default function AgwaPage() {
                                         width="220"
                                         height="96"
                                         rx="8"
-                                        fill="#fef3e8"
-                                        stroke="#b85c00"
+                                        fill="rgba(var(--color-warning-rgb), 0.1)"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="370"
                                         y="50"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="18"
                                     >
                                         🚧
@@ -1746,7 +1745,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="72"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontWeight="600"
                                     >
                                         Step 2: p=quarantine
@@ -1755,7 +1754,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="90"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         認証失敗メールを隔離
@@ -1764,7 +1763,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         迷惑メールフォルダへ
@@ -1773,19 +1772,19 @@ export default function AgwaPage() {
                                         x="370"
                                         y="114"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         （誤検知なければ次へ）
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="492,72 492,62 510,72 492,82" fill="#1a6b4a" />
+                                    <polygon points="492,72 492,62 510,72 492,82" fill="var(--color-theme-agwa-fg)" />
                                     <line
                                         x1="480"
                                         y1="72"
                                         x2="492"
                                         y2="72"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 3: reject  */}
@@ -1795,15 +1794,15 @@ export default function AgwaPage() {
                                         width="210"
                                         height="96"
                                         rx="8"
-                                        fill="#e8f5ee"
-                                        stroke="#1a6b4a"
+                                        fill="var(--color-theme-agwa-bg)"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="2"
                                     />
                                     <text
                                         x="615"
                                         y="50"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="18"
                                     >
                                         🛡️
@@ -1812,7 +1811,7 @@ export default function AgwaPage() {
                                         x="615"
                                         y="72"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                     >
                                         Step 3: p=reject
@@ -1821,7 +1820,7 @@ export default function AgwaPage() {
                                         x="615"
                                         y="90"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         認証失敗メールを完全拒否
@@ -1830,7 +1829,7 @@ export default function AgwaPage() {
                                         x="615"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         最高レベルの保護
@@ -1839,7 +1838,7 @@ export default function AgwaPage() {
                                         x="615"
                                         y="114"
                                         textAnchor="middle"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="10"
                                         fontWeight="600"
                                     >
@@ -1850,7 +1849,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="145"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         段階的移行が重要 — 急に reject
@@ -1903,8 +1902,8 @@ export default function AgwaPage() {
                                         width="720"
                                         height="200"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Layer 1: Org  */}
@@ -1914,14 +1913,14 @@ export default function AgwaPage() {
                                         width="360"
                                         height="44"
                                         rx="8"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="360"
                                         y="35"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                         letterSpacing="0.5"
                                     >
@@ -1931,7 +1930,7 @@ export default function AgwaPage() {
                                         x="360"
                                         y="52"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                     >
                                         🌐 組織全体の設定（Admin コンソール）
@@ -1946,8 +1945,8 @@ export default function AgwaPage() {
                                         strokeWidth="2"
                                         strokeDasharray="5,3"
                                     />
-                                    <polygon points="355,78 365,78 360,88" fill="#8a8680" />
-                                    <text x="520" y="73" fill="#8a8680" fontSize="11">
+                                    <polygon points="355,78 365,78 360,88" fill="var(--color-muted)" />
+                                    <text x="520" y="73" fill="var(--color-muted)" fontSize="11">
                                         OU単位で上書き可能
                                     </text>
                                     {/*  Layer 2: OU  */}
@@ -1957,14 +1956,14 @@ export default function AgwaPage() {
                                         width="320"
                                         height="40"
                                         rx="8"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="360"
                                         y="104"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                         letterSpacing="0.5"
                                     >
@@ -1974,7 +1973,7 @@ export default function AgwaPage() {
                                         x="360"
                                         y="120"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                     >
                                         🏢 OU単位の設定
@@ -1989,8 +1988,8 @@ export default function AgwaPage() {
                                         strokeWidth="2"
                                         strokeDasharray="5,3"
                                     />
-                                    <polygon points="355,146 365,146 360,156" fill="#8a8680" />
-                                    <text x="520" y="141" fill="#8a8680" fontSize="11">
+                                    <polygon points="355,146 365,146 360,156" fill="var(--color-muted)" />
+                                    <text x="520" y="141" fill="var(--color-muted)" fontSize="11">
                                         管理者が許可した場合のみ
                                     </text>
                                     {/*  Layer 3: User  */}
@@ -2000,14 +1999,14 @@ export default function AgwaPage() {
                                         width="280"
                                         height="36"
                                         rx="8"
-                                        fill="#5c3fa8"
+                                        fill="var(--color-tip)"
                                         stroke="none"
                                     />
                                     <text
                                         x="360"
                                         y="172"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                         letterSpacing="0.5"
                                     >
@@ -2017,7 +2016,7 @@ export default function AgwaPage() {
                                         x="360"
                                         y="186"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                     >
                                         👤 ユーザー個人の設定
@@ -2029,15 +2028,15 @@ export default function AgwaPage() {
                                         width="148"
                                         height="110"
                                         rx="6"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="94"
                                         y="78"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2047,7 +2046,7 @@ export default function AgwaPage() {
                                         x="94"
                                         y="96"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         上位が優先される
@@ -2056,7 +2055,7 @@ export default function AgwaPage() {
                                         x="94"
                                         y="114"
                                         textAnchor="middle"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         ❌ 下位では上位の
@@ -2065,7 +2064,7 @@ export default function AgwaPage() {
                                         x="94"
                                         y="130"
                                         textAnchor="middle"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         制限は解除できない
@@ -2074,7 +2073,7 @@ export default function AgwaPage() {
                                         x="94"
                                         y="148"
                                         textAnchor="middle"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         ✅ 下位でより
@@ -2083,7 +2082,7 @@ export default function AgwaPage() {
                                         x="94"
                                         y="163"
                                         textAnchor="middle"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         厳しくすることは可
@@ -2287,8 +2286,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="190"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Title  */}
@@ -2296,7 +2295,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="28"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="13"
                                     >
@@ -2309,8 +2308,8 @@ export default function AgwaPage() {
                                         width="212"
                                         height="108"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#b85c00"
+                                        fill="#151921"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -2319,7 +2318,7 @@ export default function AgwaPage() {
                                         width="212"
                                         height="28"
                                         rx="8"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         stroke="none"
                                     />
                                     <rect
@@ -2328,14 +2327,14 @@ export default function AgwaPage() {
                                         width="212"
                                         height="12"
                                         rx="0"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         stroke="none"
                                     />
                                     <text
                                         x="126"
                                         y="61"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2345,7 +2344,7 @@ export default function AgwaPage() {
                                         x="126"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontWeight="600"
                                         fontSize="22"
                                     >
@@ -2355,7 +2354,7 @@ export default function AgwaPage() {
                                         x="126"
                                         y="112"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="12"
                                     >
                                         保持期間
@@ -2364,7 +2363,7 @@ export default function AgwaPage() {
                                         x="126"
                                         y="130"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         対象: 財務部門OU
@@ -2373,7 +2372,7 @@ export default function AgwaPage() {
                                         x="126"
                                         y="144"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         法規制対応のため
@@ -2385,8 +2384,8 @@ export default function AgwaPage() {
                                         width="212"
                                         height="108"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#1d5fa8"
+                                        fill="#151921"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -2395,7 +2394,7 @@ export default function AgwaPage() {
                                         width="212"
                                         height="28"
                                         rx="8"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <rect
@@ -2404,14 +2403,14 @@ export default function AgwaPage() {
                                         width="212"
                                         height="12"
                                         rx="0"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="370"
                                         y="61"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2421,7 +2420,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontWeight="600"
                                         fontSize="22"
                                     >
@@ -2431,7 +2430,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="112"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="12"
                                     >
                                         保持期間
@@ -2440,7 +2439,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="130"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         対象: 全組織
@@ -2449,7 +2448,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="144"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         デフォルトルール
@@ -2461,8 +2460,8 @@ export default function AgwaPage() {
                                         width="212"
                                         height="108"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#1a6b4a"
+                                        fill="#151921"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -2471,7 +2470,7 @@ export default function AgwaPage() {
                                         width="212"
                                         height="28"
                                         rx="8"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <rect
@@ -2480,14 +2479,14 @@ export default function AgwaPage() {
                                         width="212"
                                         height="12"
                                         rx="0"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="614"
                                         y="61"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2497,7 +2496,7 @@ export default function AgwaPage() {
                                         x="614"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                         fontSize="22"
                                     >
@@ -2507,7 +2506,7 @@ export default function AgwaPage() {
                                         x="614"
                                         y="112"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="12"
                                     >
                                         退職後の保持期間
@@ -2516,7 +2515,7 @@ export default function AgwaPage() {
                                         x="614"
                                         y="130"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         アーカイブライセンス
@@ -2525,7 +2524,7 @@ export default function AgwaPage() {
                                         x="614"
                                         y="144"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         でコスト削減可能
@@ -2537,7 +2536,7 @@ export default function AgwaPage() {
                                         width="700"
                                         height="20"
                                         rx="6"
-                                        fill="#fff8e8"
+                                        fill="rgba(var(--color-warning-rgb), 0.15)"
                                         stroke="#f0c08a"
                                         strokeWidth="1"
                                     />
@@ -2545,7 +2544,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="176"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="12"
                                         fontWeight="600"
                                     >
@@ -2607,8 +2606,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="240"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Step boxes in a row  */}
@@ -2619,8 +2618,8 @@ export default function AgwaPage() {
                                         width="160"
                                         height="170"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#1d5fa8"
+                                        fill="#151921"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -2629,7 +2628,7 @@ export default function AgwaPage() {
                                         width="160"
                                         height="30"
                                         rx="8"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <rect
@@ -2638,14 +2637,14 @@ export default function AgwaPage() {
                                         width="160"
                                         height="12"
                                         rx="0"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="98"
                                         y="38"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2653,9 +2652,9 @@ export default function AgwaPage() {
                                     </text>
                                     <text
                                         x="98"
-                                        y="55"
+                                        y="62"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2665,7 +2664,7 @@ export default function AgwaPage() {
                                         x="98"
                                         y="78"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         ■ 組み込み検出器
@@ -2674,7 +2673,7 @@ export default function AgwaPage() {
                                         x="98"
                                         y="95"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         クレジットカード番号
@@ -2683,7 +2682,7 @@ export default function AgwaPage() {
                                         x="98"
                                         y="111"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         社会保障番号 など
@@ -2693,14 +2692,14 @@ export default function AgwaPage() {
                                         y1="122"
                                         x2="156"
                                         y2="122"
-                                        stroke="#e2dfd8"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     <text
                                         x="98"
                                         y="138"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         ■ カスタム正規表現
@@ -2709,7 +2708,7 @@ export default function AgwaPage() {
                                         x="98"
                                         y="155"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         独自の機密情報
@@ -2718,7 +2717,7 @@ export default function AgwaPage() {
                                         x="98"
                                         y="171"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         パターン
@@ -2726,14 +2725,14 @@ export default function AgwaPage() {
                                     {/*  Arrow  */}
                                     <polygon
                                         points="187,103 187,93 204,103 187,113"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                     />
                                     <line
                                         x1="178"
                                         y1="103"
                                         x2="187"
                                         y2="103"
-                                        stroke="#1d5fa8"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 2  */}
@@ -2743,8 +2742,8 @@ export default function AgwaPage() {
                                         width="152"
                                         height="170"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#5c3fa8"
+                                        fill="#151921"
+                                        stroke="var(--color-tip)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -2753,7 +2752,7 @@ export default function AgwaPage() {
                                         width="152"
                                         height="30"
                                         rx="8"
-                                        fill="#5c3fa8"
+                                        fill="var(--color-tip)"
                                         stroke="none"
                                     />
                                     <rect
@@ -2762,14 +2761,14 @@ export default function AgwaPage() {
                                         width="152"
                                         height="12"
                                         rx="0"
-                                        fill="#5c3fa8"
+                                        fill="var(--color-tip)"
                                         stroke="none"
                                     />
                                     <text
                                         x="280"
                                         y="38"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2777,9 +2776,9 @@ export default function AgwaPage() {
                                     </text>
                                     <text
                                         x="280"
-                                        y="55"
+                                        y="62"
                                         textAnchor="middle"
-                                        fill="#3a2470"
+                                        fill="var(--color-tip)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2789,7 +2788,7 @@ export default function AgwaPage() {
                                         x="280"
                                         y="80"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         🌐 全組織
@@ -2798,7 +2797,7 @@ export default function AgwaPage() {
                                         x="280"
                                         y="100"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         🏢 特定のOU
@@ -2807,7 +2806,7 @@ export default function AgwaPage() {
                                         x="280"
                                         y="120"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         👥 特定のグループ
@@ -2816,7 +2815,7 @@ export default function AgwaPage() {
                                         x="280"
                                         y="155"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         細かく対象を
@@ -2825,7 +2824,7 @@ export default function AgwaPage() {
                                         x="280"
                                         y="171"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         絞り込める
@@ -2833,14 +2832,14 @@ export default function AgwaPage() {
                                     {/*  Arrow  */}
                                     <polygon
                                         points="365,103 365,93 382,103 365,113"
-                                        fill="#5c3fa8"
+                                        fill="var(--color-tip)"
                                     />
                                     <line
                                         x1="356"
                                         y1="103"
                                         x2="365"
                                         y2="103"
-                                        stroke="#5c3fa8"
+                                        stroke="var(--color-tip)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 3  */}
@@ -2850,8 +2849,8 @@ export default function AgwaPage() {
                                         width="160"
                                         height="170"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#b85c00"
+                                        fill="#151921"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -2860,7 +2859,7 @@ export default function AgwaPage() {
                                         width="160"
                                         height="30"
                                         rx="8"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         stroke="none"
                                     />
                                     <rect
@@ -2869,14 +2868,14 @@ export default function AgwaPage() {
                                         width="160"
                                         height="12"
                                         rx="0"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         stroke="none"
                                     />
                                     <text
                                         x="462"
                                         y="38"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2884,9 +2883,9 @@ export default function AgwaPage() {
                                     </text>
                                     <text
                                         x="462"
-                                        y="55"
+                                        y="62"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -2896,7 +2895,7 @@ export default function AgwaPage() {
                                         x="462"
                                         y="76"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         🚫 ブロック
@@ -2905,7 +2904,7 @@ export default function AgwaPage() {
                                         x="462"
                                         y="94"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         ⚠️ 警告（続行可能）
@@ -2914,7 +2913,7 @@ export default function AgwaPage() {
                                         x="462"
                                         y="112"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         📥 隔離（管理者レビュー）
@@ -2923,7 +2922,7 @@ export default function AgwaPage() {
                                         x="462"
                                         y="130"
                                         textAnchor="middle"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                         fontWeight="600"
                                     >
@@ -2933,7 +2932,7 @@ export default function AgwaPage() {
                                         x="462"
                                         y="148"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         まず監視から
@@ -2942,7 +2941,7 @@ export default function AgwaPage() {
                                         x="462"
                                         y="163"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="#ffffff"
                                         fontSize="10"
                                     >
                                         始めるのが安全
@@ -2950,14 +2949,14 @@ export default function AgwaPage() {
                                     {/*  Arrow  */}
                                     <polygon
                                         points="551,103 551,93 568,103 551,113"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                     />
                                     <line
                                         x1="542"
                                         y1="103"
                                         x2="551"
                                         y2="103"
-                                        stroke="#b85c00"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 4  */}
@@ -2967,8 +2966,8 @@ export default function AgwaPage() {
                                         width="154"
                                         height="170"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#1a6b4a"
+                                        fill="#151921"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -2977,7 +2976,7 @@ export default function AgwaPage() {
                                         width="154"
                                         height="30"
                                         rx="8"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <rect
@@ -2986,14 +2985,14 @@ export default function AgwaPage() {
                                         width="154"
                                         height="12"
                                         rx="0"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="645"
                                         y="38"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3001,9 +3000,9 @@ export default function AgwaPage() {
                                     </text>
                                     <text
                                         x="645"
-                                        y="55"
+                                        y="62"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3013,7 +3012,7 @@ export default function AgwaPage() {
                                         x="645"
                                         y="80"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         ユーザーへの
@@ -3022,7 +3021,7 @@ export default function AgwaPage() {
                                         x="645"
                                         y="97"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         わかりやすい説明
@@ -3031,7 +3030,7 @@ export default function AgwaPage() {
                                         x="645"
                                         y="120"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         &quot;なぜブロックされた
@@ -3040,7 +3039,7 @@ export default function AgwaPage() {
                                         x="645"
                                         y="137"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="#ffffff"
                                         fontSize="11"
                                     >
                                         か&quot;が明確に
@@ -3049,7 +3048,7 @@ export default function AgwaPage() {
                                         x="645"
                                         y="157"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         ユーザー教育
@@ -3058,7 +3057,7 @@ export default function AgwaPage() {
                                         x="645"
                                         y="173"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         効果にもなる
@@ -3070,7 +3069,7 @@ export default function AgwaPage() {
                                         width="704"
                                         height="30"
                                         rx="6"
-                                        fill="#e8f5ee"
+                                        fill="var(--color-theme-agwa-bg)"
                                         stroke="#b8dfc9"
                                         strokeWidth="1"
                                     />
@@ -3078,7 +3077,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="220"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="12"
                                         fontWeight="600"
                                     >
@@ -3330,8 +3329,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="120"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Steps  */}
@@ -3348,7 +3347,7 @@ export default function AgwaPage() {
                                         x="93"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="20"
                                     >
                                         🚫
@@ -3357,7 +3356,7 @@ export default function AgwaPage() {
                                         x="93"
                                         y="65"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3389,14 +3388,14 @@ export default function AgwaPage() {
                                         width="158"
                                         height="72"
                                         rx="7"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         stroke="none"
                                     />
                                     <text
                                         x="277"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="20"
                                     >
                                         📁
@@ -3405,7 +3404,7 @@ export default function AgwaPage() {
                                         x="277"
                                         y="65"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3421,13 +3420,13 @@ export default function AgwaPage() {
                                         Drive データを別ユーザーへ
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="366,54 366,44 382,54 366,64" fill="#b85c00" />
+                                    <polygon points="366,54 366,44 382,54 366,64" fill="var(--color-warning)" />
                                     <line
                                         x1="356"
                                         y1="54"
                                         x2="366"
                                         y2="54"
-                                        stroke="#b85c00"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 3  */}
@@ -3437,14 +3436,14 @@ export default function AgwaPage() {
                                         width="158"
                                         height="72"
                                         rx="7"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="461"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="20"
                                     >
                                         📱
@@ -3453,7 +3452,7 @@ export default function AgwaPage() {
                                         x="461"
                                         y="65"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3469,13 +3468,13 @@ export default function AgwaPage() {
                                         BYOD=アカウントのみ
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="550,54 550,44 566,54 550,64" fill="#1d5fa8" />
+                                    <polygon points="550,54 550,44 566,54 550,64" fill="var(--color-primary)" />
                                     <line
                                         x1="540"
                                         y1="54"
                                         x2="550"
                                         y2="54"
-                                        stroke="#1d5fa8"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 4  */}
@@ -3485,14 +3484,14 @@ export default function AgwaPage() {
                                         width="158"
                                         height="72"
                                         rx="7"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="645"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="20"
                                     >
                                         🗑️
@@ -3501,7 +3500,7 @@ export default function AgwaPage() {
                                         x="645"
                                         y="65"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3521,7 +3520,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="108"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         この順序を必ず守ること — 削除前にデータ移転を完了させる
@@ -3567,18 +3566,18 @@ export default function AgwaPage() {
                                         width="740"
                                         height="130"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Step nodes  */}
                                     {/*  1  */}
-                                    <circle cx="72" cy="50" r="28" fill="#1d5fa8" stroke="none" />
+                                    <circle cx="72" cy="50" r="28" fill="var(--color-background)" stroke="var(--color-border)" />
                                     <text
                                         x="72"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="18"
                                     >
                                         🖥️
@@ -3587,7 +3586,7 @@ export default function AgwaPage() {
                                         x="72"
                                         y="62"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -3597,7 +3596,7 @@ export default function AgwaPage() {
                                         x="72"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         Admin コンソール
@@ -3606,7 +3605,7 @@ export default function AgwaPage() {
                                         x="72"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         デバイス→Chrome
@@ -3615,28 +3614,28 @@ export default function AgwaPage() {
                                         x="72"
                                         y="119"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         →マネージドブラウザ
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="112,50 112,42 128,50 112,58" fill="#1d5fa8" />
+                                    <polygon points="112,50 112,42 128,50 112,58" fill="var(--color-primary)" />
                                     <line
                                         x1="100"
                                         y1="50"
                                         x2="112"
                                         y2="50"
-                                        stroke="#1d5fa8"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="2"
                                     />
                                     {/*  2  */}
-                                    <circle cx="168" cy="50" r="28" fill="#5c3fa8" stroke="none" />
+                                    <circle cx="168" cy="50" r="28" fill="var(--color-tip)" stroke="none" />
                                     <text
                                         x="168"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="18"
                                     >
                                         🔑
@@ -3645,7 +3644,7 @@ export default function AgwaPage() {
                                         x="168"
                                         y="62"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -3655,7 +3654,7 @@ export default function AgwaPage() {
                                         x="168"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         登録トークンを
@@ -3664,28 +3663,28 @@ export default function AgwaPage() {
                                         x="168"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         生成する
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="208,50 208,42 224,50 208,58" fill="#5c3fa8" />
+                                    <polygon points="208,50 208,42 224,50 208,58" fill="var(--color-tip)" />
                                     <line
                                         x1="196"
                                         y1="50"
                                         x2="208"
                                         y2="50"
-                                        stroke="#5c3fa8"
+                                        stroke="var(--color-tip)"
                                         strokeWidth="2"
                                     />
                                     {/*  3  */}
-                                    <circle cx="268" cy="50" r="28" fill="#b85c00" stroke="none" />
+                                    <circle cx="268" cy="50" r="28" fill="var(--color-theme-agwa-bg)" stroke="var(--color-theme-agwa-fg)" />
                                     <text
                                         x="268"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="18"
                                     >
                                         📤
@@ -3694,7 +3693,7 @@ export default function AgwaPage() {
                                         x="268"
                                         y="62"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -3704,7 +3703,7 @@ export default function AgwaPage() {
                                         x="268"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         トークンを配布
@@ -3713,28 +3712,28 @@ export default function AgwaPage() {
                                         x="268"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         GPO(Win) / MDM(Mac)
                                     </text>
                                     {/*  Arrow  */}
-                                    <polygon points="308,50 308,42 324,50 308,58" fill="#b85c00" />
+                                    <polygon points="308,50 308,42 324,50 308,58" fill="var(--color-warning)" />
                                     <line
                                         x1="296"
                                         y1="50"
                                         x2="308"
                                         y2="50"
-                                        stroke="#b85c00"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="2"
                                     />
                                     {/*  4  */}
-                                    <circle cx="370" cy="50" r="28" fill="#1a6b4a" stroke="none" />
+                                    <circle cx="370" cy="50" r="28" fill="var(--color-background)" stroke="var(--color-border)" />
                                     <text
                                         x="370"
                                         y="46"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="18"
                                     >
                                         ✅
@@ -3743,7 +3742,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="62"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -3753,7 +3752,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         登録完了
@@ -3762,7 +3761,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="106"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         ポリシーが自動適用
@@ -3773,10 +3772,10 @@ export default function AgwaPage() {
                                         y1="50"
                                         x2="440"
                                         y2="50"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="2"
                                     />
-                                    <polygon points="440,50 432,44 432,56" fill="#1a6b4a" />
+                                    <polygon points="440,50 432,44 432,56" fill="var(--color-theme-agwa-fg)" />
                                     {/*  Benefits box  */}
                                     <rect
                                         x="450"
@@ -3784,15 +3783,15 @@ export default function AgwaPage() {
                                         width="270"
                                         height="110"
                                         rx="8"
-                                        fill="#e8f5ee"
-                                        stroke="#1a6b4a"
+                                        fill="var(--color-theme-agwa-bg)"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="585"
                                         y="42"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3802,7 +3801,7 @@ export default function AgwaPage() {
                                         x="585"
                                         y="60"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         🔒 拡張機能の許可/ブロック
@@ -3811,7 +3810,7 @@ export default function AgwaPage() {
                                         x="585"
                                         y="78"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         🔄 自動更新の強制
@@ -3820,7 +3819,7 @@ export default function AgwaPage() {
                                         x="585"
                                         y="96"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         🌐 SafeBrowsing の強制
@@ -3829,7 +3828,7 @@ export default function AgwaPage() {
                                         x="585"
                                         y="114"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         🔐 パスワードマネージャー
@@ -3888,8 +3887,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="270"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Start  */}
@@ -3906,7 +3905,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="38"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                     >
                                         問題報告を受けた
@@ -3928,14 +3927,14 @@ export default function AgwaPage() {
                                         width="400"
                                         height="42"
                                         rx="8"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="370"
                                         y="92"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -3990,7 +3989,7 @@ export default function AgwaPage() {
                                         x="175"
                                         y="170"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         🔴 Google障害の場合
@@ -4010,24 +4009,24 @@ export default function AgwaPage() {
                                         y1="128"
                                         x2="565"
                                         y2="145"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
-                                    <polygon points="560,143 570,143 565,153" fill="#1a6b4a" />
+                                    <polygon points="560,143 570,143 565,153" fill="var(--color-theme-agwa-fg)" />
                                     <rect
                                         x="470"
                                         y="153"
                                         width="190"
                                         height="38"
                                         rx="7"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="565"
                                         y="170"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="12"
                                     >
                                         🟢 Google は正常稼働中
@@ -4058,14 +4057,14 @@ export default function AgwaPage() {
                                         width="400"
                                         height="34"
                                         rx="7"
-                                        fill="#5c3fa8"
+                                        fill="var(--color-tip)"
                                         stroke="none"
                                     />
                                     <text
                                         x="370"
                                         y="226"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4087,7 +4086,7 @@ export default function AgwaPage() {
                                         width="256"
                                         height="12"
                                         rx="4"
-                                        fill="#e8f0fb"
+                                        fill="rgba(var(--color-primary-rgb), 0.1)"
                                         stroke="#b0cef4"
                                         strokeWidth="1"
                                     />
@@ -4095,7 +4094,7 @@ export default function AgwaPage() {
                                         x="242"
                                         y="262"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="10"
                                     >
                                         全ユーザー? or 特定ユーザー?
@@ -4106,7 +4105,7 @@ export default function AgwaPage() {
                                         width="256"
                                         height="12"
                                         rx="4"
-                                        fill="#e8f0fb"
+                                        fill="rgba(var(--color-primary-rgb), 0.1)"
                                         stroke="#b0cef4"
                                         strokeWidth="1"
                                     />
@@ -4114,7 +4113,7 @@ export default function AgwaPage() {
                                         x="512"
                                         y="262"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="10"
                                     >
                                         全デバイス? or 特定デバイス?
@@ -4143,8 +4142,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="220"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Entry  */}
@@ -4154,14 +4153,14 @@ export default function AgwaPage() {
                                         width="300"
                                         height="34"
                                         rx="8"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="370"
                                         y="30"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4189,7 +4188,7 @@ export default function AgwaPage() {
                                     {/*  Decision diamond  */}
                                     <polygon
                                         points="370,74 440,100 370,126 300,100"
-                                        fill="white"
+                                        fill="var(--color-background)"
                                         stroke="#4a4843"
                                         strokeWidth="1.5"
                                     />
@@ -4219,7 +4218,7 @@ export default function AgwaPage() {
                                         y1="100"
                                         x2="580"
                                         y2="100"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -4228,15 +4227,15 @@ export default function AgwaPage() {
                                         width="140"
                                         height="32"
                                         rx="6"
-                                        fill="#e8f5ee"
-                                        stroke="#1a6b4a"
+                                        fill="var(--color-theme-agwa-bg)"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="650"
                                         y="99"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4246,7 +4245,7 @@ export default function AgwaPage() {
                                         x="650"
                                         y="113"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="10"
                                     >
                                         受信者側の問題
@@ -4296,7 +4295,7 @@ export default function AgwaPage() {
                                         y1="126"
                                         x2="270"
                                         y2="158"
-                                        stroke="#b85c00"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -4305,15 +4304,15 @@ export default function AgwaPage() {
                                         width="130"
                                         height="32"
                                         rx="6"
-                                        fill="#fef3e8"
-                                        stroke="#b85c00"
+                                        fill="rgba(var(--color-warning-rgb), 0.1)"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="235"
                                         y="163"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4323,7 +4322,7 @@ export default function AgwaPage() {
                                         x="235"
                                         y="176"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="10"
                                     >
                                         迷惑メール扱い
@@ -4334,7 +4333,7 @@ export default function AgwaPage() {
                                         y1="126"
                                         x2="470"
                                         y2="158"
-                                        stroke="#5c3fa8"
+                                        stroke="var(--color-tip)"
                                         strokeWidth="1.5"
                                     />
                                     <rect
@@ -4343,15 +4342,15 @@ export default function AgwaPage() {
                                         width="130"
                                         height="32"
                                         rx="6"
-                                        fill="#f2eeff"
-                                        stroke="#5c3fa8"
+                                        fill="rgba(var(--color-theme-genai-rgb), 0.1)"
+                                        stroke="var(--color-tip)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="485"
                                         y="163"
                                         textAnchor="middle"
-                                        fill="#3a2470"
+                                        fill="var(--color-tip)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4361,7 +4360,7 @@ export default function AgwaPage() {
                                         x="485"
                                         y="176"
                                         textAnchor="middle"
-                                        fill="#3a2470"
+                                        fill="var(--color-tip)"
                                         fontSize="10"
                                     >
                                         送信待ち・遅延
@@ -4373,7 +4372,7 @@ export default function AgwaPage() {
                                         width="512"
                                         height="16"
                                         rx="6"
-                                        fill="#e8f0fb"
+                                        fill="rgba(var(--color-primary-rgb), 0.1)"
                                         stroke="#b0cef4"
                                         strokeWidth="1"
                                     />
@@ -4381,7 +4380,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="209"
                                         textAnchor="middle"
-                                        fill="#0c3870"
+                                        fill="var(--color-primary)"
                                         fontSize="11"
                                         fontWeight="600"
                                     >
@@ -4411,8 +4410,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="210"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Title area  */}
@@ -4422,14 +4421,14 @@ export default function AgwaPage() {
                                         width="704"
                                         height="30"
                                         rx="6"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="370"
                                         y="36"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                     >
                                         Admin コンソール → レポート → Meet 品質ツール —
@@ -4443,15 +4442,15 @@ export default function AgwaPage() {
                                         width="216"
                                         height="80"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="126"
                                         y="80"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4472,7 +4471,7 @@ export default function AgwaPage() {
                                         width="35"
                                         height="18"
                                         rx="4"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     {/*  10% = good  */}
@@ -4480,7 +4479,7 @@ export default function AgwaPage() {
                                         x="126"
                                         y="118"
                                         textAnchor="middle"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         ✅ &lt;2% 正常
@@ -4501,15 +4500,15 @@ export default function AgwaPage() {
                                         width="216"
                                         height="80"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="370"
                                         y="80"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4530,7 +4529,7 @@ export default function AgwaPage() {
                                         width="70"
                                         height="18"
                                         rx="4"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         stroke="none"
                                     />
                                     {/*  ~40% = moderate  */}
@@ -4538,7 +4537,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="118"
                                         textAnchor="middle"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         ✅ &lt;150ms 正常
@@ -4559,15 +4558,15 @@ export default function AgwaPage() {
                                         width="216"
                                         height="80"
                                         rx="8"
-                                        fill="white"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-foreground)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="614"
                                         y="80"
                                         textAnchor="middle"
-                                        fill="#4a4843"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4588,7 +4587,7 @@ export default function AgwaPage() {
                                         width="52"
                                         height="18"
                                         rx="4"
-                                        fill="#5c3fa8"
+                                        fill="var(--color-tip)"
                                         stroke="none"
                                     />
                                     {/*  ~30% = warning  */}
@@ -4596,7 +4595,7 @@ export default function AgwaPage() {
                                         x="614"
                                         y="118"
                                         textAnchor="middle"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontSize="11"
                                     >
                                         ✅ &lt;30ms 正常
@@ -4646,15 +4645,15 @@ export default function AgwaPage() {
                                         width="340"
                                         height="46"
                                         rx="7"
-                                        fill="#fef3e8"
-                                        stroke="#b85c00"
+                                        fill="rgba(var(--color-warning-rgb), 0.1)"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="1.5"
                                     />
                                     <text
                                         x="552"
                                         y="172"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontWeight="600"
                                         fontSize="12"
                                     >
@@ -4664,7 +4663,7 @@ export default function AgwaPage() {
                                         x="552"
                                         y="189"
                                         textAnchor="middle"
-                                        fill="#6b3600"
+                                        fill="var(--color-warning)"
                                         fontSize="11"
                                     >
                                         → その参加者の端末 / 接続の問題
@@ -4692,8 +4691,8 @@ export default function AgwaPage() {
                                         width="740"
                                         height="140"
                                         rx="10"
-                                        fill="#f7f6f2"
-                                        stroke="#e2dfd8"
+                                        fill="var(--color-background)"
+                                        stroke="var(--color-border)"
                                         strokeWidth="1"
                                     />
                                     {/*  Step 1  */}
@@ -4719,7 +4718,7 @@ export default function AgwaPage() {
                                         x="81"
                                         y="70"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -4729,7 +4728,7 @@ export default function AgwaPage() {
                                         x="81"
                                         y="85"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         を開く
@@ -4738,12 +4737,12 @@ export default function AgwaPage() {
                                         x="81"
                                         y="99"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         Ctrl+Shift+I
                                     </text>
-                                    <polygon points="158,62 158,52 174,62 158,72" fill="#4a4843" />
+                                    <polygon points="158,62 158,52 174,62 158,72" fill="var(--color-foreground)" />
                                     <line
                                         x1="148"
                                         y1="62"
@@ -4759,14 +4758,14 @@ export default function AgwaPage() {
                                         width="134"
                                         height="88"
                                         rx="7"
-                                        fill="#1d5fa8"
+                                        fill="var(--color-primary)"
                                         stroke="none"
                                     />
                                     <text
                                         x="241"
                                         y="48"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="22"
                                     >
                                         🌐
@@ -4775,7 +4774,7 @@ export default function AgwaPage() {
                                         x="241"
                                         y="70"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -4790,13 +4789,13 @@ export default function AgwaPage() {
                                     >
                                         を選択する
                                     </text>
-                                    <polygon points="318,62 318,52 334,62 318,72" fill="#1d5fa8" />
+                                    <polygon points="318,62 318,52 334,62 318,72" fill="var(--color-primary)" />
                                     <line
                                         x1="308"
                                         y1="62"
                                         x2="318"
                                         y2="62"
-                                        stroke="#1d5fa8"
+                                        stroke="var(--color-primary)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 3  */}
@@ -4806,14 +4805,14 @@ export default function AgwaPage() {
                                         width="134"
                                         height="88"
                                         rx="7"
-                                        fill="#b85c00"
+                                        fill="var(--color-warning)"
                                         stroke="none"
                                     />
                                     <text
                                         x="401"
                                         y="48"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="22"
                                     >
                                         🔁
@@ -4822,7 +4821,7 @@ export default function AgwaPage() {
                                         x="401"
                                         y="70"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -4837,13 +4836,13 @@ export default function AgwaPage() {
                                     >
                                         再現する
                                     </text>
-                                    <polygon points="478,62 478,52 494,62 478,72" fill="#b85c00" />
+                                    <polygon points="478,62 478,52 494,62 478,72" fill="var(--color-warning)" />
                                     <line
                                         x1="468"
                                         y1="62"
                                         x2="478"
                                         y2="62"
-                                        stroke="#b85c00"
+                                        stroke="var(--color-warning)"
                                         strokeWidth="2"
                                     />
                                     {/*  Step 4  */}
@@ -4853,14 +4852,14 @@ export default function AgwaPage() {
                                         width="134"
                                         height="88"
                                         rx="7"
-                                        fill="#1a6b4a"
+                                        fill="var(--color-theme-agwa-fg)"
                                         stroke="none"
                                     />
                                     <text
                                         x="561"
                                         y="48"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontSize="22"
                                     >
                                         💾
@@ -4869,7 +4868,7 @@ export default function AgwaPage() {
                                         x="561"
                                         y="68"
                                         textAnchor="middle"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -4899,17 +4898,17 @@ export default function AgwaPage() {
                                         y1="62"
                                         x2="650"
                                         y2="62"
-                                        stroke="#1a6b4a"
+                                        stroke="var(--color-theme-agwa-fg)"
                                         strokeWidth="2"
                                     />
-                                    <polygon points="648,62 640,56 640,68" fill="#1a6b4a" />
+                                    <polygon points="648,62 640,56 640,68" fill="var(--color-theme-agwa-fg)" />
                                     <rect
                                         x="650"
                                         y="42"
                                         width="78"
                                         height="40"
                                         rx="6"
-                                        fill="white"
+                                        fill="var(--color-foreground)"
                                         stroke="#b8dfc9"
                                         strokeWidth="1.5"
                                     />
@@ -4917,7 +4916,7 @@ export default function AgwaPage() {
                                         x="689"
                                         y="59"
                                         textAnchor="middle"
-                                        fill="#0d4a30"
+                                        fill="var(--color-theme-agwa-fg)"
                                         fontWeight="600"
                                         fontSize="11"
                                     >
@@ -4927,7 +4926,7 @@ export default function AgwaPage() {
                                         x="689"
                                         y="74"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="10"
                                     >
                                         サポートへ提出
@@ -4937,7 +4936,7 @@ export default function AgwaPage() {
                                         x="370"
                                         y="124"
                                         textAnchor="middle"
-                                        fill="#8a8680"
+                                        fill="var(--color-foreground)"
                                         fontSize="11"
                                     >
                                         ⚠️ HARファイルにはセッション情報が含まれる場合があります —

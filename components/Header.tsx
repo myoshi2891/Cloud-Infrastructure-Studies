@@ -497,6 +497,13 @@ export function Header() {
                             ariaLabel="AGWA 概要"
                             onClick={() => setOpenMenu(null)}
                         />
+                        <DropdownItem
+                            href="/gcl/agwa/section1"
+                            label="Section 1"
+                            desc="ユーザー・ドメイン・ディレクトリ管理"
+                            ariaLabel="AGWA Section 1"
+                            onClick={() => setOpenMenu(null)}
+                        />
                     </div>
                 </div>
             </div>
