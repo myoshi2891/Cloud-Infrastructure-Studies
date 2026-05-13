@@ -5,14 +5,80 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **最新 HEAD:** 96c3853f66f91722883017253503f15915856417
-- **次の作業:** PCNEのE2Eテスト作成（Playwright）など、必要に応じた対応
+- **次の作業:** AGWA Section 1 の他セクション (1.1, 1.2, 1.3, 1.4, 1.6) の不足情報補完（ユーザー確認済みの乖離修正）
 - **テスト数:** 311件パス
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
-- **最終更新日時(UTC):** 2026-05-12T05:00:00Z
+- **最終更新日時(UTC):** 2026-05-12T07:15:00Z
+
+---
+
+## 2026-05-12: AGWA Section 1 Restoration (実行中)
+
+### 目的
+
+ユーザーによって確認されたオリジナル HTML との乖離（情報の省略・簡略化）を解消するため、残りのセクション（1.1, 1.2, 1.3, 1.4, 1.6）の内容をオリジナルに準拠したリッチな内容に復元・補完する。
+
+### ステータス
+
+- [x] **Section 1.5 建物とリソースの管理**: 補完完了、CSSマッピング済み。
+- [ ] **Section 1.1 ユーザー ライフサイクル管理**: GCDS 同期、アカウント状態の遷移図などの復元。
+- [ ] **Section 1.2 ドメインの管理**: プライマリ/セカンダリ/エイリアスの詳細表の復元。
+- [ ] **Section 1.3 組織ユニット (OU)**: 継承ルール、例外設定の例の復元。
+- [ ] **Section 1.4 グループの管理**: 設定パラメータ、Collaborative Inbox 詳細の復元。
+- [ ] **Section 1.6 管理者ロール**: システム定義ロール比較表の復元。
+
+---
 
 ## 次回セッションでの再開プロンプト
 
-PCNEの移行作業と、その後の品質改善（レイアウト最適化、テスト堅牢化）が完了しました。引き続き、E2Eテストの実送や他のタスクについて指示してください。
+あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
+現在、`MIGRATION_PROGRESS.md` の「2026-05-12: AGWA Section 1 Migration (進行中)」セクションにある「実装ステップ詳細」に基づいて、静的HTMLファイルの Next.js への完全移行をステップバイステップで行う必要があります。
+
+以下の要件を厳守して実装を進めてください。
+1. 一度にすべての変更を行うのではなく、Phase 1 から順にステップバイステップで実装すること。
+2. 各 Phase（ステップ）が完了し、`bun run lint` や `bun run build` でエラーが出ないことを確認したら、要件にあるコミットメッセージで必ず `git commit` を行うこと。
+3. すべての CSS カスタムプロパティはプロジェクトの `@theme` トークン (`globals.css` に定義済み) にマッピングし、元の配色ではなくプロジェクトのダークテーマに準拠させること。
+4. `<svg>` タグ内の属性はすべて React 向けに camelCase に変換すること。
+5. E2Eテストは不要ですが、実装ステップごとのビルド確認とコンポーネントの型整合性は必ず確認すること。
+
+それでは、対象のHTMLファイル `agwa-section1-accounts-domains-directory.html` を読み込み、「AGWA Section 1 Restoration (実行中)」セクションにある対象セクション（1.1, 1.2, 1.3, 1.4, 1.6）について、ユーザー確認済みの乖離箇所を順次、オリジナルに準拠したリッチな内容へと復元・補完してください。1セクションごとに作業を完了させ、コミットを行ってください。
+
+---
+
+## 2026-05-12: AGWA Section 1 Migration (進行中)
+
+### 実装ステップ詳細 (Implementation Plan)
+
+#### Objective
+
+Migrate the standalone static HTML page `agwa-section1-accounts-domains-directory.html` into the Next.js App Router application at the route `app/gcl/agwa/section1/page.tsx`.
+
+#### CSS Variable Mapping
+
+HTML `:root` variables must be mapped to the project's `globals.css` `@theme` tokens in `page.css`:
+- `--bg` -> `--color-background`
+- `--surface` -> `--color-card`
+- `--accent` -> `--color-theme-agwa-fg`
+- `--text` -> `--color-foreground`
+- `--border` -> `--color-border`
+
+#### Steps & Commits
+
+- **Phase 1: CSS Extraction and Setup**
+  - `app/gcl/agwa/section1/page.css` 作成と変数マッピング。
+  - Commit: `feat(agwa): add section 1 specific css and token mappings`
+- **Phase 2: HTML to TSX Conversion**
+  - `app/gcl/agwa/section1/page.tsx` 作成。SVG属性の camelCase 変換を含む HTML 変換。
+  - Commit: `feat(agwa): convert section 1 html to tsx component`
+- **Phase 3: Integration and Navigation**
+  - `components/Header.tsx` および `CLAUDE.md` の更新。
+  - Commit: `feat(agwa): add section 1 to header navigation and update docs`
+
+### 次のステップ
+
+- [x] **Phase 1: CSS Extraction and Setup**
+- [x] **Phase 2: HTML to TSX Conversion**
+- [x] **Phase 3: Integration and Navigation**
 
 ---
 
@@ -20,6 +86,11 @@ PCNEの移行作業と、その後の品質改善（レイアウト最適化、�
 
 ### 完了済み
 
+- **AGWA Section 1 Quality Improvements (Section 1.5)**:
+  - Section 1.5 「建物とリソースの管理」の内容をオリジナル HTML に準拠するよう復元。
+  - 欠落していたテーブル（リソース種類、予約権限、詳細オプション）および CSV 一括作成手順を追加。
+  - SVG をリッチなオリジナル版に置き換え（camelCase 属性変換済み）。
+  - `page.css` の変数をプロジェクトの `@theme` トークンに正しくマッピング。
 - **PCNE Step-by-Step Guide Migration (Step 1-8)**:
   - Section 1-6 までの移行を完了し、旧 HTML ファイルをアーカイブ化。
 - **Layout Optimization (SharedSection.module.css)**:

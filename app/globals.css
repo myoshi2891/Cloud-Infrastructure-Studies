@@ -17,6 +17,7 @@
     /* Layer 1: セマンティックトークン (shadcn/ui 互換) */
     --color-background: #08090f;
     --color-foreground: #e2e8f0;
+    --color-foreground-rgb: 226, 232, 240;
     --color-card: #0e1117;
     --color-card-foreground: #e2e8f0;
     --color-muted: #c5d1e1;
@@ -42,6 +43,14 @@
 
     --color-theme-agwa-bg: hsl(140 50% 45% / 0.25);
     --color-theme-agwa-fg: hsl(140 70% 65%);
+    --color-theme-agwa-rgb: 79, 195, 247;
+
+    /* Google Brand Colors (central tokens) */
+    --color-google-blue: #4285f4;
+    --color-google-green: #34a853;
+    --color-google-yellow: #fbbc05;
+    --color-google-red: #ea4335;
+    --color-google-blue-rgb: 66, 133, 244;
 
 
     /* Callout & Status Themes */
@@ -49,6 +58,7 @@
     --color-warning-bg: #fef3e8;
     --color-warning-border: #f0c08a;
     --color-warning-fg: #6b3600;
+    --color-warning-rgb: 184, 92, 0;
 
     --color-tip: #5c3fa8;
     --color-tip-bg: #f2eeff;
@@ -59,16 +69,21 @@
     --color-info-fg: #0c3870;
 
     --color-destructive: #c0392b;
+    --color-destructive-rgb: 192, 57, 43;
 
     --color-alt: #7a6200;
     --color-alt-fg: #5c4a00;
 
+    --color-theme-genai-rgb: 167, 139, 250;
+    --color-orange: #fb923c;
+    --color-orange-rgb: 251, 146, 60;
     --color-theme-agwa-border: #b8dfc9;
     --color-theme-agwa-dark: #0d4a30;
 
     /* Layer 2: 共有プリミティブ */
-    --color-shadow: rgba(0, 0, 0, 0.4);
-    --color-shadow-subtle: rgba(0, 0, 0, 0.06);
+    --color-shadow-rgb: 0, 0, 0;
+    --color-shadow: rgba(var(--color-shadow-rgb), 0.4);
+    --color-shadow-subtle: rgba(var(--color-shadow-rgb), 0.06);
     --color-surface-subtle: rgba(255, 255, 255, 0.05);
 
     --font-display: 'DM Sans', sans-serif;
