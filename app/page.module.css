@@ -77,8 +77,16 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 60% 50% at 20% 60%, color-mix(in srgb, var(--color-brand-start) 8%, transparent) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 50% at 80% 40%, color-mix(in srgb, var(--color-brand-end) 7%, transparent) 0%, transparent 70%);
+        radial-gradient(
+            ellipse 60% 50% at 20% 60%,
+            color-mix(in srgb, var(--color-brand-start) 8%, transparent) 0%,
+            transparent 70%
+        ),
+        radial-gradient(
+            ellipse 60% 50% at 80% 40%,
+            color-mix(in srgb, var(--color-brand-end) 7%, transparent) 0%,
+            transparent 70%
+        );
     pointer-events: none;
 }
 
@@ -115,7 +123,10 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-xl);
     padding: 28px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
     position: relative;
     overflow: hidden;
 }
@@ -140,12 +151,18 @@
     border-color: var(--color-theme-ace-bg);
 }
 .cardAce::before {
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--color-theme-ace-fg) 8%, transparent), transparent);
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-theme-ace-fg) 8%, transparent),
+        transparent
+    );
 }
-.cardAce:hover, .cardAce:focus-within {
+.cardAce:hover,
+.cardAce:focus-within {
     border-color: color-mix(in srgb, var(--color-theme-ace-fg) 50%, transparent);
 }
-.cardAce:hover::before, .cardAce:focus-within::before {
+.cardAce:hover::before,
+.cardAce:focus-within::before {
     opacity: 1;
 }
 
@@ -153,12 +170,18 @@
     border-color: var(--color-theme-genai-bg);
 }
 .cardGenai::before {
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--color-theme-genai-fg) 8%, transparent), transparent);
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-theme-genai-fg) 8%, transparent),
+        transparent
+    );
 }
-.cardGenai:hover, .cardGenai:focus-within {
+.cardGenai:hover,
+.cardGenai:focus-within {
     border-color: color-mix(in srgb, var(--color-theme-genai-fg) 50%, transparent);
 }
-.cardGenai:hover::before, .cardGenai:focus-within::before {
+.cardGenai:hover::before,
+.cardGenai:focus-within::before {
     opacity: 1;
 }
 
@@ -166,12 +189,37 @@
     border-color: var(--color-theme-cdl-bg);
 }
 .cardCdl::before {
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--color-theme-cdl-fg) 8%, transparent), transparent);
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-theme-cdl-fg) 8%, transparent),
+        transparent
+    );
 }
-.cardCdl:hover, .cardCdl:focus-within {
+.cardCdl:hover,
+.cardCdl:focus-within {
     border-color: color-mix(in srgb, var(--color-theme-cdl-fg) 50%, transparent);
 }
-.cardCdl:hover::before, .cardCdl:focus-within::before {
+.cardCdl:hover::before,
+.cardCdl:focus-within::before {
+    opacity: 1;
+}
+
+.cardAgwa {
+    border-color: var(--color-theme-agwa-bg);
+}
+.cardAgwa::before {
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-theme-agwa-fg) 8%, transparent),
+        transparent
+    );
+}
+.cardAgwa:hover,
+.cardAgwa:focus-within {
+    border-color: color-mix(in srgb, var(--color-theme-agwa-fg) 50%, transparent);
+}
+.cardAgwa:hover::before,
+.cardAgwa:focus-within::before {
     opacity: 1;
 }
 
@@ -321,7 +369,10 @@
     background: hsl(220 20% 14%);
     color: var(--color-foreground);
     border: 1px solid var(--color-border);
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
 }
 
 .cardAce .ctaBtn:hover,
@@ -343,6 +394,13 @@
     background: color-mix(in srgb, var(--color-theme-cdl-fg) 15%, transparent);
     border-color: color-mix(in srgb, var(--color-theme-cdl-fg) 50%, transparent);
     color: var(--color-theme-cdl-fg);
+}
+
+.cardAgwa .ctaBtn:hover,
+.cardAgwa .ctaBtn:focus-visible {
+    background: color-mix(in srgb, var(--color-theme-agwa-fg) 15%, transparent);
+    border-color: color-mix(in srgb, var(--color-theme-agwa-fg) 50%, transparent);
+    color: var(--color-theme-agwa-fg);
 }
 
 .statsSection {

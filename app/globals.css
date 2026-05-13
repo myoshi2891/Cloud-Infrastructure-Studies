@@ -30,15 +30,18 @@
     --color-brand-end: hsl(270 80% 60%);
     --color-brand-text-start: hsl(220 100% 72%);
     --color-brand-text-end: hsl(270 70% 65%);
-    
+
     --color-theme-genai-bg: hsl(270 60% 55% / 0.25);
     --color-theme-genai-fg: hsl(270 80% 75%);
-    
+
     --color-theme-ace-bg: hsl(220 60% 55% / 0.25);
     --color-theme-ace-fg: hsl(220 100% 75%);
-    
+
     --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
     --color-theme-cdl-fg: hsl(160 70% 65%);
+
+    --color-theme-agwa-bg: hsl(140 50% 45% / 0.25);
+    --color-theme-agwa-fg: hsl(140 70% 65%);
 
     /* Layer 2: 共有プリミティブ */
     --color-shadow: rgba(0, 0, 0, 0.4);
@@ -100,6 +103,11 @@ body {
 @utility icon-theme-cdl {
     background: var(--color-theme-cdl-bg);
     color: var(--color-theme-cdl-fg);
+}
+
+@utility icon-theme-agwa {
+    background: var(--color-theme-agwa-bg);
+    color: var(--color-theme-agwa-fg);
 }
 
 .code-line {

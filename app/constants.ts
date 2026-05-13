@@ -6,7 +6,7 @@ export interface ExamDomain {
     pct: string;
 }
 
-export type ColorKey = 'card-ace' | 'card-genai' | 'card-cdl';
+export type ColorKey = 'card-ace' | 'card-genai' | 'card-cdl' | 'card-agwa';
 
 export interface Exam {
     id: string;
@@ -34,10 +34,26 @@ export const EXAMS: Exam[] = [
         description:
             'Google Cloud 上でのアプリのデプロイ・管理・監視能力を認定。コンピュート・ストレージ・ネットワーク・IAM など幅広い領域を網羅。',
         domains: [
-            { label: 'Domain 1: 環境設定', href: '/gcl/associate-cloud-engineer/domain1', pct: '17.5%' },
-            { label: 'Domain 2: 計画と実装', href: '/gcl/associate-cloud-engineer/domain2', pct: '21%' },
-            { label: 'Domain 3: 運用管理', href: '/gcl/associate-cloud-engineer/domain3', pct: '22%' },
-            { label: 'Domain 4: アクセスとセキュリティ', href: '/gcl/associate-cloud-engineer/domain4', pct: '20%' },
+            {
+                label: 'Domain 1: 環境設定',
+                href: '/gcl/associate-cloud-engineer/domain1',
+                pct: '17.5%',
+            },
+            {
+                label: 'Domain 2: 計画と実装',
+                href: '/gcl/associate-cloud-engineer/domain2',
+                pct: '21%',
+            },
+            {
+                label: 'Domain 3: 運用管理',
+                href: '/gcl/associate-cloud-engineer/domain3',
+                pct: '22%',
+            },
+            {
+                label: 'Domain 4: アクセスとセキュリティ',
+                href: '/gcl/associate-cloud-engineer/domain4',
+                pct: '20%',
+            },
         ],
         badge: '実践向け',
         icon: '⚙️',
@@ -54,7 +70,11 @@ export const EXAMS: Exam[] = [
             'Google Cloud の生成 AI サービスとビジネス戦略を認定。Vertex AI・LLM・RAG・プロンプトエンジニアリングの基礎知識が問われる。',
         domains: [
             { label: 'Section 1: Gen AI 基礎', href: '/gcl/genai-leader/section1', pct: '25%' },
-            { label: 'Section 2: Google Cloud Gen AI', href: '/gcl/genai-leader/section2', pct: '30%' },
+            {
+                label: 'Section 2: Google Cloud Gen AI',
+                href: '/gcl/genai-leader/section2',
+                pct: '30%',
+            },
             { label: 'Section 3: モデル出力改善', href: '/gcl/genai-leader/section3', pct: '25%' },
             { label: 'Section 4: ビジネス戦略', href: '/gcl/genai-leader/section4', pct: '20%' },
         ],
@@ -77,6 +97,20 @@ export const EXAMS: Exam[] = [
         ],
         badge: '入門向け',
         icon: '🌐',
+    },
+    {
+        id: 'agwa',
+        label: 'Associate Google Workspace Administrator',
+        abbr: 'AGWA',
+        level: 'Associate',
+        score: '~50-60問 / 120分',
+        color: 'card-agwa',
+        href: '/gcl/agwa',
+        description:
+            'Google Workspace のコアサービスの管理・設定、ユーザー・ドメインのプロビジョニング、セキュリティとアクセス制御などを認定。',
+        domains: [{ label: 'すべてのコンテンツを見る', href: '/gcl/agwa', pct: '—' }],
+        badge: 'Workspace 管理向け',
+        icon: '💼',
     },
 ];
 
