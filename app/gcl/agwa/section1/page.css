@@ -16,8 +16,6 @@ body {
     color: var(--color-foreground);
     line-height: 1.8;
     font-size: 1.05rem;
-    --text-muted: #e2e8f0; /* Further brightened */
-    --text-dim: #cbd5e1;   /* Further brightened */
 }
 
 /* ── HEADER ── */
@@ -113,7 +111,7 @@ body {
 }
 .hero-sub {
     font-size: 1.15rem;
-    color: var(--text-muted);
+    color: var(--color-foreground);
     max-width: 640px;
     margin-bottom: 32px;
     line-height: 1.6;
@@ -223,7 +221,7 @@ body {
     margin-bottom: 4px;
 }
 .section-header p {
-    color: var(--text-muted);
+    color: var(--color-muted);
     font-size: 1.1rem;
 }
 .chapter {
@@ -469,7 +467,7 @@ tbody tr:hover td {
 .compare-card ul li {
     padding: 8px 0;
     font-size: 1.05rem;
-    color: var(--color-foreground); /* Brightened from var(--text-muted) */
+    color: var(--color-foreground);
     border-bottom: 1px solid rgba(var(--color-foreground-rgb), 0.04);
     display: flex;
     gap: 8px;
