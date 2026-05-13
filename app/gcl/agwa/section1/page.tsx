@@ -1651,7 +1651,7 @@ export default function AgwaSection1Page() {
                     <h3>✦ セクション 1.3 ベストプラクティス総まとめ</h3>
                     <ul className="bp-list">
                         <li>
-                            グループの命名規則を統一する（例：<code>grp-sales-global@</code>、<code>sec-admin-access@</code> のようにプレフィックスで用途を明示）
+                            グループの命名規則を統一する（例：grp-sales-global@、sec-admin-access@ のようにプレフィックスで用途を明示）
                         </li>
                         <li>
                             チームでのメール対応には Collaborative Inbox を活用し、対応の重複と見落としを防ぐ
