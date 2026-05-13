@@ -1654,8 +1654,7 @@ export default function AgwaSection1Page() {
                             グループの命名規則を統一する（例：<code>grp-sales-global@</code>、<code>sec-admin-access@</code> のようにプレフィックスで用途を明示）
                         </li>
                         <li>
-                            チームでのメール対応には Collaborative Inbox
-                            を活用し、対応の重複と見落としを防ぐ
+                            チームでのメール対応には Collaborative Inbox を活用し、対応の重複と見落としを防ぐ
                         </li>
                         <li>
                             大規模なグループ（全社員グループなど）への外部からのメール送信を制限し、スパム・誤送信リスクを軽減する
