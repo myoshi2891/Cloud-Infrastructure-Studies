@@ -43,6 +43,13 @@
     --color-theme-agwa-bg: hsl(140 50% 45% / 0.25);
     --color-theme-agwa-fg: hsl(140 70% 65%);
 
+    /* Google Brand Colors (central tokens) */
+    --color-google-blue: #4285f4;
+    --color-google-green: #34a853;
+    --color-google-yellow: #fbbc05;
+    --color-google-red: #ea4335;
+    --color-google-blue-rgb: 66, 133, 244;
+
 
     /* Callout & Status Themes */
     --color-warning: #b85c00;
