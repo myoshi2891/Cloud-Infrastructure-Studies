@@ -14,8 +14,11 @@ export default function ScrollSpy() {
         if (sections.length === 0 || links.length === 0) return;
 
         function updateActive() {
+            const first = sections[0];
+            if (!first) return;
+
             const scrollY = window.scrollY + 80;
-            let current = sections[0];
+            let current = first;
             for (const s of sections) {
                 if (s.offsetTop <= scrollY) current = s;
             }
