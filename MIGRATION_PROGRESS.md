@@ -82,8 +82,6 @@ HTML `:root` variables must be mapped to the project's `globals.css` `@theme` to
 
 ---
 
-## 2026-05-12: AGWA Section 1 Migration (完了)
-
 ## 2026-05-12: PCNE Step-by-Step Guide Migration & Quality Improvements (完了)
 
 ### 完了済み
