@@ -1,24 +1,44 @@
 :root {
     --bg: var(--color-background);
     --surface: var(--color-card);
-    --surface2: var(--color-surface-subtle);
-    --surface3: rgba(255, 255, 255, 0.1);
+    --surface2: #1a2235;
+    --surface3: #1f2d45;
     --border: var(--color-border);
     --accent: var(--color-theme-agwa-fg);
-    --accent2: var(--color-theme-cdl-fg);
+    --accent2: #34d399;
     --accent3: #f472b6;
-    --accent4: var(--color-warning);
-    --accent5: var(--color-theme-genai-fg);
+    --accent4: #fb923c;
+    --accent5: #a78bfa;
     --text: var(--color-foreground);
-    --text-muted: var(--color-muted-foreground);
-    --text-dim: var(--color-muted);
-    --google-blue: var(--color-primary);
-    --google-red: var(--color-destructive);
-    --google-yellow: var(--color-warning);
-    --google-green: var(--color-theme-agwa-fg);
-    --warn: var(--color-warning);
-    --danger: var(--color-destructive);
-    --success: var(--color-theme-agwa-fg);
+    --text-muted: #b8cbe6;
+    --text-dim: #a0bade;
+    --google-blue: #4285f4;
+    --google-red: #ea4335;
+    --google-yellow: #fbbc05;
+    --google-green: #34a853;
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --success: #34d399;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 1rem;
 }
 
 /* ── HEADER ── */
@@ -26,7 +46,7 @@
     position: relative;
     overflow: hidden;
     padding: 80px 40px 70px;
-    background: linear-gradient(135deg, #0d1b35 0%, var(--bg) 60%);
+    background: linear-gradient(135deg, #0d1b35 0%, #0a0f1a 60%);
     border-bottom: 1px solid var(--border);
 }
 .hero::before {
@@ -69,7 +89,7 @@
     border-radius: 100px;
     padding: 5px 16px;
     font-size: 1rem;
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     color: var(--accent);
     letter-spacing: 0.08em;
     margin-bottom: 24px;
@@ -94,7 +114,7 @@
     }
 }
 .hero h1 {
-    font-family: var(--font-display);
+    font-family: 'Syne', sans-serif;
     font-size: clamp(28px, 4vw, 52px);
     font-weight: 800;
     line-height: 1.1;
@@ -126,7 +146,7 @@
 }
 .stat-pill strong {
     color: var(--accent);
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     font-size: 18px;
     display: block;
 }
@@ -134,7 +154,7 @@
 /* ── NAV ── */
 .sticky-nav {
     position: sticky;
-    top: var(--header-h);
+    top: 0;
     z-index: 100;
     background: rgba(10, 15, 26, 0.92);
     backdrop-filter: blur(16px);
@@ -205,7 +225,7 @@
     flex-shrink: 0;
 }
 .section-header h2 {
-    font-family: var(--font-display);
+    font-family: 'Syne', sans-serif;
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 4px;
@@ -216,7 +236,7 @@
 }
 .chapter {
     margin-bottom: 72px;
-    scroll-margin-top: calc(var(--header-h) + 20px);
+    scroll-margin-top: 70px;
 }
 
 /* ── CARDS ── */
@@ -232,7 +252,7 @@
     border-color: rgba(79, 195, 247, 0.25);
 }
 .card h3 {
-    font-family: var(--font-display);
+    font-family: 'Syne', sans-serif;
     font-size: 17px;
     font-weight: 700;
     margin-bottom: 14px;
@@ -242,7 +262,7 @@
     gap: 10px;
 }
 .card h3 .tag {
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     font-size: 1rem;
     font-weight: 500;
     padding: 2px 8px;
@@ -270,7 +290,7 @@ thead tr {
 thead th {
     padding: 12px 16px;
     text-align: left;
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     font-size: 1rem;
     letter-spacing: 0.08em;
     color: var(--text-muted);
@@ -344,7 +364,7 @@ tbody tr:hover td {
     border: 1px solid rgba(79, 195, 247, 0.15);
     border-radius: 12px;
     padding: 20px 24px;
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     font-size: 1rem;
     line-height: 1.8;
     overflow-x: auto;
@@ -387,7 +407,7 @@ tbody tr:hover td {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     font-size: 1rem;
     font-weight: 500;
     flex-shrink: 0;
@@ -442,7 +462,7 @@ tbody tr:hover td {
     padding: 20px;
 }
 .compare-card h4 {
-    font-family: var(--font-display);
+    font-family: 'Syne', sans-serif;
     font-weight: 700;
     font-size: 1rem;
     margin-bottom: 12px;
@@ -477,7 +497,7 @@ tbody tr:hover td {
     align-items: center;
     gap: 4px;
     font-size: 1rem;
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     padding: 2px 10px;
     border-radius: 100px;
     font-weight: 500;
@@ -523,7 +543,7 @@ tbody tr:hover td {
     margin-top: 20px;
 }
 .sources h4 {
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -543,7 +563,7 @@ tbody tr:hover td {
     border: 1px solid rgba(79, 195, 247, 0.15);
     margin: 4px 4px 4px 0;
     transition: all 0.2s;
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
 }
 .sources a:hover {
     background: rgba(79, 195, 247, 0.15);
@@ -585,7 +605,7 @@ tbody tr:hover td {
     border: 1px solid;
 }
 .state-card h4 {
-    font-family: var(--font-display);
+    font-family: 'Syne', sans-serif;
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 8px;
@@ -637,14 +657,14 @@ tbody tr:hover td {
 }
 
 /* ── FOOTER ── */
-.footer {
+footer {
     text-align: center;
     padding: 48px 40px;
     color: var(--text-dim);
     font-size: 1rem;
     border-top: 1px solid var(--border);
 }
-.footer a {
+footer a {
     color: var(--accent);
     text-decoration: none;
 }
@@ -655,7 +675,7 @@ tbody tr:hover td {
     border-radius: 4px;
     padding: 1px 6px;
     color: var(--accent);
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     font-size: 1rem;
 }
 
@@ -680,7 +700,7 @@ tbody tr:hover td {
 }
 .pc-box h5 {
     font-size: 1rem;
-    font-family: var(--font-mono);
+    font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 8px;
@@ -716,6 +736,4 @@ tbody tr:hover td {
         grid-template-columns: 1fr;
     }
 }
-small {
-    font-size: 1rem;
-}
+small { font-size: 1rem; }

@@ -2136,7 +2136,7 @@ export default function AgwaSection1Page() {
                                 fontSize="11"
                                 fontWeight="600"
                             >
-                                会議室 10A
+                                会議室A-10F（定員12名）
                             </text>
                             <line
                                 x1="434"
@@ -2146,20 +2146,20 @@ export default function AgwaSection1Page() {
                                 stroke="rgba(255,255,255,0.06)"
                                 strokeWidth="1"
                             />
-                            <text x="434" y="140" fill="#64748b" fontSize="10">🏢 種類</text>
-                            <text x="434" y="155" fill="#94a3b8" fontSize="10">会議室 / 備品</text>
-                            <text x="434" y="172" fill="#64748b" fontSize="10">👥 定員</text>
+                            <text x="434" y="140" fill="#64748b" fontSize="10">📛 リソース名</text>
+                            <text x="434" y="155" fill="#94a3b8" fontSize="10">会議室A-10F</text>
+                            <text x="434" y="172" fill="#64748b" fontSize="10">👥 収容人数</text>
                             <text x="434" y="187" fill="#94a3b8" fontSize="10">12名</text>
-                            <text x="434" y="204" fill="#64748b" fontSize="10">📅 カレンダーID</text>
-                            <text x="434" y="219" fill="#94a3b8" fontSize="10">resource-id@...</text>
-                            <text x="434" y="240" fill="#64748b" fontSize="10">🏢 所属フロア</text>
-                            <text x="434" y="255" fill="#94a3b8" fontSize="10">10F</text>
+                            <text x="434" y="204" fill="#64748b" fontSize="10">🔒 予約権限</text>
+                            <text x="434" y="219" fill="#94a3b8" fontSize="10">自動承認</text>
+                            <text x="434" y="240" fill="#64748b" fontSize="10">🔑 リソースID</text>
+                            <text x="434" y="255" fill="#94a3b8" fontSize="10">room-10f-a</text>
 
                             {/* Arrow 3&rarr;4 */}
                             <line
-                                x1="622"
+                                x1="620"
                                 y1="160"
-                                x2="652"
+                                x2="650"
                                 y2="160"
                                 stroke="#4fc3f7"
                                 strokeWidth="2"
@@ -2168,34 +2168,34 @@ export default function AgwaSection1Page() {
 
                             {/* ===== COLUMN 4: フィーチャー ===== */}
                             <rect
-                                x="654"
+                                x="652"
                                 y="50"
-                                width="180"
+                                width="188"
                                 height="220"
                                 rx="14"
-                                fill="rgba(167,139,250,0.07)"
-                                stroke="#a78bfa"
+                                fill="rgba(234,67,53,0.07)"
+                                stroke="#EA4335"
                                 strokeWidth="1.5"
                             />
                             <rect
-                                x="654"
+                                x="652"
                                 y="50"
-                                width="180"
+                                width="188"
                                 height="38"
                                 rx="14"
-                                fill="rgba(167,139,250,0.2)"
-                                stroke="#a78bfa"
+                                fill="rgba(234,67,53,0.2)"
+                                stroke="#EA4335"
                                 strokeWidth="1.5"
                             />
                             <rect
-                                x="654"
+                                x="652"
                                 y="74"
-                                width="180"
+                                width="188"
                                 height="16"
-                                fill="rgba(167,139,250,0.2)"
+                                fill="rgba(234,67,53,0.2)"
                             />
                             <text
-                                x="744"
+                                x="746"
                                 y="73"
                                 textAnchor="middle"
                                 fill="#ffffff"
@@ -2204,89 +2204,292 @@ export default function AgwaSection1Page() {
                             >
                                 ⭐ フィーチャー
                             </text>
-                            <text x="744" y="86" textAnchor="middle" fill="#a78bfa" fontSize="10">
-                                Feature（設備）
+                            <text x="746" y="86" textAnchor="middle" fill="#EA4335" fontSize="10">
+                                Features（設備情報）
                             </text>
 
-                            <text
-                                x="744"
-                                y="116"
-                                textAnchor="middle"
-                                fill="#94a3b8"
-                                fontSize="11"
-                                fontWeight="600"
-                            >
-                                設備・備品
-                            </text>
                             <line
-                                x1="670"
-                                y1="124"
-                                x2="818"
-                                y2="124"
+                                x1="668"
+                                y1="98"
+                                x2="824"
+                                y2="98"
                                 stroke="rgba(255,255,255,0.06)"
                                 strokeWidth="1"
                             />
-                            <text x="670" y="145" fill="#94a3b8" fontSize="10">📺 大型モニター</text>
-                            <text x="670" y="165" fill="#94a3b8" fontSize="10">📹 ビデオ会議 (Meet)</text>
-                            <text x="670" y="185" fill="#94a3b8" fontSize="10">⌨ ホワイトボード</text>
-                            <text x="670" y="205" fill="#94a3b8" fontSize="10">♿ バリアフリー</text>
-                            <text x="670" y="225" fill="#94a3b8" fontSize="10">🔊 音響システム</text>
+                            {/* Feature chips */}
+                            <rect
+                                x="668"
+                                y="108"
+                                width="150"
+                                height="22"
+                                rx="5"
+                                fill="rgba(52,211,153,0.15)"
+                                stroke="rgba(52,211,153,0.3)"
+                                strokeWidth="1"
+                            />
+                            <text
+                                x="743"
+                                y="123"
+                                textAnchor="middle"
+                                fill="#34d399"
+                                fontSize="11"
+                            >
+                                📹 ビデオ会議設備
+                            </text>
 
-                            {/* Footer text */}
-                            <text x="430" y="300" textAnchor="middle" fill="#64748b" fontSize="10">
-                                階層構造により、カレンダーでの「建物ごと」「設備ごと」のフィルタリングが可能になる
+                            <rect
+                                x="668"
+                                y="136"
+                                width="120"
+                                height="22"
+                                rx="5"
+                                fill="rgba(52,211,153,0.15)"
+                                stroke="rgba(52,211,153,0.3)"
+                                strokeWidth="1"
+                            />
+                            <text
+                                x="728"
+                                y="151"
+                                textAnchor="middle"
+                                fill="#34d399"
+                                fontSize="11"
+                            >
+                                📋 ホワイトボード
+                            </text>
+
+                            <rect
+                                x="668"
+                                y="164"
+                                width="110"
+                                height="22"
+                                rx="5"
+                                fill="rgba(52,211,153,0.15)"
+                                stroke="rgba(52,211,153,0.3)"
+                                strokeWidth="1"
+                            />
+                            <text
+                                x="723"
+                                y="179"
+                                textAnchor="middle"
+                                fill="#34d399"
+                                fontSize="11"
+                            >
+                                📽 プロジェクター
+                            </text>
+
+                            <rect
+                                x="668"
+                                y="192"
+                                width="100"
+                                height="22"
+                                rx="5"
+                                fill="rgba(52,211,153,0.15)"
+                                stroke="rgba(52,211,153,0.3)"
+                                strokeWidth="1"
+                            />
+                            <text
+                                x="718"
+                                y="207"
+                                textAnchor="middle"
+                                fill="#34d399"
+                                fontSize="11"
+                            >
+                                ♿ バリアフリー
+                            </text>
+
+                            <rect
+                                x="668"
+                                y="220"
+                                width="100"
+                                height="22"
+                                rx="5"
+                                fill="rgba(52,211,153,0.15)"
+                                stroke="rgba(52,211,153,0.3)"
+                                strokeWidth="1"
+                            />
+                            <text
+                                x="718"
+                                y="235"
+                                textAnchor="middle"
+                                fill="#34d399"
+                                fontSize="11"
+                            >
+                                📞 電話会議
+                            </text>
+
+                            <text x="668" y="258" fill="#64748b" fontSize="10">
+                                * カレンダー絞り込み検索に利用
+                            </text>
+
+                            {/* Bottom annotation */}
+                            <text
+                                x="430"
+                                y="295"
+                                textAnchor="middle"
+                                fill="#64748b"
+                                fontSize="11"
+                            >
+                                リソース作成は Admin コンソール &rarr; ディレクトリ &rarr; 建物とリソース
+                                から。50件以上は CSV 一括インポートを活用。
                             </text>
                         </svg>
+                    </div>
+
+                    <div className="tbl-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>リソース種類</th>
+                                    <th>例</th>
+                                    <th>管理のポイント</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>会議室</strong></td>
+                                    <td>会議室A-10F（定員12名）</td>
+                                    <td>定員・フロア・設備を正確に登録</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>共有デスク</strong></td>
+                                    <td>フリーアドレス席-3F</td>
+                                    <td>予約時間の上限設定が重要</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>備品</strong></td>
+                                    <td>プロジェクター01, 社用車A</td>
+                                    <td>貸出・返却管理として活用</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>専用端末</strong></td>
+                                    <td>Meet Hardware-会議室B</td>
+                                    <td>フィーチャーに「ビデオ会議システム」を追加</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div className="card">
-                    <h3>リソース作成手順 — ステップバイステップ</h3>
+                    <h3>一括作成 — CSV インポート手順 <span className="tag">大規模環境必須</span></h3>
 
                     <div className="steps">
                         <div className="step">
                             <div className="step-num">1</div>
                             <div className="step-body">
-                                <strong>建物を登録</strong>管理コンソール &rarr;
+                                <strong>テンプレートをダウンロード</strong>管理コンソール &rarr;
                                 <span className="term">ディレクトリ</span> &rarr;
-                                <span className="term">建物、リソース</span> &rarr;
-                                「建物」タブ &rarr; 「＋」で住所等の基本情報を入力
+                                <span className="term">建物とリソース</span> &rarr;
+                                <span className="term">リソース</span> &rarr;
+                                「ダウンロード」でCSVテンプレートを取得
                             </div>
                         </div>
                         <div className="step">
                             <div className="step-num">2</div>
                             <div className="step-body">
-                                <strong>フィーチャーを定義（任意）</strong>「リソース」タブ &rarr;
-                                「フィーチャーを管理」 &rarr; 組織で共通の設備名（例：モニター、WEBカメラ等）を登録
+                                <strong>CSV を編集</strong>Google スプレッドシートや Excel
+                                で開き、必須列（Resource ID, Resource Name, Building ID,
+                                Capacity）を記入。フィーチャーは
+                                <code>#フィーチャー名</code> の列を追加。
                             </div>
                         </div>
                         <div className="step">
                             <div className="step-num">3</div>
                             <div className="step-body">
-                                <strong>リソースを作成</strong>「リソース」タブ &rarr;
-                                「＋」 &rarr; 種類、名前、所属建物、フロア、定員、フィーチャーを選択して作成
-                            </div>
-                        </div>
-                        <div className="step">
-                            <div className="step-num">4</div>
-                            <div className="step-body">
-                                <strong>一括登録（オプション）</strong>リソースが 50
-                                件以上ある場合は、「CSV 一括アップロード」を使用して効率的に作成する
+                                <strong>CSV をアップロード</strong>管理コンソールに戻り、編集済みCSVをアップロードして整合性チェックを実行
                             </div>
                         </div>
                     </div>
 
-                    <div className="callout warn">
-                        <div className="callout-icon">⚠️</div>
-                        <div>
-                            <strong>リソース削除時の注意</strong><br />リソース（会議室等）を削除すると、そのリソースに関連付けられていた過去および将来のカレンダーの予約もすべて削除される。削除の前に慎重に検討すること。
-                        </div>
+                    <h3 style={{ marginTop: '20px' }}>CSV フォーマット例</h3>
+                    <div className="code-block">
+                        <span className="comment"># リソース一括登録CSVの例</span><br />
+                        <span className="key">Resource ID</span>,<span className="key">Building ID</span>,<span className="key">Floor Name</span>,<span className="key">Resource Name</span>,<span className="key">Capacity</span>,<span className="key">#ビデオ会議</span>,<span className="key">#ホワイトボード</span><br />
+                        <span className="val">room-1f-101</span>,<span className="val">tokyo-hq</span>,<span className="val">1F</span>,<span className="val">会議室101（定員10名）</span>,<span className="val">10</span>,<span className="val">YES</span>,<span className="val">YES</span><br />
+                        <span className="val">room-2f-201</span>,<span className="val">tokyo-hq</span>,<span className="val">2F</span>,<span className="val">会議室201（定員6名）</span>,<span className="val">6</span>,<span className="val">NO</span>,<span className="val">YES</span><br />
+                        <span className="val">training-3f</span>,<span className="val">tokyo-hq</span>,<span className="val">3F</span>,<span className="val">トレーニングルーム（定員30名）</span>,<span className="val">30</span>,<span className="val">YES</span>,<span className="val">YES</span>
+                    </div>
+                </div>
+
+                <div className="card">
+                    <h3>リソース予約権限の設定</h3>
+
+                    <div className="tbl-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>権限レベル</th>
+                                    <th>説明</th>
+                                    <th>推奨ユースケース</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>無制限の予約</strong></td>
+                                    <td>誰でも（外部除く）自由に予約可能</td>
+                                    <td>一般的な会議室</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>自動承認</strong></td>
+                                    <td>予約申請が自動で承認される（空き確認のみ）</td>
+                                    <td>共有デスク・一般備品</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>手動承認</strong></td>
+                                    <td>オーナーが予約申請を手動で承認/却下</td>
+                                    <td>役員会議室・高価な備品</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>オーナーのみ</strong></td>
+                                    <td>リソースカレンダーのオーナーだけが予約可能</td>
+                                    <td>特権的なリソース</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style={{ marginTop: '24px' }}>詳細予約オプション</h3>
+                    <div className="tbl-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>設定項目</th>
+                                    <th>内容</th>
+                                    <th>推奨値</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>事前予約できる最大日数</td>
+                                    <td>何日前から予約できるか制限</td>
+                                    <td>60〜90日</td>
+                                </tr>
+                                <tr>
+                                    <td>最低使用時間</td>
+                                    <td>最短予約時間</td>
+                                    <td>30分</td>
+                                </tr>
+                                <tr>
+                                    <td>最大使用時間</td>
+                                    <td>1回の予約の最長時間</td>
+                                    <td>4〜8時間</td>
+                                </tr>
+                                <tr>
+                                    <td>定期的な予約</td>
+                                    <td>定期会議での予約を許可するか</td>
+                                    <td>許可（期間上限を設定）</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div className="sources">
                         <h4>📎 公式ドキュメント</h4>
-                        <a href="https://support.google.com/a/answer/1686462" target="_blank" rel="noopener noreferrer">↗ 建物とリソース</a>
-                        <a href="https://support.google.com/a/answer/1033925" target="_blank" rel="noopener noreferrer">↗ リソースの一括追加</a>
+                        <a href="https://support.google.com/a/answer/1686462" target="_blank" rel="noopener noreferrer">↗ 建物とリソースの管理</a>
+                        <a href="https://support.google.com/a/answer/2569760" target="_blank" rel="noopener noreferrer">↗ リソースの予約設定</a>
+                        <a href="https://support.google.com/a/answer/1423286" target="_blank" rel="noopener noreferrer">↗ リソース一括作成</a>
+                        <a href="https://support.google.com/a/answer/1638114" target="_blank" rel="noopener noreferrer">↗ フィーチャーの設定</a>
+                        <a href="https://knowledge.workspace.google.com/admin/calendar/create-buildings-features-and-calendar-resources" target="_blank" rel="noopener noreferrer">↗ 建物・フィーチャー・リソース作成</a>
                     </div>
                 </div>
 
