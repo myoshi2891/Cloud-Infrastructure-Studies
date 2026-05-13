@@ -13,6 +13,7 @@ const cardColorMap: Record<ColorKey, string> = {
     'card-ace': `card-ace ${styles.cardAce}`,
     'card-genai': `card-genai ${styles.cardGenai}`,
     'card-cdl': `card-cdl ${styles.cardCdl}`,
+    'card-agwa': `card-agwa ${styles.cardAgwa}`, // Add AGWA mapping
 };
 
 /**
@@ -25,15 +26,15 @@ function Hero() {
     return (
         <section className={styles.hero}>
             <div className={styles.heroInner}>
-                <p className={styles.eyebrow}>
-                    Google Cloud 認定試験 学習ガイド
-                </p>
+                <p className={styles.eyebrow}>Google Cloud 認定試験 学習ガイド</p>
                 <h1 className={styles.title}>
-                    Cloud Infrastructure<br />
+                    Cloud Infrastructure
+                    <br />
                     <span className={styles.titleAccent}>Studies</span>
                 </h1>
                 <p className={styles.sub}>
-                    現場で通用するクラウドエンジニアを目指す方のための<br />
+                    現場で通用するクラウドエンジニアを目指す方のための
+                    <br />
                     体系的な試験対策コンテンツ集
                 </p>
                 <div className={styles.heroBadges}>
@@ -63,7 +64,10 @@ function ExamCards({ exams }: { exams: Exam[] }) {
                 <h2 className={styles.sectionTitle}>対応試験一覧</h2>
                 <div className={styles.cards}>
                     {exams.map((exam) => (
-                        <article key={exam.id} className={`home-card ${styles.card} ${cardColorMap[exam.color] || ''}`}>
+                        <article
+                            key={exam.id}
+                            className={`home-card ${styles.card} ${cardColorMap[exam.color] || ''}`}
+                        >
                             <div className={styles.cardHeader}>
                                 <div className={styles.cardTop}>
                                     <span className={styles.cardIcon}>{exam.icon}</span>
@@ -83,7 +87,10 @@ function ExamCards({ exams }: { exams: Exam[] }) {
                                 <ul className={styles.domainsList}>
                                     {exam.domains.map((d) => (
                                         <li key={d.href + d.label}>
-                                            <Link href={d.href} className={`home-domain-link ${styles.domainLink}`}>
+                                            <Link
+                                                href={d.href}
+                                                className={`home-domain-link ${styles.domainLink}`}
+                                            >
                                                 <span className={styles.domainName}>{d.label}</span>
                                                 <span className={styles.domainPct}>{d.pct}</span>
                                             </Link>

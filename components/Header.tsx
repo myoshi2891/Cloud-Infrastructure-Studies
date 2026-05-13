@@ -13,16 +13,25 @@ import { cn } from '@/lib/utils';
  * @returns The header JSX element containing the brand/home link and centered dropdown navigation
  */
 export function Header() {
-    const [openMenu, setOpenMenu] = useState<'genai' | 'ace' | 'cdl' | 'pcne' | null>(null);
+    const [openMenu, setOpenMenu] = useState<'genai' | 'ace' | 'cdl' | 'pcne' | 'agwa' | null>(
+        null,
+    );
     const genAiRef = useRef<HTMLDivElement>(null);
     const aceRef = useRef<HTMLDivElement>(null);
     const cdlRef = useRef<HTMLDivElement>(null);
     const pcneRef = useRef<HTMLDivElement>(null);
+    const agwaRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (openMenu === null) return;
 
-        const refMap = { genai: genAiRef, ace: aceRef, cdl: cdlRef, pcne: pcneRef } as const;
+        const refMap = {
+            genai: genAiRef,
+            ace: aceRef,
+            cdl: cdlRef,
+            pcne: pcneRef,
+            agwa: agwaRef,
+        } as const;
 
         const handleClickOutside = (e: MouseEvent) => {
             const ref = refMap[openMenu];
@@ -66,10 +75,7 @@ export function Header() {
                     ☁
                 </span>
                 <span className="text-[15px] font-bold tracking-tight">
-                    Cloud Infrastructure{' '}
-                    <span className="text-gradient-aurora">
-                        Studies
-                    </span>
+                    Cloud Infrastructure <span className="text-gradient-aurora">Studies</span>
                 </span>
             </Link>
 
@@ -426,6 +432,69 @@ export function Header() {
                             label="ステップバイステップ ガイド"
                             desc="PCNE 完全攻略ガイド"
                             ariaLabel="PCNE ステップバイステップ完全攻略ガイド"
+                            onClick={() => setOpenMenu(null)}
+                        />
+                    </div>
+                </div>
+
+                {/* Associate Google Workspace Administrator */}
+                <div
+                    className="relative"
+                    ref={agwaRef}
+                    onMouseEnter={() => setOpenMenu('agwa')}
+                    onMouseLeave={() => setOpenMenu(null)}
+                >
+                    <button
+                        type="button"
+                        onClick={() => setOpenMenu((v) => (v === 'agwa' ? null : 'agwa'))}
+                        aria-haspopup="true"
+                        aria-expanded={openMenu === 'agwa'}
+                        className={cn(
+                            'flex items-center gap-2.5 rounded-xl px-5 py-3 font-medium transition-all duration-150',
+                            openMenu === 'agwa'
+                                ? 'bg-white/8 text-[var(--color-foreground)]'
+                                : 'text-[var(--color-muted-foreground)] hover:bg-white/5 hover:text-[var(--color-foreground)]',
+                        )}
+                    >
+                        <span
+                            className="icon-theme-agwa flex h-4 w-4 items-center justify-center rounded text-[10px]"
+                            aria-hidden
+                        >
+                            💼
+                        </span>
+                        Associate Google Workspace Administrator
+                        <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            aria-hidden
+                            className={cn(
+                                'transition-transform duration-150',
+                                openMenu === 'agwa' && 'rotate-180',
+                            )}
+                        >
+                            <path
+                                d="M2 4l4 4 4-4"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
+
+                    <div
+                        className={cn(
+                            'invisible absolute right-0 top-full z-50 mt-2 flex w-[22rem] origin-top-right flex-col gap-1.5 rounded-xl border border-white/[0.08] bg-[#0e1117]/95 p-4 opacity-0 shadow-2xl backdrop-blur-xl transition-all duration-150',
+                            openMenu === 'agwa' && 'visible opacity-100',
+                        )}
+                    >
+                        <DropdownItem
+                            href="/gcl/agwa"
+                            label="概要"
+                            desc="AGWA 完全試験対策ガイド"
+                            ariaLabel="AGWA 概要"
                             onClick={() => setOpenMenu(null)}
                         />
                     </div>

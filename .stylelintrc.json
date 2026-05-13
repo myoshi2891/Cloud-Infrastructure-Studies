@@ -1,0 +1,12 @@
+{
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "rules": {
+        "at-rule-no-unknown": [true, {
+          "ignoreAtRules": ["utility", "theme", "apply", "tailwind", "layer", "config"]
+        }]
+      }
+    }
+  ]
+}

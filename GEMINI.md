@@ -46,7 +46,7 @@
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップしてください。`.code-line` は `white-space: pre` 等でインデントを保持し、`map` での展開時には安定した `key` を付与してください。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換してください。その際、必ず `<thead>` を含め、見出しセルには `<th scope="col">` を使用してください。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-card` など）を厳格に使用すること。コンポーネントの CSS 内で新しいカスタムプロパティ (`--*`) を定義することは禁止します（グローバルな `@theme` トークンのみを参照）。
-- **レイアウトと最大幅の制約**: 各セクションのメインコンテンツは画面幅いっぱいに広がらないよう、CSS Modulesで `max-width` (例: 1000px または `.container` ラッパー) を設定し、中央寄せにしてください。`SharedSection.module.css` のような共通スタイルでは `.section > *` セレクタ等を活用して内部の幅を制限し、背景や下線は画面全体に広がるようにします。
+- **レイアウトと最大幅の制約**: 各セクションのメインコンテンツは画面幅いっぱいに広がらないよう、CSS Modulesで `max-width` (例: 1000px または `.container` ラッパー) を設定し、中央寄せにしてください。`SharedSection.module.css` のような共通スタイルでは `.section > :not(.divider)` セレクタ等を活用して内部の幅を制限し、背景や区切り線（`.divider`）は画面全体に広がるようにします。
 - **グローバルメニューの運用**: `components/Header.tsx` のようなグローバルナビゲーションには、未作成・未完成のセクションへのリンクは配置せず、該当ページやセクションが実装されてから追加するようにしてください。
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。

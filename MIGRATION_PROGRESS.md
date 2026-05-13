@@ -4,22 +4,30 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** d1808e8586f9908d8e58b6911326267273398734 docs: update MIGRATION_PROGRESS.md with latest HEAD SHA
+- **最新 HEAD:** 96c3853f66f91722883017253503f15915856417
 - **次の作業:** PCNEのE2Eテスト作成（Playwright）など、必要に応じた対応
 - **テスト数:** 311件パス
 - **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
-- **最終更新日時(UTC):** 2026-05-12T04:00:00Z
+- **最終更新日時(UTC):** 2026-05-12T05:00:00Z
 
 ## 次回セッションでの再開プロンプト
 
-PCNE移行が完了しました。引き続き、E2Eテストの実装や他のタスクについて指示してください。
+PCNEの移行作業と、その後の品質改善（レイアウト最適化、テスト堅牢化）が完了しました。引き続き、E2Eテストの実送や他のタスクについて指示してください。
 
 ---
 
-## 2026-05-12: PCNE Step-by-Step Guide Migration (完了)
+## 2026-05-12: PCNE Step-by-Step Guide Migration & Quality Improvements (完了)
 
 ### 完了済み
 
+- **PCNE Step-by-Step Guide Migration (Step 1-8)**:
+  - Section 1-6 までの移行を完了し、旧 HTML ファイルをアーカイブ化。
+- **Layout Optimization (SharedSection.module.css)**:
+  - `.section > *` セレクターを `.section > :not(.divider)` に変更し、区切り線（`.divider`）のみを画面幅いっぱいに表示するよう修正。
+  - `SharedSection.module.css` を使用する全コンポーネントに適用。
+- **Test Robustness Improvements**:
+  - `getByRole('heading', { level: 2 })` を `name` オプション（アクセシブルネーム）併用による厳密な取得にリファクタリング。
+  - `.code-block` や `.code-line` の構造を検証するテストを追加し、テストの信頼性を向上。
 - **Step 1: Base Setup & Constants**:
   - `constants.ts`, `layout.tsx`, `page.tsx`, `pcne-step.module.css` を作成。
   - Heroセクション、スティッキーナビゲーションの実装。
