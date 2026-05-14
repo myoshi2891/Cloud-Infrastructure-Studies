@@ -1,0 +1,69 @@
+# Compose Specification v2（version フィールド不要）
+# 使い方:
+#   開発:  docker compose --profile dev up --build
+#   本番:  docker compose --profile prod up --build -d
+
+name: infra
+
+services:
+  # ----------------------------------------------------------
+  # 本番サービス: standalone ビルド済みイメージを起動
+  # ----------------------------------------------------------
+  web:
+    profiles: ["prod"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: infra-web:latest
+    container_name: infra-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+    env_file:
+      - path: .env
+        required: false
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ----------------------------------------------------------
+  # 開発サービス: bun run dev --turbopack, ソースを bind mount
+  # ----------------------------------------------------------
+  dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: infra-dev:latest
+    container_name: infra-dev
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      # ホスト側のソースをコンテナにバインド（hot reload）
+      - .:/app
+      # node_modules はコンテナ内専用ボリュームで隔離（OS差由来の破損を防ぐ）
+      - dev_node_modules:/app/node_modules
+      # .next も同様に隔離（ホストの古いビルド成果物との干渉防止）
+      - dev_next_cache:/app/.next
+    tty: true
+    stdin_open: true
+
+volumes:
+  dev_node_modules:
+  dev_next_cache:

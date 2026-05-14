@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1.7
+# 開発用 Dockerfile — hot reload 前提
+# ソースは compose の bind mount で外部から差し込む想定
+
+ARG BUN_VERSION=1-alpine
+
+FROM oven/bun:${BUN_VERSION}
+WORKDIR /app
+
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+# Turbopack / Next dev はファイル監視に inotify を使う。
+# bind mount 経由のイベント取りこぼし対策としてポーリングを有効化。
+ENV CHOKIDAR_USEPOLLING=true
+ENV WATCHPACK_POLLING=true
+
+COPY package.json bun.lock* ./
+
+# bun.lock は gitignore 対象のため frozen install は使わない（本番 Dockerfile と方針統一）
+RUN bun install
+
+# ソースコードは compose 側で volume マウントされるため、
+# ここでは特にコピーしない（イメージを軽量に保つ）
+
+EXPOSE 3000
+
+CMD ["bun", "run", "dev"]

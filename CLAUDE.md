@@ -9,7 +9,7 @@ GCP・AWS資格試験対策（Associate Cloud Engineer, Generative AI Leader）�
 ## コマンド
 
 ```bash
-# 開発
+# 開発（ローカル）
 bun run dev          # Turbopack で開発サーバー起動（localhost:3000）
 bun run build        # プロダクションビルド
 bun run lint         # ESLint
@@ -21,6 +21,20 @@ bun run test:e2e     # Playwright E2E（dev server を自動起動）
 ```
 
 初回E2Eテスト前: `bunx playwright install`
+
+```bash
+# Docker（Makefile 経由）
+make dev             # 開発サーバー起動（hot reload、bind mount）
+make prod            # 本番ビルド & 起動（standalone、256MB）
+make down            # コンテナ停止・削除
+make logs            # 本番コンテナのログ表示
+make logs-dev        # 開発コンテナのログ表示
+make shell           # 本番コンテナ内シェル（デバッグ用）
+make clean           # コンテナ + 名前付きボリューム削除
+make help            # コマンド一覧
+```
+
+Docker 関連ファイル: `Dockerfile`（本番）、`Dockerfile.dev`（開発）、`compose.yaml`、`.dockerignore`
 
 ## アーキテクチャ
 
