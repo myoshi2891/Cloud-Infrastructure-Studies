@@ -3,7 +3,7 @@
  * Layer 3: ページ固有テーマ変数 + コンポーネントスタイル
  */
 
-:root {
+.ace-page {
     --ace-bg: #08090f;
     --ace-surface: #0e1117;
     --ace-surface2: #141820;
@@ -123,6 +123,7 @@
     top: 0;
     z-index: 100;
     background: rgba(8, 9, 15, 0.93);
+    -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--ace-border);
     display: flex;
