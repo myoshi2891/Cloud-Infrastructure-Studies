@@ -18,7 +18,7 @@ services:
     container_name: infra-web
     restart: unless-stopped
     ports:
-      - "3001:3000"
+      - "3003:3000"
     environment:
       NODE_ENV: production
       PORT: 3000
@@ -44,7 +44,7 @@ services:
     image: infra-dev:latest
     container_name: infra-dev
     ports:
-      - "3001:3000"
+      - "3003:3000"
     environment:
       NODE_ENV: development
       PORT: 3000
