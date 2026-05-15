@@ -1182,7 +1182,7 @@ export default function Section3Page() {
             </header>
 
             {/* NAV */}
-            <nav className="snav">
+            <nav className="snav" aria-label="Section 3 サブセクションナビゲーション">
                 <a href="#s31" className="t1"><span className="ch ch1">3.1</span>モデルの限界と克服</a>
                 <a href="#s32" className="t2"><span className="ch ch2">3.2</span>プロンプトエンジニアリング</a>
                 <a href="#s33" className="t3"><span className="ch ch3">3.3</span>グラウンディング・RAG</a>

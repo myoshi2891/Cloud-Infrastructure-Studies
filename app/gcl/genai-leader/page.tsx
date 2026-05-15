@@ -498,7 +498,7 @@ export default function GenaiLeaderPage() {
             </section>
 
             {/* Sticky Nav */}
-            <nav className="sticky-nav" role="navigation">
+            <nav className="sticky-nav" aria-label="Generative AI Leader セクションナビゲーション">
                 <a href="#overview" className="nav-item"><span className="dot dot-blue" />試験概要</a>
                 <a href="#section1" className="nav-item s1"><span className="dot dot-blue" />Section 1: Gen AI 基礎</a>
                 <a href="#section2" className="nav-item s2"><span className="dot dot-green" />Section 2: GCP サービス</a>

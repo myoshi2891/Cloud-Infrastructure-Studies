@@ -1079,7 +1079,7 @@ export default function AssociateCloudEngineerPage() {
             </section>
 
             {/* Sticky Nav */}
-            <nav className="snav" role="navigation">
+            <nav className="snav" aria-label="ACE セクションナビゲーション">
                 <a href="#overview" className="n1"><span className="dot db" />概要</a>
                 <a href="#s1" className="n1"><span className="dot db" />S1: 環境構築</a>
                 <a href="#s2" className="n2"><span className="dot dg" />S2: 計画・実装</a>

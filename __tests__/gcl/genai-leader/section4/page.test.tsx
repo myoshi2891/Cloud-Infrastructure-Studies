@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import Section4Page from '@/app/gcl/genai-leader/section4/page';
 
 describe('Generative AI Leader Section 4 ページ', () => {
@@ -33,10 +33,10 @@ describe('Generative AI Leader Section 4 ページ', () => {
 
     it('nav にサブセクションリンクが含まれること', () => {
         render(<Section4Page />);
-        const nav = screen.getByRole('navigation');
+        const nav = screen.getByRole('navigation', { name: /Section 4 サブセクションナビゲーション/ });
         expect(nav).toBeInTheDocument();
-        expect(screen.getAllByText(/Gen AI 実装戦略/).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/セキュアな AI/).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/責任ある AI/).length).toBeGreaterThanOrEqual(1);
+        expect(within(nav).getByText(/Gen AI 実装戦略/)).toBeInTheDocument();
+        expect(within(nav).getByText(/セキュアな AI/)).toBeInTheDocument();
+        expect(within(nav).getByText(/責任ある AI/)).toBeInTheDocument();
     });
 });
