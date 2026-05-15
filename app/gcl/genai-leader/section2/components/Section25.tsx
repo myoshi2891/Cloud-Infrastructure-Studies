@@ -77,9 +77,9 @@ export default function Section25() {
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>API</th>
-                            <th>機能</th>
-                            <th>エージェントでの活用例</th>
+                            <th scope="col">API</th>
+                            <th scope="col">機能</th>
+                            <th scope="col">エージェントでの活用例</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,9 +135,9 @@ export default function Section25() {
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>比較軸</th>
-                            <th>Vertex AI Studio</th>
-                            <th>Google AI Studio</th>
+                            <th scope="col">比較軸</th>
+                            <th scope="col">Vertex AI Studio</th>
+                            <th scope="col">Google AI Studio</th>
                         </tr>
                     </thead>
                     <tbody>

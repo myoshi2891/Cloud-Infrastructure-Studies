@@ -85,9 +85,9 @@ export default function Section22() {
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>機能</th>
-                            <th>内容</th>
-                            <th>ビジネス価値</th>
+                            <th scope="col">機能</th>
+                            <th scope="col">内容</th>
+                            <th scope="col">ビジネス価値</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -193,10 +193,10 @@ export default function Section22() {
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>サービス</th>
-                            <th>主な対象ユーザー</th>
-                            <th>核心価値</th>
-                            <th>特徴的機能</th>
+                            <th scope="col">サービス</th>
+                            <th scope="col">主な対象ユーザー</th>
+                            <th scope="col">核心価値</th>
+                            <th scope="col">特徴的機能</th>
                         </tr>
                     </thead>
                     <tbody>

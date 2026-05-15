@@ -81,9 +81,9 @@ export default function Section23() {
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>コンポーネント</th>
-                            <th>機能</th>
-                            <th>ユースケース</th>
+                            <th scope="col">コンポーネント</th>
+                            <th scope="col">機能</th>
+                            <th scope="col">ユースケース</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -132,9 +132,9 @@ export default function Section24() {
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>タイプ</th>
-                            <th>対応タスク</th>
-                            <th>代表ユースケース</th>
+                            <th scope="col">タイプ</th>
+                            <th scope="col">対応タスク</th>
+                            <th scope="col">代表ユースケース</th>
                         </tr>
                     </thead>
                     <tbody>

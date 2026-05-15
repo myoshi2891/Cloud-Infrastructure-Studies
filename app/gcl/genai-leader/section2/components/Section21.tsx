@@ -96,9 +96,9 @@ export default function Section21() {
                 <table className="tbl">
                     <thead>
                         <tr>
-                            <th>コンポーネント</th>
-                            <th>特徴</th>
-                            <th>AI での活用</th>
+                            <th scope="col">コンポーネント</th>
+                            <th scope="col">特徴</th>
+                            <th scope="col">AI での活用</th>
                         </tr>
                     </thead>
                     <tbody>

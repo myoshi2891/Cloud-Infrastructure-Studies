@@ -27,10 +27,10 @@ export default function Section12() {
                 <table className="ctbl">
                     <thead>
                         <tr>
-                            <th>種類</th>
-                            <th>特徴</th>
-                            <th>具体例</th>
-                            <th>GCP 格納先</th>
+                            <th scope="col">種類</th>
+                            <th scope="col">特徴</th>
+                            <th scope="col">具体例</th>
+                            <th scope="col">GCP 格納先</th>
                         </tr>
                     </thead>
                     <tbody>
