@@ -39,4 +39,51 @@ describe('Generative AI Leader Section 4 ページ', () => {
         expect(screen.getAllByText(/セキュアな AI/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/責任ある AI/).length).toBeGreaterThanOrEqual(1);
     });
+
+    it('card-h クラスの h3 見出しが主要セクションに存在すること', () => {
+        const { container } = render(<Section4Page />);
+        const cardHeadings = container.querySelectorAll('h3.card-h');
+        expect(cardHeadings.length).toBeGreaterThanOrEqual(5);
+
+        const headingTexts = Array.from(cardHeadings).map((el) => el.textContent ?? '');
+        expect(headingTexts.some((t) => t.includes('Gen AI ソリューションの種類と特性'))).toBe(true);
+        expect(headingTexts.some((t) => t.includes('Google Cloud の主要セキュリティツール群'))).toBe(true);
+        expect(headingTexts.some((t) => t.includes('Section 4 試験攻略'))).toBe(true);
+    });
+
+    it('外部リンクに rel="noopener" と aria-describedby が設定されていること', () => {
+        const { container } = render(<Section4Page />);
+        const externalLinks = container.querySelectorAll('a[target="_blank"]');
+        expect(externalLinks.length).toBeGreaterThanOrEqual(1);
+
+        externalLinks.forEach((link) => {
+            const rel = link.getAttribute('rel') ?? '';
+            expect(rel).toContain('noopener');
+            expect(link.getAttribute('aria-describedby')).toBe('s4-external-link-hint');
+        });
+    });
+
+    it('スクリーンリーダー向け共有ヒント要素が存在し ID が正しいこと', () => {
+        const { container } = render(<Section4Page />);
+        const hint = container.querySelector('#s4-external-link-hint');
+        expect(hint).not.toBeNull();
+        expect(hint?.classList.contains('sr-only')).toBe(true);
+        expect(hint?.textContent).toContain('新しいタブで開きます');
+    });
+
+    it('テーブルヘッダーに scope="col" が設定されていること', () => {
+        const { container } = render(<Section4Page />);
+        const thElements = container.querySelectorAll('thead th');
+        expect(thElements.length).toBeGreaterThanOrEqual(1);
+
+        thElements.forEach((th) => {
+            expect(th.getAttribute('scope')).toBe('col');
+        });
+    });
+
+    it('テーブルに sr-only caption が存在すること', () => {
+        const { container } = render(<Section4Page />);
+        const captions = container.querySelectorAll('table caption.sr-only');
+        expect(captions.length).toBeGreaterThanOrEqual(1);
+    });
 });

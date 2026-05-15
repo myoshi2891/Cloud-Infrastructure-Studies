@@ -1220,7 +1220,7 @@ export default function Section2Page() {
                 <strong>Google Cloud Generative AI Leader — Section 2 Gen AI サービス完全解説ガイド</strong>
                 <br /><br />
                 参考：
-                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer" aria-label="Google Cloud 公式試験ページ（新しいタブで開く）">
+                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noopener noreferrer" aria-label="Google Cloud 公式試験ページ（新しいタブで開く）">
                     Google Cloud 公式試験ページ
                 </a>
                 {' '}｜ 作成日：2026年3月<br /><br />

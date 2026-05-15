@@ -48,10 +48,10 @@ function Section41() {
                     <caption className="sr-only">Gen AI ソリューションの種類と特性</caption>
                     <thead>
                         <tr>
-                            <th>ソリューションタイプ</th>
-                            <th>定義</th>
-                            <th>代表的なビジネスユースケース</th>
-                            <th>Google Cloud サービス例</th>
+                            <th scope="col">ソリューションタイプ</th>
+                            <th scope="col">定義</th>
+                            <th scope="col">代表的なビジネスユースケース</th>
+                            <th scope="col">Google Cloud サービス例</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -565,9 +565,9 @@ function Section42() {
                     <caption className="sr-only">Google Cloud の主要セキュリティツール群</caption>
                     <thead>
                         <tr>
-                            <th>ツール / サービス</th>
-                            <th>役割</th>
-                            <th>AI セキュリティでの具体的活用</th>
+                            <th scope="col">ツール / サービス</th>
+                            <th scope="col">役割</th>
+                            <th scope="col">AI セキュリティでの具体的活用</th>
                         </tr>
                     </thead>
                     <tbody>
