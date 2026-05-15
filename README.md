@@ -17,6 +17,7 @@ Google Cloud (GCP) や AWS の資格試験対策を目的とした、インタ�
 - **Testing:** Vitest, Playwright
 - **Runtime:** Bun / Node.js
 - **Container:** Docker (Bun alpine, multi-stage build, standalone output)
+- **Hosting:** Netlify (Free Plan, `@netlify/plugin-nextjs`)
 
 ## 📦 セットアップ
 
@@ -53,6 +54,19 @@ make help
 | `make shell-dev` | 開発コンテナ内シェル（デバッグ用） |
 
 > **本番イメージサイズ:** standalone モードにより約 256MB（通常の Next.js + node_modules 全体比で大幅削減）
+> **注意:** `next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で切り替え。Docker は `standalone`、Netlify は未設定（SSR）。
+
+---
+
+### ☁️ Netlify へのデプロイ
+
+`netlify.toml` に設定済み。Netlify 管理画面でリポジトリを接続するだけで自動デプロイが有効になります。
+
+| 設定 | 値 |
+|---|---|
+| ビルドコマンド | `bun run build` |
+| パブリッシュディレクトリ | `.next` |
+| プラグイン | `@netlify/plugin-nextjs` |
 
 ---
 

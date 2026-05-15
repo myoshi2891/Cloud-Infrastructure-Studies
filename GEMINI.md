@@ -26,7 +26,7 @@
 - `/app`: Next.js App Router のページコンポーネント。
   - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
   - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
-- `/components`: 共通コンポーネント（Header, Footer など）。
+- `/components`: 共通コンポーネント（Header, Footer, DisclaimerBanner など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。
 - `/Gcl`: 旧式の HTML ベースの学習ガイド資料（移行中、または参照用）。
@@ -39,8 +39,14 @@
 - **スタイリング:** CSS 変数は `app/globals.css` で定義された 3層トークンアーキテクチャに従ってください。
 - **保守性:** 共通の定数（作成日など）は `app/gcl/genai-leader/constants.ts` に集約されています。
 
+## デプロイ
+
+- **Netlify**: `netlify.toml` + `@netlify/plugin-nextjs` で構成。`next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で制御（Docker ビルド時: `standalone`、Netlify ビルド時: 未設定）。
+- **Docker**: `Dockerfile`（本番 standalone）、`Dockerfile.dev`（開発 hot reload）。`make dev` / `make prod` で起動。開発コンテナの `.next` ボリューム (`infra_dev_next_cache`) は `nextjs` ユーザー（UID 1001）所有で初期化される。
+
 ## 注意事項
 
+- **`DisclaimerBanner`**: 全画面固定の免責事項バナー。`components/DisclaimerBanner.tsx` を編集すること。ResizeObserver で高さを `--disclaimer-height` に同期、`body { padding-top }` でコンテンツ隠れを防止。
 - `litellm` や `dspy` は脆弱性の懸念があるため、プロジェクトへの追加は禁止されています。
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持してください。また、Client コンポーネント内でサーバー専用API (`fs`, `cookies`, `headers`) を参照することは禁止し、PropsはJSONシリアライズ可能なものに限定してください。
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップしてください。`.code-line` は `white-space: pre` 等でインデントを保持し、`map` での展開時には安定した `key` を付与してください。

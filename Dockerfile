@@ -24,6 +24,7 @@ WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NEXT_OUTPUT_MODE=standalone
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
