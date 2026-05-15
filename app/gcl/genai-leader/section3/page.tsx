@@ -1139,7 +1139,14 @@ function SummarySection() {
     );
 }
 
-/* ── Main Page ── */
+/**
+ * Renders the Section 3 study guide page for the Generative AI Leader exam.
+ *
+ * The page includes a hero header, subsection navigation, the 3.1–3.3 content sections with dividers,
+ * and a footer with references and creation date. Global font classes are applied to the page root.
+ *
+ * @returns The React element for the complete Section 3 page, including header, navigation, main subsections, and footer.
+ */
 export default function Section3Page() {
     const fontClasses = `${outfit.variable} ${firaCode.variable}`;
 
@@ -1182,7 +1189,7 @@ export default function Section3Page() {
             </header>
 
             {/* NAV */}
-            <nav className="snav">
+            <nav className="snav" aria-label="Section 3 サブセクションナビゲーション">
                 <a href="#s31" className="t1"><span className="ch ch1">3.1</span>モデルの限界と克服</a>
                 <a href="#s32" className="t2"><span className="ch ch2">3.2</span>プロンプトエンジニアリング</a>
                 <a href="#s33" className="t3"><span className="ch ch3">3.3</span>グラウンディング・RAG</a>
