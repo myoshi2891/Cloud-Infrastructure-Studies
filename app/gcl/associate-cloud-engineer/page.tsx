@@ -1039,7 +1039,11 @@ function Section4() {
     );
 }
 
-/* ── メインページコンポーネント ── */
+/**
+ * Renders the Associate Cloud Engineer study guide page with a hero header, sticky section navigation, overview card, four content sections (S1–S4), and footer.
+ *
+ * @returns The page's JSX element containing the complete ACE study guide layout
+ */
 export default function AssociateCloudEngineerPage() {
     return (
         <div className="ace-page">

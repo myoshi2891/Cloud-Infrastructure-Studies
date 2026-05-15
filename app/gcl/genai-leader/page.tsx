@@ -473,7 +473,14 @@ function Section4() {
     );
 }
 
-/* ── メインページコンポーネント ── */
+/**
+ * Render the Generative AI Leader exam study guide page including hero, navigation, main sections, and footer.
+ *
+ * The component composes a hero banner with exam metadata, a sticky section navigation, an overview with section weightings,
+ * the content sections (Section1–Section4), and a footer with references and disclaimers.
+ *
+ * @returns The React element for the full Generative AI Leader guide page.
+ */
 export default function GenaiLeaderPage() {
     return (
         <div className={`genai-leader-page ${spaceMono.variable}`}>
