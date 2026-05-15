@@ -38,13 +38,14 @@ function Section41() {
 
             {/* Gen AI Solution Types */}
             <div className="card">
-                <div className="card-h">📋 Gen AI ソリューションの種類と特性</div>
+                <h3 className="card-h">📋 Gen AI ソリューションの種類と特性</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     試験では「どのビジネス課題に、どの Gen AI ソリューションタイプが適切か」を判断する問題が出る。
                     各タイプの強みと適用場面を理解することが第一歩。
                 </p>
 
                 <table className="ctbl">
+                    <caption className="sr-only">Gen AI ソリューションの種類と特性</caption>
                     <thead>
                         <tr>
                             <th>ソリューションタイプ</th>
@@ -99,7 +100,7 @@ function Section41() {
 
             {/* Key Factors */}
             <div className="card">
-                <div className="card-h">🔍 Gen AI ニーズを左右するキー要因</div>
+                <h3 className="card-h">🔍 Gen AI ニーズを左右するキー要因</h3>
                 <div className="fgrid">
                     <div className="fi">
                         <div className="fi-t">📊 ビジネス要件（Business Requirements）</div>
@@ -130,7 +131,7 @@ function Section41() {
 
             {/* Implementation Roadmap */}
             <div className="card">
-                <div className="card-h">🗺️ Google Cloud 推奨：Gen AI 実装の 5 ステップ ロードマップ</div>
+                <h3 className="card-h">🗺️ Google Cloud 推奨：Gen AI 実装の 5 ステップ ロードマップ</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '20px' }}>
                     Google Cloud が推奨する段階的な Gen AI 導入プロセス。試験では各ステップの内容・順序・それぞれで重要な考慮点が問われる。
                 </p>
@@ -281,7 +282,7 @@ function Section41() {
 
             {/* KPI Measurement Framework */}
             <div className="card">
-                <div className="card-h">📊 Gen AI インパクト測定フレームワーク</div>
+                <h3 className="card-h">📊 Gen AI インパクト測定フレームワーク</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     試験では「どのように Gen AI の効果を測定するか」が問われる。測定指標は財務・運用・顧客・技術の4カテゴリに分類される。
                 </p>
@@ -335,9 +336,9 @@ function Section41() {
 
                 <div className="src">
                     <div className="srct">📎 参照リソース</div>
-                    <a href="https://cloud.google.com/transform/scaling-ai-from-experimentation-to-enterprise-reality-google" target="_blank" rel="noreferrer">https://cloud.google.com/transform/scaling-ai-from-experimentation-to-enterprise-reality-google</a>
-                    <a href="https://cloud.google.com/transform/what-it-takes-to-get-your-team-ready-for-the-agentic-era" target="_blank" rel="noreferrer">https://cloud.google.com/transform/what-it-takes-to-get-your-team-ready-for-the-agentic-era</a>
-                    <a href="https://cloud.google.com/solutions/ai" target="_blank" rel="noreferrer">https://cloud.google.com/solutions/ai</a>
+                    <a href="https://cloud.google.com/transform/scaling-ai-from-experimentation-to-enterprise-reality-google" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">https://cloud.google.com/transform/scaling-ai-from-experimentation-to-enterprise-reality-google</a>
+                    <a href="https://cloud.google.com/transform/what-it-takes-to-get-your-team-ready-for-the-agentic-era" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">https://cloud.google.com/transform/what-it-takes-to-get-your-team-ready-for-the-agentic-era</a>
+                    <a href="https://cloud.google.com/solutions/ai" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">https://cloud.google.com/solutions/ai</a>
                 </div>
             </div>
         </section>
@@ -359,7 +360,7 @@ function Section42() {
 
             {/* Why Secure AI */}
             <div className="card">
-                <div className="card-h">🔐 なぜ Gen AI にはセキュリティが特別に重要か？</div>
+                <h3 className="card-h">🔐 なぜ Gen AI にはセキュリティが特別に重要か？</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     Gen AI システムは従来のソフトウェアとは異なる<strong style={{ color: 'var(--rose)' }}>固有のセキュリティリスク</strong>を持つ。
                     モデルへの攻撃・データの汚染・プロンプトによる悪用など、新たな脅威ベクターが存在する。
@@ -395,7 +396,7 @@ function Section42() {
 
             {/* ML Lifecycle Security */}
             <div className="card">
-                <div className="card-h">🔄 ML ライフサイクル全体のセキュリティ設計</div>
+                <h3 className="card-h">🔄 ML ライフサイクル全体のセキュリティ設計</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     セキュリティは「最後に追加するもの」ではなく、<strong style={{ color: 'var(--amber)' }}>ML ライフサイクルの全ステップに組み込む</strong>べきもの。各フェーズ固有のリスクと対策を理解する。
                 </p>
@@ -486,7 +487,7 @@ function Section42() {
 
             {/* SAIF Framework */}
             <div className="card">
-                <div className="card-h">🛡️ Google の SAIF（Secure AI Framework）— 6つの核心原則</div>
+                <h3 className="card-h">🛡️ Google の SAIF（Secure AI Framework）— 6つの核心原則</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     Google が 2023年に公開した <strong style={{ color: 'var(--amber)' }}>SAIF（Secure AI Framework）</strong> は、AI システムをセキュアに構築・デプロイ・運用するための包括的なフレームワーク。
                     試験では各原則の名称と意味の理解が求められる。
@@ -559,8 +560,9 @@ function Section42() {
 
             {/* GCP Security Tools */}
             <div className="card">
-                <div className="card-h">🔧 Google Cloud の主要セキュリティツール群</div>
+                <h3 className="card-h">🔧 Google Cloud の主要セキュリティツール群</h3>
                 <table className="ctbl">
+                    <caption className="sr-only">Google Cloud の主要セキュリティツール群</caption>
                     <thead>
                         <tr>
                             <th>ツール / サービス</th>
@@ -618,10 +620,10 @@ function Section42() {
                 </div>
                 <div className="src">
                     <div className="srct">📎 参照リソース</div>
-                    <a href="https://cloud.google.com/security/ai" target="_blank" rel="noreferrer">https://cloud.google.com/security/ai</a>
-                    <a href="https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf" target="_blank" rel="noreferrer">Google SAIF 詳細ドキュメント: https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf</a>
-                    <a href="https://cloud.google.com/security/products/security-command-center" target="_blank" rel="noreferrer">https://cloud.google.com/security/products/security-command-center</a>
-                    <a href="https://cloud.google.com/security/products/iam" target="_blank" rel="noreferrer">https://cloud.google.com/security/products/iam</a>
+                    <a href="https://cloud.google.com/security/ai" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">https://cloud.google.com/security/ai</a>
+                    <a href="https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Google SAIF 詳細ドキュメント: https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf</a>
+                    <a href="https://cloud.google.com/security/products/security-command-center" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">https://cloud.google.com/security/products/security-command-center</a>
+                    <a href="https://cloud.google.com/security/products/iam" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">https://cloud.google.com/security/products/iam</a>
                 </div>
             </div>
         </section>
@@ -643,7 +645,7 @@ function Section43() {
 
             {/* What is Responsible AI */}
             <div className="card">
-                <div className="card-h">🌱 責任ある AI とは何か？なぜビジネスに必要か？</div>
+                <h3 className="card-h">🌱 責任ある AI とは何か？なぜビジネスに必要か？</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     責任ある AI とは、<strong style={{ color: 'var(--sage)' }}>AI を倫理的・公平・透明・安全に設計・開発・展開・監視する原則と実践の集合体</strong>。
                     単なる道徳論ではなく、<strong style={{ color: 'var(--amber)' }}>ビジネスリスク管理・規制対応・ブランド価値保護</strong>の観点からも不可欠な経営課題。
@@ -671,7 +673,7 @@ function Section43() {
 
             {/* Google's 7 Principles */}
             <div className="card">
-                <div className="card-h">📜 Google の AI 原則（7 Principles）</div>
+                <h3 className="card-h">📜 Google の AI 原則（7 Principles）</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     Google は 2018年に <strong style={{ color: 'var(--amber)' }}>AI 開発の7つの原則</strong>を公表し、全製品・サービスの AI 開発に適用している。試験では原則の内容の理解が問われる。
                 </p>
@@ -710,7 +712,7 @@ function Section43() {
 
             {/* Core RAI Principles */}
             <div className="card">
-                <div className="card-h">🏛️ 責任ある AI の核心原則（試験必須の6要素）</div>
+                <h3 className="card-h">🏛️ 責任ある AI の核心原則（試験必須の6要素）</h3>
 
                 <div className="rai-grid">
                     <div className="rai-card">
@@ -778,7 +780,7 @@ function Section43() {
 
             {/* Privacy Tech */}
             <div className="card">
-                <div className="card-h">🔏 プライバシー保護の核心技術（試験頻出）</div>
+                <h3 className="card-h">🔏 プライバシー保護の核心技術（試験頻出）</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     試験では特に <strong style={{ color: 'var(--amber)' }}>匿名化・仮名化・差分プライバシー</strong>の違いと適用場面が問われる。3つの概念を正確に区別して理解することが重要。
                 </p>
@@ -839,7 +841,7 @@ function Section43() {
 
             {/* Bias & Fairness in Depth */}
             <div className="card">
-                <div className="card-h">📊 データ品質・バイアス・公平性の深掘り</div>
+                <h3 className="card-h">📊 データ品質・バイアス・公平性の深掘り</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
                     AI のバイアスは技術的問題であると同時に<strong style={{ color: 'var(--amber)' }}>ビジネス・社会的リスク</strong>でもある。データ品質がモデルの公平性の根本を決定する。
                 </p>
@@ -884,10 +886,10 @@ function Section43() {
 
                 <div className="src">
                     <div className="srct">📎 参照リソース</div>
-                    <a href="https://ai.google/responsibility/principles/" target="_blank" rel="noreferrer">Google AI 原則: https://ai.google/responsibility/principles/</a>
-                    <a href="https://cloud.google.com/vertex-ai/docs/explainable-ai/overview" target="_blank" rel="noreferrer">Vertex Explainable AI: https://cloud.google.com/vertex-ai/docs/explainable-ai/overview</a>
-                    <a href="https://cloud.google.com/security/products/sensitive-data-protection" target="_blank" rel="noreferrer">Sensitive Data Protection: https://cloud.google.com/security/products/sensitive-data-protection</a>
-                    <a href="https://cloud.google.com/responsible-ai" target="_blank" rel="noreferrer">Google Cloud 責任あるAI: https://cloud.google.com/responsible-ai</a>
+                    <a href="https://ai.google/responsibility/principles/" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Google AI 原則: https://ai.google/responsibility/principles/</a>
+                    <a href="https://cloud.google.com/vertex-ai/docs/explainable-ai/overview" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Vertex Explainable AI: https://cloud.google.com/vertex-ai/docs/explainable-ai/overview</a>
+                    <a href="https://cloud.google.com/security/products/sensitive-data-protection" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Sensitive Data Protection: https://cloud.google.com/security/products/sensitive-data-protection</a>
+                    <a href="https://cloud.google.com/responsible-ai" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Google Cloud 責任あるAI: https://cloud.google.com/responsible-ai</a>
                 </div>
             </div>
         </section>
@@ -899,7 +901,7 @@ function SummarySection() {
     return (
         <section id="summary">
             <div className="card" style={{ borderColor: 'var(--brd2)', background: 'linear-gradient(135deg, var(--bg2), var(--bg4))' }}>
-                <div className="card-h" style={{ fontSize: '18px', fontFamily: 'var(--serif)' }}>◆ Section 4 試験攻略 — 最重要ポイント完全まとめ</div>
+                <h3 className="card-h" style={{ fontSize: '18px', fontFamily: 'var(--serif)' }}>◆ Section 4 試験攻略 — 最重要ポイント完全まとめ</h3>
 
                 <div className="scorecard">
                     <div className="sc">
@@ -966,13 +968,13 @@ function SummarySection() {
 
                 <div className="src">
                     <div className="srct">📎 Section 4 全体の参照リソース</div>
-                    <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer">試験ページ: https://cloud.google.com/learn/certification/generative-ai-leader</a>
-                    <a href="https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf" target="_blank" rel="noreferrer">試験ガイド PDF: https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf</a>
-                    <a href="https://ai.google/responsibility/principles/" target="_blank" rel="noreferrer">Google AI 原則: https://ai.google/responsibility/principles/</a>
-                    <a href="https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf" target="_blank" rel="noreferrer">SAIF ドキュメント: https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf</a>
-                    <a href="https://cloud.google.com/responsible-ai" target="_blank" rel="noreferrer">Google Cloud 責任ある AI: https://cloud.google.com/responsible-ai</a>
-                    <a href="https://cloud.google.com/security/ai" target="_blank" rel="noreferrer">Google Cloud AI セキュリティ: https://cloud.google.com/security/ai</a>
-                    <a href="https://cloud.google.com/vertex-ai/docs/explainable-ai/overview" target="_blank" rel="noreferrer">Vertex Explainable AI: https://cloud.google.com/vertex-ai/docs/explainable-ai/overview</a>
+                    <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">試験ページ: https://cloud.google.com/learn/certification/generative-ai-leader</a>
+                    <a href="https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">試験ガイド PDF: https://services.google.com/fh/files/misc/generative_ai_leader_exam_guide_english.pdf</a>
+                    <a href="https://ai.google/responsibility/principles/" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Google AI 原則: https://ai.google/responsibility/principles/</a>
+                    <a href="https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">SAIF ドキュメント: https://services.google.com/fh/files/blogs/google_secure_ai_framework_approach.pdf</a>
+                    <a href="https://cloud.google.com/responsible-ai" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Google Cloud 責任ある AI: https://cloud.google.com/responsible-ai</a>
+                    <a href="https://cloud.google.com/security/ai" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Google Cloud AI セキュリティ: https://cloud.google.com/security/ai</a>
+                    <a href="https://cloud.google.com/vertex-ai/docs/explainable-ai/overview" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">Vertex Explainable AI: https://cloud.google.com/vertex-ai/docs/explainable-ai/overview</a>
                 </div>
             </div>
         </section>
@@ -1029,6 +1031,9 @@ export default function Section4Page() {
                 <a href="#summary"><span className="snav-num" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--muted)', border: '1px solid var(--border)' }}>◎</span>試験まとめ</a>
             </nav>
 
+            {/* 外部リンク用のスクリーンリーダー向け共有ヒント (aria-describedby から参照) */}
+            <span id="s4-external-link-hint" className="sr-only">外部サイトを新しいタブで開きます</span>
+
             {/* MAIN */}
             <main className="wrap">
                 <Section41 />
@@ -1045,7 +1050,7 @@ export default function Section4Page() {
                 <strong>Google Cloud Generative AI Leader — Section 4 ビジネス戦略 完全解説ガイド</strong>
                 <br /><br />
                 参考：
-                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer">
+                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer noopener" aria-describedby="s4-external-link-hint">
                     Google Cloud 公式試験ページ
                 </a>
                 {' '}｜ {getFormattedCreationDate()}<br /><br />

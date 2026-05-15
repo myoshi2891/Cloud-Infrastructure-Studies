@@ -55,6 +55,7 @@ export function Header() {
 
     return (
         <nav
+            aria-label="サイト全体のメインナビゲーション"
             className="sticky top-0 z-50 grid border-b border-white/[0.06] bg-[var(--color-background)]/90 px-8 backdrop-blur-xl"
             style={{
                 height: 'var(--header-h, 48px)',
