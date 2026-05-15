@@ -13,6 +13,7 @@
   "devDependencies": {
     "@eslint/compat": "^2.0.5",
     "@eslint/eslintrc": "^3.3.5",
+    "@netlify/plugin-nextjs": "^5.15.11",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",

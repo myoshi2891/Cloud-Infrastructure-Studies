@@ -108,9 +108,6 @@ package-lock.json
 out/
 next-env.d.ts
 
-# Bun
-bun.lock
-
 # テスト結果
 test-results/
 playwright-report/

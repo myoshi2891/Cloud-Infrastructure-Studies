@@ -1,0 +1,69 @@
+# ビルドコンテキストから除外（イメージにコピーされないだけでなく、転送量も削減）
+
+# 依存・ビルド成果物
+node_modules
+.next
+out
+dist
+build
+
+# Git / CI
+.git
+.gitignore
+.gitattributes
+.github
+
+# テスト
+__tests__
+e2e
+test-results
+playwright-report
+coverage
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+vitest.config.*
+playwright.config.*
+
+# 旧資料・アーカイブ（ビルドに不要）
+Aws
+Gcl
+Gcl_Archive
+docs
+
+# エディタ / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Claude / 各種ツール設定
+.claude
+.gemini
+
+# 環境ファイル（イメージへの混入防止。必要なら compose の env_file で渡す）
+.env
+.env.local
+.env.*.local
+
+# Docker 関連自身
+Dockerfile
+Dockerfile.dev
+.dockerignore
+compose.yaml
+docker-compose.yml
+docker-compose.*.yml
+
+# ログ / 一時
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+tsconfig.tsbuildinfo
+
+# プラン・ドキュメント類（Next ビルドに不要）
+*.md
+!README.md

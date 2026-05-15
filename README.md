@@ -16,38 +16,91 @@ Google Cloud (GCP) や AWS の資格試験対策を目的とした、インタ�
 - **Styling:** Tailwind CSS 4, CSS Modules, Lucide React
 - **Testing:** Vitest, Playwright
 - **Runtime:** Bun / Node.js
+- **Container:** Docker (Bun alpine, multi-stage build, standalone output)
+- **Hosting:** Netlify (Free Plan, `@netlify/plugin-nextjs`)
 
 ## 📦 セットアップ
 
+### 🐳 Docker で起動する（推奨）
+
+Docker がインストールされていれば、ローカル環境への依存なしに起動できます。
+
+```bash
+# 開発サーバー（hot reload）
+make dev
+
+# 本番ビルド & 起動
+make prod
+
+# 停止
+make down
+
+# コマンド一覧
+make help
+```
+
+| コマンド | 内容 |
+|---|---|
+| `make dev` | 開発サーバー（hot reload、ソース bind mount） |
+| `make dev-d` | 開発サーバーをバックグラウンドで起動 |
+| `make prod` | 本番イメージをビルドして起動 |
+| `make build` | 本番イメージのみビルド |
+| `make down` | コンテナを停止・削除 |
+| `make clean` | コンテナ + 名前付きボリュームを削除 |
+| `make prune` | イメージ・キャッシュも含めて全削除 |
+| `make logs` | 本番コンテナのログを表示 |
+| `make logs-dev` | 開発コンテナのログを表示 |
+| `make shell` | 本番コンテナ内シェル（デバッグ用） |
+| `make shell-dev` | 開発コンテナ内シェル（デバッグ用） |
+
+> **本番イメージサイズ:** standalone モードにより約 256MB（通常の Next.js + node_modules 全体比で大幅削減）
+> **注意:** `next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で切り替え。Docker は `standalone`、Netlify は未設定（SSR）。
+
+---
+
+### ☁️ Netlify へのデプロイ
+
+`netlify.toml` に設定済み。Netlify 管理画面でリポジトリを接続するだけで自動デプロイが有効になります。
+
+| 設定 | 値 |
+|---|---|
+| ビルドコマンド | `bun run build` |
+| パブリッシュディレクトリ | `.next` |
+| プラグイン | `@netlify/plugin-nextjs` |
+
+---
+
+### ローカル（Bun）で起動する
+
 **【パッケージマネージャー方針】**
-本リポジトリではコマンドの実行に **Bun を推奨** しますが、npm でも互換性を持って動作するように設計されています。以下に両方のコマンドを併記します。
+本リポジトリではコマンドの実行に **Bun** を使用します。
 
-### プリレクイジット
+#### プリレクイジット
 
-- Node.js 20+ または Bun 1.x
+- Bun 1.x
 
-### インストール
+#### インストール
 
 ```bash
 bun install
-# または (npm の場合)
-npm install
 ```
 
-### 開発サーバーの起動
+#### 開発サーバーの起動
 
 ```bash
 bun run dev
-# または (npm の場合)
-npm run dev
 ```
 
-### ビルド
+#### ビルド
 
 ```bash
 bun run build
-# または (npm の場合)
-npm run build
+```
+
+#### Lint
+
+```bash
+bun run lint
 ```
 
 ## 🧪 テストの実行
@@ -56,8 +109,6 @@ npm run build
 
 ```bash
 bun run test
-# または (npm の場合)
-npm run test
 ```
 
 ### E2E テスト (Playwright)
@@ -65,13 +116,9 @@ npm run test
 ```bash
 # ブラウザのインストール（初回のみ）
 bunx playwright install
-# または (npm の場合)
-npx playwright install
 
 # テスト実行
 bun run test:e2e
-# または (npm の場合)
-npm run test:e2e
 ```
 
 ## 📂 ディレクトリ構造

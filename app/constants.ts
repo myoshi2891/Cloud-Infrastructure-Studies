@@ -6,7 +6,7 @@ export interface ExamDomain {
     pct: string;
 }
 
-export type ColorKey = 'card-ace' | 'card-genai' | 'card-cdl' | 'card-agwa';
+export type ColorKey = 'card-ace' | 'card-genai' | 'card-cdl' | 'card-agwa' | 'card-pcne';
 
 export interface Exam {
     id: string;
@@ -34,6 +34,11 @@ export const EXAMS: Exam[] = [
         description:
             'Google Cloud 上でのアプリのデプロイ・管理・監視能力を認定。コンピュート・ストレージ・ネットワーク・IAM など幅広い領域を網羅。',
         domains: [
+            {
+                label: 'アーキテクチャガイド',
+                href: '/gcl/associate-cloud-engineer/architecture-guide',
+                pct: '総合',
+            },
             {
                 label: 'Domain 1: 環境設定',
                 href: '/gcl/associate-cloud-engineer/domain1',
@@ -91,9 +96,13 @@ export const EXAMS: Exam[] = [
         href: '/gcl/cloud-digital-leader',
         description:
             'クラウドテクノロジーとビジネス変革の知識を認定。IT 非専門職向けの入門資格で、Google Cloud の主要サービスを幅広くカバー。',
-        // セクション別ページ未実装のため、メインページへの単一リンクとして集約
         domains: [
-            { label: 'すべてのコンテンツを見る', href: '/gcl/cloud-digital-leader', pct: '—' },
+            { label: 'Section 1: DX と Google Cloud', href: '/gcl/cloud-digital-leader/section1', pct: '—' },
+            { label: 'Section 2: データトランスフォーメーション', href: '/gcl/cloud-digital-leader/section2', pct: '—' },
+            { label: 'Section 3: AI によるイノベーション', href: '/gcl/cloud-digital-leader/section3', pct: '—' },
+            { label: 'Section 4: インフラのモダナイゼーション', href: '/gcl/cloud-digital-leader/section4', pct: '—' },
+            { label: 'Section 5: セキュリティ＆コンプライアンス', href: '/gcl/cloud-digital-leader/section5', pct: '—' },
+            { label: 'Section 6: Scaling with Operations', href: '/gcl/cloud-digital-leader/section6', pct: '—' },
         ],
         badge: '入門向け',
         icon: '🌐',
@@ -108,9 +117,28 @@ export const EXAMS: Exam[] = [
         href: '/gcl/agwa',
         description:
             'Google Workspace のコアサービスの管理・設定、ユーザー・ドメインのプロビジョニング、セキュリティとアクセス制御などを認定。',
-        domains: [{ label: 'すべてのコンテンツを見る', href: '/gcl/agwa', pct: '—' }],
+        domains: [
+            { label: 'Section 1: ユーザー・ドメイン・ディレクトリ管理', href: '/gcl/agwa/section1', pct: '—' },
+        ],
         badge: 'Workspace 管理向け',
         icon: '💼',
+    },
+    {
+        id: 'pcne',
+        label: 'Professional Cloud Network Engineer',
+        abbr: 'PCNE',
+        level: 'Professional',
+        score: '~60問 / 120分',
+        color: 'card-pcne',
+        href: '/gcl/professional-cloud-network-engineer',
+        description:
+            'Google Cloud のネットワークインフラの設計・実装・管理能力を認定。VPC・ハイブリッド接続・ロードバランシング・セキュリティなどを網羅。',
+        domains: [
+            { label: '試験対策ガイド', href: '/gcl/professional-cloud-network-engineer', pct: '概要' },
+            { label: 'ステップバイステップガイド', href: '/gcl/professional-cloud-network-engineer-step-by-step', pct: '詳細' },
+        ],
+        badge: 'ネットワーク特化',
+        icon: '🖧',
     },
 ];
 
@@ -120,7 +148,7 @@ export interface Stat {
 }
 
 export const STATS: Stat[] = [
-    { value: '4', label: '対応試験数' },
+    { value: '5', label: '対応試験数' },
     { value: '50+', label: '学習チャプター' },
     { value: '600+', label: 'コードブロック' },
     { value: '100%', label: '日本語解説' },

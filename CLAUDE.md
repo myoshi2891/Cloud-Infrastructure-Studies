@@ -9,7 +9,7 @@ GCP・AWS資格試験対策（Associate Cloud Engineer, Generative AI Leader）�
 ## コマンド
 
 ```bash
-# 開発
+# 開発（ローカル）
 bun run dev          # Turbopack で開発サーバー起動（localhost:3000）
 bun run build        # プロダクションビルド
 bun run lint         # ESLint
@@ -22,13 +22,34 @@ bun run test:e2e     # Playwright E2E（dev server を自動起動）
 
 初回E2Eテスト前: `bunx playwright install`
 
+```bash
+# Docker（Makefile 経由）
+make dev             # 開発サーバー起動（hot reload、bind mount）
+make prod            # 本番ビルド & 起動（standalone、256MB）
+make down            # コンテナ停止・削除
+make logs            # 本番コンテナのログ表示
+make logs-dev        # 開発コンテナのログ表示
+make shell           # 本番コンテナ内シェル（デバッグ用）
+make clean           # コンテナ + 名前付きボリューム削除
+make help            # コマンド一覧
+```
+
+Docker 関連ファイル: `Dockerfile`（本番）、`Dockerfile.dev`（開発）、`compose.yaml`、`.dockerignore`
+
+```bash
+# Netlify（CI/CD 自動ビルド）
+# netlify.toml に従い Netlify が自動実行。手動トリガー不要。
+# ローカルで Netlify モード（output=undefined）のビルド確認:
+bun run build   # NEXT_OUTPUT_MODE 未設定で実行
+```
+
 ## アーキテクチャ
 
 **ルーティング:** Next.js 16 App Router。全ページは `app/` 配下。
 
 ```text
 app/
-  layout.tsx                        # ルートレイアウト（Header/Footer、フォント定義）
+  layout.tsx                        # ルートレイアウト（Header/DisclaimerBanner/Footer、フォント定義）
   page.tsx                          # トップページ
   globals.css                       # グローバルスタイル（デザイントークン定義）
   gcl/
@@ -61,7 +82,8 @@ app/
 
 components/
   Header.tsx                        # ナビゲーション（新ページ追加時はここも更新）
-  Footer.tsx
+  Footer.tsx                        # シンプルなフッター（サイト名のみ）
+  DisclaimerBanner.tsx              # 全画面固定バナー（免責事項）、layout.tsx から呼び出し
 
 __tests__/                          # Vitest（jsdom環境）
 e2e/                                # Playwright（Chromiumのみ）
@@ -94,6 +116,9 @@ Aws/                                # AWS資料アーカイブ
 
 ## 制約事項
 
+- **Netlify デプロイ**: `netlify.toml` + `@netlify/plugin-nextjs` で構成。`next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で切り替え（Docker: `standalone`、Netlify: 未設定）。
+- **Docker dev コンテナの `.next` 権限**: `Dockerfile.dev` で `mkdir -p /app/.next` を `chown` より前に実行し、named volume (`dev_next_cache`) を `nextjs` ユーザー所有で初期化すること。ボリューム再作成が必要な場合は `docker volume rm infra_dev_next_cache`。
+- **`DisclaimerBanner`**: `components/DisclaimerBanner.tsx` は `'use client'` の Client Component。ResizeObserver で `--disclaimer-height` CSS変数を動的同期し、`body { padding-top }` でコンテンツ隠れを防ぐ。免責事項テキストの変更はこのファイルのみ編集する。
 - `litellm` / `dspy` の追加禁止（脆弱性懸念）
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。Client コンポーネント内でサーバー専用 API（`fs`, `cookies`, `headers` など）を呼び出すことは明示的に禁止し、渡す Props は JSON シリアライズ可能なものに限定すること。
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。`.code-line` は `white-space: pre` を適用してインデントを保持し、`map` 展開時は安定した `key` を付与すること。

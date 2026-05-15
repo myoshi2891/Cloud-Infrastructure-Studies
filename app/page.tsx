@@ -13,7 +13,8 @@ const cardColorMap: Record<ColorKey, string> = {
     'card-ace': `card-ace ${styles.cardAce}`,
     'card-genai': `card-genai ${styles.cardGenai}`,
     'card-cdl': `card-cdl ${styles.cardCdl}`,
-    'card-agwa': `card-agwa ${styles.cardAgwa}`, // Add AGWA mapping
+    'card-agwa': `card-agwa ${styles.cardAgwa}`,
+    'card-pcne': `card-pcne ${styles.cardPcne}`,
 };
 
 /**
