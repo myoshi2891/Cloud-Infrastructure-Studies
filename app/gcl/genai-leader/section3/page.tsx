@@ -949,9 +949,9 @@ function Section33() {
                     {/* max_output_tokens */}
                     <div className="param">
                         <div className="param-name">max_output_tokens</div>
-                        <div className="param-range">モデル依存（例: Gemini Pro = 8192）</div>
+                        <div className="param-range">モデル仕様で確認が必要（モデル世代ごとに異なる）</div>
                         <div className="param-desc">
-                            生成する<strong style={{ color: 'var(--teal)' }}>最大トークン数</strong>を設定。1トークン ≒ 日本語で約1〜2文字、英語で約4文字。短い応答が必要なら小さく設定して API コストを削減できる。
+                            生成する<strong style={{ color: 'var(--teal)' }}>最大トークン数</strong>を設定。1トークン ≒ 日本語で約1〜2文字、英語で約4文字。短い応答が必要なら小さく設定して API コストを削減できる。実際の上限値は使用するモデル（Gemini 2.5 Pro / Flash 等）の公式仕様で確認すること。
                         </div>
                         <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--muted)' }}>
                             <strong style={{ color: 'var(--text)' }}>推奨設定：</strong><br />
@@ -963,9 +963,9 @@ function Section33() {
                     {/* safety_settings */}
                     <div className="param">
                         <div className="param-name">safety_settings</div>
-                        <div className="param-range">OFF / LOW / MEDIUM / HIGH / BLOCK_ALL</div>
+                        <div className="param-range">BLOCK_LOW_AND_ABOVE / BLOCK_MEDIUM_AND_ABOVE / BLOCK_ONLY_HIGH / BLOCK_NONE / OFF</div>
                         <div className="param-desc">
-                            有害コンテンツ（ヘイトスピーチ・危険情報・性的内容・暴力）の<strong style={{ color: 'var(--teal)' }}>フィルタリング強度</strong>を設定。カテゴリ別に個別設定可能。エンタープライズでは HIGH を推奨。
+                            有害コンテンツ（ヘイトスピーチ・危険情報・性的内容・暴力）の<strong style={{ color: 'var(--teal)' }}>フィルタリング強度</strong>を設定。カテゴリ別に個別設定可能。エンタープライズでは <code>BLOCK_LOW_AND_ABOVE</code> 等の厳しめ閾値を推奨。<code>BLOCK_NONE</code> は gemini-2.5-flash 以降の新モデル向け。
                         </div>
                         <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--muted)' }}>
                             <strong style={{ color: 'var(--text)' }}>カテゴリ：</strong><br />
