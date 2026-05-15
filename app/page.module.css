@@ -403,6 +403,32 @@
     color: var(--color-theme-agwa-fg);
 }
 
+.cardPcne {
+    border-color: var(--color-theme-pcne-bg);
+}
+.cardPcne::before {
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-theme-pcne-fg) 8%, transparent),
+        transparent
+    );
+}
+.cardPcne:hover,
+.cardPcne:focus-within {
+    border-color: color-mix(in srgb, var(--color-theme-pcne-fg) 50%, transparent);
+}
+.cardPcne:hover::before,
+.cardPcne:focus-within::before {
+    opacity: 1;
+}
+
+.cardPcne .ctaBtn:hover,
+.cardPcne .ctaBtn:focus-visible {
+    background: color-mix(in srgb, var(--color-theme-pcne-fg) 15%, transparent);
+    border-color: color-mix(in srgb, var(--color-theme-pcne-fg) 50%, transparent);
+    color: var(--color-theme-pcne-fg);
+}
+
 .statsSection {
     padding: 40px 24px 80px;
     border-top: 1px solid var(--color-border);

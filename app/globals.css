@@ -45,6 +45,9 @@
     --color-theme-agwa-fg: hsl(140 70% 65%);
     --color-theme-agwa-rgb: 79, 195, 247;
 
+    --color-theme-pcne-bg: hsl(25 70% 50% / 0.25);
+    --color-theme-pcne-fg: hsl(25 90% 70%);
+
     /* Google Brand Colors (central tokens) */
     --color-google-blue: #4285f4;
     --color-google-green: #34a853;
@@ -148,6 +151,11 @@ body {
 @utility icon-theme-agwa {
     background: var(--color-theme-agwa-bg);
     color: var(--color-theme-agwa-fg);
+}
+
+@utility icon-theme-pcne {
+    background: var(--color-theme-pcne-bg);
+    color: var(--color-theme-pcne-fg);
 }
 
 .code-line {
