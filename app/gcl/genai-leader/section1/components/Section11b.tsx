@@ -1,4 +1,9 @@
-/* ── Sub-section 1.1b: ML アプローチ ── */
+/**
+ * Renders a documentation section that explains the three primary machine learning approaches
+ * (supervised, unsupervised, reinforcement) with example use cases and exam-focused cautions.
+ *
+ * @returns A React element for a <section> containing cards for each approach and a warning list highlighting common exam traps.
+ */
 export default function Section11b() {
     return (
         <section id="s11b">

@@ -1,6 +1,14 @@
 import { ReferencesBlock } from './ReferencesBlock';
 
-/* ── Sub-section 1.4: Google 基盤モデル ── */
+/**
+ * Renders the Section 1.4 UI describing Google foundation models (Gemini, Gemma, Imagen, Veo).
+ *
+ * The section includes a header with a priority badge, a comparative card with four model
+ * summaries and selection criteria, a references block, and a consolidated exam-summary card
+ * with key memorization points and additional references.
+ *
+ * @returns The JSX element for the section with id "s14", containing the model comparison grid, decision criteria, references, and exam summary content.
+ */
 export default function Section14() {
     return (
         <section id="s14">

@@ -1,3 +1,10 @@
+/**
+ * Renders the Section 2 summary card containing score highlights, subsection key points, common-concept warnings, and external reference links.
+ *
+ * The rendered section uses id="summary" and includes a styled scorecard, a grid of subsection highlights (2.1–2.5), a warning list of commonly confused concepts, and a list of reference resources.
+ *
+ * @returns The JSX element for the Section 2 summary card and its contained UI elements.
+ */
 export default function SummarySection() {
     return (
         <section id="summary">

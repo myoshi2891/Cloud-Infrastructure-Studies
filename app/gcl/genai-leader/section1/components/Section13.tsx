@@ -1,6 +1,13 @@
 import { ReferencesBlock } from './ReferencesBlock';
 
-/* ── Sub-section 1.3: Gen AI ランドスケープ ── */
+/**
+ * Render a section that visualizes the Gen AI ecosystem's five-layer landscape and summarizes each layer's business implications.
+ *
+ * The section includes labeled representations of the five layers (Infrastructure, Models, Platforms, Agents, Applications),
+ * a highlighted checklist of business-positioning notes, and a references block with related links.
+ *
+ * @returns The JSX element for the section with id "s13" describing the Gen AI 5-layer structure and references.
+ */
 export default function Section13() {
     return (
         <section id="s13">

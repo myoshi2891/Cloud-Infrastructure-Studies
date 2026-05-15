@@ -28,6 +28,13 @@ export const metadata: Metadata = {
         'Generative AI Leader 試験 Section 2 — Google Cloud の Gen AI プロダクト群完全解説。Vertex AI・Gemini Workspace・CES・エージェントツーリング',
 };
 
+/**
+ * Renders the Section 2 page for the Generative AI Leader guide, composing the hero, top navigation, main content subsections, and footer.
+ *
+ * The component applies site font variables and arranges page sections: a hero area with title and weight indicator, a navigation bar linking to subsections, the main content that mounts Section21–Section25 and a summary, and a footer with references and notes.
+ *
+ * @returns The JSX element for the Section 2 page layout
+ */
 export default function Section2Page() {
     const fontClasses = `${sora.variable} ${ibmPlexMono.variable}`;
 

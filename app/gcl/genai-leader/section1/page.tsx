@@ -28,7 +28,16 @@ export const metadata: Metadata = {
         'Generative AI Leader 試験 Section 1 完全解説 — AI・ML・生成AIの核心概念、データの本質、Gen AI ランドスケープ、Google基盤モデル',
 };
 
-/* ── Main Page ── */
+/**
+ * Render the Section 1 study page for the Generative AI Leader exam.
+ *
+ * The page includes a hero header with section summary and badges, a subsection
+ * navigation bar, the main content composed of imported subsection components
+ * (Section11, Section11b, Section11c, Section12, Section13, Section14), and a
+ * footer with references and metadata.
+ *
+ * @returns The JSX element representing the complete Section 1 page layout.
+ */
 export default function Section1Page() {
     const fontClasses = `${fraunces.variable} ${azeretMono.variable}`;
 
