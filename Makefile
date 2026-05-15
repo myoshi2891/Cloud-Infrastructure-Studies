@@ -22,7 +22,7 @@ help: ## コマンド一覧を表示
 # 開発
 # ============================================================
 dev: ## 開発サーバーを起動（hot reload、ソースを bind mount）
-	@echo "→ 開発サーバーを起動します (http://localhost:3000)"
+	@echo "→ 開発サーバーを起動します (http://localhost:3001)"
 	docker compose --profile dev up --build
 
 dev-d: ## 開発サーバーをバックグラウンドで起動
@@ -36,7 +36,7 @@ build-dev: ## 開発イメージのみビルド（起動しない）
 # 本番
 # ============================================================
 prod: ## 本番イメージをビルドして起動
-	@echo "→ 本番サーバーを起動します (http://localhost:3000)"
+	@echo "→ 本番サーバーを起動します (http://localhost:3001)"
 	docker compose --profile prod up --build -d
 	@echo "→ 起動完了。ログ確認: make logs"
 
