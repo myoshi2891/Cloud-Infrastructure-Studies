@@ -1152,7 +1152,16 @@ function SummarySection() {
     );
 }
 
-/* ── Main Page ── */
+/**
+ * Render the Section 2 overview page for the Generative AI Leader study guide.
+ *
+ * The component composes the hero, subsection navigation, all Section 2 subsections (2.1–2.5),
+ * and a page footer; it applies the configured fonts to the page root and includes accessible
+ * navigation and footer labeling.
+ *
+ * @returns The JSX element for the complete Section 2 page layout, including hero, top navigation,
+ * subsection content, separators, and footer.
+ */
 export default function Section2Page() {
     const fontClasses = `${sora.variable} ${ibmPlexMono.variable}`;
 
