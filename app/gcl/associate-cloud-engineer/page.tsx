@@ -19,9 +19,9 @@ function Section1() {
                 <div className="pct-badge pb1">~23%</div>
             </div>
 
-            {/* 1.1 Resource Hierarchy */}
+            {/* 1.1.1 Resource Hierarchy */}
             <div className="tcard">
-                <div className="ttitle"><span className="tid">1.1</span>リソース階層（Resource Hierarchy）の設計</div>
+                <div className="ttitle"><span className="tid">1.1.1</span>リソース階層（Resource Hierarchy）の設計</div>
                 <p style={{ fontSize: '14px', marginBottom: '14px' }}>GCPのリソースは <strong style={{ color: 'var(--ace-cyan)' }}>組織 → フォルダ → プロジェクト → リソース</strong> の4層構造で管理される。ポリシーは上位から下位へ継承される。</p>
 
                 <div className="tgrid">
@@ -73,9 +73,9 @@ function Section1() {
                 </div>
             </div>
 
-            {/* 1.1 IAM */}
+            {/* 1.1.2 IAM */}
             <div className="tcard">
-                <div className="ttitle"><span className="tid">1.1</span>IAM（Identity and Access Management）の基礎</div>
+                <div className="ttitle"><span className="tid">1.1.2</span>IAM（Identity and Access Management）の基礎</div>
                 <p style={{ fontSize: '14px', marginBottom: '14px' }}>IAMは「<strong style={{ color: 'var(--ace-cyan)' }}>誰が（Member）・何を（Permission）・どのリソースに（Resource）できるか</strong>」を定義する。ロールはアクセス制御の最小単位。</p>
 
                 <table className="ctable">
@@ -112,9 +112,9 @@ function Section1() {
                 </pre>
             </div>
 
-            {/* 1.1 Cloud Identity */}
+            {/* 1.1.3 Cloud Identity */}
             <div className="tcard">
-                <div className="ttitle"><span className="tid">1.1</span>Cloud Identity とユーザー管理</div>
+                <div className="ttitle"><span className="tid">1.1.3</span>Cloud Identity とユーザー管理</div>
                 <div className="tgrid">
                     <div className="titem">
                         <div className="tname">Cloud Identity</div>
@@ -144,9 +144,9 @@ function Section1() {
                 </div>
             </div>
 
-            {/* 1.1 APIs & Quotas */}
+            {/* 1.1.4 APIs & Quotas */}
             <div className="tcard">
-                <div className="ttitle"><span className="tid">1.1</span>API 有効化・割り当て（Quota）管理</div>
+                <div className="ttitle"><span className="tid">1.1.4</span>API 有効化・割り当て（Quota）管理</div>
                 <div className="ib">
                     <div className="ibt">重要ポイント</div>
                     <p>GCP の各サービスは使用前に API を有効化する必要がある。大規模トラフィックの前には Quota 増加を事前申請すること。クォータ超過はアプリダウンの原因となる。</p>
