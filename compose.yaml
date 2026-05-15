@@ -17,6 +17,7 @@ services:
     image: infra-web:latest
     container_name: infra-web
     restart: unless-stopped
+    mem_limit: 256m
     ports:
       - "3003:3000"
     environment:
