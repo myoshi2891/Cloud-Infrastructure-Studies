@@ -23,7 +23,15 @@ export const metadata: Metadata = {
         'Generative AI Leader 試験 Section 4 — Gen AI 実装ステップ・セキュアな AI・責任ある AI を経営者視点で完全解説',
 };
 
-/* ── Section 4.1: Gen AI ソリューションの成功実装ステップ ── */
+/**
+ * Render the "Gen AI ソリューションの成功実装ステップ" section with guidance for successful Gen AI adoption.
+ *
+ * This component produces a presentational section that explains Gen AI solution types, key influencing factors,
+ * a Google Cloud–recommended 5-step implementation roadmap (Identify, Choose, Pilot, Integrate, Measure),
+ * best practices, and a KPI measurement framework with example metrics and external references.
+ *
+ * @returns A React element for section 4.1 containing the solution types table, key factors grid, implementation roadmap, best-practice notes, and KPI measurement framework.
+ */
 function Section41() {
     return (
         <section id="s41">
@@ -345,7 +353,13 @@ function Section41() {
     );
 }
 
-/* ── Section 4.2: セキュアな AI ── */
+/**
+ * Render the "セキュアな AI (Secure AI)" section describing AI-specific security risks, ML-lifecycle security controls, Google's SAIF principles, Google Cloud security tools, and recommended best practices.
+ *
+ * This component presents explanatory text and structured content (risk list, lifecycle phases, SAIF's six core principles, a tools table, golden rules, and external references) intended for informational and exam-preparation use.
+ *
+ * @returns A JSX element for the section with id "s42" that contains the secure-AI content described above.
+ */
 function Section42() {
     return (
         <section id="s42">
@@ -630,7 +644,11 @@ function Section42() {
     );
 }
 
-/* ── Section 4.3: 責任ある AI ── */
+/**
+ * Renders the "Responsible AI and Business Ethics" section (Section 4.3), presenting definitions, Google's 7 principles, core responsible AI elements (fairness, transparency, explainability, privacy, accountability, safety), privacy protection techniques, bias and fairness considerations, best practices, and reference links.
+ *
+ * @returns The JSX element representing the Section 4.3 content.
+ */
 function Section43() {
     return (
         <section id="s43">
@@ -896,7 +914,11 @@ function Section43() {
     );
 }
 
-/* ── Summary Section ── */
+/**
+ * Renders the Section 4 summary card with score metrics, condensed takeaways, common-concept warnings, and reference links.
+ *
+ * @returns The JSX element for the Section 4 summary, including an at-a-glance scorecard, three subsection highlights, a warning list of easily confused concepts, and external resource links.
+ */
 function SummarySection() {
     return (
         <section id="summary">
@@ -981,7 +1003,12 @@ function SummarySection() {
     );
 }
 
-/* ── Main Page ── */
+/**
+ * Renders the Section 4 page for the Generative AI Leader guide, including the hero header, in-page navigation,
+ * shared external-link screen-reader hint, main content (Section41, Section42, Section43, and SummarySection), and footer.
+ *
+ * @returns The JSX element for the complete Section 4 layout
+ */
 export default function Section4Page() {
     const fontClasses = `${playfairDisplay.variable} ${dmMono.variable}`;
 
