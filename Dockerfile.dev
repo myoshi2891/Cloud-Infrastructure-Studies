@@ -18,11 +18,18 @@ ENV WATCHPACK_POLLING=true
 
 COPY package.json bun.lock* ./
 
-# bun.lock は gitignore 対象のため frozen install は使わない（本番 Dockerfile と方針統一）
+# 依存関係のインストール (本番環境と合わせ --frozen-lockfile が望ましいが、dev環境では追加パッケージを入れることも多いため一旦そのまま)
 RUN bun install
 
 # ソースコードは compose 側で volume マウントされるため、
 # ここでは特にコピーしない（イメージを軽量に保つ）
+
+# 非 root ユーザーで実行
+RUN addgroup --system --gid 1001 nodejs \
+ && adduser --system --uid 1001 --ingroup nodejs nextjs \
+ && chown -R nextjs:nodejs /app
+
+USER nextjs
 
 EXPOSE 3000
 

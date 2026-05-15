@@ -13,10 +13,8 @@ WORKDIR /app
 # COPY は glob で「無くてもエラーにしない」ため、bun.lock の有無を許容できる
 COPY package.json bun.lock* ./
 
-# bun.lock はリポジトリでは gitignore 対象（再現性は package.json の semver で担保）。
-# よって --frozen-lockfile は使わず通常 install を行う。
-# lockfile を Git 管理対象にする運用に切り替えた場合は --frozen-lockfile を追加すること。
-RUN bun install
+# bun.lock をコミットして再現性を担保するため、--frozen-lockfile を使用
+RUN bun install --frozen-lockfile
 
 # ============================================================
 # Stage 2: builder — Next.js standalone ビルド
@@ -55,6 +53,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 USER nextjs
 
 EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD bun -e "fetch('http://localhost:3000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"
 
 # Next.js standalone が生成する server.js を Bun で起動
 CMD ["bun", "run", "server.js"]
