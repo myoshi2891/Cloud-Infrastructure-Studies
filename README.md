@@ -73,34 +73,34 @@ make help
 ### ローカル（Bun）で起動する
 
 **【パッケージマネージャー方針】**
-本リポジトリではコマンドの実行に **Bun を推奨** しますが、npm でも互換性を持って動作するように設計されています。
+本リポジトリではコマンドの実行に **Bun** を使用します。
 
 #### プリレクイジット
 
-- Node.js 20+ または Bun 1.x
+- Bun 1.x
 
 #### インストール
 
 ```bash
 bun install
-# または (npm の場合)
-npm install
 ```
 
 #### 開発サーバーの起動
 
 ```bash
 bun run dev
-# または (npm の場合)
-npm run dev
 ```
 
 #### ビルド
 
 ```bash
 bun run build
-# または (npm の場合)
-npm run build
+```
+
+#### Lint
+
+```bash
+bun run lint
 ```
 
 ## 🧪 テストの実行
@@ -109,8 +109,6 @@ npm run build
 
 ```bash
 bun run test
-# または (npm の場合)
-npm run test
 ```
 
 ### E2E テスト (Playwright)
@@ -118,13 +116,9 @@ npm run test
 ```bash
 # ブラウザのインストール（初回のみ）
 bunx playwright install
-# または (npm の場合)
-npx playwright install
 
 # テスト実行
 bun run test:e2e
-# または (npm の場合)
-npm run test:e2e
 ```
 
 ## 📂 ディレクトリ構造

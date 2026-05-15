@@ -1,7 +1,10 @@
 import type { NextConfig } from 'next';
 
+const output: NextConfig['output'] =
+  process.env.NEXT_OUTPUT_MODE === 'standalone' ? 'standalone' : undefined;
+
 const nextConfig: NextConfig = {
-  output: (process.env.NEXT_OUTPUT_MODE as NextConfig['output']) || undefined,
+  output,
 };
 
 export default nextConfig;

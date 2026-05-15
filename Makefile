@@ -6,7 +6,7 @@
 #       make prod  → 本番イメージをビルドして起動
 #       make down  → 起動中のコンテナを停止・削除
 
-.PHONY: help dev prod build build-dev down logs logs-dev shell clean prune
+.PHONY: help dev dev-d prod build build-dev down logs logs-dev shell shell-dev clean prune
 
 # デフォルトターゲット: ヘルプを表示
 .DEFAULT_GOAL := help

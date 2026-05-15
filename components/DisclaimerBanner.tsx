@@ -29,6 +29,8 @@ export function DisclaimerBanner() {
     return (
         <div
             ref={ref}
+            role="note"
+            aria-label="免責事項: 本サイトは個人学習目的です。最新の公式情報は各試験プロバイダーの公式サイトをご確認ください。"
             style={{
                 position: 'fixed',
                 top: 'var(--header-h, 48px)',

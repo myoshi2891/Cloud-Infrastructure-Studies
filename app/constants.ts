@@ -148,7 +148,7 @@ export interface Stat {
 }
 
 export const STATS: Stat[] = [
-    { value: '4', label: '対応試験数' },
+    { value: '5', label: '対応試験数' },
     { value: '50+', label: '学習チャプター' },
     { value: '600+', label: 'コードブロック' },
     { value: '100%', label: '日本語解説' },
