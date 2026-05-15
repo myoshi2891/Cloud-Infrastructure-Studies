@@ -979,7 +979,14 @@ function SummarySection() {
     );
 }
 
-/* ── Main Page ── */
+/**
+ * Render the complete Section 4 page layout for the Generative AI Leader exam guide.
+ *
+ * The page includes a hero header, accessible sub-navigation for subsections 4.1–4.3, the three detailed subsection components,
+ * a summary section, and a footer with references and creation date.
+ *
+ * @returns The JSX element for the Section 4 page containing hero, navigation, main content (Section41, Section42, Section43, SummarySection), and footer.
+ */
 export default function Section4Page() {
     const fontClasses = `${playfairDisplay.variable} ${dmMono.variable}`;
 
