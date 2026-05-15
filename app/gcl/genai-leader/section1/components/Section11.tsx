@@ -1,4 +1,13 @@
-/* ── Sub-section 1.1: 核心概念・用語 ── */
+/**
+ * Renders the "Gen AI の核心概念・用語と定義" section containing an inclusion hierarchy, a glossary of key terms, and exam strategy notes.
+ *
+ * The section includes:
+ * - An AI → ML → Deep Learning → Generative AI inclusion diagram with brief definitions and tags.
+ * - A glossary of exam-essential terms (Foundation Model, LLM, Multimodal Model, Prompt, Hallucination, Fine-tuning, RAG, Embedding).
+ * - A short "試験攻略ポイント" list with common exam-focused reminders.
+ *
+ * @returns The JSX section element that groups the hierarchy diagram, glossary, and exam tips under <section id="s11">.
+ */
 export default function Section11() {
     return (
         <section id="s11">

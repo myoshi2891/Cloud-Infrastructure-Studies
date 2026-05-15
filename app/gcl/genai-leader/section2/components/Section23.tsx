@@ -1,3 +1,11 @@
+/**
+ * Renders the "2.3 顧客体験向上ソリューション（Customer Engagement Suite）" section with static explanatory UI.
+ *
+ * The section includes an introductory note, a Vertex AI Search card (features, use cases, best practices),
+ * and a Customer Engagement Suite (CES) card with component table, architecture layers, best practices, and reference links.
+ *
+ * @returns A React element containing the complete static section markup for the Customer Engagement Suite content.
+ */
 export default function Section23() {
     return (
         <section id="s23">

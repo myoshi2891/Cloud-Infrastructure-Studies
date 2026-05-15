@@ -1,3 +1,12 @@
+/**
+ * Render a section presenting an overview of Google Cloud's Vertex AI Platform, including Model Garden, AutoML, RAG offerings, and Agent Builder.
+ *
+ * The section contains a header, a layered component architecture diagram, cards for Model Garden and AutoML (with task/use-case table),
+ * a three-level RAG offerings flow, and details about Vertex AI Agent Builder (Agent Designer, ADK, Agent Engine, and security/governance),
+ * plus reference links.
+ *
+ * @returns A JSX element containing the complete "Vertex AI Platform" overview section (section#s24).
+ */
 export default function Section24() {
     return (
         <section id="s24">

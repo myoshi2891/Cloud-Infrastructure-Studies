@@ -1,6 +1,10 @@
 import { ReferencesBlock } from './ReferencesBlock';
 
-/* ── Sub-section 1.2: データの種類 ── */
+/**
+ * Renders the "データの種類とビジネス的意味" section with explanatory content for data types and quality.
+ *
+ * @returns A JSX <section id="s12"> containing: a header block, a table comparing structured / semi-structured / unstructured data with example GCP storage targets, a glossary of six data-quality characteristics (Accuracy, Completeness, Consistency, Timeliness, Uniqueness, Validity), and a ReferencesBlock with external links.
+ */
 export default function Section12() {
     return (
         <section id="s12">

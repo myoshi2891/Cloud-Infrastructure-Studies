@@ -1,3 +1,13 @@
+/**
+ * Renders the static "2.1" section describing Google Cloud's Gen AI strengths.
+ *
+ * The section (id="s21") contains a header with title and badge and multiple content
+ * cards covering AI-First research, enterprise readiness (five pillars), AI-optimized
+ * infrastructure (Hypercomputer) with a component table, Google Cloud's open strategy,
+ * and data governance / AI democratization details and references.
+ *
+ * @returns The JSX element for the section containing static cards, grids, tables, and links.
+ */
 export default function Section21() {
     return (
         <section id="s21">

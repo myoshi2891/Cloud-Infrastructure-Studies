@@ -1,6 +1,13 @@
 import { ReferencesBlock } from './ReferencesBlock';
 
-/* ── Sub-section 1.1c: ML ライフサイクル ── */
+/**
+ * Render a section that presents the five-stage ML lifecycle with corresponding Google Cloud tools.
+ *
+ * The section includes stage descriptions (data collection, development, training, deployment, monitoring),
+ * a short note on Vertex AI Pipelines' role, and a ReferencesBlock with related links.
+ *
+ * @returns The JSX element for the ML lifecycle section
+ */
 export default function Section11c() {
     return (
         <section id="s11c">

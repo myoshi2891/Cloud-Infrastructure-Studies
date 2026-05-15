@@ -1,3 +1,11 @@
+/**
+ * Render the "Gen AI エージェントのツーリング" informational section with structured content about agent tooling.
+ *
+ * Renders a <section id="s25"> containing cards that explain the four agent tool types (Extensions, Functions, Data Stores, Plugins),
+ * list major Google Cloud AI APIs and their agent use cases, and provide a comparison between Vertex AI Studio and Google AI Studio.
+ *
+ * @returns A JSX element representing the complete informational section with headings, explanatory text, tables, and reference links.
+ */
 export default function Section25() {
     return (
         <section id="s25">

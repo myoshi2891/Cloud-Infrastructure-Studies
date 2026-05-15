@@ -1,3 +1,10 @@
+/**
+ * Render the "Prebuilt Gen AI services" section (id="s22") that summarizes Gemini app, Gemini Advanced, Gemini Enterprise, NotebookLM, and Gemini for Google Workspace.
+ *
+ * The section includes an introductory info block, detailed cards for each service (features, tags, warnings, and reference links), and a comparison table useful for exam-focused study.
+ *
+ * @returns A JSX element representing the complete section with service cards and the comparison table
+ */
 export default function Section22() {
     return (
         <section id="s22">
