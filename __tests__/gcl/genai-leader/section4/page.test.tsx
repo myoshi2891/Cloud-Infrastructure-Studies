@@ -59,6 +59,7 @@ describe('Generative AI Leader Section 4 ページ', () => {
         externalLinks.forEach((link) => {
             const rel = link.getAttribute('rel') ?? '';
             expect(rel).toContain('noopener');
+            expect(rel).toContain('noreferrer');
             expect(link.getAttribute('aria-describedby')).toBe('s4-external-link-hint');
         });
     });
@@ -84,6 +85,6 @@ describe('Generative AI Leader Section 4 ページ', () => {
     it('テーブルに sr-only caption が存在すること', () => {
         const { container } = render(<Section4Page />);
         const captions = container.querySelectorAll('table caption.sr-only');
-        expect(captions.length).toBeGreaterThanOrEqual(1);
+        expect(captions.length).toBe(2);
     });
 });
