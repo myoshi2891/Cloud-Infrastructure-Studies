@@ -1013,4 +1013,8 @@
     .s3-page .fgrid { grid-template-columns: 1fr; }
     .s3-page .snav { overflow-x: auto; flex-wrap: nowrap; }
     .s3-page .hero-corner { display: none; }
+    .s3-page .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 }

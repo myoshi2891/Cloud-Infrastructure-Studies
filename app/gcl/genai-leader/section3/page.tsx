@@ -528,60 +528,62 @@ function Section32() {
                     </ul>
                 </div>
 
-                <table className="ctbl" style={{ marginTop: '20px' }}>
-                    <thead>
-                        <tr>
-                            <th>技法</th>
-                            <th>難易度</th>
-                            <th>主なユースケース</th>
-                            <th>コスト（トークン）</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong style={{ color: 'var(--teal)' }}>Zero-shot</strong></td>
-                            <td>★☆☆</td>
-                            <td>翻訳・要約・分類（明確なタスク）</td>
-                            <td>最小</td>
-                        </tr>
-                        <tr>
-                            <td><strong style={{ color: 'var(--teal)' }}>One-shot</strong></td>
-                            <td>★☆☆</td>
-                            <td>フォーマット指定・構造化出力</td>
-                            <td>小</td>
-                        </tr>
-                        <tr>
-                            <td><strong style={{ color: 'var(--lime)' }}>Few-shot</strong></td>
-                            <td>★★☆</td>
-                            <td>パターン学習・カスタム分類</td>
-                            <td>中</td>
-                        </tr>
-                        <tr>
-                            <td><strong style={{ color: 'var(--lime)' }}>Role Prompting</strong></td>
-                            <td>★★☆</td>
-                            <td>専門家視点・特定スタイルの文章生成</td>
-                            <td>中</td>
-                        </tr>
-                        <tr>
-                            <td><strong style={{ color: 'var(--lime)' }}>Prompt Chaining</strong></td>
-                            <td>★★☆</td>
-                            <td>多段階処理・ワークフロー自動化</td>
-                            <td>中〜大</td>
-                        </tr>
-                        <tr>
-                            <td><strong style={{ color: 'var(--amber)' }}>Chain-of-Thought</strong></td>
-                            <td>★★★</td>
-                            <td>数学・論理推論・説明可能性向上</td>
-                            <td>大</td>
-                        </tr>
-                        <tr>
-                            <td><strong style={{ color: 'var(--rose)' }}>ReAct</strong></td>
-                            <td>★★★</td>
-                            <td>AIエージェント・外部ツール連携</td>
-                            <td>最大</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className="table-wrapper">
+                    <table className="ctbl" style={{ marginTop: '20px' }}>
+                        <thead>
+                            <tr>
+                                <th>技法</th>
+                                <th>難易度</th>
+                                <th>主なユースケース</th>
+                                <th>コスト（トークン）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style={{ color: 'var(--teal)' }}>Zero-shot</strong></td>
+                                <td>★☆☆</td>
+                                <td>翻訳・要約・分類（明確なタスク）</td>
+                                <td>最小</td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--teal)' }}>One-shot</strong></td>
+                                <td>★☆☆</td>
+                                <td>フォーマット指定・構造化出力</td>
+                                <td>小</td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--lime)' }}>Few-shot</strong></td>
+                                <td>★★☆</td>
+                                <td>パターン学習・カスタム分類</td>
+                                <td>中</td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--lime)' }}>Role Prompting</strong></td>
+                                <td>★★☆</td>
+                                <td>専門家視点・特定スタイルの文章生成</td>
+                                <td>中</td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--lime)' }}>Prompt Chaining</strong></td>
+                                <td>★★☆</td>
+                                <td>多段階処理・ワークフロー自動化</td>
+                                <td>中〜大</td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--amber)' }}>Chain-of-Thought</strong></td>
+                                <td>★★★</td>
+                                <td>数学・論理推論・説明可能性向上</td>
+                                <td>大</td>
+                            </tr>
+                            <tr>
+                                <td><strong style={{ color: 'var(--rose)' }}>ReAct</strong></td>
+                                <td>★★★</td>
+                                <td>AIエージェント・外部ツール連携</td>
+                                <td>最大</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className="src">
                     <div className="srct">📎 参照リソース</div>
@@ -808,48 +810,50 @@ function Section33() {
                     </div>
                 </div>
 
-                <table className="ctbl" style={{ marginTop: '16px' }}>
-                    <thead>
-                        <tr>
-                            <th>比較軸</th>
-                            <th>① Vertex AI Search（プリビルト）</th>
-                            <th>② RAG API（カスタム）</th>
-                            <th>③ Grounding w/ Google Search</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>実装難易度</strong></td>
-                            <td>★☆☆（最簡単）</td>
-                            <td>★★☆（中程度）</td>
-                            <td>★☆☆（最簡単）</td>
-                        </tr>
-                        <tr>
-                            <td><strong>制御度</strong></td>
-                            <td>低（自動管理）</td>
-                            <td>高（各ステップ制御）</td>
-                            <td>低（Google管理）</td>
-                        </tr>
-                        <tr>
-                            <td><strong>データソース</strong></td>
-                            <td>社内文書・DB</td>
-                            <td>任意（カスタム）</td>
-                            <td>公開 Web（リアルタイム）</td>
-                        </tr>
-                        <tr>
-                            <td><strong>最新情報</strong></td>
-                            <td>登録次第（手動更新）</td>
-                            <td>データ次第</td>
-                            <td>◎（常時最新）</td>
-                        </tr>
-                        <tr>
-                            <td><strong>適用場面</strong></td>
-                            <td>社内ナレッジ・PoC</td>
-                            <td>高精度・専門システム</td>
-                            <td>世界の最新情報が必要な場合</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div className="table-wrapper">
+                    <table className="ctbl" style={{ marginTop: '16px' }}>
+                        <thead>
+                            <tr>
+                                <th>比較軸</th>
+                                <th>① Vertex AI Search（プリビルト）</th>
+                                <th>② RAG API（カスタム）</th>
+                                <th>③ Grounding w/ Google Search</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>実装難易度</strong></td>
+                                <td>★☆☆（最簡単）</td>
+                                <td>★★☆（中程度）</td>
+                                <td>★☆☆（最簡単）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>制御度</strong></td>
+                                <td>低（自動管理）</td>
+                                <td>高（各ステップ制御）</td>
+                                <td>低（Google管理）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>データソース</strong></td>
+                                <td>社内文書・DB</td>
+                                <td>任意（カスタム）</td>
+                                <td>公開 Web（リアルタイム）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>最新情報</strong></td>
+                                <td>登録次第（手動更新）</td>
+                                <td>データ次第</td>
+                                <td>◎（常時最新）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>適用場面</strong></td>
+                                <td>社内ナレッジ・PoC</td>
+                                <td>高精度・専門システム</td>
+                                <td>世界の最新情報が必要な場合</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className="bp">
                     <div className="bpt">✅ RAG オファリング選択のフレームワーク</div>
@@ -949,9 +953,9 @@ function Section33() {
                     {/* max_output_tokens */}
                     <div className="param">
                         <div className="param-name">max_output_tokens</div>
-                        <div className="param-range">モデル依存（例: Gemini Pro = 8192）</div>
+                        <div className="param-range">モデル仕様で確認が必要（モデル世代ごとに異なる）</div>
                         <div className="param-desc">
-                            生成する<strong style={{ color: 'var(--teal)' }}>最大トークン数</strong>を設定。1トークン ≒ 日本語で約1〜2文字、英語で約4文字。短い応答が必要なら小さく設定して API コストを削減できる。
+                            生成する<strong style={{ color: 'var(--teal)' }}>最大トークン数</strong>を設定。1トークン ≒ 日本語で約1〜2文字、英語で約4文字。短い応答が必要なら小さく設定して API コストを削減できる。実際の上限値は使用するモデル（Gemini 2.5 Pro / Flash 等）の公式仕様で確認すること。
                         </div>
                         <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--muted)' }}>
                             <strong style={{ color: 'var(--text)' }}>推奨設定：</strong><br />
@@ -963,9 +967,9 @@ function Section33() {
                     {/* safety_settings */}
                     <div className="param">
                         <div className="param-name">safety_settings</div>
-                        <div className="param-range">OFF / LOW / MEDIUM / HIGH / BLOCK_ALL</div>
+                        <div className="param-range">BLOCK_LOW_AND_ABOVE / BLOCK_MEDIUM_AND_ABOVE / BLOCK_ONLY_HIGH / BLOCK_NONE / OFF</div>
                         <div className="param-desc">
-                            有害コンテンツ（ヘイトスピーチ・危険情報・性的内容・暴力）の<strong style={{ color: 'var(--teal)' }}>フィルタリング強度</strong>を設定。カテゴリ別に個別設定可能。エンタープライズでは HIGH を推奨。
+                            有害コンテンツ（ヘイトスピーチ・危険情報・性的内容・暴力）の<strong style={{ color: 'var(--teal)' }}>フィルタリング強度</strong>を設定。カテゴリ別に個別設定可能。エンタープライズでは <code>BLOCK_LOW_AND_ABOVE</code> 等の厳しめ閾値を推奨。<code>BLOCK_NONE</code> は許可された場合にのみ利用可能な制限付きフィールドであり、gemini-2.5-flash 以降の新モデルでは <code>OFF</code> がデフォルト。
                         </div>
                         <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--muted)' }}>
                             <strong style={{ color: 'var(--text)' }}>カテゴリ：</strong><br />

@@ -105,7 +105,7 @@ export const RESOURCES: Resource[] = [
     { name: '試験概要ページ', url: 'cloud.google.com/learn/certification/cloud-digital-leader' },
     { name: '公式試験ガイド', url: 'cloud.google.com/learn/certification/guides/cloud-digital-leader' },
     { name: 'Cloud Skills Boost 学習パス', url: 'cloudskillsboost.google/paths/9' },
-    { name: '公式サンプル問題', url: 'cloud.google.com/learn/certification/cloud-digital-leader' },
+    { name: '公式サンプル問題', url: 'docs.google.com/forms/d/e/1FAIpQLSedAmf77MGS7FGEaylFzY51KtBd7kkIZJIMDsV5zSRSmpKIOA/viewform' },
     { name: '試験登録', url: 'cp.certmetrics.com/google/en/login' },
     { name: 'Google Cloud ドキュメント', url: 'cloud.google.com/docs' },
     { name: 'IAM ドキュメント', url: 'cloud.google.com/iam/docs' },
