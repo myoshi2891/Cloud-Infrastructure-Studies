@@ -50,13 +50,13 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 4**: `feat(header): add hamburger toggle with aria state` — `5b94ad3`
   - `bun add -D @testing-library/user-event` (14.6.1)
   - [components/Header.tsx](components/Header.tsx): `drawerOpen` state + ハンバーガーボタン（右カラム）+ 空の Drawer（背景オーバーレイ + クローズボタン）。既存ドロップダウンと並走
-  - 新規 [__tests__/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) (5 ケース)
+  - 新規 [**tests**/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) (5 ケース)
 - [x] **Step 5**: `feat(header): render nav tree inside drawer` — `8cb0ae4`
   - [components/Header.tsx](components/Header.tsx): `toNavTree(EXAMS)` を module スコープで算出し、Drawer 内に provider 別 `<section>` + 試験ごとの `<details><summary>` アコーディオンを描画
   - `iconThemeClass()` ヘルパで `card-*` → `icon-theme-*` 変換
   - `coming-soon` の試験は「準備中」ラベルを表示し、リンクを描画しない
   - リンクの `onClick` で `setDrawerOpen(false)` を呼びナビゲーション時に Drawer を閉じる
-  - [__tests__/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) に NavTree 描画契約 7 ケース追加
+  - [**tests**/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) に NavTree 描画契約 7 ケース追加
 - [x] **Step 6**: `feat(header): trap focus and lock scroll in drawer` — `30f5c13`
   - Drawer 用 useEffect 2 つ追加: (a) スクロールロック + open 時に閉じるボタンへ focus + close 時にトリガーへ復帰、(b) Escape クローズ + Tab/Shift+Tab フォーカストラップ
   - `hamburgerRef` / `closeButtonRef` / `drawerRef` を追加
@@ -64,10 +64,10 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 7**: `refactor(header): remove inline dropdowns in favor of drawer` — `49d9e55`
   - [components/Header.tsx](components/Header.tsx): インラインドロップダウン JSX、`openMenu` state、5 個の `useRef`、click-outside/Escape 用 effect、`DropdownItem` を削除（-773/+142 行）
   - レイアウトを `grid (1fr auto 1fr)` → `flex justify-between` に簡素化
-  - [__tests__/components/Header.test.tsx](__tests__/components/Header.test.tsx) を drawer 契約 6 ケースに書き換え（Header の最小契約: タイトル / nav role / ハンバーガー aria / provider 見出し / 全試験リンク網羅 / coming-soon 除外）
+  - [**tests**/components/Header.test.tsx](__tests__/components/Header.test.tsx) を drawer 契約 6 ケースに書き換え（Header の最小契約: タイトル / nav role / ハンバーガー aria / provider 見出し / 全試験リンク網羅 / coming-soon 除外）
 - [x] **追加 fix**: `fix(nav): dedup items when domain href equals exam href` — `0df5f20`
   - PCNE で `domains[0].href === exam.href` のため React duplicate key 警告が出ていた。adapter で exam.href と一致する domain を items から除外
-  - [__tests__/lib/navigation.test.ts](__tests__/lib/navigation.test.ts) に回帰テスト 1 ケース追加
+  - [**tests**/lib/navigation.test.ts](__tests__/lib/navigation.test.ts) に回帰テスト 1 ケース追加
 - [x] **Step 8**: `test(e2e): cover hamburger navigation flow` — `a54a181`
   - 新規 [e2e/nav.spec.ts](e2e/nav.spec.ts) (2 ケース): ACE Domain 1 遷移 / AWS 見出し可視 + Escape クローズ
   - `bun run test:e2e e2e/nav.spec.ts` で 2 件 pass を確認
@@ -81,10 +81,10 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/page.tsx](app/page.tsx) — coming-soon フィルタ
 - [app/globals.css](app/globals.css) — AWS テーマカラー、icon-theme-aws-saa
 - [components/Header.tsx](components/Header.tsx) — レガシードロップダウン撤去 + Drawer + a11y（合計 -773 / +330 行）
-- [__tests__/lib/navigation.test.ts](__tests__/lib/navigation.test.ts) — adapter テスト + dedup 回帰
-- [__tests__/components/Header.test.tsx](__tests__/components/Header.test.tsx) — drawer 契約に書き換え（22 → 6 ケース）
-- [__tests__/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) — 新 UI 全契約（17 ケース）
-- [__tests__/app/page.test.tsx](__tests__/app/page.test.tsx) — VISIBLE_EXAMS 基準
+- [**tests**/lib/navigation.test.ts](__tests__/lib/navigation.test.ts) — adapter テスト + dedup 回帰
+- [**tests**/components/Header.test.tsx](__tests__/components/Header.test.tsx) — drawer 契約に書き換え（22 → 6 ケース）
+- [**tests**/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) — 新 UI 全契約（17 ケース）
+- [**tests**/app/page.test.tsx](__tests__/app/page.test.tsx) — VISIBLE_EXAMS 基準
 - 新規 [e2e/nav.spec.ts](e2e/nav.spec.ts) — Drawer ナビ E2E (2 ケース)
 - `package.json` / `bun.lock` — @testing-library/user-event 追加
 
