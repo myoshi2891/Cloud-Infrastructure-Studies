@@ -2,7 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Header } from '@/components/Header';
 
-describe('Header', () => {
+// このスイートは Step 7 でレガシー UI を撤去するまでの「現契約」を凍結する。
+// 凍結期間中、本ファイルのテストは新ハンバーガー UI のテスト
+// (Header.hamburger.test.tsx) と並走し、リグレッション検知に用いる。
+// Step 7 で撤去時にまとめて書き換える。
+describe('Header (legacy nav: ドロップダウン UI — Step 7 で撤去予定)', () => {
     it('サイトタイトルが表示されること', () => {
         render(<Header />);
         // "Cloud Infrastructure" と "Studies" が別 <span> に分かれているため
