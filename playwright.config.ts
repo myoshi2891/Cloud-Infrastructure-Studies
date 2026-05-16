@@ -18,8 +18,9 @@ export default defineConfig({
         },
     ],
     webServer: {
-        command: 'bun run dev',
+        command: process.env.PLAYWRIGHT_WEB_SERVER_COMMAND ?? 'bun run dev',
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
+        timeout: 120 * 1000,
     },
 });
