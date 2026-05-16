@@ -16,6 +16,7 @@ export function Header() {
     const [openMenu, setOpenMenu] = useState<'genai' | 'ace' | 'cdl' | 'pcne' | 'agwa' | null>(
         null,
     );
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const genAiRef = useRef<HTMLDivElement>(null);
     const aceRef = useRef<HTMLDivElement>(null);
     const cdlRef = useRef<HTMLDivElement>(null);
@@ -54,6 +55,7 @@ export function Header() {
     }, [openMenu]);
 
     return (
+        <>
         <nav
             aria-label="サイト全体のメインナビゲーション"
             className="sticky top-0 z-50 grid border-b border-white/[0.06] bg-[var(--color-background)]/90 px-8 backdrop-blur-xl"
@@ -509,9 +511,59 @@ export function Header() {
                 </div>
             </div>
 
-            {/* Right placeholder — keeps nav centered */}
-            <div />
+            {/* Hamburger trigger — right column */}
+            <div className="flex justify-end">
+                <button
+                    type="button"
+                    onClick={() => setDrawerOpen(true)}
+                    aria-label="メニューを開く"
+                    aria-haspopup="dialog"
+                    aria-expanded={drawerOpen}
+                    aria-controls="site-nav-drawer"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)]"
+                >
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+                        <path
+                            d="M2 5h14M2 9h14M2 13h14"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                        />
+                    </svg>
+                </button>
+            </div>
         </nav>
+        {drawerOpen && (
+            <div
+                id="site-nav-drawer"
+                role="dialog"
+                aria-modal="true"
+                aria-label="サイトナビゲーション"
+                className="fixed inset-0 z-[60] flex justify-end"
+            >
+                <div
+                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    onClick={() => setDrawerOpen(false)}
+                    aria-hidden
+                />
+                <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl">
+                    <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+                        <span className="text-sm font-semibold text-[var(--color-foreground)]">
+                            メニュー
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => setDrawerOpen(false)}
+                            aria-label="メニューを閉じる"
+                            className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)]"
+                        >
+                            <span aria-hidden>×</span>
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        )}
+        </>
     );
 }
 
