@@ -148,6 +148,70 @@ describe('Header ドロワー内 NavTree 描画', () => {
         ).not.toBeInTheDocument();
     });
 
+    it('Escape キーで Drawer が閉じること', async () => {
+        // Arrange
+        const { user } = await openDrawer();
+
+        // Act
+        await user.keyboard('{Escape}');
+
+        // Assert
+        expect(screen.queryByRole('dialog', { name: 'サイトナビゲーション' })).not.toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'メニューを開く' })).toHaveAttribute(
+            'aria-expanded',
+            'false',
+        );
+    });
+
+    it('Drawer 開時に最初のフォーカスがクローズボタンへ移動すること', async () => {
+        // Arrange & Act
+        await openDrawer();
+
+        // Assert
+        expect(screen.getByRole('button', { name: 'メニューを閉じる' })).toHaveFocus();
+    });
+
+    it('Drawer 閉時にフォーカスがハンバーガーボタンへ戻ること', async () => {
+        // Arrange
+        const { user } = await openDrawer();
+
+        // Act
+        await user.keyboard('{Escape}');
+
+        // Assert
+        expect(screen.getByRole('button', { name: 'メニューを開く' })).toHaveFocus();
+    });
+
+    it('Drawer 開時に body のスクロールがロックされ、閉時に復元されること', async () => {
+        // Arrange
+        const { user } = await openDrawer();
+
+        // Assert (開時)
+        expect(document.body.style.overflow).toBe('hidden');
+
+        // Act
+        await user.keyboard('{Escape}');
+
+        // Assert (閉時)
+        expect(document.body.style.overflow).toBe('');
+    });
+
+    it('Drawer 内 Shift+Tab は最初の要素から最後の要素へ循環すること', async () => {
+        // Arrange
+        const { user } = await openDrawer();
+        // 開時に最初のフォーカスはクローズボタン（先頭要素）
+        expect(screen.getByRole('button', { name: 'メニューを閉じる' })).toHaveFocus();
+
+        // Act: Shift+Tab で末尾へ wrap
+        await user.keyboard('{Shift>}{Tab}{/Shift}');
+
+        // Assert: 最後の tabbable がフォーカスを持つ（先頭がクローズなのでループ）
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const tabbables = within(dialog).getAllByRole('link');
+        const last = tabbables[tabbables.length - 1];
+        expect(last).toHaveFocus();
+    });
+
     it('Drawer 内リンクをクリックすると Drawer が閉じること', async () => {
         // Arrange
         const { user, dialog } = await openDrawer();

@@ -27,6 +27,9 @@ export function Header() {
         null,
     );
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const drawerRef = useRef<HTMLDivElement>(null);
+    const hamburgerRef = useRef<HTMLButtonElement>(null);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
     const genAiRef = useRef<HTMLDivElement>(null);
     const aceRef = useRef<HTMLDivElement>(null);
     const cdlRef = useRef<HTMLDivElement>(null);
@@ -63,6 +66,56 @@ export function Header() {
             document.removeEventListener('keydown', handleKeyDown);
         };
     }, [openMenu]);
+
+    // Drawer: スクロールロック + 開時に閉じるボタンへフォーカス + 閉時にトリガーへ復帰
+    useEffect(() => {
+        if (!drawerOpen) return;
+
+        const triggerEl = hamburgerRef.current;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        // フォーカス移動はマウント完了後に確実に行う
+        const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
+
+        return () => {
+            window.clearTimeout(focusTimer);
+            document.body.style.overflow = previousOverflow;
+            triggerEl?.focus();
+        };
+    }, [drawerOpen]);
+
+    // Drawer: Escape で閉じる + Tab フォーカストラップ
+    useEffect(() => {
+        if (!drawerOpen) return;
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                setDrawerOpen(false);
+                return;
+            }
+            if (e.key !== 'Tab') return;
+            const container = drawerRef.current;
+            if (!container) return;
+            const tabbables = container.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            );
+            const first = tabbables[0];
+            const last = tabbables[tabbables.length - 1];
+            if (!first || !last) return;
+            const active = document.activeElement as HTMLElement | null;
+            if (e.shiftKey && (active === first || !container.contains(active))) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && active === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [drawerOpen]);
 
     return (
         <>
@@ -524,6 +577,7 @@ export function Header() {
             {/* Hamburger trigger — right column */}
             <div className="flex justify-end">
                 <button
+                    ref={hamburgerRef}
                     type="button"
                     onClick={() => setDrawerOpen(true)}
                     aria-label="メニューを開く"
@@ -545,6 +599,7 @@ export function Header() {
         </nav>
         {drawerOpen && (
             <div
+                ref={drawerRef}
                 id="site-nav-drawer"
                 role="dialog"
                 aria-modal="true"
@@ -562,6 +617,7 @@ export function Header() {
                             メニュー
                         </span>
                         <button
+                            ref={closeButtonRef}
                             type="button"
                             onClick={() => setDrawerOpen(false)}
                             aria-label="メニューを閉じる"
