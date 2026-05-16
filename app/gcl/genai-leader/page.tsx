@@ -473,7 +473,14 @@ function Section4() {
     );
 }
 
-/* ── メインページコンポーネント ── */
+/**
+ * Render the Generative AI Leader exam study guide page including hero, navigation, main sections, and footer.
+ *
+ * The component composes a hero banner with exam metadata, a sticky section navigation, an overview with section weightings,
+ * the content sections (Section1–Section4), and a footer with references and disclaimers.
+ *
+ * @returns The React element for the full Generative AI Leader guide page.
+ */
 export default function GenaiLeaderPage() {
     return (
         <div className={`genai-leader-page ${spaceMono.variable}`}>
@@ -498,7 +505,7 @@ export default function GenaiLeaderPage() {
             </section>
 
             {/* Sticky Nav */}
-            <nav className="sticky-nav" role="navigation">
+            <nav className="sticky-nav" aria-label="Generative AI Leader セクションナビゲーション">
                 <a href="#overview" className="nav-item"><span className="dot dot-blue" />試験概要</a>
                 <a href="#section1" className="nav-item s1"><span className="dot dot-blue" />Section 1: Gen AI 基礎</a>
                 <a href="#section2" className="nav-item s2"><span className="dot dot-green" />Section 2: GCP サービス</a>

@@ -66,16 +66,14 @@ describe('Home ページ', () => {
         expect(screen.getByText(/3試験対応/)).toBeInTheDocument();
     });
 
-    it('CDL カードのドメインリンクが 1 件のみ（セクションページ未実装のため集約）', () => {
+    it('CDL カードのドメインリンク数が EXAMS.domains.length と一致し、CTA 1 本が加算される', () => {
         const { container } = render(<Home />);
         const cdlCard = container.querySelector('.card-cdl');
         expect(cdlCard).toBeInTheDocument();
-        const domainLinks = within(cdlCard as HTMLElement).getAllByRole('link');
-        // CTA を除くドメインリンクが 1 件 = CDL.domains.length
         const cdlExam = EXAMS.find((e) => e.id === 'cdl');
         expect(cdlExam).toBeDefined();
-        expect(cdlExam!.domains).toHaveLength(1);
-        // ドメインリンク 1 本 + CTA 1 本 = 計 2 本
-        expect(domainLinks).toHaveLength(2);
+        expect(cdlExam!.domains.length).toBeGreaterThanOrEqual(1);
+        const domainLinks = within(cdlCard as HTMLElement).getAllByRole('link');
+        expect(domainLinks).toHaveLength(cdlExam!.domains.length + 1);
     });
 });
