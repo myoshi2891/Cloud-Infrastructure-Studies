@@ -3,6 +3,16 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { EXAMS } from '@/app/constants';
+import { toNavTree, type NavExam } from '@/app/navigation';
+
+const NAV_TREE = toNavTree(EXAMS);
+
+function iconThemeClass(colorClass: string): string {
+    // colorClass: 'card-ace' | 'card-genai' | ... | 'card-aws-saa'
+    // 既存ユーティリティ命名規約: icon-theme-<suffix>
+    return `icon-theme-${colorClass.replace(/^card-/, '')}`;
+}
 
 /**
  * Renders a sticky top navigation bar with center-aligned dropdown menus for site sections.
@@ -560,10 +570,98 @@ export function Header() {
                             <span aria-hidden>×</span>
                         </button>
                     </div>
+                    <div className="flex flex-col gap-6 px-5 py-5">
+                        {NAV_TREE.map((group) => (
+                            <section
+                                key={group.provider}
+                                aria-labelledby={`nav-group-${group.provider}`}
+                                className="flex flex-col gap-2"
+                            >
+                                <h2
+                                    id={`nav-group-${group.provider}`}
+                                    className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]"
+                                >
+                                    {group.label}
+                                </h2>
+                                <ul className="flex flex-col gap-1.5">
+                                    {group.exams.map((exam) => (
+                                        <li key={exam.id}>
+                                            <DrawerExamAccordion
+                                                exam={exam}
+                                                onLinkClick={() => setDrawerOpen(false)}
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        ))}
+                    </div>
                 </aside>
             </div>
         )}
         </>
+    );
+}
+
+function DrawerExamAccordion({
+    exam,
+    onLinkClick,
+}: {
+    exam: NavExam;
+    onLinkClick: () => void;
+}) {
+    const isComingSoon = exam.status === 'coming-soon';
+    return (
+        <details className="group rounded-xl border border-white/[0.06] bg-white/[0.02] open:bg-white/[0.04]">
+            <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 text-[14px] font-medium text-[var(--color-foreground)] hover:bg-white/[0.04]">
+                <span
+                    className={cn(
+                        iconThemeClass(exam.colorClass),
+                        'flex h-5 w-5 items-center justify-center rounded text-[11px]',
+                    )}
+                    aria-hidden
+                >
+                    {exam.icon}
+                </span>
+                <span className="flex-1 leading-tight">{exam.label}</span>
+                {isComingSoon && (
+                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+                        準備中
+                    </span>
+                )}
+                <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    aria-hidden
+                    className="text-[var(--color-muted-foreground)] transition-transform duration-150 group-open:rotate-180"
+                >
+                    <path
+                        d="M2 4l4 4 4-4"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            </summary>
+            {!isComingSoon && (
+                <ul className="flex flex-col gap-0.5 border-t border-white/[0.04] px-2 py-2">
+                    {exam.items.map((item) => (
+                        <li key={item.href}>
+                            <Link
+                                href={item.href}
+                                onClick={onLinkClick}
+                                className="block rounded-lg px-3 py-2 text-[13px] text-[var(--color-muted)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-foreground)]"
+                            >
+                                {item.label}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </details>
     );
 }
 
