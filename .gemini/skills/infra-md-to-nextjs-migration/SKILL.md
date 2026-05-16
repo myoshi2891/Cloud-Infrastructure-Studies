@@ -2,7 +2,7 @@
 
 ## 目的
 
-Markdown 形式の試験対策資料を Next.js App Router の `page.tsx` 学習コンポーネントへ移行する際のエンドツーエンドワークフローを提供する。GCP（CDL, ACE）・AWS など複数の資格に対応する。
+Markdown 形式の試験対策資料を Next.js App Router の `page.tsx` 学習コンポーネントへ移行する際のエンドツーエンドワークフローを提供する。GCP（ACE, GenAI Leader, CDL, AGWA, PCNE）・AWS など複数の資格に対応する。
 
 **前提**: グローバルな知見として JSX ピットフォール・SVG 属性変換・TypeScript strict モードの注意点をカバーしているものとする。本スキルは**このリポジトリ固有のワークフロー**に集中する。
 
@@ -17,18 +17,42 @@ Markdown 形式の試験対策資料を Next.js App Router の `page.tsx` 学習
 ```text
 app/
   gcl/                              ← GCP 資格
-    cloud-digital-leader/
-      section1/                     ← 新しい構成例: セクションごとのページ
-        constants.ts
+    associate-cloud-engineer/
+      page.tsx
+      ace.css
+      domain{1-4}/page.tsx          ← ドメイン別詳細ページ
+      architecture-guide/page.tsx
+    genai-leader/
+      constants.ts
+      page.tsx
+      genai-leader.css
+      section1/
         page.tsx
-        layout.tsx
-        components/                 ← コンポーネント抽出
-          DiagramSVG.tsx            ← SVG用コンポーネント
-          index.ts
+        components/                 ← Section11〜14 等に分割（Batch E リファクタ済み）
+      section2/
+        page.tsx
+        components/                 ← Section21〜25 等に分割（Batch E リファクタ済み）
+      section3/page.tsx
+      section4/page.tsx
+    cloud-digital-leader/
+      cdl.css                       ← 共通テーマ
+      section{1-6}/
+        page.tsx
+        components/                 ← DiagramSVG.tsx 等
           sections/
-            Section1.tsx
-            Section2.tsx
-            Section2.module.css     ← CSS Modules
+            Section*.tsx
+            Section*.module.css     ← CSS Modules
+    agwa/
+      page.tsx
+      section1/
+        page.tsx
+        page.css
+    professional-cloud-network-engineer/
+      page.tsx
+      components/                   ← Section1〜6 + SectionIntro + SectionSummary
+    professional-cloud-network-engineer-step-by-step/
+      page.tsx
+      components/                   ← Section1〜6
 ```
 
 新ページを追加した場合は `components/Header.tsx` のナビゲーションも更新する。
