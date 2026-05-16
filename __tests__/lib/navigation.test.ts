@@ -128,6 +128,25 @@ describe('toNavTree', () => {
         expect(result[0].exams[0].status).toBe('coming-soon');
     });
 
+    it('domain.href が exam.href と一致する場合、items から重複を除去する', () => {
+        // Arrange: 概要相当の domain を持つ試験（PCNE 実構造の再現）
+        const examWithDupTop: Exam = {
+            ...gcpAce,
+            href: '/exam/x',
+            domains: [
+                { label: '概要相当', href: '/exam/x', pct: '—' },
+                { label: 'サブ', href: '/exam/x/sub', pct: '—' },
+            ],
+        };
+
+        // Act
+        const result = toNavTree([examWithDupTop]);
+        const items = result[0].exams[0].items;
+
+        // Assert
+        expect(items.map((i) => i.href)).toEqual(['/exam/x', '/exam/x/sub']);
+    });
+
     it('生成された全 href に重複がない', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce, gcpGenAi, awsSaa]);

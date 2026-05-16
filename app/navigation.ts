@@ -58,9 +58,13 @@ export function toNavTree(exams: ReadonlyArray<NavExamInput>): NavGroup[] {
             icon: exam.icon,
             colorClass: exam.color,
             ...(exam.status ? { status: exam.status } : {}),
+            // exam.href（概要）と同一 href の domain がある場合は重複を除去する。
+            // 例: PCNE では domains[0] が exam.href と一致するため React key の衝突を防ぐ。
             items: [
                 { label: '概要', href: exam.href },
-                ...exam.domains.map((d) => ({ label: d.label, href: d.href })),
+                ...exam.domains
+                    .filter((d) => d.href !== exam.href)
+                    .map((d) => ({ label: d.label, href: d.href })),
             ],
         };
         const arr = buckets.get(provider) ?? [];
