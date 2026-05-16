@@ -119,3 +119,4 @@ tsconfig.tsbuildinfo
 infra-md-to-nextjs-migration.skill
 .gemini
 docs/skills
+.claude/settings.json

@@ -4,15 +4,15 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ## 現在地
 
-- **最新 HEAD:** 96c3853f66f91722883017253503f15915856417
-- **次の作業:** AGWA Section 1 の他セクション (1.1, 1.2, 1.3, 1.4, 1.6) の不足情報補完（ユーザー確認済みの乖離修正）
-- **テスト数:** 311件パス
-- **ビルド:** 成功 (Next.js 16.2.3 Turbopack)
-- **最終更新日時(UTC):** 2026-05-12T07:15:00Z
+- **最新 HEAD:** e1beafe（fix/batch-e-refactor-sections-1-2 ブランチ）
+- **次の作業:** なし（Batch C a11y マージコンフリクト解消済み）
+- **テスト数:** 317件パス
+- **ビルド:** 成功 (Next.js 16.2.6 Turbopack)
+- **最終更新日時(UTC):** 2026-05-16T02:40:00Z
 
 ---
 
-## 2026-05-12: AGWA Section 1 Restoration (実行中)
+## 2026-05-12: AGWA Section 1 Restoration (完了)
 
 ### 目的
 
@@ -21,18 +21,18 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ### ステータス
 
 - [x] **Section 1.5 建物とリソースの管理**: 補完完了、CSSマッピング済み。
-- [ ] **Section 1.1 ユーザー ライフサイクル管理**: GCDS 同期、アカウント状態の遷移図などの復元。
-- [ ] **Section 1.2 ドメインの管理**: プライマリ/セカンダリ/エイリアスの詳細表の復元。
-- [ ] **Section 1.3 組織ユニット (OU)**: 継承ルール、例外設定の例の復元。
-- [ ] **Section 1.4 グループの管理**: 設定パラメータ、Collaborative Inbox 詳細の復元。
-- [ ] **Section 1.6 管理者ロール**: システム定義ロール比較表の復元。
+- [x] **Section 1.1 ユーザー ライフサイクル管理**: 復元完了（`feat(agwa): complete reproduction of section 1 html with all details`）。
+- [x] **Section 1.2 ドメインの管理**: 復元完了。
+- [x] **Section 1.3 組織ユニット (OU)**: 復元完了。
+- [x] **Section 1.4 グループの管理**: 復元完了。
+- [x] **Section 1.6 管理者ロール**: 復元完了。
 
 ---
 
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-現在、`MIGRATION_PROGRESS.md` の「2026-05-12: AGWA Section 1 Migration (進行中)」セクションにある「実装ステップ詳細」に基づいて、静的HTMLファイルの Next.js への完全移行をステップバイステップで行う必要があります。
+現在、`MIGRATION_PROGRESS.md` の「2026-05-12: AGWA Section 1 Restoration (完了)」セクションにある「実装ステップ詳細」に基づいて、静的HTMLファイルの Next.js への完全移行をステップバイステップで行う必要があります。
 
 以下の要件を厳守して実装を進めてください。
 1. 一度にすべての変更を行うのではなく、Phase 1 から順にステップバイステップで実装すること。
@@ -41,11 +41,11 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 4. `<svg>` タグ内の属性はすべて React 向けに camelCase に変換すること。
 5. E2Eテストは不要ですが、実装ステップごとのビルド確認とコンポーネントの型整合性は必ず確認すること。
 
-それでは、対象のHTMLファイル `agwa-section1-accounts-domains-directory.html` を読み込み、「AGWA Section 1 Restoration (実行中)」セクションにある対象セクション（1.1, 1.2, 1.3, 1.4, 1.6）について、ユーザー確認済みの乖離箇所を順次、オリジナルに準拠したリッチな内容へと復元・補完してください。1セクションごとに作業を完了させ、コミットを行ってください。
+それでは、対象のHTMLファイル `agwa-section1-accounts-domains-directory.html` を読み込み、「AGWA Section 1 Restoration (完了)」セクションにある対象セクション（1.1, 1.2, 1.3, 1.4, 1.6）について、ユーザー確認済みの乖離箇所を順次、オリジナルに準拠したリッチな内容へと復元・補完してください。1セクションごとに作業を完了させ、コミットを行ってください。
 
 ---
 
-## 2026-05-12: AGWA Section 1 Migration (進行中)
+## 2026-05-12: AGWA Section 1 Migration (完了)
 
 ### 実装ステップ詳細 (Implementation Plan)
 

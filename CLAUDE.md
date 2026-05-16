@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-GCP・AWS資格試験対策（Associate Cloud Engineer, Generative AI Leader）を目的としたNext.js学習アプリ。
+GCP資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer）を目的としたNext.js学習アプリ。
 
 ## コマンド
 
@@ -56,14 +56,30 @@ app/
     associate-cloud-engineer/
       page.tsx                      # ACE 試験対策ページ
       ace.css                       # Aurora テーマ（ページ固有）
+      domain{1-4}/page.tsx          # 各ドメイン詳細ページ
+      architecture-guide/page.tsx   # アーキテクチャガイドページ
     genai-leader/
       page.tsx                      # Generative AI Leader トップ
       genai-leader.css              # Sapphire テーマ（ページ固有）
       constants.ts                  # 共通定数（作成日など）
-      section{1-4}/page.tsx         # 各セクションページ
+      section1/
+        page.tsx                    # Section 1: AI の基礎と ML の概念
+        section1.css                # ページ固有スタイル
+        components/                 # 分割されたセクションコンポーネント（Batch E）
+      section2/
+        page.tsx                    # Section 2: Google Cloud の Gen AI サービス
+        section2.css                # ページ固有スタイル
+        components/                 # 分割されたセクションコンポーネント（Batch E）
+      section3/page.tsx             # Section 3: Gen AI ソリューションの開発
+      section4/page.tsx             # Section 4: 責任ある AI
     cloud-digital-leader/
       cdl.css                       # CDL 共通テーマ（--cdl-* トークン定義）
-      section{1-2}/page.tsx         # CDL セクションページ
+      section1/
+        page.tsx                    # Section 1: デジタルトランスフォーメーション
+        components/sections/        # 分割されたセクションコンポーネント
+      section2/
+        page.tsx                    # Section 2: データとクラウドの基礎
+        components/sections/        # 分割されたセクションコンポーネント
       section3/
         page.tsx                    # Section 3: AI によるイノベーション
         section3.css                # ページ固有スタイル（plain CSS）
@@ -79,6 +95,20 @@ app/
         section5.module.css         # ページ固有スタイル（CSS Modules）
         constants.ts                # Section 5 固有定数
         components/sections/        # 分割されたセクションコンポーネント
+      section6/
+        page.tsx                    # Section 6: コスト管理・SRE・サステナビリティ
+        components/                 # 分割されたセクションコンポーネント
+    agwa/
+      page.tsx                      # AGWA トップページ
+      section1/
+        page.tsx                    # Section 1: アカウント・ドメイン・ディレクトリ管理
+        page.css                    # ページ固有スタイル
+    professional-cloud-network-engineer/
+      page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
+      components/                   # セクションコンポーネント（Section1-6 + Summary）
+    professional-cloud-network-engineer-step-by-step/
+      page.tsx                      # PCNE ステップバイステップ実践ガイド
+      components/                   # セクションコンポーネント（Section1-6）
 
 components/
   Header.tsx                        # ナビゲーション（新ページ追加時はここも更新）
@@ -87,7 +117,7 @@ components/
 
 __tests__/                          # Vitest（jsdom環境）
 e2e/                                # Playwright（Chromiumのみ）
-Gcl/                                # 旧HTML資料（参照・移行元）
+Gcl_Archive/                        # 旧HTML資料（参照・移行元アーカイブ）
 Aws/                                # AWS資料アーカイブ
 ```
 
@@ -107,7 +137,7 @@ Aws/                                # AWS資料アーカイブ
 - Aurora（ACE）、Sapphire/Laboratory/Gold/Executive（Generative AI Leader 各セクション）
 - テーマ変数は `--color-*` を上書きする形で定義
 
-新しいテーマカラーを追加する場合は、ページ固有 `.css` を作成し `app/gcl/xxx/layout.tsx` でインポートする。
+新しいテーマカラーを追加する場合は、ページ固有 `.css` を作成し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` へのインポートを優先し、不要な `layout.tsx` の作成を避ける。
 
 ## テスト構成
 
