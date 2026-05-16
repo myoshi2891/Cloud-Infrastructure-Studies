@@ -32,8 +32,6 @@
     --r-card: 18px;
     --r-sm: 10px;
 
-    --topnav-height: 84px;
-
     background: var(--ink);
     color: var(--text);
     font-family: var(--sans);
