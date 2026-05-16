@@ -1152,7 +1152,16 @@ function SummarySection() {
     );
 }
 
-/* ── Main Page ── */
+/**
+ * Render the Section 2 overview page for the Generative AI Leader study guide.
+ *
+ * The component composes the hero, subsection navigation, all Section 2 subsections (2.1–2.5),
+ * and a page footer; it applies the configured fonts to the page root and includes accessible
+ * navigation and footer labeling.
+ *
+ * @returns The JSX element for the complete Section 2 page layout, including hero, top navigation,
+ * subsection content, separators, and footer.
+ */
 export default function Section2Page() {
     const fontClasses = `${sora.variable} ${ibmPlexMono.variable}`;
 
@@ -1192,7 +1201,7 @@ export default function Section2Page() {
             </header>
 
             {/* NAV */}
-            <nav className="topnav">
+            <nav className="topnav" aria-label="Section 2 サブセクションナビゲーション">
                 <a href="#s21" className="n1"><span className="ni">2.1</span>Google Cloud の強み</a>
                 <a href="#s22" className="n2"><span className="ni">2.2</span>プリビルト Gen AI</a>
                 <a href="#s23" className="n3"><span className="ni">2.3</span>顧客体験 CES</a>
@@ -1215,19 +1224,19 @@ export default function Section2Page() {
                 <SummarySection />
             </main>
 
-            {/* FOOTER */}
-            <footer>
+            {/* PAGE FOOTER (contentinfo の重複を避けるため section 要素に変更) */}
+            <section className="page-footer" aria-label="ページ末尾の参考情報">
                 <strong>Google Cloud Generative AI Leader — Section 2 Gen AI サービス完全解説ガイド</strong>
                 <br /><br />
                 参考：
-                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer">
+                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noopener noreferrer" aria-label="Google Cloud 公式試験ページ（新しいタブで開く）">
                     Google Cloud 公式試験ページ
                 </a>
                 {' '}｜ 作成日：2026年3月<br /><br />
                 <span style={{ fontSize: '11px', opacity: 0.4 }}>
                     ※ 本ガイドは学習目的で作成。最新情報は必ず公式サイトでご確認ください。
                 </span>
-            </footer>
+            </section>
         </div>
     );
 }
