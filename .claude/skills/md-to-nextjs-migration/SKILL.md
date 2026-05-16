@@ -39,19 +39,39 @@ TypeScript strict モードの注意点をカバーしている。このスキ�
 ```text
 app/
   gcl/                              ← GCP 資格
-    cloud-digital-leader/
-      constants.ts   ← データ定数（型定義 + データ配列）
-      page.tsx       ← JSX セクション関数コンポーネント
-      layout.tsx     ← CSS インポート
-      cdl.css        ← ページ固有テーマ
     associate-cloud-engineer/
       page.tsx
       ace.css
+      domain{1-4}/page.tsx          ← ドメイン別詳細ページ
+      architecture-guide/page.tsx
     genai-leader/
       constants.ts
       page.tsx
       genai-leader.css
-      section{1-4}/page.tsx
+      section1/
+        page.tsx
+        components/                 ← Section11〜14 等に分割（Batch E）
+      section2/
+        page.tsx
+        components/                 ← Section21〜25 等に分割（Batch E）
+      section3/page.tsx
+      section4/page.tsx
+    cloud-digital-leader/
+      cdl.css                       ← 共通テーマ
+      section{1-6}/
+        page.tsx
+        components/sections/        ← 各セクション分割コンポーネント
+    agwa/
+      page.tsx
+      section1/
+        page.tsx
+        page.css
+    professional-cloud-network-engineer/
+      page.tsx
+      components/
+    professional-cloud-network-engineer-step-by-step/
+      page.tsx
+      components/
   aws/                              ← AWS 資格（将来追加予定）
     <exam>/
       constants.ts
