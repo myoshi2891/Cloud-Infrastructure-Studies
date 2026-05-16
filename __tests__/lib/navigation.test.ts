@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { toNavTree, type NavGroup } from '@/app/navigation';
-import type { Exam } from '@/app/constants';
+import { EXAMS, type Exam } from '@/app/constants';
 
 const gcpAce: Exam = {
     id: 'ace',
@@ -135,5 +135,39 @@ describe('toNavTree', () => {
 
         // Assert
         expect(new Set(allHrefs).size).toBe(allHrefs.length);
+    });
+
+    describe('実 EXAMS との結合', () => {
+        it('現行 EXAMS から GCP・AWS の 2 グループが生成される', () => {
+            // Arrange & Act
+            const result = toNavTree(EXAMS);
+
+            // Assert
+            const providers = result.map((g: NavGroup) => g.provider);
+            expect(providers).toContain('GCP');
+            expect(providers).toContain('AWS');
+        });
+
+        it('GCP グループに既存 5 試験すべてが含まれる', () => {
+            // Arrange & Act
+            const result = toNavTree(EXAMS);
+            const gcp = result.find((g) => g.provider === 'GCP');
+
+            // Assert
+            expect(gcp).toBeDefined();
+            const ids = gcp!.exams.map((e) => e.id).sort();
+            expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'pcne']);
+        });
+
+        it('AWS グループに準備中試験 (status: coming-soon) が含まれる', () => {
+            // Arrange & Act
+            const result = toNavTree(EXAMS);
+            const aws = result.find((g) => g.provider === 'AWS');
+
+            // Assert
+            expect(aws).toBeDefined();
+            expect(aws!.exams.length).toBeGreaterThan(0);
+            expect(aws!.exams[0].status).toBe('coming-soon');
+        });
     });
 });

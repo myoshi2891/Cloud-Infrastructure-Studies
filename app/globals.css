@@ -48,6 +48,9 @@
     --color-theme-pcne-bg: hsl(25 70% 50% / 0.25);
     --color-theme-pcne-fg: hsl(25 90% 70%);
 
+    --color-theme-aws-bg: hsl(35 100% 50% / 0.20);
+    --color-theme-aws-fg: hsl(35 95% 65%);
+
     /* Google Brand Colors (central tokens) */
     --color-google-blue: #4285f4;
     --color-google-green: #34a853;
@@ -158,6 +161,11 @@ body {
 @utility icon-theme-pcne {
     background: var(--color-theme-pcne-bg);
     color: var(--color-theme-pcne-fg);
+}
+
+@utility icon-theme-aws-saa {
+    background: var(--color-theme-aws-bg);
+    color: var(--color-theme-aws-fg);
 }
 
 .code-line {
