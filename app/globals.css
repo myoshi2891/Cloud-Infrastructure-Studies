@@ -95,6 +95,8 @@
 
     /* サイトヘッダーの高さ — snav の top オフセットに使用 (issue #42) */
     --header-h: 48px;
+    /* スクロール位置補正用 — sticky nav + padding を含む実効高さ */
+    --topnav-height: 84px;
 
     --radius-sm: 4px;
     --radius-md: 10px;

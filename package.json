@@ -1,6 +1,7 @@
 {
   "name": "cloud-infrastructure-studies",
   "private": true,
+  "packageManager": "bun@1.3.12",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

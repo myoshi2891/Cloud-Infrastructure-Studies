@@ -73,7 +73,9 @@ describe('Home ページ', () => {
         const cdlExam = EXAMS.find((e) => e.id === 'cdl');
         expect(cdlExam).toBeDefined();
         expect(cdlExam!.domains.length).toBeGreaterThanOrEqual(1);
-        const domainLinks = within(cdlCard as HTMLElement).getAllByRole('link');
-        expect(domainLinks).toHaveLength(cdlExam!.domains.length + 1);
+        const domainLinks = (cdlCard as HTMLElement).querySelectorAll('.home-domain-link');
+        expect(domainLinks).toHaveLength(cdlExam!.domains.length);
+        const allLinks = (cdlCard as HTMLElement).querySelectorAll('a');
+        expect(allLinks).toHaveLength(cdlExam!.domains.length + 1);
     });
 });
