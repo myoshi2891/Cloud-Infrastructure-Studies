@@ -103,7 +103,7 @@
 
 .navSticky {
     position: sticky;
-    top: 0;
+    top: var(--fixed-offset);
     z-index: 100;
     background: color-mix(in srgb, var(--color-background) 90%, transparent);
     backdrop-filter: blur(12px);

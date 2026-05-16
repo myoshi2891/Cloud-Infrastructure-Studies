@@ -96,10 +96,14 @@
     --font-body: 'Noto Sans JP', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* サイトヘッダーの高さ — snav の top オフセットに使用 (issue #42) */
+    /* サイトヘッダーの高さ */
     --header-h: 48px;
-    /* スクロール位置補正用 — sticky nav + padding を含む実効高さ */
-    --topnav-height: 84px;
+    /* DisclaimerBanner の高さ（JS から動的に更新される） */
+    --disclaimer-height: 0px;
+    /* fixed 要素（Header + DisclaimerBanner）の合計オフセット — sticky nav の top に使用 */
+    --fixed-offset: calc(var(--header-h) + var(--disclaimer-height));
+    /* SectionNav の高さ込みのスクロール補正値 — scroll-margin-top / scroll-padding-top に使用 */
+    --topnav-height: calc(var(--fixed-offset) + 40px);
 
     --radius-sm: 4px;
     --radius-md: 10px;
@@ -124,7 +128,13 @@ body {
     color: var(--color-foreground);
     font-family: var(--font-body);
     line-height: 1.75;
-    padding-top: var(--disclaimer-height, 0px);
+    /* Header(sticky) + DisclaimerBanner(fixed) の合計分だけコンテンツを押し下げる */
+    padding-top: var(--fixed-offset);
+}
+
+/* アンカーリンクのスクロール先が sticky nav の背後に隠れないよう補正 */
+[id] {
+    scroll-margin-top: var(--topnav-height);
 }
 
 @utility bg-gradient-aurora {

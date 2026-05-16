@@ -1,6 +1,6 @@
 .snav {
     position: sticky;
-    top: 0;
+    top: var(--fixed-offset);
     z-index: 100;
     background: color-mix(in srgb, var(--color-background), transparent 8%);
     backdrop-filter: blur(12px);
