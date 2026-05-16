@@ -32,6 +32,8 @@
     --r-card: 18px;
     --r-sm: 10px;
 
+    --topnav-height: 84px;
+
     background: var(--ink);
     color: var(--text);
     font-family: var(--sans);
@@ -219,7 +221,7 @@
 /* アンカー遷移時に sticky topnav の下に隠れないよう scroll-margin を確保 */
 .s2-page section[id],
 .s2-page [id^="s2"] {
-    scroll-margin-top: 84px;
+    scroll-margin-top: var(--topnav-height);
 }
 
 .s2-page .topnav a {
