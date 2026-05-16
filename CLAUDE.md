@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-GCP資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer）を目的としたNext.js学習アプリ。
+GCP/AWS 資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer、AWS Certified Solutions Architect – Associate ※準備中）を目的としたNext.js学習アプリ。
+
+試験データの正本は `app/constants.ts` の `EXAMS` 配列。ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` で自動生成されるため、新試験追加時は **`app/constants.ts` のみ変更すれば Header に自動反映** される。
 
 ## コマンド
 
@@ -52,6 +54,8 @@ app/
   layout.tsx                        # ルートレイアウト（Header/DisclaimerBanner/Footer、フォント定義）
   page.tsx                          # トップページ
   globals.css                       # グローバルスタイル（デザイントークン定義）
+  constants.ts                      # 試験データ正本（EXAMS / STATS）。新試験はここに追加するだけ
+  navigation.ts                     # toNavTree(EXAMS) adapter → NavGroup[] を生成し Header が参照
   gcl/
     associate-cloud-engineer/
       page.tsx                      # ACE 試験対策ページ
@@ -111,7 +115,7 @@ app/
       components/                   # セクションコンポーネント（Section1-6）
 
 components/
-  Header.tsx                        # ナビゲーション（新ページ追加時はここも更新）
+  Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要
   Footer.tsx                        # シンプルなフッター（サイト名のみ）
   DisclaimerBanner.tsx              # 全画面固定バナー（免責事項）、layout.tsx から呼び出し
 
@@ -155,6 +159,6 @@ Aws/                                # AWS資料アーカイブ
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。その際、必ず `<thead>` と `<th scope="col">` を用いたセマンティックな構造にすること。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-border` など）を厳格に使用すること。独自のローカル変数定義や `--color-bg-primary` のような実在しないトークンの使用は避ける。コンポーネントレベルの CSS 内で新たなカスタムプロパティ（`--*`）を定義することは禁止する。
 - **レイアウトと最大幅の制約**: 各セクションのメインコンテンツは画面幅いっぱいに広がらないよう、CSS Modulesで `max-width` (例: 1000px または `.container` ラッパー) を設定し、中央寄せにすること。`SharedSection.module.css` のような共通スタイルでは `.section > *` セレクタ等を活用して内部の幅を制限し、背景や下線は画面全体に広がるようにする。
-- **グローバルメニューの運用**: `components/Header.tsx` のようなグローバルナビゲーションには、未作成・未完成のセクションへのリンクは配置せず、ページが作成されてから随時追加すること。
-- 新ページを `app/gcl/` に追加した場合、`components/Header.tsx` のナビゲーションも更新すること
+- **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本としている。新ページ追加時は `EXAMS` に `Exam` エントリを追加し（`status: 'coming-soon'` → ページ完成後 `'available'` または省略）、`app/navigation.ts` の `toNavTree` が自動でグルーピングするため **`components/Header.tsx` は直接編集しない**。
+- 新試験を追加する場合: ① `app/constants.ts` の `EXAMS` にエントリ追加 ② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加 ③ 試験ページ作成 — この 3 ファイルのみ変更すれば Header に自動反映される。
 - ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）

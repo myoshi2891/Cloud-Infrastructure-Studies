@@ -30,7 +30,9 @@
   - `/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。
   - `/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
   - `/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
-- `/components`: 共通コンポーネント（Header, Footer, DisclaimerBanner など）。
+- `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。新試験はここに追加する。
+- `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。
+- `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。
 - `/Gcl_Archive`: 旧式の HTML ベースの学習ガイド資料（移行完了後アーカイブ済み）。
@@ -57,7 +59,7 @@
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換してください。その際、必ず `<thead>` を含め、見出しセルには `<th scope="col">` を使用してください。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background`, `--color-foreground`, `--color-card` など）を厳格に使用すること。コンポーネントの CSS 内で新しいカスタムプロパティ (`--*`) を定義することは禁止します（グローバルな `@theme` トークンのみを参照）。
 - **レイアウトと最大幅の制約**: 各セクションのメインコンテンツは画面幅いっぱいに広がらないよう、CSS Modulesで `max-width` (例: 1000px または `.container` ラッパー) を設定し、中央寄せにしてください。`SharedSection.module.css` のような共通スタイルでは `.section > :not(.divider)` セレクタ等を活用して内部の幅を制限し、背景や区切り線（`.divider`）は画面全体に広がるようにします。
-- **グローバルメニューの運用**: `components/Header.tsx` のようなグローバルナビゲーションには、未作成・未完成のセクションへのリンクは配置せず、該当ページやセクションが実装されてから追加するようにしてください。
+- **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本とし、`app/navigation.ts` の `toNavTree()` が provider 別グループを自動生成するため **`components/Header.tsx` は直接編集しない**。新試験追加時は `EXAMS` にエントリを追加し（`status: 'coming-soon'` → 完成後に省略）、`app/globals.css` に `icon-theme-<id>` を追加すれば Drawer に自動反映される。
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。

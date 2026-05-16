@@ -81,7 +81,8 @@ app/
       <exam>.css
 ```
 
-新ページを追加した場合は `components/Header.tsx` のナビゲーションも更新する。
+新ページを追加した場合は **`app/constants.ts` の `EXAMS` にエントリを追加する**（Header.tsx は `toNavTree(EXAMS)` で自動反映されるため直接編集しない）。
+`status: 'coming-soon'` で登録しておけばナビには「準備中」として表示され、ホームページのカード一覧からは除外される。ページ完成後に `status` を削除することで公開扱いになる。
 
 ---
 
