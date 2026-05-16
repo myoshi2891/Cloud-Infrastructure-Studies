@@ -107,7 +107,7 @@ Aws/                                # AWS資料アーカイブ
 - Aurora（ACE）、Sapphire/Laboratory/Gold/Executive（Generative AI Leader 各セクション）
 - テーマ変数は `--color-*` を上書きする形で定義
 
-新しいテーマカラーを追加する場合は、ページ固有 `.css` を作成し `app/gcl/xxx/layout.tsx` でインポートする。
+新しいテーマカラーを追加する場合は、ページ固有 `.css` を作成し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` へのインポートを優先し、不要な `layout.tsx` の作成を避ける。
 
 ## テスト構成
 

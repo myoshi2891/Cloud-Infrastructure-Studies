@@ -39,7 +39,8 @@ test.describe('Generative AI Leader ページ', () => {
                 errors.push(msg.text());
             }
         });
-        await page.goto('/gcl/genai-leader');
+        // beforeEach で既にナビゲート済みのため reload してリスナー登録後のロードを観測する
+        await page.reload();
         await page.waitForLoadState('networkidle');
         expect(errors).toEqual([]);
     });

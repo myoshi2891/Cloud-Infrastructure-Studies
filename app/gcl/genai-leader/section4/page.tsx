@@ -1051,7 +1051,7 @@ export default function Section4Page() {
             </header>
 
             {/* NAV */}
-            <nav className="snav">
+            <nav className="snav" aria-label="Section 4 サブセクションナビゲーション">
                 <a href="#s41" className="n1"><span className="snav-num nn1">4.1</span>Gen AI 実装戦略</a>
                 <a href="#s42" className="n2"><span className="snav-num nn2">4.2</span>セキュアな AI</a>
                 <a href="#s43" className="n3"><span className="snav-num nn3">4.3</span>責任ある AI</a>

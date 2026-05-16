@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import AssociateCloudEngineerPage from '@/app/gcl/associate-cloud-engineer/page';
 
 describe('Associate Cloud Engineer ページ', () => {
@@ -29,11 +29,13 @@ describe('Associate Cloud Engineer ページ', () => {
     });
 
     it('sticky nav にセクションリンクが含まれること', () => {
-        const nav = screen.getByRole('navigation');
+        const nav = screen.getByRole('navigation', { name: /ACE セクションナビゲーション/ });
         expect(nav).toBeInTheDocument();
-        expect(screen.getByText(/S1: 環境構築/)).toBeInTheDocument();
-        expect(screen.getByText(/S2: 計画・実装/)).toBeInTheDocument();
-        expect(screen.getByText(/S3: 運用管理/)).toBeInTheDocument();
-        expect(screen.getByText(/S4: アクセス・セキュリティ/)).toBeInTheDocument();
+        const links = within(nav).getAllByRole('link');
+        expect(links).toHaveLength(5);
+        expect(within(nav).getByText(/S1: 環境構築/)).toBeInTheDocument();
+        expect(within(nav).getByText(/S2: 計画・実装/)).toBeInTheDocument();
+        expect(within(nav).getByText(/S3: 運用管理/)).toBeInTheDocument();
+        expect(within(nav).getByText(/S4: アクセス・セキュリティ/)).toBeInTheDocument();
     });
 });

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import GenaiLeaderPage from '@/app/gcl/genai-leader/page';
 
 describe('Generative AI Leader ページ', () => {
@@ -30,11 +30,13 @@ describe('Generative AI Leader ページ', () => {
 
     it('sticky nav にセクションリンクが含まれること', () => {
         render(<GenaiLeaderPage />);
-        const nav = screen.getByRole('navigation');
+        const nav = screen.getByRole('navigation', { name: /Generative AI Leader セクションナビゲーション/ });
         expect(nav).toBeInTheDocument();
-        expect(screen.getAllByText(/Section 1: Gen AI 基礎/).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/Section 2: GCP サービス/).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/Section 3: モデル改善/).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/Section 4: ビジネス戦略/).length).toBeGreaterThanOrEqual(1);
+        const links = within(nav).getAllByRole('link');
+        expect(links).toHaveLength(5);
+        expect(within(nav).getByText(/Section 1: Gen AI 基礎/)).toBeInTheDocument();
+        expect(within(nav).getByText(/Section 2: GCP サービス/)).toBeInTheDocument();
+        expect(within(nav).getByText(/Section 3: モデル改善/)).toBeInTheDocument();
+        expect(within(nav).getByText(/Section 4: ビジネス戦略/)).toBeInTheDocument();
     });
 });
