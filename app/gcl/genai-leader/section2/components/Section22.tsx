@@ -93,7 +93,7 @@ export default function Section22() {
                     <tbody>
                         <tr>
                             <td><strong style={{ color: 'var(--aqua)' }}>NotebookLM Enterprise</strong></td>
-                            <td>企業内ドキュメント（PDF・URL・Google Docs 等）をソースにした AI 調査・要約ツール。Claude NotebookLM API として API 提供も可能。</td>
+                            <td>企業内ドキュメント（PDF・URL・Google Docs 等）をソースにした AI 調査・要約ツール。NotebookLM API として API 提供も可能。</td>
                             <td>社内ナレッジへの質問応答。ハルシネーション低減（ソース参照型）。新入社員のオンボーディング加速。</td>
                         </tr>
                         <tr>

@@ -32,7 +32,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-現在、`MIGRATION_PROGRESS.md` の「2026-05-12: AGWA Section 1 Migration (進行中)」セクションにある「実装ステップ詳細」に基づいて、静的HTMLファイルの Next.js への完全移行をステップバイステップで行う必要があります。
+現在、`MIGRATION_PROGRESS.md` の「2026-05-12: AGWA Section 1 Restoration (完了)」セクションにある「実装ステップ詳細」に基づいて、静的HTMLファイルの Next.js への完全移行をステップバイステップで行う必要があります。
 
 以下の要件を厳守して実装を進めてください。
 1. 一度にすべての変更を行うのではなく、Phase 1 から順にステップバイステップで実装すること。
@@ -41,11 +41,11 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 4. `<svg>` タグ内の属性はすべて React 向けに camelCase に変換すること。
 5. E2Eテストは不要ですが、実装ステップごとのビルド確認とコンポーネントの型整合性は必ず確認すること。
 
-それでは、対象のHTMLファイル `agwa-section1-accounts-domains-directory.html` を読み込み、「AGWA Section 1 Restoration (実行中)」セクションにある対象セクション（1.1, 1.2, 1.3, 1.4, 1.6）について、ユーザー確認済みの乖離箇所を順次、オリジナルに準拠したリッチな内容へと復元・補完してください。1セクションごとに作業を完了させ、コミットを行ってください。
+それでは、対象のHTMLファイル `agwa-section1-accounts-domains-directory.html` を読み込み、「AGWA Section 1 Restoration (完了)」セクションにある対象セクション（1.1, 1.2, 1.3, 1.4, 1.6）について、ユーザー確認済みの乖離箇所を順次、オリジナルに準拠したリッチな内容へと復元・補完してください。1セクションごとに作業を完了させ、コミットを行ってください。
 
 ---
 
-## 2026-05-12: AGWA Section 1 Migration (進行中)
+## 2026-05-12: AGWA Section 1 Migration (完了)
 
 ### 実装ステップ詳細 (Implementation Plan)
 

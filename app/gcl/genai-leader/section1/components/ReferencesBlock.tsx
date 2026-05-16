@@ -13,7 +13,7 @@ export function ReferencesBlock({ title, items }: { title: string; items: RefsIt
         <div className="src">
             <div className="srct">{title}</div>
             {items.map(({ href, label }) => (
-                <a key={href} href={href} target="_blank" rel="noreferrer">
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer">
                     {label ?? href}
                 </a>
             ))}

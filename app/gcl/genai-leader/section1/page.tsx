@@ -100,7 +100,7 @@ export default function Section1Page() {
                 <strong>Google Cloud Generative AI Leader — Section 1 基礎知識 完全解説ガイド</strong>
                 <br /><br />
                 参考：
-                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noreferrer">
+                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noopener noreferrer">
                     Google Cloud 公式試験ページ
                 </a>
                 {' '}｜ 作成日：2026年3月<br /><br />
