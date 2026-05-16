@@ -1,6 +1,6 @@
 # Project Overview: Cloud Infrastructure Studies
 
-このプロジェクトは、Google Cloud や AWS などのクラウド資格試験対策（Associate Cloud Engineer, Generative AI Leader など）を目的とした学習用 Next.js アプリケーションです。
+このプロジェクトは、Google Cloud のクラウド資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
 
 ## 主な技術スタック
@@ -24,12 +24,16 @@
 ## プロジェクト構造
 
 - `/app`: Next.js App Router のページコンポーネント。
-  - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ。
-  - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4）。
+  - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ（domain1〜4、architecture-guide を含む）。
+  - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
+  - `/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
+  - `/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。
+  - `/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
+  - `/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
 - `/components`: 共通コンポーネント（Header, Footer, DisclaimerBanner など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。
-- `/Gcl`: 旧式の HTML ベースの学習ガイド資料（移行中、または参照用）。
+- `/Gcl_Archive`: 旧式の HTML ベースの学習ガイド資料（移行完了後アーカイブ済み）。
 - `/Aws`: AWS 関連の古い資料（アーカイブ済み）。
 
 ## 開発コンベンション

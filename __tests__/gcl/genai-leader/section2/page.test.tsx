@@ -43,4 +43,16 @@ describe('Generative AI Leader Section 2 ページ', () => {
         expect(screen.getAllByText(/Vertex AI/).length).toBeGreaterThanOrEqual(1);
         expect(screen.getAllByText(/エージェント/).length).toBeGreaterThanOrEqual(1);
     });
+
+    it('Section21〜SummarySection が期待する anchor id を持ち DOM 上で正しい順序で並ぶこと', () => {
+        const { container } = render(<Section2Page />);
+        const expectedIds = ['s21', 's22', 's23', 's24', 's25', 'summary'];
+        const renderedIds = Array.from(
+            container.querySelectorAll<HTMLElement>('section[id]')
+        )
+            .map((el) => el.id)
+            .filter((id) => expectedIds.includes(id));
+
+        expect(renderedIds).toEqual(expectedIds);
+    });
 });

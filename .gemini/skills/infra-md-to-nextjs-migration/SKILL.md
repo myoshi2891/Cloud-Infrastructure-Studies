@@ -2,11 +2,12 @@
 
 ## 目的
 
-Markdown 形式の試験対策資料を Next.js App Router の `page.tsx` 学習コンポーネントへ移行する際のエンドツーエンドワークフローを提供する。GCP（CDL, ACE）・AWS など複数の資格に対応する。
+Markdown 形式の試験対策資料を Next.js App Router の `page.tsx` 学習コンポーネントへ移行する際のエンドツーエンドワークフローを提供する。GCP（ACE, GenAI Leader, CDL, AGWA, PCNE）・AWS など複数の資格に対応する。
 
 **前提**: グローバルな知見として JSX ピットフォール・SVG 属性変換・TypeScript strict モードの注意点をカバーしているものとする。本スキルは**このリポジトリ固有のワークフロー**に集中する。
 
 > **重要**: ソース MD の内容は**省略・要約を一切禁止**する。表の全行・箇条書きの全項目・説明文の全文を JSX に組み込むこと。「長いので省略」は絶対に許容しない。
+> 特に「詳細手順」「CSV フォーマット例」「複雑な表」「注釈」などは学習資料として極めて重要であるため、必ず全て移植すること。
 
 ---
 
@@ -17,18 +18,42 @@ Markdown 形式の試験対策資料を Next.js App Router の `page.tsx` 学習
 ```text
 app/
   gcl/                              ← GCP 資格
-    cloud-digital-leader/
-      section1/                     ← 新しい構成例: セクションごとのページ
-        constants.ts
+    associate-cloud-engineer/
+      page.tsx
+      ace.css
+      domain{1-4}/page.tsx          ← ドメイン別詳細ページ
+      architecture-guide/page.tsx
+    genai-leader/
+      constants.ts
+      page.tsx
+      genai-leader.css
+      section1/
         page.tsx
-        layout.tsx
-        components/                 ← コンポーネント抽出
-          DiagramSVG.tsx            ← SVG用コンポーネント
-          index.ts
+        components/                 ← Section11〜14 等に分割（Batch E リファクタ済み）
+      section2/
+        page.tsx
+        components/                 ← Section21〜25 等に分割（Batch E リファクタ済み）
+      section3/page.tsx
+      section4/page.tsx
+    cloud-digital-leader/
+      cdl.css                       ← 共通テーマ
+      section{1-6}/
+        page.tsx
+        components/                 ← DiagramSVG.tsx 等
           sections/
-            Section1.tsx
-            Section2.tsx
-            Section2.module.css     ← CSS Modules
+            Section*.tsx
+            Section*.module.css     ← CSS Modules
+    agwa/
+      page.tsx
+      section1/
+        page.tsx
+        page.css
+    professional-cloud-network-engineer/
+      page.tsx
+      components/                   ← Section1〜6 + SectionIntro + SectionSummary
+    professional-cloud-network-engineer-step-by-step/
+      page.tsx
+      components/                   ← Section1〜6
 ```
 
 新ページを追加した場合は `components/Header.tsx` のナビゲーションも更新する。
@@ -124,6 +149,9 @@ import {
 さらに、スタイルには **CSS Modules (`*.module.css`)** を使用する。共通スタイル（例 `SectionBase.module.css`）は CSS 側の `@import` ではなく、TSX で直接複数インポート（`import baseStyles from ...`）して参照すること。
 また、**JSDoc/Docstrings** を追加し、コードの意図を明確にする。
 ASCIIダイアグラムは必ず **SVG コンポーネント (`DiagramSVG.tsx` 等)** に置き換えること。`DiagramSVG` は型の制約により `ariaLabel` (説明文) または `decorative={true}` の指定が必須となるため適切に付与する。
+
+**SVGの移行品質について**:
+オリジナル HTML/MD にリッチな SVG（チップ表示、ステータス、詳細な注釈等）が含まれている場合、それらを簡略化せず、すべての詳細を React/SVG コードとして再現すること。プレースホルダーへの置き換えは禁止。属性は必ず camelCase に変換し、`style` はオブジェクト形式で記述すること。
 
 ```tsx
 /**
