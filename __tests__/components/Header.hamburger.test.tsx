@@ -205,11 +205,12 @@ describe('Header ドロワー内 NavTree 描画', () => {
         // Act: Shift+Tab で末尾へ wrap
         await user.keyboard('{Shift>}{Tab}{/Shift}');
 
-        // Assert: 最後の tabbable がフォーカスを持つ（先頭がクローズなのでループ）
+        // Assert: 全 details 閉時の最後の tabbable は最後の summary（AWS SAA アコーディオン）
+        // summary は details が閉じていても常時タブ可能（<a> リンクは closed details 内は除外）
+        // JSDOM では summary が button role として expose されないため querySelectorAll で取得
         const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
-        const tabbables = within(dialog).getAllByRole('link');
-        const last = tabbables[tabbables.length - 1];
-        expect(last).toHaveFocus();
+        const summaries = dialog.querySelectorAll('summary');
+        expect(summaries[summaries.length - 1]).toHaveFocus();
     });
 
     it('Drawer 内リンクをクリックすると Drawer が閉じること', async () => {

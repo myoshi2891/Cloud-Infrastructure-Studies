@@ -57,9 +57,15 @@ export function Header() {
             if (e.key !== 'Tab') return;
             const container = drawerRef.current;
             if (!container) return;
-            const tabbables = container.querySelectorAll<HTMLElement>(
-                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            const rawTabbables = container.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), summary, [tabindex]:not([tabindex="-1"])',
             );
+            // summary は常時タブ可能。details 内のコンテンツは open 時のみタブ可能
+            const tabbables = Array.from(rawTabbables).filter((el) => {
+                if (el.tagName.toLowerCase() === 'summary') return true;
+                const d = el.closest('details');
+                return !d || d.open;
+            });
             const first = tabbables[0];
             const last = tabbables[tabbables.length - 1];
             if (!first || !last) return;
@@ -115,7 +121,7 @@ export function Header() {
                     aria-controls="site-nav-drawer"
                     className="flex h-9 w-9 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)]"
                 >
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                         <path
                             d="M2 5h14M2 9h14M2 13h14"
                             stroke="currentColor"
@@ -218,7 +224,7 @@ function DrawerExamAccordion({
                     height="12"
                     viewBox="0 0 12 12"
                     fill="none"
-                    aria-hidden
+                    aria-hidden="true"
                     className="text-[var(--color-muted-foreground)] transition-transform duration-150 group-open:rotate-180"
                 >
                     <path

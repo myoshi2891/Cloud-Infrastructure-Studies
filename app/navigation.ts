@@ -3,7 +3,9 @@
  * Header は本関数の戻り値だけを参照して描画する。
  */
 
-export type Provider = 'GCP' | 'AWS';
+import type { Provider } from '@/app/constants';
+
+export type { Provider };
 
 export type NavLeaf = {
     label: string;

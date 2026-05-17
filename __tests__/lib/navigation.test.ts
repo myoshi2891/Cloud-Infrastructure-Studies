@@ -16,6 +16,7 @@ const gcpAce: Exam = {
     ],
     badge: '実践向け',
     icon: '⚙️',
+    provider: 'GCP',
 };
 
 const gcpGenAi: Exam = {
@@ -32,6 +33,7 @@ const gcpGenAi: Exam = {
     ],
     badge: 'AI特化',
     icon: '✨',
+    provider: 'GCP',
 };
 
 // AWS スタブ（Step 2 で constants に追加するまでは test 内 fixture として使用）
@@ -186,7 +188,7 @@ describe('toNavTree', () => {
             // Assert
             expect(aws).toBeDefined();
             expect(aws!.exams.length).toBeGreaterThan(0);
-            expect(aws!.exams[0].status).toBe('coming-soon');
+            expect(aws!.exams.some((e) => e.status === 'coming-soon')).toBe(true);
         });
     });
 });

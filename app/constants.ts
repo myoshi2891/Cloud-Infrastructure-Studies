@@ -1,6 +1,6 @@
 /** ホームページで使用する試験データと統計の定数 */
 
-import type { Provider } from './navigation';
+export type Provider = 'GCP' | 'AWS';
 
 export interface ExamDomain {
     label: string;
