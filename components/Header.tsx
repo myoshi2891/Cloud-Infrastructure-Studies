@@ -305,8 +305,13 @@ export function Header() {
 /**
  * 試験テーマアクセント (左端ボーダー) 用クラスマップ。
  * Tailwind v4 はビルド時にソース内の class 文字列を走査するため、
- * 動的に組み立てた `before:bg-[var(--color-theme-<id>-fg)]` は検出されない。
+ * テンプレートリテラルで組み立てた arbitrary value クラス
+ * (例: before バリアントで --color-theme-{試験ID}-fg を bg に当てる形) は検出されない。
  * 全パターンを静的に列挙して、JIT で必ず生成されるようにする。
+ *
+ * 注意: このコメント内に実物のクラス文字列をそのまま書くと、Tailwind の JIT が
+ * プレースホルダ込みのまま拾ってしまい、生成 CSS に `<id>` 等の不正トークンが
+ * 混入して PostCSS パースが失敗する。説明はクラス文字列を分割／日本語化で示すこと。
  */
 const ACCENT_CLASS: Record<string, string> = {
     'card-ace': 'before:bg-[var(--color-theme-ace-fg)]',
