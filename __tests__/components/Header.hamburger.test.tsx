@@ -53,6 +53,22 @@ describe('Header ハンバーガーメニュー', () => {
         expect(screen.getByRole('dialog', { name: 'サイトナビゲーション' })).toBeInTheDocument();
     });
 
+    it('Drawer の z-index は 100 を超える値であること（ページ内 sticky nav z-100 を貫通させないため）', async () => {
+        // Arrange
+        const user = userEvent.setup();
+        render(<Header />);
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert: Tailwind の z-[<n>] 任意値クラスから数値を抽出し、100 を超えることを担保する
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const match = Array.from(dialog.classList).find((c) => /^z-\[\d+\]$/.test(c));
+        expect(match, `dialog must declare an arbitrary Tailwind z-index utility, got: ${dialog.className}`).toBeDefined();
+        const zValue = Number(match!.replace(/^z-\[(\d+)\]$/, '$1'));
+        expect(zValue).toBeGreaterThan(100);
+    });
+
     it('Drawer 内のクローズボタンで閉じられること', async () => {
         // Arrange
         const user = userEvent.setup();

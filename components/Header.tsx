@@ -91,7 +91,7 @@ export function Header() {
         <>
             <nav
                 aria-label="サイト全体のメインナビゲーション"
-                className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[var(--color-background)]/90 px-6 backdrop-blur-xl"
+                className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[var(--color-background)]/90 px-6 backdrop-blur-xl md:px-8 lg:px-10"
                 style={{
                     height: 'var(--header-h, 48px)',
                     minHeight: 'var(--header-h, 48px)',
@@ -100,15 +100,15 @@ export function Header() {
                 {/* Logo / Brand */}
                 <Link
                     href="/"
-                    className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85"
+                    className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85 md:gap-3"
                 >
                     <span
-                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black md:h-8 md:w-8 md:text-base"
                         aria-hidden
                     >
                         ☁
                     </span>
-                    <span className="text-[15px] font-bold tracking-tight">
+                    <span className="text-[15px] font-bold tracking-tight md:text-[17px] lg:text-[18px]">
                         Cloud Infrastructure{' '}
                         <span className="text-gradient-aurora">Studies</span>
                     </span>
@@ -123,9 +123,14 @@ export function Header() {
                     aria-haspopup="dialog"
                     aria-expanded={drawerOpen}
                     aria-controls="site-nav-drawer"
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)]"
+                    className="group flex h-9 items-center justify-center gap-2 rounded-lg px-2 text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:gap-2.5 md:px-3.5"
                 >
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        aria-hidden="true"
+                        className="h-[18px] w-[18px] md:h-[22px] md:w-[22px]"
+                    >
                         <path
                             d="M2 5h14M2 9h14M2 13h14"
                             stroke="currentColor"
@@ -133,6 +138,9 @@ export function Header() {
                             strokeLinecap="round"
                         />
                     </svg>
+                    <span className="hidden text-[13px] font-semibold tracking-wide uppercase md:inline">
+                        Menu
+                    </span>
                 </button>
             </nav>
             {drawerOpen && (
@@ -142,53 +150,67 @@ export function Header() {
                     role="dialog"
                     aria-modal="true"
                     aria-label="サイトナビゲーション"
-                    className="fixed inset-0 z-[60] flex justify-end"
+                    className="fixed inset-0 z-[200] flex justify-end md:justify-center"
                 >
                     <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        className="absolute inset-0 bg-black/70 backdrop-blur-md"
                         onClick={() => setDrawerOpen(false)}
                         aria-hidden
                     />
-                    <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl">
-                        <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
-                            <span className="text-sm font-semibold text-[var(--color-foreground)]">
-                                メニュー
-                            </span>
+                    <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl md:max-w-none md:border-l-0 md:bg-[#0b0f16]/97">
+                        {/* Header */}
+                        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/[0.06] bg-[#0e1117]/95 px-5 py-4 backdrop-blur-xl md:px-10 md:py-6 lg:px-16">
+                            <div className="flex items-center gap-3 md:gap-4">
+                                <span
+                                    className="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-aurora text-base font-black md:flex"
+                                    aria-hidden
+                                >
+                                    ☁
+                                </span>
+                                <span className="text-sm font-semibold text-[var(--color-foreground)] md:text-xl md:font-bold md:tracking-tight">
+                                    メニュー
+                                </span>
+                            </div>
                             <button
                                 ref={closeButtonRef}
                                 type="button"
                                 onClick={() => setDrawerOpen(false)}
                                 aria-label="メニューを閉じる"
-                                className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)]"
+                                className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:w-11 md:rounded-xl md:border md:border-white/[0.08] md:text-lg"
                             >
-                                <span aria-hidden>×</span>
+                                <span aria-hidden className="text-lg leading-none md:text-2xl">×</span>
                             </button>
                         </div>
-                        <div className="flex flex-col gap-6 px-5 py-5">
-                            {NAV_TREE.map((group) => (
-                                <section
-                                    key={group.provider}
-                                    aria-labelledby={`nav-group-${group.provider}`}
-                                    className="flex flex-col gap-2"
-                                >
-                                    <h2
-                                        id={`nav-group-${group.provider}`}
-                                        className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]"
+
+                        {/* Body */}
+                        <div className="mx-auto w-full max-w-7xl flex-1 px-5 py-5 md:px-10 md:py-10 lg:px-16 lg:py-12">
+                            <div className="flex flex-col gap-6 md:grid md:grid-cols-2 md:gap-x-10 md:gap-y-10 lg:gap-x-14">
+                                {NAV_TREE.map((group) => (
+                                    <section
+                                        key={group.provider}
+                                        aria-labelledby={`nav-group-${group.provider}`}
+                                        className="flex flex-col gap-2 md:gap-4"
                                     >
-                                        {group.label}
-                                    </h2>
-                                    <ul className="flex flex-col gap-1.5">
-                                        {group.exams.map((exam) => (
-                                            <li key={exam.id}>
-                                                <DrawerExamAccordion
-                                                    exam={exam}
-                                                    onLinkClick={() => setDrawerOpen(false)}
-                                                />
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </section>
-                            ))}
+                                        <h2
+                                            id={`nav-group-${group.provider}`}
+                                            className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)] md:text-[13px] md:tracking-[0.18em]"
+                                        >
+                                            <span className="md:inline-block md:h-px md:w-6 md:bg-white/15" aria-hidden />
+                                            {group.label}
+                                        </h2>
+                                        <ul className="flex flex-col gap-1.5 md:gap-2.5">
+                                            {group.exams.map((exam) => (
+                                                <li key={exam.id}>
+                                                    <DrawerExamAccordion
+                                                        exam={exam}
+                                                        onLinkClick={() => setDrawerOpen(false)}
+                                                    />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </section>
+                                ))}
+                            </div>
                         </div>
                     </aside>
                 </div>
@@ -217,30 +239,28 @@ function DrawerExamAccordion({
 }) {
     const isComingSoon = exam.status === 'coming-soon';
     return (
-        <details className="group rounded-xl border border-white/[0.06] bg-white/[0.02] open:bg-white/[0.04]">
-            <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 text-[14px] font-medium text-[var(--color-foreground)] hover:bg-white/[0.04]">
+        <details className="group rounded-xl border border-white/[0.06] bg-white/[0.02] transition-colors open:border-white/[0.12] open:bg-white/[0.04] md:rounded-2xl">
+            <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 text-[14px] font-medium text-[var(--color-foreground)] transition-colors hover:bg-white/[0.04] md:gap-4 md:px-5 md:py-4 md:text-[16px]">
                 <span
                     className={cn(
                         iconThemeClass(exam.colorClass),
-                        'flex h-5 w-5 items-center justify-center rounded text-[11px]',
+                        'flex h-5 w-5 items-center justify-center rounded text-[11px] md:h-8 md:w-8 md:rounded-lg md:text-[14px]',
                     )}
                     aria-hidden
                 >
                     {exam.icon}
                 </span>
-                <span className="flex-1 leading-tight">{exam.label}</span>
+                <span className="flex-1 leading-tight md:tracking-tight">{exam.label}</span>
                 {isComingSoon && (
-                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)] md:px-2.5 md:py-1 md:text-[11px]">
                         準備中
                     </span>
                 )}
                 <svg
-                    width="12"
-                    height="12"
                     viewBox="0 0 12 12"
                     fill="none"
                     aria-hidden="true"
-                    className="text-[var(--color-muted-foreground)] transition-transform duration-150 group-open:rotate-180"
+                    className="h-3 w-3 text-[var(--color-muted-foreground)] transition-transform duration-150 group-open:rotate-180 md:h-4 md:w-4"
                 >
                     <path
                         d="M2 4l4 4 4-4"
@@ -252,13 +272,13 @@ function DrawerExamAccordion({
                 </svg>
             </summary>
             {!isComingSoon && (
-                <ul className="flex flex-col gap-0.5 border-t border-white/[0.04] px-2 py-2">
+                <ul className="flex flex-col gap-0.5 border-t border-white/[0.04] px-2 py-2 md:gap-1 md:px-3 md:py-3">
                     {exam.items.map((item) => (
                         <li key={item.href}>
                             <Link
                                 href={item.href}
                                 onClick={onLinkClick}
-                                className="block rounded-lg px-3 py-2 text-[13px] text-[var(--color-muted)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-foreground)]"
+                                className="block rounded-lg px-3 py-2 text-[13px] text-[var(--color-muted)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-foreground)] md:rounded-xl md:px-4 md:py-2.5 md:text-[15px]"
                             >
                                 {item.label}
                             </Link>
