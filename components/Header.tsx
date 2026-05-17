@@ -11,10 +11,16 @@ import { getRecent, type RecentEntry } from '@/lib/recentPages';
 const NAV_TREE = toNavTree(EXAMS);
 
 /**
- * 試験ツリーを検索語で絞り込む。exam.label / items[].label を case-insensitive で部分一致判定。
- * マッチした exam はそのまま（items は元のまま全件返す = 検索中も概要/全 domain にアクセス可）。
- * 空白のみの query は「絞り込みなし」として元ツリーをそのまま返す。
- */
+ * Filter a navigation tree of exam groups by a search query.
+ *
+ * Performs a case-insensitive substring match of `query` against each exam's `label`
+ * and against each `item.label` within an exam. Matching exams are included with
+ * their full original `items` array preserved so all domains remain accessible.
+ * If `query` is only whitespace, the original `tree` is returned unchanged.
+ *
+ * @param tree - The navigation groups to filter
+ * @param query - Search text; trimmed and lowercased for matching. Whitespace-only disables filtering
+ * @returns The filtered navigation tree containing only groups with at least one matching exam.
 function filterNavTree(tree: readonly NavGroup[], query: string): NavGroup[] {
     const q = query.trim().toLowerCase();
     if (!q) return tree as NavGroup[];
@@ -58,12 +64,23 @@ export function Header() {
     const hasResults = filteredTree.length > 0;
     const isSearching = query.trim().length > 0;
 
+    /**
+     * Captures a snapshot of recently viewed entries and opens the navigation drawer.
+     *
+     * This records the current recent-history snapshot so the drawer can display up-to-date
+     * "recently viewed" links, then sets the drawer open state.
+     */
     function openDrawerWithRecent() {
         // 開いた瞬間の履歴スナップショットを採取（外部 store なので useEffect ではなくイベントで取得）
         setRecent(getRecent());
         setDrawerOpen(true);
     }
 
+    /**
+     * Clears the drawer search query and closes the navigation drawer.
+     *
+     * Clears the current search input used for filtering the nav tree and sets the drawer open state to false.
+     */
     function closeDrawer() {
         setQuery('');
         setDrawerOpen(false);
@@ -324,9 +341,17 @@ const ACCENT_CLASS: Record<string, string> = {
 };
 
 /**
- * プロバイダ単位のセクション。
- * Google Cloud / Amazon Web Services でヒーロー帯（ブランドアクセント + 試験件数）と
- * 内部グリッド（GCP は md+ 2 列、AWS は常時 1 列）を切り替える。
+ * Renders a provider section with a header and its exams.
+ *
+ * Displays a hero strip with the provider label and exam count, followed by the provider's exams rendered as accordions.
+ *
+ * The exam list uses a two-column grid at md+ breakpoints for GCP and a single-column layout for AWS so single "coming soon" cards can span full width.
+ *
+ * @param group - Navigation group object containing provider, label, and exams.
+ * @param currentPath - Current pathname used to mark active item links.
+ * @param forceOpenAll - When true, non-coming-soon exams are forced open.
+ * @param onLinkClick - Callback invoked when an exam item link is clicked (typically to close the drawer).
+ * @returns The section element that groups the provider header and its exam accordions.
  */
 function ProviderSection({
     group,

@@ -13,8 +13,11 @@ export type RecentEntry = {
 };
 
 /**
- * 任意値が RecentEntry 形状か判定する型ガード。
- * any を避け、unknown を絞り込む方針。
+ * Type guard that checks whether a value conforms to the `RecentEntry` shape.
+ *
+ * Validates that `href` and `label` are non-empty strings and that `ts` is a number.
+ *
+ * @returns `true` if `value` is a `RecentEntry`, `false` otherwise.
  */
 function isRecentEntry(value: unknown): value is RecentEntry {
     if (typeof value !== 'object' || value === null) return false;
@@ -28,6 +31,11 @@ function isRecentEntry(value: unknown): value is RecentEntry {
     );
 }
 
+/**
+ * Read the recent-pages list from localStorage and return only valid entries.
+ *
+ * @returns An array of validated `RecentEntry` objects; returns an empty array if running in a non-browser environment, if the stored value is missing or not a parsable array, or if an error occurs while accessing or parsing storage. Invalid entries are excluded.
+ */
 function readStorage(): RecentEntry[] {
     try {
         if (typeof window === 'undefined') return [];
@@ -41,6 +49,15 @@ function readStorage(): RecentEntry[] {
     }
 }
 
+/**
+ * Persist the provided recent-page entries to localStorage.
+ *
+ * This is a no-op in server (SSR) environments. If writing to localStorage fails
+ * (for example due to quota limits or private browsing restrictions), the error
+ * is silently ignored.
+ *
+ * @param entries - The array of `RecentEntry` items to persist; stored as JSON under the module's STORAGE_KEY
+ */
 function writeStorage(entries: RecentEntry[]): void {
     try {
         if (typeof window === 'undefined') return;
@@ -51,15 +68,18 @@ function writeStorage(entries: RecentEntry[]): void {
 }
 
 /**
- * 履歴を新しい順で取得する。SSR や localStorage アクセス失敗時は空配列。
+ * Get recent page entries ordered newest first.
+ *
+ * @returns An array of `RecentEntry` objects sorted by descending `ts` (newest first). Returns an empty array during SSR or if localStorage is unavailable or contains invalid data.
  */
 export function getRecent(): RecentEntry[] {
     return readStorage();
 }
 
 /**
- * 履歴に 1 件追加する。同一 href があれば先頭に昇格し、MAX_RECENT を超えた古い分は切り捨てる。
- * href/label が空のときは何もしない。
+ * Add an entry to the recent-pages list, promoting an existing entry with the same href to the front and truncating the list to MAX_RECENT.
+ *
+ * @param entry - Object with `href` and `label`. If either `href` or `label` is empty, the function does nothing. The stored entry will include a `ts` timestamp set to the current time.
  */
 export function pushRecent(entry: { href: string; label: string }): void {
     if (!entry.href || !entry.label) return;
