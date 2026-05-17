@@ -60,7 +60,23 @@ app/
     associate-cloud-engineer/
       page.tsx                      # ACE 試験対策ページ
       ace.css                       # Aurora テーマ（ページ固有）
-      domain{1-4}/page.tsx          # 各ドメイン詳細ページ
+      domain1/page.tsx              # Domain 1: 環境設定
+      domain2/
+        page.tsx                    # Domain 2: 計画と実装
+        constants.ts                # Domain 2 固有定数
+        domain2.css                 # ページ固有スタイル
+        layout.tsx                  # Domain 2 レイアウト
+        Chapter17.tsx / Chapter18.tsx  # セクションコンポーネント
+      domain3/
+        page.tsx                    # Domain 3: 運用管理
+        constants.ts                # Domain 3 固有定数
+        domain3.css                 # ページ固有スタイル
+        layout.tsx                  # Domain 3 レイアウト
+      domain4/
+        page.tsx                    # Domain 4: アクセスとセキュリティ
+        constants.ts                # Domain 4 固有定数
+        domain4.css                 # ページ固有スタイル
+        layout.tsx                  # Domain 4 レイアウト
       architecture-guide/page.tsx   # アーキテクチャガイドページ
     genai-leader/
       page.tsx                      # Generative AI Leader トップ
@@ -77,7 +93,14 @@ app/
       section3/page.tsx             # Section 3: Gen AI ソリューションの開発
       section4/page.tsx             # Section 4: 責任ある AI
     cloud-digital-leader/
+      layout.tsx                    # CDL 共通レイアウト
+      page.tsx                      # CDL トップページ
+      constants.ts                  # CDL 共通定数
       cdl.css                       # CDL 共通テーマ（--cdl-* トークン定義）
+      components/
+        SectionCard.tsx             # 共通カードコンポーネント
+        shared/
+          TableComponent.tsx        # 共通テーブルコンポーネント
       section1/
         page.tsx                    # Section 1: デジタルトランスフォーメーション
         components/sections/        # 分割されたセクションコンポーネント
@@ -118,6 +141,7 @@ components/
   Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要
   Footer.tsx                        # シンプルなフッター（サイト名のみ）
   DisclaimerBanner.tsx              # 全画面固定バナー（免責事項）、layout.tsx から呼び出し
+  DiagramSVG.tsx                    # SVG ダイアグラム共通コンポーネント（ariaLabel または decorative 必須）
 
 __tests__/                          # Vitest（jsdom環境）
 e2e/                                # Playwright（Chromiumのみ）

@@ -28,7 +28,7 @@
 
 ### データレイヤー
 
-```
+```text
 app/constants.ts          (正本: EXAMS に provider フィールド追加)
         │
         ▼
@@ -105,7 +105,7 @@ export function toNavTree(exams: Exam[]): NavGroup[];
 
 ### Step 3: 既存 Header 18 テストの契約凍結
 
-- **テスト**: [__tests__/components/Header.test.tsx](__tests__/components/Header.test.tsx) を `describe('現契約 (legacy nav)')` で全体ラップ、全 PASS 確認
+- **テスト**: [**tests**/components/Header.test.tsx](__tests__/components/Header.test.tsx) を `describe('現契約 (legacy nav)')` で全体ラップ、全 PASS 確認
 - **実装**: なし
 - **コミット**: `test(header): freeze legacy nav contract before refactor`
 
@@ -169,8 +169,8 @@ export function toNavTree(exams: Exam[]): NavGroup[];
 ### 新規
 
 - [app/navigation.ts](app/navigation.ts) — adapter + 型
-- [__tests__/lib/navigation.test.ts](__tests__/lib/navigation.test.ts) — adapter ユニットテスト
-- [__tests__/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) — 新 UI のテスト
+- [**tests**/lib/navigation.test.ts](__tests__/lib/navigation.test.ts) — adapter ユニットテスト
+- [**tests**/components/Header.hamburger.test.tsx](__tests__/components/Header.hamburger.test.tsx) — 新 UI のテスト
 - [e2e/nav.spec.ts](e2e/nav.spec.ts) — E2E
 
 ### 変更
@@ -178,7 +178,7 @@ export function toNavTree(exams: Exam[]): NavGroup[];
 - [components/Header.tsx](components/Header.tsx) — ハンバーガー UI へ全面リファクタ
 - [app/constants.ts](app/constants.ts) — `provider` フィールド + AWS SAA スタブ
 - [app/globals.css](app/globals.css) — AWS テーマカラー変数追加
-- [__tests__/components/Header.test.tsx](__tests__/components/Header.test.tsx) — Step 3 で凍結、Step 7 で書き換え
+- [**tests**/components/Header.test.tsx](__tests__/components/Header.test.tsx) — Step 3 で凍結、Step 7 で書き換え
 - `package.json` — `@testing-library/user-event` 追加
 
 ### 不変条件 (触らない)
@@ -193,7 +193,7 @@ export function toNavTree(exams: Exam[]): NavGroup[];
 
 - [app/constants.ts:EXAMS](app/constants.ts) — 正本データソースとして再利用、provider フィールドのみ追加
 - [components/Header.tsx](components/Header.tsx) の `DropdownItem` — リンクカード描画ロジックはドロワー内アコーディオンで再利用可能
-- [__tests__/components/Header.test.tsx](__tests__/components/Header.test.tsx) — 日本語 describe/it + AAA パターンを Header.hamburger.test.tsx でも踏襲
+- [**tests**/components/Header.test.tsx](__tests__/components/Header.test.tsx) — 日本語 describe/it + AAA パターンを Header.hamburger.test.tsx でも踏襲
 - [vitest.setup.ts](vitest.setup.ts) — next/font / next/link モックをそのまま利用
 
 ---
