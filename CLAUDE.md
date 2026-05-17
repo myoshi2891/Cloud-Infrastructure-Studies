@@ -143,6 +143,10 @@ components/
   DisclaimerBanner.tsx              # 全画面固定バナー（免責事項）、layout.tsx から呼び出し
   DiagramSVG.tsx                    # SVG ダイアグラム共通コンポーネント（ariaLabel または decorative 必須）
 
+lib/
+  utils.ts                          # cn() (clsx + tailwind-merge)
+  recentPages.ts                    # 最近見たページ履歴 (localStorage, MAX 5件, SSR safe, 型ガード)
+
 __tests__/                          # Vitest（jsdom環境）
 e2e/                                # Playwright（Chromiumのみ）
 Gcl_Archive/                        # 旧HTML資料（参照・移行元アーカイブ）
