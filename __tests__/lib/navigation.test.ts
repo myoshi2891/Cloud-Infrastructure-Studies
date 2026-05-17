@@ -64,7 +64,9 @@ describe('toNavTree', () => {
 
     it('provider 未指定の試験は GCP グループに入る', () => {
         // Arrange
-        const exams = [gcpAce];
+        const { provider: _ignored, ...examWithoutProvider } = gcpAce;
+        void _ignored;
+        const exams = [examWithoutProvider as any];
 
         // Act
         const result = toNavTree(exams);
