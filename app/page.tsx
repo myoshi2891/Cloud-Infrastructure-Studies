@@ -15,6 +15,8 @@ const cardColorMap: Record<ColorKey, string> = {
     'card-cdl': `card-cdl ${styles.cardCdl}`,
     'card-agwa': `card-agwa ${styles.cardAgwa}`,
     'card-pcne': `card-pcne ${styles.cardPcne}`,
+    // coming-soon の試験はホームでフィルタするため CSS Module 未割当でよい
+    'card-aws-saa': 'card-aws-saa',
 };
 
 /**
@@ -143,7 +145,7 @@ export default function Home() {
     return (
         <main className={styles.page}>
             <Hero />
-            <ExamCards exams={EXAMS} />
+            <ExamCards exams={EXAMS.filter((e) => e.status !== 'coming-soon')} />
             <Stats stats={STATS} />
         </main>
     );

@@ -8,9 +8,10 @@
 
 ## 現在の作業状況
 
-- **HEAD**: e1beafe（fix/batch-e-refactor-sections-1-2 ブランチ）
-- **テスト数**: 317 件パス
+- **HEAD**: 6756706（dev ブランチ）
+- **テスト数**: 331 件パス（Vitest）/ E2E 4 件（Playwright Chromium）
 - **Next.js**: 16.2.6
-- **ステータス**: Batch E（genai-leader section1/2 コンポーネント分割）完了。Batch C（a11y 改善）の main マージコンフリクトを解消済み。
+- **ステータス**: ハンバーガー UI リファクタ（8/8 ステップ完了）。Header.tsx をデータ駆動ナビに完全移行。
 - **完了済み移行**: ACE（domain1-4, architecture-guide）、CDL（section1-6）、AGWA（section1）、PCNE（comprehensive + step-by-step）、GenAI Leader（section1-4）
-- **次の作業**: なし（仕様書同期・コンフリクト解消のみ）
+- **ナビ構造**: `app/constants.ts` の `EXAMS` → `app/navigation.ts` の `toNavTree()` → `components/Header.tsx` の Drawer で描画。新試験追加は constants.ts のみ変更すれば OK。
+- **次の作業**: AWS SAA ページ実装（`app/aws/solutions-architect-associate/`）

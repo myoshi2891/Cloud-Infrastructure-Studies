@@ -1,12 +1,20 @@
 /** ホームページで使用する試験データと統計の定数 */
 
+export type Provider = 'GCP' | 'AWS';
+
 export interface ExamDomain {
     label: string;
     href: string;
     pct: string;
 }
 
-export type ColorKey = 'card-ace' | 'card-genai' | 'card-cdl' | 'card-agwa' | 'card-pcne';
+export type ColorKey =
+    | 'card-ace'
+    | 'card-genai'
+    | 'card-cdl'
+    | 'card-agwa'
+    | 'card-pcne'
+    | 'card-aws-saa';
 
 export interface Exam {
     id: string;
@@ -20,6 +28,9 @@ export interface Exam {
     domains: ExamDomain[];
     badge: string;
     icon: string;
+    provider: Provider;
+    /** 'coming-soon' のときホームページでは非表示、ナビには「準備中」として表示 */
+    status?: 'available' | 'coming-soon';
 }
 
 export const EXAMS: Exam[] = [
@@ -62,6 +73,7 @@ export const EXAMS: Exam[] = [
         ],
         badge: '実践向け',
         icon: '⚙️',
+        provider: 'GCP',
     },
     {
         id: 'genai',
@@ -85,6 +97,7 @@ export const EXAMS: Exam[] = [
         ],
         badge: 'AI特化',
         icon: '✨',
+        provider: 'GCP',
     },
     {
         id: 'cdl',
@@ -106,6 +119,7 @@ export const EXAMS: Exam[] = [
         ],
         badge: '入門向け',
         icon: '🌐',
+        provider: 'GCP',
     },
     {
         id: 'agwa',
@@ -122,6 +136,7 @@ export const EXAMS: Exam[] = [
         ],
         badge: 'Workspace 管理向け',
         icon: '💼',
+        provider: 'GCP',
     },
     {
         id: 'pcne',
@@ -139,6 +154,23 @@ export const EXAMS: Exam[] = [
         ],
         badge: 'ネットワーク特化',
         icon: '🖧',
+        provider: 'GCP',
+    },
+    {
+        id: 'aws-saa',
+        label: 'AWS Certified Solutions Architect – Associate',
+        abbr: 'SAA',
+        level: 'Associate',
+        score: '~65問 / 130分',
+        color: 'card-aws-saa',
+        href: '/aws/solutions-architect-associate',
+        description:
+            'AWS 上で可用性・コスト効率・耐障害性に優れたシステムを設計する能力を認定。VPC・EC2・S3・IAM・RDS など中核サービスを横断的に問う。',
+        domains: [],
+        badge: '準備中',
+        icon: '🏗',
+        provider: 'AWS',
+        status: 'coming-soon',
     },
 ];
 

@@ -1,188 +1,90 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Header } from '@/components/Header';
+import { EXAMS } from '@/app/constants';
 
-describe('Header', () => {
-    it('サイトタイトルが表示されること', () => {
+// Header の最小契約を表現する。詳細な開閉挙動・フォーカス制御は
+// Header.hamburger.test.tsx 側でカバーし、ここでは構造とリンク網羅性のみを担保する。
+describe('Header (drawer nav)', () => {
+    it('サイトタイトル（ホームへのリンク）が表示されること', () => {
+        // Arrange & Act
         render(<Header />);
-        // "Cloud Infrastructure" と "Studies" が別 <span> に分かれているため
-        // getByRole でアクセシブル名（全子孫テキストを結合）を検索する
-        expect(screen.getByRole('link', { name: /cloud infrastructure studies/i })).toBeInTheDocument();
-    });
 
-    it('GenAI Leader ドロップダウントリガーが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /generative ai leader/i });
-        expect(button).toBeInTheDocument();
-        expect(button).toHaveAttribute('aria-haspopup', 'true');
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('GenAI Leader ドロップダウントリガーがクリックで開閉すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /generative ai leader/i });
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('GenAI Leader ページへのリンクが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /generative ai leader/i });
-        fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /generative ai leader 概要/i });
-        expect(link).toHaveAttribute('href', '/gcl/genai-leader');
-    });
-
-    it('Associate Cloud Engineer ドロップダウントリガーが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        expect(button).toBeInTheDocument();
-        expect(button).toHaveAttribute('aria-haspopup', 'true');
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('ACE ドロップダウントリガーがクリックで開閉すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('ACE ドロップダウンが Escape キーで閉じること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        fireEvent.keyDown(document, { key: 'Escape' });
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('ACE ドロップダウンが外側クリックで閉じること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        fireEvent.mouseDown(document);
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('ACE 概要リンクが /gcl/associate-cloud-engineer を指すこと', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        fireEvent.click(button);
-        const link = screen.getAllByRole('link', { name: /^概要$/i })[0];
-        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer');
-    });
-
-    it('ACE architecture-guide サブリンクが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /試験対策・アーキテクチャ詳細ガイド/i });
-        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer/architecture-guide');
-    });
-
-    it('ACE domain1 サブリンクが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /domain 1: 環境設定 包括的解説/i });
-        expect(link).toHaveAttribute('href', '/gcl/associate-cloud-engineer/domain1');
+        // Assert
+        const home = screen.getByRole('link', { name: /cloud infrastructure studies/i });
+        expect(home).toHaveAttribute('href', '/');
     });
 
     it('nav 要素として描画されること', () => {
+        // Arrange & Act
         render(<Header />);
+
+        // Assert
         expect(screen.getByRole('navigation')).toBeInTheDocument();
     });
 
-    it('Section 1 へのドロップダウンリンクが存在すること', () => {
+    it('ハンバーガーボタンが Drawer を制御する aria 属性を持つこと', () => {
+        // Arrange & Act
         render(<Header />);
-        const button = screen.getByRole('button', { name: /generative ai leader/i });
-        fireEvent.click(button);
-        const link = screen.getAllByRole('link', { name: /section 1/i })[0];
-        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section1');
+        const trigger = screen.getByRole('button', { name: 'メニューを開く' });
+
+        // Assert
+        expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+        expect(trigger).toHaveAttribute('aria-controls', 'site-nav-drawer');
+        expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('Section 2 へのドロップダウンリンクが存在すること', () => {
+    it('Drawer 内に「Google Cloud」「Amazon Web Services」のプロバイダ見出しが描画されること', async () => {
+        // Arrange
+        const user = userEvent.setup();
         render(<Header />);
-        const button = screen.getByRole('button', { name: /generative ai leader/i });
-        fireEvent.click(button);
-        const link = screen.getAllByRole('link', { name: /section 2/i })[0];
-        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section2');
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        expect(within(dialog).getByRole('heading', { name: 'Google Cloud' })).toBeInTheDocument();
+        expect(
+            within(dialog).getByRole('heading', { name: 'Amazon Web Services' }),
+        ).toBeInTheDocument();
     });
 
-    it('Section 3 へのドロップダウンリンクが存在すること', () => {
+    it('Drawer に EXAMS の全試験（available 分）の概要リンクと domain リンクが網羅されること', async () => {
+        // Arrange
+        const user = userEvent.setup();
         render(<Header />);
-        const button = screen.getByRole('button', { name: /generative ai leader/i });
-        fireEvent.click(button);
-        const link = screen.getAllByRole('link', { name: /section 3/i })[0];
-        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section3');
+
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
+
+        // Assert: coming-soon を除く全試験について、概要 (exam.href) と各 domain.href が <a> として描画される
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const hrefs = Array.from(dialog.querySelectorAll('a')).map((a) => a.getAttribute('href'));
+        for (const exam of EXAMS) {
+            if (exam.status === 'coming-soon') continue;
+            expect(hrefs).toContain(exam.href);
+            for (const domain of exam.domains) {
+                expect(hrefs).toContain(domain.href);
+            }
+        }
     });
 
-    it('Section 4 へのドロップダウンリンクが存在すること', () => {
+    it('coming-soon 試験は Drawer 内にリンクを持たないこと', async () => {
+        // Arrange
+        const user = userEvent.setup();
         render(<Header />);
-        const button = screen.getByRole('button', { name: /generative ai leader/i });
-        fireEvent.click(button);
-        const link = screen.getAllByRole('link', { name: /section 4/i })[0];
-        expect(link).toHaveAttribute('href', '/gcl/genai-leader/section4');
-    });
 
-    it('Cloud Digital Leader ドロップダウントリガーが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /cloud digital leader/i });
-        expect(button).toBeInTheDocument();
-        expect(button).toHaveAttribute('aria-haspopup', 'true');
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
+        // Act
+        await user.click(screen.getByRole('button', { name: 'メニューを開く' }));
 
-    it('Cloud Digital Leader ドロップダウントリガーがクリックで開閉すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /cloud digital leader/i });
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('Cloud Digital Leader ページへのリンクが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /cloud digital leader/i });
-        fireEvent.click(button);
-        const link = screen.getByRole('link', { name: /cloud digital leader 概要/i });
-        expect(link).toHaveAttribute('href', '/gcl/cloud-digital-leader');
-    });
-
-    it('Cloud Digital Leader ドロップダウンが Escape キーで閉じること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /cloud digital leader/i });
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        fireEvent.keyDown(document, { key: 'Escape' });
-        expect(button).toHaveAttribute('aria-expanded', 'false');
-    });
-
-    it('ACE domain2 サブリンクが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        const link = screen.getByRole('link', { name: /domain 2: 計画と実装 包括的解説/i });
-        expect(link).toBeInTheDocument();
-    });
-
-    it('ACE domain3 サブリンクが存在すること', () => {
-        render(<Header />);
-        const button = screen.getByRole('button', { name: /associate cloud engineer/i });
-        fireEvent.click(button);
-        expect(button).toHaveAttribute('aria-expanded', 'true');
-        const link = screen.getByRole('link', { name: /domain 3: 運用管理 包括的解説/i });
-        expect(link).toBeInTheDocument();
+        // Assert
+        const dialog = screen.getByRole('dialog', { name: 'サイトナビゲーション' });
+        const hrefs = Array.from(dialog.querySelectorAll('a')).map((a) => a.getAttribute('href'));
+        for (const exam of EXAMS) {
+            if (exam.status !== 'coming-soon') continue;
+            expect(hrefs).not.toContain(exam.href);
+        }
     });
 });

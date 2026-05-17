@@ -81,7 +81,8 @@ app/
       <exam>.css
 ```
 
-新ページを追加した場合は `components/Header.tsx` のナビゲーションも更新する。
+新ページを追加した場合は **`app/constants.ts` の `EXAMS` にエントリを追加する**（Header.tsx は `toNavTree(EXAMS)` で自動反映されるため直接編集しない）。
+`status: 'coming-soon'` で登録しておけばナビには「準備中」として表示され、ホームページのカード一覧からは除外される。ページ完成後に `status` を削除することで公開扱いになる。
 
 ---
 
@@ -224,7 +225,7 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 ## このリポジトリ固有の制約
 
 - **テストランナーは bun**: `npm run test` ではなく `bun run test` を使う
-- **新ページ追加時**: `components/Header.tsx` のナビゲーションを必ず更新する
+- **新ページ追加時**: `app/constants.ts` の `EXAMS` にエントリを追加する（`Header.tsx` は `toNavTree(EXAMS)` で自動反映されるため直接編集しない）
 - **ページ固有の共通定数**: `constants.ts` に集約する（グローバルに置かない）
 - **CSS テーマ**: ページ固有テーマは専用 `.css` ファイルに定義し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` を優先し、不要な `layout.tsx` の作成を避ける（CLAUDE.md と整合）
 - **分割方針（第一選択）**: `page.tsx` が ~400〜600 行を超えた場合は、新規セクションを `components/sections/Section*.tsx` などの独立コンポーネントに切り出すこと。再利用可能なロジックは hooks / util モジュールへ分離する。「編集を小分けにする」運用で肥大化を温存しないこと

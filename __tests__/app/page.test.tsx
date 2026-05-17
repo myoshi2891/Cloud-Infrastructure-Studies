@@ -3,17 +3,26 @@ import { render, screen, within } from '@testing-library/react';
 import Home from '@/app/page';
 import { EXAMS, STATS } from '@/app/constants';
 
+const VISIBLE_EXAMS = EXAMS.filter((e) => e.status !== 'coming-soon');
+
 describe('Home ページ', () => {
-    it('試験カードが EXAMS の数だけ表示されること', () => {
+    it('試験カードは公開済み (available) の試験数だけ表示されること', () => {
         const { container } = render(<Home />);
         const cards = container.querySelectorAll('.home-card');
-        expect(cards).toHaveLength(EXAMS.length);
+        expect(cards).toHaveLength(VISIBLE_EXAMS.length);
     });
 
-    it('各試験カードの ID がアーティクル要素として存在すること', () => {
+    it('各試験カードがアーティクル要素として存在すること', () => {
         render(<Home />);
         const articles = screen.getAllByRole('article');
-        expect(articles).toHaveLength(EXAMS.length);
+        expect(articles).toHaveLength(VISIBLE_EXAMS.length);
+    });
+
+    it('coming-soon の試験はホームページに表示されないこと', () => {
+        render(<Home />);
+        const comingSoon = EXAMS.find((e) => e.status === 'coming-soon');
+        if (!comingSoon) return; // 準備中試験がなければ常に pass
+        expect(screen.queryByText(comingSoon.label)).not.toBeInTheDocument();
     });
 
     it('最初の試験（ACE）のドメインリンクがすべて存在すること', () => {
@@ -27,7 +36,7 @@ describe('Home ページ', () => {
     it('ドメインリンクに home-domain-link クラスが付与されること', () => {
         const { container } = render(<Home />);
         const domainLinks = container.querySelectorAll('.home-domain-link');
-        const expectedCount = EXAMS.reduce((acc, exam) => acc + exam.domains.length, 0);
+        const expectedCount = VISIBLE_EXAMS.reduce((acc, exam) => acc + exam.domains.length, 0);
         expect(domainLinks).toHaveLength(expectedCount);
     });
 
