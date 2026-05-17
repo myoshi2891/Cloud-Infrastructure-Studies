@@ -1,12 +1,40 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { EXAMS } from '@/app/constants';
-import { toNavTree, type NavExam } from '@/app/navigation';
+import { toNavTree, type NavExam, type NavGroup } from '@/app/navigation';
+import { getRecent, type RecentEntry } from '@/lib/recentPages';
 
 const NAV_TREE = toNavTree(EXAMS);
+
+/**
+ * Filter a navigation tree of exam groups by a search query.
+ *
+ * Performs a case-insensitive substring match of `query` against each exam's `label`
+ * and against each `item.label` within an exam. Matching exams are included with
+ * their full original `items` array preserved so all domains remain accessible.
+ * If `query` is only whitespace, the original `tree` is returned unchanged.
+ *
+ * @param tree - The navigation groups to filter
+ * @param query - Search text; trimmed and lowercased for matching. Whitespace-only disables filtering
+ * @returns The filtered navigation tree containing only groups with at least one matching exam.
+ */
+function filterNavTree(tree: readonly NavGroup[], query: string): NavGroup[] {
+    const q = query.trim().toLowerCase();
+    if (!q) return tree as NavGroup[];
+    return tree
+        .map((group): NavGroup => {
+            const exams = group.exams.filter((exam) => {
+                if (exam.label.toLowerCase().includes(q)) return true;
+                return exam.items.some((it) => it.label.toLowerCase().includes(q));
+            });
+            return { ...group, exams };
+        })
+        .filter((group) => group.exams.length > 0);
+}
 
 /**
  * Produce the icon theme CSS class name corresponding to a card-style color class.
@@ -27,9 +55,37 @@ function iconThemeClass(colorClass: string): string {
  */
 export function Header() {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [query, setQuery] = useState('');
+    const [recent, setRecent] = useState<RecentEntry[]>([]);
     const drawerRef = useRef<HTMLDivElement>(null);
     const hamburgerRef = useRef<HTMLButtonElement>(null);
     const closeButtonRef = useRef<HTMLButtonElement>(null);
+    const currentPath = usePathname();
+    const filteredTree = useMemo(() => filterNavTree(NAV_TREE, query), [query]);
+    const hasResults = filteredTree.length > 0;
+    const isSearching = query.trim().length > 0;
+
+    /**
+     * Captures a snapshot of recently viewed entries and opens the navigation drawer.
+     *
+     * This records the current recent-history snapshot so the drawer can display up-to-date
+     * "recently viewed" links, then sets the drawer open state.
+     */
+    function openDrawerWithRecent() {
+        // 開いた瞬間の履歴スナップショットを採取（外部 store なので useEffect ではなくイベントで取得）
+        setRecent(getRecent());
+        setDrawerOpen(true);
+    }
+
+    /**
+     * Clears the drawer search query and closes the navigation drawer.
+     *
+     * Clears the current search input used for filtering the nav tree and sets the drawer open state to false.
+     */
+    function closeDrawer() {
+        setQuery('');
+        setDrawerOpen(false);
+    }
 
     // Drawer: スクロールロック + 開時に閉じるボタンへフォーカス + 閉時にトリガーへ復帰
     useEffect(() => {
@@ -55,7 +111,7 @@ export function Header() {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 e.preventDefault();
-                setDrawerOpen(false);
+                closeDrawer();
                 return;
             }
             if (e.key !== 'Tab') return;
@@ -91,7 +147,7 @@ export function Header() {
         <>
             <nav
                 aria-label="サイト全体のメインナビゲーション"
-                className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[var(--color-background)]/90 px-6 backdrop-blur-xl"
+                className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[var(--color-background)]/90 px-6 backdrop-blur-xl md:px-8 lg:px-10"
                 style={{
                     height: 'var(--header-h, 48px)',
                     minHeight: 'var(--header-h, 48px)',
@@ -100,15 +156,15 @@ export function Header() {
                 {/* Logo / Brand */}
                 <Link
                     href="/"
-                    className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85"
+                    className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85 md:gap-3"
                 >
                     <span
-                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black"
+                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black md:h-8 md:w-8 md:text-base"
                         aria-hidden
                     >
                         ☁
                     </span>
-                    <span className="text-[15px] font-bold tracking-tight">
+                    <span className="text-[15px] font-bold tracking-tight md:text-[17px] lg:text-[18px]">
                         Cloud Infrastructure{' '}
                         <span className="text-gradient-aurora">Studies</span>
                     </span>
@@ -118,14 +174,19 @@ export function Header() {
                 <button
                     ref={hamburgerRef}
                     type="button"
-                    onClick={() => setDrawerOpen(true)}
+                    onClick={openDrawerWithRecent}
                     aria-label="メニューを開く"
                     aria-haspopup="dialog"
                     aria-expanded={drawerOpen}
                     aria-controls="site-nav-drawer"
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)]"
+                    className="group flex h-9 items-center justify-center gap-2 rounded-lg px-2 text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:gap-2.5 md:px-3.5"
                 >
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        aria-hidden="true"
+                        className="h-[18px] w-[18px] md:h-[22px] md:w-[22px]"
+                    >
                         <path
                             d="M2 5h14M2 9h14M2 13h14"
                             stroke="currentColor"
@@ -133,6 +194,9 @@ export function Header() {
                             strokeLinecap="round"
                         />
                     </svg>
+                    <span className="hidden text-[13px] font-semibold tracking-wide uppercase md:inline">
+                        Menu
+                    </span>
                 </button>
             </nav>
             {drawerOpen && (
@@ -142,58 +206,220 @@ export function Header() {
                     role="dialog"
                     aria-modal="true"
                     aria-label="サイトナビゲーション"
-                    className="fixed inset-0 z-[60] flex justify-end"
+                    className="fixed inset-0 z-[200] flex justify-end md:justify-center"
                 >
                     <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                        onClick={() => setDrawerOpen(false)}
+                        className="absolute inset-0 bg-black/70 backdrop-blur-md"
+                        onClick={closeDrawer}
                         aria-hidden
                     />
-                    <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl">
-                        <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
-                            <span className="text-sm font-semibold text-[var(--color-foreground)]">
-                                メニュー
-                            </span>
-                            <button
-                                ref={closeButtonRef}
-                                type="button"
-                                onClick={() => setDrawerOpen(false)}
-                                aria-label="メニューを閉じる"
-                                className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)]"
-                            >
-                                <span aria-hidden>×</span>
-                            </button>
-                        </div>
-                        <div className="flex flex-col gap-6 px-5 py-5">
-                            {NAV_TREE.map((group) => (
-                                <section
-                                    key={group.provider}
-                                    aria-labelledby={`nav-group-${group.provider}`}
-                                    className="flex flex-col gap-2"
-                                >
-                                    <h2
-                                        id={`nav-group-${group.provider}`}
-                                        className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]"
+                    <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl md:max-w-none md:border-l-0 md:bg-[#0b0f16]/97">
+                        {/* Header — 外側で背景・ボーダーを画面端まで延ばし、内側ラッパーで本文と左右整列 */}
+                        <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-[#0e1117]/95 backdrop-blur-xl">
+                            <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 md:px-10 md:py-6 lg:px-16">
+                                <div className="flex items-center gap-3 md:gap-4">
+                                    <span
+                                        className="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-aurora text-base font-black md:flex"
+                                        aria-hidden
                                     >
-                                        {group.label}
+                                        ☁
+                                    </span>
+                                    <span className="text-sm font-semibold text-[var(--color-foreground)] md:text-xl md:font-bold md:tracking-tight">
+                                        メニュー
+                                    </span>
+                                </div>
+                                <button
+                                    ref={closeButtonRef}
+                                    type="button"
+                                    onClick={closeDrawer}
+                                    aria-label="メニューを閉じる"
+                                    className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:w-11 md:rounded-xl md:border md:border-white/[0.08] md:text-lg"
+                                >
+                                    <span aria-hidden className="text-lg leading-none md:text-2xl">×</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Body */}
+                        <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-6 md:px-10 md:py-12 lg:px-16 lg:py-16">
+                            {/* Search */}
+                            <div className="mb-5 md:mb-8">
+                                <label className="relative block">
+                                    <span className="sr-only">ナビゲーション検索</span>
+                                    <svg
+                                        aria-hidden="true"
+                                        viewBox="0 0 20 20"
+                                        fill="none"
+                                        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted-foreground)] md:left-4 md:h-5 md:w-5"
+                                    >
+                                        <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.5" />
+                                        <path d="M14 14l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    </svg>
+                                    <input
+                                        type="search"
+                                        aria-label="ナビゲーション検索"
+                                        placeholder="試験名・ドメインで検索..."
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                        className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] py-2.5 pl-9 pr-3 text-[14px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:border-white/[0.18] focus:outline-none focus:ring-2 focus:ring-white/10 md:rounded-2xl md:py-3.5 md:pl-12 md:pr-4 md:text-[15px]"
+                                    />
+                                </label>
+                            </div>
+
+                            {hasResults ? (
+                                <div className="flex flex-col gap-8 md:gap-12">
+                                    {filteredTree.map((group) => (
+                                        <ProviderSection
+                                            key={group.provider}
+                                            group={group}
+                                            currentPath={currentPath}
+                                            forceOpenAll={isSearching}
+                                            onLinkClick={closeDrawer}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div
+                                    role="status"
+                                    aria-live="polite"
+                                    className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-8 text-center text-[14px] text-[var(--color-muted-foreground)] md:py-12 md:text-[15px]"
+                                >
+                                    「{query}」に該当する試験はありません。
+                                </div>
+                            )}
+
+                            {!isSearching && recent.length > 0 && (
+                                <nav
+                                    aria-label="最近見たページ"
+                                    className="mt-8 border-t border-white/[0.06] pt-6 md:mt-12 md:pt-8"
+                                >
+                                    <h2 className="mb-3 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)] md:mb-4 md:text-[13px] md:tracking-[0.18em]">
+                                        <span className="md:inline-block md:h-px md:w-6 md:bg-white/15" aria-hidden />
+                                        最近見たページ
                                     </h2>
-                                    <ul className="flex flex-col gap-1.5">
-                                        {group.exams.map((exam) => (
-                                            <li key={exam.id}>
-                                                <DrawerExamAccordion
-                                                    exam={exam}
-                                                    onLinkClick={() => setDrawerOpen(false)}
-                                                />
+                                    <ul className="flex flex-wrap gap-2 md:gap-2.5">
+                                        {recent.map((entry) => (
+                                            <li key={entry.href}>
+                                                <Link
+                                                    href={entry.href}
+                                                    onClick={closeDrawer}
+                                                    className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[12px] text-[var(--color-muted)] transition-colors hover:border-white/[0.18] hover:bg-white/[0.06] hover:text-[var(--color-foreground)] md:px-4 md:py-2 md:text-[13px]"
+                                                >
+                                                    <span aria-hidden className="text-[var(--color-muted-foreground)]">↻</span>
+                                                    {entry.label}
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
-                                </section>
-                            ))}
+                                </nav>
+                            )}
                         </div>
                     </aside>
                 </div>
             )}
         </>
+    );
+}
+
+/**
+ * 試験テーマアクセント (左端ボーダー) 用クラスマップ。
+ * Tailwind v4 はビルド時にソース内の class 文字列を走査するため、
+ * テンプレートリテラルで組み立てた arbitrary value クラス
+ * (例: before バリアントで --color-theme-{試験ID}-fg を bg に当てる形) は検出されない。
+ * 全パターンを静的に列挙して、JIT で必ず生成されるようにする。
+ *
+ * 注意: このコメント内に実物のクラス文字列をそのまま書くと、Tailwind の JIT が
+ * プレースホルダ込みのまま拾ってしまい、生成 CSS に `<id>` 等の不正トークンが
+ * 混入して PostCSS パースが失敗する。説明はクラス文字列を分割／日本語化で示すこと。
+ */
+const ACCENT_CLASS: Record<string, string> = {
+    'card-ace': 'before:bg-[var(--color-theme-ace-fg)]',
+    'card-genai': 'before:bg-[var(--color-theme-genai-fg)]',
+    'card-cdl': 'before:bg-[var(--color-theme-cdl-fg)]',
+    'card-agwa': 'before:bg-[var(--color-theme-agwa-fg)]',
+    'card-pcne': 'before:bg-[var(--color-theme-pcne-fg)]',
+    'card-aws-saa': 'before:bg-[var(--color-theme-aws-fg)]',
+};
+
+/**
+ * Renders a provider section with a header and its exams.
+ *
+ * Displays a hero strip with the provider label and exam count, followed by the provider's exams rendered as accordions.
+ *
+ * The exam list uses a two-column grid at md+ breakpoints for GCP and a single-column layout for AWS so single "coming soon" cards can span full width.
+ *
+ * @param group - Navigation group object containing provider, label, and exams.
+ * @param currentPath - Current pathname used to mark active item links.
+ * @param forceOpenAll - When true, non-coming-soon exams are forced open.
+ * @param onLinkClick - Callback invoked when an exam item link is clicked (typically to close the drawer).
+ * @returns The section element that groups the provider header and its exam accordions.
+ */
+function ProviderSection({
+    group,
+    currentPath,
+    forceOpenAll,
+    onLinkClick,
+}: {
+    group: NavGroup;
+    currentPath: string | null;
+    forceOpenAll: boolean;
+    onLinkClick: () => void;
+}) {
+    const isGCP = group.provider === 'GCP';
+    return (
+        <section
+            aria-labelledby={`nav-group-${group.provider}`}
+            className="flex flex-col gap-4 md:gap-6"
+        >
+            {/* Hero strip */}
+            <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] pb-3 md:pb-4">
+                <div className="flex items-center gap-3 md:gap-4">
+                    {isGCP ? (
+                        <span className="flex gap-1" aria-hidden>
+                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-blue)]" />
+                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-red)]" />
+                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-yellow)]" />
+                            <span className="h-2 w-2 rounded-full bg-[var(--color-google-green)]" />
+                        </span>
+                    ) : (
+                        <span
+                            aria-hidden
+                            className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--color-theme-aws-bg)] text-[10px] font-black text-[var(--color-theme-aws-fg)] md:h-6 md:w-6 md:text-[11px]"
+                        >
+                            aws
+                        </span>
+                    )}
+                    <h2
+                        id={`nav-group-${group.provider}`}
+                        className="text-[13px] font-bold tracking-tight text-[var(--color-foreground)] md:text-[18px]"
+                    >
+                        {group.label}
+                    </h2>
+                </div>
+                <span className="rounded-full bg-white/[0.06] px-2.5 py-0.5 text-[11px] font-medium text-[var(--color-muted-foreground)] md:px-3 md:py-1 md:text-[12px]">
+                    {group.exams.length} 試験
+                </span>
+            </div>
+
+            {/* Exam list: GCP は md+ で 2 列、AWS は常に 1 列 (single coming-soon card を最大幅で見せる) */}
+            <ul
+                className={cn(
+                    'flex flex-col gap-2 md:gap-4',
+                    isGCP && 'md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-3',
+                )}
+            >
+                {group.exams.map((exam) => (
+                    <li key={exam.id}>
+                        <DrawerExamAccordion
+                            exam={exam}
+                            currentPath={currentPath}
+                            forceOpen={forceOpenAll}
+                            onLinkClick={onLinkClick}
+                        />
+                    </li>
+                ))}
+            </ul>
+        </section>
     );
 }
 
@@ -210,37 +436,54 @@ export function Header() {
  */
 function DrawerExamAccordion({
     exam,
+    currentPath,
+    forceOpen = false,
     onLinkClick,
 }: {
     exam: NavExam;
+    currentPath: string | null;
+    forceOpen?: boolean;
     onLinkClick: () => void;
 }) {
     const isComingSoon = exam.status === 'coming-soon';
+    // 現在ページが exam 配下に含まれるなら open default にする（uncontrolled details の defaultOpen 相当）
+    const containsActive =
+        !!currentPath && exam.items.some((item) => item.href === currentPath);
+    const shouldOpen = (forceOpen && !isComingSoon) || containsActive;
+    const accentBefore = ACCENT_CLASS[exam.colorClass] ?? 'before:bg-white/30';
     return (
-        <details className="group rounded-xl border border-white/[0.06] bg-white/[0.02] open:bg-white/[0.04]">
-            <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 text-[14px] font-medium text-[var(--color-foreground)] hover:bg-white/[0.04]">
+        <details
+            open={shouldOpen || undefined}
+            className={cn(
+                'group relative overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02] transition-colors open:bg-white/[0.04] md:rounded-2xl',
+                'before:absolute before:bottom-3 before:left-0 before:top-3 before:w-[2px] before:rounded-r before:opacity-50 before:transition-opacity before:content-[""]',
+                accentBefore,
+                'hover:border-white/[0.12] hover:before:opacity-90',
+                'open:border-white/[0.14] open:before:opacity-100',
+                isComingSoon && 'opacity-70',
+            )}
+        >
+            <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3 text-[14px] font-medium text-[var(--color-foreground)] transition-colors hover:bg-white/[0.04] md:gap-4 md:px-5 md:py-4 md:text-[16px]">
                 <span
                     className={cn(
                         iconThemeClass(exam.colorClass),
-                        'flex h-5 w-5 items-center justify-center rounded text-[11px]',
+                        'flex h-5 w-5 items-center justify-center rounded text-[11px] md:h-8 md:w-8 md:rounded-lg md:text-[14px]',
                     )}
                     aria-hidden
                 >
                     {exam.icon}
                 </span>
-                <span className="flex-1 leading-tight">{exam.label}</span>
+                <span className="flex-1 leading-tight md:tracking-tight">{exam.label}</span>
                 {isComingSoon && (
-                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)] md:px-2.5 md:py-1 md:text-[11px]">
                         準備中
                     </span>
                 )}
                 <svg
-                    width="12"
-                    height="12"
                     viewBox="0 0 12 12"
                     fill="none"
                     aria-hidden="true"
-                    className="text-[var(--color-muted-foreground)] transition-transform duration-150 group-open:rotate-180"
+                    className="h-3 w-3 text-[var(--color-muted-foreground)] transition-transform duration-150 group-open:rotate-180 md:h-4 md:w-4"
                 >
                     <path
                         d="M2 4l4 4 4-4"
@@ -252,18 +495,32 @@ function DrawerExamAccordion({
                 </svg>
             </summary>
             {!isComingSoon && (
-                <ul className="flex flex-col gap-0.5 border-t border-white/[0.04] px-2 py-2">
-                    {exam.items.map((item) => (
-                        <li key={item.href}>
-                            <Link
-                                href={item.href}
-                                onClick={onLinkClick}
-                                className="block rounded-lg px-3 py-2 text-[13px] text-[var(--color-muted)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-foreground)]"
-                            >
-                                {item.label}
-                            </Link>
-                        </li>
-                    ))}
+                <ul className="flex flex-col gap-1 border-t border-white/[0.04] px-2 py-2 md:gap-1.5 md:px-3 md:py-3">
+                    {exam.items.map((item) => {
+                        const isActive = currentPath === item.href;
+                        return (
+                            <li key={item.href}>
+                                <Link
+                                    href={item.href}
+                                    onClick={onLinkClick}
+                                    aria-current={isActive ? 'page' : undefined}
+                                    className={cn(
+                                        'flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-[13px] text-[var(--color-muted)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-foreground)] md:rounded-xl md:px-4 md:py-2.5 md:text-[15px]',
+                                        isActive &&
+                                            'bg-white/[0.08] font-semibold text-[var(--color-foreground)]',
+                                    )}
+                                >
+                                    <span className="flex-1 truncate">{item.label}</span>
+                                    {isActive && (
+                                        <span
+                                            aria-hidden
+                                            className="h-1.5 w-1.5 shrink-0 rounded-full bg-current"
+                                        />
+                                    )}
+                                </Link>
+                            </li>
+                        );
+                    })}
                 </ul>
             )}
         </details>

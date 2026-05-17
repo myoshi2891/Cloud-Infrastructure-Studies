@@ -60,7 +60,23 @@ app/
     associate-cloud-engineer/
       page.tsx                      # ACE 試験対策ページ
       ace.css                       # Aurora テーマ（ページ固有）
-      domain{1-4}/page.tsx          # 各ドメイン詳細ページ
+      domain1/page.tsx              # Domain 1: 環境設定
+      domain2/
+        page.tsx                    # Domain 2: 計画と実装
+        constants.ts                # Domain 2 固有定数
+        domain2.css                 # ページ固有スタイル
+        layout.tsx                  # Domain 2 レイアウト
+        Chapter17.tsx / Chapter18.tsx  # セクションコンポーネント
+      domain3/
+        page.tsx                    # Domain 3: 運用管理
+        constants.ts                # Domain 3 固有定数
+        domain3.css                 # ページ固有スタイル
+        layout.tsx                  # Domain 3 レイアウト
+      domain4/
+        page.tsx                    # Domain 4: アクセスとセキュリティ
+        constants.ts                # Domain 4 固有定数
+        domain4.css                 # ページ固有スタイル
+        layout.tsx                  # Domain 4 レイアウト
       architecture-guide/page.tsx   # アーキテクチャガイドページ
     genai-leader/
       page.tsx                      # Generative AI Leader トップ
@@ -77,7 +93,14 @@ app/
       section3/page.tsx             # Section 3: Gen AI ソリューションの開発
       section4/page.tsx             # Section 4: 責任ある AI
     cloud-digital-leader/
+      layout.tsx                    # CDL 共通レイアウト
+      page.tsx                      # CDL トップページ
+      constants.ts                  # CDL 共通定数
       cdl.css                       # CDL 共通テーマ（--cdl-* トークン定義）
+      components/
+        SectionCard.tsx             # 共通カードコンポーネント
+        shared/
+          TableComponent.tsx        # 共通テーブルコンポーネント
       section1/
         page.tsx                    # Section 1: デジタルトランスフォーメーション
         components/sections/        # 分割されたセクションコンポーネント
@@ -115,9 +138,15 @@ app/
       components/                   # セクションコンポーネント（Section1-6）
 
 components/
-  Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要
+  Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要。検索フィルタ・active リンク判定 (usePathname)・最近見たページ表示を内包
   Footer.tsx                        # シンプルなフッター（サイト名のみ）
-  DisclaimerBanner.tsx              # 全画面固定バナー（免責事項）、layout.tsx から呼び出し
+  DisclaimerBanner.tsx              # 免責事項バナー。Header 直下に sticky で貼り付き（top: var(--header-h)）、scroll 中も Header→Disclaimer→本文 の順序を保つ
+  DiagramSVG.tsx                    # SVG ダイアグラム共通コンポーネント（ariaLabel または decorative 必須）
+  RecentPageRecorder.tsx            # 'use client'、DOM レス。usePathname 監視で lib/recentPages.pushRecent を呼ぶ。layout.tsx に 1 度だけ配置
+
+lib/
+  utils.ts                          # cn() (clsx + tailwind-merge)
+  recentPages.ts                    # 最近見たページ履歴 (localStorage, MAX 5件, SSR safe, 型ガード)
 
 __tests__/                          # Vitest（jsdom環境）
 e2e/                                # Playwright（Chromiumのみ）
@@ -152,7 +181,7 @@ Aws/                                # AWS資料アーカイブ
 
 - **Netlify デプロイ**: `netlify.toml` + `@netlify/plugin-nextjs` で構成。`next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で切り替え（Docker: `standalone`、Netlify: 未設定）。
 - **Docker dev コンテナの `.next` 権限**: `Dockerfile.dev` で `mkdir -p /app/.next` を `chown` より前に実行し、named volume (`dev_next_cache`) を `nextjs` ユーザー所有で初期化すること。ボリューム再作成が必要な場合は `docker volume rm infra_dev_next_cache`。
-- **`DisclaimerBanner`**: `components/DisclaimerBanner.tsx` は `'use client'` の Client Component。ResizeObserver で `--disclaimer-height` CSS変数を動的同期し、`body { padding-top }` でコンテンツ隠れを防ぐ。免責事項テキストの変更はこのファイルのみ編集する。
+- **`DisclaimerBanner`**: `components/DisclaimerBanner.tsx` は `'use client'` の Client Component。**`position: sticky; top: var(--header-h)`** で Header 直下に貼り付き、flow 内に居続けるため `body { padding-top }` は不要（過去 fixed 配置で `padding-top: calc(--header-h + --disclaimer-height)` を盛っていた結果、sticky Header の natural position が下にずれて scroll 開始まで Disclaimer と縦並び順が入れ替わる不具合が発生していたため修正済）。ResizeObserver は `--disclaimer-height` の動的同期を継続（ページ内 SectionNav が `--fixed-offset = calc(--header-h + --disclaimer-height)` を `top` 値として参照しているため、合計実高さは引き続き必要）。免責事項テキストの変更はこのファイルのみ編集する。
 - `litellm` / `dspy` の追加禁止（脆弱性懸念）
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。Client コンポーネント内でサーバー専用 API（`fs`, `cookies`, `headers` など）を呼び出すことは明示的に禁止し、渡す Props は JSON シリアライズ可能なものに限定すること。
 - **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。`.code-line` は `white-space: pre` を適用してインデントを保持し、`map` 展開時は安定した `key` を付与すること。
@@ -162,3 +191,5 @@ Aws/                                # AWS資料アーカイブ
 - **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本としている。新ページ追加時は `EXAMS` に `Exam` エントリを追加し（`status: 'coming-soon'` → ページ完成後 `'available'` または省略）、`app/navigation.ts` の `toNavTree` が自動でグルーピングするため **`components/Header.tsx` は直接編集しない**。
 - 新試験を追加する場合: ① `app/constants.ts` の `EXAMS` にエントリ追加 ② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加 ③ 試験ページ作成 — この 3 ファイルのみ変更すれば Header に自動反映される。
 - ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）
+- **z-index レイヤリング**: グローバル UI のスタッキング順は `Header (sticky z-50)` → `DisclaimerBanner (sticky z-40, top: var(--header-h))` → ページ内 sticky/fixed (`z-index: 100` を使うページが多い、`top: var(--fixed-offset)`) → `Header ドロワー (z-[200])`。Header と Disclaimer は両方 sticky で flow 内、ドロワーは fixed inset-0 で全画面オーバーレイ。ページ側で 100 を超える z-index を新規に導入する場合は、ドロワーを覆い隠さないか必ず確認すること。
+- **Tailwind v4 動的クラス**: テンプレートリテラルで組み立てた class 名（例: `` `before:bg-[var(--color-theme-${id}-fg)]` ``）は JIT が拾えないため意図したスタイルが当たらない。バリエーション分の class 文字列をソース内に **静的に列挙** すること（`components/Header.tsx` の `ACCENT_CLASS` Record 参照）。

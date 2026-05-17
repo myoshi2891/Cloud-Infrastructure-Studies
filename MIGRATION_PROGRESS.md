@@ -5,7 +5,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新 HEAD:** a54a181 — `test(e2e): cover hamburger navigation flow` (Step 8 完了)
+- **最新 HEAD:** c3b8c2e — `test(nav): fix provider fallback test to actually exercise missing provider`
 - **進行中タスク:** なし（直近完了: グローバルメニュー ハンバーガー化 + AWS 拡張対応 8/8）
 - **テスト数:** 331 件パス（Vitest 53 ファイル）/ E2E 4 件パス（Playwright Chromium）
 - **ビルド:** 成功 (Next.js 16.2.6 Turbopack)
