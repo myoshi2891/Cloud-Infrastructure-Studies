@@ -8,6 +8,12 @@ import { toNavTree, type NavExam } from '@/app/navigation';
 
 const NAV_TREE = toNavTree(EXAMS);
 
+/**
+ * Produce the icon theme CSS class name corresponding to a card-style color class.
+ *
+ * @param colorClass - A card-style color class (for example, `"card-ace"`, `"card-genai"`, `"card-aws-saa"`)
+ * @returns The corresponding `icon-theme-*` class name (for example, `"icon-theme-ace"`)
+ */
 function iconThemeClass(colorClass: string): string {
     // colorClass: 'card-ace' | 'card-genai' | ... | 'card-aws-saa'
     // 既存ユーティリティ命名規約: icon-theme-<suffix>
@@ -15,11 +21,9 @@ function iconThemeClass(colorClass: string): string {
 }
 
 /**
- * Renders the sticky top navigation bar with a hamburger-triggered right-side drawer.
+ * Renders a sticky top navigation bar with a hamburger button that opens a right-side navigation drawer.
  *
- * The drawer is the single navigation surface for both desktop and mobile and is built
- * from {@link toNavTree} applied to {@link EXAMS}. The drawer implements focus trap,
- * scroll lock, Escape-to-close, and trigger-focus restoration.
+ * The drawer contains the site's navigation and enforces scroll lock, keyboard accessibility (Tab focus trapping and Escape-to-close), and focus restoration to the hamburger trigger when closed.
  */
 export function Header() {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -193,6 +197,17 @@ export function Header() {
     );
 }
 
+/**
+ * Render an accordion section for a single exam inside the drawer navigation.
+ *
+ * Renders a <details>/<summary> accordion showing the exam icon and label, an optional
+ * "準備中" badge when the exam status is `coming-soon`, and a list of links for the
+ * exam's items when not coming soon.
+ *
+ * @param exam - The exam data (label, icon, colorClass, status, and items) to render.
+ * @param onLinkClick - Callback invoked when any exam item link is clicked.
+ * @returns A JSX element containing the exam accordion (header plus optional item links).
+ */
 function DrawerExamAccordion({
     exam,
     onLinkClick,
