@@ -55,6 +55,7 @@ function iconThemeClass(colorClass: string): string {
  */
 export function Header() {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
     const [query, setQuery] = useState('');
     const [recent, setRecent] = useState<RecentEntry[]>([]);
     const drawerRef = useRef<HTMLDivElement>(null);
@@ -84,7 +85,11 @@ export function Header() {
      */
     function closeDrawer() {
         setQuery('');
-        setDrawerOpen(false);
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            setDrawerOpen(false);
+        }, 270);
     }
 
     // Drawer: スクロールロック + 開時に閉じるボタンへフォーカス + 閉時にトリガーへ復帰
@@ -191,11 +196,42 @@ export function Header() {
                             aria-hidden="true"
                             className="h-[18px] w-[18px] md:h-[22px] md:w-[22px]"
                         >
+                            {/* 上の線: 開いた時 45deg 回転して X の一方になる */}
                             <path
-                                d="M2 5h14M2 9h14M2 13h14"
+                                d="M2 5h14"
                                 stroke="currentColor"
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
+                                style={{
+                                    transition: 'transform 0.32s cubic-bezier(0.4,0,0.2,1)',
+                                    transformOrigin: '9px 9px',
+                                    transform: drawerOpen ? 'translateY(4px) rotate(45deg)' : 'none',
+                                }}
+                            />
+                            {/* 中央の線: フェードアウト */}
+                            <path
+                                d="M2 9h14"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                style={{
+                                    transition: 'opacity 0.2s ease, transform 0.2s ease',
+                                    transformOrigin: '9px 9px',
+                                    opacity: drawerOpen ? 0 : 1,
+                                    transform: drawerOpen ? 'scaleX(0.5)' : 'none',
+                                }}
+                            />
+                            {/* 下の線: 開いた時 -45deg 回転して X のもう一方になる */}
+                            <path
+                                d="M2 13h14"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                style={{
+                                    transition: 'transform 0.32s cubic-bezier(0.4,0,0.2,1)',
+                                    transformOrigin: '9px 9px',
+                                    transform: drawerOpen ? 'translateY(-4px) rotate(-45deg)' : 'none',
+                                }}
                             />
                         </svg>
                         <span className="hidden text-[13px] font-semibold tracking-wide uppercase md:inline">
@@ -204,7 +240,7 @@ export function Header() {
                     </button>
                 </div>
             </nav>
-            {drawerOpen && (
+            {(drawerOpen || isClosing) && (
                 <div
                     ref={drawerRef}
                     id="site-nav-drawer"
@@ -214,11 +250,15 @@ export function Header() {
                     className="fixed inset-0 z-[200] flex justify-end md:justify-center"
                 >
                     <div
-                        className="absolute inset-0 bg-black/70 backdrop-blur-md"
+                        className="hdr-backdrop absolute inset-0 bg-black/70 backdrop-blur-md"
+                        data-state={isClosing ? 'closing' : 'open'}
                         onClick={closeDrawer}
                         aria-hidden
                     />
-                    <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl md:max-w-none md:border-l-0 md:bg-[#0b0f16]/97">
+                    <aside
+                        className="hdr-panel relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl md:max-w-none md:border-l-0 md:bg-[#0b0f16]/97"
+                        data-state={isClosing ? 'closing' : 'open'}
+                    >
                         {/* Header — 外側で背景・ボーダーを画面端まで延ばし、内側ラッパーで本文と左右整列 */}
                         <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-[#0e1117]/95 backdrop-blur-xl">
                             <div

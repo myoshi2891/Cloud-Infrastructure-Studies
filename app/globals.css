@@ -183,3 +183,55 @@ body {
     white-space: pre;
     font-family: var(--font-mono);
 }
+
+/* ── Header Drawer Animations ─────────────────────────── */
+@keyframes hdr-backdrop-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes hdr-backdrop-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+@keyframes hdr-panel-slide-in {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+}
+@keyframes hdr-panel-slide-out {
+    from { transform: translateX(0); }
+    to   { transform: translateX(100%); }
+}
+@keyframes hdr-panel-fade-in {
+    from { opacity: 0; transform: scale(0.98); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes hdr-panel-fade-out {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.98); }
+}
+
+.hdr-backdrop[data-state="open"] {
+    animation: hdr-backdrop-in 0.25s ease-out forwards;
+}
+.hdr-backdrop[data-state="closing"] {
+    animation: hdr-backdrop-out 0.22s ease-in forwards;
+}
+
+/* モバイル: 右からスライド */
+@media (max-width: 767px) {
+    .hdr-panel[data-state="open"] {
+        animation: hdr-panel-slide-in 0.32s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+    }
+    .hdr-panel[data-state="closing"] {
+        animation: hdr-panel-slide-out 0.24s ease-in forwards;
+    }
+}
+/* デスクトップ: フェード + 微スケール */
+@media (min-width: 768px) {
+    .hdr-panel[data-state="open"] {
+        animation: hdr-panel-fade-in 0.25s ease-out forwards;
+    }
+    .hdr-panel[data-state="closing"] {
+        animation: hdr-panel-fade-out 0.2s ease-in forwards;
+    }
+}
