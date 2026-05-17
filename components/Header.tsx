@@ -153,52 +153,55 @@ export function Header() {
                     minHeight: 'var(--header-h, 48px)',
                 }}
             >
-                <div className="flex h-full w-full items-center justify-between px-6 md:px-8 lg:px-10" style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}>
-                {/* Logo / Brand */}
-                <Link
-                    href="/"
-                    className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85 md:gap-3"
+                <div
+                    className="flex h-full w-full items-center justify-between px-6 md:px-8 lg:px-10"
+                    style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}
                 >
-                    <span
-                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black md:h-8 md:w-8 md:text-base"
-                        aria-hidden
+                    {/* Logo / Brand */}
+                    <Link
+                        href="/"
+                        className="group flex items-center gap-2.5 text-[var(--color-foreground)] transition-opacity hover:opacity-85 md:gap-3"
                     >
-                        ☁
-                    </span>
-                    <span className="text-[15px] font-bold tracking-tight md:text-[17px] lg:text-[18px]">
-                        Cloud Infrastructure{' '}
-                        <span className="text-gradient-aurora">Studies</span>
-                    </span>
-                </Link>
+                        <span
+                            className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-aurora text-sm font-black md:h-8 md:w-8 md:text-base"
+                            aria-hidden
+                        >
+                            ☁
+                        </span>
+                        <span className="text-[15px] font-bold tracking-tight md:text-[17px] lg:text-[18px]">
+                            Cloud Infrastructure{' '}
+                            <span className="text-gradient-aurora">Studies</span>
+                        </span>
+                    </Link>
 
-                {/* Hamburger trigger */}
-                <button
-                    ref={hamburgerRef}
-                    type="button"
-                    onClick={openDrawerWithRecent}
-                    aria-label="メニューを開く"
-                    aria-haspopup="dialog"
-                    aria-expanded={drawerOpen}
-                    aria-controls="site-nav-drawer"
-                    className="group flex h-9 items-center justify-center gap-2 rounded-lg px-2 text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:gap-2.5 md:px-3.5"
-                >
-                    <svg
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        aria-hidden="true"
-                        className="h-[18px] w-[18px] md:h-[22px] md:w-[22px]"
+                    {/* Hamburger trigger */}
+                    <button
+                        ref={hamburgerRef}
+                        type="button"
+                        onClick={openDrawerWithRecent}
+                        aria-label="メニューを開く"
+                        aria-haspopup="dialog"
+                        aria-expanded={drawerOpen}
+                        aria-controls="site-nav-drawer"
+                        className="group flex h-9 items-center justify-center gap-2 rounded-lg px-2 text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:gap-2.5 md:px-3.5"
                     >
-                        <path
-                            d="M2 5h14M2 9h14M2 13h14"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                        />
-                    </svg>
-                    <span className="hidden text-[13px] font-semibold tracking-wide uppercase md:inline">
-                        Menu
-                    </span>
-                </button>
+                        <svg
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            aria-hidden="true"
+                            className="h-[18px] w-[18px] md:h-[22px] md:w-[22px]"
+                        >
+                            <path
+                                d="M2 5h14M2 9h14M2 13h14"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                            />
+                        </svg>
+                        <span className="hidden text-[13px] font-semibold tracking-wide uppercase md:inline">
+                            Menu
+                        </span>
+                    </button>
                 </div>
             </nav>
             {drawerOpen && (
@@ -218,7 +221,14 @@ export function Header() {
                     <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl md:max-w-none md:border-l-0 md:bg-[#0b0f16]/97">
                         {/* Header — 外側で背景・ボーダーを画面端まで延ばし、内側ラッパーで本文と左右整列 */}
                         <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-[#0e1117]/95 backdrop-blur-xl">
-                            <div className="flex w-full items-center justify-between px-6 py-4 md:px-8 md:py-6 lg:px-10" style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}>
+                            <div
+                                className="flex w-full items-center justify-between px-6 py-4 md:px-8 md:py-6 lg:px-10"
+                                style={{
+                                    maxWidth: '1100px',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                }}
+                            >
                                 <div className="flex items-center gap-3 md:gap-4">
                                     <span
                                         className="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-aurora text-base font-black md:flex"
@@ -237,15 +247,25 @@ export function Header() {
                                     aria-label="メニューを閉じる"
                                     className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:w-11 md:rounded-xl md:border md:border-white/[0.08] md:text-lg"
                                 >
-                                    <span aria-hidden className="text-lg leading-none md:text-2xl">×</span>
+                                    <span aria-hidden className="text-lg leading-none md:text-2xl">
+                                        ×
+                                    </span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Body */}
-                        <div className="w-full flex-1 px-6 pt-8 pb-6 md:px-8 md:pt-14 md:pb-12 lg:px-10 lg:pt-16 lg:pb-16" style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}>
+                        <div
+                            className="w-full flex-1 px-6 pb-6 md:px-8 md:pb-12 lg:px-10 lg:pb-16"
+                            style={{
+                                maxWidth: '1100px',
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                paddingTop: '2.5rem',
+                            }}
+                        >
                             {/* Search */}
-                            <div className="mb-5 md:mb-8">
+                            <div className="mb-5 flex justify-end md:mb-8">
                                 <label className="relative block">
                                     <span className="sr-only">ナビゲーション検索</span>
                                     <svg
@@ -254,8 +274,19 @@ export function Header() {
                                         fill="none"
                                         className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted-foreground)] md:left-4 md:h-5 md:w-5"
                                     >
-                                        <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.5" />
-                                        <path d="M14 14l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                        <circle
+                                            cx="9"
+                                            cy="9"
+                                            r="6"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                        />
+                                        <path
+                                            d="M14 14l3 3"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                        />
                                     </svg>
                                     <input
                                         type="search"
@@ -263,7 +294,7 @@ export function Header() {
                                         placeholder="試験名・ドメインで検索..."
                                         value={query}
                                         onChange={(e) => setQuery(e.target.value)}
-                                        className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] py-2.5 pl-9 pr-3 text-[14px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:border-white/[0.18] focus:outline-none focus:ring-2 focus:ring-white/10 md:rounded-2xl md:py-3.5 md:pl-12 md:pr-4 md:text-[15px]"
+                                        className="w-[30rem] rounded-xl border border-white/[0.08] bg-white/[0.03] py-2.5 pl-9 pr-3 text-[14px] text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)] focus:border-white/[0.18] focus:outline-none focus:ring-2 focus:ring-white/10 md:rounded-2xl md:py-3.5 md:pl-12 md:pr-4 md:text-[15px]"
                                     />
                                 </label>
                             </div>
@@ -293,10 +324,14 @@ export function Header() {
                             {!isSearching && recent.length > 0 && (
                                 <nav
                                     aria-label="最近見たページ"
-                                    className="mt-12 border-t border-white/[0.06] pt-8 md:mt-16 md:pt-10"
+                                    className="border-t border-white/[0.06]"
+                                    style={{ marginTop: '2rem' }}
                                 >
                                     <h2 className="mb-3 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)] md:mb-4 md:text-[13px] md:tracking-[0.18em]">
-                                        <span className="md:inline-block md:h-px md:w-6 md:bg-white/15" aria-hidden />
+                                        <span
+                                            className="md:inline-block md:h-px md:w-6 md:bg-white/15"
+                                            aria-hidden
+                                        />
                                         最近見たページ
                                     </h2>
                                     <ul className="flex flex-wrap gap-2 md:gap-2.5">
@@ -307,7 +342,12 @@ export function Header() {
                                                     onClick={closeDrawer}
                                                     className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[12px] text-[var(--color-muted)] transition-colors hover:border-white/[0.18] hover:bg-white/[0.06] hover:text-[var(--color-foreground)] md:px-4 md:py-2 md:text-[13px]"
                                                 >
-                                                    <span aria-hidden className="text-[var(--color-muted-foreground)]">↻</span>
+                                                    <span
+                                                        aria-hidden
+                                                        className="text-[var(--color-muted-foreground)]"
+                                                    >
+                                                        ↻
+                                                    </span>
                                                     {entry.label}
                                                 </Link>
                                             </li>
@@ -449,8 +489,7 @@ function DrawerExamAccordion({
 }) {
     const isComingSoon = exam.status === 'coming-soon';
     // 現在ページが exam 配下に含まれるなら open default にする（uncontrolled details の defaultOpen 相当）
-    const containsActive =
-        !!currentPath && exam.items.some((item) => item.href === currentPath);
+    const containsActive = !!currentPath && exam.items.some((item) => item.href === currentPath);
     const shouldOpen = (forceOpen && !isComingSoon) || containsActive;
     const accentBefore = ACCENT_CLASS[exam.colorClass] ?? 'before:bg-white/30';
     return (
@@ -497,7 +536,10 @@ function DrawerExamAccordion({
                 </svg>
             </summary>
             {!isComingSoon && (
-                <ul className="flex flex-col border-t border-white/[0.04]" style={{ padding: '4px 6px', gap: '4px' }}>
+                <ul
+                    className="flex flex-col border-t border-white/[0.04]"
+                    style={{ padding: '4px 6px', gap: '4px' }}
+                >
                     {exam.items.map((item) => {
                         const isActive = currentPath === item.href;
                         return (
