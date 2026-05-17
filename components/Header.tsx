@@ -21,6 +21,7 @@ const NAV_TREE = toNavTree(EXAMS);
  * @param tree - The navigation groups to filter
  * @param query - Search text; trimmed and lowercased for matching. Whitespace-only disables filtering
  * @returns The filtered navigation tree containing only groups with at least one matching exam.
+ */
 function filterNavTree(tree: readonly NavGroup[], query: string): NavGroup[] {
     const q = query.trim().toLowerCase();
     if (!q) return tree as NavGroup[];
