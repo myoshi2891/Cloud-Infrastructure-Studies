@@ -196,32 +196,34 @@ export function Header() {
                         aria-hidden
                     />
                     <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl md:max-w-none md:border-l-0 md:bg-[#0b0f16]/97">
-                        {/* Header */}
-                        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/[0.06] bg-[#0e1117]/95 px-5 py-4 backdrop-blur-xl md:px-10 md:py-6 lg:px-16">
-                            <div className="flex items-center gap-3 md:gap-4">
-                                <span
-                                    className="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-aurora text-base font-black md:flex"
-                                    aria-hidden
+                        {/* Header — 外側で背景・ボーダーを画面端まで延ばし、内側ラッパーで本文と左右整列 */}
+                        <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-[#0e1117]/95 backdrop-blur-xl">
+                            <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 md:px-10 md:py-6 lg:px-16">
+                                <div className="flex items-center gap-3 md:gap-4">
+                                    <span
+                                        className="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-aurora text-base font-black md:flex"
+                                        aria-hidden
+                                    >
+                                        ☁
+                                    </span>
+                                    <span className="text-sm font-semibold text-[var(--color-foreground)] md:text-xl md:font-bold md:tracking-tight">
+                                        メニュー
+                                    </span>
+                                </div>
+                                <button
+                                    ref={closeButtonRef}
+                                    type="button"
+                                    onClick={closeDrawer}
+                                    aria-label="メニューを閉じる"
+                                    className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:w-11 md:rounded-xl md:border md:border-white/[0.08] md:text-lg"
                                 >
-                                    ☁
-                                </span>
-                                <span className="text-sm font-semibold text-[var(--color-foreground)] md:text-xl md:font-bold md:tracking-tight">
-                                    メニュー
-                                </span>
+                                    <span aria-hidden className="text-lg leading-none md:text-2xl">×</span>
+                                </button>
                             </div>
-                            <button
-                                ref={closeButtonRef}
-                                type="button"
-                                onClick={closeDrawer}
-                                aria-label="メニューを閉じる"
-                                className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--color-muted-foreground)] transition-colors hover:bg-white/5 hover:text-[var(--color-foreground)] md:h-11 md:w-11 md:rounded-xl md:border md:border-white/[0.08] md:text-lg"
-                            >
-                                <span aria-hidden className="text-lg leading-none md:text-2xl">×</span>
-                            </button>
                         </div>
 
                         {/* Body */}
-                        <div className="mx-auto w-full max-w-7xl flex-1 px-5 py-5 md:px-10 md:py-10 lg:px-16 lg:py-12">
+                        <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-6 md:px-10 md:py-12 lg:px-16 lg:py-16">
                             {/* Search */}
                             <div className="mb-5 md:mb-8">
                                 <label className="relative block">
@@ -237,7 +239,6 @@ export function Header() {
                                     </svg>
                                     <input
                                         type="search"
-                                        role="searchbox"
                                         aria-label="ナビゲーション検索"
                                         placeholder="試験名・ドメインで検索..."
                                         value={query}
@@ -342,7 +343,7 @@ function ProviderSection({
     return (
         <section
             aria-labelledby={`nav-group-${group.provider}`}
-            className="flex flex-col gap-3 md:gap-5"
+            className="flex flex-col gap-4 md:gap-6"
         >
             {/* Hero strip */}
             <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] pb-3 md:pb-4">
@@ -377,7 +378,7 @@ function ProviderSection({
             {/* Exam list: GCP は md+ で 2 列、AWS は常に 1 列 (single coming-soon card を最大幅で見せる) */}
             <ul
                 className={cn(
-                    'flex flex-col gap-1.5 md:gap-3',
+                    'flex flex-col gap-2 md:gap-4',
                     isGCP && 'md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-3',
                 )}
             >
@@ -468,7 +469,7 @@ function DrawerExamAccordion({
                 </svg>
             </summary>
             {!isComingSoon && (
-                <ul className="flex flex-col gap-0.5 border-t border-white/[0.04] px-2 py-2 md:gap-1 md:px-3 md:py-3">
+                <ul className="flex flex-col gap-1 border-t border-white/[0.04] px-2 py-2 md:gap-1.5 md:px-3 md:py-3">
                     {exam.items.map((item) => {
                         const isActive = currentPath === item.href;
                         return (

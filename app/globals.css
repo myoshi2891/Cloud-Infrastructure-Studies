@@ -128,8 +128,9 @@ body {
     color: var(--color-foreground);
     font-family: var(--font-body);
     line-height: 1.75;
-    /* Header(sticky) + DisclaimerBanner(fixed) の合計分だけコンテンツを押し下げる */
-    padding-top: var(--fixed-offset);
+    /* Header / DisclaimerBanner ともに sticky で flow 内に居るため、natural flow が
+       コンテンツを自動で押し下げる。padding-top で重ねがけすると sticky 要素の
+       natural position が下にずれて scroll 開始まで縦並び順が崩れるため不要。 */
 }
 
 /* アンカーリンクのスクロール先が sticky nav の背後に隠れないよう補正 */

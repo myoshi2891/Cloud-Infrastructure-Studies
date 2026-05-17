@@ -32,10 +32,10 @@ export function DisclaimerBanner() {
             role="note"
             aria-label="免責事項: 本サイトは個人学習目的です。最新の公式情報は各試験プロバイダーの公式サイトをご確認ください。"
             style={{
-                position: 'fixed',
+                // sticky: Header (sticky top:0) の直後に flow 内で積まれ、scroll 中も常に Header の下に貼り付く。
+                // fixed だと flow 外になり scroll = 0 で Header より上に表示され縦並びが入れ替わる現象が起きる。
+                position: 'sticky',
                 top: 'var(--header-h, 48px)',
-                left: 0,
-                right: 0,
                 background: 'rgba(234, 179, 8, 0.12)',
                 borderBottom: '1px solid rgba(234, 179, 8, 0.25)',
                 zIndex: 40,
