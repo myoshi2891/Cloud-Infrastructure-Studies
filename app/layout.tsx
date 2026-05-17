@@ -36,10 +36,12 @@ export const metadata: Metadata = {
 };
 
 /**
- * Root layout component that applies configured fonts and wraps page content with site Header and Footer.
+ * Root layout component that applies configured font CSS variables and composes site chrome around page content.
  *
- * @param children - The page content to render between the Header and Footer.
- * @returns A React element representing the HTML root with font CSS variables applied and a body containing the Header, `children`, and Footer.
+ * This layout renders the document root (<html lang="ja">) with font variables and a body containing the Header, DisclaimerBanner, RecentPageRecorder, the provided page `children`, and the Footer.
+ *
+ * @param children - The page content to render within the layout
+ * @returns A React element representing the HTML root with font CSS variables and the site's header, banners, content, and footer
  */
 export default function RootLayout({
     children,
