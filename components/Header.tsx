@@ -147,12 +147,13 @@ export function Header() {
         <>
             <nav
                 aria-label="サイト全体のメインナビゲーション"
-                className="sticky top-0 z-50 flex items-center justify-between border-b border-white/[0.06] bg-[var(--color-background)]/90 px-6 backdrop-blur-xl md:px-8 lg:px-10"
+                className="sticky top-0 z-50 border-b border-white/[0.06] bg-[var(--color-background)]/90 backdrop-blur-xl"
                 style={{
                     height: 'var(--header-h, 48px)',
                     minHeight: 'var(--header-h, 48px)',
                 }}
             >
+                <div className="flex h-full w-full items-center justify-between px-6 md:px-8 lg:px-10" style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}>
                 {/* Logo / Brand */}
                 <Link
                     href="/"
@@ -198,6 +199,7 @@ export function Header() {
                         Menu
                     </span>
                 </button>
+                </div>
             </nav>
             {drawerOpen && (
                 <div
@@ -216,7 +218,7 @@ export function Header() {
                     <aside className="relative flex h-full w-full max-w-sm flex-col overflow-y-auto border-l border-white/[0.08] bg-[#0e1117]/95 shadow-2xl md:max-w-none md:border-l-0 md:bg-[#0b0f16]/97">
                         {/* Header — 外側で背景・ボーダーを画面端まで延ばし、内側ラッパーで本文と左右整列 */}
                         <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-[#0e1117]/95 backdrop-blur-xl">
-                            <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 md:px-10 md:py-6 lg:px-16">
+                            <div className="flex w-full items-center justify-between px-6 py-4 md:px-8 md:py-6 lg:px-10" style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}>
                                 <div className="flex items-center gap-3 md:gap-4">
                                     <span
                                         className="hidden h-9 w-9 items-center justify-center rounded-xl bg-gradient-aurora text-base font-black md:flex"
@@ -241,7 +243,7 @@ export function Header() {
                         </div>
 
                         {/* Body */}
-                        <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-6 md:px-10 md:py-12 lg:px-16 lg:py-16">
+                        <div className="w-full flex-1 px-6 pt-8 pb-6 md:px-8 md:pt-14 md:pb-12 lg:px-10 lg:pt-16 lg:pb-16" style={{ maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}>
                             {/* Search */}
                             <div className="mb-5 md:mb-8">
                                 <label className="relative block">
@@ -291,7 +293,7 @@ export function Header() {
                             {!isSearching && recent.length > 0 && (
                                 <nav
                                     aria-label="最近見たページ"
-                                    className="mt-8 border-t border-white/[0.06] pt-6 md:mt-12 md:pt-8"
+                                    className="mt-12 border-t border-white/[0.06] pt-8 md:mt-16 md:pt-10"
                                 >
                                     <h2 className="mb-3 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)] md:mb-4 md:text-[13px] md:tracking-[0.18em]">
                                         <span className="md:inline-block md:h-px md:w-6 md:bg-white/15" aria-hidden />
@@ -495,7 +497,7 @@ function DrawerExamAccordion({
                 </svg>
             </summary>
             {!isComingSoon && (
-                <ul className="flex flex-col gap-1 border-t border-white/[0.04] px-2 py-2 md:gap-1.5 md:px-3 md:py-3">
+                <ul className="flex flex-col border-t border-white/[0.04]" style={{ padding: '4px 6px', gap: '4px' }}>
                     {exam.items.map((item) => {
                         const isActive = currentPath === item.href;
                         return (
@@ -505,10 +507,11 @@ function DrawerExamAccordion({
                                     onClick={onLinkClick}
                                     aria-current={isActive ? 'page' : undefined}
                                     className={cn(
-                                        'flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-[13px] text-[var(--color-muted)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-foreground)] md:rounded-xl md:px-4 md:py-2.5 md:text-[15px]',
+                                        'flex items-center justify-between gap-2 rounded-lg leading-relaxed text-[13px] text-[var(--color-muted)] transition-colors hover:bg-white/[0.06] hover:text-[var(--color-foreground)] md:rounded-xl md:text-[15px]',
                                         isActive &&
                                             'bg-white/[0.08] font-semibold text-[var(--color-foreground)]',
                                     )}
+                                    style={{ padding: '3px 12px' }}
                                 >
                                     <span className="flex-1 truncate">{item.label}</span>
                                     {isActive && (
