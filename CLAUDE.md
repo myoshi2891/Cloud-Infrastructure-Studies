@@ -138,10 +138,11 @@ app/
       components/                   # セクションコンポーネント（Section1-6）
 
 components/
-  Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要
+  Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要。検索フィルタ・active リンク判定 (usePathname)・最近見たページ表示を内包
   Footer.tsx                        # シンプルなフッター（サイト名のみ）
   DisclaimerBanner.tsx              # 全画面固定バナー（免責事項）、layout.tsx から呼び出し
   DiagramSVG.tsx                    # SVG ダイアグラム共通コンポーネント（ariaLabel または decorative 必須）
+  RecentPageRecorder.tsx            # 'use client'、DOM レス。usePathname 監視で lib/recentPages.pushRecent を呼ぶ。layout.tsx に 1 度だけ配置
 
 lib/
   utils.ts                          # cn() (clsx + tailwind-merge)
@@ -190,3 +191,5 @@ Aws/                                # AWS資料アーカイブ
 - **グローバルメニューの運用（データ駆動）**: ナビゲーションは `app/constants.ts` の `EXAMS` を正本としている。新ページ追加時は `EXAMS` に `Exam` エントリを追加し（`status: 'coming-soon'` → ページ完成後 `'available'` または省略）、`app/navigation.ts` の `toNavTree` が自動でグルーピングするため **`components/Header.tsx` は直接編集しない**。
 - 新試験を追加する場合: ① `app/constants.ts` の `EXAMS` にエントリ追加 ② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加 ③ 試験ページ作成 — この 3 ファイルのみ変更すれば Header に自動反映される。
 - ページ固有の共通定数は `constants.ts` に集約する（`app/gcl/genai-leader/constants.ts` 参照）
+- **z-index レイヤリング**: グローバル UI のスタッキング順は `Header (z-50)` → `DisclaimerBanner (z-40)` → ページ内 sticky/fixed (`z-index: 100` を使うページが多い) → `Header ドロワー (z-[200])`。ページ側で 100 を超える z-index を新規に導入する場合は、ドロワーを覆い隠さないか必ず確認すること。
+- **Tailwind v4 動的クラス**: テンプレートリテラルで組み立てた class 名（例: `` `before:bg-[var(--color-theme-${id}-fg)]` ``）は JIT が拾えないため意図したスタイルが当たらない。バリエーション分の class 文字列をソース内に **静的に列挙** すること（`components/Header.tsx` の `ACCENT_CLASS` Record 参照）。
