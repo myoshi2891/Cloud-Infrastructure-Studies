@@ -180,6 +180,13 @@ Aws/                                # AWS資料アーカイブ
 - **Vitest:** `__tests__/**/*.test.{ts,tsx}`、jsdom環境、`@` エイリアスが `./` に解決される
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
 
+**🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
+全てのコード実装において、`.claude/rules/TDD_COMMIT_WORKFLOW.md` に定義されたルールを厳守すること。
+1. プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
+2. テストをPassさせる実装を行いコミットする。
+3. リファクタリング/統合を行いコミットする。
+※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
+
 ## 制約事項
 
 - **Netlify デプロイ**: `netlify.toml` + `@netlify/plugin-nextjs` で構成。`next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で切り替え（Docker: `standalone`、Netlify: 未設定）。
