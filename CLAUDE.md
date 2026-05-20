@@ -130,6 +130,9 @@ app/
       section1/
         page.tsx                    # Section 1: アカウント・ドメイン・ディレクトリ管理
         page.css                    # ページ固有スタイル
+      section2/
+        page.tsx                    # Section 2: コアサービス管理
+        page.css                    # ページ固有スタイル
     professional-cloud-network-engineer/
       page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
       components/                   # セクションコンポーネント（Section1-6 + Summary）
