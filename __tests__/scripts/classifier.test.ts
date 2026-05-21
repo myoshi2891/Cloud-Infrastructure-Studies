@@ -82,8 +82,11 @@ describe('classifier / buildActions', () => {
             { domain: 'common', category: 'Integration', status: 'missing', sources: 2, coveredSources: 0, tests: [] },
         ];
         const actions = buildActions(cells, { libSourceCount: 2 });
-        expect(actions[0]!.priority).toBe('P0');
-        expect(actions[0]!.area).toMatch(/lib|共通|common/i);
+        const firstAction = actions[0];
+        expect(firstAction).toBeDefined();
+        if (!firstAction) return;
+        expect(firstAction.priority).toBe('P0');
+        expect(firstAction.area).toMatch(/lib|共通|common/i);
     });
 
     it('should generate P1 action when exam domain has zero E2E tests', () => {
@@ -117,7 +120,9 @@ describe('classifier / buildActions', () => {
         ];
         const actions = buildActions(cells, { libSourceCount: 2 });
         const priorities = actions.map((a) => a.priority);
-        expect(priorities[0]).toBe('P0');
-        expect(priorities[priorities.length - 1]).toBe('P2');
+        const firstPriority = priorities[0];
+        const lastPriority = priorities[priorities.length - 1];
+        expect(firstPriority).toBe('P0');
+        expect(lastPriority).toBe('P2');
     });
 });
