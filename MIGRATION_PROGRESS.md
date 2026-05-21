@@ -31,13 +31,15 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ### 関連ファイル
 
 #### 新規
-- [__tests__/gcl/agwa/ScrollSpy.test.tsx](__tests__/gcl/agwa/ScrollSpy.test.tsx) — `ScrollSpy` ユニットテスト (2 ケース)
+
+- [**tests**/gcl/agwa/ScrollSpy.test.tsx](__tests__/gcl/agwa/ScrollSpy.test.tsx) — `ScrollSpy` ユニットテスト (2 ケース)
 - [e2e/cloud-digital-leader.spec.ts](e2e/cloud-digital-leader.spec.ts) — CDL E2Eテスト (5 ケース)
 - [e2e/pcne.spec.ts](e2e/pcne.spec.ts) — PCNE E2Eテスト (5 ケース)
 - [e2e/pcne-step.spec.ts](e2e/pcne-step.spec.ts) — PCNE Step E2Eテスト (5 ケース)
 - [e2e/agwa.spec.ts](e2e/agwa.spec.ts) — AGWA E2Eテスト (4 ケース)
 
 #### 変更
+
 - [docs/TEST_COVERAGE_PROGRESS.md](docs/TEST_COVERAGE_PROGRESS.md) — テストカバレッジ・網羅性進捗レポート
 - [docs/coverage-dashboard.html](docs/coverage-dashboard.html) — カバレッジダッシュボードHTML (再生成)
 
