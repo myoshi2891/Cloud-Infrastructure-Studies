@@ -102,19 +102,19 @@ describe('toNavTree', () => {
     it('NavExam.items は試験トップ（概要）+ domains を含む', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0]!.exams[0]!;
+        const aceExam = result[0].exams[0];
 
         // Assert
-        expect(aceExam.items[0]!.href).toBe('/gcl/associate-cloud-engineer');
-        expect(aceExam.items[0]!.label).toBe('概要');
+        expect(aceExam.items[0].href).toBe('/gcl/associate-cloud-engineer');
+        expect(aceExam.items[0].label).toBe('概要');
         expect(aceExam.items).toHaveLength(2);
-        expect(aceExam.items[1]!.href).toBe('/gcl/associate-cloud-engineer/domain1');
+        expect(aceExam.items[1].href).toBe('/gcl/associate-cloud-engineer/domain1');
     });
 
     it('NavExam に id/label/icon/colorClass がコピーされる', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0]!.exams[0]!;
+        const aceExam = result[0].exams[0];
 
         // Assert
         expect(aceExam.id).toBe('ace');
