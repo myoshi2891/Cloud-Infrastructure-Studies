@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CollapsibleSection } from '@/app/gcl/agwa/section2/CollapsibleSection';
+import styles from '@/app/gcl/agwa/section2/page.module.css';
 
 describe('CollapsibleSection', () => {
     it('should render header with number, title, and exam weight', () => {
@@ -87,8 +88,7 @@ describe('CollapsibleSection', () => {
         );
         const body = container.querySelector('#s21-body');
         expect(body).not.toBeNull();
-        const className = body!.className;
-        expect(className).toMatch(/\bopen\b/);
+        expect(body!.classList.contains(styles.open)).toBe(true);
     });
 
     it('should NOT add the open class to body element when collapsed', () => {
@@ -99,6 +99,6 @@ describe('CollapsibleSection', () => {
         );
         const body = container.querySelector('#s21-body');
         expect(body).not.toBeNull();
-        expect(body!.className).not.toMatch(/\bopen\b/);
+        expect(body!.classList.contains(styles.open)).toBe(false);
     });
 });
