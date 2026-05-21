@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>テストカバレッジ ダッシュボード</title>
+    <style>
+:root {
+    --bg: #ffffff;
+    --fg: #111827;
+    --muted: #4b5563;
+    --border: #e5e7eb;
+    --surface: #f9fafb;
+    --accent: #2563eb;
+    --ok-bg: #dcfce7;
+    --ok-fg: #15803d;
+    --warn-bg: #fef3c7;
+    --warn-fg: #a16207;
+    --miss-bg: #fee2e2;
+    --miss-fg: #b91c1c;
+    --p0: #b91c1c;
+    --p1: #a16207;
+    --p2: #1d4ed8;
+    color-scheme: light;
+}
+:root[data-theme="dark"] {
+    --bg: #0b1220;
+    --fg: #f3f4f6;
+    --muted: #9ca3af;
+    --border: #1f2937;
+    --surface: #111827;
+    --accent: #60a5fa;
+    --ok-bg: #064e3b;
+    --ok-fg: #6ee7b7;
+    --warn-bg: #78350f;
+    --warn-fg: #fde68a;
+    --miss-bg: #7f1d1d;
+    --miss-fg: #fecaca;
+    color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+    :root[data-theme="auto"] {
+        --bg: #0b1220;
+        --fg: #f3f4f6;
+        --muted: #9ca3af;
+        --border: #1f2937;
+        --surface: #111827;
+        --accent: #60a5fa;
+        --ok-bg: #064e3b;
+        --ok-fg: #6ee7b7;
+        --warn-bg: #78350f;
+        --warn-fg: #fde68a;
+        --miss-bg: #7f1d1d;
+        --miss-fg: #fecaca;
+        color-scheme: dark;
+    }
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+    margin: 0;
+    line-height: 1.6;
+}
+main { max-width: 1280px; margin: 0 auto; padding: 1.5rem; }
+.skip-link { position: absolute; left: -9999px; top: 0; background: var(--accent); color: #fff; padding: .5rem 1rem; z-index: 100; }
+.skip-link:focus { left: 0; }
+.page-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+    max-width: 1280px; margin: 0 auto;
+}
+.page-header h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+.muted { color: var(--muted); font-size: .9rem; }
+.controls button {
+    background: var(--surface); color: var(--fg); border: 1px solid var(--border);
+    padding: .5rem .9rem; border-radius: .5rem; cursor: pointer; font-size: .9rem;
+}
+.controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.summary { margin-bottom: 1.5rem; }
+.summary h2 { margin: 0 0 .75rem; font-size: 1.15rem; }
+.summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: .75rem;
+}
+.metric {
+    background: var(--surface); border: 1px solid var(--border); border-radius: .5rem;
+    padding: .9rem;
+}
+.metric-label { display: block; color: var(--muted); font-size: .8rem; }
+.metric-value { display: block; font-size: 1.6rem; font-weight: 600; }
+.metric--rate progress { width: 100%; height: .6rem; margin-top: .35rem; }
+.filters { background: var(--surface); border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: 1rem; }
+.filters summary { cursor: pointer; font-weight: 600; }
+.filters fieldset { border: none; padding: .5rem 0; margin: 0; }
+.filters legend { font-weight: 600; padding: 0; }
+.filters label { display: inline-flex; align-items: center; gap: .35rem; margin-right: 1rem; margin-top: .35rem; }
+.filters input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 1024px; }
+caption { caption-side: top; text-align: left; padding: .5rem 0; font-weight: 600; }
+th, td { border: 1px solid var(--border); padding: .5rem .6rem; text-align: left; vertical-align: top; }
+thead th { background: var(--surface); position: sticky; top: 0; z-index: 2; }
+tbody th .row-label { display: block; font-weight: 600; }
+tbody th .row-meta { display: block; color: var(--muted); font-size: .8rem; font-weight: 400; }
+.cell { font-size: .85rem; }
+.cell-icon { font-size: 1rem; margin-right: .25rem; }
+.cell-ratio { font-weight: 600; }
+.cell-count { display: block; color: var(--muted); font-size: .75rem; }
+.cell--ok { background: var(--ok-bg); color: var(--ok-fg); }
+.cell--warn { background: var(--warn-bg); color: var(--warn-fg); }
+.cell--missing { background: var(--miss-bg); color: var(--miss-fg); }
+.cell--legend { display: inline-block; padding: .1rem .4rem; border-radius: .25rem; margin-right: .35rem; }
+.uncovered { margin-top: .75rem; }
+.uncovered summary { cursor: pointer; font-weight: 600; }
+.uncovered ul { margin: .5rem 0; padding-left: 1.25rem; }
+.uncovered code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; }
+.actions { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; }
+.action { border: 1px solid var(--border); border-radius: .5rem; padding: .9rem 1rem; background: var(--surface); }
+.action header { display: flex; align-items: center; gap: .5rem; margin-bottom: .35rem; }
+.action h3 { margin: 0; font-size: 1.05rem; }
+.action--p0 { border-left: 4px solid var(--p0); }
+.action--p1 { border-left: 4px solid var(--p1); }
+.action--p2 { border-left: 4px solid var(--p2); }
+.badge { display: inline-block; padding: .15rem .45rem; border-radius: .25rem; font-weight: 700; font-size: .8rem; color: #fff; }
+.badge--p0 { background: var(--p0); }
+.badge--p1 { background: var(--p1); }
+.badge--p2 { background: var(--p2); }
+.action dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .35rem .75rem; margin: .5rem 0 0; }
+.action dt { font-size: .75rem; color: var(--muted); }
+.action dd { margin: 0; font-size: .9rem; }
+.legend ul { list-style: none; padding: 0; display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.page-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); max-width: 1280px; margin: 1.5rem auto 0; color: var(--muted); font-size: .85rem; }
+.page-footer code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+@media (max-width: 768px) {
+    .page-header { flex-direction: column; align-items: flex-start; gap: .5rem; }
+}
+@media print {
+    .controls, .filters, .skip-link, #theme-toggle { display: none !important; }
+    body { background: #fff !important; color: #000 !important; }
+    .cell--ok { background: #e7f5ec !important; color: #15803d !important; }
+    .cell--warn { background: #fef7e0 !important; color: #a16207 !important; }
+    .cell--missing { background: #fde8e8 !important; color: #b91c1c !important; }
+    thead th { position: static !important; }
+    table { break-inside: avoid; }
+    .action { break-inside: avoid; page-break-inside: avoid; }
+    a[href]::after { content: " (" attr(href) ")"; font-size: .75em; color: #555; }
+}
+</style>
+</head>
+<body>
+    <a href="#matrix" class="skip-link">マトリクスへスキップ</a>
+    <header class="page-header">
+        <div>
+            <h1>テストカバレッジ ダッシュボード</h1>
+            <p class="muted">生成: <time datetime="2026-05-21T00:56:16.224Z">2026-05-21</time> / Runner: Vitest 4.x (jsdom) + Playwright 1.x (Chromium)</p>
+        </div>
+        <div class="controls">
+            <button type="button" id="theme-toggle" aria-pressed="false" aria-label="ダークモード切替">🌓 テーマ</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="summary" aria-labelledby="summary-title">
+            <h2 id="summary-title">全体カバレッジ</h2>
+            <div class="summary-grid">
+                <div class="metric">
+                    <span class="metric-label">ソース総数</span>
+                    <span class="metric-value">176</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">カバー済み</span>
+                    <span class="metric-value">57</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">テストファイル</span>
+                    <span class="metric-value">61</span>
+                </div>
+                <div class="metric metric--rate">
+                    <span class="metric-label">達成率</span>
+                    <span class="metric-value">32%</span>
+                    <progress max="100" value="32" aria-label="全体カバレッジ 32%">32%</progress>
+                </div>
+            </div>
+        </section>
+
+        
+        <details class="filters" open>
+            <summary>フィルタ</summary>
+            <fieldset>
+                <legend>試験ドメイン</legend>
+                
+        <label><input type="checkbox" data-filter-domain="ace" checked> Associate Cloud Engineer</label>
+    
+        <label><input type="checkbox" data-filter-domain="genai-leader" checked> Generative AI Leader</label>
+    
+        <label><input type="checkbox" data-filter-domain="cloud-digital-leader" checked> Cloud Digital Leader</label>
+    
+        <label><input type="checkbox" data-filter-domain="agwa" checked> Google Workspace Admin</label>
+    
+        <label><input type="checkbox" data-filter-domain="pcne" checked> Professional Cloud Network Engineer</label>
+    
+        <label><input type="checkbox" data-filter-domain="pcne-step" checked> PCNE Step-by-Step</label>
+    
+        <label><input type="checkbox" data-filter-domain="common" checked> 共通 (components / lib / navigation)</label>
+    
+            </fieldset>
+            <fieldset>
+                <legend>ステータス</legend>
+                
+        <label><input type="checkbox" data-filter-status="ok" checked> ✅ 実装済み</label>
+    
+        <label><input type="checkbox" data-filter-status="warn" checked> ⚠️ 部分的</label>
+    
+        <label><input type="checkbox" data-filter-status="missing" checked> ❌ 未実装</label>
+    
+            </fieldset>
+        </details>
+    
+
+        <section aria-labelledby="matrix-title">
+            <h2 id="matrix-title">カバレッジ マトリクス</h2>
+            <div class="table-wrap">
+                <table id="matrix">
+                    <caption>試験ドメイン × テストカテゴリのカバレッジ状況</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">ドメイン</th>
+                            <th scope="col">Unit</th><th scope="col">Integration</th><th scope="col">E2E</th><th scope="col">Smoke</th><th scope="col">Visual</th><th scope="col">A11y</th><th scope="col">Performance</th><th scope="col">Security</th>
+                        </tr>
+                    </thead>
+                    <tbody><tr data-domain="ace"><th scope="row"><span class="row-label">Associate Cloud Engineer</span><span class="row-meta">6/14 (43%)</span></th><td class="cell cell--warn" data-status="warn" data-domain="ace" data-category="Unit" title="__tests__/gcl/associate-cloud-engineer/domain2/page.test.tsx
+__tests__/gcl/associate-cloud-engineer/domain3/page.test.tsx
+__tests__/gcl/associate-cloud-engineer/domain4/page.test.tsx
+__tests__/gcl/associate-cloud-engineer/page.test.tsx"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">43%</span><span class="cell-count">4 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="ace" data-category="Integration" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--warn" data-status="warn" data-domain="ace" data-category="E2E" title="e2e/associate-cloud-engineer.spec.ts"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">7%</span><span class="cell-count">1 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="ace" data-category="Smoke" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="ace" data-category="Visual" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="ace" data-category="A11y" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="ace" data-category="Performance" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="ace" data-category="Security" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td></tr><tr data-domain="genai-leader"><th scope="row"><span class="row-label">Generative AI Leader</span><span class="row-meta">5/19 (26%)</span></th><td class="cell cell--warn" data-status="warn" data-domain="genai-leader" data-category="Unit" title="__tests__/gcl/genai-leader/page.test.tsx
+__tests__/gcl/genai-leader/section1/page.test.tsx
+__tests__/gcl/genai-leader/section2/page.test.tsx
+__tests__/gcl/genai-leader/section3/page.test.tsx
+__tests__/gcl/genai-leader/section4/page.test.tsx"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">26%</span><span class="cell-count">5 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="genai-leader" data-category="Integration" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--warn" data-status="warn" data-domain="genai-leader" data-category="E2E" title="e2e/genai-leader.spec.ts"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">5%</span><span class="cell-count">1 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="genai-leader" data-category="Smoke" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="genai-leader" data-category="Visual" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="genai-leader" data-category="A11y" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="genai-leader" data-category="Performance" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="genai-leader" data-category="Security" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td></tr><tr data-domain="cloud-digital-leader"><th scope="row"><span class="row-label">Cloud Digital Leader</span><span class="row-meta">21/107 (20%)</span></th><td class="cell cell--warn" data-status="warn" data-domain="cloud-digital-leader" data-category="Unit" title="__tests__/gcl/cloud-digital-leader/page.test.tsx
+__tests__/gcl/cloud-digital-leader/section1/page.test.tsx
+__tests__/gcl/cloud-digital-leader/section2/page.test.tsx
+__tests__/gcl/cloud-digital-leader/section3/Section4_Checklist.test.tsx
+__tests__/gcl/cloud-digital-leader/section3/Section4_Patterns.test.tsx
+__tests__/gcl/cloud-digital-leader/section3/Section4_Responsible.test.tsx
+__tests__/gcl/cloud-digital-leader/section3/page.test.tsx
+__tests__/gcl/cloud-digital-leader/section4/page.test.tsx
+__tests__/gcl/cloud-digital-leader/section5/Section2.test.tsx
+__tests__/gcl/cloud-digital-leader/section5/Section3.test.tsx
+__tests__/gcl/cloud-digital-leader/section5/Section4.test.tsx
+__tests__/gcl/cloud-digital-leader/section5/page.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/Section1.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/Section2.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/Section3.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/Section4.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/Section5.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/Section6.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/Section7.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/layout.test.tsx
+__tests__/gcl/cloud-digital-leader/section6/page.test.tsx"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">20%</span><span class="cell-count">21 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="cloud-digital-leader" data-category="Integration" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="cloud-digital-leader" data-category="E2E" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="cloud-digital-leader" data-category="Smoke" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="cloud-digital-leader" data-category="Visual" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="cloud-digital-leader" data-category="A11y" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="cloud-digital-leader" data-category="Performance" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="cloud-digital-leader" data-category="Security" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td></tr><tr data-domain="agwa"><th scope="row"><span class="row-label">Google Workspace Admin</span><span class="row-meta">0/0 (0%)</span></th><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="Unit" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="Integration" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="E2E" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="Smoke" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="Visual" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="A11y" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="Performance" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="agwa" data-category="Security" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td></tr><tr data-domain="pcne"><th scope="row"><span class="row-label">Professional Cloud Network Engineer</span><span class="row-meta">10/11 (91%)</span></th><td class="cell cell--ok" data-status="ok" data-domain="pcne" data-category="Unit" title="__tests__/gcl/professional-cloud-network-engineer/Section1.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/Section2.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/Section3.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/Section4.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/Section5.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/Section6.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/SectionIntro.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/SectionSummary.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/layout.test.tsx
+__tests__/gcl/professional-cloud-network-engineer/page.test.tsx"><span class="cell-icon" aria-hidden="true">✅</span><span class="cell-ratio">91%</span><span class="cell-count">10 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne" data-category="Integration" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne" data-category="E2E" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne" data-category="Smoke" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne" data-category="Visual" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne" data-category="A11y" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne" data-category="Performance" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne" data-category="Security" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td></tr><tr data-domain="pcne-step"><th scope="row"><span class="row-label">PCNE Step-by-Step</span><span class="row-meta">6/9 (67%)</span></th><td class="cell cell--warn" data-status="warn" data-domain="pcne-step" data-category="Unit" title="__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section1.test.tsx
+__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section2.test.tsx
+__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section3.test.tsx
+__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section4.test.tsx
+__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section5.test.tsx
+__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section6.test.tsx"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">67%</span><span class="cell-count">6 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne-step" data-category="Integration" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne-step" data-category="E2E" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne-step" data-category="Smoke" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne-step" data-category="Visual" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne-step" data-category="A11y" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne-step" data-category="Performance" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="pcne-step" data-category="Security" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td></tr><tr data-domain="common"><th scope="row"><span class="row-label">共通 (components / lib / navigation)</span><span class="row-meta">8/11 (73%)</span></th><td class="cell cell--warn" data-status="warn" data-domain="common" data-category="Unit" title="__tests__/app/page.test.tsx
+__tests__/components/Footer.test.tsx
+__tests__/components/Header.drawer-features.test.tsx
+__tests__/components/Header.hamburger.test.tsx
+__tests__/components/Header.test.tsx
+__tests__/components/RecentPageRecorder.test.tsx
+__tests__/layout.test.tsx"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">64%</span><span class="cell-count">7 tests</span></td><td class="cell cell--warn" data-status="warn" data-domain="common" data-category="Integration" title="__tests__/lib/navigation.test.ts
+__tests__/lib/recentPages.test.ts"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">27%</span><span class="cell-count">2 tests</span></td><td class="cell cell--warn" data-status="warn" data-domain="common" data-category="E2E" title="e2e/nav.spec.ts
+e2e/smoke.spec.ts"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">9%</span><span class="cell-count">2 tests</span></td><td class="cell cell--warn" data-status="warn" data-domain="common" data-category="Smoke" title="__tests__/smoke.test.tsx"><span class="cell-icon" aria-hidden="true">⚠️</span><span class="cell-ratio">9%</span><span class="cell-count">1 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="common" data-category="Visual" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="common" data-category="A11y" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="common" data-category="Performance" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td><td class="cell cell--missing" data-status="missing" data-domain="common" data-category="Security" title="テスト未実装"><span class="cell-icon" aria-hidden="true">❌</span><span class="cell-ratio">0%</span><span class="cell-count">0 tests</span></td></tr></tbody>
+                </table>
+            </div>
+            <details class="uncovered"><summary>未カバー ソース一覧 (119)</summary><ul><li><code>app/api/health/route.ts</code></li><li><code>app/gcl/agwa/ScrollSpy.tsx</code></li><li><code>app/gcl/agwa/page.tsx</code></li><li><code>app/gcl/agwa/section1/page.tsx</code></li><li><code>app/gcl/associate-cloud-engineer/architecture-guide/page.tsx</code></li><li><code>app/gcl/associate-cloud-engineer/domain1/page.tsx</code></li><li><code>app/gcl/associate-cloud-engineer/domain2/Chapter17.tsx</code></li><li><code>app/gcl/associate-cloud-engineer/domain2/layout.tsx</code></li><li><code>app/gcl/associate-cloud-engineer/domain3/Chapter18.tsx</code></li><li><code>app/gcl/associate-cloud-engineer/domain3/layout.tsx</code></li><li><code>app/gcl/associate-cloud-engineer/domain4/constants.ts</code></li><li><code>app/gcl/associate-cloud-engineer/domain4/layout.tsx</code></li><li><code>app/gcl/cloud-digital-leader/components/SectionCard.tsx</code></li><li><code>app/gcl/cloud-digital-leader/components/shared/TableComponent.tsx</code></li><li><code>app/gcl/cloud-digital-leader/constants.ts</code></li><li><code>app/gcl/cloud-digital-leader/layout.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/DiagramSVG.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/SectionCard.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/SectionHero.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/SectionNav.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/TableComponent.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section0.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section1.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section10.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section11.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section12.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section13.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section14.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section2.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section3.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section4.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section5.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section6.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section7.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section8.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/Section9.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section1/components/sections/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section1/constants.ts</code></li><li><code>app/gcl/cloud-digital-leader/section1/layout.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/DiagramSVG.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/SectionCard.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/SectionHero.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/SectionNav.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/TableComponent.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section1.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section10.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section11.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section12.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section13.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section2.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section3.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section4.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section5.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section6.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section7.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section8.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/Section9.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section2/components/sections/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section2/constants.ts</code></li><li><code>app/gcl/cloud-digital-leader/section2/layout.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/DiagramSVG.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/SectionCard.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/SectionHero.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/SectionNav.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/TableComponent.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section0.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section1.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section2.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section3.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section3_Apis.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section3_AutoML.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section3_BQML.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section3_TensorFlow.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section3_VertexAI.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/Section4.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section3/components/sections/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section3/constants.ts</code></li><li><code>app/gcl/cloud-digital-leader/section3/layout.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/DiagramSVG.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/SectionCard.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/SectionHero.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/SectionNav.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/TableComponent.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/sections/Section0.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/sections/Section1.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/sections/Section2.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/sections/Section3.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/sections/Section4.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section4/components/sections/index.ts</code></li><li><code>app/gcl/cloud-digital-leader/section4/constants.ts</code></li><li><code>app/gcl/cloud-digital-leader/section4/layout.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section5/components/sections/Section0.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section5/components/sections/Section1.tsx</code></li><li><code>app/gcl/cloud-digital-leader/section6/constants.ts</code></li><li><code>app/gcl/genai-leader/constants.ts</code></li><li><code>app/gcl/genai-leader/section1/components/ReferencesBlock.tsx</code></li><li><code>app/gcl/genai-leader/section1/components/Section11.tsx</code></li><li><code>app/gcl/genai-leader/section1/components/Section11b.tsx</code></li><li><code>app/gcl/genai-leader/section1/components/Section11c.tsx</code></li><li><code>app/gcl/genai-leader/section1/components/Section12.tsx</code></li><li><code>app/gcl/genai-leader/section1/components/Section13.tsx</code></li><li><code>app/gcl/genai-leader/section1/components/Section14.tsx</code></li><li><code>app/gcl/genai-leader/section2/components/Section21.tsx</code></li><li><code>app/gcl/genai-leader/section2/components/Section22.tsx</code></li><li><code>app/gcl/genai-leader/section2/components/Section23.tsx</code></li><li><code>app/gcl/genai-leader/section2/components/Section24.tsx</code></li><li><code>app/gcl/genai-leader/section2/components/Section25.tsx</code></li><li><code>app/gcl/genai-leader/section2/components/SummarySection.tsx</code></li><li><code>app/gcl/professional-cloud-network-engineer-step-by-step/constants.ts</code></li><li><code>app/gcl/professional-cloud-network-engineer-step-by-step/layout.tsx</code></li><li><code>app/gcl/professional-cloud-network-engineer-step-by-step/page.tsx</code></li><li><code>app/gcl/professional-cloud-network-engineer/constants.ts</code></li><li><code>components/DiagramSVG.tsx</code></li><li><code>components/DisclaimerBanner.tsx</code></li><li><code>lib/utils.ts</code></li></ul></details>
+        </section>
+
+        <section aria-labelledby="actions-title">
+            <h2 id="actions-title">ネクストアクション (優先度順)</h2>
+            <ol class="actions">
+        <li class="action action--p0">
+            <header>
+                <span class="badge badge--p0">P0</span>
+                <h3>共通 / lib カバレッジ補強</h3>
+            </header>
+            <p>lib/ の 2 ファイルに対する Integration テストが不足しています</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Vitest</dd></div>
+                <div><dt>導入コスト</dt><dd>中</dd></div>
+                <div><dt>期待効果</dt><dd>主要ユーティリティ（recentPages, navigation, utils）の回帰防止</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p1">
+            <header>
+                <span class="badge badge--p1">P1</span>
+                <h3>cloud-digital-leader / クリティカルパス E2E</h3>
+            </header>
+            <p>対応する e2e/*.spec.ts が存在しません</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Playwright</dd></div>
+                <div><dt>導入コスト</dt><dd>中</dd></div>
+                <div><dt>期待効果</dt><dd>ユーザー導線の自動回帰検出</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p1">
+            <header>
+                <span class="badge badge--p1">P1</span>
+                <h3>pcne / クリティカルパス E2E</h3>
+            </header>
+            <p>対応する e2e/*.spec.ts が存在しません</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Playwright</dd></div>
+                <div><dt>導入コスト</dt><dd>中</dd></div>
+                <div><dt>期待効果</dt><dd>ユーザー導線の自動回帰検出</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p1">
+            <header>
+                <span class="badge badge--p1">P1</span>
+                <h3>pcne-step / クリティカルパス E2E</h3>
+            </header>
+            <p>対応する e2e/*.spec.ts が存在しません</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Playwright</dd></div>
+                <div><dt>導入コスト</dt><dd>中</dd></div>
+                <div><dt>期待効果</dt><dd>ユーザー導線の自動回帰検出</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p1">
+            <header>
+                <span class="badge badge--p1">P1</span>
+                <h3>agwa / ページ単体テスト追加</h3>
+            </header>
+            <p>0 ファイル中 0 ファイルのみカバー</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Vitest + React Testing Library</dd></div>
+                <div><dt>導入コスト</dt><dd>小〜中</dd></div>
+                <div><dt>期待効果</dt><dd>ページ描画リグレッション防止</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p1">
+            <header>
+                <span class="badge badge--p1">P1</span>
+                <h3>agwa / クリティカルパス E2E</h3>
+            </header>
+            <p>対応する e2e/*.spec.ts が存在しません</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Playwright</dd></div>
+                <div><dt>導入コスト</dt><dd>中</dd></div>
+                <div><dt>期待効果</dt><dd>ユーザー導線の自動回帰検出</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p2">
+            <header>
+                <span class="badge badge--p2">P2</span>
+                <h3>横断品質: Visual 導入検討</h3>
+            </header>
+            <p>全 7 ドメインで Visual テストが未実装</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Playwright (toHaveScreenshot)</dd></div>
+                <div><dt>導入コスト</dt><dd>中</dd></div>
+                <div><dt>期待効果</dt><dd>UI 退行検知</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p2">
+            <header>
+                <span class="badge badge--p2">P2</span>
+                <h3>横断品質: A11y 導入検討</h3>
+            </header>
+            <p>全 7 ドメインで A11y テストが未実装</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>@axe-core/playwright</dd></div>
+                <div><dt>導入コスト</dt><dd>小</dd></div>
+                <div><dt>期待効果</dt><dd>WCAG 違反の継続監視</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p2">
+            <header>
+                <span class="badge badge--p2">P2</span>
+                <h3>横断品質: Performance 導入検討</h3>
+            </header>
+            <p>全 7 ドメインで Performance テストが未実装</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>Lighthouse CI</dd></div>
+                <div><dt>導入コスト</dt><dd>中</dd></div>
+                <div><dt>期待効果</dt><dd>バンドル肥大化検知</dd></div>
+            </dl>
+        </li>
+    
+        <li class="action action--p2">
+            <header>
+                <span class="badge badge--p2">P2</span>
+                <h3>横断品質: Security 導入検討</h3>
+            </header>
+            <p>全 7 ドメインで Security テストが未実装</p>
+            <dl>
+                <div><dt>推奨ツール</dt><dd>npm audit + Snyk</dd></div>
+                <div><dt>導入コスト</dt><dd>小</dd></div>
+                <div><dt>期待効果</dt><dd>依存脆弱性可視化</dd></div>
+            </dl>
+        </li>
+    </ol>
+        </section>
+
+        <section class="legend" aria-label="凡例">
+            <h2>凡例</h2>
+            <ul>
+                <li><span class="cell cell--ok cell--legend">✅</span> 実装済み (80% 以上カバー)</li>
+                <li><span class="cell cell--warn cell--legend">⚠️</span> 部分的 (0〜80% 未満)</li>
+                <li><span class="cell cell--missing cell--legend">❌</span> 未実装 (対応テスト 0 件)</li>
+            </ul>
+            <p class="muted">外部連携: なし (Datadog / SonarCloud 等は未導入)</p>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <p>このダッシュボードは <code>bun run dashboard</code> で再生成できます (静的ファイルスキャンに基づく)。</p>
+    </footer>
+
+    <script type="application/json" id="dashboard-data">{"generatedAt":"2026-05-21T00:56:16.224Z","runner":{"unit":"Vitest 4.x (jsdom)","e2e":"Playwright 1.x (Chromium)"},"totals":{"sources":176,"covered":57,"testFiles":61},"domains":[{"id":"ace","label":"Associate Cloud Engineer","sources":14,"covered":6},{"id":"genai-leader","label":"Generative AI Leader","sources":19,"covered":5},{"id":"cloud-digital-leader","label":"Cloud Digital Leader","sources":107,"covered":21},{"id":"agwa","label":"Google Workspace Admin","sources":0,"covered":0},{"id":"pcne","label":"Professional Cloud Network Engineer","sources":11,"covered":10},{"id":"pcne-step","label":"PCNE Step-by-Step","sources":9,"covered":6},{"id":"common","label":"共通 (components / lib / navigation)","sources":11,"covered":8}],"cells":[{"domain":"ace","category":"Unit","status":"warn","coverageRate":0.42857142857142855,"testCount":4,"coveredSources":6,"sources":14,"tests":["__tests__/gcl/associate-cloud-engineer/domain2/page.test.tsx","__tests__/gcl/associate-cloud-engineer/domain3/page.test.tsx","__tests__/gcl/associate-cloud-engineer/domain4/page.test.tsx","__tests__/gcl/associate-cloud-engineer/page.test.tsx"]},{"domain":"ace","category":"Integration","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":14,"tests":[]},{"domain":"ace","category":"E2E","status":"warn","coverageRate":0.07142857142857142,"testCount":1,"coveredSources":1,"sources":14,"tests":["e2e/associate-cloud-engineer.spec.ts"]},{"domain":"ace","category":"Smoke","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":14,"tests":[]},{"domain":"ace","category":"Visual","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":14,"tests":[]},{"domain":"ace","category":"A11y","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":14,"tests":[]},{"domain":"ace","category":"Performance","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":14,"tests":[]},{"domain":"ace","category":"Security","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":14,"tests":[]},{"domain":"genai-leader","category":"Unit","status":"warn","coverageRate":0.2631578947368421,"testCount":5,"coveredSources":5,"sources":19,"tests":["__tests__/gcl/genai-leader/page.test.tsx","__tests__/gcl/genai-leader/section1/page.test.tsx","__tests__/gcl/genai-leader/section2/page.test.tsx","__tests__/gcl/genai-leader/section3/page.test.tsx","__tests__/gcl/genai-leader/section4/page.test.tsx"]},{"domain":"genai-leader","category":"Integration","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":19,"tests":[]},{"domain":"genai-leader","category":"E2E","status":"warn","coverageRate":0.05263157894736842,"testCount":1,"coveredSources":1,"sources":19,"tests":["e2e/genai-leader.spec.ts"]},{"domain":"genai-leader","category":"Smoke","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":19,"tests":[]},{"domain":"genai-leader","category":"Visual","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":19,"tests":[]},{"domain":"genai-leader","category":"A11y","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":19,"tests":[]},{"domain":"genai-leader","category":"Performance","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":19,"tests":[]},{"domain":"genai-leader","category":"Security","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":19,"tests":[]},{"domain":"cloud-digital-leader","category":"Unit","status":"warn","coverageRate":0.19626168224299065,"testCount":21,"coveredSources":21,"sources":107,"tests":["__tests__/gcl/cloud-digital-leader/page.test.tsx","__tests__/gcl/cloud-digital-leader/section1/page.test.tsx","__tests__/gcl/cloud-digital-leader/section2/page.test.tsx","__tests__/gcl/cloud-digital-leader/section3/Section4_Checklist.test.tsx","__tests__/gcl/cloud-digital-leader/section3/Section4_Patterns.test.tsx","__tests__/gcl/cloud-digital-leader/section3/Section4_Responsible.test.tsx","__tests__/gcl/cloud-digital-leader/section3/page.test.tsx","__tests__/gcl/cloud-digital-leader/section4/page.test.tsx","__tests__/gcl/cloud-digital-leader/section5/Section2.test.tsx","__tests__/gcl/cloud-digital-leader/section5/Section3.test.tsx","__tests__/gcl/cloud-digital-leader/section5/Section4.test.tsx","__tests__/gcl/cloud-digital-leader/section5/page.test.tsx","__tests__/gcl/cloud-digital-leader/section6/Section1.test.tsx","__tests__/gcl/cloud-digital-leader/section6/Section2.test.tsx","__tests__/gcl/cloud-digital-leader/section6/Section3.test.tsx","__tests__/gcl/cloud-digital-leader/section6/Section4.test.tsx","__tests__/gcl/cloud-digital-leader/section6/Section5.test.tsx","__tests__/gcl/cloud-digital-leader/section6/Section6.test.tsx","__tests__/gcl/cloud-digital-leader/section6/Section7.test.tsx","__tests__/gcl/cloud-digital-leader/section6/layout.test.tsx","__tests__/gcl/cloud-digital-leader/section6/page.test.tsx"]},{"domain":"cloud-digital-leader","category":"Integration","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":107,"tests":[]},{"domain":"cloud-digital-leader","category":"E2E","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":107,"tests":[]},{"domain":"cloud-digital-leader","category":"Smoke","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":107,"tests":[]},{"domain":"cloud-digital-leader","category":"Visual","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":107,"tests":[]},{"domain":"cloud-digital-leader","category":"A11y","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":107,"tests":[]},{"domain":"cloud-digital-leader","category":"Performance","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":107,"tests":[]},{"domain":"cloud-digital-leader","category":"Security","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":107,"tests":[]},{"domain":"agwa","category":"Unit","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"agwa","category":"Integration","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"agwa","category":"E2E","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"agwa","category":"Smoke","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"agwa","category":"Visual","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"agwa","category":"A11y","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"agwa","category":"Performance","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"agwa","category":"Security","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":0,"tests":[]},{"domain":"pcne","category":"Unit","status":"ok","coverageRate":0.9090909090909091,"testCount":10,"coveredSources":10,"sources":11,"tests":["__tests__/gcl/professional-cloud-network-engineer/Section1.test.tsx","__tests__/gcl/professional-cloud-network-engineer/Section2.test.tsx","__tests__/gcl/professional-cloud-network-engineer/Section3.test.tsx","__tests__/gcl/professional-cloud-network-engineer/Section4.test.tsx","__tests__/gcl/professional-cloud-network-engineer/Section5.test.tsx","__tests__/gcl/professional-cloud-network-engineer/Section6.test.tsx","__tests__/gcl/professional-cloud-network-engineer/SectionIntro.test.tsx","__tests__/gcl/professional-cloud-network-engineer/SectionSummary.test.tsx","__tests__/gcl/professional-cloud-network-engineer/layout.test.tsx","__tests__/gcl/professional-cloud-network-engineer/page.test.tsx"]},{"domain":"pcne","category":"Integration","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"pcne","category":"E2E","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"pcne","category":"Smoke","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"pcne","category":"Visual","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"pcne","category":"A11y","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"pcne","category":"Performance","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"pcne","category":"Security","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"pcne-step","category":"Unit","status":"warn","coverageRate":0.6666666666666666,"testCount":6,"coveredSources":6,"sources":9,"tests":["__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section1.test.tsx","__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section2.test.tsx","__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section3.test.tsx","__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section4.test.tsx","__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section5.test.tsx","__tests__/gcl/professional-cloud-network-engineer-step-by-step/components/Section6.test.tsx"]},{"domain":"pcne-step","category":"Integration","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":9,"tests":[]},{"domain":"pcne-step","category":"E2E","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":9,"tests":[]},{"domain":"pcne-step","category":"Smoke","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":9,"tests":[]},{"domain":"pcne-step","category":"Visual","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":9,"tests":[]},{"domain":"pcne-step","category":"A11y","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":9,"tests":[]},{"domain":"pcne-step","category":"Performance","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":9,"tests":[]},{"domain":"pcne-step","category":"Security","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":9,"tests":[]},{"domain":"common","category":"Unit","status":"warn","coverageRate":0.6363636363636364,"testCount":7,"coveredSources":7,"sources":11,"tests":["__tests__/app/page.test.tsx","__tests__/components/Footer.test.tsx","__tests__/components/Header.drawer-features.test.tsx","__tests__/components/Header.hamburger.test.tsx","__tests__/components/Header.test.tsx","__tests__/components/RecentPageRecorder.test.tsx","__tests__/layout.test.tsx"]},{"domain":"common","category":"Integration","status":"warn","coverageRate":0.2727272727272727,"testCount":2,"coveredSources":3,"sources":11,"tests":["__tests__/lib/navigation.test.ts","__tests__/lib/recentPages.test.ts"]},{"domain":"common","category":"E2E","status":"warn","coverageRate":0.09090909090909091,"testCount":2,"coveredSources":1,"sources":11,"tests":["e2e/nav.spec.ts","e2e/smoke.spec.ts"]},{"domain":"common","category":"Smoke","status":"warn","coverageRate":0.09090909090909091,"testCount":1,"coveredSources":1,"sources":11,"tests":["__tests__/smoke.test.tsx"]},{"domain":"common","category":"Visual","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"common","category":"A11y","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"common","category":"Performance","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]},{"domain":"common","category":"Security","status":"missing","coverageRate":0,"testCount":0,"coveredSources":0,"sources":11,"tests":[]}],"actions":[{"priority":"P0","area":"共通 / lib カバレッジ補強","detail":"lib/ の 2 ファイルに対する Integration テストが不足しています","tool":"Vitest","cost":"中","effect":"主要ユーティリティ（recentPages, navigation, utils）の回帰防止","impact":8},{"priority":"P1","area":"cloud-digital-leader / クリティカルパス E2E","detail":"対応する e2e/*.spec.ts が存在しません","tool":"Playwright","cost":"中","effect":"ユーザー導線の自動回帰検出","impact":107},{"priority":"P1","area":"pcne / クリティカルパス E2E","detail":"対応する e2e/*.spec.ts が存在しません","tool":"Playwright","cost":"中","effect":"ユーザー導線の自動回帰検出","impact":11},{"priority":"P1","area":"pcne-step / クリティカルパス E2E","detail":"対応する e2e/*.spec.ts が存在しません","tool":"Playwright","cost":"中","effect":"ユーザー導線の自動回帰検出","impact":9},{"priority":"P1","area":"agwa / ページ単体テスト追加","detail":"0 ファイル中 0 ファイルのみカバー","tool":"Vitest + React Testing Library","cost":"小〜中","effect":"ページ描画リグレッション防止","impact":0},{"priority":"P1","area":"agwa / クリティカルパス E2E","detail":"対応する e2e/*.spec.ts が存在しません","tool":"Playwright","cost":"中","effect":"ユーザー導線の自動回帰検出","impact":0},{"priority":"P2","area":"横断品質: Visual 導入検討","detail":"全 7 ドメインで Visual テストが未実装","tool":"Playwright (toHaveScreenshot)","cost":"中","effect":"UI 退行検知","impact":0},{"priority":"P2","area":"横断品質: A11y 導入検討","detail":"全 7 ドメインで A11y テストが未実装","tool":"@axe-core/playwright","cost":"小","effect":"WCAG 違反の継続監視","impact":0},{"priority":"P2","area":"横断品質: Performance 導入検討","detail":"全 7 ドメインで Performance テストが未実装","tool":"Lighthouse CI","cost":"中","effect":"バンドル肥大化検知","impact":0},{"priority":"P2","area":"横断品質: Security 導入検討","detail":"全 7 ドメインで Security テストが未実装","tool":"npm audit + Snyk","cost":"小","effect":"依存脆弱性可視化","impact":0}],"uncoveredSources":["app/api/health/route.ts","app/gcl/agwa/ScrollSpy.tsx","app/gcl/agwa/page.tsx","app/gcl/agwa/section1/page.tsx","app/gcl/associate-cloud-engineer/architecture-guide/page.tsx","app/gcl/associate-cloud-engineer/domain1/page.tsx","app/gcl/associate-cloud-engineer/domain2/Chapter17.tsx","app/gcl/associate-cloud-engineer/domain2/layout.tsx","app/gcl/associate-cloud-engineer/domain3/Chapter18.tsx","app/gcl/associate-cloud-engineer/domain3/layout.tsx","app/gcl/associate-cloud-engineer/domain4/constants.ts","app/gcl/associate-cloud-engineer/domain4/layout.tsx","app/gcl/cloud-digital-leader/components/SectionCard.tsx","app/gcl/cloud-digital-leader/components/shared/TableComponent.tsx","app/gcl/cloud-digital-leader/constants.ts","app/gcl/cloud-digital-leader/layout.tsx","app/gcl/cloud-digital-leader/section1/components/DiagramSVG.tsx","app/gcl/cloud-digital-leader/section1/components/SectionCard.tsx","app/gcl/cloud-digital-leader/section1/components/SectionHero.tsx","app/gcl/cloud-digital-leader/section1/components/SectionNav.tsx","app/gcl/cloud-digital-leader/section1/components/TableComponent.tsx","app/gcl/cloud-digital-leader/section1/components/index.ts","app/gcl/cloud-digital-leader/section1/components/sections/Section0.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section1.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section10.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section11.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section12.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section13.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section14.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section2.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section3.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section4.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section5.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section6.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section7.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section8.tsx","app/gcl/cloud-digital-leader/section1/components/sections/Section9.tsx","app/gcl/cloud-digital-leader/section1/components/sections/index.ts","app/gcl/cloud-digital-leader/section1/constants.ts","app/gcl/cloud-digital-leader/section1/layout.tsx","app/gcl/cloud-digital-leader/section2/components/DiagramSVG.tsx","app/gcl/cloud-digital-leader/section2/components/SectionCard.tsx","app/gcl/cloud-digital-leader/section2/components/SectionHero.tsx","app/gcl/cloud-digital-leader/section2/components/SectionNav.tsx","app/gcl/cloud-digital-leader/section2/components/TableComponent.tsx","app/gcl/cloud-digital-leader/section2/components/index.ts","app/gcl/cloud-digital-leader/section2/components/sections/Section1.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section10.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section11.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section12.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section13.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section2.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section3.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section4.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section5.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section6.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section7.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section8.tsx","app/gcl/cloud-digital-leader/section2/components/sections/Section9.tsx","app/gcl/cloud-digital-leader/section2/components/sections/index.ts","app/gcl/cloud-digital-leader/section2/constants.ts","app/gcl/cloud-digital-leader/section2/layout.tsx","app/gcl/cloud-digital-leader/section3/components/DiagramSVG.tsx","app/gcl/cloud-digital-leader/section3/components/SectionCard.tsx","app/gcl/cloud-digital-leader/section3/components/SectionHero.tsx","app/gcl/cloud-digital-leader/section3/components/SectionNav.tsx","app/gcl/cloud-digital-leader/section3/components/TableComponent.tsx","app/gcl/cloud-digital-leader/section3/components/index.ts","app/gcl/cloud-digital-leader/section3/components/sections/Section0.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section1.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section2.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section3.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section3_Apis.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section3_AutoML.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section3_BQML.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section3_TensorFlow.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section3_VertexAI.tsx","app/gcl/cloud-digital-leader/section3/components/sections/Section4.tsx","app/gcl/cloud-digital-leader/section3/components/sections/index.ts","app/gcl/cloud-digital-leader/section3/constants.ts","app/gcl/cloud-digital-leader/section3/layout.tsx","app/gcl/cloud-digital-leader/section4/components/DiagramSVG.tsx","app/gcl/cloud-digital-leader/section4/components/SectionCard.tsx","app/gcl/cloud-digital-leader/section4/components/SectionHero.tsx","app/gcl/cloud-digital-leader/section4/components/SectionNav.tsx","app/gcl/cloud-digital-leader/section4/components/TableComponent.tsx","app/gcl/cloud-digital-leader/section4/components/index.ts","app/gcl/cloud-digital-leader/section4/components/sections/Section0.tsx","app/gcl/cloud-digital-leader/section4/components/sections/Section1.tsx","app/gcl/cloud-digital-leader/section4/components/sections/Section2.tsx","app/gcl/cloud-digital-leader/section4/components/sections/Section3.tsx","app/gcl/cloud-digital-leader/section4/components/sections/Section4.tsx","app/gcl/cloud-digital-leader/section4/components/sections/index.ts","app/gcl/cloud-digital-leader/section4/constants.ts","app/gcl/cloud-digital-leader/section4/layout.tsx","app/gcl/cloud-digital-leader/section5/components/sections/Section0.tsx","app/gcl/cloud-digital-leader/section5/components/sections/Section1.tsx","app/gcl/cloud-digital-leader/section6/constants.ts","app/gcl/genai-leader/constants.ts","app/gcl/genai-leader/section1/components/ReferencesBlock.tsx","app/gcl/genai-leader/section1/components/Section11.tsx","app/gcl/genai-leader/section1/components/Section11b.tsx","app/gcl/genai-leader/section1/components/Section11c.tsx","app/gcl/genai-leader/section1/components/Section12.tsx","app/gcl/genai-leader/section1/components/Section13.tsx","app/gcl/genai-leader/section1/components/Section14.tsx","app/gcl/genai-leader/section2/components/Section21.tsx","app/gcl/genai-leader/section2/components/Section22.tsx","app/gcl/genai-leader/section2/components/Section23.tsx","app/gcl/genai-leader/section2/components/Section24.tsx","app/gcl/genai-leader/section2/components/Section25.tsx","app/gcl/genai-leader/section2/components/SummarySection.tsx","app/gcl/professional-cloud-network-engineer-step-by-step/constants.ts","app/gcl/professional-cloud-network-engineer-step-by-step/layout.tsx","app/gcl/professional-cloud-network-engineer-step-by-step/page.tsx","app/gcl/professional-cloud-network-engineer/constants.ts","components/DiagramSVG.tsx","components/DisclaimerBanner.tsx","lib/utils.ts"]}</script>
+    <script>
+(function() {
+    'use strict';
+    const STORAGE_KEY = 'coverage-dashboard:theme';
+    const root = document.documentElement;
+    const stored = (function() { try { return localStorage.getItem(STORAGE_KEY); } catch (_) { return null; } })();
+    if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+
+    const toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+        const sync = () => {
+            const current = root.getAttribute('data-theme');
+            const isDark = current === 'dark';
+            toggle.setAttribute('aria-pressed', String(isDark));
+        };
+        sync();
+        toggle.addEventListener('click', () => {
+            const current = root.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', next);
+            try { localStorage.setItem(STORAGE_KEY, next); } catch (_) {}
+            sync();
+        });
+    }
+
+    const apply = () => {
+        const okDomains = new Set();
+        document.querySelectorAll('[data-filter-domain]').forEach((el) => {
+            if (el.checked) okDomains.add(el.getAttribute('data-filter-domain'));
+        });
+        const okStatuses = new Set();
+        document.querySelectorAll('[data-filter-status]').forEach((el) => {
+            if (el.checked) okStatuses.add(el.getAttribute('data-filter-status'));
+        });
+        document.querySelectorAll('tbody tr').forEach((tr) => {
+            const d = tr.getAttribute('data-domain');
+            const visibleRow = okDomains.has(d);
+            tr.style.display = visibleRow ? '' : 'none';
+        });
+        document.querySelectorAll('td.cell').forEach((td) => {
+            const s = td.getAttribute('data-status');
+            const dim = !okStatuses.has(s);
+            td.classList.toggle('cell--dim', dim);
+            td.style.opacity = dim ? '0.25' : '';
+        });
+    };
+
+    document.querySelectorAll('[data-filter-domain], [data-filter-status]').forEach((el) => {
+        el.addEventListener('change', apply);
+    });
+    apply();
+})();
+</script>
+</body>
+</html>
