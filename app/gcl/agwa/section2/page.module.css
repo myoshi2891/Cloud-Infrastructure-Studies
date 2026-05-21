@@ -17,13 +17,14 @@
     flex: 1 1 0;
     padding: 0 1rem 3rem;
     min-width: 0;
-    max-width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 @media (min-width: 768px) {
     .main {
         margin-left: 260px;
         padding: 0 2rem 4rem;
-        max-width: calc(100% - 260px);
+        max-width: min(1000px, calc(100% - 260px));
     }
 }
 .sidebar-header {
@@ -169,6 +170,12 @@
     overflow: hidden;
 }
 .section-header {
+    /* button reset */
+    border: none;
+    font: inherit;
+    text-align: left;
+    width: 100%;
+    /* layout */
     display: flex;
     align-items: center;
     gap: 12px;

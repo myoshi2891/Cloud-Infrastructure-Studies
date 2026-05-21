@@ -25,6 +25,12 @@ test.describe('ナビゲーションバーとヒーローの中央寄せテス�
             await expect(hero).toBeVisible();
             const textAlign = await hero.evaluate((el) => window.getComputedStyle(el).textAlign);
             expect(textAlign).toBe('center');
+
+            // モバイルサイズ (640px) でナビが表示され justify-content が flex-start であること
+            await page.setViewportSize({ width: 640, height: 768 });
+            await expect(nav).toBeVisible();
+            const mobileJustify = await nav.evaluate((el) => window.getComputedStyle(el).justifyContent);
+            expect(mobileJustify).toBe('flex-start');
         });
     }
 });

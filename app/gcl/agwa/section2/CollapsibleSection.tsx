@@ -1,20 +1,35 @@
 'use client';
 
-import { useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import styles from './page.module.css';
+import { cn } from '@/lib/utils';
 
-interface CollapsibleSectionProps {
-    id: string;
-    num: ReactNode;
-    title: string;
-    weight: string;
-    defaultOpen?: boolean;
-    wrapperStyle?: CSSProperties;
-    headerStyle?: CSSProperties;
-    numStyle?: CSSProperties;
-    children: ReactNode;
-}
-
+/**
+ * Collapsible section card for AGWA Section 2 study content.
+ *
+ * Renders a card with a toggle header and a collapsible body. The toggle is
+ * implemented with a native `<button>` element so keyboard activation
+ * (Enter / Space) works out of the box without custom key handlers.
+ *
+ * @param props - {@link CollapsibleSectionProps}
+ * @param props.id - Unique HTML id for the wrapper element; the body panel gets
+ *   the id `${id}-body` (referenced by `aria-controls`).
+ * @param props.num - Section number label rendered as a badge (accepts ReactNode
+ *   so styled spans can be passed).
+ * @param props.title - Section title displayed in the header.
+ * @param props.weight - Exam frequency / weight label (e.g. "試験頻出度 ★★★").
+ * @param props.defaultOpen - Whether the section is expanded on mount.
+ *   Defaults to `false`.
+ * @param props.wrapperStyle - Optional inline `CSSProperties` applied to the
+ *   outer card wrapper.
+ * @param props.headerStyle - Optional inline `CSSProperties` applied to the
+ *   `<button>` header element.
+ * @param props.numStyle - Optional inline `CSSProperties` applied to the
+ *   section-number badge span.
+ * @param props.children - Body content (`ReactNode`) shown when the section is
+ *   expanded.
+ * @returns A `React.ReactElement` — the collapsible section card.
+ */
 export function CollapsibleSection({
     id,
     num,
@@ -30,36 +45,39 @@ export function CollapsibleSection({
     const bodyId = `${id}-body`;
 
     const toggle = () => setOpen((prev) => !prev);
-    const handleKey = (event: KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            toggle();
-        }
-    };
 
     return (
         <div className={styles['section-card']} id={id} style={wrapperStyle}>
-            <div
+            <button
                 className={styles['section-header']}
-                role="button"
-                tabIndex={0}
                 aria-expanded={open}
                 aria-controls={bodyId}
                 onClick={toggle}
-                onKeyDown={handleKey}
                 style={headerStyle}
             >
                 <span className={styles['section-num']} style={numStyle}>{num}</span>
                 <span className={styles['section-title']}>{title}</span>
                 <span className={styles['section-exam-weight']}>{weight}</span>
-                <span className={`${styles.chevron} ${open ? styles.open : ''}`.trim()}>▾</span>
-            </div>
+                <span className={cn(styles.chevron, open && styles.open)}>▾</span>
+            </button>
             <div
                 id={bodyId}
-                className={`${styles['section-body']} ${open ? styles.open : ''}`.trim()}
+                className={cn(styles['section-body'], open && styles.open)}
             >
                 {children}
             </div>
         </div>
     );
+}
+
+interface CollapsibleSectionProps {
+    id: string;
+    num: ReactNode;
+    title: string;
+    weight: string;
+    defaultOpen?: boolean;
+    wrapperStyle?: CSSProperties;
+    headerStyle?: CSSProperties;
+    numStyle?: CSSProperties;
+    children: ReactNode;
 }

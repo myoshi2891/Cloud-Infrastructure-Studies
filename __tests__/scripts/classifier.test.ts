@@ -50,8 +50,8 @@ describe('classifier / domainOf', () => {
         expect(domainOf('app/gcl/cloud-digital-leader/section3/page.tsx')).toBe('cloud-digital-leader');
     });
 
-    it('should map app/agwa/section1/page.tsx to agwa', () => {
-        expect(domainOf('app/agwa/section1/page.tsx')).toBe('agwa');
+    it('should map app/gcl/agwa/section1/page.tsx to agwa', () => {
+        expect(domainOf('app/gcl/agwa/section1/page.tsx')).toBe('agwa');
     });
 
     it('should map app/gcl/professional-cloud-network-engineer/page.tsx to pcne', () => {

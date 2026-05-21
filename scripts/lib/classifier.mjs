@@ -52,7 +52,7 @@ export function domainOf(filePath) {
     if (p.startsWith('app/gcl/cloud-digital-leader/')) return 'cloud-digital-leader';
     if (p.startsWith('app/gcl/professional-cloud-network-engineer-step-by-step/')) return 'pcne-step';
     if (p.startsWith('app/gcl/professional-cloud-network-engineer/')) return 'pcne';
-    if (p.startsWith('app/agwa/')) return 'agwa';
+    if (p.startsWith('app/gcl/agwa/')) return 'agwa';
 
     if (p.startsWith('components/')) return 'common';
     if (p.startsWith('lib/')) return 'common';
