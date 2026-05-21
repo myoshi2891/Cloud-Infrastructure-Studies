@@ -24,8 +24,8 @@ describe('lib/utils', () => {
             expect(cn('px-2', 'px-4')).toBe('px-4');
             // bg-red-500 and bg-blue-500 conflict, should resolve to bg-blue-500
             expect(cn('bg-red-500', 'bg-blue-500')).toBe('bg-blue-500');
-            // mixed classes should merge correctly
-            expect(cn('px-2 py-1', 'p-4')).toBe('py-1 p-4'); // py-1 remains if p-4 is applied? Actually tailwind-merge resolves py-1 and p-4. Let's see: p-4 overrides py-1 as well. So it should be 'p-4'. Let's verify.
+            // p-4 subsumes py-1 and px-2, so tailwind-merge resolves to p-4 only
+            expect(cn('px-2 py-1', 'p-4')).toBe('p-4');
         });
     });
 });

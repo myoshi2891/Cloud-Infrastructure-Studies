@@ -72,3 +72,10 @@ vi.mock('next/link', () => ({
         return React.createElement('a', { href, ...props }, children);
     },
 }));
+
+// next/navigation のグローバルモック（ファイル内で上書き可能）
+vi.mock('next/navigation', () => ({
+    usePathname: () => '/',
+    useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+    useSearchParams: () => new URLSearchParams(),
+}));
