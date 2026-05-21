@@ -73,9 +73,16 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result).toHaveLength(1);
-        expect(result[0]!.provider).toBe('GCP');
-        expect(result[0]!.exams).toHaveLength(1);
-        expect(result[0]!.exams[0]!.id).toBe('ace');
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+        expect(group.provider).toBe('GCP');
+        expect(group.exams).toHaveLength(1);
+
+        const exam = group.exams[0];
+        expect(exam).toBeDefined();
+        if (!exam) return;
+        expect(exam.id).toBe('ace');
     });
 
     it('GCP のみのとき AWS グループは生成されない', () => {
@@ -84,7 +91,10 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result.map((g: NavGroup) => g.provider)).toEqual(['GCP']);
-        expect(result[0]!.exams).toHaveLength(2);
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+        expect(group.exams).toHaveLength(2);
     });
 
     it('AWS 試験を含むと GCP・AWS の 2 グループに分かれる（GCP が先）', () => {
@@ -93,10 +103,16 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result).toHaveLength(2);
-        expect(result[0]!.provider).toBe('GCP');
-        expect(result[1]!.provider).toBe('AWS');
-        expect(result[0]!.exams.map((e) => e.id)).toEqual(['ace', 'genai']);
-        expect(result[1]!.exams.map((e) => e.id)).toEqual(['aws-saa']);
+        const group0 = result[0];
+        const group1 = result[1];
+        expect(group0).toBeDefined();
+        expect(group1).toBeDefined();
+        if (!group0 || !group1) return;
+
+        expect(group0.provider).toBe('GCP');
+        expect(group1.provider).toBe('AWS');
+        expect(group0.exams.map((e) => e.id)).toEqual(['ace', 'genai']);
+        expect(group1.exams.map((e) => e.id)).toEqual(['aws-saa']);
     });
 
     it('NavExam.items は試験トップ（概要）+ domains を含む', () => {
@@ -148,8 +164,15 @@ describe('toNavTree', () => {
         const result = toNavTree([awsSaa]);
 
         // Assert
-        expect(result[0]!.provider).toBe('AWS');
-        expect(result[0]!.exams[0]!.status).toBe('coming-soon');
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+        expect(group.provider).toBe('AWS');
+
+        const exam = group.exams[0];
+        expect(exam).toBeDefined();
+        if (!exam) return;
+        expect(exam.status).toBe('coming-soon');
     });
 
     it('domain.href が exam.href と一致する場合、items から重複を除去する', () => {
@@ -165,7 +188,14 @@ describe('toNavTree', () => {
 
         // Act
         const result = toNavTree([examWithDupTop]);
-        const items = result[0]!.exams[0]!.items;
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+
+        const exam = group.exams[0];
+        expect(exam).toBeDefined();
+        if (!exam) return;
+        const items = exam.items;
 
         // Assert
         expect(items.map((i) => i.href)).toEqual(['/exam/x', '/exam/x/sub']);
@@ -174,7 +204,7 @@ describe('toNavTree', () => {
     it('生成された全 href に重複がない', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce, gcpGenAi, awsSaa]);
-        const allHrefs = result.flatMap((g) => g.exams.flatMap((e) => e.items!.map((i) => i!.href)));
+        const allHrefs = result.flatMap((g) => g.exams.flatMap((e) => e.items.map((i) => i.href)));
 
         // Assert
         expect(new Set(allHrefs).size).toBe(allHrefs.length);
