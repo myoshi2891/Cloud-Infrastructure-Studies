@@ -4,8 +4,8 @@ import AgwaSection2Page from '@/app/gcl/agwa/section2/page';
 
 describe('AGWA Section 2 完全学習ガイド', () => {
     it('ページコンポーネントがレンダリングされること', () => {
-        const { container } = render(<AgwaSection2Page />);
-        expect(container).toBeInTheDocument();
+        render(<AgwaSection2Page />);
+        expect(screen.getByRole('main')).toBeInTheDocument();
     });
 
     it('hero セクションにタイトルが含まれること', () => {

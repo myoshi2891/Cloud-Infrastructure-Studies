@@ -214,6 +214,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0 24px;
+    justify-content: center;
 }
 
 /* アンカー遷移時に sticky topnav の下に隠れないよう scroll-margin を確保 */
@@ -895,7 +896,7 @@
     .s2-page .ssh-badge { margin-left: 0; }
     .s2-page .fgrid { grid-template-columns: 1fr; }
     .s2-page .tool-grid { grid-template-columns: 1fr; }
-    .s2-page .topnav { overflow-x: auto; flex-wrap: nowrap; }
+    .s2-page .topnav { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; }
     .s2-page .split { grid-template-columns: 1fr; }
     .s2-page .scorecard { grid-template-columns: 1fr 1fr; }
     .s2-page .alayer { flex-wrap: wrap; }

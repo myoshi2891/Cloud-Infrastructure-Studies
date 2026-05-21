@@ -1,6 +1,7 @@
 # TDD & Step-by-Step Commit Workflow Rules
 
 ## 目的 (Objective)
+
 LLMエージェントがコードを実装する際、要件漏れや意図しない破壊的変更を防ぐため、**テスト駆動開発（TDD）**と**ステップバイステップの細かなコミット**を**絶対の義務（マスト）**として規定する。
 
 ## 基本原則 (Core Mandates)
@@ -17,7 +18,7 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 ### Step 1: テストの作成 (Write Tests)
 - 要求された機能や修正に対するテストコードを作成する。
 - 実行してテストがFailすることを確認する。
-- **Commit:** `test: add failing tests for [機能名]` (必要であればFail状態でコミット、またはStep 2でまとめても可だが「テスト作成」を独立したフェーズとして扱うこと)
+- **Commit:** `test: add failing tests for [機能名]` — **テスト作成直後に必ずコミットすること。Step 2への繰り越しは禁止。**
 
 ### Step 2: 最小限の実装 (Implementation)
 - テストをPassさせるための最小限のプロダクションコードを実装する。
@@ -30,6 +31,7 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 - **Commit:** `refactor/docs: integrate [機能名] into routing and update docs`
 
 ## 各種スキル・仕様書での扱い (Integration with Skills & Specs)
+
 本プロジェクトにおける全ての「仕様書（`CLAUDE.md`, `GEMINI.md` 等）」や「スキルファイル（`.claude/skills/*`, `.gemini/skills/*`）」に基づく作業は、**本ワークフローファイルに定められた手順を常に最優先事項として適用**すること。
 
 「実装せよ」「移行せよ」という指示を受けた場合、エージェントは自動的にこのTDDとコミットのステップを計画（Plan）に組み込み、ユーザーの合意を経た上で、各ステップ完了ごとに必ずローカルコミットを実行しなければならない。

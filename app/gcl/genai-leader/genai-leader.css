@@ -130,6 +130,7 @@
     padding: 0 32px;
     overflow-x: auto;
     scrollbar-width: none;
+    justify-content: center;
 }
 
 .genai-leader-page .sticky-nav::-webkit-scrollbar {
@@ -637,7 +638,7 @@
 @media (max-width: 640px) {
     .genai-leader-page .hero { padding: 60px 16px 40px; min-height: 320px; }
     .genai-leader-page .wrapper { padding: 40px 14px; }
-    .genai-leader-page .sticky-nav { padding: 0 12px; }
+    .genai-leader-page .sticky-nav { padding: 0 12px; justify-content: flex-start; }
     .genai-leader-page .section-header { flex-wrap: wrap; }
     .genai-leader-page .pct-badge { margin-left: 0; }
     .genai-leader-page .term-grid { grid-template-columns: 1fr; }

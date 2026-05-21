@@ -112,7 +112,6 @@ next-env.d.ts
 test-results/
 playwright-report/
 
-
 Aws/archive/
 Gcl_Archive/
 tsconfig.tsbuildinfo
