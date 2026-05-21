@@ -21,6 +21,11 @@ const fixture = {
     uncoveredSources: [],
 };
 
+/**
+ * Constructs a JSDOM instance of the dashboard HTML using renderDashboardHtml with the fixture.
+ *
+ * @returns {JSDOM} A JSDOM object representing the rendered dashboard.
+ */
 function makeDom(): JSDOM {
     const html = renderDashboardHtml(fixture);
     return new JSDOM(html, {
