@@ -102,19 +102,39 @@ describe('toNavTree', () => {
     it('NavExam.items は試験トップ（概要）+ domains を含む', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0].exams[0];
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+
+        const aceExam = group.exams[0];
+        expect(aceExam).toBeDefined();
+        if (!aceExam) return;
 
         // Assert
-        expect(aceExam.items[0].href).toBe('/gcl/associate-cloud-engineer');
-        expect(aceExam.items[0].label).toBe('概要');
+        const item0 = aceExam.items[0];
+        expect(item0).toBeDefined();
+        if (!item0) return;
+        expect(item0.href).toBe('/gcl/associate-cloud-engineer');
+        expect(item0.label).toBe('概要');
+
         expect(aceExam.items).toHaveLength(2);
-        expect(aceExam.items[1].href).toBe('/gcl/associate-cloud-engineer/domain1');
+
+        const item1 = aceExam.items[1];
+        expect(item1).toBeDefined();
+        if (!item1) return;
+        expect(item1.href).toBe('/gcl/associate-cloud-engineer/domain1');
     });
 
     it('NavExam に id/label/icon/colorClass がコピーされる', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0].exams[0];
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+
+        const aceExam = group.exams[0];
+        expect(aceExam).toBeDefined();
+        if (!aceExam) return;
 
         // Assert
         expect(aceExam.id).toBe('ace');
