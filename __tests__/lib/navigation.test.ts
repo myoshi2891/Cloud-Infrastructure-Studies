@@ -215,7 +215,7 @@ describe('toNavTree', () => {
             const result = toNavTree([unknownExam]);
 
             // Assert
-            expect(result).toBe('intentionally-failing-wrong-value');
+            expect(result).toEqual([]);
         });
     });
 });
