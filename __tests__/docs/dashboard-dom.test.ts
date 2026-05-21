@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+// @ts-expect-error jsdom type declarations are missing in this environment
 import { JSDOM } from 'jsdom';
 import { renderDashboardHtml } from '../../scripts/lib/dashboard-html.mjs';
 
