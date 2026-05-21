@@ -20,9 +20,14 @@ bun run lint         # ESLint
 bun run test         # Vitest（ユニット・コンポーネント）
 bun run test:watch   # Vitest ウォッチモード（単一ファイル: vitest run __tests__/foo.test.tsx）
 bun run test:e2e     # Playwright E2E（dev server を自動起動）
+
+# カバレッジ可視化
+bun run dashboard    # 静的スキャンで docs/coverage-dashboard.html を再生成
 ```
 
 初回E2Eテスト前: `bunx playwright install`
+
+カバレッジダッシュボードは `__tests__/` と `e2e/` の静的解析（`import '@/...'` と `page.goto('/...')` の抽出）で生成される単一 HTML。`@vitest/coverage-v8` 等のランタイム計測ではないため、テスト追加時は `bun run dashboard` を再実行する。
 
 ```bash
 # Docker（Makefile 経由）
