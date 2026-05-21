@@ -73,9 +73,9 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result).toHaveLength(1);
-        expect(result[0].provider).toBe('GCP');
-        expect(result[0].exams).toHaveLength(1);
-        expect(result[0].exams[0].id).toBe('ace');
+        expect(result[0]!.provider).toBe('GCP');
+        expect(result[0]!.exams).toHaveLength(1);
+        expect(result[0]!.exams[0]!.id).toBe('ace');
     });
 
     it('GCP のみのとき AWS グループは生成されない', () => {
@@ -84,7 +84,7 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result.map((g: NavGroup) => g.provider)).toEqual(['GCP']);
-        expect(result[0].exams).toHaveLength(2);
+        expect(result[0]!.exams).toHaveLength(2);
     });
 
     it('AWS 試験を含むと GCP・AWS の 2 グループに分かれる（GCP が先）', () => {
@@ -93,28 +93,28 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result).toHaveLength(2);
-        expect(result[0].provider).toBe('GCP');
-        expect(result[1].provider).toBe('AWS');
-        expect(result[0].exams.map((e) => e.id)).toEqual(['ace', 'genai']);
-        expect(result[1].exams.map((e) => e.id)).toEqual(['aws-saa']);
+        expect(result[0]!.provider).toBe('GCP');
+        expect(result[1]!.provider).toBe('AWS');
+        expect(result[0]!.exams.map((e) => e.id)).toEqual(['ace', 'genai']);
+        expect(result[1]!.exams.map((e) => e.id)).toEqual(['aws-saa']);
     });
 
     it('NavExam.items は試験トップ（概要）+ domains を含む', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0].exams[0];
+        const aceExam = result[0]!.exams[0]!;
 
         // Assert
-        expect(aceExam.items[0].href).toBe('/gcl/associate-cloud-engineer');
-        expect(aceExam.items[0].label).toBe('概要');
+        expect(aceExam.items[0]!.href).toBe('/gcl/associate-cloud-engineer');
+        expect(aceExam.items[0]!.label).toBe('概要');
         expect(aceExam.items).toHaveLength(2);
-        expect(aceExam.items[1].href).toBe('/gcl/associate-cloud-engineer/domain1');
+        expect(aceExam.items[1]!.href).toBe('/gcl/associate-cloud-engineer/domain1');
     });
 
     it('NavExam に id/label/icon/colorClass がコピーされる', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0].exams[0];
+        const aceExam = result[0]!.exams[0]!;
 
         // Assert
         expect(aceExam.id).toBe('ace');
@@ -128,8 +128,8 @@ describe('toNavTree', () => {
         const result = toNavTree([awsSaa]);
 
         // Assert
-        expect(result[0].provider).toBe('AWS');
-        expect(result[0].exams[0].status).toBe('coming-soon');
+        expect(result[0]!.provider).toBe('AWS');
+        expect(result[0]!.exams[0]!.status).toBe('coming-soon');
     });
 
     it('domain.href が exam.href と一致する場合、items から重複を除去する', () => {
@@ -145,7 +145,7 @@ describe('toNavTree', () => {
 
         // Act
         const result = toNavTree([examWithDupTop]);
-        const items = result[0].exams[0].items;
+        const items = result[0]!.exams[0]!.items;
 
         // Assert
         expect(items.map((i) => i.href)).toEqual(['/exam/x', '/exam/x/sub']);
@@ -154,7 +154,7 @@ describe('toNavTree', () => {
     it('生成された全 href に重複がない', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce, gcpGenAi, awsSaa]);
-        const allHrefs = result.flatMap((g) => g.exams.flatMap((e) => e.items.map((i) => i.href)));
+        const allHrefs = result.flatMap((g) => g.exams.flatMap((e) => e.items!.map((i) => i!.href)));
 
         // Assert
         expect(new Set(allHrefs).size).toBe(allHrefs.length);
@@ -178,7 +178,8 @@ describe('toNavTree', () => {
 
             // Assert
             expect(gcp).toBeDefined();
-            const ids = gcp!.exams.map((e) => e.id).sort();
+            if (!gcp) return;
+            const ids = gcp.exams.map((e) => e.id).sort();
             expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'pcne']);
         });
 
@@ -189,8 +190,9 @@ describe('toNavTree', () => {
 
             // Assert
             expect(aws).toBeDefined();
-            expect(aws!.exams.length).toBeGreaterThan(0);
-            expect(aws!.exams.some((e) => e.status === 'coming-soon')).toBe(true);
+            if (!aws) return;
+            expect(aws.exams.length).toBeGreaterThan(0);
+            expect(aws.exams.some((e) => e.status === 'coming-soon')).toBe(true);
         });
     });
 
