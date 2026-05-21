@@ -84,8 +84,7 @@
     flex: 1 1 0;
     min-width: 0;
     padding: 3rem 3.5rem;
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 100%;
 }
 .hero {
     margin-bottom: 3.5rem;
