@@ -179,7 +179,7 @@ describe('lib/recentPages', () => {
             const result = getRecent();
 
             // Assert
-            expect(result).toBe('intentionally-failing-wrong-value');
+            expect(result).toEqual<RecentEntry[]>([{ href: '/ok', label: 'OK', ts: 123 }]);
         });
     });
 });
