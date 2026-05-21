@@ -193,4 +193,29 @@ describe('toNavTree', () => {
             expect(aws!.exams.some((e) => e.status === 'coming-soon')).toBe(true);
         });
     });
+
+    describe('エッジケースと無効なデータ', () => {
+        it('未知のプロバイダが指定された場合、出力のグループ一覧から無視されること（意図的な失敗）', () => {
+            // Arrange
+            const unknownExam = {
+                id: 'unknown-exam',
+                label: 'Unknown Exam',
+                abbr: 'UNK',
+                level: 'Foundational',
+                score: '---',
+                color: 'card-unknown',
+                href: '/unknown',
+                domains: [],
+                badge: 'テスト',
+                icon: '❓',
+                provider: 'AZURE' as any, // 未知のプロバイダ
+            };
+
+            // Act
+            const result = toNavTree([unknownExam]);
+
+            // Assert
+            expect(result).toBe('intentionally-failing-wrong-value');
+        });
+    });
 });
