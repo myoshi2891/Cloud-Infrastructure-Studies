@@ -5,11 +5,6 @@ test.describe('Associate Google Workspace Administrator ページ', () => {
         await page.goto('/gcl/agwa');
     });
 
-    test('意図的な失敗テスト', async () => {
-        // TDDワークフローのための失敗テスト
-        expect(true).toBe(false);
-    });
-
     test('ページが正常に表示されること', async ({ page }) => {
         await expect(page.locator('h1')).toContainText('Associate Google Workspace');
     });
