@@ -92,7 +92,9 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 ### セクション 1: 汎用仕様書（CLAUDE.md / GEMINI.md 等）の同期手順
 
 #### Step 1: 乖離検出
+
 以下を確認して乖離箇所をリストアップする:
+
 ```bash
 # 現在のファイルツリーを確認
 find app -name "page.tsx" | sort
@@ -108,12 +110,14 @@ git log --oneline -1
 ```
 
 #### Step 2: 各仕様書を読み込み、現状と比較
+
 - `CLAUDE.md` のアーキテクチャツリーが実ファイルツリーと一致しているか
 - `CLAUDE.md` の制約事項が現在のコードの挙動と一致しているか
 - `GEMINI.md` が `CLAUDE.md` と内容が同期しているか
 - `.gemini/rules/migration-progress-sync.md` の HEAD・テスト数が最新か
 
 #### Step 3: 更新の優先順位
+
 1. **CLAUDE.md** — Claude Code が毎回参照するため最優先
 2. **GEMINI.md** — CLAUDE.md と同期して更新
 3. **.claude/skills/\*/SKILL.md** — 手順が誤っていると誤った作業を引き起こすため優先
@@ -121,6 +125,7 @@ git log --oneline -1
 5. **README.md** — ユーザー向け。大きな変化があれば更新、軽微なら省略可
 
 #### Step 4: 更新後の確認とコミット
+
 ```bash
 # lint・build で型エラーがないことを確認
 bun run lint
@@ -139,14 +144,19 @@ git commit -m "docs(specs): sync all spec docs after <feature-name>"
 テストの実装やリファクタリングが終了した後は、以下の手順に従ってドキュメントおよびダッシュボードを同期します。
 
 #### Step 1: カバレッジダッシュボードHTMLの再生成
+
 テストファイルのスキャン結果を同期するため、以下のダッシュボード生成スクリプトを実行します。
+
 ```bash
 node scripts/generate-coverage-dashboard.mjs
 ```
+
 実行ログを確認し、対象ソースコード数、カバー済みソースコード数、テストファイル数が正しく出力されていることを確認します。
 
 #### Step 2: 最新の統計データ（JSON）の抽出
+
 生成された `docs/coverage-dashboard.html` の末尾付近にある `id="dashboard-data"` の script タグから最新の統計情報を抽出します。
+
 ```html
 <script type="application/json" id="dashboard-data">
 {
@@ -157,6 +167,7 @@ node scripts/generate-coverage-dashboard.mjs
 ```
 
 #### Step 3: `docs/TEST_COVERAGE_PROGRESS.md` の更新
+
 抽出したデータをもとに、以下のセクションを修正します。
 
 1. **全体サマリー (Overall Summary)**
@@ -173,6 +184,7 @@ node scripts/generate-coverage-dashboard.mjs
    - プロンプトの最後にある、開始すべき推奨タスクを次に優先度の高いタスクへ切り替えます。
 
 #### Step 4: 更新内容の確認とコミット
+
 ```bash
 # 差分を確認
 git diff docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html
