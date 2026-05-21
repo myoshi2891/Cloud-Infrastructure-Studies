@@ -1,14 +1,17 @@
 'use client';
 
-import { useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import styles from './page.module.css';
 
 interface CollapsibleSectionProps {
     id: string;
-    num: string;
+    num: ReactNode;
     title: string;
     weight: string;
     defaultOpen?: boolean;
+    wrapperStyle?: CSSProperties;
+    headerStyle?: CSSProperties;
+    numStyle?: CSSProperties;
     children: ReactNode;
 }
 
@@ -18,6 +21,9 @@ export function CollapsibleSection({
     title,
     weight,
     defaultOpen = false,
+    wrapperStyle,
+    headerStyle,
+    numStyle,
     children,
 }: CollapsibleSectionProps) {
     const [open, setOpen] = useState(defaultOpen);
@@ -32,7 +38,7 @@ export function CollapsibleSection({
     };
 
     return (
-        <div className={styles['section-card']} id={id}>
+        <div className={styles['section-card']} id={id} style={wrapperStyle}>
             <div
                 className={styles['section-header']}
                 role="button"
@@ -41,8 +47,9 @@ export function CollapsibleSection({
                 aria-controls={bodyId}
                 onClick={toggle}
                 onKeyDown={handleKey}
+                style={headerStyle}
             >
-                <span className={styles['section-num']}>{num}</span>
+                <span className={styles['section-num']} style={numStyle}>{num}</span>
                 <span className={styles['section-title']}>{title}</span>
                 <span className={styles['section-exam-weight']}>{weight}</span>
                 <span className={`${styles.chevron} ${open ? styles.open : ''}`.trim()}>▾</span>

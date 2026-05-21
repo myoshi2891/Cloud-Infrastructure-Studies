@@ -88,7 +88,7 @@ describe('CollapsibleSection', () => {
         );
         const body = container.querySelector('#s21-body');
         expect(body).not.toBeNull();
-        expect(body!.classList.contains(styles.open)).toBe(true);
+        expect(body!.classList.contains(styles.open!)).toBe(true);
     });
 
     it('should NOT add the open class to body element when collapsed', () => {
@@ -99,6 +99,6 @@ describe('CollapsibleSection', () => {
         );
         const body = container.querySelector('#s21-body');
         expect(body).not.toBeNull();
-        expect(body!.classList.contains(styles.open)).toBe(false);
+        expect(body!.classList.contains(styles.open!)).toBe(false);
     });
 });
