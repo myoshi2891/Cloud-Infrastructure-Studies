@@ -1,147 +1,60 @@
 ---
-name: spec-sync
-description: >
-  Audit and update all specification documents in this repository after feature additions.
-  Use this skill when adding a new exam, new page, new navigation pattern, new architecture
-  layer, or any change that affects the documented data flow or constraints.
-  Trigger (日本語): 仕様書更新, 仕様書同期, ドキュメント更新, 仕様書を更新して, 仕様の乖離を直して,
-  仕様書を精査して, CLAUDE.md を更新して, README を更新して, 仕様書が古い.
-  Trigger (English): update specs, sync docs, update documentation, spec drift, audit specs,
-  update CLAUDE.md, docs out of date, keep specs in sync.
+name: test-coverage-progress-sync
+description: Standardizes the workflow to sync test specifications, execution progress, dashboard reports, and next session prompts inside docs/TEST_COVERAGE_PROGRESS.md after test implementation. Triggered on: "テスト進捗の同期", "テストカバレッジ同期", "テストドキュメント更新", "テスト進捗更新".
 ---
 
-# 仕様書同期スキル（spec-sync）
+# Test Coverage and Progress Synchronization Skill
 
-**🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-仕様書の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.claude/rules/TDD_COMMIT_WORKFLOW.md` のステップバイステップ・コミットルールに従うこと。
+This skill ensures that whenever you finish implementing or refactoring tests, you consistently update all related specifications, dashboards, progress sheets, and next-action prompts without omission.
 
-## 目的
+## Prerequisites
 
-機能追加・リファクタ後に生じる仕様書とコードの乖離を検出し、すべての仕様書を現状に合わせて更新する。
+Ensure you have successfully completed the test implementations and typechecks.
+- All vitest and playwright tests must pass.
+- Typecheck (`npx tsc --project tsconfig.json --noEmit`) must succeed with 0 errors.
 
----
+## Workflow Steps
 
-## 対象仕様書と更新トリガー
-
-| ファイル | 役割 | 更新が必要な変更 |
-|---|---|---|
-| `CLAUDE.md` | Claude Code 向け主仕様（アーキテクチャ・制約・コマンド） | アーキテクチャ変更、新ファイル追加、制約変更、試験追加 |
-| `GEMINI.md` | Gemini CLI 向け主仕様（同等内容） | CLAUDE.md と同期して更新 |
-| `.gemini/rules/migration-progress-sync.md` | Gemini 向け作業状況 | HEAD・テスト数・完了状況変更時 |
-| `README.md` | ユーザー向け概要 | 新機能追加、試験追加、UI パターン変更 |
-| `.claude/skills/md-to-nextjs-migration/SKILL.md` | MD→Next.js 移行ワークフロー | ナビ追加フロー変更、新ディレクトリ規約 |
-| `.claude/skills/html-to-nextjs-migration/SKILL.md` | HTML→Next.js 移行ワークフロー | 同上 |
-| `MIGRATION_PROGRESS.md` | 移行進捗（単一の正本） | 各ステップ完了時 |
-
----
-
-## 機能追加カテゴリ別チェックリスト
-
-### A. 新試験を追加した場合
-
-**変更対象ファイル:**
-1. `app/constants.ts` — `EXAMS` に `Exam` エントリ追加（これが正本、他は自動反映）
-2. `app/globals.css` — `icon-theme-<id>` ユーティリティ追加
-
-**仕様書更新:**
-- [ ] `CLAUDE.md` のプロジェクト概要に試験名を追記
-- [ ] `GEMINI.md` の プロジェクト構造に追記
-- [ ] `README.md` の特徴セクションに追記
-- [ ] `MIGRATION_PROGRESS.md` の「現在地」テスト数・HEAD を更新
-- **触らないもの**: `components/Header.tsx`（toNavTree が自動反映）
-
-### B. アーキテクチャ・データフローを変更した場合
-
-**仕様書更新:**
-- [ ] `CLAUDE.md` のアーキテクチャツリー（`app/` 配下のファイル一覧）を更新
-- [ ] `CLAUDE.md` の制約事項セクションに変更内容を反映
-- [ ] `GEMINI.md` のプロジェクト構造・注意事項を同期
-- [ ] `.claude/skills/md-to-nextjs-migration/SKILL.md` の「新ページ追加時の手順」を更新
-- [ ] `README.md` の特徴セクション（技術的変化が大きい場合のみ）
-
-### C. 新ページ・新セクションを追加した場合
-
-**仕様書更新:**
-- [ ] `CLAUDE.md` のアーキテクチャツリーに `page.tsx` パスを追記
-- [ ] `GEMINI.md` の `/app` 構造に追記
-- [ ] `MIGRATION_PROGRESS.md` に完了済みステップとして記録
-- [ ] `MIGRATION_PROGRESS.md` の「現在地」テスト数・HEAD を更新
-
-### D. コンポーネントの制約を変更した場合
-
-例: `Header.tsx` のインタフェース変更、`DisclaimerBanner.tsx` の制約変更など
-
-**仕様書更新:**
-- [ ] `CLAUDE.md` の制約事項セクションを更新
-- [ ] `GEMINI.md` の注意事項を同期
-- [ ] 関連スキルの SKILL.md を更新（手順に影響する場合）
-
-### E. テスト構成・コマンドを変更した場合
-
-**仕様書更新:**
-- [ ] `CLAUDE.md` のテスト構成セクション
-- [ ] `CLAUDE.md` のコマンドセクション
-- [ ] `GEMINI.md` の「開発と実行」セクション
-- [ ] `README.md` の「テストの実行」セクション
-
----
-
-## 実行手順
-
-### Step 1: 乖離検出
-
-以下を確認して乖離箇所をリストアップする:
-
+### Step 1: Re-generate the Coverage Dashboard HTML
+Run the coverage dashboard generation script to sync the local test files scanning:
 ```bash
-# 現在のファイルツリーを確認
-find app -name "page.tsx" | sort
-find app -name "constants.ts" | sort
-find components -name "*.tsx" | sort
-find e2e -name "*.spec.ts" | sort
+node scripts/generate-coverage-dashboard.mjs
+```
+Verify that the output shows the correct number of sources, covered files, and test files.
 
-# テスト数を確認
-bun run test 2>&1 | grep "Tests"
-
-# HEAD を確認
-git log --oneline -1
+### Step 2: Extract the Latest Dashboard Data
+Examine the newly generated `docs/coverage-dashboard.html` to extract the updated JSON statistics.
+Locate the script tag with `id="dashboard-data"` (typically near the bottom of the HTML file):
+```html
+<script type="application/json" id="dashboard-data">
+{
+  "totals": { "sources": 177, "covered": 60, "testFiles": 65 },
+  "domains": [...]
+}
+</script>
 ```
 
-### Step 2: 各仕様書を読み込み、現状と比較
+### Step 3: Update `docs/TEST_COVERAGE_PROGRESS.md`
+Update the following sections in `docs/TEST_COVERAGE_PROGRESS.md` with the extracted data:
 
-- `CLAUDE.md` のアーキテクチャツリーが実ファイルツリーと一致しているか
-- `CLAUDE.md` の制約事項が現在のコードの挙動と一致しているか
-- `GEMINI.md` が `CLAUDE.md` と内容が同期しているか
-- `.gemini/rules/migration-progress-sync.md` の HEAD・テスト数が最新か
+1. **Overall Summary (全体サマリー)**
+   - Update `ソースファイル総数` (Total source files), `テストカバー済みソース数` (Covered source files), `全体カバレッジ達成率` (Overall coverage rate), and `テストファイル総数` (Total test files).
+2. **Domain Coverage Matrix (ドメイン別カバレッジマトリクス)**
+   - Update the coverage rate and matrix percentages for the domains that were changed.
+   - If a domain's coverage rate reaches **80%** or higher, upgrade its indicator from `⚠️` to `✅` (Implemented) and bold the domain name.
+3. **Integration & Category Analysis (テストカテゴリ別の網羅性と課題)**
+   - Review and update current coverage rate details in the text for Unit, Integration, E2E, Smoke, and horizontal quality metrics.
+4. **Next Actions Task List (優先度別ネクストアクション)**
+   - Mark completed items as `[x]`.
+   - Update task descriptions if necessary.
+5. **Next Session Prompt (次回セッションでのテスト追加再開プロンプト)**
+   - Adjust the target priorities under "4. 対象優先度".
+   - Shift the starting recommendation at the end of the prompt (e.g. from P0 to P1) to reflect the next high-priority task.
 
-### Step 3: 更新の優先順位
-
-1. **CLAUDE.md** — Claude Code が毎回参照するため最優先
-2. **GEMINI.md** — CLAUDE.md と同期して更新
-3. **.claude/skills/\*/SKILL.md** — 手順が誤っていると誤った作業を引き起こすため優先
-4. **.gemini/rules/** — Gemini 向け状態管理
-5. **README.md** — ユーザー向け。大きな変化があれば更新、軽微なら省略可
-
-### Step 4: 更新後の確認
-
-```bash
-# lint・build で型エラーがないことを確認
-bun run lint
-bun run build
-
-# 更新をコミット
-git add CLAUDE.md GEMINI.md README.md \
-  .gemini/rules/migration-progress-sync.md \
-  .claude/skills/*/SKILL.md \
-  MIGRATION_PROGRESS.md
-git commit -m "docs(specs): sync all spec docs after <feature-name>"
-```
-
----
-
-## 絶対に守るルール
-
-1. **仕様書を実コードより先に更新しない** — コードが確定してから仕様書を合わせる
-2. **CLAUDE.md の制約事項に「触らないもの」が書かれていたら、その制約自体も仕様書に反映する**
-3. **テスト数は `bun run test` を実行した実数を記録する**（推定値禁止）
-4. **HEAD は `git log --oneline -1` で取得した実 commit hash を記録する**
-5. **GEMINI.md と CLAUDE.md の内容は必ず同期する**（片方だけ更新しない）
+### Step 4: Verify and Commit
+1. Run `git diff` to verify the modifications inside `docs/TEST_COVERAGE_PROGRESS.md` and `docs/coverage-dashboard.html`.
+2. Commit the changes:
+   ```bash
+   git add docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html
+   git commit -m "docs: update test coverage dashboard and progress report for [Task/Priority] completion"
+   ```
