@@ -141,12 +141,15 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>設定方式</th>
                                     <th>優先度</th>
                                     <th>メールサーバー（Value）</th>
                                     <th>推奨</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td rowSpan={1}>
                                         <span className="tag tag-green">新しい推奨設定</span>
@@ -179,6 +182,7 @@ export default function AgwaSection2Page() {
                                     <td>10</td>
                                     <td><code>ALT4.ASPMX.L.GOOGLE.COM</code></td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout warning">
@@ -490,12 +494,15 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table" style={{ marginTop: '0.75rem' }}>
+                                <thead>
                                 <tr>
                                     <th>ポリシー(p=)</th>
                                     <th>意味</th>
                                     <th>認証失敗時の動作</th>
                                     <th>推奨フェーズ</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td><span className="tag tag-amber">none</span></td>
                                     <td>監視のみ</td>
@@ -514,6 +521,7 @@ export default function AgwaSection2Page() {
                                     <td>メールを完全に拒否</td>
                                     <td>Phase 3（最終目標）</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout danger">
@@ -614,11 +622,14 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>設定名</th>
                                     <th>機能</th>
                                     <th>推奨設定</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>スパムフィルタ強化</td>
                                     <td>迷惑メールの検出強度</td>
@@ -644,6 +655,7 @@ export default function AgwaSection2Page() {
                                     <td>偽サイトへのリンク検出、なりすまし検出</td>
                                     <td>まず「警告表示」から始め、誤検知確認後に「隔離」へ</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout warning">
@@ -688,11 +700,14 @@ export default function AgwaSection2Page() {
                                 コンテンツコンプライアンスルール — できること
                             </p>
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>条件</th>
                                     <th>アクション</th>
                                     <th>実例</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>件名・本文・添付ファイルに特定キーワード/正規表現を含む</td>
                                     <td>メールを拒否</td>
@@ -713,6 +728,7 @@ export default function AgwaSection2Page() {
                                     <td>ヘッダー変更・転送</td>
                                     <td>カスタムヘッダーの追加</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="bp-grid">
@@ -881,11 +897,14 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table" style={{ marginTop: '0.75rem' }}>
+                                <thead>
                                 <tr>
                                     <th>設定項目</th>
                                     <th>選択肢</th>
                                     <th>セキュリティ推奨</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>外部共有</td>
                                     <td>許可 / 禁止 / ドメイン限定</td>
@@ -906,6 +925,7 @@ export default function AgwaSection2Page() {
                                     <td>許可 / 禁止</td>
                                     <td>原則禁止（特定部門のみ許可）</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout exam">
@@ -983,11 +1003,14 @@ export default function AgwaSection2Page() {
                             </p>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>比較項目</th>
                                     <th>マイドライブ</th>
                                     <th>共有ドライブ</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>ファイルの帰属</td>
                                     <td>個人ユーザー</td>
@@ -1008,6 +1031,7 @@ export default function AgwaSection2Page() {
                                     <td>個人ファイル</td>
                                     <td>チームの共有資料・プロジェクト</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <p
@@ -1016,11 +1040,14 @@ export default function AgwaSection2Page() {
                                 共有ドライブの権限レベル（試験頻出）
                             </p>
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>役割</th>
                                     <th>できること</th>
                                     <th>推奨対象</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td><span className="tag tag-red">マネージャー</span></td>
                                     <td>メンバー管理・設定変更・全ファイル操作</td>
@@ -1052,6 +1079,7 @@ export default function AgwaSection2Page() {
                                     <td>閲覧のみ</td>
                                     <td>参照のみの他部署ユーザー</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout exam">
@@ -1098,11 +1126,14 @@ export default function AgwaSection2Page() {
                             </p>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>DLP ルールの構成要素</th>
                                     <th>選択肢</th>
                                     <th>例</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>スキャン対象</td>
                                     <td>組織全体 / 特定OU / グループ</td>
@@ -1118,6 +1149,7 @@ export default function AgwaSection2Page() {
                                     <td>共有ブロック / 警告表示 / 監査ログ記録</td>
                                     <td>「このファイルには機密情報が含まれます」と警告</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <p style={{ fontWeight: '600', fontSize: '13px', marginTop: '1rem' }}>
@@ -1128,11 +1160,14 @@ export default function AgwaSection2Page() {
                             </p>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>ラベル例</th>
                                     <th>値の例</th>
                                     <th>使用場面</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>機密レベル</td>
                                     <td>公開 / 社内限 / 機密 / 極秘</td>
@@ -1148,6 +1183,7 @@ export default function AgwaSection2Page() {
                                     <td>ドラフト / 承認待ち / 承認済み</td>
                                     <td>承認ワークフロー管理</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout info">
@@ -1225,11 +1261,14 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>設定要素</th>
                                     <th>内容</th>
                                     <th>重要ポイント</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>建物（Buildings）</td>
                                     <td>会議室が存在する拠点情報</td>
@@ -1245,6 +1284,7 @@ export default function AgwaSection2Page() {
                                     <td>実際の会議室名・備品名</td>
                                     <td>建物と機能に関連付け。キャパシティも正確に入力</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="bp-grid">
@@ -1279,11 +1319,14 @@ export default function AgwaSection2Page() {
                                 予約承認フローの種類
                             </p>
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>承認タイプ</th>
                                     <th>仕組み</th>
                                     <th>用途</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>自動承認</td>
                                     <td>予約者 → 即時確定</td>
@@ -1299,6 +1342,7 @@ export default function AgwaSection2Page() {
                                     <td>承認不要ユーザー:即時 / その他:承認フロー</td>
                                     <td>ハイブリッド運用</td>
                                 </tr>
+                                </tbody>
                             </table>
                         </div>
 
@@ -1315,11 +1359,14 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>外部共有設定レベル</th>
                                     <th>説明</th>
                                     <th>推奨</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>外部との共有なし</td>
                                     <td>組織外の誰にも予定情報を共有しない</td>
@@ -1340,6 +1387,7 @@ export default function AgwaSection2Page() {
                                     <td>公開URLでカレンダーを公開</td>
                                     <td>⚠ 原則非推奨（会議タイトルが公開されるリスク）</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout exam">
@@ -1409,11 +1457,14 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>設定名</th>
                                     <th>説明</th>
                                     <th>推奨設定</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td><strong>ノックイン（ノックをする）</strong></td>
                                     <td>組織外ユーザーが参加前にホストの承認が必要</td>
@@ -1434,6 +1485,7 @@ export default function AgwaSection2Page() {
                                     <td>ユーザーが安全でない状況を報告できる</td>
                                     <td>✅ 有効</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout exam">
@@ -1450,11 +1502,14 @@ export default function AgwaSection2Page() {
                             <div className="topic-title">録画・文字起こし・AI機能の管理</div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>機能</th>
                                     <th>説明</th>
                                     <th>注意点</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>録画の許可</td>
                                     <td>会議の録画を許可するか</td>
@@ -1470,6 +1525,7 @@ export default function AgwaSection2Page() {
                                     <td>Gemini が自動的にメモを作成</td>
                                     <td>Gemini対応エディションが必要</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="bp-grid">
@@ -1562,11 +1618,14 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>設定名</th>
                                     <th>説明</th>
                                     <th>コンプライアンス要件がある場合</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>チャット履歴</td>
                                     <td>メッセージを保存するか</td>
@@ -1587,6 +1646,7 @@ export default function AgwaSection2Page() {
                                     <td>不適切なメッセージの報告・管理</td>
                                     <td>✅ 有効化推奨</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <div className="callout exam">
@@ -1715,11 +1775,14 @@ export default function AgwaSection2Page() {
                             </div>
 
                             <table className="data-table">
+                                <thead>
                                 <tr>
                                     <th>部門</th>
                                     <th>推奨設定</th>
                                     <th>理由</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
                                     <td>一般業務部門</td>
                                     <td>✅ 有効</td>
@@ -1735,6 +1798,7 @@ export default function AgwaSection2Page() {
                                     <td>⚠ 無効 or 制限</td>
                                     <td>機密情報の保護を優先</td>
                                 </tr>
+                                </tbody>
                             </table>
 
                             <p style={{ fontWeight: '600', fontSize: '13px', marginTop: '1rem' }}>
