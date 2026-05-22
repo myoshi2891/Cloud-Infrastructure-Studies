@@ -66,4 +66,15 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
         const links = ch17?.querySelectorAll('a');
         expect(links?.length).toBe(expectedCount);
     });
+
+    it('SVG 内の rect 要素がハードコードされた色（rgba など）を fill に含まないこと', () => {
+        const rects = document.querySelectorAll('rect');
+        rects.forEach((rect) => {
+            const fill = rect.getAttribute('fill');
+            if (fill) {
+                expect(fill).not.toContain('rgba');
+                expect(fill).not.toContain('#');
+            }
+        });
+    });
 });
