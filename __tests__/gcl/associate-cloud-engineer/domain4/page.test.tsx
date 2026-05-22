@@ -15,6 +15,37 @@ describe('ACE Domain 4 Page', () => {
         expect(screen.getByText(/最小特権の原則（Principle of Least Privilege）/)).toBeDefined();
     });
 
+    it('最小特権の原則: 悪い例/良い例の比較テーブルが描画されること', () => {
+        render(<Domain4Page />);
+        const table = screen.getByRole('table', { name: /最小特権の比較/ });
+        expect(table).toBeInTheDocument();
+    });
+
+    it('職務分掌フロー図が Mermaid wrapper として描画されること', () => {
+        render(<Domain4Page />);
+        const diagram = screen.getByRole('img', { name: /職務分掌フロー/ });
+        expect(diagram).toBeInTheDocument();
+        expect(diagram).toHaveAttribute('aria-roledescription', 'diagram');
+    });
+
+    it('深層防御の層構造図が SVG として描画されること', () => {
+        render(<Domain4Page />);
+        const diagram = screen.getByRole('img', { name: /深層防御の層構造/ });
+        expect(diagram).toBeInTheDocument();
+    });
+
+    it('共有責任モデル図が SVG として描画されること', () => {
+        render(<Domain4Page />);
+        const diagram = screen.getByRole('img', { name: /Google の共有責任モデル/ });
+        expect(diagram).toBeInTheDocument();
+    });
+
+    it('IAM の 3 要素が比較テーブルとして描画されること', () => {
+        render(<Domain4Page />);
+        const table = screen.getByRole('table', { name: /IAM の 3 要素/ });
+        expect(table).toBeInTheDocument();
+    });
+
     it('renders Chapter 2 content correctly', () => {
         render(<Domain4Page />);
         expect(screen.getByText(/Chapter 2: IAM の基本アーキテクチャ/)).toBeDefined();
