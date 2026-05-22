@@ -46,6 +46,13 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
         ).toBeGreaterThanOrEqual(1);
     });
 
+    it('Domain 2 構造図が SVG（role="img"）として描画されること', () => {
+        const diagram = screen.getByRole('img', {
+            name: /Domain 2 の全体マップ/,
+        });
+        expect(diagram).toBeInTheDocument();
+    });
+
     it('Chapter17 が正しくレンダリングされ、参考リンクがすべて表示されること', () => {
         // Assert the presence of the section anchor '#ch17'
         const ch17 = document.getElementById('ch17');
