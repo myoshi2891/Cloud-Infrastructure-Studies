@@ -23,7 +23,7 @@ function SectionIntro() {
                 <div className="ttitle"><span className="tid">2.0</span>Domain 2 の構造</div>
                 <DiagramSVG viewBox="0 0 1100 470" ariaLabel="Domain 2 の全体マップ">
                     {/* Root */}
-                    <rect x="320" y="10" width="460" height="46" rx="8" fill="rgba(64,224,208,0.12)" stroke="currentColor" strokeWidth="2" />
+                    <rect x="320" y="10" width="460" height="46" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="2" />
                     <text x="550" y="38" textAnchor="middle" fontSize="15" fontWeight="bold" fill="currentColor">Domain 2: クラウドソリューションの計画・実装（≈21%）</text>
                     {/* Trunk lines */}
                     <line x1="550" y1="56" x2="550" y2="80" stroke="currentColor" strokeWidth="1.5" />
@@ -33,13 +33,13 @@ function SectionIntro() {
                     <line x1="685" y1="80" x2="685" y2="100" stroke="currentColor" strokeWidth="1.5" />
                     <line x1="955" y1="80" x2="955" y2="100" stroke="currentColor" strokeWidth="1.5" />
                     {/* Sub-domain headers */}
-                    <rect x="20" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="20" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="145" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-A. コンピューティング</text>
-                    <rect x="290" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="290" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="415" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-B. データストレージ</text>
-                    <rect x="560" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="560" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="685" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-C. ネットワーク</text>
-                    <rect x="830" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="830" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="955" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-D. IaC</text>
                     {/* Column 1: Compute */}
                     <text x="30" y="168" fontSize="12" fill="currentColor">• Compute Engine (GCE)</text>
