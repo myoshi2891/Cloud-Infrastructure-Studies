@@ -45,7 +45,7 @@ function SectionIntro() {
                 <div className="ttitle"><span className="tid">3.0</span>Domain 3 の構造</div>
                 <DiagramSVG viewBox="0 0 1100 470" ariaLabel="Domain 3 の全体マップ">
                     {/* Root */}
-                    <rect x="280" y="10" width="540" height="46" rx="8" fill="rgba(64,224,208,0.12)" stroke="currentColor" strokeWidth="2" />
+                    <rect x="280" y="10" width="540" height="46" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="2" />
                     <text x="550" y="38" textAnchor="middle" fontSize="15" fontWeight="bold" fill="currentColor">Domain 3: 正常なオペレーションの確保（≈22%）</text>
                     {/* Trunk */}
                     <line x1="550" y1="56" x2="550" y2="80" stroke="currentColor" strokeWidth="1.5" />
@@ -55,13 +55,13 @@ function SectionIntro() {
                     <line x1="685" y1="80" x2="685" y2="100" stroke="currentColor" strokeWidth="1.5" />
                     <line x1="955" y1="80" x2="955" y2="100" stroke="currentColor" strokeWidth="1.5" />
                     {/* Sub-domain headers */}
-                    <rect x="20" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="20" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="145" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-A. コンピュート管理</text>
-                    <rect x="290" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="290" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="415" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-B. ストレージ/DB 管理</text>
-                    <rect x="560" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="560" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="685" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-C. オブザーバビリティ</text>
-                    <rect x="830" y="100" width="250" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <rect x="830" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
                     <text x="955" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-D. AI 駆動運用</text>
                     {/* Column 1: Compute */}
                     <text x="30" y="168" fontSize="12" fill="currentColor">• Compute Engine ライフサイクル</text>
@@ -147,21 +147,21 @@ function Chapter1() {
                 <DiagramSVG viewBox="0 0 1000 300" ariaLabel="クラウド運用の 3 つの柱">
                     <text x="500" y="24" textAnchor="middle" fontSize="14" fontWeight="bold" fill="currentColor">クラウド運用の 3 つの柱</text>
                     {/* Pillar 1 */}
-                    <rect x="20" y="44" width="300" height="44" rx="8" fill="rgba(64,224,208,0.14)" stroke="currentColor" strokeWidth="1.8" />
+                    <rect x="20" y="44" width="300" height="44" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="1.8" />
                     <text x="170" y="63" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">① 信頼性 (Reliability)</text>
                     <text x="170" y="80" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">期待通りに動き続けること</text>
                     <text x="30" y="110" fontSize="12" fill="currentColor">• スナップショットによるバックアップ</text>
                     <text x="30" y="132" fontSize="12" fill="currentColor">• MIG の自動ヒーリング</text>
                     <text x="30" y="154" fontSize="12" fill="currentColor">• SLO による目標の定義と監視</text>
                     {/* Pillar 2 */}
-                    <rect x="350" y="44" width="300" height="44" rx="8" fill="rgba(64,224,208,0.14)" stroke="currentColor" strokeWidth="1.8" />
+                    <rect x="350" y="44" width="300" height="44" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="1.8" />
                     <text x="500" y="63" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">② 可観測性 (Observability)</text>
                     <text x="500" y="80" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">今何が起きているかを把握</text>
                     <text x="360" y="110" fontSize="12" fill="currentColor">• Cloud Monitoring でメトリクス収集</text>
                     <text x="360" y="132" fontSize="12" fill="currentColor">• Cloud Logging でログを集約・分析</text>
                     <text x="360" y="154" fontSize="12" fill="currentColor">• Cloud Trace で処理の遅延を特定</text>
                     {/* Pillar 3 */}
-                    <rect x="680" y="44" width="300" height="44" rx="8" fill="rgba(64,224,208,0.14)" stroke="currentColor" strokeWidth="1.8" />
+                    <rect x="680" y="44" width="300" height="44" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="1.8" />
                     <text x="830" y="63" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">③ 運用効率 (Operational Efficiency)</text>
                     <text x="830" y="80" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">自動検知・自動解決</text>
                     <text x="690" y="110" fontSize="12" fill="currentColor">• アラートで異常を自動通知</text>
