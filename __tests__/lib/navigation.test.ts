@@ -66,7 +66,7 @@ describe('toNavTree', () => {
         // Arrange
         const { provider: _ignored, ...examWithoutProvider } = gcpAce;
         void _ignored;
-        const exams = [examWithoutProvider as any];
+        const exams = [examWithoutProvider as unknown as Exam];
 
         // Act
         const result = toNavTree(exams);
@@ -247,7 +247,7 @@ describe('toNavTree', () => {
     });
 
     describe('エッジケースと無効なデータ', () => {
-        it('未知のプロバイダが指定された場合、出力のグループ一覧から無視されること（意図的な失敗）', () => {
+        it('未知のプロバイダが指定された場合、出力のグループ一覧から無視されること', () => {
             // Arrange
             const unknownExam = {
                 id: 'unknown-exam',
@@ -260,7 +260,7 @@ describe('toNavTree', () => {
                 domains: [],
                 badge: 'テスト',
                 icon: '❓',
-                provider: 'AZURE' as any, // 未知のプロバイダ
+                provider: 'AZURE' as unknown as Exam['provider'], // 未知のプロバイダ
             };
 
             // Act

@@ -148,7 +148,7 @@ git commit -m "docs(specs): sync all spec docs after <feature-name>"
 テストファイルのスキャン結果を同期するため、以下のダッシュボード生成スクリプトを実行します。
 
 ```bash
-node scripts/generate-coverage-dashboard.mjs
+bun scripts/generate-coverage-dashboard.mjs
 ```
 
 実行ログを確認し、対象ソースコード数、カバー済みソースコード数、テストファイル数が正しく出力されていることを確認します。

@@ -165,7 +165,7 @@ describe('lib/recentPages', () => {
     });
 
     describe('isRecentEntry validation logic', () => {
-        it('should filter out entries where ts is not a number (intentionally failing)', () => {
+        it('ts が数値でないエントリを除外すること', () => {
             // Arrange
             window.localStorage.setItem(
                 'cis:recent-pages',

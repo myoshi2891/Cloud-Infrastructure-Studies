@@ -49,6 +49,7 @@ export function CollapsibleSection({
     return (
         <div className={styles['section-card']} id={id} style={wrapperStyle}>
             <button
+                type="button"
                 className={styles['section-header']}
                 aria-expanded={open}
                 aria-controls={bodyId}
