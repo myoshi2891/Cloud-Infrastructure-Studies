@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 
 describe('MermaidDiagram', () => {
@@ -47,23 +47,19 @@ describe('MermaidDiagram', () => {
             return { svg: '<svg>Mocked SVG</svg>' };
         });
 
-        const { rerender, container } = render(
+        const { rerender } = render(
             <MermaidDiagram chart={sampleChart} ariaLabel="サンプルフロー図" />
         );
 
-        await new Promise((resolve) => setTimeout(resolve, 50));
-
-        const errorEl = container.querySelector('[data-testid="mermaid-error"]');
-        expect(errorEl).not.toBeNull();
-        expect(errorEl?.textContent).toContain('Mock render error');
+        const errorEl = await screen.findByTestId('mermaid-error');
+        expect(errorEl.textContent).toContain('Mock render error');
 
         shouldFail = false;
         rerender(<MermaidDiagram chart="flowchart LR\n B-->C" ariaLabel="サンプルフロー図" />);
 
-        await new Promise((resolve) => setTimeout(resolve, 50));
-
-        const errorElAfter = container.querySelector('[data-testid="mermaid-error"]');
-        expect(errorElAfter).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByTestId('mermaid-error')).toBeNull();
+        });
 
         window.SVGElement.prototype.getBBox = originalGetBBox;
         vi.restoreAllMocks();

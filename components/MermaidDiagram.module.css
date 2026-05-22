@@ -1,6 +1,6 @@
 .mermaidWrapper {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--cdl-border, rgba(255, 255, 255, 0.1));
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 1.5rem;
     margin: 1.5rem 0;

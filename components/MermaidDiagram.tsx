@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 import styles from './MermaidDiagram.module.css';
 
 export interface MermaidDiagramProps {
@@ -50,6 +51,8 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
         if (!canRenderInBrowser()) return;
         let cancelled = false;
         (async () => {
+            setError(null);
+            setRendered(false);
             try {
                 const mermaid = (await import('mermaid')).default;
                 if (!initialized) {
@@ -87,7 +90,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
 
     return (
         <div
-            className={[styles.mermaidWrapper, className].filter(Boolean).join(' ')}
+            className={cn(styles.mermaidWrapper, className)}
             role="img"
             aria-label={ariaLabel}
             aria-roledescription="diagram"
