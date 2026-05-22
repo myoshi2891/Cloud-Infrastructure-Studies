@@ -35,17 +35,22 @@ describe('MermaidDiagram', () => {
     });
 
     it('レンダリング試行時に以前のエラーがクリアされること', async () => {
-        const originalGetBBox = window.SVGElement.prototype.getBBox;
-        window.SVGElement.prototype.getBBox = vi.fn();
+        const svgProto = window.SVGElement.prototype as any;
+        const originalGetBBox = svgProto.getBBox;
+        svgProto.getBBox = vi.fn();
 
         const mermaid = await import('mermaid');
         let shouldFail = true;
-        vi.spyOn(mermaid.default, 'render').mockImplementation(async () => {
+        vi.spyOn(mermaid.default, 'render').mockImplementation((async () => {
             if (shouldFail) {
                 throw new Error('Mock render error');
             }
-            return { svg: '<svg>Mocked SVG</svg>' };
-        });
+            return {
+                svg: '<svg>Mocked SVG</svg>',
+                diagramType: 'flowchart',
+                bindFunctions: () => {},
+            };
+        }) as any);
 
         const { rerender } = render(
             <MermaidDiagram chart={sampleChart} ariaLabel="サンプルフロー図" />
@@ -61,7 +66,7 @@ describe('MermaidDiagram', () => {
             expect(screen.queryByTestId('mermaid-error')).toBeNull();
         });
 
-        window.SVGElement.prototype.getBBox = originalGetBBox;
+        svgProto.getBBox = originalGetBBox;
         vi.restoreAllMocks();
     });
 });
