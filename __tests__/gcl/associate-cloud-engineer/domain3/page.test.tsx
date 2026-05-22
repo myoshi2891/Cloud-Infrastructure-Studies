@@ -98,4 +98,15 @@ describe('Domain 3: Ensuring Successful Operation of a Cloud Solution ページ'
             expect(link).toHaveAttribute('rel', 'noopener noreferrer');
         });
     });
+
+    it('SVG 内の rect 要素がハードコードされた色（rgba など）を fill に含まないこと', () => {
+        const rects = document.querySelectorAll('rect');
+        rects.forEach((rect) => {
+            const fill = rect.getAttribute('fill');
+            if (fill) {
+                expect(fill).not.toContain('rgba');
+                expect(fill).not.toContain('#');
+            }
+        });
+    });
 });
