@@ -55,6 +55,28 @@ describe('Domain 3: Ensuring Successful Operation of a Cloud Solution ページ'
         ).toBeGreaterThanOrEqual(1);
     });
 
+    it('Domain 3 構造図が SVG（role="img"）として描画されること', () => {
+        const diagram = screen.getByRole('img', {
+            name: /Domain 3 の全体マップ/,
+        });
+        expect(diagram).toBeInTheDocument();
+    });
+
+    it('クラウド運用の 3 つの柱が SVG として描画されること', () => {
+        const diagram = screen.getByRole('img', {
+            name: /クラウド運用の 3 つの柱/,
+        });
+        expect(diagram).toBeInTheDocument();
+    });
+
+    it('VM ライフサイクル状態遷移図が Mermaid wrapper として描画されること', () => {
+        const diagram = screen.getByRole('img', {
+            name: /VM のライフサイクル/,
+        });
+        expect(diagram).toBeInTheDocument();
+        expect(diagram).toHaveAttribute('aria-roledescription', 'diagram');
+    });
+
     it('ベストプラクティスセクションが存在すること', () => {
         expect(
             screen.getAllByText(/ベストプラクティス/).length
