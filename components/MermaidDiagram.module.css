@@ -1,0 +1,20 @@
+.mermaidWrapper {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--cdl-border, rgba(255, 255, 255, 0.1));
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+}
+
+.mermaidTarget {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.mermaidTarget :global(svg) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
