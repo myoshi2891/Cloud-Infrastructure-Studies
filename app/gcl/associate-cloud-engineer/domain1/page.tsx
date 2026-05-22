@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { DiagramSVG } from '@/components/DiagramSVG';
 import '../ace.css';
 
 export const metadata: Metadata = {
@@ -22,24 +23,38 @@ function SectionIntro() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">0.1</span>Domain 1 の全体マップ</div>
-                <pre className="codeblock">{`Domain 1: クラウドソリューション環境の設定
-│
-├── 1. クラウドプロジェクトとアカウントの設定
-│   ├── 1-1. Google Cloud リソース階層
-│   ├── 1-2. Cloud Identity / Google Workspace
-│   ├── 1-3. プロジェクトの作成と管理
-│   ├── 1-4. 組織ポリシー（Organization Policy）
-│   └── 1-5. gcloud CLI の設定と管理
-│
-├── 2. 請求構成とコスト管理
-│   ├── 2-1. 請求先アカウント（Billing Account）
-│   ├── 2-2. 予算とアラートの設定
-│   ├── 2-3. コストの可視化と分析
-│   └── 2-4. 自動コスト制御アーキテクチャ
-│
-└── 3. Cloud API の管理
-    ├── 3-1. API の有効化と管理
-    └── 3-2. API キーとサービスアカウント認証`}</pre>
+                <DiagramSVG viewBox="0 0 900 290" ariaLabel="Domain 1 の全体マップ">
+                    {/* Root */}
+                    <rect x="270" y="10" width="360" height="46" rx="8" fill="rgba(64,224,208,0.12)" stroke="currentColor" strokeWidth="2" />
+                    <text x="450" y="38" textAnchor="middle" fontSize="15" fontWeight="bold" fill="currentColor">Domain 1: クラウドソリューション環境の設定</text>
+                    {/* Trunk lines */}
+                    <line x1="450" y1="56" x2="450" y2="78" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="160" y1="78" x2="740" y2="78" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="160" y1="78" x2="160" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="450" y1="78" x2="450" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="740" y1="78" x2="740" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    {/* Sub-domain boxes */}
+                    <rect x="20" y="100" width="280" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="160" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">1. プロジェクト/アカウント設定</text>
+                    <rect x="310" y="100" width="280" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="450" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2. 請求構成とコスト管理</text>
+                    <rect x="600" y="100" width="280" height="38" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="740" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3. Cloud API の管理</text>
+                    {/* Items: column 1 */}
+                    <text x="30" y="168" fontSize="12" fill="currentColor">• 1-1 Google Cloud リソース階層</text>
+                    <text x="30" y="190" fontSize="12" fill="currentColor">• 1-2 Cloud Identity / Google Workspace</text>
+                    <text x="30" y="212" fontSize="12" fill="currentColor">• 1-3 プロジェクトの作成と管理</text>
+                    <text x="30" y="234" fontSize="12" fill="currentColor">• 1-4 組織ポリシー</text>
+                    <text x="30" y="256" fontSize="12" fill="currentColor">• 1-5 gcloud CLI の設定と管理</text>
+                    {/* Items: column 2 */}
+                    <text x="320" y="168" fontSize="12" fill="currentColor">• 2-1 請求先アカウント (Billing Account)</text>
+                    <text x="320" y="190" fontSize="12" fill="currentColor">• 2-2 予算とアラートの設定</text>
+                    <text x="320" y="212" fontSize="12" fill="currentColor">• 2-3 コストの可視化と分析</text>
+                    <text x="320" y="234" fontSize="12" fill="currentColor">• 2-4 自動コスト制御アーキテクチャ</text>
+                    {/* Items: column 3 */}
+                    <text x="610" y="168" fontSize="12" fill="currentColor">• 3-1 API の有効化と管理</text>
+                    <text x="610" y="190" fontSize="12" fill="currentColor">• 3-2 API キーとサービスアカウント認証</text>
+                </DiagramSVG>
                 <p style={{ fontSize: '14px', marginBottom: '0' }}>
                     Domain 1 は試験全体の約 <strong>23%</strong>（Standard Exam 50〜60問中 約12〜14問）を占める最重要基盤領域。
                     ここで設計する階層・ポリシー・請求構成が後続のすべての運用・セキュリティ・コスト管理の土台となる。
@@ -87,13 +102,62 @@ function Chapter1() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">1.1</span>リソース階層とは？ — 会社組織図との対応</div>
-                <pre className="codeblock">{`【現実の会社組織】              【Google Cloud の階層】
-  株式会社 Example          →   Organization（組織）
-    ├── 開発部門             →     ├── Folder（フォルダ）
-    │    ├── バックエンドチーム →  │    ├── Project（プロジェクト）
-    │    └── フロントエンドチーム→ │    └── Project（プロジェクト）
-    └── 営業部門             →     └── Folder（フォルダ）
-         └── ...             →          └── Project（プロジェクト）`}</pre>
+                <DiagramSVG viewBox="0 0 800 260" ariaLabel="会社組織図と Google Cloud 階層の対応">
+                    <defs>
+                        <marker id="d1-cmp-arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L7,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                    {/* Column headers */}
+                    <text x="180" y="22" textAnchor="middle" fontSize="13" fontWeight="bold" fill="currentColor">【現実の会社組織】</text>
+                    <text x="620" y="22" textAnchor="middle" fontSize="13" fontWeight="bold" fill="currentColor">【Google Cloud の階層】</text>
+                    {/* Level 1 */}
+                    <rect x="40" y="40" width="280" height="36" rx="6" fill="rgba(64,224,208,0.12)" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="180" y="63" textAnchor="middle" fontSize="13" fill="currentColor">株式会社 Example</text>
+                    <rect x="480" y="40" width="280" height="36" rx="6" fill="rgba(64,224,208,0.12)" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="620" y="63" textAnchor="middle" fontSize="13" fill="currentColor">Organization（組織）</text>
+                    <line x1="324" y1="58" x2="475" y2="58" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#d1-cmp-arrow)" />
+                    {/* Connectors to level 2 */}
+                    <line x1="180" y1="76" x2="180" y2="94" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="100" y1="94" x2="260" y2="94" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="100" y1="94" x2="100" y2="112" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="260" y1="94" x2="260" y2="112" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="620" y1="76" x2="620" y2="94" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="540" y1="94" x2="700" y2="94" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="540" y1="94" x2="540" y2="112" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="700" y1="94" x2="700" y2="112" stroke="currentColor" strokeWidth="1.5" />
+                    {/* Level 2: dept / folder */}
+                    <rect x="20" y="112" width="160" height="32" rx="5" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="100" y="132" textAnchor="middle" fontSize="12" fill="currentColor">開発部門</text>
+                    <rect x="180" y="112" width="160" height="32" rx="5" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="260" y="132" textAnchor="middle" fontSize="12" fill="currentColor">営業部門</text>
+                    <rect x="460" y="112" width="160" height="32" rx="5" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="540" y="132" textAnchor="middle" fontSize="12" fill="currentColor">Folder（開発）</text>
+                    <rect x="620" y="112" width="160" height="32" rx="5" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="700" y="132" textAnchor="middle" fontSize="12" fill="currentColor">Folder（営業）</text>
+                    <line x1="340" y1="128" x2="455" y2="128" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#d1-cmp-arrow)" />
+                    {/* Connectors from 開発部門 to teams */}
+                    <line x1="100" y1="144" x2="100" y2="162" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="40" y1="162" x2="160" y2="162" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="40" y1="162" x2="40" y2="180" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="160" y1="162" x2="160" y2="180" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="540" y1="144" x2="540" y2="162" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="480" y1="162" x2="600" y2="162" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="480" y1="162" x2="480" y2="180" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="600" y1="162" x2="600" y2="180" stroke="currentColor" strokeWidth="1.2" />
+                    {/* Level 3 */}
+                    <rect x="0" y="180" width="80" height="28" rx="4" fill="rgba(64,224,208,0.05)" stroke="currentColor" strokeWidth="1" />
+                    <text x="40" y="198" textAnchor="middle" fontSize="11" fill="currentColor">backend</text>
+                    <rect x="120" y="180" width="80" height="28" rx="4" fill="rgba(64,224,208,0.05)" stroke="currentColor" strokeWidth="1" />
+                    <text x="160" y="198" textAnchor="middle" fontSize="11" fill="currentColor">frontend</text>
+                    <rect x="440" y="180" width="80" height="28" rx="4" fill="rgba(64,224,208,0.05)" stroke="currentColor" strokeWidth="1" />
+                    <text x="480" y="198" textAnchor="middle" fontSize="11" fill="currentColor">Project</text>
+                    <rect x="560" y="180" width="80" height="28" rx="4" fill="rgba(64,224,208,0.05)" stroke="currentColor" strokeWidth="1" />
+                    <text x="600" y="198" textAnchor="middle" fontSize="11" fill="currentColor">Project</text>
+                    <line x1="200" y1="194" x2="435" y2="194" stroke="currentColor" strokeWidth="1.2" markerEnd="url(#d1-cmp-arrow)" />
+                    {/* Legend */}
+                    <text x="400" y="240" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">部門 = Folder、チーム = Project — 階層が一対一に対応する</text>
+                </DiagramSVG>
             </div>
 
             <div className="tcard">
