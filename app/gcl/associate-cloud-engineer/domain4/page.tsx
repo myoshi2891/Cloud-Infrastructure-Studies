@@ -41,11 +41,11 @@ function Chapter1() {
                 <div className="ttitle"><span className="tid">1.1</span>Google Cloud セキュリティの 3 つの基本原則</div>
                 
                 <h3 className="stitle">原則①: 最小特権の原則（Principle of Least Privilege）</h3>
-                <p style={{ fontSize: '14px', marginBottom: '12px' }}>
+                <p className="text-sm mb-3">
                     必要な権限だけを、必要な人・サービスにだけ、必要な期間だけ付与する。
                 </p>
                 <table className="ctable">
-                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>最小特権の比較: 悪い例（過剰権限）と 良い例（最小権限）</caption>
+                    <caption className="caption-top text-left font-semibold py-2">最小特権の比較: 悪い例（過剰権限）と 良い例（最小権限）</caption>
                     <thead>
                         <tr>
                             <th scope="col">観点</th>
@@ -78,7 +78,7 @@ function Chapter1() {
                 </table>
 
                 <h3 className="stitle">原則②: 職務分掌（Separation of Duties）</h3>
-                <p style={{ fontSize: '14px', marginBottom: '8px' }}>
+                <p className="text-sm mb-2">
                     同一人物がすべての操作を単独で実行できないようにし、コードを書いた人がそのまま本番デプロイできない仕組みを作る。
                 </p>
                 <MermaidDiagram
@@ -91,7 +91,7 @@ function Chapter1() {
                 />
 
                 <h3 className="stitle">原則③: 深層防御（Defense in Depth）</h3>
-                <p style={{ fontSize: '14px', marginBottom: '8px' }}>
+                <p className="text-sm mb-2">
                     複数のセキュリティ層を重ねて、1 つの層が破られても他の層で防御する。
                 </p>
                 <DiagramSVG viewBox="0 0 760 380" ariaLabel="深層防御の層構造 (Defense in Depth)">
@@ -181,9 +181,9 @@ function Chapter2() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">2.1</span>IAM の 3 つの要素</div>
-                <p>IAM（Identity and Access Management）は、Google Cloud のすべてのアクセス制御の基盤です。</p>
+                <p>IAM（Identity and Access Management）は, Google Cloud のすべてのアクセス制御の基盤です。</p>
                 <table className="ctable">
-                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>IAM の 3 要素</caption>
+                    <caption className="caption-top text-left font-semibold py-2">IAM の 3 要素</caption>
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -213,7 +213,7 @@ function Chapter2() {
                         </tr>
                     </tbody>
                 </table>
-                <p style={{ fontSize: '14px', marginTop: '12px', marginBottom: '0' }}>
+                <p className="text-sm mt-3 mb-0">
                     <strong>IAM ポリシー = 主体 + ロール + リソース の組み合わせ</strong>
                 </p>
             </div>
