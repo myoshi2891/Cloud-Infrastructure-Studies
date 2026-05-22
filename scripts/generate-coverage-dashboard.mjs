@@ -23,10 +23,20 @@ import { renderDashboardHtml } from './lib/dashboard-html.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
+/**
+ * Read a file as UTF-8 and return its contents, or an empty string if reading fails.
+ * @param {string} file - Path to the file to read.
+ * @returns {string} File contents, or an empty string if the file cannot be read.
+ */
 function readSafe(file) {
     try { return fs.readFileSync(file, 'utf8'); } catch { return ''; }
 }
 
+/**
+ * Determines whether a given file path should be considered a source candidate for coverage scanning.
+ * @param {string} filePath - File path to evaluate.
+ * @returns {boolean} `true` if the path does not match test/spec/type-definition/e2e exclusion patterns, `false` otherwise.
+ */
 function isSourceCandidate(filePath) {
     if (filePath.endsWith('.test.ts') || filePath.endsWith('.test.tsx')) return false;
     if (filePath.endsWith('.spec.ts') || filePath.endsWith('.spec.tsx')) return false;
@@ -36,6 +46,18 @@ function isSourceCandidate(filePath) {
     return true;
 }
 
+/**
+ * Build the coverage dashboard data structure by scanning sources and tests, resolving test-to-source mappings, and aggregating domain/category coverage.
+ *
+ * @returns {Object} An object containing the dashboard data:
+ *  - `generatedAt` (string): ISO timestamp of generation.
+ *  - `runner` (Object): labels for unit and e2e test runners.
+ *  - `totals` (Object): counts `{ sources, covered, testFiles }`.
+ *  - `domains` (Array): domain summaries `{ id, label, sources, covered }`.
+ *  - `cells` (Array): per-domain/category cells including classification fields and `tests` list.
+ *  - `actions` (Array): generated action metadata for the dashboard.
+ *  - `uncoveredSources` (Array): sorted list of source paths with no mapped tests.
+ */
 function build() {
     const sourceFiles = listSourceFiles(ROOT).filter(isSourceCandidate);
     const sourceSet = new Set(sourceFiles);
@@ -127,6 +149,13 @@ function build() {
     };
 }
 
+/**
+ * Generate the coverage dashboard HTML and write it to docs/coverage-dashboard.html.
+ *
+ * Builds dashboard data, renders it to HTML, writes the output file under the project's
+ * docs directory, and logs a concise summary including output size, source totals,
+ * covered count/percentage, test file count, and action count.
+ */
 function main() {
     const data = build();
     const html = renderDashboardHtml(data);

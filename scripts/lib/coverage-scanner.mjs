@@ -4,6 +4,11 @@ import path from 'node:path';
 const IMPORT_RE = /from\s+['"](@\/[^'"]+)['"]/g;
 const GOTO_RE = /page\.goto\(\s*(['"])([^'"]+)\1\s*\)/g;
 
+/**
+ * Extract unique alias import paths from a source file.
+ * @param {string} source - The file contents to scan for aliased imports.
+ * @returns {string[]} Unique alias import paths found in the source, deduplicated.
+ */
 export function extractImports(source) {
     const seen = new Set();
     for (const match of source.matchAll(IMPORT_RE)) {
@@ -12,6 +17,11 @@ export function extractImports(source) {
     return [...seen];
 }
 
+/**
+ * Extracts unique route strings used in `page.goto(...)` calls from the given source text.
+ * @param {string} source - Source code to scan for `page.goto` call arguments.
+ * @returns {string[]} Unique route strings captured from `page.goto(...)` occurrences.
+ */
 export function extractGotoPaths(source) {
     const seen = new Set();
     for (const match of source.matchAll(GOTO_RE)) {
@@ -22,6 +32,12 @@ export function extractGotoPaths(source) {
 
 const RESOLVE_EXTENSIONS = ['.ts', '.tsx', '.mjs', '.js', '.jsx'];
 
+/**
+ * Resolve a '@/...' module alias to a concrete project file path if present in the provided fileset.
+ * @param {string} alias - Module alias beginning with `'@/'` (e.g., `'@/components/Button'`).
+ * @param {Set<string>} fileset - Set of project-relative file paths (forward-slash separated) to check against.
+ * @returns {string|null} The matching file path from `fileset` including extension (or `/index` or `/page` variant), or `null` if none found.
+ */
 export function resolveAliasPath(alias, fileset) {
     if (!alias.startsWith('@/')) return null;
     const rel = alias.slice(2);
@@ -40,6 +56,12 @@ export function resolveAliasPath(alias, fileset) {
     return null;
 }
 
+/**
+ * Classify a test file path into one of the project's test categories.
+ *
+ * @param {string} testPath - File path relative to the repository root (may use either '/' or '\' separators).
+ * @returns {'E2E'|'Smoke'|'Integration'|'Unit'} The test category: `'E2E'` for files under `e2e/`, `'Smoke'` for files named `smoke.test.*` or `smoke.spec.*`, `'Integration'` for files under `__tests__/lib/`, and `'Unit'` for all others.
+ */
 export function classifyTestCategory(testPath) {
     const normalized = testPath.replace(/\\/g, '/');
     if (normalized.startsWith('e2e/')) return 'E2E';
@@ -48,6 +70,14 @@ export function classifyTestCategory(testPath) {
     return 'Unit';
 }
 
+/**
+ * Recursively collects file paths under a directory that satisfy a predicate.
+ * Hidden entries (names starting with `.`) and `node_modules` directories are skipped.
+ * @param {string} dir - The directory path to traverse.
+ * @param {(filePath: string) => boolean} predicate - Test function invoked with each file's absolute path; files for which this returns `true` are included.
+ * @param {string[]} [out=[]] - Optional accumulator array to append matching file paths to.
+ * @returns {string[]} The accumulator array containing matching absolute file paths.
+ */
 function walk(dir, predicate, out = []) {
     if (!fs.existsSync(dir)) return out;
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -62,6 +92,13 @@ function walk(dir, predicate, out = []) {
     return out;
 }
 
+/**
+ * Collects source file paths from the app, components, and lib directories and returns them relative to the provided root.
+ *
+ * Scans those folders recursively for files with extensions .ts, .tsx, .mjs, .js, .jsx, normalizes paths to use forward slashes, deduplicates, and sorts the result.
+ * @param {string} rootDir - The project root directory to scan.
+ * @returns {string[]} Sorted array of unique source file paths relative to `rootDir`, using forward slashes.
+ */
 export function listSourceFiles(rootDir) {
     const result = new Set();
     const roots = ['app', 'components', 'lib'];
@@ -74,6 +111,13 @@ export function listSourceFiles(rootDir) {
     return [...result].sort();
 }
 
+/**
+ * Collects test files under __tests__ and e2e, returning their paths relative to rootDir.
+ *
+ * Finds files matching `.test.(ts|tsx|js|jsx)` under `__tests__` (excluding `__tests__/scripts/` and `__tests__/docs/`) and `.spec.(ts|tsx|js|jsx)` under `e2e`, and returns a sorted array of their relative paths.
+ * @param {string} rootDir - Project root directory to scan.
+ * @return {string[]} Sorted array of test file paths relative to `rootDir`.
+ */
 export function listTestFiles(rootDir) {
     const result = [];
     const unitRoot = path.join(rootDir, '__tests__');
@@ -89,6 +133,12 @@ export function listTestFiles(rootDir) {
     return result.sort();
 }
 
+/**
+ * Map a route path to its corresponding app page source file if present.
+ * @param {string} routePath - Route path; leading and trailing slashes are ignored.
+ * @param {Set<string>} fileset - Set of project file paths to resolve against.
+ * @returns {string|null} The matching source file path (e.g. `app/.../page.tsx` or `app/.../page.ts`) if found, `null` otherwise.
+ */
 export function resolveGotoPathToSource(routePath, fileset) {
     const trimmed = routePath.replace(/^\/+/, '').replace(/\/+$/, '');
     const candidates = trimmed

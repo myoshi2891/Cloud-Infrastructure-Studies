@@ -12,6 +12,11 @@ const PARA_SEP = String.fromCharCode(0x2029);
 const LINE_SEP_RE = new RegExp(LINE_SEP, 'g');
 const PARA_SEP_RE = new RegExp(PARA_SEP, 'g');
 
+/**
+ * Escape HTML-sensitive characters in a value for safe insertion into HTML.
+ * @param {*} value - The value to convert to a string and escape.
+ * @returns {string} The input converted to a string with `&`, `<`, `>`, `"` and `'` replaced by their HTML entities.
+ */
 export function escapeHtml(value) {
     return String(value)
         .replace(/&/g, '&amp;')
@@ -21,6 +26,11 @@ export function escapeHtml(value) {
         .replace(/'/g, '&#39;');
 }
 
+/**
+ * Serialize a value to JSON and escape characters that can break embedding in HTML or script contexts.
+ * @param {*} value - The value to serialize.
+ * @returns {string} The JSON string with `<`, `>`, `&`, U+2028, and U+2029 replaced by their Unicode escape sequences.
+ */
 function safeJson(value) {
     return JSON.stringify(value)
         .replace(/</g, '\\u003c')
@@ -30,6 +40,21 @@ function safeJson(value) {
         .replace(PARA_SEP_RE, '\\u2029');
 }
 
+/**
+ * Build a table row representing a domain and its category coverage cells.
+ *
+ * Produces a `<tr>` whose header cell shows the domain label and covered/sources with percentage,
+ * and whose `<td>` cells (one per category from `CATEGORIES`) contain status, ratio text, and test count.
+ *
+ * @param {Object} domain - Domain summary used for the row.
+ * @param {string} domain.id - Identifier used in `data-domain` attributes and to lookup cells.
+ * @param {string} domain.label - Human-readable domain label shown in the row header.
+ * @param {number} domain.covered - Number of covered sources for the domain.
+ * @param {number} domain.sources - Total number of sources for the domain.
+ * @param {Map<string,Object>} cellsByDomainCat - Map keyed by `${domain.id}::${category}` to cell objects.
+ *   Cell objects may include `status` (string), `testCount` (number), and `tests` (array of strings).
+ * @returns {string} HTML string for the completed table row (`<tr>...</tr>`).
+ */
 function renderMatrixRow(domain, cellsByDomainCat) {
     const tds = CATEGORIES.map((category) => {
         const cell = cellsByDomainCat.get(`${domain.id}::${category}`);
@@ -45,6 +70,21 @@ function renderMatrixRow(domain, cellsByDomainCat) {
     return `<tr data-domain="${escapeHtml(domain.id)}"><th scope="row"><span class="row-label">${escapeHtml(domain.label)}</span><span class="row-meta">${domain.covered}/${domain.sources} (${coverage}%)</span></th>${tds}</tr>`;
 }
 
+/**
+ * Render an HTML fragment representing prioritized next actions for the dashboard.
+ *
+ * Produces an ordered list of action cards when `actions` contains items; otherwise returns
+ * a muted paragraph indicating there are no unsupported actions.
+ *
+ * @param {Array<Object>} actions - Array of action objects. Each object may include:
+ *   - {string} priority - Priority label (e.g., "High", "Medium", "Low").
+ *   - {string} area - Short title or area affected by the action.
+ *   - {string} detail - Description of the action.
+ *   - {string} tool - Recommended tool for the action.
+ *   - {string} cost - Estimated implementation cost.
+ *   - {string} effect - Expected benefit or effect.
+ * @returns {string} HTML string containing either an `<ol class="actions">` with action `<li>` items or a `<p class="muted">` message when no actions are provided.
+ */
 function renderActions(actions) {
     if (!actions || actions.length === 0) {
         return '<p class="muted">未対応アクションはありません。</p>';
@@ -66,12 +106,24 @@ function renderActions(actions) {
     return `<ol class="actions">${items}</ol>`;
 }
 
+/**
+ * Render an HTML details block listing uncovered source paths.
+ *
+ * @param {string[]} uncovered - Array of source strings; each entry is HTML-escaped before insertion.
+ * @returns {string} An HTML string containing a `<details>` element with a summary and an unordered list of the uncovered sources, or an empty string when `uncovered` is falsy or empty.
+ */
 function renderUncovered(uncovered) {
     if (!uncovered || uncovered.length === 0) return '';
     const items = uncovered.map((p) => `<li><code>${escapeHtml(p)}</code></li>`).join('');
     return `<details class="uncovered"><summary>未カバー ソース一覧 (${uncovered.length})</summary><ul>${items}</ul></details>`;
 }
 
+/**
+ * Render HTML for the filters UI allowing selection of domains and status values.
+ *
+ * @param {Array<{id: string, label: string}>} domains - Array of domain descriptors; each object must have `id` (used for the checkbox `data-filter-domain` value) and `label` (display text).
+ * @returns {string} An HTML string containing a <details> block with checkboxes for each domain and for the three statuses (`ok`, `warn`, `missing`).
+ */
 function renderFilters(domains) {
     const domainBoxes = domains.map((d) => `
         <label><input type="checkbox" data-filter-domain="${escapeHtml(d.id)}" checked> ${escapeHtml(d.label)}</label>
@@ -94,6 +146,24 @@ function renderFilters(domains) {
     `;
 }
 
+/**
+ * Render a complete static HTML coverage dashboard from the supplied data.
+ *
+ * @param {Object} data - Dashboard payload.
+ * @param {string} data.generatedAt - ISO timestamp when the report was generated.
+ * @param {Object} data.runner - Runner metadata.
+ * @param {string} data.runner.unit - Unit runner identifier.
+ * @param {string} data.runner.e2e - E2E runner identifier.
+ * @param {Object} data.totals - Aggregated totals.
+ * @param {number} data.totals.sources - Total number of source files.
+ * @param {number} data.totals.covered - Number of covered source files.
+ * @param {number} data.totals.testFiles - Number of test files.
+ * @param {Array<Object>} data.domains - Array of domain descriptors used to render matrix rows.
+ * @param {Array<Object>} data.cells - Array of cell objects describing domain×category coverage.
+ * @param {Array<Object>} [data.actions] - Optional list of recommended next actions.
+ * @param {Array<string>} [data.uncoveredSources] - Optional list of uncovered source file paths.
+ * @returns {string} The rendered full HTML document as a string.
+ */
 export function renderDashboardHtml(data) {
     const cellsByDomainCat = new Map();
     for (const c of data.cells) cellsByDomainCat.set(`${c.domain}::${c.category}`, c);
