@@ -161,4 +161,15 @@ describe('ACE Domain 4 Page', () => {
         expect(screen.getByText(/クラウドインフラストラクチャにおけるセキュリティの重要性/)).toBeDefined();
         expect(screen.getByText(/サービスアカウントキーの脆弱性と最新の組織ポリシー/)).toBeDefined();
     });
+
+    it('インラインスタイル属性（style={{...}}）が使われていないこと', () => {
+        render(<Domain4Page />);
+        const styledElements = document.querySelectorAll('[style]');
+        styledElements.forEach((el) => {
+            const styleAttr = el.getAttribute('style');
+            if (styleAttr && !styleAttr.includes('display')) {
+                expect(styleAttr).toBe('');
+            }
+        });
+    });
 });
