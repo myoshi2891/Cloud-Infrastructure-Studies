@@ -20,9 +20,14 @@ bun run lint         # ESLint
 bun run test         # Vitest（ユニット・コンポーネント）
 bun run test:watch   # Vitest ウォッチモード（単一ファイル: vitest run __tests__/foo.test.tsx）
 bun run test:e2e     # Playwright E2E（dev server を自動起動）
+
+# カバレッジ可視化
+bun run dashboard    # 静的スキャンで docs/coverage-dashboard.html を再生成
 ```
 
 初回E2Eテスト前: `bunx playwright install`
+
+カバレッジダッシュボードは `__tests__/` と `e2e/` の静的解析（`import '@/...'` と `page.goto('/...')` の抽出）で生成される単一 HTML。`@vitest/coverage-v8` 等のランタイム計測ではないため、テスト追加時は `bun run dashboard` を再実行する。
 
 ```bash
 # Docker（Makefile 経由）
@@ -130,6 +135,9 @@ app/
       section1/
         page.tsx                    # Section 1: アカウント・ドメイン・ディレクトリ管理
         page.css                    # ページ固有スタイル
+      section2/
+        page.tsx                    # Section 2: コアサービス管理
+        page.css                    # ページ固有スタイル
     professional-cloud-network-engineer/
       page.tsx                      # PCNE 試験対策ページ（概要・ドメイン別解説）
       components/                   # セクションコンポーネント（Section1-6 + Summary）
@@ -176,6 +184,13 @@ Aws/                                # AWS資料アーカイブ
 
 - **Vitest:** `__tests__/**/*.test.{ts,tsx}`、jsdom環境、`@` エイリアスが `./` に解決される
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
+
+**🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
+全てのコード実装において、`.claude/rules/TDD_COMMIT_WORKFLOW.md` に定義されたルールを厳守すること。
+1. プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
+2. テストをPassさせる実装を行いコミットする。
+3. リファクタリング/統合を行いコミットする。
+※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
 
 ## 制約事項
 

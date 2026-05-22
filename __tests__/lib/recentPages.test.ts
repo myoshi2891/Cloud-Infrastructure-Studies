@@ -163,4 +163,23 @@ describe('lib/recentPages', () => {
             }
         });
     });
+
+    describe('isRecentEntry validation logic', () => {
+        it('ts が数値でないエントリを除外すること', () => {
+            // Arrange
+            window.localStorage.setItem(
+                'cis:recent-pages',
+                JSON.stringify([
+                    { href: '/ok', label: 'OK', ts: 123 },
+                    { href: '/invalid-ts', label: 'Invalid TS', ts: '12345' }, // ts is a string
+                ]),
+            );
+
+            // Act
+            const result = getRecent();
+
+            // Assert
+            expect(result).toEqual<RecentEntry[]>([{ href: '/ok', label: 'OK', ts: 123 }]);
+        });
+    });
 });

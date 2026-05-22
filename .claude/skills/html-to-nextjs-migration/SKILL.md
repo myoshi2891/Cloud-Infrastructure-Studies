@@ -21,6 +21,13 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 ## Instructions
 
+**🚨 MANDATORY WORKFLOW RULE (TDD & Step-by-step Commit) 🚨**
+You MUST strictly follow `.claude/rules/TDD_COMMIT_WORKFLOW.md` for all migrations.
+1. Write failing Vitest tests first and commit (`test: ...`).
+2. Implement the page/CSS and verify tests pass, then commit (`feat: ...`).
+3. Integrate into routing/Header and commit (`refactor/docs: ...`).
+Never combine these steps into a single large commit.
+
 ### Phase 1: Analysis — Audit the Source HTML
 
 Before writing any code, read the source HTML and extract:

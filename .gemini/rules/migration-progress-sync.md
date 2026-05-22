@@ -8,10 +8,10 @@
 
 ## 現在の作業状況
 
-- **HEAD**: c3b8c2e（dev ブランチ）
-- **テスト数**: 331 件パス（Vitest）/ E2E 4 件（Playwright Chromium）
+- **HEAD**: 7d0a9ab（dev ブランチ）
+- **テスト数**: 333 件パス（Vitest）/ E2E 23 件（Playwright Chromium）
 - **Next.js**: 16.2.6
-- **ステータス**: ハンバーガー UI リファクタ（8/8 ステップ完了）。Header.tsx をデータ駆動ナビに完全移行。
+- **ステータス**: P1 テスト整備タスク完了。CDL, PCNE, PCNE Step, AGWA の E2E テストおよび AGWA の ScrollSpy 単体テストを実装。
 - **完了済み移行**: ACE（domain1-4, architecture-guide）、CDL（section1-6）、AGWA（section1）、PCNE（comprehensive + step-by-step）、GenAI Leader（section1-4）
 - **ナビ構造**: `app/constants.ts` の `EXAMS` → `app/navigation.ts` の `toNavTree()` → `components/Header.tsx` の Drawer で描画。新試験追加は constants.ts のみ変更すれば OK。
-- **次の作業**: AWS SAA ページ実装（`app/aws/solutions-architect-associate/`）
+- **次の作業**: AWS SAA ページ実装（`app/aws/solutions-architect-associate/`）および P2 横断品質（Visual, A11y等）の導入検討

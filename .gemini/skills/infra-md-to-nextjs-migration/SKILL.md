@@ -1,5 +1,12 @@
 # MD → Next.js 移行ワークフロー（Infra リポジトリ）
 
+**🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
+全てのコード実装において、必ず `.claude/rules/TDD_COMMIT_WORKFLOW.md` のルールに従うこと。
+1. `test: ` 失敗するテストを先に書きコミットする
+2. `feat: ` テストをPassさせる実装を行いコミットする
+3. `refactor/docs: ` 統合を行いコミットする
+これらを1つの巨大なコミットにまとめることは厳禁である。
+
 ## 目的
 
 Markdown 形式の試験対策資料を Next.js App Router の `page.tsx` 学習コンポーネントへ移行する際のエンドツーエンドワークフローを提供する。GCP（ACE, GenAI Leader, CDL, AGWA, PCNE）・AWS など複数の資格に対応する。

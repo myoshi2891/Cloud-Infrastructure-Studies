@@ -208,6 +208,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0 24px;
+    justify-content: center;
 }
 
 .s4-page .snav a {
@@ -588,6 +589,6 @@
     .s4-page .sec-badge { margin-left: 0; }
     .s4-page .fgrid { grid-template-columns: 1fr; }
     .s4-page .principle-grid { grid-template-columns: 1fr 1fr; }
-    .s4-page .snav { overflow-x: auto; flex-wrap: nowrap; }
+    .s4-page .snav { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; }
     .s4-page .ornament, .s4-page .ornament-line { display: none; }
 }

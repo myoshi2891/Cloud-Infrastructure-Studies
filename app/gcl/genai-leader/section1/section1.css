@@ -201,6 +201,7 @@
     flex-wrap: wrap;
     gap: 0;
     padding: 0 24px;
+    justify-content: center;
 }
 
 .s1-page .na {
@@ -990,5 +991,5 @@
     .s1-page .hier-row { grid-template-columns: 1fr; }
     .s1-page .approach-grid { grid-template-columns: 1fr; }
     .s1-page .model-grid { grid-template-columns: 1fr; }
-    .s1-page .snav { overflow-x: auto; flex-wrap: nowrap; }
+    .s1-page .snav { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; }
 }

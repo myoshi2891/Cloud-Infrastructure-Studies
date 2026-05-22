@@ -5,11 +5,56 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新 HEAD:** c3b8c2e — `test(nav): fix provider fallback test to actually exercise missing provider`
-- **進行中タスク:** なし（直近完了: グローバルメニュー ハンバーガー化 + AWS 拡張対応 8/8）
-- **テスト数:** 331 件パス（Vitest 53 ファイル）/ E2E 4 件パス（Playwright Chromium）
+- **最新 HEAD:** 7d0a9ab — `refactor/docs: update test coverage progress and regenerate dashboard after P1 completion`
+- **進行中タスク:** なし（直近完了: P1 テスト整備タスク（ドメイン品質・E2E））
+- **テスト数:** 333 件パス（Vitest 54 ファイル）/ E2E 23 件パス（Playwright Chromium 16 ファイル）
 - **ビルド:** 成功 (Next.js 16.2.6 Turbopack)
-- **最終更新日時(UTC):** 2026-05-17T00:15:00Z
+- **最終更新日時(UTC):** 2026-05-21T07:35:00Z
+
+---
+
+## 2026-05-21: P1 テスト整備タスク（完了）
+
+### 目的
+
+優先度 **🟡 P1** に分類されている、各ドメイン（CDL, PCNE, PCNE Step-by-Step, AGWA）のクリティカルパス E2E テストおよび単体テストを整備し、リグレッションを自動検知できるようにする。
+
+### 完了済みステップ
+
+- [x] **`cloud-digital-leader` クリティカルパス E2E テストの作成** (`e2e/cloud-digital-leader.spec.ts`)
+- [x] **`pcne` クリティカルパス E2E テストの作成** (`e2e/pcne.spec.ts`)
+- [x] **`pcne-step` クリティカルパス E2E テストの作成** (`e2e/pcne-step.spec.ts`)
+- [x] **`agwa` ページ単体テストの追加** (`__tests__/gcl/agwa/ScrollSpy.test.tsx`)
+- [x] **`agwa` クリティカルパス E2E テストの作成** (`e2e/agwa.spec.ts`)
+- [x] **ドキュメントとカバレッジダッシュボードの更新** (`docs/TEST_COVERAGE_PROGRESS.md` および `docs/coverage-dashboard.html`)
+
+### 関連ファイル
+
+#### 新規
+
+- [**tests**/gcl/agwa/ScrollSpy.test.tsx](__tests__/gcl/agwa/ScrollSpy.test.tsx) — `ScrollSpy` ユニットテスト (2 ケース)
+- [e2e/cloud-digital-leader.spec.ts](e2e/cloud-digital-leader.spec.ts) — CDL E2Eテスト (5 ケース)
+- [e2e/pcne.spec.ts](e2e/pcne.spec.ts) — PCNE E2Eテスト (5 ケース)
+- [e2e/pcne-step.spec.ts](e2e/pcne-step.spec.ts) — PCNE Step E2Eテスト (5 ケース)
+- [e2e/agwa.spec.ts](e2e/agwa.spec.ts) — AGWA E2Eテスト (4 ケース)
+
+#### 変更
+
+- [docs/TEST_COVERAGE_PROGRESS.md](docs/TEST_COVERAGE_PROGRESS.md) — テストカバレッジ・網羅性進捗レポート
+- [docs/coverage-dashboard.html](docs/coverage-dashboard.html) — カバレッジダッシュボードHTML (再生成)
+
+### 検証コマンド（完了時の最終結果）
+
+```bash
+bun run test         # Vitest 333 件 / 54 ファイル全 pass
+bun run test:e2e     # Playwright E2E 23 件 / 16 ファイル全 pass
+bun run build        # Next.js ビルド成功
+bun run dashboard    # カバレッジダッシュボード再生成
+```
+
+### 次のステップ
+
+- [ ] 🔵 P2: 横断品質（Visual, A11y, Performance, Security）の導入検討
 
 ---
 

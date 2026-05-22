@@ -43,7 +43,10 @@
 
 ## 開発コンベンション
 
-- **テスト駆動:** 新機能や修正の際は、`/__tests__` に対応するテストを追加または更新してください。
+- **テスト駆動（絶対厳守）:** 実装の際は必ず `.claude/rules/TDD_COMMIT_WORKFLOW.md` のルールに従い、以下の3ステップを厳格に繰り返すこと。各ステップ完了後に**即コミット（繰り越し禁止）**。
+  1. **Step 1 — Fail:** テストコードを先に作成し、失敗（Fail）することを確認してコミット (`test: add failing tests for ...`)
+  2. **Step 2 — Pass:** テストをPassさせる最小限の実装を行いコミット (`feat/fix: implement ... to pass tests`)
+  3. **Step 3 — Refactor:** コード整理・ルーティング統合・ビルド確認後にコミット (`refactor/docs: integrate ... into routing and update docs`)
 - **UI デザイン:** 各セクションごとに固有のテーマカラー（Aurora, Sapphire, Laboratory, Gold）が設定されています。
 - **スタイリング:** CSS 変数は `app/globals.css` で定義された 3層トークンアーキテクチャに従ってください。
 - **保守性:** 共通の定数（作成日など）は `app/gcl/genai-leader/constants.ts` に集約されています。

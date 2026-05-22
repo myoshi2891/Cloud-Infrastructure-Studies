@@ -66,16 +66,23 @@ describe('toNavTree', () => {
         // Arrange
         const { provider: _ignored, ...examWithoutProvider } = gcpAce;
         void _ignored;
-        const exams = [examWithoutProvider as any];
+        const exams = [examWithoutProvider as unknown as Exam];
 
         // Act
         const result = toNavTree(exams);
 
         // Assert
         expect(result).toHaveLength(1);
-        expect(result[0].provider).toBe('GCP');
-        expect(result[0].exams).toHaveLength(1);
-        expect(result[0].exams[0].id).toBe('ace');
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+        expect(group.provider).toBe('GCP');
+        expect(group.exams).toHaveLength(1);
+
+        const exam = group.exams[0];
+        expect(exam).toBeDefined();
+        if (!exam) return;
+        expect(exam.id).toBe('ace');
     });
 
     it('GCP のみのとき AWS グループは生成されない', () => {
@@ -84,7 +91,10 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result.map((g: NavGroup) => g.provider)).toEqual(['GCP']);
-        expect(result[0].exams).toHaveLength(2);
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+        expect(group.exams).toHaveLength(2);
     });
 
     it('AWS 試験を含むと GCP・AWS の 2 グループに分かれる（GCP が先）', () => {
@@ -93,28 +103,54 @@ describe('toNavTree', () => {
 
         // Assert
         expect(result).toHaveLength(2);
-        expect(result[0].provider).toBe('GCP');
-        expect(result[1].provider).toBe('AWS');
-        expect(result[0].exams.map((e) => e.id)).toEqual(['ace', 'genai']);
-        expect(result[1].exams.map((e) => e.id)).toEqual(['aws-saa']);
+        const group0 = result[0];
+        const group1 = result[1];
+        expect(group0).toBeDefined();
+        expect(group1).toBeDefined();
+        if (!group0 || !group1) return;
+
+        expect(group0.provider).toBe('GCP');
+        expect(group1.provider).toBe('AWS');
+        expect(group0.exams.map((e) => e.id)).toEqual(['ace', 'genai']);
+        expect(group1.exams.map((e) => e.id)).toEqual(['aws-saa']);
     });
 
     it('NavExam.items は試験トップ（概要）+ domains を含む', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0].exams[0];
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+
+        const aceExam = group.exams[0];
+        expect(aceExam).toBeDefined();
+        if (!aceExam) return;
 
         // Assert
-        expect(aceExam.items[0].href).toBe('/gcl/associate-cloud-engineer');
-        expect(aceExam.items[0].label).toBe('概要');
+        const item0 = aceExam.items[0];
+        expect(item0).toBeDefined();
+        if (!item0) return;
+        expect(item0.href).toBe('/gcl/associate-cloud-engineer');
+        expect(item0.label).toBe('概要');
+
         expect(aceExam.items).toHaveLength(2);
-        expect(aceExam.items[1].href).toBe('/gcl/associate-cloud-engineer/domain1');
+
+        const item1 = aceExam.items[1];
+        expect(item1).toBeDefined();
+        if (!item1) return;
+        expect(item1.href).toBe('/gcl/associate-cloud-engineer/domain1');
     });
 
     it('NavExam に id/label/icon/colorClass がコピーされる', () => {
         // Arrange & Act
         const result = toNavTree([gcpAce]);
-        const aceExam = result[0].exams[0];
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+
+        const aceExam = group.exams[0];
+        expect(aceExam).toBeDefined();
+        if (!aceExam) return;
 
         // Assert
         expect(aceExam.id).toBe('ace');
@@ -128,8 +164,15 @@ describe('toNavTree', () => {
         const result = toNavTree([awsSaa]);
 
         // Assert
-        expect(result[0].provider).toBe('AWS');
-        expect(result[0].exams[0].status).toBe('coming-soon');
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+        expect(group.provider).toBe('AWS');
+
+        const exam = group.exams[0];
+        expect(exam).toBeDefined();
+        if (!exam) return;
+        expect(exam.status).toBe('coming-soon');
     });
 
     it('domain.href が exam.href と一致する場合、items から重複を除去する', () => {
@@ -145,7 +188,14 @@ describe('toNavTree', () => {
 
         // Act
         const result = toNavTree([examWithDupTop]);
-        const items = result[0].exams[0].items;
+        const group = result[0];
+        expect(group).toBeDefined();
+        if (!group) return;
+
+        const exam = group.exams[0];
+        expect(exam).toBeDefined();
+        if (!exam) return;
+        const items = exam.items;
 
         // Assert
         expect(items.map((i) => i.href)).toEqual(['/exam/x', '/exam/x/sub']);
@@ -178,7 +228,8 @@ describe('toNavTree', () => {
 
             // Assert
             expect(gcp).toBeDefined();
-            const ids = gcp!.exams.map((e) => e.id).sort();
+            if (!gcp) return;
+            const ids = gcp.exams.map((e) => e.id).sort();
             expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'pcne']);
         });
 
@@ -189,8 +240,34 @@ describe('toNavTree', () => {
 
             // Assert
             expect(aws).toBeDefined();
-            expect(aws!.exams.length).toBeGreaterThan(0);
-            expect(aws!.exams.some((e) => e.status === 'coming-soon')).toBe(true);
+            if (!aws) return;
+            expect(aws.exams.length).toBeGreaterThan(0);
+            expect(aws.exams.some((e) => e.status === 'coming-soon')).toBe(true);
+        });
+    });
+
+    describe('エッジケースと無効なデータ', () => {
+        it('未知のプロバイダが指定された場合、出力のグループ一覧から無視されること', () => {
+            // Arrange
+            const unknownExam = {
+                id: 'unknown-exam',
+                label: 'Unknown Exam',
+                abbr: 'UNK',
+                level: 'Foundational',
+                score: '---',
+                color: 'card-unknown',
+                href: '/unknown',
+                domains: [],
+                badge: 'テスト',
+                icon: '❓',
+                provider: 'AZURE' as unknown as Exam['provider'], // 未知のプロバイダ
+            };
+
+            // Act
+            const result = toNavTree([unknownExam]);
+
+            // Assert
+            expect(result).toEqual([]);
         });
     });
 });

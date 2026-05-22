@@ -219,6 +219,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0 24px;
+    justify-content: center;
 }
 
 .s3-page .snav a {
@@ -1011,7 +1012,7 @@
     .s3-page .sec-pct { margin-left: 0; }
     .s3-page .split2 { grid-template-columns: 1fr; }
     .s3-page .fgrid { grid-template-columns: 1fr; }
-    .s3-page .snav { overflow-x: auto; flex-wrap: nowrap; }
+    .s3-page .snav { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; }
     .s3-page .hero-corner { display: none; }
     .s3-page .table-wrapper {
         overflow-x: auto;

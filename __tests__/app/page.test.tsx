@@ -30,7 +30,10 @@ describe('Home ページ', () => {
         const firstCard = container.querySelector('.card-ace');
         expect(firstCard).toBeInTheDocument();
         const domainLinks = (firstCard as HTMLElement).querySelectorAll('.home-domain-link');
-        expect(domainLinks).toHaveLength(EXAMS[0]!.domains.length);
+        const firstExam = EXAMS[0];
+        expect(firstExam).toBeDefined();
+        if (!firstExam) return;
+        expect(domainLinks).toHaveLength(firstExam.domains.length);
     });
 
     it('ドメインリンクに home-domain-link クラスが付与されること', () => {
@@ -81,10 +84,11 @@ describe('Home ページ', () => {
         expect(cdlCard).toBeInTheDocument();
         const cdlExam = EXAMS.find((e) => e.id === 'cdl');
         expect(cdlExam).toBeDefined();
-        expect(cdlExam!.domains.length).toBeGreaterThanOrEqual(1);
+        if (!cdlExam) return;
+        expect(cdlExam.domains.length).toBeGreaterThanOrEqual(1);
         const domainLinks = (cdlCard as HTMLElement).querySelectorAll('.home-domain-link');
-        expect(domainLinks).toHaveLength(cdlExam!.domains.length);
+        expect(domainLinks).toHaveLength(cdlExam.domains.length);
         const allLinks = (cdlCard as HTMLElement).querySelectorAll('a');
-        expect(allLinks).toHaveLength(cdlExam!.domains.length + 1);
+        expect(allLinks).toHaveLength(cdlExam.domains.length + 1);
     });
 });
