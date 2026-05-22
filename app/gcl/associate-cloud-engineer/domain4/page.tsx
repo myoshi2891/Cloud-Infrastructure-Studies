@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { DiagramSVG } from '@/components/DiagramSVG';
+import { MermaidDiagram } from '@/components/MermaidDiagram';
 import {
     D4_SECTION_TITLE,
     COMPUTE_ROLES,
@@ -39,90 +41,128 @@ function Chapter1() {
                 <div className="ttitle"><span className="tid">1.1</span>Google Cloud セキュリティの 3 つの基本原則</div>
                 
                 <h3 className="stitle">原則①: 最小特権の原則（Principle of Least Privilege）</h3>
-                <div className="cb-wrap">
-                    <div className="cb-label"><span className="dot dot-purple"></span><span className="dot dot-amber"></span><span className="dot dot-fuchsia"></span></div>
-                    <pre className="codeblock">{`【最小特権とは？】
-
-必要な権限だけを、必要な人・サービスにだけ、
-必要な期間だけ付与する
-
-悪い例（過剰な権限）:
-  「とりあえず Editor を全員に付与する」
-    → 誰でも VM を削除できる
-    → 誰でも DB を変更できる
-    → 侵害時の被害が最大化
-
-良い例（最小権限）:
-  「フロントエンドエンジニアには Cloud Run の
-   デプロイ権限だけを付与する」
-   → 必要な操作だけできる
-   → 侵害されても他のリソースへの影響を最小化`}</pre>
-                </div>
+                <p style={{ fontSize: '14px', marginBottom: '12px' }}>
+                    必要な権限だけを、必要な人・サービスにだけ、必要な期間だけ付与する。
+                </p>
+                <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>最小特権の比較: 悪い例（過剰権限）と 良い例（最小権限）</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">観点</th>
+                            <th scope="col">悪い例: 過剰な権限</th>
+                            <th scope="col">良い例: 最小権限</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>付与する権限</td>
+                            <td>とりあえず Editor を全員に付与</td>
+                            <td>フロントエンドエンジニアには Cloud Run のデプロイ権限だけを付与</td>
+                        </tr>
+                        <tr>
+                            <td>VM 操作</td>
+                            <td>誰でも VM を削除できる</td>
+                            <td>必要な操作だけ実行できる</td>
+                        </tr>
+                        <tr>
+                            <td>DB 操作</td>
+                            <td>誰でも DB を変更できる</td>
+                            <td>DB 変更は専用 SA / DBA のみ</td>
+                        </tr>
+                        <tr>
+                            <td>侵害時の影響範囲</td>
+                            <td>被害が組織全体に拡大</td>
+                            <td>他リソースへの波及を最小化</td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <h3 className="stitle">原則②: 職務分掌（Separation of Duties）</h3>
-                <div className="cb-wrap">
-                    <div className="cb-label"><span className="dot dot-purple"></span><span className="dot dot-amber"></span><span className="dot dot-fuchsia"></span></div>
-                    <pre className="codeblock">{`【職務分掌とは？】
-
-同一人物がすべての操作を単独で実行できないようにする
-
-例:
-  コードを書く人（Developer）
-      ↓ PR を作成
-  コードをレビューする人（Reviewer）
-      ↓ 承認
-  本番にデプロイする人（Ops）または CI/CD が自動実行
-
-→ 一人のエンジニアが「コードを書いてそのまま本番にデプロイ」
-  できない仕組みを作る`}</pre>
-                </div>
+                <p style={{ fontSize: '14px', marginBottom: '8px' }}>
+                    同一人物がすべての操作を単独で実行できないようにし、コードを書いた人がそのまま本番デプロイできない仕組みを作る。
+                </p>
+                <MermaidDiagram
+                    chart={`flowchart LR
+    D["Developer<br/>コードを書く"] -->|PR を作成| R["Reviewer<br/>コードレビュー"]
+    R -->|承認| O["Ops または CI/CD<br/>本番にデプロイ"]
+    classDef actor fill:#1e2a35,stroke:#40E0D0,color:#e6e9ee
+    class D,R,O actor`}
+                    ariaLabel="職務分掌フロー: Developer → Reviewer → Ops/CI-CD"
+                />
 
                 <h3 className="stitle">原則③: 深層防御（Defense in Depth）</h3>
-                <div className="cb-wrap">
-                    <div className="cb-label"><span className="dot dot-purple"></span><span className="dot dot-amber"></span><span className="dot dot-fuchsia"></span></div>
-                    <pre className="codeblock">{`【深層防御とは？】
-
-複数のセキュリティ層を重ねて、
-1 つの層が破られても他の層で防御する
-
-Google Cloud での深層防御:
-
-外側: Cloud Armor（DDoS / WAF）
-  ↓
-ネットワーク: ファイアウォールルール / VPC Service Controls
-  ↓
-認証: IAM / Identity-Aware Proxy
-  ↓
-データ: 暗号化（Cloud KMS）/ Secret Manager
-  ↓
-監視: Security Command Center / Cloud Logging`}</pre>
-                </div>
+                <p style={{ fontSize: '14px', marginBottom: '8px' }}>
+                    複数のセキュリティ層を重ねて、1 つの層が破られても他の層で防御する。
+                </p>
+                <DiagramSVG viewBox="0 0 760 380" ariaLabel="深層防御の層構造 (Defense in Depth)">
+                    <defs>
+                        <marker id="d4-defense-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                    {/* Layer 1: 外側 */}
+                    <rect x="80" y="20" width="600" height="48" rx="8" fill="rgba(64,224,208,0.18)" stroke="currentColor" strokeWidth="2" />
+                    <text x="100" y="42" fontSize="12" fontWeight="600" fill="currentColor">外側</text>
+                    <text x="380" y="50" textAnchor="middle" fontSize="13" fill="currentColor">Cloud Armor（DDoS / WAF）</text>
+                    <line x1="380" y1="68" x2="380" y2="84" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#d4-defense-arrow)" />
+                    {/* Layer 2 */}
+                    <rect x="80" y="84" width="600" height="48" rx="8" fill="rgba(64,224,208,0.15)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="100" y="106" fontSize="12" fontWeight="600" fill="currentColor">ネットワーク</text>
+                    <text x="420" y="114" textAnchor="middle" fontSize="13" fill="currentColor">ファイアウォール / VPC Service Controls</text>
+                    <line x1="380" y1="132" x2="380" y2="148" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#d4-defense-arrow)" />
+                    {/* Layer 3 */}
+                    <rect x="80" y="148" width="600" height="48" rx="8" fill="rgba(64,224,208,0.12)" stroke="currentColor" strokeWidth="1.6" />
+                    <text x="100" y="170" fontSize="12" fontWeight="600" fill="currentColor">認証</text>
+                    <text x="420" y="178" textAnchor="middle" fontSize="13" fill="currentColor">IAM / Identity-Aware Proxy</text>
+                    <line x1="380" y1="196" x2="380" y2="212" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#d4-defense-arrow)" />
+                    {/* Layer 4 */}
+                    <rect x="80" y="212" width="600" height="48" rx="8" fill="rgba(64,224,208,0.09)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="100" y="234" fontSize="12" fontWeight="600" fill="currentColor">データ</text>
+                    <text x="420" y="242" textAnchor="middle" fontSize="13" fill="currentColor">Cloud KMS (暗号化) / Secret Manager</text>
+                    <line x1="380" y1="260" x2="380" y2="276" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#d4-defense-arrow)" />
+                    {/* Layer 5 */}
+                    <rect x="80" y="276" width="600" height="48" rx="8" fill="rgba(64,224,208,0.06)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="100" y="298" fontSize="12" fontWeight="600" fill="currentColor">監視</text>
+                    <text x="420" y="306" textAnchor="middle" fontSize="13" fill="currentColor">Security Command Center / Cloud Logging</text>
+                    {/* Note */}
+                    <text x="380" y="355" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">外側ほど広範囲・内側ほど機密性が高い — 各層が独立して防御</text>
+                </DiagramSVG>
             </div>
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">1.2</span>Google の共有責任モデル（Shared Responsibility Model）</div>
-                <div className="cb-wrap">
-                    <div className="cb-label"><span className="dot dot-purple"></span><span className="dot dot-amber"></span><span className="dot dot-fuchsia"></span></div>
-                    <pre className="codeblock">{`【誰が何を守るか？】
-
-Google の責任:
-  ├── 物理インフラのセキュリティ（データセンター）
-  ├── ハードウェアとソフトウェアの脆弱性対応
-  ├── ネットワークの基盤セキュリティ
-  └── マネージドサービスのセキュリティ（GKE Autopilot など）
-
-顧客（あなた）の責任:
-  ├── IAM 設定（誰がアクセスできるか）
-  ├── データの暗号化設定
-  ├── アプリケーションのセキュリティ
-  ├── ファイアウォールルールの設定
-  └── シークレット・認証情報の管理
-
-【責任の境界はサービスによって異なる】
-  IaaS（Compute Engine）: 顧客の責任範囲が広い
-  PaaS（Cloud Run）: Google の責任範囲が広い
-  SaaS（Google Workspace）: ほぼ Google が管理`}</pre>
-                </div>
+                <DiagramSVG viewBox="0 0 900 420" ariaLabel="Google の共有責任モデル">
+                    <text x="450" y="24" textAnchor="middle" fontSize="14" fontWeight="bold" fill="currentColor">誰が何を守るか？</text>
+                    {/* Google column */}
+                    <rect x="30" y="44" width="400" height="40" rx="6" fill="rgba(124,164,255,0.18)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="230" y="68" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">Google の責任</text>
+                    <text x="40" y="108" fontSize="12" fill="currentColor">• 物理インフラのセキュリティ（データセンター）</text>
+                    <text x="40" y="130" fontSize="12" fill="currentColor">• ハードウェア / ソフトウェアの脆弱性対応</text>
+                    <text x="40" y="152" fontSize="12" fill="currentColor">• ネットワークの基盤セキュリティ</text>
+                    <text x="40" y="174" fontSize="12" fill="currentColor">• マネージドサービスのセキュリティ (GKE Autopilot 等)</text>
+                    {/* Customer column */}
+                    <rect x="470" y="44" width="400" height="40" rx="6" fill="rgba(64,224,208,0.18)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="670" y="68" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">顧客 (あなた) の責任</text>
+                    <text x="480" y="108" fontSize="12" fill="currentColor">• IAM 設定 (誰がアクセスできるか)</text>
+                    <text x="480" y="130" fontSize="12" fill="currentColor">• データの暗号化設定</text>
+                    <text x="480" y="152" fontSize="12" fill="currentColor">• アプリケーションのセキュリティ</text>
+                    <text x="480" y="174" fontSize="12" fill="currentColor">• ファイアウォールルールの設定</text>
+                    <text x="480" y="196" fontSize="12" fill="currentColor">• シークレット・認証情報の管理</text>
+                    {/* Divider */}
+                    <line x1="450" y1="44" x2="450" y2="220" stroke="currentColor" strokeWidth="1" strokeDasharray="4,3" opacity="0.5" />
+                    {/* Boundary by service type */}
+                    <text x="450" y="260" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">責任の境界はサービスによって異なる</text>
+                    <rect x="60" y="276" width="240" height="56" rx="8" fill="rgba(124,164,255,0.06)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="180" y="298" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">IaaS (Compute Engine)</text>
+                    <text x="180" y="320" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">顧客の責任範囲が広い</text>
+                    <rect x="330" y="276" width="240" height="56" rx="8" fill="rgba(124,164,255,0.12)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="450" y="298" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">PaaS (Cloud Run)</text>
+                    <text x="450" y="320" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">Google の責任範囲が広い</text>
+                    <rect x="600" y="276" width="240" height="56" rx="8" fill="rgba(124,164,255,0.2)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="720" y="298" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">SaaS (Google Workspace)</text>
+                    <text x="720" y="320" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">ほぼ Google が管理</text>
+                    <text x="450" y="380" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">左から右に向かって、顧客責任は縮小し Google 責任は拡大する</text>
+                </DiagramSVG>
             </div>
         </div>
     );
@@ -142,21 +182,40 @@ function Chapter2() {
             <div className="tcard">
                 <div className="ttitle"><span className="tid">2.1</span>IAM の 3 つの要素</div>
                 <p>IAM（Identity and Access Management）は、Google Cloud のすべてのアクセス制御の基盤です。</p>
-                <div className="cb-wrap">
-                    <div className="cb-label"><span className="dot dot-purple"></span><span className="dot dot-amber"></span><span className="dot dot-fuchsia"></span></div>
-                    <pre className="codeblock">{`【IAM の 3 要素】
-
-① 主体（Principal / Who）
-   └── 誰がアクセスするか？
-
-② ロール（Role / Can do what）
-   └── 何ができるか？
-
-③ リソース（Resource / On which resource）
-   └── どのリソースに対して？
-
-IAM ポリシー = 主体 + ロール + リソース の組み合わせ`}</pre>
-                </div>
+                <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>IAM の 3 要素</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">要素</th>
+                            <th scope="col">英名 / 別名</th>
+                            <th scope="col">意味</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>①</td>
+                            <td>主体</td>
+                            <td>Principal / Who</td>
+                            <td>誰がアクセスするか？</td>
+                        </tr>
+                        <tr>
+                            <td>②</td>
+                            <td>ロール</td>
+                            <td>Role / Can do what</td>
+                            <td>何ができるか？</td>
+                        </tr>
+                        <tr>
+                            <td>③</td>
+                            <td>リソース</td>
+                            <td>Resource / On which</td>
+                            <td>どのリソースに対して？</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style={{ fontSize: '14px', marginTop: '12px', marginBottom: '0' }}>
+                    <strong>IAM ポリシー = 主体 + ロール + リソース の組み合わせ</strong>
+                </p>
             </div>
 
             <div className="tcard">
