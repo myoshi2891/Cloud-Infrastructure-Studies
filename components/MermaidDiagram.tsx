@@ -98,12 +98,20 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
             <div ref={containerRef} className={styles.mermaidTarget} aria-hidden={rendered ? undefined : 'true'} />
             {!rendered && !error && (
                 <pre className="codeblock" aria-hidden="true">
-                    {chart}
+                    {chart.split('\n').map((line, idx) => (
+                        <div className="code-line" key={`${idx}-${line}`}>
+                            {line}
+                        </div>
+                    ))}
                 </pre>
             )}
             {error && (
                 <pre className="codeblock" data-testid="mermaid-error">
-                    {`Mermaid render error: ${error}\n\n${chart}`}
+                    {`Mermaid render error: ${error}\n\n${chart}`.split('\n').map((line, idx) => (
+                        <div className="code-line" key={`${idx}-${line}`}>
+                            {line}
+                        </div>
+                    ))}
                 </pre>
             )}
         </div>

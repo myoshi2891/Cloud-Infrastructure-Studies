@@ -39,34 +39,36 @@ describe('MermaidDiagram', () => {
         const originalGetBBox = svgProto.getBBox;
         svgProto.getBBox = vi.fn();
 
-        const mermaid = await import('mermaid');
-        let shouldFail = true;
-        vi.spyOn(mermaid.default, 'render').mockImplementation((async () => {
-            if (shouldFail) {
-                throw new Error('Mock render error');
-            }
-            return {
-                svg: '<svg>Mocked SVG</svg>',
-                diagramType: 'flowchart',
-                bindFunctions: () => {},
-            };
-        }) as any);
+        try {
+            const mermaid = await import('mermaid');
+            let shouldFail = true;
+            vi.spyOn(mermaid.default, 'render').mockImplementation((async () => {
+                if (shouldFail) {
+                    throw new Error('Mock render error');
+                }
+                return {
+                    svg: '<svg>Mocked SVG</svg>',
+                    diagramType: 'flowchart',
+                    bindFunctions: () => {},
+                };
+            }) as any);
 
-        const { rerender } = render(
-            <MermaidDiagram chart={sampleChart} ariaLabel="サンプルフロー図" />
-        );
+            const { rerender } = render(
+                <MermaidDiagram chart={sampleChart} ariaLabel="サンプルフロー図" />
+            );
 
-        const errorEl = await screen.findByTestId('mermaid-error');
-        expect(errorEl.textContent).toContain('Mock render error');
+            const errorEl = await screen.findByTestId('mermaid-error');
+            expect(errorEl.textContent).toContain('Mock render error');
 
-        shouldFail = false;
-        rerender(<MermaidDiagram chart="flowchart LR\n B-->C" ariaLabel="サンプルフロー図" />);
+            shouldFail = false;
+            rerender(<MermaidDiagram chart="flowchart LR\n B-->C" ariaLabel="サンプルフロー図" />);
 
-        await waitFor(() => {
-            expect(screen.queryByTestId('mermaid-error')).toBeNull();
-        });
-
-        svgProto.getBBox = originalGetBBox;
-        vi.restoreAllMocks();
+            await waitFor(() => {
+                expect(screen.queryByTestId('mermaid-error')).toBeNull();
+            });
+        } finally {
+            svgProto.getBBox = originalGetBBox;
+            vi.restoreAllMocks();
+        }
     });
 });

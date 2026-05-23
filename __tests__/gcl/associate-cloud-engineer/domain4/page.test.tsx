@@ -165,11 +165,6 @@ describe('ACE Domain 4 Page', () => {
     it('インラインスタイル属性（style={{...}}）が使われていないこと', () => {
         render(<Domain4Page />);
         const styledElements = document.querySelectorAll('[style]');
-        styledElements.forEach((el) => {
-            const styleAttr = el.getAttribute('style');
-            if (styleAttr && !styleAttr.includes('display')) {
-                expect(styleAttr).toBe('');
-            }
-        });
+        expect(styledElements.length).toBe(0);
     });
 });

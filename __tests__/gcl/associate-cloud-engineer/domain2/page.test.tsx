@@ -69,11 +69,12 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
 
     it('SVG 内の rect 要素がハードコードされた色（rgba など）を fill に含まないこと', () => {
         const rects = document.querySelectorAll('rect');
+        expect(rects.length).toBeGreaterThan(0);
         rects.forEach((rect) => {
             const fill = rect.getAttribute('fill');
             if (fill) {
-                expect(fill).not.toContain('rgba');
-                expect(fill).not.toContain('#');
+                const allowedFillRegex = /^(?:currentColor|none|transparent|var\(--[a-zA-Z0-9_-]+\)|url\(#[a-zA-Z0-9_-]+\))$/;
+                expect(fill).toMatch(allowedFillRegex);
             }
         });
     });
