@@ -47,6 +47,15 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
     const [rendered, setRendered] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const toCodeLines = (text: string) => {
+        const seen = new Map<string, number>();
+        return text.split('\n').map((line) => {
+            const count = seen.get(line) ?? 0;
+            seen.set(line, count + 1);
+            return { line, key: `${line}::${count}` };
+        });
+    };
+
     useEffect(() => {
         if (!canRenderInBrowser()) return;
         let cancelled = false;
@@ -98,8 +107,8 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
             <div ref={containerRef} className={styles.mermaidTarget} aria-hidden={rendered ? undefined : 'true'} />
             {!rendered && !error && (
                 <pre className="codeblock" aria-hidden="true">
-                    {chart.split('\n').map((line, idx) => (
-                        <div className="code-line" key={`${idx}-${line}`}>
+                    {toCodeLines(chart).map(({ line, key }) => (
+                        <div className="code-line" key={key} data-key={key}>
                             {line}
                         </div>
                     ))}
@@ -107,8 +116,8 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
             )}
             {error && (
                 <pre className="codeblock" data-testid="mermaid-error">
-                    {`Mermaid render error: ${error}\n\n${chart}`.split('\n').map((line, idx) => (
-                        <div className="code-line" key={`${idx}-${line}`}>
+                    {toCodeLines(`Mermaid render error: ${error}\n\n${chart}`).map(({ line, key }) => (
+                        <div className="code-line" key={key} data-key={key}>
                             {line}
                         </div>
                     ))}
