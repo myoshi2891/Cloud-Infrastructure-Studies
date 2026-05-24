@@ -8,6 +8,11 @@ export const metadata: Metadata = {
         'Google Cloud ACE Domain 2 包括的解説。コンピューティング・ストレージ・ネットワーク・Terraform の計画と実装を詳解。',
 };
 
+/**
+ * Render the Domain 2 overview section containing an SVG diagram of the four subdomains and a chapter table of contents.
+ *
+ * @returns The JSX element for the "Domain 2 全体マップ" section, including the DiagramSVG overview and a table listing chapters Ch1–Ch17 with titles and key topics.
+ */
 function SectionIntro() {
     return (
         <div id="ch0" className="sgap">
