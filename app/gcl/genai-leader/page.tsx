@@ -484,41 +484,40 @@ function Section4() {
 export default function GenaiLeaderPage() {
     return (
         <div className={`genai-leader-page ${spaceMono.variable}`}>
-            {/* Hero */}
-            <section className="hero">
-                <div className="hero-badge">Google Cloud 認定試験 完全対策ガイド</div>
-                <h1>
-                    Generative AI Leader<br />
-                    <span>試験完全マスター</span>
-                </h1>
-                <p className="hero-sub">
-                    初学者でも安心！4つの出題セクションを図解・ベストプラクティス付きでステップバイステップ解説。生成AI時代のビジネスリーダーを目指す方の決定版ガイド。
-                </p>
-                <div className="meta-grid">
-                    <div className="meta-card"><div className="label">試験時間</div><div className="val">90 分</div></div>
-                    <div className="meta-card"><div className="label">問題数</div><div className="val">50〜60問</div></div>
-                    <div className="meta-card"><div className="label">形式</div><div className="val">多肢選択式</div></div>
-                    <div className="meta-card"><div className="label">受験料</div><div className="val">$99</div></div>
-                    <div className="meta-card"><div className="label">有効期間</div><div className="val">3 年間</div></div>
-                    <div className="meta-card"><div className="label">前提知識</div><div className="val">不要</div></div>
-                </div>
-            </section>
-
-            {/* Sticky Nav */}
-            <nav className="sticky-nav" aria-label="Generative AI Leader セクションナビゲーション">
-                <a href="#overview" className="nav-item"><span className="dot dot-blue" />試験概要</a>
-                <a href="#section1" className="nav-item s1"><span className="dot dot-blue" />Section 1: Gen AI 基礎</a>
-                <a href="#section2" className="nav-item s2"><span className="dot dot-green" />Section 2: GCP サービス</a>
-                <a href="#section3" className="nav-item s3"><span className="dot dot-yellow" />Section 3: モデル改善</a>
-                <a href="#section4" className="nav-item s4"><span className="dot dot-red" />Section 4: ビジネス戦略</a>
-            </nav>
-
-            {/* Main Content */}
             <main className="wrapper">
+                {/* Hero */}
+                <section className="hero">
+                    <div className="hero-badge">Google Cloud 認定試験 完全対策ガイド</div>
+                    <h1>
+                        Generative AI Leader<br />
+                        <span>試験完全マスター</span>
+                    </h1>
+                    <p className="hero-sub">
+                        初学者でも安心！4つの出題セクションを図解・ベストプラクティス付きでステップバイステップ解説。生成AI時代のビジネスリーダーを目指す方の決定版ガイド。
+                    </p>
+                    <div className="meta-grid">
+                        <div className="meta-card"><div className="label">試験時間</div><div className="val">90 分</div></div>
+                        <div className="meta-card"><div className="label">問題数</div><div className="val">50〜60問</div></div>
+                        <div className="meta-card"><div className="label">形式</div><div className="val">多肢選択式</div></div>
+                        <div className="meta-card"><div className="label">受験料</div><div className="val">$99</div></div>
+                        <div className="meta-card"><div className="label">有効期間</div><div className="val">3 年間</div></div>
+                        <div className="meta-card"><div className="label">前提知識</div><div className="val">不要</div></div>
+                    </div>
+                </section>
+
+                {/* Sticky Nav */}
+                <nav className="sticky-nav" aria-label="Generative AI Leader セクションナビゲーション">
+                    <a href="#overview" className="nav-item"><span className="dot dot-blue" />試験概要</a>
+                    <a href="#section1" className="nav-item s1"><span className="dot dot-blue" />Section 1: Gen AI 基礎</a>
+                    <a href="#section2" className="nav-item s2"><span className="dot dot-green" />Section 2: GCP サービス</a>
+                    <a href="#section3" className="nav-item s3"><span className="dot dot-yellow" />Section 3: モデル改善</a>
+                    <a href="#section4" className="nav-item s4"><span className="dot dot-red" />Section 4: ビジネス戦略</a>
+                </nav>
+
                 {/* Overview */}
                 <div id="overview">
                     <div className="exam-overview">
-                        <h3><span aria-hidden="true">📊</span> 出題セクション別 比重</h3>
+                        <h2><span aria-hidden="true">📊</span> 出題セクション別 比重</h2>
                         <div className="progress-row">
                             <div className="progress-label">Section 1: Gen AI 基礎</div>
                             <div className="progress-bar"><div className="progress-fill fill-blue" style={{ width: '30%' }} /></div>
@@ -552,13 +551,13 @@ export default function GenaiLeaderPage() {
             </main>
 
             {/* Page Footer */}
-            <footer className="page-footer">
+            <div className="page-footer">
                 <p style={{ marginBottom: '8px' }}>Google Cloud Generative AI Leader 試験対策ガイド</p>
                 <p>
                     参考：<a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noopener noreferrer">Google Cloud 公式試験ページ</a> ｜ 作成日：2026年3月
                 </p>
                 <p style={{ marginTop: '8px', fontSize: '11px', opacity: 0.6 }}>※ 本ガイドは学習目的で作成されました。最新情報は必ず公式サイトでご確認ください。</p>
-            </footer>
+            </div>
         </div>
     );
 }
