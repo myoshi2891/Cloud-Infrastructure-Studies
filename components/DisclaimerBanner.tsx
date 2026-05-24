@@ -35,9 +35,8 @@ export function DisclaimerBanner() {
     }, []);
 
     return (
-        <div
+        <aside
             ref={ref}
-            role="note"
             aria-label="免責事項: 本サイトは個人学習目的です。最新の公式情報は各試験プロバイダーの公式サイトをご確認ください。"
             style={{
                 // sticky: Header (sticky top:0) の直後に flow 内で積まれ、scroll 中も常に Header の下に貼り付く。
@@ -60,6 +59,6 @@ export function DisclaimerBanner() {
             <span style={{ display: 'block' }}>
                 最新の公式情報は各試験プロバイダーの公式サイトをご確認ください。
             </span>
-        </div>
+        </aside>
     );
 }
