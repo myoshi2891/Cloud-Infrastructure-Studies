@@ -46,6 +46,7 @@ describe('Cloud Digital Leader 認定試験 ページ', () => {
         render(<CloudDigitalLeaderPage />);
         const nav = screen.getByRole('navigation', { name: /セクションナビゲーション/i });
         expect(nav).toBeInTheDocument();
+        expect(nav.getAttribute('role')).toBeNull();
         expect(screen.getByText('試験概要')).toBeInTheDocument();
         expect(within(nav).getByRole('link', { name: /AI\/ML/i })).toBeInTheDocument();
     });
