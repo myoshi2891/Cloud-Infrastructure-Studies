@@ -71,4 +71,45 @@ describe('MermaidDiagram', () => {
             vi.restoreAllMocks();
         }
     });
+
+    it('フォールバック表示時、各行の要素に安定したキーに基づいた data-key 属性が付与されること', () => {
+        const duplicateLinesChart = 'flowchart LR\n  A --> B\n  A --> B';
+        const { container } = render(
+            <MermaidDiagram chart={duplicateLinesChart} ariaLabel="重複テスト" />
+        );
+        const codeLines = container.querySelectorAll('.code-line');
+        expect(codeLines).toHaveLength(3);
+
+        expect(codeLines[0].getAttribute('data-key')).toBe('flowchart LR::0');
+        expect(codeLines[1].getAttribute('data-key')).toBe('  A --> B::0');
+        expect(codeLines[2].getAttribute('data-key')).toBe('  A --> B::1');
+    });
+
+    it('エラー表示時、各行の要素に安定したキーに基づいた data-key 属性が付与されること', async () => {
+        const svgProto = window.SVGElement.prototype as any;
+        const originalGetBBox = svgProto.getBBox;
+        svgProto.getBBox = vi.fn();
+
+        try {
+            const mermaid = await import('mermaid');
+            vi.spyOn(mermaid.default, 'render').mockRejectedValue(new Error('Syntax error'));
+
+            const duplicateLinesChart = 'flowchart LR\n  A --> B\n  A --> B';
+            const { container } = render(
+                <MermaidDiagram chart={duplicateLinesChart} ariaLabel="エラー重複テスト" />
+            );
+
+            await screen.findByTestId('mermaid-error');
+            const codeLines = container.querySelectorAll('.code-line');
+            expect(codeLines.length).toBeGreaterThan(3);
+
+            const keys = Array.from(codeLines).map(el => el.getAttribute('data-key'));
+            expect(keys).toContain('  A --> B::0');
+            expect(keys).toContain('  A --> B::1');
+        } finally {
+            svgProto.getBBox = originalGetBBox;
+            vi.restoreAllMocks();
+        }
+    });
 });
+
