@@ -2354,50 +2354,50 @@ function Section8() {
 export default function CloudDigitalLeaderPage() {
     return (
         <div className="cdl-page">
-            <section className="hero">
-                <div className="hero-eyebrow">Google Cloud Certification · CDL</div>
-                <h1>
-                    Cloud Digital Leader{' '}
-                    <span>認定試験</span>
-                </h1>
-                <p className="hero-sub">
-                    DX・データ・AI/ML・インフラ・セキュリティ・生成 AI — 全領域を体系的に解説
-                </p>
-                <div className="hero-meta">
-                    <span className="hero-badge">
-                        <span className="dot dot-blue" />
-                        全9セクション
-                    </span>
-                    <span className="hero-badge">
-                        <span className="dot dot-red" />
-                        試験時間 90分
-                    </span>
-                    <span className="hero-badge">
-                        <span className="dot dot-yellow" />
-                        50–60問
-                    </span>
-                    <span className="hero-badge">
-                        <span className="dot dot-green" />
-                        推奨経験 6ヶ月+
-                    </span>
-                </div>
-            </section>
+            <main className="wrapper">
+                <section className="hero">
+                    <div className="hero-eyebrow">Google Cloud Certification · CDL</div>
+                    <h1>
+                        Cloud Digital Leader{' '}
+                        <span>認定試験</span>
+                    </h1>
+                    <p className="hero-sub">
+                        DX・データ・AI/ML・インフラ・セキュリティ・生成 AI — 全領域を体系的に解説
+                    </p>
+                    <div className="hero-meta">
+                        <span className="hero-badge">
+                            <span className="dot dot-blue" />
+                            全9セクション
+                        </span>
+                        <span className="hero-badge">
+                            <span className="dot dot-red" />
+                            試験時間 90分
+                        </span>
+                        <span className="hero-badge">
+                            <span className="dot dot-yellow" />
+                            50–60問
+                        </span>
+                        <span className="hero-badge">
+                            <span className="dot dot-green" />
+                            推奨経験 6ヶ月+
+                        </span>
+                    </div>
+                </section>
 
-            <nav className="snav" role="navigation" aria-label="セクションナビゲーション">
-                <div className="snav-inner">
-                    <a href="#s0" className="snav-link"><span className="snav-num">00</span>試験概要</a>
-                    <a href="#s1" className="snav-link"><span className="snav-num">01</span>DX基礎</a>
-                    <a href="#s2" className="snav-link"><span className="snav-num">02</span>データ</a>
-                    <a href="#s3" className="snav-link"><span className="snav-num">03</span>インフラ</a>
-                    <a href="#s4" className="snav-link"><span className="snav-num">04</span>セキュリティ</a>
-                    <a href="#s5" className="snav-link"><span className="snav-num">05</span>AI/ML</a>
-                    <a href="#s6" className="snav-link"><span className="snav-num">06</span>早見表</a>
-                    <a href="#s7" className="snav-link"><span className="snav-num">07</span>攻略</a>
-                    <a href="#s8" className="snav-link"><span className="snav-num">08</span>リソース</a>
-                </div>
-            </nav>
+                <nav className="snav" role="navigation" aria-label="セクションナビゲーション">
+                    <div className="snav-inner">
+                        <a href="#s0" className="snav-link"><span className="snav-num">00</span>試験概要</a>
+                        <a href="#s1" className="snav-link"><span className="snav-num">01</span>DX基礎</a>
+                        <a href="#s2" className="snav-link"><span className="snav-num">02</span>データ</a>
+                        <a href="#s3" className="snav-link"><span className="snav-num">03</span>インフラ</a>
+                        <a href="#s4" className="snav-link"><span className="snav-num">04</span>セキュリティ</a>
+                        <a href="#s5" className="snav-link"><span className="snav-num">05</span>AI/ML</a>
+                        <a href="#s6" className="snav-link"><span className="snav-num">06</span>早見表</a>
+                        <a href="#s7" className="snav-link"><span className="snav-num">07</span>攻略</a>
+                        <a href="#s8" className="snav-link"><span className="snav-num">08</span>リソース</a>
+                    </div>
+                </nav>
 
-            <div className="wrapper">
                 <SectionIntro />
                 <Section1 />
                 <Section2 />
@@ -2407,11 +2407,11 @@ export default function CloudDigitalLeaderPage() {
                 <Section6 />
                 <Section7 />
                 <Section8 />
-            </div>
+            </main>
 
-            <footer className="page-footer">
+            <div className="page-footer">
                 <p>Cloud Digital Leader 認定試験 包括的解説 — 2026 Edition</p>
-            </footer>
+            </div>
         </div>
     );
 }
