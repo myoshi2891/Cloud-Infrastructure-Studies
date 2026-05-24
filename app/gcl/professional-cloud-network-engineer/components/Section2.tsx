@@ -76,7 +76,7 @@ export function Section2() {
                 <p>HA VPN（High Availability VPN）は<strong>99.99% SLA</strong>を提供します。2つの独立したインターフェースに2本のトンネルを張り、BGPで動的ルーティングを行います。</p>
                 
                 <div className={sharedStyles.bpBox}>
-                    <h5>ベストプラクティス</h5>
+                    <h4>ベストプラクティス</h4>
                     <ul>
                         <li><strong>新規VPN構築は必ずHA VPN</strong>を使用（Classic VPNは非推奨）</li>
                         <li><strong>IKEv2</strong>を使用（IKEv1より安全で効率的）</li>
@@ -99,7 +99,7 @@ export function Section2() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>VLAN Attachmentとは</h5>
+                    <h4>VLAN Attachmentとは</h4>
                     <p>1本の物理専用線を論理的に複数に分割する仕組み（VLAN）。各アタッチメントが1つのVPCに対応し、1本の回線で複数のVPCに接続できます。</p>
                 </div>
             </div>

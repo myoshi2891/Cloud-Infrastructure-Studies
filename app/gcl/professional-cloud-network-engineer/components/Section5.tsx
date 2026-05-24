@@ -119,7 +119,7 @@ export function Section5() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>
                             全外部LBに<strong>Cloud Armorセキュリティポリシーを適用</strong>
@@ -284,7 +284,7 @@ export function Section5() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>機密データ（個人情報・金融データ）を扱うプロジェクトに必ず適用する</li>
                         <li>
@@ -506,7 +506,7 @@ export function Section5() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>
                             SSH/RDPは外部からの直接アクセスを廃止し、<strong>IAP経由のみ</strong>
