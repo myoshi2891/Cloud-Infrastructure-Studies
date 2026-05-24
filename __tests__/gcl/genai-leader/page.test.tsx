@@ -14,10 +14,20 @@ describe('Generative AI Leader ページ', () => {
     });
 
     it('試験メタデータが表示されること', () => {
-        render(<GenaiLeaderPage />);
+        const { container } = render(<GenaiLeaderPage />);
         expect(screen.getByText('90 分')).toBeInTheDocument();
         expect(screen.getByText('50〜60問')).toBeInTheDocument();
         expect(screen.getAllByText('$99').length).toBeGreaterThanOrEqual(1);
+
+        // meta-card のラベル要素がクラス名 "ml" を、値要素がクラス名 "mv" を持っていることをテスト
+        const metaCard = container.querySelector('.meta-card');
+        expect(metaCard).toBeInTheDocument();
+        if (metaCard) {
+            const labelEl = metaCard.querySelector('.ml');
+            const valEl = metaCard.querySelector('.mv');
+            expect(labelEl).toBeInTheDocument();
+            expect(valEl).toBeInTheDocument();
+        }
     });
 
     it('4つのセクション見出しが存在すること', () => {
