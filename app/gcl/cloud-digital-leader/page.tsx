@@ -2384,7 +2384,7 @@ export default function CloudDigitalLeaderPage() {
                     </div>
                 </section>
 
-                <nav className="snav" role="navigation" aria-label="セクションナビゲーション">
+                <nav className="snav" aria-label="セクションナビゲーション">
                     <div className="snav-inner">
                         <a href="#s0" className="snav-link"><span className="snav-num">00</span>試験概要</a>
                         <a href="#s1" className="snav-link"><span className="snav-num">01</span>DX基礎</a>
