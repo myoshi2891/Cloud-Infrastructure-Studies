@@ -60,25 +60,25 @@
 
 
     /* Callout & Status Themes */
-    --color-warning: #b85c00;
+    --color-warning: #fb923c;
     --color-warning-bg: #fef3e8;
     --color-warning-border: #f0c08a;
-    --color-warning-fg: #6b3600;
-    --color-warning-rgb: 184, 92, 0;
+    --color-warning-fg: #fb923c;
+    --color-warning-rgb: 251, 146, 60;
 
-    --color-tip: #5c3fa8;
+    --color-tip: #a78bfa;
     --color-tip-bg: #f2eeff;
     --color-tip-border: #c8b8f0;
-    --color-tip-fg: #3a2470;
+    --color-tip-fg: #a78bfa;
 
     --color-info-border: #b0cef4;
-    --color-info-fg: #0c3870;
+    --color-info-fg: #4f8ef7;
 
-    --color-destructive: #c0392b;
-    --color-destructive-rgb: 192, 57, 43;
+    --color-destructive: #f87171;
+    --color-destructive-rgb: 248, 113, 113;
 
-    --color-alt: #7a6200;
-    --color-alt-fg: #5c4a00;
+    --color-alt: #eab308;
+    --color-alt-fg: #facc15;
 
     --color-theme-genai-rgb: 167, 139, 250;
     --color-orange: #fb923c;

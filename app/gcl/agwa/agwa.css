@@ -422,7 +422,7 @@ tr:hover td {
 .source-block a {
     display: block;
     color: var(--color-primary);
-    text-decoration: none;
+    text-decoration: underline;
     margin-bottom: 3px;
     word-break: break-all;
 }
@@ -487,7 +487,7 @@ tr:hover td {
 }
 .footer a {
     color: var(--color-primary);
-    text-decoration: none;
+    text-decoration: underline;
 }
 .sidebar::-webkit-scrollbar {
     width: 4px;
