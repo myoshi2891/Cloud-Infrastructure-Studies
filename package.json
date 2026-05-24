@@ -13,6 +13,7 @@
     "dashboard": "node scripts/generate-coverage-dashboard.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@eslint/compat": "^2.0.5",
     "@eslint/eslintrc": "^3.3.5",
     "@netlify/plugin-nextjs": "^5.15.11",
