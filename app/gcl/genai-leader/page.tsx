@@ -496,12 +496,12 @@ export default function GenaiLeaderPage() {
                         初学者でも安心！4つの出題セクションを図解・ベストプラクティス付きでステップバイステップ解説。生成AI時代のビジネスリーダーを目指す方の決定版ガイド。
                     </p>
                     <div className="meta-grid">
-                        <div className="meta-card"><div className="label">試験時間</div><div className="val">90 分</div></div>
-                        <div className="meta-card"><div className="label">問題数</div><div className="val">50〜60問</div></div>
-                        <div className="meta-card"><div className="label">形式</div><div className="val">多肢選択式</div></div>
-                        <div className="meta-card"><div className="label">受験料</div><div className="val">$99</div></div>
-                        <div className="meta-card"><div className="label">有効期間</div><div className="val">3 年間</div></div>
-                        <div className="meta-card"><div className="label">前提知識</div><div className="val">不要</div></div>
+                        <div className="meta-card"><div className="ml">試験時間</div><div className="mv">90 分</div></div>
+                        <div className="meta-card"><div className="ml">問題数</div><div className="mv">50〜60問</div></div>
+                        <div className="meta-card"><div className="ml">形式</div><div className="mv">多肢選択式</div></div>
+                        <div className="meta-card"><div className="ml">受験料</div><div className="mv">$99</div></div>
+                        <div className="meta-card"><div className="ml">有効期間</div><div className="mv">3 年間</div></div>
+                        <div className="meta-card"><div className="ml">前提知識</div><div className="mv">不要</div></div>
                     </div>
                 </section>
 
