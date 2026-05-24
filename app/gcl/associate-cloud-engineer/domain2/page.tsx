@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { DiagramSVG } from '@/components/DiagramSVG';
 import { CHAPTER_COUNT } from './constants';
 import Chapter17 from './Chapter17';
 export const metadata: Metadata = {
@@ -7,6 +8,11 @@ export const metadata: Metadata = {
         'Google Cloud ACE Domain 2 包括的解説。コンピューティング・ストレージ・ネットワーク・Terraform の計画と実装を詳解。',
 };
 
+/**
+ * Render the Domain 2 overview section containing an SVG diagram of the four subdomains and a chapter table of contents.
+ *
+ * @returns The JSX element for the "Domain 2 全体マップ" section, including the DiagramSVG overview and a table listing chapters Ch1–Ch17 with titles and key topics.
+ */
 function SectionIntro() {
     return (
         <div id="ch0" className="sgap">
@@ -20,37 +26,55 @@ function SectionIntro() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">2.0</span>Domain 2 の構造</div>
-                <pre className="codeblock">{`Domain 2: クラウドソリューションの計画・実装（≈ 21%）
-│
-├── 2-A. コンピューティングリソースの計画と実装
-│   ├── Compute Engine (GCE)
-│   ├── Spot VM / プリエンプティブル VM
-│   ├── Managed Instance Group (MIG)
-│   ├── Google Kubernetes Engine (GKE)
-│   │   ├── Autopilot モード
-│   │   └── Standard モード
-│   ├── Cloud Run
-│   └── Cloud Functions
-│
-├── 2-B. データストレージの計画と実装
-│   ├── Cloud Storage（オブジェクトストレージ）
-│   ├── Persistent Disk / Filestore（ブロック・ファイルストレージ）
-│   └── データベースサービス選定
-│       ├── Cloud SQL / Cloud Spanner / AlloyDB
-│       ├── Firestore / Cloud Bigtable / Memorystore
-│       └── BigQuery / Bare Metal Solution
-│
-├── 2-C. ネットワークリソースの計画と実装
-│   ├── VPC・サブネット設計
-│   ├── Shared VPC / VPC Peering
-│   ├── Cloud NAT / Cloud DNS
-│   ├── Cloud VPN / Cloud Interconnect
-│   └── ロードバランサの選定
-│
-└── 2-D. Infrastructure as Code (IaC)
-    ├── Terraform の基本と State 管理
-    ├── CI/CD パイプラインとの統合
-    └── Cloud Deployment Manager`}</pre>
+                <DiagramSVG viewBox="0 0 1100 470" ariaLabel="Domain 2 の全体マップ">
+                    {/* Root */}
+                    <rect x="320" y="10" width="460" height="46" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="2" />
+                    <text x="550" y="38" textAnchor="middle" fontSize="15" fontWeight="bold" fill="currentColor">Domain 2: クラウドソリューションの計画・実装（≈21%）</text>
+                    {/* Trunk lines */}
+                    <line x1="550" y1="56" x2="550" y2="80" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="145" y1="80" x2="955" y2="80" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="145" y1="80" x2="145" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="415" y1="80" x2="415" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="685" y1="80" x2="685" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="955" y1="80" x2="955" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    {/* Sub-domain headers */}
+                    <rect x="20" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="145" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-A. コンピューティング</text>
+                    <rect x="290" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="415" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-B. データストレージ</text>
+                    <rect x="560" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="685" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-C. ネットワーク</text>
+                    <rect x="830" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="955" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">2-D. IaC</text>
+                    {/* Column 1: Compute */}
+                    <text x="30" y="168" fontSize="12" fill="currentColor">• Compute Engine (GCE)</text>
+                    <text x="30" y="190" fontSize="12" fill="currentColor">• Spot VM / プリエンプティブル VM</text>
+                    <text x="30" y="212" fontSize="12" fill="currentColor">• Managed Instance Group (MIG)</text>
+                    <text x="30" y="234" fontSize="12" fill="currentColor">• Google Kubernetes Engine (GKE)</text>
+                    <text x="50" y="254" fontSize="11" fill="currentColor" fontStyle="italic">– Autopilot モード</text>
+                    <text x="50" y="272" fontSize="11" fill="currentColor" fontStyle="italic">– Standard モード</text>
+                    <text x="30" y="294" fontSize="12" fill="currentColor">• Cloud Run</text>
+                    <text x="30" y="316" fontSize="12" fill="currentColor">• Cloud Functions</text>
+                    {/* Column 2: Storage */}
+                    <text x="300" y="168" fontSize="12" fill="currentColor">• Cloud Storage（オブジェクト）</text>
+                    <text x="300" y="190" fontSize="12" fill="currentColor">• Persistent Disk / Filestore</text>
+                    <text x="300" y="212" fontSize="12" fill="currentColor">• データベースサービス選定</text>
+                    <text x="320" y="232" fontSize="11" fill="currentColor" fontStyle="italic">– Cloud SQL / Spanner / AlloyDB</text>
+                    <text x="320" y="250" fontSize="11" fill="currentColor" fontStyle="italic">– Firestore / Bigtable / Memorystore</text>
+                    <text x="320" y="268" fontSize="11" fill="currentColor" fontStyle="italic">– BigQuery / Bare Metal Solution</text>
+                    {/* Column 3: Network */}
+                    <text x="570" y="168" fontSize="12" fill="currentColor">• VPC・サブネット設計</text>
+                    <text x="570" y="190" fontSize="12" fill="currentColor">• Shared VPC / VPC Peering</text>
+                    <text x="570" y="212" fontSize="12" fill="currentColor">• Cloud NAT / Cloud DNS</text>
+                    <text x="570" y="234" fontSize="12" fill="currentColor">• Cloud VPN / Cloud Interconnect</text>
+                    <text x="570" y="256" fontSize="12" fill="currentColor">• ロードバランサの選定</text>
+                    {/* Column 4: IaC */}
+                    <text x="840" y="168" fontSize="12" fill="currentColor">• Terraform の基本と State 管理</text>
+                    <text x="840" y="190" fontSize="12" fill="currentColor">• CI/CD パイプラインとの統合</text>
+                    <text x="840" y="212" fontSize="12" fill="currentColor">• Cloud Deployment Manager</text>
+                    {/* Footer note */}
+                    <text x="550" y="420" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">4 つのサブドメイン (A〜D) を横断して計画・実装を学ぶ</text>
+                </DiagramSVG>
             </div>
 
             <div className="tcard">

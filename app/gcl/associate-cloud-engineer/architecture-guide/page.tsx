@@ -1,5 +1,36 @@
 import type { Metadata } from 'next';
+import { DiagramSVG } from '@/components/DiagramSVG';
+import { MermaidDiagram } from '@/components/MermaidDiagram';
 import '../ace.css';
+
+const ROADMAP_CHART = `flowchart LR
+    W12["Week 1-2<br/>基礎固め<br/>GCP概要・IAM・VPC"] --> W34["Week 3-4<br/>コンピューティング & ストレージ<br/>GCE / GKE / Cloud Run / GCS / DB"]
+    W34 --> W56["Week 5-6<br/>ネットワーク & IaC<br/>VPC設計 / LB / Terraform"]
+    W56 --> W78["Week 7-8<br/>運用 & 試験対策<br/>Monitoring / Logging / 模擬試験"]`;
+
+const BUDGET_AUTOSTOP_CHART = `flowchart LR
+    A[予算アラート] --> B[Pub/Sub トピック]
+    B --> C[Cloud Functions]
+    C --> D[リソースの停止<br/>VM stop / API disable]`;
+
+const SPOT_VM_CHART = `flowchart TD
+    A[Google にキャパシティの余裕あり] --> B[Spot VM をデプロイ可能]
+    B --> C[通常 VM の最大 91% 割引で稼働]
+    C --> D{Google がキャパシティを<br/>必要としたか?}
+    D -->|Yes| E[プリエンプト<br/>強制停止]
+    D -->|No| C`;
+
+const CLOUD_RUN_OVERVIEW_CHART = `flowchart TD
+    A[コンテナイメージをデプロイ] --> B[インフラ管理不要<br/>ゼロオペレーション]
+    B --> C[ゼロへのスケールダウン<br/>アイドル時コストなし]
+    C --> D[HTTP リクエスト or<br/>Eventarc イベントで起動]`;
+
+const BINARY_AUTH_CHART = `flowchart LR
+    A[CI/CD パイプラインで署名<br/>イメージにデジタル署名を付与] --> B[Artifact Registry]
+    B --> C[GKE デプロイ時に検証]
+    C --> D{承認済み署名あり?}
+    D -->|Yes| E[Deploy 許可]
+    D -->|No| F[ブロック]`;
 
 export const metadata: Metadata = {
     title: 'ACE 試験対策・アーキテクチャ詳細ガイド | Associate Cloud Engineer',
@@ -7,7 +38,15 @@ export const metadata: Metadata = {
         'Google Cloud ACE 試験の完全学習ガイド。初学者向け試験概要・学習ロードマップから、コンピューティング・GKE・ストレージ・ネットワーク・IaC・IAM・GenAI まで全領域のアーキテクチャとベストプラクティスを網羅。',
 };
 
-/* ── Section 1: 試験の全体像と学習ロードマップ ── */
+/**
+ * Render the "試験の全体像と学習ロードマップ" (Exam overview and study roadmap) section of the ACE study guide page.
+ *
+ * The section includes an ACE certification summary, recommended experience and next steps, exam types and structure,
+ * domain weightings, a study tip emphasizing Domain 2, a Mermaid-based 6–8 week learning roadmap diagram, and an
+ * enterprise-oriented breakdown of exam details with reference links.
+ *
+ * @returns A JSX element containing the complete Section 1 content for the page.
+ */
 function S1Overview() {
     return (
         <div id="s1" className="sgap">
@@ -56,12 +95,22 @@ function S1Overview() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">1.3</span>出題ドメインと配点比率</div>
-                <pre className="codeblock">{`┌─────────────────────────────────────────────────────────┐
-│  Domain 1: クラウドソリューション環境の設定      ≈ 23%  │
-│  Domain 2: クラウドソリューションの計画と実装    ≈ 30%  │
-│  Domain 3: 正常なオペレーションの確保            ≈ 27%  │
-│  Domain 4: アクセスとセキュリティの構成          ≈ 20%  │
-└─────────────────────────────────────────────────────────┘`}</pre>
+                <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>出題ドメインと配点比率</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">ドメイン</th>
+                            <th scope="col">テーマ</th>
+                            <th scope="col">配点比率</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Domain 1</td><td>クラウドソリューション環境の設定</td><td>≈ 23%</td></tr>
+                        <tr><td>Domain 2</td><td>クラウドソリューションの計画と実装</td><td>≈ 30%</td></tr>
+                        <tr><td>Domain 3</td><td>正常なオペレーションの確保</td><td>≈ 27%</td></tr>
+                        <tr><td>Domain 4</td><td>アクセスとセキュリティの構成</td><td>≈ 20%</td></tr>
+                    </tbody>
+                </table>
                 <p style={{ fontSize: '14px', marginBottom: '0' }}>
                     💡 <strong>学習のコツ</strong>: Domain 2（計画と実装）が最大配点です。Compute Engine、GKE、Cloud SQL などの実装パターンを重点的に学習しましょう。
                 </p>
@@ -69,17 +118,7 @@ function S1Overview() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">1.4</span>学習ロードマップ（目安: 6〜8週間）</div>
-                <pre className="codeblock">{`Week 1-2: 基礎固め
-  └── Google Cloud 概要 → IAM・リソース階層 → VPCの基本
-
-Week 3-4: コンピューティング & ストレージ
-  └── Compute Engine → GKE → Cloud Run → Cloud Storage → データベース選定
-
-Week 5-6: ネットワーク & IaC
-  └── VPC設計 → ロードバランサ → Terraform基礎
-
-Week 7-8: 運用 & 試験対策
-  └── Cloud Monitoring/Logging → セキュリティ強化 → 模擬試験`}</pre>
+                <MermaidDiagram chart={ROADMAP_CHART} ariaLabel="ACE 試験対策の学習ロードマップ (8 週間)" />
             </div>
 
             <div className="tcard">
@@ -117,7 +156,11 @@ Week 7-8: 運用 & 試験対策
     );
 }
 
-/* ── Section 2: クラウドソリューション環境の設定とガバナンス ── */
+/**
+ * Renders the "クラウドソリューション環境の設定とガバナンス" (Domain 1) section containing resource hierarchy, IAM policy inheritance, billing & budgets, budget-driven auto-stop architecture, and enterprise governance guidance.
+ *
+ * @returns The JSX element for Section 2 of the architecture guide page.
+ */
 function S2Governance() {
     return (
         <div id="s2" className="sgap">
@@ -135,10 +178,24 @@ function S2Governance() {
                 <p style={{ fontSize: '14px', marginBottom: '14px' }}>
                     Google Cloud のすべてのリソースは、以下の厳密な階層構造で管理されます。
                 </p>
-                <pre className="codeblock">{`Organization（組織）
-    └── Folder（フォルダ）
-            └── Project（プロジェクト）
-                    └── Resources（VMなど個別リソース）`}</pre>
+                <DiagramSVG viewBox="0 0 720 280" ariaLabel="Google Cloud のリソース階層">
+                    <defs>
+                        <marker id="arch-rh-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                    <rect x="220" y="20" width="280" height="40" rx="8" fill="rgba(64,224,208,0.18)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="360" y="44" textAnchor="middle" fontSize="14" fontWeight="700" fill="currentColor">Organization（組織）</text>
+                    <line x1="360" y1="60" x2="360" y2="80" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-rh-arrow)" />
+                    <rect x="220" y="84" width="280" height="40" rx="8" fill="rgba(64,224,208,0.14)" stroke="currentColor" strokeWidth="1.6" />
+                    <text x="360" y="108" textAnchor="middle" fontSize="14" fontWeight="600" fill="currentColor">Folder（フォルダ）</text>
+                    <line x1="360" y1="124" x2="360" y2="144" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-rh-arrow)" />
+                    <rect x="220" y="148" width="280" height="40" rx="8" fill="rgba(64,224,208,0.10)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="360" y="172" textAnchor="middle" fontSize="14" fontWeight="600" fill="currentColor">Project（プロジェクト）</text>
+                    <line x1="360" y1="188" x2="360" y2="208" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-rh-arrow)" />
+                    <rect x="220" y="212" width="280" height="40" rx="8" fill="rgba(64,224,208,0.06)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="360" y="236" textAnchor="middle" fontSize="13" fill="currentColor">Resources（VM、バケット、DB 等）</text>
+                </DiagramSVG>
                 <table className="ctable">
                     <thead>
                         <tr><th>レベル</th><th>役割</th><th>具体例</th></tr>
@@ -151,13 +208,28 @@ function S2Governance() {
                     </tbody>
                 </table>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}><strong>IAMポリシーの継承</strong></p>
-                <pre className="codeblock">{`Organization レベルのポリシー
-    ↓ 自動継承
-Folder レベルのポリシー
-    ↓ 自動継承
-Project レベルのポリシー
-    ↓ 自動継承
-個別リソースのポリシー`}</pre>
+                <DiagramSVG viewBox="0 0 720 320" ariaLabel="IAM ポリシーの継承カスケード">
+                    <defs>
+                        <marker id="arch-iam-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                    <rect x="180" y="20" width="360" height="40" rx="8" fill="rgba(64,224,208,0.18)" stroke="currentColor" strokeWidth="1.6" />
+                    <text x="360" y="44" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">Organization レベルのポリシー</text>
+                    <line x1="360" y1="60" x2="360" y2="84" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-iam-arrow)" />
+                    <text x="378" y="78" fontSize="11" fontStyle="italic" fill="currentColor">自動継承</text>
+                    <rect x="180" y="88" width="360" height="40" rx="8" fill="rgba(64,224,208,0.14)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="360" y="112" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">Folder レベルのポリシー</text>
+                    <line x1="360" y1="128" x2="360" y2="152" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-iam-arrow)" />
+                    <text x="378" y="146" fontSize="11" fontStyle="italic" fill="currentColor">自動継承</text>
+                    <rect x="180" y="156" width="360" height="40" rx="8" fill="rgba(64,224,208,0.10)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="360" y="180" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">Project レベルのポリシー</text>
+                    <line x1="360" y1="196" x2="360" y2="220" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-iam-arrow)" />
+                    <text x="378" y="214" fontSize="11" fontStyle="italic" fill="currentColor">自動継承</text>
+                    <rect x="180" y="224" width="360" height="40" rx="8" fill="rgba(64,224,208,0.06)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="360" y="248" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">個別リソースのポリシー</text>
+                    <text x="360" y="294" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">上位から下位へ自動継承 — 下位での制限は上位での許可を上書きできない</text>
+                </DiagramSVG>
                 <div className="wb">
                     ⚠️ <strong>重要</strong>: IAMポリシーは <strong>上位から下位へ継承</strong> されます。下位レベルで制限しても、上位で許可されていればアクセスできます。
                 </div>
@@ -179,11 +251,21 @@ Project レベルのポリシー
             <div className="tcard">
                 <div className="ttitle"><span className="tid">2.2</span>請求と予算管理（Billing &amp; Budget）</div>
                 <p style={{ fontSize: '14px', marginBottom: '14px' }}><strong>請求先アカウントの構造</strong></p>
-                <pre className="codeblock">{`支払いプロファイル（クレカ情報など）
-    └── 請求先アカウント（Billing Account）
-            ├── Project A
-            ├── Project B
-            └── Project C`}</pre>
+                <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>請求先アカウントの構造</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">階層</th>
+                            <th scope="col">エンティティ</th>
+                            <th scope="col">説明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>支払いプロファイル</td><td>クレジットカード情報・支払者情報</td></tr>
+                        <tr><td>2</td><td>請求先アカウント (Billing Account)</td><td>支払いプロファイルに紐付く請求単位</td></tr>
+                        <tr><td>3</td><td>Project A / Project B / Project C …</td><td>各プロジェクトは正確に 1 つの請求先アカウントにリンク</td></tr>
+                    </tbody>
+                </table>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}>
                     💡 各プロジェクトは <strong>正確に1つ</strong> の請求先アカウントにリンクされます。
                 </p>
@@ -197,10 +279,7 @@ Project レベルのポリシー
                     Google Cloud は予算の上限に達しても <strong>リソースを自動停止しません</strong>。
                 </div>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}>自動停止を実現するアーキテクチャ:</p>
-                <pre className="codeblock">{`予算アラート
-    → Pub/Sub トピック
-        → Cloud Functions
-            → リソースの停止 (例: VM停止, API無効化)`}</pre>
+                <MermaidDiagram chart={BUDGET_AUTOSTOP_CHART} ariaLabel="予算アラートから自動停止までのアーキテクチャ" />
                 <table className="ctable">
                     <thead>
                         <tr><th>リスク</th><th>原因</th><th>対策</th></tr>
@@ -250,7 +329,13 @@ Project レベルのポリシー
     );
 }
 
-/* ── Section 3: コンピューティングリソース ── */
+/**
+ * Render the "Computing Resources" documentation section (Domain 2) covering service selection, VM and serverless details, and operational guidance.
+ *
+ * The section includes subsections for computing service selection, Compute Engine details (machine families and OS Login guidance), Spot VM lifecycle and best practices, Cloud Run overview and Direct VPC Egress topology, plus enterprise-focused optimization and serverless networking recommendations.
+ *
+ * @returns A JSX element containing the full "Computing Resources" section with subsections 3.1–3.6, tables, diagrams, code snippets, and reference links.
+ */
 function S3Compute() {
     return (
         <div id="s3" className="sgap">
@@ -265,10 +350,23 @@ function S3Compute() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">3.1</span>コンピューティングサービス選定ガイド</div>
-                <pre className="codeblock">{`「どのコンピューティングサービスを使う？」
-
-制御レベルが高い ←────────────────────→ 制御レベルが低い
-Compute Engine → GKE Standard → GKE Autopilot → Cloud Run → Cloud Functions`}</pre>
+                <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>コンピューティングサービスの制御レベル比較</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">サービス</th>
+                            <th scope="col">制御レベル</th>
+                            <th scope="col">抽象化</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Compute Engine</td><td>★★★★★ (最高)</td><td>VM (IaaS)</td></tr>
+                        <tr><td>GKE Standard</td><td>★★★★</td><td>マネージド Kubernetes (ノード管理あり)</td></tr>
+                        <tr><td>GKE Autopilot</td><td>★★★</td><td>フルマネージド Kubernetes</td></tr>
+                        <tr><td>Cloud Run</td><td>★★</td><td>サーバーレスコンテナ</td></tr>
+                        <tr><td>Cloud Functions</td><td>★ (最低)</td><td>サーバーレス関数</td></tr>
+                    </tbody>
+                </table>
                 <table className="ctable">
                     <thead>
                         <tr><th>サービス</th><th>特徴</th><th>最適なユースケース</th></tr>
@@ -297,16 +395,22 @@ Compute Engine → GKE Standard → GKE Autopilot → Cloud Run → Cloud Functi
                     </tbody>
                 </table>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}><strong>セキュアな SSH アクセス管理</strong></p>
-                <pre className="codeblock">{`❌ アンチパターン（避けるべき方法）
-静的な SSH 公開鍵をメタデータに登録
-    → 退職者の鍵が残り続けるリスク
-    → 鍵の棚卸しが困難
-
-✅ 推奨: OS Login を使用
-OS Login 有効化
-    → IAM ポリシーで SSH アクセスを制御
-    → ユーザー削除 = 即時アクセス失効
-    → 詳細な監査ログが自動記録`}</pre>
+                <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>OS Login vs 静的 SSH キーの比較</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">観点</th>
+                            <th scope="col">❌ 静的 SSH 公開鍵 (メタデータ登録)</th>
+                            <th scope="col">✅ OS Login 有効化</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>退職者対応</td><td>鍵が残り続けるリスク</td><td>IAM 削除で即時アクセス失効</td></tr>
+                        <tr><td>鍵の管理</td><td>棚卸しが困難</td><td>IAM ポリシーで一元管理</td></tr>
+                        <tr><td>アクセス制御</td><td>鍵ベースで粒度が荒い</td><td>IAM ポリシーで SSH アクセスを細粒度に制御</td></tr>
+                        <tr><td>監査ログ</td><td>限定的</td><td>詳細な監査ログが自動記録</td></tr>
+                    </tbody>
+                </table>
                 <p style={{ fontSize: '14px', marginBottom: '8px' }}>OS Login の設定:</p>
                 <pre className="codeblock">
                     <span className="comment"># プロジェクト全体に OS Login を有効化</span>{'\n'}
@@ -334,11 +438,7 @@ OS Login 有効化
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">3.3</span>Spot VM（スポットVM）</div>
-                <pre className="codeblock">{`Google のキャパシティに余裕がある時に使える VM
-                ↓
-通常 VM の最大 91% 割引
-                ↓
-Google がキャパシティを必要とした時に「プリエンプト（強制停止）」`}</pre>
+                <MermaidDiagram chart={SPOT_VM_CHART} ariaLabel="Spot VM プリエンプションのライフサイクル" />
                 <p style={{ fontSize: '14px', marginBottom: '8px' }}>プリエンプトへの備え:</p>
                 <pre className="codeblock">
                     <span className="comment"># シャットダウンスクリプトで状態を Cloud Storage に保存</span>{'\n'}
@@ -372,16 +472,34 @@ Google がキャパシティを必要とした時に「プリエンプト（強�
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">3.4</span>Cloud Run（サーバーレスコンテナ）</div>
-                <pre className="codeblock">{`コンテナイメージをデプロイするだけ！
-    ↓
-・インフラ管理不要（ゼロオペレーション）
-・ゼロへのスケールダウン（アイドル時コストなし）
-・HTTP リクエスト or Eventarc イベントで起動`}</pre>
+                <MermaidDiagram chart={CLOUD_RUN_OVERVIEW_CHART} ariaLabel="Cloud Run の概要フロー" />
                 <p style={{ fontSize: '14px', marginBottom: '8px' }}>ネットワーク接続: Direct VPC Egress</p>
-                <pre className="codeblock">{`Cloud Run → [Direct VPC Egress] → VPC内のリソース
-                                    ├── Cloud SQL
-                                    ├── Memorystore
-                                    └── GCE VM (内部IP)`}</pre>
+                <DiagramSVG viewBox="0 0 880 280" ariaLabel="Cloud Run から VPC リソースへの接続トポロジ">
+                    <defs>
+                        <marker id="arch-cr-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                    {/* Cloud Run box */}
+                    <rect x="20" y="100" width="180" height="60" rx="10" fill="rgba(64,224,208,0.18)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="110" y="125" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">Cloud Run</text>
+                    <text x="110" y="145" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">サーバーレス</text>
+                    {/* Direct VPC Egress label */}
+                    <line x1="200" y1="130" x2="320" y2="130" stroke="currentColor" strokeWidth="1.8" markerEnd="url(#arch-cr-arrow)" />
+                    <text x="260" y="120" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">Direct VPC Egress</text>
+                    {/* VPC boundary */}
+                    <rect x="320" y="20" width="540" height="240" rx="14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6,4" />
+                    <text x="590" y="40" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">VPC 内のリソース</text>
+                    {/* Sub-resources */}
+                    <rect x="360" y="70" width="220" height="40" rx="8" fill="rgba(124,164,255,0.12)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="470" y="94" textAnchor="middle" fontSize="12" fill="currentColor">Cloud SQL</text>
+                    <rect x="360" y="120" width="220" height="40" rx="8" fill="rgba(124,164,255,0.12)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="470" y="144" textAnchor="middle" fontSize="12" fill="currentColor">Memorystore</text>
+                    <rect x="360" y="170" width="220" height="40" rx="8" fill="rgba(124,164,255,0.12)" stroke="currentColor" strokeWidth="1.4" />
+                    <text x="470" y="194" textAnchor="middle" fontSize="12" fill="currentColor">GCE VM (内部 IP)</text>
+                    <rect x="620" y="120" width="220" height="40" rx="8" fill="rgba(124,164,255,0.08)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="730" y="144" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">その他 VPC リソース</text>
+                </DiagramSVG>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}>
                     💡 <strong>第1世代 vs 第2世代</strong>: スループットを最大化するには <strong>第2世代の実行環境 + Direct VPC egress</strong> を選択。VPC コネクタより高速です。
                 </p>
@@ -469,29 +587,14 @@ function S4GKE() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">4.1</span>GKE の2つのモード: Autopilot vs Standard</div>
-                <pre className="codeblock">{`             Autopilot モード
-┌────────────────────────────────────────┐
-│ Google がすべて管理:                    │
-│   ・ノードのプロビジョニング            │
-│   ・スケーリング                        │
-│   ・アップグレード                      │
-│   ・セキュリティ制約                    │
-│ 課金: Pod が要求する vCPU/Memory 単位   │
-└────────────────────────────────────────┘
-          ↑ デフォルト推奨
-
-             Standard モード
-┌────────────────────────────────────────┐
-│ ユーザーがノードプールを直接管理        │
-│ 課金: ノード（VM）単位                  │
-│ 必要な場面:                             │
-│   ・特権コンテナの実行                  │
-│   ・カーネルパラメータのチューニング    │
-│   ・DaemonSet（ロギング/監視エージェント）│
-└────────────────────────────────────────┘`}</pre>
+                <p style={{ fontSize: '14px', marginBottom: '10px' }}>
+                    <strong>Autopilot モード</strong> は Google がノードのプロビジョニング・スケーリング・アップグレード・セキュリティ制約をすべて管理し、課金は Pod が要求する vCPU/Memory 単位（デフォルト推奨）。
+                    <strong>Standard モード</strong> はユーザーがノードプールを直接管理し、課金はノード単位。特権コンテナの実行・カーネルパラメータのチューニング・DaemonSet（ロギング/監視）など低レベル制御が必要な場合に選択する。
+                </p>
                 <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>GKE Autopilot vs Standard 比較</caption>
                     <thead>
-                        <tr><th>項目</th><th>Autopilot</th><th>Standard</th></tr>
+                        <tr><th scope="col">項目</th><th scope="col">Autopilot</th><th scope="col">Standard</th></tr>
                     </thead>
                     <tbody>
                         <tr><td>ノード管理</td><td>Google が自動管理</td><td>ユーザーが管理</td></tr>
@@ -507,17 +610,35 @@ function S4GKE() {
             <div className="tcard">
                 <div className="ttitle"><span className="tid">4.2</span>GKE セキュリティの要点</div>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}><strong>Workload Identity Federation（最重要！）</strong></p>
-                <pre className="codeblock">{`❌ アンチパターン: サービスアカウントキーをクラスタ内に保存
-Secret として JSON キーを保存
-    → キーが漏洩するリスク
-    → キーのローテーション管理が複雑
-
-✅ 推奨: Workload Identity を使用
-Kubernetes Service Account
-    ↓ 紐付け (bind)
-Google Cloud IAM Service Account
-    ↓
-GCP API (Secret Manager, Cloud Storage など) にアクセス`}</pre>
+                <DiagramSVG viewBox="0 0 880 400" ariaLabel="Workload Identity アンチパターン vs 推奨パターン">
+                    <defs>
+                        <marker id="arch-wi-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L9,3 z" fill="currentColor" />
+                        </marker>
+                    </defs>
+                    {/* Anti-pattern column */}
+                    <rect x="20" y="20" width="400" height="44" rx="8" fill="rgba(255,99,99,0.14)" stroke="currentColor" strokeWidth="1.6" />
+                    <text x="220" y="48" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">❌ アンチパターン: SA キーをクラスタ内に保存</text>
+                    <rect x="60" y="84" width="320" height="40" rx="6" fill="rgba(255,255,255,0.04)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="220" y="108" textAnchor="middle" fontSize="12" fill="currentColor">Secret として JSON キーを保存</text>
+                    <line x1="220" y1="124" x2="220" y2="148" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-wi-arrow)" />
+                    <rect x="60" y="152" width="320" height="40" rx="6" fill="rgba(255,99,99,0.08)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="220" y="176" textAnchor="middle" fontSize="12" fill="currentColor">キー漏洩リスク・ローテーション管理が複雑</text>
+                    {/* Recommended column */}
+                    <rect x="460" y="20" width="400" height="44" rx="8" fill="rgba(64,224,208,0.18)" stroke="currentColor" strokeWidth="1.6" />
+                    <text x="660" y="48" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">✅ 推奨: Workload Identity</text>
+                    <rect x="500" y="84" width="320" height="40" rx="6" fill="rgba(64,224,208,0.08)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="660" y="108" textAnchor="middle" fontSize="12" fill="currentColor">Kubernetes Service Account (KSA)</text>
+                    <line x1="660" y1="124" x2="660" y2="148" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-wi-arrow)" />
+                    <text x="680" y="142" fontSize="11" fontStyle="italic" fill="currentColor">bind</text>
+                    <rect x="500" y="152" width="320" height="40" rx="6" fill="rgba(64,224,208,0.10)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="660" y="176" textAnchor="middle" fontSize="12" fill="currentColor">Google Cloud IAM Service Account</text>
+                    <line x1="660" y1="192" x2="660" y2="216" stroke="currentColor" strokeWidth="1.5" markerEnd="url(#arch-wi-arrow)" />
+                    <rect x="500" y="220" width="320" height="40" rx="6" fill="rgba(64,224,208,0.12)" stroke="currentColor" strokeWidth="1.2" />
+                    <text x="660" y="244" textAnchor="middle" fontSize="12" fill="currentColor">GCP API (Secret Manager / GCS 等)</text>
+                    {/* Footer */}
+                    <text x="440" y="320" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">キーレスで短期トークンを取得 — 漏洩リスクとローテーションの負担を解消</text>
+                </DiagramSVG>
                 <p style={{ fontSize: '14px', marginBottom: '8px' }}>設定例:</p>
                 <pre className="codeblock">
                     <span className="comment"># KSA と GSA を紐付け</span>{'\n'}
@@ -527,11 +648,7 @@ GCP API (Secret Manager, Cloud Storage など) にアクセス`}</pre>
                     {'  '}<span className="flag">--member</span>{' '}&quot;serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]&quot;
                 </pre>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}><strong>Binary Authorization（コンテナ整合性の保証）</strong></p>
-                <pre className="codeblock">{`CI/CD パイプラインで署名
-    └── イメージにデジタル署名を付与
-
-GKE デプロイ時に検証
-    └── 承認済み署名がないイメージはブロック！`}</pre>
+                <MermaidDiagram chart={BINARY_AUTH_CHART} ariaLabel="Binary Authorization フロー: 署名から検証まで" />
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}><strong>Security Posture Dashboard</strong></p>
                 <p style={{ fontSize: '14px', marginBottom: '10px' }}>GKE の「セキュリティポスチャダッシュボード」が自動スキャン:</p>
                 <ul style={{ fontSize: '14px', paddingLeft: '20px', marginBottom: '14px' }}>
@@ -574,7 +691,11 @@ GKE デプロイ時に検証
     );
 }
 
-/* ── Section 5: データ・ストレージアーキテクチャ ── */
+/**
+ * Render the "データ・ストレージアーキテクチャ" (Section 5) content covering Cloud Storage classes, object lifecycle management (OLM), bucket naming best practices, Soft Delete, Signed URLs, a database selection guide, and enterprise storage design guidance.
+ *
+ * @returns A JSX element containing the Section 5 markup (tables, code examples, best-practice lists, and reference links).
+ */
 function S5Storage() {
     return (
         <div id="s5" className="sgap">
@@ -589,23 +710,23 @@ function S5Storage() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">5.1</span>Cloud Storage（オブジェクトストレージ）</div>
-                <pre className="codeblock">{`アクセス頻度
-   高い ←──────────────────────────→ 低い
-
-Standard → Nearline → Coldline → Archive
- ($)       ($$)       ($$$)      ($$$$)
-最安/GB
-         ↑             ↑            ↑
-      月1回          年4回未満    年1回未満`}</pre>
                 <table className="ctable">
+                    <caption style={{ captionSide: 'top', textAlign: 'left', fontWeight: 600, padding: '8px 0' }}>Cloud Storage クラスのアクセス頻度別比較</caption>
                     <thead>
-                        <tr><th>クラス</th><th>最小保存期間</th><th>アクセスコスト</th><th>ユースケース</th></tr>
+                        <tr>
+                            <th scope="col">クラス</th>
+                            <th scope="col">アクセス頻度</th>
+                            <th scope="col">最小保存期間</th>
+                            <th scope="col">アクセスコスト</th>
+                            <th scope="col">保管コスト</th>
+                            <th scope="col">ユースケース</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Standard</strong></td><td>なし</td><td>無料</td><td>頻繁アクセスデータ、Webコンテンツ</td></tr>
-                        <tr><td><strong>Nearline</strong></td><td>30日</td><td>あり</td><td>バックアップ、月次レポート</td></tr>
-                        <tr><td><strong>Coldline</strong></td><td>90日</td><td>高め</td><td>災害復旧、四半期データ</td></tr>
-                        <tr><td><strong>Archive</strong></td><td>365日</td><td>最高</td><td>法規制保管、年次データ</td></tr>
+                        <tr><td><strong>Standard</strong></td><td>高 (随時)</td><td>なし</td><td>無料</td><td>$</td><td>頻繁アクセスデータ、Web コンテンツ</td></tr>
+                        <tr><td><strong>Nearline</strong></td><td>月 1 回</td><td>30 日</td><td>あり</td><td>$$</td><td>バックアップ、月次レポート</td></tr>
+                        <tr><td><strong>Coldline</strong></td><td>年 4 回未満</td><td>90 日</td><td>高め</td><td>$$$</td><td>災害復旧、四半期データ</td></tr>
+                        <tr><td><strong>Archive</strong></td><td>年 1 回未満</td><td>365 日</td><td>最高</td><td>$$$$</td><td>法規制保管、年次データ</td></tr>
                     </tbody>
                 </table>
                 <p style={{ fontSize: '14px', marginBottom: '8px' }}><strong>Object Lifecycle Management (OLM) で自動コスト最適化</strong></p>

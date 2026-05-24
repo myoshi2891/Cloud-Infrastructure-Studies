@@ -1,12 +1,40 @@
 import type { Metadata } from 'next';
+import { DiagramSVG } from '@/components/DiagramSVG';
+import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { CHAPTER_COUNT } from './constants';
 import Chapter18 from './Chapter18';
+
+const VM_LIFECYCLE_CHART = `stateDiagram-v2
+    [*] --> PROVISIONING: 作成
+    PROVISIONING --> STAGING: リソース割当完了
+    STAGING --> RUNNING: ブート完了
+    RUNNING --> STOPPING_stop: stop
+    STOPPING_stop --> TERMINATED: 停止完了
+    TERMINATED --> RUNNING: start
+    RUNNING --> SUSPENDED: suspend (Hibernation)
+    SUSPENDED --> RUNNING: resume
+    RUNNING --> STOPPING_del: delete
+    STOPPING_del --> DELETED: 削除完了
+    DELETED --> [*]
+    note right of TERMINATED
+      ディスクのデータは保持
+      静的 IP・永続ディスクには課金が継続
+    end note
+    note right of SUSPENDED
+      メモリ状態を保持して停止
+      stop より再起動が高速
+    end note`;
 export const metadata: Metadata = {
     title: 'Domain 3: Ensuring Successful Operation of a Cloud Solution',
     description:
         'Google Cloud ACE Domain 3 包括的解説。SRE・監視・ロギング・バックアップ・障害対応の運用管理を詳解。',
 };
 
+/**
+ * Render the Domain 3 introduction section: overall map, SRE pillars, and chapter table of contents.
+ *
+ * @returns The DOM subtree for the Domain 3 intro, including the SVG map diagram, the three SRE pillars card, and the chapters table (Ch1–Ch18).
+ */
 function SectionIntro() {
     return (
         <div id="ch0" className="sgap">
@@ -20,37 +48,52 @@ function SectionIntro() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">3.0</span>Domain 3 の構造</div>
-                <pre className="codeblock">{`Domain 3: クラウドソリューションの正常なオペレーションの確保（≈ 22%）
-│
-├── 3-A. コンピュートリソースの管理と維持
-│   ├── Compute Engine のライフサイクル管理
-│   ├── ディスクスナップショットの管理
-│   ├── Managed Instance Group (MIG) の操作
-│   ├── GKE クラスタ・ノードの管理
-│   └── Cloud Run / Cloud Functions の管理
-│
-├── 3-B. ストレージとデータベースの管理
-│   ├── Cloud Storage のデータ保護・管理
-│   ├── Cloud SQL / Spanner のバックアップと復元
-│   └── BigQuery データ管理
-│
-├── 3-C. オブザーバビリティ（可観測性）の確立
-│   ├── Cloud Monitoring
-│   │   ├── Ops Agent（メトリクス・ログ収集）
-│   │   ├── カスタムダッシュボード
-│   │   ├── アラートポリシーの設定
-│   │   └── SLO（サービスレベル目標）の設定
-│   ├── Cloud Logging
-│   │   ├── 監査ログの種類と管理
-│   │   ├── ログの検索・フィルタリング
-│   │   ├── Log Router（シンク設定）
-│   │   └── BigQuery / Cloud Storage へのエクスポート
-│   ├── Cloud Trace / Cloud Profiler
-│   └── Error Reporting
-│
-└── 3-D. AI 駆動の運用最適化
-    ├── Gemini Cloud Assist
-    └── Cloud Asset Inventory`}</pre>
+                <DiagramSVG viewBox="0 0 1100 470" ariaLabel="Domain 3 の全体マップ">
+                    {/* Root */}
+                    <rect x="280" y="10" width="540" height="46" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="2" />
+                    <text x="550" y="38" textAnchor="middle" fontSize="15" fontWeight="bold" fill="currentColor">Domain 3: 正常なオペレーションの確保（≈22%）</text>
+                    {/* Trunk */}
+                    <line x1="550" y1="56" x2="550" y2="80" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="145" y1="80" x2="955" y2="80" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="145" y1="80" x2="145" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="415" y1="80" x2="415" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="685" y1="80" x2="685" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    <line x1="955" y1="80" x2="955" y2="100" stroke="currentColor" strokeWidth="1.5" />
+                    {/* Sub-domain headers */}
+                    <rect x="20" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="145" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-A. コンピュート管理</text>
+                    <rect x="290" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="415" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-B. ストレージ/DB 管理</text>
+                    <rect x="560" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="685" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-C. オブザーバビリティ</text>
+                    <rect x="830" y="100" width="250" height="38" rx="6" fill="var(--color-theme-ace-bg)" opacity="0.7" stroke="currentColor" strokeWidth="1.5" />
+                    <text x="955" y="124" textAnchor="middle" fontSize="13" fontWeight="600" fill="currentColor">3-D. AI 駆動運用</text>
+                    {/* Column 1: Compute */}
+                    <text x="30" y="168" fontSize="12" fill="currentColor">• Compute Engine ライフサイクル</text>
+                    <text x="30" y="190" fontSize="12" fill="currentColor">• ディスクスナップショット管理</text>
+                    <text x="30" y="212" fontSize="12" fill="currentColor">• MIG の操作</text>
+                    <text x="30" y="234" fontSize="12" fill="currentColor">• GKE クラスタ・ノード管理</text>
+                    <text x="30" y="256" fontSize="12" fill="currentColor">• Cloud Run / Functions 管理</text>
+                    {/* Column 2: Storage */}
+                    <text x="300" y="168" fontSize="12" fill="currentColor">• Cloud Storage データ保護</text>
+                    <text x="300" y="190" fontSize="12" fill="currentColor">• Cloud SQL/Spanner バックアップ</text>
+                    <text x="300" y="212" fontSize="12" fill="currentColor">• BigQuery データ管理</text>
+                    {/* Column 3: Observability */}
+                    <text x="570" y="168" fontSize="12" fill="currentColor">• Cloud Monitoring</text>
+                    <text x="590" y="186" fontSize="11" fill="currentColor" fontStyle="italic">– Ops Agent</text>
+                    <text x="590" y="202" fontSize="11" fill="currentColor" fontStyle="italic">– カスタムダッシュボード</text>
+                    <text x="590" y="218" fontSize="11" fill="currentColor" fontStyle="italic">– アラートポリシー / SLO</text>
+                    <text x="570" y="240" fontSize="12" fill="currentColor">• Cloud Logging</text>
+                    <text x="590" y="258" fontSize="11" fill="currentColor" fontStyle="italic">– 監査ログ / Log Router</text>
+                    <text x="590" y="274" fontSize="11" fill="currentColor" fontStyle="italic">– BigQuery/GCS エクスポート</text>
+                    <text x="570" y="296" fontSize="12" fill="currentColor">• Cloud Trace / Profiler</text>
+                    <text x="570" y="318" fontSize="12" fill="currentColor">• Error Reporting</text>
+                    {/* Column 4: AI Ops */}
+                    <text x="840" y="168" fontSize="12" fill="currentColor">• Gemini Cloud Assist</text>
+                    <text x="840" y="190" fontSize="12" fill="currentColor">• Cloud Asset Inventory</text>
+                    {/* Footer */}
+                    <text x="550" y="420" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">SRE 的観点で 4 つのサブドメインを統合的に運用する</text>
+                </DiagramSVG>
             </div>
 
             <div className="tcard">
@@ -92,6 +135,15 @@ function SectionIntro() {
     );
 }
 
+/**
+ * Render the Chapter 1 section covering SRE principles, SLI/SLO/SLA, and fundamental operational concepts.
+ *
+ * Renders a titled chapter block that includes a three-pillar diagram of reliability/observability/operational efficiency,
+ * an SRE core concepts codeblock (SLI/SLO/SLA and error budget), a comparison table of SRE vs DevOps with best-practice notes,
+ * and a table describing the Four Golden Signals (Latency, Traffic, Errors, Saturation).
+ *
+ * @returns The JSX element representing the "SRE 的アプローチ — オペレーション管理の考え方" chapter content.
+ */
 function Chapter1() {
     return (
         <div id="ch1" className="sgap">
@@ -106,25 +158,33 @@ function Chapter1() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">1.1</span>「正常なオペレーション」とは？</div>
-                <pre className="codeblock">{`【クラウド運用の 3 つの柱】
-
-①  信頼性（Reliability）
-   └── システムが期待通りに動き続けること
-       ・スナップショットによるバックアップ
-       ・MIG の自動ヒーリング
-       ・SLO による目標の定義と監視
-
-②  可観測性（Observability）
-   └── システムの「今何が起きているか」を把握できること
-       ・Cloud Monitoring でメトリクスを収集
-       ・Cloud Logging でログを集約・分析
-       ・Cloud Trace で処理の遅延を特定
-
-③  運用効率（Operational Efficiency）
-   └── 手作業を減らし、問題を自動で検知・解決すること
-       ・アラートで異常を自動通知
-       ・Gemini Cloud Assist で障害の根本原因を AI が分析
-       ・IaC でインフラをコードで管理`}</pre>
+                <DiagramSVG viewBox="0 0 1000 300" ariaLabel="クラウド運用の 3 つの柱">
+                    <text x="500" y="24" textAnchor="middle" fontSize="14" fontWeight="bold" fill="currentColor">クラウド運用の 3 つの柱</text>
+                    {/* Pillar 1 */}
+                    <rect x="20" y="44" width="300" height="44" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="170" y="63" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">① 信頼性 (Reliability)</text>
+                    <text x="170" y="80" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">期待通りに動き続けること</text>
+                    <text x="30" y="110" fontSize="12" fill="currentColor">• スナップショットによるバックアップ</text>
+                    <text x="30" y="132" fontSize="12" fill="currentColor">• MIG の自動ヒーリング</text>
+                    <text x="30" y="154" fontSize="12" fill="currentColor">• SLO による目標の定義と監視</text>
+                    {/* Pillar 2 */}
+                    <rect x="350" y="44" width="300" height="44" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="500" y="63" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">② 可観測性 (Observability)</text>
+                    <text x="500" y="80" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">今何が起きているかを把握</text>
+                    <text x="360" y="110" fontSize="12" fill="currentColor">• Cloud Monitoring でメトリクス収集</text>
+                    <text x="360" y="132" fontSize="12" fill="currentColor">• Cloud Logging でログを集約・分析</text>
+                    <text x="360" y="154" fontSize="12" fill="currentColor">• Cloud Trace で処理の遅延を特定</text>
+                    {/* Pillar 3 */}
+                    <rect x="680" y="44" width="300" height="44" rx="8" fill="var(--color-theme-ace-bg)" stroke="currentColor" strokeWidth="1.8" />
+                    <text x="830" y="63" textAnchor="middle" fontSize="13" fontWeight="700" fill="currentColor">③ 運用効率 (Operational Efficiency)</text>
+                    <text x="830" y="80" textAnchor="middle" fontSize="11" fontStyle="italic" fill="currentColor">自動検知・自動解決</text>
+                    <text x="690" y="110" fontSize="12" fill="currentColor">• アラートで異常を自動通知</text>
+                    <text x="690" y="132" fontSize="12" fill="currentColor">• Gemini Cloud Assist で AI 根本原因分析</text>
+                    <text x="690" y="154" fontSize="12" fill="currentColor">• IaC でインフラをコードで管理</text>
+                    {/* Connector base */}
+                    <line x1="40" y1="200" x2="960" y2="200" stroke="currentColor" strokeWidth="1" strokeDasharray="4,3" opacity="0.5" />
+                    <text x="500" y="230" textAnchor="middle" fontSize="12" fontStyle="italic" fill="currentColor">3 つの柱を SRE 的アプローチで統合運用する</text>
+                </DiagramSVG>
             </div>
 
             <div className="tcard">
@@ -183,6 +243,11 @@ SLA（Service Level Agreement）= 契約
     );
 }
 
+/**
+ * Renders Chapter 2: Compute Engine lifecycle management content including the VM lifecycle diagram, common gcloud commands, startup/shutdown script examples, serial console debugging guidance, best practices, and IAP SSH notes.
+ *
+ * @returns The React element for the Chapter 2 section of the Domain 3 page
+ */
 function Chapter2() {
     return (
         <div id="ch2" className="sgap">
@@ -196,24 +261,7 @@ function Chapter2() {
 
             <div className="tcard">
                 <div className="ttitle"><span className="tid">2.1</span>VM のライフサイクルと状態管理</div>
-                <pre className="codeblock">{`【VM のライフサイクル】
-
-PROVISIONING（プロビジョニング中）
-    ↓ リソース割り当て完了
-STAGING（起動準備中）
-    ↓ ブート完了
-RUNNING（実行中）← 通常の稼働状態
-    │
-    ├── gcloud compute instances stop → STOPPING → TERMINATED（停止）
-    │   ※ TERMINATED でもディスクのデータは保持される
-    │   ※ TERMINATED 中も静的 IP・永続ディスクには課金が継続
-    │
-    ├── gcloud compute instances suspend → SUSPENDED（サスペンド）
-    │   ※ メモリ状態を保持したまま停止（Hibernation）
-    │   ※ 停止より再起動が速い
-    │
-    └── gcloud compute instances delete → STOPPING → DELETED
-        ※ ディスクの削除設定に依存`}</pre>
+                <MermaidDiagram chart={VM_LIFECYCLE_CHART} ariaLabel="VM のライフサイクル状態遷移図" />
             </div>
 
             <div className="tcard">

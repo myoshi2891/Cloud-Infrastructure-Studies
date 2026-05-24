@@ -46,6 +46,13 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
         ).toBeGreaterThanOrEqual(1);
     });
 
+    it('Domain 2 構造図が SVG（role="img"）として描画されること', () => {
+        const diagram = screen.getByRole('img', {
+            name: /Domain 2 の全体マップ/,
+        });
+        expect(diagram).toBeInTheDocument();
+    });
+
     it('Chapter17 が正しくレンダリングされ、参考リンクがすべて表示されること', () => {
         // Assert the presence of the section anchor '#ch17'
         const ch17 = document.getElementById('ch17');
@@ -58,5 +65,17 @@ describe('Domain 2: Planning and Implementing a Cloud Solution ページ', () =>
         const expectedCount = REFERENCE_LINKS.length + TECH_GUIDE_LINKS.length;
         const links = ch17?.querySelectorAll('a');
         expect(links?.length).toBe(expectedCount);
+    });
+
+    it('SVG 内の rect 要素がハードコードされた色（rgba など）を fill に含まないこと', () => {
+        const rects = document.querySelectorAll('rect');
+        expect(rects.length).toBeGreaterThan(0);
+        rects.forEach((rect) => {
+            const fill = rect.getAttribute('fill');
+            if (fill) {
+                const allowedFillRegex = /^(?:currentColor|none|transparent|var\(--[a-zA-Z0-9_-]+\)|url\(#[a-zA-Z0-9_-]+\))$/;
+                expect(fill).toMatch(allowedFillRegex);
+            }
+        });
     });
 });
