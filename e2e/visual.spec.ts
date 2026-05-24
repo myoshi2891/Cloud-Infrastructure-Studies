@@ -13,6 +13,9 @@ test.describe('Visual Regression tests', () => {
 
     for (const pagePath of pages) {
         test(`visual snapshot for ${pagePath}`, async ({ page }) => {
+            // Extend timeout to 120s as rendering/saving full-page screenshots of long pages can take time
+            test.setTimeout(120000);
+
             await page.goto(pagePath);
             await page.waitForLoadState('networkidle');
             // Wait for animations/rendering to settle down
