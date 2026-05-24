@@ -94,6 +94,7 @@ models/
 *.gif
 *.mp4
 *.avi
+!e2e/**/*.png
 
 # 環境ファイル
 config.ini
