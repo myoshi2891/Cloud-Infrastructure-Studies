@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 /**
  * Renders a sticky disclaimer banner and publishes its rendered height to a CSS custom property.
  *
- * The banner is exposed to assistive tech via `role="note"` and an `aria-label` containing the Japanese disclaimer.
+ * The banner is exposed to assistive tech via an `<aside>` element with an `aria-label` containing the Japanese disclaimer.
  * It sets `--disclaimer-height` on the document element and keeps that value updated when the banner's size changes.
  *
  * @returns The disclaimer banner as a JSX element.

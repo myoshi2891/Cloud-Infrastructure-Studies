@@ -9,8 +9,8 @@ describe('DisclaimerBanner', () => {
         expect(aside).toBeInTheDocument();
         expect(aside).toHaveAttribute('aria-label');
         
-        // 意図的な失敗: 実際には role="note" はありませんが、JSDocを更新する前にテストを失敗させます
-        expect(aside?.getAttribute('role')).toBe('note');
+        // role 属性が明示的に設定されていないことを検証
+        expect(aside?.getAttribute('role')).toBeNull();
     });
 
     it('--disclaimer-height カスタムプロパティが documentElement に設定されること', () => {
