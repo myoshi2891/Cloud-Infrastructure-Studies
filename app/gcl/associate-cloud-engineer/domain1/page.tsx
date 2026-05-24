@@ -8,7 +8,15 @@ export const metadata: Metadata = {
         'Google Cloud ACE Domain 1 完全解説。リソース階層・IAM継承・組織ポリシー・請求管理・予算自動制御・BigQuery分析・gcloud CLI・API管理まで全章を網羅。',
 };
 
-/* ── Section Intro ── */
+/**
+ * Render the Domain 1 introduction area including a diagram, summary, official link, and enterprise-positioning table.
+ *
+ * The component displays a Domain 1 hero header with weight badge, an inline SVG map of subdomains and items, a brief
+ * explanatory paragraph, a link to the official certification page, and a table that places Domain 1 among other exam
+ * domains from an enterprise governance perspective.
+ *
+ * @returns A JSX element containing the Domain 1 intro section with diagram, summary text, source link, and comparison table.
+ */
 function SectionIntro() {
     return (
         <div id="intro" className="sgap">
@@ -87,7 +95,11 @@ function SectionIntro() {
     );
 }
 
-/* ── Chapter 1: リソース階層 ── */
+/**
+ * Renders Chapter 1 content explaining Google Cloud resource hierarchy, IAM inheritance mechanics, and practical architecture/design patterns.
+ *
+ * @returns The React element for Chapter 1, including the organization-vs-cloud hierarchy diagram, detailed level descriptions, IAM inheritance examples, best-practice guidance, and reference links.
+ */
 function Chapter1() {
     return (
         <div id="ch1" className="sgap">

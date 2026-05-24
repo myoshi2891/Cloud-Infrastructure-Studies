@@ -38,7 +38,15 @@ export const metadata: Metadata = {
         'Google Cloud ACE 試験の完全学習ガイド。初学者向け試験概要・学習ロードマップから、コンピューティング・GKE・ストレージ・ネットワーク・IaC・IAM・GenAI まで全領域のアーキテクチャとベストプラクティスを網羅。',
 };
 
-/* ── Section 1: 試験の全体像と学習ロードマップ ── */
+/**
+ * Render the "試験の全体像と学習ロードマップ" (Exam overview and study roadmap) section of the ACE study guide page.
+ *
+ * The section includes an ACE certification summary, recommended experience and next steps, exam types and structure,
+ * domain weightings, a study tip emphasizing Domain 2, a Mermaid-based 6–8 week learning roadmap diagram, and an
+ * enterprise-oriented breakdown of exam details with reference links.
+ *
+ * @returns A JSX element containing the complete Section 1 content for the page.
+ */
 function S1Overview() {
     return (
         <div id="s1" className="sgap">
@@ -148,7 +156,11 @@ function S1Overview() {
     );
 }
 
-/* ── Section 2: クラウドソリューション環境の設定とガバナンス ── */
+/**
+ * Renders the "クラウドソリューション環境の設定とガバナンス" (Domain 1) section containing resource hierarchy, IAM policy inheritance, billing & budgets, budget-driven auto-stop architecture, and enterprise governance guidance.
+ *
+ * @returns The JSX element for Section 2 of the architecture guide page.
+ */
 function S2Governance() {
     return (
         <div id="s2" className="sgap">
@@ -317,7 +329,13 @@ function S2Governance() {
     );
 }
 
-/* ── Section 3: コンピューティングリソース ── */
+/**
+ * Render the "Computing Resources" documentation section (Domain 2) covering service selection, VM and serverless details, and operational guidance.
+ *
+ * The section includes subsections for computing service selection, Compute Engine details (machine families and OS Login guidance), Spot VM lifecycle and best practices, Cloud Run overview and Direct VPC Egress topology, plus enterprise-focused optimization and serverless networking recommendations.
+ *
+ * @returns A JSX element containing the full "Computing Resources" section with subsections 3.1–3.6, tables, diagrams, code snippets, and reference links.
+ */
 function S3Compute() {
     return (
         <div id="s3" className="sgap">
@@ -673,7 +691,11 @@ function S4GKE() {
     );
 }
 
-/* ── Section 5: データ・ストレージアーキテクチャ ── */
+/**
+ * Render the "データ・ストレージアーキテクチャ" (Section 5) content covering Cloud Storage classes, object lifecycle management (OLM), bucket naming best practices, Soft Delete, Signed URLs, a database selection guide, and enterprise storage design guidance.
+ *
+ * @returns A JSX element containing the Section 5 markup (tables, code examples, best-practice lists, and reference links).
+ */
 function S5Storage() {
     return (
         <div id="s5" className="sgap">

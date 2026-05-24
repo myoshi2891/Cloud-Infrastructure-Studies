@@ -26,6 +26,15 @@ export const metadata: Metadata = {
     description: 'Google Cloud Associate Cloud Engineer Domain 4: Configuring access and security study guide.',
 };
 
+/**
+ * Render the Chapter 1 content: core security principles and the shared responsibility model.
+ *
+ * Includes a comparison table illustrating the Principle of Least Privilege, a Mermaid flow
+ * diagram demonstrating Separation of Duties, and SVG diagrams illustrating Defense in Depth
+ * and Google's Shared Responsibility Model across IaaS/PaaS/SaaS.
+ *
+ * @returns The JSX element for the Chapter 1 section, ready to be inserted into the page.
+ */
 function Chapter1() {
     return (
         <div id="ch1" className="sgap">
@@ -168,6 +177,11 @@ function Chapter1() {
     );
 }
 
+/**
+ * Render the Chapter 2 section covering IAM fundamentals: the three IAM elements (principal, role, resource), types of principals, permission naming conventions, and IAM policy structure examples.
+ *
+ * @returns The JSX element for the Chapter 2 content section (id="ch2").
+ */
 function Chapter2() {
     return (
         <div id="ch2" className="sgap">

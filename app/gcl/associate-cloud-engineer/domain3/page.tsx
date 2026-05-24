@@ -30,6 +30,11 @@ export const metadata: Metadata = {
         'Google Cloud ACE Domain 3 包括的解説。SRE・監視・ロギング・バックアップ・障害対応の運用管理を詳解。',
 };
 
+/**
+ * Render the Domain 3 introduction section: overall map, SRE pillars, and chapter table of contents.
+ *
+ * @returns The DOM subtree for the Domain 3 intro, including the SVG map diagram, the three SRE pillars card, and the chapters table (Ch1–Ch18).
+ */
 function SectionIntro() {
     return (
         <div id="ch0" className="sgap">
@@ -130,6 +135,15 @@ function SectionIntro() {
     );
 }
 
+/**
+ * Render the Chapter 1 section covering SRE principles, SLI/SLO/SLA, and fundamental operational concepts.
+ *
+ * Renders a titled chapter block that includes a three-pillar diagram of reliability/observability/operational efficiency,
+ * an SRE core concepts codeblock (SLI/SLO/SLA and error budget), a comparison table of SRE vs DevOps with best-practice notes,
+ * and a table describing the Four Golden Signals (Latency, Traffic, Errors, Saturation).
+ *
+ * @returns The JSX element representing the "SRE 的アプローチ — オペレーション管理の考え方" chapter content.
+ */
 function Chapter1() {
     return (
         <div id="ch1" className="sgap">
@@ -229,6 +243,11 @@ SLA（Service Level Agreement）= 契約
     );
 }
 
+/**
+ * Renders Chapter 2: Compute Engine lifecycle management content including the VM lifecycle diagram, common gcloud commands, startup/shutdown script examples, serial console debugging guidance, best practices, and IAP SSH notes.
+ *
+ * @returns The React element for the Chapter 2 section of the Domain 3 page
+ */
 function Chapter2() {
     return (
         <div id="ch2" className="sgap">
