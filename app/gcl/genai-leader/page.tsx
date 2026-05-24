@@ -548,16 +548,15 @@ export default function GenaiLeaderPage() {
                 <Section3 />
                 <hr className="section-divider" />
                 <Section4 />
+                {/* Page Footer */}
+                <div className="page-footer">
+                    <p style={{ marginBottom: '8px' }}>Google Cloud Generative AI Leader 試験対策ガイド</p>
+                    <p>
+                        参考：<a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noopener noreferrer">Google Cloud 公式試験ページ</a> ｜ 作成日：2026年3月
+                    </p>
+                    <p style={{ marginTop: '8px', fontSize: '11px', opacity: 0.8 }}>※ 本ガイドは学習目的で作成されました。最新情報は必ず公式サイトでご確認ください。</p>
+                </div>
             </main>
-
-            {/* Page Footer */}
-            <div className="page-footer">
-                <p style={{ marginBottom: '8px' }}>Google Cloud Generative AI Leader 試験対策ガイド</p>
-                <p>
-                    参考：<a href="https://cloud.google.com/learn/certification/generative-ai-leader" target="_blank" rel="noopener noreferrer">Google Cloud 公式試験ページ</a> ｜ 作成日：2026年3月
-                </p>
-                <p style={{ marginTop: '8px', fontSize: '11px', opacity: 0.6 }}>※ 本ガイドは学習目的で作成されました。最新情報は必ず公式サイトでご確認ください。</p>
-            </div>
         </div>
     );
 }

@@ -1126,16 +1126,15 @@ export default function AssociateCloudEngineerPage() {
                 <Section3 />
                 <hr className="sdiv" />
                 <Section4 />
+                {/* Page Footer */}
+                <div className="page-footer">
+                    <p style={{ marginBottom: '8px', fontWeight: 600 }}>Google Cloud Associate Cloud Engineer 試験完全対策ガイド</p>
+                    <p>
+                        参考：<a href="https://cloud.google.com/learn/certification/cloud-engineer" target="_blank" rel="noopener noreferrer">Google Cloud 公式試験ページ</a> ｜ 作成日：2026年3月
+                    </p>
+                    <p style={{ marginTop: '8px', fontSize: '11px', opacity: 0.8 }}>※ 本ガイドは学習目的で作成。最新情報は必ず公式サイトでご確認ください。</p>
+                </div>
             </main>
-
-            {/* Page Footer */}
-            <div className="page-footer">
-                <p style={{ marginBottom: '8px', fontWeight: 600 }}>Google Cloud Associate Cloud Engineer 試験完全対策ガイド</p>
-                <p>
-                    参考：<a href="https://cloud.google.com/learn/certification/cloud-engineer" target="_blank" rel="noopener noreferrer">Google Cloud 公式試験ページ</a> ｜ 作成日：2026年3月
-                </p>
-                <p style={{ marginTop: '8px', fontSize: '11px', opacity: 0.5 }}>※ 本ガイドは学習目的で作成。最新情報は必ず公式サイトでご確認ください。</p>
-            </div>
         </div>
     );
 }

@@ -2407,11 +2407,10 @@ export default function CloudDigitalLeaderPage() {
                 <Section6 />
                 <Section7 />
                 <Section8 />
+                <div className="page-footer">
+                    <p>Cloud Digital Leader 認定試験 包括的解説 — 2026 Edition</p>
+                </div>
             </main>
-
-            <div className="page-footer">
-                <p>Cloud Digital Leader 認定試験 包括的解説 — 2026 Edition</p>
-            </div>
         </div>
     );
 }
