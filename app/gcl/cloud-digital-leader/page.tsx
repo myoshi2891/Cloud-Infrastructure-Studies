@@ -2351,6 +2351,13 @@ function Section8() {
     );
 }
 
+/**
+ * Page component that renders the Cloud Digital Leader 認定試験 study and reference guide divided into nine sections.
+ *
+ * Renders a hero header with exam metadata, a section navigation bar, the nine static content sections (SectionIntro through Section8), and a page footer.
+ *
+ * @returns The complete Cloud Digital Leader exam guide page as a React element
+ */
 export default function CloudDigitalLeaderPage() {
     return (
         <div className="cdl-page">
