@@ -7,7 +7,7 @@ describe('DisclaimerBanner', () => {
         const { container } = render(<DisclaimerBanner />);
         const aside = container.querySelector('aside');
         expect(aside).toBeInTheDocument();
-        expect(aside).toHaveAttribute('aria-label', 'dummy');
+        expect(aside).toHaveAttribute('aria-label', '免責事項: 本サイトは個人学習目的です。最新の公式情報は各試験プロバイダーの公式サイトをご確認ください。');
         
         // role 属性が明示的に設定されていないことを検証
         expect(aside?.getAttribute('role')).toBeNull();

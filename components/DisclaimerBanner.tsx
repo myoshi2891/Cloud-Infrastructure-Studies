@@ -11,7 +11,7 @@ import { useEffect, useRef } from 'react';
  * @returns The disclaimer banner as a JSX element.
  */
 export function DisclaimerBanner() {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const el = ref.current;
