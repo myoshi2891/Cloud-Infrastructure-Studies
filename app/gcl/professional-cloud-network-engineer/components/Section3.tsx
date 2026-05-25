@@ -451,7 +451,7 @@ export function Section3() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>マルチリージョンバックエンドで高可用性を実現する</li>
                         <li>Cloud CDNと組み合わせて静的コンテンツをキャッシュする</li>

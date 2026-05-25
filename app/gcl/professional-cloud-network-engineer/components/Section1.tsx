@@ -78,7 +78,7 @@ export function Section1() {
                 </ul>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>階層型ファイアウォールポリシー（Hierarchical Firewall Policies）</h5>
+                    <h4>階層型ファイアウォールポリシー（Hierarchical Firewall Policies）</h4>
                     <ul>
                         <li>VPC 単位ではなく、<strong>組織（Organization）またはフォルダ（Folder）レベル</strong>で適用可能。</li>
                         <li>配下の全プロジェクト・全 VPC に一括適用されるため、「社内共通のセキュリティ要件（例：全社で SSH は特定 IP からのみ許可）」を強制するのに最適。</li>

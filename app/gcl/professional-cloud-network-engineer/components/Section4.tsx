@@ -252,7 +252,7 @@ export function Section4() {
                 </p>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>
                             内部サービスは<strong>プライベートゾーン</strong>でDNS管理を集中化する

@@ -1047,56 +1047,55 @@ function Section4() {
 export default function AssociateCloudEngineerPage() {
     return (
         <div className="ace-page">
-            {/* Hero */}
-            <section className="hero">
-                <div className="hero-eyebrow">Google Cloud Certification</div>
-                <h1>
-                    <span className="accent">Associate Cloud Engineer</span>
-                    <br />
-                    完全マスター教材
-                </h1>
-                <p className="hero-desc">
-                    GCP の基盤構築から運用管理まで——ACE 試験に必要な知識を体系的に学ぶ
-                </p>
-                <div className="meta-row">
-                    <div className="meta-pill">
-                        <div className="ml">Duration</div>
-                        <div className="mv">2 時間</div>
-                    </div>
-                    <div className="meta-pill">
-                        <div className="ml">Questions</div>
-                        <div className="mv">50〜60問</div>
-                    </div>
-                    <div className="meta-pill">
-                        <div className="ml">Fee</div>
-                        <div className="mv">$125</div>
-                    </div>
-                    <div className="meta-pill">
-                        <div className="ml">Validity</div>
-                        <div className="mv">2 年間</div>
-                    </div>
-                    <div className="meta-pill">
-                        <div className="ml">Language</div>
-                        <div className="mv">日本語対応</div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Sticky Nav */}
-            <nav className="snav" aria-label="ACE セクションナビゲーション">
-                <a href="#overview" className="n1"><span className="dot db" />概要</a>
-                <a href="#s1" className="n1"><span className="dot db" />S1: 環境構築</a>
-                <a href="#s2" className="n2"><span className="dot dg" />S2: 計画・実装</a>
-                <a href="#s3" className="n3"><span className="dot dy" />S3: 運用管理</a>
-                <a href="#s4" className="n4"><span className="dot do" />S4: アクセス・セキュリティ</a>
-            </nav>
-
-            {/* Main Content */}
             <main className="wrap">
+                {/* Hero */}
+                <section className="hero">
+                    <div className="hero-eyebrow">Google Cloud Certification</div>
+                    <h1>
+                        <span className="accent">Associate Cloud Engineer</span>
+                        <br />
+                        完全マスター教材
+                    </h1>
+                    <p className="hero-desc">
+                        GCP の基盤構築から運用管理まで——ACE 試験に必要な知識を体系的に学ぶ
+                    </p>
+                    <div className="meta-row">
+                        <div className="meta-pill">
+                            <div className="ml">Duration</div>
+                            <div className="mv">2 時間</div>
+                        </div>
+                        <div className="meta-pill">
+                            <div className="ml">Questions</div>
+                            <div className="mv">50〜60問</div>
+                        </div>
+                        <div className="meta-pill">
+                            <div className="ml">Fee</div>
+                            <div className="mv">$125</div>
+                        </div>
+                        <div className="meta-pill">
+                            <div className="ml">Validity</div>
+                            <div className="mv">2 年間</div>
+                        </div>
+                        <div className="meta-pill">
+                            <div className="ml">Language</div>
+                            <div className="mv">日本語対応</div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Sticky Nav */}
+                <nav className="snav" aria-label="ACE セクションナビゲーション">
+                    <a href="#overview" className="n1"><span className="dot db" />概要</a>
+                    <a href="#s1" className="n1"><span className="dot db" />S1: 環境構築</a>
+                    <a href="#s2" className="n2"><span className="dot dg" />S2: 計画・実装</a>
+                    <a href="#s3" className="n3"><span className="dot dy" />S3: 運用管理</a>
+                    <a href="#s4" className="n4"><span className="dot do" />S4: アクセス・セキュリティ</a>
+                </nav>
+
                 {/* Overview */}
                 <div id="overview">
                     <div className="overview-card">
-                        <h3>出題セクション別 比重と内容</h3>
+                        <h2>出題セクション別 比重と内容</h2>
                         <div className="prow">
                             <div className="pl">Section 1: クラウド環境のセットアップ</div>
                             <div className="pbar"><div className="pfill fb" style={{ width: '23%' }} /></div>
@@ -1127,16 +1126,15 @@ export default function AssociateCloudEngineerPage() {
                 <Section3 />
                 <hr className="sdiv" />
                 <Section4 />
+                {/* Page Footer */}
+                <div className="page-footer">
+                    <p style={{ marginBottom: '8px', fontWeight: 600 }}>Google Cloud Associate Cloud Engineer 試験完全対策ガイド</p>
+                    <p>
+                        参考：<a href="https://cloud.google.com/learn/certification/cloud-engineer" target="_blank" rel="noopener noreferrer">Google Cloud 公式試験ページ</a> ｜ 作成日：2026年3月
+                    </p>
+                    <p style={{ marginTop: '8px', fontSize: '11px', opacity: 0.8 }}>※ 本ガイドは学習目的で作成。最新情報は必ず公式サイトでご確認ください。</p>
+                </div>
             </main>
-
-            {/* Page Footer */}
-            <footer className="page-footer">
-                <p style={{ marginBottom: '8px', fontWeight: 600 }}>Google Cloud Associate Cloud Engineer 試験完全対策ガイド</p>
-                <p>
-                    参考：<a href="https://cloud.google.com/learn/certification/cloud-engineer" target="_blank" rel="noopener noreferrer">Google Cloud 公式試験ページ</a> ｜ 作成日：2026年3月
-                </p>
-                <p style={{ marginTop: '8px', fontSize: '11px', opacity: 0.5 }}>※ 本ガイドは学習目的で作成。最新情報は必ず公式サイトでご確認ください。</p>
-            </footer>
         </div>
     );
 }

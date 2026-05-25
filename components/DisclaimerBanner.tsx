@@ -5,13 +5,13 @@ import { useEffect, useRef } from 'react';
 /**
  * Renders a sticky disclaimer banner and publishes its rendered height to a CSS custom property.
  *
- * The banner is exposed to assistive tech via `role="note"` and an `aria-label` containing the Japanese disclaimer.
+ * The banner is exposed to assistive tech via an `<aside>` element with an `aria-label` containing the Japanese disclaimer.
  * It sets `--disclaimer-height` on the document element and keeps that value updated when the banner's size changes.
  *
  * @returns The disclaimer banner as a JSX element.
  */
 export function DisclaimerBanner() {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const el = ref.current;
@@ -35,9 +35,8 @@ export function DisclaimerBanner() {
     }, []);
 
     return (
-        <div
+        <aside
             ref={ref}
-            role="note"
             aria-label="免責事項: 本サイトは個人学習目的です。最新の公式情報は各試験プロバイダーの公式サイトをご確認ください。"
             style={{
                 // sticky: Header (sticky top:0) の直後に flow 内で積まれ、scroll 中も常に Header の下に貼り付く。
@@ -60,6 +59,6 @@ export function DisclaimerBanner() {
             <span style={{ display: 'block' }}>
                 最新の公式情報は各試験プロバイダーの公式サイトをご確認ください。
             </span>
-        </div>
+        </aside>
     );
 }

@@ -35,6 +35,20 @@ const replaceWithParsedSvg = (host: HTMLElement, svgString: string): void => {
 };
 
 /**
+ * テキストを行ごとに分割し、各行に一意で安定したキー（行文字列 + 出現回数）を付与したオブジェクトの配列を生成します。
+ *
+ * @param text 分割対象のテキスト
+ */
+const toCodeLines = (text: string): { line: string; key: string }[] => {
+    const seen = new Map<string, number>();
+    return text.split('\n').map((line) => {
+        const count = seen.get(line) ?? 0;
+        seen.set(line, count + 1);
+        return { line, key: `${line}::${count}` };
+    });
+};
+
+/**
  * Mermaid 図を遅延ロード・クライアント描画するラッパー。
  *
  * - `mermaid` 本体は `useEffect` 内で動的 import するため、初期バンドルから分離される。
@@ -98,8 +112,8 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
             <div ref={containerRef} className={styles.mermaidTarget} aria-hidden={rendered ? undefined : 'true'} />
             {!rendered && !error && (
                 <pre className="codeblock" aria-hidden="true">
-                    {chart.split('\n').map((line, idx) => (
-                        <div className="code-line" key={`${idx}-${line}`}>
+                    {toCodeLines(chart).map(({ line, key }) => (
+                        <div className="code-line" key={key} data-key={key}>
                             {line}
                         </div>
                     ))}
@@ -107,8 +121,8 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
             )}
             {error && (
                 <pre className="codeblock" data-testid="mermaid-error">
-                    {`Mermaid render error: ${error}\n\n${chart}`.split('\n').map((line, idx) => (
-                        <div className="code-line" key={`${idx}-${line}`}>
+                    {toCodeLines(`Mermaid render error: ${error}\n\n${chart}`).map(({ line, key }) => (
+                        <div className="code-line" key={key} data-key={key}>
                             {line}
                         </div>
                     ))}

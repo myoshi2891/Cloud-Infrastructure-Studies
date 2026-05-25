@@ -3,13 +3,13 @@ import sharedStyles from './SharedSection.module.css';
 import { DiagramSVG } from '@/components/DiagramSVG';
 
 /**
- * Render the Section 5 content block for the PCNE Network Security guide.
+ * Render the Section 5 markup for the PCNE Network Security guide.
  *
- * This is a static, presentational React component that outputs the full Section 5 markup:
- * headers, descriptive paragraphs, Cloud Armor/VPC Service Controls/IAP subsections, diagrams,
- * example command snippets, tips, and best-practice lists.
+ * Outputs a static JSX section containing headings, descriptive text, three subsections
+ * (Cloud Armor, VPC Service Controls, Identity-Aware Proxy), diagrams, example CLI snippets,
+ * exam tips, and best-practice lists.
  *
- * @returns A JSX element containing the Section 5 markup for network security design and implementation
+ * @returns The JSX element for Section 5 (id="s5")
  */
 export function Section5() {
     return (
@@ -119,7 +119,7 @@ export function Section5() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>
                             全外部LBに<strong>Cloud Armorセキュリティポリシーを適用</strong>
@@ -284,7 +284,7 @@ export function Section5() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>機密データ（個人情報・金融データ）を扱うプロジェクトに必ず適用する</li>
                         <li>
@@ -506,7 +506,7 @@ export function Section5() {
                 </div>
 
                 <div className={sharedStyles.bpBox}>
-                    <h5>✅ ベストプラクティス</h5>
+                    <h4>✅ ベストプラクティス</h4>
                     <ul>
                         <li>
                             SSH/RDPは外部からの直接アクセスを廃止し、<strong>IAP経由のみ</strong>
