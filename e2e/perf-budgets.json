@@ -1,0 +1,8 @@
+{
+    "default": {
+        "lcp": 30000,
+        "cls": 0.5,
+        "tbt": 3000
+    },
+    "overrides": {}
+}
