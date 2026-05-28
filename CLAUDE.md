@@ -19,10 +19,14 @@ bun run lint         # ESLint
 # テスト
 bun run test         # Vitest（ユニット・コンポーネント）
 bun run test:watch   # Vitest ウォッチモード（単一ファイル: vitest run __tests__/foo.test.tsx）
-bun run test:e2e     # Playwright E2E（dev server を自動起動）
+bun run test:e2e     # Playwright E2E（chromium project: smoke / nav / a11y / visual / 各ドメイン）
+bun run test:perf    # Playwright perf project: Core Web Vitals (LCP/CLS/TBT) を perf-budgets.json と比較
 
 # カバレッジ可視化
 bun run dashboard    # 静的スキャンで docs/coverage-dashboard.html を再生成
+
+# パフォーマンス手動レポート（深掘り分析用）
+bun run build && bun run perf:report  # @lhci/cli autorun。.lighthouseci/ に JSON/HTML 出力
 ```
 
 初回E2Eテスト前: `bunx playwright install`

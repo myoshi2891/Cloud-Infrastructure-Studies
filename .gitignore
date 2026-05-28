@@ -112,6 +112,7 @@ next-env.d.ts
 # テスト結果
 test-results/
 playwright-report/
+.lighthouseci/
 
 Aws/archive/
 Gcl_Archive/
