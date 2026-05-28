@@ -1,18 +1,9 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { CRITICAL_PAGES } from './helpers/critical-pages';
 
 test.describe('Accessibility (A11y) tests', () => {
-    const pages = [
-        '/',
-        '/gcl/associate-cloud-engineer',
-        '/gcl/genai-leader',
-        '/gcl/cloud-digital-leader',
-        '/gcl/agwa',
-        '/gcl/professional-cloud-network-engineer',
-        '/gcl/professional-cloud-network-engineer-step-by-step',
-    ];
-
-    for (const pagePath of pages) {
+    for (const pagePath of CRITICAL_PAGES) {
         test(`should not have any automatically detectable accessibility issues on ${pagePath}`, async ({ page }) => {
             await page.goto(pagePath);
             await page.waitForLoadState('networkidle');

@@ -1,18 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { CRITICAL_PAGES } from './helpers/critical-pages';
 import { collectWebVitals, loadBudgetFor } from './helpers/perf';
 
 test.describe('Performance budget tests (Core Web Vitals)', () => {
-    const pages = [
-        '/',
-        '/gcl/associate-cloud-engineer',
-        '/gcl/genai-leader',
-        '/gcl/cloud-digital-leader',
-        '/gcl/agwa',
-        '/gcl/professional-cloud-network-engineer',
-        '/gcl/professional-cloud-network-engineer-step-by-step',
-    ];
-
-    for (const pagePath of pages) {
+    for (const pagePath of CRITICAL_PAGES) {
         test(`should meet perf budgets on ${pagePath}`, async ({ page }) => {
             test.setTimeout(60_000);
 
