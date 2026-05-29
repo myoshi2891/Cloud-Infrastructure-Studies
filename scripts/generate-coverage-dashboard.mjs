@@ -47,16 +47,16 @@ function isSourceCandidate(filePath) {
 }
 
 /**
- * Build the coverage dashboard data structure by scanning sources and tests, resolving test-to-source mappings, and aggregating domain/category coverage.
+ * Build aggregated coverage/dashboard data by scanning project source and test files and mapping tests to sources.
  *
- * @returns {Object} An object containing the dashboard data:
- *  - `generatedAt` (string): ISO timestamp of generation.
- *  - `runner` (Object): labels for unit and e2e test runners.
- *  - `totals` (Object): counts `{ sources, covered, testFiles }`.
- *  - `domains` (Array): domain summaries `{ id, label, sources, covered }`.
- *  - `cells` (Array): per-domain/category cells including classification fields and `tests` list.
- *  - `actions` (Array): generated action metadata for the dashboard.
- *  - `uncoveredSources` (Array): sorted list of source paths with no mapped tests.
+ * @returns {Object} Dashboard data:
+ *  - generatedAt (string): ISO timestamp of generation.
+ *  - runner (Object): labels for unit and e2e test runners.
+ *  - totals (Object): counts `{ sources, covered, testFiles }`.
+ *  - domains (Array): domain summaries `{ id, label, sources, covered }`.
+ *  - cells (Array): per-domain/category cells including classification fields and `tests` array.
+ *  - actions (Array): action metadata for the dashboard.
+ *  - uncoveredSources (Array): sorted list of source paths with no mapped tests.
  */
 function build() {
     const sourceFiles = listSourceFiles(ROOT).filter(isSourceCandidate);
