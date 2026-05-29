@@ -19,10 +19,12 @@ import process from 'node:process';
 const KNOWN_SEVERITIES = new Set(['low', 'moderate', 'high', 'critical']);
 
 /**
- * `bun audit --json` の出力（パース済みオブジェクト）を集計する。
+ * Produce an AuditSummary counting advisories by severity from a parsed `bun audit --json` result.
  *
- * @param {unknown} json
- * @returns {AuditSummary}
+ * Tallies advisories whose `severity` is one of `low`, `moderate`, `high`, or `critical` and computes a `total`.
+ * Invalid or unexpected shapes in the input are ignored.
+ * @param {unknown} json - Parsed JSON output from `bun audit --json`.
+ * @returns {AuditSummary} Counts for `low`, `moderate`, `high`, `critical`, and `total`.
  */
 export function parseAuditOutput(json) {
     const summary = { low: 0, moderate: 0, high: 0, critical: 0, total: 0 };
@@ -44,19 +46,20 @@ export function parseAuditOutput(json) {
 }
 
 /**
- * High / Critical のいずれかが 1 件以上あればブロック対象として true を返す。
+ * Check whether the audit summary contains blocking vulnerabilities (any high or critical findings).
  *
- * @param {AuditSummary} summary
- * @returns {boolean}
+ * @param {AuditSummary} summary - Object with numeric fields `low`, `moderate`, `high`, `critical`, and `total`.
+ * @returns {boolean} `true` if `high > 0` or `critical > 0`, `false` otherwise.
  */
 export function hasBlockingVulnerabilities(summary) {
     return summary.high > 0 || summary.critical > 0;
 }
 
 /**
- * `bun audit --json` を起動して標準出力 JSON を返す。失敗時は throw。
+ * Run `bun audit --json` and parse its JSON output.
  *
- * @returns {unknown}
+ * @returns {unknown} The parsed JSON object produced by `bun audit --json`, or an empty object when no JSON output is present.
+ * @throws {Error} If the audit process fails (spawn error, non-zero exit status, or received signal) or if the captured output cannot be parsed as JSON.
  */
 function runBunAudit() {
     const result = spawnSync('bun', ['audit', '--json'], {
@@ -86,6 +89,16 @@ function runBunAudit() {
     return JSON.parse(jsonText);
 }
 
+/**
+ * Render a multi-line textual summary of vulnerability counts by severity.
+ * @param {Object} summary - Counts for each severity.
+ * @param {number} summary.critical - Number of critical vulnerabilities.
+ * @param {number} summary.high - Number of high vulnerabilities.
+ * @param {number} summary.moderate - Number of moderate vulnerabilities.
+ * @param {number} summary.low - Number of low vulnerabilities.
+ * @param {number} summary.total - Total number of vulnerabilities.
+ * @returns {string} A formatted multi-line string listing counts for `critical`, `high`, `moderate`, `low`, and `total`.
+ */
 function formatSummary(summary) {
     return [
         `critical: ${summary.critical}`,
@@ -96,6 +109,14 @@ function formatSummary(summary) {
     ].join('\n');
 }
 
+/**
+ * Run the bundled audit, print a formatted severity summary, and terminate the process with an appropriate exit code.
+ *
+ * Executes the audit, prints a human-readable summary to stdout and any error details to stderr, and then exits:
+ * - Exit code 0: audit completed and no high/critical vulnerabilities were found.
+ * - Exit code 1: one or more high or critical vulnerabilities were detected.
+ * - Exit code 2: the audit failed to run or the output could not be processed.
+ */
 function main() {
     let summary;
     try {

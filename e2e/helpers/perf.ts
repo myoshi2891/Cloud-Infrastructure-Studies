@@ -23,6 +23,15 @@ const BUDGETS_PATH = resolve(process.cwd(), 'e2e', 'perf-budgets.json');
 
 let cachedConfig: PerfBudgetsConfig | null = null;
 
+/**
+ * Load, validate, and cache the perf-budgets.json configuration.
+ *
+ * Reads the budgets file, validates its shape as a `PerfBudgetsConfig`, stores the validated
+ * configuration in a module-level cache, and returns it for use by callers.
+ *
+ * @returns The validated `PerfBudgetsConfig`.
+ * @throws Error if the budgets file does not match the `PerfBudgetsConfig` schema.
+ */
 function readBudgetsConfig(): PerfBudgetsConfig {
     if (cachedConfig) return cachedConfig;
     const raw = readFileSync(BUDGETS_PATH, 'utf-8');
@@ -34,6 +43,12 @@ function readBudgetsConfig(): PerfBudgetsConfig {
     return cachedConfig;
 }
 
+/**
+ * Determines whether a value is a PerfBudget object.
+ *
+ * @param value - The value to check for `lcp`, `cls`, and `tbt` numeric properties
+ * @returns `true` if `value` has numeric `lcp`, `cls`, and `tbt` properties, `false` otherwise.
+ */
 function isPerfBudget(value: unknown): value is PerfBudget {
     if (typeof value !== 'object' || value === null) return false;
     const candidate = value as Record<string, unknown>;
@@ -44,6 +59,15 @@ function isPerfBudget(value: unknown): value is PerfBudget {
     );
 }
 
+/**
+ * Determines whether a runtime value matches the PerfBudgetsConfig structure.
+ *
+ * Validates that `value` is an object containing a required `default` budget and an optional `overrides` object
+ * that maps page paths to partial budget overrides.
+ *
+ * @param value - The runtime value to validate
+ * @returns `true` if `value` is an object with a `default` PerfBudget and an optional `overrides` mapping, `false` otherwise.
+ */
 function isPerfBudgetsConfig(value: unknown): value is PerfBudgetsConfig {
     if (typeof value !== 'object' || value === null) return false;
     const candidate = value as Record<string, unknown>;
@@ -54,6 +78,12 @@ function isPerfBudgetsConfig(value: unknown): value is PerfBudgetsConfig {
     return true;
 }
 
+/**
+ * Resolve the performance budget for a given page path.
+ *
+ * @param pagePath - The page path key used to select an optional override from the budgets configuration
+ * @returns The resolved PerfBudget where each of `lcp`, `cls`, and `tbt` uses the override value when provided, otherwise falls back to the configured default
+ */
 export async function loadBudgetFor(pagePath: string): Promise<PerfBudget> {
     const cfg = readBudgetsConfig();
     const override = cfg.overrides?.[pagePath] ?? {};
@@ -65,13 +95,17 @@ export async function loadBudgetFor(pagePath: string): Promise<PerfBudget> {
 }
 
 /**
- * 対象ページの Core Web Vitals 相当値を計測する。
+ * Measure Core Web Vitals–equivalent metrics for the given page.
  *
- * - LCP: Largest Contentful Paint（バッファ済みエントリの最終値）
- * - CLS: Cumulative Layout Shift（ユーザー入力を除く加算値）
- * - TBT: Total Blocking Time 近似（longtask 観測の duration-50ms 合算）
+ * Collects three numeric metrics:
+ * - LCP: Largest Contentful Paint candidate (uses buffered entries' final candidate)
+ * - CLS: Cumulative Layout Shift (sums `value` for shifts without recent user input)
+ * - TBT: Total Blocking Time approximation (sum of `duration - 50ms` for long tasks)
  *
- * 注: dev サーバー（Turbopack）計測では本番ビルドより値が大きく出る。バジェットは保守的に設定する。
+ * Note: measurements from a development server (e.g., Turbopack) may be larger than
+ * production builds; set performance budgets conservatively when comparing against these values.
+ *
+ * @returns An object with numeric `lcp`, `cls`, and `tbt` metrics
  */
 export async function collectWebVitals(page: Page): Promise<WebVitalsMetrics> {
     // longtask / layout-shift の最終フラッシュ待ち
