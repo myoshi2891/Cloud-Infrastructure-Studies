@@ -122,6 +122,28 @@ bunx playwright install
 bun run test:e2e
 ```
 
+### Performance テスト (Playwright `perf` project)
+
+主要 7 ページの Core Web Vitals (LCP / CLS / TBT) を `e2e/perf-budgets.json` の閾値と比較します。
+
+```bash
+bun run test:perf
+```
+
+深掘り分析用に Lighthouse CI を手動起動できます（`.lighthouseci/` に HTML/JSON が出力されます）。
+
+```bash
+bun run build && bun run perf:report
+```
+
+### Security テスト (`bun audit` ラッパー)
+
+`bun audit --json` を集計し、`high` / `critical` の脆弱性検出時に exit 1 を返します。
+
+```bash
+bun run test:security
+```
+
 ## 📂 ディレクトリ構造
 
 - `app/`: 各試験セクションのページとスタイル。

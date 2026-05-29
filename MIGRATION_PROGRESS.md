@@ -54,7 +54,10 @@ bun run dashboard    # カバレッジダッシュボード再生成
 
 ### 次のステップ
 
-- [ ] 🔵 P2: 横断品質（Visual, A11y, Performance, Security）の導入検討
+- [x] 🔵 P2: 横断品質（Visual, A11y, Performance, Security）の導入検討
+  - Visual / A11y: 全 7 ドメイン対応済み（`e2e/visual.spec.ts`, `e2e/a11y.spec.ts`）
+  - Performance: `bun run test:perf`（Playwright `perf` project + `e2e/perf-budgets.json`）+ `bun run perf:report`（`@lhci/cli` autorun）
+  - Security: `bun run test:security`（`scripts/security-audit.mjs` + `bun audit --json` 集計）
 
 ---
 
