@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test --project=chromium",
     "test:perf": "playwright test --project=perf",
+    "test:security": "node scripts/security-audit.mjs",
     "perf:report": "lhci autorun",
     "dashboard": "node scripts/generate-coverage-dashboard.mjs"
   },
