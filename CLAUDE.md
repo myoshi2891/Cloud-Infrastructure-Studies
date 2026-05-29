@@ -21,6 +21,7 @@ bun run test         # Vitest（ユニット・コンポーネント）
 bun run test:watch   # Vitest ウォッチモード（単一ファイル: vitest run __tests__/foo.test.tsx）
 bun run test:e2e     # Playwright E2E（chromium project: smoke / nav / a11y / visual / 各ドメイン）
 bun run test:perf    # Playwright perf project: Core Web Vitals (LCP/CLS/TBT) を perf-budgets.json と比較
+bun run test:security # bun audit --json を集計し high/critical 検出時に exit 1 (scripts/security-audit.mjs)
 
 # カバレッジ可視化
 bun run dashboard    # 静的スキャンで docs/coverage-dashboard.html を再生成

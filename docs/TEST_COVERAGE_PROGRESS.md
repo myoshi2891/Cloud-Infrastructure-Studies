@@ -21,13 +21,13 @@
 
 | ドメイン | 進捗 (カバー数/総数) | 達成率 | Unit | Integration | E2E | Smoke | Visual | A11y | Perf | Security |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Associate Cloud Engineer (ACE)** | 6 / 14 | **43%** | ⚠️ 43% | ❌ 0% | ⚠️ 7% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Generative AI Leader (GCL)** | 5 / 19 | **26%** | ⚠️ 26% | ❌ 0% | ⚠️ 5% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Cloud Digital Leader (CDL)** | 21 / 107 | **20%** | ⚠️ 20% | ❌ 0% | ⚠️ 1% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Google Workspace Admin (AGWA)** | 4 / 5 | **✅ 80%** | ✅ 80% | ❌ 0% | ⚠️ 20% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Professional Cloud Network Engineer (PCNE)** | 10 / 11 | **91%** | ✅ 91% | ❌ 0% | ⚠️ 9% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **PCNE Step-by-Step** | 7 / 9 | **78%** | ⚠️ 67% | ❌ 0% | ⚠️ 11% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **共通 (components / lib / navigation)** | 9 / 11 | **82%** | ⚠️ 64% | ⚠️ 36% | ⚠️ 9% | ⚠️ 9% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
+| **Associate Cloud Engineer (ACE)** | 6 / 14 | **43%** | ⚠️ 43% | ❌ 0% | ⚠️ 7% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Generative AI Leader (GCL)** | 5 / 19 | **26%** | ⚠️ 26% | ❌ 0% | ⚠️ 5% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Cloud Digital Leader (CDL)** | 21 / 107 | **20%** | ⚠️ 20% | ❌ 0% | ⚠️ 1% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Google Workspace Admin (AGWA)** | 4 / 5 | **✅ 80%** | ✅ 80% | ❌ 0% | ⚠️ 20% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Professional Cloud Network Engineer (PCNE)** | 10 / 11 | **91%** | ✅ 91% | ❌ 0% | ⚠️ 9% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **PCNE Step-by-Step** | 7 / 9 | **78%** | ⚠️ 67% | ❌ 0% | ⚠️ 11% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **共通 (components / lib / navigation)** | 9 / 11 | **82%** | ⚠️ 64% | ⚠️ 36% | ⚠️ 9% | ⚠️ 9% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 
 > **凡例:**
 > - ✅ **実装済み**: 80% 以上カバー
@@ -60,8 +60,8 @@
 
 ### ⑤ 横断品質（Visual, A11y, Performance, Security）
 
-- **現状**: Visual と A11y の自動テストが全 7 ドメインで **✅ 実装** となりました。
-- **課題**: Lighthouse 等を用いたパフォーマンス測定や、`npm audit` 等のセキュリティチェックが自動テストパイプラインに組み込まれていません。
+- **現状**: Visual / A11y / Performance / Security の自動テストが全 7 ドメインで **✅ 実装** されました。Performance は Playwright `perf` project で LCP / CLS / TBT を計測し `e2e/perf-budgets.json` と比較、Security は `scripts/security-audit.mjs` が `bun audit --json` を集計します。
+- **課題**: 現状はローカル npm scripts のみ。`.github/workflows/` への CI 統合と、初期バジェット値（LCP/CLS/TBT 閾値）の段階的なチューニングが次の対象です。
 
 ---
 
@@ -99,12 +99,14 @@
 - [x] **A11y (アクセシビリティ) 自動テストの導入**
   - **内容**: `aria-label` の欠損やコントラスト比不足などの WCAG 違反の自動監視。
   - **推奨ツール**: `@axe-core/playwright`
-- [ ] **Performance テストの導入**
-  - **内容**: バンドルサイズ肥大化や LCP の劣化検知。
-  - **推奨ツール**: Lighthouse CI
-- [ ] **Security テストの導入**
-  - **内容**: 依存パッケージの脆弱性自動検知。
-  - **推奨ツール**: `npm audit` / `Snyk`
+- [x] **Performance テストの導入**
+  - **対象**: 全ドメインの主要 7 ページ（`e2e/helpers/critical-pages.ts`）
+  - **内容**: `bun run test:perf` で Playwright `perf` project が LCP / CLS / TBT を計測し、`e2e/perf-budgets.json` の閾値と比較する。深掘り分析用に `bun run perf:report`（`@lhci/cli` autorun）も併設。
+  - **推奨ツール**: Playwright `PerformanceObserver` + `@lhci/cli`
+- [x] **Security テストの導入**
+  - **対象**: `package.json` の全依存パッケージ
+  - **内容**: `bun run test:security` で `scripts/security-audit.mjs` が `bun audit --json` を起動し、`high` / `critical` 検知時に exit 1 を返す。
+  - **推奨ツール**: `bun audit`（Bun 1.3.12 同梱）
 
 ---
 
