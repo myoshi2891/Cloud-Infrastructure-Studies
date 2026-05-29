@@ -28,6 +28,7 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 ### Step 3: リファクタリング・統合 (Refactoring & Integration)
 - コードの整理、CSSトークンのマッピング、`Header.tsx` や `CLAUDE.md` 等へのルーティング統合を行う。
 - ビルド (`bun run build`) や関連テストを実行し、既存機能が破壊されていないか確認する。
+- **🚨 P レベルタスク（`docs/TEST_COVERAGE_PROGRESS.md` の優先度別ネクストアクション）または複数コミットからなる「フェーズ」を完了する場合は、`.claude/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を必ず適用すること。**単発の Step 3 で `CLAUDE.md` だけ更新して終わらせるのは禁止 — `MIGRATION_PROGRESS.md` の進捗チェックボックス、`docs/TEST_COVERAGE_PROGRESS.md` の Section 7（再開プロンプト）、`GEMINI.md` / `README.md` のコマンド一覧まで含めて同一フェーズ内で確定させる。
 - **Commit:** `refactor/docs: integrate [機能名] into routing and update docs`
 
 ## 各種スキル・仕様書での扱い (Integration with Skills & Specs)

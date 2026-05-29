@@ -18,14 +18,32 @@ export function extractImports(source) {
 }
 
 /**
- * Extracts unique route strings used in `page.goto(...)` calls from the given source text.
- * @param {string} source - Source code to scan for `page.goto` call arguments.
- * @returns {string[]} Unique route strings captured from `page.goto(...)` occurrences.
+ * Collects unique route strings used in `page.goto(...)` calls found in the provided source.
+ *
+ * If the source contains the substring `CRITICAL_PAGES`, the function will also attempt to read
+ * `e2e/helpers/critical-pages.ts` from the project root and include any route-like string literals
+ * (strings starting with `/`) found there. Failures when reading that file are ignored.
+ * @param {string} source - Source text to scan for `page.goto(...)` arguments.
+ * @returns {string[]} `true` if the number is odd, `false` otherwise.
  */
 export function extractGotoPaths(source) {
     const seen = new Set();
     for (const match of source.matchAll(GOTO_RE)) {
         seen.add(match[2]);
+    }
+    if (source.includes('CRITICAL_PAGES')) {
+        try {
+            const criticalPagesPath = path.resolve(process.cwd(), 'e2e/helpers/critical-pages.ts');
+            if (fs.existsSync(criticalPagesPath)) {
+                const content = fs.readFileSync(criticalPagesPath, 'utf8');
+                const paths = content.match(/['"](\/[^'"]*)['"]/g) || [];
+                for (const p of paths) {
+                    seen.add(p.replace(/['"]/g, ''));
+                }
+            }
+        } catch {
+            // Ignore error
+        }
     }
     return [...seen];
 }
@@ -57,13 +75,25 @@ export function resolveAliasPath(alias, fileset) {
 }
 
 /**
- * Classify a test file path into one of the project's test categories.
+ * Determine the test category for a repository-relative test file path.
  *
- * @param {string} testPath - File path relative to the repository root (may use either '/' or '\' separators).
- * @returns {'E2E'|'Smoke'|'Integration'|'Unit'} The test category: `'E2E'` for files under `e2e/`, `'Smoke'` for files named `smoke.test.*` or `smoke.spec.*`, `'Integration'` for files under `__tests__/lib/`, and `'Unit'` for all others.
+ * @param {string} testPath - File path relative to repository root; may use '/' or '\' separators.
+ * @returns {'Visual'|'A11y'|'Performance'|'Security'|'E2E'|'Smoke'|'Integration'|'Unit'} The test category:
+ * - `'Visual'` for visual-regression specs (files ending with `visual.spec.ts` or `visual.spec.tsx`),
+ * - `'A11y'` for accessibility specs (files ending with `a11y.spec.ts` or `a11y.spec.tsx`),
+ * - `'Performance'` for performance specs (files ending with `perf.spec.ts` or `perf.spec.tsx`),
+ * - `'Security'` when the path contains `security-audit`,
+ * - `'E2E'` for files under `e2e/`,
+ * - `'Smoke'` for files matching `smoke.test.*` or `smoke.spec.*`,
+ * - `'Integration'` for files under `__tests__/lib/`,
+ * - `'Unit'` for all other test files.
  */
 export function classifyTestCategory(testPath) {
     const normalized = testPath.replace(/\\/g, '/');
+    if (normalized.endsWith('visual.spec.ts') || normalized.endsWith('visual.spec.tsx')) return 'Visual';
+    if (normalized.endsWith('a11y.spec.ts') || normalized.endsWith('a11y.spec.tsx')) return 'A11y';
+    if (normalized.endsWith('perf.spec.ts') || normalized.endsWith('perf.spec.tsx')) return 'Performance';
+    if (normalized.includes('security-audit')) return 'Security';
     if (normalized.startsWith('e2e/')) return 'E2E';
     if (/\bsmoke\.(test|spec)\.[tj]sx?$/.test(normalized)) return 'Smoke';
     if (normalized.startsWith('__tests__/lib/')) return 'Integration';
@@ -112,9 +142,10 @@ export function listSourceFiles(rootDir) {
 }
 
 /**
- * Collects test files under __tests__ and e2e, returning their paths relative to rootDir.
+ * Collects test files under __tests__ and e2e and returns their paths relative to rootDir.
  *
- * Finds files matching `.test.(ts|tsx|js|jsx)` under `__tests__` (excluding `__tests__/scripts/` and `__tests__/docs/`) and `.spec.(ts|tsx|js|jsx)` under `e2e`, and returns a sorted array of their relative paths.
+ * Scans __tests__ for files matching `.test.(ts|tsx|js|jsx)` and e2e for files matching `.spec.(ts|tsx|js|jsx)`.
+ * Files under `__tests__/docs/` are excluded; files under `__tests__/scripts/` are excluded unless the path contains `security-audit`.
  * @param {string} rootDir - Project root directory to scan.
  * @return {string[]} Sorted array of test file paths relative to `rootDir`.
  */
@@ -123,7 +154,8 @@ export function listTestFiles(rootDir) {
     const unitRoot = path.join(rootDir, '__tests__');
     for (const f of walk(unitRoot, (p) => /\.test\.(tsx?|jsx?)$/.test(p))) {
         const rel = path.relative(rootDir, f).replace(/\\/g, '/');
-        if (rel.startsWith('__tests__/scripts/') || rel.startsWith('__tests__/docs/')) continue;
+        if (rel.startsWith('__tests__/scripts/') && !rel.includes('security-audit')) continue;
+        if (rel.startsWith('__tests__/docs/')) continue;
         result.push(rel);
     }
     const e2eRoot = path.join(rootDir, 'e2e');

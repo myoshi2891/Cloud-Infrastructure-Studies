@@ -1,6 +1,6 @@
 ---
 name: spec-sync
-description: Audit and update all repository specifications (CLAUDE.md, GEMINI.md, README.md, etc.) as well as test execution progress, coverage dashboards, and next session prompts inside docs/TEST_COVERAGE_PROGRESS.md. Triggered on: "仕様書更新", "仕様書同期", "ドキュメント更新", "テスト進捗の同期", "テストカバレッジ同期", "テストドキュメント更新", "テスト進捗更新".
+description: Audit and update all repository specifications (CLAUDE.md, GEMINI.md, README.md, MIGRATION_PROGRESS.md) as well as test execution progress, coverage dashboards, and next-session restart prompts inside docs/TEST_COVERAGE_PROGRESS.md. **Must be invoked at the end of every P-level priority task or multi-commit phase** (see Section F — "Definition of Done") to prevent spec drift. Triggered on (日本語): "仕様書更新", "仕様書同期", "ドキュメント更新", "テスト進捗の同期", "テストカバレッジ同期", "テストドキュメント更新", "テスト進捗更新", "フェーズ完了", "Pレベル完了", "P0完了", "P1完了", "P2完了", "P3完了". Triggered on (English): "sync specs", "spec sync", "update specs", "audit specs", "sync documentation", "update docs", "sync test progress", "update test coverage", "test coverage sync", "test docs sync", "phase complete", "phase completion", "P-level complete", "P0 complete", "P1 complete", "P2 complete", "P3 complete", "definition of done", "DoD check".
 ---
 
 # 仕様書・テスト進捗同期スキル (spec-sync)
@@ -79,11 +79,53 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 - [ ] `GEMINI.md` の「開発と実行」セクション
 - [ ] `README.md` の「テストの実行」セクション
 
-### F. テストの実装・整備を行った場合 (新規追加)
+### F. テストの実装・整備を行った場合（P レベル・フェーズ完了時の Definition of Done）
 
-**変更対象ファイル:**
-1. `docs/coverage-dashboard.html` — カバレッジダッシュボードHTMLの再生成
-2. `docs/TEST_COVERAGE_PROGRESS.md` — テスト進捗レポートおよび次回セッションプロンプトの更新
+`.claude/rules/TDD_COMMIT_WORKFLOW.md` Step 3 から強制呼び出しされる、**フェーズ完了時に「漏れなく」更新する全ファイル一覧**。単発の Step 3 で `CLAUDE.md` だけ触って終わらせるのは禁止。以下を 1 フェーズ内で確定させること。
+
+**変更対象ファイルと観点:**
+
+1. **`docs/coverage-dashboard.html`** — `bun run dashboard` で再生成（手書き禁止）
+2. **`docs/TEST_COVERAGE_PROGRESS.md`** — 以下 5 セクションを必ず確認
+   - Section 1: 全体サマリー（ソース総数 / カバー済み / 達成率 / テストファイル総数）
+   - Section 2: ドメイン別カバレッジマトリクス（該当列の `❌ 0%` → `✅ 実装` 等を更新）
+   - Section 3: テストカテゴリ別の網羅性と課題（現状/課題文を新事実に合わせて書き換え）
+   - Section 4: 優先度別ネクストアクション（完了タスクを `[ ]` → `[x]` 化、説明補強）
+   - **Section 7: 次回セッションでのテスト追加再開プロンプト**（完了した優先度の表記を「P0/P1/P2 完了済み」等に更新し、次フェーズ候補を列挙。**ここを更新し忘れると次セッションで重複作業や混乱が発生するため最重要**）
+3. **`MIGRATION_PROGRESS.md`** — 「次のステップ」の `- [ ] 🔵 P*: ...` 行を `[x]` 化し、導入したコマンド・スクリプトの実体（パスやコマンド名）を子要素として追記
+4. **`CLAUDE.md`** — コマンドセクション（`## コマンド` 配下の `bash` ブロック）、アーキテクチャツリー、制約事項を必要に応じて更新
+5. **`GEMINI.md`** — `CLAUDE.md` と内容同期。特に「開発と実行」セクションの bullet 一覧に新コマンドを追記（`CLAUDE.md` だけ更新して `GEMINI.md` を放置するパターンが頻発するため必ず対で更新）
+6. **`README.md`** — ユーザー向け「テストの実行」等のセクションに新コマンドサブセクションを追記（軽微な変更で省略可だが、新コマンドや新フェーズ完了時は追記推奨）
+
+**整合性チェック（コミット前に必ず実行）:**
+
+P レベル・フェーズキーワード（例: `P2`, `Performance テスト`, `Security テスト`, `横断品質` 等）が全 spec で同じ完了状態を指しているか、横断 grep で確認する:
+
+```bash
+# 完了したフェーズのキーワードで横断 grep（例: P2 横断品質完了時）
+grep -rn "P2\|横断品質" *.md docs/*.md .claude/rules/*.md .claude/skills/*/SKILL.md
+
+# 出力された箇所すべてが「完了済み」「[x]」「✅」等の整合した表記になっていることを目視確認
+# `[ ]` や「未実装」が残っていればその場で修正してからコミット
+```
+
+**コミット前検証コマンド:**
+
+```bash
+bun run lint
+bun run build
+bun run test
+bun run dashboard   # coverage-dashboard.html 再生成
+```
+
+**コミット粒度:**
+
+DoD の全対象を 1 つの `docs:` または `refactor/docs:` コミットにまとめて構わない。ただし以下の 2 コミットに分けるのが安全:
+
+- (a) `docs: mark [P*] [機能名] as done and document scripts` — `TEST_COVERAGE_PROGRESS.md` の Section 4/2/3 + `CLAUDE.md` + `coverage-dashboard.html`
+- (b) `docs: sync specs for [P*] [機能名] completion` — `TEST_COVERAGE_PROGRESS.md` Section 7 + `MIGRATION_PROGRESS.md` + `GEMINI.md` + `README.md`
+
+(a) のみで止めると (b) が次セッションに繰り越され、結果として「再開プロンプトが古い」「進捗台帳が古い」状態を晒すため、**(a) を出したフェーズ内で必ず (b) まで到達すること**。
 
 ---
 

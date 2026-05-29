@@ -15,6 +15,12 @@ export default defineConfig({
         {
             name: 'chromium',
             use: { ...devices['Desktop Chrome'] },
+            testIgnore: /perf\.spec\.ts$/,
+        },
+        {
+            name: 'perf',
+            use: { ...devices['Desktop Chrome'] },
+            testMatch: /perf\.spec\.ts$/,
         },
     ],
     webServer: {

@@ -1,0 +1,55 @@
+{
+    "low-pkg": [
+        {
+            "id": 1000001,
+            "url": "https://example.test/advisories/LOW-1",
+            "title": "Low severity sample",
+            "severity": "low",
+            "vulnerable_versions": "<1.0.0",
+            "cwe": [],
+            "cvss": { "score": 2.0, "vectorString": null }
+        }
+    ],
+    "moderate-pkg": [
+        {
+            "id": 1000002,
+            "url": "https://example.test/advisories/MOD-1",
+            "title": "Moderate severity sample",
+            "severity": "moderate",
+            "vulnerable_versions": "<2.0.0",
+            "cwe": [],
+            "cvss": { "score": 5.5, "vectorString": null }
+        }
+    ],
+    "high-pkg": [
+        {
+            "id": 1000003,
+            "url": "https://example.test/advisories/HIGH-1",
+            "title": "High severity sample",
+            "severity": "high",
+            "vulnerable_versions": "<3.0.0",
+            "cwe": [],
+            "cvss": { "score": 7.5, "vectorString": null }
+        },
+        {
+            "id": 1000004,
+            "url": "https://example.test/advisories/HIGH-2",
+            "title": "Another high severity finding in same package",
+            "severity": "high",
+            "vulnerable_versions": "<3.1.0",
+            "cwe": [],
+            "cvss": { "score": 8.0, "vectorString": null }
+        }
+    ],
+    "critical-pkg": [
+        {
+            "id": 1000005,
+            "url": "https://example.test/advisories/CRIT-1",
+            "title": "Critical severity sample",
+            "severity": "critical",
+            "vulnerable_versions": "<4.0.0",
+            "cwe": [],
+            "cvss": { "score": 9.8, "vectorString": null }
+        }
+    ]
+}

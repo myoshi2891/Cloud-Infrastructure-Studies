@@ -22,27 +22,31 @@ export const CATEGORIES = [
 const OK_THRESHOLD = 0.8;
 
 /**
- * Classifies a cell's test coverage and returns related metrics.
+ * Classifies a coverage cell and computes its coverage rate, test count, and status.
  * @param {Object} params - Input parameters.
- * @param {Array|undefined|null} params.tests - Array of test entries; treated as missing when falsy or empty.
+ * @param {Array|undefined|null} params.tests - Test entries; treated as missing when falsy or empty.
  * @param {number|undefined|null} params.coveredSources - Number of covered source files; falsy values are treated as 0.
  * @param {number|undefined|null} params.sources - Total number of source files; falsy values are treated as 0.
+ * @param {string|undefined} params.category - Category name; certain "horizontal" categories force an `ok` status when tests exist and sources > 0.
  * @returns {{status: 'missing'|'ok'|'warn', coverageRate: number, testCount: number, coveredSources: number, sources: number}}
- * An object containing:
- * - `status`: `'missing'` when there are no tests or no sources, `'ok'` when coverageRate >= OK_THRESHOLD, otherwise `'warn'`.
- * - `coverageRate`: fraction between 0 and 1 (coveredSources / sources, or 0 when sources is 0).
+ * An object with:
+ * - `status`: `'missing'` when there are no tests or `sources` is 0; otherwise `'ok'` for horizontal quality categories (`Visual`, `A11y`, `Performance`, `Security`) when tests exist; for other categories `'ok'` when `coverageRate >= OK_THRESHOLD`, otherwise `'warn'`.
+ * - `coverageRate`: `coveredSources / sources` (0 when `sources` is 0), in the range [0,1].
  * - `testCount`: number of tests (0 when `tests` is falsy).
- * - `coveredSources`: coerced coveredSources count.
- * - `sources`: coerced sources count.
+ * - `coveredSources`: coerced coveredSources count (falsy treated as 0).
+ * - `sources`: coerced sources count (falsy treated as 0).
  */
-export function classifyCell({ tests, coveredSources, sources }) {
+export function classifyCell({ tests, coveredSources, sources, category }) {
     const safeSources = sources || 0;
     const safeCovered = coveredSources || 0;
     const coverageRate = safeSources > 0 ? safeCovered / safeSources : 0;
 
     let status;
+    const horizontal = ['Visual', 'A11y', 'Performance', 'Security'];
     if (!tests || tests.length === 0 || safeSources === 0) {
         status = 'missing';
+    } else if (horizontal.includes(category)) {
+        status = 'ok';
     } else if (coverageRate >= OK_THRESHOLD) {
         status = 'ok';
     } else {

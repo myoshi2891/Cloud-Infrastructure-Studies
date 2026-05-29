@@ -1,17 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { CRITICAL_PAGES } from './helpers/critical-pages';
 
 test.describe('Visual Regression tests', () => {
-    const pages = [
-        '/',
-        '/gcl/associate-cloud-engineer',
-        '/gcl/genai-leader',
-        '/gcl/cloud-digital-leader',
-        '/gcl/agwa',
-        '/gcl/professional-cloud-network-engineer',
-        '/gcl/professional-cloud-network-engineer-step-by-step',
-    ];
-
-    for (const pagePath of pages) {
+    for (const pagePath of CRITICAL_PAGES) {
         test(`visual snapshot for ${pagePath}`, async ({ page }) => {
             // Extend timeout to 120s as rendering/saving full-page screenshots of long pages can take time
             test.setTimeout(120000);

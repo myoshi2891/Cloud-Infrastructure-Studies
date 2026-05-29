@@ -9,12 +9,16 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --project=chromium",
+    "test:perf": "playwright test --project=perf",
+    "test:security": "node scripts/security-audit.mjs",
+    "perf:report": "lhci autorun",
     "dashboard": "node scripts/generate-coverage-dashboard.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",
     "@eslint/compat": "^2.0.5",
+    "@lhci/cli": "^0.14.0",
     "@eslint/eslintrc": "^3.3.5",
     "@netlify/plugin-nextjs": "^5.15.11",
     "@playwright/test": "^1.59.1",

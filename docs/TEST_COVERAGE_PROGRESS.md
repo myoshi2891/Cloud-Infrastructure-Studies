@@ -21,13 +21,13 @@
 
 | ドメイン | 進捗 (カバー数/総数) | 達成率 | Unit | Integration | E2E | Smoke | Visual | A11y | Perf | Security |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Associate Cloud Engineer (ACE)** | 6 / 14 | **43%** | ⚠️ 43% | ❌ 0% | ⚠️ 7% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Generative AI Leader (GCL)** | 5 / 19 | **26%** | ⚠️ 26% | ❌ 0% | ⚠️ 5% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Cloud Digital Leader (CDL)** | 21 / 107 | **20%** | ⚠️ 20% | ❌ 0% | ⚠️ 1% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Google Workspace Admin (AGWA)** | 4 / 5 | **✅ 80%** | ✅ 80% | ❌ 0% | ⚠️ 20% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **Professional Cloud Network Engineer (PCNE)** | 10 / 11 | **91%** | ✅ 91% | ❌ 0% | ⚠️ 9% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **PCNE Step-by-Step** | 7 / 9 | **78%** | ⚠️ 67% | ❌ 0% | ⚠️ 11% | ❌ 0% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
-| **共通 (components / lib / navigation)** | 9 / 11 | **82%** | ⚠️ 64% | ⚠️ 36% | ⚠️ 9% | ⚠️ 9% | ✅ 実装 | ✅ 実装 | ❌ 0% | ❌ 0% |
+| **Associate Cloud Engineer (ACE)** | 6 / 14 | **43%** | ⚠️ 43% | ❌ 0% | ⚠️ 7% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Generative AI Leader (GCL)** | 5 / 19 | **26%** | ⚠️ 26% | ❌ 0% | ⚠️ 5% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Cloud Digital Leader (CDL)** | 21 / 107 | **20%** | ⚠️ 20% | ❌ 0% | ⚠️ 1% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Google Workspace Admin (AGWA)** | 4 / 5 | **✅ 80%** | ✅ 80% | ❌ 0% | ⚠️ 20% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **Professional Cloud Network Engineer (PCNE)** | 10 / 11 | **91%** | ✅ 91% | ❌ 0% | ⚠️ 9% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **PCNE Step-by-Step** | 7 / 9 | **78%** | ⚠️ 67% | ❌ 0% | ⚠️ 11% | ❌ 0% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
+| **共通 (components / lib / navigation)** | 9 / 11 | **82%** | ⚠️ 64% | ⚠️ 36% | ⚠️ 9% | ⚠️ 9% | ✅ 実装 | ✅ 実装 | ✅ 実装 | ✅ 実装 |
 
 > **凡例:**
 > - ✅ **実装済み**: 80% 以上カバー
@@ -60,8 +60,8 @@
 
 ### ⑤ 横断品質（Visual, A11y, Performance, Security）
 
-- **現状**: Visual と A11y の自動テストが全 7 ドメインで **✅ 実装** となりました。
-- **課題**: Lighthouse 等を用いたパフォーマンス測定や、`npm audit` 等のセキュリティチェックが自動テストパイプラインに組み込まれていません。
+- **現状**: Visual / A11y / Performance / Security の自動テストが全 7 ドメインで **✅ 実装** されました。Performance は Playwright `perf` project で LCP / CLS / TBT を計測し `e2e/perf-budgets.json` と比較、Security は `scripts/security-audit.mjs` が `bun audit --json` を集計します。
+- **課題**: 現状はローカル npm scripts のみ。`.github/workflows/` への CI 統合と、初期バジェット値（LCP/CLS/TBT 閾値）の段階的なチューニングが次の対象です。
 
 ---
 
@@ -99,12 +99,14 @@
 - [x] **A11y (アクセシビリティ) 自動テストの導入**
   - **内容**: `aria-label` の欠損やコントラスト比不足などの WCAG 違反の自動監視。
   - **推奨ツール**: `@axe-core/playwright`
-- [ ] **Performance テストの導入**
-  - **内容**: バンドルサイズ肥大化や LCP の劣化検知。
-  - **推奨ツール**: Lighthouse CI
-- [ ] **Security テストの導入**
-  - **内容**: 依存パッケージの脆弱性自動検知。
-  - **推奨ツール**: `npm audit` / `Snyk`
+- [x] **Performance テストの導入**
+  - **対象**: 全ドメインの主要 7 ページ（`e2e/helpers/critical-pages.ts`）
+  - **内容**: `bun run test:perf` で Playwright `perf` project が LCP / CLS / TBT を計測し、`e2e/perf-budgets.json` の閾値と比較する。本テストは主に dev サーバー計測を対象としており、その目的は CI/CD パイプラインにおける「テスト疎通の確認（疎通確認）」です。バジェット値は本番ビルドの実測値に基づいて段階的に引き締め調整されています。また、深掘り分析用に `bun run perf:report`（`@lhci/cli` autorun）も併設。
+  - **推奨ツール**: Playwright `PerformanceObserver` + `@lhci/cli`
+- [x] **Security テストの導入**
+  - **対象**: `package.json` の全依存パッケージ
+  - **内容**: `bun run test:security` で `scripts/security-audit.mjs` が `bun audit --json` を起動し、`high` / `critical` 検知時に exit 1 を返す。
+  - **推奨ツール**: `bun audit`（Bun 1.3.12 同梱）
 
 ---
 
@@ -151,7 +153,7 @@ bun run dashboard
 ## 7. 次回セッションでのテスト追加再開プロンプト
 
 あなたは熟練したテストエンジニアであり、Next.js (App Router) / TypeScript / Vitest / Playwright のテストスペシャリストです。
-現在、[docs/TEST_COVERAGE_PROGRESS.md](TEST_COVERAGE_PROGRESS.md) にまとめられた「4. 優先度別ネクストアクション」に基づき、テスト整備タスクをステップバイステップで実装する必要があります。
+現在、[docs/TEST_COVERAGE_PROGRESS.md](TEST_COVERAGE_PROGRESS.md) にまとめられた「4. 優先度別ネクストアクション」のうち **🔴 P0 / 🟡 P1 / 🔵 P2 は全て完了済み** です。次フェーズとして以下のいずれかをステップバイステップで進めてください。
 
 以下の要件を厳守して実装を進めてください。
 1. **TDD（テスト駆動開発）の厳格な遵守**:
@@ -163,7 +165,11 @@ bun run dashboard
    無駄なループを防ぐため、1つのテストファイル（または1つの小さなテストケース群）ごとに実装と検証を終え、その都度 `git add` と `git commit` を行って進捗を確定させてから、次のテスト作成に進むこと。
 3. **個人情報 (PII) の排除**:
    追加・作成するテストコードやドキュメントには、絶対パス（例: `/Users/username/...`）などの個人を特定できる情報を含めず、常にリポジトリ相対パスや環境依存しない形式で記述すること。
-4. **対象優先度**:
-   「4. 優先度別ネクストアクション」に定義された **🔵 P2**（横断品質の導入検討: Visual / A11y 等）へと進めてください。
+4. **次フェーズ候補（🟢 P3: 残課題）**:
+   - **CI 統合**: `.github/workflows/` を追加し、`bun run test` / `bun run test:e2e` / `bun run test:perf` / `bun run test:security` を PR ゲートとして自動実行する。
+   - **Smoke テスト拡充**: 「2. ドメイン別カバレッジマトリクス」で全ドメインが ❌ 0% の Smoke 列を埋めるため、各ドメインのトップページに対する軽量レンダリングテストを追加する。
+   - **Integration テスト導入**: ドメインごとの「ナビ → セクション遷移」「ScrollSpy → SectionNav 連動」等のコンポーネント間連携テストを Vitest + Testing Library で追加する。
+   - **Unit カバレッジ底上げ**: CDL（20%）/ GCL（26%）/ ACE（43%）の未カバーコンポーネントから優先的に追加する。具体的ターゲットは「5. 主な未カバーソースファイル一覧」を参照。
+   - **Performance バジェットのチューニング**: `e2e/perf-budgets.json` の初期バジェット値は、本番ビルドの実測値に基づいて段階的に引き締め調整されました（LCP: 3000ms, CLS: 0.1, TBT: 200ms）。
 
-それでは、次に優先度の高い **🔵 P2: 横断品質** の整備から作業を開始してください。
+開始時は上記候補からひとつを選び、対応する優先度ラベル（🟢 P3）と「Smoke / Integration / Unit / CI / Perf チューニング」のどのトラックかを宣言してから着手してください。
