@@ -27,6 +27,20 @@ export function extractGotoPaths(source) {
     for (const match of source.matchAll(GOTO_RE)) {
         seen.add(match[2]);
     }
+    if (source.includes('CRITICAL_PAGES')) {
+        try {
+            const criticalPagesPath = path.resolve(process.cwd(), 'e2e/helpers/critical-pages.ts');
+            if (fs.existsSync(criticalPagesPath)) {
+                const content = fs.readFileSync(criticalPagesPath, 'utf8');
+                const paths = content.match(/['"](\/[^'"]*)['"]/g) || [];
+                for (const p of paths) {
+                    seen.add(p.replace(/['"]/g, ''));
+                }
+            }
+        } catch {
+            // Ignore error
+        }
+    }
     return [...seen];
 }
 
@@ -64,6 +78,10 @@ export function resolveAliasPath(alias, fileset) {
  */
 export function classifyTestCategory(testPath) {
     const normalized = testPath.replace(/\\/g, '/');
+    if (normalized.endsWith('visual.spec.ts') || normalized.endsWith('visual.spec.tsx')) return 'Visual';
+    if (normalized.endsWith('a11y.spec.ts') || normalized.endsWith('a11y.spec.tsx')) return 'A11y';
+    if (normalized.endsWith('perf.spec.ts') || normalized.endsWith('perf.spec.tsx')) return 'Performance';
+    if (normalized.includes('security-audit')) return 'Security';
     if (normalized.startsWith('e2e/')) return 'E2E';
     if (/\bsmoke\.(test|spec)\.[tj]sx?$/.test(normalized)) return 'Smoke';
     if (normalized.startsWith('__tests__/lib/')) return 'Integration';
@@ -123,7 +141,8 @@ export function listTestFiles(rootDir) {
     const unitRoot = path.join(rootDir, '__tests__');
     for (const f of walk(unitRoot, (p) => /\.test\.(tsx?|jsx?)$/.test(p))) {
         const rel = path.relative(rootDir, f).replace(/\\/g, '/');
-        if (rel.startsWith('__tests__/scripts/') || rel.startsWith('__tests__/docs/')) continue;
+        if (rel.startsWith('__tests__/scripts/') && !rel.includes('security-audit')) continue;
+        if (rel.startsWith('__tests__/docs/')) continue;
         result.push(rel);
     }
     const e2eRoot = path.join(rootDir, 'e2e');

@@ -94,6 +94,7 @@ function build() {
             const cellSources = sourceFiles.filter((s) => domainOf(s) === domain.id);
             const cellTests = testFiles.filter((t) => {
                 if (classifyTestCategory(t) !== category) return false;
+                if (category === 'Security') return true;
                 const srcs = testToSources.get(t) || [];
                 return srcs.some((s) => domainOf(s) === domain.id);
             });
@@ -105,6 +106,7 @@ function build() {
                 tests: cellTests,
                 coveredSources: coveredSources.length,
                 sources: cellSources.length,
+                category,
             });
             cells.push({
                 domain: domain.id,

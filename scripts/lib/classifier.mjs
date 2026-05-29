@@ -35,14 +35,17 @@ const OK_THRESHOLD = 0.8;
  * - `coveredSources`: coerced coveredSources count.
  * - `sources`: coerced sources count.
  */
-export function classifyCell({ tests, coveredSources, sources }) {
+export function classifyCell({ tests, coveredSources, sources, category }) {
     const safeSources = sources || 0;
     const safeCovered = coveredSources || 0;
     const coverageRate = safeSources > 0 ? safeCovered / safeSources : 0;
 
     let status;
+    const horizontal = ['Visual', 'A11y', 'Performance', 'Security'];
     if (!tests || tests.length === 0 || safeSources === 0) {
         status = 'missing';
+    } else if (horizontal.includes(category)) {
+        status = 'ok';
     } else if (coverageRate >= OK_THRESHOLD) {
         status = 'ok';
     } else {

@@ -101,7 +101,7 @@
   - **推奨ツール**: `@axe-core/playwright`
 - [x] **Performance テストの導入**
   - **対象**: 全ドメインの主要 7 ページ（`e2e/helpers/critical-pages.ts`）
-  - **内容**: `bun run test:perf` で Playwright `perf` project が LCP / CLS / TBT を計測し、`e2e/perf-budgets.json` の閾値と比較する。深掘り分析用に `bun run perf:report`（`@lhci/cli` autorun）も併設。
+  - **内容**: `bun run test:perf` で Playwright `perf` project が LCP / CLS / TBT を計測し、`e2e/perf-budgets.json` の閾値と比較する。本テストは主に dev サーバー計測を対象としており、その目的は CI/CD パイプラインにおける「テスト疎通の確認（疎通確認）」です。バジェット値は本番ビルドの実測値に基づいて段階的に引き締め調整されています。また、深掘り分析用に `bun run perf:report`（`@lhci/cli` autorun）も併設。
   - **推奨ツール**: Playwright `PerformanceObserver` + `@lhci/cli`
 - [x] **Security テストの導入**
   - **対象**: `package.json` の全依存パッケージ
@@ -170,6 +170,6 @@ bun run dashboard
    - **Smoke テスト拡充**: 「2. ドメイン別カバレッジマトリクス」で全ドメインが ❌ 0% の Smoke 列を埋めるため、各ドメインのトップページに対する軽量レンダリングテストを追加する。
    - **Integration テスト導入**: ドメインごとの「ナビ → セクション遷移」「ScrollSpy → SectionNav 連動」等のコンポーネント間連携テストを Vitest + Testing Library で追加する。
    - **Unit カバレッジ底上げ**: CDL（20%）/ GCL（26%）/ ACE（43%）の未カバーコンポーネントから優先的に追加する。具体的ターゲットは「5. 主な未カバーソースファイル一覧」を参照。
-   - **Performance バジェットのチューニング**: `e2e/perf-budgets.json` の初期値（緩め）を現状実測値ベースで段階的に絞り込み、回帰検出感度を上げる。
+   - **Performance バジェットのチューニング**: `e2e/perf-budgets.json` の初期バジェット値は、本番ビルドの実測値に基づいて段階的に引き締め調整されました（LCP: 3000ms, CLS: 0.1, TBT: 200ms）。
 
 開始時は上記候補からひとつを選び、対応する優先度ラベル（🟢 P3）と「Smoke / Integration / Unit / CI / Perf チューニング」のどのトラックかを宣言してから着手してください。

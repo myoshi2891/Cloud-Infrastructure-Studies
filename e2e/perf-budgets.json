@@ -1,8 +1,15 @@
 {
     "default": {
-        "lcp": 30000,
-        "cls": 0.5,
-        "tbt": 3000
+        "lcp": 3000,
+        "cls": 0.1,
+        "tbt": 200
     },
-    "overrides": {}
+    "overrides": {
+        "/gcl/cloud-digital-leader": {
+            "tbt": 600
+        },
+        "/gcl/professional-cloud-network-engineer": {
+            "tbt": 400
+        }
+    }
 }

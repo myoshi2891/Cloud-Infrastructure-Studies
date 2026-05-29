@@ -62,9 +62,18 @@ function runBunAudit() {
     const result = spawnSync('bun', ['audit', '--json'], {
         encoding: 'utf-8',
         stdio: ['ignore', 'pipe', 'pipe'],
+        timeout: 15000,
     });
-    if (result.error) {
-        throw new Error(`Failed to invoke bun audit: ${result.error.message}`);
+    if (result.error || result.status !== 0 || result.signal) {
+        const errorMsg = result.error ? result.error.message : 'None';
+        const stderrStr = result.stderr ? result.stderr.toString() : 'None';
+        throw new Error(
+            `bun audit execution failed.\n` +
+            `Status: ${result.status}\n` +
+            `Signal: ${result.signal}\n` +
+            `Error message: ${errorMsg}\n` +
+            `Stderr: ${stderrStr}`
+        );
     }
     const stdout = result.stdout ?? '';
     // bun audit はバージョン情報を含むヘッダ行を ANSI 付きで先頭に出力するため、最初の `{` 以降を抽出

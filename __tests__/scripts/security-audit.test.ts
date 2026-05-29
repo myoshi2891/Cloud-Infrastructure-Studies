@@ -8,6 +8,13 @@ import {
 
 const FIXTURES_DIR = resolve(process.cwd(), '__tests__/scripts/__fixtures__');
 
+/**
+ * Loads a security audit JSON fixture from the fixtures directory.
+ *
+ * @param {string} name - The filename of the fixture to load.
+ * @returns {unknown} The parsed JSON object representing the audit results.
+ * @throws {Error} Throws when the file cannot be read or JSON parsing fails.
+ */
 function loadFixture(name: string): unknown {
     const raw = readFileSync(resolve(FIXTURES_DIR, name), 'utf-8');
     return JSON.parse(raw);

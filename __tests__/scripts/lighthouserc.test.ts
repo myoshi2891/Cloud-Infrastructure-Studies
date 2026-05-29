@@ -19,6 +19,13 @@ type LhciConfig = {
     };
 };
 
+/**
+ * Loads and validates the Lighthouse CI configuration from `lighthouserc.cjs`.
+ * Uses `createRequire` with `CONFIG_PATH` to resolve the CommonJS module.
+ *
+ * @returns {LhciConfig} The parsed Lighthouse CI configuration object.
+ * @throws {Error} Throws when the exported module is not an object or is null.
+ */
 function loadConfig(): LhciConfig {
     const require = createRequire(process.cwd() + '/');
     const mod = require(CONFIG_PATH) as unknown;
@@ -64,9 +71,38 @@ describe('lighthouserc.cjs (manual perf report config)', () => {
         const cfg = loadConfig();
         const assert = cfg.ci?.assert;
         expect(assert).toBeDefined();
-        const hasAssertions =
-            (assert?.preset !== undefined && assert.preset.length > 0) ||
-            (assert?.assertions !== undefined && Object.keys(assert.assertions).length > 0);
-        expect(hasAssertions).toBe(true);
+
+        const preset = assert?.preset;
+        const hasPerfPreset = preset !== undefined && preset.includes('performance');
+
+        const assertions = assert?.assertions as Record<string, any> | undefined;
+        let hasPerfAssertion = false;
+        if (assertions) {
+            // Check flat categories:performance format
+            const flatPerf = assertions['categories:performance'];
+            if (flatPerf !== undefined) {
+                if (typeof flatPerf === 'number' && flatPerf > 0) {
+                    hasPerfAssertion = true;
+                } else if (Array.isArray(flatPerf)) {
+                    const options = flatPerf[1];
+                    if (options && typeof options === 'object' && typeof options.minScore === 'number' && options.minScore > 0) {
+                        hasPerfAssertion = true;
+                    }
+                }
+            }
+            // Check nested categories object format
+            const categories = assertions.categories;
+            if (categories && typeof categories === 'object') {
+                const perf = categories.performance;
+                if (typeof perf === 'number' && perf > 0) {
+                    hasPerfAssertion = true;
+                } else if (perf && typeof perf === 'object' && typeof perf.minScore === 'number' && perf.minScore > 0) {
+                    hasPerfAssertion = true;
+                }
+            }
+        }
+
+        expect(hasPerfPreset || hasPerfAssertion).toBe(true);
     });
 });
+

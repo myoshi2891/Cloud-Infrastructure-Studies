@@ -5,11 +5,11 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新 HEAD:** 7d0a9ab — `refactor/docs: update test coverage progress and regenerate dashboard after P1 completion`
-- **進行中タスク:** なし（直近完了: P1 テスト整備タスク（ドメイン品質・E2E））
-- **テスト数:** 333 件パス（Vitest 54 ファイル）/ E2E 23 件パス（Playwright Chromium 16 ファイル）
+- **最新 HEAD:** 710f7a1 — `docs(rules): enforce spec-sync DoD at TDD Step 3 to prevent drift`
+- **進行中タスク:** なし（直近完了: 🔵 P2: 横断品質（Visual, A11y, Performance, Security）の導入検討）
+- **テスト数:** 497 件パス（Vitest 71 ファイル）/ E2E 23 件パス（Playwright Chromium 16 ファイル）
 - **ビルド:** 成功 (Next.js 16.2.6 Turbopack)
-- **最終更新日時(UTC):** 2026-05-21T07:35:00Z
+- **最終更新日時(UTC):** 2026-05-29T03:12:00Z
 
 ---
 
