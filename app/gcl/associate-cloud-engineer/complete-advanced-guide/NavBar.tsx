@@ -3,8 +3,7 @@
 import React from 'react';
 
 /**
- * NavBar component containing all the section links for the GCP ACE Complete Advanced Guide page.
- * Supports smooth scrolling and state monitoring for active items.
+ * NavBar component rendering static section anchor links for the GCP ACE Complete Advanced Guide.
  */
 export default function NavBar() {
     return (
