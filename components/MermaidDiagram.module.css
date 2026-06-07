@@ -19,15 +19,5 @@
     height: auto;
 }
 
-.mermaidTarget :global(svg text:not([style*="color"]):not([style*="fill"])),
-.mermaidTarget :global(.nodeLabel:not([style*="color"])),
-.mermaidTarget :global(.edgeLabel:not([style*="color"])),
-.mermaidTarget :global(.labelText:not([style*="color"])),
-.mermaidTarget :global(.label:not([style*="color"])),
-.mermaidTarget :global(foreignObject div:not([style*="color"])),
-.mermaidTarget :global(foreignObject span:not([style*="color"])) {
-    color: #e6e9ee !important;
-    fill: #e6e9ee !important;
-}
-
+/* 色は MermaidDiagram.tsx の themeVariables に一元化（強制上書きは廃止）。CSS はレイアウト責務のみ。 */
 
