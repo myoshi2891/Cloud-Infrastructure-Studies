@@ -1,17 +1,71 @@
-# 移行作業ワークフロー・同期ルール
+---
+paths:
+  - "app/**/*.tsx"
+  - "app/**/*.css"
+  - "MIGRATION_PROGRESS.md"
+---
 
-## 🚨 プロジェクトの鉄則
+# MIGRATION_PROGRESS.md セッション終了前同期ルール
 
-1. **ツールのパラメータ確認 (自己レビュー義務)**: ツールを呼び出す前に、必ず thought ブロック内で必須パラメータが揃っているか確認すること。
-2. **ステップごとの確定 (コミット義務)**: 1つの実装・テストが完了するごとに、必ず `git add` と `git commit` を行い作業を確定させること。
-3. **HTMLファイルのアーカイブ**: 移行が完全に完了したファイルのみ `Gcl_Archive/` へ移動すること。移行前のファイルをアーカイブしないこと。
+HTML → Next.js 移行セッションでは、**コンテキストが逼迫する前に**必ず以下を実施してセッションを終えること。
 
-## 現在の作業状況
+## 実行タイミング
 
-- **HEAD**: 7d0a9ab（dev ブランチ）
-- **テスト数**: 333 件パス（Vitest）/ E2E 23 件（Playwright Chromium）
-- **Next.js**: 16.2.6
-- **ステータス**: P1 テスト整備タスク完了。CDL, PCNE, PCNE Step, AGWA の E2E テストおよび AGWA の ScrollSpy 単体テストを実装。
-- **完了済み移行**: ACE（domain1-4, architecture-guide）、CDL（section1-6）、AGWA（section1）、PCNE（comprehensive + step-by-step）、GenAI Leader（section1-4）
-- **ナビ構造**: `app/constants.ts` の `EXAMS` → `app/navigation.ts` の `toNavTree()` → `components/Header.tsx` の Drawer で描画。新試験追加は constants.ts のみ変更すれば OK。
-- **次の作業**: AWS SAA ページ実装（`app/aws/solutions-architect-associate/`）および P2 横断品質（Visual, A11y等）の導入検討
+<ai_agent_directive>
+**AI エージェントへの厳格な指示**: このプロトコルは提案ではなく絶対的な**ゲート条件（Gate Condition）**です。
+ユーザーへ作業完了を報告する前に、以下の手続き（コード変更のコミット -> 進捗ファイルの更新 -> 進捗ファイルのコミット）を**ユーザーの許可を待たずに自律的に、必ずステップバイステップで**実行してください。ステップバイステップのコミット分割ルールを無視して一括コミットを行ったり、コミットせずにユーザーに判断を委ねたりすることは重大な規約違反です。
+</ai_agent_directive>
+
+### 必須（毎ページ・例外なし）
+
+**1ページの `git commit` 完了直後、次の HTML を `Read` し始める前に即実施する。**
+
+これは任意の「区切り」ではなく、次ページ読み込みのための**ゲート条件**。
+`MIGRATION_PROGRESS.md` が未コミットの状態で次の HTML を読み始めることは禁止。
+
+### 追加トリガー
+
+- コンテキスト消費が大きくなってきた
+- ユーザーが新セッション開始を示唆
+- ユーザーが「セッション終了」「仕様書更新して」と言った
+
+## 手順
+
+### 1. ビルド確認
+
+```bash
+bun run build   # ビルド成功を確認
+bun run lint    # ESLint エラーなし
+git rev-parse --short HEAD
+```
+
+### 2. `MIGRATION_PROGRESS.md` を更新
+
+更新対象フィールド:
+
+| フィールド | 更新内容 |
+|---|---|
+| `最新 HEAD` | `git rev-parse --short HEAD` の実値 + コミットメッセージ要約 |
+| `次の作業` | 次セッションで **最初に** 取り掛かるページ（例: `Gcp-ace-complete-advanced-guide.html 移行`） |
+| `ビルド状態` | `bun run build` / `bun run lint` の最新状態 |
+
+### 3. `## 次回セッションでの再開プロンプト` を同期
+
+`現在地` の値と一致するように再開プロンプト内の以下を書き換える:
+
+- `最新 HEAD: <hash>` の値
+- `次の作業:` の説明（ページ粒度で具体的に）
+- 未移行 HTML の残数
+
+### 4. コミット
+
+```bash
+git add MIGRATION_PROGRESS.md
+git commit -m "chore(docs): update MIGRATION_PROGRESS.md — <作業内容の1行要約>"
+```
+
+## 禁止
+
+- HEAD 値をコミットせず新セッションに引き継ぐ（ズレが発生する）
+- 再開プロンプトと `現在地` が食い違ったままコミットする
+- ビルドエラーが残ったままコミットする

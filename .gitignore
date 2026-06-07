@@ -118,6 +118,6 @@ Aws/archive/
 Gcl_Archive/
 tsconfig.tsbuildinfo
 infra-md-to-nextjs-migration.skill
-.gemini
+.gemini/settings.json
 docs/skills
 .claude/settings.json
