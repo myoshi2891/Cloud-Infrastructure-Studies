@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import styles from './MermaidDiagram.module.css';
 import mermaid from 'mermaid';
@@ -15,46 +15,32 @@ export interface MermaidDiagramProps {
 }
 
 if (typeof window !== 'undefined') {
+    // 設定値は正本である Gcp-ace-complete-advanced-guide.html の表示を再現するもの。
+    // DIAGRAMS は静的・作者管理の定数のみ（外部入力なし）のため securityLevel: 'loose' で問題ない。
     mermaid.initialize({
         startOnLoad: false,
-        theme: 'base',
-        securityLevel: 'strict',
-        // 採寸（getBBox 用の一時 div）と描画のフォントを一致させ、日本語ラベルの字幅ズレによる文字切れを防ぐ
-        fontFamily: '"Noto Sans JP", "DM Sans", sans-serif',
+        theme: 'dark',
+        securityLevel: 'loose',
         themeVariables: {
-            // darkMode: base テーマの派生色（edgeLabelBackground 等）をダーク向きに計算させる
-            darkMode: true,
-            background: 'transparent',
-            // --- 共通 ---
-            primaryColor: 'rgba(64,224,208,0.12)',
-            primaryBorderColor: '#40E0D0',
-            primaryTextColor: '#e6e9ee',
-            secondaryColor: 'rgba(124,164,255,0.12)',
-            tertiaryColor: 'rgba(255,255,255,0.04)',
-            tertiaryTextColor: '#e6e9ee',
-            lineColor: '#9aa7b2',
-            textColor: '#e6e9ee',
-            nodeTextColor: '#e6e9ee',
-            titleColor: '#e6e9ee',
-            // --- フロー図 エッジラベル / subgraph クラスタ ---
-            edgeLabelBackground: '#0d1320',
-            clusterBkg: 'rgba(124,164,255,0.06)',
-            clusterBorder: '#3a4453',
-            // --- シーケンス図 ---
-            actorBkg: 'rgba(64,224,208,0.12)',
-            actorBorder: '#40E0D0',
-            actorTextColor: '#e6e9ee',
-            actorLineColor: '#9aa7b2',
-            signalColor: '#9aa7b2',
-            signalTextColor: '#e6e9ee',
-            labelBoxBkgColor: 'rgba(124,164,255,0.12)',
-            labelBoxBorderColor: '#3a4453',
-            labelTextColor: '#e6e9ee',
-            loopTextColor: '#e6e9ee',
-            noteBkgColor: '#1c2230',
-            noteTextColor: '#e6e9ee',
-            noteBorderColor: '#3a4453',
+            primaryColor: '#1a73e8',
+            primaryTextColor: '#e8f0fe',
+            primaryBorderColor: '#1a73e8',
+            lineColor: '#5f7fb8',
+            secondaryColor: '#0f9d58',
+            tertiaryColor: '#0d1a2e',
+            background: '#060b14',
+            mainBkg: '#0f2040',
+            nodeBorder: '#1a73e8',
+            clusterBkg: '#0d1a2e',
+            titleColor: '#e8f0fe',
+            edgeLabelBackground: '#0d1a2e',
+            attributeBackgroundColorEven: '#0f2040',
+            attributeBackgroundColorOdd: '#0d1a2e',
+            fontFamily: "'Noto Sans JP', sans-serif",
+            fontSize: '13px',
         },
+        flowchart: { curve: 'basis', padding: 20 },
+        sequence: { actorMargin: 60, mirrorActors: true },
     });
 }
 
@@ -83,6 +69,42 @@ const toCodeLines = (text: string): { line: string; key: string }[] => {
 };
 
 /**
+ * 注入済みのライブ SVG 要素に、正本 HTML と同じ下部見切れ対策を直接施す。
+ *
+ * 文字列を DOMParser/XMLSerializer で往復させると foreignObject 内の HTML（htmlLabels）の
+ * 名前空間が壊れてラベルが空になるため、innerHTML 注入後の実 DOM を操作する。
+ *
+ * - width/height 属性を除去し、width:100% / height:auto でアスペクト比を維持
+ * - overflow:visible で viewBox から数px はみ出す描画の途切れを防止
+ * - viewBox の高さを拡張（flowchart は +15、sequence/state は下部にアクター/メモが伸びるため +110）
+ *
+ * @param svgEl 注入済みの SVG 要素
+ * @param chart 元の DSL（図種別の判定に使用）
+ */
+const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
+    svgEl.removeAttribute('width');
+    svgEl.removeAttribute('height');
+    svgEl.style.width = '100%';
+    svgEl.style.height = 'auto';
+    svgEl.style.overflow = 'visible';
+    svgEl.style.marginBottom = '10px';
+    svgEl.style.maxWidth = '100%';
+
+    const viewBox = svgEl.getAttribute('viewBox');
+    if (!viewBox) return;
+
+    const parts = viewBox.split(/\s+/).map(Number);
+    if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
+
+    const trimmed = chart.trim();
+    const isSequenceOrState =
+        trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
+    const extraHeight = isSequenceOrState ? 110 : 15;
+    const [x, y, w, h] = parts as [number, number, number, number];
+    svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
+};
+
+/**
  * Mermaid 図を遅延ロード・クライアント描画するラッパー。
  *
  * - SSR / 初回マウント前は DSL を `<pre className="codeblock" aria-hidden>` として見せてハイドレーションエラーを防ぐ。
@@ -94,6 +116,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
     const [rendered, setRendered] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [svgStr, setSvgStr] = useState<string>('');
+    const targetRef = useRef<HTMLDivElement>(null);
 
     // マウント状態のみを管理する Effect (ESLint の set-state-in-effect 回避)
     useEffect(() => {
@@ -136,6 +159,15 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
         };
     }, [chart, reactId, isMounted]);
 
+    // SVG 注入後（svgStr 反映後）に、実 DOM の SVG へ下部見切れ対策を適用する
+    useEffect(() => {
+        if (!rendered || !svgStr) return;
+        const svgEl = targetRef.current?.querySelector('svg');
+        if (svgEl instanceof SVGSVGElement) {
+            applySvgFixups(svgEl, chart);
+        }
+    }, [svgStr, rendered, chart]);
+
     // マウント前、またはブラウザ環境でない（jsdomテストなど）場合は、ハイドレーション不一致を防ぐためフォールバックを表示
     const showFallback = !isMounted || !canRenderInBrowser() || (!rendered && !error);
 
@@ -148,6 +180,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
         >
             {isMounted && rendered && !error && (
                 <div
+                    ref={targetRef}
                     className={cn(styles.mermaidTarget, "mermaid-target")}
                     dangerouslySetInnerHTML={{ __html: svgStr }}
                 />

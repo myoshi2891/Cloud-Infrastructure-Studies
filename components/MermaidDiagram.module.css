@@ -21,3 +21,19 @@
 
 /* 色は MermaidDiagram.tsx の themeVariables に一元化（強制上書きは廃止）。CSS はレイアウト責務のみ。 */
 
+/*
+ * foreignObject は SVG 仕様上 overflow:hidden がデフォルトで内容をクリップする。
+ * emoji を含むラベルは採寸幅 < 実描画幅となり右端が切れるため、はみ出しを許可する。
+ * ノード矩形は十分広く、はみ出した文字も枠内に収まる。
+ */
+.mermaidTarget :global(foreignObject) {
+    overflow: visible;
+}
+
+.mermaidTarget :global(foreignObject > div),
+.mermaidTarget :global(.nodeLabel),
+.mermaidTarget :global(.edgeLabel) {
+    overflow: visible;
+    white-space: nowrap;
+}
+
