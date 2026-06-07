@@ -66,6 +66,9 @@ This skill provides rules and best practices to ensure all Markdown documents (`
 
 ### 3. MD032: blanks-around-lists (リスト前後の空行)
 
+> [!NOTE]
+> **※本ルールは現在 `.markdownlint.json` で無効化（`"MD032": false`）されています。** そのため、本プロジェクトではリスト前後の空行エラーによるビルド失敗は発生しませんが、可読性向上のために空行を挟むことを推奨します。
+
 **問題**: 箇条書きリスト（`-`, `*`, `1.` など）の直前または直後に空行がなく、通常のパラグラフテキストと連結している。
 
 #### ❌ 違反例
@@ -136,7 +139,7 @@ This skill provides rules and best practices to ensure all Markdown documents (`
 
 **問題**: Markdown 内に `<br>`, `<img>`, `<a>` などの HTML タグが直接書かれている。
 
-* **例外**: プロジェクトで意図的に HTML レンダリングする特定のダッシュボードやスライドコンポーネント用ファイル（例: `docs/coverage-dashboard.html`、またはマークダウン内で特別に許可されたアコーディオン等）を除き、原則として標準의 Markdown 記法を使用してください。
+* **例外**: プロジェクトで意図的に HTML レンダリングする特定のダッシュボードやスライドコンポーネント用ファイル（例: `docs/coverage-dashboard.html`、またはマークダウン内で特別に許可されたアコーディオン等）を除き、原則として標準の Markdown 記法を使用してください。
 * **改行の代替案**: 行末に 2 つのスペースを入れる（ダブルスペース改行）、または新しいパラグラフ（空行を挟む）として分割してください。
 
 ---<!-- markdownlint-enable MD031 MD022 MD032 -->
@@ -152,6 +155,9 @@ AI エージェントは Markdown ファイルを新規作成・修正した際�
 ```bash
 bun scripts/format-markdown.mjs <file_path>
 ```
+
+> [!NOTE]
+> `scripts/format-markdown.mjs` は MD022, MD012, MD047 のルールを自動で修正しますが、リストの内部にあるネストされたコードブロック等の MD031 (blanks-around-fences) については自動修正の対象外です。これらは手動で修正を行い、`git diff` で変更点を確認する必要があります。
 
 > [!CAUTION]
 > **手動優先ルール**: 自動整形スクリプトは便利ですが、リスト内のネストされたコードブロックなど複雑な構造で意図しない崩れを起こす可能性があります。自動整形を実行した後は、必ず `git diff` で意図しない変更が加えられていないかを確認し、必要に応じて手動で微調整を行ってください。
