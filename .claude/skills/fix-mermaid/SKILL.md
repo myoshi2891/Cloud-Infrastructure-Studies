@@ -270,6 +270,112 @@ vi.mock("@/components/MermaidDiagram", () => ({
 }));
 ```
 
+## Mermaid v11 + React 共通コンポーネントの可読性・文字切れ・文字色対策（2026年6月追記）
+
+本リポジトリは `mermaid@^11.15.0` を使用し、図は共通コンポーネント [`components/MermaidDiagram.tsx`](../../../components/MermaidDiagram.tsx)（`'use client'`）で描画する。`mermaid.render()` が返す SVG 文字列を `dangerouslySetInnerHTML` で注入し、ページ固有スタイルは [`components/MermaidDiagram.module.css`](../../../components/MermaidDiagram.module.css) に置く。
+
+正本（レンダリングの正解）は静的 HTML `Gcp-ace-complete-advanced-guide.html`（mermaid 10.6.1）。新たに不具合を直す際は **この HTML の `mermaid.initialize` 設定と後処理を正として再現**すること。
+
+### 症状と根本原因の対応表
+
+| 症状 | 根本原因 | 対策 |
+| ------ | --------- | ------ |
+| 文字が低コントラストで読みづらい（特にエッジラベル・subgraph 見出し・シーケンス図 Note） | `theme:'base'`（非 darkMode）が `edgeLabelBackground=lighten(...)`・`noteBkgColor="#fff5ad"` 等の**明色背景**を算出。そこへ CSS で明色文字を当てると明×明で読めない | `theme:'dark'` + **ソリッド濃色の `themeVariables`** を明示（下記） |
+| ノード内の文字が下端で切れる | 採寸と実描画の数 px 差で SVG `viewBox` 下端が見切れる | 描画後に `viewBox` の高さを拡張（flowchart `+15` / sequence・state `+110`）+ `overflow:visible` |
+| ノード文字が**右端**で切れる（emoji を含む図のみ。emoji 無しの図は無傷＝切り分けの目印） | `<foreignObject>` は SVG 仕様上 **`overflow:hidden` がデフォルト**。emoji はラベル採寸時に「豆腐(tofu)」幅で測られ実描画で広がるため `foreignObject 幅 < 実テキスト幅` となりクリップ | CSS で `.mermaidTarget foreignObject { overflow: visible }`（ノード矩形は十分広く、はみ出した文字も枠内に収まる） |
+| 文字色を変えても**全く反映されない** | `mermaid.initialize()` はモジュール最上位で**一度だけ**実行されるため HMR では再実行されず古いテーマのまま。加えて `*.module.css` 変更後の `.next` キャッシュ汚染 | `.next` 削除 + dev サーバー完全再起動 + ブラウザのハードリロード（後述） |
+| 日本語ラベルの幅不足による軽微な切れ | Web フォント（Noto Sans JP）読込前に採寸 | `mermaid.render()` 直前に `await document.fonts.ready`（jsdom 等は型ガードで skip） |
+
+### 正本 HTML を再現する `mermaid.initialize` 設定（v11）
+
+```ts
+mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',          // 'base' は明色背景を算出して低コントラストになる。'dark' を使う
+    securityLevel: 'loose', // 'strict' は htmlLabels の採寸挙動を変え見切れの原因になる。
+                            // DIAGRAMS は静的・作者管理の定数のみ（外部入力なし）なので 'loose' で安全
+    themeVariables: {
+        primaryColor: '#1a73e8', primaryTextColor: '#e8f0fe', primaryBorderColor: '#1a73e8',
+        lineColor: '#5f7fb8', secondaryColor: '#0f9d58', tertiaryColor: '#0d1a2e',
+        background: '#060b14', mainBkg: '#0f2040', nodeBorder: '#1a73e8',
+        clusterBkg: '#0d1a2e', titleColor: '#e8f0fe', edgeLabelBackground: '#0d1a2e',
+        fontFamily: "'Noto Sans JP', sans-serif", fontSize: '13px',
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { actorMargin: 60, mirrorActors: true },
+});
+```
+
+> `mainBkg` を**透明や半透明にしない**こと。ノード背景がソリッド濃色だからこそ白文字が読め、CSS の `!important` 強制上書きが不要になる。
+
+### ⚠️ SVG 後処理は「文字列加工」ではなく「ライブ DOM 操作」で行う
+
+`mermaid.render()` の戻り値（SVG 文字列）を **`DOMParser('image/svg+xml')` + `XMLSerializer` で往復させてはならない**。`foreignObject` 内の htmlLabels（XHTML 名前空間の HTML）が壊れ、ラベルが `width=0`・テキスト空になって表示が潰れる。
+
+正本 HTML と同じく、**`innerHTML` 注入後の実 DOM 要素を直接操作**する。React では `ref` + `svgStr` 依存の `useEffect` で、注入済み `<svg>` に対して後処理を適用する。
+
+```ts
+const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
+    svgEl.removeAttribute('width');
+    svgEl.removeAttribute('height');
+    svgEl.style.width = '100%';
+    svgEl.style.height = 'auto';
+    svgEl.style.overflow = 'visible';   // viewBox から数px はみ出す描画の途切れ防止
+    svgEl.style.marginBottom = '10px';
+    svgEl.style.maxWidth = '100%';
+
+    const viewBox = svgEl.getAttribute('viewBox');
+    if (!viewBox) return;
+    const parts = viewBox.split(/\s+/).map(Number);
+    if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
+    const trimmed = chart.trim();
+    const isSequenceOrState =
+        trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
+    const extraHeight = isSequenceOrState ? 110 : 15;
+    const [x, y, w, h] = parts as [number, number, number, number];
+    svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
+};
+```
+
+### 文字色は「ノードラベル限定」で当てる（明背景×明文字の再発防止）
+
+過去、全 SVG テキストへ `color/fill:#e6e9ee !important` を当てた結果、**エッジラベル・subgraph 見出し・シーケンス図 Note（明色背景）まで明色文字になり読めなくなる**「もぐら叩き」を繰り返した。`theme:'dark'` で背景色は適正化されるため、CSS で色を当てるのは**ノードラベル（`.node .nodeLabel`）に限定**する。エッジラベル / Note はテーマ任せ（暗背景＋明文字）にする。
+
+ノード文字色の方針（ユーザー選択：**暗ノード＝白 / 黄ノード＝黒** が最も読みやすい）:
+
+```css
+/* foreignObject のクリップ解除（emoji 採寸ズレによる右端切れ対策） */
+.mermaidTarget :global(foreignObject) { overflow: visible; }
+.mermaidTarget :global(foreignObject > div),
+.mermaidTarget :global(.nodeLabel),
+.mermaidTarget :global(.edgeLabel) { overflow: visible; white-space: nowrap; }
+
+/* 既定でノードラベルを白に（<br/> 2 行目が暗く残る問題も解消するため子孫 * まで） */
+.mermaidTarget :global(.node .nodeLabel),
+.mermaidTarget :global(.node .nodeLabel *) { color: #ffffff !important; }
+
+/* 黄色ノード(#fbbc04)のみラベルを黒に戻す（白×黄の同化回避） */
+.mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel *) { color: #000000 !important; }
+```
+
+> `.edgeLabel *` に `fill:#fff` を当てない。エッジラベルの背景 `rect` が白く塗り潰される。色を当てるのは**ラベルテキストのみ・`color` のみ**に留める。
+
+### 確認手順（重要・順序厳守）
+
+1. `*.module.css` 変更時は `.claude/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、**dev サーバーを完全再起動**する。
+
+```bash
+kill $(lsof -ti:3000) 2>/dev/null; rm -rf .next; bun run dev
+```
+
+2. ブラウザは**ハードリロード（⌘+Shift+R）**。通常リロードでは古い SVG/CSS が残る。
+3. 目視確認はユーザー側で実施する（このリポジトリでは Playwright/ブラウザ自動操作は使わない方針）。
+
 ---
 
 ### Mermaid を諦めて HTML/CSS に置き換えるべきケース
