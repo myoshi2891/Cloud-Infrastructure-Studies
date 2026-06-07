@@ -5,11 +5,46 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新 HEAD:** 710f7a1 — `docs(rules): enforce spec-sync DoD at TDD Step 3 to prevent drift`
-- **進行中タスク:** なし（直近完了: 🔵 P2: 横断品質（Visual, A11y, Performance, Security）の導入検討）
-- **テスト数:** 497 件パス（Vitest 71 ファイル）/ E2E 23 件パス（Playwright Chromium 16 ファイル）
-- **ビルド:** 成功 (Next.js 16.2.6 Turbopack)
-- **最終更新日時(UTC):** 2026-05-29T03:12:00Z
+- **最新 HEAD:** da11387 — `refactor(ace-guide): integrate complete advanced guide into routing and update docs`
+- **進行中タスク:** なし（直近完了: 🟢 GCP Associate Cloud Engineer 完全試験対策ガイド移行）
+- **テスト数:** 500 件パス（Vitest 72 ファイル）/ E2E 23 件パス（Playwright Chromium 16 ファイル）
+- **ビルド:** 成功（ユーザー環境でのビルド確認）
+- **最終更新日時(UTC):** 2026-06-07T05:30:00Z
+
+---
+
+## 2026-06-07: GCP Associate Cloud Engineer 完全試験対策ガイド移行 (完了)
+
+### 目的
+
+`Gcp-ace-complete-advanced-guide.html` に基づく「完全試験対策ガイド（シングルページ）」を、既存のサブページや親ページを置き換えることなく、Next.js アプリの `app/gcl/associate-cloud-engineer/complete-advanced-guide` ルートに共存・追加する。
+
+### 完了済みステップ
+
+- [x] **Step 1**: `test(ace-guide): add failing tests for complete advanced guide page`
+  - 新規テストファイル `__tests__/gcl/associate-cloud-engineer/complete-advanced-guide/page.test.tsx` を作成し、失敗を確認。
+- [x] **Step 2**: `feat(ace-guide): implement basic layout and components for complete advanced guide`
+  - 最小限の `page.tsx`, `page.css`, `NavBar.tsx` を実装し、テストをパス。
+- [x] **Step 3**: `feat(ace-guide): migrate all content and style from HTML to complete advanced guide page`
+  - 変換スクリプト `scratch/convert.mjs` を実行し、全セクションのコンテンツ（テキスト、コードブロック、テーブル、ダイアグラム）と scoped CSS を忠実に移行。
+  - テストおよび IntersectionObserver のモックを設定し、Vitest が正常にパスすることを確認。
+- [x] **Step 4**: `refactor(ace-guide): integrate complete advanced guide into routing and update docs`
+  - `app/constants.ts` の `EXAMS` にルート `/gcl/associate-cloud-engineer/complete-advanced-guide` を追加し、メニュー連携を統合。
+  - `CLAUDE.md` / `GEMINI.md` に新しいルートを追加。
+- [x] **Step 5**: `chore(docs): update MIGRATION_PROGRESS.md — migrate complete advanced guide and archive html`
+  - `Gcp-ace-complete-advanced-guide.html` を `Gcl_Archive/Associate-Cloud-Engineer/` へ移動（アーカイブ）。
+  - `MIGRATION_PROGRESS.md` の更新。
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/complete-advanced-guide/page.tsx](app/gcl/associate-cloud-engineer/complete-advanced-guide/page.tsx)
+- [app/gcl/associate-cloud-engineer/complete-advanced-guide/page.css](app/gcl/associate-cloud-engineer/complete-advanced-guide/page.css)
+- [app/gcl/associate-cloud-engineer/complete-advanced-guide/constants.ts](app/gcl/associate-cloud-engineer/complete-advanced-guide/constants.ts)
+- [app/gcl/associate-cloud-engineer/complete-advanced-guide/NavBar.tsx](app/gcl/associate-cloud-engineer/complete-advanced-guide/NavBar.tsx)
+- [__tests__/gcl/associate-cloud-engineer/complete-advanced-guide/page.test.tsx](__tests__/gcl/associate-cloud-engineer/complete-advanced-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [CLAUDE.md](CLAUDE.md)
+- [GEMINI.md](GEMINI.md)
 
 ---
 
