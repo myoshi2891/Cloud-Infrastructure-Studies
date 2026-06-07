@@ -6,7 +6,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 # 仕様書・テスト進捗同期スキル (spec-sync)
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.claude/rules/TDD_COMMIT_WORKFLOW.md` のステップバイステップ・コミットルールに従うこと。
+仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.claude/rules/tdd-commit-workflow.md` のステップバイステップ・コミットルールに従うこと。
 
 ## 目的
 
@@ -97,7 +97,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 
 ### F. テストの実装・整備を行った場合（P レベル・フェーズ完了時の Definition of Done）
 
-`.claude/rules/TDD_COMMIT_WORKFLOW.md` Step 3 から強制呼び出しされる、**フェーズ完了時に「漏れなく」更新する全ファイル一覧**。単発の Step 3 で `CLAUDE.md` だけ触って終わらせるのは禁止。以下を 1 フェーズ内で確定させること。
+`.claude/rules/tdd-commit-workflow.md` Step 3 から強制呼び出しされる、**フェーズ完了時に「漏れなく」更新する全ファイル一覧**。単発の Step 3 で `CLAUDE.md` だけ触って終わらせるのは禁止。以下を 1 フェーズ内で確定させること。
 
 **変更対象ファイルと観点:**
 

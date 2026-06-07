@@ -18,7 +18,7 @@ description: >
 # MD → Next.js 移行ワークフロー（Infra リポジトリ）
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、必ず `.claude/rules/TDD_COMMIT_WORKFLOW.md` のルールに従うこと。
+全てのコード実装において、必ず `.claude/rules/tdd-commit-workflow.md` のルールに従うこと。
 1. `test:` 失敗するテストを先に書きコミットする
 2. `feat:` テストをPassさせる実装を行いコミットする
 3. `refactor/docs:` 統合を行いコミットする

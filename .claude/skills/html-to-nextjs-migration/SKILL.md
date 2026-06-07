@@ -24,7 +24,7 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 1. **`docs/MIGRATION_PROGRESS.md`** — 現在地・残タスク・再開プロンプト
 2. **このファイル（`SKILL.md`）** — 移行手順と QA_Studies 固有ルール
-3. **`.claude/rules/TDD_COMMIT_WORKFLOW.md`** — TDD必須サイクル & コミット分割ルール
+3. **`.claude/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
 
 ## 未移行 HTML
 
@@ -36,7 +36,7 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 ### TDD 必須サイクルの適用（最重要）
 
-移行作業中は、常に `.claude/rules/TDD_COMMIT_WORKFLOW.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
+移行作業中は、常に `.claude/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
 
 1. **タスク設計の段階（`task.md` の作成時）**:
    - `task.md` 内のタスクを「Red（テスト失敗とコミット）」「Green（実装とコミット）」「Refactor（リファクタ/ビルド/Linter修正とコミット）」「Docs Sync（進捗同期とコミット）」のコミット単位に明確に構造化してください。

@@ -191,7 +191,7 @@ Aws/                                # AWS資料アーカイブ
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、`.claude/rules/TDD_COMMIT_WORKFLOW.md` に定義されたルールを厳守すること。
+全てのコード実装において、`.claude/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。
 1. プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
 2. テストをPassさせる実装を行いコミットする。
 3. リファクタリング/統合を行いコミットする。
