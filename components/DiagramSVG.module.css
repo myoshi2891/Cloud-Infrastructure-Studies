@@ -18,4 +18,6 @@
 
 .diagramSvg text {
     font-family: var(--font-azeret-mono, monospace);
+    fill: currentColor;
+    stroke: none;
 }

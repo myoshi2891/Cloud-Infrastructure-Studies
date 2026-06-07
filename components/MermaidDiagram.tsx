@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { cn } from '@/lib/utils';
 import styles from './MermaidDiagram.module.css';
+import mermaid from 'mermaid';
 
 export interface MermaidDiagramProps {
     /** Mermaid DSL（flowchart / stateDiagram-v2 等） */
@@ -13,25 +14,39 @@ export interface MermaidDiagramProps {
     className?: string;
 }
 
-let initialized = false;
+if (typeof window !== 'undefined') {
+    mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'strict',
+        fontFamily: 'inherit',
+        themeVariables: {
+            primaryColor: 'rgba(64,224,208,0.12)',
+            primaryBorderColor: '#40E0D0',
+            primaryTextColor: '#e6e9ee',
+            lineColor: '#9aa7b2',
+            secondaryColor: 'rgba(124,164,255,0.12)',
+            tertiaryColor: 'rgba(255,255,255,0.04)',
+            background: 'transparent',
+            nodeTextColor: '#e6e9ee',
+            textColor: '#e6e9ee',
+            titleColor: '#e6e9ee',
+            actorTextColor: '#e6e9ee',
+            actorLineColor: '#9aa7b2',
+            signalTextColor: '#e6e9ee',
+            labelTextColor: '#e6e9ee',
+        },
+    });
+}
 
 const canRenderInBrowser = (): boolean => {
     if (typeof window === 'undefined') return false;
-    const SVGElementCtor = (window as unknown as { SVGElement?: { prototype?: { getBBox?: unknown } } }).SVGElement;
-    return Boolean(SVGElementCtor?.prototype?.getBBox);
-};
-
-/**
- * mermaid が返す SVG 文字列を DOMParser で構造化し、ホスト要素の子として差し替える。
- * innerHTML を使わないので XSS リスクを回避できる（mermaid 自身は信頼できるが、
- * securityLevel='strict' との二重防御として DOM API のみで挿入する）。
- */
-const replaceWithParsedSvg = (host: HTMLElement, svgString: string): void => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(svgString, 'image/svg+xml');
-    const svgEl = doc.documentElement;
-    while (host.firstChild) host.removeChild(host.firstChild);
-    host.appendChild(host.ownerDocument.importNode(svgEl, true));
+    const SVGGraphicsElementCtor = (window as any).SVGGraphicsElement;
+    const SVGElementCtor = (window as any).SVGElement;
+    return Boolean(
+        SVGGraphicsElementCtor?.prototype?.getBBox ||
+        SVGElementCtor?.prototype?.getBBox
+    );
 };
 
 /**
@@ -51,56 +66,50 @@ const toCodeLines = (text: string): { line: string; key: string }[] => {
 /**
  * Mermaid 図を遅延ロード・クライアント描画するラッパー。
  *
- * - `mermaid` 本体は `useEffect` 内で動的 import するため、初期バンドルから分離される。
+ * - SSR / 初回マウント前は DSL を `<pre className="codeblock" aria-hidden>` として見せてハイドレーションエラーを防ぐ。
  * - jsdom 等 `getBBox` が無い環境ではフォールバック表示（DSL の `<pre>`）のまま描画しない。
- * - SSR / 初回マウント前は DSL を `<pre className="codeblock" aria-hidden>` として見せる。
  */
 export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel, className }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
     const reactId = useId();
+    const [isMounted, setIsMounted] = useState(false);
     const [rendered, setRendered] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [svgStr, setSvgStr] = useState<string>('');
+
+    // マウント状態のみを管理する Effect (ESLint の set-state-in-effect 回避)
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setIsMounted(true);
+    }, []);
 
     useEffect(() => {
-        if (!canRenderInBrowser()) return;
+        if (!isMounted || !canRenderInBrowser()) return;
+
         let cancelled = false;
-        (async () => {
+        const renderChart = async () => {
             setError(null);
             setRendered(false);
             try {
-                const mermaid = (await import('mermaid')).default;
-                if (!initialized) {
-                    mermaid.initialize({
-                        startOnLoad: false,
-                        theme: 'base',
-                        securityLevel: 'strict',
-                        fontFamily: 'inherit',
-                        themeVariables: {
-                            primaryColor: 'rgba(64,224,208,0.12)',
-                            primaryBorderColor: '#40E0D0',
-                            primaryTextColor: '#e6e9ee',
-                            lineColor: '#9aa7b2',
-                            secondaryColor: 'rgba(124,164,255,0.12)',
-                            tertiaryColor: 'rgba(255,255,255,0.04)',
-                            background: 'transparent',
-                        },
-                    });
-                    initialized = true;
-                }
                 const id = `mermaid-${reactId.replace(/[^a-zA-Z0-9]/g, '')}`;
                 const { svg } = await mermaid.render(id, chart);
-                if (cancelled || !containerRef.current) return;
-                replaceWithParsedSvg(containerRef.current, svg);
+                if (cancelled) return;
+                setSvgStr(svg);
                 setRendered(true);
             } catch (e) {
                 if (cancelled) return;
                 setError(e instanceof Error ? e.message : String(e));
             }
-        })();
+        };
+
+        renderChart();
+
         return () => {
             cancelled = true;
         };
-    }, [chart, reactId]);
+    }, [chart, reactId, isMounted]);
+
+    // マウント前、またはブラウザ環境でない（jsdomテストなど）場合は、ハイドレーション不一致を防ぐためフォールバックを表示
+    const showFallback = !isMounted || !canRenderInBrowser() || (!rendered && !error);
 
     return (
         <div
@@ -109,8 +118,13 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
             aria-label={ariaLabel}
             aria-roledescription="diagram"
         >
-            <div ref={containerRef} className={styles.mermaidTarget} aria-hidden={rendered ? undefined : 'true'} />
-            {!rendered && !error && (
+            {isMounted && rendered && !error && (
+                <div
+                    className={styles.mermaidTarget}
+                    dangerouslySetInnerHTML={{ __html: svgStr }}
+                />
+            )}
+            {showFallback && (
                 <pre className="codeblock" aria-hidden="true">
                     {toCodeLines(chart).map(({ line, key }) => (
                         <div className="code-line" key={key} data-key={key}>
@@ -119,7 +133,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
                     ))}
                 </pre>
             )}
-            {error && (
+            {isMounted && error && (
                 <pre className="codeblock" data-testid="mermaid-error">
                     {toCodeLines(`Mermaid render error: ${error}\n\n${chart}`).map(({ line, key }) => (
                         <div className="code-line" key={key} data-key={key}>

@@ -18,3 +18,26 @@
     max-width: 100%;
     height: auto;
 }
+
+.mermaidTarget :global(svg text),
+.mermaidTarget :global(.nodeLabel),
+.mermaidTarget :global(.edgeLabel),
+.mermaidTarget :global(.labelText),
+.mermaidTarget :global(.label),
+.mermaidTarget :global(foreignObject div),
+.mermaidTarget :global(foreignObject span) {
+    color: #e6e9ee !important;
+    fill: #e6e9ee !important;
+}
+
+.mermaidTarget :global(g.node[style*="fbbc04"] .nodeLabel),
+.mermaidTarget :global(g.node[style*="251, 188, 4"] .nodeLabel),
+.mermaidTarget :global(g.node[style*="fbbc04"] text),
+.mermaidTarget :global(g.node[style*="251, 188, 4"] text),
+.mermaidTarget :global(g.node[style*="fbbc04"] foreignObject div),
+.mermaidTarget :global(g.node[style*="251, 188, 4"] foreignObject div),
+.mermaidTarget :global(g.node[style*="fbbc04"] foreignObject span),
+.mermaidTarget :global(g.node[style*="251, 188, 4"] foreignObject span) {
+    color: #000000 !important;
+    fill: #000000 !important;
+}
