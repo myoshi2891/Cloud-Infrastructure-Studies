@@ -228,7 +228,7 @@
 }
 
 .complete-guide-page .hero .container {
-    max-width: 1000px;
+    max-width: none;
     margin: 0 auto;
 }
 
@@ -330,7 +330,7 @@
 /* ===== CONTENT SECTIONS ===== */
 .complete-guide-page .content {
     padding: 0 60px 80px;
-    max-width: 1000px;
+    max-width: none;
     margin: 0 auto;
 }
 
