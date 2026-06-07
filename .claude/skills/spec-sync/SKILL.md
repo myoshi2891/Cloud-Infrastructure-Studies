@@ -14,17 +14,34 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 
 ---
 
+## 最終更新日（Last Updated）の記載ルール
+
+すべての仕様書および進捗管理ドキュメントには、**更新を行った日付**を必ず明記し、いつ時点の仕様であるかを誰でも判断できるようにしなければなりません。
+
+### 記載フォーマットと場所
+
+各ドキュメントの以下の位置に、最終更新日を記載または更新してください：
+
+| ドキュメント | 最終更新日の記載方法 | 記載・更新場所 |
+|---|---|---|
+| `CLAUDE.md` | `Updated YYYY-MM-DD` | ファイル冒頭付近 |
+| `GEMINI.md` | `Updated YYYY-MM-DD` | ファイル冒頭付近 |
+| `README.md` | `最終更新日: YYYY-MM-DD` | ファイル冒頭付近（見出しの直下） |
+| `docs/MIGRATION_PROGRESS.md` | `Updated YYYY-MM-DD`（現在地テーブル内） | 現在地テーブル内、または「最終 HEAD」欄 |
+| `docs/TEST_COVERAGE_PROGRESS.md` | `最終更新日: YYYY-MM-DD` | ファイル冒頭付近 |
+| `docs/coverage-dashboard.html` | `<time datetime="YYYY-MM-DD">YYYY-MM-DD</time>` | ヘッダーのメタ情報エリア（`Updated`）およびフッター |
+| 各個別 `SKILL.md` / `*.md` | `(最終更新日: YYYY-MM-DD)` または未移行HTMLリスト等の日付 | タイトル下、または進捗管理の日付欄 |
+
+---
+
 ## 対象仕様書・進捗ドキュメントと更新トリガー
 
 | ファイル | 役割 | 更新が必要な変更 |
 |---|---|---|
 | `CLAUDE.md` | Claude Code 向け主仕様（アーキテクチャ・制約・コマンド） | アーキテクチャ変更、新ファイル追加、制約変更、試験追加 |
 | `GEMINI.md` | Gemini CLI 向け主仕様（同等内容） | CLAUDE.md と同期して更新 |
-| `.gemini/rules/migration-progress-sync.md` | Gemini 向け作業状況 | HEAD・テスト数・完了状況変更時 |
 | `README.md` | ユーザー向け概要 | 新機能追加、試験追加、UI パターン変更 |
-| `.claude/skills/md-to-nextjs-migration/SKILL.md` | MD→Next.js 移行ワークフロー | ナビ追加フロー変更、新ディレクトリ規約 |
-| `.claude/skills/html-to-nextjs-migration/SKILL.md` | HTML→Next.js 移行ワークフロー | 同上 |
-| `MIGRATION_PROGRESS.md` | 移行進捗（単一の正本） | 各ステップ完了時 |
+| `docs/MIGRATION_PROGRESS.md` | 移行進捗（単一の正本） | 各ステップ完了時、セッション終了時 |
 | `docs/TEST_COVERAGE_PROGRESS.md` | テストカバレッジ・実装進捗状況の管理 | テストの実装、カバレッジの変化、ネクストアクション完了時 |
 | `docs/coverage-dashboard.html` | カバレッジダッシュボード（HTML形式） | テストの実装、カバレッジ変化時（スクリプト実行による自動生成） |
 
@@ -51,7 +68,6 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 - [ ] `CLAUDE.md` のアーキテクチャツリー（`app/` 配下のファイル一覧）を更新
 - [ ] `CLAUDE.md` の制約事項セクションに変更内容を反映
 - [ ] `GEMINI.md` のプロジェクト構造・注意事項を同期
-- [ ] `.claude/skills/md-to-nextjs-migration/SKILL.md` の「新ページ追加時の手順」を更新
 - [ ] `README.md` の特徴セクション（技術的変化が大きい場合のみ）
 
 ### C. 新ページ・新セクションを追加した場合
@@ -89,10 +105,10 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 2. **`docs/TEST_COVERAGE_PROGRESS.md`** — 以下 5 セクションを必ず確認
    - Section 1: 全体サマリー（ソース総数 / カバー済み / 達成率 / テストファイル総数）
    - Section 2: ドメイン別カバレッジマトリクス（該当列の `❌ 0%` → `✅ 実装` 等を更新）
-   - Section 3: テストカテゴリ別の網羅性と課題（現状/課題文を新事実に合わせて書き換え）
+   - Section 3: テストカテゴリ別の網羅性と課題（現状/課題文を新事合わせて書き換え）
    - Section 4: 優先度別ネクストアクション（完了タスクを `[ ]` → `[x]` 化、説明補強）
    - **Section 7: 次回セッションでのテスト追加再開プロンプト**（完了した優先度の表記を「P0/P1/P2 完了済み」等に更新し、次フェーズ候補を列挙。**ここを更新し忘れると次セッションで重複作業や混乱が発生するため最重要**）
-3. **`MIGRATION_PROGRESS.md`** — 「次のステップ」の `- [ ] 🔵 P*: ...` 行を `[x]` 化し、導入したコマンド・スクリプトの実体（パスやコマンド名）を子要素として追記
+3. **`docs/MIGRATION_PROGRESS.md`** — 「次のステップ」の `- [ ] 🔵 P*: ...` 行を `[x]` 化し、導入したコマンド・スクリプトの実体（パスやコマンド名）を子要素として追記
 4. **`CLAUDE.md`** — コマンドセクション（`## コマンド` 配下の `bash` ブロック）、アーキテクチャツリー、制約事項を必要に応じて更新
 5. **`GEMINI.md`** — `CLAUDE.md` と内容同期。特に「開発と実行」セクションの bullet 一覧に新コマンドを追記（`CLAUDE.md` だけ更新して `GEMINI.md` を放置するパターンが頻発するため必ず対で更新）
 6. **`README.md`** — ユーザー向け「テストの実行」等のセクションに新コマンドサブセクションを追記（軽微な変更で省略可だが、新コマンドや新フェーズ完了時は追記推奨）
@@ -104,147 +120,92 @@ P レベル・フェーズキーワード（例: `P2`, `Performance テスト`, 
 ```bash
 # 完了したフェーズのキーワードで横断 grep（例: P2 横断品質完了時）
 grep -rn "P2\|横断品質" *.md docs/*.md .claude/rules/*.md .claude/skills/*/SKILL.md
-
-# 出力された箇所すべてが「完了済み」「[x]」「✅」等の整合した表記になっていることを目視確認
-# `[ ]` や「未実装」が残っていればその場で修正してからコミット
-```
-
-**コミット前検証コマンド:**
-
-```bash
-bun run lint
-bun run build
-bun run test
-bun run dashboard   # coverage-dashboard.html 再生成
-```
-
-**コミット粒度:**
-
-DoD の全対象を 1 つの `docs:` または `refactor/docs:` コミットにまとめて構わない。ただし以下の 2 コミットに分けるのが安全:
-
-- (a) `docs: mark [P*] [機能名] as done and document scripts` — `TEST_COVERAGE_PROGRESS.md` の Section 4/2/3 + `CLAUDE.md` + `coverage-dashboard.html`
-- (b) `docs: sync specs for [P*] [機能名] completion` — `TEST_COVERAGE_PROGRESS.md` Section 7 + `MIGRATION_PROGRESS.md` + `GEMINI.md` + `README.md`
-
-(a) のみで止めると (b) が次セッションに繰り越され、結果として「再開プロンプトが古い」「進捗台帳が古い」状態を晒すため、**(a) を出したフェーズ内で必ず (b) まで到達すること**。
-
----
-
-## 実行手順
-
-### セクション 1: 汎用仕様書（CLAUDE.md / GEMINI.md 等）の同期手順
-
-#### Step 1: 乖離検出
-
-以下を確認して乖離箇所をリストアップする:
-
-```bash
-# 現在のファイルツリーを確認
-find app -name "page.tsx" | sort
-find app -name "constants.ts" | sort
-find components -name "*.tsx" | sort
-find e2e -name "*.spec.ts" | sort
-
-# テスト数を確認
-bun run test 2>&1 | grep "Tests"
-
-# HEAD を確認
-git log --oneline -1
-```
-
-#### Step 2: 各仕様書を読み込み、現状と比較
-
-- `CLAUDE.md` のアーキテクチャツリーが実ファイルツリーと一致しているか
-- `CLAUDE.md` の制約事項が現在のコードの挙動と一致しているか
-- `GEMINI.md` が `CLAUDE.md` と内容が同期しているか
-- `.gemini/rules/migration-progress-sync.md` の HEAD・テスト数が最新か
-
-#### Step 3: 更新の優先順位
-
-1. **CLAUDE.md** — Claude Code が毎回参照するため最優先
-2. **GEMINI.md** — CLAUDE.md と同期して更新
-3. **.claude/skills/\*/SKILL.md** — 手順が誤っていると誤った作業を引き起こすため優先
-4. **.gemini/rules/** — Gemini 向け状態管理
-5. **README.md** — ユーザー向け。大きな変化があれば更新、軽微なら省略可
-
-#### Step 4: 更新後の確認とコミット
-
-```bash
-# lint・build で型エラーがないことを確認
-bun run lint
-bun run build
-
-# 更新をコミット
-git add CLAUDE.md GEMINI.md README.md \
-  .gemini/rules/migration-progress-sync.md \
-  .claude/skills/*/SKILL.md \
-  MIGRATION_PROGRESS.md
-git commit -m "docs(specs): sync all spec docs after <feature-name>"
-```
-
-### セクション 2: テスト進捗・カバレッジの同期手順
-
-テストの実装やリファクタリングが終了した後は、以下の手順に従ってドキュメントおよびダッシュボードを同期します。
-
-#### Step 1: カバレッジダッシュボードHTMLの再生成
-
-テストファイルのスキャン結果を同期するため、以下のダッシュボード生成スクリプトを実行します。
-
-```bash
-bun scripts/generate-coverage-dashboard.mjs
-```
-
-実行ログを確認し、対象ソースコード数、カバー済みソースコード数、テストファイル数が正しく出力されていることを確認します。
-
-#### Step 2: 最新の統計データ（JSON）の抽出
-
-生成された `docs/coverage-dashboard.html` の末尾付近にある `id="dashboard-data"` の script タグから最新の統計情報を抽出します。
-
-```html
-<script type="application/json" id="dashboard-data">
-{
-  "totals": { "sources": 177, "covered": 60, "testFiles": 65 },
-  "domains": [...]
-}
-</script>
-```
-
-#### Step 3: `docs/TEST_COVERAGE_PROGRESS.md` の更新
-
-抽出したデータをもとに、以下のセクションを修正します。
-
-1. **全体サマリー (Overall Summary)**
-   - `ソースファイル総数`、`テストカバー済みソース数`、`全体カバレッジ達成率`、`テストファイル総数` を最新の値に更新します。
-2. **ドメイン別カバレッジマトリクス (Domain Coverage Matrix)**
-   - 変更があったドメインのカバレッジ率（テスト済数 / 総ファイル数、パーセンテージ）を更新します。
-   - カバレッジ率が **80%** 以上に達した場合、ステータスアイコンを `⚠️` から `✅` (実装済み) に変更し、ドメイン名を太字にします。
-3. **テストカテゴリ別の網羅性と課題**
-   - ユニットテスト、結合テスト、E2Eテストなどの現在のカバレッジ状況や残課題のテキストを調整します。
-4. **優先度別ネクストアクション**
-   - 完了したテストタスクのチェックボックスを `[x]` に更新します。必要に応じてタスク説明や優先度を整理します。
-5. **次回セッションでのテスト追加再開プロンプト**
-   - 「4. 対象優先度」の記述を、完了した優先度（例: P0 ➔ P1）に応じて更新します。
-   - プロンプトの最後にある、開始すべき推奨タスクを次に優先度の高いタスクへ切り替えます。
-
-#### Step 4: 更新内容の確認とコミット
-
-```bash
-# 差分を確認
-git diff docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html
-
-# コミットを実行
-git add docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html
-git commit -m "docs: update test coverage dashboard and progress report for [Task/Priority] completion"
 ```
 
 ---
 
-## 絶対に守るルール
+## 監査・確認プロセス（「更新漏れがないか確認して」への対応）
 
-1. **仕様書を実コードより先に更新しない** — コードが確定してから仕様書を合わせる
-2. **CLAUDE.md の制約事項に「触らないもの」が書かれていたら、その制約自体も仕様書に反映する**
-3. **テスト数は `bun run test` (または `vitest run`) を実行した実数を記録する**（推定値禁止）
-4. **HEAD は `git log --oneline -1` で取得した実 commit hash を記録する**
-5. **GEMINI.md と CLAUDE.md の内容は必ず同期する**（片方だけ更新しない）
-6. **テストカバレッジ率が目標値 (80%) を超えたドメインは、ステータスを `⚠️` から `✅` に昇格し、太字で強調する。** (新規)
-7. **次回セッションプロンプトの内容は、直近で完了した優先度 (P0, P1等) を反映し、次に開始すべきタスクを指すように更新する。** (新規)
-8. **カバレッジダッシュボードから抽出した JSON 統計データと、ドキュメントに記載する数値を完全に一致させる（目測や推定による記述は禁止）。** (新規)
+ユーザーまたはシステムから「更新漏れがないか確認」の依頼を受けた際、またはセッション終了時には、以下の監査手順を実行し、すべての不整合を解消してください。
+
+### 1. 現在のステータス情報の収集
+
+以下のコマンドを実行し、プロジェクトの「実装・テストの実態値」を取得します。
+
+```bash
+# A. 最新の HEAD コミット値の取得
+git log --oneline -5
+git rev-parse --short HEAD
+
+# B. 現在のNext.jsルート一覧の取得
+ls app/*/page.tsx 2>/dev/null | sed 's|app/||' | sed 's|/page.tsx||'
+
+# C. テストファイル実数の取得 (Vitest単体テスト)
+find __tests__/ -name "*.test.ts" -o -name "*.test.tsx" 2>/dev/null | sort
+
+# D. テスト実行結果の取得
+bun test 2>&1 | tail -5
+bun run lint 2>&1 | tail -5
+```
+
+### 2. 監査チェックリスト
+
+収集した実態値と、各仕様書の記述に乖離がないか検証します。
+
+- [ ] **`CLAUDE.md` 監査**
+  - [ ] `app/**/page.tsx` および `app/**/*.css` の全配置パスが `CLAUDE.md` の「アーキテクチャ」セクションに正しく記載されているか。
+  - [ ] コマンド節のユニットテスト数などが現在の実測値と一致しているか。
+  - [ ] 最終更新日のタイムスタンプが最新化されているか。
+- [ ] **`GEMINI.md` 監査**
+  - [ ] プロジェクト構造の Next.js ページ構成に、現在存在する全ページが漏れなく載っているか。
+  - [ ] 最終更新日のタイムスタンプが最新化されているか。
+- [ ] **`README.md` 監査**
+  - [ ] 起動手順、テストの実行、定義に変更はないか。
+  - [ ] 最終更新日のタイムスタンプが最新化されているか。
+- [ ] **`docs/MIGRATION_PROGRESS.md` 監査**
+  - [ ] `最新 HEAD` が `git rev-parse --short HEAD` の出力と完全に一致しているか。
+  - [ ] `ビルド状態` の `bun test` の pass 数が現在の実測値と一致しているか。
+  - [ ] `## 次回セッションでの再開プロンプト` の `最新 HEAD`、`テスト件数` が上記と同期しているか。
+  - [ ] 最終更新日（タイムスタンプ）が更新されているか。
+- [ ] **`docs/TEST_COVERAGE_PROGRESS.md` 監査**
+  - [ ] Section 1 の全体サマリーが、最新の `dashboard` スクリプト出力値と同期しているか。
+  - [ ] ネクストアクション、再開プロンプトが最新状態になっているか。
+  - [ ] 最終更新日のタイムスタンプが最新化されているか。
+- [ ] **`docs/coverage-dashboard.html` 監査**
+  - [ ] `DATA.pages` の配列件数と Next.js のルート件数が一致しているか。
+  - [ ] メタ情報の `Updated` タイムスタンプが最新化されているか。
+
+---
+
+## 修正とコミット規約
+
+監査の結果、1つでも乖離が検出された場合は**直ちに修正**し、以下の規約に従ってコミットしてください。
+
+### コミットメッセージ
+
+仕様書のみの同期更新のコミットには**ソースコードの変更を一切含めない**でください（TDD コミット分割ルール）。
+
+```bash
+git add CLAUDE.md GEMINI.md README.md docs/MIGRATION_PROGRESS.md docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html .claude/skills/
+git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"
+```
+
+---
+
+## 自己監査・強制発火ルール (Enforcement & Gate Conditions)
+
+エージェントは、以下のイベントが発生した際、ユーザーからの指示を待たずに**自律的かつ自動的**に本スキルを読み込み、同期・監査を実行しなければなりません。
+
+### 1. 強制発火のトリガー条件
+
+- **テストの追加・変更時**:
+  - `__tests__/` 配下のファイルやアサーションを修正した直後、直ちに `coverage-dashboard.html` および `TEST_COVERAGE_PROGRESS.md` を同期・更新すること。
+- **セッション開始・再開時**:
+  - セッションが開始または compaction から再開された場合、最初のコミットを行う前に必ず「### 1. 現在のステータス情報の収集」の見出しのセクションに定義された実測コマンドを実行し、現行コードと仕様書の乖離（テスト数、Next.jsのルートなど）を自動検知して修正すること。
+- **Markdown 編集時**:
+  - ドキュメント同期のために Markdown ファイルを新規作成または編集した場合は、コミットする前に必ず `markdown-formatter/SKILL.md` スキルをロードし、そこに定義された手順に従ってリント検証を行い、エラーが 0 件であることを保証すること。
+
+### 2. ゲート条件としてのドキュメント同期
+
+- ドキュメント同期および自己監査は、ソースコードのビルド成功と全く同等の **「完了判定ゲート（Gate Condition）」** です。
+- 仕様書・進捗管理ドキュメントに実態との不整合が1点でもある状態でのタスク完了報告は、**プロトコール違反（FAILED）** とみなされます。報告前に必ず本スキルの「監査チェックリスト」を上から順に自律実行してください。
