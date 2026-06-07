@@ -83,29 +83,31 @@ export default function CompleteAdvancedGuidePage() {
         <main className="main">
             {/* HERO */}
             <section className="hero" id="overview">
-                <div className="hero-tag">Google Cloud Certification</div>
-                <h2>
-                    Associate Cloud Engineer<br /><span className="highlight">完全試験対策ガイド</span>
-                </h2>
-                <p>
-                    中級者〜上級者向け。全4ドメインの詳細解説・ベストプラクティス・Mermaidフローチャートと引っかけ問題パターンを完全網羅。
-                </p>
-                <div className="hero-stats">
-                    <div className="stat-item">
-                        <div className="stat-value blue">50-60</div>
-                        <div className="stat-label">設問数</div>
-                    </div>
-                    <div className="stat-item">
-                        <div className="stat-value green">2h</div>
-                        <div className="stat-label">試験時間</div>
-                    </div>
-                    <div className="stat-item">
-                        <div className="stat-value yellow">$125</div>
-                        <div className="stat-label">受験料</div>
-                    </div>
-                    <div className="stat-item">
-                        <div className="stat-value" style={{ color: '#a78bfa' }}>3yr</div>
-                        <div className="stat-label">有効期限</div>
+                <div className="container">
+                    <div className="hero-tag">Google Cloud Certification</div>
+                    <h2>
+                        Associate Cloud Engineer<br /><span className="highlight">完全試験対策ガイド</span>
+                    </h2>
+                    <p>
+                        中級者〜上級者向け。全4ドメインの詳細解説・ベストプラクティス・Mermaidフローチャートと引っかけ問題パターンを完全網羅。
+                    </p>
+                    <div className="hero-stats">
+                        <div className="stat-item">
+                            <div className="stat-value blue">50-60</div>
+                            <div className="stat-label">設問数</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value green">2h</div>
+                            <div className="stat-label">試験時間</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value yellow">$125</div>
+                            <div className="stat-label">受験料</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value" style={{ color: '#a78bfa' }}>3yr</div>
+                            <div className="stat-label">有効期限</div>
+                        </div>
                     </div>
                 </div>
             </section>
