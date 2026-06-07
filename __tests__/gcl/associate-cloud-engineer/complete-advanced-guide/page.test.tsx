@@ -1,9 +1,17 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import CompleteAdvancedGuidePage from '@/app/gcl/associate-cloud-engineer/complete-advanced-guide/page';
 
 describe('GCP ACE 完全試験対策ガイド ページ', () => {
     beforeEach(() => {
+        // Mock IntersectionObserver
+        class MockIntersectionObserver {
+            observe = vi.fn();
+            unobserve = vi.fn();
+            disconnect = vi.fn();
+        }
+        window.IntersectionObserver = MockIntersectionObserver as any;
+
         render(<CompleteAdvancedGuidePage />);
     });
 
