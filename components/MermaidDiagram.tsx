@@ -120,7 +120,7 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
         >
             {isMounted && rendered && !error && (
                 <div
-                    className={styles.mermaidTarget}
+                    className={cn(styles.mermaidTarget, "mermaid-target")}
                     dangerouslySetInnerHTML={{ __html: svgStr }}
                 />
             )}
