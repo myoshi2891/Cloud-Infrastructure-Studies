@@ -34,14 +34,14 @@
 
 ```mermaid
 flowchart LR
-    A[Week 1-2\n基礎固め] --> B[Week 3-4\nコンピューティング\nストレージ]
-    B --> C[Week 5-6\nネットワーク\nIaC]
-    C --> D[Week 7-8\n運用・セキュリティ\n模擬試験]
+    A[Week 1-2<br>基礎固め] --> B[Week 3-4<br>コンピューティング<br>ストレージ]
+    B --> C[Week 5-6<br>ネットワーク<br>IaC]
+    C --> D[Week 7-8<br>運用・セキュリティ<br>模擬試験]
     
-    A -.-> A1[IAM・リソース階層\nVPC基本\nBilling管理]
-    B -.-> B1[GCE・GKE・Cloud Run\nCloud Storage\nDB選定]
-    C -.-> C1[VPC設計\nLB選定\nTerraform]
-    D -.-> D1[Monitoring・Logging\nSecurity強化\n過去問演習]
+    A -.-> A1[IAM・リソース階層<br>VPC基本<br>Billing管理]
+    B -.-> B1[GCE・GKE・Cloud Run<br>Cloud Storage<br>DB選定]
+    C -.-> C1[VPC設計<br>LB選定<br>Terraform]
+    D -.-> D1[Monitoring・Logging<br>Security強化<br>過去問演習]
 ```
 
 ---
@@ -54,15 +54,15 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    ORG[🏢 Organization\nexample.com] --> F1[📁 Folder\n開発部門]
-    ORG --> F2[📁 Folder\n本番部門]
-    ORG --> F3[📁 Folder\n財務部門]
-    F1 --> P1[🗂️ Project\ndev-frontend]
-    F1 --> P2[🗂️ Project\ndev-backend]
-    F2 --> P3[🗂️ Project\nprod-webapp]
-    F2 --> P4[🗂️ Project\nprod-api]
-    P1 --> R1[⚙️ Resources\nVM / DB / GCS]
-    P3 --> R2[⚙️ Resources\nVM / DB / GCS]
+    ORG[🏢 Organization<br>example.com] --> F1[📁 Folder<br>開発部門]
+    ORG --> F2[📁 Folder<br>本番部門]
+    ORG --> F3[📁 Folder<br>財務部門]
+    F1 --> P1[🗂️ Project<br>dev-frontend]
+    F1 --> P2[🗂️ Project<br>dev-backend]
+    F2 --> P3[🗂️ Project<br>prod-webapp]
+    F2 --> P4[🗂️ Project<br>prod-api]
+    P1 --> R1[⚙️ Resources<br>VM / DB / GCS]
+    P3 --> R2[⚙️ Resources<br>VM / DB / GCS]
 ```
 
 ### 各レベルの役割と特性
@@ -78,9 +78,9 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    O[Organization\nroles/logging.admin 付与] -->|継承| F[Folder\n追加ロールを付与可能]
-    F -->|継承| P[Project\nすべての上位ロールが有効]
-    P -->|継承| R[Resource\n最終的な権限 = 上位ロールの和集合]
+    O[Organization<br>roles/logging.admin 付与] -->|継承| F[Folder<br>追加ロールを付与可能]
+    F -->|継承| P[Project<br>すべての上位ロールが有効]
+    P -->|継承| R[Resource<br>最終的な権限 = 上位ロールの和集合]
     
     style O fill:#4285F4,color:#fff
     style F fill:#34A853,color:#fff
@@ -104,8 +104,8 @@ flowchart TD
 stateDiagram-v2
     [*] --> ACTIVE : プロジェクト作成
     ACTIVE --> DELETE_REQUESTED : gcloud projects delete
-    DELETE_REQUESTED --> ACTIVE : gcloud projects undelete\n（30日以内）
-    DELETE_REQUESTED --> DELETED : 30日経過後\n（完全削除・復元不可）
+    DELETE_REQUESTED --> ACTIVE : gcloud projects undelete<br>（30日以内）
+    DELETE_REQUESTED --> DELETED : 30日経過後<br>（完全削除・復元不可）
 ```
 
 ### ベストプラクティス
@@ -161,8 +161,8 @@ stateDiagram-v2
 
 ```mermaid
 flowchart TD
-    PP[💳 支払いプロファイル\nクレジットカード・銀行口座] --> BA1[請求先アカウント A\nBilling Account]
-    PP --> BA2[請求先アカウント B\nBilling Account]
+    PP[💳 支払いプロファイル<br>クレジットカード・銀行口座] --> BA1[請求先アカウント A<br>Billing Account]
+    PP --> BA2[請求先アカウント B<br>Billing Account]
     BA1 --> P1[Project 1]
     BA1 --> P2[Project 2]
     BA1 --> P3[Project 3]
@@ -185,12 +185,12 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    B[予算設定\n金額・スコープ・期間] --> T[閾値設定\n50% / 90% / 100%]
+    B[予算設定<br>金額・スコープ・期間] --> T[閾値設定<br>50% / 90% / 100%]
     T --> N{通知方法}
     N -->|メール| E[📧 最大5アドレスに送信]
     N -->|Pub/Sub| PS[📨 Pub/Sub トピック]
     PS --> CF[⚡ Cloud Functions]
-    CF --> A[🔴 リソース自動停止\nVM停止 / API無効化]
+    CF --> A[🔴 リソース自動停止<br>VM停止 / API無効化]
 ```
 
 > ⚠️ **最重要（試験頻出）**: Google Cloud は予算の上限に達しても**リソースを自動停止しません**。自動停止には `Pub/Sub + Cloud Functions` のアーキテクチャが必要。
@@ -223,9 +223,9 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    CLI[gcloud CLI] --> C1[config: default\nデフォルト設定]
-    CLI --> C2[config: dev-profile\n開発環境用]
-    CLI --> C3[config: prod-profile\n本番環境用]
+    CLI[gcloud CLI] --> C1[config: default<br>デフォルト設定]
+    CLI --> C2[config: dev-profile<br>開発環境用]
+    CLI --> C3[config: prod-profile<br>本番環境用]
     C1 -.->|account / project / region| S1[設定値]
     C2 -.->|account / project / region| S2[設定値]
     C3 -.->|account / project / region| S3[設定値]
@@ -246,12 +246,12 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    A[アプリがGCP APIを呼び出し] --> B{GOOGLE_APPLICATION_CREDENTIALS\n環境変数が設定されているか?}
+    A[アプリがGCP APIを呼び出し] --> B{GOOGLE_APPLICATION_CREDENTIALS<br>環境変数が設定されているか?}
     B -->|Yes| C[指定されたキーファイルを使用]
-    B -->|No| D{gcloud auth application-default login\n認証情報が存在するか?}
+    B -->|No| D{gcloud auth application-default login<br>認証情報が存在するか?}
     D -->|Yes| E[ユーザー認証情報を使用]
-    D -->|No| F{GCE / GKE / Cloud Run等の\n実行環境か?}
-    F -->|Yes| G[メタデータサーバーから\nトークンを自動取得]
+    D -->|No| F{GCE / GKE / Cloud Run等の<br>実行環境か?}
+    F -->|Yes| G[メタデータサーバーから<br>トークンを自動取得]
     F -->|No| H[認証エラー]
 ```
 
@@ -277,16 +277,16 @@ flowchart TD
 ```mermaid
 flowchart TD
     START[アプリケーション要件を確認] --> VM{VMが必要?}
-    VM -->|Yes| SPOT{停止されても\n問題ない?}
-    SPOT -->|Yes| SVM[Spot VM + MIG\n最大91%コスト削減]
-    SPOT -->|No| GCE[Compute Engine\nOS レベルの完全制御]
+    VM -->|Yes| SPOT{停止されても<br>問題ない?}
+    SPOT -->|Yes| SVM[Spot VM + MIG<br>最大91%コスト削減]
+    SPOT -->|No| GCE[Compute Engine<br>OS レベルの完全制御]
     VM -->|No| CONT{コンテナを使う?}
     CONT -->|Yes| K8S{Kubernetes が必要?}
-    K8S -->|Yes| PRIV{特権コンテナ or\nDaemonSet が必要?}
-    PRIV -->|Yes| STD[GKE Standard\nノードを自己管理]
-    PRIV -->|No| AUTO[GKE Autopilot\nGoogleが全管理・推奨]
-    K8S -->|No| RUN[Cloud Run\nHTTPステートレス・ゼロスケール]
-    CONT -->|No| FUNC[Cloud Functions\n軽量イベント駆動]
+    K8S -->|Yes| PRIV{特権コンテナ or<br>DaemonSet が必要?}
+    PRIV -->|Yes| STD[GKE Standard<br>ノードを自己管理]
+    PRIV -->|No| AUTO[GKE Autopilot<br>Googleが全管理・推奨]
+    K8S -->|No| RUN[Cloud Run<br>HTTPステートレス・ゼロスケール]
+    CONT -->|No| FUNC[Cloud Functions<br>軽量イベント駆動]
 ```
 
 ### コンピューティングサービス比較表
@@ -340,10 +340,10 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    E[エンジニア\nSSH接続試行] --> OL[OS Login\nIAM リアルタイム照会]
+    E[エンジニア<br>SSH接続試行] --> OL[OS Login<br>IAM リアルタイム照会]
     OL -->|ロール有効| VM[VM 接続 OK ✅]
-    OL -->|ロール削除済み\n退職処理後| NG[接続 NG ❌]
-    IAM[IAM ポリシー\nユーザー削除] -.->|即時反映| OL
+    OL -->|ロール削除済み<br>退職処理後| NG[接続 NG ❌]
+    IAM[IAM ポリシー<br>ユーザー削除] -.->|即時反映| OL
     
     style VM fill:#34A853,color:#fff
     style NG fill:#EA4335,color:#fff
@@ -454,13 +454,13 @@ sequenceDiagram
 flowchart TD
     START[GKE クラスタを作成したい] --> PRIV{特権コンテナが必要?}
     PRIV -->|Yes| STD
-    PRIV -->|No| KERN{カーネルパラメータ\nの変更が必要?}
+    PRIV -->|No| KERN{カーネルパラメータ<br>の変更が必要?}
     KERN -->|Yes| STD
-    KERN -->|No| DS{DaemonSet が必要\nカスタムエージェント配置?}
+    KERN -->|No| DS{DaemonSet が必要<br>カスタムエージェント配置?}
     DS -->|Yes| STD
-    DS -->|No| GPU2{特定 GPU/TPU\nノードプール設定?}
-    GPU2 -->|Yes| STD[GKE Standard\nノードを自己管理]
-    GPU2 -->|No| AUTO[GKE Autopilot ✅\n推奨: Google が全管理]
+    DS -->|No| GPU2{特定 GPU/TPU<br>ノードプール設定?}
+    GPU2 -->|Yes| STD[GKE Standard<br>ノードを自己管理]
+    GPU2 -->|No| AUTO[GKE Autopilot ✅<br>推奨: Google が全管理]
     
     style AUTO fill:#34A853,color:#fff
     style STD fill:#FBBC04,color:#000
@@ -497,9 +497,9 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    KSA[Kubernetes\nService Account\nKSA] -->|紐付け| GSA[Google Cloud\nIAM Service Account\nGSA]
+    KSA[Kubernetes<br>Service Account<br>KSA] -->|紐付け| GSA[Google Cloud<br>IAM Service Account<br>GSA]
     POD[Pod] -->|KSA を使用| KSA
-    GSA -->|IAM ロール付与| GCP[GCP API\nSecret Manager\nCloud Storage 等]
+    GSA -->|IAM ロール付与| GCP[GCP API<br>Secret Manager<br>Cloud Storage 等]
     
     style POD fill:#4285F4,color:#fff
     style GCP fill:#34A853,color:#fff
@@ -544,12 +544,12 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    CODE[アプリケーション\nコード] --> BUILD[Artifact Registry\nにイメージを Push]
+    CODE[アプリケーション<br>コード] --> BUILD[Artifact Registry<br>にイメージを Push]
     BUILD --> DEPLOY[gcloud run deploy]
-    DEPLOY --> ENDPOINT[HTTPS エンドポイント\n自動生成]
+    DEPLOY --> ENDPOINT[HTTPS エンドポイント<br>自動生成]
     ENDPOINT --> SCALE{トラフィック}
     SCALE -->|リクエストあり| UP[スケールアウト]
-    SCALE -->|リクエストなし| ZERO[ゼロスケールダウン\n💰 コストゼロ]
+    SCALE -->|リクエストなし| ZERO[ゼロスケールダウン<br>💰 コストゼロ]
 ```
 
 ### 第 1 世代 vs 第 2 世代 実行環境
@@ -565,9 +565,9 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    REQ[ユーザーリクエスト] --> LB[Cloud Run\nトラフィック分割]
-    LB -->|90%| V1[リビジョン v1\n安定版]
-    LB -->|10%| V2[リビジョン v2\n新バージョン]
+    REQ[ユーザーリクエスト] --> LB[Cloud Run<br>トラフィック分割]
+    LB -->|90%| V1[リビジョン v1<br>安定版]
+    LB -->|10%| V2[リビジョン v2<br>新バージョン]
     V2 -->|問題なし| PROMO[100% に切り替え]
     V2 -->|問題あり| ROLL[v1 に 100% ロールバック]
     
@@ -606,9 +606,9 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    UPLOAD[オブジェクト作成\nStandard] -->|30日後| N[Nearline\n自動移行]
-    N -->|90日後| C[Coldline\n自動移行]
-    C -->|365日後| A[Archive\n自動移行]
+    UPLOAD[オブジェクト作成<br>Standard] -->|30日後| N[Nearline<br>自動移行]
+    N -->|90日後| C[Coldline<br>自動移行]
+    C -->|365日後| A[Archive<br>自動移行]
     A -->|730日後| DEL[自動削除]
     
     style UPLOAD fill:#4285F4,color:#fff
@@ -659,19 +659,19 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    START[データの種類は?] --> SQL{構造化データ\nSQLが必要?}
-    SQL -->|Yes| SCALE{グローバル分散\n99.999%可用性?}
-    SCALE -->|Yes| SPANNER[Cloud Spanner\nグローバル分散・水平スケール]
-    SCALE -->|No| PERF{PostgreSQL互換で\n4倍の性能が必要?}
-    PERF -->|Yes| ALLOY[AlloyDB\nPG互換・AI最適化]
-    PERF -->|No| CSQL[Cloud SQL\nMySQL/PG/SQL Server]
+    START[データの種類は?] --> SQL{構造化データ<br>SQLが必要?}
+    SQL -->|Yes| SCALE{グローバル分散<br>99.999%可用性?}
+    SCALE -->|Yes| SPANNER[Cloud Spanner<br>グローバル分散・水平スケール]
+    SCALE -->|No| PERF{PostgreSQL互換で<br>4倍の性能が必要?}
+    PERF -->|Yes| ALLOY[AlloyDB<br>PG互換・AI最適化]
+    PERF -->|No| CSQL[Cloud SQL<br>MySQL/PG/SQL Server]
     SQL -->|No| NOSQL{どんな特性?}
-    NOSQL -->|大規模時系列・IoT| BT[Cloud Bigtable\nPB規模・ミリ秒レイテンシ]
-    NOSQL -->|リアルタイム同期\nモバイル| FS[Firestore\nサーバーレス・強整合性]
-    NOSQL -->|マイクロ秒キャッシュ| MEM[Memorystore\nRedis/Memcached]
+    NOSQL -->|大規模時系列・IoT| BT[Cloud Bigtable<br>PB規模・ミリ秒レイテンシ]
+    NOSQL -->|リアルタイム同期<br>モバイル| FS[Firestore<br>サーバーレス・強整合性]
+    NOSQL -->|マイクロ秒キャッシュ| MEM[Memorystore<br>Redis/Memcached]
     START --> DWH{分析・DWH?}
-    DWH -->|Yes| BQ[BigQuery\nサーバーレス分析エンジン]
-    START --> ORACLE{Oracle を\nリフトシフト?}
+    DWH -->|Yes| BQ[BigQuery<br>サーバーレス分析エンジン]
+    START --> ORACLE{Oracle を<br>リフトシフト?}
     ORACLE -->|Yes| BMS[Bare Metal Solution]
 ```
 
@@ -693,9 +693,9 @@ flowchart TD
 ```mermaid
 flowchart TD
     APP[アプリケーション] --> METHOD{接続方法}
-    METHOD -->|推奨 1| PROXY[Cloud SQL Auth Proxy\nIAM 認証・SSL 自動処理]
-    METHOD -->|推奨 2| PRIV[プライベート IP 直接接続\nVPC 内・最もセキュア]
-    METHOD -->|非推奨| PUB[パブリック IP\n許可リスト方式]
+    METHOD -->|推奨 1| PROXY[Cloud SQL Auth Proxy<br>IAM 認証・SSL 自動処理]
+    METHOD -->|推奨 2| PRIV[プライベート IP 直接接続<br>VPC 内・最もセキュア]
+    METHOD -->|非推奨| PUB[パブリック IP<br>許可リスト方式]
     
     style PROXY fill:#34A853,color:#fff
     style PRIV fill:#34A853,color:#fff
@@ -726,10 +726,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    VPC[Google Cloud VPC\n【グローバルスコープ】] --> SUB1[サブネット\n東京 asia-northeast1]
-    VPC --> SUB2[サブネット\n大阪 asia-northeast2]
-    VPC --> SUB3[サブネット\n米国 us-central1]
-    VPC --> SUB4[サブネット\n欧州 europe-west1]
+    VPC[Google Cloud VPC<br>【グローバルスコープ】] --> SUB1[サブネット<br>東京 asia-northeast1]
+    VPC --> SUB2[サブネット<br>大阪 asia-northeast2]
+    VPC --> SUB3[サブネット<br>米国 us-central1]
+    VPC --> SUB4[サブネット<br>欧州 europe-west1]
     
     style VPC fill:#4285F4,color:#fff
 ```
@@ -740,10 +740,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    HOST[ホストプロジェクト\nネットワーク管理チーム] --> VPC[VPC ネットワーク\nサブネット・ファイアウォール集中管理]
-    VPC --> SP1[サービスプロジェクト 1\nフロントエンドチーム]
-    VPC --> SP2[サービスプロジェクト 2\nバックエンドチーム]
-    VPC --> SP3[サービスプロジェクト 3\nDB チーム]
+    HOST[ホストプロジェクト<br>ネットワーク管理チーム] --> VPC[VPC ネットワーク<br>サブネット・ファイアウォール集中管理]
+    VPC --> SP1[サービスプロジェクト 1<br>フロントエンドチーム]
+    VPC --> SP2[サービスプロジェクト 2<br>バックエンドチーム]
+    VPC --> SP3[サービスプロジェクト 3<br>DB チーム]
     
     SP1 -.->|Network User ロール付与| VPC
     SP2 -.->|Network User ロール付与| VPC
@@ -763,7 +763,7 @@ flowchart TD
 flowchart LR
     A[VPC A] <-->|Peering ✅| B[VPC B]
     B <-->|Peering ✅| C[VPC C]
-    A -. "直接通信 ❌\n（推移的でない）" .-> C
+    A -. "直接通信 ❌<br>（推移的でない）" .-> C
     
     style A fill:#4285F4,color:#fff
     style B fill:#34A853,color:#fff
@@ -779,14 +779,14 @@ flowchart TD
     START[どんなトラフィック?] --> HTTP{HTTP/HTTPS?}
     HTTP -->|Yes| ALB[Application Load Balancer L7]
     ALB --> GLOB{グローバル配信?}
-    GLOB -->|Yes| GALB[Global External ALB\nPremium Tier 使用]
-    GLOB -->|No| COMP{コンプライアンス要件\nデータ主権?}
-    COMP -->|Yes| RALB[Regional ALB\n⚠️ 必ずリージョナルを選択]
+    GLOB -->|Yes| GALB[Global External ALB<br>Premium Tier 使用]
+    GLOB -->|No| COMP{コンプライアンス要件<br>データ主権?}
+    COMP -->|Yes| RALB[Regional ALB<br>⚠️ 必ずリージョナルを選択]
     COMP -->|No| RALB2[Regional ALB]
     HTTP -->|No TCP/UDP 等| NLB[Network Load Balancer L4]
     NLB --> SSL{SSL オフロードが必要?}
-    SSL -->|Yes| PNLB[Proxy Network LB\nSSL 終端・送信元 IP 失われる]
-    SSL -->|No| PASS[Passthrough Network LB\n送信元 IP 保持・DSR]
+    SSL -->|Yes| PNLB[Proxy Network LB<br>SSL 終端・送信元 IP 失われる]
+    SSL -->|No| PASS[Passthrough Network LB<br>送信元 IP 保持・DSR]
     
     style GALB fill:#4285F4,color:#fff
     style RALB fill:#EA4335,color:#fff
@@ -836,11 +836,11 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    CODE[Terraform コード\n.tf ファイル] <-->|マッピングを管理| STATE[terraform.tfstate\nState ファイル]
+    CODE[Terraform コード<br>.tf ファイル] <-->|マッピングを管理| STATE[terraform.tfstate<br>State ファイル]
     STATE <-->|実際のリソース情報| GCP[GCP リソース]
     
     subgraph 推奨バックエンド
-        GCS[Cloud Storage バケット\nリモートバックエンド]
+        GCS[Cloud Storage バケット<br>リモートバックエンド]
         GCS -->|バージョニング有効| VER[変更履歴を保存]
         GCS -->|State ロック有効| LOCK[並行 apply を防止]
     end
@@ -854,10 +854,10 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    COMMIT[コードを\ngit commit] --> PLAN[terraform plan\n-out=tfplan]
-    PLAN --> REVIEW[変更内容を\nレビュー]
-    REVIEW --> APPLY[terraform apply\ntfplan]
-    APPLY --> VERIFY[デプロイ結果\nを確認]
+    COMMIT[コードを<br>git commit] --> PLAN[terraform plan<br>-out=tfplan]
+    PLAN --> REVIEW[変更内容を<br>レビュー]
+    REVIEW --> APPLY[terraform apply<br>tfplan]
+    APPLY --> VERIFY[デプロイ結果<br>を確認]
     
     style PLAN fill:#4285F4,color:#fff
     style APPLY fill:#34A853,color:#fff
@@ -874,9 +874,9 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    FEAT[feature ブランチ\nコード変更] -->|PR 作成| DEV[dev ブランチへ merge\n↓ Cloud Build トリガー]
+    FEAT[feature ブランチ<br>コード変更] -->|PR 作成| DEV[dev ブランチへ merge<br>↓ Cloud Build トリガー]
     DEV -->|terraform apply| DEVENV[Dev 環境に自動適用]
-    DEV -->|承認後 PR| MAIN[main ブランチへ merge\n↓ Cloud Build トリガー]
+    DEV -->|承認後 PR| MAIN[main ブランチへ merge<br>↓ Cloud Build トリガー]
     MAIN -->|terraform apply| PRODENV[Prod 環境に自動適用]
     
     style DEVENV fill:#34A853,color:#fff
@@ -917,17 +917,17 @@ flowchart TD
 ```mermaid
 flowchart TD
     subgraph データソース
-        GCE[Compute Engine\nCPU/Network 自動収集]
-        OPS[Ops Agent インストール\nメモリ/アプリログ収集]
-        GKE[GKE\nManaged Prometheus]
-        SAAS[Cloud Run / Cloud SQL\n自動収集]
+        GCE[Compute Engine<br>CPU/Network 自動収集]
+        OPS[Ops Agent インストール<br>メモリ/アプリログ収集]
+        GKE[GKE<br>Managed Prometheus]
+        SAAS[Cloud Run / Cloud SQL<br>自動収集]
     end
     
     subgraph Cloud Monitoring
-        METRIC[メトリクス\nデータベース]
-        DASH[カスタム\nダッシュボード]
-        ALERT[アラート\nポリシー]
-        SLO[SLO\nモニタリング]
+        METRIC[メトリクス<br>データベース]
+        DASH[カスタム<br>ダッシュボード]
+        ALERT[アラート<br>ポリシー]
+        SLO[SLO<br>モニタリング]
     end
     
     subgraph 通知先
@@ -967,8 +967,8 @@ flowchart TD
 ```mermaid
 flowchart LR
     VM[Compute Engine VM] --> OPS[Ops Agent]
-    OPS --> FB[Fluent Bit\nログ収集エンジン]
-    OPS --> OT[OpenTelemetry Collector\nメトリクス収集エンジン]
+    OPS --> FB[Fluent Bit<br>ログ収集エンジン]
+    OPS --> OT[OpenTelemetry Collector<br>メトリクス収集エンジン]
     FB --> LOG[Cloud Logging]
     OT --> MON[Cloud Monitoring]
     
@@ -981,10 +981,10 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    GKE[GKE クラスタ] --> POD[アプリ Pod\n/metrics エンドポイント]
-    POD --> PM[PodMonitoring CRD\nスクレイプ設定]
-    PM --> MSP[Managed Service for Prometheus\nGoogle が管理]
-    MSP --> MON[Cloud Monitoring\nPromQL でクエリ可能]
+    GKE[GKE クラスタ] --> POD[アプリ Pod<br>/metrics エンドポイント]
+    POD --> PM[PodMonitoring CRD<br>スクレイプ設定]
+    PM --> MSP[Managed Service for Prometheus<br>Google が管理]
+    MSP --> MON[Cloud Monitoring<br>PromQL でクエリ可能]
     
     style MSP fill:#4285F4,color:#fff
 ```
@@ -1011,9 +1011,9 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    EB[エラーバジェット\n月間 43.8分] --> BR{バーンレートを監視}
-    BR -->|14.4倍速 - 1時間ウィンドウ| FAST[🔥 高速消費アラート\n緊急対応が必要]
-    BR -->|1.0倍速 - 6時間ウィンドウ| SLOW[⚠️ 低速消費アラート\n調査が必要]
+    EB[エラーバジェット<br>月間 43.8分] --> BR{バーンレートを監視}
+    BR -->|14.4倍速 - 1時間ウィンドウ| FAST[🔥 高速消費アラート<br>緊急対応が必要]
+    BR -->|1.0倍速 - 6時間ウィンドウ| SLOW[⚠️ 低速消費アラート<br>調査が必要]
     BR -->|通常範囲| OK[✅ SLO 達成中]
     
     style FAST fill:#EA4335,color:#fff
@@ -1098,21 +1098,21 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     subgraph ログ発生源
-        GCP_SVC[GCP サービス\nGKE / Cloud SQL / Cloud Run / LB]
-        VM_OPS[Compute Engine VM\nOps Agent 経由]
-        APP[アプリケーション\nCloud Logging API]
+        GCP_SVC[GCP サービス<br>GKE / Cloud SQL / Cloud Run / LB]
+        VM_OPS[Compute Engine VM<br>Ops Agent 経由]
+        APP[アプリケーション<br>Cloud Logging API]
     end
     
     subgraph Cloud Logging
-        INGEST[ログ受信・保存\nインデックス作成]
-        ROUTER[Log Router\nシンク振り分け]
+        INGEST[ログ受信・保存<br>インデックス作成]
+        ROUTER[Log Router<br>シンク振り分け]
     end
     
     subgraph エクスポート先
-        BKT[Cloud Logging バケット\nデフォルト 30日保持]
-        BQ[BigQuery\n長期保存・SQL 分析]
-        GCS[Cloud Storage\nアーカイブ・低コスト]
-        PS[Pub/Sub\nリアルタイム処理・SIEM 連携]
+        BKT[Cloud Logging バケット<br>デフォルト 30日保持]
+        BQ[BigQuery<br>長期保存・SQL 分析]
+        GCS[Cloud Storage<br>アーカイブ・低コスト]
+        PS[Pub/Sub<br>リアルタイム処理・SIEM 連携]
     end
     
     GCP_SVC --> INGEST
@@ -1143,13 +1143,13 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    AUDIT[監査ログの種別] --> AA[管理アクティビティ\nAdmin Activity]
-    AUDIT --> DA[データアクセス\nData Access]
-    AUDIT --> SE[システムイベント\nSystem Event]
+    AUDIT[監査ログの種別] --> AA[管理アクティビティ<br>Admin Activity]
+    AUDIT --> DA[データアクセス<br>Data Access]
+    AUDIT --> SE[システムイベント<br>System Event]
     
-    AA -->|IAM 変更 / リソース作成削除| AA2[✅ 常時有効・無料\n❌ 無効化不可]
-    DA -->|データの読み書き| DA2[❌ デフォルト無効\n手動有効化が必要・有料]
-    SE -->|Google 自動操作| SE2[✅ 常時有効・無料\n❌ 無効化不可]
+    AA -->|IAM 変更 / リソース作成削除| AA2[✅ 常時有効・無料<br>❌ 無効化不可]
+    DA -->|データの読み書き| DA2[❌ デフォルト無効<br>手動有効化が必要・有料]
+    SE -->|Google 自動操作| SE2[✅ 常時有効・無料<br>❌ 無効化不可]
     
     style AA2 fill:#34A853,color:#fff
     style DA2 fill:#FBBC04,color:#000
@@ -1240,12 +1240,12 @@ gantt
 
 ```mermaid
 flowchart LR
-    APP[アプリケーション\n例外・エラーを出力] --> LOG[Cloud Logging\nログに記録]
-    LOG --> ER[Error Reporting\n自動スキャン]
-    ER --> GROUP[同じエラーを\n自動グループ化]
-    GROUP --> NOTIFY[新しいエラーを\n即時通知]
-    GROUP --> TREND[発生頻度・\nトレンドを表示]
-    GROUP --> STACK[スタックトレースで\n原因箇所を特定]
+    APP[アプリケーション<br>例外・エラーを出力] --> LOG[Cloud Logging<br>ログに記録]
+    LOG --> ER[Error Reporting<br>自動スキャン]
+    ER --> GROUP[同じエラーを<br>自動グループ化]
+    GROUP --> NOTIFY[新しいエラーを<br>即時通知]
+    GROUP --> TREND[発生頻度・<br>トレンドを表示]
+    GROUP --> STACK[スタックトレースで<br>原因箇所を特定]
 ```
 
 ---
@@ -1265,11 +1265,11 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    ENG[エンジニアが\n自然言語で質問] --> GCA[Gemini Cloud Assist]
-    GCA --> L[Cloud Logging\nエラーログ分析]
-    GCA --> M[Cloud Monitoring\nメトリクス確認]
-    GCA --> CAI[Cloud Asset Inventory\n設定変更履歴確認]
-    L --> RESULT[分析結果・修正アクションを\n自然言語で提示]
+    ENG[エンジニアが<br>自然言語で質問] --> GCA[Gemini Cloud Assist]
+    GCA --> L[Cloud Logging<br>エラーログ分析]
+    GCA --> M[Cloud Monitoring<br>メトリクス確認]
+    GCA --> CAI[Cloud Asset Inventory<br>設定変更履歴確認]
+    L --> RESULT[分析結果・修正アクションを<br>自然言語で提示]
     M --> RESULT
     CAI --> RESULT
     
@@ -1321,11 +1321,11 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    NEED[権限を付与したい] --> PRED{事前定義ロールで\n要件を満たせるか?}
+    NEED[権限を付与したい] --> PRED{事前定義ロールで<br>要件を満たせるか?}
     PRED -->|Yes| USE[事前定義ロールを使用 ✅]
-    PRED -->|No - 過剰権限 or 組み合わせが必要| CUSTOM[カスタムロールを作成\n最小限の権限で定義]
+    PRED -->|No - 過剰権限 or 組み合わせが必要| CUSTOM[カスタムロールを作成<br>最小限の権限で定義]
     
-    BASIC[基本ロール\nViewer / Editor / Owner] --> DANGER[⚠️ 本番環境での使用は原則禁止\n粒度が粗すぎる]
+    BASIC[基本ロール<br>Viewer / Editor / Owner] --> DANGER[⚠️ 本番環境での使用は原則禁止<br>粒度が粗すぎる]
     
     style USE fill:#34A853,color:#fff
     style DANGER fill:#EA4335,color:#fff
@@ -1335,8 +1335,8 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    EDITOR[roles/editor を付与] --> WANT[✅ やりたいこと\nCloud Run へのデプロイ]
-    EDITOR --> UNWANT[❌ 意図しない権限\n・Cloud SQL の DB を削除\n・Cloud Storage バケットを削除\n・Secret Manager を読み取り\n・GKE クラスタを削除]
+    EDITOR[roles/editor を付与] --> WANT[✅ やりたいこと<br>Cloud Run へのデプロイ]
+    EDITOR --> UNWANT[❌ 意図しない権限<br>・Cloud SQL の DB を削除<br>・Cloud Storage バケットを削除<br>・Secret Manager を読み取り<br>・GKE クラスタを削除]
     
     style WANT fill:#34A853,color:#fff
     style UNWANT fill:#EA4335,color:#fff
@@ -1390,13 +1390,13 @@ flowchart LR
 flowchart TD
     NEED[GCP API にアクセスしたい] --> WHERE{どこから?}
     
-    WHERE -->|GCE / GKE / Cloud Run| META[インスタンスに SA をアタッチ\nメタデータサーバーから自動取得 ✅]
-    WHERE -->|開発者のローカル PC| ADC[gcloud auth application-default login\nADC を使用 ✅]
-    WHERE -->|GitHub Actions / GitLab CI| WIF[Workload Identity Federation\nキーレス認証 ✅]
-    WHERE -->|AWS / Azure / オンプレ| WIF2[Workload Identity Federation\n外部 IdP トークンを交換 ✅]
-    WHERE -->|一時的な特権操作| IMP[SA Impersonation\n短期トークン・監査ログ付き ✅]
+    WHERE -->|GCE / GKE / Cloud Run| META[インスタンスに SA をアタッチ<br>メタデータサーバーから自動取得 ✅]
+    WHERE -->|開発者のローカル PC| ADC[gcloud auth application-default login<br>ADC を使用 ✅]
+    WHERE -->|GitHub Actions / GitLab CI| WIF[Workload Identity Federation<br>キーレス認証 ✅]
+    WHERE -->|AWS / Azure / オンプレ| WIF2[Workload Identity Federation<br>外部 IdP トークンを交換 ✅]
+    WHERE -->|一時的な特権操作| IMP[SA Impersonation<br>短期トークン・監査ログ付き ✅]
     
-    AVOID[❌ SA JSON キー\nほぼ使うべきシナリオなし]
+    AVOID[❌ SA JSON キー<br>ほぼ使うべきシナリオなし]
     
     style META fill:#34A853,color:#fff
     style ADC fill:#34A853,color:#fff
@@ -1411,7 +1411,7 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     participant GH as GitHub Actions
-    participant STS as Google STS\nSecurity Token Service
+    participant STS as Google STS<br>Security Token Service
     participant SA as IAM Service Account
     participant GCP as GCP API
 
@@ -1427,14 +1427,14 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant U as 通常権限の\nエンジニア alice
+    participant U as 通常権限の<br>エンジニア alice
     participant GCP as GCP IAM
-    participant PSA as 特権 SA\nprivileged-sa
+    participant PSA as 特権 SA<br>privileged-sa
     
-    U->>GCP: SA の TokenCreator 権限を使って\n短期トークンをリクエスト
-    GCP-->>U: 短期有効なアクセストークンを発行\n（最大 1 時間）
+    U->>GCP: SA の TokenCreator 権限を使って<br>短期トークンをリクエスト
+    GCP-->>U: 短期有効なアクセストークンを発行<br>（最大 1 時間）
     U->>PSA: 短期トークンで管理タスクを実行
-    Note over GCP: 「alice が privileged-sa を使って\n何時にどの操作をしたか」を監査ログに記録
+    Note over GCP: 「alice が privileged-sa を使って<br>何時にどの操作をしたか」を監査ログに記録
     Note over U: 1時間後にトークンが自動失効
 ```
 
@@ -1447,7 +1447,7 @@ sequenceDiagram
     participant APPROVER as 承認者（上長）
     participant IAM as GCP IAM
 
-    E->>PAM: 特権アクセスをリクエスト\n（理由: インシデント対応）
+    E->>PAM: 特権アクセスをリクエスト<br>（理由: インシデント対応）
     PAM->>APPROVER: 承認リクエスト通知
     APPROVER->>PAM: 承認（有効期間: 2時間）
     PAM->>IAM: ロールを一時付与
@@ -1474,15 +1474,15 @@ sequenceDiagram
 ```mermaid
 flowchart LR
     subgraph ❌ 禁止
-        HC[コードに\nハードコード]
-        ENV_PLAIN[環境変数に\n平文で設定]
-        GIT[Git に\nコミット]
+        HC[コードに<br>ハードコード]
+        ENV_PLAIN[環境変数に<br>平文で設定]
+        GIT[Git に<br>コミット]
     end
     
     subgraph ✅ 推奨
-        SM[Secret Manager に\n安全に保存]
-        IAM_SM[IAM で\nアクセス制御]
-        AUDIT[監査ログで\nアクセス追跡]
+        SM[Secret Manager に<br>安全に保存]
+        IAM_SM[IAM で<br>アクセス制御]
+        AUDIT[監査ログで<br>アクセス追跡]
         ROTATE[自動ローテーション]
     end
     
@@ -1505,8 +1505,8 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    SM[Secret Manager\ndb-password:latest] -->|--set-secrets フラグ| CR[Cloud Run\n環境変数 DB_PASSWORD として注入]
-    CR --> APP[アプリケーション\n$DB_PASSWORD で参照]
+    SM[Secret Manager<br>db-password:latest] -->|--set-secrets フラグ| CR[Cloud Run<br>環境変数 DB_PASSWORD として注入]
+    CR --> APP[アプリケーション<br>$DB_PASSWORD で参照]
     
     style SM fill:#4285F4,color:#fff
     style CR fill:#34A853,color:#fff
@@ -1530,9 +1530,9 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    KR[キーリング\nKeyRing] --> SYM[対称暗号化キー\n・データの暗号化・復号化\n・自動ローテーション設定可]
-    KR --> ASYM[非対称署名キー\n・コード署名\n・JWT 署名]
-    KR --> MAC[MAC 保護キー\nメッセージ認証コード]
+    KR[キーリング<br>KeyRing] --> SYM[対称暗号化キー<br>・データの暗号化・復号化<br>・自動ローテーション設定可]
+    KR --> ASYM[非対称署名キー<br>・コード署名<br>・JWT 署名]
+    KR --> MAC[MAC 保護キー<br>メッセージ認証コード]
 ```
 
 ### KMS のアクセス制御ロール
@@ -1553,12 +1553,12 @@ flowchart TD
 ```mermaid
 flowchart TD
     subgraph 従来の VPN 方式
-        USER1[ユーザー] -->|VPN 接続| VPN[VPN ゲートウェイ\n管理・証明書が必要]
+        USER1[ユーザー] -->|VPN 接続| VPN[VPN ゲートウェイ<br>管理・証明書が必要]
         VPN -->|内部ネットワーク全体にアクセス可能| APP1[社内システム]
     end
     
     subgraph IAP（ゼロトラスト）
-        USER2[ユーザー] -->|HTTPS 直接アクセス| IAP2[Identity-Aware Proxy\nGoogleアカウント認証\nIAMで認可\nデバイス確認]
+        USER2[ユーザー] -->|HTTPS 直接アクセス| IAP2[Identity-Aware Proxy<br>Googleアカウント認証<br>IAMで認可<br>デバイス確認]
         IAP2 -->|特定のアプリのみアクセス| APP2[社内システム]
     end
     
@@ -1582,9 +1582,9 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    INTERNET[インターネット] --> CA[Cloud Armor\nエッジで防御]
+    INTERNET[インターネット] --> CA[Cloud Armor<br>エッジで防御]
     CA --> LB[Cloud Load Balancer]
-    LB --> BACKEND[バックエンド\nVM / GKE / Cloud Run]
+    LB --> BACKEND[バックエンド<br>VM / GKE / Cloud Run]
     
     CA -->|ブロック| DDOS[DDoS 攻撃]
     CA -->|ブロック| SQLI[SQL インジェクション]
@@ -1648,11 +1648,11 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    INTERNET[インターネット] --> CA[Layer 1: Cloud Armor\nDDoS / WAF 防御]
-    CA --> FW[Layer 2: ファイアウォールルール\nIAP IP レンジのみ SSH 許可\n35.235.240.0/20]
-    FW --> IAP[Layer 3: Identity-Aware Proxy\nGoogle アカウント認証・IAM 認可]
-    IAP --> OSLOGIN[Layer 4: OS Login + 2FA\nIAM ベースの SSH 管理]
-    OSLOGIN --> VM[VM\n外部 IP なし構成]
+    INTERNET[インターネット] --> CA[Layer 1: Cloud Armor<br>DDoS / WAF 防御]
+    CA --> FW[Layer 2: ファイアウォールルール<br>IAP IP レンジのみ SSH 許可<br>35.235.240.0/20]
+    FW --> IAP[Layer 3: Identity-Aware Proxy<br>Google アカウント認証・IAM 認可]
+    IAP --> OSLOGIN[Layer 4: OS Login + 2FA<br>IAM ベースの SSH 管理]
+    OSLOGIN --> VM[VM<br>外部 IP なし構成]
     
     style CA fill:#4285F4,color:#fff
     style FW fill:#34A853,color:#fff
