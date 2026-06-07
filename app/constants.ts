@@ -46,6 +46,11 @@ export const EXAMS: Exam[] = [
             'Google Cloud 上でのアプリのデプロイ・管理・監視能力を認定。コンピュート・ストレージ・ネットワーク・IAM など幅広い領域を網羅。',
         domains: [
             {
+                label: '完全試験対策ガイド',
+                href: '/gcl/associate-cloud-engineer/complete-advanced-guide',
+                pct: '完全解説',
+            },
+            {
                 label: 'アーキテクチャガイド',
                 href: '/gcl/associate-cloud-engineer/architecture-guide',
                 pct: '総合',

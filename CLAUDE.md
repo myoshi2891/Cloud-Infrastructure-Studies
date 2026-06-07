@@ -70,6 +70,11 @@ app/
     associate-cloud-engineer/
       page.tsx                      # ACE 試験対策ページ
       ace.css                       # Aurora テーマ（ページ固有）
+      complete-advanced-guide/
+        page.tsx                    # 完全試験対策ガイドページ
+        page.css                    # ページ固有スタイル
+        constants.ts                # 定数（Mermaidダイアグラム等）
+        NavBar.tsx                  # サイドバーナビ
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装
