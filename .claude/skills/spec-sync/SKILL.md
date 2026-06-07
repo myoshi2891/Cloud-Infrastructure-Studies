@@ -138,7 +138,7 @@ git log --oneline -5
 git rev-parse --short HEAD
 
 # B. 現在のNext.jsルート一覧の取得
-ls app/*/page.tsx 2>/dev/null | sed 's|app/||' | sed 's|/page.tsx||'
+find app -name "page.tsx" 2>/dev/null | sed 's|app/||' | sed 's|/page.tsx||'
 
 # C. テストファイル実数の取得 (Vitest単体テスト)
 find __tests__/ -name "*.test.ts" -o -name "*.test.tsx" 2>/dev/null | sort
