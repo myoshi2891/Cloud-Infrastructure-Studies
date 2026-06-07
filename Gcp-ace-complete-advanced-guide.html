@@ -2146,7 +2146,11 @@
                                     </tr>
                                     <tr>
                                         <td>DaemonSet</td>
-                                        <td><span class="tag tag-red">基本的に不可</span></td>
+                                        <td>
+                                            <span class="tag tag-yellow"
+                                                >DaemonSet は GKE Autopilot でサポートされるが、リソース要求やセキュリティポリシー等によりカスタム DaemonSet のデプロイは制限され得る（例：⚠️ 制約あり — ポリシー準拠が必要）</span
+                                            >
+                                        </td>
                                         <td><span class="tag tag-green">可能</span></td>
                                     </tr>
                                     <tr>
@@ -2279,7 +2283,7 @@
                                     <tr>
                                         <td>スループット</td>
                                         <td>制限あり</td>
-                                        <td><span class="tag tag-green">最大 2Gbps</span></td>
+                                        <td><span class="tag tag-green">最大 1Gbps</span>（Direct VPC 送出のインスタンスあたり上限。詳細は <a href="https://cloud.google.com/run/docs/configuring/vpc-direct-egress#limits" target="_blank">Google Cloud ドキュメント</a> を参照）</td>
                                     </tr>
                                     <tr>
                                         <td>並行処理数</td>

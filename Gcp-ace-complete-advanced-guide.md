@@ -474,7 +474,7 @@ flowchart TD
 | セキュリティ標準 | Kubernetes Baseline 強制 | ユーザー設定 |
 | 特権コンテナ | ❌ | ✅ |
 | Workload Identity | 自動有効化 | 手動設定 |
-| DaemonSet | ❌（基本的に不可） | ✅ |
+| DaemonSet | DaemonSet は GKE Autopilot でサポートされるが、リソース要求やセキュリティポリシー等によりカスタム DaemonSet のデプロイは制限され得る（例：⚠️ 制約あり — ポリシー準拠が必要） | ✅ |
 | 課金モデル | **Pod リソース単位**（アイドルコストなし） | **ノード（VM）単位** |
 | 新規クラスタ推奨 | **✅ デフォルト推奨** | 特殊要件のみ |
 
@@ -557,7 +557,7 @@ flowchart LR
 | 項目 | 第 1 世代 | 第 2 世代（推奨） |
 |------|:--------:|:---------------:|
 | ネットワーク接続 | VPC コネクタ | **Direct VPC Egress（高速）** |
-| スループット | 制限あり | **最大 2Gbps** |
+| スループット | 制限あり | **最大 1Gbps**（Direct VPC 送出のインスタンスあたり上限。詳細は [Google Cloud ドキュメント](https://cloud.google.com/run/docs/configuring/vpc-direct-egress#limits) を参照） |
 | 並行処理数 | 最大 250/インスタンス | **最大 1,000/インスタンス** |
 | CPU | リクエスト中のみ | **常時利用可能** |
 
