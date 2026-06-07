@@ -157,6 +157,31 @@ CSS にもフォールバックを追加する：
 }
 ```
 
+### シーケンス図・状態遷移図等の下部見切れ（クリッピング）対策（2026年6月追記）
+
+Mermaid v10 のシーケンス図（`sequenceDiagram`）や状態遷移図（`stateDiagram`）のレンダラーには、描画される最下部要素（ライフライン下端、下部アクターボックス、ループブロック、警告メモ等）の境界座標を正しく計算できず、生成される SVG の `viewBox` 属性の高さ（height）が不足するバグがあります。
+
+親要素（`.diagram-wrap` 等）に `overflow-x: auto` などが指定されている場合、CSSの仕様により縦方向もクリッピング（`hidden` 同等）されるため、はみ出た下部要素が切り落とされて見えなくなります。
+
+**【対策】**
+`mermaid.render()` 後に、JS で動的に `viewBox` の高さを拡張し、十分なスペースを確保した上で再適用します。
+
+```javascript
+// viewBox の高さを拡張して、下部見切れを解消
+const viewBoxStr = svgEl.getAttribute('viewBox');
+if (viewBoxStr) {
+    const parts = viewBoxStr.split(' ').map(Number);
+    if (parts.length === 4) {
+        const isSequenceOrState = src.trim().startsWith('sequenceDiagram') || src.trim().startsWith('stateDiagram');
+        // mirrorActors: true（上下両方のアクターボックス表示）の場合は縦幅が大きく伸びるため
+        // 余裕を持って高さを増やす（シーケンス図等は +110px、その他は +15px 程度）
+        const extraHeight = isSequenceOrState ? 110 : 15;
+        svgEl.setAttribute('viewBox', `${parts[0]} ${parts[1]} ${parts[2]} ${parts[3] + extraHeight}`);
+    }
+}
+```
+
+
 ### `quadrantChart` の文字被り対策（2026年6月追記）
 
 `quadrantChart` でプロットされる各要素のテキストラベルが重なって表示される場合は、`mermaid.initialize` の設定にて内部描画解像度を大きく指定します。
