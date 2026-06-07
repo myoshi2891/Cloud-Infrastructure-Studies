@@ -2033,7 +2033,7 @@ export default function CompleteAdvancedGuidePage() {
                                         <td><strong>WAF ルール</strong></td>
                                         <td>OWASP Top 10 対策（事前設定済み）</td>
                                         <td>
-                                            <code >evaluatePreconfiguredExpr('sqli-v33-stable')</code >
+                                            <code >evaluatePreconfiguredExpr(&#39;sqli-v33-stable&#39;)</code >
                                         </td>
                                     </tr>
                                     <tr>
@@ -2044,7 +2044,7 @@ export default function CompleteAdvancedGuidePage() {
                                     <tr>
                                         <td><strong>地理情報ベース</strong></td>
                                         <td>特定の国からのアクセスを制御</td>
-                                        <td><code>origin.region_code == 'XX'</code></td>
+                                        <td><code>origin.region_code == &#39;XX&#39;</code></td>
                                     </tr>
                                     <tr>
                                         <td><strong>レート制限</strong></td>
