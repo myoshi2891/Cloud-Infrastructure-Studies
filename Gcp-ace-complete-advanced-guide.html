@@ -4332,7 +4332,7 @@ style VM fill:#333,color:#fff,stroke:#555`
                     fontSize: '13px',
                 },
                 flowchart: { curve: 'basis', padding: 20 },
-                sequence: { actorMargin: 60, mirrorActors: false },
+                sequence: { actorMargin: 60, mirrorActors: true },
                 securityLevel: 'loose',
             });
 
@@ -4366,8 +4366,8 @@ style VM fill:#333,color:#fff,stroke:#555`
                                 const parts = viewBoxStr.split(' ').map(Number);
                                 if (parts.length === 4) {
                                     const isSequenceOrState = src.trim().startsWith('sequenceDiagram') || src.trim().startsWith('stateDiagram');
-                                    // シーケンス図は特に下部にライフラインやメモが伸びるため、余裕を持って高さを増やす
-                                    const extraHeight = isSequenceOrState ? 70 : 15;
+                                    // シーケンス図は特に下部にアクターボックスやメモが伸びるため、余裕を持って高さを増やす
+                                    const extraHeight = isSequenceOrState ? 110 : 15;
                                     svgEl.setAttribute('viewBox', `${parts[0]} ${parts[1]} ${parts[2]} ${parts[3] + extraHeight}`);
                                 }
                             }
