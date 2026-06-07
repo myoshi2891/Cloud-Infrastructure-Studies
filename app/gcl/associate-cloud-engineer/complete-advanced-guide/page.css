@@ -1051,28 +1051,4 @@
     max-width: 100%;
 }
 
-/* ── Mermaid Diagram Node Contrast Fix ──────────────── */
-.complete-guide-page .diagram-wrap g.node:is(
-    [style*="fbbc04" i], [fill*="fbbc04" i], :has(*[style*="fbbc04" i]), :has(*[fill*="fbbc04" i]),
-    [style*="fbbc05" i], [fill*="fbbc05" i], :has(*[style*="fbbc05" i]), :has(*[fill*="fbbc05" i]),
-    [style*="251, 188" i], [fill*="251, 188" i], :has(*[style*="251, 188" i]), :has(*[fill*="251, 188" i]),
-    [style*="0f9d58" i], [fill*="0f9d58" i], :has(*[style*="0f9d58" i]), :has(*[fill*="0f9d58" i]),
-    [style*="34a853" i], [fill*="34a853" i], :has(*[style*="34a853" i]), :has(*[fill*="34a853" i]),
-    [style*="15, 157" i], [fill*="15, 157" i], :has(*[style*="15, 157" i]), :has(*[fill*="15, 157" i]),
-    [style*="52, 168" i], [fill*="52, 168" i], :has(*[style*="52, 168" i]), :has(*[fill*="52, 168" i])
-) :is(.nodeLabel, text, foreignObject div, foreignObject span) {
-    color: #000000 !important;
-    fill: #000000 !important;
-}
 
-.complete-guide-page .diagram-wrap g.node:is(
-    [style*="1a73e8" i], [fill*="1a73e8" i], :has(*[style*="1a73e8" i]), :has(*[fill*="1a73e8" i]),
-    [style*="4285f4" i], [fill*="4285f4" i], :has(*[style*="4285f4" i]), :has(*[fill*="4285f4" i]),
-    [style*="26, 115" i], [fill*="26, 115" i], :has(*[style*="26, 115" i]), :has(*[fill*="26, 115" i]),
-    [style*="66, 133" i], [fill*="66, 133" i], :has(*[style*="66, 133" i]), :has(*[fill*="66, 133" i]),
-    [style*="ea4335" i], [fill*="ea4335" i], :has(*[style*="ea4335" i]), :has(*[fill*="ea4335" i]),
-    [style*="234, 67" i], [fill*="234, 67" i], :has(*[style*="234, 67" i]), :has(*[fill*="234, 67" i])
-) :is(.nodeLabel, text, foreignObject div, foreignObject span) {
-    color: #ffffff !important;
-    fill: #ffffff !important;
-}

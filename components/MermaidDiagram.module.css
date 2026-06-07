@@ -19,13 +19,13 @@
     height: auto;
 }
 
-.mermaidTarget :global(svg text),
-.mermaidTarget :global(.nodeLabel),
-.mermaidTarget :global(.edgeLabel),
-.mermaidTarget :global(.labelText),
-.mermaidTarget :global(.label),
-.mermaidTarget :global(foreignObject div),
-.mermaidTarget :global(foreignObject span) {
+.mermaidTarget :global(svg text:not([style*="color"]):not([style*="fill"])),
+.mermaidTarget :global(.nodeLabel:not([style*="color"])),
+.mermaidTarget :global(.edgeLabel:not([style*="color"])),
+.mermaidTarget :global(.labelText:not([style*="color"])),
+.mermaidTarget :global(.label:not([style*="color"])),
+.mermaidTarget :global(foreignObject div:not([style*="color"])),
+.mermaidTarget :global(foreignObject span:not([style*="color"])) {
     color: #e6e9ee !important;
     fill: #e6e9ee !important;
 }
