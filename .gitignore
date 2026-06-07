@@ -114,7 +114,7 @@ test-results/
 playwright-report/
 .lighthouseci/
 
-archive/*
+archive/
 Aws/archive/
 Gcl_Archive/
 tsconfig.tsbuildinfo

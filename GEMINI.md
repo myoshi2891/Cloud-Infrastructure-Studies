@@ -28,11 +28,11 @@
 
 - `/app`: Next.js App Router のページコンポーネント。
   - `/app/gcl/associate-cloud-engineer`: ACE 試験対策ページ（domain1〜4、architecture-guide、complete-advanced-guide を含む）。
-  - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
-  - `/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
-  - `/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。
-  - `/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
-  - `/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
+  - `/app/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
+  - `/app/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
+  - `/app/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。
+  - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
+  - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` ※実装準備中、constants の `status` を変更するだけで Drawer に自動反映）
