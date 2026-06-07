@@ -348,7 +348,9 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
 .mermaidTarget :global(foreignObject) { overflow: visible; }
 .mermaidTarget :global(foreignObject > div),
 .mermaidTarget :global(.nodeLabel),
-.mermaidTarget :global(.edgeLabel) { overflow: visible; white-space: nowrap; }
+.mermaidTarget :global(.edgeLabel) { overflow: visible; }
+/* ⚠️ white-space: nowrap は付けない。mermaid は長いラベルを foreignObject 幅で折返す前提で
+   box を採寸するため、nowrap を強制すると長い行が右端で切れる（emoji 対策は overflow: visible のみで足りる） */
 
 /* 既定でノードラベルを白に（<br/> 2 行目が暗く残る問題も解消するため子孫 * まで） */
 .mermaidTarget :global(.node .nodeLabel),

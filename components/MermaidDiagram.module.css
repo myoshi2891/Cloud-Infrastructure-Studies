@@ -30,11 +30,15 @@
     overflow: visible;
 }
 
+/*
+ * overflow:visible のみ（emoji 採寸ズレによるはみ出しを表示するため）。
+ * white-space は mermaid 本来の折返し採寸に委ねる（nowrap を強制すると長いラベルが
+ * foreignObject 幅を超えて右端で切れるため指定しない）。
+ */
 .mermaidTarget :global(foreignObject > div),
 .mermaidTarget :global(.nodeLabel),
 .mermaidTarget :global(.edgeLabel) {
     overflow: visible;
-    white-space: nowrap;
 }
 
 /*
