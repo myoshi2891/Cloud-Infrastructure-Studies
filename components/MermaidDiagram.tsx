@@ -19,22 +19,41 @@ if (typeof window !== 'undefined') {
         startOnLoad: false,
         theme: 'base',
         securityLevel: 'strict',
-        fontFamily: 'inherit',
+        // 採寸（getBBox 用の一時 div）と描画のフォントを一致させ、日本語ラベルの字幅ズレによる文字切れを防ぐ
+        fontFamily: '"Noto Sans JP", "DM Sans", sans-serif',
         themeVariables: {
+            // darkMode: base テーマの派生色（edgeLabelBackground 等）をダーク向きに計算させる
+            darkMode: true,
+            background: 'transparent',
+            // --- 共通 ---
             primaryColor: 'rgba(64,224,208,0.12)',
             primaryBorderColor: '#40E0D0',
             primaryTextColor: '#e6e9ee',
-            lineColor: '#9aa7b2',
             secondaryColor: 'rgba(124,164,255,0.12)',
             tertiaryColor: 'rgba(255,255,255,0.04)',
-            background: 'transparent',
-            nodeTextColor: '#e6e9ee',
+            tertiaryTextColor: '#e6e9ee',
+            lineColor: '#9aa7b2',
             textColor: '#e6e9ee',
+            nodeTextColor: '#e6e9ee',
             titleColor: '#e6e9ee',
+            // --- フロー図 エッジラベル / subgraph クラスタ ---
+            edgeLabelBackground: '#0d1320',
+            clusterBkg: 'rgba(124,164,255,0.06)',
+            clusterBorder: '#3a4453',
+            // --- シーケンス図 ---
+            actorBkg: 'rgba(64,224,208,0.12)',
+            actorBorder: '#40E0D0',
             actorTextColor: '#e6e9ee',
             actorLineColor: '#9aa7b2',
+            signalColor: '#9aa7b2',
             signalTextColor: '#e6e9ee',
+            labelBoxBkgColor: 'rgba(124,164,255,0.12)',
+            labelBoxBorderColor: '#3a4453',
             labelTextColor: '#e6e9ee',
+            loopTextColor: '#e6e9ee',
+            noteBkgColor: '#1c2230',
+            noteTextColor: '#e6e9ee',
+            noteBorderColor: '#3a4453',
         },
     });
 }
@@ -90,6 +109,15 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
             setError(null);
             setRendered(false);
             try {
+                // Web フォント（Noto Sans JP）読込前に採寸するとノード幅が狭く算出され文字が切れるため、完了を待つ
+                if (typeof document !== 'undefined' && 'fonts' in document) {
+                    try {
+                        await document.fonts.ready;
+                    } catch {
+                        // フォント API が失敗してもフォールバックフォントで描画は続行する
+                    }
+                }
+                if (cancelled) return;
                 const id = `mermaid-${reactId.replace(/[^a-zA-Z0-9]/g, '')}`;
                 const { svg } = await mermaid.render(id, chart);
                 if (cancelled) return;
