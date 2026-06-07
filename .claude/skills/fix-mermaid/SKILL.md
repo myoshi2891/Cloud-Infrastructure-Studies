@@ -181,7 +181,6 @@ if (viewBoxStr) {
 }
 ```
 
-
 ### `quadrantChart` の文字被り対策（2026年6月追記）
 
 `quadrantChart` でプロットされる各要素のテキストラベルが重なって表示される場合は、`mermaid.initialize` の設定にて内部描画解像度を大きく指定します。

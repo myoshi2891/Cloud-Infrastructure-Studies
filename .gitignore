@@ -122,3 +122,4 @@ infra-md-to-nextjs-migration.skill
 .gemini/settings.json
 docs/skills
 .claude/settings.json
+.playwright-mcp
