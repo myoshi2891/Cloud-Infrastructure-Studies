@@ -47,7 +47,7 @@ HTMLやコードのフォーマッタ（Prettier等）による破壊パター�
 自動修正を行う場合は TypeScript 版スクリプト `fix_mermaid.ts` を `bun` で実行します:
 
 ```bash
-bun run .claude/skills/fix-mermaid/scripts/fix_mermaid.ts path/to/file.tsx
+bun run .gemini/skills/fix-mermaid/scripts/fix_mermaid.ts path/to/file.tsx
 ```
 
 ## 変換例

@@ -170,8 +170,8 @@ export function fixMarkdownMermaid(markdown: string): { fixed: string; report: s
 export function fixTsxMermaid(content: string): { fixed: string; report: string[] } {
   const report: string[] = [];
   // バッククォート ` で囲まれたテンプレートリテラルで、
-  // 内部が graph/flowchart/sequenceDiagram/mindmap で始まるものを検出
-  const pattern = /`(\s*(?:graph\s+\w+|flowchart\s+\w+|sequenceDiagram|mindmap\b)[\s\S]*?)`/gi;
+  // 内部が graph/flowchart/sequenceDiagram/mindmap 等で始まるものを検出
+  const pattern = /`(\s*(?:graph\s+\w+|flowchart\s+\w+|sequenceDiagram|mindmap|(?:\w+Diagram)|gantt\b|pie\b|journey\b)[\s\S]*?)`/gi;
 
   const fixed = content.replace(pattern, (match, inner) => {
     const { fixedContent } = fixMermaidContent(inner, report);
@@ -214,7 +214,7 @@ if (typeof require !== 'undefined' && require.main === module) {
     }
 
     if (result.report.length > 0) {
-      result.report.forEach(line => console.log(line));
+      result.report.forEach(line => { console.log(line); });
       fs.writeFileSync(absolutePath, result.fixed, 'utf8');
       console.log(`\n✅ Fixed and saved: ${filePath}`);
     } else {
