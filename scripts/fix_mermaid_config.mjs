@@ -67,4 +67,5 @@ if (parts.length === 2) {
     console.log('Fixed mermaid config and rendering logic!');
 } else {
     console.error('Could not find mermaid.initialize({ startOnLoad: false }); in HTML');
+    process.exit(1);
 }

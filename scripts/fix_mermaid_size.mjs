@@ -26,6 +26,17 @@ const newCss = `.mermaid-wrap {
                 display: flex;
                 justify-content: center;`;
 
-html = html.replace(cssToReplace, newCss);
-fs.writeFileSync('Ace-section1-complete-guide.html', html, 'utf8');
+// 再実行時の宣言重複を防ぐ（.mermaid-wrap > div が既にあれば適用済み）
+if (html.includes('.mermaid-wrap > div')) {
+    console.log('mermaid-wrap CSS already applied; skipping');
+    process.exit(0);
+}
+
+const next = html.replace(cssToReplace, newCss);
+if (next === html) {
+    console.error('Could not find .mermaid-wrap block in HTML');
+    process.exit(1);
+}
+
+fs.writeFileSync('Ace-section1-complete-guide.html', next, 'utf8');
 console.log('Fixed mermaid-wrap CSS for size constraints!');

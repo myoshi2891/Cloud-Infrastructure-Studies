@@ -5,10 +5,16 @@ let md = fs.readFileSync('Ace-section1-complete-guide.md', 'utf8');
 
 // 1. Extract all mermaid blocks from MD
 let mdBlocks = [];
-md.replace(/```mermaid\n([\s\S]*?)\n```/g, (match, inner) => {
+// CRLF / マーカー直後の余分な空白を許容する寛容な正規表現
+md.replace(/```mermaid[ \t]*\r?\n([\s\S]*?)\r?\n```/g, (match, inner) => {
     mdBlocks.push(inner.trim());
     return match;
 });
+
+if (mdBlocks.length === 0) {
+    console.error('No mermaid blocks found in MD');
+    process.exit(1);
+}
 
 // 2. Extract the DIAGRAMS JSON from HTML
 let diagramsMatch = html.match(/const DIAGRAMS = (\{[\s\S]*?\});/);
