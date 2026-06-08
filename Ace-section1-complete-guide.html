@@ -725,11 +725,37 @@
             }
             .mermaid-wrap > div {
                 width: 100%;
-                max-width: 800px;
+                max-width: 1000px;
                 display: flex;
                 justify-content: center;
-                overflow-x: auto;
-                text-align: center;
+            }
+            /* 特定の図解をさらに小さく調整 */
+            #diag-1 {
+                max-width: 700px;
+            }
+            #diag-3 {
+                max-width: 500px;
+            }
+            #diag-4 {
+                max-width: 900px;
+            }
+            #diag-8 {
+                max-width: 500px;
+            }
+            #diag-9 {
+                max-width: 400px;
+            }
+            #diag-10 {
+                max-width: 400px;
+            }
+            #diag-11 {
+                max-width: 300px;
+            }
+            #diag-12 {
+                max-width: 450px;
+            }
+            #diag-14 {
+                max-width: 800px;
             }
             .mermaid {
                 display: flex;
@@ -1000,7 +1026,7 @@
                     </div>
 
                     <div class="mermaid-wrap">
-<div id="diag-0"></div>
+                        <div id="diag-0"></div>
                     </div>
 
                     <div class="sources">
@@ -1192,7 +1218,7 @@
                     <div class="subsection">
                         <h3>IAMポリシーの継承メカニズム</h3>
                         <div class="mermaid-wrap">
-<div id="diag-1"></div>
+                            <div id="diag-1"></div>
                         </div>
                         <div class="callout callout-danger">
                             <div class="callout-icon">⛔</div>
@@ -1212,9 +1238,7 @@
                                 ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                             </div>
                             <pre><code><span class="c"># プロジェクトの作成（フォルダ配下）</span>
-gcloud projects create PROJECT_ID \
-  --name="My Project" \
-  --folder=FOLDER_ID
+gcloud projects create PROJECT_ID   --name="My Project"   --folder=FOLDER_ID
 
 <span class="c"># 組織配下のプロジェクト一覧</span>
 gcloud projects list --filter="parent.id=ORG_ID"
@@ -1349,7 +1373,7 @@ gcloud projects undelete PROJECT_ID</code></pre>
                         </div>
 
                         <div class="mermaid-wrap">
-<div id="diag-2"></div>
+                            <div id="diag-2"></div>
                         </div>
                     </div>
 
@@ -1449,7 +1473,7 @@ gcloud projects undelete PROJECT_ID</code></pre>
                     <div class="subsection">
                         <h3>継承と上書きのフロー</h3>
                         <div class="mermaid-wrap">
-<div id="diag-3"></div>
+                            <div id="diag-3"></div>
                         </div>
                     </div>
 
@@ -1464,9 +1488,7 @@ gcloud projects undelete PROJECT_ID</code></pre>
 gcloud org-policies list-constraints --organization=ORG_ID
 
 <span class="c"># 外部IP禁止ポリシーを組織に適用</span>
-gcloud resource-manager org-policies enable-enforce \
-  constraints/compute.disableExternalIpAddresses \
-  --organization=ORG_ID
+gcloud resource-manager org-policies enable-enforce   constraints/compute.disableExternalIpAddresses   --organization=ORG_ID
 
 <span class="c"># YAMLでリージョン制限ポリシーを適用</span>
 gcloud org-policies set-policy policy.yaml --project=PROJECT_ID
@@ -1475,10 +1497,7 @@ gcloud org-policies set-policy policy.yaml --project=PROJECT_ID
 gcloud org-policies set-policy policy.yaml --dry-run
 
 <span class="c"># 有効なポリシーを確認</span>
-gcloud org-policies describe \
-  constraints/gcp.resourceLocations \
-  --effective \
-  --project=PROJECT_ID</code></pre>
+gcloud org-policies describe   constraints/gcp.resourceLocations   --effective   --project=PROJECT_ID</code></pre>
                         </div>
                         <div class="code-block">
                             <div class="code-header">
@@ -1573,7 +1592,7 @@ spec:
                     <div class="subsection">
                         <h3>IAMの3要素</h3>
                         <div class="mermaid-wrap">
-<div id="diag-4"></div>
+                            <div id="diag-4"></div>
                         </div>
                     </div>
 
@@ -1689,25 +1708,16 @@ spec:
                                 ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                             </div>
                             <pre><code><span class="c"># ユーザーにロールを付与</span>
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="user:alice@example.com" \
-  --role="roles/compute.instanceAdmin.v1"
+gcloud projects add-iam-policy-binding PROJECT_ID   --member="user:alice@example.com"   --role="roles/compute.instanceAdmin.v1"
 
 <span class="c"># グループにロールを付与（推奨）</span>
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="group:dev-team@example.com" \
-  --role="roles/run.developer"
+gcloud projects add-iam-policy-binding PROJECT_ID   --member="group:dev-team@example.com"   --role="roles/run.developer"
 
 <span class="c"># IAM Conditions（有効期限付き権限）</span>
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="user:contractor@partner.com" \
-  --role="roles/viewer" \
-  --condition='title=Temp,expression=request.time < timestamp("2025-12-31T23:59:59Z")'
+gcloud projects add-iam-policy-binding PROJECT_ID   --member="user:contractor@partner.com"   --role="roles/viewer"   --condition='title=Temp,expression=request.time < timestamp("2025-12-31T23:59:59Z")'
 
 <span class="c"># カスタムロールの作成</span>
-gcloud iam roles create customDeployer \
-  --project=PROJECT_ID \
-  --file=custom-role.yaml
+gcloud iam roles create customDeployer   --project=PROJECT_ID   --file=custom-role.yaml
 
 <span class="c"># IAMポリシーの確認</span>
 gcloud projects get-iam-policy PROJECT_ID</code></pre>
@@ -1837,7 +1847,7 @@ gcloud projects get-iam-policy PROJECT_ID</code></pre>
                     <div class="subsection">
                         <h3>自動プロビジョニング（GCDS / SCIM）</h3>
                         <div class="mermaid-wrap">
-<div id="diag-5"></div>
+                            <div id="diag-5"></div>
                         </div>
                     </div>
                     <div class="bp-list">
@@ -1971,13 +1981,7 @@ gcloud projects get-iam-policy PROJECT_ID</code></pre>
                                 ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                             </div>
                             <pre><code><span class="c"># 複数APIを一括有効化</span>
-gcloud services enable \
-  compute.googleapis.com \
-  container.googleapis.com \
-  run.googleapis.com \
-  secretmanager.googleapis.com \
-  cloudasset.googleapis.com \
-  --project=PROJECT_ID
+gcloud services enable   compute.googleapis.com   container.googleapis.com   run.googleapis.com   secretmanager.googleapis.com   cloudasset.googleapis.com   --project=PROJECT_ID
 
 <span class="c"># 有効化されているAPIの確認</span>
 gcloud services list --enabled --project=PROJECT_ID</code></pre>
@@ -2084,17 +2088,14 @@ gcloud services list --enabled --project=PROJECT_ID</code></pre>
                             ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                         </div>
                         <pre><code><span class="c"># Monitoring/Logging API の有効化</span>
-gcloud services enable monitoring.googleapis.com logging.googleapis.com \
-  --project=PROJECT_ID
+gcloud services enable monitoring.googleapis.com logging.googleapis.com   --project=PROJECT_ID
 
 <span class="c"># Ops Agent のインストール（VM にSSH後）</span>
 curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
 <span class="c"># GKE Managed Service for Prometheus を有効化</span>
-gcloud container clusters update CLUSTER_NAME \
-  --enable-managed-prometheus \
-  --region=REGION</code></pre>
+gcloud container clusters update CLUSTER_NAME   --enable-managed-prometheus   --region=REGION</code></pre>
                     </div>
                     <div class="sources">
                         <div class="sources-title">📎 公式ドキュメント</div>
@@ -2145,7 +2146,7 @@ gcloud container clusters update CLUSTER_NAME \
                         </table>
                     </div>
                     <div class="mermaid-wrap">
-<div id="diag-6"></div>
+                        <div id="diag-6"></div>
                     </div>
                     <div class="callout callout-warn">
                         <div class="callout-icon">⚠️</div>
@@ -2168,18 +2169,114 @@ gcloud container clusters update CLUSTER_NAME \
                         <div class="section-num">1.1.8</div>
                         <div>
                             <h2>スタンドアロン組織の設定</h2>
-                            <div class="section-meta">Standalone Organization — 特殊シナリオ</div>
+                            <div class="section-meta">
+                                Standalone Organization — Organization ノード取得の正しい理解
+                            </div>
                         </div>
                     </div>
-                    <div class="mermaid-wrap">
-<div id="diag-7"></div>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 14px">
+                        Google Cloud で Organization ノードを持つには Google Workspace または Cloud
+                        Identity のドメインが必要。これにより組織レベルの
+                        IAM・組織ポリシー・フォルダ管理が初めて利用可能になる。
+                    </p>
+                    <div class="subsection">
+                        <h3>Organization ノード取得フロー</h3>
+                        <div class="mermaid-wrap">
+                            <div id="diag-7"></div>
+                        </div>
                     </div>
-                    <div class="callout callout-info">
-                        <div class="callout-icon">ℹ️</div>
+                    <div class="subsection">
+                        <h3>個人 Gmail vs Cloud Identity vs Google Workspace</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>個人 Gmail (@gmail.com)</th>
+                                        <th>Cloud Identity Free</th>
+                                        <th>Google Workspace</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Organization ノード</td>
+                                        <td>❌ 取得不可</td>
+                                        <td>✅ 自動作成</td>
+                                        <td>✅ 自動作成</td>
+                                    </tr>
+                                    <tr>
+                                        <td>フォルダ管理</td>
+                                        <td>❌ 使用不可</td>
+                                        <td>✅ 使用可能</td>
+                                        <td>✅ 使用可能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>組織ポリシー</td>
+                                        <td>❌ 使用不可</td>
+                                        <td>✅ 使用可能</td>
+                                        <td>✅ 使用可能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shared VPC</td>
+                                        <td>❌ 制限あり</td>
+                                        <td>✅ 利用可能</td>
+                                        <td>✅ 利用可能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gmail / Drive</td>
+                                        <td>✅ あり</td>
+                                        <td>❌ なし</td>
+                                        <td>✅ あり</td>
+                                    </tr>
+                                    <tr>
+                                        <td>コスト</td>
+                                        <td>無料</td>
+                                        <td><span class="tag tag-green">無料</span></td>
+                                        <td>有料</td>
+                                    </tr>
+                                    <tr>
+                                        <td>本番推奨</td>
+                                        <td><span class="tag tag-red">非推奨</span></td>
+                                        <td><span class="tag tag-green">推奨</span></td>
+                                        <td><span class="tag tag-green">推奨</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="subsection">
+                        <h3>Organization 設定後の初期タスク</h3>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span
+                                ><button class="code-copy" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="c"># 組織 ID の確認</span>
+gcloud organizations list
+
+<span class="c"># 組織レベルの IAM ポリシー確認</span>
+gcloud organizations get-iam-policy ORG_ID
+
+<span class="c"># Organization Admin ロールを付与</span>
+gcloud organizations add-iam-policy-binding ORG_ID \
+  --member="user:admin@example.com" \
+  --role="roles/resourcemanager.organizationAdmin"
+
+<span class="c"># フォルダの作成（組織直下）</span>
+gcloud resource-manager folders create \
+  --display-name="Production" \
+  --organization=ORG_ID</code></pre>
+                        </div>
+                    </div>
+                    <div class="callout callout-success">
+                        <div class="callout-icon">💡</div>
                         <div>
-                            通常は Google Workspace / Cloud Identity ドメインを経由して Organization
-                            ノードが作成される。個人 Gmail (@gmail.com) では Organization
-                            ノードは作成できない。
+                            <strong>Cloud Identity Free で十分:</strong> Google Workspace
+                            のメール・ドライブ機能が不要な場合でも、<strong
+                                >Cloud Identity Free</strong
+                            >
+                            を取得するだけで Organization
+                            ノード・組織ポリシー・フォルダ管理のすべてが利用できる。追加コストゼロで企業レベルのガバナンスを実現できる。
                         </div>
                     </div>
                     <div class="bp-list">
@@ -2192,7 +2289,8 @@ gcloud container clusters update CLUSTER_NAME \
                                 </div>
                                 <div class="bp-desc">
                                     Organization
-                                    ノードが取得できず、組織全体のポリシー管理・フォルダ階層の設計ができない。
+                                    ノードが取得できず、組織ポリシー・フォルダ管理・Shared VPC
+                                    が利用できない。
                                 </div>
                             </div>
                         </div>
@@ -2200,17 +2298,39 @@ gcloud container clusters update CLUSTER_NAME \
                             <div class="bp-num">2</div>
                             <div class="bp-content">
                                 <div class="bp-title">
-                                    Google Workspace または Cloud Identity を使用する
+                                    Cloud Identity Free でコストゼロで Organization を取得
                                 </div>
                                 <div class="bp-desc">
-                                    Cloud Identity Free でも Organization ノードを取得でき、Google
-                                    Cloud の階層管理を有効化できる。
+                                    メール機能不要でも Cloud Identity Free を使えば Organization
+                                    ノードが取得できる。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bp-item">
+                            <div class="bp-num">3</div>
+                            <div class="bp-content">
+                                <div class="bp-title">
+                                    Organization Admin は最小人数に限定し Break-Glass
+                                    アカウントを設定
+                                </div>
+                                <div class="bp-desc">
+                                    組織全体に影響を与える強力なロールのため、緊急用アカウントを含む最小構成にする。
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="sources">
+                        <div class="sources-title">📎 公式ドキュメント</div>
+                        <a href="https://cloud.google.com/identity/docs/overview" target="_blank"
+                            >▸ Cloud Identity Overview</a
+                        >
+                        <a
+                            href="https://cloud.google.com/resource-manager/docs/creating-managing-organization"
+                            target="_blank"
+                            >▸ Creating and Managing Organizations</a
+                        >
+                    </div>
                 </div>
-
                 <!-- 1.1.9 Networking -->
                 <div class="section-block" id="s119">
                     <div class="section-heading">
@@ -2218,10 +2338,16 @@ gcloud container clusters update CLUSTER_NAME \
                         <div>
                             <h2>クラウドネットワーキングの設定</h2>
                             <div class="section-meta">
-                                VPC / Firewall / Cloud NAT — 初期ネットワーク設定の基礎
+                                VPC / Subnet / Firewall / Cloud NAT / IAP — 初期ネットワーク設計
                             </div>
                         </div>
                     </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 14px">
+                        Section 1 のネットワーキングでは VPC
+                        の初期セットアップとセキュアなアクセス設計が問われる。Google Cloud VPC は 1
+                        つの VPC
+                        がグローバルに広がり、すべてのリージョンにまたがるサブネットを配置できる点が他社クラウドとの大きな違い。
+                    </p>
                     <div class="subsection">
                         <h3>デフォルト VPC vs カスタム VPC</h3>
                         <div class="table-wrap">
@@ -2237,45 +2363,87 @@ gcloud container clusters update CLUSTER_NAME \
                                     <tr>
                                         <td>自動作成</td>
                                         <td>✅ 各リージョンに自動</td>
-                                        <td>❌ 手動で作成</td>
+                                        <td>❌ 手動で設計・作成</td>
                                     </tr>
                                     <tr>
-                                        <td>サブネット</td>
-                                        <td>自動（10.128.0.0/9）</td>
-                                        <td>手動で設計</td>
+                                        <td>サブネット IP 範囲</td>
+                                        <td>固定（10.128.0.0/9）</td>
+                                        <td>自由に設計</td>
+                                    </tr>
+                                    <tr>
+                                        <td>VPC Peering</td>
+                                        <td>❌ IP 重複で制限</td>
+                                        <td>✅ 計画的な IP 設計で対応</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shared VPC</td>
+                                        <td>❌ 非推奨</td>
+                                        <td>✅ 対応</td>
                                     </tr>
                                     <tr>
                                         <td>本番環境での推奨</td>
                                         <td><span class="tag tag-red">非推奨</span></td>
                                         <td><span class="tag tag-green">推奨</span></td>
                                     </tr>
-                                    <tr>
-                                        <td>理由</td>
-                                        <td>IP 範囲が固定で VPC Peering に制限がある</td>
-                                        <td>
-                                            IP 範囲を自由に設計でき、VPC Peering・Shared VPC に対応
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span class="code-lang">bash</span
-                            ><button class="code-copy" onclick="copyCode(this)">Copy</button>
+                    <div class="subsection">
+                        <h3>セキュアなネットワーク初期設計フロー</h3>
+                        <div class="mermaid-wrap">
+                            <div id="diag-8"></div>
                         </div>
-                        <pre><code><span class="c"># カスタムモード VPC の作成</span>
+                    </div>
+                    <div class="subsection">
+                        <h3>gcloud コマンド</h3>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span
+                                ><button class="code-copy" onclick="copyCode(this)">Copy</button>
+                            </div>
+                            <pre><code><span class="c"># デフォルト VPC の削除（本番環境では推奨）</span>
+gcloud compute networks delete default --project=PROJECT_ID
+
+<span class="c"># カスタムモード VPC の作成</span>
 gcloud compute networks create my-vpc \
   --subnet-mode=custom \
   --project=PROJECT_ID
 
 <span class="c"># サブネットの作成</span>
-gcloud compute networks subnets create my-subnet \
+gcloud compute networks subnets create web-subnet \
   --network=my-vpc \
   --region=asia-northeast1 \
-  --range=10.1.0.0/24 \
-  --project=PROJECT_ID</code></pre>
+  --range=10.1.1.0/24 \
+  --project=PROJECT_ID
+
+<span class="c"># IAP からの SSH のみ許可するファイアウォールルール</span>
+gcloud compute firewall-rules create allow-ssh-iap \
+  --network=my-vpc \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=tcp:22 \
+  --source-ranges=35.235.240.0/20 \
+  --target-tags=iap-ssh \
+  --project=PROJECT_ID
+
+<span class="c"># Cloud Router の作成（Cloud NAT の前提条件）</span>
+gcloud compute routers create my-router \
+  --network=my-vpc \
+  --region=asia-northeast1
+
+<span class="c"># Cloud NAT の作成（外部 IP なし VM のアウトバウンドを確保）</span>
+gcloud compute routers nats create my-nat \
+  --router=my-router \
+  --region=asia-northeast1 \
+  --nat-all-subnet-ip-ranges \
+  --auto-allocate-nat-external-ips
+
+<span class="c"># IAP トンネル経由で VM に SSH（外部 IP 不要）</span>
+gcloud compute ssh VM_NAME \
+  --zone=asia-northeast1-a \
+  --tunnel-through-iap</code></pre>
+                        </div>
                     </div>
                     <div class="bp-list">
                         <div class="bp-header">✅ ベストプラクティス</div>
@@ -2287,7 +2455,7 @@ gcloud compute networks subnets create my-subnet \
                                 </div>
                                 <div class="bp-desc">
                                     IP 範囲の計画的な管理と VPC Peering / Shared VPC
-                                    対応のために必須。
+                                    対応のために必須。将来の拡張を見越した IP 設計が重要。
                                 </div>
                             </div>
                         </div>
@@ -2295,10 +2463,33 @@ gcloud compute networks subnets create my-subnet \
                             <div class="bp-num">2</div>
                             <div class="bp-content">
                                 <div class="bp-title">
-                                    VM に外部 IP を付与せず Cloud NAT + IAP を使用
+                                    VM に外部 IP を付与せず Cloud NAT でアウトバウンドを確保
                                 </div>
                                 <div class="bp-desc">
-                                    攻撃面を最小化し、インターネットからの直接アクセスを遮断する。
+                                    外部 IP を持たない VM
+                                    はインターネットから直接アクセスできないため、攻撃面を大幅に削減できる。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bp-item">
+                            <div class="bp-num">3</div>
+                            <div class="bp-content">
+                                <div class="bp-title">SSH アクセスは IAP トンネルのみに制限</div>
+                                <div class="bp-desc">
+                                    IAP の IP レンジ（35.235.240.0/20）からのみ SSH
+                                    を許可し、ブルートフォース攻撃を完全に遮断する。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bp-item">
+                            <div class="bp-num">4</div>
+                            <div class="bp-content">
+                                <div class="bp-title">
+                                    ファイアウォールルールはネットワークタグベースで設定
+                                </div>
+                                <div class="bp-desc">
+                                    IP ではなくタグで対象を指定することで、VM
+                                    スケールアウト時も自動適用され管理コストを削減できる。
                                 </div>
                             </div>
                         </div>
@@ -2313,9 +2504,18 @@ gcloud compute networks subnets create my-subnet \
                             target="_blank"
                             >▸ VPC Design Best Practices</a
                         >
+                        <a
+                            href="https://cloud.google.com/blog/topics/developers-practitioners/cloud-nat-explained"
+                            target="_blank"
+                            >▸ Cloud NAT Explained — Google Cloud Blog</a
+                        >
+                        <a
+                            href="https://cloud.google.com/iap/docs/concepts-overview"
+                            target="_blank"
+                            >▸ Identity-Aware Proxy Overview</a
+                        >
                     </div>
                 </div>
-
                 <!-- 1.1.10 Geographic Availability -->
                 <div class="section-block" id="s1110">
                     <div class="section-heading">
@@ -2328,7 +2528,7 @@ gcloud compute networks subnets create my-subnet \
                         </div>
                     </div>
                     <div class="mermaid-wrap">
-<div id="diag-8"></div>
+                        <div id="diag-9"></div>
                     </div>
                     <div class="table-wrap">
                         <table>
@@ -2409,7 +2609,7 @@ gcloud compute zones list --filter="region:asia-northeast1"</code></pre>
                             ポリシーを一元管理・分析・エクスポートするサービス。
                         </p>
                         <div class="mermaid-wrap">
-<div id="diag-9"></div>
+                            <div id="diag-10"></div>
                         </div>
                         <div class="code-block">
                             <div class="code-header">
@@ -2420,20 +2620,13 @@ gcloud compute zones list --filter="region:asia-northeast1"</code></pre>
 gcloud services enable cloudasset.googleapis.com
 
 <span class="c"># 組織全体の GKE クラスタを検索</span>
-gcloud asset search-all-resources \
-  --asset-types='container.googleapis.com/Cluster' \
-  --scope='organizations/ORG_ID'
+gcloud asset search-all-resources   --asset-types='container.googleapis.com/Cluster'   --scope='organizations/ORG_ID'
 
 <span class="c"># 外部 IP を持つ VM を特定（セキュリティ監査）</span>
-gcloud asset search-all-resources \
-  --asset-types='compute.googleapis.com/Instance' \
-  --scope='organizations/ORG_ID' \
-  --query='networkInterfaces.accessConfigs.natIP:*'
+gcloud asset search-all-resources   --asset-types='compute.googleapis.com/Instance'   --scope='organizations/ORG_ID'   --query='networkInterfaces.accessConfigs.natIP:*'
 
 <span class="c"># 特定リソースへのアクセス権を持つ全 Identity を分析</span>
-gcloud asset analyze-iam-policy \
-  --organization=ORG_ID \
-  --full-resource-name='//storage.googleapis.com/projects/_/buckets/my-bucket'</code></pre>
+gcloud asset analyze-iam-policy   --organization=ORG_ID   --full-resource-name='//storage.googleapis.com/projects/_/buckets/my-bucket'</code></pre>
                         </div>
                     </div>
 
@@ -2475,18 +2668,13 @@ gcloud asset analyze-iam-policy \
                                 ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                             </div>
                             <pre><code><span class="c"># Gemini Cloud Assist API を有効化</span>
-gcloud services enable geminicloudassist.googleapis.com \
-  --project=PROJECT_ID
+gcloud services enable geminicloudassist.googleapis.com   --project=PROJECT_ID
 
 <span class="c"># Gemini Cloud Assist ユーザーロールを付与</span>
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="user:alice@example.com" \
-  --role="roles/geminicloudassist.user"
+gcloud projects add-iam-policy-binding PROJECT_ID   --member="user:alice@example.com"   --role="roles/geminicloudassist.user"
 
 <span class="c"># Cloud Asset Viewer も必要（リソース分析機能のため）</span>
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="user:alice@example.com" \
-  --role="roles/cloudasset.viewer"</code></pre>
+gcloud projects add-iam-policy-binding PROJECT_ID   --member="user:alice@example.com"   --role="roles/cloudasset.viewer"</code></pre>
                         </div>
                     </div>
 
@@ -2604,7 +2792,7 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
                     <div class="subsection">
                         <h3>設定フロー</h3>
                         <div class="mermaid-wrap">
-<div id="diag-10"></div>
+                            <div id="diag-11"></div>
                         </div>
                     </div>
                     <div class="subsection">
@@ -2615,24 +2803,13 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
                                 ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                             </div>
                             <pre><code><span class="c"># 1. Workforce Identity Pool の作成（組織レベル）</span>
-gcloud iam workforce-pools create my-workforce-pool \
-  --organization=ORG_ID \
-  --location=global \
-  --display-name="Corporate IdP Pool"
+gcloud iam workforce-pools create my-workforce-pool   --organization=ORG_ID   --location=global   --display-name="Corporate IdP Pool"
 
 <span class="c"># 2. OIDC プロバイダーの登録（Okta の例）</span>
-gcloud iam workforce-pools providers create-oidc okta-provider \
-  --workforce-pool=my-workforce-pool \
-  --location=global \
-  --display-name="Okta OIDC" \
-  --issuer-uri="https://myorg.okta.com/oauth2/default" \
-  --client-id="MY_CLIENT_ID" \
-  --attribute-mapping="google.subject=assertion.sub,google.groups=assertion.groups,attribute.department=assertion.department"
+gcloud iam workforce-pools providers create-oidc okta-provider   --workforce-pool=my-workforce-pool   --location=global   --display-name="Okta OIDC"   --issuer-uri="https://myorg.okta.com/oauth2/default"   --client-id="MY_CLIENT_ID"   --attribute-mapping="google.subject=assertion.sub,google.groups=assertion.groups,attribute.department=assertion.department"
 
 <span class="c"># 3. 外部ユーザーグループに IAM ロールを付与</span>
-gcloud projects add-iam-policy-binding PROJECT_ID \
-  --member="principalSet://iam.googleapis.com/locations/global/workforcePools/my-workforce-pool/attribute.department/engineering" \
-  --role="roles/viewer"</code></pre>
+gcloud projects add-iam-policy-binding PROJECT_ID   --member="principalSet://iam.googleapis.com/locations/global/workforcePools/my-workforce-pool/attribute.department/engineering"   --role="roles/viewer"</code></pre>
                         </div>
                     </div>
                     <div class="bp-list">
@@ -2695,7 +2872,7 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
                         </div>
                     </div>
                     <div class="mermaid-wrap">
-<div id="diag-11"></div>
+                        <div id="diag-12"></div>
                     </div>
                     <div class="callout callout-info">
                         <div class="callout-icon">ℹ️</div>
@@ -2764,15 +2941,13 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
                             ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                         </div>
                         <pre><code><span class="c"># プロジェクトを請求先アカウントにリンク</span>
-gcloud billing projects link PROJECT_ID \
-  --billing-account=BILLING_ACCOUNT_ID
+gcloud billing projects link PROJECT_ID   --billing-account=BILLING_ACCOUNT_ID
 
 <span class="c"># プロジェクトの請求先アカウントを確認</span>
 gcloud billing projects describe PROJECT_ID
 
 <span class="c"># 請求先アカウントにリンクされているプロジェクト一覧</span>
-gcloud billing projects list \
-  --billing-account=BILLING_ACCOUNT_ID</code></pre>
+gcloud billing projects list   --billing-account=BILLING_ACCOUNT_ID</code></pre>
                     </div>
                     <div class="callout callout-danger">
                         <div class="callout-icon">⛔</div>
@@ -2805,7 +2980,7 @@ gcloud billing projects list \
                     <div class="subsection">
                         <h3>自動コスト制御アーキテクチャ</h3>
                         <div class="mermaid-wrap">
-<div id="diag-12"></div>
+                            <div id="diag-13"></div>
                         </div>
                     </div>
 
@@ -2817,18 +2992,10 @@ gcloud billing projects list \
                                 ><button class="code-copy" onclick="copyCode(this)">Copy</button>
                             </div>
                             <pre><code><span class="c"># 予算の作成（3段階のアラート閾値）</span>
-gcloud billing budgets create \
-  --billing-account=BILLING_ACCOUNT_ID \
-  --display-name="Monthly Prod Budget" \
-  --budget-amount=100000JPY \
-  --threshold-rule=percent=50 \
-  --threshold-rule=percent=90 \
-  --threshold-rule=percent=100 \
-  --filter-projects=projects/my-prod-project
+gcloud billing budgets create   --billing-account=BILLING_ACCOUNT_ID   --display-name="Monthly Prod Budget"   --budget-amount=100000JPY   --threshold-rule=percent=50   --threshold-rule=percent=90   --threshold-rule=percent=100   --filter-projects=projects/my-prod-project
 
 <span class="c"># 予算一覧の確認</span>
-gcloud billing budgets list \
-  --billing-account=BILLING_ACCOUNT_ID</code></pre>
+gcloud billing budgets list   --billing-account=BILLING_ACCOUNT_ID</code></pre>
                         </div>
                     </div>
 
@@ -2903,7 +3070,7 @@ gcloud billing budgets list \
                     </div>
 
                     <div class="mermaid-wrap">
-<div id="diag-13"></div>
+                        <div id="diag-14"></div>
                     </div>
 
                     <div class="table-wrap">
@@ -3295,6 +3462,108 @@ ORDER BY total_cost DESC;</code></pre>
         </button>
 
         <script>
+            // Mermaid 初期化
+
+            const DIAGRAMS = {
+                'diag-0':
+                    'graph LR\nS1["Section 1 Cloud Solution Environment Setup ~20%"]\nS1A["1.1 クラウドプロジェクト & アカウント設定"]\nS1B["1.2 請求設定の管理"]\nS1A1["リソース階層の構築"]\nS1A2["組織ポリシーの適用"]\nS1A3["IAMロールの付与"]\nS1A4["Cloud Identity管理"]\nS1A5["APIの有効化"]\nS1A6["Observabilityの設定"]\nS1A7["クォータ管理"]\nS1A8["スタンドアロン組織"]\nS1A9["ネットワーキング設定"]\nS1A10["地理的可用性確認"]\nS1A11["Cloud Asset Inventory & Gemini Cloud Assist"]\nS1A12["Workforce Identity Federation"]\nS1B1["請求アカウント作成"]\nS1B2["プロジェクトとのリンク"]\nS1B3["予算とアラート"]\nS1B4["請求エクスポート"]\nS1 --> S1A\nS1 --> S1B\nS1A --> S1A1\nS1A --> S1A2\nS1A --> S1A3\nS1A --> S1A4\nS1A --> S1A5\nS1A --> S1A6\nS1A --> S1A7\nS1A --> S1A8\nS1A --> S1A9\nS1A --> S1A10\nS1A --> S1A11\nS1A --> S1A12\nS1B --> S1B1\nS1B --> S1B2\nS1B --> S1B3\nS1B --> S1B4\nstyle S1 fill:#4285F4,color:#fff\nstyle S1A fill:#34A853,color:#fff\nstyle S1B fill:#34A853,color:#fff',
+                'diag-1':
+                    'flowchart TD\nORG["Organization Level<br />roles/viewer を alice に付与"]\nFOLDER["Folder Level<br />継承: alice は viewer"]\nPROJECT["Project Level<br />継承: alice は viewer"]\nRESOURCE["Resource Level<br />継承: alice は viewer"]\nORG -->|"自動継承 ↓"| FOLDER\nFOLDER -->|"自動継承 ↓"| PROJECT\nPROJECT -->|"自動継承 ↓"| RESOURCE\nNOTE["⚠ 重要: 下位レベルで上位の許可を取り消せない<br />権限は和集合で評価される"]\nstyle ORG fill:#4285F4,color:#fff\nstyle FOLDER fill:#34A853,color:#fff\nstyle PROJECT fill:#FBBC04,color:#000\nstyle RESOURCE fill:#EA4335,color:#fff\nstyle NOTE fill:#2d1f1f,color:#f28b82,stroke:#EA4335',
+                'diag-2':
+                    'flowchart LR\nUSER["ユーザー / SA"]\nIAM{"IAM チェック<br />誰が何をできるか"}\nORGPOL{"Org Policy チェック<br />リソース設定の制限"}\nRESOURCE["✅ リソース操作"]\nDENY["❌ 拒否"]\nUSER --> IAM\nIAM -->|"権限あり"| ORGPOL\nIAM -->|"権限なし"| DENY\nORGPOL -->|"制約内"| RESOURCE\nORGPOL -->|"制約違反"| DENY\nstyle DENY fill:#EA4335,color:#fff\nstyle RESOURCE fill:#34A853,color:#fff\nstyle USER fill:#4285F4,color:#fff',
+                'diag-3':
+                    'flowchart TD\nORG["Organization<br />disableExternalIpAddresses = enforce:true"]\nFA["Folder: 本番環境<br />継承: 外部IP禁止"]\nFB["Folder: 開発環境<br />restore_default: 外部IP許可に上書き"]\nPA["Project: prod-app<br />外部IP禁止 継承"]\nPB["Project: dev-app<br />外部IP許可 上書き済み"]\nORG --> FA\nORG --> FB\nFA --> PA\nFB --> PB\nstyle ORG fill:#4285F4,color:#fff\nstyle FA fill:#EA4335,color:#fff\nstyle FB fill:#34A853,color:#fff\nstyle PA fill:#EA4335,color:#fff\nstyle PB fill:#34A853,color:#fff',
+                'diag-4':
+                    'graph LR\nWHO["👤 Principal（誰が）<br />user: alice@example.com<br />group: dev-team@example.com<br />serviceAccount: app@project.iam..."]\nWHAT["🔑 Role（何ができるか）<br />roles/compute.instanceAdmin.v1<br />roles/storage.objectViewer<br />カスタムロール"]\nWHERE["🏷 Resource（どこで）<br />Organization / Folder<br />Project / 個別リソース"]\nWHO -->|"バインディング"| WHAT\nWHAT -->|"対象"| WHERE\nstyle WHO fill:#4285F4,color:#fff\nstyle WHAT fill:#34A853,color:#fff\nstyle WHERE fill:#FBBC04,color:#000',
+                'diag-5':
+                    'flowchart LR\nLDAP["社内 LDAP / AD<br />（Active Directory等）"]\nSYNC["Google Cloud Directory Sync<br />GCDS または SCIM"]\nCI["Cloud Identity<br />ユーザー / グループ同期"]\nIAM["Google Cloud IAM<br />グループへのロール付与"]\nLDAP -->|"定期同期"| SYNC\nSYNC -->|"プロビジョニング"| CI\nCI -->|"継承"| IAM\nstyle LDAP fill:#F9AB00,color:#000\nstyle CI fill:#34A853,color:#fff\nstyle IAM fill:#4285F4,color:#fff',
+                'diag-6':
+                    'flowchart LR\nA["IAM と管理 → クォータ"] -->\nB["対象クォータを選択"]\nA[__STR0__] --> B -->\nC["上限を編集をクリック"]\nA[__STR0__] --> B --> C -->\nD["必要な上限値を入力・理由を記述"]\nA[__STR0__] --> B --> C --> D -->\nE["申請送信"]\nA[__STR0__] --> B --> C --> D --> E -->\nF["Google が審査（数日〜数週間）"]\nA[__STR0__] --> B --> C --> D --> E -->\nstyle A fill:#4285F4,color:#fff\nstyle F fill:#34A853,color:#fff',
+                'diag-7':
+                    'flowchart LR\nA["Google Workspace または Cloud Identity を取得"]\nB["ドメイン所有権を確認 DNS レコードで認証"]\nC["Organization ノードが 自動生成される"]\nD["Organization Admin が フォルダ・ポリシーを設定"]\nA --> B --> C --> D\nstyle C fill:#34A853,color:#fff\nstyle D fill:#4285F4,color:#fff',
+                'diag-8':
+                    'flowchart TD\nA["カスタムモード VPC の作成 デフォルト VPC を削除"]\nB["サブネット設計 用途別・リージョン別に IP レンジを計画"]\nC["ファイアウォールルール設計 デフォルト拒否 + 必要なポートのみ許可"]\nD["VM に外部 IP を付与しない プライベート IP のみ構成"]\nE["Cloud NAT を設定 外部 IP なし VM のアウトバウンド通信を確保"]\nF["IAP を設定 VPN レスの安全な SSH アクセス"]\nA --> B --> C --> D --> E --> F\nstyle A fill:#4285F4,color:#fff\nstyle C fill:#EA4335,color:#fff\nstyle F fill:#34A853,color:#fff',
+                'diag-9':
+                    'graph TD\nGLOBAL["グローバルリソース<br />IAM / Cloud DNS / GCS マルチリージョン等"]\nREGION["リージョン<br />asia-northeast1（東京） / asia-northeast2（大阪）"]\nZONE["ゾーン（可用性ドメイン）<br />asia-northeast1-a / -b / -c"]\nGLOBAL --> REGION\nREGION --> ZONE\nstyle GLOBAL fill:#4285F4,color:#fff\nstyle REGION fill:#34A853,color:#fff\nstyle ZONE fill:#FBBC04,color:#000',
+                'diag-10':
+                    'flowchart LR\nCI["Cloud Asset Inventory"]\nA["リソースの検索<br />searchAllResources"]\nB["IAMポリシーの分析<br />analyzeIamPolicy"]\nC["変更履歴の追跡<br />exportAssets"]\nD["リアルタイムフィード<br />feeds.create"]\nCI --> A\nCI --> B\nCI --> C\nCI --> D\nstyle CI fill:#4285F4,color:#fff',
+                'diag-11':
+                    'flowchart TD\nA["外部 IdP<br />（Okta / Azure AD / ADFS 等）"]\nB["Workforce Identity Pool の作成<br />（組織レベル）"]\nC["IdP Provider の登録<br />（OIDC or SAML）"]\nD["属性マッピングの設定<br />google.subject = assertion.sub"]\nE["IAM バインディング<br />principalSet:// でグループに権限付与"]\nF["外部ユーザーが<br />gcloud / Console にアクセス"]\nA --> B --> C --> D --> E --> F\nstyle A fill:#F9AB00,color:#000\nstyle F fill:#34A853,color:#fff',
+                'diag-12':
+                    'graph TD\nPP["支払いプロファイル<br />Payment Profile<br />（クレカ・銀行口座情報）"]\nBA1["請求先アカウント A"]\nBA2["請求先アカウント B"]\nP1["Project 1"]\nP2["Project 2"]\nP3["Project 3"]\nP4["Project 4"]\nPP --> BA1\nPP --> BA2\nBA1 --> P1\nBA1 --> P2\nBA2 --> P3\nBA2 --> P4\nstyle PP fill:#4285F4,color:#fff\nstyle BA1 fill:#34A853,color:#fff\nstyle BA2 fill:#34A853,color:#fff',
+                'diag-13':
+                    'flowchart LR\nBUDGET["予算アラート<br />100% 閾値到達"]\nPUBSUB["Pub/Sub トピック<br />にメッセージを発行"]\nCF["Cloud Functions<br />トリガー起動"]\nAPI["Compute Engine API<br />または Billing API"]\nACTION["VM を停止<br />または課金リンク解除"]\nBUDGET --> PUBSUB --> CF --> API --> ACTION\nstyle BUDGET fill:#EA4335,color:#fff\nstyle ACTION fill:#34A853,color:#fff\nstyle PUBSUB fill:#4285F4,color:#fff',
+                'diag-14':
+                    'flowchart LR\nBILLING["Cloud Billing<br />（請求データ）"]\nEXPORT["BigQuery エクスポート<br />（継続的に自動書き込み）"]\nBQ["BigQuery データセット<br />billing_export"]\nANALYSIS["SQL クエリ<br />によるコスト分析"]\nVIZ["Looker Studio<br />ダッシュボード"]\nBILLING --> EXPORT --> BQ --> ANALYSIS\nBQ --> VIZ\nstyle BILLING fill:#4285F4,color:#fff\nstyle BQ fill:#34A853,color:#fff\nstyle VIZ fill:#FBBC04,color:#000',
+            };
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                themeVariables: {
+                    primaryColor: '#1a2035',
+                    primaryTextColor: '#e8eaf6',
+                    primaryBorderColor: '#4285F4',
+                    lineColor: '#4285F4',
+                    secondaryColor: '#141929',
+                    tertiaryColor: '#0f1525',
+                    background: '#0a0e1a',
+                    mainBkg: '#141929',
+                    nodeBorder: '#4285F4',
+                    clusterBkg: '#0f1525',
+                    titleColor: '#e8eaf6',
+                    edgeLabelBackground: '#141929',
+                    attributeBackgroundColorEven: '#141929',
+                    attributeBackgroundColorOdd: '#0f1525',
+                },
+                flowchart: { htmlLabels: true, curve: 'basis' },
+                mindmap: { padding: 20 },
+            });
+
+            (async () => {
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.innerHTML = svg;
+                            const svgEl = el.querySelector('svg');
+                            if (svgEl) {
+                                svgEl.removeAttribute('width');
+                                svgEl.removeAttribute('height');
+                                svgEl.style.width = '100%';
+                                svgEl.style.height = 'auto';
+                                svgEl.style.overflow = 'visible';
+                                svgEl.style.marginBottom = '10px';
+                                svgEl.style.maxWidth = '100%';
+
+                                const viewBoxStr = svgEl.getAttribute('viewBox');
+                                if (viewBoxStr) {
+                                    const parts = viewBoxStr.split(' ').map(Number);
+                                    if (
+                                        parts.length === 4 &&
+                                        parts.every((n) => Number.isFinite(n))
+                                    ) {
+                                        const trimmed = src.trim();
+                                        const isSequenceOrState =
+                                            trimmed.startsWith('sequenceDiagram') ||
+                                            trimmed.startsWith('stateDiagram');
+                                        const extraHeight = isSequenceOrState ? 110 : 15;
+                                        svgEl.setAttribute(
+                                            'viewBox',
+                                            `${parts[0]} ${parts[1]} ${parts[2]} ${parts[3] + extraHeight}`,
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Mermaid render error for ' + id, e);
+                    }
+                }
+            })();
+
             // Copy code
             function copyCode(btn) {
                 const code = btn.closest('.code-block').querySelector('pre code').textContent;
@@ -3341,82 +3610,6 @@ ORDER BY total_cost DESC;</code></pre>
                 navLinks.forEach((l) => l.classList.remove('active'));
                 if (current) current.classList.add('active');
             });
-        </script>
-    
-        <script>
-            const DIAGRAMS = {
-  "diag-0": "mindmap\n  root((Section 1\\n~20%))\n    1.1 クラウドプロジェクトと\\nアカウントの設定\n      リソース階層の構築\n      組織ポリシーの適用\n      IAMロールの付与\n      Cloud Identityの管理\n      APIの有効化\n      Google Cloud Observabilityの設定\n      クォータの評価と申請\n      スタンドアロン組織の設定\n      クラウドネットワーキングの設定\n      製品の地理的可用性確認\n      Cloud Asset Inventoryの設定\n      Gemini Cloud Assistの活用\n      Workforce Identity Federationの設定\n    1.2 請求設定の管理\n      請求アカウントの作成\n      プロジェクトと請求アカウントのリンク\n      予算とアラートの設定\n      請求エクスポートの設定",
-  "diag-1": "flowchart TD\n    ORG[\"Organization Level\\nroles/viewer を alice に付与\"]\n    FOLDER[\"Folder Level\\n(継承: alice は viewer)\"]\n    PROJECT[\"Project Level\\n(継承: alice は viewer)\"]\n    RESOURCE[\"Resource Level\\n(継承: alice は viewer)\"]\n    \n    ORG -->|\"自動継承 ↓\"| FOLDER\n    FOLDER -->|\"自動継承 ↓\"| PROJECT\n    PROJECT -->|\"自動継承 ↓\"| RESOURCE\n\n    NOTE[\"⚠️ 重要: 下位レベルで\\n上位の許可を取り消せない\\n権限は「和集合」で評価される\"]\n\n    style ORG fill:#4285F4,color:#fff\n    style FOLDER fill:#34A853,color:#fff\n    style PROJECT fill:#FBBC04,color:#000\n    style RESOURCE fill:#EA4335,color:#fff\n    style NOTE fill:#FCE8E6,color:#000",
-  "diag-2": "flowchart LR\n    USER[\"ユーザー/SA\"]\n    IAM{\"IAM チェック\\n誰が何をできるか\"}\n    ORGPOL{\"Org Policy チェック\\nリソース設定の制限\"}\n    RESOURCE[\"リソース操作\"]\n    DENY[\"❌ 拒否\"]\n\n    USER --> IAM\n    IAM -->|\"権限あり\"| ORGPOL\n    IAM -->|\"権限なし\"| DENY\n    ORGPOL -->|\"制約内\"| RESOURCE\n    ORGPOL -->|\"制約違反\"| DENY\n\n    style DENY fill:#EA4335,color:#fff\n    style RESOURCE fill:#34A853,color:#fff",
-  "diag-3": "flowchart TD\nORG[\"Organization<br />disableExternalIpAddresses = enforce:true\"]\nFA[\"Folder: 本番環境<br />継承: 外部IP禁止\"]\nFB[\"Folder: 開発環境<br />restore_default: 外部IP許可に上書き\"]\nPA[\"Project: prod-app<br />外部IP禁止 継承\"]\nPB[\"Project: dev-app<br />外部IP許可 上書き済み\"]\nORG --> FA\nORG --> FB\nFA --> PA\nFB --> PB\nstyle ORG fill:#4285F4,color:#fff\nstyle FA fill:#EA4335,color:#fff\nstyle FB fill:#34A853,color:#fff\nstyle PA fill:#EA4335,color:#fff\nstyle PB fill:#34A853,color:#fff",
-  "diag-4": "graph LR\n    WHO[\"👤 Principal（誰が）\\nuser: alice@example.com\\ngroup: dev-team@example.com\\nserviceAccount: app@project.iam.gserviceaccount.com\"]\n    WHAT[\"🔑 Role（何ができるか）\\nroles/compute.instanceAdmin.v1\\nroles/storage.objectViewer\\nカスタムロール\"]\n    WHERE[\"🏷️ Resource（どこで）\\nOrganization\\nFolder\\nProject\\n個別リソース\"]\n\n    WHO -->|\"バインディング\"| WHAT\n    WHAT -->|\"対象\"| WHERE",
-  "diag-5": "flowchart LR\n    LDAP[\"社内 LDAP/AD\\n（Active Directory等）\"]\n    SYNC[\"Google Cloud Directory Sync\\nGCDS\"]\n    CI[\"Cloud Identity\\nユーザー/グループ同期\"]\n    IAM[\"Google Cloud IAM\\nグループへのロール付与\"]\n\n    LDAP -->|\"定期同期\"| SYNC\n    SYNC -->|\"プロビジョニング\"| CI\n    CI -->|\"継承\"| IAM\n\n    style LDAP fill:#F9AB00,color:#000\n    style SYNC fill:#4285F4,color:#fff\n    style CI fill:#34A853,color:#fff\n    style IAM fill:#EA4335,color:#fff",
-  "diag-6": "flowchart LR\n    A[\"IAM と管理\\n→ クォータ\"] --> B[\"対象クォータを選択\"]\n    B --> C[\"上限を編集\\nをクリック\"]\n    C --> D[\"必要な上限値を入力\\n理由を記述\"]\n    D --> E[\"申請送信\"]\n    E --> F[\"Google が審査\\n（数日〜数週間）\"]\n\n    style A fill:#4285F4,color:#fff\n    style F fill:#34A853,color:#fff",
-  "diag-7": "flowchart LR\n    A[\"Google Workspace\\nまたは\\nCloud Identity を取得\"]\n    B[\"ドメイン所有権を確認\"]\n    C[\"Organization ノードが\\n自動生成される\"]\n\n    A --> B --> C\n\n    style C fill:#34A853,color:#fff",
-  "diag-8": "graph TD\nGLOBAL[\"グローバルリソース<br />IAM / Cloud DNS / GCS マルチリージョン等\"]\nREGION[\"リージョン<br />asia-northeast1（東京） / asia-northeast2（大阪）\"]\nZONE[\"ゾーン（可用性ドメイン）<br />asia-northeast1-a / -b / -c\"]\nGLOBAL --> REGION\nREGION --> ZONE\nstyle GLOBAL fill:#4285F4,color:#fff\nstyle REGION fill:#34A853,color:#fff\nstyle ZONE fill:#FBBC04,color:#000",
-  "diag-9": "mindmap\n  root((Section 1\\n~20%))\n    1.1 クラウドプロジェクトと\\nアカウントの設定\n      リソース階層の構築\n      組織ポリシーの適用\n      IAMロールの付与\n      Cloud Identityの管理\n      APIの有効化\n      Google Cloud Observabilityの設定\n      クォータの評価と申請\n      スタンドアロン組織の設定\n      クラウドネットワーキングの設定\n      製品の地理的可用性確認\n      Cloud Asset Inventoryの設定\n      Gemini Cloud Assistの活用\n      Workforce Identity Federationの設定\n    1.2 請求設定の管理\n      請求アカウントの作成\n      プロジェクトと請求アカウントのリンク\n      予算とアラートの設定\n      請求エクスポートの設定",
-  "diag-10": "flowchart TD\nA[\"外部 IdP<br />（Okta / Azure AD / ADFS 等）\"]\nB[\"Workforce Identity Pool の作成<br />（組織レベル）\"]\nC[\"IdP Provider の登録<br />（OIDC or SAML）\"]\nD[\"属性マッピングの設定<br />google.subject = assertion.sub\"]\nE[\"IAM バインディング<br />principalSet:// でグループに権限付与\"]\nF[\"外部ユーザーが<br />gcloud / Console にアクセス\"]\nA --> B --> C --> D --> E --> F\nstyle A fill:#F9AB00,color:#000\nstyle F fill:#34A853,color:#fff",
-  "diag-11": "graph TD\n    PP[\"支払いプロファイル\\nPayment Profile\\n（クレカ・銀行口座情報）\"]\n    BA1[\"請求先アカウント A\\nBilling Account\"]\n    BA2[\"請求先アカウント B\\nBilling Account\"]\n    P1[\"Project 1\"]\n    P2[\"Project 2\"]\n    P3[\"Project 3\"]\n    P4[\"Project 4\"]\n\n    PP --> BA1\n    PP --> BA2\n    BA1 --> P1\n    BA1 --> P2\n    BA2 --> P3\n    BA2 --> P4\n\n    NOTE[\"⚠️ 重要:\\n1プロジェクト = 正確に1つの請求先アカウント\\n1つの請求先アカウント = 複数プロジェクト可能\"]\n\n    style PP fill:#4285F4,color:#fff\n    style BA1 fill:#34A853,color:#fff\n    style BA2 fill:#34A853,color:#fff\n    style NOTE fill:#FCE8E6,color:#000",
-  "diag-12": "flowchart LR\nBUDGET[\"予算アラート<br />100% 閾値到達\"]\nPUBSUB[\"Pub/Sub トピック<br />にメッセージを発行\"]\nCF[\"Cloud Functions<br />トリガー起動\"]\nAPI[\"Compute Engine API<br />または Billing API\"]\nACTION[\"VM を停止<br />または課金リンク解除\"]\nBUDGET --> PUBSUB --> CF --> API --> ACTION\nstyle BUDGET fill:#EA4335,color:#fff\nstyle ACTION fill:#34A853,color:#fff\nstyle PUBSUB fill:#4285F4,color:#fff",
-  "diag-13": "flowchart LR\nBILLING[\"Cloud Billing<br />（請求データ）\"]\nEXPORT[\"BigQuery エクスポート<br />（継続的に自動書き込み）\"]\nBQ[\"BigQuery データセット<br />billing_export\"]\nANALYSIS[\"SQL クエリ<br />によるコスト分析\"]\nVIZ[\"Looker Studio<br />ダッシュボード\"]\nBILLING --> EXPORT --> BQ --> ANALYSIS\nBQ --> VIZ\nstyle BILLING fill:#4285F4,color:#fff\nstyle BQ fill:#34A853,color:#fff\nstyle VIZ fill:#FBBC04,color:#000"
-};
-            mermaid.initialize({
-                startOnLoad: false,
-                theme: 'dark',
-                securityLevel: 'loose',
-                themeVariables: {
-                    primaryColor: '#1a2035',
-                    primaryTextColor: '#e8eaf6',
-                    primaryBorderColor: '#4285F4',
-                    lineColor: '#4285F4',
-                    secondaryColor: '#141929',
-                    tertiaryColor: '#0f1525',
-                    background: '#0a0e1a',
-                    mainBkg: '#141929',
-                    nodeBorder: '#4285F4',
-                    clusterBkg: '#0f1525',
-                    titleColor: '#e8eaf6',
-                    edgeLabelBackground: '#141929',
-                    attributeBackgroundColorEven: '#141929',
-                    attributeBackgroundColorOdd: '#0f1525',
-                },
-                flowchart: { htmlLabels: true, curve: 'basis' },
-                mindmap: { padding: 20 },
-            });
-            (async () => {
-                for (const [id, src] of Object.entries(DIAGRAMS)) {
-                    try {
-                        const { svg } = await mermaid.render('svg-' + id, src);
-                        const el = document.getElementById(id);
-                        if (el) {
-                            el.innerHTML = svg;
-                            const svgEl = el.querySelector('svg');
-                            if (svgEl) {
-                                svgEl.removeAttribute('width');
-                                svgEl.removeAttribute('height');
-                                svgEl.style.width = 'auto';
-                                svgEl.style.maxWidth = '100%';
-                                svgEl.style.height = 'auto';
-                                svgEl.style.maxHeight = '600px';
-                                svgEl.style.overflow = 'visible';
-
-                                const viewBoxStr = svgEl.getAttribute('viewBox');
-                                if (viewBoxStr) {
-                                    const parts = viewBoxStr.split(' ').map(Number);
-                                    if (parts.length === 4 && parts.every((n) => Number.isFinite(n))) {
-                                        const trimmed = src.trim();
-                                        const isSequenceOrState = trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
-                                        const extraHeight = isSequenceOrState ? 110 : 15;
-                                        svgEl.setAttribute('viewBox', `${parts[0]} ${parts[1]} ${parts[2]} ${parts[3] + extraHeight}`);
-                                    }
-                                }
-                            }
-                        }
-                    } catch (e) {
-                        console.error('Mermaid render error for ' + id, e);
-                    }
-                }
-            })();
         </script>
     </body>
 </html>
