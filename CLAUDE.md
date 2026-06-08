@@ -70,6 +70,11 @@ app/
     associate-cloud-engineer/
       page.tsx                      # ACE 試験対策ページ
       ace.css                       # Aurora テーマ（ページ固有）
+      complete-advanced-guide/
+        page.tsx                    # 完全試験対策ガイドページ
+        page.css                    # ページ固有スタイル
+        constants.ts                # 定数（Mermaidダイアグラム等）
+        NavBar.tsx                  # サイドバーナビ
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装
@@ -191,7 +196,7 @@ Aws/                                # AWS資料アーカイブ
 - **Playwright:** `e2e/` 配下、Chromiumのみ、`baseURL: http://localhost:3000`、CIでは`bun run dev`を自動起動
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、`.claude/rules/TDD_COMMIT_WORKFLOW.md` に定義されたルールを厳守すること。
+全てのコード実装において、`.claude/rules/tdd-commit-workflow.md` に定義されたルールを厳守すること。
 1. プロダクションコードを書く前に、必ずFailするテストを書いてコミットする。
 2. テストをPassさせる実装を行いコミットする。
 3. リファクタリング/統合を行いコミットする。

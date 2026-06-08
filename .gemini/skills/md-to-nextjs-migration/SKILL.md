@@ -18,7 +18,7 @@ description: >
 # MD → Next.js 移行ワークフロー（Infra リポジトリ）
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、必ず `.claude/rules/tdd-commit-workflow.md` のルールに従うこと。
+全てのコード実装において、必ず `.gemini/rules/tdd-commit-workflow.md` のルールに従うこと。
 1. `test:` 失敗するテストを先に書きコミットする
 2. `feat:` テストをPassさせる実装を行いコミットする
 3. `refactor/docs:` 統合を行いコミットする
@@ -107,6 +107,9 @@ app/
 3. **ステップバイステップで進める**
     - 全フェーズを一括実装しない
     - 1フェーズ完了 → テスト通過確認 → コミット → 次フェーズ の順を守る
+4. **MIGRATION_PROGRESS.md 同期のゲート条件（厳守）**
+    - `.gemini/rules/migration-progress-sync.md` に従い、各ページを完了してコミット（メッセージ形式 `feat(<path>/SN): ...`）した後は、次のソースファイルの読み込みや作業に進む前に**必ず即座に `MIGRATION_PROGRESS.md` を更新してコミット**してください。
+    - `MIGRATION_PROGRESS.md` の同期が完了していない状態で次のページ移行に進むことは、セッションの引き継ぎやLLMの継続性維持のために厳しく禁止されています。
 
 ### 計画 MD のテンプレート
 
@@ -234,7 +237,7 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 - **テストランナーは bun**: `npm run test` ではなく `bun run test` を使う
 - **新ページ追加時**: `app/constants.ts` の `EXAMS` にエントリを追加する（`Header.tsx` は `toNavTree(EXAMS)` で自動反映されるため直接編集しない）
 - **ページ固有の共通定数**: `constants.ts` に集約する（グローバルに置かない）
-- **CSS テーマ**: ページ固有テーマは専用 `.css` ファイルに定義し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` を優先し、不要な `layout.tsx` の作成を避ける（CLAUDE.md と整合）
+- **CSS テーマ**: ページ固有テーマは専用 `.css` ファイルに定義し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` を優先し、不要な `layout.tsx` の作成を避ける（GEMINI.md と整合）
 - **分割方針（第一選択）**: `page.tsx` が ~400〜600 行を超えた場合は、新規セクションを `components/sections/Section*.tsx` などの独立コンポーネントに切り出すこと。再利用可能なロジックは hooks / util モジュールへ分離する。「編集を小分けにする」運用で肥大化を温存しないこと
 - **Edit サイズ（補助ルール）**: コンポーネント分割後もやむを得ず大きな編集が発生する場合に限り、1 回の Edit は 300 行以内に収める
 - **SVG 移行品質**: オリジナルにリッチな SVG（チップ表示、ステータス、詳細な注釈等）が含まれる場合は簡略化せず全詳細を再現すること。プレースホルダーへの置き換えは禁止。属性は camelCase に変換し `style` はオブジェクト形式で記述すること

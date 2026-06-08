@@ -157,7 +157,7 @@ bun run dashboard
 
 以下の要件を厳守して実装を進めてください。
 1. **TDD（テスト駆動開発）の厳格な遵守**:
-   `.claude/rules/TDD_COMMIT_WORKFLOW.md` のルールに従い、必ず以下の 3 ステップを繰り返してください。
+   `.claude/rules/tdd-commit-workflow.md` のルールに従い、必ず以下の 3 ステップを繰り返してください。
    - **Step 1 — Fail**: まずテストコードを作成し、失敗（Fail）することを確認してコミットする。 (`test: add failing tests for ...`)
    - **Step 2 — Pass**: テストを通す最小限の実装（または既存コードの修正）を行いコミットする。 (`feat/fix/test: implement ... to pass tests`)
    - **Step 3 — Refactor**: コード整理・リファクタリング、ビルド確認後にコミットする。 (`refactor: ...`)

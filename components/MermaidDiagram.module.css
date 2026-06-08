@@ -18,3 +18,46 @@
     max-width: 100%;
     height: auto;
 }
+
+/* 色は MermaidDiagram.tsx の themeVariables に一元化（強制上書きは廃止）。CSS はレイアウト責務のみ。 */
+
+/*
+ * foreignObject は SVG 仕様上 overflow:hidden がデフォルトで内容をクリップする。
+ * emoji を含むラベルは採寸幅 < 実描画幅となり右端が切れるため、はみ出しを許可する。
+ * ノード矩形は十分広く、はみ出した文字も枠内に収まる。
+ */
+.mermaidTarget :global(foreignObject) {
+    overflow: visible;
+}
+
+/*
+ * overflow:visible のみ（emoji 採寸ズレによるはみ出しを表示するため）。
+ * white-space は mermaid 本来の折返し採寸に委ねる（nowrap を強制すると長いラベルが
+ * foreignObject 幅を超えて右端で切れるため指定しない）。
+ */
+.mermaidTarget :global(foreignObject > div),
+.mermaidTarget :global(.nodeLabel),
+.mermaidTarget :global(.edgeLabel) {
+    overflow: visible;
+}
+
+/*
+ * ノードラベルの文字色（ノードラベル限定）。
+ * 背景がソリッド濃色のノードは明るい白で統一し、<br/> 2 行目が暗く残る問題も解消する。
+ * エッジラベル / シーケンス図 Note は対象外（テーマの暗背景＋明文字のまま）。
+ */
+.mermaidTarget :global(.node .nodeLabel),
+.mermaidTarget :global(.node .nodeLabel *) {
+    color: #ffffff !important;
+}
+
+/* 黄色ノード(#fbbc04)は白×黄で同化するため、ラベルのみ黒に戻す */
+.mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel *) {
+    color: #000000 !important;
+}
+

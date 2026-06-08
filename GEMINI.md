@@ -27,12 +27,12 @@
 ## プロジェクト構造
 
 - `/app`: Next.js App Router のページコンポーネント。
-  - `/gcl/associate-cloud-engineer`: ACE 試験対策ページ（domain1〜4、architecture-guide を含む）。
-  - `/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
-  - `/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
-  - `/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。
-  - `/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
-  - `/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
+  - `/app/gcl/associate-cloud-engineer`: ACE 試験対策ページ（domain1〜4、architecture-guide、complete-advanced-guide を含む）。
+  - `/app/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
+  - `/app/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
+  - `/app/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。
+  - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
+  - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` ※実装準備中、constants の `status` を変更するだけで Drawer に自動反映）
@@ -46,7 +46,7 @@
 
 ## 開発コンベンション
 
-- **テスト駆動（絶対厳守）:** 実装の際は必ず `.claude/rules/TDD_COMMIT_WORKFLOW.md` のルールに従い、以下の3ステップを厳格に繰り返すこと。各ステップ完了後に**即コミット（繰り越し禁止）**。
+- **テスト駆動（絶対厳守）:** 実装の際は必ず `.claude/rules/tdd-commit-workflow.md` のルールに従い、以下の3ステップを厳格に繰り返すこと。各ステップ完了後に**即コミット（繰り越し禁止）**。
   1. **Step 1 — Fail:** テストコードを先に作成し、失敗（Fail）することを確認してコミット (`test: add failing tests for ...`)
   2. **Step 2 — Pass:** テストをPassさせる最小限の実装を行いコミット (`feat/fix: implement ... to pass tests`)
   3. **Step 3 — Refactor:** コード整理・ルーティング統合・ビルド確認後にコミット (`refactor/docs: integrate ... into routing and update docs`)
@@ -72,7 +72,7 @@
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。
-- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.gemini/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元の HTML ファイルは絶対に削除せず、移行完了後に `Gcl_Archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください**。
+- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.claude/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元の HTML ファイルは絶対に削除せず、移行完了後に `Gcl_Archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください**。
 - **移行の忠実性とコンテンツの網羅性**: 移行元の HTML/Markdown に含まれる情報は、**一切の省略・要約を禁止**します。特に「詳細手順」「CSV フォーマット例」「複雑な表」「注釈」などは学習資料として極めて重要であるため、必ず全て TSX コンポーネントへ移植してください。また、SVG についてもオリジナルの詳細（チップ表示やステータス等）を維持したリッチな版を移行し、簡略化したプレースホルダーへの置き換えは避けてください。
 - **異常なトークン消費の防止とステップごとのコミット義務**: 無駄なループを防ぐため、複数のステップにまたがる複雑な実装を行う際は、必ず計画を立て、1つのステップ（またはコンポーネント）ごとに実装とテストを完了させ、**そのステップの完了と同時に必ず `git status`, `git add`, `git commit` を実行して作業を確定させてから**次のステップに進んでください。
 - **システムツールのパラメータ必須要件の厳守と自己レビュー義務 (`update_topic` 等)**: `update_topic` や `write_file` などのシステムツールを呼び出す際は、スキーマで要求されている**必須パラメーター（例: `strategic_intent` や `file_path` など）が全て含まれていることを実行前に必ず確認**してください。エラーとリトライの無限ループを防止するため、ツール呼び出し前の `<thought>` ブロック内で「これから使うツールの必須パラメータは何か？」「それらの値はセットされているか？」を明示的に自己レビューしてから実行してください。
