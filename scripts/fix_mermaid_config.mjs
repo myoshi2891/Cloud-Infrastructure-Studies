@@ -62,6 +62,10 @@ const renderScript = `mermaid.initialize({
 const parts = html.split('mermaid.initialize({ startOnLoad: false });');
 if (parts.length === 2) {
     const endScriptIndex = parts[1].lastIndexOf('</script>');
+    if (endScriptIndex === -1) {
+        console.error('Could not find closing </script> after mermaid init block');
+        process.exit(1);
+    }
     html = parts[0] + renderScript + '\n        ' + parts[1].substring(endScriptIndex);
     fs.writeFileSync('Ace-section1-complete-guide.html', html, 'utf8');
     console.log('Fixed mermaid config and rendering logic!');
