@@ -723,7 +723,7 @@
     background: linear-gradient(90deg, var(--color-google-blue), #9334e6, var(--color-google-green));
     transform-origin: left;
     transform: scaleX(0);
-    z-index: 999;
+    z-index: 100;
     transition: transform 0.1s;
 }
 
@@ -780,7 +780,7 @@
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.3s;
-    z-index: 200;
+    z-index: 150;
     box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
     border: none;
     color: #fff;
