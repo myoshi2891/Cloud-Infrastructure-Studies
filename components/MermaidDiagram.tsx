@@ -81,7 +81,7 @@ const toCodeLines = (text: string): { line: string; key: string }[] => {
  * @param svgEl 注入済みの SVG 要素
  * @param chart 元の DSL（図種別の判定に使用）
  */
-const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
+export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
     svgEl.style.width = '100%';
