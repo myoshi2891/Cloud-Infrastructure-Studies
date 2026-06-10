@@ -1,4 +1,5 @@
 # Google Cloud ACE 試験対策 — Section 2: Planning and Implementing a Cloud Solution
+
 ## 中級者〜上級者向け 完全詳細解説ガイド（2025年6月改訂版）
 
 > **試験配点**: 全体の約 **30%**（最大配点ドメイン）  
