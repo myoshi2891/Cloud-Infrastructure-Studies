@@ -1162,17 +1162,7 @@
                         <div class="sub-title">サービス選択フローチャート</div>
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ ワークロード種別によるサービス選択</div>
-                            <div class="mermaid">
-                                flowchart TD A[ワークロードの要件確認] -->
-                                B{コンテナ化されているか？} B -->|No VM が必要| C{OS
-                                の完全制御が必要か？} B -->|Yes| D{Kubernetes が必要か？} C -->|Yes|
-                                E[Compute Engine GCE] C -->|No AI エージェント| F[Agent Runtime] D
-                                -->|Yes| G{ノード管理を自前で行うか？} D -->|No HTTP ベース| H[Cloud
-                                Run] D -->|No 軽量イベント| I[Cloud Run Functions] G -->|No
-                                マネージドで良い| J[GKE Autopilot 推奨] G -->|Yes 特権コンテナなど|
-                                K[GKE Standard] E --> L{コスト削減優先か？} L -->|Yes 停止許容|
-                                M[Spot VM + MIG] L -->|No 常時稼働| N[通常 VM]
-                            </div>
+                            <div class="mermaid" id="diag-1"></div>
                         </div>
                         <div class="sub-title">コンピューティングサービス比較表</div>
                         <div class="table-wrap">
@@ -1291,20 +1281,7 @@
                             <div class="diagram-label">
                                 ▶ データ永続性・性能要件によるストレージ選択
                             </div>
-                            <div class="mermaid">
-                                flowchart TD A[ストレージ選択] --> B{データ永続性が必要か？} B
-                                -->|No 一時データのみ| C["Local SSD\n最高 IOPS
-                                スループット\nVM停止でデータ消失"] B -->|Yes 永続ストレージ|
-                                D{性能の独立制御が必要か？} D -->|Yes 新世代推奨| E[Google Cloud
-                                Hyperdisk] D -->|No 従来型で十分| F[Persistent Disk] E -->
-                                G{ユースケース} G -->|汎用ワークロード| H["Hyperdisk Balanced
-                                推奨\nIOPS 最大 160,000\nスループット 最大 2,400 MiB/s"] G -->|OLTP
-                                高 IOPS DB| I["Hyperdisk Extreme\nIOPS 最大 350,000"] G
-                                -->|大規模分析| J["Hyperdisk Throughput\n低コスト"] G -->|AI/ML
-                                モデル配信| K["Hyperdisk ML\n読み取り専用共有"] F --> L{用途} L
-                                -->|汎用| M[Balanced PD] L -->|高性能| N[SSD PD] L -->|低コスト|
-                                O[Standard PD]
-                            </div>
+                            <div class="mermaid" id="diag-2"></div>
                         </div>
                         <div class="sub-title">ストレージ種別詳細比較</div>
                         <div class="table-wrap">
@@ -1411,13 +1388,7 @@ gcloud compute disks create my-hyperdisk \
                     <div class="topic-body">
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ MIG のアーキテクチャと自動機能</div>
-                            <div class="mermaid">
-                                flowchart LR T["インスタンステンプレート（設計図）\nマシンタイプ /
-                                OS / ディスク / スクリプト"] -->|MIG が参照| M M["MIG\nManaged
-                                Instance Group"] --> V1[VM1 ゾーン A] M --> V2[VM2 ゾーン B] M -->
-                                V3[VM3 ゾーン C] M -->
-                                AUTO["自動機能\nオートスケーリング\n自動ヒーリング\nローリングアップデート"]
-                            </div>
+                            <div class="mermaid" id="diag-3"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -1505,13 +1476,7 @@ gcloud compute instance-groups managed set-autoscaling web-mig \
                             <div class="diagram-label">
                                 ▶ OS Login による IAM 統合アクセス管理フロー
                             </div>
-                            <div class="mermaid">
-                                flowchart LR User["エンジニア\nalice@example.com"] -->|SSH 接続試行|
-                                OSL["OS Login\nIAM リアルタイム照会"] OSL -->|roles/compute.osLogin
-                                確認| IAM[Cloud IAM] IAM -->|権限あり| VM["VM 接続成功\nLinux
-                                アカウントを自動生成"] IAM -->|権限なし削除済み|
-                                DENY["接続拒否\n退職時は即時失効"]
-                            </div>
+                            <div class="mermaid" id="diag-4"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -1586,17 +1551,7 @@ gcloud compute project-info add-metadata \
                             <div class="diagram-label">
                                 ▶ Spot VM の仕組みとフォールトトレラント設計
                             </div>
-                            <div class="mermaid">
-                                flowchart TD SV[Spot VM] --> ADV["最大 91% 割引\n通常 VM
-                                より大幅に安価"] SV -->
-                                RISK["プリエンプトリスク\n30秒前通知で停止される可能性"] RISK -->
-                                DESIGN[フォールトトレラント設計が必須] DESIGN -->
-                                CP["チェックポイント機能\nCloud Storage に定期保存"] DESIGN -->
-                                SS["シャットダウンスクリプト\n終了時のクリーンアップ"] DESIGN -->
-                                MIG_COMBO["MIG との組み合わせ\nプリエンプト後に自動再作成"] DESIGN
-                                --> TA["終了アクション\nSTOP: データ保持+再起動\nDELETE:
-                                最小コスト"]
-                            </div>
+                            <div class="mermaid" id="diag-5"></div>
                         </div>
                         <pre><span class="comment"># Spot VM の作成</span>
 gcloud compute instances create my-spot-vm \
@@ -1638,16 +1593,7 @@ gcloud compute instances create custom-vm \
                             <div class="diagram-label">
                                 ▶ GKE Autopilot vs Standard の選択フロー
                             </div>
-                            <div class="mermaid">
-                                flowchart TD Start[GKE クラスタの要件確認] -->
-                                Q1{特権コンテナが必要か？} Q1 -->|Yes| S[GKE Standard モード] Q1
-                                -->|No| Q2{カーネルパラメータの変更が必要か？} Q2 -->|Yes| S Q2
-                                -->|No| Q3{DaemonSet でカスタムエージェントを実行するか？} Q3
-                                -->|Yes| S Q3 -->|No| Q4{GPU/TPUノードプールをカスタム設定するか？}
-                                Q4 -->|Yes| S Q4 -->|No| A["GKE Autopilot 推奨\n課金: Pod
-                                リソース単位\nセキュリティ: Baseline 強制\nWorkload Identity:
-                                自動有効"] S["GKE Standard\n課金: ノード単位\n完全なノード管理"]
-                            </div>
+                            <div class="mermaid" id="diag-6"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -1725,13 +1671,7 @@ gcloud container clusters get-credentials my-cluster <span class="flag">--region
                             <div class="diagram-label">
                                 ▶ Cloud Run ネットワーキングアーキテクチャ（第2世代）
                             </div>
-                            <div class="mermaid">
-                                flowchart LR Internet["インターネット HTTPS"] -->|HTTPS| CR["Cloud
-                                Run 第2世代"] CR -->|Direct VPC Egress 推奨| VPC[VPC 内部リソース]
-                                VPC --> SQL[Cloud SQL プライベート IP] VPC --> MEM[Memorystore
-                                Redis] PUBSUB[Pub/Sub] -->|Eventarc| CR GCS[Cloud Storage 変更]
-                                -->|Eventarc| CR
-                            </div>
+                            <div class="mermaid" id="diag-7"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -1789,16 +1729,7 @@ gcloud run deploy my-service \
                     <div class="topic-body">
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ GPU vs TPU の選択フローチャート</div>
-                            <div class="mermaid">
-                                flowchart TD A[AI/ML ワークロード] --> B{ワークロードの種類} B
-                                -->|"汎用 ML 推論 レンダリング"| C[GPU を選択] B -->|大規模 LLM
-                                トレーニング| D{使用フレームワーク} D -->|"TensorFlow JAX 最適化"|
-                                E[TPU を選択] D -->|"PyTorch 汎用"| C C --> F{GPU の種類} F
-                                -->|推論コスト効率重視| G["NVIDIA L4 G2 ファミリー\nコスパ最高"] F
-                                -->|大規模トレーニング| H["NVIDIA A100 A2\nHBM メモリ搭載"] F
-                                -->|最先端 LLM| I["NVIDIA H100 A3\n最高性能"] E --> J["Cloud TPU
-                                v4/v5\n専用 Pod"]
-                            </div>
+                            <div class="mermaid" id="diag-8"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -1872,15 +1803,7 @@ gcloud run deploy my-service \
                         </div>
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ Agent Runtime のアーキテクチャ</div>
-                            <div class="mermaid">
-                                flowchart LR Dev["開発者\nPython フレームワーク\nLangChain ADK 等"]
-                                -->|デプロイ| AR["Agent Runtime\nGemini Enterprise Agent Platform"]
-                                AR -->
-                                M["マネージドランタイム\nコンテナ化の自動処理\n自動スケーリング"] AR
-                                --> OBS["オブザーバビリティ\nCloud Logging\nCloud Trace"] AR -->
-                                SEC["エンタープライズセキュリティ\nCMEK 対応\nVPC Service Controls"]
-                                AR --> FEAT["高度な機能\nSessions 会話履歴\nMemory Bank 長期記憶"]
-                            </div>
+                            <div class="mermaid" id="diag-9"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -1937,21 +1860,7 @@ gcloud run deploy my-service \
                     <div class="topic-body">
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ データベース選択フローチャート</div>
-                            <div class="mermaid">
-                                flowchart TD A[データベースの要件] --> B{データは構造化か？} B
-                                -->|Yes スキーマ固定| C{SQL ACID が必要か？} B -->|No 半構造化|
-                                D{リアルタイム同期が必要か？} B -->|分析 DWH|
-                                K["BigQuery\nサーバーレス DWH\nペタバイト分析 ML"] C -->|Yes|
-                                E{グローバル分散と 99.999% SLA が必要か？} C -->|No NoSQL で良い| D
-                                E -->|Yes| F["Cloud Spanner\nグローバル分散\n水平スケール\n99.999%
-                                SLA"] E -->|No PG 互換で高性能| G["AlloyDB\nPostgreSQL 互換\n標準比
-                                4倍の OLTP\npgvector ベクトル検索"] E -->|No 標準的な RDB| H["Cloud
-                                SQL\nMySQL/PG/SQL Server\nフルマネージド"] D -->|Yes モバイル IoT|
-                                I["Firestore\nサーバーレスドキュメント DB\nリアルタイム同期"] D
-                                -->|No 大規模時系列| J["Cloud Bigtable\nワイドカラム型\nペタバイト
-                                ミリ秒以下"] D -->|キャッシュ| L["Memorystore\nRedis
-                                Memcached\nマイクロ秒レスポンス"]
-                            </div>
+                            <div class="mermaid" id="diag-10"></div>
                         </div>
                         <div class="sub-title">データベースサービス完全比較表</div>
                         <div class="table-wrap">
@@ -2062,15 +1971,7 @@ gcloud run deploy my-service \
                             <div class="diagram-label">
                                 ▶ アクセス頻度によるストレージクラス選択
                             </div>
-                            <div class="mermaid">
-                                flowchart LR A["オブジェクトの\nアクセス頻度"] -->
-                                B{どのくらいの頻度？} B -->|頻繁 日次以上|
-                                C["Standard\n最小保存期間: なし\nアクセスコスト: 無料"] B -->|月 1
-                                回程度| D["Nearline\n最小保存期間: 30 日\nアクセスコストあり"] B
-                                -->|年 4 回未満| E["Coldline\n最小保存期間: 90
-                                日\nアクセストコスト高め"] B -->|年 1 回未満|
-                                F["Archive\n最小保存期間: 365 日\n法規制上の長期保管"]
-                            </div>
+                            <div class="mermaid" id="diag-11"></div>
                         </div>
                         <div class="sub-title">ファイルストレージサービスの比較（2026年版）</div>
                         <div class="callout callout-blue">
@@ -2115,14 +2016,7 @@ gcloud run deploy my-service \
                         </div>
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ ファイルストレージ選択フローチャート</div>
-                            <div class="mermaid">
-                                flowchart TD F[ファイルストレージの選択] --> P{要件} P -->|"標準的な
-                                NFS 共有ストレージ"| FS["Filestore\nBasic 最大 64TiB\nRegional 最大
-                                100TiB"] P -->|"HPC AI/ML 並列アクセス"| ML["Managed Lustre\nLustre
-                                並列ファイルシステム\nペタバイト規模"] P -->|"エンタープライズ NFS
-                                SMB iSCSI"| NV["NetApp Volumes\nONTAP
-                                データ管理機能\nスナップショット レプリケーション内蔵"]
-                            </div>
+                            <div class="mermaid" id="diag-12"></div>
                         </div>
                         <a
                             href="https://docs.cloud.google.com/storage/docs/best-practices"
@@ -2193,15 +2087,7 @@ gcloud run deploy my-service \
                             <div class="diagram-label">
                                 ▶ SLA / RPO 要件によるリージョン冗長性の選択
                             </div>
-                            <div class="mermaid">
-                                flowchart TD R[冗長性の要件] --> D{SLA RTO RPO の要件} D
-                                -->|"単一リージョン内で十分\nコスト最適化"| SR["Single Region\nCloud
-                                SQL HA ゾーン冗長\nRegional Persistent Disk"] D -->|"2
-                                リージョン間\nバランス型"| DR["Dual Region\nCloud Storage
-                                Dual-Region\nCloud SQL クロスリージョンレプリカ"] D
-                                -->|"グローバル分散\n最高の可用性"| MR["Multi Region\nCloud Storage
-                                Multi-Region\nCloud Spanner グローバル\nFirestore マルチリージョン"]
-                            </div>
+                            <div class="mermaid" id="diag-13"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -2283,16 +2169,7 @@ gcloud run deploy my-service \
                             <div class="diagram-label">
                                 ▶ Shared VPC vs VPC Network Peering の比較
                             </div>
-                            <div class="mermaid">
-                                flowchart TB subgraph SVPC ["Shared VPC（組織内 - 推奨）"]
-                                HP["ホストプロジェクト\nネットワーク集中管理"] -->
-                                SA[サービスプロジェクト A Web チーム] HP --> SB[サービスプロジェクト
-                                B API チーム] HP --> SC[サービスプロジェクト C DB チーム] end
-                                subgraph PEER ["VPC Network Peering（異組織間）"] VA["VPC A Project
-                                1"] <-->|内部 IP で通信| VB["VPC B Project 2"] VB <-->|Peering|
-                                VC["VPC C Project 3"] VA -.->|"❌ A→C は直接通信不可 推移的でない"|
-                                VC end
-                            </div>
+                            <div class="mermaid" id="diag-14"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -2362,19 +2239,7 @@ gcloud run deploy my-service \
                     <div class="topic-body">
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ Cloud NGFW のティア構成</div>
-                            <div class="mermaid">
-                                flowchart TB subgraph OLD ["従来の VPC ファイアウォールルール"]
-                                VFR["VPC
-                                ファイアウォールルール\nネットワークタグで対象を指定\nプロジェクトレベルで管理"]
-                                end subgraph NEW ["Cloud NGFW（次世代ファイアウォール）"] subgraph
-                                TIER_E ["Essentials（基本）"]
-                                FP["ネットワークファイアウォールポリシー\n階層的ポリシー（組織/フォルダ/プロジェクト）\nIAM
-                                管理のセキュアタグ"] end subgraph TIER_S ["Standard（高度）"]
-                                FQDN["FQDN フィルタリング\nGoogle Threat
-                                Intelligence\n地理情報ベースのフィルタリング"] end subgraph TIER_ENT
-                                ["Enterprise（最高レベル）"] IPS["IDS/IPS 侵入検知防御\nURL
-                                フィルタリング\nTLS インスペクション"] end end OLD --> NEW
-                            </div>
+                            <div class="mermaid" id="diag-15"></div>
                         </div>
                         <div class="sub-title">ネットワークタグ vs セキュアタグ（Cloud NGFW）</div>
                         <div class="table-wrap">
@@ -2453,15 +2318,7 @@ gcloud resource-manager tags keys create webserver \
                             <div class="diagram-label">
                                 ▶ オンプレミス / 他クラウドとの接続オプション
                             </div>
-                            <div class="mermaid">
-                                flowchart LR OnPrem["オンプレミス 他クラウド"] -->
-                                OPT{接続方式の選択} OPT --> VPN["Cloud
-                                VPN\nインターネット経由\nIPsec 暗号化\n帯域 最大 3Gbps/トンネル\nHA
-                                VPN 99.99% SLA"] OPT --> IC["Cloud
-                                Interconnect\n専用線（物理接続）\nDedicated 10G or 100Gbps\nPartner
-                                50Mbps〜10Gbps\n99.99% SLA 冗長構成時"] OPT --> PEER["VPC Network
-                                Peering\n同じ Google ネットワーク内\n内部 IP で通信"]
-                            </div>
+                            <div class="mermaid" id="diag-16"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -2515,21 +2372,7 @@ gcloud resource-manager tags keys create webserver \
                     <div class="topic-body">
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ ロードバランサ選択フローチャート</div>
-                            <div class="mermaid">
-                                flowchart TD A[ロードバランサの要件] --> B{トラフィックの種類} B
-                                -->|HTTP HTTPS L7| C[Application Load Balancer] B -->|TCP UDP その他
-                                L4| D[Network Load Balancer] C --> E{スコープ} E
-                                -->|"グローバル分散\nAnycast IP が必要"| F["Global External
-                                ALB\nPremium Tier 必須\nCloud Armor 統合"] E
-                                -->|"特定リージョン内\nコンプライアンス要件"| G["Regional External
-                                ALB\nデータ主権要件に対応\nTLS 終端が特定リージョン"] E -->|VPC
-                                内部のみ| H["Internal ALB\n内部 IP アドレス\nマイクロサービス間"] D
-                                --> I{処理方式} I -->|"SSL オフロードが必要"| J["Proxy Network
-                                LB\nTCP 接続を終端\n送信元 IP は失われる"] I -->|"送信元 IP
-                                保持\nUDP が必要"| K["Passthrough Network LB\nDSR Direct Server
-                                Return\n送信元 IP をそのまま転送"] I -->|VPC 内部のみ| L["Internal
-                                Passthrough NLB\n内部 IP east-west トラフィック"]
-                            </div>
+                            <div class="mermaid" id="diag-17"></div>
                         </div>
                         <div class="table-wrap">
                             <table>
@@ -2654,12 +2497,7 @@ gcloud resource-manager tags keys create webserver \
                         </div>
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ Premium vs Standard ルーティング経路</div>
-                            <div class="mermaid">
-                                flowchart LR User[エンドユーザー] -->|Premium Tier| GNET["Google
-                                グローバルバックボーン\n高速・低レイテンシ\nエッジで受信"] -->
-                                GCE["GCE VM LB"] User -->|Standard Tier|
-                                Internet["インターネット\n通常のルーティング\nコスト低い"] --> GCE
-                            </div>
+                            <div class="mermaid" id="diag-18"></div>
                         </div>
                         <div class="callout callout-yellow">
                             <span class="callout-icon">⚠️</span>
@@ -2733,14 +2571,7 @@ gcloud resource-manager tags keys create webserver \
                         <div class="sub-title">Terraform の安全なデプロイフロー</div>
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ GitOps による Terraform 運用フロー</div>
-                            <div class="mermaid">
-                                flowchart LR DEV[開発者がコードを変更] --> PR[Pull Request 作成] PR
-                                --> PLAN["terraform plan -out=tfplan\n変更内容のレビュー"] PLAN -->
-                                REVIEW[人によるレビュー・承認] REVIEW --> APPLY["terraform apply
-                                tfplan\n本番適用"] APPLY --> STATE["State ファイル更新\nGCS
-                                リモートバックエンド"] STATE --> AUDIT["変更履歴は Git
-                                で管理\n完全な監査証跡"]
-                            </div>
+                            <div class="mermaid" id="diag-19"></div>
                         </div>
                         <pre><span class="comment"># backend.tf — State をリモートバックエンドで管理（必須）</span>
 terraform {
@@ -2760,13 +2591,7 @@ gcloud storage buckets update gs://my-terraform-state-bucket <span class="flag">
                         </div>
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ Fabric FAST の段階的デプロイフロー</div>
-                            <div class="mermaid">
-                                flowchart LR S0["Stage 0: Bootstrap\nTerraform の実行基盤\nState
-                                バケット\nCI/CD プロジェクト"] --> S1["Stage 1:
-                                Organization\nフォルダ階層\n組織ポリシー\nロギング"] --> S2["Stage
-                                2: Networking\nShared VPC\nHub-and-Spoke\nDNS 設計"] --> S3["Stage
-                                3: Projects\nプロジェクトファクトリ\nYAML ベースの宣言"]
-                            </div>
+                            <div class="mermaid" id="diag-20"></div>
                         </div>
                         <div class="callout callout-green">
                             <span class="callout-icon">✅</span>
@@ -2837,15 +2662,7 @@ gcloud storage buckets update gs://my-terraform-state-bucket <span class="flag">
                         </div>
                         <div class="diagram-wrap">
                             <div class="diagram-label">▶ Gemini Cloud Assist の主要機能</div>
-                            <div class="mermaid">
-                                flowchart LR GCA[Gemini Cloud Assist] -->
-                                ARCH["アーキテクチャ図の自動生成\n自然言語プロンプトから生成\nTerraform
-                                テンプレートの提案"] GCA -->
-                                TROUBLE["トラブルシューティング\nログ横断分析\n根本原因分析 RCA"]
-                                GCA --> COST["FinOps
-                                支援\nコスト最適化の提案\n無駄なリソースの検出"] GCA --> MON["Cloud
-                                Monitoring 統合\n自然言語でアラートを作成"]
-                            </div>
+                            <div class="mermaid" id="diag-21"></div>
                         </div>
                         <a
                             href="https://docs.cloud.google.com/cloud-assist/overview"
@@ -3477,7 +3294,8 @@ gcloud storage buckets update gs://my-terraform-state-bucket <span class="flag">
 
         <script>
             mermaid.initialize({
-                startOnLoad: true,
+                startOnLoad: false,
+                securityLevel: 'loose',
                 theme: 'dark',
                 themeVariables: {
                     primaryColor: '#1a73e8',
@@ -3497,6 +3315,232 @@ gcloud storage buckets update gs://my-terraform-state-bucket <span class="flag">
                 },
                 flowchart: { curve: 'basis', htmlLabels: true, useMaxWidth: false },
             });
+
+            // 図のソースは JS テンプレートリテラルで保持し Prettier による改行破壊を防ぐ
+            const DIAGRAMS = {
+                'diag-1': `flowchart TD
+A[ワークロードの要件確認] --> B{コンテナ化されているか？}
+B -->|No VM が必要| C{"OS の完全制御が必要か？"}
+B -->|Yes| D{Kubernetes が必要か？}
+C -->|Yes| E[Compute Engine GCE]
+C -->|No AI エージェント| F[Agent Runtime]
+D -->|Yes| G{ノード管理を自前で行うか？}
+D -->|No HTTP ベース| H[Cloud Run]
+D -->|No 軽量イベント| I[Cloud Run Functions]
+G -->|No マネージドで良い| J[GKE Autopilot 推奨]
+G -->|Yes 特権コンテナなど| K[GKE Standard]
+E --> L{コスト削減優先か？}
+L -->|Yes 停止許容| M[Spot VM + MIG]
+L -->|No 常時稼働| N[通常 VM]`,
+                'diag-2': `flowchart TD
+A[ストレージ選択] --> B{データ永続性が必要か？}
+B -->|No 一時データのみ| C["Local SSD<br/>最高 IOPS スループット<br/>VM停止でデータ消失"]
+B -->|Yes 永続ストレージ| D{性能の独立制御が必要か？}
+D -->|Yes 新世代推奨| E[Google Cloud Hyperdisk]
+D -->|No 従来型で十分| F[Persistent Disk]
+E --> G{ユースケース}
+G -->|汎用ワークロード| H["Hyperdisk Balanced 推奨<br/>IOPS 最大 160,000<br/>スループット 最大 2,400 MiB/s"]
+G -->|OLTP 高 IOPS DB| I["Hyperdisk Extreme<br/>IOPS 最大 350,000"]
+G -->|大規模分析| J["Hyperdisk Throughput<br/>低コスト"]
+G -->|"AI/ML モデル配信"| K["Hyperdisk ML<br/>読み取り専用共有"]
+F --> L{用途}
+L -->|汎用| M[Balanced PD]
+L -->|高性能| N[SSD PD]
+L -->|低コスト| O[Standard PD]`,
+                'diag-3': `flowchart LR
+T["インスタンステンプレート(設計図)<br/>マシンタイプ / OS / ディスク / スクリプト"] -->|MIG が参照| M
+M["MIG<br/>Managed Instance Group"] --> V1[VM1 ゾーン A]
+M --> V2[VM2 ゾーン B]
+M --> V3[VM3 ゾーン C]
+M --> AUTO["自動機能<br/>オートスケーリング<br/>自動ヒーリング<br/>ローリングアップデート"]`,
+                'diag-4': `flowchart LR
+User["エンジニア<br/>alice@example.com"] -->|SSH 接続試行| OSL["OS Login<br/>IAM リアルタイム照会"]
+OSL -->|"roles/compute.osLogin 確認"| IAM[Cloud IAM]
+IAM -->|権限あり| VM["VM 接続成功<br/>Linux アカウントを自動生成"]
+IAM -->|権限なし削除済み| DENY["接続拒否<br/>退職時は即時失効"]`,
+                'diag-5': `flowchart TD
+SV[Spot VM] --> ADV["最大 91% 割引<br/>通常 VM より大幅に安価"]
+SV --> RISK["プリエンプトリスク<br/>30秒前通知で停止される可能性"]
+RISK --> DESIGN[フォールトトレラント設計が必須]
+DESIGN --> CP["チェックポイント機能<br/>Cloud Storage に定期保存"]
+DESIGN --> SS["シャットダウンスクリプト<br/>終了時のクリーンアップ"]
+DESIGN --> MIG_COMBO["MIG との組み合わせ<br/>プリエンプト後に自動再作成"]
+DESIGN --> TA["終了アクション<br/>STOP: データ保持+再起動<br/>DELETE: 最小コスト"]`,
+                'diag-6': `flowchart TD
+Start[GKE クラスタの要件確認] --> Q1{特権コンテナが必要か？}
+Q1 -->|Yes| S[GKE Standard モード]
+Q1 -->|No| Q2{カーネルパラメータの変更が必要か？}
+Q2 -->|Yes| S
+Q2 -->|No| Q3{DaemonSet でカスタムエージェントを実行するか？}
+Q3 -->|Yes| S
+Q3 -->|No| Q4{"GPU/TPU ノードプールをカスタム設定するか？"}
+Q4 -->|Yes| S
+Q4 -->|No| A["GKE Autopilot 推奨<br/>課金: Pod リソース単位<br/>セキュリティ: Baseline 強制<br/>Workload Identity: 自動有効"]
+S["GKE Standard<br/>課金: ノード単位<br/>完全なノード管理"]`,
+                'diag-7': `flowchart LR
+Internet["インターネット HTTPS"] -->|HTTPS| CR["Cloud Run 第2世代"]
+CR -->|Direct VPC Egress 推奨| VPC[VPC 内部リソース]
+VPC --> SQL[Cloud SQL プライベート IP]
+VPC --> MEM[Memorystore Redis]
+PUBSUB["Pub/Sub"] -->|Eventarc| CR
+GCS[Cloud Storage 変更] -->|Eventarc| CR`,
+                'diag-8': `flowchart TD
+A["AI/ML ワークロード"] --> B{ワークロードの種類}
+B -->|"汎用 ML 推論 レンダリング"| C[GPU を選択]
+B -->|大規模 LLM トレーニング| D{使用フレームワーク}
+D -->|"TensorFlow JAX 最適化"| E[TPU を選択]
+D -->|"PyTorch 汎用"| C
+C --> F{GPU の種類}
+F -->|推論コスト効率重視| G["NVIDIA L4 G2 ファミリー<br/>コスパ最高"]
+F -->|大規模トレーニング| H["NVIDIA A100 A2<br/>HBM メモリ搭載"]
+F -->|最先端 LLM| I["NVIDIA H100 A3<br/>最高性能"]
+E --> J["Cloud TPU v4/v5<br/>専用 Pod"]`,
+                'diag-9': `flowchart LR
+Dev["開発者<br/>Python フレームワーク<br/>LangChain ADK 等"] -->|デプロイ| AR["Agent Runtime<br/>Gemini Enterprise Agent Platform"]
+AR --> M["マネージドランタイム<br/>コンテナ化の自動処理<br/>自動スケーリング"]
+AR --> OBS["オブザーバビリティ<br/>Cloud Logging<br/>Cloud Trace"]
+AR --> SEC["エンタープライズセキュリティ<br/>CMEK 対応<br/>VPC Service Controls"]
+AR --> FEAT["高度な機能<br/>Sessions 会話履歴<br/>Memory Bank 長期記憶"]`,
+                'diag-10': `flowchart TD
+A[データベースの要件] --> B{データは構造化か？}
+B -->|Yes スキーマ固定| C{SQL ACID が必要か？}
+B -->|No 半構造化| D{リアルタイム同期が必要か？}
+B -->|分析 DWH| K["BigQuery<br/>サーバーレス DWH<br/>ペタバイト分析 ML"]
+C -->|Yes| E{"グローバル分散と 99.999% SLA が必要か？"}
+C -->|No NoSQL で良い| D
+E -->|Yes| F["Cloud Spanner<br/>グローバル分散<br/>水平スケール<br/>99.999% SLA"]
+E -->|No PG 互換で高性能| G["AlloyDB<br/>PostgreSQL 互換<br/>標準比 4倍の OLTP<br/>pgvector ベクトル検索"]
+E -->|No 標準的な RDB| H["Cloud SQL<br/>MySQL/PG/SQL Server<br/>フルマネージド"]
+D -->|Yes モバイル IoT| I["Firestore<br/>サーバーレスドキュメント DB<br/>リアルタイム同期"]
+D -->|No 大規模時系列| J["Cloud Bigtable<br/>ワイドカラム型<br/>ペタバイト ミリ秒以下"]
+D -->|キャッシュ| L["Memorystore<br/>Redis Memcached<br/>マイクロ秒レスポンス"]`,
+                'diag-11': `flowchart LR
+A["オブジェクトの<br/>アクセス頻度"] --> B{どのくらいの頻度？}
+B -->|頻繁 日次以上| C["Standard<br/>最小保存期間: なし<br/>アクセスコスト: 無料"]
+B -->|月 1 回程度| D["Nearline<br/>最小保存期間: 30 日<br/>アクセスコストあり"]
+B -->|年 4 回未満| E["Coldline<br/>最小保存期間: 90 日<br/>アクセスコスト高め"]
+B -->|年 1 回未満| F["Archive<br/>最小保存期間: 365 日<br/>法規制上の長期保管"]`,
+                'diag-12': `flowchart TD
+F[ファイルストレージの選択] --> P{要件}
+P -->|"標準的な NFS 共有ストレージ"| FS["Filestore<br/>Basic 最大 64TiB<br/>Regional 最大 100TiB"]
+P -->|"HPC AI/ML 並列アクセス"| ML["Managed Lustre<br/>Lustre 並列ファイルシステム<br/>ペタバイト規模"]
+P -->|"エンタープライズ NFS SMB iSCSI"| NV["NetApp Volumes<br/>ONTAP データ管理機能<br/>スナップショット レプリケーション内蔵"]`,
+                'diag-13': `flowchart TD
+R[冗長性の要件] --> D{SLA RTO RPO の要件}
+D -->|"単一リージョン内で十分<br/>コスト最適化"| SR["Single Region<br/>Cloud SQL HA ゾーン冗長<br/>Regional Persistent Disk"]
+D -->|"2 リージョン間<br/>バランス型"| DR["Dual Region<br/>Cloud Storage Dual-Region<br/>Cloud SQL クロスリージョンレプリカ"]
+D -->|"グローバル分散<br/>最高の可用性"| MR["Multi Region<br/>Cloud Storage Multi-Region<br/>Cloud Spanner グローバル<br/>Firestore マルチリージョン"]`,
+                'diag-14': `flowchart TB
+subgraph SVPC ["Shared VPC 組織内 - 推奨"]
+HP["ホストプロジェクト<br/>ネットワーク集中管理"] --> SA[サービスプロジェクト A Web チーム]
+HP --> SB[サービスプロジェクト B API チーム]
+HP --> SC[サービスプロジェクト C DB チーム]
+end
+subgraph PEER ["VPC Network Peering 異組織間"]
+VA["VPC A Project 1"] <-->|内部 IP で通信| VB["VPC B Project 2"]
+VB <-->|Peering| VC["VPC C Project 3"]
+VA -.->|"A から C は直接通信不可 推移的でない"| VC
+end`,
+                'diag-15': `flowchart TB
+subgraph OLD ["従来の VPC ファイアウォールルール"]
+VFR["VPC ファイアウォールルール<br/>ネットワークタグで対象を指定<br/>プロジェクトレベルで管理"]
+end
+subgraph NEW ["Cloud NGFW 次世代ファイアウォール"]
+subgraph TIER_E ["Essentials 基本"]
+FP["ネットワークファイアウォールポリシー<br/>階層的ポリシー(組織/フォルダ/プロジェクト)<br/>IAM 管理のセキュアタグ"]
+end
+subgraph TIER_S ["Standard 高度"]
+FQDN["FQDN フィルタリング<br/>Google Threat Intelligence<br/>地理情報ベースのフィルタリング"]
+end
+subgraph TIER_ENT ["Enterprise 最高レベル"]
+IPS["IDS/IPS 侵入検知防御<br/>URL フィルタリング<br/>TLS インスペクション"]
+end
+end
+OLD --> NEW`,
+                'diag-16': `flowchart LR
+OnPrem["オンプレミス 他クラウド"] --> OPT{接続方式の選択}
+OPT --> VPN["Cloud VPN<br/>インターネット経由<br/>IPsec 暗号化<br/>帯域 最大 3Gbps/トンネル<br/>HA VPN 99.99% SLA"]
+OPT --> IC["Cloud Interconnect<br/>専用線(物理接続)<br/>Dedicated 10G or 100Gbps<br/>Partner 50Mbps-10Gbps<br/>99.99% SLA 冗長構成時"]
+OPT --> PEER["VPC Network Peering<br/>同じ Google ネットワーク内<br/>内部 IP で通信"]`,
+                'diag-17': `flowchart TD
+A[ロードバランサの要件] --> B{トラフィックの種類}
+B -->|HTTP HTTPS L7| C[Application Load Balancer]
+B -->|TCP UDP その他 L4| D[Network Load Balancer]
+C --> E{スコープ}
+E -->|"グローバル分散<br/>Anycast IP が必要"| F["Global External ALB<br/>Premium Tier 必須<br/>Cloud Armor 統合"]
+E -->|"特定リージョン内<br/>コンプライアンス要件"| G["Regional External ALB<br/>データ主権要件に対応<br/>TLS 終端が特定リージョン"]
+E -->|VPC 内部のみ| H["Internal ALB<br/>内部 IP アドレス<br/>マイクロサービス間"]
+D --> I{処理方式}
+I -->|"SSL オフロードが必要"| J["Proxy Network LB<br/>TCP 接続を終端<br/>送信元 IP は失われる"]
+I -->|"送信元 IP 保持<br/>UDP が必要"| K["Passthrough Network LB<br/>DSR Direct Server Return<br/>送信元 IP をそのまま転送"]
+I -->|VPC 内部のみ| L["Internal Passthrough NLB<br/>内部 IP east-west トラフィック"]`,
+                'diag-18': `flowchart LR
+User[エンドユーザー] -->|Premium Tier| GNET["Google グローバルバックボーン<br/>高速・低レイテンシ<br/>エッジで受信"] --> GCE["GCE VM LB"]
+User -->|Standard Tier| Internet["インターネット<br/>通常のルーティング<br/>コスト低い"] --> GCE`,
+                'diag-19': `flowchart LR
+DEV[開発者がコードを変更] --> PR[Pull Request 作成]
+PR --> PLAN["terraform plan -out=tfplan<br/>変更内容のレビュー"]
+PLAN --> REVIEW[人によるレビュー・承認]
+REVIEW --> APPLY["terraform apply tfplan<br/>本番適用"]
+APPLY --> STATE["State ファイル更新<br/>GCS リモートバックエンド"]
+STATE --> AUDIT["変更履歴は Git で管理<br/>完全な監査証跡"]`,
+                'diag-20': `flowchart LR
+S0["Stage 0: Bootstrap<br/>Terraform の実行基盤<br/>State バケット<br/>CI/CD プロジェクト"] --> S1["Stage 1: Organization<br/>フォルダ階層<br/>組織ポリシー<br/>ロギング"]
+S1 --> S2["Stage 2: Networking<br/>Shared VPC<br/>Hub-and-Spoke<br/>DNS 設計"]
+S2 --> S3["Stage 3: Projects<br/>プロジェクトファクトリ<br/>YAML ベースの宣言"]`,
+                'diag-21': `flowchart LR
+GCA[Gemini Cloud Assist] --> ARCH["アーキテクチャ図の自動生成<br/>自然言語プロンプトから生成<br/>Terraform テンプレートの提案"]
+GCA --> TROUBLE["トラブルシューティング<br/>ログ横断分析<br/>根本原因分析 RCA"]
+GCA --> COST["FinOps 支援<br/>コスト最適化の提案<br/>無駄なリソースの検出"]
+GCA --> MON["Cloud Monitoring 統合<br/>自然言語でアラートを作成"]`,
+            };
+
+            // mermaid v10 は SVG に絶対 px の width/height を付与し viewBox も下端が不足しがち。
+            // 描画後に DOM を直接操作して是正する（文字列 DOMParser 往復は foreignObject を壊すため禁止）。
+            function applySvgFixups(svgEl, src) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.width = '100%';
+                svgEl.style.height = 'auto';
+                svgEl.style.maxWidth = '100%';
+                svgEl.style.overflow = 'visible';
+                svgEl.style.marginBottom = '10px';
+                const viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                const parts = viewBox.split(/\s+/).map(Number);
+                if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
+                const trimmed = src.trim();
+                const isSequenceOrState =
+                    trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
+                const extraHeight = isSequenceOrState ? 110 : 15;
+                const [x, y, w, h] = parts;
+                svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + extraHeight));
+            }
+
+            (async () => {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (_e) {
+                        /* フォント待機に失敗しても描画は継続する */
+                    }
+                }
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    const el = document.getElementById(id);
+                    if (!el) continue;
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        el.innerHTML = svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl, src);
+                    } catch (err) {
+                        el.innerHTML =
+                            '<pre style="color:#ff8888;white-space:pre-wrap">' +
+                            (err && err.message ? err.message : String(err)) +
+                            '</pre>';
+                    }
+                }
+            })();
 
             function toggleCard(header) {
                 header.closest('.topic-card').classList.toggle('collapsed');
