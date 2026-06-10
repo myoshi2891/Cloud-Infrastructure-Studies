@@ -113,12 +113,21 @@ export function ensureInitFlags(html) {
     if (/startOnLoad:\s*true/.test(out)) {
         out = out.replace(/startOnLoad:\s*true\s*,?/, "startOnLoad: false,");
     }
-    // initialize 呼び出し内に securityLevel が無ければ startOnLoad 行の直後に追加
+    // initialize 呼び出し内に securityLevel が無ければ注入する。
     if (!/securityLevel\s*:/.test(out)) {
-        out = out.replace(
-            /(startOnLoad:\s*false\s*,)/,
-            "$1\n                securityLevel: 'loose',",
-        );
+        if (/startOnLoad:\s*false\s*,/.test(out)) {
+            // 従来どおり startOnLoad 行の直後に追加
+            out = out.replace(
+                /(startOnLoad:\s*false\s*,)/,
+                "$1\n                securityLevel: 'loose',",
+            );
+        } else {
+            // startOnLoad 不在/カンマ無し時は initialize の options ブロック先頭へ挿入
+            out = out.replace(
+                /(mermaid\.initialize\(\s*\{)/,
+                "$1 securityLevel: 'loose',",
+            );
+        }
     }
     return out;
 }
