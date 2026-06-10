@@ -60,9 +60,11 @@ function CheckItem({ children }: { children: React.ReactNode }) {
 
 /** Mermaid 図ラッパー。共有 MermaidDiagram を mermaid-wrap で囲む。 */
 function Diagram({ id, label }: { id: string; label: string }) {
+    const chart = DIAGRAMS[id];
+    if (!chart) return null;
     return (
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS[id]} ariaLabel={label} />
+            <MermaidDiagram chart={chart} ariaLabel={label} />
         </div>
     );
 }
