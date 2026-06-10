@@ -16,6 +16,34 @@ allowed-tools:
 
 # Mermaid v10 構文修正スキル
 
+## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
+
+静的 HTML の Mermaid 描画崩れを直すときは、**ボイラープレート（render ループ・SVG 後処理・中央寄せ CSS）を手書きで再生成しないこと**。以下の再利用スクリプトで機械的処理を一括適用できる。
+
+1. **図ソースを JS テンプレートリテラルで定義**（LLM の判断が必要なのはここだけ）:
+   各図を 1 ステートメント 1 行・カラム 0・改行は `<br/>` で `const DIAGRAMS = { 'diag-1': \`flowchart TD ...\` }` として HTML の `<script>` 内に書く。
+2. **描画パイプラインを冪等適用**:
+
+   ```bash
+   bun run .claude/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
+   ```
+
+   これが `<div class="mermaid">…</div>` → 連番 id 付き空 div への置換、`startOnLoad:false`+`securityLevel:'loose'` 付与、`applySvgFixups`+render ループ注入、中央寄せ CSS 注入をまとめて行う（再実行しても二重適用しない）。
+
+3. **正本 Markdown から図を復元する場合**（HTML 側ソースが破壊された等）:
+
+   ```bash
+   bun run .claude/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
+   ```
+
+4. **インデント汚染・行分断のみの修正**（`.html`/`.md`/`.tsx`）は `fix_mermaid.ts`:
+
+   ```bash
+   bun run .claude/skills/fix-mermaid/scripts/fix_mermaid.ts <file>
+   ```
+
+> **SVG 幅の鉄則**: `apply_render_pipeline.mjs` は SVG 幅に **viewBox 由来の自然 px 幅 + `maxWidth:100%`** を使う。`width:'100%'` も `width:'auto'`（viewBox のみで intrinsic サイズを持たない SVG ではコンテナ全幅へ伸びる）も、小さい flowchart LR 図を異常拡大させるため**使わない**。
+
 ## 対象
 
 - `.html` ファイル内の `<div class="mermaid">` ブロック
@@ -273,7 +301,7 @@ vi.mock("@/components/MermaidDiagram", () => ({
 
 本リポジトリは `mermaid@^11.15.0` を使用し、図は共通コンポーネント [`components/MermaidDiagram.tsx`](../../../components/MermaidDiagram.tsx)（`'use client'`）で描画する。`mermaid.render()` が返す SVG 文字列を `dangerouslySetInnerHTML` で注入し、ページ固有スタイルは [`components/MermaidDiagram.module.css`](../../../components/MermaidDiagram.module.css) に置く。
 
-正本（レンダリングの正解）は静的 HTML `Gcp-ace-complete-advanced-guide.html`（mermaid 10.6.1）。新たに不具合を直す際は **この HTML の `mermaid.initialize` 設定と後処理を正として再現**すること。
+レンダリングの正準ロジック（`mermaid.initialize` 設定・`applySvgFixups`・render ループ・中央寄せ CSS）は再利用スクリプト [`scripts/apply_render_pipeline.mjs`](scripts/apply_render_pipeline.mjs) に集約されている。新たに不具合を直す際は **手書きで再現せず、このスクリプトを正として適用**すること（冒頭「🚀 まず再利用スクリプトを使う」を参照）。
 
 ### 症状と根本原因の対応表
 
@@ -285,7 +313,7 @@ vi.mock("@/components/MermaidDiagram", () => ({
 | 文字色を変えても**全く反映されない** | `mermaid.initialize()` はモジュール最上位で**一度だけ**実行されるため HMR では再実行されず古いテーマのまま。加えて `*.module.css` 変更後の `.next` キャッシュ汚染 | `.next` 削除 + dev サーバー完全再起動 + ブラウザのハードリロード（後述） |
 | 日本語ラベルの幅不足による軽微な切れ | Web フォント（Noto Sans JP）読込前に採寸 | `mermaid.render()` 直前に `await document.fonts.ready`（jsdom 等は型ガードで skip） |
 
-### 正本 HTML を再現する `mermaid.initialize` 設定（v11）
+### 正準の `mermaid.initialize` 設定（v11、`apply_render_pipeline.mjs` が踏襲）
 
 ```ts
 mermaid.initialize({
@@ -311,13 +339,12 @@ mermaid.initialize({
 
 `mermaid.render()` の戻り値（SVG 文字列）を **`DOMParser('image/svg+xml')` + `XMLSerializer` で往復させてはならない**。`foreignObject` 内の htmlLabels（XHTML 名前空間の HTML）が壊れ、ラベルが `width=0`・テキスト空になって表示が潰れる。
 
-正本 HTML と同じく、**`innerHTML` 注入後の実 DOM 要素を直接操作**する。React では `ref` + `svgStr` 依存の `useEffect` で、注入済み `<svg>` に対して後処理を適用する。
+**`innerHTML` 注入後の実 DOM 要素を直接操作**する（`apply_render_pipeline.mjs` も同方式）。React では `ref` + `svgStr` 依存の `useEffect` で、注入済み `<svg>` に対して後処理を適用する。
 
 ```ts
 const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
-    svgEl.style.width = '100%';
     svgEl.style.height = 'auto';
     svgEl.style.overflow = 'visible';   // viewBox から数px はみ出す描画の途切れ防止
     svgEl.style.marginBottom = '10px';
@@ -332,6 +359,10 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
+    // ⚠️ 幅は viewBox 由来の自然 px を使う。width:'100%'/'auto' は viewBox のみで intrinsic
+    //    サイズを持たない SVG をコンテナ全幅へ拡大し、小さい flowchart LR 図を異常拡大させる。
+    //    自然 px + maxWidth:100% なら親より広い図のみ縮小され、拡大は起きない。
+    svgEl.style.width = `${w}px`;
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 ```
