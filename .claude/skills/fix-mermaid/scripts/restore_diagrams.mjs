@@ -17,10 +17,10 @@ import fs from 'fs';
 export function extractMdMermaidBlocks(md) {
     const blocks = [];
     // CRLF / マーカー直後の余分な空白を許容する寛容な正規表現
-    md.replace(/```mermaid[ \t]*\r?\n([\s\S]*?)\r?\n```/g, (match, inner) => {
-        blocks.push(inner.trim());
-        return match;
-    });
+    const regex = /```mermaid[ \t]*\r?\n([\s\S]*?)\r?\n```/g;
+    for (const match of md.matchAll(regex)) {
+        blocks.push(match[1].trim());
+    }
     return blocks;
 }
 
@@ -30,15 +30,13 @@ export function extractMdMermaidBlocks(md) {
  */
 function extractKeywords(brokenCode) {
     const keywords = [];
-    brokenCode.replace(/"(.*?)"/g, (_m, p1) => {
-        if (p1.length > 3) keywords.push(p1);
-        return _m;
-    });
+    for (const match of brokenCode.matchAll(/"(.*?)"/g)) {
+        if (match[1].length > 3) keywords.push(match[1]);
+    }
     if (keywords.length === 0) {
-        brokenCode.replace(/[a-zA-Z]{5,}/g, (m) => {
-            keywords.push(m);
-            return m;
-        });
+        for (const match of brokenCode.matchAll(/[a-zA-Z]{5,}/g)) {
+            keywords.push(match[0]);
+        }
     }
     return keywords;
 }
