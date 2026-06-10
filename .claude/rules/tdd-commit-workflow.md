@@ -71,8 +71,8 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 ### Step 4: Docs Sync（進捗同期）
 
 - **対象**: 作業対象が HTML → Next.js ページ移行タスク（`app/` 下のページ新規作成・移行）の場合のみ実施。
-- **内容**: 毎ページの移行完了直後に、`docs/MIGRATION_PROGRESS.md` などのドキュメントを更新・同期する。
-- **コミットメッセージ**: `chore(docs): update docs/MIGRATION_PROGRESS.md — [作業内容の1行要約]`
+- **内容**: 毎ページの移行完了直後に、`MIGRATION_PROGRESS.md`（リポジトリ直下）などのドキュメントを更新・同期する。
+- **コミットメッセージ**: `chore(docs): update MIGRATION_PROGRESS.md — [作業内容の1行要約]`
 
 
 ---
