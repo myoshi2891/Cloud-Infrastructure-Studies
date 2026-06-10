@@ -101,6 +101,10 @@ export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
+    // max-width を viewBox の自然幅に固定する。'100%' のままだとラッパー幅まで
+    // 拡大され、細い／小規模な図（特に flowchart TD）が過大表示になるため。
+    // width:100% と併用することで「コンテナ幅まで、ただし自然幅 w を超えない」となる。
+    svgEl.style.maxWidth = `${w}px`;
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 
