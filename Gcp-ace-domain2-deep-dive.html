@@ -624,6 +624,11 @@
                 margin: 16px 0;
                 overflow-x: auto;
             }
+            /* SVG は自然幅(width:auto)+maxWidth:100% のため flex item として中央寄せする */
+            .diagram-wrap .mermaid {
+                display: flex;
+                justify-content: center;
+            }
             .diagram-label {
                 font-size: 10px;
                 font-family: 'JetBrains Mono', monospace;
