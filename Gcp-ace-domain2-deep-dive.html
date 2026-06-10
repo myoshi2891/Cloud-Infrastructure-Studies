@@ -3500,7 +3500,6 @@ GCA --> MON["Cloud Monitoring 統合<br/>自然言語でアラートを作成"]`
             function applySvgFixups(svgEl, src) {
                 svgEl.removeAttribute('width');
                 svgEl.removeAttribute('height');
-                svgEl.style.width = '100%';
                 svgEl.style.height = 'auto';
                 svgEl.style.maxWidth = '100%';
                 svgEl.style.overflow = 'visible';
@@ -3514,6 +3513,9 @@ GCA --> MON["Cloud Monitoring 統合<br/>自然言語でアラートを作成"]`
                     trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
                 const extraHeight = isSequenceOrState ? 110 : 15;
                 const [x, y, w, h] = parts;
+                // viewBox 由来の自然幅で表示し、拡大は抑制。親より広い場合のみ maxWidth で縮小。
+                // width:'100%' は小さな LR 図を全幅へ引き伸ばし異常拡大の原因になるため使わない。
+                svgEl.style.width = w + 'px';
                 svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + extraHeight));
             }
 
