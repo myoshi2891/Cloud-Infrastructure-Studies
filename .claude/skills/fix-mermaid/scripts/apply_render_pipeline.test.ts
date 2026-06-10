@@ -55,6 +55,26 @@ describe("ensureInitFlags", () => {
     expect(out).toContain("securityLevel: 'loose'");
     expect(out).not.toContain("startOnLoad: true");
   });
+
+  test("カンマ無しの startOnLoad:true でも false 化し securityLevel を付与する", () => {
+    const input = "mermaid.initialize({ startOnLoad: true });";
+    const out = ensureInitFlags(input);
+    expect(out).toContain("startOnLoad: false");
+    expect(out).toContain("securityLevel: 'loose'");
+    expect(out).not.toContain("startOnLoad: true");
+  });
+
+  test("startOnLoad 不在でも securityLevel:'loose' を注入する", () => {
+    const input = "mermaid.initialize({ theme: 'dark' });";
+    const out = ensureInitFlags(input);
+    expect(out).toContain("securityLevel: 'loose'");
+  });
+
+  test("securityLevel 既存なら重複注入しない(冪等)", () => {
+    const input = "mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });";
+    const out = ensureInitFlags(input);
+    expect(out.match(/securityLevel/g)?.length).toBe(1);
+  });
 });
 
 describe("injectRenderLoop", () => {

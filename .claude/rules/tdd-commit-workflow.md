@@ -74,7 +74,6 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 - **内容**: 毎ページの移行完了直後に、`MIGRATION_PROGRESS.md`（リポジトリ直下）などのドキュメントを更新・同期する。
 - **コミットメッセージ**: `chore(docs): update MIGRATION_PROGRESS.md — [作業内容の1行要約]`
 
-
 ---
 
 ## 除外事項 (Exceptions)
