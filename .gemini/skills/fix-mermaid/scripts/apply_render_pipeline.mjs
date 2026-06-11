@@ -6,7 +6,7 @@
  * 同種作業でボイラープレートを手書き再生成しなくて済むようにする。
  *
  * 使い方:
- *   bun run .claude/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
+ *   bun run .gemini/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
  *
  * 前提: HTML の <script> 内に `const DIAGRAMS = { 'diag-1': ` ... ` }` が定義済みであること
  *       (無い場合は空スタブを挿入して警告する)。各図の <div class="mermaid">...</div> は
