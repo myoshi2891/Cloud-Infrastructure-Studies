@@ -1,0 +1,3584 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GCP ACE Section 2 — Planning & Implementing a Cloud Solution</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+        <style>
+            :root {
+                --gcp-blue: #1a73e8;
+                --gcp-blue-dark: #0d47a1;
+                --gcp-blue-light: #4285f4;
+                --gcp-cyan: #00bcd4;
+                --gcp-green: #34a853;
+                --gcp-yellow: #fbbc04;
+                --gcp-red: #ea4335;
+                --gcp-orange: #ff6d00;
+                --bg-base: #0a0e1a;
+                --bg-card: #111827;
+                --bg-card2: #1a2236;
+                --bg-sidebar: #0d1526;
+                --border: #1e3a5f;
+                --text-primary: #e8edf5;
+                --text-secondary: #8ba3c7;
+                --text-muted: #4a6a9a;
+                --code-bg: #0d1526;
+                --tag-bg: #0d2548;
+                --accent-gradient: linear-gradient(135deg, #1a73e8 0%, #00bcd4 50%, #34a853 100%);
+                --card-shadow: 0 4px 24px rgba(26, 115, 232, 0.12);
+                --sidebar-w: 300px;
+            }
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: 'Noto Sans JP', sans-serif;
+                background: var(--bg-base);
+                color: var(--text-primary);
+                line-height: 1.75;
+                display: flex;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            /* SIDEBAR */
+            .sidebar {
+                width: var(--sidebar-w);
+                min-width: var(--sidebar-w);
+                background: var(--bg-sidebar);
+                border-right: 1px solid var(--border);
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                overflow-y: auto;
+                z-index: 100;
+                display: flex;
+                flex-direction: column;
+            }
+            .sidebar::-webkit-scrollbar {
+                width: 4px;
+            }
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 2px;
+            }
+            .sidebar-header {
+                padding: 24px 20px 20px;
+                border-bottom: 1px solid var(--border);
+                background: linear-gradient(180deg, rgba(26, 115, 232, 0.08) 0%, transparent 100%);
+            }
+            .sidebar-logo {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--gcp-blue-light);
+                margin-bottom: 6px;
+            }
+            .sidebar-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--text-primary);
+                line-height: 1.4;
+            }
+            .sidebar-badge {
+                display: inline-block;
+                margin-top: 8px;
+                padding: 2px 8px;
+                background: rgba(26, 115, 232, 0.2);
+                border: 1px solid rgba(26, 115, 232, 0.4);
+                border-radius: 20px;
+                font-size: 10px;
+                font-weight: 700;
+                color: var(--gcp-blue-light);
+            }
+            .sidebar-score {
+                margin: 16px 12px;
+                padding: 12px;
+                background: rgba(26, 115, 232, 0.08);
+                border: 1px solid rgba(26, 115, 232, 0.2);
+                border-radius: 8px;
+            }
+            .score-label {
+                font-size: 10px;
+                color: var(--text-muted);
+                margin-bottom: 4px;
+            }
+            .score-value {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 28px;
+                font-weight: 700;
+                color: var(--gcp-blue-light);
+                line-height: 1;
+            }
+            .score-sub {
+                font-size: 10px;
+                color: var(--text-secondary);
+                margin-top: 2px;
+            }
+            .score-bar {
+                margin-top: 8px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            .score-fill {
+                height: 100%;
+                width: 30%;
+                background: var(--accent-gradient);
+                border-radius: 2px;
+            }
+            .nav-section {
+                padding: 16px 12px 8px;
+            }
+            .nav-section-label {
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+                padding: 0 8px;
+                margin-bottom: 6px;
+            }
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 7px 10px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+                color: var(--text-secondary);
+                transition: all 0.15s;
+                text-decoration: none;
+                line-height: 1.3;
+            }
+            .nav-item:hover {
+                background: rgba(26, 115, 232, 0.1);
+                color: var(--gcp-blue-light);
+            }
+            .nav-item.active {
+                background: rgba(26, 115, 232, 0.15);
+                color: var(--gcp-blue-light);
+                border-left: 2px solid var(--gcp-blue-light);
+            }
+            .nav-icon {
+                width: 16px;
+                height: 16px;
+                min-width: 16px;
+                border-radius: 3px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 9px;
+                font-weight: 700;
+            }
+            .icon-compute {
+                background: rgba(66, 133, 244, 0.2);
+                color: var(--gcp-blue-light);
+            }
+            .icon-storage {
+                background: rgba(0, 188, 212, 0.2);
+                color: var(--gcp-cyan);
+            }
+            .icon-network {
+                background: rgba(52, 168, 83, 0.2);
+                color: var(--gcp-green);
+            }
+            .icon-iac {
+                background: rgba(251, 188, 4, 0.2);
+                color: var(--gcp-yellow);
+            }
+            .icon-summary {
+                background: rgba(234, 67, 53, 0.2);
+                color: var(--gcp-red);
+            }
+
+            /* MAIN */
+            .main {
+                margin-left: var(--sidebar-w);
+                flex: 1;
+                min-width: 0;
+            }
+
+            /* HERO */
+            .hero {
+                position: relative;
+                padding: 64px 64px 48px;
+                overflow: hidden;
+                border-bottom: 1px solid var(--border);
+            }
+            .hero-bg {
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        ellipse 60% 80% at 70% -10%,
+                        rgba(26, 115, 232, 0.15) 0%,
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        ellipse 40% 60% at 90% 80%,
+                        rgba(0, 188, 212, 0.08) 0%,
+                        transparent 50%
+                    );
+                pointer-events: none;
+            }
+            .hero-grid {
+                position: absolute;
+                inset: 0;
+                background-image:
+                    linear-gradient(rgba(26, 115, 232, 0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(26, 115, 232, 0.04) 1px, transparent 1px);
+                background-size: 48px 48px;
+                pointer-events: none;
+            }
+            .hero-eyebrow {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 16px;
+                flex-wrap: wrap;
+            }
+            .hero-tag {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 11px;
+                padding: 3px 10px;
+                border-radius: 20px;
+                background: rgba(26, 115, 232, 0.15);
+                border: 1px solid rgba(26, 115, 232, 0.35);
+                color: var(--gcp-blue-light);
+            }
+            .hero-tag.green {
+                background: rgba(52, 168, 83, 0.15);
+                border-color: rgba(52, 168, 83, 0.35);
+                color: var(--gcp-green);
+            }
+            .hero-tag.yellow {
+                background: rgba(251, 188, 4, 0.15);
+                border-color: rgba(251, 188, 4, 0.35);
+                color: var(--gcp-yellow);
+            }
+            .hero-title {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: clamp(26px, 3.5vw, 42px);
+                font-weight: 700;
+                line-height: 1.15;
+                margin-bottom: 12px;
+                letter-spacing: -0.02em;
+            }
+            .hero-title .accent {
+                background: var(--accent-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero-sub {
+                font-size: 15px;
+                color: var(--text-secondary);
+                max-width: 640px;
+                margin-bottom: 32px;
+            }
+            .hero-stats {
+                display: flex;
+                gap: 32px;
+                flex-wrap: wrap;
+            }
+            .hero-stat {
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+            }
+            .hero-stat-value {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 24px;
+                font-weight: 700;
+                background: var(--accent-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero-stat-label {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+
+            /* CHANGES BANNER */
+            .changes-banner {
+                margin: 32px 64px;
+                padding: 20px 24px;
+                background: rgba(251, 188, 4, 0.06);
+                border: 1px solid rgba(251, 188, 4, 0.25);
+                border-radius: 10px;
+                display: flex;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            .changes-icon {
+                font-size: 20px;
+                margin-top: 2px;
+                flex-shrink: 0;
+            }
+            .changes-title {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--gcp-yellow);
+                margin-bottom: 10px;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+            }
+            .changes-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 6px;
+            }
+            .change-item {
+                display: flex;
+                align-items: baseline;
+                gap: 8px;
+                font-size: 12px;
+            }
+            .change-dot {
+                width: 6px;
+                height: 6px;
+                min-width: 6px;
+                border-radius: 50%;
+                background: var(--gcp-yellow);
+                margin-top: 4px;
+            }
+            .change-label {
+                font-weight: 700;
+                color: var(--gcp-yellow);
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 11px;
+            }
+            .change-desc {
+                color: var(--text-secondary);
+            }
+
+            /* CONTENT */
+            .content {
+                padding: 0 64px 64px;
+            }
+
+            /* SECTION HEADER */
+            .section-header {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 40px 0 20px;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 32px;
+            }
+            .section-icon-wrap {
+                width: 48px;
+                height: 48px;
+                min-width: 48px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                position: relative;
+            }
+            .section-icon-wrap::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: 10px;
+                opacity: 0.15;
+            }
+            .section-icon-blue::before {
+                background: var(--gcp-blue);
+            }
+            .section-icon-cyan::before {
+                background: var(--gcp-cyan);
+            }
+            .section-icon-green::before {
+                background: var(--gcp-green);
+            }
+            .section-icon-yellow::before {
+                background: var(--gcp-yellow);
+            }
+            .section-icon-red::before {
+                background: var(--gcp-red);
+            }
+            .section-meta {
+                flex: 1;
+            }
+            .section-number {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 10px;
+                color: var(--text-muted);
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+            .section-title-main {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 22px;
+                font-weight: 700;
+                letter-spacing: -0.01em;
+            }
+            .section-weight {
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 12px;
+                font-weight: 700;
+                background: rgba(26, 115, 232, 0.15);
+                border: 1px solid rgba(26, 115, 232, 0.3);
+                color: var(--gcp-blue-light);
+                white-space: nowrap;
+            }
+
+            /* TOPIC CARD */
+            .topic-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                margin-bottom: 24px;
+                overflow: hidden;
+                transition:
+                    border-color 0.2s,
+                    box-shadow 0.2s;
+            }
+            .topic-card:hover {
+                border-color: rgba(26, 115, 232, 0.35);
+                box-shadow: var(--card-shadow);
+            }
+            .topic-card-header {
+                padding: 20px 24px 16px;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                cursor: pointer;
+                user-select: none;
+                background: rgba(255, 255, 255, 0.01);
+            }
+            .topic-card-header:hover {
+                background: rgba(26, 115, 232, 0.04);
+            }
+            .topic-number {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 10px;
+                padding: 2px 7px;
+                border-radius: 4px;
+                background: rgba(26, 115, 232, 0.12);
+                color: var(--gcp-blue-light);
+                white-space: nowrap;
+            }
+            .topic-title {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 16px;
+                font-weight: 700;
+                flex: 1;
+                letter-spacing: -0.01em;
+            }
+            .topic-new-badge {
+                padding: 2px 8px;
+                border-radius: 20px;
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                background: rgba(251, 188, 4, 0.15);
+                border: 1px solid rgba(251, 188, 4, 0.4);
+                color: var(--gcp-yellow);
+            }
+            .topic-toggle {
+                font-size: 16px;
+                color: var(--text-muted);
+                transition: transform 0.2s;
+            }
+            .topic-card.collapsed .topic-toggle {
+                transform: rotate(-90deg);
+            }
+            .topic-body {
+                padding: 24px;
+            }
+            .topic-card.collapsed .topic-body {
+                display: none;
+            }
+
+            /* SUB TITLE */
+            .sub-title {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--text-primary);
+                margin: 24px 0 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .sub-title::before {
+                content: '';
+                display: block;
+                width: 3px;
+                height: 14px;
+                border-radius: 2px;
+                background: var(--accent-gradient);
+            }
+
+            /* TABLE */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 16px 0;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13px;
+            }
+            th {
+                background: rgba(26, 115, 232, 0.08);
+                color: var(--gcp-blue-light);
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 10px 14px;
+                text-align: left;
+                white-space: nowrap;
+                border-bottom: 1px solid var(--border);
+            }
+            td {
+                padding: 10px 14px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                vertical-align: top;
+                color: var(--text-secondary);
+            }
+            tr:last-child td {
+                border-bottom: none;
+            }
+            tr:hover td {
+                background: rgba(255, 255, 255, 0.02);
+            }
+            td strong {
+                color: var(--text-primary);
+                font-weight: 600;
+            }
+
+            /* CODE */
+            pre {
+                background: var(--code-bg);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 16px 18px;
+                overflow-x: auto;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 12px;
+                line-height: 1.7;
+                color: #a8d8a8;
+                margin: 14px 0;
+            }
+            pre .comment {
+                color: #4a7c59;
+            }
+            pre .flag {
+                color: #87ceeb;
+            }
+            pre .string {
+                color: #ffd700;
+            }
+            code:not(pre code) {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 11.5px;
+                background: var(--tag-bg);
+                color: var(--gcp-cyan);
+                padding: 1px 6px;
+                border-radius: 4px;
+                border: 1px solid rgba(0, 188, 212, 0.2);
+            }
+
+            /* DIAGRAM */
+            .diagram-wrap {
+                background: var(--bg-card2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 20px;
+                margin: 16px 0;
+                overflow-x: auto;
+            }
+            /* SVG は自然幅(width:auto)+maxWidth:100% のため flex item として中央寄せする */
+            .diagram-wrap .mermaid {
+                display: flex;
+                justify-content: center;
+            }
+            .diagram-label {
+                font-size: 10px;
+                font-family: 'JetBrains Mono', monospace;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .diagram-label::before {
+                content: '';
+                display: block;
+                width: 16px;
+                height: 1px;
+                background: var(--border);
+            }
+
+            /* CALLOUT */
+            .callout {
+                border-radius: 8px;
+                padding: 14px 16px;
+                margin: 14px 0;
+                display: flex;
+                gap: 12px;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+            .callout-icon {
+                font-size: 16px;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+            .callout-blue {
+                background: rgba(26, 115, 232, 0.08);
+                border: 1px solid rgba(26, 115, 232, 0.25);
+                color: var(--text-secondary);
+            }
+            .callout-yellow {
+                background: rgba(251, 188, 4, 0.07);
+                border: 1px solid rgba(251, 188, 4, 0.25);
+                color: var(--text-secondary);
+            }
+            .callout-red {
+                background: rgba(234, 67, 53, 0.07);
+                border: 1px solid rgba(234, 67, 53, 0.25);
+                color: var(--text-secondary);
+            }
+            .callout-green {
+                background: rgba(52, 168, 83, 0.07);
+                border: 1px solid rgba(52, 168, 83, 0.25);
+                color: var(--text-secondary);
+            }
+            .callout strong {
+                color: var(--text-primary);
+            }
+
+            /* BEST PRACTICE */
+            .bp-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .bp-card {
+                background: rgba(52, 168, 83, 0.05);
+                border: 1px solid rgba(52, 168, 83, 0.2);
+                border-radius: 8px;
+                padding: 14px 16px;
+                display: flex;
+                gap: 10px;
+                font-size: 12.5px;
+            }
+            .bp-num {
+                width: 22px;
+                height: 22px;
+                min-width: 22px;
+                border-radius: 50%;
+                background: rgba(52, 168, 83, 0.2);
+                color: var(--gcp-green);
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 10px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .bp-text {
+                color: var(--text-secondary);
+                line-height: 1.5;
+            }
+            .bp-text strong {
+                color: var(--gcp-green);
+            }
+
+            /* REF LINK */
+            .ref-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 11px;
+                color: var(--gcp-blue-light);
+                text-decoration: none;
+                padding: 3px 9px;
+                border-radius: 4px;
+                background: rgba(26, 115, 232, 0.1);
+                border: 1px solid rgba(26, 115, 232, 0.2);
+                transition: all 0.15s;
+                margin: 2px 3px;
+                font-family: 'JetBrains Mono', monospace;
+            }
+            .ref-link:hover {
+                background: rgba(26, 115, 232, 0.2);
+            }
+
+            /* CHECKLIST */
+            .checklist {
+                list-style: none;
+                margin: 12px 0;
+            }
+            .checklist li {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 6px 0;
+                font-size: 13px;
+                color: var(--text-secondary);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            }
+            .checklist li:last-child {
+                border-bottom: none;
+            }
+            .check-box {
+                width: 16px;
+                height: 16px;
+                min-width: 16px;
+                border: 1.5px solid var(--border);
+                border-radius: 3px;
+                margin-top: 3px;
+                background: rgba(52, 168, 83, 0.05);
+            }
+
+            /* PATTERN GRID */
+            .pattern-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 16px;
+                margin: 16px 0;
+            }
+            .pattern-card {
+                background: var(--bg-card2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+            .pattern-card-head {
+                padding: 10px 16px;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                border-bottom: 1px solid var(--border);
+            }
+            .ph-blue {
+                background: rgba(26, 115, 232, 0.08);
+                color: var(--gcp-blue-light);
+            }
+            .ph-cyan {
+                background: rgba(0, 188, 212, 0.08);
+                color: var(--gcp-cyan);
+            }
+            .ph-green {
+                background: rgba(52, 168, 83, 0.08);
+                color: var(--gcp-green);
+            }
+            .ph-yellow {
+                background: rgba(251, 188, 4, 0.08);
+                color: var(--gcp-yellow);
+            }
+            .pattern-row {
+                display: flex;
+                padding: 9px 16px;
+                gap: 10px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+                font-size: 12px;
+                align-items: baseline;
+            }
+            .pattern-row:last-child {
+                border-bottom: none;
+            }
+            .pattern-kw {
+                color: var(--text-muted);
+                flex: 1;
+                font-style: italic;
+            }
+            .pattern-ans {
+                color: var(--text-primary);
+                font-weight: 600;
+                text-align: right;
+                white-space: nowrap;
+            }
+            .pattern-ans.blue {
+                color: var(--gcp-blue-light);
+            }
+            .pattern-ans.cyan {
+                color: var(--gcp-cyan);
+            }
+            .pattern-ans.green {
+                color: var(--gcp-green);
+            }
+            .pattern-ans.yellow {
+                color: var(--gcp-yellow);
+            }
+
+            /* REFS GRID */
+            .refs-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 8px;
+                margin: 16px 0;
+            }
+            .ref-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 12px;
+                background: var(--bg-card2);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                text-decoration: none;
+                transition: all 0.15s;
+            }
+            .ref-item:hover {
+                border-color: var(--gcp-blue-light);
+                background: rgba(26, 115, 232, 0.08);
+            }
+            .ref-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: var(--gcp-blue-light);
+                flex-shrink: 0;
+            }
+            .ref-text {
+                font-size: 11.5px;
+                color: var(--text-secondary);
+            }
+            .ref-text strong {
+                color: var(--text-primary);
+                display: block;
+            }
+
+            /* SCROLL TOP */
+            #scroll-top {
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: var(--gcp-blue);
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.2s;
+                z-index: 200;
+                box-shadow: 0 4px 16px rgba(26, 115, 232, 0.4);
+            }
+            #scroll-top.visible {
+                opacity: 1;
+                pointer-events: auto;
+            }
+            #progress-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 2px;
+                background: var(--accent-gradient);
+                z-index: 999;
+                transition: width 0.1s;
+                width: 0;
+            }
+
+            @media (max-width: 900px) {
+                :root {
+                    --sidebar-w: 240px;
+                }
+                .hero,
+                .content {
+                    padding-left: 32px;
+                    padding-right: 32px;
+                }
+                .changes-banner {
+                    margin-left: 32px;
+                    margin-right: 32px;
+                }
+            }
+            @media (max-width: 700px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                }
+                .main {
+                    margin-left: 0;
+                }
+                .hero,
+                .content {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+                .changes-banner {
+                    margin-left: 20px;
+                    margin-right: 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="progress-bar"></div>
+
+        <!-- SIDEBAR -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">Google Cloud</div>
+                <div class="sidebar-title">ACE Section 2<br />Study Guide</div>
+                <div class="sidebar-badge">2026年6月版対応</div>
+            </div>
+            <div class="sidebar-score">
+                <div class="score-label">試験配点</div>
+                <div class="score-value">
+                    30<span style="font-size: 16px; color: var(--text-muted)">%</span>
+                </div>
+                <div class="score-sub">最大配点ドメイン</div>
+                <div class="score-bar"><div class="score-fill"></div></div>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-label">Section 2.1 — Compute</div>
+                <a href="#s21" class="nav-item"
+                    ><span class="nav-icon icon-compute">2.1</span>コンピューティング選択</a
+                >
+                <a href="#s21-disk" class="nav-item"
+                    ><span class="nav-icon icon-compute">HD</span>Hyperdisk / ストレージ</a
+                >
+                <a href="#s21-mig" class="nav-item"
+                    ><span class="nav-icon icon-compute">MIG</span>Managed Instance Group</a
+                >
+                <a href="#s21-oslogin" class="nav-item"
+                    ><span class="nav-icon icon-compute">OS</span>OS Login / VM Manager</a
+                >
+                <a href="#s21-spot" class="nav-item"
+                    ><span class="nav-icon icon-compute">Spt</span>Spot VM / カスタムタイプ</a
+                >
+                <a href="#s21-gke" class="nav-item"
+                    ><span class="nav-icon icon-compute">GKE</span>GKE 展開設定</a
+                >
+                <a href="#s21-serverless" class="nav-item"
+                    ><span class="nav-icon icon-compute">Run</span>サーバーレス / Eventarc</a
+                >
+                <a href="#s21-gpu" class="nav-item"
+                    ><span class="nav-icon icon-compute">GPU</span>GPU / TPU 選択基準</a
+                >
+                <a href="#s21-agent" class="nav-item"
+                    ><span class="nav-icon icon-compute">AI</span>Agent Runtime 🆕</a
+                >
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-label">Section 2.2 — Storage &amp; Data</div>
+                <a href="#s22-db" class="nav-item"
+                    ><span class="nav-icon icon-storage">DB</span>データベース選択</a
+                >
+                <a href="#s22-storage" class="nav-item"
+                    ><span class="nav-icon icon-storage">GCS</span>ストレージ選択 🆕</a
+                >
+                <a href="#s22-load" class="nav-item"
+                    ><span class="nav-icon icon-storage">ETL</span>データロード / 冗長性</a
+                >
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-label">Section 2.3 — Networking</div>
+                <a href="#s23-vpc" class="nav-item"
+                    ><span class="nav-icon icon-network">VPC</span>VPC / サブネット設計</a
+                >
+                <a href="#s23-fw" class="nav-item"
+                    ><span class="nav-icon icon-network">FW</span>FW / Cloud NGFW 🆕</a
+                >
+                <a href="#s23-conn" class="nav-item"
+                    ><span class="nav-icon icon-network">Cnx</span>ネットワーク接続</a
+                >
+                <a href="#s23-lb" class="nav-item"
+                    ><span class="nav-icon icon-network">LB</span>ロードバランサ選定</a
+                >
+                <a href="#s23-tier" class="nav-item"
+                    ><span class="nav-icon icon-network">Tier</span>Network Service Tier 🆕</a
+                >
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-label">Section 2.4 — IaC &amp; AI</div>
+                <a href="#s24-iac" class="nav-item"
+                    ><span class="nav-icon icon-iac">IaC</span>Terraform / Fabric FAST 🆕</a
+                >
+                <a href="#s24-ai" class="nav-item"
+                    ><span class="nav-icon icon-iac">AI</span>AI支援ツール 🆕</a
+                >
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-label">試験対策</div>
+                <a href="#summary" class="nav-item"
+                    ><span class="nav-icon icon-summary">Sum</span>頻出パターン別 解法</a
+                >
+                <a href="#checklist" class="nav-item"
+                    ><span class="nav-icon icon-summary">✓</span>直前チェックリスト</a
+                >
+                <a href="#refs" class="nav-item"
+                    ><span class="nav-icon icon-summary">🔗</span>参考リソース一覧</a
+                >
+            </div>
+        </nav>
+
+        <!-- MAIN -->
+        <main class="main">
+            <section class="hero">
+                <div class="hero-bg"></div>
+                <div class="hero-grid"></div>
+                <div class="hero-eyebrow">
+                    <span class="hero-tag">ACE 試験対策</span>
+                    <span class="hero-tag green">2026年6月版 試験ガイド対応</span>
+                    <span class="hero-tag yellow">中級〜上級者向け</span>
+                </div>
+                <h1 class="hero-title">
+                    Section 2: <span class="accent">Planning &amp;</span><br />
+                    <span class="accent">Implementing</span> a Cloud Solution
+                </h1>
+                <p class="hero-sub">
+                    Google Cloud ACE
+                    試験の最大配点ドメイン（約30%）を完全網羅。2026年6月30日施行の最新試験ガイドに準拠。Hyperdisk・Cloud
+                    NGFW・Fabric FAST・Agent Runtime など新規追加トピックも完全カバー。
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">~30%</span
+                        ><span class="hero-stat-label">試験全体の配点比率</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">4</span
+                        ><span class="hero-stat-label">サブセクション</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">6+</span
+                        ><span class="hero-stat-label">2026年新規追加トピック</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">30+</span
+                        ><span class="hero-stat-label">公式ドキュメントリンク</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="changes-banner">
+                <div class="changes-icon">⚠️</div>
+                <div style="flex: 1">
+                    <div class="changes-title">2026年6月版 試験ガイド 主要変更点</div>
+                    <div class="changes-grid">
+                        <div class="change-item">
+                            <div class="change-dot"></div>
+                            <span class="change-label">[Compute]</span
+                            ><span class="change-desc"
+                                >Agent Runtime on Gemini Enterprise Agent Platform 追加</span
+                            >
+                        </div>
+                        <div class="change-item">
+                            <div class="change-dot"></div>
+                            <span class="change-label">[Storage]</span
+                            ><span class="change-desc"
+                                >Hyperdisk・Managed Lustre・NetApp Volumes 追加</span
+                            >
+                        </div>
+                        <div class="change-item">
+                            <div class="change-dot"></div>
+                            <span class="change-label">[Network]</span
+                            ><span class="change-desc"
+                                >Cloud NGFW・Secure Tags・Network Service Tier 追加</span
+                            >
+                        </div>
+                        <div class="change-item">
+                            <div class="change-dot"></div>
+                            <span class="change-label">[IaC]</span
+                            ><span class="change-desc"
+                                >Fabric FAST・Gemini CLI・Application Design Center 追加</span
+                            >
+                        </div>
+                        <div class="change-item">
+                            <div class="change-dot"></div>
+                            <span class="change-label">[GPU/TPU]</span
+                            ><span class="change-desc">GPU/TPU の選択基準が明示化</span>
+                        </div>
+                        <div class="change-item">
+                            <div class="change-dot"></div>
+                            <span class="change-label">[Eventarc]</span
+                            ><span class="change-desc"
+                                >イベント処理プラットフォームとして明示追加</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== CONTENT ==================== -->
+            <div class="content">
+                <!-- ===== SECTION 2.1 ===== -->
+                <div id="s21" class="section-header">
+                    <div class="section-icon-wrap section-icon-blue">💻</div>
+                    <div class="section-meta">
+                        <div class="section-number">Section 2.1</div>
+                        <div class="section-title-main">コンピューティングリソースの計画と実装</div>
+                    </div>
+                    <span class="section-weight">~12–14問</span>
+                </div>
+
+                <!-- 2.1-A -->
+                <div class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-A</span>
+                        <span class="topic-title"
+                            >コンピューティングサービスの選択とマシンファミリー</span
+                        >
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="sub-title">サービス選択フローチャート</div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ ワークロード種別によるサービス選択</div>
+                            <div class="mermaid" id="diag-1"></div>
+                        </div>
+                        <div class="sub-title">コンピューティングサービス比較表</div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>サービス</th>
+                                    <th>管理レベル</th>
+                                    <th>課金単位</th>
+                                    <th>最適なユースケース</th>
+                                    <th>特記事項</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Compute Engine</strong></td>
+                                    <td>IaaS（完全制御）</td>
+                                    <td>vCPU/時 + メモリ/時</td>
+                                    <td>レガシー移行、特定 OS・ライセンス</td>
+                                    <td>OS カーネル変更が可能</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Spot VM</strong></td>
+                                    <td>IaaS（完全制御）</td>
+                                    <td>最大 91% 割引</td>
+                                    <td>バッチ、ML トレーニング、レンダリング</td>
+                                    <td>プリエンプト（強制停止）あり</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GKE Autopilot</strong></td>
+                                    <td>フルマネージド</td>
+                                    <td>Pod リソース（vCPU/メモリ）</td>
+                                    <td>マイクロサービス、API サービス</td>
+                                    <td><strong>デフォルト推奨</strong>、セキュリティ自動強化</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GKE Standard</strong></td>
+                                    <td>半マネージド</td>
+                                    <td>ノード（VM）単位</td>
+                                    <td>特権コンテナ、DaemonSet、GPU/TPU</td>
+                                    <td>ノードプールを直接管理</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Run</strong></td>
+                                    <td>サーバーレス</td>
+                                    <td>リクエスト / CPU 秒</td>
+                                    <td>HTTP API、イベント処理、ゼロスケール</td>
+                                    <td>第2世代推奨、Direct VPC Egress</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Run Functions</strong></td>
+                                    <td>サーバーレス</td>
+                                    <td>呼び出し回数 + 時間</td>
+                                    <td>軽量グルーロジック、Webhook</td>
+                                    <td>イベント駆動の最小単位</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Agent Runtime</strong></td>
+                                    <td>フルマネージド</td>
+                                    <td>vCPU 時 + GiB 時</td>
+                                    <td>AI エージェントの実行基盤</td>
+                                    <td>Python フレームワーク対応</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="callout callout-yellow">
+                            <span class="callout-icon">⚠️</span>
+                            <div>
+                                <strong>試験の重要ポイント:</strong> GPU/TPU 搭載 VM は
+                                <code>--maintenance-policy=TERMINATE</code>
+                                が強制されます（ライブマイグレーション不可）。
+                            </div>
+                        </div>
+                        <div class="callout callout-red">
+                            <span class="callout-icon">🚨</span>
+                            <div>
+                                <strong>試験の罠:</strong> OS Login
+                                が有効な場合、プロジェクトレベルのメタデータ SSH
+                                キーは<strong>無視</strong>されます。
+                            </div>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/connect/ssh-best-practices/login-access"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 SSH ベストプラクティス</a
+                        >
+                        <a
+                            href="https://cloud.google.com/blog/topics/developers-practitioners/where-should-i-run-my-stuff-choosing-google-cloud-compute-option"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 コンピューティング選択ガイド</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-B Hyperdisk -->
+                <div id="s21-disk" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-B</span>
+                        <span class="topic-title"
+                            >ストレージ選択 — Hyperdisk / Persistent Disk / Local SSD</span
+                        >
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="callout callout-blue">
+                            <span class="callout-icon">💡</span>
+                            <div>
+                                <strong>Hyperdisk の最大優位点:</strong>
+                                性能（IOPS/スループット）と容量を独立してプロビジョニング可能。Persistent
+                                Disk は容量を増やさないと性能が上がらないが、Hyperdisk
+                                はサイズを変えずに IOPS だけ増減できる。
+                            </div>
+                        </div>
+                        <div class="sub-title">ストレージ選択フローチャート</div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ データ永続性・性能要件によるストレージ選択
+                            </div>
+                            <div class="mermaid" id="diag-2"></div>
+                        </div>
+                        <div class="sub-title">ストレージ種別詳細比較</div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>ストレージタイプ</th>
+                                    <th>最大 IOPS</th>
+                                    <th>最大スループット</th>
+                                    <th>永続性</th>
+                                    <th>特徴・用途</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hyperdisk Balanced</strong></td>
+                                    <td>160,000</td>
+                                    <td>2,400 MiB/s</td>
+                                    <td>✅ 永続</td>
+                                    <td>
+                                        <strong>★推奨</strong>。ベースライン 3,000 IOPS / 140 MiB/s
+                                        が無料
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hyperdisk Extreme</strong></td>
+                                    <td>350,000</td>
+                                    <td>5,000 MiB/s</td>
+                                    <td>✅ 永続</td>
+                                    <td>OLTP、ミッションクリティカル DB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hyperdisk Throughput</strong></td>
+                                    <td>低い</td>
+                                    <td>2,400 MiB/s</td>
+                                    <td>✅ 永続</td>
+                                    <td>大規模分析、低コスト</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hyperdisk ML</strong></td>
+                                    <td>高（読み取り）</td>
+                                    <td>高（読み取り）</td>
+                                    <td>✅ 永続</td>
+                                    <td>AI/ML モデルの高速配信、読み取り専用共有</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Balanced Persistent Disk</strong></td>
+                                    <td>80,000</td>
+                                    <td>1,200 MiB/s</td>
+                                    <td>✅ 永続</td>
+                                    <td>従来型。容量に依存した性能</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SSD Persistent Disk</strong></td>
+                                    <td>100,000</td>
+                                    <td>1,200 MiB/s</td>
+                                    <td>✅ 永続</td>
+                                    <td>高 IOPS 従来型</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Standard Persistent Disk</strong></td>
+                                    <td>7,500</td>
+                                    <td>400 MiB/s</td>
+                                    <td>✅ 永続</td>
+                                    <td>最安。バッチ、コールドデータ</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Local SSD</strong></td>
+                                    <td>2,400,000+</td>
+                                    <td>超高速</td>
+                                    <td>❌ 一時</td>
+                                    <td>VM停止でデータ消失。キャッシュ、一時処理のみ</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <pre><span class="comment"># Hyperdisk Balanced の作成例（IOPS とスループットを独立指定）</span>
+gcloud compute disks create my-hyperdisk \
+  <span class="flag">--type</span>=hyperdisk-balanced \
+  <span class="flag">--size</span>=500GB \
+  <span class="flag">--provisioned-iops</span>=10000 \
+  <span class="flag">--provisioned-throughput</span>=500 \
+  <span class="flag">--zone</span>=asia-northeast1-a</pre>
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/disks/hyperdisks"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Hyperdisk 概要</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/disks"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 ストレージ種別選択ガイド</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-C MIG -->
+                <div id="s21-mig" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-C</span>
+                        <span class="topic-title"
+                            >Managed Instance Group (MIG) — 自動スケールと高可用性</span
+                        >
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ MIG のアーキテクチャと自動機能</div>
+                            <div class="mermaid" id="diag-3"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>ゾーン MIG</th>
+                                    <th>リージョン MIG</th>
+                                </tr>
+                                <tr>
+                                    <td>展開範囲</td>
+                                    <td>1ゾーン</td>
+                                    <td>最大3ゾーンに均等分散</td>
+                                </tr>
+                                <tr>
+                                    <td>耐障害性</td>
+                                    <td>低い（ゾーン障害で全停止）</td>
+                                    <td><strong>高い（1ゾーン障害でも継続）</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>推奨環境</td>
+                                    <td>開発・テスト</td>
+                                    <td><strong>本番環境（必須）</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <pre><span class="comment"># インスタンステンプレート作成 → リージョン MIG → オートスケール</span>
+gcloud compute instance-templates create web-template \
+  <span class="flag">--machine-type</span>=n2-standard-4 <span class="flag">--boot-disk-type</span>=hyperdisk-balanced
+
+gcloud compute instance-groups managed create web-mig \
+  <span class="flag">--template</span>=web-template <span class="flag">--size</span>=3 <span class="flag">--region</span>=asia-northeast1
+
+gcloud compute instance-groups managed set-autoscaling web-mig \
+  <span class="flag">--region</span>=asia-northeast1 <span class="flag">--max-num-replicas</span>=10 \
+  <span class="flag">--min-num-replicas</span>=3 <span class="flag">--target-cpu-utilization</span>=0.6</pre>
+                        <div class="bp-grid">
+                            <div class="bp-card">
+                                <div class="bp-num">1</div>
+                                <div class="bp-text">
+                                    <strong>リージョン MIG を選択</strong> —
+                                    ゾーン障害への耐性を確保（本番環境必須）
+                                </div>
+                            </div>
+                            <div class="bp-card">
+                                <div class="bp-num">2</div>
+                                <div class="bp-text">
+                                    <strong>max-num-replicas に上限</strong> — コスト暴走を防止
+                                </div>
+                            </div>
+                            <div class="bp-card">
+                                <div class="bp-num">3</div>
+                                <div class="bp-text">
+                                    <strong>ローリングアップデートは max-unavailable=0</strong> —
+                                    ゼロダウンタイムを実現
+                                </div>
+                            </div>
+                            <div class="bp-card">
+                                <div class="bp-num">4</div>
+                                <div class="bp-text">
+                                    <strong>Spot VM との組み合わせ</strong> — バッチ処理コストを最大
+                                    91% 削減
+                                </div>
+                            </div>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 MIG 作成ガイド</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-D OS Login -->
+                <div id="s21-oslogin" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-D</span>
+                        <span class="topic-title"
+                            >OS Login と VM Manager（OS パッチ・インベントリ・設定管理）</span
+                        >
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ OS Login による IAM 統合アクセス管理フロー
+                            </div>
+                            <div class="mermaid" id="diag-4"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>OS Login ロール</th>
+                                    <th>sudo 権限</th>
+                                    <th>ユースケース</th>
+                                </tr>
+                                <tr>
+                                    <td><code>roles/compute.osLogin</code></td>
+                                    <td>なし</td>
+                                    <td>一般オペレーター</td>
+                                </tr>
+                                <tr>
+                                    <td><code>roles/compute.osAdminLogin</code></td>
+                                    <td><strong>あり</strong></td>
+                                    <td>システム管理者</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <pre><span class="comment"># OS Login + 2FA 有効化（プロジェクト全体）</span>
+gcloud compute project-info add-metadata \
+  <span class="flag">--metadata</span> enable-oslogin=TRUE,enable-oslogin-2fa=TRUE
+
+<span class="comment"># VM Manager を有効化</span>
+gcloud compute project-info add-metadata \
+  <span class="flag">--metadata</span>=enable-osconfig=TRUE</pre>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>VM Manager 機能</th>
+                                    <th>説明</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>OS パッチ管理</strong></td>
+                                    <td>パッチの定期スケジュール、ゾーン単位のローリング適用</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OS インベントリ管理</strong></td>
+                                    <td>インストール済みパッケージ・OS 情報の自動収集</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OS 設定管理</strong></td>
+                                    <td>エージェントの大規模展開、設定の強制適用</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/oslogin/set-up-oslogin"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 OS Login 設定</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/compute/vm-manager/docs/patch"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 VM Manager OS パッチ</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-E Spot VM -->
+                <div id="s21-spot" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-E</span>
+                        <span class="topic-title">Spot VM とカスタムマシンタイプ</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ Spot VM の仕組みとフォールトトレラント設計
+                            </div>
+                            <div class="mermaid" id="diag-5"></div>
+                        </div>
+                        <pre><span class="comment"># Spot VM の作成</span>
+gcloud compute instances create my-spot-vm \
+  <span class="flag">--machine-type</span>=n2-standard-4 \
+  <span class="flag">--provisioning-model</span>=SPOT \
+  <span class="flag">--instance-termination-action</span>=STOP \
+  <span class="flag">--zone</span>=asia-northeast1-a
+
+<span class="comment"># カスタムマシンタイプ（6 vCPU、20GB メモリ）</span>
+gcloud compute instances create custom-vm \
+  <span class="flag">--custom-cpu</span>=6 <span class="flag">--custom-memory</span>=20GB \
+  <span class="flag">--zone</span>=asia-northeast1-a</pre>
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/instances/create-use-spot"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Spot VM 作成と使用</a
+                        >
+                        <a
+                            href="https://cloud.google.com/blog/products/compute/google-cloud-spot-vm-use-cases-and-best-practices"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Spot VM ベストプラクティス</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-F GKE -->
+                <div id="s21-gke" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-F</span>
+                        <span class="topic-title"
+                            >GKE の展開設定 — Autopilot / Standard / プライベートクラスタ</span
+                        >
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ GKE Autopilot vs Standard の選択フロー
+                            </div>
+                            <div class="mermaid" id="diag-6"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>Autopilot</th>
+                                    <th>Standard</th>
+                                    <th>説明</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>ノード管理</strong></td>
+                                    <td>Google が自動管理</td>
+                                    <td>ユーザーが管理</td>
+                                    <td>Autopilot は OS パッチも自動</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>課金単位</strong></td>
+                                    <td>Pod リソース</td>
+                                    <td>ノード（VM）</td>
+                                    <td>Autopilot はアイドルコストなし</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>特権コンテナ</strong></td>
+                                    <td>❌ 不可</td>
+                                    <td>✅ 可能</td>
+                                    <td>Standard のみ</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Workload Identity</strong></td>
+                                    <td>自動有効</td>
+                                    <td>手動設定</td>
+                                    <td>JSON キーなしで GCP API アクセス</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GPU/TPU</strong></td>
+                                    <td>制限あり</td>
+                                    <td>✅ 完全対応</td>
+                                    <td>カスタム GPU ノードは Standard</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <pre><span class="comment"># Autopilot クラスタの作成（推奨）</span>
+gcloud container clusters create-auto my-autopilot-cluster \
+  <span class="flag">--region</span>=asia-northeast1 <span class="flag">--enable-private-nodes</span>
+
+<span class="comment"># kubectl インストールとクラスタ認証</span>
+gcloud components install kubectl
+gcloud container clusters get-credentials my-cluster <span class="flag">--region</span>=asia-northeast1</pre>
+                        <a
+                            href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 GKE Autopilot セキュリティ</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/kubernetes-engine/docs/resources/autopilot-standard-feature-comparison"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Autopilot vs Standard 比較</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-G Cloud Run -->
+                <div id="s21-serverless" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-G</span>
+                        <span class="topic-title"
+                            >サーバーレス — Cloud Run / Cloud Run Functions / Eventarc</span
+                        >
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ Cloud Run ネットワーキングアーキテクチャ（第2世代）
+                            </div>
+                            <div class="mermaid" id="diag-7"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>トリガー種別</th>
+                                    <th>ユースケース</th>
+                                    <th>設定方法</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pub/Sub メッセージ</strong></td>
+                                    <td>非同期処理、キューイング</td>
+                                    <td>Eventarc / 直接 Pub/Sub push</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Storage 変更通知</strong></td>
+                                    <td>ファイルアップロード処理</td>
+                                    <td>Eventarc</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>HTTP リクエスト</strong></td>
+                                    <td>REST API、Webhook</td>
+                                    <td>直接 HTTPS エンドポイント</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Scheduler</strong></td>
+                                    <td>定期バッチ処理</td>
+                                    <td>Scheduler → Pub/Sub → Cloud Run</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <pre><span class="comment"># Cloud Run のデプロイ（第2世代 + Direct VPC Egress）</span>
+gcloud run deploy my-service \
+  <span class="flag">--image</span>=gcr.io/PROJECT_ID/my-app:latest \
+  <span class="flag">--region</span>=asia-northeast1 \
+  <span class="flag">--execution-environment</span>=gen2 \
+  <span class="flag">--vpc-egress</span>=all-traffic <span class="flag">--network</span>=my-vpc \
+  <span class="flag">--min-instances</span>=1 <span class="flag">--max-instances</span>=100</pre>
+                        <a
+                            href="https://docs.cloud.google.com/run/docs/configuring/networking-best-practices"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Cloud Run ネットワーキング</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-H GPU -->
+                <div id="s21-gpu" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-H</span>
+                        <span class="topic-title">GPU と TPU の選択基準</span>
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ GPU vs TPU の選択フローチャート</div>
+                            <div class="mermaid" id="diag-8"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>アクセラレータ</th>
+                                    <th>マシンファミリー</th>
+                                    <th>ユースケース</th>
+                                    <th>特記事項</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>NVIDIA L4</strong></td>
+                                    <td>G2</td>
+                                    <td>コスト効率の良い推論、動画処理</td>
+                                    <td>汎用 GPU の中でコスパ最高</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NVIDIA A100</strong></td>
+                                    <td>A2</td>
+                                    <td>大規模 ML トレーニング、科学計算</td>
+                                    <td>HBM メモリ搭載</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NVIDIA H100</strong></td>
+                                    <td>A3</td>
+                                    <td>最先端 LLM トレーニング</td>
+                                    <td>最高性能 GPU</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud TPU v4/v5</strong></td>
+                                    <td>専用 Pod</td>
+                                    <td>大規模 TF/JAX モデル</td>
+                                    <td>Google 独自設計、超大規模 LLM</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="callout callout-yellow">
+                            <span class="callout-icon">⚠️</span>
+                            <div>
+                                <strong>必須:</strong> GPU/TPU 搭載 VM は
+                                <code>--maintenance-policy=TERMINATE</code>
+                                が強制です（ライブマイグレーション不可）。
+                            </div>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/gpus"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 GPU ドキュメント</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.1-I Agent Runtime -->
+                <div id="s21-agent" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.1-I</span>
+                        <span class="topic-title"
+                            >Agent Runtime on Gemini Enterprise Agent Platform</span
+                        >
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="callout callout-blue">
+                            <span class="callout-icon">🤖</span>
+                            <div>
+                                2026年6月版の試験ガイドで新規追加。旧名: Vertex AI Agent
+                                Engine。Python フレームワーク（LangChain、ADK 等）で構築した AI
+                                エージェントをフルマネージドで実行するプラットフォームです。
+                            </div>
+                        </div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ Agent Runtime のアーキテクチャ</div>
+                            <div class="mermaid" id="diag-9"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>機能</th>
+                                    <th>説明</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>マネージドランタイム</strong></td>
+                                    <td>コンテナ化・デプロイを自動処理、スケーリングも管理不要</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sessions</strong></td>
+                                    <td>会話履歴を管理、マルチターン会話をサポート</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Memory Bank</strong></td>
+                                    <td>会話から長期記憶を抽出、パーソナライズを実現</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>課金モデル</strong></td>
+                                    <td>vCPU 時 + GiB 時（使用リソースに応じた課金）</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <a
+                            href="https://cloud.google.com/products/gemini-enterprise-agent-platform"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Agent Platform 公式ページ</a
+                        >
+                    </div>
+                </div>
+
+                <!-- ===== SECTION 2.2 ===== -->
+                <div id="s22-db" class="section-header">
+                    <div class="section-icon-wrap section-icon-cyan">🗄️</div>
+                    <div class="section-meta">
+                        <div class="section-number">Section 2.2</div>
+                        <div class="section-title-main">
+                            ストレージとデータソリューションの計画と実装
+                        </div>
+                    </div>
+                    <span class="section-weight">~8–10問</span>
+                </div>
+
+                <!-- 2.2-A DB -->
+                <div class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.2-A</span>
+                        <span class="topic-title">データベースサービスの選択と展開</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ データベース選択フローチャート</div>
+                            <div class="mermaid" id="diag-10"></div>
+                        </div>
+                        <div class="sub-title">データベースサービス完全比較表</div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>サービス</th>
+                                    <th>種別</th>
+                                    <th>スケール</th>
+                                    <th>整合性</th>
+                                    <th>ユースケース</th>
+                                    <th>2026 新機能</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud SQL</strong></td>
+                                    <td>リレーショナル</td>
+                                    <td>中規模</td>
+                                    <td>強整合性</td>
+                                    <td>Web アプリ、ERP</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Spanner</strong></td>
+                                    <td>リレーショナル</td>
+                                    <td>グローバル水平</td>
+                                    <td>外部整合性</td>
+                                    <td>金融、グローバル在庫</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>AlloyDB</strong></td>
+                                    <td>リレーショナル（PG互換）</td>
+                                    <td>大規模</td>
+                                    <td>強整合性</td>
+                                    <td>HTAP、高性能 OLTP</td>
+                                    <td>pgvector ベクトル検索</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Firestore</strong></td>
+                                    <td>ドキュメント型</td>
+                                    <td>自動</td>
+                                    <td>強整合性</td>
+                                    <td>モバイル、IoT</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Bigtable</strong></td>
+                                    <td>ワイドカラム型</td>
+                                    <td>ペタバイト</td>
+                                    <td>結果整合性</td>
+                                    <td>時系列、IoT、広告</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Memorystore</strong></td>
+                                    <td>インメモリ</td>
+                                    <td>中規模</td>
+                                    <td>—</td>
+                                    <td>キャッシュ、セッション</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>BigQuery</strong></td>
+                                    <td>DWH</td>
+                                    <td>ペタバイト</td>
+                                    <td>—</td>
+                                    <td>分析、BI、ML</td>
+                                    <td>BigQuery ML、Omni</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Managed Kafka</strong></td>
+                                    <td>ストリーミング</td>
+                                    <td>大規模</td>
+                                    <td>—</td>
+                                    <td>Kafka 互換ストリーミング</td>
+                                    <td><strong>★2026年新サービス</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <a
+                            href="https://cloud.google.com/blog/topics/developers-practitioners/your-google-cloud-database-options-explained"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 DB 選定ガイド（ブログ）</a
+                        >
+                        <a
+                            href="https://cloud.google.com/managed-kafka/docs/overview"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Managed Kafka</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.2-B Storage -->
+                <div id="s22-storage" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.2-B</span>
+                        <span class="topic-title"
+                            >ストレージサービス — Cloud Storage / Filestore / Managed Lustre /
+                            NetApp Volumes</span
+                        >
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="sub-title">Cloud Storage ストレージクラスの選択</div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ アクセス頻度によるストレージクラス選択
+                            </div>
+                            <div class="mermaid" id="diag-11"></div>
+                        </div>
+                        <div class="sub-title">ファイルストレージサービスの比較（2026年版）</div>
+                        <div class="callout callout-blue">
+                            <span class="callout-icon">💡</span>
+                            <div>
+                                2026年版では <strong>Google Cloud Managed Lustre</strong> と
+                                <strong>Google Cloud NetApp Volumes</strong>
+                                が試験範囲に追加されました。
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>サービス</th>
+                                    <th>プロトコル</th>
+                                    <th>パフォーマンス</th>
+                                    <th>ユースケース</th>
+                                    <th>特徴</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Filestore</strong></td>
+                                    <td>NFS</td>
+                                    <td>高い</td>
+                                    <td>GKE 共有ストレージ、CMS</td>
+                                    <td>スケール: GiB〜100TiB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Managed Lustre</strong></td>
+                                    <td>Lustre（並列FS）</td>
+                                    <td>超高速（ペタバイト）</td>
+                                    <td>HPC、AI/ML トレーニング、大規模科学計算</td>
+                                    <td>複数 VM からの並列 I/O アクセス</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NetApp Volumes</strong></td>
+                                    <td>NFS / SMB / iSCSI</td>
+                                    <td>高い（複数ティア）</td>
+                                    <td>エンタープライズ、Windows/Linux 混在</td>
+                                    <td>ONTAP 互換、スナップショット/レプリケーション内蔵</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ ファイルストレージ選択フローチャート</div>
+                            <div class="mermaid" id="diag-12"></div>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/storage/docs/best-practices"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Cloud Storage ベストプラクティス</a
+                        >
+                        <a
+                            href="https://cloud.google.com/products/managed-lustre"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Managed Lustre</a
+                        >
+                        <a
+                            href="https://cloud.google.com/netapp-volumes"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 NetApp Volumes</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.2-C Data Load & Redundancy -->
+                <div id="s22-load" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.2-C</span>
+                        <span class="topic-title">データのロード方法とマルチリージョン冗長性</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="sub-title">データロード手法の比較</div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>方法</th>
+                                    <th>ユースケース</th>
+                                    <th>特徴</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>gcloud storage cp</strong></td>
+                                    <td>小〜中規模のファイル転送</td>
+                                    <td>シンプル、スクリプト化が容易</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Storage からのロード</strong></td>
+                                    <td>BigQuery、Bigtable への一括ロード</td>
+                                    <td><strong>最も効率的なバルクロード手法</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Storage Transfer Service</strong></td>
+                                    <td>他クラウド/オンプレミスからの移行</td>
+                                    <td>スケジュール設定、大規模データ移行</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dataflow</strong></td>
+                                    <td>ストリーミング/バッチ ETL</td>
+                                    <td>リアルタイム変換、複雑なパイプライン</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>BigQuery Data Transfer Service</strong></td>
+                                    <td>SaaS からの定期取り込み</td>
+                                    <td>Google Analytics、Ads 等と統合</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="sub-title">マルチリージョン冗長性の設計パターン</div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ SLA / RPO 要件によるリージョン冗長性の選択
+                            </div>
+                            <div class="mermaid" id="diag-13"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>サービス</th>
+                                    <th>Single Region</th>
+                                    <th>Dual Region</th>
+                                    <th>Multi Region</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Storage</strong></td>
+                                    <td>✅</td>
+                                    <td>✅（2リージョン）</td>
+                                    <td>✅（US/EU/ASIA）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud SQL</strong></td>
+                                    <td>HA（同一リージョン2ゾーン）</td>
+                                    <td>クロスリージョンレプリカ（読み取り専用）</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Spanner</strong></td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅（真のグローバル分散）</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Firestore</strong></td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>✅</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== SECTION 2.3 ===== -->
+                <div id="s23-vpc" class="section-header">
+                    <div class="section-icon-wrap section-icon-green">🌐</div>
+                    <div class="section-meta">
+                        <div class="section-number">Section 2.3</div>
+                        <div class="section-title-main">ネットワークリソースの計画と実装</div>
+                    </div>
+                    <span class="section-weight">~8–10問</span>
+                </div>
+
+                <!-- 2.3-A VPC -->
+                <div class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.3-A</span>
+                        <span class="topic-title"
+                            >VPC とサブネットの設計 — Shared VPC / VPC Peering</span
+                        >
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>VPC モード</th>
+                                    <th>説明</th>
+                                    <th>推奨用途</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Auto Mode</strong></td>
+                                    <td>各リージョンにサブネットを自動作成（10.128.0.0/9）</td>
+                                    <td>学習・PoC</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Custom Mode</strong></td>
+                                    <td>サブネットの IP レンジを手動設計</td>
+                                    <td><strong>本番環境（必須）</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ Shared VPC vs VPC Network Peering の比較
+                            </div>
+                            <div class="mermaid" id="diag-14"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>比較項目</th>
+                                    <th>Shared VPC</th>
+                                    <th>VPC Network Peering</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>管理の一元化</strong></td>
+                                    <td>✅ ホストプロジェクトで集中管理</td>
+                                    <td>❌ 各 VPC で個別管理</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>推移性</strong></td>
+                                    <td>✅ サービスプロジェクト全体でアクセス</td>
+                                    <td>
+                                        ❌ <strong>推移的でない</strong>（A-B-C は A-C 通信不可）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>異組織間</strong></td>
+                                    <td>❌ 同一組織内のみ</td>
+                                    <td>✅ 異組織間も可能</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IP 重複</strong></td>
+                                    <td>管理可能</td>
+                                    <td>❌ 重複した IP レンジは Peering 不可</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="callout callout-red">
+                            <span class="callout-icon">🚨</span>
+                            <div>
+                                <strong>試験の最頻出トラップ:</strong> VPC Peering
+                                は推移的ではありません。VPC A↔B、B↔C でも A と C
+                                は直接通信できません。A-C 間も通信させるには追加の Peering
+                                が必要です。
+                            </div>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/vpc/docs/shared-vpc"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Shared VPC</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 VPC 設計ベストプラクティス</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.3-B Cloud NGFW -->
+                <div id="s23-fw" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.3-B</span>
+                        <span class="topic-title"
+                            >VPC ファイアウォールと Cloud NGFW — Secure Tags</span
+                        >
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ Cloud NGFW のティア構成</div>
+                            <div class="mermaid" id="diag-15"></div>
+                        </div>
+                        <div class="sub-title">ネットワークタグ vs セキュアタグ（Cloud NGFW）</div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>比較項目</th>
+                                    <th>ネットワークタグ（従来）</th>
+                                    <th>セキュアタグ（Cloud NGFW）</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>管理</strong></td>
+                                    <td>VM のメタデータに直接設定</td>
+                                    <td>組織/プロジェクトレベルで IAM 管理</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>セキュリティ</strong></td>
+                                    <td>ユーザーが自由に変更可能</td>
+                                    <td><strong>タグの付与・変更に IAM 権限が必要</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>スコープ</strong></td>
+                                    <td>ネットワーク内のみ</td>
+                                    <td><strong>組織全体</strong>に適用可能</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>適用ポリシー</strong></td>
+                                    <td>VPC ファイアウォールルール</td>
+                                    <td>Cloud NGFW ネットワークポリシー</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <pre><span class="comment"># SSH は IAP からのみ許可（ネットワークタグベース）</span>
+gcloud compute firewall-rules create allow-ssh-iap \
+  <span class="flag">--network</span>=my-vpc <span class="flag">--direction</span>=INGRESS \
+  <span class="flag">--action</span>=ALLOW <span class="flag">--rules</span>=tcp:22 \
+  <span class="flag">--target-tags</span>=ssh-allowed \
+  <span class="flag">--source-ranges</span>=35.235.240.0/20
+
+<span class="comment"># セキュアタグキーの作成（Cloud NGFW）</span>
+gcloud resource-manager tags keys create webserver \
+  <span class="flag">--parent</span>=organizations/ORG_ID \
+  <span class="flag">--purpose</span>=GCE_FIREWALL \
+  <span class="flag">--purpose-data</span>=network=//compute.googleapis.com/projects/PROJECT/global/networks/my-vpc</pre>
+                        <a
+                            href="https://docs.cloud.google.com/firewall/docs/about-firewalls"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Cloud NGFW 概要</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/firewall/docs/tags-firewalls-overview"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Secure Tags</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/firewall/docs/ngfw_tiers"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Cloud NGFW Tiers</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.3-C Network Connections -->
+                <div id="s23-conn" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.3-C</span>
+                        <span class="topic-title"
+                            >ネットワーク接続の確立 — Cloud VPN / Cloud Interconnect</span
+                        >
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">
+                                ▶ オンプレミス / 他クラウドとの接続オプション
+                            </div>
+                            <div class="mermaid" id="diag-16"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>接続方法</th>
+                                    <th>帯域</th>
+                                    <th>SLA</th>
+                                    <th>コスト</th>
+                                    <th>ユースケース</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>HA VPN</strong></td>
+                                    <td>最大 3Gbps/トンネル</td>
+                                    <td>99.99%（HA 構成）</td>
+                                    <td>低い</td>
+                                    <td>オンプレミス接続の標準</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Interconnect (Dedicated)</strong></td>
+                                    <td>10G or 100Gbps</td>
+                                    <td>99.99%</td>
+                                    <td>高い</td>
+                                    <td>大規模・ミッションクリティカル</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Interconnect (Partner)</strong></td>
+                                    <td>50Mbps〜10Gbps</td>
+                                    <td>99.99%</td>
+                                    <td>中程度</td>
+                                    <td>専用線が直接引けない場合</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VPC Network Peering</strong></td>
+                                    <td>ネットワーク上限まで</td>
+                                    <td>—</td>
+                                    <td>なし</td>
+                                    <td>同一 GCP 内の VPC 間</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2.3-D Load Balancer -->
+                <div id="s23-lb" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.3-D</span>
+                        <span class="topic-title">ロードバランサの選定</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ ロードバランサ選択フローチャート</div>
+                            <div class="mermaid" id="diag-17"></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>ロードバランサ</th>
+                                    <th>レイヤ</th>
+                                    <th>スコープ</th>
+                                    <th>送信元 IP 保持</th>
+                                    <th>SSL 終端</th>
+                                    <th>Cloud Armor</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Global External ALB</strong></td>
+                                    <td>L7</td>
+                                    <td>グローバル</td>
+                                    <td>❌</td>
+                                    <td>✅ エッジ</td>
+                                    <td>✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Regional External ALB</strong></td>
+                                    <td>L7</td>
+                                    <td>リージョン</td>
+                                    <td>❌</td>
+                                    <td>✅ リージョン</td>
+                                    <td>✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Internal ALB</strong></td>
+                                    <td>L7</td>
+                                    <td>VPC 内部</td>
+                                    <td>❌</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Proxy Network LB</strong></td>
+                                    <td>L4</td>
+                                    <td>リージョン</td>
+                                    <td>❌</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Passthrough Network LB</strong></td>
+                                    <td>L4</td>
+                                    <td>リージョン</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Internal Passthrough NLB</strong></td>
+                                    <td>L4</td>
+                                    <td>VPC 内部</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="callout callout-red">
+                            <span class="callout-icon">🚨</span>
+                            <div>
+                                <strong>試験頻出の罠（3つ）:</strong><br />
+                                ①
+                                コンプライアンス要件（データを特定リージョンに留める）がある場合は必ず
+                                <strong>Regional LB</strong> を選択<br />
+                                ② Proxy 型 NLB は送信元 IP が失われる（<code>X-Forwarded-For</code>
+                                ヘッダーで補完）<br />
+                                ③ UDP が必要な場合は
+                                <strong>Passthrough Network LB</strong> のみ対応
+                            </div>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/load-balancing/docs/choosing-load-balancer"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 ロードバランサ選定ガイド</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.3-E Network Service Tier -->
+                <div id="s23-tier" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.3-E</span>
+                        <span class="topic-title"
+                            >ネットワークサービスティア — Premium vs Standard</span
+                        >
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>ティア</th>
+                                    <th>コスト</th>
+                                    <th>パフォーマンス</th>
+                                    <th>特徴</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Premium Tier</strong></td>
+                                    <td>高い</td>
+                                    <td>最高</td>
+                                    <td>
+                                        Google のグローバルバックボーンを使用。Global
+                                        ALB、低レイテンシ、Anycast IP
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Standard Tier</strong></td>
+                                    <td>低い</td>
+                                    <td>通常</td>
+                                    <td>
+                                        インターネット経由でルーティング。リージョン単位の処理。Global
+                                        ALB は使用不可
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ Premium vs Standard ルーティング経路</div>
+                            <div class="mermaid" id="diag-18"></div>
+                        </div>
+                        <div class="callout callout-yellow">
+                            <span class="callout-icon">⚠️</span>
+                            <div>
+                                <strong>重要:</strong> <code>Global External ALB</code> は
+                                <strong>Premium Tier</strong>
+                                でのみ真のグローバル配信が可能です。Standard Tier を選択すると
+                                Regional LB として動作し、Anycast IP のメリットが失われます。
+                            </div>
+                        </div>
+                        <a
+                            href="https://cloud.google.com/network-tiers/docs/overview"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 ネットワークサービスティア</a
+                        >
+                    </div>
+                </div>
+
+                <!-- ===== SECTION 2.4 ===== -->
+                <div id="s24-iac" class="section-header">
+                    <div class="section-icon-wrap section-icon-yellow">🔧</div>
+                    <div class="section-meta">
+                        <div class="section-number">Section 2.4</div>
+                        <div class="section-title-main">ツールを用いたリソースの計画と実装</div>
+                    </div>
+                    <span class="section-weight">~4–6問</span>
+                </div>
+
+                <!-- 2.4-A IaC -->
+                <div class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.4-A</span>
+                        <span class="topic-title"
+                            >Infrastructure as Code — Terraform / Fabric FAST / Config Connector /
+                            Helm</span
+                        >
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>ツール</th>
+                                    <th>特性</th>
+                                    <th>主な用途</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Terraform</strong></td>
+                                    <td>宣言的 IaC、プロバイダーエコシステム</td>
+                                    <td>GCP リソースの全般的な管理</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fabric FAST</strong></td>
+                                    <td>Terraform ベースのエンタープライズ Landing Zone</td>
+                                    <td>組織全体の基盤構築、<strong>Google PSO 推奨</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Config Connector</strong></td>
+                                    <td>Kubernetes CRD で GCP リソースを管理</td>
+                                    <td>GKE 環境での GCP リソース管理</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Helm</strong></td>
+                                    <td>Kubernetes パッケージマネージャー</td>
+                                    <td>GKE アプリケーションのデプロイ管理</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="sub-title">Terraform の安全なデプロイフロー</div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ GitOps による Terraform 運用フロー</div>
+                            <div class="mermaid" id="diag-19"></div>
+                        </div>
+                        <pre><span class="comment"># backend.tf — State をリモートバックエンドで管理（必須）</span>
+terraform {
+  backend "gcs" {
+    bucket  = "my-terraform-state-bucket"
+    prefix  = "terraform/state"
+  }
+}
+
+<span class="comment"># State バケットの作成（バージョニング必須）</span>
+gcloud storage buckets create gs://my-terraform-state-bucket \
+  <span class="flag">--location</span>=asia-northeast1 <span class="flag">--uniform-bucket-level-access</span>
+
+gcloud storage buckets update gs://my-terraform-state-bucket <span class="flag">--versioning</span></pre>
+                        <div class="sub-title">
+                            Fabric FAST — Google PSO 推奨の Landing Zone ツールキット
+                        </div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ Fabric FAST の段階的デプロイフロー</div>
+                            <div class="mermaid" id="diag-20"></div>
+                        </div>
+                        <div class="callout callout-green">
+                            <span class="callout-icon">✅</span>
+                            <div>
+                                <strong>Fabric FAST の特徴:</strong> YAML
+                                ファクトリでサブネット・ファイアウォール・プロジェクトを宣言的管理。Google
+                                Cloud Professional Services Organization
+                                が実績から構築したエンタープライズ向けベストプラクティスが組み込み済み。
+                            </div>
+                        </div>
+                        <a
+                            href="https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/fast"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Fabric FAST（GitHub）</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/docs/terraform/best-practices/operations"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Terraform ベストプラクティス</a
+                        >
+                        <a
+                            href="https://cloud.google.com/config-connector/docs/overview"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Config Connector</a
+                        >
+                    </div>
+                </div>
+
+                <!-- 2.4-B AI Tools -->
+                <div id="s24-ai" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">2.4-B</span>
+                        <span class="topic-title"
+                            >AI 支援による計画と実装 — Gemini Cloud Assist / Gemini CLI</span
+                        >
+                        <span class="topic-new-badge">NEW 2026</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="table-wrap">
+                            <table>
+                                <tr>
+                                    <th>ツール</th>
+                                    <th>主な機能</th>
+                                    <th>ユースケース</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gemini Cloud Assist</strong></td>
+                                    <td>Cloud Console 内の AI アシスタント</td>
+                                    <td>
+                                        アーキテクチャ設計、トラブルシューティング、根本原因分析（RCA）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gemini CLI</strong></td>
+                                    <td>コマンドライン AI インターフェース</td>
+                                    <td>ターミナルから自然言語で GCP を操作</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Application Design Center</strong></td>
+                                    <td>アプリケーション設計の可視化・管理</td>
+                                    <td>マイクロサービスアーキテクチャの設計</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="diagram-wrap">
+                            <div class="diagram-label">▶ Gemini Cloud Assist の主要機能</div>
+                            <div class="mermaid" id="diag-21"></div>
+                        </div>
+                        <a
+                            href="https://docs.cloud.google.com/cloud-assist/overview"
+                            target="_blank"
+                            class="ref-link"
+                            >🔗 Gemini Cloud Assist</a
+                        >
+                    </div>
+                </div>
+
+                <!-- ===== SUMMARY ===== -->
+                <div id="summary" class="section-header">
+                    <div class="section-icon-wrap section-icon-red">🎯</div>
+                    <div class="section-meta">
+                        <div class="section-number">試験対策まとめ</div>
+                        <div class="section-title-main">
+                            頻出パターン別 解法ガイドと直前チェックリスト
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary-A Pattern Map -->
+                <div class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">Summary-A</span>
+                        <span class="topic-title">キーワード → 正解サービス 即答マップ</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="pattern-grid">
+                            <div class="pattern-card">
+                                <div class="pattern-card-head ph-blue">
+                                    💻 Pattern A: コンピューティングサービス
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「VM 完全制御・特定 OS・ライセンス」</span
+                                    ><span class="pattern-ans blue">Compute Engine</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「コスト最小化・バッチ・停止許容」</span
+                                    ><span class="pattern-ans blue">Spot VM + MIG</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「コンテナ・K8s・運用負荷を減らしたい」</span
+                                    ><span class="pattern-ans blue">GKE Autopilot ★</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「特権コンテナ・DaemonSet・GPU」</span
+                                    ><span class="pattern-ans blue">GKE Standard</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「HTTP API・ゼロスケール・サーバーレス」</span
+                                    ><span class="pattern-ans blue">Cloud Run</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「イベント駆動・軽量処理・Webhook」</span
+                                    ><span class="pattern-ans blue">Cloud Run Functions</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「AI エージェント・Python フレームワーク」</span
+                                    ><span class="pattern-ans blue">Agent Runtime 🆕</span>
+                                </div>
+                            </div>
+                            <div class="pattern-card">
+                                <div class="pattern-card-head ph-cyan">
+                                    🗄️ Pattern B: データベースサービス
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「グローバル分散・99.999%・水平スケール」</span
+                                    ><span class="pattern-ans cyan">Cloud Spanner</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「PG 互換・高性能 OLTP・HTAP」</span
+                                    ><span class="pattern-ans cyan">AlloyDB</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「MySQL/PG・標準的な Web アプリ」</span
+                                    ><span class="pattern-ans cyan">Cloud SQL</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「ペタバイト・時系列・IoT・ミリ秒以下」</span
+                                    ><span class="pattern-ans cyan">Cloud Bigtable</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「リアルタイム同期・モバイルアプリ」</span
+                                    ><span class="pattern-ans cyan">Firestore</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「マイクロ秒・キャッシュ・セッション」</span
+                                    ><span class="pattern-ans cyan">Memorystore</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「DWH・SQL 分析・ペタバイト分析」</span
+                                    ><span class="pattern-ans cyan">BigQuery</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「Kafka 互換・ストリーミング」</span
+                                    ><span class="pattern-ans cyan">Managed Kafka 🆕</span>
+                                </div>
+                            </div>
+                            <div class="pattern-card">
+                                <div class="pattern-card-head ph-green">
+                                    🌐 Pattern C: ネットワーク / FW
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「SSH を IAM で管理したい」</span
+                                    ><span class="pattern-ans green">OS Login</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「SSH を安全に・外部 IP なしで接続」</span
+                                    ><span class="pattern-ans green">IAP + OS Login</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「組織全体に FW ポリシーを適用」</span
+                                    ><span class="pattern-ans green">Cloud NGFW 🆕</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「ID ベースのマイクロセグメンテーション」</span
+                                    ><span class="pattern-ans green">Secure Tags 🆕</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「データを特定リージョンに限定」</span
+                                    ><span class="pattern-ans green"
+                                        >Regional LB + 組織ポリシー</span
+                                    >
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「複数プロジェクトでネットワーク共有」</span
+                                    ><span class="pattern-ans green">Shared VPC</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「A→B→C でも A から C に通信したい」</span
+                                    ><span class="pattern-ans green">追加 Peering が必要</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「UDP・送信元 IP 保持が必要」</span
+                                    ><span class="pattern-ans green">Passthrough Network LB</span>
+                                </div>
+                            </div>
+                            <div class="pattern-card">
+                                <div class="pattern-card-head ph-yellow">
+                                    💾 Pattern D: ストレージ選択
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「IOPS/スループットを独立制御したい」</span
+                                    ><span class="pattern-ans yellow">Hyperdisk Balanced 🆕</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「最高 IOPS・ミッションクリティカル DB」</span
+                                    ><span class="pattern-ans yellow">Hyperdisk Extreme 🆕</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「HPC・並列 FS・多数 VM から同時アクセス」</span
+                                    ><span class="pattern-ans yellow">Managed Lustre 🆕</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「NFS/SMB 両方・ONTAP・エンタープライズ」</span
+                                    ><span class="pattern-ans yellow">NetApp Volumes 🆕</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「VM の一時データ・最高速・消失 OK」</span
+                                    ><span class="pattern-ans yellow">Local SSD</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw">「頻繁アクセス・コスト最安/GB」</span
+                                    ><span class="pattern-ans yellow">GCS Standard</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「年 1 回以下・法規制保管・365日+」</span
+                                    ><span class="pattern-ans yellow">GCS Archive</span>
+                                </div>
+                                <div class="pattern-row">
+                                    <span class="pattern-kw"
+                                        >「グローバル ALB + 最低レイテンシ」</span
+                                    ><span class="pattern-ans yellow">Premium Tier 🆕</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checklist -->
+                <div id="checklist" class="topic-card">
+                    <div class="topic-card-header" onclick="toggleCard(this)">
+                        <span class="topic-number">Summary-B</span>
+                        <span class="topic-title">試験直前チェックリスト — Section 2 完全版</span>
+                        <span class="topic-toggle">▼</span>
+                    </div>
+                    <div class="topic-body">
+                        <div class="sub-title">2.1 コンピューティング</div>
+                        <ul class="checklist">
+                            <li>
+                                <div class="check-box"></div>
+                                GKE Autopilot vs Standard
+                                の使い分け基準（特権コンテナ・DaemonSet・カーネル変更）を即答できる
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Spot VM
+                                のプリエンプト対応設計（チェックポイント・シャットダウンスクリプト・MIG
+                                との組み合わせ）を知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Hyperdisk Balanced が Persistent Disk
+                                より優れている点（性能と容量の独立制御）を説明できる
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                OS Login が有効な場合、プロジェクトレベルの SSH
+                                キーが無視されることを知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                VM Manager の OS Patch Management
+                                の主要機能（パッチ管理・インベントリ・設定管理）を知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Cloud Run のトリガー種別（HTTP・Pub/Sub・Eventarc・Cloud
+                                Storage）を知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                GPU/TPU 搭載 VM は Maintenance Policy が TERMINATE
+                                強制であることを知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Agent Runtime が Python
+                                エージェントのマネージド実行基盤であることを知っている
+                            </li>
+                        </ul>
+                        <div class="sub-title">2.2 ストレージとデータ</div>
+                        <ul class="checklist">
+                            <li>
+                                <div class="check-box"></div>
+                                Cloud Storage の 4
+                                クラスと最小保存期間（なし・30日・90日・365日）を暗記している
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Cloud SQL / Spanner / AlloyDB / Bigtable / Firestore
+                                の使い分けを即答できる
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Managed Lustre（並列 FS・HPC）と NetApp
+                                Volumes（ONTAP・NFS/SMB/iSCSI）の違いを説明できる
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                BigQuery へのデータロードは Cloud Storage
+                                経由が最も効率的であることを知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                マルチリージョン vs デュアルリージョン vs
+                                シングルリージョンの使い分けを知っている
+                            </li>
+                        </ul>
+                        <div class="sub-title">2.3 ネットワーク</div>
+                        <ul class="checklist">
+                            <li>
+                                <div class="check-box"></div>
+                                Shared VPC vs VPC Network Peering の使い分けを説明できる
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                VPC Peering が推移的でないことを知っている（A-B-C でも A-C
+                                は直接通信不可）
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                ネットワークタグ vs セキュアタグ（Cloud NGFW）の違いを説明できる
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                コンプライアンス要件（データ主権）がある場合は Regional LB
+                                を選ぶことを知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Passthrough Network LB が送信元 IP を保持できる唯一の LB
+                                であることを知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Premium Tier vs Standard Tier の違いと Global ALB が Premium Tier
+                                必須であることを知っている
+                            </li>
+                        </ul>
+                        <div class="sub-title">2.4 IaC とツール</div>
+                        <ul class="checklist">
+                            <li>
+                                <div class="check-box"></div>
+                                Terraform の State
+                                ファイルをリモートバックエンド（GCS）で管理する理由を説明できる
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                State ファイルを手動編集することの危険性を知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Fabric FAST が Google PSO 推奨のエンタープライズ Landing Zone
+                                ツールであることを知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Config Connector が Kubernetes CRD で GCP
+                                リソースを管理することを知っている
+                            </li>
+                            <li>
+                                <div class="check-box"></div>
+                                Gemini Cloud Assist の主要機能（RCA・IaC
+                                生成・コスト最適化）を知っている
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- REFS -->
+                <div id="refs" class="section-header">
+                    <div class="section-icon-wrap section-icon-blue">🔗</div>
+                    <div class="section-meta">
+                        <div class="section-number">参考リソース</div>
+                        <div class="section-title-main">公式ドキュメント一覧</div>
+                    </div>
+                </div>
+
+                <div class="refs-grid">
+                    <a
+                        href="https://cloud.google.com/learn/certification/cloud-engineer?hl=en"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>ACE 試験公式ページ</strong>認定資格の概要・登録
+                        </div></a
+                    >
+                    <a
+                        href="https://services.google.com/fh/files/misc/063026_associate_cloud_engineer_exam_guide_english.pdf"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>試験ガイド PDF（2026年6月版）</strong>出題範囲の詳細
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/compute/docs/disks/hyperdisks"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Google Cloud Hyperdisk</strong>新世代ブロックストレージ
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/compute/docs/disks"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>ストレージ種別選択ガイド</strong>Hyperdisk vs PD vs Local SSD
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>GKE Autopilot セキュリティ</strong>セキュリティ標準の自動適用
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/kubernetes-engine/docs/resources/autopilot-standard-feature-comparison"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>GKE Autopilot vs Standard</strong>機能比較
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/run/docs/configuring/networking-best-practices"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Cloud Run ネットワーキング</strong>Direct VPC Egress
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/compute/vm-manager/docs/patch"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>VM Manager OS パッチ</strong>自動パッチ管理
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/compute/docs/oslogin/set-up-oslogin"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>OS Login 設定</strong>IAM 統合 SSH アクセス
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/compute/docs/instances/create-use-spot"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text"><strong>Spot VM</strong>作成と使用方法</div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/blog/products/compute/google-cloud-spot-vm-use-cases-and-best-practices"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Spot VM ベストプラクティス</strong>フォールトトレラント設計
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>MIG 作成ガイド</strong>オートスケール・ヒーリング
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/compute/docs/gpus"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>GPU ドキュメント</strong>アクセラレータ選択基準
+                        </div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/products/gemini-enterprise-agent-platform"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Agent Runtime</strong>Gemini Enterprise Agent Platform
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/firewall/docs/about-firewalls"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Cloud NGFW 概要</strong>次世代ファイアウォール
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/firewall/docs/tags-firewalls-overview"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Secure Tags</strong>IAM 管理 ID ベースタグ
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/firewall/docs/ngfw_tiers"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Cloud NGFW Tiers</strong>Essentials/Standard/Enterprise
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/vpc/docs/shared-vpc"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Shared VPC</strong>組織内ネットワーク共有
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/architecture/best-practices-vpc-design"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>VPC 設計ベストプラクティス</strong>ネットワーク設計指針
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/load-balancing/docs/choosing-load-balancer"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>ロードバランサ選定ガイド</strong>L4/L7/Regional/Global
+                        </div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/network-tiers/docs/overview"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>ネットワークサービスティア</strong>Premium vs Standard
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/docs/terraform/best-practices/operations"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Terraform ベストプラクティス</strong>State 管理・CI/CD 統合
+                        </div></a
+                    >
+                    <a
+                        href="https://github.com/GoogleCloudPlatform/cloud-foundation-fabric/tree/master/fast"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Fabric FAST（GitHub）</strong>エンタープライズ Landing Zone
+                        </div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/config-connector/docs/overview"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Config Connector</strong>Kubernetes CRD で GCP 管理
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/cloud-assist/overview"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Gemini Cloud Assist</strong>AI 支援の運用管理
+                        </div></a
+                    >
+                    <a
+                        href="https://docs.cloud.google.com/storage/docs/best-practices"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Cloud Storage ベストプラクティス</strong
+                            >セキュリティ・コスト最適化
+                        </div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/products/managed-lustre"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Google Cloud Managed Lustre</strong>並列ファイルシステム
+                        </div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/netapp-volumes"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Google Cloud NetApp Volumes</strong
+                            >エンタープライズファイルストレージ
+                        </div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/managed-kafka/docs/overview"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>Managed Kafka</strong>フルマネージド Kafka サービス
+                        </div></a
+                    >
+                    <a
+                        href="https://cloud.google.com/blog/topics/developers-practitioners/your-google-cloud-database-options-explained"
+                        target="_blank"
+                        class="ref-item"
+                        ><div class="ref-dot"></div>
+                        <div class="ref-text">
+                            <strong>DB 選定ガイド（ブログ）</strong>Google Cloud データベース比較
+                        </div></a
+                    >
+                </div>
+            </div>
+            <!-- /content -->
+        </main>
+
+        <button id="scroll-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">↑</button>
+
+        <script>
+            mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: 'loose',
+                theme: 'dark',
+                themeVariables: {
+                    primaryColor: '#1a73e8',
+                    primaryTextColor: '#e8edf5',
+                    primaryBorderColor: '#1e3a5f',
+                    lineColor: '#4a6a9a',
+                    secondaryColor: '#111827',
+                    tertiaryColor: '#1a2236',
+                    background: '#0a0e1a',
+                    mainBkg: '#111827',
+                    nodeBorder: '#1e3a5f',
+                    clusterBkg: '#1a2236',
+                    titleColor: '#e8edf5',
+                    edgeLabelBackground: '#111827',
+                    fontFamily: 'Noto Sans JP, sans-serif',
+                    fontSize: '13px',
+                },
+                flowchart: { curve: 'basis', htmlLabels: true, useMaxWidth: false },
+            });
+
+            // 図のソースは JS テンプレートリテラルで保持し Prettier による改行破壊を防ぐ
+            const DIAGRAMS = {
+                'diag-1': `flowchart TD
+A[ワークロードの要件確認] --> B{コンテナ化されているか？}
+B -->|No VM が必要| C{"OS の完全制御が必要か？"}
+B -->|Yes| D{Kubernetes が必要か？}
+C -->|Yes| E[Compute Engine GCE]
+C -->|No AI エージェント| F[Agent Runtime]
+D -->|Yes| G{ノード管理を自前で行うか？}
+D -->|No HTTP ベース| H[Cloud Run]
+D -->|No 軽量イベント| I[Cloud Run Functions]
+G -->|No マネージドで良い| J[GKE Autopilot 推奨]
+G -->|Yes 特権コンテナなど| K[GKE Standard]
+E --> L{コスト削減優先か？}
+L -->|Yes 停止許容| M[Spot VM + MIG]
+L -->|No 常時稼働| N[通常 VM]`,
+                'diag-2': `flowchart TD
+A[ストレージ選択] --> B{データ永続性が必要か？}
+B -->|No 一時データのみ| C["Local SSD<br/>最高 IOPS スループット<br/>VM停止でデータ消失"]
+B -->|Yes 永続ストレージ| D{性能の独立制御が必要か？}
+D -->|Yes 新世代推奨| E[Google Cloud Hyperdisk]
+D -->|No 従来型で十分| F[Persistent Disk]
+E --> G{ユースケース}
+G -->|汎用ワークロード| H["Hyperdisk Balanced 推奨<br/>IOPS 最大 160,000<br/>スループット 最大 2,400 MiB/s"]
+G -->|OLTP 高 IOPS DB| I["Hyperdisk Extreme<br/>IOPS 最大 350,000"]
+G -->|大規模分析| J["Hyperdisk Throughput<br/>低コスト"]
+G -->|"AI/ML モデル配信"| K["Hyperdisk ML<br/>読み取り専用共有"]
+F --> L{用途}
+L -->|汎用| M[Balanced PD]
+L -->|高性能| N[SSD PD]
+L -->|低コスト| O[Standard PD]`,
+                'diag-3': `flowchart LR
+T["インスタンステンプレート(設計図)<br/>マシンタイプ / OS / ディスク / スクリプト"] -->|MIG が参照| M
+M["MIG<br/>Managed Instance Group"] --> V1[VM1 ゾーン A]
+M --> V2[VM2 ゾーン B]
+M --> V3[VM3 ゾーン C]
+M --> AUTO["自動機能<br/>オートスケーリング<br/>自動ヒーリング<br/>ローリングアップデート"]`,
+                'diag-4': `flowchart LR
+User["エンジニア<br/>alice@example.com"] -->|SSH 接続試行| OSL["OS Login<br/>IAM リアルタイム照会"]
+OSL -->|"roles/compute.osLogin 確認"| IAM[Cloud IAM]
+IAM -->|権限あり| VM["VM 接続成功<br/>Linux アカウントを自動生成"]
+IAM -->|権限なし削除済み| DENY["接続拒否<br/>退職時は即時失効"]`,
+                'diag-5': `flowchart TD
+SV[Spot VM] --> ADV["最大 91% 割引<br/>通常 VM より大幅に安価"]
+SV --> RISK["プリエンプトリスク<br/>30秒前通知で停止される可能性"]
+RISK --> DESIGN[フォールトトレラント設計が必須]
+DESIGN --> CP["チェックポイント機能<br/>Cloud Storage に定期保存"]
+DESIGN --> SS["シャットダウンスクリプト<br/>終了時のクリーンアップ"]
+DESIGN --> MIG_COMBO["MIG との組み合わせ<br/>プリエンプト後に自動再作成"]
+DESIGN --> TA["終了アクション<br/>STOP: データ保持+再起動<br/>DELETE: 最小コスト"]`,
+                'diag-6': `flowchart TD
+Start[GKE クラスタの要件確認] --> Q1{特権コンテナが必要か？}
+Q1 -->|Yes| S[GKE Standard モード]
+Q1 -->|No| Q2{カーネルパラメータの変更が必要か？}
+Q2 -->|Yes| S
+Q2 -->|No| Q3{DaemonSet でカスタムエージェントを実行するか？}
+Q3 -->|Yes| S
+Q3 -->|No| Q4{"GPU/TPU ノードプールをカスタム設定するか？"}
+Q4 -->|Yes| S
+Q4 -->|No| A["GKE Autopilot 推奨<br/>課金: Pod リソース単位<br/>セキュリティ: Baseline 強制<br/>Workload Identity: 自動有効"]
+S["GKE Standard<br/>課金: ノード単位<br/>完全なノード管理"]`,
+                'diag-7': `flowchart LR
+Internet["インターネット HTTPS"] -->|HTTPS| CR["Cloud Run 第2世代"]
+CR -->|Direct VPC Egress 推奨| VPC[VPC 内部リソース]
+VPC --> SQL[Cloud SQL プライベート IP]
+VPC --> MEM[Memorystore Redis]
+PUBSUB["Pub/Sub"] -->|Eventarc| CR
+GCS[Cloud Storage 変更] -->|Eventarc| CR`,
+                'diag-8': `flowchart TD
+A["AI/ML ワークロード"] --> B{ワークロードの種類}
+B -->|"汎用 ML 推論 レンダリング"| C[GPU を選択]
+B -->|大規模 LLM トレーニング| D{使用フレームワーク}
+D -->|"TensorFlow JAX 最適化"| E[TPU を選択]
+D -->|"PyTorch 汎用"| C
+C --> F{GPU の種類}
+F -->|推論コスト効率重視| G["NVIDIA L4 G2 ファミリー<br/>コスパ最高"]
+F -->|大規模トレーニング| H["NVIDIA A100 A2<br/>HBM メモリ搭載"]
+F -->|最先端 LLM| I["NVIDIA H100 A3<br/>最高性能"]
+E --> J["Cloud TPU v4/v5<br/>専用 Pod"]`,
+                'diag-9': `flowchart LR
+Dev["開発者<br/>Python フレームワーク<br/>LangChain ADK 等"] -->|デプロイ| AR["Agent Runtime<br/>Gemini Enterprise Agent Platform"]
+AR --> M["マネージドランタイム<br/>コンテナ化の自動処理<br/>自動スケーリング"]
+AR --> OBS["オブザーバビリティ<br/>Cloud Logging<br/>Cloud Trace"]
+AR --> SEC["エンタープライズセキュリティ<br/>CMEK 対応<br/>VPC Service Controls"]
+AR --> FEAT["高度な機能<br/>Sessions 会話履歴<br/>Memory Bank 長期記憶"]`,
+                'diag-10': `flowchart TD
+A[データベースの要件] --> B{データは構造化か？}
+B -->|Yes スキーマ固定| C{SQL ACID が必要か？}
+B -->|No 半構造化| D{リアルタイム同期が必要か？}
+B -->|分析 DWH| K["BigQuery<br/>サーバーレス DWH<br/>ペタバイト分析 ML"]
+C -->|Yes| E{"グローバル分散と 99.999% SLA が必要か？"}
+C -->|No NoSQL で良い| D
+E -->|Yes| F["Cloud Spanner<br/>グローバル分散<br/>水平スケール<br/>99.999% SLA"]
+E -->|No PG 互換で高性能| G["AlloyDB<br/>PostgreSQL 互換<br/>標準比 4倍の OLTP<br/>pgvector ベクトル検索"]
+E -->|No 標準的な RDB| H["Cloud SQL<br/>MySQL/PG/SQL Server<br/>フルマネージド"]
+D -->|Yes モバイル IoT| I["Firestore<br/>サーバーレスドキュメント DB<br/>リアルタイム同期"]
+D -->|No 大規模時系列| J["Cloud Bigtable<br/>ワイドカラム型<br/>ペタバイト ミリ秒以下"]
+D -->|キャッシュ| L["Memorystore<br/>Redis Memcached<br/>マイクロ秒レスポンス"]`,
+                'diag-11': `flowchart LR
+A["オブジェクトの<br/>アクセス頻度"] --> B{どのくらいの頻度？}
+B -->|頻繁 日次以上| C["Standard<br/>最小保存期間: なし<br/>アクセスコスト: 無料"]
+B -->|月 1 回程度| D["Nearline<br/>最小保存期間: 30 日<br/>アクセスコストあり"]
+B -->|年 4 回未満| E["Coldline<br/>最小保存期間: 90 日<br/>アクセスコスト高め"]
+B -->|年 1 回未満| F["Archive<br/>最小保存期間: 365 日<br/>法規制上の長期保管"]`,
+                'diag-12': `flowchart TD
+F[ファイルストレージの選択] --> P{要件}
+P -->|"標準的な NFS 共有ストレージ"| FS["Filestore<br/>Basic 最大 64TiB<br/>Regional 最大 100TiB"]
+P -->|"HPC AI/ML 並列アクセス"| ML["Managed Lustre<br/>Lustre 並列ファイルシステム<br/>ペタバイト規模"]
+P -->|"エンタープライズ NFS SMB iSCSI"| NV["NetApp Volumes<br/>ONTAP データ管理機能<br/>スナップショット レプリケーション内蔵"]`,
+                'diag-13': `flowchart TD
+R[冗長性の要件] --> D{SLA RTO RPO の要件}
+D -->|"単一リージョン内で十分<br/>コスト最適化"| SR["Single Region<br/>Cloud SQL HA ゾーン冗長<br/>Regional Persistent Disk"]
+D -->|"2 リージョン間<br/>バランス型"| DR["Dual Region<br/>Cloud Storage Dual-Region<br/>Cloud SQL クロスリージョンレプリカ"]
+D -->|"グローバル分散<br/>最高の可用性"| MR["Multi Region<br/>Cloud Storage Multi-Region<br/>Cloud Spanner グローバル<br/>Firestore マルチリージョン"]`,
+                'diag-14': `flowchart TB
+subgraph SVPC ["Shared VPC 組織内 - 推奨"]
+HP["ホストプロジェクト<br/>ネットワーク集中管理"] --> SA[サービスプロジェクト A Web チーム]
+HP --> SB[サービスプロジェクト B API チーム]
+HP --> SC[サービスプロジェクト C DB チーム]
+end
+subgraph PEER ["VPC Network Peering 異組織間"]
+VA["VPC A Project 1"] <-->|内部 IP で通信| VB["VPC B Project 2"]
+VB <-->|Peering| VC["VPC C Project 3"]
+VA -.->|"A から C は直接通信不可 推移的でない"| VC
+end`,
+                'diag-15': `flowchart TB
+subgraph OLD ["従来の VPC ファイアウォールルール"]
+VFR["VPC ファイアウォールルール<br/>ネットワークタグで対象を指定<br/>プロジェクトレベルで管理"]
+end
+subgraph NEW ["Cloud NGFW 次世代ファイアウォール"]
+subgraph TIER_E ["Essentials 基本"]
+FP["ネットワークファイアウォールポリシー<br/>階層的ポリシー(組織/フォルダ/プロジェクト)<br/>IAM 管理のセキュアタグ"]
+end
+subgraph TIER_S ["Standard 高度"]
+FQDN["FQDN フィルタリング<br/>Google Threat Intelligence<br/>地理情報ベースのフィルタリング"]
+end
+subgraph TIER_ENT ["Enterprise 最高レベル"]
+IPS["IDS/IPS 侵入検知防御<br/>URL フィルタリング<br/>TLS インスペクション"]
+end
+end
+OLD --> NEW`,
+                'diag-16': `flowchart LR
+OnPrem["オンプレミス 他クラウド"] --> OPT{接続方式の選択}
+OPT --> VPN["Cloud VPN<br/>インターネット経由<br/>IPsec 暗号化<br/>帯域 最大 3Gbps/トンネル<br/>HA VPN 99.99% SLA"]
+OPT --> IC["Cloud Interconnect<br/>専用線(物理接続)<br/>Dedicated 10G or 100Gbps<br/>Partner 50Mbps-10Gbps<br/>99.99% SLA 冗長構成時"]
+OPT --> PEER["VPC Network Peering<br/>同じ Google ネットワーク内<br/>内部 IP で通信"]`,
+                'diag-17': `flowchart TD
+A[ロードバランサの要件] --> B{トラフィックの種類}
+B -->|HTTP HTTPS L7| C[Application Load Balancer]
+B -->|TCP UDP その他 L4| D[Network Load Balancer]
+C --> E{スコープ}
+E -->|"グローバル分散<br/>Anycast IP が必要"| F["Global External ALB<br/>Premium Tier 必須<br/>Cloud Armor 統合"]
+E -->|"特定リージョン内<br/>コンプライアンス要件"| G["Regional External ALB<br/>データ主権要件に対応<br/>TLS 終端が特定リージョン"]
+E -->|VPC 内部のみ| H["Internal ALB<br/>内部 IP アドレス<br/>マイクロサービス間"]
+D --> I{処理方式}
+I -->|"SSL オフロードが必要"| J["Proxy Network LB<br/>TCP 接続を終端<br/>送信元 IP は失われる"]
+I -->|"送信元 IP 保持<br/>UDP が必要"| K["Passthrough Network LB<br/>DSR Direct Server Return<br/>送信元 IP をそのまま転送"]
+I -->|VPC 内部のみ| L["Internal Passthrough NLB<br/>内部 IP east-west トラフィック"]`,
+                'diag-18': `flowchart LR
+User[エンドユーザー] -->|Premium Tier| GNET["Google グローバルバックボーン<br/>高速・低レイテンシ<br/>エッジで受信"] --> GCE["GCE VM LB"]
+User -->|Standard Tier| Internet["インターネット<br/>通常のルーティング<br/>コスト低い"] --> GCE`,
+                'diag-19': `flowchart LR
+DEV[開発者がコードを変更] --> PR[Pull Request 作成]
+PR --> PLAN["terraform plan -out=tfplan<br/>変更内容のレビュー"]
+PLAN --> REVIEW[人によるレビュー・承認]
+REVIEW --> APPLY["terraform apply tfplan<br/>本番適用"]
+APPLY --> STATE["State ファイル更新<br/>GCS リモートバックエンド"]
+STATE --> AUDIT["変更履歴は Git で管理<br/>完全な監査証跡"]`,
+                'diag-20': `flowchart LR
+S0["Stage 0: Bootstrap<br/>Terraform の実行基盤<br/>State バケット<br/>CI/CD プロジェクト"] --> S1["Stage 1: Organization<br/>フォルダ階層<br/>組織ポリシー<br/>ロギング"]
+S1 --> S2["Stage 2: Networking<br/>Shared VPC<br/>Hub-and-Spoke<br/>DNS 設計"]
+S2 --> S3["Stage 3: Projects<br/>プロジェクトファクトリ<br/>YAML ベースの宣言"]`,
+                'diag-21': `flowchart LR
+GCA[Gemini Cloud Assist] --> ARCH["アーキテクチャ図の自動生成<br/>自然言語プロンプトから生成<br/>Terraform テンプレートの提案"]
+GCA --> TROUBLE["トラブルシューティング<br/>ログ横断分析<br/>根本原因分析 RCA"]
+GCA --> COST["FinOps 支援<br/>コスト最適化の提案<br/>無駄なリソースの検出"]
+GCA --> MON["Cloud Monitoring 統合<br/>自然言語でアラートを作成"]`,
+            };
+
+            // mermaid v10 は SVG に絶対 px の width/height を付与し viewBox も下端が不足しがち。
+            // 描画後に DOM を直接操作して是正する（文字列 DOMParser 往復は foreignObject を壊すため禁止）。
+            function applySvgFixups(svgEl, src) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.maxWidth = '100%';
+                svgEl.style.overflow = 'visible';
+                svgEl.style.marginBottom = '10px';
+                const viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                const parts = viewBox.split(/\s+/).map(Number);
+                if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
+                const trimmed = src.trim();
+                const isSequenceOrState =
+                    trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
+                const extraHeight = isSequenceOrState ? 110 : 15;
+                const [x, y, w, h] = parts;
+                // viewBox 由来の自然幅で表示し、拡大は抑制。親より広い場合のみ maxWidth で縮小。
+                // width:'100%' は小さな LR 図を全幅へ引き伸ばし異常拡大の原因になるため使わない。
+                svgEl.style.width = w + 'px';
+                svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + extraHeight));
+            }
+
+            (async () => {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (_e) {
+                        /* フォント待機に失敗しても描画は継続する */
+                    }
+                }
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    const el = document.getElementById(id);
+                    if (!el) continue;
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        el.innerHTML = svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl, src);
+                    } catch (err) {
+                        el.innerHTML =
+                            '<pre style="color:#ff8888;white-space:pre-wrap">' +
+                            (err && err.message ? err.message : String(err)) +
+                            '</pre>';
+                    }
+                }
+            })();
+
+            function toggleCard(header) {
+                header.closest('.topic-card').classList.toggle('collapsed');
+            }
+
+            const progressBar = document.getElementById('progress-bar');
+            window.addEventListener('scroll', () => {
+                const s = window.scrollY,
+                    t = document.documentElement.scrollHeight - window.innerHeight;
+                progressBar.style.width = `${(s / t) * 100}%`;
+                document.getElementById('scroll-top').classList.toggle('visible', s > 400);
+            });
+
+            const navItems = document.querySelectorAll('.nav-item');
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) {
+                            const id = e.target.id;
+                            navItems.forEach((item) =>
+                                item.classList.toggle(
+                                    'active',
+                                    item.getAttribute('href') === '#' + id,
+                                ),
+                            );
+                        }
+                    });
+                },
+                { rootMargin: '-30% 0px -60% 0px' },
+            );
+            document.querySelectorAll('[id]').forEach((el) => observer.observe(el));
+        </script>
+    </body>
+</html>

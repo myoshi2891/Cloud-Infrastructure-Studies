@@ -1,36 +1,161 @@
 ---
-name: qa-studies-html-to-nextjs-migration
+name: infra-html-to-nextjs-migration
 description: >
   Complete workflow for migrating static HTML pages to Next.js App Router page.tsx
-  in the QA_Studies project. Covers CSS variable mapping (HTML vars to Tailwind v4
-  @theme tokens), page-specific CSS extraction, Header.tsx navigation updates,
-  and CLAUDE.md documentation. Extends the global html-to-nextjs-migration skill
-  with project-specific knowledge including font loading via next/font/google,
-  design token alignment, and accessibility patterns.
+  in this repository (GCP/AWS 資格試験対策 Next.js 学習アプリ). Covers CSS variable
+  mapping (HTML vars to Tailwind v4 @theme tokens), page-specific CSS extraction,
+  EXAMS-driven Header navigation, MermaidDiagram reuse, and CLAUDE.md documentation.
+  Extends the global html-to-nextjs-migration skill with project-specific knowledge:
+  the canonical guide-page structure, GCP design-token map, sidebar layout recipe,
+  and a token-efficient reading protocol.
   Trigger: HTMLマイグレーション, ページ移行, HTML変換, 静的HTML移行, CSS変数マッピング,
-  unit-testing-guide.html migration, new page creation from HTML, HTMLからpage.tsx,
-  mat/mbt/tas guide migration.
+  new page creation from HTML, HTMLからpage.tsx, ガイドページ移行, Mermaid 図移行.
 ---
 
-# QA_Studies HTML → Next.js Migration Workflow
+# HTML → Next.js Migration Workflow（本リポジトリ専用）
 
 ## Goal
 
-Provide the complete, ordered workflow for converting a standalone HTML page (with embedded `<style>`) into a fully integrated Next.js App Router page within the QA_Studies project. This skill extends the global `html-to-nextjs-migration` skill (JSX pitfalls) with project-specific CSS token mapping, file organization, and integration steps.
+Provide the complete, ordered workflow for converting a standalone HTML page (with embedded `<style>` and trailing `<script>`) into a fully integrated Next.js App Router page in this repository. This skill extends the global `html-to-nextjs-migration` skill (JSX pitfalls) with project-specific CSS token mapping, file organization, MermaidDiagram reuse, and integration steps.
 
-**Prerequisite**: The global skill covers `<pre>` block conversion, `class`/`className` rules, HTML entity handling, `@layer` priority, and cache invalidation. This skill assumes that knowledge and focuses on the **end-to-end workflow**.
+**Prerequisite**: The global skill covers `<pre>` block conversion, `class`/`className` rules, HTML entity handling, `@layer` priority, and cache invalidation. This skill assumes that knowledge and focuses on the **end-to-end workflow + reusable reference**.
+
+> **トークン効率の鉄則（省略禁止）**: 本 skill の目的の一つは将来の移行のトークン浪費削減である。
+> **ソースHTMLは常に100%読む。移行時の内容の省略・要約は厳禁。**
+> 削減してよいのは「参照ファイル・トークンマップ・配置値の**再読込/再導出の往復**」のみ。
+> 下記「正準リファレンス」と「効率的読み取りプロトコル」に従えば、参照コンポーネントや
+> `globals.css` を毎回読み直さずに移行を完了できる。
 
 ## セッション開始時に必ず読むファイル
 
-1. **`docs/MIGRATION_PROGRESS.md`** — 現在地・残タスク・再開プロンプト
-2. **このファイル（`SKILL.md`）** — 移行手順と QA_Studies 固有ルール
+1. **`MIGRATION_PROGRESS.md`**（リポジトリ直下）— 現在地・残タスク・再開プロンプト
+2. **このファイル（`SKILL.md`）** — 移行手順・正準リファレンス・本リポジトリ固有ルール
 3. **`.claude/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
 
 ## 未移行 HTML
 
 | ファイル | 予定ルート | 状態 |
 |---|---|---|
-| なし | - | ✅ 全て完了 |
+| `Ace-section1-complete-guide.html` | `/gcl/associate-cloud-engineer/section1` | ✅ 完了（元HTMLはルート残置） |
+
+> 残タスクの正本は `MIGRATION_PROGRESS.md`。この表は補助。
+
+## 正準リファレンス（再読不要・探索削減）
+
+**この節を読めば、移行のたびに参照コンポーネント（`page.tsx`/`NavBar`/`MermaidDiagram`/`page.css`）や
+`app/globals.css` を grep / Read し直す必要はない。** 出典は実装済みの
+`app/gcl/associate-cloud-engineer/section1/*` と `.../complete-advanced-guide/*`。
+値が古くなった疑いがある時だけ実ファイルで照合する。
+
+### 1. リッチ「ガイドページ」の正準ファイル構成
+
+content-heavy な単一HTML（hero + サイドバー + 多数セクション + Mermaid + コードブロック + チェックリスト）は、
+次の5ファイル構成へ移行する（`complete-advanced-guide` / `section1` と同形）:
+
+| ファイル | 種別 | 役割 |
+|---|---|---|
+| `page.tsx` | **Server** | `metadata` を定義し `<XxxGuide />` を返すだけ |
+| `XxxGuide.tsx` | **client** (`'use client'`) | 本文JSX + 進捗バー/scroll-top/scroll spy/チェックリスト等の interactivity |
+| `NavBar.tsx` | **client** | サイドバーの静的アンカーリンク（`#id` へジャンプ） |
+| `constants.ts` | — | `export const DIAGRAMS: Record<string,string>`（Mermaid DSL） |
+| `page.css` | — | `.<page>-page` スコープの plain CSS（`@layer` 不使用） |
+
+> `page.css` の import は **Server の `page.tsx`** で行う（`import './page.css';`）。
+> Server/Client 分割により、メタデータは Server、状態を持つUIは Client に収まる。
+
+### 2. GCP / ダークテーマ トークンマップ（確定値）
+
+HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既存トークンへ機械的に置換する。
+**コンポーネントCSSで新規 `--*` を定義しない。** トークンが無い値は元の rgba/hex を**リテラルで保持**。
+
+| HTML ローカル変数 | 置換先 | 備考 |
+|---|---|---|
+| `--gcp-blue` / `-green` / `-yellow` / `-red` | `var(--color-google-blue / -green / -yellow / -red)` | 既存トークン |
+| `--gcp-purple` | リテラル `#9334e6` | **トークン無し** |
+| `--gcp-teal` | リテラル `#00bcd4` | トークン無し |
+| `--bg-primary` | `var(--color-background)` | |
+| `--bg-card` / `--bg-card-hover` | `var(--color-card)` / リテラル `#1a2035` | |
+| `--bg-code` | リテラル `#0d1117` | |
+| `--text-primary` | `var(--color-foreground)` | |
+| `--text-secondary` / `--text-muted` | `var(--color-muted-foreground)` | |
+| `--border` / `--border-bright` | リテラル `rgba(66,133,244,0.2)` / `…0.5)` | 青み境界線は維持 |
+| `--accent-glow` | リテラル `rgba(66,133,244,0.15)` | |
+| Space Grotesk | `var(--font-display)` | DM Sans に統一 |
+| Noto Sans JP | `var(--font-body)` | |
+| JetBrains Mono | `var(--font-mono)` | |
+
+> シンタックスハイライトの色クラス（`.k/.s/.c/.f/.o` 等）はトークン化せず、元の hex をページCSSにそのまま移す。
+
+### 3. サイドバー / メイン配置レシピ（確定値）
+
+グローバル Header（sticky `z-50`）+ DisclaimerBanner（sticky `z-40`）の**下**に収めるための定石:
+
+```css
+.<page>-page .sidebar {
+  position: fixed; left: 0;
+  top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+  bottom: 0; width: 280px; z-index: 40; overflow-y: auto;
+}
+.<page>-page .main { margin-left: 280px; }
+.<page>-page .section-block { /* アンカー着地が Header に隠れない */
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+}
+@media (max-width: 900px) {
+  .<page>-page .sidebar { transform: translateX(-100%); }
+  .<page>-page .main { margin-left: 0; }
+}
+```
+
+### 4. Mermaid 図の移行（MermaidDiagram を再利用・本体は読まない）
+
+HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)` ループは**再実装しない**。
+共有コンポーネント `components/MermaidDiagram.tsx` がフォント待ち・viewBox 見切れ対策・SSRフォールバックを内蔵済み。
+
+- `import { MermaidDiagram } from '@/components/MermaidDiagram';`
+- props は **`chart: string`** と **`ariaLabel: string`（必須）** のみ。
+- `<script>` 内の `'graph LR\n...'` 文字列を `constants.ts` の `DIAGRAMS` に**テンプレートリテラル（`\n`→実改行）**で移植。`<br />` 等はそのまま。
+- 各 `<div class="mermaid" id="diag-N">` を `<MermaidDiagram chart={DIAGRAMS['diag-…']} ariaLabel="…" />` に置換（`.mermaid-wrap` で囲む）。
+- **TS strict（`noUncheckedIndexedAccess`）必須形**（Record の添字は `string | undefined`）:
+
+  ```tsx
+  function Diagram({ id, label }: { id: string; label: string }) {
+    const chart = DIAGRAMS[id];
+    if (!chart) return null;
+    return <div className="mermaid-wrap"><MermaidDiagram chart={chart} ariaLabel={label} /></div>;
+  }
+  ```
+
+- 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.claude/skills/fix-mermaid`。
+
+### 5. HTML 末尾 `<script>` の interactivity → React 変換表
+
+| 元の JS | React 置換 |
+|---|---|
+| `copyCode(btn)`（クリップボードコピー） | `pre` への `ref` + `navigator.clipboard.writeText(ref.textContent)`、`Copied!` を `useState` で2秒表示 |
+| `toggleCheck(el)`（チェック切替） | `CheckItem` を `useState<boolean>` でトグル（`<button className="check-box">`） |
+| progress bar / scroll-top の可視/scroll spy | **単一の `useEffect`** に集約。`scroll` リスナ + `IntersectionObserver` |
+| `IntersectionObserver` 全般 | jsdom 対策に `typeof IntersectionObserver !== 'undefined'` でガードし、cleanup で `disconnect()` |
+
+### 6. コードブロックの2パターン使い分け
+
+- **構文ハイライトの `<span>` 入り**（GCPガイド系。`<pre><code><span class="c">…`）
+  → **Pattern B**: `<pre>` を `dangerouslySetInnerHTML` で注入（静的・作者管理コードのみ）。
+  `__html` 内は `class` 維持、`<` のみ `&lt;` にエスケープ、`{`/`}`/`&` は実文字、バッククォートは `` \` ``。
+  `.<page>-page pre, .<page>-page pre code { white-space: pre; }` を指定（preflight 負け回避）。
+- **プレーン整形のみ**（ハイライト無し）→ global skill の `.code-line` ラッパー（`white-space: pre`）。
+
+## 効率的読み取りプロトコル（省略禁止＋無駄読み禁止）
+
+トークン浪費の最大要因は「ソースの再読」と「参照ファイルの再読」。以下を厳守する。
+
+1. **ソースHTMLは100%読む（要約・スキップ厳禁）。** ただし往復は最小化する:
+   - まず **1回の `grep`** で zone 境界の行番号を取得（例: `grep -nE '</style>|<body|<script' file.html`）。
+   - `<style>` ブロック・本文・末尾 `<script>` を、**大きめ（~800行）の連続・非重複チャンクで各1回** Read する。
+   - **同一行範囲を二度読まない。** 既読範囲はメモリ上の内容を使う。
+2. **既知の単一ファイル移行では Explore / Plan エージェントを使わない**（1エージェント ≈ 40K tokens のオーバーヘッド。対象パスが明確なら Read/Grep を直接使う）。
+3. **本 skill の「正準リファレンス」に載っている参照ファイルを移行のたびに読まない**
+   （`components/MermaidDiagram.tsx`・参照ページの `page.tsx`/`NavBar.tsx`/`page.css`・`app/globals.css`）。
+   値の陳腐化が疑われる時だけ、必要な数行を `grep` で照合する。
 
 ## Instructions
 
@@ -73,29 +198,12 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 | Font body | `--font-body` | Resolved by next/font/google in layout.tsx |
 | Font mono | `--font-mono` | Resolved by next/font/google in layout.tsx |
 
-#### unit-testing-guide.html (Warm Editorial Theme) → Project Tokens (Example)
+#### GCP テーマ HTML の確定マッピング
 
-| HTML Variable | Project Token | Notes |
-| --- | --- | --- |
-| `--cream` | `--color-background` | Light → dark theme conversion |
-| `--cream2` | `--color-card` |  |
-| `--cream3` | `--color-card` |  |
-| `--ink` | `--color-foreground` | Inverted from dark-on-light |
-| `--ink2` / `--ink3` | `--color-muted-foreground` |  |
-| `--ink4` | `--color-muted` |  |
-| `--green` / `--green2` | `--color-primary` | Or use theme-specific primary |
-| `--green3` | N/A | Replace `var(--green3)` with `rgba(104, 211, 145, <alpha>)` where `<alpha>` is taken from the HTML’s original opacity/rgba alpha usage (use a numeric value). |
-| `--amber` | `--color-brand-end` | Or specific brand accent |
-| `--red` | `--color-theme-cdl-fg` | Example mapping for CDL theme |
-| `--blue` | `--color-primary` |  |
-| `--purple` | `--color-theme-genai-fg` | Example mapping for GenAI theme |
-| `--border` | `--color-border` |  |
-| `--border2` | `--color-border` |  |
-| `--r` | `--radius-lg` | 16px |
-| `--rs` | `--radius-md` | 10px |
-| `--font-display` (`Playfair Display`) | `--font-display` (DM Sans) | Font replacement |
-| `--font-body` (`Plus Jakarta Sans`) | `--font-body` (Noto Sans JP) | Font replacement |
-| `--font-mono` (`Sora` / `Source Code Pro`) | `--font-mono` (JetBrains Mono) | Font replacement |
+GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` 変数）は、
+**「正準リファレンス §2 GCP / ダークテーマ トークンマップ」の確定表をそのまま適用**する
+（毎回 `globals.css` を grep して導出しない）。トークンが無い色（紫・コードブロック背景・青み境界線）は
+元の rgba/hex を**リテラルで保持**する。
 
 **Critical**: The project uses a **unified dark theme**. Light-theme HTML pages must be re-themed to match the dark color system. Do not attempt to preserve the original light color scheme.
 
@@ -133,7 +241,7 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
      1. `app/<page-slug>/NavBar.tsx` を `'use client'` コンポーネントとして作成
      2. HTML の `<script>` 内 `IntersectionObserver` ロジックを `useEffect` に変換し、クリーンアップで `obs.disconnect()` を呼ぶ
      3. CSS の `position: sticky; top: 0` → `top: calc(var(--header-h) + var(--disclaimer-height))`、`z-index` は Header の `z-50`（50）を超えないよう `40` 以下に設定
-     4. `page.tsx`（Server Component のまま）先頭で `<NavBar />` をインポート・配置
+     4. `page.tsx`（Server Component のまま）先頭で `<NavBar />` をインポート・配置（リッチガイドでは「正準リファレンス §1」に従い `XxxGuide.tsx` 内に置く）
 
 4. **`.code-block` 内の行区切りパターン** — HTMLの `white-space: pre` コンテキストから JSX へ変換する際に最も多発する問題:
 
@@ -189,18 +297,18 @@ export default function PageSlugPage() {
   { id: 'slug', title: 'タイトル', status: 'coming-soon', ... }
 ```
 
-#### 5b. Update Navigation & E2E Testing Assertions
+#### 5b. ナビゲーション/テストの扱い（データ駆動 — ページ数更新は不要）
 
-To prevent CI/CD and test suite breakages, you must update the page count expectations in the following test-related files:
+ナビは `app/constants.ts` の `EXAMS` を正本とする**データ駆動**構成（`toNavTree` → `Header`）。
+5a でエントリを追加すれば Header に自動反映されるため、**ページ数を手で数える assertion は存在せず更新不要**。
 
-1. **`__tests__/navigation.test.ts`** (テストファイルの場所に合わせて修正してください)
-2. **`e2e/pages.ts`**:
-   - Add the path and header regex for the new page into the `PAGES` array.
-   - Increment `EXPECTED_PAGE_COUNT` to the new page total.
+> 本リポジトリには `e2e/pages.ts` / `EXPECTED_PAGE_COUNT` / `__tests__/navigation.test.ts` は**存在しない**。
+> これらを探したり作ったりしないこと（旧 QA_Studies 由来の記述を撤去済み）。
+> E2E は `e2e/` 配下（smoke/nav/a11y/visual 等）にあり、ナビは `EXAMS` から導出されるため新ページ追加で件数固定の更新は不要。
 
 #### 5c. Create Route Directory
 
-Create `app/<page-slug>/page.tsx` following Next.js App Router conventions.
+Create `app/<page-slug>/page.tsx` following Next.js App Router conventions（リッチガイドは「正準リファレンス §1」の5ファイル構成）。
 
 #### 5d. Update CLAUDE.md and GEMINI.md
 
@@ -212,12 +320,12 @@ Add the new page to the Architecture section of **both** `CLAUDE.md` and `GEMINI
 
 If a page-specific CSS file was created, also document it.
 
-#### 5e. Update docs/coverage-dashboard.html
+#### 5e. Update docs/coverage-dashboard.html（静的スキャン）
 
-After adding `__tests__/<page-slug>/page.test.tsx`, update the `DATA.pages` array in the `<script>` block at the bottom of `docs/coverage-dashboard.html` and run:
+カバレッジダッシュボードは `__tests__/` と `e2e/` の静的解析で生成される。テスト追加後に再生成する:
 
 ```bash
-bun scripts/generate-coverage-dashboard.mjs
+bun run dashboard   # = node scripts/generate-coverage-dashboard.mjs → docs/coverage-dashboard.html
 ```
 
 ### Phase 6: Verification
@@ -268,7 +376,7 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 - **Never duplicate z-index in CSS** when Tailwind class is used in JSX
 - **Never place responsive overrides outside `@media` queries**
 - **Never use camelCase for `@keyframes` names** — use kebab-case
-- **Pages are server-rendered** — no `useState`, `useEffect`, or client-side interactivity unless explicitly needed (use `'use client'` directive)
+- **Pages are server-rendered by default** — no `useState`/`useEffect` in `page.tsx`。**例外**: 進捗バー・scroll spy・チェックリスト等を持つリッチガイドは「正準リファレンス §1」の通り、Server `page.tsx`（`metadata` + `<XxxGuide/>` を返すだけ）と client `XxxGuide.tsx`（`'use client'`）に分割する。Server に状態を持ち込まない。
 - **Always use fallback values** for CSS vars that may not be defined: `var(--radius-lg, 16px)`
 - **Never use `{"\n"}` for line breaks inside `.code-block`** — 各行を `<div className="code-line">...</div>` でラップすること
 - **Never align tabular data with spaces in `.code-block`** — デシジョンテーブルや行列データは `<table>` 要素を使うこと

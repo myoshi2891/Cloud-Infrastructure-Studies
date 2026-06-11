@@ -5,11 +5,52 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新 HEAD:** da11387 — `refactor(ace-guide): integrate complete advanced guide into routing and update docs`
-- **進行中タスク:** なし（直近完了: 🟢 GCP Associate Cloud Engineer 完全試験対策ガイド移行）
-- **テスト数:** 500 件パス（Vitest 72 ファイル）/ E2E 23 件パス（Playwright Chromium 16 ファイル）
-- **ビルド:** 成功（ユーザー環境でのビルド確認）
-- **最終更新日時(UTC):** 2026-06-07T05:30:00Z
+- **最新 HEAD:** 1519164 — `refactor(ace-s1): integrate section1 into nav and update docs`
+- **進行中タスク:** なし（直近完了: 🟢 ACE Section 1「環境設定」完全ガイド移行）
+- **次の作業:** 未移行の残 HTML を確認（`Ace-section1-complete-guide.html` はユーザー指示によりルートに残置）
+- **テスト数:** 508 件パス（Vitest 73 ファイル）
+- **ビルド:** 成功（`bun run build` / `bun run lint` ともにエラーなし）
+- **最終更新日時(UTC):** 2026-06-10T00:00:00Z
+
+---
+
+## 2026-06-10: ACE Section 1「環境設定」完全ガイド移行 (完了)
+
+### 目的
+
+`Ace-section1-complete-guide.html`（静的HTML・3,615行）を、`complete-advanced-guide` と同じ設計パターン（NavBar + page.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/section1` ルートへ移行・共存させる。デザインは HTML を忠実に再現しつつ色は globals.css の design token に整合。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ace-s1): add failing tests for section1 complete guide page`
+- [x] **Step 2 (Green)**: `feat(ace-s1): implement section1 complete guide page`
+  - Mermaid 15図を `constants.ts` へ移植。壊れていた `diag-6`（クォータ申請フロー）を線形フローに修正。
+  - code-block は `dangerouslySetInnerHTML`、表は `<thead>/<th scope>`、チェックリストは client state でトグル化。
+- [x] **Step 3 (Refactor)**: `refactor(ace-s1): integrate section1 into nav and update docs`
+  - `app/constants.ts` の `EXAMS` に「Section 1: 環境設定 完全ガイド（~23%）」を追加（Header 自動反映）。
+  - `CLAUDE.md` に section1 構成を追記。`bun run build` / `bun run lint` パス。
+- [x] **Step 4 (Docs Sync)**: `chore(docs): update MIGRATION_PROGRESS.md — ACE section1 移行完了`
+
+### コンテンツ補正（ユーザー確認済み）
+
+公式 PDF ファイル名 `063026_..._exam_guide`（= 2026/06/30）および Google 公式アナウンスに基づき、HTML本文の誤記を修正:
+
+- 「試験ガイド 2025年6月30日版」→「**2026年6月30日版**」
+- hero スタット「2025」→「**2026**」、配点「~20%」→「**~23%**」
+- IAM Conditions の `timestamp("2025-12-31...")` はサンプル値のため変更せず。
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/section1/page.tsx](app/gcl/associate-cloud-engineer/section1/page.tsx)
+- [app/gcl/associate-cloud-engineer/section1/Section1Guide.tsx](app/gcl/associate-cloud-engineer/section1/Section1Guide.tsx)
+- [app/gcl/associate-cloud-engineer/section1/NavBar.tsx](app/gcl/associate-cloud-engineer/section1/NavBar.tsx)
+- [app/gcl/associate-cloud-engineer/section1/constants.ts](app/gcl/associate-cloud-engineer/section1/constants.ts)
+- [app/gcl/associate-cloud-engineer/section1/page.css](app/gcl/associate-cloud-engineer/section1/page.css)
+- [__tests__/gcl/associate-cloud-engineer/section1/page.test.tsx](__tests__/gcl/associate-cloud-engineer/section1/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [CLAUDE.md](CLAUDE.md)
+
+> 備考: 元 `Ace-section1-complete-guide.html` / `.md` はユーザー指示によりリポジトリルートに残置（アーカイブ移動・削除しない）。
 
 ---
 

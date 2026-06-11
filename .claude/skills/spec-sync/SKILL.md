@@ -27,7 +27,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 | `CLAUDE.md` | `Updated YYYY-MM-DD` | ファイル冒頭付近 |
 | `GEMINI.md` | `Updated YYYY-MM-DD` | ファイル冒頭付近 |
 | `README.md` | `最終更新日: YYYY-MM-DD` | ファイル冒頭付近（見出しの直下） |
-| `docs/MIGRATION_PROGRESS.md` | `Updated YYYY-MM-DD`（現在地テーブル内） | 現在地テーブル内、または「最終 HEAD」欄 |
+| `MIGRATION_PROGRESS.md` | `Updated YYYY-MM-DD`（現在地テーブル内） | 現在地テーブル内、または「最終 HEAD」欄 |
 | `docs/TEST_COVERAGE_PROGRESS.md` | `最終更新日: YYYY-MM-DD` | ファイル冒頭付近 |
 | `docs/coverage-dashboard.html` | `<time datetime="YYYY-MM-DD">YYYY-MM-DD</time>` | ヘッダーのメタ情報エリア（`Updated`）およびフッター |
 | 各個別 `SKILL.md` / `*.md` | `(最終更新日: YYYY-MM-DD)` または未移行HTMLリスト等の日付 | タイトル下、または進捗管理の日付欄 |
@@ -41,7 +41,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 | `CLAUDE.md` | Claude Code 向け主仕様（アーキテクチャ・制約・コマンド） | アーキテクチャ変更、新ファイル追加、制約変更、試験追加 |
 | `GEMINI.md` | Gemini CLI 向け主仕様（同等内容） | CLAUDE.md と同期して更新 |
 | `README.md` | ユーザー向け概要 | 新機能追加、試験追加、UI パターン変更 |
-| `docs/MIGRATION_PROGRESS.md` | 移行進捗（単一の正本） | 各ステップ完了時、セッション終了時 |
+| `MIGRATION_PROGRESS.md` | 移行進捗（単一の正本） | 各ステップ完了時、セッション終了時 |
 | `docs/TEST_COVERAGE_PROGRESS.md` | テストカバレッジ・実装進捗状況の管理 | テストの実装、カバレッジの変化、ネクストアクション完了時 |
 | `docs/coverage-dashboard.html` | カバレッジダッシュボード（HTML形式） | テストの実装、カバレッジ変化時（スクリプト実行による自動生成） |
 
@@ -108,7 +108,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
    - Section 3: テストカテゴリ別の網羅性と課題（現状/課題文を新事合わせて書き換え）
    - Section 4: 優先度別ネクストアクション（完了タスクを `[ ]` → `[x]` 化、説明補強）
    - **Section 7: 次回セッションでのテスト追加再開プロンプト**（完了した優先度の表記を「P0/P1/P2 完了済み」等に更新し、次フェーズ候補を列挙。**ここを更新し忘れると次セッションで重複作業や混乱が発生するため最重要**）
-3. **`docs/MIGRATION_PROGRESS.md`** — 「次のステップ」の `- [ ] 🔵 P*: ...` 行を `[x]` 化し、導入したコマンド・スクリプトの実体（パスやコマンド名）を子要素として追記
+3. **`MIGRATION_PROGRESS.md`** — 「次のステップ」の `- [ ] 🔵 P*: ...` 行を `[x]` 化し、導入したコマンド・スクリプトの実体（パスやコマンド名）を子要素として追記
 4. **`CLAUDE.md`** — コマンドセクション（`## コマンド` 配下の `bash` ブロック）、アーキテクチャツリー、制約事項を必要に応じて更新
 5. **`GEMINI.md`** — `CLAUDE.md` と内容同期。特に「開発と実行」セクションの bullet 一覧に新コマンドを追記（`CLAUDE.md` だけ更新して `GEMINI.md` を放置するパターンが頻発するため必ず対で更新）
 6. **`README.md`** — ユーザー向け「テストの実行」等のセクションに新コマンドサブセクションを追記（軽微な変更で省略可だが、新コマンドや新フェーズ完了時は追記推奨）
@@ -162,7 +162,7 @@ bun run lint 2>&1 | tail -5
 - [ ] **`README.md` 監査**
   - [ ] 起動手順、テストの実行、定義に変更はないか。
   - [ ] 最終更新日のタイムスタンプが最新化されているか。
-- [ ] **`docs/MIGRATION_PROGRESS.md` 監査**
+- [ ] **`MIGRATION_PROGRESS.md` 監査**
   - [ ] `最新 HEAD` が `git rev-parse --short HEAD` の出力と完全に一致しているか。
   - [ ] `ビルド状態` の `bun test` の pass 数が現在の実測値と一致しているか。
   - [ ] `## 次回セッションでの再開プロンプト` の `最新 HEAD`、`テスト件数` が上記と同期しているか。
@@ -192,7 +192,7 @@ cp -R .claude/rules/* .gemini/rules/
 cp -R .claude/skills/* .gemini/skills/
 
 # 2. 変更された仕様書とルール・スキルをステージングしてコミット
-git add CLAUDE.md GEMINI.md README.md docs/MIGRATION_PROGRESS.md docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html .claude/ .gemini/
+git add CLAUDE.md GEMINI.md README.md MIGRATION_PROGRESS.md docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html .claude/ .gemini/
 git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"
 ```
 

@@ -75,6 +75,12 @@ app/
         page.css                    # ページ固有スタイル
         constants.ts                # 定数（Mermaidダイアグラム等）
         NavBar.tsx                  # サイドバーナビ
+      section1/
+        page.tsx                    # Section 1 完全ガイド（Server。メタデータ定義）
+        Section1Guide.tsx           # 本文＋インタラクション（client。進捗バー/scroll spy/チェックリスト）
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid 図定義（diag-6 修正済み）
+        page.css                    # ページ固有スタイル（token 整合）
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装
@@ -201,6 +207,8 @@ Aws/                                # AWS資料アーカイブ
 2. テストをPassさせる実装を行いコミットする。
 3. リファクタリング/統合を行いコミットする。
 ※ LLMはタスク実行前に必ずこのルールをPlanに組み込み、まとめて実装・コミットすることを避けること。
+
+**HTML → Next.js 移行タスク時**: まず `.claude/skills/html-to-nextjs-migration/SKILL.md` の「正準リファレンス」を読むこと。GCPトークンマップ・サイドバー配置値・MermaidDiagram契約・ガイドページのファイル構成が前出しされており、参照 `page.tsx`/`NavBar.tsx`/`MermaidDiagram.tsx`/`page.css` や `globals.css` の再読込・再 grep が不要になる（ソースHTMLは100%読む — 要約・スキップ厳禁）。
 
 ## 制約事項
 
