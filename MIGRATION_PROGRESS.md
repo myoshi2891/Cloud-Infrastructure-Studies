@@ -5,12 +5,36 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **最新 HEAD:** 1519164 — `refactor(ace-s1): integrate section1 into nav and update docs`
-- **進行中タスク:** なし（直近完了: 🟢 ACE Section 1「環境設定」完全ガイド移行）
-- **次の作業:** 未移行の残 HTML を確認（`Ace-section1-complete-guide.html` はユーザー指示によりルートに残置）
-- **テスト数:** 508 件パス（Vitest 73 ファイル）
-- **ビルド:** 成功（`bun run build` / `bun run lint` ともにエラーなし）
-- **最終更新日時(UTC):** 2026-06-10T00:00:00Z
+- **進行中タスク:** 🟢 ACE Section 2「計画と実装」完全ガイド移行 (完了)
+- **次の作業:** (なし)
+- **テスト数:** 522 件パス（Vitest 75 ファイル）
+- **ビルド:** パス
+- **最終更新日時(UTC):** 2026-06-11T06:00:00Z
+
+---
+
+## 2026-06-11: ACE Section 2「計画と実装」完全ガイド移行 (完了)
+
+### 目的
+
+`Gcp-ace-domain2-deep-dive.html`（静的HTML・3,585行）を、`section1` と同じ設計パターン（NavBar + page.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/section2` ルートへ移行・追加する。デザインは HTML を忠実に再現しつつ globals.css のダークテーマデザイントークンに整合。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ace-s2): add failing tests for section2 complete guide page`
+- [x] **Step 2 (Green)**: `feat(ace-s2): implement basic layout and components for section2`
+- [x] **Step 3 (Refactor / Content Migration)**: `feat(ace-s2): migrate all content and style from HTML to section2 page` (コンテンツ移行完了、テスト通過)
+- [x] **Step 4 (Docs Sync)**: `refactor(ace-s2): integrate section2 into routing and update docs` (アーカイブ移動、ドキュメント更新完了)
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/section2/page.tsx](app/gcl/associate-cloud-engineer/section2/page.tsx)
+- [app/gcl/associate-cloud-engineer/section2/Section2Guide.tsx](app/gcl/associate-cloud-engineer/section2/Section2Guide.tsx)
+- [app/gcl/associate-cloud-engineer/section2/NavBar.tsx](app/gcl/associate-cloud-engineer/section2/NavBar.tsx)
+- [app/gcl/associate-cloud-engineer/section2/constants.ts](app/gcl/associate-cloud-engineer/section2/constants.ts)
+- [app/gcl/associate-cloud-engineer/section2/page.css](app/gcl/associate-cloud-engineer/section2/page.css)
+- [__tests__/gcl/associate-cloud-engineer/section2/page.test.tsx](__tests__/gcl/associate-cloud-engineer/section2/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
 
 ---
 
