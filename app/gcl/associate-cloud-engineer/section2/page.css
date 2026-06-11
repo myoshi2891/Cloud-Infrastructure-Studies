@@ -406,7 +406,7 @@
 /* CONTENT */
 .ace-s2-page .content {
     padding: 0 64px 64px;
-    max-width: 1000px; /* layout and max width constraint */
+    max-width: 100%; /* layout and max width constraint */
     margin: 0 auto;
 }
 
@@ -701,6 +701,15 @@
 .ace-s2-page .diagram-wrap .mermaid-wrap {
     display: flex;
     justify-content: center;
+    width: 100%;
+}
+
+.ace-s2-page .diagram-wrap .mermaid-wrap > div {
+    width: 100%;
+}
+
+.ace-s2-page .diagram-wrap .mermaid-wrap svg {
+    max-width: 100% !important;
 }
 
 .ace-s2-page .diagram-label {
