@@ -708,9 +708,7 @@
     width: 100%;
 }
 
-.ace-s2-page .diagram-wrap .mermaid-wrap svg {
-    max-width: 100% !important;
-}
+
 
 .ace-s2-page .diagram-label {
     font-size: 10px;
