@@ -66,6 +66,11 @@ export const EXAMS: Exam[] = [
                 pct: '17.5%',
             },
             {
+                label: 'Section 2: 計画と実装 完全ガイド',
+                href: '/gcl/associate-cloud-engineer/section2',
+                pct: '~30%',
+            },
+            {
                 label: 'Domain 2: 計画と実装',
                 href: '/gcl/associate-cloud-engineer/domain2',
                 pct: '21%',

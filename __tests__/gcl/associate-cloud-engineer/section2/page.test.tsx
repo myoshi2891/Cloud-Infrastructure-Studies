@@ -15,7 +15,7 @@ describe('ACE Section 2 完全ガイド ページ', () => {
     });
 
     it('試験ガイドの年表記が 2026年6月版対応 になっていること', () => {
-        expect(screen.getByText(/2026年6月版/)).toBeInTheDocument();
+        expect(screen.getAllByText(/2026年6月版/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('Section 2 の配点が ~30% になっていること', () => {
