@@ -7,6 +7,11 @@ export const metadata: Metadata = {
     description: 'Google Cloud Associate Cloud Engineer Section 2 Study Guide',
 };
 
+/**
+ * Renders the Section 2 study guide page.
+ *
+ * @returns A JSX element that renders the `Section2Guide` component.
+ */
 export default function Page() {
     return <Section2Guide />;
 }
