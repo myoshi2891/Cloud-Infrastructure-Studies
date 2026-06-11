@@ -3,9 +3,11 @@
 import React from 'react';
 
 /**
- * ACE Section 2 完全ガイドのサイドバーナビ。
- * 正本 HTML の <nav class="sidebar"> を静的アンカーリンクとして再現する。
- * active 判定はページ側の scroll spy（Section2Guide）が DOM クラスを付与する。
+ * Render the ACE Section 2 sidebar navigation for the study guide.
+ *
+ * Renders a static <nav> element containing labeled section groups and anchor links for Section 2 (Compute, Storage & Data, Networking, IaC & AI) and exam-prep items. Active link state is not managed here and is expected to be applied externally (e.g., a scroll-spy).
+ *
+ * @returns The sidebar navigation JSX element
  */
 export default function NavBar() {
     return (
