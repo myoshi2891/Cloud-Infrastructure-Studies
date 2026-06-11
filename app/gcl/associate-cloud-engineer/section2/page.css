@@ -1,0 +1,34 @@
+/* Minimal CSS for Section 2 complete guide */
+.ace-s2-page {
+    position: relative;
+}
+.ace-s2-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 40;
+    overflow-y: auto;
+}
+.ace-s2-page .main {
+    margin-left: 280px;
+}
+.ace-s2-page .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--color-google-blue, #1a73e8);
+    transform-origin: 0% 50%;
+    transform: scaleX(0);
+    z-index: 999;
+}
+@media (max-width: 900px) {
+    .ace-s2-page .sidebar {
+        transform: translateX(-100%);
+    }
+    .ace-s2-page .main {
+        margin-left: 0;
+    }
+}
