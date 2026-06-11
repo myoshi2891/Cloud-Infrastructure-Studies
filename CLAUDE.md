@@ -81,6 +81,12 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（diag-6 修正済み）
         page.css                    # ページ固有スタイル（token 整合）
+      section2/
+        page.tsx                    # Section 2 完全ガイド（Server。メタデータ定義）
+        Section2Guide.tsx           # 本文＋インタラクション（client。進捗バー/scroll spy/チェックリスト）
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid 図定義（21図）
+        page.css                    # ページ固有スタイル（token 整合）
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装

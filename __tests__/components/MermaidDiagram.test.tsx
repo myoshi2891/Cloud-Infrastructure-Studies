@@ -1,6 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { MermaidDiagram } from '@/components/MermaidDiagram';
+import { MermaidDiagram, applySvgFixups } from '@/components/MermaidDiagram';
+
+/** viewBox 付き SVG 要素を生成するヘルパー */
+const makeSvg = (viewBox?: string): SVGSVGElement => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg') as SVGSVGElement;
+    if (viewBox) svg.setAttribute('viewBox', viewBox);
+    return svg;
+};
 
 describe('MermaidDiagram', () => {
     const sampleChart = 'flowchart LR\n  A[Start] --> B[End]';
@@ -83,6 +90,33 @@ describe('MermaidDiagram', () => {
         expect(codeLines[0]?.getAttribute('data-key')).toBe('flowchart LR::0');
         expect(codeLines[1]?.getAttribute('data-key')).toBe('  A --> B::0');
         expect(codeLines[2]?.getAttribute('data-key')).toBe('  A --> B::1');
+    });
+
+    describe('applySvgFixups', () => {
+        it('viewBox の自然幅を max-width(px) として上限化し、過大拡大を防ぐこと', () => {
+            // Arrange: 細い縦長 flowchart 相当の viewBox
+            const svg = makeSvg('0 0 250 600');
+
+            // Act
+            applySvgFixups(svg, 'flowchart TD\nA-->B');
+
+            // Assert: max-width は自然幅 250px（'100%' だとラッパー幅まで拡大してしまう）
+            expect(svg.style.maxWidth).toBe('250px');
+            expect(svg.style.width).toBe('100%');
+            // flowchart は viewBox 高さを +15 拡張する
+            expect(svg.getAttribute('viewBox')).toBe('0 0 250 615');
+        });
+
+        it('viewBox が無い場合は max-width:100% のフォールバックを維持すること', () => {
+            // Arrange
+            const svg = makeSvg();
+
+            // Act
+            applySvgFixups(svg, 'flowchart TD\nA-->B');
+
+            // Assert
+            expect(svg.style.maxWidth).toBe('100%');
+        });
     });
 
     it('エラー表示時、各行の要素に安定したキーに基づいた data-key 属性が付与されること', async () => {

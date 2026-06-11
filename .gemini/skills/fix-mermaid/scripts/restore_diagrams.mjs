@@ -6,7 +6,7 @@
  * 各図の正しいソースを引き当てて差し替える。
  *
  * 使い方:
- *   bun run .claude/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
+ *   bun run .gemini/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
  */
 import fs from 'fs';
 
