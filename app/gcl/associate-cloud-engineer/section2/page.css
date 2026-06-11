@@ -1034,7 +1034,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s;
-    z-index: 200;
+    z-index: 150; /* Header ドロワー(200)より下、ページ fixed(100)より上 */
     box-shadow: 0 4px 16px rgba(26, 115, 232, 0.4);
 }
 
