@@ -3,15 +3,15 @@ import { render, screen, within } from '@testing-library/react';
 import Section2Page from '@/app/gcl/associate-cloud-engineer/section2/page';
 
 describe('ACE Section 2 完全ガイド ページ', () => {
-    let container: HTMLElement;
-
     beforeEach(() => {
-        ({ container } = render(<Section2Page />));
+        render(<Section2Page />);
     });
 
     it('hero タイトルがレンダリングされること', () => {
-        expect(screen.getAllByText(/Planning &/).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/Implementing/).length).toBeGreaterThanOrEqual(1);
+        // h1 のアクセシブル名は span/<br/> を連結した "Section 2: Planning & Implementing a Cloud Solution"
+        expect(
+            screen.getByRole('heading', { level: 1, name: /Planning &.*Implementing/ }),
+        ).toBeInTheDocument();
     });
 
     it('試験ガイドの年表記が 2026年6月版対応 になっていること', () => {
