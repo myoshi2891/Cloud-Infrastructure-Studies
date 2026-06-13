@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCP ACE Section 4 — Configuring Access and Security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+:root {
+  --gcp-blue:#1a73e8;--gcp-blue-dark:#0d47a1;--gcp-blue-light:#4285f4;
+  --gcp-cyan:#00bcd4;--gcp-green:#34a853;--gcp-yellow:#fbbc04;
+  --gcp-red:#ea4335;--gcp-orange:#ff6d00;--gcp-purple:#7c4dff;
+  --bg-base:#070c18;--bg-card:#0e1929;--bg-card2:#142235;
+  --bg-sidebar:#09111f;--border:#1a3a5c;--border-bright:rgba(26,115,232,0.4);
+  --text-primary:#e8f0fe;--text-secondary:#8ab4f8;--text-muted:#4a6a9a;
+  --code-bg:#060d1a;--tag-bg:#0d2548;
+  --accent-gradient:linear-gradient(135deg,#1a73e8 0%,#00bcd4 50%,#34a853 100%);
+  --card-shadow:0 4px 24px rgba(26,115,232,0.12);
+  --sidebar-w:310px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg-base);color:var(--text-primary);line-height:1.75;display:flex;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 5%,rgba(26,115,232,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 85% 90%,rgba(0,188,212,0.06) 0%,transparent 50%),radial-gradient(ellipse 40% 50% at 50% 50%,rgba(124,77,255,0.04) 0%,transparent 70%);pointer-events:none;z-index:0;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--bg-sidebar);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column;}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.sidebar-header{padding:24px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(26,115,232,0.07) 0%,transparent 100%);}
+.sidebar-logo{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gcp-blue-light);margin-bottom:6px;}
+.sidebar-title{font-size:13px;font-weight:700;color:var(--text-primary);line-height:1.4;}
+.sidebar-badge{display:inline-block;margin-top:8px;padding:2px 8px;background:rgba(26,115,232,0.18);border:1px solid rgba(26,115,232,0.4);border-radius:20px;font-size:10px;font-weight:700;color:var(--gcp-blue-light);}
+.sidebar-score{margin:14px 12px;padding:12px;background:rgba(234,67,53,0.08);border:1px solid rgba(234,67,53,0.25);border-radius:8px;}
+.score-label{font-size:10px;color:var(--text-muted);margin-bottom:4px;}
+.score-value{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:#ef5350;line-height:1;}
+.score-sub{font-size:10px;color:var(--text-secondary);margin-top:2px;}
+.score-bar{margin-top:8px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.score-fill{height:100%;width:20%;background:linear-gradient(90deg,#ea4335,#fbbc04);border-radius:2px;}
+.nav-section{padding:14px 12px 6px;}
+.nav-section-label{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted);padding:0 8px;margin-bottom:5px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;color:var(--text-secondary);transition:all .15s;text-decoration:none;line-height:1.3;}
+.nav-item:hover{background:rgba(26,115,232,0.1);color:var(--gcp-blue-light);}
+.nav-item.active{background:rgba(26,115,232,0.15);color:var(--gcp-blue-light);border-left:2px solid var(--gcp-blue-light);}
+.nav-icon{width:16px;height:16px;min-width:16px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;}
+.icon-iam{background:rgba(66,133,244,0.2);color:var(--gcp-blue-light);}
+.icon-sa{background:rgba(0,188,212,0.2);color:var(--gcp-cyan);}
+.icon-wif{background:rgba(124,77,255,0.2);color:var(--gcp-purple);}
+.icon-exam{background:rgba(234,67,53,0.2);color:var(--gcp-red);}
+.icon-check{background:rgba(52,168,83,0.2);color:var(--gcp-green);}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;min-width:0;position:relative;z-index:1;}
+
+/* HERO */
+.hero{position:relative;padding:56px 60px 44px;overflow:hidden;border-bottom:1px solid var(--border);}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% -10%,rgba(26,115,232,0.12) 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 90% 80%,rgba(0,188,212,0.07) 0%,transparent 50%);pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,115,232,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(26,115,232,0.035) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(26,115,232,0.12);border:1px solid rgba(26,115,232,0.35);color:var(--gcp-blue-light);}
+.hero-tag.red{background:rgba(234,67,53,0.12);border-color:rgba(234,67,53,0.35);color:#ef5350;}
+.hero-tag.purple{background:rgba(124,77,255,0.12);border-color:rgba(124,77,255,0.35);color:var(--gcp-purple);}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3.2vw,40px);font-weight:700;line-height:1.15;margin-bottom:12px;letter-spacing:-.02em;}
+.hero-title .accent{background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:14px;color:var(--text-secondary);max-width:640px;margin-bottom:28px;}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
+.hero-stat{display:flex;flex-direction:column;gap:3px;}
+.hero-stat-value{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-stat-label{font-size:11px;color:var(--text-muted);}
+
+/* CHANGES BANNER */
+.changes-banner{margin:28px 60px;padding:18px 22px;background:rgba(234,67,53,0.05);border:1px solid rgba(234,67,53,0.22);border-radius:10px;display:flex;align-items:flex-start;gap:14px;}
+.changes-icon{font-size:18px;margin-top:2px;flex-shrink:0;}
+.changes-title{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:#ef5350;margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase;}
+.changes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:5px;}
+.change-item{display:flex;align-items:baseline;gap:8px;font-size:12px;}
+.change-dot{width:5px;height:5px;min-width:5px;border-radius:50%;background:#ef5350;margin-top:4px;}
+.change-label{font-weight:700;color:#ef5350;font-family:'JetBrains Mono',monospace;font-size:11px;}
+.change-desc{color:var(--text-secondary);}
+
+/* CONTENT */
+.content{padding:0 60px 60px;}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;gap:14px;padding:36px 0 18px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+.section-icon-wrap{width:46px;height:46px;min-width:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;position:relative;}
+.section-icon-wrap::before{content:'';position:absolute;inset:0;border-radius:10px;opacity:.15;}
+.section-icon-blue::before{background:var(--gcp-blue);}
+.section-icon-cyan::before{background:var(--gcp-cyan);}
+.section-icon-green::before{background:var(--gcp-green);}
+.section-icon-purple::before{background:var(--gcp-purple);}
+.section-icon-red::before{background:var(--gcp-red);}
+.section-meta{flex:1;}
+.section-number{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.section-title-main{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.01em;}
+.section-weight{padding:4px 12px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;background:rgba(234,67,53,0.12);border:1px solid rgba(234,67,53,0.3);color:#ef5350;white-space:nowrap;}
+
+/* TOPIC CARD */
+.topic-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;margin-bottom:22px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+.topic-card:hover{border-color:var(--border-bright);box-shadow:var(--card-shadow);}
+.topic-card-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;background:rgba(255,255,255,0.01);}
+.topic-card-header:hover{background:rgba(26,115,232,0.04);}
+.topic-number{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(26,115,232,0.12);color:var(--gcp-blue-light);white-space:nowrap;}
+.topic-title{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;flex:1;letter-spacing:-.01em;}
+.topic-new-badge{padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(234,67,53,0.12);border:1px solid rgba(234,67,53,0.35);color:#ef5350;}
+.topic-toggle{font-size:15px;color:var(--text-muted);transition:transform .2s;}
+.topic-card.collapsed .topic-toggle{transform:rotate(-90deg);}
+.topic-body{padding:22px;}
+.topic-card.collapsed .topic-body{display:none;}
+
+/* SUB TITLE */
+.sub-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--text-primary);margin:22px 0 10px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8px;}
+.sub-title::before{content:'';display:block;width:3px;height:14px;border-radius:2px;background:var(--accent-gradient);}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:rgba(26,115,232,0.07);color:var(--gcp-blue-light);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:9px 13px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--border);}
+td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top;color:var(--text-secondary);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+td strong{color:var(--text-primary);font-weight:600;}
+
+/* CODE */
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:15px 16px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:#a8d8a8;margin:12px 0;position:relative;}
+pre .comment{color:#4a6a5a;}
+pre .flag{color:#87ceeb;}
+pre .string{color:#ffd700;}
+pre .keyword{color:#c792ea;}
+code:not(pre code){font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--tag-bg);color:var(--gcp-cyan);padding:1px 6px;border-radius:4px;border:1px solid rgba(0,188,212,0.2);}
+
+/* COPY BUTTON */
+.copy-btn{position:absolute;top:8px;right:10px;background:rgba(26,115,232,0.15);border:1px solid rgba(26,115,232,0.3);color:var(--gcp-blue-light);font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 8px;border-radius:4px;cursor:pointer;transition:all .15s;}
+.copy-btn:hover{background:rgba(26,115,232,0.3);}
+
+/* DIAGRAM */
+.diagram-wrap{background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;padding:18px 18px 26px;margin:14px 0;overflow-x:auto;}
+.diagram-label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.diagram-label::before{content:'';display:block;width:16px;height:1px;background:var(--border);}
+.mermaid{display:flex;justify-content:center;margin:0 auto;}
+.mermaid svg{overflow:visible !important;}
+
+/* CALLOUT */
+.callout{border-radius:8px;padding:13px 15px;margin:12px 0;display:flex;gap:11px;font-size:13px;line-height:1.65;}
+.callout-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
+.callout-blue{background:rgba(26,115,232,0.07);border:1px solid rgba(26,115,232,0.22);color:var(--text-secondary);}
+.callout-yellow{background:rgba(251,188,4,0.06);border:1px solid rgba(251,188,4,0.22);color:var(--text-secondary);}
+.callout-red{background:rgba(234,67,53,0.06);border:1px solid rgba(234,67,53,0.22);color:var(--text-secondary);}
+.callout-green{background:rgba(52,168,83,0.06);border:1px solid rgba(52,168,83,0.22);color:var(--text-secondary);}
+.callout-purple{background:rgba(124,77,255,0.06);border:1px solid rgba(124,77,255,0.22);color:var(--text-secondary);}
+.callout strong{color:var(--text-primary);}
+
+/* BEST PRACTICE */
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin:14px 0;}
+.bp-card{background:rgba(52,168,83,0.05);border:1px solid rgba(52,168,83,0.18);border-radius:8px;padding:12px 14px;display:flex;gap:9px;font-size:12.5px;}
+.bp-num{width:20px;height:20px;min-width:20px;border-radius:50%;background:rgba(52,168,83,0.18);color:var(--gcp-green);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.bp-text{color:var(--text-secondary);line-height:1.5;}
+.bp-text strong{color:var(--gcp-green);}
+
+/* ANTI vs GOOD */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.compare-bad{background:rgba(234,67,53,0.05);border:1px solid rgba(234,67,53,0.2);border-radius:8px;padding:14px 16px;}
+.compare-good{background:rgba(52,168,83,0.05);border:1px solid rgba(52,168,83,0.2);border-radius:8px;padding:14px 16px;}
+.compare-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+.compare-bad .compare-label{color:#ef5350;}
+.compare-good .compare-label{color:var(--gcp-green);}
+.compare-content{font-size:12.5px;color:var(--text-secondary);line-height:1.6;}
+
+/* PATTERN GRID */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:14px 0;}
+.pattern-card{background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.pattern-card-head{padding:9px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--border);}
+.ph-blue{background:rgba(26,115,232,0.07);color:var(--gcp-blue-light);}
+.ph-cyan{background:rgba(0,188,212,0.07);color:var(--gcp-cyan);}
+.ph-purple{background:rgba(124,77,255,0.07);color:var(--gcp-purple);}
+.ph-red{background:rgba(234,67,53,0.07);color:#ef5350;}
+.pattern-row{display:flex;padding:8px 14px;gap:8px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:12px;align-items:baseline;}
+.pattern-row:last-child{border-bottom:none;}
+.pattern-kw{color:var(--text-muted);flex:1;font-style:italic;}
+.pattern-ans{color:var(--text-primary);font-weight:600;text-align:right;white-space:nowrap;}
+.pattern-ans.blue{color:var(--gcp-blue-light);}
+.pattern-ans.cyan{color:var(--gcp-cyan);}
+.pattern-ans.purple{color:var(--gcp-purple);}
+.pattern-ans.green{color:var(--gcp-green);}
+
+/* REF LINK */
+.ref-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--gcp-blue-light);text-decoration:none;padding:3px 9px;border-radius:4px;background:rgba(26,115,232,0.08);border:1px solid rgba(26,115,232,0.2);transition:all .15s;margin:2px 3px;font-family:'JetBrains Mono',monospace;}
+.ref-link:hover{background:rgba(26,115,232,0.18);}
+
+/* CHECKLIST */
+.checklist{list-style:none;margin:10px 0;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,0.03);}
+.checklist li:last-child{border-bottom:none;}
+.check-box{width:15px;height:15px;min-width:15px;border:1.5px solid var(--border);border-radius:3px;margin-top:3px;background:rgba(52,168,83,0.04);}
+
+/* REFS GRID */
+.refs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:7px;margin:14px 0;}
+.ref-item{display:flex;align-items:center;gap:8px;padding:7px 11px;background:var(--bg-card2);border:1px solid var(--border);border-radius:6px;text-decoration:none;transition:all .15s;}
+.ref-item:hover{border-color:var(--gcp-blue-light);background:rgba(26,115,232,0.07);}
+.ref-dot{width:5px;height:5px;border-radius:50%;background:var(--gcp-blue-light);flex-shrink:0;}
+.ref-text{font-size:11.5px;color:var(--text-secondary);}
+.ref-text strong{color:var(--text-primary);display:block;}
+
+/* SCROLL TOP */
+#scroll-top{position:fixed;bottom:22px;right:22px;width:38px;height:38px;border-radius:50%;background:var(--gcp-blue);color:white;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;z-index:200;box-shadow:0 4px 16px rgba(26,115,232,0.4);}
+#scroll-top.visible{opacity:1;pointer-events:auto;}
+#progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent-gradient);z-index:999;transition:width .1s;width:0;}
+
+@media(max-width:900px){:root{--sidebar-w:250px;}.hero,.content{padding-left:28px;padding-right:28px;}.changes-banner{margin-left:28px;margin-right:28px;}}
+@media(max-width:680px){.sidebar{transform:translateX(-100%);}.main{margin-left:0;}.hero,.content{padding-left:18px;padding-right:18px;}.changes-banner{margin-left:18px;margin-right:18px;}.compare-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Google Cloud ACE</div>
+    <div class="sidebar-title">Section 4: Access &amp;<br>Security 完全解説</div>
+    <div class="sidebar-badge">2025年6月版 試験ガイド対応</div>
+  </div>
+  <div class="sidebar-score">
+    <div class="score-label">試験配点</div>
+    <div class="score-value">20<span style="font-size:15px;color:var(--text-muted)">%</span></div>
+    <div class="score-sub">約10〜12問 / 50〜60問中</div>
+    <div class="score-bar"><div class="score-fill"></div></div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">基礎</div>
+    <a href="#principles" class="nav-item"><span class="nav-icon icon-iam">基</span>セキュリティ設計原則</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">4.1 — IAMの管理</div>
+    <a href="#s41-policy" class="nav-item"><span class="nav-icon icon-iam">P</span>IAMポリシーの表示と作成</a>
+    <a href="#s41-hierarchy" class="nav-item"><span class="nav-icon icon-iam">H</span>組織階層とロール継承</a>
+    <a href="#s41-roles" class="nav-item"><span class="nav-icon icon-iam">R</span>ロール種別とカスタムロール</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">4.2 — SAの管理</div>
+    <a href="#s42-create" class="nav-item"><span class="nav-icon icon-sa">C</span>SAの作成</a>
+    <a href="#s42-leastpriv" class="nav-item"><span class="nav-icon icon-sa">LP</span>最小権限でのIAM利用</a>
+    <a href="#s42-attach" class="nav-item"><span class="nav-icon icon-sa">A</span>リソースへのSA割り当て</a>
+    <a href="#s42-iam" class="nav-item"><span class="nav-icon icon-sa">IM</span>SAのIAM権限管理</a>
+    <a href="#s42-impersonation" class="nav-item"><span class="nav-icon icon-sa">Im</span>SA権限借用の管理</a>
+    <a href="#s42-shortlived" class="nav-item"><span class="nav-icon icon-sa">SL</span>短期クレデンシャル</a>
+    <a href="#s42-gke" class="nav-item"><span class="nav-icon icon-sa">GK</span>GKEでのSA利用</a>
+    <a href="#s42-wif" class="nav-item"><span class="nav-icon icon-wif">WF</span>Workload Identity Federation</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">試験対策</div>
+    <a href="#exam-patterns" class="nav-item"><span class="nav-icon icon-exam">試</span>頻出パターン解法</a>
+    <a href="#traps" class="nav-item"><span class="nav-icon icon-exam">罠</span>引っかけ問題</a>
+    <a href="#checklist" class="nav-item"><span class="nav-icon icon-check">✓</span>直前チェックリスト</a>
+    <a href="#refs" class="nav-item"><span class="nav-icon icon-check">🔗</span>参考リソース一覧</a>
+  </div>
+</nav>
+
+<main class="main">
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow">
+    <span class="hero-tag">ACE 試験対策</span>
+    <span class="hero-tag red">Section 4 / ~20%</span>
+    <span class="hero-tag purple">2025年6月版 試験ガイド対応</span>
+  </div>
+  <h1 class="hero-title">
+    Section 4: <span class="accent">Configuring</span><br>
+    <span class="accent">Access and Security</span>
+  </h1>
+  <p class="hero-sub">IAMポリシーの設計・ロール管理・サービスアカウントのライフサイクル・権限借用・Workload Identity Federationまで、アクセスとセキュリティの全領域を完全網羅。中級者〜上級者向け実践ガイド。</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-value">~20%</span><span class="hero-stat-label">試験配点比率</span></div>
+    <div class="hero-stat"><span class="hero-stat-value">2</span><span class="hero-stat-label">主要セクション（4.1 / 4.2）</span></div>
+    <div class="hero-stat"><span class="hero-stat-value">8+</span><span class="hero-stat-label">試験ガイド記載の出題トピック</span></div>
+    <div class="hero-stat"><span class="hero-stat-value">30+</span><span class="hero-stat-label">公式ドキュメントリンク</span></div>
+  </div>
+</section>
+
+<div class="changes-banner">
+  <div class="changes-icon">🔐</div>
+  <div style="flex:1">
+    <div class="changes-title">Section 4 の出題範囲（2025年6月版 試験ガイド）</div>
+    <div class="changes-grid">
+      <div class="change-item"><div class="change-dot"></div><span class="change-label">[4.1]</span><span class="change-desc">IAMポリシーの表示・作成・組織階層でのロール付与</span></div>
+      <div class="change-item"><div class="change-dot"></div><span class="change-label">[4.1]</span><span class="change-desc">カスタムIAMロールの定義・管理</span></div>
+      <div class="change-item"><div class="change-dot"></div><span class="change-label">[4.2]</span><span class="change-desc">SA作成・最小権限IAM・リソースへのSA割り当て</span></div>
+      <div class="change-item"><div class="change-dot"></div><span class="change-label">[4.2]</span><span class="change-desc">SA権限借用・短期クレデンシャルの作成と管理</span></div>
+      <div class="change-item"><div class="change-dot"></div><span class="change-label">[4.2]</span><span class="change-desc">GKEアプリのSA利用・Workload Identity Federationのプロビジョニング</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ===== PRINCIPLES ===== -->
+<div id="principles" class="section-header">
+  <div class="section-icon-wrap section-icon-purple">🛡️</div>
+  <div class="section-meta">
+    <div class="section-number">基礎</div>
+    <div class="section-title-main">セキュリティ設計の基本原則</div>
+  </div>
+</div>
+
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">基礎-A</span>
+    <span class="topic-title">Google Cloudセキュリティモデルの核心</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="callout callout-purple"><span class="callout-icon">💡</span><div>Section 4 が問うのは「誰が何にアクセスできるか」を設計・実装・管理する能力です。単純な暗記ではなく、<strong>なぜその設計が安全なのか</strong>を理解していることが問われます。</div></div>
+    <div class="sub-title">3つの基本原則</div>
+    <div class="table-wrap"><table>
+      <tr><th>原則</th><th>説明</th><th>Google Cloud での実装</th></tr>
+      <tr><td><strong>最小特権（Least Privilege）</strong></td><td>必要な権限だけを、必要な期間だけ付与する</td><td>事前定義ロール・IAM Conditions</td></tr>
+      <tr><td><strong>職務分掌（Separation of Duties）</strong></td><td>一人がすべての操作を単独で実行できない設計</td><td>承認フロー・PAM（Privileged Access Manager）</td></tr>
+      <tr><td><strong>深層防御（Defense in Depth）</strong></td><td>複数のセキュリティ層を重ねる</td><td>IAM + VPC Firewall + Cloud Armor + KMS</td></tr>
+    </table></div>
+    <div class="sub-title">IAM の構成要素</div>
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ IAM の 3 要素とポリシーの関係</div>
+      <div class="mermaid">
+flowchart LR
+    WHO["👤 Principal（誰が）\nUser / Group / SA / Federated Identity"]
+    WHAT["🔑 Role（何ができるか）\nBasic / Predefined / Custom"]
+    WHERE["🏷️ Resource（どこで）\nOrg / Folder / Project / Resource"]
+    HOW["📜 Policy（どう紐付けるか）\nAllow Policy / Deny Policy"]
+    WHO -->|バインディング| HOW
+    WHAT -->|バインディング| HOW
+    HOW -->|対象| WHERE
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 4.1 ===== -->
+<div id="s41-policy" class="section-header">
+  <div class="section-icon-wrap section-icon-blue">🔑</div>
+  <div class="section-meta">
+    <div class="section-number">Section 4.1</div>
+    <div class="section-title-main">IAMの管理</div>
+  </div>
+  <span class="section-weight">~5–6問</span>
+</div>
+
+<!-- IAM Policy -->
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.1-A</span>
+    <span class="topic-title">IAMポリシーの表示と作成</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="sub-title">IAMポリシーの構造（JSON）</div>
+    <div class="callout callout-blue"><span class="callout-icon">💡</span><div><strong>version: 3 が必要な理由</strong>: IAM Conditions（条件付きバインディング）を使う場合は必ずポリシーバージョンを <code>3</code> に設定します。バージョン <code>1</code> では条件を付与できません。</div></div>
+    <pre class="lang-json" style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button>{
+  "version": 3,
+  "bindings": [
+    {
+      "role": "roles/storage.objectViewer",
+      "members": [
+        "user:alice@example.com",
+        "group:dev-team@example.com",
+        "serviceAccount:my-app@project.iam.gserviceaccount.com"
+      ]
+    },
+    {
+      "role": "roles/compute.instanceAdmin.v1",
+      "members": ["user:bob@example.com"],
+      "condition": {
+        "title": "Business Hours Only",
+        "expression": "request.time.getHours('Asia/Tokyo') >= 9 && request.time.getHours('Asia/Tokyo') &lt; 18"
+      }
+    }
+  ],
+  "etag": "BwXxyzAbcde="
+}</pre>
+
+    <div class="sub-title">IAMポリシーの表示コマンド</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># プロジェクトの IAM ポリシーを確認</span>
+gcloud projects get-iam-policy PROJECT_ID
+
+<span class="comment"># JSON 形式で出力（スクリプト処理向け）</span>
+gcloud projects get-iam-policy PROJECT_ID --format=json
+
+<span class="comment"># フォルダの IAM ポリシーを確認</span>
+gcloud resource-manager folders get-iam-policy FOLDER_ID
+
+<span class="comment"># 組織の IAM ポリシーを確認</span>
+gcloud organizations get-iam-policy ORG_ID
+
+<span class="comment"># Cloud Storage バケットの IAM ポリシーを確認</span>
+gcloud storage buckets get-iam-policy gs://my-bucket
+
+<span class="comment"># Cloud Run サービスの IAM ポリシーを確認</span>
+gcloud run services get-iam-policy SERVICE_NAME --region=REGION</pre>
+
+    <div class="sub-title">IAMポリシーの作成・変更コマンド</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># ユーザーにロールを付与</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="user:alice@example.com" \
+  --role="roles/compute.instanceAdmin.v1"
+
+<span class="comment"># グループにロールを付与（推奨）</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="group:dev-team@example.com" \
+  --role="roles/run.developer"
+
+<span class="comment"># 条件付きロールバインディング（IAM Conditions）</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="user:contractor@example.com" \
+  --role="roles/viewer" \
+  --condition='title=Temporary Access,expression=request.time &lt; timestamp("2025-12-31T23:59:59Z")'
+
+<span class="comment"># ロールを削除</span>
+gcloud projects remove-iam-policy-binding PROJECT_ID \
+  --member="user:alice@example.com" \
+  --role="roles/compute.instanceAdmin.v1"
+
+<span class="comment"># ポリシーファイルを使った一括更新（注意：完全上書き）</span>
+gcloud projects set-iam-policy PROJECT_ID policy.json</pre>
+
+    <div class="callout callout-red"><span class="callout-icon">⚠️</span><div><strong>set-iam-policy の危険性</strong>: <code>add/remove-iam-policy-binding</code> は個別バインディングを変更しますが、<code>set-iam-policy</code> はポリシー全体を上書きします。必ず現在のポリシーを取得してから編集し適用してください。</div></div>
+
+    <div class="sub-title">Deny Policy（拒否ポリシー）</div>
+    <div class="callout callout-purple"><span class="callout-icon">🔒</span><div>Deny Policy は Allow Policy より<strong>優先</strong>されます。特定の権限を明示的に拒否でき、組織全体の重要リソースを保護するのに効果的です。</div></div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># 拒否ポリシーの確認</span>
+gcloud iam policies list \
+  --attachment-point=cloudresourcemanager.googleapis.com/projects/PROJECT_ID \
+  --kind=denypolicies
+
+<span class="comment"># 拒否ポリシーの作成（JSON ファイルを使用）</span>
+gcloud iam policies create POLICY_ID \
+  --attachment-point=cloudresourcemanager.googleapis.com/projects/PROJECT_ID \
+  --kind=denypolicies \
+  --policy-file=deny-policy.json</pre>
+
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>個人ではなくグループにロールを付与する</strong> — メンバー変更時にIAMを変更せず済む</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>add/remove-binding を優先・set-policy は避ける</strong> — 競合状態と上書きを防止</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>IAM Conditionsで有効期限・時間帯・リソースパスを制限</strong> — 永続的な過剰権限のリスクを排除</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>Deny Policyで重要リソースへの危険な操作を禁止</strong> — Allow Policyより優先される強力な保護</div></div>
+    </div>
+    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" class="ref-link">🔗 IAM 継承とアクセス制御</a>
+    <a href="https://docs.cloud.google.com/iam/docs/deny-overview" target="_blank" class="ref-link">🔗 Deny Policy</a>
+    <a href="https://docs.cloud.google.com/iam/docs/conditions-overview" target="_blank" class="ref-link">🔗 IAM Conditions</a>
+  </div>
+</div>
+
+<!-- Hierarchy -->
+<div id="s41-hierarchy" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.1-B</span>
+    <span class="topic-title">組織階層でのロール付与と継承</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ IAM ポリシーの継承メカニズム</div>
+      <div class="mermaid">
+flowchart TD
+    ORG["🏢 Organization\nroles/logging.admin を付与"]
+    F1["📁 Folder: 開発部門\n追加のロールを付与可能"]
+    F2["📁 Folder: 本番部門\n追加のロールを付与可能"]
+    P1["🗂️ Project: dev-app\nOrg + Folder + Project のロールの和集合"]
+    P2["🗂️ Project: prod-api\nOrg + Folder + Project のロールの和集合"]
+    R1["⚙️ Resource\n上位すべてのロールが有効"]
+    ORG -->|"自動継承 ↓"| F1
+    ORG -->|"自動継承 ↓"| F2
+    F1 -->|"自動継承 ↓"| P1
+    F2 -->|"自動継承 ↓"| P2
+    P1 -->|"自動継承 ↓"| R1
+    NOTE["⚠️ 下位で上位の許可を\n取り消すことはできない\n（Deny Policy を除く）"]
+    style ORG fill:#4285F4,color:#fff
+    style F1 fill:#34A853,color:#fff
+    style F2 fill:#34A853,color:#fff
+    style P1 fill:#FBBC04,color:#000
+    style P2 fill:#FBBC04,color:#000
+    style R1 fill:#EA4335,color:#fff
+    style NOTE fill:#2d1010,color:#ef5350
+      </div>
+    </div>
+    <div class="callout callout-red"><span class="callout-icon">🚨</span><div><strong>試験最頻出の落とし穴</strong>: 有効な権限 = すべての祖先レベルで付与されたポリシーの<strong>和集合（Union）</strong>。下位で削除しても上位の継承は無効にならない。上位の許可を制限したい場合は <strong>Deny Policy</strong> を使用する。</div></div>
+    <div class="sub-title">各階層でのロール付与コマンド</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># === 組織レベル ===</span>
+gcloud organizations add-iam-policy-binding ORG_ID \
+  --member="group:security-team@example.com" \
+  --role="roles/securitycenter.admin"
+
+<span class="comment"># === フォルダレベル ===</span>
+gcloud resource-manager folders add-iam-policy-binding FOLDER_ID \
+  --member="group:dev-team@example.com" \
+  --role="roles/editor"
+
+<span class="comment"># === プロジェクトレベル ===</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="user:alice@example.com" \
+  --role="roles/run.developer"
+
+<span class="comment"># === リソースレベル（Cloud Storage バケット）===</span>
+gcloud storage buckets add-iam-policy-binding gs://my-bucket \
+  --member="serviceAccount:app@project.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+<span class="comment"># === リソースレベル（Cloud Run サービス）===</span>
+gcloud run services add-iam-policy-binding SERVICE_NAME \
+  --region=asia-northeast1 \
+  --member="serviceAccount:caller@project.iam.gserviceaccount.com" \
+  --role="roles/run.invoker"</pre>
+
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>Organization レベルのロール付与は最小限に</strong> — 影響範囲が最大のため慎重に管理</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>複数プロジェクト共通の権限は親フォルダで付与</strong> — 個別設定の手間と漏れを防止</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>環境（dev/prod）は別フォルダ・別プロジェクトで分離</strong> — 誤操作のリスクを低減</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>同一信頼境界のリソースを同一プロジェクトにまとめる</strong> — セキュリティポリシーの一貫性を確保</div></div>
+    </div>
+    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" class="ref-link">🔗 リソース階層とアクセス制御</a>
+    <a href="https://docs.cloud.google.com/resource-manager/docs/access-control-org" target="_blank" class="ref-link">🔗 組織レベルのアクセス制御</a>
+  </div>
+</div>
+
+<!-- Roles -->
+<div id="s41-roles" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.1-C</span>
+    <span class="topic-title">ロール種別の管理とカスタムIAMロールの定義</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ ロール選択フローチャート</div>
+      <div class="mermaid">
+flowchart TD
+    NEED["権限を付与したい"] --> Q1{"事前定義ロールで\n要件を満たせるか？"}
+    Q1 -->|"Yes"| PRED["事前定義ロールを使用 ✅\nroles/storage.objectViewer 等"]
+    Q1 -->|"No 過剰権限"| CUSTOM["カスタムロールを作成\n最小限の権限だけ含める"]
+    Q1 -->|"No 複数の組み合わせが必要"| MULTI["複数のロールを組み合わせる"]
+    BASIC["❌ 基本ロール\nroles/viewer / editor / owner\n本番環境では原則禁止"]
+    style PRED fill:#34A853,color:#fff
+    style BASIC fill:#EA4335,color:#fff
+    style CUSTOM fill:#FBBC04,color:#000
+    style MULTI fill:#4285F4,color:#fff
+      </div>
+    </div>
+    <div class="sub-title">試験頻出の事前定義ロール一覧</div>
+    <div class="table-wrap"><table>
+      <tr><th>サービス</th><th>ロール</th><th>権限概要</th></tr>
+      <tr><td rowspan="4">Compute Engine</td><td><code>roles/compute.admin</code></td><td>Compute Engine の完全管理</td></tr>
+      <tr><td><code>roles/compute.instanceAdmin.v1</code></td><td>VM の作成・管理（ネットワーク変更は不可）</td></tr>
+      <tr><td><code>roles/compute.osLogin</code></td><td>OS Login での SSH 接続（sudo なし）</td></tr>
+      <tr><td><code>roles/compute.osAdminLogin</code></td><td>OS Login での SSH 接続（sudo あり）</td></tr>
+      <tr><td rowspan="4">Cloud Storage</td><td><code>roles/storage.admin</code></td><td>バケット・オブジェクトの完全管理</td></tr>
+      <tr><td><code>roles/storage.objectAdmin</code></td><td>オブジェクトの完全管理（バケット設定変更は不可）</td></tr>
+      <tr><td><code>roles/storage.objectCreator</code></td><td>オブジェクトのアップロードのみ</td></tr>
+      <tr><td><code>roles/storage.objectViewer</code></td><td>オブジェクトの閲覧のみ</td></tr>
+      <tr><td rowspan="5">IAM / SA</td><td><code>roles/iam.serviceAccountAdmin</code></td><td>SA の作成・管理</td></tr>
+      <tr><td><code>roles/iam.serviceAccountUser</code></td><td>SA を VM 等にアタッチする権限（actAs）</td></tr>
+      <tr><td><code>roles/iam.serviceAccountTokenCreator</code></td><td>SA の短期トークン生成（権限借用）</td></tr>
+      <tr><td><code>roles/iam.workloadIdentityUser</code></td><td>Workload Identity 経由での SA へのアクセス</td></tr>
+      <tr><td><code>roles/iam.roleAdmin</code></td><td>カスタムロールの作成・管理</td></tr>
+      <tr><td>Secret Manager</td><td><code>roles/secretmanager.secretAccessor</code></td><td>シークレット値の読み取りのみ</td></tr>
+      <tr><td rowspan="2">Cloud Run</td><td><code>roles/run.developer</code></td><td>デプロイ・設定変更</td></tr>
+      <tr><td><code>roles/run.invoker</code></td><td>Cloud Run へのリクエスト送信</td></tr>
+    </table></div>
+
+    <div class="sub-title">カスタムロールの作成</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># YAML でカスタムロールを定義</span>
+cat > custom-deployer-role.yaml &lt;&lt;EOF
+title: "Cloud Run Deployer"
+description: "Cloud Run へのデプロイと Artifact Registry の読み取りのみ"
+stage: "GA"
+includedPermissions:
+  - run.services.create
+  - run.services.update
+  - run.services.get
+  - run.services.list
+  - artifactregistry.repositories.get
+  - artifactregistry.tags.get
+  - storage.objects.get
+  - storage.objects.list
+EOF
+
+<span class="comment"># プロジェクトレベルでカスタムロールを作成</span>
+gcloud iam roles create cloudRunDeployer \
+  --project=PROJECT_ID \
+  --file=custom-deployer-role.yaml
+
+<span class="comment"># 組織レベルでカスタムロールを作成（組織全体で再利用可能）</span>
+gcloud iam roles create cloudRunDeployer \
+  --organization=ORG_ID \
+  --file=custom-deployer-role.yaml
+
+<span class="comment"># カスタムロールの一覧確認</span>
+gcloud iam roles list --project=PROJECT_ID --filter="name~customRoles"
+
+<span class="comment"># 権限を追加</span>
+gcloud iam roles update cloudRunDeployer \
+  --project=PROJECT_ID \
+  --add-permissions=run.routes.get
+
+<span class="comment"># 無効化（削除前のステップ）</span>
+gcloud iam roles update cloudRunDeployer \
+  --project=PROJECT_ID \
+  --stage=DISABLED
+
+<span class="comment"># 削除</span>
+gcloud iam roles delete cloudRunDeployer --project=PROJECT_ID</pre>
+
+    <div class="sub-title">カスタムロールのライフサイクル</div>
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ カスタムロールのステージ遷移</div>
+      <div class="mermaid">
+stateDiagram-v2
+    [*] --> ALPHA: 作成（stage: ALPHA）
+    ALPHA --> BETA: 昇格（stage: BETA）
+    BETA --> GA: 昇格（stage: GA）
+    GA --> DISABLED: 無効化（stage: DISABLED）
+    DISABLED --> GA: 再有効化
+    DISABLED --> DELETED: 削除
+    ALPHA --> DELETED: 削除
+    BETA --> DELETED: 削除
+    GA --> DELETED: 削除
+      </div>
+    </div>
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>本番環境での基本ロール（Editor/Owner）使用を禁止</strong> — 過剰権限リスクを排除</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>事前定義ロールを優先しカスタムロールは最小限に</strong> — 管理コストが高いため</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>ALPHA → BETA → GA の段階を踏む</strong> — 予期せぬ権限の付与を防止</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>組織レベルのカスタムロールはプロジェクト間で再利用</strong> — 重複した定義の乱立を防止</div></div>
+    </div>
+    <a href="https://docs.cloud.google.com/iam/docs/creating-custom-roles" target="_blank" class="ref-link">🔗 カスタムロールの作成と管理</a>
+    <a href="https://docs.cloud.google.com/iam/docs/roles-overview" target="_blank" class="ref-link">🔗 IAM ロールの概要</a>
+  </div>
+</div>
+
+<!-- ===== SECTION 4.2 ===== -->
+<div id="s42-create" class="section-header">
+  <div class="section-icon-wrap section-icon-cyan">🤖</div>
+  <div class="section-meta">
+    <div class="section-number">Section 4.2</div>
+    <div class="section-title-main">サービスアカウントの管理</div>
+  </div>
+  <span class="section-weight">~5–6問</span>
+</div>
+
+<!-- SA Create -->
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-A</span>
+    <span class="topic-title">サービスアカウントの作成と基本概念</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ サービスアカウントの二重の役割</div>
+      <div class="mermaid">
+flowchart TB
+    SA["サービスアカウント\nmy-app@project.iam.gserviceaccount.com"]
+    R1["役割 1: 主体（Principal）として\n他のリソースにアクセスする「誰か」"]
+    R2["役割 2: リソース（Resource）として\n誰がこの SA を使えるかをIAMで制御"]
+    SA --> R1
+    SA --> R2
+    R1 --> EX1["例: VM上のアプリが Cloud Storage を読み取る\n→ SA の権限でアクセス"]
+    R2 --> EX2["例: alice が SA を使う権限を持つか\n→ roles/iam.serviceAccountUser が必要"]
+    style SA fill:#4285F4,color:#fff
+    style R1 fill:#34A853,color:#fff
+    style R2 fill:#FBBC04,color:#000
+      </div>
+    </div>
+    <div class="sub-title">サービスアカウントの種類</div>
+    <div class="table-wrap"><table>
+      <tr><th>種類</th><th>作成者</th><th>命名規則</th><th>注意事項</th></tr>
+      <tr><td><strong>ユーザー管理 SA</strong></td><td>ユーザーが作成</td><td><code>NAME@PROJECT_ID.iam.gserviceaccount.com</code></td><td>アプリ・CI/CD・GKE Pod 用（推奨）</td></tr>
+      <tr><td><strong>デフォルト SA</strong></td><td>Google が自動作成</td><td><code>PROJECT_NUMBER-compute@developer.gserviceaccount.com</code></td><td><strong>過剰権限のため本番では非推奨</strong></td></tr>
+      <tr><td><strong>Google 管理 SA</strong></td><td>Google が内部で使用</td><td><code>PROJECT_ID@cloudservices.gserviceaccount.com</code></td><td>直接操作は不可</td></tr>
+    </table></div>
+    <div class="callout callout-red"><span class="callout-icon">⚠️</span><div><strong>デフォルトSAの危険性</strong>: Compute Engine と App Engine のデフォルト SA は <code>roles/editor</code> に近い過剰な権限を持ちます。本番環境では専用の最小権限 SA を作成して使用してください。</div></div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># SA の作成（用途が分かる命名規則を使う）</span>
+gcloud iam service-accounts create vm-web-server \
+  --display-name="Web Server VM Service Account" \
+  --description="Prod web server VM - reads GCS, writes Firestore"
+
+<span class="comment"># Workload Identity Federation 用（wlif- プレフィックス）</span>
+gcloud iam service-accounts create wlif-github-deploy \
+  --display-name="GitHub Actions Deployment SA"
+
+<span class="comment"># GKE Workload Identity 用（wlifgke- プレフィックス）</span>
+gcloud iam service-accounts create wlifgke-api-backend \
+  --display-name="GKE API Backend Service Account"
+
+<span class="comment"># SA の一覧確認</span>
+gcloud iam service-accounts list
+
+<span class="comment"># SA の無効化（削除ではなく一時停止）</span>
+gcloud iam service-accounts disable \
+  vm-web-server@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># SA の削除（30日間は復元可能）</span>
+gcloud iam service-accounts delete \
+  vm-web-server@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># SA の復元（削除後30日以内）</span>
+gcloud iam service-accounts undelete SA_UNIQUE_ID</pre>
+
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>1つのSAは1アプリ/1目的のみ</strong> — 最小権限の原則と追跡可能性を確保</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>デフォルト SA を本番で使わない</strong> — 専用の最小権限 SA を作成する</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>命名規則を統一する（vm- / wlif- / wlifgke-）</strong> — 一目で用途を識別できる</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>不要になったSAは無効化→削除の順で対処</strong> — 30日間の復元猶予期間を活用</div></div>
+    </div>
+    <a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" class="ref-link">🔗 SA のベストプラクティス</a>
+  </div>
+</div>
+
+<!-- SA Least Priv -->
+<div id="s42-leastpriv" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-B</span>
+    <span class="topic-title">最小権限でのIAMポリシー利用</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># SA に必要な権限だけを付与する例</span>
+
+<span class="comment"># Cloud Storage への読み取りのみ</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+<span class="comment"># BigQuery への読み取りのみ</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/bigquery.dataViewer"
+
+<span class="comment"># Secret Manager のシークレット読み取りのみ</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+
+<span class="comment"># より細かい制御：特定のバケットのみにアクセスを制限</span>
+gcloud storage buckets add-iam-policy-binding gs://specific-bucket \
+  --member="serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+<span class="comment"># Policy Analyzer で特定の権限を持つ Principal を検索</span>
+gcloud asset analyze-iam-policy \
+  --project=PROJECT_ID \
+  --permissions="storage.objects.delete"
+
+<span class="comment"># 特定リソースにアクセスできる全 Identity を分析</span>
+gcloud asset analyze-iam-policy \
+  --organization=ORG_ID \
+  --full-resource-name="//storage.googleapis.com/projects/_/buckets/my-bucket"</pre>
+  </div>
+</div>
+
+<!-- SA Attach -->
+<div id="s42-attach" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-C</span>
+    <span class="topic-title">リソースへのサービスアカウント割り当て</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="sub-title">スコープ（Scope）の理解</div>
+    <div class="table-wrap"><table>
+      <tr><th>スコープ</th><th>説明</th><th>推奨度</th></tr>
+      <tr><td><code>cloud-platform</code></td><td>すべての GCP API へのアクセスを SA の IAM で制御</td><td>✅ 推奨</td></tr>
+      <tr><td>個別スコープ（例: storage.read_only）</td><td>特定の API のみ（旧来の方法）</td><td>⚠️ 非推奨</td></tr>
+      <tr><td><code>default</code></td><td>一部の API のみデフォルトで有効</td><td>❌ 非推奨</td></tr>
+    </table></div>
+    <div class="callout callout-blue"><span class="callout-icon">💡</span><div><strong>なぜ cloud-platform スコープが推奨されるのか？</strong> スコープではなく SA の IAM ロールで権限を制御することで、コンソールや gcloud からの権限変更が即座に反映されます。</div></div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># VM 作成時に SA をアタッチ（推奨設定）</span>
+gcloud compute instances create my-vm \
+  --zone=asia-northeast1-a \
+  --machine-type=n2-standard-4 \
+  --service-account=vm-web-server@PROJECT_ID.iam.gserviceaccount.com \
+  --scopes=cloud-platform
+
+<span class="comment"># 既存 VM の SA を変更（VM を停止してから実行）</span>
+gcloud compute instances stop my-vm --zone=asia-northeast1-a
+gcloud compute instances set-service-account my-vm \
+  --zone=asia-northeast1-a \
+  --service-account=new-sa@PROJECT_ID.iam.gserviceaccount.com \
+  --scopes=cloud-platform
+gcloud compute instances start my-vm --zone=asia-northeast1-a
+
+<span class="comment"># Cloud Run サービスに SA をアタッチ</span>
+gcloud run deploy my-service \
+  --image=gcr.io/PROJECT_ID/my-app:latest \
+  --region=asia-northeast1 \
+  --service-account=wlif-cloudrun@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># Cloud Functions に SA をアタッチ</span>
+gcloud functions deploy my-function \
+  --gen2 --runtime=python312 --trigger-http \
+  --service-account=func-sa@PROJECT_ID.iam.gserviceaccount.com \
+  --region=asia-northeast1</pre>
+  </div>
+</div>
+
+<!-- SA IAM -->
+<div id="s42-iam" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-D</span>
+    <span class="topic-title">サービスアカウントのIAM権限管理（actAs権限）</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="callout callout-yellow"><span class="callout-icon">⚠️</span><div>SA の IAM 権限管理には2つの側面があります。<strong>①SA が GCP リソースにアクセスするための権限</strong>と、<strong>②誰がこのSAを使えるか（SA自体に対するIAM設定）</strong>です。</div></div>
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ actAs 権限の重要性</div>
+      <div class="mermaid">
+flowchart LR
+    ALICE["alice\n（エンジニア）"]
+    SA["privileged-sa\n（特権 SA）"]
+    VM["VM インスタンス"]
+    GCP["GCP リソース"]
+    ALICE -->|"roles/iam.serviceAccountUser\nが必要（actAs 権限を含む）"| SA
+    SA -->|"アタッチ"| VM
+    VM -->|"SA の権限でアクセス"| GCP
+    DANGER["⚠️ privileged-sa に Cloud SQL Admin 権限がある場合\nactAs 権限を誰でも持てると\n誰でもその権限を悪用できる！"]
+    style DANGER fill:#2d1010,color:#ef5350
+    style SA fill:#FBBC04,color:#000
+      </div>
+    </div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># SA への actAs 権限の付与（SA を VM にアタッチできるようにする）</span>
+gcloud iam service-accounts add-iam-policy-binding \
+  privileged-sa@PROJECT_ID.iam.gserviceaccount.com \
+  --member="user:alice@example.com" \
+  --role="roles/iam.serviceAccountUser"
+
+<span class="comment"># SA の IAM ポリシー（誰がこの SA を使えるか）を確認</span>
+gcloud iam service-accounts get-iam-policy \
+  privileged-sa@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># SA の IAM ポリシーを更新</span>
+gcloud iam service-accounts set-iam-policy \
+  privileged-sa@PROJECT_ID.iam.gserviceaccount.com \
+  policy.json</pre>
+  </div>
+</div>
+
+<!-- Impersonation -->
+<div id="s42-impersonation" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-E</span>
+    <span class="topic-title">サービスアカウント権限借用（Impersonation）の管理</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ 権限借用のシーケンス</div>
+      <div class="mermaid">
+sequenceDiagram
+    participant A as alice（通常権限のエンジニア）
+    participant IAM as GCP IAM
+    participant PSA as privileged-sa（特権SA）
+    participant API as GCP API
+    A->>IAM: SA の TokenCreator 権限を使ってトークンをリクエスト
+    IAM->>IAM: alice が tokenCreator 権限を持つか確認
+    IAM-->>A: 短期アクセストークン（最大1時間）を発行
+    A->>API: トークンで privileged-sa の権限で操作
+    API-->>A: 結果を返す
+    Note over IAM: 監査ログに「alice が privileged-sa を使って何時に何の操作をしたか」が記録される
+    Note over A: 1時間後にトークンが自動失効
+      </div>
+    </div>
+    <div class="sub-title">通常の権限付与 vs 権限借用 vs PAM</div>
+    <div class="table-wrap"><table>
+      <tr><th>方法</th><th>権限の永続性</th><th>監査性</th><th>リスク</th></tr>
+      <tr><td>直接ロール付与</td><td>永続的</td><td>操作ログのみ</td><td>高（常に特権を持つ）</td></tr>
+      <tr><td><strong>SA 権限借用</strong></td><td>一時的（最大1時間）</td><td>誰がいつ借用したかが明確</td><td>低（時間制限あり）</td></tr>
+      <tr><td><strong>PAM（Privileged Access Manager）</strong></td><td>承認制・時間制限</td><td>完全な監査証跡</td><td>最低</td></tr>
+    </table></div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># Step 1: privileged-sa に必要な権限を付与</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="serviceAccount:privileged-sa@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/storage.admin"
+
+<span class="comment"># Step 2: alice に SA のトークン作成権限を付与</span>
+gcloud iam service-accounts add-iam-policy-binding \
+  privileged-sa@PROJECT_ID.iam.gserviceaccount.com \
+  --member="user:alice@example.com" \
+  --role="roles/iam.serviceAccountTokenCreator"
+
+<span class="comment"># Step 3a: alice が権限借用で操作（gcloud コマンド）</span>
+gcloud storage ls gs://my-bucket \
+  --impersonate-service-account=privileged-sa@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># Step 3b: 一時的なアクセストークンを生成</span>
+gcloud auth print-access-token \
+  --impersonate-service-account=privileged-sa@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># Step 3c: gcloud CLI のデフォルトで権限借用を設定</span>
+gcloud config set auth/impersonate_service_account \
+  privileged-sa@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># 設定を解除</span>
+gcloud config unset auth/impersonate_service_account
+
+<span class="comment"># 権限借用のイベントを Cloud Logging で検索</span>
+gcloud logging read \
+  'protoPayload.methodName="GenerateAccessToken" AND protoPayload.request.name=~"privileged-sa"' \
+  --limit=10 --format=json</pre>
+
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>特権操作は直接ロール付与ではなくSA権限借用を使う</strong> — 一時的な権限 + 詳細な監査ログ</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>TokenCreator はプロジェクトレベルではなくSAリソースレベルで付与</strong> — 影響範囲を特定SAに限定</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>PAMで承認フローを組み込む</strong> — 承認なしに特権SAを借用できないようにする</div></div>
+    </div>
+    <a href="https://docs.cloud.google.com/iam/docs/service-account-impersonation" target="_blank" class="ref-link">🔗 SA の権限借用</a>
+    <a href="https://docs.cloud.google.com/iam/docs/service-account-permissions" target="_blank" class="ref-link">🔗 SA 権限のロール</a>
+  </div>
+</div>
+
+<!-- Short-lived Credentials -->
+<div id="s42-shortlived" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-F</span>
+    <span class="topic-title">短期クレデンシャルの作成と管理</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="table-wrap"><table>
+      <tr><th>種類</th><th>用途</th><th>有効期限</th><th>API</th></tr>
+      <tr><td><strong>OAuth 2.0 アクセストークン</strong></td><td>Google API 呼び出し</td><td>デフォルト1時間（最大12時間）</td><td>generateAccessToken</td></tr>
+      <tr><td><strong>OIDC ID トークン</strong></td><td>Cloud Run / API Gateway の認証</td><td>1時間</td><td>generateIdToken</td></tr>
+      <tr><td><strong>自己署名 JWT</strong></td><td>一部の Google API 認証</td><td>1時間</td><td>signJwt</td></tr>
+      <tr><td><strong>自己署名バイナリオブジェクト</strong></td><td>カスタム認証</td><td>任意</td><td>signBlob</td></tr>
+    </table></div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># OAuth 2.0 アクセストークンの生成（権限借用）</span>
+gcloud auth print-access-token \
+  --impersonate-service-account=my-sa@PROJECT_ID.iam.gserviceaccount.com
+
+<span class="comment"># OIDC ID トークンの生成（Cloud Run のエンドポイント向け）</span>
+gcloud auth print-identity-token \
+  --impersonate-service-account=my-sa@PROJECT_ID.iam.gserviceaccount.com \
+  --audiences=https://my-cloud-run-service-url
+
+<span class="comment"># REST API を使ってアクセストークンを生成</span>
+curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  -d '{"scope": ["https://www.googleapis.com/auth/cloud-platform"]}' \
+  "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/my-sa@PROJECT_ID.iam.gserviceaccount.com:generateAccessToken"
+
+<span class="comment"># 委任チェーンでトークンを生成（複数の SA を経由）</span>
+gcloud auth print-access-token \
+  --impersonate-service-account=sa1@PROJECT.iam.gserviceaccount.com,sa2@PROJECT.iam.gserviceaccount.com,sa3@PROJECT.iam.gserviceaccount.com</pre>
+
+    <div class="callout callout-red"><span class="callout-icon">🚫</span><div><strong>自己権限借用（Self-Impersonation）は禁止</strong>: SA の短期クレデンシャルを使って、同じ SA の新しいアクセストークンを生成することは禁止されています。盗まれたトークンを無限に更新する攻撃を防ぐためです。</div></div>
+    <a href="https://docs.cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" class="ref-link">🔗 短期クレデンシャルの作成</a>
+    <a href="https://docs.cloud.google.com/iam/docs/service-account-creds" target="_blank" class="ref-link">🔗 SA クレデンシャルの種類</a>
+  </div>
+</div>
+
+<!-- GKE -->
+<div id="s42-gke" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-G</span>
+    <span class="topic-title">GKEアプリケーションでのサービスアカウント利用</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ Workload Identity Federation for GKE のアーキテクチャ</div>
+      <div class="mermaid">
+flowchart TB
+    subgraph Kubernetes
+        POD["Pod\n（アプリケーション）"]
+        KSA["Kubernetes Service Account\n（KSA）\niam.gke.io/gcp-service-account アノテーション付き"]
+    end
+    subgraph GCP
+        GSA["Google Cloud IAM SA\n（GSA）\nwlifgke-api-backend@project.iam.gserviceaccount.com"]
+        GCS["Cloud Storage\n（目的のリソース）"]
+        IAM["IAM\nroles/iam.workloadIdentityUser"]
+    end
+    POD -->|"KSA を使用"| KSA
+    KSA -->|"Workload Identity Federation で紐付け"| IAM
+    IAM -->|"GSA の権限を付与"| GSA
+    GSA -->|"IAM ロールで許可された操作"| GCS
+    style POD fill:#4285F4,color:#fff
+    style GCS fill:#34A853,color:#fff
+    style KSA fill:#0d1929,stroke:#00bcd4
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-bad">
+        <div class="compare-label">✕ アンチパターン：JSON キーを Secret にマウント</div>
+        <div class="compare-content">SA の JSON キーを Kubernetes Secret に保存してPodにマウント。キー漏洩リスク・ローテーション管理の煩雑さが問題。<strong>絶対に使わないこと。</strong></div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✓ 推奨：Workload Identity Federation for GKE</div>
+        <div class="compare-content">KSA と GSA を紐付けるだけ。JSON キー不要。メタデータサーバーから自動的に短期トークンを取得。GKE Autopilot では自動有効化。</div>
+      </div>
+    </div>
+
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button"><span class="comment"># Step 1: GKE クラスタで Workload Identity を有効化</span>
+gcloud container clusters update my-cluster \
+  --workload-pool=PROJECT_ID.svc.id.goog \
+  --region=asia-northeast1
+<span class="comment"># ※ GKE Autopilot では自動的に有効化される</span>
+
+<span class="comment"># Step 2: GSA を作成</span>
+gcloud iam service-accounts create wlifgke-api-backend \
+  --display-name="GKE API Backend GSA"
+
+<span class="comment"># Step 3: GSA に必要な権限を付与</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="serviceAccount:wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+<span class="comment"># Step 4: KSA が GSA を使えるように IAM を設定</span>
+gcloud iam service-accounts add-iam-policy-binding \
+  wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com \
+  --role=roles/iam.workloadIdentityUser \
+  --member="serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]"
+
+<span class="comment"># Step 5: KSA を作成してアノテーションを付ける</span>
+kubectl create serviceaccount my-ksa --namespace my-namespace
+kubectl annotate serviceaccount my-ksa \
+  --namespace my-namespace \
+  iam.gke.io/gcp-service-account=wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com</pre>
+
+    <div class="sub-title">Kubernetes マニフェスト</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button">apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-ksa
+  namespace: my-namespace
+  annotations:
+    iam.gke.io/gcp-service-account: wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com
+---
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      serviceAccountName: my-ksa  <span class="comment"># ← KSA を指定するだけ（JSON キー不要）</span>
+      containers:
+      - name: my-container
+        image: gcr.io/PROJECT_ID/my-app:latest
+        <span class="comment"># GOOGLE_APPLICATION_CREDENTIALS の設定不要！</span>
+        <span class="comment"># アプリは自動的に Workload Identity を使用する</span></pre>
+
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>JSON キーは絶対に使わずWorkload Identityを使用</strong> — キー漏洩リスクを根本から排除</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>GKE Autopilotを使うとWorkload Identityが自動有効</strong> — 設定漏れを防止</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>Namespace単位・Pod単位でKSAを分離</strong> — 最小権限の原則をコンテナレベルで適用</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>GSAの命名はwlifgke-プレフィックスを付ける</strong> — Workload Identity用SAだと一目で分かる</div></div>
+    </div>
+    <a href="https://docs.cloud.google.com/iam/docs/workload-identities" target="_blank" class="ref-link">🔗 Workload Identities for GKE</a>
+    <a href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" class="ref-link">🔗 GKE Autopilot セキュリティ</a>
+  </div>
+</div>
+
+<!-- WIF -->
+<div id="s42-wif" class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">4.2-H</span>
+    <span class="topic-title">Workload Identity Federation のプロビジョニング</span>
+    <span class="topic-new-badge">重要</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ Workload Identity Federation の全体フロー</div>
+      <div class="mermaid">
+flowchart LR
+    subgraph 外部環境
+        EXT["外部ワークロード\nGitHub Actions / AWS EC2\nAzure VM / オンプレミス"]
+        OIDC["OIDC/SAML トークン\n（外部 IdP が発行）"]
+    end
+    subgraph Google Cloud
+        WIP["Workload Identity Pool"]
+        PROV["Pool Provider\n（特定IdPとの信頼関係）"]
+        STS["Google STS\n（Security Token Service）"]
+        SA["IAM Service Account\n（オプション）"]
+        GCP["GCP リソース"]
+    end
+    EXT --> OIDC
+    OIDC -->|"トークンを提示"| STS
+    STS -->|"WIP + Provider で検証"| WIP
+    WIP --> PROV
+    STS -->|"短期 GCP トークンを発行"| EXT
+    EXT -->|"直接アクセス OR 権限借用"| SA
+    SA -->|"SA の権限でアクセス"| GCP
+    EXT -->|"直接アクセス"| GCP
+    style EXT fill:#FBBC04,color:#000
+    style STS fill:#4285F4,color:#fff
+    style GCP fill:#34A853,color:#fff
+      </div>
+    </div>
+
+    <div class="sub-title">GitHub Actions との設定（最もよく使われるパターン）</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># Step 1: Workload Identity Pool を作成</span>
+gcloud iam workload-identity-pools create github-pool \
+  --location=global \
+  --display-name="GitHub Actions Pool" \
+  --description="GitHub Actions Workload Identity Pool"
+
+<span class="comment"># Step 2: GitHub の OIDC Provider を登録</span>
+gcloud iam workload-identity-pools providers create-oidc github-provider \
+  --location=global \
+  --workload-identity-pool=github-pool \
+  --display-name="GitHub OIDC Provider" \
+  --issuer-uri="https://token.actions.githubusercontent.com" \
+  --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.actor=assertion.actor" \
+  --attribute-condition="assertion.repository_owner == 'my-org'"
+
+<span class="comment"># Step 3: GSA を作成</span>
+gcloud iam service-accounts create wlif-github-deploy \
+  --display-name="GitHub Actions Deployment SA"
+
+<span class="comment"># Step 4: GSA に必要な権限を付与</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member="serviceAccount:wlif-github-deploy@PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/run.developer"
+
+<span class="comment"># Step 5: Workload Identity Pool が GSA を権限借用できるように設定</span>
+WORKLOAD_IDENTITY_POOL_ID=$(gcloud iam workload-identity-pools describe github-pool \
+  --location=global --format="value(name)")
+
+gcloud iam service-accounts add-iam-policy-binding \
+  wlif-github-deploy@PROJECT_ID.iam.gserviceaccount.com \
+  --role="roles/iam.workloadIdentityUser" \
+  --member="principalSet://iam.googleapis.com/${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/my-org/my-repo"</pre>
+
+    <div class="sub-title">GitHub Actions ワークフロー（SA キー不要）</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button">name: Deploy to Cloud Run
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write   <span class="comment"># OIDC トークンの生成を許可（必須）</span>
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      <span class="comment"># Workload Identity Federation で認証（SA キー不要！）</span>
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'wlif-github-deploy@PROJECT_ID.iam.gserviceaccount.com'
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy my-service \
+            --image=gcr.io/PROJECT_ID/my-app:${{ github.sha }} \
+            --region=asia-northeast1</pre>
+
+    <div class="sub-title">セキュリティ強化のための attribute-condition</div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button"><span class="comment"># GitHub Actions: 特定の Organization のリポジトリのみ許可</span>
+--attribute-condition="assertion.repository_owner == 'my-org'"
+
+<span class="comment"># GitHub Actions: 特定のリポジトリのみ許可（より厳密）</span>
+--attribute-condition="assertion.repository == 'my-org/my-repo'"
+
+<span class="comment"># AWS: 特定の IAM ロールのみ許可</span>
+--attribute-condition="attribute.aws_role == 'arn:aws:sts::ACCOUNT:assumed-role/ROLE'"</pre>
+
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>SA JSON キーの代わりに常にWIFを使用</strong> — キー管理不要・自動失効・より安全</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>attribute-conditionで外部IdPの範囲を必ず限定</strong> — なりすまし攻撃を防止</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>環境（dev/prod）ごとに別のPoolを作成</strong> — 環境間の分離を確保</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>GSAの命名にwlif-プレフィックスを使用</strong> — WIF用SAだと一目で識別できる</div></div>
+    </div>
+    <a href="https://docs.cloud.google.com/iam/docs/workload-identity-federation" target="_blank" class="ref-link">🔗 Workload Identity Federation 概要</a>
+    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" class="ref-link">🔗 WIF ベストプラクティス</a>
+    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" class="ref-link">🔗 デプロイパイプラインでの SA ベストプラクティス</a>
+  </div>
+</div>
+
+<!-- ===== EXAM PATTERNS ===== -->
+<div id="exam-patterns" class="section-header">
+  <div class="section-icon-wrap section-icon-red">🎯</div>
+  <div class="section-meta">
+    <div class="section-number">試験対策</div>
+    <div class="section-title-main">頻出パターン別 解法ガイド</div>
+  </div>
+</div>
+
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">試験-A</span>
+    <span class="topic-title">キーワード → 正解サービス・設定 即答マップ</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="pattern-card-head ph-blue">🔑 Pattern A: IAMロール選択</div>
+        <div class="pattern-row"><span class="pattern-kw">「Cloud Run にデプロイのみ」</span><span class="pattern-ans blue">roles/run.developer</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「Cloud Runを呼び出すだけ」</span><span class="pattern-ans blue">roles/run.invoker</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「GCSのオブジェクト読み取りのみ」</span><span class="pattern-ans blue">roles/storage.objectViewer</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「SSH接続のみ（sudo不要）」</span><span class="pattern-ans blue">roles/compute.osLogin</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「SSH接続のみ（sudo必要）」</span><span class="pattern-ans blue">roles/compute.osAdminLogin</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「SAをVMにアタッチしたい」</span><span class="pattern-ans blue">roles/iam.serviceAccountUser</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「SAの権限を一時的に借用したい」</span><span class="pattern-ans blue">roles/iam.serviceAccountTokenCreator</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「シークレット値の読み取りのみ」</span><span class="pattern-ans blue">roles/secretmanager.secretAccessor</span></div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card-head ph-cyan">🤖 Pattern B: SA認証方式選択</div>
+        <div class="pattern-row"><span class="pattern-kw">「GCE/GKE/Cloud RunからGCP APIへ」</span><span class="pattern-ans cyan">SAをリソースにアタッチ</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「ローカル開発からGCP APIへ」</span><span class="pattern-ans cyan">ADC (gcloud auth app-default login)</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「GitHub ActionsからGCP APIへ」</span><span class="pattern-ans cyan">Workload Identity Federation</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「AWS EC2からGCP APIへ」</span><span class="pattern-ans cyan">Workload Identity Federation</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「一時的に特権操作が必要」</span><span class="pattern-ans cyan">SA Impersonation</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「承認フロー付きの特権アクセス」</span><span class="pattern-ans cyan">PAM (Privileged Access Manager)</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「GKEのPodからGCP APIへ」</span><span class="pattern-ans cyan">Workload Identity for GKE</span></div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card-head ph-purple">📜 Pattern C: IAMポリシー操作</div>
+        <div class="pattern-row"><span class="pattern-kw">「既存ポリシーにバインディングを追加」</span><span class="pattern-ans purple">add-iam-policy-binding</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「既存ポリシーからバインディングを削除」</span><span class="pattern-ans purple">remove-iam-policy-binding</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「ポリシー全体を置き換え（危険）」</span><span class="pattern-ans purple">set-iam-policy</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「特定の権限を強制的に拒否したい」</span><span class="pattern-ans purple">Deny Policy</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「有効期限付きの権限を付与したい」</span><span class="pattern-ans purple">IAM Conditions</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「不要な権限を自動検出したい」</span><span class="pattern-ans purple">Policy Recommender</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「特定リソースにアクセスできる全Identityを調査」</span><span class="pattern-ans purple">Policy Analyzer</span></div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-card-head ph-red">🚨 Pattern D: 引っかけに注意</div>
+        <div class="pattern-row"><span class="pattern-kw">「SA JSONキーは90日で自動失効」</span><span class="pattern-ans" style="color:#ef5350;">❌ 失効しない（無期限）</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「下位で上位のロールを削除できる」</span><span class="pattern-ans" style="color:#ef5350;">❌ できない（和集合）</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「基本ロールは開発環境なら使っていい」</span><span class="pattern-ans" style="color:#ef5350;">❌ 原則禁止</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「GKEでのJSON Keyを K8s Secret で管理」</span><span class="pattern-ans" style="color:#ef5350;">❌ Workload Identity を使う</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「カスタムロールはPJとOrg間で共有可能」</span><span class="pattern-ans" style="color:#ef5350;">❌ それぞれで独立管理</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「自己権限借用でトークンを無限更新」</span><span class="pattern-ans" style="color:#ef5350;">❌ IAMが禁止している</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHECKLIST ===== -->
+<div id="checklist" class="section-header">
+  <div class="section-icon-wrap section-icon-green">✅</div>
+  <div class="section-meta">
+    <div class="section-number">直前確認</div>
+    <div class="section-title-main">Section 4 直前チェックリスト</div>
+  </div>
+</div>
+
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">Check-A</span>
+    <span class="topic-title">4.1 IAMの管理</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <ul class="checklist">
+      <li><div class="check-box"></div>IAMポリシーのJSON構造（version, bindings, etag）を説明できる</li>
+      <li><div class="check-box"></div><code>add-iam-policy-binding</code> と <code>set-iam-policy</code> の違いと危険性を知っている</li>
+      <li><div class="check-box"></div>組織・フォルダ・プロジェクト・リソース各レベルでのロール付与コマンドを知っている</li>
+      <li><div class="check-box"></div>IAMポリシーが上位から下位へ継承され下位で上位を取り消せないことを知っている（和集合）</li>
+      <li><div class="check-box"></div>IAM Conditions で時間・日付・リソースパスの条件を付与できる</li>
+      <li><div class="check-box"></div>Deny Policy が Allow Policy より優先されることを知っている</li>
+      <li><div class="check-box"></div>基本ロール（Editor/Owner）を本番環境で使うべきでない理由を説明できる</li>
+      <li><div class="check-box"></div>カスタムロールのライフサイクル（ALPHA → BETA → GA → DISABLED → DELETED）を知っている</li>
+      <li><div class="check-box"></div><code>roles/iam.serviceAccountUser</code>（actAs）と <code>roles/iam.serviceAccountTokenCreator</code> の違いを説明できる</li>
+      <li><div class="check-box"></div>Policy Analyzer でアクセス権を分析できることを知っている</li>
+    </ul>
+  </div>
+</div>
+
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">Check-B</span>
+    <span class="topic-title">4.2 サービスアカウントの管理</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <ul class="checklist">
+      <li><div class="check-box"></div>ユーザー管理 SA・デフォルト SA・Google 管理 SA の違いを説明できる</li>
+      <li><div class="check-box"></div>デフォルト SA の過剰権限問題を知っており専用 SA を使う理由を説明できる</li>
+      <li><div class="check-box"></div><code>roles/iam.serviceAccountUser</code>（actAs）が必要なケースを説明できる</li>
+      <li><div class="check-box"></div><code>roles/iam.serviceAccountTokenCreator</code> が権限借用に必要なことを知っている</li>
+      <li><div class="check-box"></div>SA 権限借用のフロー（一時トークン・監査ログ・1時間失効）を説明できる</li>
+      <li><div class="check-box"></div>短期クレデンシャルの種類（OAuth2.0 / OIDC IDトークン / 自己署名JWT）を知っている</li>
+      <li><div class="check-box"></div>自己権限借用が禁止されている理由を説明できる</li>
+      <li><div class="check-box"></div>GKE での Workload Identity Federation の設定フロー（KSA → GSA 紐付け）を説明できる</li>
+      <li><div class="check-box"></div><code>iam.gke.io/gcp-service-account</code> アノテーションの役割を知っている</li>
+      <li><div class="check-box"></div>Workload Identity Federation の設定フロー（Pool → Provider → GSA）を説明できる</li>
+      <li><div class="check-box"></div><code>attribute-condition</code> でセキュリティを強化する方法を知っている</li>
+      <li><div class="check-box"></div>GitHub Actions での WIF 設定と <code>id-token: write</code> permission の必要性を知っている</li>
+      <li><div class="check-box"></div>SA JSON キーより WIF・短期クレデンシャル・Workload Identity が推奨される理由を説明できる</li>
+      <li><div class="check-box"></div>命名規則（<code>vm-</code>, <code>wlif-</code>, <code>wlifgke-</code>）の目的を知っている</li>
+    </ul>
+  </div>
+</div>
+
+<!-- REFS -->
+<div id="refs" class="section-header">
+  <div class="section-icon-wrap section-icon-blue">🔗</div>
+  <div class="section-meta">
+    <div class="section-number">参考リソース</div>
+    <div class="section-title-main">公式ドキュメント一覧</div>
+  </div>
+</div>
+
+<div class="refs-grid">
+  <a href="https://cloud.google.com/learn/certification/cloud-engineer?hl=en" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>ACE 試験公式ページ</strong>認定資格の概要・登録</div></a>
+  <a href="https://services.google.com/fh/files/misc/063026_associate_cloud_engineer_exam_guide_english.pdf" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>試験ガイド PDF（2025年6月版）</strong>出題範囲の詳細</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM リソース階層とアクセス制御</strong>継承メカニズムの詳細</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/roles-overview" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM ロールの概要</strong>ロール種別の説明</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/creating-custom-roles" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>カスタムロールの作成と管理</strong>YAML定義とライフサイクル</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/deny-overview" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Deny Policy 概要</strong>拒否ポリシーの仕組み</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/conditions-overview" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM Conditions</strong>条件付きバインディング</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA のベストプラクティス</strong>安全なSA管理の指針</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/service-account-impersonation" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA の権限借用</strong>Impersonationの設定方法</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>短期クレデンシャルの作成</strong>トークン種別と生成方法</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/service-account-creds" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA クレデンシャルの種類</strong>OAuth / OIDC / JWT</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/service-account-permissions" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA 権限のロール</strong>actAs権限の詳細</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/workload-identity-federation" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Workload Identity Federation 概要</strong>外部ワークロードの認証</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>WIF ベストプラクティス</strong>セキュアな設定の指針</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/workload-identities" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Workload Identities for GKE</strong>GKEでのWIF設定</div></a>
+  <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>デプロイパイプラインでのSAベストプラクティス</strong>CI/CD向け設定</div></a>
+  <a href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>GKE Autopilot セキュリティ</strong>自動セキュリティ強化</div></a>
+  <a href="https://docs.cloud.google.com/resource-manager/docs/access-control-org" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>組織レベルのアクセス制御</strong>Org IAM管理</div></a>
+  <a href="https://cloud.google.com/blog/products/identity-security/iam-best-practice-guides-available-now" target="_blank" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM ベストプラクティスガイド</strong>実務向け設計指針</div></a>
+</div>
+
+</div><!-- /content -->
+</main>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+mermaid.initialize({
+  startOnLoad:true,theme:'dark',
+  themeVariables:{
+    primaryColor:'#1a73e8',primaryTextColor:'#e8f0fe',
+    primaryBorderColor:'#1a3a5c',lineColor:'#4a6a9a',
+    secondaryColor:'#0e1929',tertiaryColor:'#142235',
+    background:'#070c18',mainBkg:'#0e1929',
+    nodeBorder:'#1a3a5c',clusterBkg:'#142235',
+    titleColor:'#e8f0fe',edgeLabelBackground:'#0e1929',
+    fontFamily:'Noto Sans JP, sans-serif',fontSize:'13px'
+  },
+  flowchart:{curve:'basis',htmlLabels:true,useMaxWidth:false},
+  sequence:{actorMargin:60,mirrorActors:false}
+});
+
+function toggleCard(header){
+  header.closest('.topic-card').classList.toggle('collapsed');
+}
+
+function copyCode(btn){
+  const pre = btn.closest('pre');
+  const text = pre.innerText.replace('Copy','').replace('Copied!','').trim();
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy',2000);
+  });
+}
+
+const progressBar=document.getElementById('progress-bar');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.documentElement.scrollHeight-window.innerHeight;
+  progressBar.style.width=`${t>0?(s/t)*100:0}%`;
+  document.getElementById('scroll-top').classList.toggle('visible',s>400);
+});
+
+const navItems=document.querySelectorAll('.nav-item');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navItems.forEach(item=>item.classList.toggle('active',item.getAttribute('href')==='#'+id));
+    }
+  });
+},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('[id]').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
