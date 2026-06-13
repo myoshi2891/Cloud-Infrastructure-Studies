@@ -65,9 +65,9 @@ flowchart TD
     A[クラウドソリューション稼働中] --> B{正常稼働か？}
     B -->|Yes| C[継続的モニタリング]
     B -->|No| D[診断・トラブルシューティング]
-    C --> E[メトリクス収集\nCloud Monitoring]
-    C --> F[ログ収集\nCloud Logging]
-    C --> G[トレース\nCloud Trace / Profiler]
+    C --> E[メトリクス収集<br>Cloud Monitoring]
+    C --> F[ログ収集<br>Cloud Logging]
+    C --> G[トレース<br>Cloud Trace / Profiler]
     D --> H[ログ分析]
     D --> I[アラート確認]
     D --> J[診断ツール活用]
@@ -116,10 +116,10 @@ sequenceDiagram
 
     User->>gcloud: gcloud compute ssh INSTANCE --tunnel-through-iap
     gcloud->>IAP: IAP トンネル確立要求
-    IAP-->>IAP: IAM 権限確認\n(roles/iap.tunnelResourceAccessor)
+    IAP-->>IAP: IAM 権限確認<br>(roles/iap.tunnelResourceAccessor)
     IAP->>VM: TCP ポート 22 へのトンネル確立
     gcloud-->>User: SSH セッション開始
-    Note over IAP,VM: 外部IPなし・ファイアウォール\nでもアクセス可能
+    Note over IAP,VM: 外部IPなし・ファイアウォール<br>でもアクセス可能
 ```
 
 ##### 主要な gcloud コマンド
@@ -267,14 +267,14 @@ flowchart TD
     B -->|定期バックアップ・障害復旧| C[スナップショット]
     B -->|新VMの雛形作成・大量展開| D[カスタムイメージ]
     C --> E{スケジュール必要？}
-    E -->|Yes| F[Snapshot Schedule Policy を作成\nディスクに適用]
+    E -->|Yes| F[Snapshot Schedule Policy を作成<br>ディスクに適用]
     E -->|No| G[手動スナップショット作成]
     D --> H{OS設定済みの VM がある？}
-    H -->|Yes| I[VMを停止→イメージ作成\n--family オプションで管理]
+    H -->|Yes| I[VMを停止→イメージ作成<br>--family オプションで管理]
     H -->|No| J[スナップショットからイメージ作成]
-    F --> K[Cloud Storage に自動保存\n増分バックアップ]
+    F --> K[Cloud Storage に自動保存<br>増分バックアップ]
     G --> K
-    I --> L[Image Family で最新版管理\nインスタンステンプレートに利用]
+    I --> L[Image Family で最新版管理<br>インスタンステンプレートに利用]
     J --> L
 ```
 
@@ -331,9 +331,9 @@ GKE が Artifact Registry からコンテナイメージを Pull するための
 ```mermaid
 flowchart LR
     A[GKE Node] --> B{認証方式}
-    B -->|Workload Identity Federation\n推奨| C[Kubernetes SA\nとGCP SA を紐付け]
-    B -->|デフォルトSA| D[Compute Engine SA に\nartifactregistry.reader 付与]
-    C --> E[Artifact Registry\nからイメージPull]
+    B -->|Workload Identity Federation<br>推奨| C[Kubernetes SA<br>とGCP SA を紐付け]
+    B -->|デフォルトSA| D[Compute Engine SA に<br>artifactregistry.reader 付与]
+    C --> E[Artifact Registry<br>からイメージPull]
     D --> E
     E --> F[コンテナ起動]
 ```
@@ -603,11 +603,11 @@ Cloud Run はデプロイのたびに**新しいリビジョン**が作成され
 ```mermaid
 flowchart LR
     A[ユーザーリクエスト] --> B[Cloud Run Service]
-    B --> C{トラフィック分割\nポリシー}
-    C -->|90%| D[revision-00001\n安定版]
-    C -->|10%| E[revision-00002\n新バージョン]
+    B --> C{トラフィック分割<br>ポリシー}
+    C -->|90%| D[revision-00001<br>安定版]
+    C -->|10%| E[revision-00002<br>新バージョン]
     E -->|問題なし| F[100%へ切り替え]
-    E -->|問題あり| G[0%へ戻す\nロールバック]
+    E -->|問題あり| G[0%へ戻す<br>ロールバック]
 ```
 
 ```bash
@@ -689,9 +689,9 @@ gcloud run services update SERVICE_NAME \
 ```mermaid
 flowchart TD
     A[GPU VMを起動したい] --> B{既存VMか新規VMか？}
-    B -->|新規VM| C[gcloud compute instances create\n--accelerator type=nvidia-tesla-t4,count=1]
-    B -->|既存VM| D[VMを停止する\ngcloud compute instances stop]
-    D --> E[GPU アタッチ\ngcloud compute instances set-machine-type\n--accelerator type=...,count=...]
+    B -->|新規VM| C[gcloud compute instances create<br>--accelerator type=nvidia-tesla-t4,count=1]
+    B -->|既存VM| D[VMを停止する<br>gcloud compute instances stop]
+    D --> E[GPU アタッチ<br>gcloud compute instances set-machine-type<br>--accelerator type=...,count=...]
     C --> F[GPU Driver のインストール]
     E --> G[VMを起動]
     G --> F
@@ -1158,18 +1158,18 @@ Database Center は Google Cloud 上の全データベース（Cloud SQL、Spann
 
 ```mermaid
 flowchart TD
-    A[Database Center] --> B[フリート管理\nInventory]
-    A --> C[セキュリティ評価\nSecurity Recommendations]
-    A --> D[パフォーマンス分析\nQuery Insights]
-    A --> E[コンプライアンス確認\nCompliance Status]
+    A[Database Center] --> B[フリート管理<br>Inventory]
+    A --> C[セキュリティ評価<br>Security Recommendations]
+    A --> D[パフォーマンス分析<br>Query Insights]
+    A --> E[コンプライアンス確認<br>Compliance Status]
     B --> F[Cloud SQL]
     B --> G[AlloyDB]
     B --> H[Spanner]
     B --> I[Bigtable]
-    C --> J[暗号化状況\nCMEK適用確認]
-    C --> K[アクセス制御\nIAM設定確認]
-    D --> L[スロークエリ\n特定]
-    D --> M[インデックス推奨\nIndex Advisor]
+    C --> J[暗号化状況<br>CMEK適用確認]
+    C --> K[アクセス制御<br>IAM設定確認]
+    D --> L[スロークエリ<br>特定]
+    D --> M[インデックス推奨<br>Index Advisor]
 ```
 
 ```bash
@@ -1361,13 +1361,13 @@ Cloud NAT は外部IPを持たない VM がインターネットに**アウト�
 
 ```mermaid
 flowchart LR
-    A[Private VM\n外部IP なし] --> B[Cloud NAT]
+    A[Private VM<br>外部IP なし] --> B[Cloud NAT]
     B --> C[Cloud Router]
     C --> D[インターネット]
     D -->|応答| C
     C --> B
     B --> A
-    Note1["インバウンドは不可\nアウトバウンドのみ"]
+    Note1["インバウンドは不可<br>アウトバウンドのみ"]
 ```
 
 ```bash
@@ -1520,7 +1520,7 @@ Cloud Monitoring はメトリクスを収集してアラートを発火させる
 
 ```mermaid
 flowchart TD
-    A[メトリクスデータ収集\nCompute Engine / GKE / Cloud Run...] --> B[Cloud Monitoring]
+    A[メトリクスデータ収集<br>Compute Engine / GKE / Cloud Run...] --> B[Cloud Monitoring]
     B --> C{アラートポリシー評価}
     C -->|条件を満たす| D[インシデント作成]
     C -->|条件を満たさない| E[正常]
@@ -1529,7 +1529,7 @@ flowchart TD
     F --> H[PagerDuty]
     F --> I[Slack / Webhook]
     F --> J[Pub/Sub]
-    D --> K[Playbook URL\n対応手順書リンク]
+    D --> K[Playbook URL<br>対応手順書リンク]
 ```
 
 #### アラートポリシーの作成
@@ -1679,15 +1679,15 @@ gcloud compute firewall-rules update RULE_NAME \
 
 ```mermaid
 flowchart TD
-    A[全てのログ\nCloud Logging に集約] --> B[Log Router]
-    B --> C{ログバケット\nフィルタリング}
-    C -->|条件一致| D[ログシンク1\nBigQuery]
-    C -->|条件一致| E[ログシンク2\nCloud Storage]
-    C -->|条件一致| F[ログシンク3\nPub/Sub]
-    C -->|デフォルト| G[_Default バケット\n30日保持]
+    A[全てのログ<br>Cloud Logging に集約] --> B[Log Router]
+    B --> C{ログバケット<br>フィルタリング}
+    C -->|条件一致| D[ログシンク1<br>BigQuery]
+    C -->|条件一致| E[ログシンク2<br>Cloud Storage]
+    C -->|条件一致| F[ログシンク3<br>Pub/Sub]
+    C -->|デフォルト| G[_Default バケット<br>30日保持]
     D --> H[長期分析・監査]
     E --> I[アーカイブ・コンプライアンス]
-    F --> J[外部システム連携\nSIEM / on-premises]
+    F --> J[外部システム連携<br>SIEM / on-premises]
 ```
 
 ```bash
@@ -1768,14 +1768,14 @@ gcloud logging read 'logName="projects/PROJECT_ID/logs/cloudaudit.googleapis.com
 
 ```mermaid
 flowchart LR
-    A[ユーザーリクエスト] --> B[Frontend Service\n50ms]
-    B --> C[API Gateway\n10ms]
-    C --> D[Auth Service\n30ms]
-    C --> E[Data Service\n200ms]
-    E --> F[Cloud SQL\n150ms]
-    E --> G[Cache\n5ms]
+    A[ユーザーリクエスト] --> B[Frontend Service<br>50ms]
+    B --> C[API Gateway<br>10ms]
+    C --> D[Auth Service<br>30ms]
+    C --> E[Data Service<br>200ms]
+    E --> F[Cloud SQL<br>150ms]
+    E --> G[Cache<br>5ms]
     B --> H[総レイテンシ: 500ms]
-    Note1["Cloud Trace で\nボトルネックを特定\n→ Data Service の\n最適化が必要"]
+    Note1["Cloud Trace で<br>ボトルネックを特定<br>→ Data Service の<br>最適化が必要"]
 ```
 
 ```python
