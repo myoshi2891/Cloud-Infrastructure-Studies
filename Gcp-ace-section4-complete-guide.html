@@ -618,15 +618,15 @@ gcloud iam roles delete cloudRunDeployer --project=PROJECT_ID</pre>
       <div class="diagram-label">▶ カスタムロールのステージ遷移</div>
       <div class="mermaid">
 stateDiagram-v2
-    [*] --> ALPHA: 作成（stage: ALPHA）
-    ALPHA --> BETA: 昇格（stage: BETA）
-    BETA --> GA: 昇格（stage: GA）
-    GA --> DISABLED: 無効化（stage: DISABLED）
-    DISABLED --> GA: 再有効化
-    DISABLED --> DELETED: 削除
-    ALPHA --> DELETED: 削除
-    BETA --> DELETED: 削除
-    GA --> DELETED: 削除
+    [*] --> ALPHA: "作成（stage: ALPHA）"
+    ALPHA --> BETA: "昇格（stage: BETA）"
+    BETA --> GA: "昇格（stage: GA）"
+    GA --> DISABLED: "無効化（stage: DISABLED）"
+    DISABLED --> GA: "再有効化"
+    DISABLED --> DELETED: "削除"
+    ALPHA --> DELETED: "削除"
+    BETA --> DELETED: "削除"
+    GA --> DELETED: "削除"
       </div>
     </div>
     <div class="bp-grid">
