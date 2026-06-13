@@ -643,11 +643,14 @@ gcloud run revisions describe REVISION_NAME --region=REGION
 
 ```bash
 # オートスケーリングのパラメータ設定
+# ※ --min-instances: 最小インスタンス数（コールドスタート防止）
+# ※ --max-instances: 最大インスタンス数
+# ※ --concurrency: 1インスタンスあたりの同時リクエスト数
 gcloud run services update SERVICE_NAME \
     --region=REGION \
-    --min-instances=1 \   # 最小インスタンス数（コールドスタート防止）
-    --max-instances=100 \ # 最大インスタンス数
-    --concurrency=80      # 1インスタンスあたりの同時リクエスト数
+    --min-instances=1 \
+    --max-instances=100 \
+    --concurrency=80
 
 # CPU・メモリの設定
 gcloud run services update SERVICE_NAME \
@@ -700,12 +703,12 @@ flowchart TD
 ```
 
 ```bash
-# GPU付きVMの作成
+# GPU付きVMの作成（※ GPU使用時は --maintenance-policy=TERMINATE が必須）
 gcloud compute instances create GPU_INSTANCE \
     --zone=us-central1-a \
     --machine-type=n1-standard-4 \
     --accelerator="type=nvidia-tesla-t4,count=1" \
-    --maintenance-policy=TERMINATE \  # GPU使用時は必須
+    --maintenance-policy=TERMINATE \
     --image-family=debian-11 \
     --image-project=debian-cloud \
     --boot-disk-size=50GB
@@ -836,10 +839,10 @@ gcloud storage buckets add-iam-policy-binding gs://BUCKET_NAME \
 
 # バケットの公開アクセス防止（推奨）
 gcloud storage buckets update gs://BUCKET_NAME \
-    --no-public-access-prevention
-# または公開を完全にブロック
-gcloud storage buckets update gs://BUCKET_NAME \
     --public-access-prevention
+# または公開を完全にブロック（強制）
+gcloud storage buckets update gs://BUCKET_NAME \
+    --public-access-prevention=enforced
 ```
 
 #### Cloud Storage のデータ保護機能
@@ -1377,11 +1380,13 @@ gcloud compute routers create ROUTER_NAME \
     --network=VPC_NAME
 
 # Cloud NAT の作成
+# ※ --auto-allocate-nat-external-ips: GCPが自動でIPを割り当て
+# ※ --nat-all-subnet-ip-ranges: VPC内の全サブネットをNAT対象
 gcloud compute routers nats create NAT_NAME \
     --router=ROUTER_NAME \
     --region=REGION \
-    --auto-allocate-nat-external-ips \  # GCPが自動でIPを割り当て
-    --nat-all-subnet-ip-ranges          # VPC内の全サブネットをNAT対象
+    --auto-allocate-nat-external-ips \
+    --nat-all-subnet-ip-ranges
 
 # 特定サブネットのみNAT対象にする場合
 gcloud compute routers nats create NAT_NAME \
@@ -1659,10 +1664,11 @@ gcloud projects get-iam-policy PROJECT_ID --format=json > policy.json
 gcloud projects set-iam-policy PROJECT_ID policy.json
 
 # VPC Flow Logs の有効化（サブネット単位）
+# ※ --logging-filter-expr で特定のIPアドレスからの通信をフィルタリング可能
 gcloud compute networks subnets update SUBNET_NAME \
     --region=REGION \
     --enable-flow-logs \
-    --logging-filter-expr="src_ip != '10.0.0.1'"  # フィルタリング可能 \
+    --logging-filter-expr="connection.src_ip != '10.0.0.1'" \
     --logging-aggregation-interval=interval-5-sec \
     --logging-flow-sampling=0.5  # サンプリング率（0.0〜1.0）
 
@@ -1976,7 +1982,7 @@ Cloud Hub はアクティブなインシデントとアプリケーション健�
 
 ```bash
 # Service Health の確認（gcloud）
-gcloud services list --available | grep cloudhealth
+gcloud service-health events list --location=global
 
 # Cloud Console でのアクセス
 # URL: https://console.cloud.google.com/cloud-health
