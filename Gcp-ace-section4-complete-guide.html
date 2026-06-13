@@ -1032,7 +1032,7 @@ kubectl annotate serviceaccount my-ksa \
   iam.gke.io/gcp-service-account=wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com</pre>
 
     <div class="sub-title">Kubernetes マニフェスト</div>
-    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button">apiVersion: v1
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button>apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: my-ksa
@@ -1136,7 +1136,7 @@ gcloud iam service-accounts add-iam-policy-binding \
   --member="principalSet://iam.googleapis.com/${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/my-org/my-repo"</pre>
 
     <div class="sub-title">GitHub Actions ワークフロー（SA キー不要）</div>
-    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button">name: Deploy to Cloud Run
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button>name: Deploy to Cloud Run
 on:
   push:
     branches: [main]
