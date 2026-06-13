@@ -25,7 +25,7 @@
                 --red: #ea4335;
                 --purple: #8b5cf6;
                 --text: #b8cde0;
-                --muted: #4a6880;
+                --muted: #8fafc9;
                 --bright: #e2f0ff;
                 --mono: 'JetBrains Mono', monospace;
                 --sans: 'Space Grotesk', sans-serif;
@@ -163,8 +163,6 @@
             .app-layout {
                 display: grid;
                 grid-template-columns: 260px 1fr;
-                max-width: 1400px;
-                margin: 0 auto;
                 min-height: 100vh;
             }
             .sidebar {
@@ -791,25 +789,25 @@
                     grid-template-columns: 1fr;
                 }
             }
-        /* mermaid-center (apply_render_pipeline.mjs): 図を中央寄せ */
-        .mermaid-wrap {
-            display: flex;
-            flex-direction: column;
-        }
-        .mermaid,
-        .diagram-wrap .mermaid {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-        .mermaid svg,
-        .diagram-wrap .mermaid svg {
-            display: block;
-            margin: 0 auto;
-            max-width: 100% !important;
-            height: auto !important;
-        }
-</style>
+            /* mermaid-center (apply_render_pipeline.mjs): 図を中央寄せ */
+            .mermaid-wrap {
+                display: flex;
+                flex-direction: column;
+            }
+            .mermaid,
+            .diagram-wrap .mermaid {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            .mermaid svg,
+            .diagram-wrap .mermaid svg {
+                display: block;
+                margin: 0 auto;
+                max-width: 100% !important;
+                height: auto !important;
+            }
+        </style>
     </head>
     <body>
         <header class="hero">
@@ -3304,17 +3302,27 @@ sudo systemctl status google-cloud-ops-agent
 
         <script>
             const DIAGRAMS = {
-  "diag-1": "flowchart TD\n    A[クラウドソリューション稼働中] --> B{正常稼働か？}\n    B -->|Yes| C[継続的モニタリング]\n    B -->|No| D[診断・トラブルシューティング]\n    C --> E[メトリクス収集<br>Cloud Monitoring]\n    C --> F[ログ収集<br>Cloud Logging]\n    C --> G[トレース<br>Cloud Trace / Profiler]\n    D --> H[ログ分析]\n    D --> I[アラート確認]\n    D --> J[診断ツール活用]\n    H --> K[根本原因特定]\n    I --> K\n    J --> K\n    K --> L{対処方法}\n    L -->|スケール調整| M[オートスケーリング設定変更]\n    L -->|インフラ変更| N[スナップショット取得→変更]\n    L -->|データ復旧| O[バックアップからリストア]\n    L -->|ネットワーク修正| P[ファイアウォール・DNS 調整]\n    M --> B\n    N --> B\n    O --> B\n    P --> B",
-  "diag-2": "sequenceDiagram\n    actor User\n    participant gcloud\n    participant IAP as Cloud IAP\n    participant VM as Compute Engine VM\n\n    User->>gcloud: gcloud compute ssh INSTANCE --tunnel-through-iap\n    gcloud->>IAP: IAP トンネル確立要求\n    IAP-->>IAP: IAM 権限確認<br>(roles/iap.tunnelResourceAccessor)\n    IAP->>VM: TCP ポート 22 へのトンネル確立\n    gcloud-->>User: SSH セッション開始\n    Note over IAP,VM: 外部IPなし・ファイアウォール<br>でもアクセス可能",
-  "diag-3": "flowchart TD\n    A[ディスクデータを保護・移行したい] --> B{目的は何か？}\n    B -->|定期バックアップ・障害復旧| C[スナップショット]\n    B -->|新VMの雛形作成・大量展開| D[カスタムイメージ]\n    C --> E{スケジュール必要？}\n    E -->|Yes| F[Snapshot Schedule Policy を作成<br>ディスクに適用]\n    E -->|No| G[手動スナップショット作成]\n    D --> H{OS設定済みの VM がある？}\n    H -->|Yes| I[VMを停止→イメージ作成<br>--family オプションで管理]\n    H -->|No| J[スナップショットからイメージ作成]\n    F --> K[Cloud Storage に自動保存<br>増分バックアップ]\n    G --> K\n    I --> L[Image Family で最新版管理<br>インスタンステンプレートに利用]\n    J --> L",
-  "diag-4": "flowchart LR\n    A[GKE Node] --> B{認証方式}\n    B -->|Workload Identity Federation<br>推奨| C[Kubernetes SA<br>とGCP SA を紐付け]\n    B -->|デフォルトSA| D[Compute Engine SA に<br>artifactregistry.reader 付与]\n    C --> E[Artifact Registry<br>からイメージPull]\n    D --> E\n    E --> F[コンテナ起動]",
-  "diag-5": "flowchart LR\n    A[ユーザーリクエスト] --> B[Cloud Run Service]\n    B --> C{トラフィック分割<br>ポリシー}\n    C -->|90%| D[revision-00001<br>安定版]\n    C -->|10%| E[revision-00002<br>新バージョン]\n    E -->|問題なし| F[100%へ切り替え]\n    E -->|問題あり| G[0%へ戻す<br>ロールバック]",
-  "diag-6": "flowchart TD\n    A[\"クエリを書く\"] --> B[\"--dry_run オプションで実行\"]\n    B --> C{\"スキャン量を確認\"}\n    C -->|許容範囲内| D[\"クエリ実行\"]\n    C -->|多すぎる| E[\"クエリ最適化\"]\n    E --> F[\"パーティションフィルタを追加<br>WHERE _PARTITIONDATE = '...'\"]\n    F --> G[\"クラスタリングカラムを活用\"]\n    G --> H[\"SELECT * を避けて必要カラムのみ選択\"]\n    H --> B\n    D --> I[\"結果確認\"]\n    I --> J{\"コスト確認<br>($5/TB)\"}\n    J -->|許容範囲内| K[\"本番運用\"]\n    J -->|高すぎる| E",
-  "diag-7": "flowchart TD\n    A[Database Center] --> B[フリート管理<br>Inventory]\n    A --> C[セキュリティ評価<br>Security Recommendations]\n    A --> D[パフォーマンス分析<br>Query Insights]\n    A --> E[コンプライアンス確認<br>Compliance Status]\n    B --> F[Cloud SQL]\n    B --> G[AlloyDB]\n    B --> H[Spanner]\n    B --> I[Bigtable]\n    C --> J[暗号化状況<br>CMEK適用確認]\n    C --> K[アクセス制御<br>IAM設定確認]\n    D --> L[スロークエリ<br>特定]\n    D --> M[インデックス推奨<br>Index Advisor]",
-  "diag-8": "flowchart LR\n    A[Private VM<br>外部IP なし] --> B[Cloud NAT]\n    B --> C[Cloud Router]\n    C --> D[インターネット]\n    D -->|応答| C\n    C --> B\n    B --> A\n    Note1[\"インバウンドは不可<br>アウトバウンドのみ\"]",
-  "diag-9": "flowchart TD\n    A[メトリクスデータ収集<br>Compute Engine / GKE / Cloud Run...] --> B[Cloud Monitoring]\n    B --> C{アラートポリシー評価}\n    C -->|条件を満たす| D[インシデント作成]\n    C -->|条件を満たさない| E[正常]\n    D --> F[通知チャンネル]\n    F --> G[Email]\n    F --> H[PagerDuty]\n    F --> I[Slack / Webhook]\n    F --> J[Pub/Sub]\n    D --> K[Playbook URL<br>対応手順書リンク]",
-  "diag-10": "flowchart TD\n    A[全てのログ<br>Cloud Logging に集約] --> B[Log Router]\n    B --> C{ログバケット<br>フィルタリング}\n    C -->|条件一致| D[ログシンク1<br>BigQuery]\n    C -->|条件一致| E[ログシンク2<br>Cloud Storage]\n    C -->|条件一致| F[ログシンク3<br>Pub/Sub]\n    C -->|デフォルト| G[_Default バケット<br>30日保持]\n    D --> H[長期分析・監査]\n    E --> I[アーカイブ・コンプライアンス]\n    F --> J[外部システム連携<br>SIEM / on-premises]"
-};
+                'diag-1':
+                    'flowchart TD\n    A[クラウドソリューション稼働中] --> B{正常稼働か？}\n    B -->|Yes| C[継続的モニタリング]\n    B -->|No| D[診断・トラブルシューティング]\n    C --> E[メトリクス収集<br>Cloud Monitoring]\n    C --> F[ログ収集<br>Cloud Logging]\n    C --> G[トレース<br>Cloud Trace / Profiler]\n    D --> H[ログ分析]\n    D --> I[アラート確認]\n    D --> J[診断ツール活用]\n    H --> K[根本原因特定]\n    I --> K\n    J --> K\n    K --> L{対処方法}\n    L -->|スケール調整| M[オートスケーリング設定変更]\n    L -->|インフラ変更| N[スナップショット取得→変更]\n    L -->|データ復旧| O[バックアップからリストア]\n    L -->|ネットワーク修正| P[ファイアウォール・DNS 調整]\n    M --> B\n    N --> B\n    O --> B\n    P --> B',
+                'diag-2':
+                    'sequenceDiagram\n    actor User\n    participant gcloud\n    participant IAP as Cloud IAP\n    participant VM as Compute Engine VM\n\n    User->>gcloud: gcloud compute ssh INSTANCE --tunnel-through-iap\n    gcloud->>IAP: IAP トンネル確立要求\n    IAP-->>IAP: IAM 権限確認<br>(roles/iap.tunnelResourceAccessor)\n    IAP->>VM: TCP ポート 22 へのトンネル確立\n    gcloud-->>User: SSH セッション開始\n    Note over IAP,VM: 外部IPなし・ファイアウォール<br>でもアクセス可能',
+                'diag-3':
+                    'flowchart TD\n    A[ディスクデータを保護・移行したい] --> B{目的は何か？}\n    B -->|定期バックアップ・障害復旧| C[スナップショット]\n    B -->|新VMの雛形作成・大量展開| D[カスタムイメージ]\n    C --> E{スケジュール必要？}\n    E -->|Yes| F[Snapshot Schedule Policy を作成<br>ディスクに適用]\n    E -->|No| G[手動スナップショット作成]\n    D --> H{OS設定済みの VM がある？}\n    H -->|Yes| I[VMを停止→イメージ作成<br>--family オプションで管理]\n    H -->|No| J[スナップショットからイメージ作成]\n    F --> K[Cloud Storage に自動保存<br>増分バックアップ]\n    G --> K\n    I --> L[Image Family で最新版管理<br>インスタンステンプレートに利用]\n    J --> L',
+                'diag-4':
+                    'flowchart LR\n    A[GKE Node] --> B{認証方式}\n    B -->|Workload Identity Federation<br>推奨| C[Kubernetes SA<br>とGCP SA を紐付け]\n    B -->|デフォルトSA| D[Compute Engine SA に<br>artifactregistry.reader 付与]\n    C --> E[Artifact Registry<br>からイメージPull]\n    D --> E\n    E --> F[コンテナ起動]',
+                'diag-5':
+                    'flowchart LR\n    A[ユーザーリクエスト] --> B[Cloud Run Service]\n    B --> C{トラフィック分割<br>ポリシー}\n    C -->|90%| D[revision-00001<br>安定版]\n    C -->|10%| E[revision-00002<br>新バージョン]\n    E -->|問題なし| F[100%へ切り替え]\n    E -->|問題あり| G[0%へ戻す<br>ロールバック]',
+                'diag-6':
+                    'flowchart TD\n    A["クエリを書く"] --> B["--dry_run オプションで実行"]\n    B --> C{"スキャン量を確認"}\n    C -->|許容範囲内| D["クエリ実行"]\n    C -->|多すぎる| E["クエリ最適化"]\n    E --> F["パーティションフィルタを追加<br>WHERE _PARTITIONDATE = \'...\'"]\n    F --> G["クラスタリングカラムを活用"]\n    G --> H["SELECT * を避けて必要カラムのみ選択"]\n    H --> B\n    D --> I["結果確認"]\n    I --> J{"コスト確認<br>($5/TB)"}\n    J -->|許容範囲内| K["本番運用"]\n    J -->|高すぎる| E',
+                'diag-7':
+                    'flowchart TD\n    A[Database Center] --> B[フリート管理<br>Inventory]\n    A --> C[セキュリティ評価<br>Security Recommendations]\n    A --> D[パフォーマンス分析<br>Query Insights]\n    A --> E[コンプライアンス確認<br>Compliance Status]\n    B --> F[Cloud SQL]\n    B --> G[AlloyDB]\n    B --> H[Spanner]\n    B --> I[Bigtable]\n    C --> J[暗号化状況<br>CMEK適用確認]\n    C --> K[アクセス制御<br>IAM設定確認]\n    D --> L[スロークエリ<br>特定]\n    D --> M[インデックス推奨<br>Index Advisor]',
+                'diag-8':
+                    'flowchart LR\n    A[Private VM<br>外部IP なし] --> B[Cloud NAT]\n    B --> C[Cloud Router]\n    C --> D[インターネット]\n    D -->|応答| C\n    C --> B\n    B --> A\n    Note1["インバウンドは不可<br>アウトバウンドのみ"]',
+                'diag-9':
+                    'flowchart TD\n    A[メトリクスデータ収集<br>Compute Engine / GKE / Cloud Run...] --> B[Cloud Monitoring]\n    B --> C{アラートポリシー評価}\n    C -->|条件を満たす| D[インシデント作成]\n    C -->|条件を満たさない| E[正常]\n    D --> F[通知チャンネル]\n    F --> G[Email]\n    F --> H[PagerDuty]\n    F --> I[Slack / Webhook]\n    F --> J[Pub/Sub]\n    D --> K[Playbook URL<br>対応手順書リンク]',
+                'diag-10':
+                    'flowchart TD\n    A[全てのログ<br>Cloud Logging に集約] --> B[Log Router]\n    B --> C{ログバケット<br>フィルタリング}\n    C -->|条件一致| D[ログシンク1<br>BigQuery]\n    C -->|条件一致| E[ログシンク2<br>Cloud Storage]\n    C -->|条件一致| F[ログシンク3<br>Pub/Sub]\n    C -->|デフォルト| G[_Default バケット<br>30日保持]\n    D --> H[長期分析・監査]\n    E --> I[アーカイブ・コンプライアンス]\n    F --> J[外部システム連携<br>SIEM / on-premises]',
+            };
             mermaid.initialize({
                 startOnLoad: false,
                 securityLevel: 'loose',
@@ -3356,7 +3364,7 @@ sudo systemctl status google-cloud-ops-agent
             );
 
             document.querySelectorAll('[id]').forEach((el) => observer.observe(el));
-        
+
             // --- mermaid render pipeline (apply_render_pipeline.mjs) ---
             function applySvgFixups(svgEl, src) {
                 svgEl.removeAttribute('width');
@@ -3405,7 +3413,7 @@ sudo systemctl status google-cloud-ops-agent
             })();
 
             // チェックリストクリックイベントハンドラー
-            document.querySelectorAll('.check-item').forEach(item => {
+            document.querySelectorAll('.check-item').forEach((item) => {
                 item.addEventListener('click', () => {
                     const box = item.querySelector('.check-box');
                     if (box) box.classList.toggle('checked');
