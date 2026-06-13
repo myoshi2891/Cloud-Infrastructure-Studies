@@ -496,24 +496,24 @@
     font-family: var(--font-mono);
     font-size: 12.5px;
     line-height: 1.7;
-    color: #a6c0f5;
+    color: #e2e8f0;
     white-space: pre;
 }
 .ace-s1-page .k {
-    color: #e06c75;
+    color: #ff7b72;
 }
 .ace-s1-page .s {
-    color: #98c379;
+    color: #a5d6ff;
 }
 .ace-s1-page .c {
-    color: #5c6882;
+    color: #8b9bb4;
     font-style: italic;
 }
 .ace-s1-page .f {
-    color: #61afef;
+    color: #79c0ff;
 }
 .ace-s1-page .o {
-    color: #c678dd;
+    color: #d2a8ff;
 }
 
 /* ===== BEST PRACTICES ===== */
