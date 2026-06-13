@@ -191,9 +191,12 @@ code:not(pre code){font-family:'JetBrains Mono',monospace;font-size:11.5px;backg
 
 /* CHECKLIST */
 .checklist{list-style:none;margin:10px 0;}
-.checklist li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,0.03);}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;user-select:none;}
 .checklist li:last-child{border-bottom:none;}
-.check-box{width:15px;height:15px;min-width:15px;border:1.5px solid var(--border);border-radius:3px;margin-top:3px;background:rgba(52,168,83,0.04);}
+.check-box{width:15px;height:15px;min-width:15px;border:1.5px solid var(--border);border-radius:3px;margin-top:3px;background:rgba(52,168,83,0.04);cursor:pointer;position:relative;transition:all 0.15s;}
+.check-box.checked{background:var(--gcp-green);border-color:var(--gcp-green);}
+.check-box.checked::after{content:'';position:absolute;left:4px;top:1px;width:4px;height:7px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg);}
+.checklist li:hover{color:var(--text-primary);}
 
 /* REFS GRID */
 .refs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:7px;margin:14px 0;}
@@ -1386,6 +1389,13 @@ const observer=new IntersectionObserver(entries=>{
   });
 },{rootMargin:'-25% 0px -65% 0px'});
 document.querySelectorAll('[id]').forEach(el=>observer.observe(el));
+
+document.querySelectorAll('.checklist li').forEach(item => {
+  item.addEventListener('click', () => {
+    const box = item.querySelector('.check-box');
+    if (box) box.classList.toggle('checked');
+  });
+});
 </script>
 </body>
 </html>
