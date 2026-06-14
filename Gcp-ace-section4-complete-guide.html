@@ -451,9 +451,9 @@ gcloud iam policies create POLICY_ID \
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>IAM Conditionsで有効期限・時間帯・リソースパスを制限</strong> — 永続的な過剰権限のリスクを排除</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>Deny Policyで重要リソースへの危険な操作を禁止</strong> — Allow Policyより優先される強力な保護</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" class="ref-link">🔗 IAM 継承とアクセス制御</a>
-    <a href="https://docs.cloud.google.com/iam/docs/deny-overview" target="_blank" class="ref-link">🔗 Deny Policy</a>
-    <a href="https://docs.cloud.google.com/iam/docs/conditions-overview" target="_blank" class="ref-link">🔗 IAM Conditions</a>
+    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM 継承 &amp; アクセス制御</a>
+    <a href="https://docs.cloud.google.com/iam/docs/deny-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Deny Policy</a>
+    <a href="https://docs.cloud.google.com/iam/docs/conditions-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM Conditions</a>
   </div>
 </div>
 
@@ -524,8 +524,8 @@ gcloud run services add-iam-policy-binding SERVICE_NAME \
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>環境（dev/prod）は別フォルダ・別プロジェクトで分離</strong> — 誤操作のリスクを低減</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>同一信頼境界のリソースを同一プロジェクトにまとめる</strong> — セキュリティポリシーの一貫性を確保</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" class="ref-link">🔗 リソース階層とアクセス制御</a>
-    <a href="https://docs.cloud.google.com/resource-manager/docs/access-control-org" target="_blank" class="ref-link">🔗 組織レベルのアクセス制御</a>
+    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 リソース階層とアクセス制御</a>
+    <a href="https://docs.cloud.google.com/resource-manager/docs/access-control-org" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 組織レベルのアクセス制御</a>
   </div>
 </div>
 
@@ -638,8 +638,8 @@ stateDiagram-v2
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>ALPHA → BETA → GA の段階を踏む</strong> — 予期せぬ権限の付与を防止</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>組織レベルのカスタムロールはプロジェクト間で再利用</strong> — 重複した定義の乱立を防止</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/creating-custom-roles" target="_blank" class="ref-link">🔗 カスタムロールの作成と管理</a>
-    <a href="https://docs.cloud.google.com/iam/docs/roles-overview" target="_blank" class="ref-link">🔗 IAM ロールの概要</a>
+    <a href="https://docs.cloud.google.com/iam/docs/creating-custom-roles" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 カスタムロールの作成と管理</a>
+    <a href="https://docs.cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM ロールの概要</a>
   </div>
 </div>
 
@@ -718,7 +718,7 @@ gcloud iam service-accounts undelete SA_UNIQUE_ID</pre>
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>命名規則を統一する（vm- / wlif- / wlifgke-）</strong> — 一目で用途を識別できる</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>不要になったSAは無効化→削除の順で対処</strong> — 30日間の復元猶予期間を活用</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" class="ref-link">🔗 SA のベストプラクティス</a>
+    <a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA のベストプラクティス</a>
   </div>
 </div>
 
@@ -919,8 +919,8 @@ gcloud logging read \
       <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>TokenCreator はプロジェクトレベルではなくSAリソースレベルで付与</strong> — 影響範囲を特定SAに限定</div></div>
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>PAMで承認フローを組み込む</strong> — 承認なしに特権SAを借用できないようにする</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/service-account-impersonation" target="_blank" class="ref-link">🔗 SA の権限借用</a>
-    <a href="https://docs.cloud.google.com/iam/docs/service-account-permissions" target="_blank" class="ref-link">🔗 SA 権限のロール</a>
+    <a href="https://docs.cloud.google.com/iam/docs/service-account-impersonation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA の権限借用</a>
+    <a href="https://docs.cloud.google.com/iam/docs/service-account-permissions" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA 権限のロール</a>
   </div>
 </div>
 
@@ -960,8 +960,8 @@ gcloud auth print-access-token \
   --impersonate-service-account=sa1@PROJECT.iam.gserviceaccount.com,sa2@PROJECT.iam.gserviceaccount.com,sa3@PROJECT.iam.gserviceaccount.com</pre>
 
     <div class="callout callout-red"><span class="callout-icon">🚫</span><div><strong>自己権限借用（Self-Impersonation）は禁止</strong>: SA の短期クレデンシャルを使って、同じ SA の新しいアクセストークンを生成することは禁止されています。盗まれたトークンを無限に更新する攻撃を防ぐためです。</div></div>
-    <a href="https://docs.cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" class="ref-link">🔗 短期クレデンシャルの作成</a>
-    <a href="https://docs.cloud.google.com/iam/docs/service-account-creds" target="_blank" class="ref-link">🔗 SA クレデンシャルの種類</a>
+    <a href="https://docs.cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 短期クレデンシャルの作成</a>
+    <a href="https://docs.cloud.google.com/iam/docs/service-account-creds" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA クレデンシャルの種類</a>
   </div>
 </div>
 
@@ -1007,7 +1007,7 @@ flowchart TB
       </div>
     </div>
 
-    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button"><span class="comment"># Step 1: GKE クラスタで Workload Identity を有効化</span>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># Step 1: GKE クラスタで Workload Identity を有効化</span>
 gcloud container clusters update my-cluster \
   --workload-pool=PROJECT_ID.svc.id.goog \
   --region=asia-northeast1
@@ -1061,8 +1061,8 @@ spec:
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>Namespace単位・Pod単位でKSAを分離</strong> — 最小権限の原則をコンテナレベルで適用</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>GSAの命名はwlifgke-プレフィックスを付ける</strong> — Workload Identity用SAだと一目で分かる</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/workload-identities" target="_blank" class="ref-link">🔗 Workload Identities for GKE</a>
-    <a href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" class="ref-link">🔗 GKE Autopilot セキュリティ</a>
+    <a href="https://docs.cloud.google.com/iam/docs/workload-identities" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Workload Identities for GKE</a>
+    <a href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 GKE Autopilot セキュリティ</a>
   </div>
 </div>
 
@@ -1168,7 +1168,7 @@ jobs:
             --region=asia-northeast1</pre>
 
     <div class="sub-title">セキュリティ強化のための attribute-condition</div>
-    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button"><span class="comment"># GitHub Actions: 特定の Organization のリポジトリのみ許可</span>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># GitHub Actions: 特定の Organization のリポジトリのみ許可</span>
 --attribute-condition="assertion.repository_owner == 'my-org'"
 
 <span class="comment"># GitHub Actions: 特定のリポジトリのみ許可（より厳密）</span>
@@ -1183,9 +1183,9 @@ jobs:
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>環境（dev/prod）ごとに別のPoolを作成</strong> — 環境間の分離を確保</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>GSAの命名にwlif-プレフィックスを使用</strong> — WIF用SAだと一目で識別できる</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/workload-identity-federation" target="_blank" class="ref-link">🔗 Workload Identity Federation 概要</a>
-    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" class="ref-link">🔗 WIF ベストプラクティス</a>
-    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" class="ref-link">🔗 デプロイパイプラインでの SA ベストプラクティス</a>
+    <a href="https://docs.cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Workload Identity Federation 概要</a>
+    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 WIF ベストプラクティス</a>
+    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 デプロイパイプラインでの SA ベストプラクティス</a>
   </div>
 </div>
 

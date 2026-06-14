@@ -496,24 +496,24 @@
     font-family: var(--font-mono);
     font-size: 12.5px;
     line-height: 1.7;
-    color: #e2e8f0;
+    color: var(--color-foreground);
     white-space: pre;
 }
 .ace-s1-page .k {
-    color: #ff7b72;
+    color: var(--color-google-red);
 }
 .ace-s1-page .s {
-    color: #a5d6ff;
+    color: var(--color-theme-ace-fg);
 }
 .ace-s1-page .c {
-    color: #8b9bb4;
+    color: var(--color-muted-foreground);
     font-style: italic;
 }
 .ace-s1-page .f {
-    color: #79c0ff;
+    color: var(--color-google-blue);
 }
 .ace-s1-page .o {
-    color: #d2a8ff;
+    color: var(--color-theme-genai-fg);
 }
 
 /* ===== BEST PRACTICES ===== */
@@ -671,19 +671,19 @@
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #c084fc;
+    color: var(--color-theme-genai-fg);
     margin-bottom: 10px;
 }
 .ace-s1-page .sources a {
     display: block;
     font-size: 12px;
-    color: #d8b4fe;
+    color: var(--color-theme-genai-fg);
     text-decoration: none;
     padding: 2px 0;
     transition: color 0.2s;
 }
 .ace-s1-page .sources a:hover {
-    color: #f3e8ff;
+    color: var(--color-foreground);
 }
 
 /* ===== EXAM TRAP BOX ===== */
