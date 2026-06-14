@@ -191,12 +191,13 @@ code:not(pre code){font-family:'JetBrains Mono',monospace;font-size:11.5px;backg
 
 /* CHECKLIST */
 .checklist{list-style:none;margin:10px 0;}
-.checklist li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:13px;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;user-select:none;}
+.checklist li{border-bottom:1px solid rgba(255,255,255,0.03);}
 .checklist li:last-child{border-bottom:none;}
-.check-box{width:15px;height:15px;min-width:15px;border:1.5px solid var(--border);border-radius:3px;margin-top:3px;background:rgba(52,168,83,0.04);cursor:pointer;position:relative;transition:all 0.15s;}
+.checklist-btn{display:flex;align-items:flex-start;gap:10px;width:100%;background:none;border:none;padding:6px 0;font-family:inherit;font-size:13px;color:var(--text-secondary);text-align:left;cursor:pointer;user-select:none;transition:color 0.15s;}
+.checklist-btn:hover{color:var(--text-primary);}
+.check-box{width:15px;height:15px;min-width:15px;border:1.5px solid var(--border);border-radius:3px;margin-top:2px;background:rgba(52,168,83,0.04);position:relative;transition:all 0.15s;}
 .check-box.checked{background:var(--gcp-green);border-color:var(--gcp-green);}
 .check-box.checked::after{content:'';position:absolute;left:4px;top:1px;width:4px;height:7px;border:solid white;border-width:0 2px 2px 0;transform:rotate(45deg);}
-.checklist li:hover{color:var(--text-primary);}
 
 /* REFS GRID */
 .refs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:7px;margin:14px 0;}
@@ -209,7 +210,7 @@ code:not(pre code){font-family:'JetBrains Mono',monospace;font-size:11.5px;backg
 /* SCROLL TOP */
 #scroll-top{position:fixed;bottom:22px;right:22px;width:38px;height:38px;border-radius:50%;background:var(--gcp-blue);color:white;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;z-index:200;box-shadow:0 4px 16px rgba(26,115,232,0.4);}
 #scroll-top.visible{opacity:1;pointer-events:auto;}
-#progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent-gradient);z-index:999;transition:width .1s;width:0;}
+#progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent-gradient);z-index:210;transition:width .1s;width:0;}
 
 @media(max-width:900px){:root{--sidebar-w:250px;}.hero,.content{padding-left:28px;padding-right:28px;}.changes-banner{margin-left:28px;margin-right:28px;}}
 @media(max-width:680px){.sidebar{transform:translateX(-100%);}.main{margin-left:0;}.hero,.content{padding-left:18px;padding-right:18px;}.changes-banner{margin-left:18px;margin-right:18px;}.compare-grid{grid-template-columns:1fr;}}
@@ -1267,16 +1268,66 @@ jobs:
   </div>
   <div class="topic-body">
     <ul class="checklist">
-      <li><div class="check-box"></div>IAMポリシーのJSON構造（version, bindings, etag）を説明できる</li>
-      <li><div class="check-box"></div><code>add-iam-policy-binding</code> と <code>set-iam-policy</code> の違いと危険性を知っている</li>
-      <li><div class="check-box"></div>組織・フォルダ・プロジェクト・リソース各レベルでのロール付与コマンドを知っている</li>
-      <li><div class="check-box"></div>IAMポリシーが上位から下位へ継承され下位で上位を取り消せないことを知っている（和集合）</li>
-      <li><div class="check-box"></div>IAM Conditions で時間・日付・リソースパスの条件を付与できる</li>
-      <li><div class="check-box"></div>Deny Policy が Allow Policy より優先されることを知っている</li>
-      <li><div class="check-box"></div>基本ロール（Editor/Owner）を本番環境で使うべきでない理由を説明できる</li>
-      <li><div class="check-box"></div>カスタムロールのライフサイクル（ALPHA → BETA → GA → DISABLED → DELETED）を知っている</li>
-      <li><div class="check-box"></div><code>roles/iam.serviceAccountUser</code>（actAs）と <code>roles/iam.serviceAccountTokenCreator</code> の違いを説明できる</li>
-      <li><div class="check-box"></div>Policy Analyzer でアクセス権を分析できることを知っている</li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="IAMポリシーのJSON構造（version, bindings, etag）を説明できる">
+          <span class="check-box"></span>
+          <span>IAMポリシーのJSON構造（version, bindings, etag）を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="add-iam-policy-binding と set-iam-policy の違いと危険性を知っている">
+          <span class="check-box"></span>
+          <span><code>add-iam-policy-binding</code> と <code>set-iam-policy</code> の違いと危険性を知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="組織・フォルダ・プロジェクト・リソース各レベルでのロール付与コマンドを知っている">
+          <span class="check-box"></span>
+          <span>組織・フォルダ・プロジェクト・リソース各レベルでのロール付与コマンドを知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="IAMポリシーが上位から下位へ継承され下位で上位を取り消せないことを知っている（和集合）">
+          <span class="check-box"></span>
+          <span>IAMポリシーが上位から下位へ継承され下位で上位を取り消せないことを知っている（和集合）</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="IAM Conditions で時間・日付・リソースパスの条件を付与できる">
+          <span class="check-box"></span>
+          <span>IAM Conditions で時間・日付・リソースパスの条件を付与できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="Deny Policy が Allow Policy より優先されることを知っている">
+          <span class="check-box"></span>
+          <span>Deny Policy が Allow Policy より優先されることを知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="基本ロール（Editor/Owner）を本番環境で使うべきでない理由を説明できる">
+          <span class="check-box"></span>
+          <span>基本ロール（Editor/Owner）を本番環境で使うべきでない理由を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="カスタムロールのライフサイクル（ALPHA → BETA → GA → DISABLED → DELETED）を知っている">
+          <span class="check-box"></span>
+          <span>カスタムロールのライフサイクル（ALPHA → BETA → GA → DISABLED → DELETED）を知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="roles/iam.serviceAccountUser（actAs）と roles/iam.serviceAccountTokenCreator の違いを説明できる">
+          <span class="check-box"></span>
+          <span><code>roles/iam.serviceAccountUser</code>（actAs）と <code>roles/iam.serviceAccountTokenCreator</code> の違いを説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="Policy Analyzer でアクセス権を分析できることを知っている">
+          <span class="check-box"></span>
+          <span>Policy Analyzer でアクセス権を分析できることを知っている</span>
+        </button>
+      </li>
     </ul>
   </div>
 </div>
@@ -1289,20 +1340,90 @@ jobs:
   </div>
   <div class="topic-body">
     <ul class="checklist">
-      <li><div class="check-box"></div>ユーザー管理 SA・デフォルト SA・Google 管理 SA の違いを説明できる</li>
-      <li><div class="check-box"></div>デフォルト SA の過剰権限問題を知っており専用 SA を使う理由を説明できる</li>
-      <li><div class="check-box"></div><code>roles/iam.serviceAccountUser</code>（actAs）が必要なケースを説明できる</li>
-      <li><div class="check-box"></div><code>roles/iam.serviceAccountTokenCreator</code> が権限借用に必要なことを知っている</li>
-      <li><div class="check-box"></div>SA 権限借用のフロー（一時トークン・監査ログ・1時間失効）を説明できる</li>
-      <li><div class="check-box"></div>短期クレデンシャルの種類（OAuth2.0 / OIDC IDトークン / 自己署名JWT）を知っている</li>
-      <li><div class="check-box"></div>自己権限借用が禁止されている理由を説明できる</li>
-      <li><div class="check-box"></div>GKE での Workload Identity Federation の設定フロー（KSA → GSA 紐付け）を説明できる</li>
-      <li><div class="check-box"></div><code>iam.gke.io/gcp-service-account</code> アノテーションの役割を知っている</li>
-      <li><div class="check-box"></div>Workload Identity Federation の設定フロー（Pool → Provider → GSA）を説明できる</li>
-      <li><div class="check-box"></div><code>attribute-condition</code> でセキュリティを強化する方法を知っている</li>
-      <li><div class="check-box"></div>GitHub Actions での WIF 設定と <code>id-token: write</code> permission の必要性を知っている</li>
-      <li><div class="check-box"></div>SA JSON キーより WIF・短期クレデンシャル・Workload Identity が推奨される理由を説明できる</li>
-      <li><div class="check-box"></div>命名規則（<code>vm-</code>, <code>wlif-</code>, <code>wlifgke-</code>）の目的を知っている</li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="ユーザー管理 SA・デフォルト SA・Google 管理 SA の違いを説明できる">
+          <span class="check-box"></span>
+          <span>ユーザー管理 SA・デフォルト SA・Google 管理 SA の違いを説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="デフォルト SA の過剰権限問題を知っており専用 SA を使う理由を説明できる">
+          <span class="check-box"></span>
+          <span>デフォルト SA の過剰権限問題を知っており専用 SA を使う理由を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="roles/iam.serviceAccountUser（actAs）が必要なケースを説明できる">
+          <span class="check-box"></span>
+          <span><code>roles/iam.serviceAccountUser</code>（actAs）が必要なケースを説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="roles/iam.serviceAccountTokenCreator が権限借用に必要なことを知っている">
+          <span class="check-box"></span>
+          <span><code>roles/iam.serviceAccountTokenCreator</code> が権限借用に必要なことを知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="SA 権限借用のフロー（一時トークン・監査ログ・1時間失効）を説明できる">
+          <span class="check-box"></span>
+          <span>SA 権限借用のフロー（一時トークン・監査ログ・1時間失効）を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="短期クレデンシャルの種類（OAuth2.0 / OIDC IDトークン / 自己署名JWT）を知っている">
+          <span class="check-box"></span>
+          <span>短期クレデンシャルの種類（OAuth2.0 / OIDC IDトークン / 自己署名JWT）を知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="自己権限借用が禁止されている理由を説明できる">
+          <span class="check-box"></span>
+          <span>自己権限借用が禁止されている理由を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="GKE での Workload Identity Federation の設定フロー（KSA → GSA 紐付け）を説明できる">
+          <span class="check-box"></span>
+          <span>GKE での Workload Identity Federation の設定フロー（KSA → GSA 紐付け）を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="iam.gke.io/gcp-service-account アノテーションの役割を知っている">
+          <span class="check-box"></span>
+          <span><code>iam.gke.io/gcp-service-account</code> アノテーションの役割を知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="Workload Identity Federation の設定フロー（Pool → Provider → GSA）を説明できる">
+          <span class="check-box"></span>
+          <span>Workload Identity Federation の設定フロー（Pool → Provider → GSA）を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="attribute-condition でセキュリティを強化する方法を知っている">
+          <span class="check-box"></span>
+          <span><code>attribute-condition</code> でセキュリティを強化する方法を知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="GitHub Actions での WIF 設定と id-token: write permission の必要性を知っている">
+          <span class="check-box"></span>
+          <span>GitHub Actions での WIF 設定と <code>id-token: write</code> permission の必要性を知っている</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="SA JSON キーより WIF・短期クレデンシャル・Workload Identity が推奨される理由を説明できる">
+          <span class="check-box"></span>
+          <span>SA JSON キーより WIF・短期クレデンシャル・Workload Identity が推奨される理由を説明できる</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" class="checklist-btn" aria-pressed="false" aria-label="命名規則（vm-、wlif-、wlifgke-）の目的を知っている">
+          <span class="check-box"></span>
+          <span>命名規則（<code>vm-</code>, <code>wlif-</code>, <code>wlifgke-</code>）の目的を知っている</span>
+        </button>
+      </li>
     </ul>
   </div>
 </div>
@@ -1390,10 +1511,14 @@ const observer=new IntersectionObserver(entries=>{
 },{rootMargin:'-25% 0px -65% 0px'});
 document.querySelectorAll('[id]').forEach(el=>observer.observe(el));
 
-document.querySelectorAll('.checklist li').forEach(item => {
-  item.addEventListener('click', () => {
-    const box = item.querySelector('.check-box');
-    if (box) box.classList.toggle('checked');
+document.querySelectorAll('.checklist-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const isPressed = btn.getAttribute('aria-pressed') === 'true';
+    btn.setAttribute('aria-pressed', !isPressed);
+    const box = btn.querySelector('.check-box');
+    if (box) {
+      box.classList.toggle('checked', !isPressed);
+    }
   });
 });
 </script>
