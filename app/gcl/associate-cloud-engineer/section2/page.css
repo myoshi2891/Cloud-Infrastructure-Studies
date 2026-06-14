@@ -42,7 +42,7 @@
     left: 0;
     bottom: 0;
     overflow-y: auto;
-    z-index: 40;
+    z-index: 100; /* ページレベル fixed 要素の標準レイヤー */
     display: flex;
     flex-direction: column;
 }

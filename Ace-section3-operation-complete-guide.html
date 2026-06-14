@@ -1,0 +1,3424 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ACE Section 3 | Ensuring Successful Operation | Google Cloud</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+        <style>
+            :root {
+                --void: #050a14;
+                --space: #080f1c;
+                --surface: #0d1b2a;
+                --panel: #112030;
+                --card: #152538;
+                --border: #1e3348;
+                --brd2: #274460;
+                --blue: #3d8ef5;
+                --cyan: #00c8ff;
+                --green: #34a853;
+                --amber: #fbbc04;
+                --red: #ea4335;
+                --purple: #8b5cf6;
+                --text: #b8cde0;
+                --muted: #8fafc9;
+                --bright: #e2f0ff;
+                --mono: 'JetBrains Mono', monospace;
+                --sans: 'Space Grotesk', sans-serif;
+                --body: 'Inter', sans-serif;
+            }
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                background: var(--void);
+                color: var(--text);
+                font-family: var(--body);
+                line-height: 1.75;
+                overflow-x: hidden;
+            }
+            .hero {
+                background: linear-gradient(160deg, #060d1a 0%, #0a1828 50%, #050a14 100%);
+                padding: 80px 40px 64px;
+                text-align: center;
+                border-bottom: 1px solid var(--border);
+                position: relative;
+                overflow: hidden;
+            }
+            .hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        ellipse 70% 60% at 50% -10%,
+                        rgba(61, 142, 245, 0.15) 0%,
+                        transparent 65%
+                    ),
+                    radial-gradient(
+                        ellipse 40% 30% at 10% 90%,
+                        rgba(52, 168, 83, 0.06) 0%,
+                        transparent 60%
+                    );
+                pointer-events: none;
+            }
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--cyan);
+                letter-spacing: 2.5px;
+                text-transform: uppercase;
+                border: 1px solid rgba(0, 200, 255, 0.25);
+                background: rgba(0, 200, 255, 0.06);
+                border-radius: 100px;
+                padding: 5px 18px;
+                margin-bottom: 24px;
+                position: relative;
+                z-index: 1;
+            }
+            .hero-eyebrow .pulse {
+                width: 7px;
+                height: 7px;
+                background: var(--green);
+                border-radius: 50%;
+                animation: pulse 2s ease-in-out infinite;
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                50% {
+                    opacity: 0.4;
+                    transform: scale(0.7);
+                }
+            }
+            .hero h1 {
+                font-family: var(--sans);
+                font-size: clamp(28px, 4.5vw, 54px);
+                font-weight: 700;
+                color: var(--bright);
+                line-height: 1.1;
+                margin-bottom: 16px;
+                position: relative;
+                z-index: 1;
+            }
+            .hero h1 span {
+                background: linear-gradient(90deg, #3d8ef5, #00c8ff, #34a853);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero-sub {
+                color: var(--muted);
+                font-size: 15px;
+                max-width: 680px;
+                margin: 0 auto 40px;
+                position: relative;
+                z-index: 1;
+            }
+            .hero-meta {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+                position: relative;
+                z-index: 1;
+            }
+            .meta-pill {
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 10px 20px;
+                text-align: center;
+            }
+            .meta-pill .ml {
+                font-size: 10px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-family: var(--mono);
+            }
+            .meta-pill .mv {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--cyan);
+                margin-top: 2px;
+            }
+            .app-layout {
+                display: grid;
+                grid-template-columns: 260px 1fr;
+                min-height: 100vh;
+            }
+            .sidebar {
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--space);
+                border-right: 1px solid var(--border);
+                padding: 28px 0;
+                scrollbar-width: thin;
+                scrollbar-color: var(--border) transparent;
+            }
+            .sidebar::-webkit-scrollbar {
+                width: 4px;
+            }
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+            .nav-section-title {
+                font-family: var(--mono);
+                font-size: 10px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                padding: 8px 20px 4px;
+                margin-top: 16px;
+            }
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 20px;
+                font-size: 13px;
+                color: var(--muted);
+                text-decoration: none;
+                transition: all 0.15s;
+                border-left: 2px solid transparent;
+            }
+            .nav-item:hover {
+                color: var(--bright);
+                background: rgba(255, 255, 255, 0.03);
+                border-left-color: var(--blue);
+            }
+            .nav-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+            .main-content {
+                padding: 48px 56px;
+                overflow: hidden;
+            }
+            .sec-header {
+                display: flex;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 28px 32px;
+                background: linear-gradient(135deg, var(--surface), var(--panel));
+                border: 1px solid var(--brd2);
+                border-radius: 16px;
+                margin-bottom: 36px;
+                position: relative;
+                overflow: hidden;
+            }
+            .sec-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                border-radius: 16px 16px 0 0;
+            }
+            .sh-blue::before {
+                background: linear-gradient(90deg, var(--blue), transparent);
+            }
+            .sh-green::before {
+                background: linear-gradient(90deg, var(--green), transparent);
+            }
+            .sh-amber::before {
+                background: linear-gradient(90deg, var(--amber), transparent);
+            }
+            .sh-red::before {
+                background: linear-gradient(90deg, var(--red), transparent);
+            }
+            .sec-icon {
+                width: 52px;
+                height: 52px;
+                border-radius: 13px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                flex-shrink: 0;
+            }
+            .si-blue {
+                background: rgba(61, 142, 245, 0.12);
+                border: 1px solid rgba(61, 142, 245, 0.3);
+            }
+            .si-green {
+                background: rgba(52, 168, 83, 0.12);
+                border: 1px solid rgba(52, 168, 83, 0.3);
+            }
+            .si-amber {
+                background: rgba(251, 188, 4, 0.12);
+                border: 1px solid rgba(251, 188, 4, 0.3);
+            }
+            .si-red {
+                background: rgba(234, 67, 53, 0.12);
+                border: 1px solid rgba(234, 67, 53, 0.3);
+            }
+            .sec-header-body h2 {
+                font-family: var(--sans);
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--bright);
+                margin-bottom: 5px;
+            }
+            .sec-header-body p {
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .weight-badge {
+                margin-left: auto;
+                padding: 5px 14px;
+                border-radius: 100px;
+                font-family: var(--mono);
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            .wb-blue {
+                background: rgba(61, 142, 245, 0.1);
+                color: var(--blue);
+                border: 1px solid rgba(61, 142, 245, 0.3);
+            }
+            .wb-green {
+                background: rgba(52, 168, 83, 0.1);
+                color: var(--green);
+                border: 1px solid rgba(52, 168, 83, 0.3);
+            }
+            .wb-amber {
+                background: rgba(251, 188, 4, 0.1);
+                color: var(--amber);
+                border: 1px solid rgba(251, 188, 4, 0.3);
+            }
+            .wb-red {
+                background: rgba(234, 67, 53, 0.1);
+                color: var(--red);
+                border: 1px solid rgba(234, 67, 53, 0.3);
+            }
+            .card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 26px 28px;
+                margin-bottom: 20px;
+                transition:
+                    border-color 0.2s,
+                    transform 0.15s;
+            }
+            .card:hover {
+                border-color: rgba(61, 142, 245, 0.4);
+                transform: translateY(-2px);
+            }
+            .card-title {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-family: var(--sans);
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--bright);
+                margin-bottom: 16px;
+            }
+            .topic-tag {
+                font-family: var(--mono);
+                font-size: 10px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid var(--border);
+                padding: 2px 8px;
+                border-radius: 5px;
+                color: var(--muted);
+            }
+            .fgrid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .fitem {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 16px 18px;
+                border-left: 3px solid transparent;
+                transition: border-left-color 0.2s;
+            }
+            .fitem:hover {
+                border-left-color: var(--blue);
+            }
+            .fitem-t {
+                font-family: var(--sans);
+                font-weight: 600;
+                font-size: 13px;
+                color: var(--cyan);
+                margin-bottom: 5px;
+            }
+            .fitem-d {
+                font-size: 13px;
+                color: var(--muted);
+                line-height: 1.65;
+            }
+            .code-block {
+                background: #050a14;
+                border: 1px solid var(--brd2);
+                border-radius: 10px;
+                overflow: hidden;
+                margin: 14px 0;
+            }
+            .code-header {
+                background: var(--panel);
+                padding: 8px 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .code-lang {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .code-dots {
+                display: flex;
+                gap: 6px;
+                margin-left: auto;
+            }
+            .code-dots span {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+            .cd1 {
+                background: #ff5f57;
+            }
+            .cd2 {
+                background: #ffbd2e;
+            }
+            .cd3 {
+                background: #28c840;
+            }
+            pre.code-content {
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 0;
+                font-family: var(--mono);
+                font-size: 12px;
+                line-height: 1.85;
+                color: #7dd3fc;
+            }
+            pre.code-content .comment {
+                color: #4a6880;
+                font-style: italic;
+            }
+            pre.code-content .flag {
+                color: #86efac;
+            }
+            pre.code-content .val {
+                color: #fcd34d;
+            }
+            pre.code-content .cmd {
+                color: #6ee7b7;
+            }
+            pre.code-content .key {
+                color: #c4b5fd;
+            }
+            .tbl-wrap {
+                overflow-x: auto;
+                margin: 14px 0;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13px;
+            }
+            th {
+                background: var(--panel);
+                padding: 10px 14px;
+                text-align: left;
+                color: var(--muted);
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border-bottom: 1px solid var(--border);
+                font-family: var(--mono);
+                white-space: nowrap;
+            }
+            td {
+                padding: 10px 14px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                color: var(--text);
+                vertical-align: top;
+                line-height: 1.6;
+            }
+            tr:hover td {
+                background: rgba(61, 142, 245, 0.03);
+            }
+            td strong {
+                color: var(--bright);
+            }
+            .bp {
+                background: rgba(52, 168, 83, 0.05);
+                border: 1px solid rgba(52, 168, 83, 0.2);
+                border-left: 3px solid var(--green);
+                border-radius: 10px;
+                padding: 16px 20px;
+                margin: 14px 0;
+            }
+            .bp-title {
+                font-family: var(--mono);
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--green);
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .bp ul {
+                list-style: none;
+                padding: 0;
+            }
+            .bp li {
+                font-size: 13px;
+                color: var(--text);
+                padding: 4px 0 4px 18px;
+                position: relative;
+                line-height: 1.65;
+            }
+            .bp li::before {
+                content: '✓';
+                color: var(--green);
+                position: absolute;
+                left: 0;
+                font-size: 11px;
+                top: 5px;
+            }
+            .warn {
+                background: rgba(251, 188, 4, 0.05);
+                border: 1px solid rgba(251, 188, 4, 0.2);
+                border-left: 3px solid var(--amber);
+                border-radius: 10px;
+                padding: 14px 18px;
+                margin: 12px 0;
+            }
+            .warn-title {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--amber);
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 6px;
+            }
+            .warn p,
+            .warn li {
+                font-size: 13px;
+                color: var(--text);
+                line-height: 1.65;
+            }
+            .warn ul {
+                list-style: none;
+                padding: 0;
+            }
+            .warn li {
+                padding: 3px 0 3px 16px;
+                position: relative;
+            }
+            .warn li::before {
+                content: '!';
+                font-family: var(--mono);
+                font-weight: 700;
+                position: absolute;
+                left: 0;
+                top: 4px;
+                color: var(--amber);
+                font-size: 11px;
+            }
+            .info {
+                background: rgba(61, 142, 245, 0.05);
+                border: 1px solid rgba(61, 142, 245, 0.2);
+                border-left: 3px solid var(--blue);
+                border-radius: 10px;
+                padding: 14px 18px;
+                margin: 12px 0;
+                font-size: 13px;
+                color: var(--text);
+                line-height: 1.65;
+            }
+            .info-title {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--blue);
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 6px;
+            }
+            .src-box {
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 18px;
+                margin-top: 20px;
+            }
+            .src-title {
+                font-family: var(--mono);
+                font-size: 10px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 8px;
+            }
+            .src-box a {
+                display: block;
+                font-size: 12px;
+                font-family: var(--mono);
+                color: var(--cyan);
+                text-decoration: none;
+                padding: 3px 0;
+                opacity: 0.75;
+                transition: opacity 0.2s;
+                word-break: break-all;
+            }
+            .src-box a:hover {
+                opacity: 1;
+                text-decoration: underline;
+            }
+            .mermaid-wrap {
+                background: var(--panel);
+                border: 1px solid var(--brd2);
+                border-radius: 12px;
+                padding: 24px;
+                margin: 16px 0;
+                overflow-x: auto;
+            }
+            .mermaid-title {
+                font-family: var(--mono);
+                font-size: 10px;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                margin-bottom: 16px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--border);
+            }
+            .split2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin: 14px 0;
+            }
+            .sbox {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 16px 18px;
+            }
+            .sbox-t {
+                font-family: var(--sans);
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .sbox ul {
+                list-style: none;
+                padding: 0;
+            }
+            .sbox li {
+                font-size: 12px;
+                color: var(--muted);
+                padding: 3px 0 3px 14px;
+                position: relative;
+                line-height: 1.55;
+            }
+            .sbox li::before {
+                content: '›';
+                color: var(--cyan);
+                position: absolute;
+                left: 0;
+                top: 2px;
+                font-size: 13px;
+            }
+            .overview-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 28px;
+                margin-bottom: 40px;
+            }
+            .overview-card h3 {
+                font-family: var(--sans);
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--bright);
+                margin-bottom: 20px;
+            }
+            .prow {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 14px;
+            }
+            .pl {
+                font-size: 12px;
+                color: var(--muted);
+                width: 220px;
+                flex-shrink: 0;
+            }
+            .pbar {
+                flex: 1;
+                height: 7px;
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 100px;
+                overflow: hidden;
+            }
+            .pfill {
+                height: 100%;
+                border-radius: 100px;
+            }
+            .pct-val {
+                font-family: var(--mono);
+                font-size: 11px;
+                font-weight: 700;
+                width: 38px;
+                text-align: right;
+            }
+            .section-gap {
+                margin-top: 64px;
+            }
+            .divider {
+                border: none;
+                border-top: 1px solid var(--border);
+                margin: 56px 0 40px;
+            }
+            .checklist {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 12px;
+                margin: 16px 0;
+            }
+            .check-item {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 16px;
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                cursor: pointer;
+                user-select: none;
+            }
+            .check-box {
+                width: 18px;
+                height: 18px;
+                border: 2px solid var(--border);
+                border-radius: 4px;
+                flex-shrink: 0;
+                margin-top: 2px;
+                position: relative;
+                transition: all 0.2s;
+            }
+            .check-box.checked {
+                background: var(--purple);
+                border-color: var(--purple);
+            }
+            .check-box.checked::after {
+                content: '';
+                position: absolute;
+                left: 4px;
+                top: 0px;
+                width: 5px;
+                height: 9px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+            .check-content strong {
+                display: block;
+                font-size: 13px;
+                color: var(--bright);
+                margin-bottom: 3px;
+            }
+            .check-content span {
+                font-size: 12px;
+                color: var(--muted);
+                line-height: 1.5;
+            }
+            @media (max-width: 1024px) {
+                .app-layout {
+                    grid-template-columns: 1fr;
+                }
+                .sidebar {
+                    position: static;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                .main-content {
+                    padding: 32px 24px;
+                }
+                .split2 {
+                    grid-template-columns: 1fr;
+                }
+                .fgrid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            /* mermaid-center (apply_render_pipeline.mjs): 図を中央寄せ */
+            .mermaid-wrap {
+                display: flex;
+                flex-direction: column;
+            }
+            .mermaid,
+            .diagram-wrap .mermaid {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+            .mermaid svg,
+            .diagram-wrap .mermaid svg {
+                display: block;
+                margin: 0 auto;
+                max-width: 100% !important;
+                height: auto !important;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="hero">
+            <div class="hero-eyebrow">
+                <span class="pulse"></span>Google Cloud Certification — ACE 試験対策
+            </div>
+            <h1>
+                Section 3:<br /><span>Ensuring the Successful Operation of a Cloud Solution</span>
+            </h1>
+            <p class="hero-sub">
+                試験配点 ~30%（最重量セクション）。Compute Engine・GKE・Cloud
+                Run・Storage・Networking・Monitoring/Logging
+                の日常運用を中級〜上級者向けに完全解説。試験ガイド
+                063026（2026年6月30日改訂版）準拠。
+            </p>
+            <div class="hero-meta">
+                <div class="meta-pill">
+                    <div class="ml">配点</div>
+                    <div class="mv">~30%</div>
+                </div>
+                <div class="meta-pill">
+                    <div class="ml">サブセクション</div>
+                    <div class="mv">3.1 〜 3.4</div>
+                </div>
+                <div class="meta-pill">
+                    <div class="ml">試験ガイド</div>
+                    <div class="mv">063026</div>
+                </div>
+                <div class="meta-pill">
+                    <div class="ml">対象レベル</div>
+                    <div class="mv">中級〜上級</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="app-layout">
+            <nav class="sidebar">
+                <div class="nav-section-title">概要</div>
+                <a href="#overview" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--cyan)"></span>Section 3
+                    全体像</a
+                >
+                <div class="nav-section-title">3.1 コンピューティング</div>
+                <a href="#s31-connect" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--blue)"></span>リモート接続</a
+                >
+                <a href="#s31-snapshot" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--blue)"></span
+                    >スナップショット・イメージ</a
+                >
+                <a href="#s31-gke" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--blue)"></span>GKE 運用管理</a
+                >
+                <a href="#s31-autoscale" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--blue)"></span>Pod
+                    オートスケーリング</a
+                >
+                <a href="#s31-cloudrun" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--blue)"></span>Cloud Run 運用</a
+                >
+                <a href="#s31-gpu" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--blue)"></span>GPU / TPU</a
+                >
+                <div class="nav-section-title">3.2 ストレージ・データ</div>
+                <a href="#s32-gcs" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--green)"></span>Cloud Storage</a
+                >
+                <a href="#s32-lifecycle" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--green)"></span
+                    >ライフサイクル管理</a
+                >
+                <a href="#s32-query" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--green)"></span>クエリ・DB
+                    操作</a
+                >
+                <a href="#s32-backup" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--green)"></span
+                    >バックアップ・リストア</a
+                >
+                <a href="#s32-cmek" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--green)"></span>Database Center /
+                    CMEK</a
+                >
+                <div class="nav-section-title">3.3 ネットワーク</div>
+                <a href="#s33-subnet" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--amber)"></span>サブネット・IP
+                    管理</a
+                >
+                <a href="#s33-dns-nat" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--amber)"></span>Cloud DNS /
+                    NAT</a
+                >
+                <a href="#s33-fw" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--amber)"></span
+                    >ファイアウォール・NGFW</a
+                >
+                <div class="nav-section-title">3.4 モニタリング・ログ</div>
+                <a href="#s34-alert" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--red)"></span>アラートポリシー</a
+                >
+                <a href="#s34-logs" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--red)"></span
+                    >ログ管理・エクスポート</a
+                >
+                <a href="#s34-diag" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--red)"></span>診断ツール群</a
+                >
+                <a href="#s34-ops" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--red)"></span>Ops Agent /
+                    Prometheus</a
+                >
+                <a href="#s34-ai" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--red)"></span>AI 支援ツール群</a
+                >
+                <div class="nav-section-title">総まとめ</div>
+                <a href="#checklist" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--purple)"></span
+                    >試験チェックリスト</a
+                >
+                <a href="#refs" class="nav-item"
+                    ><span class="nav-dot" style="background: var(--purple)"></span
+                    >公式参照リソース</a
+                >
+            </nav>
+
+            <main class="main-content">
+                <!-- OVERVIEW -->
+                <section id="overview">
+                    <div class="overview-card">
+                        <h3>📊 Section 3 — サブセクション別 出題比重（試験ガイド 063026 準拠）</h3>
+                        <div class="prow">
+                            <div class="pl">3.1 コンピューティング管理</div>
+                            <div class="pbar">
+                                <div
+                                    class="pfill"
+                                    style="width: 40%; background: var(--blue)"
+                                ></div>
+                            </div>
+                            <div class="pct-val" style="color: var(--blue)">★★★★</div>
+                        </div>
+                        <div class="prow">
+                            <div class="pl">3.2 ストレージ・データ管理</div>
+                            <div class="pbar">
+                                <div
+                                    class="pfill"
+                                    style="width: 30%; background: var(--green)"
+                                ></div>
+                            </div>
+                            <div class="pct-val" style="color: var(--green)">★★★</div>
+                        </div>
+                        <div class="prow">
+                            <div class="pl">3.3 ネットワーク管理</div>
+                            <div class="pbar">
+                                <div
+                                    class="pfill"
+                                    style="width: 25%; background: var(--amber)"
+                                ></div>
+                            </div>
+                            <div class="pct-val" style="color: var(--amber)">★★★</div>
+                        </div>
+                        <div class="prow">
+                            <div class="pl">3.4 モニタリング・ロギング</div>
+                            <div class="pbar">
+                                <div class="pfill" style="width: 35%; background: var(--red)"></div>
+                            </div>
+                            <div class="pct-val" style="color: var(--red)">★★★★</div>
+                        </div>
+                    </div>
+                    <div class="mermaid-wrap">
+                        <div class="mermaid-title">Section 3 — Day2 Operations 全体フロー</div>
+                        <div class="mermaid" id="diag-1"></div>
+                    </div>
+                </section>
+
+                <!-- ===== 3.1 ===== -->
+                <div class="section-gap">
+                    <div class="sec-header sh-blue">
+                        <div class="sec-icon si-blue">🖥️</div>
+                        <div class="sec-header-body">
+                            <h2>3.1 コンピューティングリソースの管理</h2>
+                            <p>
+                                Compute Engine・GKE・Cloud Run の日常運用 —
+                                接続・スナップショット・スケール・デプロイ管理
+                            </p>
+                        </div>
+                        <div class="weight-badge wb-blue">最重要 ★★★★</div>
+                    </div>
+
+                    <div class="card" id="s31-connect">
+                        <div class="card-title">
+                            🔐 Compute Engine へのリモート接続 <span class="topic-tag">3.1</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>接続方法</th>
+                                        <th>外部 IP</th>
+                                        <th>セキュリティ</th>
+                                        <th>推奨場面</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>IAP トンネル SSH</strong></td>
+                                        <td>不要</td>
+                                        <td>🔒 最高</td>
+                                        <td>本番環境・外部 IP なし VM</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>OS Login + IAP</strong></td>
+                                        <td>不要</td>
+                                        <td>🔒 最高</td>
+                                        <td>組織管理環境・SSH 鍵一元管理</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>gcloud SSH（直接）</strong></td>
+                                        <td>必要</td>
+                                        <td>🔓 中</td>
+                                        <td>開発・検証環境</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Cloud Console ブラウザ</strong></td>
+                                        <td>推奨なし</td>
+                                        <td>🔓 中</td>
+                                        <td>簡易操作・緊急時</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Serial Console</strong></td>
+                                        <td>不要</td>
+                                        <td>🔓 中</td>
+                                        <td>OS 起動不能時の緊急復旧のみ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">IAP トンネル SSH — 認証フロー</div>
+                            <div class="mermaid" id="diag-2"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># IAP 経由 SSH（本番推奨）</span>
+<span class="cmd">gcloud</span> compute ssh INSTANCE_NAME <span class="flag">--zone</span>=ZONE <span class="flag">--tunnel-through-iap</span>
+
+<span class="comment"># OS Login 有効化（プロジェクト全体）</span>
+<span class="cmd">gcloud</span> compute project-info add-metadata <span class="flag">--metadata</span> <span class="val">enable-oslogin=TRUE</span>
+
+<span class="comment"># OS Login IAM ロール付与</span>
+<span class="cmd">gcloud</span> projects add-iam-policy-binding PROJECT_ID \
+  <span class="flag">--member</span>=<span class="val">"user:user@example.com"</span> \
+  <span class="flag">--role</span>=<span class="val">"roles/compute.osLogin"</span>
+
+<span class="comment"># インスタンス一覧・詳細確認</span>
+<span class="cmd">gcloud</span> compute instances list
+<span class="cmd">gcloud</span> compute instances describe INSTANCE_NAME <span class="flag">--zone</span>=ZONE
+
+<span class="comment"># 起動・停止・削除</span>
+<span class="cmd">gcloud</span> compute instances start INSTANCE_NAME <span class="flag">--zone</span>=ZONE
+<span class="cmd">gcloud</span> compute instances stop INSTANCE_NAME <span class="flag">--zone</span>=ZONE</pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — リモート接続</div>
+                            <ul>
+                                <li>
+                                    本番 VM には<strong>外部 IP を割り当てず</strong>、IAP
+                                    トンネル経由でアクセスする
+                                </li>
+                                <li>
+                                    <strong>OS Login</strong> を有効化して SSH 鍵の個別管理を廃止し
+                                    IAM で一元制御する
+                                </li>
+                                <li>
+                                    Serial Console は緊急時以外は<strong>無効</strong>にしておく
+                                </li>
+                                <li>
+                                    <code>roles/iap.tunnelResourceAccessor</code>
+                                    は最小権限で付与する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/compute/docs/connect/ssh-using-iap"
+                                target="_blank"
+                                >https://cloud.google.com/compute/docs/connect/ssh-using-iap</a
+                            >
+                            <a href="https://cloud.google.com/compute/docs/oslogin" target="_blank"
+                                >https://cloud.google.com/compute/docs/oslogin</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s31-snapshot">
+                        <div class="card-title">
+                            📸 スナップショットとイメージ管理 <span class="topic-tag">3.1</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>比較項目</th>
+                                        <th>スナップショット</th>
+                                        <th>カスタムイメージ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>主な用途</strong></td>
+                                        <td>バックアップ・PITR</td>
+                                        <td>VM テンプレート・大量展開</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>保存方式</strong></td>
+                                        <td>増分（初回のみフル）</td>
+                                        <td>完全コピー</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>スコープ</strong></td>
+                                        <td>プロジェクト内</td>
+                                        <td>グローバル（プロジェクト跨ぎ可）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>復元方法</strong></td>
+                                        <td>新ディスクとして復元</td>
+                                        <td>新 VM を作成</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>スケジュール</strong></td>
+                                        <td>Snapshot Schedule Policy で自動化可</td>
+                                        <td>手動 / CI/CD パイプライン</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">
+                                スナップショット vs イメージ — 使い分けフロー
+                            </div>
+                            <div class="mermaid" id="diag-3"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># スナップショット作成</span>
+<span class="cmd">gcloud</span> compute disks snapshot DISK_NAME \
+  <span class="flag">--snapshot-names</span>=SNAPSHOT_NAME \
+  <span class="flag">--zone</span>=ZONE \
+  <span class="flag">--storage-location</span>=REGION
+
+<span class="comment"># スナップショットスケジュール作成（毎日 04:00）</span>
+<span class="cmd">gcloud</span> compute resource-policies create snapshot-schedule POLICY_NAME \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--max-retention-days</span>=<span class="val">7</span> \
+  <span class="flag">--daily-schedule</span> \
+  <span class="flag">--start-time</span>=<span class="val">04:00</span>
+
+<span class="comment"># ディスクへのスケジュール適用</span>
+<span class="cmd">gcloud</span> compute disks add-resource-policies DISK_NAME \
+  <span class="flag">--resource-policies</span>=POLICY_NAME <span class="flag">--zone</span>=ZONE
+
+<span class="comment"># イメージ作成（--family で最新版管理）</span>
+<span class="cmd">gcloud</span> compute images create IMAGE_NAME \
+  <span class="flag">--source-disk</span>=DISK_NAME \
+  <span class="flag">--source-disk-zone</span>=ZONE \
+  <span class="flag">--family</span>=MY_IMAGE_FAMILY
+
+<span class="comment"># 最新イメージの参照（常に最新版を使う）</span>
+<span class="cmd">gcloud</span> compute images describe-from-family MY_IMAGE_FAMILY \
+  <span class="flag">--project</span>=PROJECT_ID</pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">
+                                ✅ ベストプラクティス — スナップショット・イメージ
+                            </div>
+                            <ul>
+                                <li>
+                                    <strong>Snapshot Schedule Policy</strong>
+                                    で本番ディスクの定期バックアップを自動化する
+                                </li>
+                                <li>
+                                    イメージは <code>--family</code> で管理し
+                                    <code>describe-from-family</code> で常に最新版を参照する
+                                </li>
+                                <li>
+                                    <strong>VM 停止中</strong
+                                    >にスナップショットを取得してデータ整合性を確保する
+                                </li>
+                                <li>
+                                    <code>--storage-location</code>
+                                    でデータ主権要件に合わせてリージョンを指定する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/compute/docs/disks/create-snapshots"
+                                target="_blank"
+                                >https://cloud.google.com/compute/docs/disks/create-snapshots</a
+                            >
+                            <a
+                                href="https://cloud.google.com/compute/docs/images/create-custom"
+                                target="_blank"
+                                >https://cloud.google.com/compute/docs/images/create-custom</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s31-gke">
+                        <div class="card-title">
+                            ☸️ GKE クラスタの運用管理 <span class="topic-tag">3.1</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>比較項目</th>
+                                        <th>Deployment</th>
+                                        <th>StatefulSet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Pod 名</strong></td>
+                                        <td>ランダムサフィックス</td>
+                                        <td>順番付き（pod-0, pod-1…）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>起動順序</strong></td>
+                                        <td>同時起動</td>
+                                        <td>順番に起動（0→1→2）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ストレージ</strong></td>
+                                        <td>共有可</td>
+                                        <td>各 Pod に固有の PV</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ユースケース</strong></td>
+                                        <td>ステートレス Web/API</td>
+                                        <td>DB・Kafka・ZooKeeper</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">
+                                GKE から Artifact Registry へのアクセス設定
+                            </div>
+                            <div class="mermaid" id="diag-4"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># クラスタ認証情報の取得</span>
+<span class="cmd">gcloud</span> container clusters get-credentials CLUSTER_NAME <span class="flag">--zone</span>=ZONE
+
+<span class="comment"># インベントリ確認</span>
+<span class="cmd">kubectl</span> get nodes -o wide
+<span class="cmd">kubectl</span> get pods <span class="flag">--all-namespaces</span> -o wide
+<span class="cmd">kubectl</span> get services <span class="flag">--all-namespaces</span>
+<span class="cmd">kubectl</span> get statefulsets <span class="flag">--all-namespaces</span>
+
+<span class="comment"># ノードプール追加（GPU 対応）</span>
+<span class="cmd">gcloud</span> container node-pools create GPU_POOL \
+  <span class="flag">--cluster</span>=CLUSTER_NAME <span class="flag">--zone</span>=ZONE \
+  <span class="flag">--machine-type</span>=<span class="val">n1-standard-4</span> \
+  <span class="flag">--accelerator</span>=<span class="val">type=nvidia-tesla-t4,count=1</span> \
+  <span class="flag">--enable-autoscaling</span> \
+  <span class="flag">--min-nodes</span>=<span class="val">0</span> <span class="flag">--max-nodes</span>=<span class="val">5</span>
+
+<span class="comment"># ノードプール削除</span>
+<span class="cmd">gcloud</span> container node-pools delete POOL_NAME \
+  <span class="flag">--cluster</span>=CLUSTER_NAME <span class="flag">--zone</span>=ZONE
+
+<span class="comment"># Deployment ローリングアップデート</span>
+<span class="cmd">kubectl</span> set image deployment/MY_DEPLOY container=NEW_IMAGE:TAG -n NAMESPACE
+
+<span class="comment"># ロールバック</span>
+<span class="cmd">kubectl</span> rollout undo deployment/MY_DEPLOY -n NAMESPACE
+
+<span class="comment"># Pod ログ確認</span>
+<span class="cmd">kubectl</span> logs POD_NAME -n NAMESPACE <span class="flag">--tail</span>=<span class="val">100</span> -f</pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — GKE 運用</div>
+                            <ul>
+                                <li>
+                                    Artifact Registry アクセスは
+                                    <strong>Workload Identity Federation</strong> で SA
+                                    キーなしに認証する
+                                </li>
+                                <li>
+                                    GPU ノードプールは
+                                    <code>--min-nodes=0</code>
+                                    に設定して未使用時のコストをゼロにする
+                                </li>
+                                <li>StatefulSet 削除は必ず順番に行いデータ損失を防ぐ</li>
+                                <li>
+                                    Autopilot では全コンテナに
+                                    <code>resources.requests</code> を必ず設定する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools"
+                                target="_blank"
+                                >https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools</a
+                            >
+                            <a
+                                href="https://cloud.google.com/artifact-registry/docs/integrate-gke"
+                                target="_blank"
+                                >https://cloud.google.com/artifact-registry/docs/integrate-gke</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s31-autoscale">
+                        <div class="card-title">
+                            📈 Pod オートスケーリング（HPA / VPA）
+                            <span class="topic-tag">3.1</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>比較項目</th>
+                                        <th>HPA（Horizontal）</th>
+                                        <th>VPA（Vertical）</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>スケール方向</strong></td>
+                                        <td>Pod 数を増減</td>
+                                        <td>Pod の CPU/Memory を増減</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Pod 再起動</strong></td>
+                                        <td>なし</td>
+                                        <td>あり（updateMode: Auto の場合）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ユースケース</strong></td>
+                                        <td>ステートレスアプリのトラフィック対応</td>
+                                        <td>DB・バッチ処理のリソース最適化</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>GKE Autopilot</strong></td>
+                                        <td>自動管理</td>
+                                        <td>Pod Resource Request を管理</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash / yaml</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># HPA 作成（CPU 70% でスケール）</span>
+<span class="cmd">kubectl</span> autoscale deployment MY_DEPLOY \
+  <span class="flag">--cpu-percent</span>=<span class="val">70</span> \
+  <span class="flag">--min</span>=<span class="val">2</span> \
+  <span class="flag">--max</span>=<span class="val">20</span>
+
+<span class="comment"># HPA マニフェスト（CPU + Memory）</span>
+<span class="key">apiVersion</span>: autoscaling/v2
+<span class="key">kind</span>: HorizontalPodAutoscaler
+<span class="key">spec</span>:
+  <span class="key">minReplicas</span>: <span class="val">2</span>
+  <span class="key">maxReplicas</span>: <span class="val">20</span>
+  <span class="key">metrics</span>:
+  - <span class="key">type</span>: Resource
+    <span class="key">resource</span>:
+      <span class="key">name</span>: cpu
+      <span class="key">target</span>:
+        <span class="key">type</span>: Utilization
+        <span class="key">averageUtilization</span>: <span class="val">70</span>
+
+<span class="comment"># VPA マニフェスト（updateMode: Initial 推奨）</span>
+<span class="key">apiVersion</span>: autoscaling.k8s.io/v1
+<span class="key">kind</span>: VerticalPodAutoscaler
+<span class="key">spec</span>:
+  <span class="key">updatePolicy</span>:
+    <span class="key">updateMode</span>: <span class="val">"Initial"</span>  <span class="comment"># 本番では Auto を避ける</span></pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — オートスケーリング</div>
+                            <ul>
+                                <li>
+                                    <code>minReplicas</code> は
+                                    <strong>2 以上</strong>に設定して単一障害点を排除する
+                                </li>
+                                <li>
+                                    VPA の <code>updateMode: Auto</code> は Pod
+                                    再起動を伴うため本番では <code>Initial</code> か
+                                    <code>Off</code> 推奨
+                                </li>
+                                <li>
+                                    HPA と
+                                    <strong>Cluster Autoscaler</strong>
+                                    を組み合わせてノード数も自動調整する
+                                </li>
+                                <li>
+                                    Autopilot では全コンテナに
+                                    <code>resources.requests</code> を必ず設定する（過剰課金防止）
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/kubernetes-engine/docs/concepts/horizontalpodautoscaler"
+                                target="_blank"
+                                >https://cloud.google.com/kubernetes-engine/docs/concepts/horizontalpodautoscaler</a
+                            >
+                            <a
+                                href="https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler"
+                                target="_blank"
+                                >https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s31-cloudrun">
+                        <div class="card-title">
+                            🚀 Cloud Run の運用管理 <span class="topic-tag">3.1</span>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">
+                                カナリアデプロイとトラフィック分割フロー
+                            </div>
+                            <div class="mermaid" id="diag-5"></div>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>パラメータ</th>
+                                        <th>説明</th>
+                                        <th>推奨値</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>--min-instances</strong></td>
+                                        <td>アイドル時も維持するインスタンス数</td>
+                                        <td>レイテンシ重視: 1以上、コスト重視: 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>--max-instances</strong></td>
+                                        <td>スケールアップの上限</td>
+                                        <td>DB コネクション数・外部 API 制限を考慮</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>--concurrency</strong></td>
+                                        <td>1 インスタンスあたりの同時リクエスト数</td>
+                                        <td>CPU バウンド: 1、I/O バウンド: 80〜1000</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>--timeout</strong></td>
+                                        <td>リクエストタイムアウト（秒）</td>
+                                        <td>最大 3600 秒</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># トラフィックを向けずに新バージョンをデプロイ</span>
+<span class="cmd">gcloud</span> run deploy SERVICE_NAME \
+  <span class="flag">--image</span>=IMAGE_URL \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--no-traffic</span>
+
+<span class="comment"># カナリアデプロイ（10% だけ新バージョンへ）</span>
+<span class="cmd">gcloud</span> run services update-traffic SERVICE_NAME \
+  <span class="flag">--to-revisions</span>=<span class="val">revision-00002=10,revision-00001=90</span> \
+  <span class="flag">--region</span>=REGION
+
+<span class="comment"># 最新リビジョンに 100% 切り替え</span>
+<span class="cmd">gcloud</span> run services update-traffic SERVICE_NAME \
+  <span class="flag">--to-latest</span> <span class="flag">--region</span>=REGION
+
+<span class="comment"># ロールバック</span>
+<span class="cmd">gcloud</span> run services update-traffic SERVICE_NAME \
+  <span class="flag">--to-revisions</span>=<span class="val">revision-00001=100</span> <span class="flag">--region</span>=REGION
+
+<span class="comment"># オートスケーリング設定</span>
+<span class="cmd">gcloud</span> run services update SERVICE_NAME \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--min-instances</span>=<span class="val">1</span> \
+  <span class="flag">--max-instances</span>=<span class="val">100</span> \
+  <span class="flag">--concurrency</span>=<span class="val">80</span></pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — Cloud Run</div>
+                            <ul>
+                                <li>
+                                    本番リリース前は <code>--no-traffic</code> でデプロイし<strong
+                                        >段階的にトラフィックを切り替える</strong
+                                    >
+                                </li>
+                                <li>
+                                    レイテンシが重要なサービスは
+                                    <code>--min-instances=1</code> 以上で<strong
+                                        >コールドスタートを防ぐ</strong
+                                    >
+                                </li>
+                                <li>
+                                    <code>--max-instances</code>
+                                    はバックエンドの制約（DBコネクション数）に合わせて必ず設定する
+                                </li>
+                                <li>
+                                    Cloud Run Functions も同じトラフィック分割コマンドで管理可能
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration"
+                                target="_blank"
+                                >https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration</a
+                            >
+                            <a
+                                href="https://cloud.google.com/run/docs/configuring/autoscaling"
+                                target="_blank"
+                                >https://cloud.google.com/run/docs/configuring/autoscaling</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s31-gpu">
+                        <div class="card-title">
+                            ⚡ GPU / TPU アタッチメント <span class="topic-tag">3.1</span>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># GPU 付き VM の作成（maintenance-policy=TERMINATE が必須）</span>
+<span class="cmd">gcloud</span> compute instances create GPU_VM \
+  <span class="flag">--zone</span>=us-central1-a \
+  <span class="flag">--machine-type</span>=<span class="val">n1-standard-4</span> \
+  <span class="flag">--accelerator</span>=<span class="val">"type=nvidia-tesla-t4,count=1"</span> \
+  <span class="flag">--maintenance-policy</span>=<span class="val">TERMINATE</span> \
+  <span class="flag">--metadata</span>=<span class="val">"install-nvidia-driver=True"</span>
+
+<span class="comment"># Spot VM でコストを最大 90% 削減（学習ジョブ向け）</span>
+<span class="cmd">gcloud</span> compute instances create SPOT_GPU_VM \
+  <span class="flag">--provisioning-model</span>=<span class="val">SPOT</span> \
+  <span class="flag">--accelerator</span>=<span class="val">"type=nvidia-tesla-t4,count=1"</span> \
+  <span class="flag">--maintenance-policy</span>=<span class="val">TERMINATE</span>
+
+<span class="comment"># Cloud TPU VM の作成</span>
+<span class="cmd">gcloud</span> compute tpus tpu-vm create TPU_NAME \
+  <span class="flag">--zone</span>=ZONE \
+  <span class="flag">--accelerator-type</span>=<span class="val">v4-8</span> \
+  <span class="flag">--version</span>=<span class="val">tpu-vm-tf-2.12.0</span></pre>
+                        </div>
+                        <div class="warn">
+                            <div class="warn-title">⚠️ GPU VM の必須設定</div>
+                            <ul>
+                                <li>
+                                    <code>--maintenance-policy=TERMINATE</code>
+                                    が<strong>必須</strong>（ライブマイグレーション非対応）
+                                </li>
+                                <li>
+                                    GPU Driver
+                                    は起動スクリプト（<code>install-nvidia-driver=True</code>）で自動インストールを推奨
+                                </li>
+                                <li>
+                                    学習ジョブには
+                                    <code>--provisioning-model=SPOT</code> でコストを最大 90%
+                                    削減できる
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a href="https://cloud.google.com/compute/docs/gpus" target="_blank"
+                                >https://cloud.google.com/compute/docs/gpus</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 3.2 ===== -->
+                <div class="section-gap">
+                    <div class="sec-header sh-green">
+                        <div class="sec-icon si-green">💾</div>
+                        <div class="sec-header-body">
+                            <h2>3.2 ストレージとデータソリューションの管理</h2>
+                            <p>Cloud Storage・データベース操作・バックアップ・CMEK の運用管理</p>
+                        </div>
+                        <div class="weight-badge wb-green">重要 ★★★</div>
+                    </div>
+
+                    <div class="card" id="s32-gcs">
+                        <div class="card-title">
+                            🪣 Cloud Storage の操作とセキュリティ <span class="topic-tag">3.2</span>
+                        </div>
+                        <div class="split2">
+                            <div class="sbox">
+                                <div class="sbox-t" style="color: var(--green)">
+                                    ✅ Uniform Bucket-Level Access（推奨）
+                                </div>
+                                <ul>
+                                    <li>バケット全体に IAM ポリシーを適用</li>
+                                    <li>オブジェクト個別の ACL を無効化</li>
+                                    <li>権限管理が一元化されシンプル</li>
+                                    <li>GDPR・コンプライアンス対応に有効</li>
+                                </ul>
+                            </div>
+                            <div class="sbox">
+                                <div class="sbox-t" style="color: var(--red)">
+                                    ❌ Fine-grained ACL（非推奨・レガシー）
+                                </div>
+                                <ul>
+                                    <li>オブジェクト個別に ACL を設定可能</li>
+                                    <li>管理が複雑で権限棚卸しが困難</li>
+                                    <li>設定ミスによる意図しない公開リスク</li>
+                                    <li>新規プロジェクトでは使用しない</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>データ保護機能</th>
+                                        <th>説明</th>
+                                        <th>主な用途</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>バージョニング</strong></td>
+                                        <td>過去バージョンを保持</td>
+                                        <td>誤削除・誤上書きからの復旧</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>オブジェクトロック（WORM）</strong></td>
+                                        <td>一定期間の削除・変更を防止</td>
+                                        <td>規制対応・コンプライアンス</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>保持ポリシー</strong></td>
+                                        <td>バケット全体の最小保持期間を設定</td>
+                                        <td>コンプライアンス・監査</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ソフトデリート</strong></td>
+                                        <td>削除オブジェクトを 7〜90 日間復元可能</td>
+                                        <td>誤削除からの素早い復旧</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># Uniform Bucket-Level Access 有効化（推奨）</span>
+<span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \
+  <span class="flag">--uniform-bucket-level-access</span>
+
+<span class="comment"># 公開アクセス防止（誤公開防止）</span>
+<span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \
+  <span class="flag">--public-access-prevention</span>
+
+<span class="comment"># バージョニング有効化</span>
+<span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME <span class="flag">--versioning</span>
+
+<span class="comment"># 保持ポリシー（30 日間削除禁止）</span>
+<span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \
+  <span class="flag">--retention-period</span>=<span class="val">30d</span>
+
+<span class="comment"># ソフトデリート（30 日間復元可能）</span>
+<span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \
+  <span class="flag">--soft-delete-duration</span>=<span class="val">30d</span></pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — Cloud Storage</div>
+                            <ul>
+                                <li>
+                                    すべてのバケットで
+                                    <strong>Uniform Bucket-Level Access</strong> を有効化する
+                                </li>
+                                <li>
+                                    <strong>Public Access Prevention</strong>
+                                    を組織ポリシーで強制して誤公開を防ぐ
+                                </li>
+                                <li>
+                                    機密データには<strong>保持ポリシー</strong>と<strong>オブジェクトロック</strong>を設定する
+                                </li>
+                                <li>
+                                    バケット名は
+                                    <code>PROJECT_ID-bucket-name</code>
+                                    のような命名規則でグローバル一意性を確保する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/storage/docs/uniform-bucket-level-access"
+                                target="_blank"
+                                >https://cloud.google.com/storage/docs/uniform-bucket-level-access</a
+                            >
+                            <a
+                                href="https://cloud.google.com/storage/docs/access-control"
+                                target="_blank"
+                                >https://cloud.google.com/storage/docs/access-control</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s32-lifecycle">
+                        <div class="card-title">
+                            🔄 ライフサイクル管理ポリシー <span class="topic-tag">3.2</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ストレージクラス</th>
+                                        <th>最小保存期間</th>
+                                        <th>用途目安</th>
+                                        <th>GB/月コスト</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Standard</strong></td>
+                                        <td>なし</td>
+                                        <td>頻繁アクセス・Web 配信</td>
+                                        <td>$0.020</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Nearline</strong></td>
+                                        <td>30 日</td>
+                                        <td>月 1 回程度（バックアップ）</td>
+                                        <td>$0.010</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Coldline</strong></td>
+                                        <td>90 日</td>
+                                        <td>四半期 1 回（アーカイブ）</td>
+                                        <td>$0.004</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Archive</strong></td>
+                                        <td>365 日</td>
+                                        <td>年 1 回未満（法的保管）</td>
+                                        <td>$0.0012</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">json — lifecycle.json</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre class="code-content">{
+  <span class="key">"lifecycle"</span>: {
+    <span class="key">"rule"</span>: [
+      {
+        <span class="key">"action"</span>: { <span class="key">"type"</span>: <span class="val">"SetStorageClass"</span>, <span class="key">"storageClass"</span>: <span class="val">"NEARLINE"</span> },
+        <span class="key">"condition"</span>: { <span class="key">"age"</span>: <span class="val">30</span>, <span class="key">"matchesStorageClass"</span>: [<span class="val">"STANDARD"</span>] }
+      },
+      {
+        <span class="key">"action"</span>: { <span class="key">"type"</span>: <span class="val">"SetStorageClass"</span>, <span class="key">"storageClass"</span>: <span class="val">"COLDLINE"</span> },
+        <span class="key">"condition"</span>: { <span class="key">"age"</span>: <span class="val">90</span> }
+      },
+      {
+        <span class="key">"action"</span>: { <span class="key">"type"</span>: <span class="val">"Delete"</span> },
+        <span class="key">"condition"</span>: { <span class="key">"age"</span>: <span class="val">365</span> }
+      },
+      {
+        <span class="key">"action"</span>: { <span class="key">"type"</span>: <span class="val">"Delete"</span> },
+        <span class="key">"condition"</span>: { <span class="key">"numNewerVersions"</span>: <span class="val">3</span>, <span class="key">"isLive"</span>: <span class="val">false</span> }
+      }
+    ]
+  }
+}
+
+<span class="comment"># ポリシー適用</span>
+<span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \
+  <span class="flag">--lifecycle-file</span>=lifecycle.json</pre>
+                        </div>
+                        <div class="warn">
+                            <div class="warn-title">⚠️ age 条件の注意点</div>
+                            <p>
+                                <code>age</code>
+                                条件はオブジェクトの<strong>作成日からの日数</strong>です（最終アクセス日ではありません）。バージョニング有効時は
+                                <code>numNewerVersions</code>
+                                で古いバージョンを定期削除してコストを管理してください。
+                            </p>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/storage/docs/lifecycle"
+                                target="_blank"
+                                >https://cloud.google.com/storage/docs/lifecycle</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s32-query">
+                        <div class="card-title">
+                            🔍 データベースクエリと操作 <span class="topic-tag">3.2</span>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">BigQuery クエリコスト管理フロー</div>
+                            <div class="mermaid" id="diag-6"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># BigQuery ドライランでコスト試算（必須手順）</span>
+<span class="cmd">bq</span> query <span class="flag">--use_legacy_sql</span>=false <span class="flag">--dry_run</span> \
+  <span class="val">'SELECT col1, col2 FROM `project.dataset.table`
+   WHERE DATE(_PARTITIONTIME)="2025-01-01"'</span>
+
+<span class="comment"># Cloud SQL Auth Proxy 経由で接続（推奨）</span>
+./cloud-sql-proxy PROJECT_ID:REGION:INSTANCE <span class="flag">--port</span>=<span class="val">5432</span> &
+psql <span class="val">"host=127.0.0.1 port=5432 dbname=DB user=USER"</span>
+
+<span class="comment"># Cloud Spanner クエリ</span>
+<span class="cmd">gcloud</span> spanner databases execute-sql DB_NAME \
+  <span class="flag">--instance</span>=INSTANCE \
+  <span class="flag">--sql</span>=<span class="val">"SELECT * FROM Users WHERE UserId = 1"</span>
+
+<span class="comment"># Firestore データベース一覧</span>
+<span class="cmd">gcloud</span> firestore databases list</pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — DB クエリ</div>
+                            <ul>
+                                <li>
+                                    BigQuery では
+                                    <code>--dry_run</code>
+                                    で<strong>事前にコストを確認</strong>してから本番実行する（$5/TB）
+                                </li>
+                                <li>
+                                    Cloud SQL へは
+                                    <strong>Cloud SQL Auth Proxy</strong>
+                                    経由で接続し直接インターネット接続を避ける
+                                </li>
+                                <li>
+                                    BigQuery
+                                    高コストクエリには<strong>パーティション化とクラスタリング</strong>を適用する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/bigquery/docs/best-practices-performance-compute"
+                                target="_blank"
+                                >https://cloud.google.com/bigquery/docs/best-practices-performance-compute</a
+                            >
+                            <a
+                                href="https://cloud.google.com/sql/docs/mysql/connect-auth-proxy"
+                                target="_blank"
+                                >https://cloud.google.com/sql/docs/mysql/connect-auth-proxy</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s32-backup">
+                        <div class="card-title">
+                            🔒 バックアップとリストア <span class="topic-tag">3.2</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>サービス</th>
+                                        <th>バックアップ種別</th>
+                                        <th>主なコマンド</th>
+                                        <th>PITR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Cloud SQL</strong></td>
+                                        <td>自動・オンデマンド・PITR（7日間）</td>
+                                        <td><code>gcloud sql backups create</code></td>
+                                        <td>✅ 秒単位</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>AlloyDB</strong></td>
+                                        <td>自動・オンデマンド・PITR</td>
+                                        <td><code>gcloud alloydb backups create</code></td>
+                                        <td>✅ 秒単位</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Spanner</strong></td>
+                                        <td>フルバックアップ・PITR（7日間）</td>
+                                        <td><code>gcloud spanner backups create</code></td>
+                                        <td>✅ 秒単位</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Firestore</strong></td>
+                                        <td>Managed Export（Cloud Storage）</td>
+                                        <td><code>gcloud firestore export</code></td>
+                                        <td>❌ エクスポート時点</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Bigtable</strong></td>
+                                        <td>マネージドバックアップ・GCS エクスポート</td>
+                                        <td><code>gcloud bigtable backups create</code></td>
+                                        <td>❌ バックアップ時点</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># Cloud SQL バックアップ作成</span>
+<span class="cmd">gcloud</span> sql backups create <span class="flag">--instance</span>=INSTANCE_NAME
+
+<span class="comment"># Cloud SQL PITR（特定時点への復元）</span>
+<span class="cmd">gcloud</span> sql instances restore-backup TARGET_INSTANCE \
+  <span class="flag">--restore-instance</span>=SOURCE_INSTANCE \
+  <span class="flag">--backup-time</span>=<span class="val">"2025-01-15T10:00:00Z"</span>
+
+<span class="comment"># Spanner バックアップ作成</span>
+<span class="cmd">gcloud</span> spanner backups create BACKUP_NAME \
+  <span class="flag">--instance</span>=INSTANCE <span class="flag">--database</span>=DB \
+  <span class="flag">--expiration-date</span>=<span class="val">"2025-12-31T00:00:00Z"</span>
+
+<span class="comment"># Firestore エクスポート</span>
+<span class="cmd">gcloud</span> firestore export gs://BACKUP_BUCKET/backup \
+  <span class="flag">--collection-ids</span>=COLLECTION1,COLLECTION2
+
+<span class="comment"># Firestore インポート</span>
+<span class="cmd">gcloud</span> firestore import gs://BACKUP_BUCKET/backup</pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — バックアップ</div>
+                            <ul>
+                                <li>
+                                    Cloud SQL は <strong>PITR</strong> を有効化して最大 7
+                                    日間の任意時点に復元できるようにする
+                                </li>
+                                <li>
+                                    Firestore エクスポートは
+                                    <strong>Cloud Scheduler + Cloud Run</strong> で定期自動化する
+                                </li>
+                                <li>
+                                    バックアップは<strong>本番とは別リージョン</strong>に保存してリージョン障害に備える
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/sql/docs/mysql/backup-recovery/pitr"
+                                target="_blank"
+                                >https://cloud.google.com/sql/docs/mysql/backup-recovery/pitr</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s32-cmek">
+                        <div class="card-title">
+                            🔑 Database Center と CMEK <span class="topic-tag">3.2</span>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">Database Center — フリート管理の全体像</div>
+                            <div class="mermaid" id="diag-7"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash — CMEK 設定</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># KMS キーリングとキーの作成</span>
+<span class="cmd">gcloud</span> kms keyrings create KEY_RING <span class="flag">--location</span>=REGION
+<span class="cmd">gcloud</span> kms keys create KEY_NAME \
+  <span class="flag">--keyring</span>=KEY_RING <span class="flag">--location</span>=REGION \
+  <span class="flag">--purpose</span>=encryption
+
+<span class="comment"># Cloud SQL で CMEK を使用してインスタンス作成</span>
+<span class="cmd">gcloud</span> sql instances create INSTANCE_NAME \
+  <span class="flag">--database-version</span>=<span class="val">POSTGRES_15</span> \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--disk-encryption-key</span>=<span class="val">projects/PROJECT/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME</span>
+
+<span class="comment"># Cloud Storage バケットで CMEK を設定</span>
+<span class="cmd">gcloud</span> storage buckets create gs://BUCKET_NAME \
+  <span class="flag">--location</span>=REGION \
+  <span class="flag">--default-encryption-key</span>=<span class="val">projects/PROJECT/locations/REGION/keyRings/RING/cryptoKeys/KEY</span></pre>
+                        </div>
+                        <div class="warn">
+                            <div class="warn-title">⚠️ CMEK の重要注意事項</div>
+                            <p>
+                                CMEK を使う場合、<strong
+                                    >KMS キーへのアクセスを失うとデータも失います</strong
+                                >。キーのバックアップと復旧手順を事前に整備し、キーローテーションポリシーを設定してください。
+                            </p>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a href="https://cloud.google.com/kms/docs/cmek" target="_blank"
+                                >https://cloud.google.com/kms/docs/cmek</a
+                            >
+                            <a href="https://cloud.google.com/database-center" target="_blank"
+                                >https://cloud.google.com/database-center</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 3.3 ===== -->
+                <div class="section-gap">
+                    <div class="sec-header sh-amber">
+                        <div class="sec-icon si-amber">🌐</div>
+                        <div class="sec-header-body">
+                            <h2>3.3 ネットワークリソースの管理</h2>
+                            <p>
+                                サブネット・IP アドレス・Cloud DNS・Cloud NAT・VPC
+                                ファイアウォール・Cloud NGFW の運用
+                            </p>
+                        </div>
+                        <div class="weight-badge wb-amber">重要 ★★★</div>
+                    </div>
+
+                    <div class="card" id="s33-subnet">
+                        <div class="card-title">
+                            📡 サブネット・IP アドレス管理 <span class="topic-tag">3.3</span>
+                        </div>
+                        <div class="info">
+                            <div class="info-title">📌 試験頻出の落とし穴</div>
+                            VPC
+                            サブネットは<strong>拡張（広げる）のみ可能</strong>です。縮小はできません。<code
+                                >--prefix-length</code
+                            >
+                            に現在より小さい値（より広い範囲）を指定します。
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># サブネットの IP 範囲を拡張（/24 → /22）</span>
+<span class="cmd">gcloud</span> compute networks subnets expand-ip-range SUBNET_NAME \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--prefix-length</span>=<span class="val">22</span>
+
+<span class="comment"># 静的内部 IP の予約</span>
+<span class="cmd">gcloud</span> compute addresses create INTERNAL_IP \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--subnet</span>=SUBNET_NAME \
+  <span class="flag">--addresses</span>=<span class="val">10.0.0.100</span>
+
+<span class="comment"># 静的外部 IP の予約（リージョナル）</span>
+<span class="cmd">gcloud</span> compute addresses create EXTERNAL_IP \
+  <span class="flag">--region</span>=REGION
+
+<span class="comment"># 静的外部 IP の予約（グローバル LB 用）</span>
+<span class="cmd">gcloud</span> compute addresses create GLOBAL_IP <span class="flag">--global</span>
+
+<span class="comment"># 予約済み IP 一覧</span>
+<span class="cmd">gcloud</span> compute addresses list
+
+<span class="comment"># 未使用 IP の解放（課金停止）</span>
+<span class="cmd">gcloud</span> compute addresses delete IP_NAME <span class="flag">--region</span>=REGION
+
+<span class="comment"># カスタム静的ルートの追加</span>
+<span class="cmd">gcloud</span> compute routes create ROUTE_NAME \
+  <span class="flag">--network</span>=VPC_NAME \
+  <span class="flag">--destination-range</span>=<span class="val">10.20.0.0/16</span> \
+  <span class="flag">--next-hop-vpn-tunnel</span>=VPN_TUNNEL \
+  <span class="flag">--next-hop-vpn-tunnel-region</span>=REGION \
+  <span class="flag">--priority</span>=<span class="val">1000</span></pre>
+                        </div>
+                        <div class="warn">
+                            <div class="warn-title">⚠️ 静的 IP の課金</div>
+                            <p>
+                                予約された静的 IP は VM
+                                に割り当てられていなくても<strong>課金されます</strong>。不要な予約
+                                IP は速やかに解放してください。
+                            </p>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a href="https://cloud.google.com/vpc/docs/subnets" target="_blank"
+                                >https://cloud.google.com/vpc/docs/subnets</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s33-dns-nat">
+                        <div class="card-title">
+                            🔀 Cloud DNS と Cloud NAT <span class="topic-tag">3.3</span>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">
+                                Cloud NAT — 外部 IP なし VM のアウトバウンド接続
+                            </div>
+                            <div class="mermaid" id="diag-8"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># プライベート DNS ゾーンの作成（VPC 内部用）</span>
+<span class="cmd">gcloud</span> dns managed-zones create PRIVATE_ZONE \
+  <span class="flag">--dns-name</span>=<span class="val">"internal.example.com."</span> \
+  <span class="flag">--visibility</span>=private \
+  <span class="flag">--networks</span>=VPC_NAME
+
+<span class="comment"># DNS A レコードの追加</span>
+<span class="cmd">gcloud</span> dns record-sets create www.example.com. \
+  <span class="flag">--zone</span>=ZONE_NAME <span class="flag">--type</span>=A \
+  <span class="flag">--ttl</span>=<span class="val">300</span> <span class="flag">--rrdatas</span>=<span class="val">34.100.0.1</span>
+
+<span class="comment"># Cloud Router の作成（Cloud NAT の前提条件）</span>
+<span class="cmd">gcloud</span> compute routers create ROUTER_NAME \
+  <span class="flag">--region</span>=REGION <span class="flag">--network</span>=VPC_NAME
+
+<span class="comment"># Cloud NAT の作成</span>
+<span class="cmd">gcloud</span> compute routers nats create NAT_NAME \
+  <span class="flag">--router</span>=ROUTER_NAME \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--auto-allocate-nat-external-ips</span> \
+  <span class="flag">--nat-all-subnet-ip-ranges</span> \
+  <span class="flag">--enable-logging</span>
+
+<span class="comment"># DNS レコード一覧</span>
+<span class="cmd">gcloud</span> dns record-sets list <span class="flag">--zone</span>=ZONE_NAME</pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — DNS / NAT</div>
+                            <ul>
+                                <li>
+                                    本番 VM には外部 IP を割り当てず
+                                    <strong>Cloud NAT + IAP</strong>
+                                    の組み合わせでセキュアに管理する
+                                </li>
+                                <li>プライベート DNS ゾーンで VPC 内のサービス名解決を設定する</li>
+                                <li>
+                                    Cloud NAT
+                                    のログを有効化（<code>--enable-logging</code>）して通信の監査証跡を残す
+                                </li>
+                                <li>
+                                    Cloud NAT は Cloud Router が必須 — 先に Cloud Router を作成する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a href="https://cloud.google.com/nat/docs/overview" target="_blank"
+                                >https://cloud.google.com/nat/docs/overview</a
+                            >
+                            <a href="https://cloud.google.com/dns/docs" target="_blank"
+                                >https://cloud.google.com/dns/docs</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s33-fw">
+                        <div class="card-title">
+                            🛡️ VPC ファイアウォールと Cloud NGFW <span class="topic-tag">3.3</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>比較項目</th>
+                                        <th>VPC ファイアウォールルール</th>
+                                        <th>Cloud NGFW ポリシー</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>適用スコープ</strong></td>
+                                        <td>プロジェクト内 VPC</td>
+                                        <td>組織・フォルダ・プロジェクト</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>L7 フィルタリング</strong></td>
+                                        <td>不可</td>
+                                        <td>可能（FQDN・TLS inspection）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>集中管理</strong></td>
+                                        <td>個別 VPC</td>
+                                        <td>階層型ポリシーで一元管理</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>脅威防御</strong></td>
+                                        <td>なし</td>
+                                        <td>侵入防御（IPS）対応</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>推奨場面</strong></td>
+                                        <td>単一プロジェクトの簡易制御</td>
+                                        <td>複数プロジェクト・組織全体の統一管理</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># SSH を特定 IP からのみ許可（タグベース）</span>
+<span class="cmd">gcloud</span> compute firewall-rules create allow-ssh-corp \
+  <span class="flag">--network</span>=VPC_NAME \
+  <span class="flag">--action</span>=ALLOW \
+  <span class="flag">--direction</span>=INGRESS \
+  <span class="flag">--rules</span>=<span class="val">tcp:22</span> \
+  <span class="flag">--source-ranges</span>=<span class="val">203.0.113.0/24</span> \
+  <span class="flag">--target-tags</span>=<span class="val">ssh-allowed</span> \
+  <span class="flag">--priority</span>=<span class="val">1000</span>
+
+<span class="comment"># Egress ルール（送信トラフィック制御）</span>
+<span class="cmd">gcloud</span> compute firewall-rules create deny-egress \
+  <span class="flag">--network</span>=VPC_NAME \
+  <span class="flag">--action</span>=DENY \
+  <span class="flag">--direction</span>=EGRESS \
+  <span class="flag">--rules</span>=all \
+  <span class="flag">--destination-ranges</span>=<span class="val">10.99.0.0/16</span>
+
+<span class="comment"># ルールの一時無効化（削除せず）</span>
+<span class="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span class="flag">--disabled</span>
+
+<span class="comment"># ファイアウォールログの有効化</span>
+<span class="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span class="flag">--enable-logging</span>
+
+<span class="comment"># Cloud NGFW ポリシーの作成</span>
+<span class="cmd">gcloud</span> compute network-firewall-policies create POLICY_NAME <span class="flag">--global</span>
+
+<span class="comment"># NGFW ポリシーを VPC に関連付け</span>
+<span class="cmd">gcloud</span> compute network-firewall-policies associations create \
+  <span class="flag">--firewall-policy</span>=POLICY_NAME \
+  <span class="flag">--network</span>=VPC_NAME \
+  <span class="flag">--global-firewall-policy</span></pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — ファイアウォール</div>
+                            <ul>
+                                <li>
+                                    <strong>Allowlist 方式</strong>:
+                                    デフォルトで全て拒否し、必要なトラフィックのみ許可する
+                                </li>
+                                <li>
+                                    <code>0.0.0.0/0</code> からの SSH/RDP
+                                    を許可するルールは絶対に作成しない。必ず
+                                    <strong>IAP 経由</strong>にする
+                                </li>
+                                <li>
+                                    複数プロジェクト共通のポリシーは
+                                    <strong>Cloud NGFW 階層型ポリシー</strong>で一元管理する
+                                </li>
+                                <li>
+                                    ファイアウォールルールには必ず
+                                    <strong>description を記載</strong
+                                    >してレビュー可能な状態を維持する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/firewall/docs/firewalls"
+                                target="_blank"
+                                >https://cloud.google.com/firewall/docs/firewalls</a
+                            >
+                            <a
+                                href="https://cloud.google.com/firewall/docs/network-firewall-policies"
+                                target="_blank"
+                                >https://cloud.google.com/firewall/docs/network-firewall-policies</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 3.4 ===== -->
+                <div class="section-gap">
+                    <div class="sec-header sh-red">
+                        <div class="sec-icon si-red">📊</div>
+                        <div class="sec-header-body">
+                            <h2>3.4 モニタリングとロギング</h2>
+                            <p>
+                                Cloud Monitoring・Cloud Logging・診断ツール・Ops Agent・AI
+                                支援ツールの活用
+                            </p>
+                        </div>
+                        <div class="weight-badge wb-red">最重要 ★★★★</div>
+                    </div>
+
+                    <div class="card" id="s34-alert">
+                        <div class="card-title">
+                            🔔 Cloud Monitoring アラートポリシー <span class="topic-tag">3.4</span>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">アラートポリシーの処理フロー</div>
+                            <div class="mermaid" id="diag-9"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">yaml — アラートポリシー</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="key">displayName</span>: <span class="val">"High CPU Usage Alert"</span>
+<span class="key">conditions</span>:
+  - <span class="key">displayName</span>: <span class="val">"CPU utilization > 80% for 5min"</span>
+    <span class="key">conditionThreshold</span>:
+      <span class="key">filter</span>: >
+        resource.type = <span class="val">"gce_instance"</span> AND
+        metric.type = <span class="val">"compute.googleapis.com/instance/cpu/utilization"</span>
+      <span class="key">comparison</span>: COMPARISON_GT
+      <span class="key">thresholdValue</span>: <span class="val">0.8</span>
+      <span class="key">duration</span>: <span class="val">"300s"</span>
+      <span class="key">aggregations</span>:
+        - <span class="key">alignmentPeriod</span>: <span class="val">"60s"</span>
+          <span class="key">perSeriesAligner</span>: ALIGN_MEAN
+<span class="key">combiner</span>: OR
+<span class="key">notificationChannels</span>:
+  - <span class="val">projects/PROJECT_ID/notificationChannels/CHANNEL_ID</span>
+<span class="key">documentation</span>:
+  <span class="key">content</span>: <span class="val">"CPU 使用率が 80% を超えました。\nRunbook: https://wiki.example.com/runbooks/cpu"</span>
+  <span class="key">mimeType</span>: <span class="val">"text/markdown"</span></pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — アラート設計</div>
+                            <ul>
+                                <li>
+                                    <strong>症状ベースのアラート</strong
+                                    >（エラー率・レイテンシ・可用性）を優先しノイズを削減する
+                                </li>
+                                <li>SLO ベースの<strong>バーンレートアラート</strong>を設定する</li>
+                                <li>
+                                    アラートには必ず <strong>Playbook / Runbook の URL</strong> を
+                                    documentation フィールドに含める
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a href="https://cloud.google.com/monitoring/alerts" target="_blank"
+                                >https://cloud.google.com/monitoring/alerts</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s34-logs">
+                        <div class="card-title">
+                            📋 ログ管理・監査ログ・エクスポート <span class="topic-tag">3.4</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ログ種別</th>
+                                        <th>記録内容</th>
+                                        <th>デフォルト</th>
+                                        <th>無効化</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Admin Activity</strong></td>
+                                        <td>リソース設定変更（VM 作成・IAM 変更）</td>
+                                        <td>常に有効</td>
+                                        <td>❌ 不可</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Data Access</strong></td>
+                                        <td>データの読み取り・書き込み</td>
+                                        <td>無効</td>
+                                        <td>✅ 可能</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>System Event</strong></td>
+                                        <td>Google システムの自動操作</td>
+                                        <td>常に有効</td>
+                                        <td>❌ 不可</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Policy Denied</strong></td>
+                                        <td>VPC Service Controls によるブロック</td>
+                                        <td>有効</td>
+                                        <td>✅ 可能</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mermaid-wrap">
+                            <div class="mermaid-title">ログルーター — ログ転送アーキテクチャ</div>
+                            <div class="mermaid" id="diag-10"></div>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># VPC Flow Logs の有効化（サブネット単位）</span>
+<span class="cmd">gcloud</span> compute networks subnets update SUBNET_NAME \
+  <span class="flag">--region</span>=REGION \
+  <span class="flag">--enable-flow-logs</span> \
+  <span class="flag">--logging-flow-sampling</span>=<span class="val">0.5</span>
+
+<span class="comment"># ファイアウォールログの有効化（ルール単位）</span>
+<span class="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span class="flag">--enable-logging</span>
+
+<span class="comment"># BigQuery へのログシンク作成</span>
+<span class="cmd">gcloud</span> logging sinks create bq-audit-sink \
+  bigquery.googleapis.com/projects/PROJECT/datasets/DATASET \
+  <span class="flag">--log-filter</span>=<span class="val">'logName="projects/PROJECT/logs/cloudaudit.googleapis.com%2Factivity"'</span>
+
+<span class="comment"># シンク SA に BigQuery 権限付与（必須！）</span>
+<span class="cmd">gcloud</span> projects add-iam-policy-binding PROJECT_ID \
+  <span class="flag">--member</span>=<span class="val">"serviceAccount:SINK_SA@gcp-sa-logging.iam.gserviceaccount.com"</span> \
+  <span class="flag">--role</span>=<span class="val">"roles/bigquery.dataEditor"</span>
+
+<span class="comment"># ログバケットの作成（1 年保持）</span>
+<span class="cmd">gcloud</span> logging buckets create BUCKET_NAME \
+  <span class="flag">--location</span>=REGION \
+  <span class="flag">--retention-days</span>=<span class="val">365</span>
+
+<span class="comment"># ログフィルタリング確認</span>
+<span class="cmd">gcloud</span> logging read <span class="val">'severity="ERROR" AND resource.type="gce_instance"'</span> \
+  <span class="flag">--limit</span>=<span class="val">50</span> <span class="flag">--freshness</span>=<span class="val">1h</span></pre>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>フィルタ</th>
+                                        <th>説明</th>
+                                        <th>例</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>severity</code></td>
+                                        <td>ログの重大度</td>
+                                        <td><code>severity="ERROR"</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>resource.type</code></td>
+                                        <td>リソースタイプ</td>
+                                        <td><code>resource.type="gce_instance"</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>logName</code></td>
+                                        <td>ログ名</td>
+                                        <td><code>logName=~"cloudaudit"</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>timestamp</code></td>
+                                        <td>時刻範囲</td>
+                                        <td><code>timestamp&gt;="2025-01-01T00:00:00Z"</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>textPayload</code></td>
+                                        <td>テキスト検索</td>
+                                        <td><code>textPayload:"OutOfMemory"</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>jsonPayload.key</code></td>
+                                        <td>JSON フィールド</td>
+                                        <td><code>jsonPayload.httpRequest.status=500</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — ログ管理</div>
+                            <ul>
+                                <li>
+                                    <strong>Admin Activity ログは常に有効</strong>で無効化不可 —
+                                    Data Access ログは機密データ向けのみ有効化してコスト制御する
+                                </li>
+                                <li>
+                                    ログシンク作成後は必ずシンクの SA
+                                    に<strong>宛先への権限付与</strong>を行う（よくある設定ミス）
+                                </li>
+                                <li>
+                                    BigQuery にエクスポートして
+                                    <strong>Log Analytics</strong>
+                                    で長期的な分析・コンプライアンスレポートに活用する
+                                </li>
+                                <li>
+                                    VPC Flow Logs
+                                    はサンプリング率（<code>--logging-flow-sampling</code>）でコストを最適化する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/logging/docs/export/configure_export_v2"
+                                target="_blank"
+                                >https://cloud.google.com/logging/docs/export/configure_export_v2</a
+                            >
+                            <a href="https://cloud.google.com/logging/docs/audit" target="_blank"
+                                >https://cloud.google.com/logging/docs/audit</a
+                            >
+                            <a href="https://cloud.google.com/vpc/docs/flow-logs" target="_blank"
+                                >https://cloud.google.com/vpc/docs/flow-logs</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s34-diag">
+                        <div class="card-title">
+                            🔬 診断ツール群（Trace / Profiler / Query Insights）
+                            <span class="topic-tag">3.4</span>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ツール</th>
+                                        <th>主な用途</th>
+                                        <th>試験で問われるシナリオ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Cloud Trace</strong></td>
+                                        <td>分散アプリのレイテンシ分析・ボトルネック特定</td>
+                                        <td>「API の応答が遅い原因を調査するには？」</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Cloud Profiler</strong></td>
+                                        <td>本番 CPU・メモリのホットスポット特定</td>
+                                        <td>「本番でメモリ使用量が高騰している原因は？」</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Query Insights</strong></td>
+                                        <td>Cloud SQL / AlloyDB スロークエリ分析</td>
+                                        <td>「Cloud SQL のクエリが遅い原因は？」</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Index Advisor</strong></td>
+                                        <td>追加すべきインデックスの自動提案</td>
+                                        <td>「DB パフォーマンスを改善するインデックスは？」</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Service Health Dashboard</strong></td>
+                                        <td>Google Cloud のインシデントと自プロジェクトへの影響</td>
+                                        <td>
+                                            「GCP
+                                            障害が自分のサービスに影響しているか確認するには？」
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a href="https://cloud.google.com/trace/docs" target="_blank"
+                                >https://cloud.google.com/trace/docs</a
+                            >
+                            <a href="https://cloud.google.com/profiler/docs" target="_blank"
+                                >https://cloud.google.com/profiler/docs</a
+                            >
+                            <a
+                                href="https://cloud.google.com/sql/docs/mysql/insights-overview"
+                                target="_blank"
+                                >https://cloud.google.com/sql/docs/mysql/insights-overview</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s34-ops">
+                        <div class="card-title">
+                            🤖 Ops Agent と Managed Prometheus <span class="topic-tag">3.4</span>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang">bash — Ops Agent インストール</span>
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># Ops Agent のインストール（Debian/Ubuntu）</span>
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+<span class="comment"># ステータス確認</span>
+sudo systemctl status google-cloud-ops-agent
+
+<span class="comment"># GKE で Managed Prometheus を有効化</span>
+<span class="cmd">gcloud</span> container clusters update CLUSTER_NAME \
+  <span class="flag">--zone</span>=ZONE \
+  <span class="flag">--enable-managed-prometheus</span></pre>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-lang"
+                                    >yaml — Ops Agent カスタムログ / Managed Prometheus
+                                    PodMonitoring</span
+                                >
+                                <div class="code-dots">
+                                    <span class="cd1"></span><span class="cd2"></span
+                                    ><span class="cd3"></span>
+                                </div>
+                            </div>
+                            <pre
+                                class="code-content"
+                            ><span class="comment"># /etc/google-cloud-ops-agent/config.yaml</span>
+<span class="key">logging</span>:
+  <span class="key">receivers</span>:
+    <span class="key">app_logs</span>:
+      <span class="key">type</span>: files
+      <span class="key">include_paths</span>: [<span class="val">/var/log/myapp/*.log</span>]
+  <span class="key">exporters</span>:
+    <span class="key">google</span>: { <span class="key">type</span>: google_cloud_logging }
+  <span class="key">service</span>:
+    <span class="key">pipelines</span>:
+      <span class="key">app_pipeline</span>:
+        <span class="key">receivers</span>: [app_logs]
+        <span class="key">exporters</span>: [google]
+
+<span class="comment">---</span>
+<span class="comment"># Managed Prometheus PodMonitoring</span>
+<span class="key">apiVersion</span>: monitoring.googleapis.com/v1
+<span class="key">kind</span>: PodMonitoring
+<span class="key">metadata</span>:
+  <span class="key">name</span>: my-app-monitoring
+<span class="key">spec</span>:
+  <span class="key">selector</span>:
+    <span class="key">matchLabels</span>: { <span class="key">app</span>: my-app }
+  <span class="key">endpoints</span>:
+  - <span class="key">port</span>: metrics
+    <span class="key">interval</span>: <span class="val">30s</span>
+    <span class="key">path</span>: <span class="val">/metrics</span></pre>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">
+                                ✅ ベストプラクティス — Ops Agent / Prometheus
+                            </div>
+                            <ul>
+                                <li>
+                                    全 Compute Engine VM に
+                                    <strong>Ops Agent</strong>
+                                    をデプロイしてシステムメトリクスとアプリログを収集する
+                                </li>
+                                <li>
+                                    GKE には
+                                    <strong>Managed Prometheus</strong>
+                                    を有効化してアプリメトリクスを標準化する
+                                </li>
+                                <li>
+                                    Ops Agent の設定変更後は
+                                    <code>sudo systemctl restart google-cloud-ops-agent</code>
+                                    で反映する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a
+                                href="https://cloud.google.com/stackdriver/docs/solutions/agents/ops-agent"
+                                target="_blank"
+                                >https://cloud.google.com/stackdriver/docs/solutions/agents/ops-agent</a
+                            >
+                            <a href="https://cloud.google.com/managed-prometheus" target="_blank"
+                                >https://cloud.google.com/managed-prometheus</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="card" id="s34-ai">
+                        <div class="card-title">
+                            ✨ AI 支援ツール群（Gemini / Active Assist / Cloud Hub）
+                            <span class="topic-tag">3.4</span>
+                        </div>
+                        <div class="fgrid">
+                            <div class="fitem">
+                                <div class="fitem-t">Gemini Cloud Assist for Monitoring</div>
+                                <div class="fitem-d">
+                                    メトリクスの異常分析・アラートの根本原因特定・対処方法を AI
+                                    が自然言語で提案。Cloud Console から「Ask
+                                    Gemini」ボタンで即時利用可能。
+                                </div>
+                            </div>
+                            <div class="fitem">
+                                <div class="fitem-t">Active Assist（Recommender）</div>
+                                <div class="fitem-d">
+                                    AI ベースのリソース最適化推奨エンジン。VM
+                                    Right-sizing・未使用リソース削除・IAM 権限最小化・FW
+                                    ルール最適化を自動提案。
+                                </div>
+                            </div>
+                            <div class="fitem">
+                                <div class="fitem-t">Cloud Hub</div>
+                                <div class="fitem-d">
+                                    アクティブなインシデントとアプリケーション健全性を一元表示。Personalized
+                                    Service Health で自分のリソースへの影響を優先表示。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tbl-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Active Assist 推奨種別</th>
+                                        <th>内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>VM Right-sizing</strong></td>
+                                        <td>過剰スペックの VM のダウンサイズ提案</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Idle Resource</strong></td>
+                                        <td>未使用リソース（停止中 VM・未割当 IP）の削除提案</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>IAM Recommender</strong></td>
+                                        <td>過剰な権限の最小化提案</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Firewall Insights</strong></td>
+                                        <td>未使用 FW ルールの削除提案</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>BigQuery Recommender</strong></td>
+                                        <td>未使用テーブル・高コストクエリの最適化提案</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bp">
+                            <div class="bp-title">✅ ベストプラクティス — AI 支援ツール</div>
+                            <ul>
+                                <li>
+                                    <strong>Active Assist の推奨</strong
+                                    >を月次で確認してリソースの無駄を継続的に排除する
+                                </li>
+                                <li>
+                                    Gemini Cloud Assist
+                                    はアラート調査・ログ分析・クエリ最適化に積極的に活用する
+                                </li>
+                                <li>
+                                    Cloud Hub
+                                    を<strong>インシデント対応のファーストビュー</strong>として設定する
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="src-box">
+                            <div class="src-title">📎 参照リソース</div>
+                            <a href="https://cloud.google.com/recommender/docs" target="_blank"
+                                >https://cloud.google.com/recommender/docs</a
+                            >
+                            <a href="https://cloud.google.com/cloud-hub" target="_blank"
+                                >https://cloud.google.com/cloud-hub</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHECKLIST -->
+                <div class="section-gap">
+                    <hr class="divider" />
+                    <div
+                        class="sec-header"
+                        style="
+                            border-color: rgba(139, 92, 246, 0.3);
+                            background: linear-gradient(
+                                135deg,
+                                var(--surface),
+                                rgba(139, 92, 246, 0.05)
+                            );
+                        "
+                    >
+                        <div
+                            class="sec-icon"
+                            style="
+                                background: rgba(139, 92, 246, 0.12);
+                                border: 1px solid rgba(139, 92, 246, 0.3);
+                            "
+                        >
+                            ✅
+                        </div>
+                        <div class="sec-header-body">
+                            <h2 id="checklist">試験直前チェックリスト</h2>
+                            <p>
+                                Section 3
+                                の頻出ポイントを最終確認。チェックを入れながら弱点を把握してください。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="checklist">
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>IAP トンネル SSH</strong
+                                ><span
+                                    >外部 IP なし VM への接続 — roles/iap.tunnelResourceAccessor
+                                    が必要</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>OS Login</strong
+                                ><span>SSH 鍵を IAM で一元管理 — roles/compute.osLogin を付与</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Snapshot Schedule Policy</strong
+                                ><span
+                                    >定期自動スナップショット — ディスクへのポリシー適用が必要</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Image Family</strong
+                                ><span
+                                    >--family で管理・describe-from-family で常に最新版を参照</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>StatefulSet</strong
+                                ><span
+                                    >DB を GKE で動かす最適なリソース — 固有 PV・順番付き起動</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>HPA vs VPA</strong
+                                ><span>HPA=Pod 数増減、VPA=CPU/Memory 増減（Pod 再起動あり）</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Cloud Run --no-traffic</strong
+                                ><span
+                                    >カナリアデプロイ —
+                                    デプロイ後に段階的にトラフィックを切り替え</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>GPU: --maintenance-policy=TERMINATE</strong
+                                ><span>GPU VM 必須設定 — ライブマイグレーション非対応</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Uniform Bucket-Level Access</strong
+                                ><span
+                                    >Cloud Storage の推奨アクセス制御 — オブジェクト ACL
+                                    を廃止</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>ライフサイクル age 条件</strong
+                                ><span>オブジェクト作成日からの日数（最終アクセス日ではない）</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>BigQuery --dry_run</strong
+                                ><span>クエリ実行前にコスト試算 — $5/TB</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Cloud SQL PITR</strong
+                                ><span>最大 7 日間の任意時点に復元 — --backup-time オプション</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>CMEK の注意</strong
+                                ><span
+                                    >KMS キーを失うとデータも失う — 復旧手順の事前整備が必須</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>サブネット拡張（縮小不可）</strong
+                                ><span>--prefix-length に現在より小さい値を指定 — 縮小は不可</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>静的 IP の課金</strong
+                                ><span>未割当の静的 IP は課金される — 不要なら速やかに解放</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Cloud NAT に Cloud Router が必要</strong
+                                ><span>先に Cloud Router を作成してから Cloud NAT を追加する</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Admin Activity ログは無効化不可</strong
+                                ><span>常に有効 — Data Access ログはデフォルト無効</span>
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>ログシンクの SA 権限付与</strong
+                                ><span
+                                    >シンク作成後に宛先への権限付与が必要（よくある設定ミス）</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Cloud Trace vs Cloud Profiler</strong
+                                ><span
+                                    >Trace=レイテンシ分析、Profiler=CPU/Memory
+                                    ホットスポット特定</span
+                                >
+                            </div>
+                        </div>
+                        <div class="check-item">
+                            <div class="check-box"></div>
+                            <div class="check-content">
+                                <strong>Active Assist</strong
+                                ><span>AI によるリソース最適化推奨 — 月次で確認してコスト削減</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REFS -->
+                <div class="section-gap" id="refs">
+                    <hr class="divider" />
+                    <div class="card" style="border-color: rgba(0, 200, 255, 0.3)">
+                        <div class="card-title">📎 公式参照リソース一覧</div>
+                        <div
+                            style="
+                                display: grid;
+                                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+                                gap: 12px;
+                                margin-top: 8px;
+                            "
+                        >
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">試験情報</div>
+                                <a
+                                    href="https://cloud.google.com/learn/certification/cloud-engineer"
+                                    target="_blank"
+                                    >試験概要ページ</a
+                                >
+                                <a
+                                    href="https://services.google.com/fh/files/misc/063026_associate_cloud_engineer_exam_guide_english.pdf"
+                                    target="_blank"
+                                    >試験ガイド PDF（063026）</a
+                                >
+                            </div>
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">Compute Engine</div>
+                                <a
+                                    href="https://cloud.google.com/compute/docs/connect/ssh-using-iap"
+                                    target="_blank"
+                                    >IAP 経由 SSH</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/compute/docs/oslogin"
+                                    target="_blank"
+                                    >OS Login</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/compute/docs/disks/create-snapshots"
+                                    target="_blank"
+                                    >スナップショット</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/compute/docs/images/create-custom"
+                                    target="_blank"
+                                    >カスタムイメージ</a
+                                >
+                                <a href="https://cloud.google.com/compute/docs/gpus" target="_blank"
+                                    >GPU アタッチメント</a
+                                >
+                            </div>
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">GKE</div>
+                                <a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools"
+                                    target="_blank"
+                                    >ノードプール管理</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/horizontalpodautoscaler"
+                                    target="_blank"
+                                    >HPA</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler"
+                                    target="_blank"
+                                    >VPA</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/artifact-registry/docs/integrate-gke"
+                                    target="_blank"
+                                    >Artifact Registry 統合</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity"
+                                    target="_blank"
+                                    >Workload Identity</a
+                                >
+                            </div>
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">Cloud Run</div>
+                                <a
+                                    href="https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration"
+                                    target="_blank"
+                                    >トラフィック分割・ロールバック</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/run/docs/configuring/autoscaling"
+                                    target="_blank"
+                                    >オートスケーリング設定</a
+                                >
+                            </div>
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">Cloud Storage</div>
+                                <a
+                                    href="https://cloud.google.com/storage/docs/uniform-bucket-level-access"
+                                    target="_blank"
+                                    >Uniform Bucket-Level Access</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/storage/docs/lifecycle"
+                                    target="_blank"
+                                    >ライフサイクル管理</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/storage/docs/storage-classes"
+                                    target="_blank"
+                                    >ストレージクラス</a
+                                >
+                            </div>
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">データベース</div>
+                                <a
+                                    href="https://cloud.google.com/sql/docs/mysql/backup-recovery/pitr"
+                                    target="_blank"
+                                    >Cloud SQL PITR</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/sql/docs/mysql/connect-auth-proxy"
+                                    target="_blank"
+                                    >Cloud SQL Auth Proxy</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/bigquery/docs/best-practices-performance-compute"
+                                    target="_blank"
+                                    >BigQuery クエリ最適化</a
+                                >
+                                <a href="https://cloud.google.com/kms/docs/cmek" target="_blank"
+                                    >CMEK</a
+                                >
+                                <a href="https://cloud.google.com/database-center" target="_blank"
+                                    >Database Center</a
+                                >
+                            </div>
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">ネットワーク</div>
+                                <a href="https://cloud.google.com/nat/docs/overview" target="_blank"
+                                    >Cloud NAT</a
+                                >
+                                <a href="https://cloud.google.com/dns/docs" target="_blank"
+                                    >Cloud DNS</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/firewall/docs/firewalls"
+                                    target="_blank"
+                                    >VPC ファイアウォール</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/firewall/docs/network-firewall-policies"
+                                    target="_blank"
+                                    >Cloud NGFW ポリシー</a
+                                >
+                            </div>
+                            <div class="src-box" style="margin: 0">
+                                <div class="src-title">モニタリング・ロギング</div>
+                                <a href="https://cloud.google.com/monitoring/alerts" target="_blank"
+                                    >Cloud Monitoring アラート</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/logging/docs/export/configure_export_v2"
+                                    target="_blank"
+                                    >ログエクスポート</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/logging/docs/audit"
+                                    target="_blank"
+                                    >監査ログ</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/vpc/docs/flow-logs"
+                                    target="_blank"
+                                    >VPC Flow Logs</a
+                                >
+                                <a href="https://cloud.google.com/trace/docs" target="_blank"
+                                    >Cloud Trace</a
+                                >
+                                <a href="https://cloud.google.com/profiler/docs" target="_blank"
+                                    >Cloud Profiler</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/stackdriver/docs/solutions/agents/ops-agent"
+                                    target="_blank"
+                                    >Ops Agent</a
+                                >
+                                <a
+                                    href="https://cloud.google.com/managed-prometheus"
+                                    target="_blank"
+                                    >Managed Prometheus</a
+                                >
+                                <a href="https://cloud.google.com/recommender/docs" target="_blank"
+                                    >Active Assist</a
+                                >
+                                <a href="https://cloud.google.com/cloud-hub" target="_blank"
+                                    >Cloud Hub</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    style="
+                        text-align: center;
+                        padding: 48px 0 32px;
+                        color: var(--muted);
+                        font-size: 13px;
+                        border-top: 1px solid var(--border);
+                        margin-top: 64px;
+                    "
+                >
+                    <p>Google Cloud Associate Cloud Engineer — Section 3 完全攻略ガイド</p>
+                    <p style="margin-top: 6px">
+                        試験ガイド 063026（2026年6月30日施行版）準拠 ｜ 作成日: 2026年6月
+                    </p>
+                    <p style="margin-top: 6px; font-size: 11px; opacity: 0.5">
+                        ※
+                        本ガイドは学習目的で作成されています。最新情報は必ず公式サイトでご確認ください。
+                    </p>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            const DIAGRAMS = {
+                'diag-1':
+                    'flowchart TD\n    A[クラウドソリューション稼働中] --> B{正常稼働か？}\n    B -->|Yes| C[継続的モニタリング]\n    B -->|No| D[診断・トラブルシューティング]\n    C --> E[メトリクス収集<br>Cloud Monitoring]\n    C --> F[ログ収集<br>Cloud Logging]\n    C --> G[トレース<br>Cloud Trace / Profiler]\n    D --> H[ログ分析]\n    D --> I[アラート確認]\n    D --> J[診断ツール活用]\n    H --> K[根本原因特定]\n    I --> K\n    J --> K\n    K --> L{対処方法}\n    L -->|スケール調整| M[オートスケーリング設定変更]\n    L -->|インフラ変更| N[スナップショット取得→変更]\n    L -->|データ復旧| O[バックアップからリストア]\n    L -->|ネットワーク修正| P[ファイアウォール・DNS 調整]\n    M --> B\n    N --> B\n    O --> B\n    P --> B',
+                'diag-2':
+                    'sequenceDiagram\n    actor User\n    participant gcloud\n    participant IAP as Cloud IAP\n    participant VM as Compute Engine VM\n\n    User->>gcloud: gcloud compute ssh INSTANCE --tunnel-through-iap\n    gcloud->>IAP: IAP トンネル確立要求\n    IAP-->>IAP: IAM 権限確認<br>(roles/iap.tunnelResourceAccessor)\n    IAP->>VM: TCP ポート 22 へのトンネル確立\n    gcloud-->>User: SSH セッション開始\n    Note over IAP,VM: 外部IPなし・ファイアウォール<br>でもアクセス可能',
+                'diag-3':
+                    'flowchart TD\n    A[ディスクデータを保護・移行したい] --> B{目的は何か？}\n    B -->|定期バックアップ・障害復旧| C[スナップショット]\n    B -->|新VMの雛形作成・大量展開| D[カスタムイメージ]\n    C --> E{スケジュール必要？}\n    E -->|Yes| F[Snapshot Schedule Policy を作成<br>ディスクに適用]\n    E -->|No| G[手動スナップショット作成]\n    D --> H{OS設定済みの VM がある？}\n    H -->|Yes| I[VMを停止→イメージ作成<br>--family オプションで管理]\n    H -->|No| J[スナップショットからイメージ作成]\n    F --> K[Cloud Storage に自動保存<br>増分バックアップ]\n    G --> K\n    I --> L[Image Family で最新版管理<br>インスタンステンプレートに利用]\n    J --> L',
+                'diag-4':
+                    'flowchart LR\n    A[GKE Node] --> B{認証方式}\n    B -->|Workload Identity Federation<br>推奨| C[Kubernetes SA<br>とGCP SA を紐付け]\n    B -->|デフォルトSA| D[Compute Engine SA に<br>artifactregistry.reader 付与]\n    C --> E[Artifact Registry<br>からイメージPull]\n    D --> E\n    E --> F[コンテナ起動]',
+                'diag-5':
+                    'flowchart LR\n    A[ユーザーリクエスト] --> B[Cloud Run Service]\n    B --> C{トラフィック分割<br>ポリシー}\n    C -->|90%| D[revision-00001<br>安定版]\n    C -->|10%| E[revision-00002<br>新バージョン]\n    E -->|問題なし| F[100%へ切り替え]\n    E -->|問題あり| G[0%へ戻す<br>ロールバック]',
+                'diag-6':
+                    'flowchart TD\n    A["クエリを書く"] --> B["--dry_run オプションで実行"]\n    B --> C{"スキャン量を確認"}\n    C -->|許容範囲内| D["クエリ実行"]\n    C -->|多すぎる| E["クエリ最適化"]\n    E --> F["パーティションフィルタを追加<br>WHERE _PARTITIONDATE = \'...\'"]\n    F --> G["クラスタリングカラムを活用"]\n    G --> H["SELECT * を避けて必要カラムのみ選択"]\n    H --> B\n    D --> I["結果確認"]\n    I --> J{"コスト確認<br>($5/TB)"}\n    J -->|許容範囲内| K["本番運用"]\n    J -->|高すぎる| E',
+                'diag-7':
+                    'flowchart TD\n    A[Database Center] --> B[フリート管理<br>Inventory]\n    A --> C[セキュリティ評価<br>Security Recommendations]\n    A --> D[パフォーマンス分析<br>Query Insights]\n    A --> E[コンプライアンス確認<br>Compliance Status]\n    B --> F[Cloud SQL]\n    B --> G[AlloyDB]\n    B --> H[Spanner]\n    B --> I[Bigtable]\n    C --> J[暗号化状況<br>CMEK適用確認]\n    C --> K[アクセス制御<br>IAM設定確認]\n    D --> L[スロークエリ<br>特定]\n    D --> M[インデックス推奨<br>Index Advisor]',
+                'diag-8':
+                    'flowchart LR\n    A[Private VM<br>外部IP なし] --> B[Cloud NAT]\n    B --> C[Cloud Router]\n    C --> D[インターネット]\n    D -->|応答| C\n    C --> B\n    B --> A\n    Note1["インバウンドは不可<br>アウトバウンドのみ"]',
+                'diag-9':
+                    'flowchart TD\n    A[メトリクスデータ収集<br>Compute Engine / GKE / Cloud Run...] --> B[Cloud Monitoring]\n    B --> C{アラートポリシー評価}\n    C -->|条件を満たす| D[インシデント作成]\n    C -->|条件を満たさない| E[正常]\n    D --> F[通知チャンネル]\n    F --> G[Email]\n    F --> H[PagerDuty]\n    F --> I[Slack / Webhook]\n    F --> J[Pub/Sub]\n    D --> K[Playbook URL<br>対応手順書リンク]',
+                'diag-10':
+                    'flowchart TD\n    A[全てのログ<br>Cloud Logging に集約] --> B[Log Router]\n    B --> C{ログバケット<br>フィルタリング}\n    C -->|条件一致| D[ログシンク1<br>BigQuery]\n    C -->|条件一致| E[ログシンク2<br>Cloud Storage]\n    C -->|条件一致| F[ログシンク3<br>Pub/Sub]\n    C -->|デフォルト| G[_Default バケット<br>30日保持]\n    D --> H[長期分析・監査]\n    E --> I[アーカイブ・コンプライアンス]\n    F --> J[外部システム連携<br>SIEM / on-premises]',
+            };
+            mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: 'loose',
+                theme: 'dark',
+                themeVariables: {
+                    primaryColor: '#1E3348',
+                    primaryTextColor: '#B8CDE0',
+                    primaryBorderColor: '#274460',
+                    lineColor: '#3D8EF5',
+                    secondaryColor: '#112030',
+                    tertiaryColor: '#0D1B2A',
+                    background: '#050A14',
+                    mainBkg: '#0D1B2A',
+                    nodeBorder: '#274460',
+                    clusterBkg: '#112030',
+                    titleColor: '#E2F0FF',
+                    edgeLabelBackground: '#0D1B2A',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '13px',
+                },
+                flowchart: { curve: 'basis', htmlLabels: true },
+                sequence: { actorMargin: 50 },
+            });
+
+            const navItems = document.querySelectorAll('.nav-item[href^="#"]');
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            navItems.forEach((i) => i.style.removeProperty('color'));
+                            const active = document.querySelector(
+                                `.nav-item[href="#${entry.target.id}"]`,
+                            );
+                            if (active) active.style.color = 'var(--bright)';
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+
+            document.querySelectorAll('[id]').forEach((el) => observer.observe(el));
+
+            // --- mermaid render pipeline (apply_render_pipeline.mjs) ---
+            function applySvgFixups(svgEl, src) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.maxWidth = '100%';
+                svgEl.style.overflow = 'visible';
+                svgEl.style.marginBottom = '10px';
+                const viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                const parts = viewBox.split(/\s+/).map(Number);
+                if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
+                const trimmed = src.trim();
+                const isSequenceOrState =
+                    trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
+                const extraHeight = isSequenceOrState ? 110 : 15;
+                const [x, y, w, h] = parts;
+                // 自然幅で表示し拡大は抑制。親より広い図のみ maxWidth で縮小される。
+                svgEl.style.width = w + 'px';
+                svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + extraHeight));
+            }
+
+            (async () => {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (_e) {
+                        /* フォント待機に失敗しても描画は継続する */
+                    }
+                }
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    const el = document.getElementById(id);
+                    if (!el) continue;
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        el.innerHTML = svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl, src);
+                    } catch (err) {
+                        el.innerHTML =
+                            '<pre style="color:#ff8888;white-space:pre-wrap">' +
+                            (err && err.message ? err.message : String(err)) +
+                            '</pre>';
+                    }
+                }
+            })();
+
+            // チェックリストクリックイベントハンドラー
+            document.querySelectorAll('.check-item').forEach((item) => {
+                item.addEventListener('click', () => {
+                    const box = item.querySelector('.check-box');
+                    if (box) box.classList.toggle('checked');
+                });
+            });
+        </script>
+    </body>
+</html>
