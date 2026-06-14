@@ -120,8 +120,7 @@ IAMポリシーは **バインディング（Binding）** の集合体です。�
       }
     }
   ],
-  "etag": "BwXxyzAbcde=",
-  "version": 3
+  "etag": "BwXxyzAbcde="
 }
 ```
 
