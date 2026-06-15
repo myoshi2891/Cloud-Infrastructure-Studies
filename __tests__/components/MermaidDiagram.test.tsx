@@ -100,9 +100,9 @@ describe('MermaidDiagram', () => {
             // Act
             applySvgFixups(svg, 'flowchart TD\nA-->B');
 
-            // Assert: max-width は自然幅 250px（'100%' だとラッパー幅まで拡大してしまう）
-            expect(svg.style.maxWidth).toBe('250px');
-            expect(svg.style.width).toBe('100%');
+            // Assert: maxWidth が '100%' となり、width が自然幅 250px となる
+            expect(svg.style.maxWidth).toBe('100%');
+            expect(svg.style.width).toBe('250px');
             // flowchart は viewBox 高さを +15 拡張する
             expect(svg.getAttribute('viewBox')).toBe('0 0 250 615');
         });

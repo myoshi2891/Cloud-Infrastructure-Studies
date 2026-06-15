@@ -85,6 +85,7 @@ export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
     svgEl.style.height = 'auto';
+    svgEl.style.maxWidth = '100%';
     svgEl.style.overflow = 'visible';
     svgEl.style.marginBottom = '10px';
 
