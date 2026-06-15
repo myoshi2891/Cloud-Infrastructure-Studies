@@ -42,6 +42,40 @@ export default function AceSection3Guide() {
             <NavBar />
 
             <main className="main-content">
+                {/* HERO */}
+                <header className="hero">
+                    <div className="hero-eyebrow">
+                        <span className="pulse"></span>Google Cloud Certification — ACE 試験対策
+                    </div>
+                    <h1>
+                        Section 3:<br /><span>Ensuring the Successful Operation of a Cloud Solution</span>
+                    </h1>
+                    <p className="hero-sub">
+                        試験配点 ~30%（最重量セクション）。Compute Engine・GKE・Cloud
+                        Run・Storage・Networking・Monitoring/Logging
+                        の日常運用を中級〜上級者向けに完全解説。試験ガイド
+                        063026（2026年6月30日改訂版）準拠。
+                    </p>
+                    <div className="hero-meta">
+                        <div className="meta-pill">
+                            <div className="ml">配点</div>
+                            <div className="mv">~30%</div>
+                        </div>
+                        <div className="meta-pill">
+                            <div className="ml">サブセクション</div>
+                            <div className="mv">3.1 〜 3.4</div>
+                        </div>
+                        <div className="meta-pill">
+                            <div className="ml">試験ガイド</div>
+                            <div className="mv">063026</div>
+                        </div>
+                        <div className="meta-pill">
+                            <div className="ml">対象レベル</div>
+                            <div className="mv">中級〜上級</div>
+                        </div>
+                    </div>
+                </header>
+
                 {/* OVERVIEW */}
                 <section id="overview" className="section-block">
                     <div className="overview-card">
