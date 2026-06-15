@@ -152,8 +152,7 @@
 }
 
 .ace-section3-page .app-layout {
-    display: grid;
-    grid-template-columns: 260px 1fr;
+    display: flex;
     min-height: 100vh;
 }
 
@@ -226,6 +225,8 @@
     margin-left: 260px;
     padding: 48px 56px;
     overflow: hidden;
+    flex: 1;
+    min-width: 0;
 }
 
 .ace-section3-page .section-block {
@@ -874,7 +875,7 @@
 
 @media (max-width: 1024px) {
     .ace-section3-page .app-layout {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
     .ace-section3-page .sidebar {
         position: static;
