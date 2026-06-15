@@ -203,8 +203,8 @@ export default function AceSection3Guide() {
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># OS Login IAM ロール付与</span></div>
                                 <div className="code-line"><span className="cmd">gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                <div className="code-line">  <span className="flag">--member</span>=<span className="val">"user:user@example.com"</span> \</div>
-                                <div className="code-line">  <span className="flag">--role</span>=<span className="val">"roles/compute.osLogin"</span></div>
+                                <div className="code-line">  <span className="flag">--member</span>=<span className="val">&quot;user:user@example.com&quot;</span> \</div>
+                                <div className="code-line">  <span className="flag">--role</span>=<span className="val">&quot;roles/compute.osLogin&quot;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># インスタンス一覧・詳細確認</span></div>
                                 <div className="code-line"><span className="cmd">gcloud</span> compute instances list</div>
@@ -976,11 +976,11 @@ export default function AceSection3Guide() {
                                 <div className="code-line">  <span className="key">&quot;lifecycle&quot;</span>: {`{`}</div>
                                 <div className="code-line">    <span className="key">&quot;rule&quot;</span>: [</div>
                                 <div className="code-line">      {`{`}</div>
-                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;SetStorageClass&quot;</span>, <span className="key">"storageClass"</span>: <span className="val">&quot;NEARLINE&quot;</span> {`}`},</div>
+                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;SetStorageClass&quot;</span>, <span className="key">&quot;storageClass&quot;</span>: <span className="val">&quot;NEARLINE&quot;</span> {`}`},</div>
                                 <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span className="val">30</span>, <span className="key">&quot;matchesStorageClass&quot;</span>: [<span className="val">&quot;STANDARD&quot;</span>] {`}`}</div>
                                 <div className="code-line">      {`}`},</div>
                                 <div className="code-line">      {`{`}</div>
-                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;SetStorageClass&quot;</span>, <span className="key">"storageClass"</span>: <span className="val">&quot;COLDLINE&quot;</span> {`}`},</div>
+                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;SetStorageClass&quot;</span>, <span className="key">&quot;storageClass&quot;</span>: <span className="val">&quot;COLDLINE&quot;</span> {`}`},</div>
                                 <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span className="val">90</span> {`}`}</div>
                                 <div className="code-line">      {`}`},</div>
                                 <div className="code-line">      {`{`}</div>
@@ -1700,27 +1700,27 @@ export default function AceSection3Guide() {
                                     <tr>
                                         <td><code>severity</code></td>
                                         <td>ログの重大度</td>
-                                        <td><code>severity="ERROR"</code></td>
+                                        <td><code>severity=&quot;ERROR&quot;</code></td>
                                     </tr>
                                     <tr>
                                         <td><code>resource.type</code></td>
                                         <td>リソースタイプ</td>
-                                        <td><code>resource.type="gce_instance"</code></td>
+                                        <td><code>resource.type=&quot;gce_instance&quot;</code></td>
                                     </tr>
                                     <tr>
                                         <td><code>logName</code></td>
                                         <td>ログ名</td>
-                                        <td><code>logName=~"cloudaudit"</code></td>
+                                        <td><code>logName=~&quot;cloudaudit&quot;</code></td>
                                     </tr>
                                     <tr>
                                         <td><code>timestamp</code></td>
                                         <td>時刻範囲</td>
-                                        <td><code>timestamp&gt;="2025-01-01T00:00:00Z"</code></td>
+                                        <td><code>timestamp&gt;=&quot;2025-01-01T00:00:00Z&quot;</code></td>
                                     </tr>
                                     <tr>
                                         <td><code>textPayload</code></td>
                                         <td>テキスト検索</td>
-                                        <td><code>textPayload:"OutOfMemory"</code></td>
+                                        <td><code>textPayload:&quot;OutOfMemory&quot;</code></td>
                                     </tr>
                                     <tr>
                                         <td><code>jsonPayload.key</code></td>
