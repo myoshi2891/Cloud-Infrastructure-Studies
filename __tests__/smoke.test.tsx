@@ -18,12 +18,11 @@ describe('スモークテスト', () => {
     });
 
     it('should verify that .app-layout uses block layout (Red Phase)', () => {
-        const cssPath = path.resolve(__dirname, '../app/gcl/associate-cloud-engineer/section3/page.css');
+        const cssPath = path.resolve(__dirname, '../app/gcl/associate-cloud-engineer/section3/page.module.css');
         const cssContent = fs.readFileSync(cssPath, 'utf-8');
         
-        // .ace-section3-page .app-layout { ... } ブロック内に display: block が指定されているかを正規表現で検証
-        // 修正前は display: grid なので失敗します
-        const appLayoutBlockRegex = /\.ace-section3-page\s+\.app-layout\s*\{[^}]*display:\s*block[^}]*\}/;
+        // .app-layout { ... } ブロック内に display: block が指定されているかを正規表現で検証
+        const appLayoutBlockRegex = /\.app-layout\s*\{[^}]*display:\s*block[^}]*\}/;
         expect(cssContent).toMatch(appLayoutBlockRegex);
     });
 });
