@@ -23,38 +23,38 @@ describe('ACE Section 3 完全ガイド ページ', () => {
     });
 
     it('3.1 の全サブセクション見出しが存在すること', () => {
-        expect(screen.getByText('Compute Engine へのリモート接続')).toBeInTheDocument();
-        expect(screen.getByText('スナップショットとイメージ管理')).toBeInTheDocument();
-        expect(screen.getByText('GKE クラスタの運用管理')).toBeInTheDocument();
-        expect(screen.getByText('Pod オートスケーリング（HPA / VPA）')).toBeInTheDocument();
-        expect(screen.getByText('Cloud Run の運用管理')).toBeInTheDocument();
-        expect(screen.getByText('GPU / TPU アタッチメント')).toBeInTheDocument();
+        expect(screen.getByText(/Compute Engine へのリモート接続/)).toBeInTheDocument();
+        expect(screen.getByText(/スナップショットとイメージ管理/)).toBeInTheDocument();
+        expect(screen.getByText(/GKE クラスタの運用管理/)).toBeInTheDocument();
+        expect(screen.getByText(/Pod オートスケーリング（HPA \/ VPA）/)).toBeInTheDocument();
+        expect(screen.getByText(/Cloud Run の運用管理/)).toBeInTheDocument();
+        expect(screen.getByText(/GPU \/ TPU アタッチメント/)).toBeInTheDocument();
     });
 
     it('3.2 ストレージとデータソリューションの見出しが存在すること', () => {
-        expect(screen.getByText('Cloud Storage の操作とセキュリティ')).toBeInTheDocument();
-        expect(screen.getByText('ライフサイクル管理ポリシー')).toBeInTheDocument();
-        expect(screen.getByText('データベースクエリと操作')).toBeInTheDocument();
-        expect(screen.getByText('バックアップとリストア')).toBeInTheDocument();
-        expect(screen.getByText('Database Center と CMEK')).toBeInTheDocument();
+        expect(screen.getByText(/Cloud Storage の操作とセキュリティ/)).toBeInTheDocument();
+        expect(screen.getByText(/ライフサイクル管理ポリシー/)).toBeInTheDocument();
+        expect(screen.getByText(/データベースクエリと操作/)).toBeInTheDocument();
+        expect(screen.getByText(/バックアップとリストア/)).toBeInTheDocument();
+        expect(screen.getByText(/Database Center と CMEK/)).toBeInTheDocument();
     });
 
     it('3.3 ネットワークリソースの見出しが存在すること', () => {
-        expect(screen.getByText('サブネット・IP アドレス管理')).toBeInTheDocument();
-        expect(screen.getByText('Cloud DNS と Cloud NAT')).toBeInTheDocument();
-        expect(screen.getByText('VPC ファイアウォールと Cloud NGFW')).toBeInTheDocument();
+        expect(screen.getByText(/サブネット・IP アドレス管理/)).toBeInTheDocument();
+        expect(screen.getByText(/Cloud DNS と Cloud NAT/)).toBeInTheDocument();
+        expect(screen.getByText(/VPC ファイアウォールと Cloud NGFW/)).toBeInTheDocument();
     });
 
     it('3.4 モニタリングの見出しが存在すること', () => {
-        expect(screen.getByText('Cloud Monitoring アラートポリシー')).toBeInTheDocument();
-        expect(screen.getByText('ログ管理・監査ログ・エクスポート')).toBeInTheDocument();
-        expect(screen.getByText('診断ツール群（Trace / Profiler / Query Insights）')).toBeInTheDocument();
-        expect(screen.getByText('Ops Agent と Managed Prometheus')).toBeInTheDocument();
-        expect(screen.getByText('AI 支援ツール群（Gemini / Active Assist / Cloud Hub）')).toBeInTheDocument();
+        expect(screen.getByText(/Cloud Monitoring アラートポリシー/)).toBeInTheDocument();
+        expect(screen.getByText(/ログ管理・監査ログ・エクスポート/)).toBeInTheDocument();
+        expect(screen.getByText(/診断ツール群（Trace \/ Profiler \/ Query Insights）/)).toBeInTheDocument();
+        expect(screen.getByText(/Ops Agent と Managed Prometheus/)).toBeInTheDocument();
+        expect(screen.getByText(/AI 支援ツール群（Gemini \/ Active Assist \/ Cloud Hub）/)).toBeInTheDocument();
     });
 
     it('まとめセクション（チェックリスト）が存在すること', () => {
-        expect(screen.getByText('試験直前チェックリスト')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: '試験直前チェックリスト' })).toBeInTheDocument();
     });
 
     it('チェックリスト項目が 20 件存在すること', () => {
