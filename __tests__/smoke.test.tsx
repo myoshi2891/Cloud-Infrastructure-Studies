@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Home from '@/app/page';
+import fs from 'fs';
+import path from 'path';
 
 describe('スモークテスト', () => {
     it('Home ページがレンダリングされること', () => {
@@ -10,8 +12,13 @@ describe('スモークテスト', () => {
         expect(screen.getByRole('heading', { level: 1, name: /cloud infrastructure/i })).toBeInTheDocument();
     });
 
-    it('ACE Section 3 Layout Temporary Red Check (Replaced on Fix)', () => {
-        // レイアウト修正のためのダミーの失敗テスト -> 成功するように変更
-        expect('Layout is fixed').toBe('Layout is fixed');
+    it('should verify that .app-layout uses block layout (Red Phase)', () => {
+        const cssPath = path.resolve(__dirname, '../app/gcl/associate-cloud-engineer/section3/page.css');
+        const cssContent = fs.readFileSync(cssPath, 'utf-8');
+        
+        // .ace-section3-page .app-layout { ... } ブロック内に display: block が指定されているかを正規表現で検証
+        // 修正前は display: grid なので失敗します
+        const appLayoutBlockRegex = /\.ace-section3-page\s+\.app-layout\s*\{[^}]*display:\s*block[^}]*\}/;
+        expect(cssContent).toMatch(appLayoutBlockRegex);
     });
 });
