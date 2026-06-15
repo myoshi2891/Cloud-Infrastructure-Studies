@@ -5,11 +5,37 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** 🟢 ACE Section 2「計画と実装」完全ガイド移行 (完了)
+- **進行中タスク:** 🟢 ACE Section 3「運用管理」完全ガイド移行 (完了)
 - **次の作業:** (なし)
-- **テスト数:** 522 件パス（Vitest 75 ファイル）
-- **ビルド:** パス
-- **最終更新日時(UTC):** 2026-06-11T06:00:00Z
+- **テスト数:** (テストとビルドはユーザー手動確認予定)
+- **ビルド:** ユーザー手動確認予定
+- **最終更新日時(UTC):** 2026-06-15T04:12:00Z
+
+---
+
+## 2026-06-15: ACE Section 3「運用管理」完全ガイド移行 (完了)
+
+### 目的
+
+`Ace-section3-operation-complete-guide.html`（静的HTML・3,425行）を、`section1` / `section2` と同じ設計パターン（NavBar + page.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/section3` ルートへ移行・追加する。デザインは HTML を忠実に再現しつつ globals.css のダークテーマデザイントークンに整合。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for ACE section3 guide`
+- [x] **Step 2 (Green)**: `feat: implement ACE section3 page to pass tests` (Mermaid 10図の constants 移植、code-block の code-line 分割、チェックリスト client state 化)
+- [x] **Step 3 (Refactor / Integration)**: `refactor: integrate ACE section3 into constants.ts` (constants.ts へのルーティング統合)
+- [x] **Step 4 (Docs Sync)**: ドキュメント類の同期、HTMLソースのアーカイブ化（Gcl_Archive/Associate-Cloud-Engineer/ への移動）
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/section3/page.tsx](app/gcl/associate-cloud-engineer/section3/page.tsx)
+- [app/gcl/associate-cloud-engineer/section3/AceSection3Guide.tsx](app/gcl/associate-cloud-engineer/section3/AceSection3Guide.tsx)
+- [app/gcl/associate-cloud-engineer/section3/NavBar.tsx](app/gcl/associate-cloud-engineer/section3/NavBar.tsx)
+- [app/gcl/associate-cloud-engineer/section3/constants.ts](app/gcl/associate-cloud-engineer/section3/constants.ts)
+- [app/gcl/associate-cloud-engineer/section3/page.css](app/gcl/associate-cloud-engineer/section3/page.css)
+- [__tests__/gcl/associate-cloud-engineer/section3/page.test.tsx](__tests__/gcl/associate-cloud-engineer/section3/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ---
 
