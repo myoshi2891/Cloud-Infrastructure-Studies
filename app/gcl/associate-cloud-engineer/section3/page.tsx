@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
     return (
-        <div className={styles['ace-section3-page']}>
+        <div className="ace-section3-page">
             <AceSection3Guide />
         </div>
     );
