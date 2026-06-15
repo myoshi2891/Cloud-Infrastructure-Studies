@@ -84,11 +84,9 @@ const toCodeLines = (text: string): { line: string; key: string }[] => {
 export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
-    svgEl.style.width = '100%';
     svgEl.style.height = 'auto';
     svgEl.style.overflow = 'visible';
     svgEl.style.marginBottom = '10px';
-    svgEl.style.maxWidth = '100%';
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) return;
@@ -101,10 +99,12 @@ export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
-    // max-width を viewBox の自然幅に固定する。'100%' のままだとラッパー幅まで
-    // 拡大され、細い／小規模な図（特に flowchart TD）が過大表示になるため。
-    // width:100% と併用することで「コンテナ幅まで、ただし自然幅 w を超えない」となる。
-    svgEl.style.maxWidth = `${w}px`;
+    // ⚠️ SKILL.md「SVG 幅の鉄則」: viewBox 由来の自然 px 幅 + maxWidth:100%。
+    // width:'100%' は viewBox のみで intrinsic サイズを持たない SVG をコンテナ全幅へ
+    // 伸ばし、小さい flowchart LR 図を異常拡大させるため使わない。
+    // 自然 px + maxWidth:100% なら「親より広い図のみ縮小、小さい図は等倍」となる。
+    svgEl.style.width = `${w}px`;
+    svgEl.style.maxWidth = '100%';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 
