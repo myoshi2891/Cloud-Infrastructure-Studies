@@ -100,13 +100,129 @@
 .red { background-color: var(--color-google-red); }
 .purple { background-color: #8b5cf6; }
 
+/* --- Floating Menu Toggle Button (Mobile/Tablet) --- */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 101;
+    padding: 10px 18px;
+    border-radius: 100px;
+    background: rgba(10, 24, 40, 0.8);
+    border: 1px solid rgba(66, 133, 244, 0.4);
+    color: #00c8ff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.menu-toggle:hover {
+    background: rgba(66, 133, 244, 0.2);
+    border-color: #00c8ff;
+    transform: translateY(-2px);
+}
+
+.menu-toggle:active {
+    transform: translateY(0);
+}
+
+/* --- Mobile Drawer Header --- */
+.drawer-header {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(66, 133, 244, 0.15);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(6, 13, 26, 0.8);
+}
+
+.drawer-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-foreground);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--color-muted-foreground);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.15s;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: var(--color-foreground);
+}
+
+/* --- Backdrop Overlay --- */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 99;
+    animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 @media (max-width: 1024px) {
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .overlay {
+        display: block;
+    }
+
+    .drawer-header {
+        display: flex;
+    }
+
     .sidebar {
-        position: static;
-        height: auto;
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 100;
+        background: rgba(6, 13, 26, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-right: 1px solid rgba(66, 133, 244, 0.3);
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        padding-top: 72px;
+        border-bottom: none;
+    }
+
+    .open {
+        transform: translateX(0) !important;
     }
 }
 

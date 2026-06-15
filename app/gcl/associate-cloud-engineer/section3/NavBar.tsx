@@ -7,9 +7,11 @@ import styles from './page.module.css';
 /**
  * ACE Section 3 ページ専用のサイドバーナビゲーションコンポーネント。
  * IntersectionObserver によるスクロールスパイをサポート。
+ * モバイル・タブレット環境（1024px以下）ではトグル式のドロワーメニューとして機能します。
  */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
@@ -41,30 +43,69 @@ export default function NavBar() {
     }, []);
 
     return (
-        <nav className={styles.sidebar} aria-label="Section 3 ガイドナビゲーション">
-            {NAV_ITEMS.map((item) => {
-                if (item.type === 'title') {
-                    return (
-                        <div key={item.id} className={styles['nav-section-title']}>
-                            {item.label}
-                        </div>
-                    );
-                }
+        <>
+            {/* モバイル用フローティングトグルボタン */}
+            <button
+                type="button"
+                className={styles['menu-toggle']}
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="ページ内目次を開く"
+                aria-expanded={isOpen}
+            >
+                {isOpen ? '✕' : '📋 目次'}
+            </button>
 
-                const isActive = activeId === item.id;
-                return (
-                    <a
-                        key={item.id}
-                        href={`#${item.id}`}
-                        className={`${styles['nav-item']} ${isActive ? styles.active : ''}`}
+            {/* モバイル用背景オーバーレイ */}
+            {isOpen && (
+                <div
+                    className={styles.overlay}
+                    onClick={() => setIsOpen(false)}
+                    aria-hidden="true"
+                />
+            )}
+
+            <nav
+                className={styles.sidebar}
+                aria-label="Section 3 ガイドナビゲーション"
+            >
+                {/* モバイル用ドロワーヘッダー */}
+                <div className={styles['drawer-header']}>
+                    <span className={styles['drawer-title']}>セクション目次</span>
+                    <button
+                        type="button"
+                        className={styles['close-btn']}
+                        onClick={() => setIsOpen(false)}
+                        aria-label="目次を閉じる"
                     >
-                        <span
-                            className={`${styles['nav-dot']} ${item.colorClass ? styles[item.colorClass] : ''}`}
-                        />
-                        {item.label}
-                    </a>
-                );
-            })}
-        </nav>
+                        ✕
+                    </button>
+                </div>
+
+                {NAV_ITEMS.map((item) => {
+                    if (item.type === 'title') {
+                        return (
+                            <div key={item.id} className={styles['nav-section-title']}>
+                                {item.label}
+                            </div>
+                        );
+                    }
+
+                    const isActive = activeId === item.id;
+                    return (
+                        <a
+                            key={item.id}
+                            href={`#${item.id}`}
+                            className={`${styles['nav-item']} ${isActive ? styles.active : ''}`}
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <span
+                                className={`${styles['nav-dot']} ${item.colorClass ? styles[item.colorClass] : ''}`}
+                            />
+                            {item.label}
+                        </a>
+                    );
+                })}
+            </nav>
+        </>
     );
 }
