@@ -22,7 +22,7 @@ describe('スモークテスト', () => {
         const cssContent = fs.readFileSync(cssPath, 'utf-8');
         
         // .app-layout { ... } ブロック内に display: block が指定されているかを正規表現で検証
-        const appLayoutBlockRegex = /\.app-layout\s*\{[^}]*display:\s*block[^}]*\}/;
+        const appLayoutBlockRegex = /\.app-layout\s*\)?\s*\{[^}]*display:\s*block[^}]*\}/;
         expect(cssContent).toMatch(appLayoutBlockRegex);
     });
 });

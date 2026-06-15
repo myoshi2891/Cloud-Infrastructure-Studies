@@ -26,7 +26,7 @@ describe('NavBar component', () => {
         expect(sidebar.className).toContain('open');
         
         // 目次リンクをクリックしたときに閉じるか検証
-        const link = screen.getByText('3.1 コンピューティング管理');
+        const link = screen.getByText('リモート接続');
         fireEvent.click(link);
         
         // 閉じた状態に戻る
