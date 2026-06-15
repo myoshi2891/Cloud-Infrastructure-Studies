@@ -170,7 +170,7 @@ Mermaid v10 は SVG 要素に絶対ピクセル値の `width`/`height` 属性を
 ```js
 svgEl.removeAttribute('width');
 svgEl.removeAttribute('height');
-svgEl.style.width    = 'auto';     // 'auto' 必須。'100%' は NG（拡大されて縦長になる）
+svgEl.style.width    = `${w}px`;   // 自然 px 幅（width:${w}px + maxWidth:100% の新ルールに準拠）
 svgEl.style.maxWidth = '100%';
 svgEl.style.height   = 'auto';
 ```
