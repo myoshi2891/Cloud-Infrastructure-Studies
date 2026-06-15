@@ -224,6 +224,19 @@
     .open {
         transform: translateX(0) !important;
     }
+
+    .ace-section3-page :global(.mermaid) {
+        justify-content: flex-start !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 12px;
+    }
+
+    .ace-section3-page :global(.mermaid svg) {
+        min-width: 720px;
+        width: 100% !important;
+        max-width: none !important;
+    }
 }
 
 /* Keyframes (Top-level) */

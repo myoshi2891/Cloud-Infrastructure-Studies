@@ -65,7 +65,7 @@ export default function NavBar() {
             )}
 
             <nav
-                className={styles.sidebar}
+                className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}
                 aria-label="Section 3 ガイドナビゲーション"
             >
                 {/* モバイル用ドロワーヘッダー */}
