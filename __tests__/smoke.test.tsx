@@ -9,4 +9,9 @@ describe('スモークテスト', () => {
         // getByRole でアクセシブル名を検索する
         expect(screen.getByRole('heading', { level: 1, name: /cloud infrastructure/i })).toBeInTheDocument();
     });
+
+    it('ACE Section 3 Layout Temporary Red Check (Replaced on Fix)', () => {
+        // レイアウト修正のためのダミーの失敗テスト
+        expect('Layout is fixed').toBe('Layout needs grid to flex fix');
+    });
 });
