@@ -162,23 +162,23 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># IAP 経由 SSH（本番推奨）</span></div>
-                                <div className="code-line"><span className="cmd">gcloud</span> compute ssh INSTANCE_NAME <span class="flag">--zone</span>=ZONE <span class="flag">--tunnel-through-iap</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute ssh INSTANCE_NAME <span className="flag">--zone</span>=ZONE <span className="flag">--tunnel-through-iap</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># OS Login 有効化（プロジェクト全体）</span></div>
-                                <div className="code-line"><span className="cmd">gcloud</span> compute project-info add-metadata <span class="flag">--metadata</span> <span class="val">enable-oslogin=TRUE</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute project-info add-metadata <span className="flag">--metadata</span> <span className="val">enable-oslogin=TRUE</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># OS Login IAM ロール付与</span></div>
                                 <div className="code-line"><span className="cmd">gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                <div className="code-line">  <span class="flag">--member</span>=<span class="val">"user:user@example.com"</span> \</div>
-                                <div className="code-line">  <span class="flag">--role</span>=<span class="val">"roles/compute.osLogin"</span></div>
+                                <div className="code-line">  <span className="flag">--member</span>=<span className="val">"user:user@example.com"</span> \</div>
+                                <div className="code-line">  <span className="flag">--role</span>=<span className="val">"roles/compute.osLogin"</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># インスタンス一覧・詳細確認</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute instances list</div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute instances describe INSTANCE_NAME <span class="flag">--zone</span>=ZONE</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute instances list</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute instances describe INSTANCE_NAME <span className="flag">--zone</span>=ZONE</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 起動・停止・削除</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute instances start INSTANCE_NAME <span class="flag">--zone</span>=ZONE</div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute instances stop INSTANCE_NAME <span class="flag">--zone</span>=ZONE</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute instances start INSTANCE_NAME <span className="flag">--zone</span>=ZONE</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute instances stop INSTANCE_NAME <span className="flag">--zone</span>=ZONE</div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -220,7 +220,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s31-snapshot">
+                    <div className="card section-block" id="s31-snapshot">
                         <div className="card-title">
                             📸 スナップショットとイメージ管理 <span className="topic-tag">3.1</span>
                         </div>
@@ -273,30 +273,30 @@ export default function AceSection3Guide() {
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># スナップショット作成</span></div>
                                 <div className="code-line"><span className="cmd">gcloud</span> compute disks snapshot DISK_NAME \</div>
-                                <div className="code-line">  <span class="flag">--snapshot-names</span>=SNAPSHOT_NAME \</div>
-                                <div className="code-line">  <span class="flag">--zone</span>=ZONE \</div>
-                                <div className="code-line">  <span class="flag">--storage-location</span>=REGION</div>
+                                <div className="code-line">  <span className="flag">--snapshot-names</span>=SNAPSHOT_NAME \</div>
+                                <div className="code-line">  <span className="flag">--zone</span>=ZONE \</div>
+                                <div className="code-line">  <span className="flag">--storage-location</span>=REGION</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># スナップショットスケジュール作成（毎日 04:00）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute resource-policies create snapshot-schedule POLICY_NAME \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--max-retention-days</span>=<span class="val">7</span> \</div>
-                                <div className="code-line">  <span class="flag">--daily-schedule</span> \</div>
-                                <div className="code-line">  <span class="flag">--start-time</span>=<span class="val">04:00</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute resource-policies create snapshot-schedule POLICY_NAME \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--max-retention-days</span>=<span className="val">7</span> \</div>
+                                <div className="code-line">  <span className="flag">--daily-schedule</span> \</div>
+                                <div className="code-line">  <span className="flag">--start-time</span>=<span className="val">04:00</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ディスクへのスケジュール適用</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute disks add-resource-policies DISK_NAME \</div>
-                                <div className="code-line">  <span class="flag">--resource-policies</span>=POLICY_NAME <span class="flag">--zone</span>=ZONE</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute disks add-resource-policies DISK_NAME \</div>
+                                <div className="code-line">  <span className="flag">--resource-policies</span>=POLICY_NAME <span className="flag">--zone</span>=ZONE</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># イメージ作成（--family で最新版管理）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute images create IMAGE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--source-disk</span>=DISK_NAME \</div>
-                                <div className="code-line">  <span class="flag">--source-disk-zone</span>=ZONE \</div>
-                                <div className="code-line">  <span class="flag">--family</span>=MY_IMAGE_FAMILY</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute images create IMAGE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--source-disk</span>=DISK_NAME \</div>
+                                <div className="code-line">  <span className="flag">--source-disk-zone</span>=ZONE \</div>
+                                <div className="code-line">  <span className="flag">--family</span>=MY_IMAGE_FAMILY</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 最新イメージの参照（常に最新版を使う）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute images describe-from-family MY_IMAGE_FAMILY \</div>
-                                <div className="code-line">  <span class="flag">--project</span>=PROJECT_ID</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute images describe-from-family MY_IMAGE_FAMILY \</div>
+                                <div className="code-line">  <span className="flag">--project</span>=PROJECT_ID</div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -321,8 +321,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/compute/docs/disks/create-snapshots"
                                 target="_blank"
@@ -340,7 +340,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s31-gke">
+                    <div className="card section-block" id="s31-gke">
                         <div className="card-title">
                             ☸️ GKE クラスタの運用管理 <span className="topic-tag">3.1</span>
                         </div>
@@ -387,34 +387,34 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># クラスタ認証情報の取得</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> container clusters get-credentials CLUSTER_NAME <span class="flag">--zone</span>=ZONE</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> container clusters get-credentials CLUSTER_NAME <span className="flag">--zone</span>=ZONE</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># インベントリ確認</span></div>
-                                <div className="code-line"><span class="cmd">kubectl</span> get nodes -o wide</div>
-                                <div className="code-line"><span class="cmd">kubectl</span> get pods <span class="flag">--all-namespaces</span> -o wide</div>
-                                <div className="code-line"><span class="cmd">kubectl</span> get services <span class="flag">--all-namespaces</span></div>
-                                <div className="code-line"><span class="cmd">kubectl</span> get statefulsets <span class="flag">--all-namespaces</span></div>
+                                <div className="code-line"><span className="cmd">kubectl</span> get nodes -o wide</div>
+                                <div className="code-line"><span className="cmd">kubectl</span> get pods <span className="flag">--all-namespaces</span> -o wide</div>
+                                <div className="code-line"><span className="cmd">kubectl</span> get services <span className="flag">--all-namespaces</span></div>
+                                <div className="code-line"><span className="cmd">kubectl</span> get statefulsets <span className="flag">--all-namespaces</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ノードプール追加（GPU 対応）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> container node-pools create GPU_POOL \</div>
-                                <div className="code-line">  <span class="flag">--cluster</span>=CLUSTER_NAME <span class="flag">--zone</span>=ZONE \</div>
-                                <div className="code-line">  <span class="flag">--machine-type</span>=<span class="val">n1-standard-4</span> \</div>
-                                <div className="code-line">  <span class="flag">--accelerator</span>=<span class="val">type=nvidia-tesla-t4,count=1</span> \</div>
-                                <div className="code-line">  <span class="flag">--enable-autoscaling</span> \</div>
-                                <div className="code-line">  <span class="flag">--min-nodes</span>=<span class="val">0</span> <span class="flag">--max-nodes</span>=<span class="val">5</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> container node-pools create GPU_POOL \</div>
+                                <div className="code-line">  <span className="flag">--cluster</span>=CLUSTER_NAME <span className="flag">--zone</span>=ZONE \</div>
+                                <div className="code-line">  <span className="flag">--machine-type</span>=<span className="val">n1-standard-4</span> \</div>
+                                <div className="code-line">  <span className="flag">--accelerator</span>=<span className="val">type=nvidia-tesla-t4,count=1</span> \</div>
+                                <div className="code-line">  <span className="flag">--enable-autoscaling</span> \</div>
+                                <div className="code-line">  <span className="flag">--min-nodes</span>=<span className="val">0</span> <span className="flag">--max-nodes</span>=<span className="val">5</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ノードプール削除</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> container node-pools delete POOL_NAME \</div>
-                                <div className="code-line">  <span class="flag">--cluster</span>=CLUSTER_NAME <span class="flag">--zone</span>=ZONE</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> container node-pools delete POOL_NAME \</div>
+                                <div className="code-line">  <span className="flag">--cluster</span>=CLUSTER_NAME <span className="flag">--zone</span>=ZONE</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Deployment ローリングアップデート</span></div>
-                                <div className="code-line"><span class="cmd">kubectl</span> set image deployment/MY_DEPLOY container=NEW_IMAGE:TAG -n NAMESPACE</div>
+                                <div className="code-line"><span className="cmd">kubectl</span> set image deployment/MY_DEPLOY container=NEW_IMAGE:TAG -n NAMESPACE</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ロールバック</span></div>
-                                <div className="code-line"><span class="cmd">kubectl</span> rollout undo deployment/MY_DEPLOY -n NAMESPACE</div>
+                                <div className="code-line"><span className="cmd">kubectl</span> rollout undo deployment/MY_DEPLOY -n NAMESPACE</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Pod ログ確認</span></div>
-                                <div className="code-line"><span class="cmd">kubectl</span> logs POD_NAME -n NAMESPACE <span class="flag">--tail</span>=<span class="val">100</span> -f</div>
+                                <div className="code-line"><span className="cmd">kubectl</span> logs POD_NAME -n NAMESPACE <span className="flag">--tail</span>=<span className="val">100</span> -f</div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -437,8 +437,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools"
                                 target="_blank"
@@ -456,7 +456,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s31-autoscale">
+                    <div className="card section-block" id="s31-autoscale">
                         <div className="card-title">
                             📈 Pod オートスケーリング（HPA / VPA）
                             <span className="topic-tag">3.1</span>
@@ -503,32 +503,32 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># HPA 作成（CPU 70% でスケール）</span></div>
-                                <div className="code-line"><span class="cmd">kubectl</span> autoscale deployment MY_DEPLOY \</div>
-                                <div className="code-line">  <span class="flag">--cpu-percent</span>=<span class="val">70</span> \</div>
-                                <div className="code-line">  <span class="flag">--min</span>=<span class="val">2</span> \</div>
-                                <div className="code-line">  <span class="flag">--max</span>=<span class="val">20</span></div>
+                                <div className="code-line"><span className="cmd">kubectl</span> autoscale deployment MY_DEPLOY \</div>
+                                <div className="code-line">  <span className="flag">--cpu-percent</span>=<span className="val">70</span> \</div>
+                                <div className="code-line">  <span className="flag">--min</span>=<span className="val">2</span> \</div>
+                                <div className="code-line">  <span className="flag">--max</span>=<span className="val">20</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># HPA マニフェスト（CPU + Memory）</span></div>
-                                <div className="code-line"><span class="key">apiVersion</span>: autoscaling/v2</div>
-                                <div className="code-line"><span class="key">kind</span>: HorizontalPodAutoscaler</div>
-                                <div className="code-line"><span class="key">spec</span>:</div>
-                                <div className="code-line">  <span class="key">minReplicas</span>: <span class="val">2</span></div>
-                                <div className="code-line">  <span class="key">maxReplicas</span>: <span class="val">20</span></div>
-                                <div className="code-line">  <span class="key">metrics</span>:</div>
-                                <div className="code-line">  - <span class="key">type</span>: Resource</div>
-                                <div className="code-line">    <span class="key">resource</span>:</div>
-                                <div className="code-line">      <span class="key">name</span>: cpu</div>
-                                <div className="code-line">      <span class="key">target</span>:</div>
-                                <div className="code-line">        <span class="key">type</span>: Utilization</div>
-                                <div className="code-line">        <span class="key">averageUtilization</span>: <span class="val">70</span></div>
+                                <div className="code-line"><span className="key">apiVersion</span>: autoscaling/v2</div>
+                                <div className="code-line"><span className="key">kind</span>: HorizontalPodAutoscaler</div>
+                                <div className="code-line"><span className="key">spec</span>:</div>
+                                <div className="code-line">  <span className="key">minReplicas</span>: <span className="val">2</span></div>
+                                <div className="code-line">  <span className="key">maxReplicas</span>: <span className="val">20</span></div>
+                                <div className="code-line">  <span className="key">metrics</span>:</div>
+                                <div className="code-line">  - <span className="key">type</span>: Resource</div>
+                                <div className="code-line">    <span className="key">resource</span>:</div>
+                                <div className="code-line">      <span className="key">name</span>: cpu</div>
+                                <div className="code-line">      <span className="key">target</span>:</div>
+                                <div className="code-line">        <span className="key">type</span>: Utilization</div>
+                                <div className="code-line">        <span className="key">averageUtilization</span>: <span className="val">70</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># VPA マニフェスト（updateMode: Initial 推奨）</span></div>
-                                <div className="code-line"><span class="key">apiVersion</span>: autoscaling.k8s.io/v1</div>
-                                <div className="code-line"><span class="key">kind</span>: VerticalPodAutoscaler</div>
-                                <div className="code-line"><span class="key">spec</span>:</div>
-                                <div className="code-line">  <span class="key">updatePolicy</span>:</div>
-                                <div className="code-line">    <span class="key">updatePolicy</span>:</div>
-                                <div className="code-line">      <span class="key">updateMode</span>: <span class="val">&quot;Initial&quot;</span>  <span className="comment">{/* 本番では Auto を避ける */}</span></div>
+                                <div className="code-line"><span className="key">apiVersion</span>: autoscaling.k8s.io/v1</div>
+                                <div className="code-line"><span className="key">kind</span>: VerticalPodAutoscaler</div>
+                                <div className="code-line"><span className="key">spec</span>:</div>
+                                <div className="code-line">  <span className="key">updatePolicy</span>:</div>
+                                <div className="code-line">    <span className="key">updatePolicy</span>:</div>
+                                <div className="code-line">      <span className="key">updateMode</span>: <span className="val">&quot;Initial&quot;</span>  <span className="comment">{/* 本番では Auto を避ける */}</span></div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -554,8 +554,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/kubernetes-engine/docs/concepts/horizontalpodautoscaler"
                                 target="_blank"
@@ -573,7 +573,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s31-cloudrun">
+                    <div className="card section-block" id="s31-cloudrun">
                         <div className="card-title">
                             🚀 Cloud Run の運用管理 <span className="topic-tag">3.1</span>
                         </div>
@@ -620,30 +620,30 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># トラフィックを向けずに新バージョンをデプロイ</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> run deploy SERVICE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--image</span>=IMAGE_URL \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--no-traffic</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> run deploy SERVICE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--image</span>=IMAGE_URL \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--no-traffic</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># カナリアデプロイ（10% だけ新バージョンへ）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> run services update-traffic SERVICE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--to-revisions</span>=<span class="val">revision-00002=10,revision-00001=90</span> \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> run services update-traffic SERVICE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--to-revisions</span>=<span className="val">revision-00002=10,revision-00001=90</span> \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 最新リビジョンに 100% 切り替え</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> run services update-traffic SERVICE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--to-latest</span> <span class="flag">--region</span>=REGION</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> run services update-traffic SERVICE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--to-latest</span> <span className="flag">--region</span>=REGION</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ロールバック</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> run services update-traffic SERVICE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--to-revisions</span>=<span class="val">revision-00001=100</span> <span class="flag">--region</span>=REGION</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> run services update-traffic SERVICE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--to-revisions</span>=<span className="val">revision-00001=100</span> <span className="flag">--region</span>=REGION</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># オートスケーリング設定</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> run services update SERVICE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--min-instances</span>=<span class="val">1</span> \</div>
-                                <div className="code-line">  <span class="flag">--max-instances</span>=<span class="val">100</span> \</div>
-                                <div className="code-line">  <span class="flag">--concurrency</span>=<span class="val">80</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> run services update SERVICE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--min-instances</span>=<span className="val">1</span> \</div>
+                                <div className="code-line">  <span className="flag">--max-instances</span>=<span className="val">100</span> \</div>
+                                <div className="code-line">  <span className="flag">--concurrency</span>=<span className="val">80</span></div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -665,8 +665,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration"
                                 target="_blank"
@@ -684,7 +684,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s31-gpu">
+                    <div className="card section-block" id="s31-gpu">
                         <div className="card-title">
                             ⚡ GPU / TPU アタッチメント <span className="topic-tag">3.1</span>
                         </div>
@@ -697,24 +697,24 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># GPU 搭載 VM インスタンス作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute instances create GPU_VM \</div>
-                                <div className="code-line">  <span class="flag">--zone</span>=ZONE \</div>
-                                <div className="code-line">  <span class="flag">--machine-type</span>=<span class="val">n1-standard-4</span> \</div>
-                                <div className="code-line">  <span class="flag">--accelerator</span>=<span class="val">&quot;type=nvidia-tesla-t4,count=1&quot;</span> \</div>
-                                <div className="code-line">  <span class="flag">--maintenance-policy</span>=<span class="val">TERMINATE</span> \</div>
-                                <div className="code-line">  <span class="flag">--metadata</span>=<span class="val">&quot;install-nvidia-driver=True&quot;</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute instances create GPU_VM \</div>
+                                <div className="code-line">  <span className="flag">--zone</span>=ZONE \</div>
+                                <div className="code-line">  <span className="flag">--machine-type</span>=<span className="val">n1-standard-4</span> \</div>
+                                <div className="code-line">  <span className="flag">--accelerator</span>=<span className="val">&quot;type=nvidia-tesla-t4,count=1&quot;</span> \</div>
+                                <div className="code-line">  <span className="flag">--maintenance-policy</span>=<span className="val">TERMINATE</span> \</div>
+                                <div className="code-line">  <span className="flag">--metadata</span>=<span className="val">&quot;install-nvidia-driver=True&quot;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Spot VM でコストを最大 90% 削減（学習ジョブ向け）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute instances create SPOT_GPU_VM \</div>
-                                <div className="code-line">  <span class="flag">--provisioning-model</span>=<span class="val">SPOT</span> \</div>
-                                <div className="code-line">  <span class="flag">--accelerator</span>=<span class="val">&quot;type=nvidia-tesla-t4,count=1&quot;</span> \</div>
-                                <div className="code-line">  <span class="flag">--maintenance-policy</span>=<span class="val">TERMINATE</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute instances create SPOT_GPU_VM \</div>
+                                <div className="code-line">  <span className="flag">--provisioning-model</span>=<span className="val">SPOT</span> \</div>
+                                <div className="code-line">  <span className="flag">--accelerator</span>=<span className="val">&quot;type=nvidia-tesla-t4,count=1&quot;</span> \</div>
+                                <div className="code-line">  <span className="flag">--maintenance-policy</span>=<span className="val">TERMINATE</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud TPU VM の作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute tpus tpu-vm create TPU_NAME \</div>
-                                <div className="code-line">  <span class="flag">--zone</span>=ZONE \</div>
-                                <div className="code-line">  <span class="flag">--accelerator-type</span>=<span class="val">v4-8</span> \</div>
-                                <div className="code-line">  <span class="flag">--version</span>=<span class="val">tpu-vm-tf-2.12.0</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute tpus tpu-vm create TPU_NAME \</div>
+                                <div className="code-line">  <span className="flag">--zone</span>=ZONE \</div>
+                                <div className="code-line">  <span className="flag">--accelerator-type</span>=<span className="val">v4-8</span> \</div>
+                                <div className="code-line">  <span className="flag">--version</span>=<span className="val">tpu-vm-tf-2.12.0</span></div>
                             </pre>
                         </div>
                         <div className="warn">
@@ -735,8 +735,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/compute/docs/gpus"
                                 target="_blank"
@@ -759,7 +759,7 @@ export default function AceSection3Guide() {
                         <div className="weight-badge wb-green">重要 ★★★</div>
                     </div>
 
-                    <div class="card section-block" id="s32-gcs">
+                    <div className="card section-block" id="s32-gcs">
                         <div className="card-title">
                             🪣 Cloud Storage の操作とセキュリティ <span className="topic-tag">3.2</span>
                         </div>
@@ -829,23 +829,23 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># Uniform Bucket-Level Access 有効化（推奨）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--uniform-bucket-level-access</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--uniform-bucket-level-access</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 公開アクセス防止（誤公開防止）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--public-access-prevention</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--public-access-prevention</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># バージョニング有効化</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME <span class="flag">--versioning</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME <span className="flag">--versioning</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 保持ポリシー（30 日間削除禁止）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--retention-period</span>=<span class="val">30d</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--retention-period</span>=<span className="val">30d</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ソフトデリート（30 日間復元可能）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--soft-delete-duration</span>=<span class="val">30d</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--soft-delete-duration</span>=<span className="val">30d</span></div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -869,8 +869,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/storage/docs/uniform-bucket-level-access"
                                 target="_blank"
@@ -888,7 +888,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s32-lifecycle">
+                    <div className="card section-block" id="s32-lifecycle">
                         <div className="card-title">
                             🔄 ライフサイクル管理ポリシー <span className="topic-tag">3.2</span>
                         </div>
@@ -942,28 +942,28 @@ export default function AceSection3Guide() {
                                 <div className="code-line">  <span className="key">&quot;lifecycle&quot;</span>: {`{`}</div>
                                 <div className="code-line">    <span className="key">&quot;rule&quot;</span>: [</div>
                                 <div className="code-line">      {`{`}</div>
-                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span class="val">&quot;SetStorageClass&quot;</span>, <span className="key">"storageClass"</span>: <span class="val">&quot;NEARLINE&quot;</span> {`}`},</div>
-                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span class="val">30</span>, <span className="key">&quot;matchesStorageClass&quot;</span>: [<span class="val">&quot;STANDARD&quot;</span>] {`}`}</div>
+                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;SetStorageClass&quot;</span>, <span className="key">"storageClass"</span>: <span className="val">&quot;NEARLINE&quot;</span> {`}`},</div>
+                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span className="val">30</span>, <span className="key">&quot;matchesStorageClass&quot;</span>: [<span className="val">&quot;STANDARD&quot;</span>] {`}`}</div>
                                 <div className="code-line">      {`}`},</div>
                                 <div className="code-line">      {`{`}</div>
-                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span class="val">&quot;SetStorageClass&quot;</span>, <span className="key">"storageClass"</span>: <span class="val">&quot;COLDLINE&quot;</span> {`}`},</div>
-                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span class="val">90</span> {`}`}</div>
+                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;SetStorageClass&quot;</span>, <span className="key">"storageClass"</span>: <span className="val">&quot;COLDLINE&quot;</span> {`}`},</div>
+                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span className="val">90</span> {`}`}</div>
                                 <div className="code-line">      {`}`},</div>
                                 <div className="code-line">      {`{`}</div>
-                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span class="val">&quot;Delete&quot;</span> {`}`},</div>
-                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span class="val">365</span> {`}`}</div>
+                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;Delete&quot;</span> {`}`},</div>
+                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;age&quot;</span>: <span className="val">365</span> {`}`}</div>
                                 <div className="code-line">      {`}`},</div>
                                 <div className="code-line">      {`{`}</div>
-                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span class="val">&quot;Delete&quot;</span> {`}`},</div>
-                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;numNewerVersions&quot;</span>: <span class="val">3</span>, <span className="key">&quot;isLive&quot;</span>: <span class="val">false</span> {`}`}</div>
+                                <div className="code-line">        <span className="key">&quot;action&quot;</span>: {`{`} <span className="key">&quot;type&quot;</span>: <span className="val">&quot;Delete&quot;</span> {`}`},</div>
+                                <div className="code-line">        <span className="key">&quot;condition&quot;</span>: {`{`} <span className="key">&quot;numNewerVersions&quot;</span>: <span className="val">3</span>, <span className="key">&quot;isLive&quot;</span>: <span className="val">false</span> {`}`}</div>
                                 <div className="code-line">      {`}`}</div>
                                 <div className="code-line">    ]</div>
                                 <div className="code-line">  {`}`}</div>
                                 <div className="code-line">{`}`}</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ポリシー適用</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--lifecycle-file</span>=lifecycle.json</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> storage buckets update gs://BUCKET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--lifecycle-file</span>=lifecycle.json</div>
                             </pre>
                         </div>
                         <div className="warn">
@@ -975,8 +975,8 @@ export default function AceSection3Guide() {
                                 で古いバージョンを定期削除してコストを管理してください。
                             </p>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/storage/docs/lifecycle"
                                 target="_blank"
@@ -987,7 +987,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s32-query">
+                    <div className="card section-block" id="s32-query">
                         <div className="card-title">
                             🔍 データベースクエリと操作 <span className="topic-tag">3.2</span>
                         </div>
@@ -1001,21 +1001,21 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># BigQuery ドライランでコスト試算（必須手順）</span></div>
-                                <div className="code-line"><span class="cmd">bq</span> query <span class="flag">--use_legacy_sql</span>=false <span class="flag">--dry_run</span> \</div>
-                                <div className="code-line">  <span class="val">&apos;SELECT col1, col2 FROM \`project.dataset.table\`</span></div>
-                                <div className="code-line"><span class="val">   WHERE DATE(_PARTITIONTIME)=&quot;2025-01-01&quot;&apos;</span></div>
+                                <div className="code-line"><span className="cmd">bq</span> query <span className="flag">--use_legacy_sql</span>=false <span className="flag">--dry_run</span> \</div>
+                                <div className="code-line">  <span className="val">&apos;SELECT col1, col2 FROM \`project.dataset.table\`</span></div>
+                                <div className="code-line"><span className="val">   WHERE DATE(_PARTITIONTIME)=&quot;2025-01-01&quot;&apos;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud SQL Auth Proxy 経由で接続（推奨）</span></div>
-                                <div className="code-line">./cloud-sql-proxy PROJECT_ID:REGION:INSTANCE <span class="flag">--port</span>=<span class="val">5432</span> &amp;</div>
-                                <div className="code-line">psql <span class="val">&quot;host=127.0.0.1 port=5432 dbname=DB user=USER&quot;</span></div>
+                                <div className="code-line">./cloud-sql-proxy PROJECT_ID:REGION:INSTANCE <span className="flag">--port</span>=<span className="val">5432</span> &amp;</div>
+                                <div className="code-line">psql <span className="val">&quot;host=127.0.0.1 port=5432 dbname=DB user=USER&quot;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud Spanner クエリ</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> spanner databases execute-sql DB_NAME \</div>
-                                <div className="code-line">  <span class="flag">--instance</span>=INSTANCE \</div>
-                                <div className="code-line">  <span class="flag">--sql</span>=<span class="val">&quot;SELECT * FROM Users WHERE UserId = 1&quot;</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> spanner databases execute-sql DB_NAME \</div>
+                                <div className="code-line">  <span className="flag">--instance</span>=INSTANCE \</div>
+                                <div className="code-line">  <span className="flag">--sql</span>=<span className="val">&quot;SELECT * FROM Users WHERE UserId = 1&quot;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Firestore データベース一覧</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> firestore databases list</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> firestore databases list</div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -1037,8 +1037,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/bigquery/docs/best-practices-performance-compute"
                                 target="_blank"
@@ -1056,7 +1056,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s32-backup">
+                    <div className="card section-block" id="s32-backup">
                         <div className="card-title">
                             🔒 バックアップとリストア <span className="topic-tag">3.2</span>
                         </div>
@@ -1113,24 +1113,24 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># Cloud SQL バックアップ作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> sql backups create <span class="flag">--instance</span>=INSTANCE_NAME</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> sql backups create <span className="flag">--instance</span>=INSTANCE_NAME</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud SQL PITR（特定時点への復元）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> sql instances restore-backup TARGET_INSTANCE \</div>
-                                <div className="code-line">  <span class="flag">--restore-instance</span>=SOURCE_INSTANCE \</div>
-                                <div className="code-line">  <span class="flag">--backup-time</span>=<span class="val">&quot;2025-01-15T10:00:00Z&quot;</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> sql instances restore-backup TARGET_INSTANCE \</div>
+                                <div className="code-line">  <span className="flag">--restore-instance</span>=SOURCE_INSTANCE \</div>
+                                <div className="code-line">  <span className="flag">--backup-time</span>=<span className="val">&quot;2025-01-15T10:00:00Z&quot;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Spanner バックアップ作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> spanner backups create BACKUP_NAME \</div>
-                                <div className="code-line">  <span class="flag">--instance</span>=INSTANCE <span class="flag">--database</span>=DB \</div>
-                                <div className="code-line">  <span class="flag">--expiration-date</span>=<span class="val">&quot;2025-12-31T00:00:00Z&quot;</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> spanner backups create BACKUP_NAME \</div>
+                                <div className="code-line">  <span className="flag">--instance</span>=INSTANCE <span className="flag">--database</span>=DB \</div>
+                                <div className="code-line">  <span className="flag">--expiration-date</span>=<span className="val">&quot;2025-12-31T00:00:00Z&quot;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Firestore エクスポート</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> firestore export gs://BACKUP_BUCKET/backup \</div>
-                                <div className="code-line">  <span class="flag">--collection-ids</span>=COLLECTION1,COLLECTION2</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> firestore export gs://BACKUP_BUCKET/backup \</div>
+                                <div className="code-line">  <span className="flag">--collection-ids</span>=COLLECTION1,COLLECTION2</div>
                                 <div className="code-line">&nbsp;</div>
-                                <div className="code-line"><span class="comment"># Firestore インポート</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> firestore import gs://BACKUP_BUCKET/backup</div>
+                                <div className="code-line"><span className="comment"># Firestore インポート</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> firestore import gs://BACKUP_BUCKET/backup</div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -1149,8 +1149,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/sql/docs/mysql/backup-recovery/pitr"
                                 target="_blank"
@@ -1161,7 +1161,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s32-cmek">
+                    <div className="card section-block" id="s32-cmek">
                         <div className="card-title">
                             🔑 Database Center と CMEK <span className="topic-tag">3.2</span>
                         </div>
@@ -1175,21 +1175,21 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># KMS キーリングとキーの作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> kms keyrings create KEY_RING <span class="flag">--location</span>=REGION</div>
-                                <div className="code-line"><span class="cmd">gcloud</span> kms keys create KEY_NAME \</div>
-                                <div className="code-line">  <span class="flag">--keyring</span>=KEY_RING <span class="flag">--location</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--purpose</span>=encryption</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> kms keyrings create KEY_RING <span className="flag">--location</span>=REGION</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> kms keys create KEY_NAME \</div>
+                                <div className="code-line">  <span className="flag">--keyring</span>=KEY_RING <span className="flag">--location</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--purpose</span>=encryption</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud SQL で CMEK を使用してインスタンス作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> sql instances create INSTANCE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--database-version</span>=<span class="val">POSTGRES_15</span> \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--disk-encryption-key</span>=<span class="val">projects/PROJECT/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> sql instances create INSTANCE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--database-version</span>=<span className="val">POSTGRES_15</span> \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--disk-encryption-key</span>=<span className="val">projects/PROJECT/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud Storage バケットで CMEK を設定</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> storage buckets create gs://BUCKET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--location</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--default-encryption-key</span>=<span class="val">projects/PROJECT/locations/REGION/keyRings/RING/cryptoKeys/KEY</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> storage buckets create gs://BUCKET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--location</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--default-encryption-key</span>=<span className="val">projects/PROJECT/locations/REGION/keyRings/RING/cryptoKeys/KEY</span></div>
                             </pre>
                         </div>
                         <div className="warn">
@@ -1198,8 +1198,8 @@ export default function AceSection3Guide() {
                                 CMEK を使う場合、<strong>KMS キーへのアクセスを失うとデータも失います</strong>。キーのバックアップと復旧手順を事前に整備し、キーローテーションポリシーを設定してください。
                             </p>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/kms/docs/cmek"
                                 target="_blank"
@@ -1232,7 +1232,7 @@ export default function AceSection3Guide() {
                         <div className="weight-badge wb-amber">重要 ★★★</div>
                     </div>
 
-                    <div class="card section-block" id="s33-subnet">
+                    <div className="card section-block" id="s33-subnet">
                         <div className="card-title">
                             📡 サブネット・IP アドレス管理 <span className="topic-tag">3.3</span>
                         </div>
@@ -1250,36 +1250,36 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># サブネットの IP 範囲を拡張（/24 → /22）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute networks subnets expand-ip-range SUBNET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--prefix-length</span>=<span class="val">22</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute networks subnets expand-ip-range SUBNET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--prefix-length</span>=<span className="val">22</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 静的内部 IP の予約</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute addresses create INTERNAL_IP \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--subnet</span>=SUBNET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--addresses</span>=<span class="val">10.0.0.100</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute addresses create INTERNAL_IP \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--subnet</span>=SUBNET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--addresses</span>=<span className="val">10.0.0.100</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 静的外部 IP の予約（リージョナル）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute addresses create EXTERNAL_IP \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute addresses create EXTERNAL_IP \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 静的外部 IP の予約（グローバル LB 用）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute addresses create GLOBAL_IP <span class="flag">--global</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute addresses create GLOBAL_IP <span className="flag">--global</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 予約済み IP 一覧</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute addresses list</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute addresses list</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># 未使用 IP の解放（課金停止）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute addresses delete IP_NAME <span class="flag">--region</span>=REGION</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute addresses delete IP_NAME <span className="flag">--region</span>=REGION</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># カスタム静的ルートの追加</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute routes create ROUTE_NAME \</div>
-                                <div className="code-line">  <span class="flag">--network</span>=VPC_NAME \</div>
-                                <div className="code-line">  <span class="flag">--destination-range</span>=<span class="val">10.20.0.0/16</span> \</div>
-                                <div className="code-line">  <span class="flag">--next-hop-vpn-tunnel</span>=VPN_TUNNEL \</div>
-                                <div className="code-line">  <span class="flag">--next-hop-vpn-tunnel-region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--priority</span>=<span class="val">1000</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute routes create ROUTE_NAME \</div>
+                                <div className="code-line">  <span className="flag">--network</span>=VPC_NAME \</div>
+                                <div className="code-line">  <span className="flag">--destination-range</span>=<span className="val">10.20.0.0/16</span> \</div>
+                                <div className="code-line">  <span className="flag">--next-hop-vpn-tunnel</span>=VPN_TUNNEL \</div>
+                                <div className="code-line">  <span className="flag">--next-hop-vpn-tunnel-region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--priority</span>=<span className="val">1000</span></div>
                             </pre>
                         </div>
                         <div className="warn">
@@ -1290,8 +1290,8 @@ export default function AceSection3Guide() {
                                 IP は速やかに解放してください。
                             </p>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/vpc/docs/subnets"
                                 target="_blank"
@@ -1302,7 +1302,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s33-dns-nat">
+                    <div className="card section-block" id="s33-dns-nat">
                         <div className="card-title">
                             🔀 Cloud DNS と Cloud NAT <span className="topic-tag">3.3</span>
                         </div>
@@ -1316,30 +1316,30 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># プライベート DNS ゾーンの作成（VPC 内部用）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> dns managed-zones create PRIVATE_ZONE \</div>
-                                <div className="code-line">  <span class="flag">--dns-name</span>=<span class="val">&quot;internal.example.com.&quot;</span> \</div>
-                                <div className="code-line">  <span class="flag">--visibility</span>=private \</div>
-                                <div className="code-line">  <span class="flag">--networks</span>=VPC_NAME</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> dns managed-zones create PRIVATE_ZONE \</div>
+                                <div className="code-line">  <span className="flag">--dns-name</span>=<span className="val">&quot;internal.example.com.&quot;</span> \</div>
+                                <div className="code-line">  <span className="flag">--visibility</span>=private \</div>
+                                <div className="code-line">  <span className="flag">--networks</span>=VPC_NAME</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># DNS A レコードの追加</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> dns record-sets create www.example.com. \</div>
-                                <div className="code-line">  <span class="flag">--zone</span>=ZONE_NAME <span class="flag">--type</span>=A \</div>
-                                <div className="code-line">  <span class="flag">--ttl</span>=<span class="val">300</span> <span class="flag">--rrdatas</span>=<span class="val">34.100.0.1</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> dns record-sets create www.example.com. \</div>
+                                <div className="code-line">  <span className="flag">--zone</span>=ZONE_NAME <span className="flag">--type</span>=A \</div>
+                                <div className="code-line">  <span className="flag">--ttl</span>=<span className="val">300</span> <span className="flag">--rrdatas</span>=<span className="val">34.100.0.1</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud Router の作成（Cloud NAT の前提条件）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute routers create ROUTER_NAME \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION <span class="flag">--network</span>=VPC_NAME</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute routers create ROUTER_NAME \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION <span className="flag">--network</span>=VPC_NAME</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud NAT の作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute routers nats create NAT_NAME \</div>
-                                <div className="code-line">  <span class="flag">--router</span>=ROUTER_NAME \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--auto-allocate-nat-external-ips</span> \</div>
-                                <div className="code-line">  <span class="flag">--nat-all-subnet-ip-ranges</span> \</div>
-                                <div className="code-line">  <span class="flag">--enable-logging</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute routers nats create NAT_NAME \</div>
+                                <div className="code-line">  <span className="flag">--router</span>=ROUTER_NAME \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--auto-allocate-nat-external-ips</span> \</div>
+                                <div className="code-line">  <span className="flag">--nat-all-subnet-ip-ranges</span> \</div>
+                                <div className="code-line">  <span className="flag">--enable-logging</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># DNS レコード一覧</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> dns record-sets list <span class="flag">--zone</span>=ZONE_NAME</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> dns record-sets list <span className="flag">--zone</span>=ZONE_NAME</div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -1360,8 +1360,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/nat/docs/overview"
                                 target="_blank"
@@ -1379,7 +1379,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s33-fw">
+                    <div className="card section-block" id="s33-fw">
                         <div className="card-title">
                             🛡️ VPC ファイアウォールと Cloud NGFW <span className="topic-tag">3.3</span>
                         </div>
@@ -1430,37 +1430,37 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># SSH を特定 IP からのみ許可（タグベース）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute firewall-rules create allow-ssh-corp \</div>
-                                <div className="code-line">  <span class="flag">--network</span>=VPC_NAME \</div>
-                                <div className="code-line">  <span class="flag">--action</span>=ALLOW \</div>
-                                <div className="code-line">  <span class="flag">--direction</span>=INGRESS \</div>
-                                <div className="code-line">  <span class="flag">--rules</span>=<span class="val">tcp:22</span> \</div>
-                                <div className="code-line">  <span class="flag">--source-ranges</span>=<span class="val">203.0.113.0/24</span> \</div>
-                                <div className="code-line">  <span class="flag">--target-tags</span>=<span class="val">ssh-allowed</span> \</div>
-                                <div className="code-line">  <span class="flag">--priority</span>=<span class="val">1000</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute firewall-rules create allow-ssh-corp \</div>
+                                <div className="code-line">  <span className="flag">--network</span>=VPC_NAME \</div>
+                                <div className="code-line">  <span className="flag">--action</span>=ALLOW \</div>
+                                <div className="code-line">  <span className="flag">--direction</span>=INGRESS \</div>
+                                <div className="code-line">  <span className="flag">--rules</span>=<span className="val">tcp:22</span> \</div>
+                                <div className="code-line">  <span className="flag">--source-ranges</span>=<span className="val">203.0.113.0/24</span> \</div>
+                                <div className="code-line">  <span className="flag">--target-tags</span>=<span className="val">ssh-allowed</span> \</div>
+                                <div className="code-line">  <span className="flag">--priority</span>=<span className="val">1000</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Egress ルール（送信トラフィック制御）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute firewall-rules create deny-egress \</div>
-                                <div className="code-line">  <span class="flag">--network</span>=VPC_NAME \</div>
-                                <div className="code-line">  <span class="flag">--action</span>=DENY \</div>
-                                <div className="code-line">  <span class="flag">--direction</span>=EGRESS \</div>
-                                <div className="code-line">  <span class="flag">--rules</span>=all \</div>
-                                <div className="code-line">  <span class="flag">--destination-ranges</span>=<span class="val">10.99.0.0/16</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute firewall-rules create deny-egress \</div>
+                                <div className="code-line">  <span className="flag">--network</span>=VPC_NAME \</div>
+                                <div className="code-line">  <span className="flag">--action</span>=DENY \</div>
+                                <div className="code-line">  <span className="flag">--direction</span>=EGRESS \</div>
+                                <div className="code-line">  <span className="flag">--rules</span>=all \</div>
+                                <div className="code-line">  <span className="flag">--destination-ranges</span>=<span className="val">10.99.0.0/16</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ルールの一時無効化（削除せず）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span class="flag">--disabled</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span className="flag">--disabled</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ファイアウォールログの有効化</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span class="flag">--enable-logging</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span className="flag">--enable-logging</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># Cloud NGFW ポリシーの作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute network-firewall-policies create POLICY_NAME <span class="flag">--global</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute network-firewall-policies create POLICY_NAME <span className="flag">--global</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># NGFW ポリシーを VPC に関連付け</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute network-firewall-policies associations create \</div>
-                                <div className="code-line">  <span class="flag">--firewall-policy</span>=POLICY_NAME \</div>
-                                <div className="code-line">  <span class="flag">--network</span>=VPC_NAME \</div>
-                                <div className="code-line">  <span class="flag">--global-firewall-policy</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute network-firewall-policies associations create \</div>
+                                <div className="code-line">  <span className="flag">--firewall-policy</span>=POLICY_NAME \</div>
+                                <div className="code-line">  <span className="flag">--network</span>=VPC_NAME \</div>
+                                <div className="code-line">  <span className="flag">--global-firewall-policy</span></div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -1481,8 +1481,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/firewall/docs/firewalls"
                                 target="_blank"
@@ -1514,7 +1514,7 @@ export default function AceSection3Guide() {
                         <div className="weight-badge wb-red">最重要 ★★★★</div>
                     </div>
 
-                    <div class="card section-block" id="s34-alert">
+                    <div className="card section-block" id="s34-alert">
                         <div className="card-title">
                             🔔 Cloud Monitoring アラートポリシー <span className="topic-tag">3.4</span>
                         </div>
@@ -1536,9 +1536,9 @@ export default function AceSection3Guide() {
                                 <div className="code-line">        metric.type = <span className="val">&quot;compute.googleapis.com/instance/cpu/utilization&quot;</span></div>
                                 <div className="code-line">      <span className="key">comparison</span>: COMPARISON_GT</div>
                                 <div className="code-line">      <span className="key">thresholdValue</span>: <span className="val">0.8</span></div>
-                                <div className="code-line">      <span className="key">duration</span>: <span class="val">&quot;300s&quot;</span></div>
+                                <div className="code-line">      <span className="key">duration</span>: <span className="val">&quot;300s&quot;</span></div>
                                 <div className="code-line">      <span className="key">aggregations</span>:</div>
-                                <div className="code-line">        - <span className="key">alignmentPeriod</span>: <span class="val">&quot;60s&quot;</span></div>
+                                <div className="code-line">        - <span className="key">alignmentPeriod</span>: <span className="val">&quot;60s&quot;</span></div>
                                 <div className="code-line">          <span className="key">perSeriesAligner</span>: ALIGN_MEAN</div>
                                 <div className="code-line"><span className="key">combiner</span>: OR</div>
                                 <div className="code-line"><span className="key">notificationChannels</span>:</div>
@@ -1561,8 +1561,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/monitoring/alerts"
                                 target="_blank"
@@ -1573,7 +1573,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s34-logs">
+                    <div className="card section-block" id="s34-logs">
                         <div className="card-title">
                             📋 ログ管理・監査ログ・エクスポート <span className="topic-tag">3.4</span>
                         </div>
@@ -1625,32 +1625,32 @@ export default function AceSection3Guide() {
                             </div>
                             <pre className="code-content">
                                 <div className="code-line"><span className="comment"># VPC Flow Logs の有効化（サブネット単位）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute networks subnets update SUBNET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--region</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--enable-flow-logs</span> \</div>
-                                <div className="code-line">  <span class="flag">--logging-flow-sampling</span>=<span class="val">0.5</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute networks subnets update SUBNET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--region</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--enable-flow-logs</span> \</div>
+                                <div className="code-line">  <span className="flag">--logging-flow-sampling</span>=<span className="val">0.5</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ファイアウォールログの有効化（ルール単位）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span class="flag">--enable-logging</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> compute firewall-rules update RULE_NAME <span className="flag">--enable-logging</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># BigQuery へのログシンク作成</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> logging sinks create bq-audit-sink \</div>
+                                <div className="code-line"><span className="cmd">gcloud</span> logging sinks create bq-audit-sink \</div>
                                 <div className="code-line">  bigquery.googleapis.com/projects/PROJECT/datasets/DATASET \</div>
-                                <div className="code-line">  <span class="flag">--log-filter</span>=<span class="val">&apos;logName=&quot;projects/PROJECT/logs/cloudaudit.googleapis.com%2Factivity&quot;&apos;</span></div>
+                                <div className="code-line">  <span className="flag">--log-filter</span>=<span className="val">&apos;logName=&quot;projects/PROJECT/logs/cloudaudit.googleapis.com%2Factivity&quot;&apos;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># シンク SA に BigQuery 権限付与（必須！）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                <div className="code-line">  <span class="flag">--member</span>=<span class="val">&quot;serviceAccount:SINK_SA@gcp-sa-logging.iam.gserviceaccount.com&quot;</span> \</div>
-                                <div className="code-line">  <span class="flag">--role</span>=<span class="val">&quot;roles/bigquery.dataEditor&quot;</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
+                                <div className="code-line">  <span className="flag">--member</span>=<span className="val">&quot;serviceAccount:SINK_SA@gcp-sa-logging.iam.gserviceaccount.com&quot;</span> \</div>
+                                <div className="code-line">  <span className="flag">--role</span>=<span className="val">&quot;roles/bigquery.dataEditor&quot;</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ログバケットの作成（1 年保持）</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> logging buckets create BUCKET_NAME \</div>
-                                <div className="code-line">  <span class="flag">--location</span>=REGION \</div>
-                                <div className="code-line">  <span class="flag">--retention-days</span>=<span class="val">365</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> logging buckets create BUCKET_NAME \</div>
+                                <div className="code-line">  <span className="flag">--location</span>=REGION \</div>
+                                <div className="code-line">  <span className="flag">--retention-days</span>=<span className="val">365</span></div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># ログフィルタリング確認</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> logging read <span class="val">&apos;severity=&quot;ERROR&quot; AND resource.type=&quot;gce_instance&quot;&apos;</span> \</div>
-                                <div className="code-line">  <span class="flag">--limit</span>=<span class="val">50</span> <span class="flag">--freshness</span>=<span class="val">1h</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> logging read <span className="val">&apos;severity=&quot;ERROR&quot; AND resource.type=&quot;gce_instance&quot;&apos;</span> \</div>
+                                <div className="code-line">  <span className="flag">--limit</span>=<span className="val">50</span> <span className="flag">--freshness</span>=<span className="val">1h</span></div>
                             </pre>
                         </div>
                         <div className="tbl-wrap">
@@ -1718,8 +1718,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/logging/docs/export/configure_export_v2"
                                 target="_blank"
@@ -1744,7 +1744,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s34-diag">
+                    <div className="card section-block" id="s34-diag">
                         <div className="card-title">
                             🔬 診断ツール群（Trace / Profiler / Query Insights）
                             <span className="topic-tag">3.4</span>
@@ -1789,8 +1789,8 @@ export default function AceSection3Guide() {
                                 </tbody>
                             </table>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/trace/docs"
                                 target="_blank"
@@ -1815,7 +1815,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s34-ops">
+                    <div className="card section-block" id="s34-ops">
                         <div className="card-title">
                             🤖 Ops Agent と Managed Prometheus <span className="topic-tag">3.4</span>
                         </div>
@@ -1835,9 +1835,9 @@ export default function AceSection3Guide() {
                                 <div className="code-line">sudo systemctl status google-cloud-ops-agent</div>
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment"># GKE で Managed Prometheus を有効化</span></div>
-                                <div className="code-line"><span class="cmd">gcloud</span> container clusters update CLUSTER_NAME \</div>
-                                <div className="code-line">  <span class="flag">--zone</span>=ZONE \</div>
-                                <div className="code-line">  <span class="flag">--enable-managed-prometheus</span></div>
+                                <div className="code-line"><span className="cmd">gcloud</span> container clusters update CLUSTER_NAME \</div>
+                                <div className="code-line">  <span className="flag">--zone</span>=ZONE \</div>
+                                <div className="code-line">  <span className="flag">--enable-managed-prometheus</span></div>
                             </pre>
                         </div>
                         <div className="code-block">
@@ -1866,17 +1866,17 @@ export default function AceSection3Guide() {
                                 <div className="code-line">&nbsp;</div>
                                 <div className="code-line"><span className="comment">---</span></div>
                                 <div className="code-line"><span className="comment"># Managed Prometheus PodMonitoring</span></div>
-                                <div className="code-line"><span class="key">apiVersion</span>: monitoring.googleapis.com/v1</div>
-                                <div className="code-line"><span class="key">kind</span>: PodMonitoring</div>
-                                <div className="code-line"><span class="key">metadata</span>:</div>
-                                <div className="code-line">  <span class="key">name</span>: my-app-monitoring</div>
-                                <div className="code-line"><span class="key">spec</span>:</div>
-                                <div className="code-line">  <span class="key">selector</span>:</div>
-                                <div className="code-line">    <span class="key">matchLabels</span>: {`{`} <span class="key">app</span>: my-app {`}`}</div>
-                                <div className="code-line">  <span class="key">endpoints</span>:</div>
-                                <div className="code-line">  - <span class="key">port</span>: metrics</div>
-                                <div className="code-line">    <span class="key">interval</span>: <span class="val">30s</span></div>
-                                <div className="code-line">    <span class="key">path</span>: <span class="val">/metrics</span></div>
+                                <div className="code-line"><span className="key">apiVersion</span>: monitoring.googleapis.com/v1</div>
+                                <div className="code-line"><span className="key">kind</span>: PodMonitoring</div>
+                                <div className="code-line"><span className="key">metadata</span>:</div>
+                                <div className="code-line">  <span className="key">name</span>: my-app-monitoring</div>
+                                <div className="code-line"><span className="key">spec</span>:</div>
+                                <div className="code-line">  <span className="key">selector</span>:</div>
+                                <div className="code-line">    <span className="key">matchLabels</span>: {`{`} <span className="key">app</span>: my-app {`}`}</div>
+                                <div className="code-line">  <span className="key">endpoints</span>:</div>
+                                <div className="code-line">  - <span className="key">port</span>: metrics</div>
+                                <div className="code-line">    <span className="key">interval</span>: <span className="val">30s</span></div>
+                                <div className="code-line">    <span className="key">path</span>: <span className="val">/metrics</span></div>
                             </pre>
                         </div>
                         <div className="bp">
@@ -1901,8 +1901,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/stackdriver/docs/solutions/agents/ops-agent"
                                 target="_blank"
@@ -1920,7 +1920,7 @@ export default function AceSection3Guide() {
                         </div>
                     </div>
 
-                    <div class="card section-block" id="s34-ai">
+                    <div className="card section-block" id="s34-ai">
                         <div className="card-title">
                             ✨ AI 支援ツール群（Gemini / Active Assist / Cloud Hub）
                             <span className="topic-tag">3.4</span>
@@ -1997,8 +1997,8 @@ export default function AceSection3Guide() {
                                 </li>
                             </ul>
                         </div>
-                        <div class="src-box">
-                            <div class="src-title">📎 参照リソース</div>
+                        <div className="src-box">
+                            <div className="src-title">📎 参照リソース</div>
                             <a
                                 href="https://cloud.google.com/recommender/docs"
                                 target="_blank"
