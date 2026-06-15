@@ -348,7 +348,6 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     svgEl.style.height = 'auto';
     svgEl.style.overflow = 'visible';   // viewBox から数px はみ出す描画の途切れ防止
     svgEl.style.marginBottom = '10px';
-    svgEl.style.maxWidth = '100%';
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) return;
@@ -359,10 +358,12 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
-    // ⚠️ 幅は viewBox 由来の自然 px を使う。width:'100%'/'auto' は viewBox のみで intrinsic
-    //    サイズを持たない SVG をコンテナ全幅へ拡大し、小さい flowchart LR 図を異常拡大させる。
-    //    自然 px + maxWidth:100% なら親より広い図のみ縮小され、拡大は起きない。
+    // ⚠️ SVG 幅の鉄則: viewBox 由来の自然 px 幅 + maxWidth:100% を使う。
+    //    width:'100%' は viewBox のみで intrinsic サイズを持たない SVG をコンテナ全幅へ
+    //    伸ばし、小さい flowchart LR 図を異常拡大させるため使わない。
+    //    width:${w}px + maxWidth:100% なら「親より広い図のみ縮小、小さい図は自然サイズ」となる。
     svgEl.style.width = `${w}px`;
+    svgEl.style.maxWidth = '100%';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 ```
