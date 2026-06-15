@@ -126,3 +126,43 @@ export const DIAGRAMS: Record<string, string> = {
     E --> I[アーカイブ・コンプライアンス]
     F --> J[外部システム連携<br>SIEM / on-premises]`
 };
+
+export interface NavItem {
+    id: string;
+    type: 'title' | 'link';
+    label: string;
+    colorClass?: string;
+}
+
+export const NAV_ITEMS: NavItem[] = [
+    { id: 'title-overview', type: 'title', label: '概要' },
+    { id: 'overview', type: 'link', label: 'Section 3 全体像', colorClass: 'cyan' },
+    { id: 'title-31', type: 'title', label: '3.1 コンピューティング' },
+    { id: 's31-connect', type: 'link', label: 'リモート接続', colorClass: 'blue' },
+    { id: 's31-snapshot', type: 'link', label: 'スナップショット・イメージ', colorClass: 'blue' },
+    { id: 's31-gke', type: 'link', label: 'GKE 運用管理', colorClass: 'blue' },
+    { id: 's31-autoscale', type: 'link', label: 'Pod オートスケーリング', colorClass: 'blue' },
+    { id: 's31-cloudrun', type: 'link', label: 'Cloud Run 運用', colorClass: 'blue' },
+    { id: 's31-gpu', type: 'link', label: 'GPU / TPU', colorClass: 'blue' },
+    { id: 'title-32', type: 'title', label: '3.2 ストレージ・データ' },
+    { id: 's32-gcs', type: 'link', label: 'Cloud Storage', colorClass: 'green' },
+    { id: 's32-lifecycle', type: 'link', label: 'ライフサイクル管理', colorClass: 'green' },
+    { id: 's32-query', type: 'link', label: 'クエリ・DB 操作', colorClass: 'green' },
+    { id: 's32-backup', type: 'link', label: 'バックアップ・リストア', colorClass: 'green' },
+    { id: 's32-cmek', type: 'link', label: 'Database Center / CMEK', colorClass: 'green' },
+    { id: 'title-33', type: 'title', label: '3.3 ネットワーク' },
+    { id: 's33-subnet', type: 'link', label: 'サブネット・IP 管理', colorClass: 'amber' },
+    { id: 's33-dns-nat', type: 'link', label: 'Cloud DNS / NAT', colorClass: 'amber' },
+    { id: 's33-fw', type: 'link', label: 'ファイアウォール・NGFW', colorClass: 'amber' },
+    { id: 'title-34', type: 'title', label: '3.4 モニタリング・ログ' },
+    { id: 's34-alert', type: 'link', label: 'アラートポリシー', colorClass: 'red' },
+    { id: 's34-logs', type: 'link', label: 'ログ管理・エクスポート', colorClass: 'red' },
+    { id: 's34-diag', type: 'link', label: '診断ツール群', colorClass: 'red' },
+    { id: 's34-ops', type: 'link', label: 'Ops Agent / Prometheus', colorClass: 'red' },
+    { id: 's34-ai', type: 'link', label: 'AI 支援ツール群', colorClass: 'red' },
+    { id: 'title-summary', type: 'title', label: '総まとめ' },
+    { id: 'checklist', type: 'link', label: '試験直前チェックリスト', colorClass: 'purple' },
+    { id: 'refs', type: 'link', label: '公式参照リソース', colorClass: 'purple' },
+];
+
+export const REVISION_DATE = '2026年6月30日改訂版';
