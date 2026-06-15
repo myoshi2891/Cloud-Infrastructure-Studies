@@ -1,27 +1,7 @@
 .ace-section3-page {
-    --void: var(--color-background);
-    --space: var(--color-background);
-    --surface: var(--color-card);
-    --panel: #112030;
-    --card: var(--color-card);
-    --border: rgba(66, 133, 244, 0.2);
-    --brd2: rgba(66, 133, 244, 0.3);
-    --blue: var(--color-google-blue);
-    --green: var(--color-google-green);
-    --amber: var(--color-google-yellow);
-    --red: var(--color-google-red);
-    --purple: #8b5cf6;
-    --cyan: #00c8ff;
-    --text: var(--color-foreground);
-    --muted: var(--color-muted-foreground);
-    --bright: var(--color-foreground);
-    --mono: var(--font-mono);
-    --sans: var(--font-display);
-    --body: var(--font-body);
-
-    background: var(--void);
-    color: var(--text);
-    font-family: var(--body);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
     line-height: 1.75;
     min-height: 100vh;
 }
@@ -377,6 +357,12 @@
     overflow: hidden;
 }
 
+.ace-section3-page :global(.main-content) > :global(:not(.divider)) {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .ace-section3-page :global(.section-block) {
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
 }
@@ -386,8 +372,8 @@
     align-items: flex-start;
     gap: 20px;
     padding: 28px 32px;
-    background: linear-gradient(135deg, var(--surface), var(--panel));
-    border: 1px solid var(--brd2);
+    background: linear-gradient(135deg, var(--color-card), #112030);
+    border: 1px solid rgba(66, 133, 244, 0.3);
     border-radius: 16px;
     margin-bottom: 36px;
     position: relative;
@@ -405,19 +391,19 @@
 }
 
 .ace-section3-page :global(.sh-blue::before) {
-    background: linear-gradient(90deg, var(--blue), transparent);
+    background: linear-gradient(90deg, var(--color-google-blue), transparent);
 }
 
 .ace-section3-page :global(.sh-green::before) {
-    background: linear-gradient(90deg, var(--green), transparent);
+    background: linear-gradient(90deg, var(--color-google-green), transparent);
 }
 
 .ace-section3-page :global(.sh-amber::before) {
-    background: linear-gradient(90deg, var(--amber), transparent);
+    background: linear-gradient(90deg, var(--color-google-yellow), transparent);
 }
 
 .ace-section3-page :global(.sh-red::before) {
-    background: linear-gradient(90deg, var(--red), transparent);
+    background: linear-gradient(90deg, var(--color-google-red), transparent);
 }
 
 .ace-section3-page :global(.sec-icon) {
@@ -476,30 +462,30 @@
 
 .ace-section3-page :global(.wb-blue) {
     background: rgba(61, 142, 245, 0.1);
-    color: var(--blue);
+    color: var(--color-google-blue);
     border: 1px solid rgba(61, 142, 245, 0.3);
 }
 
 .ace-section3-page :global(.wb-green) {
     background: rgba(52, 168, 83, 0.1);
-    color: var(--green);
+    color: var(--color-google-green);
     border: 1px solid rgba(52, 168, 83, 0.3);
 }
 
 .ace-section3-page :global(.wb-amber) {
     background: rgba(251, 188, 4, 0.1);
-    color: var(--amber);
+    color: var(--color-google-yellow);
     border: 1px solid rgba(251, 188, 4, 0.3);
 }
 
 .ace-section3-page :global(.wb-red) {
     background: rgba(234, 67, 53, 0.1);
-    color: var(--red);
+    color: var(--color-google-red);
     border: 1px solid rgba(234, 67, 53, 0.3);
 }
 
 .ace-section3-page :global(.card) {
-    background: var(--surface);
+    background: var(--color-card);
     border: 1px solid rgba(66, 133, 244, 0.2);
     border-radius: 14px;
     padding: 26px 28px;
@@ -543,7 +529,7 @@
 }
 
 .ace-section3-page :global(.fitem) {
-    background: var(--panel);
+    background: #112030;
     border: 1px solid rgba(66, 133, 244, 0.2);
     border-radius: 10px;
     padding: 16px 18px;
@@ -552,7 +538,7 @@
 }
 
 .ace-section3-page :global(.fitem:hover) {
-    border-left-color: var(--blue);
+    border-left-color: var(--color-google-blue);
 }
 
 .ace-section3-page :global(.fitem-t) {
@@ -571,14 +557,14 @@
 
 .ace-section3-page :global(.code-block) {
     background: #050a14;
-    border: 1px solid var(--brd2);
+    border: 1px solid rgba(66, 133, 244, 0.3);
     border-radius: 10px;
     overflow: hidden;
     margin: 14px 0;
 }
 
 .ace-section3-page :global(.code-header) {
-    background: var(--panel);
+    background: #112030;
     padding: 8px 16px;
     display: flex;
     align-items: center;
@@ -642,7 +628,7 @@
 }
 
 .ace-section3-page :global(th) {
-    background: var(--panel);
+    background: #112030;
     padding: 10px 14px;
     text-align: left;
     color: var(--color-muted-foreground);
@@ -657,7 +643,7 @@
 .ace-section3-page :global(td) {
     padding: 10px 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    color: var(--text);
+    color: var(--color-foreground);
     vertical-align: top;
     line-height: 1.6;
 }
@@ -673,7 +659,7 @@
 .ace-section3-page :global(.bp) {
     background: rgba(52, 168, 83, 0.05);
     border: 1px solid rgba(52, 168, 83, 0.2);
-    border-left: 3px solid var(--green);
+    border-left: 3px solid var(--color-google-green);
     border-radius: 10px;
     padding: 16px 20px;
     margin: 14px 0;
@@ -683,7 +669,7 @@
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 600;
-    color: var(--green);
+    color: var(--color-google-green);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin-bottom: 8px;
@@ -699,7 +685,7 @@
 
 .ace-section3-page :global(.bp li) {
     font-size: 13px;
-    color: var(--text);
+    color: var(--color-foreground);
     padding: 4px 0 4px 18px;
     position: relative;
     line-height: 1.65;
@@ -707,7 +693,7 @@
 
 .ace-section3-page :global(.bp li::before) {
     content: '✓';
-    color: var(--green);
+    color: var(--color-google-green);
     position: absolute;
     left: 0;
     font-size: 11px;
@@ -717,7 +703,7 @@
 .ace-section3-page :global(.warn) {
     background: rgba(251, 188, 4, 0.05);
     border: 1px solid rgba(251, 188, 4, 0.2);
-    border-left: 3px solid var(--amber);
+    border-left: 3px solid var(--color-google-yellow);
     border-radius: 10px;
     padding: 14px 18px;
     margin: 12px 0;
@@ -726,7 +712,7 @@
 .ace-section3-page :global(.warn-title) {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--amber);
+    color: var(--color-google-yellow);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin-bottom: 6px;
@@ -734,13 +720,13 @@
 
 .ace-section3-page :global(.warn p) {
     font-size: 13px;
-    color: var(--text);
+    color: var(--color-foreground);
     line-height: 1.65;
 }
 
 .ace-section3-page :global(.warn li) {
     font-size: 13px;
-    color: var(--text);
+    color: var(--color-foreground);
     line-height: 1.65;
 }
 
@@ -756,26 +742,26 @@
     position: absolute;
     left: 0;
     top: 4px;
-    color: var(--amber);
+    color: var(--color-google-yellow);
     font-size: 11px;
 }
 
 .ace-section3-page :global(.info) {
     background: rgba(61, 142, 245, 0.05);
     border: 1px solid rgba(61, 142, 245, 0.2);
-    border-left: 3px solid var(--blue);
+    border-left: 3px solid var(--color-google-blue);
     border-radius: 10px;
     padding: 14px 18px;
     margin: 12px 0;
     font-size: 13px;
-    color: var(--text);
+    color: var(--color-foreground);
     line-height: 1.65;
 }
 
 .ace-section3-page :global(.info-title) {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--blue);
+    color: var(--color-google-blue);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin-bottom: 6px;
@@ -816,8 +802,8 @@
 }
 
 .ace-section3-page :global(.mermaid-wrap) {
-    background: var(--panel);
-    border: 1px solid var(--brd2);
+    background: #112030;
+    border: 1px solid rgba(66, 133, 244, 0.3);
     border-radius: 12px;
     padding: 24px;
     margin: 16px 0;
@@ -843,7 +829,7 @@
 }
 
 .ace-section3-page :global(.sbox) {
-    background: var(--panel);
+    background: #112030;
     border: 1px solid rgba(66, 133, 244, 0.2);
     border-radius: 10px;
     padding: 16px 18px;
@@ -881,7 +867,7 @@
 }
 
 .ace-section3-page :global(.overview-card) {
-    background: var(--surface);
+    background: var(--color-card);
     border: 1px solid rgba(66, 133, 244, 0.2);
     border-radius: 14px;
     padding: 28px;
@@ -949,7 +935,7 @@
 }
 
 .ace-section3-page :global(.check-item) {
-    background: var(--panel);
+    background: #112030;
     border: 1px solid rgba(66, 133, 244, 0.2);
     border-radius: 10px;
     padding: 14px 16px;
@@ -973,8 +959,8 @@
 }
 
 .ace-section3-page :global(.check-box.checked) {
-    background: var(--purple);
-    border-color: var(--purple);
+    background: #8b5cf6;
+    border-color: #8b5cf6;
 }
 
 .ace-section3-page :global(.check-box.checked::after) {

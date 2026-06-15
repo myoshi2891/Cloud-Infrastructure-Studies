@@ -179,7 +179,6 @@ CSS にもフォールバックを追加する：
 
 ```css
 .mermaid-wrap svg {
-  width: auto !important;
   max-width: 100% !important;
   height: auto !important;
 }
