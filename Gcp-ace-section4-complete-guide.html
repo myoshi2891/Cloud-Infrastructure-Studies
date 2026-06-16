@@ -1232,7 +1232,13 @@ jobs:
 
     <div class="sub-title">AWS との設定例</div>
     <div class="callout callout-blue"><span class="callout-icon">☁️</span><div>AWS EC2 や Lambda 等から SA キーなしで GCP リソースにアクセスする場合は AWS Provider を使用します。AWS IAM ロールの ARN を attribute-condition で限定することが必須です。</div></div>
-    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># AWS 用 Workload Identity Pool Provider を作成</span>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># AWS 用 Workload Identity Pool を作成</span>
+gcloud iam workload-identity-pools create aws-pool \
+  --location=global \
+  --display-name="AWS Pool" \
+  --description="AWS Workload Identity Pool"
+
+<span class="comment"># AWS 用 Workload Identity Pool Provider を作成</span>
 gcloud iam workload-identity-pools providers create-aws aws-provider \
   --location=global \
   --workload-identity-pool=aws-pool \
@@ -1469,7 +1475,7 @@ gcloud iam service-accounts add-iam-policy-binding \
       </tr>
       <tr>
         <td>「カスタムロールはプロジェクトと組織レベルで共有できる」</td>
-        <td>❌ <strong>それぞれのレベルで独立して管理される</strong>。Organization で作成したカスタムロールを Project で使うには別途作成が必要。</td>
+        <td>✅ <strong>Organizationレベルで作成されたカスタムロールは、同じ組織内のプロジェクトやフォルダに直接バインドして割り当てることができます。別々に作成し直す必要はありません。組織階層全体で直接利用可能です。</strong>（※プロジェクトレベルで作成されたカスタムロールは、そのプロジェクト内でのみ利用可能です）</td>
       </tr>
       <tr>
         <td>「GKE Autopilot では Workload Identity は任意設定」</td>
