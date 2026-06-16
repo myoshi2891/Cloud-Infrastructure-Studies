@@ -259,7 +259,7 @@ code:not(pre code){font-family:'JetBrains Mono',monospace;font-size:11.5px;backg
   <div class="nav-section">
     <div class="nav-section-label">試験対策</div>
     <a href="#exam-patterns" class="nav-item"><span class="nav-icon icon-exam">試</span>頻出パターン解法</a>
-    <a href="#traps" class="nav-item"><span class="nav-icon icon-exam">罠</span>引っかけ問題</a>
+    <a href="#traps" class="nav-item"><span class="nav-icon icon-exam">罠</span>引っかけ問題パターン</a>
     <a href="#checklist" class="nav-item"><span class="nav-icon icon-check">✓</span>直前チェックリスト</a>
     <a href="#refs" class="nav-item"><span class="nav-icon icon-check">🔗</span>参考リソース一覧</a>
   </div>
@@ -452,9 +452,9 @@ gcloud iam policies create POLICY_ID \
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>IAM Conditionsで有効期限・時間帯・リソースパスを制限</strong> — 永続的な過剰権限のリスクを排除</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>Deny Policyで重要リソースへの危険な操作を禁止</strong> — Allow Policyより優先される強力な保護</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM 継承 &amp; アクセス制御</a>
-    <a href="https://docs.cloud.google.com/iam/docs/deny-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Deny Policy</a>
-    <a href="https://docs.cloud.google.com/iam/docs/conditions-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM Conditions</a>
+    <a href="https://cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM 継承 &amp; アクセス制御</a>
+    <a href="https://cloud.google.com/iam/docs/deny-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Deny Policy</a>
+    <a href="https://cloud.google.com/iam/docs/conditions-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM Conditions</a>
   </div>
 </div>
 
@@ -525,8 +525,8 @@ gcloud run services add-iam-policy-binding SERVICE_NAME \
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>環境（dev/prod）は別フォルダ・別プロジェクトで分離</strong> — 誤操作のリスクを低減</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>同一信頼境界のリソースを同一プロジェクトにまとめる</strong> — セキュリティポリシーの一貫性を確保</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 リソース階層とアクセス制御</a>
-    <a href="https://docs.cloud.google.com/resource-manager/docs/access-control-org" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 組織レベルのアクセス制御</a>
+    <a href="https://cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 リソース階層とアクセス制御</a>
+    <a href="https://cloud.google.com/resource-manager/docs/access-control-org" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 組織レベルのアクセス制御</a>
   </div>
 </div>
 
@@ -639,8 +639,8 @@ stateDiagram-v2
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>ALPHA → BETA → GA の段階を踏む</strong> — 予期せぬ権限の付与を防止</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>組織レベルのカスタムロールはプロジェクト間で再利用</strong> — 重複した定義の乱立を防止</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/creating-custom-roles" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 カスタムロールの作成と管理</a>
-    <a href="https://docs.cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM ロールの概要</a>
+    <a href="https://cloud.google.com/iam/docs/creating-custom-roles" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 カスタムロールの作成と管理</a>
+    <a href="https://cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 IAM ロールの概要</a>
   </div>
 </div>
 
@@ -719,7 +719,7 @@ gcloud iam service-accounts undelete SA_UNIQUE_ID</pre>
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>命名規則を統一する（vm- / wlif- / wlifgke-）</strong> — 一目で用途を識別できる</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>不要になったSAは無効化→削除の順で対処</strong> — 30日間の復元猶予期間を活用</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA のベストプラクティス</a>
+    <a href="https://cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA のベストプラクティス</a>
   </div>
 </div>
 
@@ -731,9 +731,25 @@ gcloud iam service-accounts undelete SA_UNIQUE_ID</pre>
     <span class="topic-toggle">▼</span>
   </div>
   <div class="topic-body">
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ SA への権限付与の意思決定フロー</div>
+      <div class="mermaid">
+flowchart TD
+    START["SA に権限を付与したい"] --> Q1{"事前定義ロールで\n要件を満たせるか？"}
+    Q1 -->|"Yes"| USE["事前定義ロールを使用\nroles/storage.objectViewer 等"]
+    Q1 -->|"No: 過剰権限"| CUSTOM["カスタムロールを作成\n必要な権限だけを含める"]
+    Q1 -->|"No: 組み合わせが必要"| MULTI["複数のロールを組み合わせる"]
+    AVOID["❌ 避けるべき\nroles/editor / roles/owner を SA に付与"]
+    style USE fill:#34A853,color:#fff
+    style AVOID fill:#EA4335,color:#fff
+    style CUSTOM fill:#FBBC04,color:#000
+    style MULTI fill:#4285F4,color:#fff
+      </div>
+    </div>
+    <div class="callout callout-blue"><span class="callout-icon">🔍</span><div><strong>Policy Analyzer</strong>: 特定のリソースにアクセスできる全 Identity を特定したり、特定の権限を誰が持っているかを調査できます。過剰権限の検出や、インシデント発生時の影響範囲把握に有効です。</div></div>
     <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># SA に必要な権限だけを付与する例</span>
 
-<span class="comment"># Cloud Storage への読み取りのみ</span>
+<span class="comment"># Cloud Storage への読み取りのみ（プロジェクトレベル）</span>
 gcloud projects add-iam-policy-binding PROJECT_ID \
   --member="serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com" \
   --role="roles/storage.objectViewer"
@@ -748,20 +764,28 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
   --member="serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor"
 
-<span class="comment"># より細かい制御：特定のバケットのみにアクセスを制限</span>
+<span class="comment"># より細かい制御：特定のバケットのみにアクセスを制限（リソースレベル）</span>
 gcloud storage buckets add-iam-policy-binding gs://specific-bucket \
   --member="serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com" \
   --role="roles/storage.objectViewer"
 
-<span class="comment"># Policy Analyzer で特定の権限を持つ Principal を検索</span>
-gcloud asset analyze-iam-policy \
-  --project=PROJECT_ID \
-  --permissions="storage.objects.delete"
-
-<span class="comment"># 特定リソースにアクセスできる全 Identity を分析</span>
+<span class="comment"># Policy Analyzer: 特定リソースにアクセスできる全 Identity を分析</span>
 gcloud asset analyze-iam-policy \
   --organization=ORG_ID \
-  --full-resource-name="//storage.googleapis.com/projects/_/buckets/my-bucket"</pre>
+  --full-resource-name="//storage.googleapis.com/projects/_/buckets/my-bucket"
+
+<span class="comment"># Policy Analyzer: 特定の権限を持つ Principal を検索</span>
+gcloud asset analyze-iam-policy \
+  --project=PROJECT_ID \
+  --permissions="storage.objects.delete"</pre>
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>roles/editor / roles/owner を SA に付与しない</strong> — 過剰権限リスクの根本的排除</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>プロジェクトレベルよりリソースレベルの付与を優先</strong> — 影響範囲を最小限に絞る</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>Policy Recommender で不要な権限を定期的に削除</strong> — 権限のクリープ（肥大化）を防止</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>Policy Analyzer でアクセス権限を定期的に棚卸し</strong> — 意図しないアクセスを早期発見</div></div>
+    </div>
+    <a href="https://cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA のベストプラクティス</a>
+    <a href="https://cloud.google.com/asset-inventory/docs/analyzing-iam-policy" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Policy Analyzer</a>
   </div>
 </div>
 
@@ -920,8 +944,8 @@ gcloud logging read \
       <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>TokenCreator はプロジェクトレベルではなくSAリソースレベルで付与</strong> — 影響範囲を特定SAに限定</div></div>
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>PAMで承認フローを組み込む</strong> — 承認なしに特権SAを借用できないようにする</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/service-account-impersonation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA の権限借用</a>
-    <a href="https://docs.cloud.google.com/iam/docs/service-account-permissions" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA 権限のロール</a>
+    <a href="https://cloud.google.com/iam/docs/service-account-impersonation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA の権限借用</a>
+    <a href="https://cloud.google.com/iam/docs/service-account-permissions" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA 権限のロール</a>
   </div>
 </div>
 
@@ -961,8 +985,36 @@ gcloud auth print-access-token \
   --impersonate-service-account=sa1@PROJECT.iam.gserviceaccount.com,sa2@PROJECT.iam.gserviceaccount.com,sa3@PROJECT.iam.gserviceaccount.com</pre>
 
     <div class="callout callout-red"><span class="callout-icon">🚫</span><div><strong>自己権限借用（Self-Impersonation）は禁止</strong>: SA の短期クレデンシャルを使って、同じ SA の新しいアクセストークンを生成することは禁止されています。盗まれたトークンを無限に更新する攻撃を防ぐためです。</div></div>
-    <a href="https://docs.cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 短期クレデンシャルの作成</a>
-    <a href="https://docs.cloud.google.com/iam/docs/service-account-creds" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA クレデンシャルの種類</a>
+
+    <div class="sub-title">委任チェーン（Delegation Chain）</div>
+    <div class="callout callout-blue"><span class="callout-icon">💡</span><div>複数の SA を経由してクレデンシャルを生成するパターン。SA-1 が SA-2 の TokenCreator 権限を持ち、SA-2 が SA-3 の TokenCreator 権限を持つことで権限を段階的に移譲できます。ただし複雑さが増すと監査が困難になるため最小限に留めること。</div></div>
+    <div class="diagram-wrap">
+      <div class="diagram-label">▶ 委任チェーンのアーキテクチャ</div>
+      <div class="mermaid">
+flowchart LR
+    APP["アプリケーション\nSA-1 の権限を持つ"]
+    SA1["SA-1\n（中間 SA）"]
+    SA2["SA-2\n（中間 SA）"]
+    SA3["SA-3\n（特権 SA）"]
+    GCP["GCP リソース"]
+    APP -->|"SA-1 のトークンで\nSA-2 のトークンを要求"| SA2
+    SA1 -->|"TokenCreator on SA-2"| SA2
+    SA2 -->|"TokenCreator on SA-3"| SA3
+    APP -->|"SA-2 のトークンで\nSA-3 のトークンを要求"| SA3
+    APP -->|"SA-3 のトークンで\nリソースにアクセス"| GCP
+    style SA3 fill:#EA4335,color:#fff
+    style APP fill:#4285F4,color:#fff
+    style GCP fill:#34A853,color:#fff
+      </div>
+    </div>
+    <div class="bp-grid">
+      <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>SA の静的 JSON キーより短期クレデンシャルを優先</strong> — 自動失効するため漏洩リスクが低い</div></div>
+      <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>アクセストークンの有効期限を最小限に設定</strong> — デフォルト1時間を必要に応じて短縮</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>OIDC ID トークンは特定のオーディエンスに限定</strong> — 他のサービスへの不正な転用を防止</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>委任チェーンは複雑になるため最小限に</strong> — 複雑さが増すと監査が困難になる</div></div>
+    </div>
+    <a href="https://cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 短期クレデンシャルの作成</a>
+    <a href="https://cloud.google.com/iam/docs/service-account-creds" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 SA クレデンシャルの種類</a>
   </div>
 </div>
 
@@ -1062,8 +1114,8 @@ spec:
       <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>Namespace単位・Pod単位でKSAを分離</strong> — 最小権限の原則をコンテナレベルで適用</div></div>
       <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>GSAの命名はwlifgke-プレフィックスを付ける</strong> — Workload Identity用SAだと一目で分かる</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/workload-identities" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Workload Identities for GKE</a>
-    <a href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 GKE Autopilot セキュリティ</a>
+    <a href="https://cloud.google.com/iam/docs/workload-identities" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Workload Identities for GKE</a>
+    <a href="https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 GKE Autopilot セキュリティ</a>
   </div>
 </div>
 
@@ -1178,15 +1230,40 @@ jobs:
 <span class="comment"># AWS: 特定の IAM ロールのみ許可</span>
 --attribute-condition="attribute.aws_role == 'arn:aws:sts::ACCOUNT:assumed-role/ROLE'"</pre>
 
+    <div class="sub-title">AWS との設定例</div>
+    <div class="callout callout-blue"><span class="callout-icon">☁️</span><div>AWS EC2 や Lambda 等から SA キーなしで GCP リソースにアクセスする場合は AWS Provider を使用します。AWS IAM ロールの ARN を attribute-condition で限定することが必須です。</div></div>
+    <pre style="position:relative;"><button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="comment"># AWS 用 Workload Identity Pool Provider を作成</span>
+gcloud iam workload-identity-pools providers create-aws aws-provider \
+  --location=global \
+  --workload-identity-pool=aws-pool \
+  --display-name="AWS Provider" \
+  --account-id=AWS_ACCOUNT_ID
+
+<span class="comment"># AWS EC2 インスタンスが Pool を使えるように設定</span>
+gcloud iam service-accounts add-iam-policy-binding \
+  wlif-aws-app@PROJECT_ID.iam.gserviceaccount.com \
+  --role="roles/iam.workloadIdentityUser" \
+  --member="principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/aws-pool/attribute.aws_role/arn:aws:sts::AWS_ACCOUNT_ID:assumed-role/MY_ROLE_NAME"</pre>
+
+    <div class="sub-title">WIF のセキュリティリスクと対策</div>
+    <div class="table-wrap"><table>
+      <tr><th>リスク</th><th>対策</th></tr>
+      <tr><td><strong>なりすまし（Spoofing）</strong></td><td><code>attribute-condition</code> で許可する外部 IdP を制限</td></tr>
+      <tr><td><strong>権限昇格（Privilege Escalation）</strong></td><td>Pool Provider に最小限の属性マッピングを設定</td></tr>
+      <tr><td><strong>否認不可性の欠如</strong></td><td>Cloud Audit Logs で権限借用イベントを監視</td></tr>
+    </table></div>
+
     <div class="bp-grid">
       <div class="bp-card"><div class="bp-num">1</div><div class="bp-text"><strong>SA JSON キーの代わりに常にWIFを使用</strong> — キー管理不要・自動失効・より安全</div></div>
       <div class="bp-card"><div class="bp-num">2</div><div class="bp-text"><strong>attribute-conditionで外部IdPの範囲を必ず限定</strong> — なりすまし攻撃を防止</div></div>
-      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>環境（dev/prod）ごとに別のPoolを作成</strong> — 環境間の分離を確保</div></div>
-      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>GSAの命名にwlif-プレフィックスを使用</strong> — WIF用SAだと一目で識別できる</div></div>
+      <div class="bp-card"><div class="bp-num">3</div><div class="bp-text"><strong>環境（dev/staging/prod）ごとに別のPoolを作成</strong> — 環境間の分離を確保</div></div>
+      <div class="bp-card"><div class="bp-num">4</div><div class="bp-text"><strong>直接リソースアクセスをSA権限借用より優先</strong> — シンプルで管理しやすい</div></div>
+      <div class="bp-card"><div class="bp-num">5</div><div class="bp-text"><strong>GSAの命名にwlif-プレフィックスを使用</strong> — WIF用SAだと一目で識別できる</div></div>
+      <div class="bp-card"><div class="bp-num">6</div><div class="bp-text"><strong>Pool Providerは環境を表す意味のある名前にする</strong> — 管理・監査が容易になる</div></div>
     </div>
-    <a href="https://docs.cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Workload Identity Federation 概要</a>
-    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 WIF ベストプラクティス</a>
-    <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 デプロイパイプラインでの SA ベストプラクティス</a>
+    <a href="https://cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 Workload Identity Federation 概要</a>
+    <a href="https://cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 WIF ベストプラクティス</a>
+    <a href="https://cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" rel="noopener noreferrer" class="ref-link">🔗 デプロイパイプラインでの SA ベストプラクティス</a>
   </div>
 </div>
 
@@ -1196,6 +1273,108 @@ jobs:
   <div class="section-meta">
     <div class="section-number">試験対策</div>
     <div class="section-title-main">頻出パターン別 解法ガイド</div>
+  </div>
+</div>
+
+<!-- Detailed Exam Scenarios -->
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">試験-0</span>
+    <span class="topic-title">頻出シナリオ別 解法ガイド（選択問題対策）</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="callout callout-purple"><span class="callout-icon">📝</span><div>以下は試験で実際に出題される典型的なシナリオです。<strong>問題文のキーワードから正解を導く思考プロセス</strong>を確認してください。</div></div>
+
+    <div class="sub-title">パターン①: ロール選択問題</div>
+    <div class="compare-grid">
+      <div class="compare-bad">
+        <div class="compare-label">❌ 典型的な誤答パターン</div>
+        <div class="compare-content">
+          「Cloud Run へのデプロイと Artifact Registry の読み取りだけできればいい」<br><br>
+          ❌ <code>roles/editor</code>（過剰：あらゆるリソースの変更権限を含む）<br>
+          ❌ <code>roles/owner</code>（過剰：IAM管理権限まで含む）<br>
+          ❌ <code>roles/run.admin</code>（過剰：Cloud Run 管理権限を含む）
+        </div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✓ 正解の考え方（最小権限）</div>
+        <div class="compare-content">
+          必要な操作を正確に特定してロールを選択：<br><br>
+          ✅ Cloud Run へのデプロイ → <code>roles/run.developer</code><br>
+          ✅ Artifact Registry の読み取り → <code>roles/artifactregistry.reader</code><br><br>
+          この2つのロールの組み合わせが最小権限の正解。
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-title">パターン②: GKEでのSA問題</div>
+    <div class="compare-grid">
+      <div class="compare-bad">
+        <div class="compare-label">❌ よくある誤答</div>
+        <div class="compare-content">
+          「GKE 上のアプリが Cloud Storage バケットにアクセスする必要がある」<br><br>
+          ❌ SA の JSON キーを Kubernetes Secret に保存してマウントする<br>
+          ❌ Node の SA に直接権限を付与する（すべての Pod に影響）<br>
+          ❌ アプリコード内に認証情報をハードコードする
+        </div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✓ 正解: Workload Identity Federation for GKE</div>
+        <div class="compare-content">
+          KSA と GSA を紐付けてキーレス認証を実現：<br><br>
+          ✅ GKE クラスタで Workload Identity を有効化<br>
+          ✅ KSA に <code>iam.gke.io/gcp-service-account</code> アノテーション付与<br>
+          ✅ GSA に <code>roles/iam.workloadIdentityUser</code> を設定<br>
+          ✅ JSON キーは一切不要
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-title">パターン③: Workload Identity Federation 問題</div>
+    <div class="compare-grid">
+      <div class="compare-bad">
+        <div class="compare-label">❌ よくある誤答</div>
+        <div class="compare-content">
+          「GitHub Actions から SA JSON キーを使わずに GCP リソースを操作したい」<br><br>
+          ❌ SA JSON キーを GitHub Secrets に保存する（SA キー自体が非推奨）<br>
+          ❌ ADC を GitHub Actions 環境に設定する（GKE 等のコンピュート外では使えない）
+        </div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✓ 正解: Workload Identity Federation</div>
+        <div class="compare-content">
+          キーレス認証のセットアップ手順：<br><br>
+          ✅ 1. Workload Identity Pool を作成<br>
+          ✅ 2. GitHub の OIDC Provider を Pool に登録<br>
+          ✅ 3. GSA に <code>roles/iam.workloadIdentityUser</code> を付与<br>
+          ✅ 4. GitHub Actions で <code>google-github-actions/auth@v2</code> を使用<br>
+          ✅ 5. permissions: <code>id-token: write</code> を設定（必須）
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-title">パターン④: 短期クレデンシャル・権限借用問題</div>
+    <div class="compare-grid">
+      <div class="compare-bad">
+        <div class="compare-label">❌ よくある誤答</div>
+        <div class="compare-content">
+          「あるユーザーが特定の管理タスクを一時的に実行する必要がある。最小権限の原則に従い監査証跡を残すには？」<br><br>
+          ❌ ユーザーに直接 <code>roles/storage.admin</code> を付与する（永続的で過剰）<br>
+          ❌ SA の JSON キーを一時的に渡す（キー管理が困難）
+        </div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-label">✓ 正解: SA 権限借用（Impersonation）</div>
+        <div class="compare-content">
+          一時的な特権アクセスのベストプラクティス：<br><br>
+          ✅ 特権 SA に <code>roles/iam.serviceAccountTokenCreator</code> を付与<br>
+          ✅ <code>gcloud --impersonate-service-account</code> フラグで操作<br>
+          ✅ 操作は Cloud Audit Logs に自動記録<br>
+          ✅ 1時間でトークンが自動失効
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1246,8 +1425,73 @@ jobs:
         <div class="pattern-row"><span class="pattern-kw">「GKEでのJSON Keyを K8s Secret で管理」</span><span class="pattern-ans" style="color:#ef5350;">❌ Workload Identity を使う</span></div>
         <div class="pattern-row"><span class="pattern-kw">「カスタムロールはPJとOrg間で共有可能」</span><span class="pattern-ans" style="color:#ef5350;">❌ それぞれで独立管理</span></div>
         <div class="pattern-row"><span class="pattern-kw">「自己権限借用でトークンを無限更新」</span><span class="pattern-ans" style="color:#ef5350;">❌ IAMが禁止している</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「GKE Autopilotでは Workload Identity は任意設定」</span><span class="pattern-ans" style="color:#ef5350;">❌ 自動有効化される</span></div>
+        <div class="pattern-row"><span class="pattern-kw">「SA JSONキーをローテーションすれば安全」</span><span class="pattern-ans" style="color:#ef5350;">❌ WIF/短期クレデンシャルが最安全</span></div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ===== TRAPS ===== -->
+<div id="traps" class="section-header">
+  <div class="section-icon-wrap section-icon-red">⚠️</div>
+  <div class="section-meta">
+    <div class="section-number">引っかけ対策</div>
+    <div class="section-title-main">引っかけ問題パターン 完全攻略</div>
+  </div>
+</div>
+
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">罠-A</span>
+    <span class="topic-title">試験で狙われる「よくある誤解」 10選</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="callout callout-red"><span class="callout-icon">🚨</span><div>以下のパターンは試験で頻繁に出題される「引っかけ」です。<strong>全問正答できるまで繰り返し確認</strong>してください。</div></div>
+    <div class="table-wrap"><table>
+      <tr><th>よくある誤解（問題文に出る表現）</th><th>正しい理解</th></tr>
+      <tr>
+        <td>「SA JSON キーをローテーションすれば安全」</td>
+        <td>✅ キー自体を使わない WIF / 短期クレデンシャルが最安全。ローテーションしても漏洩リスクは残る。</td>
+      </tr>
+      <tr>
+        <td>「SA キーは90日で自動失効する」</td>
+        <td>❌ <strong>SA キーはデフォルトで失効しない（無期限）</strong>。IAM Conditions などで明示的に期限設定が必要。</td>
+      </tr>
+      <tr>
+        <td>「基本ロール（Editor）は開発環境なら使っていい」</td>
+        <td>❌ <strong>本番/開発問わず原則禁止</strong>。事前定義ロールを用途に合わせて使うこと。</td>
+      </tr>
+      <tr>
+        <td>「下位階層でロールを削除すれば上位の権限を制限できる」</td>
+        <td>❌ <strong>下位で削除しても上位の継承は無効にならない</strong>（権限は和集合）。制限したい場合は Deny Policy を使う。</td>
+      </tr>
+      <tr>
+        <td>「カスタムロールはプロジェクトと組織レベルで共有できる」</td>
+        <td>❌ <strong>それぞれのレベルで独立して管理される</strong>。Organization で作成したカスタムロールを Project で使うには別途作成が必要。</td>
+      </tr>
+      <tr>
+        <td>「GKE Autopilot では Workload Identity は任意設定」</td>
+        <td>❌ <strong>GKE Autopilot では Workload Identity が自動有効化</strong>される。無効化できない。</td>
+      </tr>
+      <tr>
+        <td>「自己権限借用で短期トークンを無限に更新できる」</td>
+        <td>❌ <strong>IAM は自己権限借用を明示的に禁止</strong>している。盗まれたトークンを使って新しいトークンを取得する攻撃を防ぐため。</td>
+      </tr>
+      <tr>
+        <td>「roles/iam.serviceAccountUser があればSAの短期トークンを生成できる」</td>
+        <td>❌ <strong>短期トークンの生成には <code>roles/iam.serviceAccountTokenCreator</code> が必要</strong>。<code>serviceAccountUser</code> は SA を VM 等にアタッチする (actAs) 権限。</td>
+      </tr>
+      <tr>
+        <td>「Node の SA に権限を付与すれば GKE の Pod から GCP API にアクセスできる」</td>
+        <td>⚠️ 技術的には可能だが<strong>全 Pod に影響するため非推奨</strong>。Pod 単位で KSA を使った Workload Identity を設定すること。</td>
+      </tr>
+      <tr>
+        <td>「set-iam-policy は add-iam-policy-binding より細かく制御できる」</td>
+        <td>❌ <strong>set-iam-policy はポリシー全体を上書きする危険なコマンド</strong>。個別バインディングには add/remove-iam-policy-binding を使う。</td>
+      </tr>
+    </table></div>
   </div>
 </div>
 
@@ -1428,6 +1672,26 @@ jobs:
   </div>
 </div>
 
+<!-- Final Advice -->
+<div class="topic-card">
+  <div class="topic-card-header" onclick="toggleCard(this)">
+    <span class="topic-number">📝 Advice</span>
+    <span class="topic-title">Section 4 学習の最終アドバイス — 必ず押さえる5つのポイント</span>
+    <span class="topic-toggle">▼</span>
+  </div>
+  <div class="topic-body">
+    <div class="callout callout-blue"><span class="callout-icon">💡</span><div>Section 4 はセキュリティ設計に関するドメインで、試験配点は約<strong>20%</strong>です。他のドメイン（GKE・Cloud Run・Terraform）とも深く連携しており、IAM・SA の知識は試験全体を通じて問われます。</div></div>
+    <div class="bp-grid">
+      <div class="bp-card" style="border-color:rgba(234,67,53,0.4);background:rgba(234,67,53,0.06);"><div class="bp-num" style="background:rgba(234,67,53,0.18);color:#ef5350;">①</div><div class="bp-text" style="color:var(--text-primary);"><strong style="color:#ef5350;">SA JSON キーは使わない</strong><br><span style="font-size:11.5px;color:var(--text-secondary);">→ WIF / 短期クレデンシャル / Workload Identity を使う。キーは漏洩・失効なし・管理困難のリスクを持つ。</span></div></div>
+      <div class="bp-card" style="border-color:rgba(234,67,53,0.4);background:rgba(234,67,53,0.06);"><div class="bp-num" style="background:rgba(234,67,53,0.18);color:#ef5350;">②</div><div class="bp-text" style="color:var(--text-primary);"><strong style="color:#ef5350;">基本ロール（Editor/Owner）は本番禁止</strong><br><span style="font-size:11.5px;color:var(--text-secondary);">→ 必ず事前定義ロールを用途に合わせて選択。カスタムロールは管理コストを考慮して最小限に。</span></div></div>
+      <div class="bp-card" style="border-color:rgba(52,168,83,0.4);background:rgba(52,168,83,0.06);"><div class="bp-num" style="background:rgba(52,168,83,0.18);color:var(--gcp-green);">③</div><div class="bp-text" style="color:var(--text-primary);"><strong style="color:var(--gcp-green);">GKE での SA 利用は Workload Identity Federation for GKE 一択</strong><br><span style="font-size:11.5px;color:var(--text-secondary);">→ KSA + GSA の紐付けでキーレス認証。GKE Autopilot では自動有効化。</span></div></div>
+      <div class="bp-card" style="border-color:rgba(26,115,232,0.4);background:rgba(26,115,232,0.06);"><div class="bp-num" style="background:rgba(26,115,232,0.18);color:var(--gcp-blue-light);">④</div><div class="bp-text" style="color:var(--text-primary);"><strong style="color:var(--gcp-blue-light);">権限借用（Impersonation）で一時的な特権アクセスを管理</strong><br><span style="font-size:11.5px;color:var(--text-secondary);">→ TokenCreator ロールで短期トークンを取得。1時間で自動失効し、Cloud Audit Logs に記録される。</span></div></div>
+      <div class="bp-card" style="border-color:rgba(124,77,255,0.4);background:rgba(124,77,255,0.06);"><div class="bp-num" style="background:rgba(124,77,255,0.18);color:var(--gcp-purple);">⑤</div><div class="bp-text" style="color:var(--text-primary);"><strong style="color:var(--gcp-purple);">Workload Identity Federation で外部ワークロードのキーレス認証</strong><br><span style="font-size:11.5px;color:var(--text-secondary);">→ Pool + Provider + attribute-condition の3点セットで設定。GitHub Actions / AWS / オンプレミスを SA キーなしで認証。</span></div></div>
+    </div>
+    <div class="callout callout-green"><span class="callout-icon">✅</span><div>IAM の継承（和集合）・Deny Policy の優先・SA の二重の役割・自己権限借用の禁止は<strong>試験頻出の概念</strong>です。理屈から理解することで、初見の問題でも正解を導けます。</div></div>
+  </div>
+</div>
+
 <!-- REFS -->
 <div id="refs" class="section-header">
   <div class="section-icon-wrap section-icon-blue">🔗</div>
@@ -1440,22 +1704,22 @@ jobs:
 <div class="refs-grid">
   <a href="https://cloud.google.com/learn/certification/cloud-engineer?hl=en" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>ACE 試験公式ページ</strong>認定資格の概要・登録</div></a>
   <a href="https://services.google.com/fh/files/misc/063026_associate_cloud_engineer_exam_guide_english.pdf" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>試験ガイド PDF（2025年6月版）</strong>出題範囲の詳細</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM リソース階層とアクセス制御</strong>継承メカニズムの詳細</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM ロールの概要</strong>ロール種別の説明</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/creating-custom-roles" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>カスタムロールの作成と管理</strong>YAML定義とライフサイクル</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/deny-overview" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Deny Policy 概要</strong>拒否ポリシーの仕組み</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/conditions-overview" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM Conditions</strong>条件付きバインディング</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA のベストプラクティス</strong>安全なSA管理の指針</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/service-account-impersonation" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA の権限借用</strong>Impersonationの設定方法</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>短期クレデンシャルの作成</strong>トークン種別と生成方法</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/service-account-creds" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA クレデンシャルの種類</strong>OAuth / OIDC / JWT</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/service-account-permissions" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA 権限のロール</strong>actAs権限の詳細</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Workload Identity Federation 概要</strong>外部ワークロードの認証</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>WIF ベストプラクティス</strong>セキュアな設定の指針</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/workload-identities" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Workload Identities for GKE</strong>GKEでのWIF設定</div></a>
-  <a href="https://docs.cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>デプロイパイプラインでのSAベストプラクティス</strong>CI/CD向け設定</div></a>
-  <a href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>GKE Autopilot セキュリティ</strong>自動セキュリティ強化</div></a>
-  <a href="https://docs.cloud.google.com/resource-manager/docs/access-control-org" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>組織レベルのアクセス制御</strong>Org IAM管理</div></a>
+  <a href="https://cloud.google.com/iam/docs/resource-hierarchy-access-control" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM リソース階層とアクセス制御</strong>継承メカニズムの詳細</div></a>
+  <a href="https://cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM ロールの概要</strong>ロール種別の説明</div></a>
+  <a href="https://cloud.google.com/iam/docs/creating-custom-roles" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>カスタムロールの作成と管理</strong>YAML定義とライフサイクル</div></a>
+  <a href="https://cloud.google.com/iam/docs/deny-overview" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Deny Policy 概要</strong>拒否ポリシーの仕組み</div></a>
+  <a href="https://cloud.google.com/iam/docs/conditions-overview" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM Conditions</strong>条件付きバインディング</div></a>
+  <a href="https://cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA のベストプラクティス</strong>安全なSA管理の指針</div></a>
+  <a href="https://cloud.google.com/iam/docs/service-account-impersonation" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA の権限借用</strong>Impersonationの設定方法</div></a>
+  <a href="https://cloud.google.com/iam/docs/create-short-lived-credentials-direct" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>短期クレデンシャルの作成</strong>トークン種別と生成方法</div></a>
+  <a href="https://cloud.google.com/iam/docs/service-account-creds" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA クレデンシャルの種類</strong>OAuth / OIDC / JWT</div></a>
+  <a href="https://cloud.google.com/iam/docs/service-account-permissions" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>SA 権限のロール</strong>actAs権限の詳細</div></a>
+  <a href="https://cloud.google.com/iam/docs/workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Workload Identity Federation 概要</strong>外部ワークロードの認証</div></a>
+  <a href="https://cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>WIF ベストプラクティス</strong>セキュアな設定の指針</div></a>
+  <a href="https://cloud.google.com/iam/docs/workload-identities" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>Workload Identities for GKE</strong>GKEでのWIF設定</div></a>
+  <a href="https://cloud.google.com/iam/docs/best-practices-for-using-service-accounts-in-deployment-pipelines" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>デプロイパイプラインでのSAベストプラクティス</strong>CI/CD向け設定</div></a>
+  <a href="https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-security" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>GKE Autopilot セキュリティ</strong>自動セキュリティ強化</div></a>
+  <a href="https://cloud.google.com/resource-manager/docs/access-control-org" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>組織レベルのアクセス制御</strong>Org IAM管理</div></a>
   <a href="https://cloud.google.com/blog/products/identity-security/iam-best-practice-guides-available-now" target="_blank" rel="noopener noreferrer" class="ref-item"><div class="ref-dot"></div><div class="ref-text"><strong>IAM ベストプラクティスガイド</strong>実務向け設計指針</div></a>
 </div>
 
