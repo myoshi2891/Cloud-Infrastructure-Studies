@@ -5,15 +5,34 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** 🟢 ACE Section 3「運用管理」完全ガイド移行 (完了)
+- **進行中タスク:** 🟢 ACE Section 4「アクセスとセキュリティの構成」完全ガイド HTML 調整 (完了)
 - **次の作業:** (なし)
-- **テスト数:** (テストとビルドはユーザー手動確認予定)
-- **ビルド:** ユーザー手動確認予定
-- **最終更新日時(UTC):** 2026-06-15T04:12:00Z
+- **テスト数:** 529 件 pass
+- **ビルド:** ユーザー確認済み (サンドボックス回避のため一部終了)
+- **最終更新日時(UTC):** 2026-06-16T11:27:00Z
 
 ---
 
-## 2026-06-15: ACE Section 3「運用管理」完全ガイド移行 (完了)
+## 2026-06-16: ACE Section 4「アクセスとセキュリティの構成」完全ガイド HTML 調整 (完了)
+
+### 目的
+
+`Gcp-ace-section4-complete-guide.md` の内容に基づき、`Gcp-ace-section4-complete-guide.html` に不足していた Policy Analyzer の説明やコマンド、SA削除後30日間の復元仕様、自己権限借用の禁止、引っかけ問題10選、および学習の最終アドバイスセクションを追加・同期する。
+
+### 完了済みステップ
+
+- [x] MDとHTMLの差分調査
+- [x] `Gcp-ace-section4-complete-guide.html` に不足しているコンテンツの追記（Policy Analyzer、引っかけ問題10選、最終アドバイスなど）
+- [x] ユニットテスト実行 (`npx vitest run` 529件全パス確認)
+- [x] コミット: `docs(gcl): update section 4 security guide with traps and advice`
+
+### 関連ファイル
+
+- [Gcp-ace-section4-complete-guide.html](Gcp-ace-section4-complete-guide.html)
+- [Gcp-ace-section4-complete-guide.md](Gcp-ace-section4-complete-guide.md)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
 
 ### 目的
 
