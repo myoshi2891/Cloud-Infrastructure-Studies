@@ -1,5 +1,13 @@
 /* Section 4 Specific CSS Module */
 
+/* Section 4 固有カラートークン */
+:root {
+    --bg-sidebar: #09111f;
+    --code-bg: #060d1a;
+    --tag-bg: #0d2548;
+    --bg-card2: #142235;
+}
+
 .ace-section4-page {
     display: flex;
     min-height: 100vh;
@@ -410,7 +418,7 @@
 /* CONTENT CONTAINER */
 .content {
     padding: 0 24px 60px;
-    max-width: 100%;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -1202,7 +1210,7 @@
         transform: translateX(-100%);
         transition: transform 0.3s ease;
         z-index: 40;
-        background: #09111f;
+        background: var(--bg-sidebar);
         top: 0;
     }
 
