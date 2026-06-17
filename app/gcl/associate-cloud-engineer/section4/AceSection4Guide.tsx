@@ -12,7 +12,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
     return (
         <div className={styles['diagram-wrap']}>
             <div className={styles['diagram-label']}>▶ {label}</div>
-            <div className={styles['mermaid-wrap']}>
+            <div id={id} className={styles['mermaid-wrap']}>
                 <MermaidDiagram chart={chart} ariaLabel={label} />
             </div>
         </div>
