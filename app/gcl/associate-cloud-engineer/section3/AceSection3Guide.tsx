@@ -85,40 +85,40 @@ export default function AceSection3Guide() {
                             <div className="pbar">
                                 <div
                                     className="pfill"
-                                    style={{ width: '40%', backgroundColor: 'var(--blue)' }}
+                                    style={{ width: '40%', backgroundColor: 'var(--color-google-blue)' }}
                                 />
                             </div>
-                            <div className="pct-val" style={{ color: 'var(--blue)' }}>★★★★</div>
+                            <div className="pct-val" style={{ color: 'var(--color-google-blue)' }}>★★★★</div>
                         </div>
                         <div className="prow">
                             <div className="pl">3.2 ストレージ・データ管理</div>
                             <div className="pbar">
                                 <div
                                     className="pfill"
-                                    style={{ width: '30%', backgroundColor: 'var(--green)' }}
+                                    style={{ width: '30%', backgroundColor: 'var(--color-google-green)' }}
                                 />
                             </div>
-                            <div className="pct-val" style={{ color: 'var(--green)' }}>★★★</div>
+                            <div className="pct-val" style={{ color: 'var(--color-google-green)' }}>★★★</div>
                         </div>
                         <div className="prow">
                             <div className="pl">3.3 ネットワーク管理</div>
                             <div className="pbar">
                                 <div
                                     className="pfill"
-                                    style={{ width: '25%', backgroundColor: 'var(--amber)' }}
+                                    style={{ width: '25%', backgroundColor: 'var(--color-google-yellow)' }}
                                 />
                             </div>
-                            <div className="pct-val" style={{ color: 'var(--amber)' }}>★★★</div>
+                            <div className="pct-val" style={{ color: 'var(--color-google-yellow)' }}>★★★</div>
                         </div>
                         <div className="prow">
                             <div className="pl">3.4 モニタリング・ロギング</div>
                             <div className="pbar">
                                 <div
                                     className="pfill"
-                                    style={{ width: '35%', backgroundColor: 'var(--red)' }}
+                                    style={{ width: '35%', backgroundColor: 'var(--color-google-red)' }}
                                 />
                             </div>
-                            <div className="pct-val" style={{ color: 'var(--red)' }}>★★★★</div>
+                            <div className="pct-val" style={{ color: 'var(--color-google-red)' }}>★★★★</div>
                         </div>
                     </div>
                     <Diagram id="diag-1" label="Section 3 — Day2 Operations 全体フロー" />

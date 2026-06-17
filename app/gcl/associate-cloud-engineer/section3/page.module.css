@@ -357,11 +357,6 @@
     overflow: hidden;
 }
 
-.ace-section3-page :global(.main-content) > :global(:not(.divider)) {
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-}
 
 .ace-section3-page :global(.section-block) {
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
