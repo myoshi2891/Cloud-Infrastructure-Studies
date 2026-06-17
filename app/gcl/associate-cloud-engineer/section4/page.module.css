@@ -1,12 +1,5 @@
 /* Section 4 Specific CSS Module */
 
-/* Section 4 固有カラートークン */
-:root {
-    --bg-sidebar: #09111f;
-    --code-bg: #060d1a;
-    --tag-bg: #0d2548;
-    --bg-card2: #142235;
-}
 
 .ace-section4-page {
     display: flex;

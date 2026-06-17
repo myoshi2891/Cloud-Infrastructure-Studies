@@ -9,7 +9,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **次の作業:** (なし)
 - **テスト数:** プロジェクト全体で 82 テストファイル (合計 529 テストケース) パス / Section 4 スコープ: 1 テストファイル (11 テストケースがパス)
 - **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-06-15T04:11:48.641Z
+- **最終更新日時(UTC):** 2026-06-17T00:00:00.000Z
 
 ---
 
@@ -80,7 +80,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/gcl/associate-cloud-engineer/section3/AceSection3Guide.tsx](app/gcl/associate-cloud-engineer/section3/AceSection3Guide.tsx)
 - [app/gcl/associate-cloud-engineer/section3/NavBar.tsx](app/gcl/associate-cloud-engineer/section3/NavBar.tsx)
 - [app/gcl/associate-cloud-engineer/section3/constants.ts](app/gcl/associate-cloud-engineer/section3/constants.ts)
-- [app/gcl/associate-cloud-engineer/section3/page.css](app/gcl/associate-cloud-engineer/section3/page.css)
+- [app/gcl/associate-cloud-engineer/section3/page.module.css](app/gcl/associate-cloud-engineer/section3/page.module.css)
 - [__tests__/gcl/associate-cloud-engineer/section3/page.test.tsx](__tests__/gcl/associate-cloud-engineer/section3/page.test.tsx)
 - [app/constants.ts](app/constants.ts)
 - [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
