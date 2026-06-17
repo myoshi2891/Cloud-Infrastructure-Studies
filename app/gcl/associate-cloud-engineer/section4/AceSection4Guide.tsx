@@ -318,24 +318,24 @@ gcloud projects set-iam-policy PROJECT_ID policy.json`} />
                                     <code>
                                         <div className={styles['code-line']}><span className={styles.comment}># ユーザーにロールを付与</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"user:alice@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/compute.instanceAdmin.v1"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;user:alice@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/compute.instanceAdmin.v1&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># グループにロールを付与（推奨）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"group:dev-team@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/run.developer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;group:dev-team@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/run.developer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># 条件付きロールバインディング（IAM Conditions）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"user:contractor@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/viewer"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--condition</span>=<span className={styles.val}>'title=Temporary Access,expression=request.time &lt; timestamp("2025-12-31T23:59:59Z")'</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;user:contractor@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/viewer&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--condition</span>=<span className={styles.val}>&apos;title=Temporary Access,expression=request.time &lt; timestamp(&quot;2025-12-31T23:59:59Z&quot;)&apos;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># ロールを削除</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects remove-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"user:alice@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/compute.instanceAdmin.v1"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;user:alice@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/compute.instanceAdmin.v1&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># ポリシーファイルを使った一括更新（注意：完全上書き）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects set-iam-policy PROJECT_ID policy.json</div>
@@ -441,29 +441,29 @@ gcloud run services add-iam-policy-binding SERVICE_NAME \\
                                     <code>
                                         <div className={styles['code-line']}><span className={styles.comment}># === 組織レベル ===</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> organizations add-iam-policy-binding ORG_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"group:security-team@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/securitycenter.admin"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;group:security-team@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/securitycenter.admin&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># === フォルダレベル ===</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> resource-manager folders add-iam-policy-binding FOLDER_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"group:dev-team@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/editor"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;group:dev-team@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/editor&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># === プロジェクトレベル ===</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"user:alice@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/run.developer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;user:alice@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/run.developer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># === リソースレベル（Cloud Storage バケット）===</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> storage buckets add-iam-policy-binding gs://my-bucket \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:app@project.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/storage.objectViewer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:app@project.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/storage.objectViewer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># === リソースレベル（Cloud Run サービス）===</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> run services add-iam-policy-binding SERVICE_NAME \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--region</span>=asia-northeast1 \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:caller@project.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/run.invoker"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:caller@project.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/run.invoker&quot;</span></div>
                                     </code>
                                 </pre>
                             </div>
@@ -618,9 +618,9 @@ gcloud iam roles delete cloudRunDeployer --project=PROJECT_ID`} />
                                     <code>
                                         <div className={styles['code-line']}><span className={styles.comment}># YAML でカスタムロールを定義</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>cat</span> &gt; custom-deployer-role.yaml &lt;&lt;EOF</div>
-                                        <div className={styles['code-line']}><span className={styles.val}>title: "Cloud Run Deployer"</span></div>
-                                        <div className={styles['code-line']}><span className={styles.val}>description: "Cloud Run へのデプロイと Artifact Registry の読み取りのみ"</span></div>
-                                        <div className={styles['code-line']}><span className={styles.val}>stage: "GA"</span></div>
+                                        <div className={styles['code-line']}><span className={styles.val}>title: &quot;Cloud Run Deployer&quot;</span></div>
+                                        <div className={styles['code-line']}><span className={styles.val}>description: &quot;Cloud Run へのデプロイと Artifact Registry の読み取りのみ&quot;</span></div>
+                                        <div className={styles['code-line']}><span className={styles.val}>stage: &quot;GA&quot;</span></div>
                                         <div className={styles['code-line']}><span className={styles.val}>includedPermissions:</span></div>
                                         <div className={styles['code-line']}><span className={styles.val}>  - run.services.create</span></div>
                                         <div className={styles['code-line']}><span className={styles.val}>  - run.services.update</span></div>
@@ -643,7 +643,7 @@ gcloud iam roles delete cloudRunDeployer --project=PROJECT_ID`} />
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--file</span>=custom-deployer-role.yaml</div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># カスタムロールの一覧確認</span></div>
-                                        <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam roles list <span className={styles.flag}>--project</span>=PROJECT_ID <span className={styles.flag}>--filter</span>=<span className={styles.val}>"name~customRoles"</span></div>
+                                        <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam roles list <span className={styles.flag}>--project</span>=PROJECT_ID <span className={styles.flag}>--filter</span>=<span className={styles.val}>&quot;name~customRoles&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># 権限を追加</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam roles update cloudRunDeployer \</div>
@@ -762,16 +762,16 @@ gcloud iam service-accounts undelete SA_UNIQUE_ID`} />
                                     <code>
                                         <div className={styles['code-line']}><span className={styles.comment}># SA の作成（用途が分かる命名規則を使う）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts create vm-web-server \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"Web Server VM Service Account"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--description</span>=<span className={styles.val}>"Prod web server VM - reads GCS, writes Firestore"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;Web Server VM Service Account&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--description</span>=<span className={styles.val}>&quot;Prod web server VM - reads GCS, writes Firestore&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Workload Identity Federation 用（wlif- プレフィックス）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts create wlif-github-deploy \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"GitHub Actions Deployment SA"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;GitHub Actions Deployment SA&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># GKE Workload Identity 用（wlifgke- プレフィックス）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts create wlifgke-api-backend \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"GKE API Backend Service Account"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;GKE API Backend Service Account&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># SA の一覧確認</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts list</div>
@@ -852,33 +852,33 @@ gcloud asset analyze-iam-policy \\
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Cloud Storage への読み取りのみ（プロジェクトレベル）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/storage.objectViewer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/storage.objectViewer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># BigQuery への読み取りのみ</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/bigquery.dataViewer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/bigquery.dataViewer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Secret Manager のシークレット読み取りのみ</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/secretmanager.secretAccessor"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/secretmanager.secretAccessor&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># より細かい制御：特定のバケットのみにアクセスを制限（リソースレベル）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> storage buckets add-iam-policy-binding gs://specific-bucket \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/storage.objectViewer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:my-app@PROJECT_ID.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/storage.objectViewer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Policy Analyzer: 特定リソースにアクセスできる全 Identity を分析</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> asset analyze-iam-policy \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--organization</span>=ORG_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--full-resource-name</span>=<span className={styles.val}>"//storage.googleapis.com/projects/_/buckets/my-bucket"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--full-resource-name</span>=<span className={styles.val}>&quot;//storage.googleapis.com/projects/_/buckets/my-bucket&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Policy Analyzer: 特定の権限を持つ Principal を検索</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> asset analyze-iam-policy \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--project</span>=PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--permissions</span>=<span className={styles.val}>"storage.objects.delete"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--permissions</span>=<span className={styles.val}>&quot;storage.objects.delete&quot;</span></div>
                                     </code>
                                 </pre>
                             </div>
@@ -1030,8 +1030,8 @@ gcloud iam service-accounts set-iam-policy \\
                                         <div className={styles['code-line']}><span className={styles.comment}># SA への actAs 権限の付与（SA を VM にアタッチできるようにする）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts add-iam-policy-binding \</div>
                                         <div className={styles['code-line']}>  privileged-sa@PROJECT_ID.iam.gserviceaccount.com \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"user:alice@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/iam.serviceAccountUser"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;user:alice@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/iam.serviceAccountUser&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># SA の IAM ポリシー（誰がこの SA を使えるか）を確認</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts get-iam-policy \</div>
@@ -1123,14 +1123,14 @@ gcloud logging read \\
                                     <code>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 1: privileged-sa に必要な権限を付与</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:privileged-sa@PROJECT_ID.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/storage.admin"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:privileged-sa@PROJECT_ID.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/storage.admin&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 2: alice に SA のトークン作成権限を付与</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts add-iam-policy-binding \</div>
                                         <div className={styles['code-line']}>  privileged-sa@PROJECT_ID.iam.gserviceaccount.com \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"user:alice@example.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/iam.serviceAccountTokenCreator"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;user:alice@example.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/iam.serviceAccountTokenCreator&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 3a: alice が権限借用で操作（gcloud コマンド）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> storage ls gs://my-bucket \</div>
@@ -1149,7 +1149,7 @@ gcloud logging read \\
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># 権限借用のイベントを Cloud Logging で検索</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> logging read \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.val}>'protoPayload.methodName="GenerateAccessToken" AND protoPayload.request.name=~"privileged-sa"'</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.val}>&apos;protoPayload.methodName=&quot;GenerateAccessToken&quot; AND protoPayload.request.name=~&quot;privileged-sa&quot;&apos;</span> \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--limit</span>=10 <span className={styles.flag}>--format</span>=json</div>
                                     </code>
                                 </pre>
@@ -1242,10 +1242,10 @@ gcloud auth print-access-token \\
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># REST API を使ってアクセストークンを生成</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>curl</span> -X POST \</div>
-                                        <div className={styles['code-line']}>  -H <span className={styles.val}>"Authorization: Bearer $(gcloud auth print-access-token)"</span> \</div>
-                                        <div className={styles['code-line']}>  -H <span className={styles.val}>"Content-Type: application/json"</span> \</div>
+                                        <div className={styles['code-line']}>  -H <span className={styles.val}>&quot;Authorization: Bearer $(gcloud auth print-access-token)&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  -H <span className={styles.val}>&quot;Content-Type: application/json&quot;</span> \</div>
                                         <div className={styles['code-line']}>  -d <span className={styles.val}>{`'{"scope": ["https://www.googleapis.com/auth/cloud-platform"]}'`}</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.val}>"https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/my-sa@PROJECT_ID.iam.gserviceaccount.com:generateAccessToken"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.val}>&quot;https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/my-sa@PROJECT_ID.iam.gserviceaccount.com:generateAccessToken&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># 委任チェーンでトークンを生成（複数の SA を経由）</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> auth print-access-token \</div>
@@ -1333,18 +1333,18 @@ kubectl annotate serviceaccount my-ksa \\
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 2: GSA を作成</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts create wlifgke-api-backend \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"GKE API Backend GSA"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;GKE API Backend GSA&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 3: GSA に必要な権限を付与</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/storage.objectViewer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/storage.objectViewer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 4: KSA が GSA を使えるように IAM を設定</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts add-iam-policy-binding \</div>
                                         <div className={styles['code-line']}>  wlifgke-api-backend@PROJECT_ID.iam.gserviceaccount.com \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=roles/iam.workloadIdentityUser \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:PROJECT_ID.svc.id.goog[NAMESPACE/KSA_NAME]&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 5: KSA を作成してアノテーションを付ける</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>kubectl</span> create serviceaccount my-ksa <span className={styles.flag}>--namespace</span> my-namespace</div>
@@ -1461,34 +1461,34 @@ gcloud iam service-accounts add-iam-policy-binding \\
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 1: Workload Identity Pool を作成</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam workload-identity-pools create github-pool \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--location</span>=global \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"GitHub Actions Pool"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--description</span>=<span className={styles.val}>"GitHub Actions Workload Identity Pool"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;GitHub Actions Pool&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--description</span>=<span className={styles.val}>&quot;GitHub Actions Workload Identity Pool&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 2: GitHub の OIDC Provider を登録</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam workload-identity-pools providers create-oidc github-provider \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--location</span>=global \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--workload-identity-pool</span>=github-pool \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"GitHub OIDC Provider"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--issuer-uri</span>=<span className={styles.val}>"https://token.actions.githubusercontent.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--attribute-mapping</span>=<span className={styles.val}>"google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.actor=assertion.actor"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>"assertion.repository_owner == 'my-org'"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;GitHub OIDC Provider&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--issuer-uri</span>=<span className={styles.val}>&quot;https://token.actions.githubusercontent.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--attribute-mapping</span>=<span className={styles.val}>&quot;google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.actor=assertion.actor&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>&quot;assertion.repository_owner == &apos;my-org&apos;&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 3: GSA を作成</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts create wlif-github-deploy \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"GitHub Actions Deployment SA"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;GitHub Actions Deployment SA&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 4: GSA に必要な権限を付与</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> projects add-iam-policy-binding PROJECT_ID \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"serviceAccount:wlif-github-deploy@PROJECT_ID.iam.gserviceaccount.com"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/run.developer"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;serviceAccount:wlif-github-deploy@PROJECT_ID.iam.gserviceaccount.com&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/run.developer&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># Step 5: Workload Identity Pool が GSA を権限借用できるように設定</span></div>
                                         <div className={styles['code-line']}>WORKLOAD_IDENTITY_POOL_ID=$(gcloud iam workload-identity-pools describe github-pool \</div>
-                                        <div className={styles['code-line']}>  --location=global --format="value(name)")</div>
+                                        <div className={styles['code-line']}>  --location=global --format=&quot;value(name)&quot;)</div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts add-iam-policy-binding \</div>
                                         <div className={styles['code-line']}>  wlif-github-deploy@PROJECT_ID.iam.gserviceaccount.com \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/iam.workloadIdentityUser"</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/iam.workloadIdentityUser&quot;</span> \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>{"\"principalSet://iam.googleapis.com/\\${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/my-org/my-repo\""}</span></div>
                                     </code>
                                 </pre>
@@ -1571,13 +1571,13 @@ jobs:
                                 <pre>
                                     <code>
                                         <div className={styles['code-line']}><span className={styles.comment}># GitHub Actions: 特定の Organization のリポジトリのみ許可</span></div>
-                                        <div className={styles['code-line']}><span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>"assertion.repository_owner == 'my-org'"</span></div>
+                                        <div className={styles['code-line']}><span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>&quot;assertion.repository_owner == &apos;my-org&apos;&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># GitHub Actions: 特定のリポジトリのみ許可（より厳密）</span></div>
-                                        <div className={styles['code-line']}><span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>"assertion.repository == 'my-org/my-repo'"</span></div>
+                                        <div className={styles['code-line']}><span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>&quot;assertion.repository == &apos;my-org/my-repo&apos;&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># AWS: 特定の IAM ロールのみ許可</span></div>
-                                        <div className={styles['code-line']}><span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>"attribute.aws_role == 'arn:aws:sts::ACCOUNT:assumed-role/ROLE'"</span></div>
+                                        <div className={styles['code-line']}><span className={styles.flag}>--attribute-condition</span>=<span className={styles.val}>&quot;attribute.aws_role == &apos;arn:aws:sts::ACCOUNT:assumed-role/ROLE&apos;&quot;</span></div>
                                     </code>
                                 </pre>
                             </div>
@@ -1613,21 +1613,21 @@ gcloud iam service-accounts add-iam-policy-binding \\
                                         <div className={styles['code-line']}><span className={styles.comment}># AWS 用 Workload Identity Pool を作成</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam workload-identity-pools create aws-pool \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--location</span>=global \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"AWS Pool"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--description</span>=<span className={styles.val}>"AWS Workload Identity Pool"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;AWS Pool&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--description</span>=<span className={styles.val}>&quot;AWS Workload Identity Pool&quot;</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># AWS 用 Workload Identity Pool Provider を作成</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam workload-identity-pools providers create-aws aws-provider \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--location</span>=global \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--workload-identity-pool</span>=aws-pool \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>"AWS Provider"</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--display-name</span>=<span className={styles.val}>&quot;AWS Provider&quot;</span> \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--account-id</span>=AWS_ACCOUNT_ID</div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># AWS EC2 インスタンスが Pool を使えるように設定</span></div>
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts add-iam-policy-binding \</div>
                                         <div className={styles['code-line']}>  wlif-aws-app@PROJECT_ID.iam.gserviceaccount.com \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/iam.workloadIdentityUser"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/aws-pool/attribute.aws_role/arn:aws:sts::AWS_ACCOUNT_ID:assumed-role/MY_ROLE_NAME"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>&quot;roles/iam.workloadIdentityUser&quot;</span> \</div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>&quot;principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/aws-pool/attribute.aws_role/arn:aws:sts::AWS_ACCOUNT_ID:assumed-role/MY_ROLE_NAME&quot;</span></div>
                                     </code>
                                 </pre>
                             </div>
