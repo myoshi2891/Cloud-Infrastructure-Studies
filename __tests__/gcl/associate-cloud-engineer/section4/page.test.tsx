@@ -16,7 +16,7 @@ describe('ACE Section 4 完全ガイド ページ', () => {
 
     it('試験ガイドの年表記が 2025 に対応していること', () => {
         // 元HTMLは「2025年6月版」もしくは「2025年6月改訂版」
-        expect(screen.getByText(/2025年6月/)).toBeInTheDocument();
+        expect(screen.getAllByText(/2025年6月/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('Section 4 の配点が ~20% であること', () => {
