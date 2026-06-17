@@ -28,11 +28,11 @@ describe('ACE Section 4 完全ガイド ページ', () => {
     });
 
     it('4.1 IAMの管理の見出しが存在すること', () => {
-        expect(screen.getByText(/IAMの管理/)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /^IAMの管理$/ })).toBeInTheDocument();
     });
 
     it('4.2 サービスアカウントの管理の見出しが存在すること', () => {
-        expect(screen.getByText(/サービスアカウントの管理/)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /^サービスアカウントの管理$/ })).toBeInTheDocument();
     });
 
     it('頻出パターン別 解法ガイドの見出しが存在すること', () => {
@@ -53,7 +53,7 @@ describe('ACE Section 4 完全ガイド ページ', () => {
     });
 
     it('サイドバーナビが存在しアンカーリンクを含むこと', () => {
-        const nav = screen.getByRole('navigation', { name: /Section 4/ });
+        const nav = screen.getByRole('navigation', { name: /^Section 4 ガイドナビゲーション$/ });
         expect(nav).toBeInTheDocument();
         const links = within(nav).getAllByRole('link');
         expect(links.length).toBeGreaterThanOrEqual(15);
