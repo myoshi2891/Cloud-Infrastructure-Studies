@@ -44,7 +44,7 @@ function ChecklistItem({ label }: { label: string }) {
                 onClick={() => setChecked(!checked)}
                 aria-pressed={checked}
             >
-                <span className={`${styles['check-box']} ${checked ? styles.checked : ''}`} />
+                <span className={`${styles['check-box']} check-box ${checked ? styles.checked : ''}`} />
                 <span>{label}</span>
             </button>
         </li>
@@ -122,7 +122,7 @@ export default function AceSection4Guide() {
                         <div className={`${styles['section-icon-wrap']} ${styles['section-icon-purple']}`}>🛡️</div>
                         <div className={styles['section-meta']}>
                             <div className={styles['section-number']}>基礎</div>
-                            <div className={styles['section-title-main']}>セキュリティ設計の基本原則</div>
+                            <h2 className={styles['section-title-main']}>セキュリティ設計の基本原則</h2>
                         </div>
                     </div>
 
@@ -177,7 +177,7 @@ export default function AceSection4Guide() {
                         <div className={`${styles['section-icon-wrap']} ${styles['section-icon-blue']}`}>🔑</div>
                         <div className={styles['section-meta']}>
                             <div className={styles['section-number']}>Section 4.1</div>
-                            <div className={styles['section-title-main']}>IAMの管理</div>
+                            <h2 className={styles['section-title-main']}>IAMの管理</h2>
                         </div>
                         <span className={styles['section-weight']}>~5–6問</span>
                     </div>
@@ -679,7 +679,7 @@ gcloud iam roles delete cloudRunDeployer --project=PROJECT_ID`} />
                         <div className={`${styles['section-icon-wrap']} ${styles['section-icon-cyan']}`}>🤖</div>
                         <div className={styles['section-meta']}>
                             <div className={styles['section-number']}>Section 4.2</div>
-                            <div className={styles['section-title-main']}>サービスアカウントの管理</div>
+                            <h2 className={styles['section-title-main']}>サービスアカウントの管理</h2>
                         </div>
                         <span className={styles['section-weight']}>~5–6問</span>
                     </div>
@@ -1244,7 +1244,7 @@ gcloud auth print-access-token \\
                                         <div className={styles['code-line']}><span className={styles.cmd}>curl</span> -X POST \</div>
                                         <div className={styles['code-line']}>  -H <span className={styles.val}>"Authorization: Bearer $(gcloud auth print-access-token)"</span> \</div>
                                         <div className={styles['code-line']}>  -H <span className={styles.val}>"Content-Type: application/json"</span> \</div>
-                                        <div className={styles['code-line']}>  -d <span className={styles.val}>'{"scope": ["https://www.googleapis.com/auth/cloud-platform"]}'</span> \</div>
+                                        <div className={styles['code-line']}>  -d <span className={styles.val}>{`'{"scope": ["https://www.googleapis.com/auth/cloud-platform"]}'`}</span> \</div>
                                         <div className={styles['code-line']}>  <span className={styles.val}>"https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/my-sa@PROJECT_ID.iam.gserviceaccount.com:generateAccessToken"</span></div>
                                         <div className={styles['code-line']}>&nbsp;</div>
                                         <div className={styles['code-line']}><span className={styles.comment}># 委任チェーンでトークンを生成（複数の SA を経由）</span></div>
@@ -1489,7 +1489,7 @@ gcloud iam service-accounts add-iam-policy-binding \\
                                         <div className={styles['code-line']}><span className={styles.cmd}>gcloud</span> iam service-accounts add-iam-policy-binding \</div>
                                         <div className={styles['code-line']}>  wlif-github-deploy@PROJECT_ID.iam.gserviceaccount.com \</div>
                                         <div className={styles['code-line']}>  <span className={styles.flag}>--role</span>=<span className={styles.val}>"roles/iam.workloadIdentityUser"</span> \</div>
-                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>"principalSet://iam.googleapis.com/\${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/my-org/my-repo"</span></div>
+                                        <div className={styles['code-line']}>  <span className={styles.flag}>--member</span>=<span className={styles.val}>{"\"principalSet://iam.googleapis.com/\\${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/my-org/my-repo\""}</span></div>
                                     </code>
                                 </pre>
                             </div>
@@ -1677,7 +1677,7 @@ gcloud iam service-accounts add-iam-policy-binding \\
                         <div className={`${styles['section-icon-wrap']} ${styles['section-icon-red']}`}>🎯</div>
                         <div className={styles['section-meta']}>
                             <div className={styles['section-number']}>試験対策</div>
-                            <div className={styles['section-title-main']}>頻出パターン別 解法ガイド</div>
+                            <h2 className={styles['section-title-main']}>頻出パターン別 解法ガイド</h2>
                         </div>
                     </div>
 
@@ -1845,7 +1845,7 @@ gcloud iam service-accounts add-iam-policy-binding \\
                         <div className={`${styles['section-icon-wrap']} ${styles['section-icon-red']}`}>⚠️</div>
                         <div className={styles['section-meta']}>
                             <div className={styles['section-number']}>引っかけ対策</div>
-                            <div className={styles['section-title-main']}>引っかけ問題パターン 完全攻略</div>
+                            <h2 className={styles['section-title-main']}>引っかけ問題パターン 完全攻略</h2>
                         </div>
                     </div>
 
@@ -1922,7 +1922,7 @@ gcloud iam service-accounts add-iam-policy-binding \\
                         <div className={`${styles['section-icon-wrap']} ${styles['section-icon-green']}`}>✅</div>
                         <div className={styles['section-meta']}>
                             <div className={styles['section-number']}>直前確認</div>
-                            <div className={styles['section-title-main']}>Section 4 直前チェックリスト</div>
+                            <h2 className={styles['section-title-main']}>Section 4 直前チェックリスト</h2>
                         </div>
                     </div>
 
@@ -2038,7 +2038,7 @@ gcloud iam service-accounts add-iam-policy-binding \\
                         <div className={`${styles['section-icon-wrap']} ${styles['section-icon-blue']}`}>🔗</div>
                         <div className={styles['section-meta']}>
                             <div className={styles['section-number']}>参考リソース</div>
-                            <div className={styles['section-title-main']}>公式ドキュメント一覧</div>
+                            <h2 className={styles['section-title-main']}>公式ドキュメント一覧</h2>
                         </div>
                     </div>
 
