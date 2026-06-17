@@ -789,6 +789,10 @@
             .mermaid {
                 display: flex;
                 justify-content: center;
+                padding-bottom: 24px;
+            }
+            .mermaid svg {
+                overflow: visible !important;
             }
 
             /* ---- COMPARE GRID ---- */
@@ -833,7 +837,7 @@
             /* ---- QUICK ANSWER TABLE ---- */
             .qa-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
                 gap: 13px;
                 margin: 14px 0;
             }
@@ -873,27 +877,25 @@
                 color: var(--red-lt);
             }
             .qa-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: baseline;
-                gap: 8px;
-                padding: 7px 14px;
+                display: grid;
+                grid-template-columns: 1.1fr 1fr;
+                align-items: center;
+                gap: 16px;
+                padding: 10px 14px;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-                font-size: 12px;
-                flex-wrap: wrap;
+                font-size: 13px;
             }
             .qa-row:last-child {
                 border-bottom: none;
             }
             .qa-q {
                 color: var(--t-muted);
-                font-style: italic;
-                flex: 1;
-                min-width: 120px;
+                font-style: normal;
+                line-height: 1.4;
             }
             .qa-a {
                 font-weight: 700;
-                text-align: right;
+                text-align: left;
             }
             .qa-a.blue {
                 color: var(--blue-lt);
@@ -2299,13 +2301,18 @@ gcloud iam service-accounts set-iam-policy \
                         <div class="diagram">
                             <div class="diagram-label">▶ 権限借用のシーケンス</div>
                             <div class="mermaid">
-                                sequenceDiagram participant A as alice（通常権限） participant IAM
-                                as GCP IAM participant PSA as privileged-sa participant API as GCP
-                                API A->>IAM: TokenCreator 権限でトークン要求 IAM->>IAM: alice
-                                の権限を確認 IAM-->>A: 短期トークン発行（最大1時間） A->>API:
-                                短期トークンで privileged-sa として操作 API-->>A: 結果を返す Note
-                                over IAM: 監査ログに「alice が privileged-sa を使って操作」が記録
-                                Note over A: 1時間後にトークン自動失効
+                                sequenceDiagram
+                                    participant A as alice（通常権限）
+                                    participant IAM as GCP IAM
+                                    participant PSA as privileged-sa
+                                    participant API as GCP API
+                                    A->>IAM: TokenCreator 権限でトークン要求
+                                    IAM->>IAM: alice の権限を確認
+                                    IAM-->>A: 短期トークン発行（最大1時間）
+                                    A->>API: 短期トークンで privileged-sa として操作
+                                    API-->>A: 結果を返す
+                                    Note over IAM: 監査ログに「alice が privileged-sa を使って操作」が記録
+                                    Note over A: 1時間後にトークン自動失効
                             </div>
                         </div>
 
@@ -3922,7 +3929,7 @@ jobs:
                     fontSize: '13px',
                 },
                 flowchart: { curve: 'basis', htmlLabels: true, useMaxWidth: false },
-                sequence: { actorMargin: 60, mirrorActors: false },
+                sequence: { actorMargin: 60, mirrorActors: true },
             });
 
             /* Toggle card */

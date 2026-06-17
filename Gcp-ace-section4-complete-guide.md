@@ -783,12 +783,12 @@ sequenceDiagram
     participant PSA as privileged-sa（特権SA）
     participant API as GCP API
 
-    A->>IAM: SA の TokenCreator 権限を使って\nトークンをリクエスト
+    A->>IAM: SA の TokenCreator 権限を使って<br/>トークンをリクエスト
     IAM->>IAM: alice が tokenCreator 権限を持つか確認
     IAM-->>A: 短期アクセストークン（最大1時間）を発行
     A->>API: トークンで privileged-sa の権限で操作
     API-->>A: 結果を返す
-    Note over IAM: 監査ログに「alice が privileged-sa を\n使って何時に何の操作をしたか」が記録される
+    Note over IAM: 監査ログに「alice が privileged-sa を<br/>使って何時に何の操作をしたか」が記録される
     Note over A: 1時間後にトークンが自動失効
 ```
 
