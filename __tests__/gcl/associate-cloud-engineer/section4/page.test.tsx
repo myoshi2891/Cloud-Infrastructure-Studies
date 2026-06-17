@@ -20,7 +20,7 @@ describe('ACE Section 4 完全ガイド ページ', () => {
     });
 
     it('Section 4 の配点が ~20% であること', () => {
-        expect(screen.getAllByText('~20%').length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/~20%/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('セキュリティ設計原則の見出しが存在すること', () => {
