@@ -716,6 +716,28 @@
     height: auto !important;
 }
 
+/* Mermaid 個別図解のサイズ微調整 */
+/* 縦長またはシンプルな図（引き伸ばすと巨大化するもの）の最大幅を制限 */
+#diag-4 :global(svg) {
+    max-width: 380px !important;
+}
+#diag-5 :global(svg) {
+    max-width: 450px !important;
+}
+#diag-10 :global(svg) {
+    max-width: 450px !important;
+}
+
+/* 横長の図（画面幅に収めると文字が小さくなりすぎるもの）の最小幅を確保し横スクロール化 */
+#diag-7 :global(svg) {
+    width: 800px !important;
+    max-width: none !important;
+}
+#diag-11 :global(svg) {
+    width: 1000px !important;
+    max-width: none !important;
+}
+
 /* CALLOUTS */
 .callout {
     border-radius: 8px;
