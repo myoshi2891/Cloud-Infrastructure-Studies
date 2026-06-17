@@ -49,7 +49,7 @@ export const DIAGRAMS: Record<string, string> = {
     'diag-2': `flowchart TD
     ORG["🏢 Organization\\nroles/logging.admin を付与"]
     F1["📁 Folder: 開発部門\\n追加のロールを付与可能"]
-    F2["📁 Folder: 本番部門\\n追加 of ロールを付与可能"]
+    F2["📁 Folder: 本番部門\\n追加のロールを付与可能"]
     P1["🗂️ Project: dev-app\\nOrg + Folder + Project のロールの和集合"]
     P2["🗂️ Project: prod-api\\nOrg + Folder + Project のロールの和集合"]
     R1["⚙️ Resource\\n上位すべてのロールが有効"]
