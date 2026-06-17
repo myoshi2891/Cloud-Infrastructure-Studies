@@ -351,8 +351,8 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-現在、リポジトリの最新 HEAD は `053250e`（※MIGRATION_PROGRESS.md の更新前）です。
-GCP ACE Section 4 の Next.js への移行（全コンテンツ、ナビゲーション統合、テスト・リンターのパス、アーカイブ化）はすべて完了しました。
+現在、リポジトリの最新 HEAD は `b456a07`（※MIGRATION_PROGRESS.md の更新前）です。
+GCP ACE Section 4 の Next.js への移行（全コンテンツ、ナビゲーション統合、テスト・リンターのパス、アーカイブ化、画面幅全幅化および Mermaid 表示調整）はすべて完了しました。
 
 次回の作業として、次の移行対象ファイルの移行に進んでください。
 
