@@ -637,7 +637,7 @@
     padding: 9px 13px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     vertical-align: top;
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
 }
 
 .table-wrap tr:last-child td {
@@ -766,22 +766,22 @@
 /* Mermaid 個別図解のサイズ微調整 */
 /* 縦長またはシンプルな図（引き伸ばすと巨大化するもの）の最大幅を制限 */
 :global(#diag-4) :global(svg) {
-    max-width: 380px !important;
+    max-width: 580px !important;
 }
 :global(#diag-5) :global(svg) {
-    max-width: 450px !important;
+    max-width: 650px !important;
 }
 :global(#diag-10) :global(svg) {
-    max-width: 450px !important;
+    max-width: 550px !important;
 }
 
 /* 横長の図（画面幅に収めると文字が小さくなりすぎるもの）の最小幅を確保し横スクロール化 */
 :global(#diag-7) :global(svg) {
-    width: 800px !important;
+    width: 1450px !important;
     max-width: none !important;
 }
 :global(#diag-11) :global(svg) {
-    width: 1000px !important;
+    width: 1200px !important;
     max-width: none !important;
 }
 
@@ -805,31 +805,31 @@
 .callout-blue {
     background: rgba(66, 133, 244, 0.07);
     border: 1px solid rgba(66, 133, 244, 0.22);
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
 }
 
 .callout-yellow {
     background: rgba(251, 188, 4, 0.06);
     border: 1px solid rgba(251, 188, 4, 0.22);
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
 }
 
 .callout-red {
     background: rgba(234, 67, 53, 0.06);
     border: 1px solid rgba(234, 67, 53, 0.22);
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
 }
 
 .callout-green {
     background: rgba(52, 168, 83, 0.06);
     border: 1px solid rgba(52, 168, 83, 0.22);
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
 }
 
 .callout-purple {
     background: rgba(124, 77, 255, 0.06);
     border: 1px solid rgba(124, 77, 255, 0.22);
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
 }
 
 .callout strong {
@@ -871,7 +871,7 @@
 }
 
 .bp-text {
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
     line-height: 1.5;
 }
 
@@ -919,7 +919,7 @@
 
 .compare-content {
     font-size: 12.5px;
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
     line-height: 1.6;
 }
 
@@ -991,7 +991,7 @@
 }
 
 .pattern-kw {
-    color: var(--color-muted-foreground);
+    color: var(--color-foreground);
     font-style: normal;
     line-height: 1.4;
 }
