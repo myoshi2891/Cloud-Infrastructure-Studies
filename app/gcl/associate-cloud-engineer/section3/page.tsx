@@ -9,13 +9,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Google Cloud Associate Cloud Engineer (ACE) 試験対策セクション 3 ページ。
- * 
- * このページは「Ensuring the Successful Operation of a Cloud Solution」に関する
- * 学習ガイドを提供します。Compute Engine、GKE、Cloud Run、ストレージ、ネットワーク、
- * およびモニタリング/ロギングの日常運用についての詳細情報をレンダリングします。
- * 
- * @returns {JSX.Element} ACE セクション 3 の学習ガイド画面
+ * Renders the Associate Cloud Engineer Section 3 study guide page.
+ *
+ * @returns The rendered Section 3 exam guide page.
  */
 export default function Page() {
     return (

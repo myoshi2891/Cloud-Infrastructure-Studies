@@ -5,9 +5,7 @@ import { NAV_ITEMS } from './constants';
 import styles from './page.module.css';
 
 /**
- * ACE Section 3 ページ専用のサイドバーナビゲーションコンポーネント。
- * IntersectionObserver によるスクロールスパイをサポート。
- * モバイル・タブレット環境（1024px以下）ではトグル式のドロワーメニューとして機能します。
+ * Navigation sidebar component for ACE Section 3 that highlights the currently viewed section and provides a collapsible drawer menu on mobile and tablet devices.
  */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('');

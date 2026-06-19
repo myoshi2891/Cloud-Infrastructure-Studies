@@ -5,9 +5,9 @@ import { NAV_ITEMS } from './constants';
 import styles from './page.module.css';
 
 /**
- * ACE Section 4 ページ専用のサイドバーナビゲーションコンポーネント。
- * IntersectionObserver によるスクロールスパイをサポート。
- * モバイル・タブレット環境ではトグル式のドロワーメニューとして機能します。
+ * Renders a responsive sidebar navigation that tracks and highlights the currently visible section.
+ *
+ * On mobile and tablet devices, the sidebar functions as a collapsible drawer menu that toggles open and closed. Links automatically close the drawer when clicked.
  */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('');

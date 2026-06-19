@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     description: `GCP ACE Section 4 (アクセスとセキュリティの構成) 完全ガイド。試験配点 ~20%。IAMポリシー、サービスアカウント、Workload Identity Federation。試験ガイド 063026（${REVISION_DATE}）準拠。`,
 };
 
+/**
+ * Renders the ACE Section 4 guide page.
+ */
 export default function Page() {
     return (
         <AceSection4Guide />
