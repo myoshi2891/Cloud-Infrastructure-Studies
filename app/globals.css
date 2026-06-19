@@ -19,7 +19,9 @@
     --color-foreground: #e2e8f0;
     --color-foreground-rgb: 226, 232, 240;
     --color-card: #0e1117;
+    --color-card-secondary: #112030;
     --color-card-foreground: #e2e8f0;
+    --color-accent-purple: #8b5cf6;
     --color-muted: #c5d1e1;
     --color-muted-foreground: #94a3b8;
     --color-border: #1e2840;
@@ -109,6 +111,7 @@
     --radius-md: 10px;
     --radius-lg: 16px;
     --radius-xl: 24px;
+
 }
 
 /* ベースリセット */

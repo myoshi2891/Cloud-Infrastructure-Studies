@@ -5,11 +5,85 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** 🟢 ACE Section 2「計画と実装」完全ガイド移行 (完了)
+- **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **テスト数:** 522 件パス（Vitest 75 ファイル）
-- **ビルド:** パス
-- **最終更新日時(UTC):** 2026-06-11T06:00:00Z
+- **テスト数:** プロジェクト全体で 82 テストファイル (合計 529 テストケース) パス / Section 4 スコープ: 1 テストファイル (11 テストケースがパス)
+- **ビルド:** リンターパス / ビルドはローカル確認
+- **最終更新日時(UTC):** 2026-06-17T00:00:00.000Z
+
+---
+
+## 2026-06-17: ACE Section 4「アクセスとセキュリティの構成」完全ガイド移行 (完了)
+
+### 目的
+
+`Gcp-ace-section4-complete-guide.html`（静的HTML）を、`section1`〜`section3`と同じ設計パターン（NavBar + page.tsx + AceSection4Guide.tsx + constants.ts + page.module.css）で `app/gcl/associate-cloud-engineer/section4` ルートへ移行・追加する。デザインは HTML を忠実に再現しつつ、globals.css のダークテーマデザイントークンに整合。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ace-s4): add failing tests for section4 complete guide page` — `d0bc9fd`
+- [x] **Step 2 (Green)**: `feat(ace-s4): implement basic layout and components for section4` — `246ff6d`, `b915d0f`
+- [x] **Step 3 (Refactor / Content Migration)**: `feat(ace-s4): migrate all content and style from HTML to section4 page` — `8fae321`, `9e145ea`, `0513691` (全コンテンツの移植、パースエラー・参照エラー・ESLint エラー等の解消、11件のテストおよびリンター完全パス)
+- [x] **Step 4 (Refactor / Integration)**: `feat(ace-s4): integrate section4 guide link into global constants navigation` — `ec8a56e` (constants.ts へのルーティング・ナビゲーション統合)
+- [x] **Step 5 (Docs Sync & Archive)**: `docs(ace-s4): archive migrated section4 HTML and Markdown files` — `053250e` (元HTML・MDファイルを `Gcl_Archive/Associate-Cloud-Engineer/` へ退避)
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/section4/page.tsx](app/gcl/associate-cloud-engineer/section4/page.tsx)
+- [app/gcl/associate-cloud-engineer/section4/AceSection4Guide.tsx](app/gcl/associate-cloud-engineer/section4/AceSection4Guide.tsx)
+- [app/gcl/associate-cloud-engineer/section4/NavBar.tsx](app/gcl/associate-cloud-engineer/section4/NavBar.tsx)
+- [app/gcl/associate-cloud-engineer/section4/constants.ts](app/gcl/associate-cloud-engineer/section4/constants.ts)
+- [app/gcl/associate-cloud-engineer/section4/page.module.css](app/gcl/associate-cloud-engineer/section4/page.module.css)
+- [__tests__/gcl/associate-cloud-engineer/section4/page.test.tsx](__tests__/gcl/associate-cloud-engineer/section4/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
+
+## 2026-06-16: ACE Section 4「アクセスとセキュリティの構成」完全ガイド HTML 調整 (完了)
+
+### 目的
+
+`Gcp-ace-section4-complete-guide.md` の内容に基づき、`Gcp-ace-section4-complete-guide.html` に不足していた Policy Analyzer の説明やコマンド、SA削除後30日間の復元仕様、自己権限借用の禁止、引っかけ問題10選、および学習の最終アドバイスセクションを追加・同期する。
+
+### 完了済みステップ
+
+- [x] MDとHTMLの差分調査
+- [x] `Gcp-ace-section4-complete-guide.html` に不足しているコンテンツの追記（Policy Analyzer、引っかけ問題10選、最終アドバイスなど）
+- [x] ユニットテスト実行 (`npx vitest run` 529件全パス確認)
+- [x] コミット: `docs(gcl): update section 4 security guide with traps and advice`
+
+### 関連ファイル
+
+- [Gcp-ace-section4-complete-guide.html](Gcp-ace-section4-complete-guide.html)
+- [Gcp-ace-section4-complete-guide.md](Gcp-ace-section4-complete-guide.md)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
+
+## 2026-06-15: ACE Section 3「オペレーション・モニタリング」完全ガイド移行 (完了)
+
+### 目的
+
+`Ace-section3-operation-complete-guide.html`（静的HTML・3,425行）を、`section1` / `section2` と同じ設計パターン（NavBar + page.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/section3` ルートへ移行・追加する。デザインは HTML を忠実に再現しつつ globals.css のダークテーマデザイントークンに整合。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for ACE section3 guide`
+- [x] **Step 2 (Green)**: `feat: implement ACE section3 page to pass tests` (Mermaid 10図の constants 移植、code-block の code-line 分割、チェックリスト client state 化)
+- [x] **Step 3 (Refactor / Integration)**: `refactor: integrate ACE section3 into constants.ts` (constants.ts へのルーティング統合)
+- [x] **Step 4 (Docs Sync)**: ドキュメント類の同期、HTMLソースのアーカイブ化（Gcl_Archive/Associate-Cloud-Engineer/ への移動）
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/section3/page.tsx](app/gcl/associate-cloud-engineer/section3/page.tsx)
+- [app/gcl/associate-cloud-engineer/section3/AceSection3Guide.tsx](app/gcl/associate-cloud-engineer/section3/AceSection3Guide.tsx)
+- [app/gcl/associate-cloud-engineer/section3/NavBar.tsx](app/gcl/associate-cloud-engineer/section3/NavBar.tsx)
+- [app/gcl/associate-cloud-engineer/section3/constants.ts](app/gcl/associate-cloud-engineer/section3/constants.ts)
+- [app/gcl/associate-cloud-engineer/section3/page.module.css](app/gcl/associate-cloud-engineer/section3/page.module.css)
+- [__tests__/gcl/associate-cloud-engineer/section3/page.test.tsx](__tests__/gcl/associate-cloud-engineer/section3/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ---
 
@@ -279,16 +353,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-現在、`MIGRATION_PROGRESS.md` の「2026-05-12: AGWA Section 1 Restoration (完了)」セクションにある「実装ステップ詳細」に基づいて、静的HTMLファイルの Next.js への完全移行をステップバイステップで行う必要があります。
+現在、リポジトリの最新 HEAD は `232184f` です。
+GCP ACE Section 1〜4 を含む全 HTML ファイルの Next.js への移行は完了済みです。現時点で未移行の HTML ファイルは存在しません。
 
-以下の要件を厳守して実装を進めてください。
-1. 一度にすべての変更を行うのではなく、Phase 1 から順にステップバイステップで実装すること。
-2. 各 Phase（ステップ）が完了し、`bun run lint` や `bun run build` でエラーが出ないことを確認したら、要件にあるコミットメッセージで必ず `git commit` を行うこと。
-3. すべての CSS カスタムプロパティはプロジェクトの `@theme` トークン (`globals.css` に定義済み) にマッピングし、元の配色ではなくプロジェクトのダークテーマに準拠させること。
-4. `<svg>` タグ内の属性はすべて React 向けに camelCase に変換すること。
-5. E2Eテストは不要ですが、実装ステップごとのビルド確認とコンポーネントの型整合性は必ず確認すること。
-
-それでは、対象のHTMLファイル `agwa-section1-accounts-domains-directory.html` を読み込み、「AGWA Section 1 Restoration (完了)」セクションにある対象セクション（1.1, 1.2, 1.3, 1.4, 1.6）について、ユーザー確認済みの乖離箇所を順次、オリジナルに準拠したリッチな内容へと復元・補完してください。1セクションごとに作業を完了させ、コミットを行ってください。
+次回の作業は HTML 移行ではなく、別途指示されたタスクから始めてください。
 
 ---
 
