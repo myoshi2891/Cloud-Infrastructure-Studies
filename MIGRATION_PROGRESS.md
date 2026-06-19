@@ -25,7 +25,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 2 (Green)**: `feat(ace-s4): implement basic layout and components for section4` — `246ff6d`, `b915d0f`
 - [x] **Step 3 (Refactor / Content Migration)**: `feat(ace-s4): migrate all content and style from HTML to section4 page` — `8fae321`, `9e145ea`, `0513691` (全コンテンツの移植、パースエラー・参照エラー・ESLint エラー等の解消、11件のテストおよびリンター完全パス)
 - [x] **Step 4 (Refactor / Integration)**: `feat(ace-s4): integrate section4 guide link into global constants navigation` — `ec8a56e` (constants.ts へのルーティング・ナビゲーション統合)
-- [x] **Step 5 (Docs Sync & Archive)**: `docs(ace-s4): archive migrated section4 HTML and Markdown files` — `053250e` (元HTML・MDファイルを `archive/Gcl_Archive/Associate-Cloud-Engineer/` へ退避)
+- [x] **Step 5 (Docs Sync & Archive)**: `docs(ace-s4): archive migrated section4 HTML and Markdown files` — `053250e` (元HTML・MDファイルを `Gcl_Archive/Associate-Cloud-Engineer/` へ退避)
 
 ### 関連ファイル
 

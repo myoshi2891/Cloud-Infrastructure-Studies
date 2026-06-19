@@ -2,6 +2,11 @@
 
 
 .ace-section4-page {
+    --bg-sidebar: var(--color-background);
+    --code-bg: var(--color-background);
+    --tag-bg: var(--color-card-secondary);
+    --bg-card2: var(--color-card-secondary);
+
     display: flex;
     min-height: 100vh;
     background: var(--color-background);

@@ -114,14 +114,6 @@
 
 }
 
-/* ACE Section 4 固有トークン */
-:root {
-    --bg-sidebar: #09111f;
-    --code-bg: #060d1a;
-    --tag-bg: #0d2548;
-    --bg-card2: #142235;
-}
-
 /* ベースリセット */
 * {
     box-sizing: border-box;
