@@ -1,0 +1,715 @@
+/* Cloud Load Balancing Guide Scoped Styles */
+
+.cloud-load-balancing-guide-page {
+    background: #050a14;
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    line-height: 1.8;
+}
+
+.cloud-load-balancing-guide-page a {
+    color: #00c8ff;
+    text-decoration: none;
+}
+
+.cloud-load-balancing-guide-page a:hover {
+    text-decoration: underline;
+}
+
+.cloud-load-balancing-guide-page :focus-visible {
+    outline: 2px solid #00c8ff;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* ── スクロール進捗バー ── */
+.cloud-load-balancing-guide-page .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, #00c8ff, var(--color-google-blue));
+    z-index: 100;
+    transition: width 0.1s linear;
+}
+
+/* ── レイアウト (SKILL.md レシピに準拠) ── */
+.cloud-load-balancing-guide-page .layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    max-width: 1320px;
+    margin: 0 auto;
+    gap: 0;
+}
+
+.cloud-load-balancing-guide-page .sidenav {
+    position: fixed;
+    left: 0;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    bottom: 0;
+    width: 280px;
+    z-index: 40;
+    overflow-y: auto;
+    padding: 32px 18px 32px 28px;
+    border-right: 1px solid rgba(66, 133, 244, 0.2);
+    background: #050a14;
+}
+
+.cloud-load-balancing-guide-page .sidenav .brand {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: #00c8ff;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.cloud-load-balancing-guide-page .sidenav .brand-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-foreground);
+    line-height: 1.35;
+    margin-bottom: 22px;
+}
+
+.cloud-load-balancing-guide-page .nav-item {
+    display: block;
+    font-size: 0.86rem;
+    color: var(--color-muted-foreground);
+    padding: 7px 12px;
+    border-left: 2px solid transparent;
+    transition:
+        color 0.15s,
+        border-color 0.15s,
+        background 0.15s;
+    cursor: pointer;
+}
+
+.cloud-load-balancing-guide-page .nav-item .num {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: #274460;
+    margin-right: 8px;
+}
+
+.cloud-load-balancing-guide-page .nav-item:hover {
+    color: var(--color-foreground);
+    text-decoration: none;
+    background: rgba(61, 142, 245, 0.06);
+}
+
+.cloud-load-balancing-guide-page .nav-item.active {
+    color: var(--color-foreground);
+    border-left-color: #00c8ff;
+    background: rgba(0, 200, 255, 0.07);
+}
+
+.cloud-load-balancing-guide-page .nav-item.active .num {
+    color: #00c8ff;
+}
+
+.cloud-load-balancing-guide-page .content {
+    margin-left: 280px;
+    padding: 0 clamp(20px, 4vw, 56px) 120px;
+    min-width: 0;
+}
+
+/* ── ヒーロー ── */
+.cloud-load-balancing-guide-page .hero {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+    margin-bottom: 56px;
+}
+
+.cloud-load-balancing-guide-page .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #00c8ff;
+    margin-bottom: 18px;
+}
+
+.cloud-load-balancing-guide-page .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.1rem);
+    line-height: 1.12;
+    color: var(--color-foreground);
+    letter-spacing: -0.02em;
+}
+
+.cloud-load-balancing-guide-page .hero h1 .accent {
+    background: linear-gradient(120deg, #00c8ff, var(--color-google-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cloud-load-balancing-guide-page .hero .lede {
+    font-size: 1.12rem;
+    color: var(--color-muted-foreground);
+    max-width: 60ch;
+    margin-top: 22px;
+}
+
+.cloud-load-balancing-guide-page .hero .meta {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    font-size: 0.84rem;
+    font-family: var(--font-mono);
+    color: var(--color-muted-foreground);
+}
+
+.cloud-load-balancing-guide-page .hero .meta b {
+    color: var(--color-foreground);
+    font-weight: 500;
+}
+
+/* ── シグネチャ: トラフィック分配ビジュアライザ ── */
+.cloud-load-balancing-guide-page .visualizer {
+    margin-top: 44px;
+    background:
+        radial-gradient(
+            circle at 20% 50%,
+            rgba(0, 200, 255, 0.07),
+            transparent 60%
+        ),
+        #080f1c;
+    border: 1px solid rgba(66, 133, 244, 0.2);
+    border-radius: 16px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.cloud-load-balancing-guide-page .visualizer .vz-caption {
+    position: absolute;
+    bottom: 12px;
+    left: 18px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--color-muted-foreground);
+    text-transform: uppercase;
+}
+
+.cloud-load-balancing-guide-page .vz-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.cloud-load-balancing-guide-page .vz-node-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-foreground);
+}
+
+.cloud-load-balancing-guide-page .vz-ingress {
+    fill: #0d1b2a;
+    stroke: #00c8ff;
+    stroke-width: 1.6;
+}
+
+.cloud-load-balancing-guide-page .vz-backend {
+    fill: #0d1b2a;
+    stroke: #274460;
+    stroke-width: 1.4;
+}
+
+.cloud-load-balancing-guide-page .vz-hc {
+    fill: #0d1b2a;
+    stroke: var(--color-google-green);
+    stroke-width: 1.4;
+    stroke-dasharray: 4 3;
+}
+
+.cloud-load-balancing-guide-page .vz-wire {
+    fill: none;
+    stroke: #274460;
+    stroke-width: 1.4;
+}
+
+.cloud-load-balancing-guide-page .vz-hc-wire {
+    fill: none;
+    stroke: var(--color-google-green);
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+    opacity: 0.7;
+}
+
+.cloud-load-balancing-guide-page .vz-pulse {
+    fill: var(--color-google-green);
+    animation: vzpulse 2s ease-in-out infinite;
+}
+
+.cloud-load-balancing-guide-page .vz-pulse.b2 {
+    animation-delay: 0.66s;
+}
+
+.cloud-load-balancing-guide-page .vz-pulse.b3 {
+    animation-delay: 1.33s;
+}
+
+@keyframes vzpulse {
+    0%,
+    100% {
+        opacity: 0.35;
+        r: 3px;
+    }
+    50% {
+        opacity: 1;
+        r: 4.5px;
+    }
+}
+
+.cloud-load-balancing-guide-page .vz-packet {
+    fill: #00c8ff;
+    offset-rotate: 0deg;
+    animation: vzflow 2.4s linear infinite;
+}
+
+.cloud-load-balancing-guide-page .vz-packet.f1 {
+    offset-path: path('M 150 150 L 470 70');
+}
+
+.cloud-load-balancing-guide-page .vz-packet.f2 {
+    offset-path: path('M 150 150 L 470 150');
+    animation-delay: 0.8s;
+}
+
+.cloud-load-balancing-guide-page .vz-packet.f3 {
+    offset-path: path('M 150 150 L 470 230');
+    animation-delay: 1.6s;
+}
+
+@keyframes vzflow {
+    from {
+        offset-distance: 0%;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    to {
+        offset-distance: 100%;
+        opacity: 0;
+    }
+}
+
+/* ── セクション ── */
+.cloud-load-balancing-guide-page section {
+    margin-bottom: 64px;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.cloud-load-balancing-guide-page .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+}
+
+.cloud-load-balancing-guide-page .sec-num {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: #00c8ff;
+    font-weight: 600;
+}
+
+.cloud-load-balancing-guide-page h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    color: var(--color-foreground);
+    letter-spacing: -0.01em;
+}
+
+.cloud-load-balancing-guide-page h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.18rem;
+    color: var(--color-foreground);
+    margin: 36px 0 12px;
+}
+
+.cloud-load-balancing-guide-page h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-google-blue);
+    margin: 26px 0 8px;
+}
+
+.cloud-load-balancing-guide-page p {
+    margin: 12px 0;
+    color: var(--color-foreground);
+}
+
+.cloud-load-balancing-guide-page .lvl {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    vertical-align: middle;
+}
+
+.cloud-load-balancing-guide-page .lvl.l4 {
+    color: var(--color-google-red);
+    border: 1px solid var(--color-google-red);
+}
+
+.cloud-load-balancing-guide-page .lvl.l7 {
+    color: var(--color-google-blue);
+    border: 1px solid var(--color-google-blue);
+}
+
+.cloud-load-balancing-guide-page .lvl.int {
+    color: var(--color-google-green);
+    border: 1px solid var(--color-google-green);
+}
+
+/* ── テーブル ── */
+.cloud-load-balancing-guide-page .table-wrap {
+    overflow-x: auto;
+    margin: 18px 0;
+    border: 1px solid rgba(66, 133, 244, 0.2);
+    border-radius: 10px;
+}
+
+.cloud-load-balancing-guide-page table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.cloud-load-balancing-guide-page thead th {
+    background: #112030;
+    color: var(--color-foreground);
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #274460;
+    white-space: nowrap;
+}
+
+.cloud-load-balancing-guide-page tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+    vertical-align: top;
+}
+
+.cloud-load-balancing-guide-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.cloud-load-balancing-guide-page tbody tr:nth-child(even) {
+    background: rgba(17, 32, 48, 0.4);
+}
+
+.cloud-load-balancing-guide-page td code,
+.cloud-load-balancing-guide-page p code,
+.cloud-load-balancing-guide-page li code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: #112030;
+    color: #00c8ff;
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.cloud-load-balancing-guide-page strong {
+    color: var(--color-foreground);
+    font-weight: 600;
+}
+
+/* ── コードカード ── */
+.cloud-load-balancing-guide-page .code-card {
+    position: relative;
+    background: #080f1c;
+    border: 1px solid rgba(66, 133, 244, 0.2);
+    border-radius: 10px;
+    margin: 16px 0;
+    overflow: hidden;
+}
+
+.cloud-load-balancing-guide-page .code-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: #112030;
+    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+}
+
+.cloud-load-balancing-guide-page .code-lang {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--color-muted-foreground);
+    text-transform: uppercase;
+}
+
+.cloud-load-balancing-guide-page .copy-btn {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-muted-foreground);
+    background: transparent;
+    border: 1px solid #274460;
+    border-radius: 5px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition:
+        color 0.15s,
+        border-color 0.15s,
+        background 0.15s;
+}
+
+.cloud-load-balancing-guide-page .copy-btn:hover {
+    color: var(--color-foreground);
+    border-color: #00c8ff;
+}
+
+.cloud-load-balancing-guide-page .copy-btn.copied {
+    color: var(--color-google-green);
+    border-color: var(--color-google-green);
+}
+
+.cloud-load-balancing-guide-page pre {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+}
+
+.cloud-load-balancing-guide-page pre code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--color-foreground);
+    white-space: pre;
+    background: none;
+    padding: 0;
+}
+
+.cloud-load-balancing-guide-page pre code .cmt {
+    color: var(--color-muted-foreground);
+    font-style: italic;
+}
+
+/* ── callout ── */
+.cloud-load-balancing-guide-page .callout {
+    border-radius: 10px;
+    padding: 16px 18px 16px 20px;
+    margin: 18px 0;
+    border-left: 3px solid var(--color-google-blue);
+    background: rgba(61, 142, 245, 0.06);
+}
+
+.cloud-load-balancing-guide-page .callout .c-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-foreground);
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cloud-load-balancing-guide-page .callout p {
+    margin: 6px 0 0;
+    font-size: 0.92rem;
+}
+
+.cloud-load-balancing-guide-page .callout.tip {
+    border-left-color: #00c8ff;
+    background: rgba(0, 200, 255, 0.06);
+}
+
+.cloud-load-balancing-guide-page .callout.warn {
+    border-left-color: var(--color-google-yellow);
+    background: rgba(251, 188, 4, 0.07);
+}
+
+.cloud-load-balancing-guide-page .callout.danger {
+    border-left-color: var(--color-google-red);
+    background: rgba(234, 67, 53, 0.07);
+}
+
+.cloud-load-balancing-guide-page .callout.sec {
+    border-left-color: var(--color-google-green);
+    background: rgba(52, 168, 83, 0.07);
+}
+
+.cloud-load-balancing-guide-page .src {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: #00c8ff;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.cloud-load-balancing-guide-page .src::after {
+    content: ' ↗';
+}
+
+/* ── mermaid ── */
+.cloud-load-balancing-guide-page .diagram {
+    margin: 22px 0;
+    padding: 18px;
+    background: #080f1c;
+    border: 1px solid rgba(66, 133, 244, 0.2);
+    border-radius: 12px;
+}
+
+.cloud-load-balancing-guide-page .diagram-cap {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+    margin-bottom: 12px;
+}
+
+.cloud-load-balancing-guide-page .mermaid {
+    display: flex;
+    justify-content: center;
+}
+
+.cloud-load-balancing-guide-page .mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.cloud-load-balancing-guide-page footer {
+    border-top: 1px solid rgba(66, 133, 244, 0.2);
+    padding: 32px 0 0;
+    margin-top: 24px;
+    font-size: 0.84rem;
+    color: var(--color-muted-foreground);
+}
+
+/* ── 目次トグル ── */
+.cloud-load-balancing-guide-page .nav-toggle {
+    display: none;
+}
+
+/* ── checklist-btn ── */
+.cloud-load-balancing-guide-page .checklist-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 6px 0;
+}
+
+.cloud-load-balancing-guide-page .check-box {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #274460;
+    border-radius: 4px;
+    margin-right: 12px;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.cloud-load-balancing-guide-page .check-box.checked {
+    background: #00c8ff;
+    border-color: #00c8ff;
+}
+
+.cloud-load-balancing-guide-page .check-box.checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #050a14;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* ── リスト ── */
+.cloud-load-balancing-guide-page ul {
+    margin: 12px 0 12px 24px;
+    color: var(--color-foreground);
+}
+
+.cloud-load-balancing-guide-page li {
+    margin: 6px 0;
+}
+
+.cloud-load-balancing-guide-page ol {
+    margin: 12px 0 12px 24px;
+    color: var(--color-foreground);
+}
+
+/* ── モバイル ── */
+@media (max-width: 880px) {
+    .cloud-load-balancing-guide-page .layout {
+        grid-template-columns: 1fr;
+    }
+    .cloud-load-balancing-guide-page .sidenav {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+        padding: 18px 20px;
+        width: 100%;
+    }
+    .cloud-load-balancing-guide-page .nav-toggle {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: #112030;
+        border: 1px solid rgba(66, 133, 244, 0.2);
+        color: var(--color-foreground);
+        font-family: var(--font-display);
+        font-weight: 600;
+        padding: 12px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    .cloud-load-balancing-guide-page .nav-list {
+        display: none;
+        margin-top: 10px;
+    }
+    .cloud-load-balancing-guide-page .nav-list.open {
+        display: block;
+    }
+    .cloud-load-balancing-guide-page .content {
+        margin-left: 0;
+        padding: 0 20px 80px;
+    }
+    .cloud-load-balancing-guide-page .hero {
+        padding: 40px 0 36px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cloud-load-balancing-guide-page * {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}
