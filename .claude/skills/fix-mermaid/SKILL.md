@@ -283,6 +283,48 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 
    個別 ID セレクタ（`#diag-0 svg` 等）は CSS Modules でも変換されないため、グローバル ID セレクタ経由で最大幅（`max-width`）を制御できます。
 
+#### ⚠️ Mermaid 図が小さくなりすぎる問題（2026年6月追記 — Next.js TSX 実装固有）
+
+**症状**: 図が画面の中央付近に極端に小さく（幅 200px 程度）表示され、コンテナの右側が空白になる。
+
+**根本原因**:
+
+```
+.mermaid { display: flex; justify-content: center; }
+  └── .mermaidWrapper (MermaidDiagram.module.css) ← flex item = fit-content 幅に縮小される
+        └── svg { width: ${w}px; max-width: 100%; }   ← 100% = mermaidWrapper 幅 = 縮小後の小サイズ
+```
+
+flex コンテナ内の flex item は `width` 未指定の場合 `fit-content` 相当の幅に縮小される。`mermaidWrapper` はデフォルトで `overflow-x: auto` を持つため、SVG の自然 px 幅を超えるとクリップせずスクロールになるが、SVG 自体は `maxWidth:100%` = 縮小後の `mermaidWrapper` 幅に制限されて小さく表示される。
+
+**修正パターン（page.css の `.mermaid` スコープ）**:
+
+```css
+/* ❌ この書き方は mermaidWrapper を fit-content 幅に縮小してしまう */
+.page-scope .mermaid {
+    display: flex;
+    justify-content: center;
+}
+
+/* ✅ 修正: display:block + width:100% で flex item の縮小を回避 */
+.page-scope .mermaid {
+    display: block;
+    width: 100%;
+}
+/* MermaidDiagram.module.css の .mermaidWrapper にも幅を引き継がせる */
+.page-scope .mermaid > div {
+    width: 100%;
+}
+.page-scope .mermaid svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+```
+
+> **チェックリスト**: Mermaid 図が小さい場合は、まず `.mermaid` の直接の親と、`.mermaid` 自身が `display:flex` の flex item になっていないか確認する。`display:block; width:100%` に変更するだけで解消する。
+
+
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
 
 `MermaidDiagram` はクライアントサイドで動的に `mermaid` ライブラリを読み込んで動作するため、テスト環境での DOM レンダリング時にエラーを起こす原因となります。
