@@ -36,7 +36,7 @@
 
 /* ── レイアウト (SKILL.md レシピに準拠) ── */
 .cloud-load-balancing-guide-page .layout {
-    max-width: 1320px;
+    max-width: 100%;
     margin: 0 auto;
     position: relative;
 }
