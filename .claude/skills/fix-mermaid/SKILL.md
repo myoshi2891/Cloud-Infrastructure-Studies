@@ -269,13 +269,15 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 
 ```css
 .mermaid {
-  display: flex;
-  justify-content: center;
+  display: block;
+  width: 100%;
+}
+.mermaid > div {
+  width: 100%;
 }
 .mermaid :global(svg) {
   display: block;
   margin: 0 auto;
-  width: 100%;
   max-width: 100%;
   height: auto;
 }
@@ -289,13 +291,13 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 
 **根本原因**:
 
-```
+```text
 .mermaid { display: flex; justify-content: center; }
   └── .mermaidWrapper (MermaidDiagram.module.css) ← flex item = fit-content 幅に縮小される
         └── svg { width: ${w}px; max-width: 100%; }   ← 100% = mermaidWrapper 幅 = 縮小後の小サイズ
 ```
 
-flex コンテナ内の flex item は `width` 未指定の場合 `fit-content` 相当の幅に縮小される。`mermaidWrapper` はデフォルトで `overflow-x: auto` を持つため、SVG の自然 px 幅を超えるとクリップせずスクロールになるが、SVG 自体は `maxWidth:100%` = 縮小後の `mermaidWrapper` 幅に制限されて小さく表示される。
+flex コンテナ内の flex item は `width` 未指定の場合 `fit-content` 相当 of width に縮小される。`mermaidWrapper` はデフォルトで `overflow-x: auto` を持つため、SVG の自然 px 幅を超えるとクリップせずスクロールになるが、SVG 自体は `maxWidth:100%` = 縮小後の `mermaidWrapper` 幅に制限されて小さく表示される。
 
 **修正パターン（page.css の `.mermaid` スコープ）**:
 

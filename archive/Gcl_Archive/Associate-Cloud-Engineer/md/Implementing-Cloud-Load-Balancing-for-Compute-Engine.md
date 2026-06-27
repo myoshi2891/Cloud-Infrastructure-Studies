@@ -441,5 +441,6 @@ flowchart TD
 | 外部パススルーNLB のセットアップ | https://cloud.google.com/load-balancing/docs/network/setting-up-network-backend-service |
 | Cloud Load Balancing 製品ページ | https://cloud.google.com/load-balancing |
 | リリースノート | https://docs.cloud.google.com/load-balancing/docs/release-notes |
+| 元コース（Google Skills Boost） | https://www.skills.google/paths/11/course_templates/648 |
 
 > ℹ️ **命名の変遷について**: 旧称「ネットワークロードバランサ」は現在「パススルー ネットワークロードバランサ」、旧称「HTTP(S)ロードバランサ」は「アプリケーションロードバランサ」に整理されています。ラボ教材によっては旧称が残っている場合があるため、公式ドキュメントの最新表記を基準にすると混乱しません。

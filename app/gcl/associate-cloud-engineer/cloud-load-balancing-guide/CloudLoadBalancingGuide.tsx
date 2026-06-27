@@ -4,18 +4,28 @@ import { useState, useEffect } from 'react';
 import NavBar from './NavBar';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS, REVISION_DATE } from './constants';
+import styles from './page.module.css';
 
 function CopyButton({ code }: { code: string }) {
-    const [copied, setCopied] = useState(false);
+    const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const handleCopy = () => {
-        navigator.clipboard.writeText(code).then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        });
+        navigator.clipboard.writeText(code)
+            .then(() => {
+                setCopyStatus('success');
+                setTimeout(() => setCopyStatus('idle'), 2000);
+            })
+            .catch(() => {
+                setCopyStatus('error');
+                setTimeout(() => setCopyStatus('idle'), 2000);
+            });
     };
     return (
-        <button className="copy-btn" onClick={handleCopy}>
-            {copied ? '✓ コピー済' : 'コピー'}
+        <button
+            className={`copy-btn ${copyStatus}`}
+            onClick={handleCopy}
+            aria-label={copyStatus === 'success' ? 'コピー成功' : copyStatus === 'error' ? 'コピー失敗' : 'コードをコピー'}
+        >
+            {copyStatus === 'success' ? '✓ コピー済' : copyStatus === 'error' ? '✗ コピー失敗' : 'コピー'}
         </button>
     );
 }
@@ -69,7 +79,7 @@ export default function CloudLoadBalancingGuide() {
     }, []);
 
     return (
-        <div className="cloud-load-balancing-guide-page">
+        <div className={styles.container}>
             {/* スクロール進捗バー */}
             <div className="progress" style={{ width: `${progressWidth}%` }} />
 
@@ -261,13 +271,13 @@ export default function CloudLoadBalancingGuide() {
                                 <span className="code-lang">bash</span>
                                 <CopyButton code={`gcloud config set compute/region REGION\ngcloud config set compute/zone ZONE`} />
                             </div>
-                            <pre><code>
+                            <pre>
                                 <div className="code-line"><span className="cmt"># デフォルトのリージョンを設定（例: us-central1）</span></div>
                                 <div className="code-line">{"gcloud config set compute/region REGION"}</div>
                                 <div className="code-line">{" "}</div>
                                 <div className="code-line"><span className="cmt"># デフォルトのゾーンを設定（例: us-central1-a）</span></div>
                                 <div className="code-line">{"gcloud config set compute/zone ZONE"}</div>
-                            </code></pre>
+                            </pre>
                         </div>
                         <div className="callout warn">
                             <div className="c-title">⚠️ ベストプラクティス</div>
