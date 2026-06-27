@@ -36,11 +36,9 @@
 
 /* ── レイアウト (SKILL.md レシピに準拠) ── */
 .cloud-load-balancing-guide-page .layout {
-    display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
     max-width: 1320px;
     margin: 0 auto;
-    gap: 0;
+    position: relative;
 }
 
 .cloud-load-balancing-guide-page .sidenav {
@@ -666,9 +664,7 @@
 
 /* ── モバイル ── */
 @media (max-width: 880px) {
-    .cloud-load-balancing-guide-page .layout {
-        grid-template-columns: 1fr;
-    }
+
     .cloud-load-balancing-guide-page .sidenav {
         position: static;
         height: auto;
