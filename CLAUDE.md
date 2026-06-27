@@ -93,6 +93,12 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（10図）
         page.css                    # ページ固有スタイル（token 整合）
+      cloud-load-balancing-guide/
+        page.tsx                    # Cloud Load Balancing 完全入門（Server。メタデータ定義）
+        CloudLoadBalancingGuide.tsx # 本文＋インタラクション（client。進捗バー/scroll spy/コピー機能）
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid 図定義（6図）
+        page.css                    # ページ固有スタイル（token 整合）
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装
