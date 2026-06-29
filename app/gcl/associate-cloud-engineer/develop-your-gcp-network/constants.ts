@@ -3,7 +3,7 @@
  * MermaidDiagram コンポーネントへ渡す chart prop として利用する。
  */
 
-export const DIAGRAMS: Record<string, string> = {
+export const DIAGRAMS = {
   'diag-query-builder': `flowchart TD
     A(["❓ 何を知りたいか決める"]) --> B[SELECT で取得列を決める]
     B --> C[FROM でテーブルを選ぶ]
@@ -200,4 +200,7 @@ export const DIAGRAMS: Record<string, string> = {
     lb --> wp_pod
     wp_pod --> db
     bastion_dev --- bastion_prod`,
-};
+} as const;
+
+/** DIAGRAMS のキー（diagram id）から導出する型。typo や rename 漏れをコンパイル時に検出する。 */
+export type DiagramId = keyof typeof DIAGRAMS;

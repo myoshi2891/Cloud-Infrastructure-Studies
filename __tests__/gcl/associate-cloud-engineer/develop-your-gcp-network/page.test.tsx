@@ -66,4 +66,30 @@ describe('Develop Your Google Cloud Network ページ', () => {
     it('DIAGRAMS が10個以上のキーを持つこと', () => {
         expect(Object.keys(DIAGRAMS).length).toBeGreaterThanOrEqual(10);
     });
+
+    it('ページが参照する全ての diagram id が DIAGRAMS に存在すること', () => {
+        // Diagram コンポーネントは未知の id に対し silently null を返すため、
+        // キー総数の検査だけでは図の欠落を検出できない。
+        // ページの JSX が <Diagram id="..."> で参照する id を網羅的に検証する。
+        const REFERENCED_IDS = [
+            'diag-query-builder',
+            'diag-console-handson',
+            'diag-data-migration',
+            'diag-multi-vpc',
+            'diag-reachability',
+            'diag-multi-nic',
+            'diag-observability',
+            'diag-alerting-policy',
+            'diag-gke-cluster',
+            'diag-rolling-update',
+            'diag-canary',
+            'diag-blue-green',
+            'diag-strategy-picker',
+            'diag-griffin-wordpress',
+        ];
+        for (const id of REFERENCED_IDS) {
+            expect(DIAGRAMS).toHaveProperty(id);
+            expect(DIAGRAMS[id as keyof typeof DIAGRAMS]).toBeTruthy();
+        }
+    });
 });

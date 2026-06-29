@@ -8,7 +8,7 @@
 import React, { useState, useRef } from 'react';
 import NavBar from './NavBar';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
-import { DIAGRAMS } from './constants';
+import { DIAGRAMS, type DiagramId } from './constants';
 
 /** コードブロック（ヘッダ + Copy ボタン + 各行を .code-line でラップした pre） */
 function HtmlCodeBlock({ lang, html }: { lang: string; html: string }) {
@@ -18,10 +18,16 @@ function HtmlCodeBlock({ lang, html }: { lang: string; html: string }) {
     const onCopy = () => {
         const text = preRef.current?.textContent ?? '';
         if (!navigator.clipboard) return;
-        navigator.clipboard.writeText(text).then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        });
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            })
+            .catch(() => {
+                // 権限拒否や非セキュアコンテキストで writeText が reject した場合は
+                // コピー成功状態にせず、未処理の Promise rejection を防ぐ。
+                setCopied(false);
+            });
     };
 
     const lines = html.split('\n');
@@ -65,7 +71,7 @@ function HtmlCodeBlock({ lang, html }: { lang: string; html: string }) {
 }
 
 /** Mermaid グラフを表示するための簡易コンポーネント */
-function Diagram({ id, label }: { id: string; label: string }) {
+function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -537,7 +543,7 @@ export default function DevelopYourGcpNetworkGuide() {
                                     <tr>
                                         <td><code>INSERT INTO</code></td>
                                         <td>行の挿入</td>
-                                        <td><code>INSERT INTO t1 VALUES ("val");</code></td>
+                                        <td><code>{"INSERT INTO t1 VALUES ('val');"}</code></td>
                                     </tr>
                                     <tr>
                                         <td><code>DELETE FROM</code></td>
@@ -844,7 +850,7 @@ export default function DevelopYourGcpNetworkGuide() {
                         <HtmlCodeBlock
                             lang="logs explorer filter"
                             html={`resource.type = <span class="s">"gce_instance"</span>
-resource.labels.instance_id = <span class="s">"lamp-1-vm"</span>`}
+resource.labels.instance_id = <span class="s">"INSTANCE_ID"</span>  <span class="c"># gce_instance では数値のインスタンス ID（VM 名ではない）</span>`}
                         />
                         <div className="table-scroll">
                             <table>
@@ -1389,7 +1395,7 @@ resource.labels.instance_id = <span class="s">"lamp-1-vm"</span>`}
 
             <footer className="page-footer">
                 <div className="shell">
-                    <p className="mono">// gcp-network:~/learn$ traceroute complete — 6 hops reached.</p>
+                    <p className="mono">{"// gcp-network:~/learn$ traceroute complete — 6 hops reached."}</p>
                     <p>本ドキュメントは <b style={{ color: 'var(--n-muted)' }}>Develop-Your-Google-Cloud-Network.md</b> を初学者向けに再構成した学習用教材です。各種設定値・コマンドは学習環境を前提としています。本番環境では上記の各「★ Best Practice」および公式ドキュメントを必ずご確認ください。</p>
                 </div>
             </footer>

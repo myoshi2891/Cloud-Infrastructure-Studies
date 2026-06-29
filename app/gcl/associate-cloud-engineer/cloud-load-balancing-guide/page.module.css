@@ -453,9 +453,14 @@
     border-color: var(--color-theme-ace-accent);
 }
 
-.container :global(.copy-btn.copied) {
+.container :global(.copy-btn.success) {
     color: var(--color-google-green);
     border-color: var(--color-google-green);
+}
+
+.container :global(.copy-btn.error) {
+    color: var(--color-google-red);
+    border-color: var(--color-google-red);
 }
 
 .container :global(pre) {

@@ -98,7 +98,7 @@ app/
         CloudLoadBalancingGuide.tsx # 本文＋インタラクション（client。進捗バー/scroll spy/コピー機能）
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（6図）
-        page.css                    # ページ固有スタイル（token 整合）
+        page.module.css             # ページ固有スタイル（CSS Modules、token 整合）
       develop-your-gcp-network/
         page.tsx                    # GCPネットワーク完全入門（Server。メタデータ定義）
         DevelopYourGcpNetworkGuide.tsx # 本文＋インタラクション（client。チェックリスト等）
