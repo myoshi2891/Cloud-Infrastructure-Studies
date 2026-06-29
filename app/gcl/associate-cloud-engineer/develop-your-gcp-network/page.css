@@ -1,0 +1,742 @@
+/* =============================================================
+   Develop Your Google Cloud Network ページ専用 CSS
+   スコープ: .gcp-network-page
+   Night Ops Console / Blueprint テーマ
+   ============================================================= */
+
+/* ---- Design tokens (page-local literals) ---- */
+.gcp-network-page {
+  --n-ink:       var(--color-background);
+  --n-ink-2:     #0d1426;
+  --n-panel:     var(--color-card);
+  --n-panel-2:   #16223b;
+  --n-line:      #233252;
+  --n-line-soft: #1a2740;
+  --n-grid:      rgba(95, 211, 240, 0.035);
+
+  --n-cyan:   #5fd3f0;
+  --n-blue:   var(--color-google-blue, #4285f4);
+  --n-amber:  var(--color-google-yellow, #fbbc04);
+  --n-green:  var(--color-google-green, #34a853);
+  --n-rose:   var(--color-google-red, #ea4335);
+  --n-violet: #a98bf0;
+  --n-faint:  #5f6f93;
+
+  --n-text:   var(--color-foreground);
+  --n-muted:  var(--color-muted-foreground);
+  --n-radius: var(--radius-lg, 14px);
+}
+
+/* ---- Global resets for page ---- */
+.gcp-network-page,
+.gcp-network-page * {
+  box-sizing: border-box;
+}
+
+.gcp-network-page {
+  font-family: var(--font-body, system-ui, -apple-system, sans-serif);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--n-text);
+  background: var(--n-ink);
+  min-height: 100vh;
+}
+
+/* ---- Layout ---- */
+.gcp-network-page .shell {
+  max-width: 100%;
+  padding: 0 clamp(16px, 4vw, 40px);
+}
+
+.gcp-network-page .with-rail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 1040px) {
+  .gcp-network-page .with-rail {
+    grid-template-columns: 248px 1fr;
+    gap: 56px;
+  }
+}
+
+/* ---- Hero ---- */
+.gcp-network-page .hero {
+  position: relative;
+  padding: clamp(56px, 9vw, 110px) 0 clamp(40px, 6vw, 72px);
+  overflow: hidden;
+}
+
+.gcp-network-page .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--n-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--n-grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(120% 80% at 50% 0%, #000 30%, transparent 78%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gcp-network-page .hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.gcp-network-page .eyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--n-cyan);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  border: 1px solid var(--n-line);
+  border-radius: 999px;
+  background: rgba(95, 211, 240, 0.05);
+}
+
+.gcp-network-page .eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--n-cyan);
+  box-shadow: 0 0 8px var(--n-cyan);
+}
+
+.gcp-network-page h1.title {
+  font-family: var(--font-display, system-ui);
+  font-weight: 700;
+  font-size: clamp(34px, 6.2vw, 68px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin: 26px 0 0;
+  color: #fff;
+}
+
+.gcp-network-page h1.title .accent {
+  background: linear-gradient(100deg, var(--n-cyan), var(--n-blue) 55%, var(--n-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gcp-network-page .lede {
+  margin: 22px 0 0;
+  max-width: 640px;
+  font-size: clamp(16px, 2.1vw, 19px);
+  color: var(--n-muted);
+}
+
+.gcp-network-page .hero-meta {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gcp-network-page .chip {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: var(--n-text);
+  padding: 7px 12px;
+  border: 1px solid var(--n-line);
+  border-radius: 8px;
+  background: var(--n-panel);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gcp-network-page .chip i {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* ---- Stat strip ---- */
+.gcp-network-page .stat-strip {
+  margin-top: 42px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--n-line-soft);
+  border: 1px solid var(--n-line-soft);
+  border-radius: var(--n-radius);
+  overflow: hidden;
+}
+
+@media (min-width: 720px) {
+  .gcp-network-page .stat-strip {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.gcp-network-page .stat {
+  background: var(--n-ink-2);
+  padding: 22px 20px;
+}
+
+.gcp-network-page .stat .n {
+  font-family: var(--font-display, system-ui);
+  font-weight: 700;
+  font-size: 30px;
+  color: #fff;
+  line-height: 1;
+}
+
+.gcp-network-page .stat .n span {
+  color: var(--n-cyan);
+}
+
+.gcp-network-page .stat .l {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--n-muted);
+}
+
+/* ---- Side rail ---- */
+.gcp-network-page .rail-wrap {
+  display: none;
+}
+
+@media (min-width: 1040px) {
+  .gcp-network-page .rail-wrap {
+    display: block;
+  }
+
+  .gcp-network-page .rail {
+    position: sticky;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+    padding: 4px 0;
+  }
+}
+
+.gcp-network-page .rail-title {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--n-faint);
+  margin: 0 0 16px 14px;
+}
+
+.gcp-network-page .hop {
+  position: relative;
+  display: block;
+  padding: 9px 0 9px 30px;
+  color: var(--n-muted);
+  border-left: 2px solid var(--n-line);
+  margin-left: 14px;
+  transition: color 0.2s, border-color 0.2s;
+  text-decoration: none;
+}
+
+.gcp-network-page .hop:hover {
+  color: var(--n-text);
+  text-decoration: none;
+  border-color: var(--n-blue);
+}
+
+.gcp-network-page .hop::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 16px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--n-ink);
+  border: 2px solid var(--n-line);
+  transition: all 0.2s;
+}
+
+.gcp-network-page .hop.active {
+  color: #fff;
+  border-color: var(--n-cyan);
+}
+
+.gcp-network-page .hop.active::before {
+  background: var(--n-cyan);
+  border-color: var(--n-cyan);
+  box-shadow: 0 0 10px var(--n-cyan);
+}
+
+.gcp-network-page .hop .h-no {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: var(--n-faint);
+  display: block;
+}
+
+.gcp-network-page .hop.active .h-no {
+  color: var(--n-cyan);
+}
+
+.gcp-network-page .hop .h-name {
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+/* ---- Main content ---- */
+.gcp-network-page main {
+  padding-bottom: 100px;
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+}
+
+.gcp-network-page .part {
+  padding-top: 64px;
+  margin-top: 8px;
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+}
+
+.gcp-network-page .part-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+
+.gcp-network-page .part-addr {
+  font-family: var(--font-mono, monospace);
+  font-size: 12.5px;
+  color: var(--n-cyan);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.gcp-network-page .part-addr .slash {
+  color: var(--n-faint);
+}
+
+.gcp-network-page h2.part-title {
+  font-family: var(--font-display, system-ui);
+  font-weight: 700;
+  font-size: clamp(25px, 3.6vw, 38px);
+  letter-spacing: -0.015em;
+  margin: 8px 0 0;
+  color: #fff;
+  line-height: 1.12;
+}
+
+.gcp-network-page .part-sub {
+  color: var(--n-muted);
+  margin: 12px 0 0;
+  max-width: 720px;
+}
+
+.gcp-network-page .rule {
+  height: 1px;
+  border: 0;
+  margin: 26px 0 0;
+  background: linear-gradient(90deg, var(--n-cyan), var(--n-line) 40%, transparent);
+}
+
+.gcp-network-page h3 {
+  font-family: var(--font-display, system-ui);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--n-text);
+  margin: 44px 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gcp-network-page h3 .num {
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  color: var(--n-blue);
+  border: 1px solid var(--n-line);
+  border-radius: 6px;
+  padding: 2px 8px;
+  flex: none;
+}
+
+.gcp-network-page h4 {
+  font-family: var(--font-display, system-ui);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--n-cyan);
+  margin: 28px 0 10px;
+}
+
+.gcp-network-page p {
+  margin: 14px 0;
+}
+
+.gcp-network-page .term {
+  font-family: var(--font-mono, monospace);
+  color: var(--n-cyan);
+  font-size: 0.92em;
+}
+
+/* ---- Cards / panels ---- */
+.gcp-network-page .panel {
+  background: var(--n-panel);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius);
+  padding: 22px 24px;
+  margin: 22px 0;
+}
+
+/* ---- Tables ---- */
+.gcp-network-page .table-scroll {
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: var(--n-radius);
+  border: 1px solid var(--n-line);
+}
+
+.gcp-network-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  min-width: 480px;
+}
+
+.gcp-network-page thead th {
+  background: var(--n-ink-2);
+  text-align: left;
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--n-cyan);
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--n-line);
+  white-space: nowrap;
+}
+
+.gcp-network-page tbody td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--n-line-soft);
+  color: var(--n-text);
+  vertical-align: top;
+}
+
+.gcp-network-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.gcp-network-page tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.gcp-network-page tbody tr:hover td {
+  background: rgba(95, 211, 240, 0.04);
+}
+
+.gcp-network-page td code,
+.gcp-network-page th code,
+.gcp-network-page p code,
+.gcp-network-page li code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.86em;
+  background: var(--n-ink-2);
+  color: var(--n-cyan);
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--n-line-soft);
+}
+
+/* ---- Code blocks ---- */
+.gcp-network-page .code {
+  position: relative;
+  background: var(--n-ink-2);
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius);
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.gcp-network-page .code-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--n-line-soft);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.gcp-network-page .code-head .lang {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-faint);
+  margin-left: auto;
+}
+
+.gcp-network-page .code-head .tl {
+  display: flex;
+  gap: 6px;
+}
+
+.gcp-network-page .code-head .tl b {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.gcp-network-page .code pre {
+  margin: 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-family: var(--font-mono, monospace);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #cdd9f0;
+  white-space: pre;
+  scrollbar-width: thin;
+  scrollbar-color: var(--n-line) transparent;
+}
+
+.gcp-network-page .code pre::-webkit-scrollbar {
+  height: 4px;
+}
+
+.gcp-network-page .code pre::-webkit-scrollbar-thumb {
+  background: var(--n-line);
+  border-radius: 2px;
+}
+
+/* Syntax highlight classes */
+.gcp-network-page .code pre .c {
+  color: var(--n-faint);
+  font-style: italic;
+}
+.gcp-network-page .code pre .k {
+  color: var(--n-violet);
+}
+.gcp-network-page .code pre .s {
+  color: var(--n-green);
+}
+.gcp-network-page .code pre .f {
+  color: var(--n-amber);
+}
+.gcp-network-page .code pre .o {
+  color: var(--n-cyan);
+}
+
+/* ---- Callouts ---- */
+.gcp-network-page .callout {
+  position: relative;
+  margin: 22px 0;
+  padding: 18px 20px 18px 22px;
+  border-radius: 12px;
+  border: 1px solid var(--n-line);
+  background: var(--n-panel);
+}
+
+.gcp-network-page .callout::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gcp-network-page .callout .tag {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.gcp-network-page .callout p {
+  margin: 4px 0 0;
+  font-size: 14.5px;
+  color: var(--n-text);
+}
+
+.gcp-network-page .callout.best::before {
+  background: var(--n-amber);
+}
+.gcp-network-page .callout.best .tag {
+  color: var(--n-amber);
+}
+.gcp-network-page .callout.warn::before {
+  background: var(--n-rose);
+}
+.gcp-network-page .callout.warn .tag {
+  color: var(--n-rose);
+}
+.gcp-network-page .callout.note::before {
+  background: var(--n-cyan);
+}
+.gcp-network-page .callout.note .tag {
+  color: var(--n-cyan);
+}
+.gcp-network-page .callout.tip::before {
+  background: var(--n-green);
+}
+.gcp-network-page .callout.tip .tag {
+  color: var(--n-green);
+}
+
+/* ---- Mermaid frame ---- */
+.gcp-network-page .diagram {
+  margin: 24px 0;
+  background:
+    linear-gradient(var(--n-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--n-grid) 1px, transparent 1px),
+    var(--n-ink-2);
+  background-size: 26px 26px, 26px 26px, auto;
+  border: 1px solid var(--n-line);
+  border-radius: var(--n-radius);
+  padding: 14px 10px;
+  overflow-x: auto;
+}
+
+.gcp-network-page .diagram .cap {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-faint);
+  padding: 6px 12px 12px;
+}
+
+.gcp-network-page .mermaid-wrap {
+  text-align: center;
+}
+
+/* ---- Clean list ---- */
+.gcp-network-page ul.clean {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.gcp-network-page ul.clean li {
+  position: relative;
+  padding-left: 26px;
+  margin: 9px 0;
+  color: var(--n-text);
+}
+
+.gcp-network-page ul.clean li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 11px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--n-cyan);
+  transform: rotate(45deg);
+}
+
+/* ---- References ---- */
+.gcp-network-page .ref-group {
+  margin: 18px 0;
+}
+
+.gcp-network-page .ref-group > .ref-h {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--n-cyan);
+  margin: 24px 0 10px;
+}
+
+/* ---- Checklist ---- */
+.gcp-network-page .checklist {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.gcp-network-page .checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--n-panel);
+  border: 1px solid var(--n-line);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14.5px;
+  color: var(--n-text);
+  transition: border-color 0.2s;
+}
+
+.gcp-network-page .checklist label:hover {
+  border-color: var(--n-blue);
+}
+
+.gcp-network-page .checklist input {
+  margin-top: 4px;
+  accent-color: var(--n-green);
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.gcp-network-page .checklist input:checked + span {
+  color: var(--n-faint);
+  text-decoration: line-through;
+}
+
+/* ---- Footer ---- */
+.gcp-network-page .page-footer {
+  border-top: 1px solid var(--n-line-soft);
+  padding: 40px 0 60px;
+  color: var(--n-faint);
+  font-size: 13px;
+}
+
+.gcp-network-page .page-footer .mono {
+  font-family: var(--font-mono, monospace);
+}
+
+/* ---- Links ---- */
+.gcp-network-page a {
+  color: var(--n-cyan);
+  text-decoration: none;
+}
+
+.gcp-network-page a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---- Selection ---- */
+.gcp-network-page ::selection {
+  background: var(--n-cyan);
+  color: #06121b;
+}
+
+/* ---- Focus visible ---- */
+.gcp-network-page :focus-visible {
+  outline: 2px solid var(--n-cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .gcp-network-page * {
+    transition: none !important;
+  }
+}

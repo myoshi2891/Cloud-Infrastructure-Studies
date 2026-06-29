@@ -47,7 +47,7 @@ describe('Develop Your Google Cloud Network ページ', () => {
     });
 
     it('参考リソース / 出典セクションが存在すること', () => {
-        expect(screen.getByText(/参考リソース/)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /参考リソース/ })).toBeInTheDocument();
     });
 
     it('サイドレールナビゲーションが存在し hop リンクを8本以上含むこと', () => {
