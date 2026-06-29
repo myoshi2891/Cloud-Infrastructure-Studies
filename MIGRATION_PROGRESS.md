@@ -7,9 +7,35 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **テスト数:** プロジェクト全体で 85 テストファイル (合計 548 テストケース) パス / 新規 LB ガイド追加
+- **テスト数:** プロジェクト全体で 79 テストファイル (合計 561 テストケース) パス
 - **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-06-27T09:47:00.000Z
+- **最終更新日時(UTC):** 2026-06-29T10:45:00.000Z
+
+---
+
+## 2026-06-29: ACE「GCPネットワーク完全入門」移行 (完了)
+
+### 目的
+
+`Develop-Your-Google-Cloud-Network.html`（静的HTML・1638行）を、他の完全ガイド（`section1`〜`section4`）と同じ設計パターン（NavBar + page.tsx + DevelopYourGcpNetworkGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/develop-your-gcp-network` ルートへ移行・追加する。デザインは HTML を忠実に再現しつつ、globals.css のダークテーマデザイントークンに整合。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for develop-your-gcp-network page` (テストの作成)
+- [x] **Step 2 (Green)**: `feat(ace): implement develop-your-gcp-network page to pass tests` (最小構成の page.tsx, DevelopYourGcpNetworkGuide.tsx, page.css, NavBar.tsx, constants.ts 実装)
+- [x] **Step 3 (Refactor / Integration)**: `refactor(ace): integrate develop-your-gcp-network into routing and update docs` (constants.ts へのルーティング統合、CLAUDE.md / GEMINI.md の更新、IntersectionObserver 関連の vitest グローバルモックの改善・CLBガイドのテスト不具合修正)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md — Develop-Your-Google-Cloud-Network 移行完了` (元HTMLファイルを `archive/Gcl_Archive/Associate-Cloud-Engineer/` または `Gcl_Archive/` 配下へ移動)
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/develop-your-gcp-network/page.tsx](app/gcl/associate-cloud-engineer/develop-your-gcp-network/page.tsx)
+- [app/gcl/associate-cloud-engineer/develop-your-gcp-network/DevelopYourGcpNetworkGuide.tsx](app/gcl/associate-cloud-engineer/develop-your-gcp-network/DevelopYourGcpNetworkGuide.tsx)
+- [app/gcl/associate-cloud-engineer/develop-your-gcp-network/NavBar.tsx](app/gcl/associate-cloud-engineer/develop-your-gcp-network/NavBar.tsx)
+- [app/gcl/associate-cloud-engineer/develop-your-gcp-network/constants.ts](app/gcl/associate-cloud-engineer/develop-your-gcp-network/constants.ts)
+- [app/gcl/associate-cloud-engineer/develop-your-gcp-network/page.css](app/gcl/associate-cloud-engineer/develop-your-gcp-network/page.css)
+- [__tests__/gcl/associate-cloud-engineer/develop-your-gcp-network/page.test.tsx](__tests__/gcl/associate-cloud-engineer/develop-your-gcp-network/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ---
 
