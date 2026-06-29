@@ -11,7 +11,7 @@ describe('Cloud Load Balancing 完全入門 ページ', () => {
 
     it('hero タイトルがレンダリングされること', () => {
         expect(screen.getAllByText(/Cloud Load Balancing/).length).toBeGreaterThanOrEqual(1);
-        expect(screen.getAllByText(/完全入門/).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/壊れないサービス/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('このガイドの全体像セクションが存在すること', () => {
@@ -27,7 +27,7 @@ describe('Cloud Load Balancing 完全入門 ページ', () => {
     });
 
     it('内部パススルー ネットワークLB 内部 L4セクションが存在すること', () => {
-        expect(screen.getByText(/内部パススルー ネットワークLB/)).toBeInTheDocument();
+        expect(screen.getAllByText(/内部パススルー ネットワークLB/).length).toBeGreaterThanOrEqual(1);
     });
 
     it('チャレンジラボの攻略方針セクションが存在すること', () => {

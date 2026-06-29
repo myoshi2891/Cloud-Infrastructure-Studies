@@ -79,3 +79,12 @@ vi.mock('next/navigation', () => ({
     useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
     useSearchParams: () => new URLSearchParams(),
 }));
+
+// IntersectionObserver のグローバルモック
+global.IntersectionObserver = vi.fn().mockImplementation(function (this: any) {
+    this.observe = vi.fn();
+    this.unobserve = vi.fn();
+    this.disconnect = vi.fn();
+    return this;
+}) as any;
+
