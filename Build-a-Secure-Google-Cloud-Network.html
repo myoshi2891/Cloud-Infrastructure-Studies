@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Google Cloud ネットワークセキュリティ実践ガイド — VPC・ファイアウォール・IAP・ロードバランシング</title>
+<meta name="description" content="VPC、ファイアウォール、IAM、IAP、ロードバランサ、Cloud Armor をゼロから理解する初学者向け実践ガイド。多層防御の考え方をステップバイステップで解説。" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --ink:        #0a1428;
+    --ink-2:      #0c1830;
+    --panel:      #0f1e38;
+    --panel-2:    #112444;
+    --line:       #21385c;
+    --line-soft:  rgba(86, 207, 225, 0.14);
+    --cyan:       #56cfe1;
+    --cyan-deep:  #4cc9f0;
+    --amber:      #f4b740;
+    --coral:      #ff6b6b;
+    --green:      #5fe39b;
+    --text:       #e7eef8;
+    --muted:      #9db1cc;
+    --muted-2:    #6c83a3;
+
+    --font-disp:  "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+    --font-tech:  "Space Grotesk", "Zen Kaku Gothic New", sans-serif;
+    --font-body:  "Noto Sans JP", sans-serif;
+    --font-mono:  "JetBrains Mono", ui-monospace, monospace;
+
+    --maxw: 980px;
+    --r: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+
+  body {
+    margin: 0;
+    background-color: var(--ink);
+    /* ブループリントのグリッド */
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
+      radial-gradient(1200px 600px at 80% -10%, rgba(76,201,240,0.10), transparent 60%);
+    background-size: 32px 32px, 32px 32px, 100% 100%;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.01em;
+  }
+
+  a { color: var(--cyan); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  ::selection { background: rgba(244,183,64,0.30); color: #fff; }
+
+  :focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem clamp(1rem, 4vw, 2.4rem);
+    background: rgba(8, 17, 35, 0.82);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar__brand {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-tech); font-weight: 600;
+    font-size: 0.92rem; letter-spacing: 0.04em;
+  }
+  .topbar__dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 0 4px rgba(86,207,225,0.18), 0 0 18px var(--cyan);
+  }
+  .topbar__tag {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--muted); letter-spacing: 0.08em;
+  }
+  .topbar a.topbar__src {
+    font-family: var(--font-mono); font-size: 0.74rem;
+    color: var(--muted); white-space: nowrap;
+  }
+
+  /* ---------- Layout shell ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 4vw, 2.4rem);
+  }
+
+  /* ---------- Sidebar TOC ---------- */
+  .toc {
+    position: sticky; top: 88px;
+    align-self: start;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding: 1.6rem 0.4rem 2rem 0;
+    border-right: 1px solid var(--line);
+    font-size: 0.86rem;
+  }
+  .toc__title {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted-2); margin: 0 0 0.9rem 0.2rem;
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  .toc li { counter-increment: toc; }
+  .toc a {
+    display: flex; gap: 0.7rem; align-items: baseline;
+    padding: 0.42rem 0.5rem; border-radius: 8px;
+    color: var(--muted); line-height: 1.4;
+    border-left: 2px solid transparent;
+  }
+  .toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--cyan-deep); flex: none;
+  }
+  .toc a:hover { color: var(--text); background: rgba(86,207,225,0.07); text-decoration: none; }
+  .toc a.is-active {
+    color: var(--text); background: rgba(86,207,225,0.10);
+    border-left-color: var(--cyan);
+  }
+
+  /* ---------- Main ---------- */
+  main { padding-bottom: 6rem; min-width: 0; }
+  .wrap { max-width: var(--maxw); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: clamp(2.6rem, 8vw, 5.5rem) 0 2.4rem; }
+  .hero__eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-mono); font-size: 0.74rem;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 1.4rem;
+  }
+  .hero__eyebrow::before {
+    content: ""; width: 28px; height: 1px; background: var(--cyan);
+  }
+  .hero h1 {
+    font-family: var(--font-disp); font-weight: 900;
+    font-size: clamp(2.1rem, 6vw, 3.7rem);
+    line-height: 1.18; letter-spacing: -0.01em;
+    margin: 0 0 1.1rem;
+  }
+  .hero h1 .accent { color: var(--cyan); }
+  .hero__lead {
+    font-size: clamp(1rem, 2.2vw, 1.18rem);
+    color: var(--muted); max-width: 60ch; margin: 0 0 2rem;
+  }
+  .hero__meta {
+    display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem;
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--muted-2);
+  }
+  .hero__meta b { color: var(--amber); font-weight: 500; }
+
+  /* ---------- Signature: packet flow schematic ---------- */
+  .flowstrip {
+    margin-top: 2.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background:
+      linear-gradient(180deg, rgba(76,201,240,0.05), transparent),
+      var(--ink-2);
+    padding: 1.6rem 1.2rem 1.3rem;
+    position: relative; overflow: hidden;
+  }
+  .flowstrip__label {
+    position: absolute; top: 0.7rem; right: 1rem;
+    font-family: var(--font-mono); font-size: 0.66rem;
+    letter-spacing: 0.14em; color: var(--muted-2);
+  }
+  .flowstrip__track {
+    display: flex; align-items: stretch; gap: 0;
+    overflow-x: auto; padding-bottom: 0.4rem;
+  }
+  .node {
+    flex: 1 0 auto; min-width: 110px;
+    text-align: center; padding: 0.4rem 0.6rem;
+    position: relative;
+  }
+  .node__icn {
+    width: 46px; height: 46px; margin: 0 auto 0.6rem;
+    display: grid; place-items: center;
+    border-radius: 12px;
+    border: 1px solid var(--cyan-deep);
+    background: rgba(86,207,225,0.08);
+    color: var(--cyan); font-size: 1.3rem;
+  }
+  .node--deny .node__icn { border-color: var(--coral); background: rgba(255,107,107,0.10); color: var(--coral); }
+  .node--end .node__icn { border-color: var(--green); background: rgba(95,227,155,0.10); color: var(--green); }
+  .node__t { font-family: var(--font-tech); font-weight: 600; font-size: 0.86rem; }
+  .node__s { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted-2); display: block; margin-top: 0.15rem; }
+  .node::after {
+    content: ""; position: absolute; top: 1.0rem; right: -2px;
+    width: calc(100% - 86px); max-width: 70px; height: 2px;
+    left: 50%; transform: translateX(28px);
+    background-image: linear-gradient(90deg, var(--cyan) 50%, transparent 50%);
+    background-size: 10px 2px;
+    animation: flow 1s linear infinite;
+  }
+  .node:last-child::after { display: none; }
+  @keyframes flow { to { background-position: 10px 0; } }
+
+  /* ---------- Section ---------- */
+  .section { padding: 3rem 0; border-top: 1px solid var(--line); }
+  .section__head {
+    display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.6rem;
+  }
+  .section__num {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 1.05rem; color: var(--cyan);
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.2rem 0.6rem; flex: none;
+  }
+  .section__head h2 {
+    font-family: var(--font-disp); font-weight: 900;
+    font-size: clamp(1.5rem, 3.6vw, 2.15rem);
+    line-height: 1.25; margin: 0; letter-spacing: -0.005em;
+  }
+  .section h3 {
+    font-family: var(--font-disp); font-weight: 700;
+    font-size: 1.22rem; margin: 2.4rem 0 0.6rem;
+    color: var(--text);
+    padding-left: 0.8rem; border-left: 3px solid var(--amber);
+  }
+  .section h4 {
+    font-family: var(--font-tech); font-weight: 600;
+    font-size: 1.02rem; margin: 1.8rem 0 0.4rem; color: var(--cyan);
+  }
+  .section p { margin: 0.7rem 0; color: #d5e0ef; }
+  .section strong { color: #fff; font-weight: 700; }
+  .lead-def {
+    font-size: 1.04rem; color: var(--muted);
+  }
+
+  /* ---------- Tables ---------- */
+  .table-wrap { overflow-x: auto; margin: 1.4rem 0; border-radius: var(--r); border: 1px solid var(--line); }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.9rem; min-width: 460px;
+    background: var(--panel);
+  }
+  thead th {
+    background: var(--panel-2);
+    font-family: var(--font-tech); font-weight: 600;
+    text-align: left; color: var(--cyan);
+    padding: 0.7rem 0.95rem; white-space: nowrap;
+    border-bottom: 1px solid var(--line);
+    letter-spacing: 0.02em;
+  }
+  tbody td {
+    padding: 0.65rem 0.95rem; vertical-align: top;
+    border-bottom: 1px solid rgba(33,56,92,0.55);
+    color: #cfdcec;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: rgba(86,207,225,0.04); }
+  td code, th code { white-space: nowrap; }
+
+  /* ---------- Code blocks ---------- */
+  code {
+    font-family: var(--font-mono); font-size: 0.86em;
+    background: rgba(86,207,225,0.10);
+    color: #bfeaf2; padding: 0.1em 0.4em; border-radius: 5px;
+  }
+  .code {
+    margin: 1.3rem 0; border-radius: var(--r);
+    border: 1px solid var(--line);
+    background: var(--ink-2); overflow: hidden;
+  }
+  .code__bar {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.5rem 0.95rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--muted-2); letter-spacing: 0.06em;
+  }
+  .code__bar::before {
+    content: ""; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--cyan); flex: none;
+  }
+  .code.is-bad .code__bar { color: var(--coral); }
+  .code.is-bad .code__bar::before { background: var(--coral); }
+  .code.is-good .code__bar { color: var(--green); }
+  .code.is-good .code__bar::before { background: var(--green); }
+  .code pre {
+    margin: 0; padding: 1rem 1.1rem; overflow-x: auto;
+    font-family: var(--font-mono); font-size: 0.82rem;
+    line-height: 1.7; color: #d7e6f2;
+  }
+  .code pre .cm { color: var(--muted-2); }
+  .code pre .fl { color: var(--amber); }
+
+  /* ---------- Callouts ---------- */
+  .callout {
+    margin: 1.5rem 0; padding: 1.1rem 1.3rem 1.1rem 1.5rem;
+    border-radius: 12px; position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--cyan);
+  }
+  .callout__k {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--cyan); display: block; margin-bottom: 0.3rem;
+  }
+  .callout p { margin: 0.2rem 0; color: #d8e3f1; font-size: 0.95rem; }
+  .callout--best { border-left-color: var(--amber); background: rgba(244,183,64,0.06); }
+  .callout--best .callout__k { color: var(--amber); }
+  .callout--warn { border-left-color: var(--coral); background: rgba(255,107,107,0.06); }
+  .callout--warn .callout__k { color: var(--coral); }
+  .callout--note { border-left-color: var(--cyan); background: rgba(86,207,225,0.05); }
+
+  /* ---------- Mermaid ---------- */
+  .diagram {
+    margin: 1.6rem 0; padding: 1.2rem;
+    border: 1px solid var(--line); border-radius: var(--r);
+    background:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
+      var(--ink-2);
+    background-size: 24px 24px, 24px 24px, 100% 100%;
+    overflow-x: auto; text-align: center;
+  }
+  .diagram .mermaid { min-width: 320px; }
+  .diagram svg { max-width: 100%; height: auto; }
+  .diagram__cap {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--muted-2); text-align: left; margin-top: 0.6rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Checklist ---------- */
+  .check-group { margin: 1.4rem 0; }
+  .check-group h4 { margin-bottom: 0.7rem; }
+  .check {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 0.55rem;
+  }
+  .check li {
+    display: flex; gap: 0.7rem; align-items: flex-start;
+    padding: 0.7rem 0.9rem; border-radius: 10px;
+    background: var(--panel); border: 1px solid var(--line);
+    font-size: 0.92rem; color: #d4e0ee;
+  }
+  .check li::before {
+    content: "✓"; flex: none;
+    width: 22px; height: 22px; border-radius: 6px;
+    display: grid; place-items: center;
+    background: rgba(95,227,155,0.14); color: var(--green);
+    font-size: 0.8rem; font-weight: 700; margin-top: 1px;
+  }
+
+  /* ---------- Pills / inline ---------- */
+  .pill {
+    font-family: var(--font-mono); font-size: 0.74rem;
+    padding: 0.12rem 0.5rem; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted);
+    white-space: nowrap;
+  }
+  .ok  { color: var(--green); }
+  .ng  { color: var(--coral); }
+
+  /* ---------- Sources ---------- */
+  .src-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.9rem; margin: 1.3rem 0;
+  }
+  .src-card {
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--panel); padding: 1rem 1.1rem;
+  }
+  .src-card h4 { margin: 0 0 0.6rem; color: var(--amber); font-size: 0.88rem; letter-spacing: 0.04em; }
+  .src-card ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
+  .src-card li { font-size: 0.85rem; line-height: 1.5; }
+  .src-card a { word-break: break-all; }
+  .src-card .doc {
+    display: block; color: var(--muted-2); font-family: var(--font-mono);
+    font-size: 0.7rem; margin-top: 0.1rem;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 2.4rem 0 3rem;
+    color: var(--muted-2); font-size: 0.85rem;
+  }
+  footer .closing {
+    border-left: 3px solid var(--amber);
+    padding-left: 1rem; margin: 0 0 1.4rem;
+    color: var(--muted); font-size: 0.95rem; max-width: 70ch;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    .toc {
+      position: static; height: auto; max-height: none;
+      border-right: none; border-bottom: 1px solid var(--line);
+      padding: 1rem 0; margin-top: 0.5rem;
+    }
+    .toc ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0.1rem; }
+  }
+  @media (max-width: 540px) {
+    .toc ol { grid-template-columns: 1fr; }
+    .topbar__tag { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .node::after { animation: none; background: var(--cyan); }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="topbar__dot" aria-hidden="true"></span>
+    Secure GCP Network
+    <span class="topbar__tag">/ defense&nbsp;in&nbsp;depth</span>
+  </div>
+  <a class="topbar__src" href="https://www.cloudskillsboost.google/course_templates/635" target="_blank" rel="noopener">元ラボ ↗</a>
+</header>
+
+<div class="shell">
+
+  <!-- ===================== TOC ===================== -->
+  <nav class="toc" aria-label="目次">
+    <p class="toc__title">Contents</p>
+    <ol>
+      <li><a href="#s1">全体像</a></li>
+      <li><a href="#s2">VPC の基礎</a></li>
+      <li><a href="#s3">ファイアウォール設計</a></li>
+      <li><a href="#s4">IAM と最小権限</a></li>
+      <li><a href="#s5">IAP でゼロトラスト</a></li>
+      <li><a href="#s6">外部 LB と Cloud Armor</a></li>
+      <li><a href="#s7">内部 LB (ILB)</a></li>
+      <li><a href="#s8">総合演習</a></li>
+      <li><a href="#s9">チェックリスト</a></li>
+      <li><a href="#s10">参考ソース</a></li>
+    </ol>
+  </nav>
+
+  <!-- ===================== MAIN ===================== -->
+  <main>
+    <div class="wrap">
+
+      <!-- ---------- HERO ---------- -->
+      <section class="hero">
+        <span class="hero__eyebrow">Defense in Depth · 多層防御</span>
+        <h1>Google Cloud<br /><span class="accent">ネットワークセキュリティ</span><br />実践ガイド</h1>
+        <p class="hero__lead">
+          VPC・ファイアウォール・IAM・IAP・ロードバランシング・Cloud Armor。
+          「なぜそうするのか」を理解したうえで、安全なネットワークを自分で設計・構築できるようになるための、初学者向けステップバイステップ解説です。
+        </p>
+        <div class="hero__meta">
+          <span>対象: <b>ネットワーク／セキュリティ初学者</b></span>
+          <span>形式: <b>10 セクション</b></span>
+          <span>図解: <b>Mermaid</b></span>
+        </div>
+
+        <!-- Signature element: パケットが層を通過する -->
+        <div class="flowstrip" role="img" aria-label="外部ユーザーのリクエストが Cloud Armor、ロードバランサ、ファイアウォールを通過してバックエンドに到達するまでの多層防御フロー">
+          <span class="flowstrip__label">request path</span>
+          <div class="flowstrip__track">
+            <div class="node">
+              <div class="node__icn" aria-hidden="true">◎</div>
+              <div class="node__t">User</div>
+              <span class="node__s">外部ユーザー</span>
+            </div>
+            <div class="node">
+              <div class="node__icn" aria-hidden="true">▽</div>
+              <div class="node__t">Cloud Armor</div>
+              <span class="node__s">L7 フィルタ</span>
+            </div>
+            <div class="node">
+              <div class="node__icn" aria-hidden="true">⇄</div>
+              <div class="node__t">Load Balancer</div>
+              <span class="node__s">単一 IP</span>
+            </div>
+            <div class="node node--deny">
+              <div class="node__icn" aria-hidden="true">▦</div>
+              <div class="node__t">Firewall</div>
+              <span class="node__s">最小許可</span>
+            </div>
+            <div class="node node--end">
+              <div class="node__icn" aria-hidden="true">▣</div>
+              <div class="node__t">Backend</div>
+              <span class="node__s">MIG / VM</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 1. 全体像 -->
+      <!-- ====================================================== -->
+      <section class="section" id="s1">
+        <div class="section__head">
+          <span class="section__num">01</span>
+          <h2>全体像 — このガイドで学ぶこと</h2>
+        </div>
+
+        <p>
+          クラウド上で動くアプリを安全に運用するには、<strong>「誰が・どこから・どのリソースに・どのポートで」</strong>アクセスできるかを厳密にコントロールする必要があります。Google Cloud では、この制御を複数のレイヤーで実現します。
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>レイヤー</th><th>役割</th><th>主なサービス</th></tr></thead>
+            <tbody>
+              <tr><td>ネットワーク分離</td><td>環境を隔離し、通信境界を作る</td><td>VPC / サブネット</td></tr>
+              <tr><td>パケットフィルタ</td><td>IP・ポート単位で許可/拒否</td><td>ファイアウォールルール</td></tr>
+              <tr><td>ID ベースアクセス</td><td>「誰が」操作できるかを制御</td><td>IAM / サービスアカウント</td></tr>
+              <tr><td>ゼロトラスト接続</td><td>外部 IP なしで安全に管理アクセス</td><td>Identity-Aware Proxy (IAP)</td></tr>
+              <tr><td>トラフィック分散</td><td>可用性とスケーラビリティ</td><td>ロードバランサ</td></tr>
+              <tr><td>エッジ防御</td><td>L7 攻撃をバックエンド到達前に遮断</td><td>Cloud Armor</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart TB
+    User([外部ユーザー])
+    Admin([管理者])
+    subgraph Edge[Google エッジ / グローバル]
+        Armor[Cloud Armor L7 フィルタ]
+        GLB[外部 Application Load Balancer]
+        IAP[Identity-Aware Proxy]
+    end
+    subgraph VPC[VPC ネットワーク]
+        FW{ファイアウォール ルール}
+        subgraph SubnetA[サブネット A]
+            Web[Web サーバー群 MIG]
+        end
+        subgraph SubnetB[サブネット B]
+            Internal[内部サービス ILB バックエンド]
+        end
+        Bastion[踏み台 / 管理 VM]
+    end
+    User -->|HTTP/HTTPS| Armor --> GLB --> FW --> Web
+    Admin -->|SSH 認証付き| IAP --> FW --> Bastion
+    Web -->|内部通信| FW --> Internal
+          </pre>
+          <p class="diagram__cap">図 1-1 — 各サービスの連携。外部通信は必ず「エッジ → ファイアウォール → バックエンド」の順に通過する。</p>
+        </div>
+
+        <div class="callout callout--note">
+          <span class="callout__k">読み方のヒント</span>
+          <p>各レイヤーで<strong>「不要な通信を落とす」</strong>ことが、多層防御 (defense in depth) の基本です。1 か所が突破されても、次の層で止められる構成を目指します。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 2. VPC -->
+      <!-- ====================================================== -->
+      <section class="section" id="s2">
+        <div class="section__head">
+          <span class="section__num">02</span>
+          <h2>VPC ネットワークの基礎</h2>
+        </div>
+
+        <h3>2-1. VPC とは何か</h3>
+        <p class="lead-def">
+          <strong>VPC (Virtual Private Cloud)</strong> は、Google Cloud 上に作る論理的に隔離された仮想ネットワークです。物理データセンターを意識せず、IP 範囲・サブネット・ルーティング・ファイアウォールを自分で設計できます。
+        </p>
+        <p>
+          VPC は既定で「隔離されたプライベートネットワーク」です。異なる VPC 同士は、たとえ同じリージョンでも内部 IP では通信できません。<strong>この隔離こそがセキュリティの第一歩</strong>です。
+        </p>
+
+        <h3>2-2. 自動モード vs カスタムモード</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>項目</th><th>自動モード (Auto)</th><th>カスタムモード (Custom)</th></tr></thead>
+            <tbody>
+              <tr><td>サブネット作成</td><td>全リージョンに自動生成</td><td>自分で必要な分だけ作成</td></tr>
+              <tr><td>IP 範囲</td><td>Google が自動割り当て</td><td>自分で CIDR を指定</td></tr>
+              <tr><td>向いている用途</td><td>検証・学習</td><td>本番環境</td></tr>
+              <tr><td>制御の自由度</td><td><span class="ng">低い</span></td><td><span class="ok">高い（推奨）</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--best">
+          <span class="callout__k">ベストプラクティス</span>
+          <p>本番環境では<strong>カスタムモード</strong>を使います。サブネットを意図的に設計することで、IP の重複を防ぎ、リージョン配置を明示的に管理できます。</p>
+        </div>
+
+        <h3>2-3. カスタム VPC を作る（コンソール / gcloud）</h3>
+        <p>コンソールでの基本手順は次のとおりです。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>ナビゲーションメニュー → <strong>VPC ネットワーク</strong></td></tr>
+              <tr><td>2</td><td><strong>VPC ネットワークを作成</strong> をクリック</td></tr>
+              <tr><td>3</td><td>名前を入力（例: <code>privatenet</code>）</td></tr>
+              <tr><td>4</td><td>サブネット作成モードで <strong>カスタム</strong> を選択</td></tr>
+              <tr><td>5</td><td>サブネット名・リージョン・IPv4 範囲（例: <code>172.16.0.0/24</code>）を指定</td></tr>
+              <tr><td>6</td><td><strong>作成</strong> をクリック</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code">
+          <div class="code__bar">gcloud — 同等のコマンド</div>
+          <pre><span class="cm"># カスタムモードの VPC を作成</span>
+gcloud compute networks create privatenet <span class="fl">--subnet-mode</span>=custom
+
+<span class="cm"># サブネットを作成（リージョンと CIDR を明示）</span>
+gcloud compute networks subnets create privatesubnet-1 \
+  <span class="fl">--network</span>=privatenet \
+  <span class="fl">--region</span>=us-central1 \
+  <span class="fl">--range</span>=172.16.0.0/24</pre>
+        </div>
+        <div class="callout callout--note">
+          <span class="callout__k">Tip · IaC への第一歩</span>
+          <p>コンソールの<strong>「同等のコマンドライン」ボタン</strong>で、設定内容を作成前に gcloud コマンドとして確認できます。これを Infrastructure as Code (IaC) 化の出発点にすると再現性が高まります。</p>
+        </div>
+
+        <h3>2-4. ネットワーク間の通信ルール — 3 原則</h3>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+    A[VM-A] -->|同じ VPC・同じ範囲| B[VM-B 到達可能]
+    A -.->|別の VPC| C[VM-C 到達不可]
+    A -->|外部 IP + ICMP 許可| D[VM-D 到達可能]
+          </pre>
+          <p class="diagram__cap">図 2-1 — 内部 IP での疎通可否。</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ケース</th><th>内部 IP での疎通</th><th>理由</th></tr></thead>
+            <tbody>
+              <tr><td>同じ VPC 内（別ゾーン・別リージョンでも可）</td><td><span class="ok">✅ 可能</span></td><td>VPC はグローバルリソース。内部通信が許可されている</td></tr>
+              <tr><td>異なる VPC 間</td><td><span class="ng">❌ 不可</span></td><td>VPC は既定で隔離される</td></tr>
+              <tr><td>外部 IP 経由</td><td>ファイアウォール次第</td><td>ICMP/SSH を許可していれば疎通する</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--warn">
+          <span class="callout__k">重要 · 思い込みの事故</span>
+          <p>異なる VPC 間で内部通信したい場合は <strong>VPC ピアリング</strong> または <strong>Cloud VPN</strong> を別途設定します。「同じリージョンだから通信できるはず」という思い込みは事故のもとです。</p>
+        </div>
+
+        <h3>2-5. 複数ネットワークインターフェース（マルチ NIC）</h3>
+        <p>
+          1 台の VM に複数の NIC を持たせ、複数の VPC に同時接続できます（インスタンスタイプにより最大 8 個）。ただし<strong>デフォルトルートは primary インターフェース (eth0) のみ</strong>に紐づきます。直接接続されたサブネット以外への通信は、すべて eth0 から出ていきます。
+        </p>
+        <div class="code">
+          <div class="code__bar">マルチ NIC VM のルーティング確認</div>
+          <pre>ip route
+<span class="cm"># 出力例: default via 172.16.0.1 dev eth0  ← デフォルトは eth0 のみ</span></pre>
+        </div>
+        <div class="callout callout--warn">
+          <span class="callout__k">落とし穴</span>
+          <p>マルチ NIC は便利ですが、ルーティングを理解しないと「なぜか通信できない」事態に陥ります。使う前に<strong>「VPC ピアリングで十分ではないか」</strong>を必ず検討しましょう。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 3. Firewall -->
+      <!-- ====================================================== -->
+      <section class="section" id="s3">
+        <div class="section__head">
+          <span class="section__num">03</span>
+          <h2>ファイアウォールルールの設計</h2>
+        </div>
+
+        <h3>3-1. ルールの構成要素</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>要素</th><th>説明</th><th>例</th></tr></thead>
+            <tbody>
+              <tr><td>方向 (Direction)</td><td>Ingress（受信）/ Egress（送信）</td><td>Ingress</td></tr>
+              <tr><td>アクション</td><td>allow / deny</td><td>allow</td></tr>
+              <tr><td>ターゲット</td><td>ルールを適用する VM</td><td>ネットワークタグ <code>web-server</code></td></tr>
+              <tr><td>ソースフィルタ</td><td>通信元の指定</td><td><code>0.0.0.0/0</code></td></tr>
+              <tr><td>プロトコル/ポート</td><td>許可する通信種別</td><td><code>tcp:80</code>, <code>icmp</code></td></tr>
+              <tr><td>優先度 (Priority)</td><td>数値が小さいほど優先</td><td>1000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>3-2. ネットワークタグ — 粒度の高い制御の鍵</h3>
+        <p>
+          <strong>ネットワークタグ</strong>は VM に付ける「ラベル」です。ファイアウォールのターゲットをタグで指定すると、そのタグを持つ VM <em>だけ</em>にルールが適用されます。「全インスタンスに適用」を避けてタグで絞ることで、<strong>最小権限の原則</strong>を実現できます。
+        </p>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart TB
+    Rule[ファイアウォールルール allow-http-web-server tcp:80 許可]
+    Rule -->|target tag: web-server| Blue[blue サーバー tag: web-server]
+    Rule -.->|タグなし→適用外| Green[green サーバー タグなし]
+    Internet([インターネット]) -->|HTTP 80| Blue
+    Internet -.->|拒否| Green
+          </pre>
+          <p class="diagram__cap">図 3-1 — <code>web-server</code> タグを持つ blue だけが HTTP 公開され、タグのない green には届かない。</p>
+        </div>
+
+        <h3>3-3. 良い例 / 悪い例</h3>
+        <div class="code is-bad">
+          <div class="code__bar">悪い例 — 全 VM に全 IP から SSH を許可</div>
+          <pre>gcloud compute firewall-rules create bad-ssh \
+  <span class="fl">--direction</span>=INGRESS <span class="fl">--action</span>=allow \
+  <span class="fl">--rules</span>=tcp:22 <span class="fl">--source-ranges</span>=0.0.0.0/0</pre>
+        </div>
+        <div class="code is-good">
+          <div class="code__bar">良い例 — 特定タグの VM に IAP 範囲からだけ許可</div>
+          <pre>gcloud compute firewall-rules create allow-ssh-from-iap \
+  <span class="fl">--direction</span>=INGRESS <span class="fl">--action</span>=allow \
+  <span class="fl">--rules</span>=tcp:22 \
+  <span class="fl">--source-ranges</span>=35.235.240.0/20 \
+  <span class="fl">--target-tags</span>=allow-iap-ssh</pre>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>観点</th><th>悪い例</th><th>良い例</th></tr></thead>
+            <tbody>
+              <tr><td>ソース範囲</td><td><span class="ng"><code>0.0.0.0/0</code>（全世界）</span></td><td><span class="ok"><code>35.235.240.0/20</code>（IAP のみ）</span></td></tr>
+              <tr><td>ターゲット</td><td><span class="ng">全 VM</span></td><td><span class="ok">特定タグの VM のみ</span></td></tr>
+              <tr><td>攻撃面</td><td><span class="ng">非常に広い</span></td><td><span class="ok">最小限</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--best">
+          <span class="callout__k">ベストプラクティス</span>
+          <p>ソース範囲は<strong>できる限り狭く</strong>します。Google も公式に <code>default-allow-ssh</code> / <code>default-allow-rdp</code>（全 IP から SSH/RDP を許可するデフォルトルール）の削除・無効化を推奨しています。</p>
+        </div>
+
+        <h3>3-4. 暗黙のルール</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ルール</th><th>内容</th><th>優先度</th></tr></thead>
+            <tbody>
+              <tr><td>implied allow egress</td><td>全送信トラフィックを許可</td><td>65535</td></tr>
+              <tr><td>implied deny ingress</td><td>全受信トラフィックを拒否</td><td>65535</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--note">
+          <span class="callout__k">考え方</span>
+          <p>何も設定しなければ<strong>外部からの受信はすべてブロック</strong>されます。あなたが作る <code>allow</code> ルールは「この拒否の上に穴を開ける」行為です。だからこそ、開ける穴は最小限にすべきなのです。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 4. IAM -->
+      <!-- ====================================================== -->
+      <section class="section" id="s4">
+        <div class="section__head">
+          <span class="section__num">04</span>
+          <h2>IAM とサービスアカウント — 最小権限の原則</h2>
+        </div>
+
+        <h3>4-1. なぜサービスアカウントを使うのか</h3>
+        <p class="lead-def">
+          <strong>サービスアカウント</strong>は、人間ではなく<strong>アプリケーションや VM</strong> が使う特別な Google アカウントです。
+        </p>
+        <p>
+          VM が Google Cloud API を操作する際、個人ユーザーの権限を使うのは危険です。サービスアカウントに「必要なロールだけ」を割り当てることで、<strong>最小権限の原則 (principle of least privilege)</strong> を守れます。
+        </p>
+
+        <h3>4-2. ネットワーク管理向けの 2 つのロール</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ロール</th><th>できること</th><th>できないこと</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Compute Network Admin</strong></td><td>ネットワーク・サブネット・ルートの作成/変更/削除、ファイアウォールの<strong>閲覧</strong></td><td>ファイアウォールの変更/削除、SSL 証明書の管理</td></tr>
+              <tr><td><strong>Compute Security Admin</strong></td><td>ファイアウォール・SSL 証明書の作成/変更/削除</td><td>ネットワークリソース全般の管理は対象外</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart TB
+    subgraph NetAdmin[Network Admin ロール]
+        N1[ファイアウォール一覧表示: 可]
+        N2[ファイアウォール削除: 不可]
+    end
+    subgraph SecAdmin[Security Admin ロール]
+        S1[ファイアウォール一覧表示: 可]
+        S2[ファイアウォール削除: 可]
+    end
+          </pre>
+          <p class="diagram__cap">図 4-1 — ロールごとの権限差。ファイアウォールの削除は Security Admin のみ。</p>
+        </div>
+        <div class="callout callout--best">
+          <span class="callout__k">設計思想 · 職務分掌</span>
+          <p>ネットワーク構成を作る人と、セキュリティルール（ファイアウォール）を管理する人を分けることで、「1 人の権限が大きすぎる」リスクを減らせます。これが <strong>separation of duties</strong> です。</p>
+        </div>
+
+        <h3>4-3. サービスアカウント運用の注意点</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>方法</th><th>セキュリティ</th><th>推奨度</th></tr></thead>
+            <tbody>
+              <tr><td>JSON キーをダウンロードして配布</td><td>キー漏洩リスクが高い</td><td><span class="ng">⚠️ 非推奨</span></td></tr>
+              <tr><td>VM にサービスアカウントを直接アタッチ</td><td>キーレス・自動ローテーション</td><td><span class="ok">✅ 推奨</span></td></tr>
+              <tr><td>Workload Identity (GKE)</td><td>キーレス</td><td><span class="ok">✅ 推奨</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--best">
+          <span class="callout__k">ベストプラクティス</span>
+          <p>サービスアカウントキー (JSON) は<strong>可能な限り発行しない</strong>でください。VM には作成時にサービスアカウントを直接アタッチし、必要なロールを付与する方式が安全です。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 5. IAP -->
+      <!-- ====================================================== -->
+      <section class="section" id="s5">
+        <div class="section__head">
+          <span class="section__num">05</span>
+          <h2>IAP — 踏み台サーバーを排除する安全なアクセス</h2>
+        </div>
+
+        <h3>5-1. IAP TCP フォワーディングとは</h3>
+        <p class="lead-def">
+          <strong>Identity-Aware Proxy (IAP) TCP フォワーディング</strong>は、暗号化トンネルを通じて SSH・RDP などの TCP トラフィックを VM に転送する仕組みです。
+        </p>
+        <p>
+          VM に<strong>外部 IP を付けずに</strong>安全な管理アクセスを実現します。従来必要だった踏み台サーバー (bastion) や VPN を<strong>不要にできる</strong>のが最大の利点です。
+        </p>
+        <div class="diagram">
+          <pre class="mermaid">
+sequenceDiagram
+    participant Dev as 管理者の端末
+    participant IAP as Identity-Aware Proxy
+    participant IAM as IAM ポリシー
+    participant VM as プライベート VM（外部 IP なし）
+    Dev->>IAP: SSH 接続要求 + Google 認証情報
+    IAP->>IAP: 1. 認証（有効な Google ID か）
+    IAP->>IAM: 2. 認可（権限があるか確認）
+    IAM-->>IAP: Tunnel User ロール確認
+    IAP->>IAP: 3. コンテキスト認証（任意）
+    IAP->>VM: 暗号化トンネル経由で接続
+    Note over IAP,VM: 4. アクセスログを記録（監査）
+    VM-->>Dev: SSH セッション確立
+          </pre>
+          <p class="diagram__cap">図 5-1 — IAP は接続時に「認証 → 認可 → コンテキスト認識 → 監査」の 4 機能を実行する。</p>
+        </div>
+
+        <h3>5-2. IAP を有効にする 3 ステップ</h3>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+    A[Step 1 IAP API を有効化] --> B[Step 2 ファイアウォールで IAP 範囲を許可]
+    B --> C[Step 3 IAM で Tunnel User ロール付与]
+    C --> D[SSH/RDP 接続可能]
+          </pre>
+          <p class="diagram__cap">図 5-2 — IAP 有効化の流れ。</p>
+        </div>
+
+        <h4>Step 1 · API の有効化</h4>
+        <p>ナビゲーションメニュー → API とサービス → ライブラリ → <strong>「Cloud Identity-Aware Proxy API」</strong>を有効化。</p>
+
+        <h4>Step 2 · ファイアウォールルールの作成</h4>
+        <p>IAP は固定の IP 範囲 <code>35.235.240.0/20</code> からアクセスします。この範囲からの SSH (22) / RDP (3389) を許可します。</p>
+        <div class="code is-good">
+          <div class="code__bar">IAP 範囲のみ許可</div>
+          <pre>gcloud compute firewall-rules create allow-ingress-from-iap \
+  <span class="fl">--direction</span>=INGRESS \
+  <span class="fl">--action</span>=allow \
+  <span class="fl">--rules</span>=tcp:22,tcp:3389 \
+  <span class="fl">--source-ranges</span>=35.235.240.0/20</pre>
+        </div>
+        <div class="callout callout--note">
+          <span class="callout__k">なぜこの IP 範囲なのか</span>
+          <p><code>35.235.240.0/20</code> は IAP が TCP フォワーディングに使う全 IP を含む範囲です。これだけを許可すれば「IAP 経由のアクセスだけ」を受け入れられます（IPv6 VM の場合は <code>2600:2d00:1:7::/64</code>）。</p>
+        </div>
+
+        <h4>Step 3 · IAM ロールの付与</h4>
+        <p>
+          セキュリティ → Identity-Aware Proxy → 「SSH and TCP Resources」タブで対象 VM を選択し、接続を許可したいユーザー/サービスアカウントに
+          <strong>Cloud IAP &gt; IAP-Secured Tunnel User</strong> ロールを付与します。
+        </p>
+
+        <h3>5-3. トンネルを使った接続</h3>
+        <div class="code">
+          <div class="code__bar">SSH / RDP over IAP</div>
+          <pre><span class="cm"># SSH（外部 IP がなければ自動的に IAP トンネルを使用）</span>
+gcloud compute ssh linux-iap <span class="fl">--tunnel-through-iap</span>
+
+<span class="cm"># RDP 用にローカルポートへトンネルを張る</span>
+gcloud compute start-iap-tunnel windows-iap 3389 \
+  <span class="fl">--local-host-port</span>=localhost:0 \
+  <span class="fl">--zone</span>=us-central1-a
+<span class="cm"># → "Listening on port [XXXX]" 表示後、RDP で localhost:XXXX に接続</span></pre>
+        </div>
+        <div class="callout callout--best">
+          <span class="callout__k">ベストプラクティス</span>
+          <p>外部 IP を持たない VM へは IAP を<strong>標準のアクセス手段</strong>にします。<code>--tunnel-through-iap</code> を明示すれば常に IAP 経由を保証できます。Chrome Enterprise Premium のアクセスレベルと組み合わせると、端末状態に基づく<strong>コンテキスト認識アクセス</strong>でゼロトラストを強化できます。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 6. 外部 LB + Cloud Armor -->
+      <!-- ====================================================== -->
+      <section class="section" id="s6">
+        <div class="section__head">
+          <span class="section__num">06</span>
+          <h2>外部 Application Load Balancer と Cloud Armor</h2>
+        </div>
+
+        <h3>6-1. グローバル外部 Application Load Balancer の仕組み</h3>
+        <p class="lead-def">
+          <strong>グローバル外部 Application Load Balancer (L7)</strong> は、ユーザートラフィックを Google エッジ (PoP) で受け取り、プライベート光ファイバーバックボーン経由で最も近い健全なバックエンドへルーティングします。
+        </p>
+        <p>世界中のユーザーに対し、<strong>1 つのグローバル IP</strong> で低遅延・高可用性のアクセスを提供できます。</p>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart TB
+    U1([アジアのユーザー])
+    U2([欧州のユーザー])
+    subgraph Edge[Google エッジ PoP]
+        Armor[Cloud Armor L7 フィルタ / 拒否リスト]
+        LB[グローバル外部 Application LB 単一の IP]
+    end
+    subgraph R1[リージョン 1]
+        MIG1[MIG: Web サーバー オートスケール]
+    end
+    subgraph R2[リージョン 2]
+        MIG2[MIG: Web サーバー オートスケール]
+    end
+    U1 --> Armor
+    U2 --> Armor
+    Armor --> LB
+    LB -->|最寄りの健全な バックエンドへ| MIG1
+    LB -->|高負荷時は オーバーフロー| MIG2
+          </pre>
+          <p class="diagram__cap">図 6-1 — 単一 IP で受け、最寄りの健全なバックエンドへ。高負荷時は別リージョンへオーバーフロー。</p>
+        </div>
+
+        <h3>6-2. 構成要素</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>コンポーネント</th><th>役割</th></tr></thead>
+            <tbody>
+              <tr><td>転送ルール / フロントエンド</td><td>グローバル IP・ポート・プロトコルを定義</td></tr>
+              <tr><td>バックエンドサービス</td><td>トラフィック分散方法とヘルスチェックを管理</td></tr>
+              <tr><td>インスタンステンプレート</td><td>VM の設計図（マシンタイプ・イメージ・起動スクリプト）</td></tr>
+              <tr><td>マネージドインスタンスグループ (MIG)</td><td>同一構成 VM の集合。自動スケール・自己修復</td></tr>
+              <tr><td>ヘルスチェック</td><td>健全なインスタンスだけにトラフィックを送る</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>6-3. 必須のファイアウォールルール 2 つ</h3>
+        <div class="code is-good">
+          <div class="code__bar">1 — ユーザーからの HTTP を許可</div>
+          <pre>gcloud compute firewall-rules create default-allow-http \
+  <span class="fl">--network</span>=default <span class="fl">--action</span>=allow <span class="fl">--direction</span>=ingress \
+  <span class="fl">--rules</span>=tcp:80 \
+  <span class="fl">--source-ranges</span>=0.0.0.0/0 \
+  <span class="fl">--target-tags</span>=http-server</pre>
+        </div>
+        <div class="code is-good">
+          <div class="code__bar">2 — Google のヘルスチェックを許可</div>
+          <pre>gcloud compute firewall-rules create default-allow-health-check \
+  <span class="fl">--network</span>=default <span class="fl">--action</span>=allow <span class="fl">--direction</span>=ingress \
+  <span class="fl">--rules</span>=tcp \
+  <span class="fl">--source-ranges</span>=130.211.0.0/22,35.191.0.0/16 \
+  <span class="fl">--target-tags</span>=http-server</pre>
+        </div>
+        <div class="callout callout--warn">
+          <span class="callout__k">超重要 · ヘルスチェックの IP 範囲</span>
+          <p>ヘルスチェックのプローブは <code>130.211.0.0/22</code> と <code>35.191.0.0/16</code> から来ます。この 2 範囲を許可しないとバックエンドが <strong>unhealthy</strong> と判定され、<strong>トラフィックが一切流れません</strong>。LB トラブルの大半はこの設定漏れが原因です。</p>
+        </div>
+
+        <h3>6-4. 負荷分散モード</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>分散モード</th><th>判定基準</th><th>設定例</th></tr></thead>
+            <tbody>
+              <tr><td>Rate（レート）</td><td>1 秒あたりのリクエスト数 (RPS)</td><td>最大 50 RPS/インスタンス</td></tr>
+              <tr><td>Utilization（使用率）</td><td>CPU 使用率</td><td>最大 80%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout--note">
+          <span class="callout__k">挙動のポイント</span>
+          <p>通常は「最寄りのバックエンド」へ送られますが、負荷が非常に高くなると別リージョンへ<strong>オーバーフロー</strong>します。これがクロスリージョンのフェイルオーバーと耐障害性を実現します。</p>
+        </div>
+
+        <h3>6-5. Cloud Armor — エッジでの防御</h3>
+        <p class="lead-def"><strong>Cloud Armor</strong> は、Google エッジで L7 フィルタリングと IP 制御を行うサービスです。</p>
+        <p>悪意あるトラフィック（L7 フラッドなど）を、<strong>VPC やバックエンドに到達する前に</strong>エッジで遮断します。バックエンドのリソースを消費させません。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>設定項目</th><th>値（拒否リスト例）</th></tr></thead>
+            <tbody>
+              <tr><td>ポリシー名</td><td><code>denylist-siege</code></td></tr>
+              <tr><td>デフォルトルール</td><td>Allow（許可）</td></tr>
+              <tr><td>追加ルール条件</td><td>攻撃元 IP（例: <code>203.0.113.10/32</code>）</td></tr>
+              <tr><td>アクション</td><td>Deny（拒否）</td></tr>
+              <tr><td>レスポンスコード</td><td>403 (Forbidden)</td></tr>
+              <tr><td>優先度</td><td>1000</td></tr>
+              <tr><td>ターゲット</td><td>バックエンドサービス（<code>http-backend</code>）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+    Attacker([攻撃元 IP]) -->|siege 負荷攻撃| Armor{Cloud Armor denylist-siege}
+    Armor -->|一致 → Deny| Block[403 Forbidden]
+    Normal([正常ユーザー]) -->|デフォルト Allow| LB[Load Balancer] --> Backend[バックエンド]
+          </pre>
+          <p class="diagram__cap">図 6-2 — 攻撃元はエッジで 403 遮断、正常ユーザーは通過。</p>
+        </div>
+        <div class="callout callout--best">
+          <span class="callout__k">ベストプラクティス</span>
+          <p>防御は 2 通り。(1) デフォルト Allow + 攻撃元を拒否リスト化、(2) デフォルト Deny + 許可 IP だけを許可リスト化。よりセキュアなのは <strong>(2) の許可リスト方式</strong>です。Cloud Armor のログを有効にすれば、いつ・どの IP がブロックされたかを追跡できます。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 7. ILB -->
+      <!-- ====================================================== -->
+      <section class="section" id="s7">
+        <div class="section__head">
+          <span class="section__num">07</span>
+          <h2>内部ロードバランサ (ILB)</h2>
+        </div>
+
+        <h3>7-1. ILB とは</h3>
+        <p class="lead-def">
+          <strong>内部ロードバランサ (ILB)</strong> は、TCP/UDP トラフィックを<strong>プライベートネットワーク内</strong>の VM へ分散する<strong>リージョナル</strong>サービスです。
+        </p>
+        <p>
+          「インターネットには公開したくないが、内部サービスからは高可用に使いたい」リソース（マイクロサービス・API・DB など）に、<strong>単一の安定したプライベート IP</strong> を提供します。
+        </p>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart TB
+    Client[内部クライアント utility-vm]
+    subgraph Region[リージョン内]
+        ILB[内部 LB my-ilb 10.10.30.5]
+        subgraph ZoneA[ゾーン A]
+            IG1[instance-group-1 subnet-a]
+        end
+        subgraph ZoneB[ゾーン B]
+            IG2[instance-group-2 subnet-b]
+        end
+    end
+    Client -->|curl 10.10.30.5| ILB
+    ILB --> IG1
+    ILB --> IG2
+          </pre>
+          <p class="diagram__cap">図 7-1 — 単一プライベート IP で、複数ゾーンのバックエンドへ分散。</p>
+        </div>
+
+        <h3>7-2. 外部 LB との違い</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>項目</th><th>外部 Application LB</th><th>内部 LB (passthrough)</th></tr></thead>
+            <tbody>
+              <tr><td>スコープ</td><td>グローバル</td><td>リージョナル</td></tr>
+              <tr><td>公開範囲</td><td>インターネット</td><td>VPC 内部のみ</td></tr>
+              <tr><td>IP</td><td>外部グローバル IP</td><td>内部プライベート IP</td></tr>
+              <tr><td>レイヤー</td><td>L7 (HTTP/HTTPS)</td><td>L4 (TCP/UDP)</td></tr>
+              <tr><td>主な用途</td><td>公開 Web アプリ</td><td>内部マイクロサービス</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>7-3. 高可用性のための配置設計</h3>
+        <p>
+          ILB はリージョナルサービスなので、<strong>複数ゾーン</strong>にバックエンドを配置することがゾーン障害への耐性を生みます。ヘルスチェックのファイアウォール範囲は外部 LB と同じく <code>130.211.0.0/22</code> と <code>35.191.0.0/16</code> を許可し、バックエンドへの HTTP は VPC の CIDR（例: <code>10.10.0.0/16</code>）からのみ許可します。
+        </p>
+        <div class="callout callout--best">
+          <span class="callout__k">ベストプラクティス</span>
+          <p>ILB のバックエンド VM には<strong>外部 IP を付けない</strong>（External IPv4 Address: None）ようにします。内部サービスはインターネットに露出させないのが原則です。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 8. 総合演習 -->
+      <!-- ====================================================== -->
+      <section class="section" id="s8">
+        <div class="section__head">
+          <span class="section__num">08</span>
+          <h2>総合演習 — セキュアなネットワークを設計する</h2>
+        </div>
+        <p>
+          ここまでの知識を統合した「あるべき構成」を考えます。題材は<strong>「公開 Web アプリ (juice-shop) を持つ小規模サイトのセキュリティ強化」</strong>です。
+        </p>
+
+        <h3>8-1. 要件</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>要件</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>踏み台 (bastion) は<strong>公開 IP を持たない</strong></td></tr>
+              <tr><td>2</td><td>bastion への SSH は <strong>IAP 経由のみ</strong></td></tr>
+              <tr><td>3</td><td>アプリサーバーへの SSH は <strong>bastion 経由のみ</strong></td></tr>
+              <tr><td>4</td><td>アプリサーバーへは <strong>HTTP だけ</strong>を世界に公開</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>8-2. アクセス経路の設計</h3>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart TB
+    Admin([管理者])
+    World([インターネット])
+    subgraph VPC[VPC ネットワーク]
+        subgraph MgmtSubnet[管理サブネット]
+            Bastion[bastion 外部 IP なし tag: ssh-iap]
+        end
+        subgraph AppSubnet[アプリサブネット]
+            App[juice-shop tag: http, ssh-internal]
+        end
+    end
+    Admin -->|SSH 22 IAP のみ| IAP[IAP 35.235.240.0/20]
+    IAP --> Bastion
+    Bastion -->|SSH 22 管理サブネットから| App
+    World -->|HTTP 80 のみ| App
+          </pre>
+          <p class="diagram__cap">図 8-1 — 管理アクセスは IAP → bastion → app の一方向。公開は HTTP だけ。</p>
+        </div>
+
+        <h3>8-3. 必要なファイアウォールルール（タグ設計）</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ルール</th><th>方向</th><th>許可</th><th>ソース</th><th>ターゲットタグ</th></tr></thead>
+            <tbody>
+              <tr><td>IAP からの SSH</td><td>Ingress</td><td>tcp:22</td><td><code>35.235.240.0/20</code></td><td><code>ssh-iap</code> (bastion)</td></tr>
+              <tr><td>世界への HTTP</td><td>Ingress</td><td>tcp:80</td><td><code>0.0.0.0/0</code></td><td><code>http</code> (juice-shop)</td></tr>
+              <tr><td>bastion からの内部 SSH</td><td>Ingress</td><td>tcp:22</td><td>管理サブネットの CIDR</td><td><code>ssh-internal</code> (juice-shop)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>8-4. 設計の要点</h3>
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+    A[Step 1 過剰に緩い 既存ルールを削除] --> B[Step 2 タグを設計し VM に付与]
+    B --> C[Step 3 最小範囲の 許可ルールを作成]
+    C --> D[Step 4 IAP 経由で 接続テスト]
+          </pre>
+          <p class="diagram__cap">図 8-2 — セキュア化の手順。</p>
+        </div>
+        <div class="callout callout--best">
+          <span class="callout__k">最重要原則 · 最小権限</span>
+          <p>ソース範囲は必ず<strong>最小限</strong>に。「とりあえず <code>0.0.0.0/0</code>」は SSH では絶対に避け、SSH は IAP 範囲か管理サブネットの CIDR に限定します。HTTP だけは公開サービスの性質上 <code>0.0.0.0/0</code> が妥当ですが、それ以外のポートは公開しません。</p>
+        </div>
+        <div class="callout callout--note">
+          <span class="callout__k">トラブル時のヒント</span>
+          <p><code>gcloud compute ssh</code> や IAP トンネルで接続できないときは <code>--troubleshoot</code> フラグを付けると、ファイアウォール・IAM・ネットワーク到達性を自動診断してくれます。</p>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 9. チェックリスト -->
+      <!-- ====================================================== -->
+      <section class="section" id="s9">
+        <div class="section__head">
+          <span class="section__num">09</span>
+          <h2>ベストプラクティス チェックリスト</h2>
+        </div>
+
+        <div class="check-group">
+          <h4>ネットワーク設計</h4>
+          <ul class="check">
+            <li>本番ではカスタムモード VPC を使い、サブネットを意図的に設計する</li>
+            <li>サブネットの CIDR は重複させない（特にマルチ NIC や VPC ピアリングで必須）</li>
+            <li>異なる VPC 間通信は VPC ピアリング / VPN で明示的に設定する</li>
+          </ul>
+        </div>
+        <div class="check-group">
+          <h4>ファイアウォール</h4>
+          <ul class="check">
+            <li>ソース範囲は最小限にする（<code>0.0.0.0/0</code> を SSH/RDP に使わない）</li>
+            <li>ターゲットはネットワークタグで絞り、「全インスタンス」適用を避ける</li>
+            <li><code>default-allow-ssh</code> / <code>default-allow-rdp</code> のデフォルトルールは削除/無効化する</li>
+            <li>LB 利用時は <code>130.211.0.0/22</code> と <code>35.191.0.0/16</code> からのヘルスチェックを許可する</li>
+          </ul>
+        </div>
+        <div class="check-group">
+          <h4>アクセス制御</h4>
+          <ul class="check">
+            <li>外部 IP なしの VM へは IAP TCP フォワーディングでアクセスする</li>
+            <li>IAP は <code>35.235.240.0/20</code> のみを許可するファイアウォールと組み合わせる</li>
+            <li>IAP-Secured Tunnel User ロールは VM/プロジェクト単位で最小限に付与する</li>
+            <li>可能なら Chrome Enterprise Premium のアクセスレベルでコンテキスト認識アクセスを追加する</li>
+          </ul>
+        </div>
+        <div class="check-group">
+          <h4>IAM / サービスアカウント</h4>
+          <ul class="check">
+            <li>最小権限の原則に従い、必要なロールだけを付与する</li>
+            <li>ネットワーク管理とセキュリティ管理のロールを分離する（職務分掌）</li>
+            <li>サービスアカウントキー (JSON) の発行を避け、VM への直接アタッチを使う</li>
+          </ul>
+        </div>
+        <div class="check-group">
+          <h4>ロードバランシング / エッジ防御</h4>
+          <ul class="check">
+            <li>バックエンドは複数ゾーン/リージョンに配置して可用性を確保する</li>
+            <li>内部サービスのバックエンド VM には外部 IP を付けない</li>
+            <li>Cloud Armor は可能なら「デフォルト Deny + 許可リスト」方式にする</li>
+            <li>Cloud Armor とヘルスチェックのログを有効にして可観測性を確保する</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ====================================================== -->
+      <!-- 10. Sources -->
+      <!-- ====================================================== -->
+      <section class="section" id="s10">
+        <div class="section__head">
+          <span class="section__num">10</span>
+          <h2>参考ソース（公式ドキュメント URL）</h2>
+        </div>
+
+        <div class="src-grid">
+          <div class="src-card">
+            <h4>Identity-Aware Proxy (IAP)</h4>
+            <ul>
+              <li><a href="https://cloud.google.com/iap/docs/using-tcp-forwarding" target="_blank" rel="noopener">IAP TCP フォワーディングの使用</a></li>
+              <li><a href="https://cloud.google.com/iap/docs/tcp-by-host" target="_blank" rel="noopener">IAP TCP フォワーディングのセットアップ</a></li>
+              <li><a href="https://cloud.google.com/iap/docs/faq" target="_blank" rel="noopener">IAP のトラブルシューティング / FAQ</a></li>
+              <li><a href="https://cloud.google.com/iap/docs/load-balancer-howto" target="_blank" rel="noopener">外部 LB のセットアップ (IAP)</a></li>
+            </ul>
+          </div>
+          <div class="src-card">
+            <h4>VPC ネットワーク / ファイアウォール</h4>
+            <ul>
+              <li><a href="https://cloud.google.com/vpc/docs/vpc" target="_blank" rel="noopener">VPC ネットワークの概要</a></li>
+              <li><a href="https://cloud.google.com/firewall/docs/firewalls" target="_blank" rel="noopener">VPC ファイアウォールルールの概要</a></li>
+              <li><a href="https://cloud.google.com/compute/docs/connect/ssh-best-practices/network-access" target="_blank" rel="noopener">SSH ネットワークアクセス制御のベストプラクティス</a></li>
+              <li><a href="https://cloud.google.com/vpc/docs/create-use-multiple-interfaces" target="_blank" rel="noopener">複数ネットワークインターフェース</a></li>
+            </ul>
+          </div>
+          <div class="src-card">
+            <h4>IAM / サービスアカウント</h4>
+            <ul>
+              <li><a href="https://cloud.google.com/iam/docs/overview" target="_blank" rel="noopener">IAM の概要</a></li>
+              <li><a href="https://cloud.google.com/compute/docs/access/iam" target="_blank" rel="noopener">Compute Engine の IAM ロール</a></li>
+              <li><a href="https://cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener">サービスアカウントのベストプラクティス</a></li>
+            </ul>
+          </div>
+          <div class="src-card">
+            <h4>ロードバランシング</h4>
+            <ul>
+              <li><a href="https://cloud.google.com/load-balancing/docs/load-balancing-overview" target="_blank" rel="noopener">Cloud Load Balancing の概要</a></li>
+              <li><a href="https://cloud.google.com/load-balancing/docs/health-check-concepts" target="_blank" rel="noopener">ヘルスチェックの概要（IP 範囲）</a></li>
+              <li><a href="https://cloud.google.com/load-balancing/docs/health-checks" target="_blank" rel="noopener">ヘルスチェックの使用</a></li>
+              <li><a href="https://cloud.google.com/load-balancing/docs/https/setting-up-https" target="_blank" rel="noopener">外部 Application LB のセットアップ</a></li>
+              <li><a href="https://cloud.google.com/load-balancing/docs/internal" target="_blank" rel="noopener">内部 passthrough Network LB</a></li>
+            </ul>
+          </div>
+          <div class="src-card">
+            <h4>Cloud Armor</h4>
+            <ul>
+              <li><a href="https://cloud.google.com/armor/docs/cloud-armor-overview" target="_blank" rel="noopener">Google Cloud Armor の概要</a></li>
+              <li><a href="https://cloud.google.com/armor/docs/configure-security-policies" target="_blank" rel="noopener">セキュリティポリシーの設定</a></li>
+            </ul>
+          </div>
+          <div class="src-card">
+            <h4>スキルバッジ（元ラボ）</h4>
+            <ul>
+              <li><a href="https://www.cloudskillsboost.google/course_templates/635" target="_blank" rel="noopener">Build a Secure Google Cloud Network</a><span class="doc">cloudskillsboost.google</span></li>
+              <li><a href="https://www.skills.google/course_templates/654" target="_blank" rel="noopener">関連コース (skills.google/654)</a><span class="doc">skills.google</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- Footer ---------- -->
+      <footer>
+        <p class="closing">
+          学習を次に進めるために — 各ラボの手順を一度なぞったら、必ず「なぜこの設定なのか」を自問してください。特に<strong style="color:var(--amber)">「ソース範囲は最小か」「タグで絞れているか」「外部 IP は本当に必要か」</strong>の 3 点は、本番設計でもセキュリティレビューでも問われ続ける核心です。
+        </p>
+        <div>Google Cloud ネットワークセキュリティ実践ガイド · defense in depth · 図版は Mermaid で描画</div>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<!-- ===================== Scripts ===================== -->
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "base",
+    securityLevel: "loose",
+    flowchart: { htmlLabels: true, curve: "basis", padding: 12 },
+    sequence: { useMaxWidth: true, mirrorActors: false },
+    themeVariables: {
+      fontFamily: '"Noto Sans JP", "Space Grotesk", sans-serif',
+      fontSize: "14px",
+      background: "#0c1830",
+      primaryColor: "#112444",
+      primaryTextColor: "#e7eef8",
+      primaryBorderColor: "#4cc9f0",
+      secondaryColor: "#15294d",
+      tertiaryColor: "#0f1e38",
+      lineColor: "#56cfe1",
+      mainBkg: "#112444",
+      nodeBorder: "#4cc9f0",
+      clusterBkg: "rgba(86,207,225,0.05)",
+      clusterBorder: "#2a4a72",
+      titleColor: "#f4b740",
+      edgeLabelBackground: "#0c1830",
+      labelBoxBkgColor: "#112444",
+      labelBoxBorderColor: "#4cc9f0",
+      actorBkg: "#112444",
+      actorBorder: "#4cc9f0",
+      actorTextColor: "#e7eef8",
+      signalColor: "#56cfe1",
+      signalTextColor: "#cfdcec",
+      noteBkgColor: "rgba(244,183,64,0.12)",
+      noteBorderColor: "#f4b740",
+      noteTextColor: "#f4d98a"
+    }
+  });
+
+  /* ---- Scroll spy for TOC ---- */
+  const links = [...document.querySelectorAll(".toc a")];
+  const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const sections = [...document.querySelectorAll("main section[id]")];
+
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          links.forEach((l) => l.classList.remove("is-active"));
+          const active = map.get(e.target.id);
+          if (active) active.classList.add("is-active");
+        }
+      });
+    },
+    { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
+  );
+  sections.forEach((s) => spy.observe(s));
+</script>
+
+</body>
+</html>
