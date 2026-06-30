@@ -95,6 +95,16 @@ export const EXAMS: Exam[] = [
                 href: '/gcl/associate-cloud-engineer/domain4',
                 pct: '20%',
             },
+            {
+                label: 'Cloud Load Balancing 完全入門',
+                href: '/gcl/associate-cloud-engineer/cloud-load-balancing-guide',
+                pct: '実践',
+            },
+            {
+                label: 'GCPネットワーク完全入門',
+                href: '/gcl/associate-cloud-engineer/develop-your-gcp-network',
+                pct: '実践',
+            },
         ],
         badge: '実践向け',
         icon: '⚙️',

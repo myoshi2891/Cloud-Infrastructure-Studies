@@ -1044,11 +1044,16 @@
 
 /* ===== MERMAID OVERRIDE ===== */
 .complete-guide-page .mermaid {
-    display: flex;
-    justify-content: center;
+    /* flex の fit-content 縮小で mermaidWrapper が狭くなると
+       SVG の maxWidth:100% が機能しないため block + 全幅に変更 */
+    display: block;
+    width: 100%;
+}
+.complete-guide-page .mermaid > div {
+    width: 100%;
 }
 .complete-guide-page .mermaid svg {
     max-width: 100%;
+    height: auto;
+    display: block;
 }
-
-

@@ -39,6 +39,8 @@
 
     --color-theme-ace-bg: hsl(220 60% 55% / 0.25);
     --color-theme-ace-fg: hsl(220 100% 75%);
+    --color-theme-ace-bg-page: #050a14;
+    --color-theme-ace-accent: #00c8ff;
 
     --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
     --color-theme-cdl-fg: hsl(160 70% 65%);
