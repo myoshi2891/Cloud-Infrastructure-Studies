@@ -6,6 +6,11 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS, REVISION_DATE } from './constants';
 import styles from './page.module.css';
 
+/**
+ * Copies code text to the clipboard and shows the copy status.
+ *
+ * @param code - The text to copy
+ */
 function CopyButton({ code }: { code: string }) {
     const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const handleCopy = () => {
@@ -30,6 +35,13 @@ function CopyButton({ code }: { code: string }) {
     );
 }
 
+/**
+ * Renders a labeled Mermaid diagram for the given diagram ID.
+ *
+ * @param id - The diagram ID to look up.
+ * @param label - The label shown for the figure and used as the diagram's accessible name.
+ * @returns The rendered diagram, or `null` when no diagram exists for `id`.
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -43,6 +55,11 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/**
+ * Renders the Cloud Load Balancing hands-on guide.
+ *
+ * Displays a multi-section tutorial covering external L4, external L7, and internal load balancers, along with a scroll progress bar, section-aware navigation, copy-to-clipboard snippets, and diagram blocks.
+ */
 export default function CloudLoadBalancingGuide() {
     const [activeId, setActiveId] = useState('overview');
     const [progressWidth, setProgressWidth] = useState(0);

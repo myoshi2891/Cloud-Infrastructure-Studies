@@ -6,6 +6,13 @@ interface NavBarProps {
     setIsOpen: (open: boolean) => void;
 }
 
+/**
+ * Renders the guide navigation and section links.
+ *
+ * @param activeId - The identifier of the currently active section.
+ * @param isOpen - Controls whether the navigation list is expanded.
+ * @param setIsOpen - Updates the expanded state of the navigation list.
+ */
 export default function NavBar({ activeId, isOpen, setIsOpen }: NavBarProps) {
     const navItems = [
         { id: 'overview', num: '00', label: '全体像' },
