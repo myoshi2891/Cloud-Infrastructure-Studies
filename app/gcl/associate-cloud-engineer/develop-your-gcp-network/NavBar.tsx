@@ -20,8 +20,10 @@ const HOPS = [
 ] as const;
 
 /**
- * ページ固有のサイドナビゲーションコンポーネント。
- * ヘッダーの直下（`--header-h` + `--disclaimer-height`）に固定表示される。
+ * Renders the page's side navigation and highlights the section currently in view.
+ *
+ * The navigation links are generated from the predefined hop list and update their active
+ * state as the matching section enters the viewport.
  */
 export default function NavBar() {
     const hopRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());

@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     description: `Google Cloud のロードバランシングを初学者向けにステップバイステップで解説。L4パススルー、L7アプリケーション、内部LBをgcloudで構築するハンズオンガイド。${REVISION_DATE}対応。`,
 };
 
+/**
+ * Renders the cloud load balancing guide page.
+ */
 export default function Page() {
     return (
         <CloudLoadBalancingGuide />

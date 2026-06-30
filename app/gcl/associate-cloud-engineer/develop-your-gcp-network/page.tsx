@@ -8,6 +8,11 @@ export const metadata: Metadata = {
         'BigQuery のクエリから Cloud SQL への移行、VPC 設計、監視、Kubernetes のデプロイ戦略まで、Google Cloud のネットワークとインフラを 6 つの hop で体験的に学ぶハンズオンガイド。',
 };
 
+/**
+ * Renders the Google Cloud network guide.
+ *
+ * @returns The guide page content.
+ */
 export default function Page() {
     return <DevelopYourGcpNetworkGuide />;
 }
