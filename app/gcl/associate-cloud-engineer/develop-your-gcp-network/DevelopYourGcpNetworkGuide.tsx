@@ -10,7 +10,12 @@ import NavBar from './NavBar';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS, type DiagramId } from './constants';
 
-/** コードブロック（ヘッダ + Copy ボタン + 各行を .code-line でラップした pre） */
+/**
+ * Renders a code block with a language label and copy action.
+ *
+ * @param lang - Language label shown in the code block header
+ * @param html - Code content rendered as individual lines
+ */
 function HtmlCodeBlock({ lang, html }: { lang: string; html: string }) {
     const preRef = useRef<HTMLPreElement>(null);
     const [copied, setCopied] = useState(false);
@@ -70,7 +75,13 @@ function HtmlCodeBlock({ lang, html }: { lang: string; html: string }) {
     );
 }
 
-/** Mermaid グラフを表示するための簡易コンポーネント */
+/**
+ * Renders a Mermaid diagram with a caption.
+ *
+ * @param id - The diagram identifier to display.
+ * @param label - The caption and accessible label for the diagram.
+ * @returns The diagram markup, or `null` if no diagram is registered for `id`.
+ */
 function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -84,6 +95,9 @@ function Diagram({ id, label }: { id: DiagramId; label: string }) {
     );
 }
 
+/**
+ * Renders the Google Cloud network learning guide page.
+ */
 export default function DevelopYourGcpNetworkGuide() {
     // 最終確認チェックリスト用 state
     const [checklist, setChecklist] = useState<boolean[]>([
