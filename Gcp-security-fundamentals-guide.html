@@ -1,0 +1,2367 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Google Cloud セキュリティ基礎 完全ガイド</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans+JP:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+        <style>
+            :root {
+                --bg: #030712;
+                --surface: #0b1220;
+                --surface-2: #0f172a;
+                --border: rgba(148, 163, 184, 0.16);
+                --border-strong: rgba(148, 163, 184, 0.3);
+                --text: #e2e8f0;
+                --text-muted: #8b98ad;
+                --cyan: #22d3ee;
+                --violet: #a78bfa;
+                --pink: #f472b6;
+                --amber: #fbbf24;
+                --green: #34d399;
+                --red: #f87171;
+                --font-display: 'Syne', sans-serif;
+                --font-body: 'IBM Plex Sans JP', 'Space Mono', sans-serif;
+                --font-mono: 'Space Mono', monospace;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background:
+                    radial-gradient(
+                        ellipse 900px 500px at 12% -10%,
+                        rgba(34, 211, 238, 0.1),
+                        transparent
+                    ),
+                    radial-gradient(
+                        ellipse 900px 600px at 100% 0%,
+                        rgba(167, 139, 250, 0.09),
+                        transparent
+                    ),
+                    var(--bg);
+                color: var(--text);
+                font-family: var(--font-body);
+                line-height: 1.75;
+                font-weight: 400;
+                -webkit-font-smoothing: antialiased;
+            }
+            h1,
+            h2,
+            h3,
+            h4 {
+                font-family: var(--font-display);
+                color: #f8fafc;
+                letter-spacing: 0.01em;
+                line-height: 1.3;
+            }
+            a {
+                color: var(--cyan);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            p {
+                color: var(--text);
+            }
+            code {
+                font-family: var(--font-mono);
+            }
+            ::selection {
+                background: rgba(34, 211, 238, 0.28);
+            }
+
+            /* ---------- Nav ---------- */
+            .nav {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+                backdrop-filter: blur(14px);
+                background: rgba(3, 7, 18, 0.82);
+                border-bottom: 1px solid var(--border);
+            }
+            .nav-inner {
+                max-width: 1180px;
+                margin: 0 auto;
+                padding: 14px 28px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+            }
+            .nav-brand {
+                font-family: var(--font-mono);
+                font-size: 12.5px;
+                letter-spacing: 0.14em;
+                color: var(--cyan);
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+            .nav-links {
+                display: flex;
+                gap: 18px;
+                flex-wrap: wrap;
+                font-size: 12.5px;
+                font-family: var(--font-mono);
+            }
+            .nav-links a {
+                color: var(--text-muted);
+            }
+            .nav-links a:hover {
+                color: var(--cyan);
+                text-decoration: none;
+            }
+            @media (max-width: 900px) {
+                .nav-links {
+                    display: none;
+                }
+            }
+
+            /* ---------- Hero ---------- */
+            .hero {
+                max-width: 1180px;
+                margin: 0 auto;
+                padding: 88px 28px 56px;
+                animation: fadeInDown 0.9s ease both;
+            }
+            .hero .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-family: var(--font-mono);
+                font-size: 12px;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                color: var(--violet);
+                border: 1px solid var(--border-strong);
+                border-radius: 999px;
+                padding: 6px 14px;
+                margin-bottom: 26px;
+            }
+            .hero .eyebrow::before {
+                content: '';
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: var(--cyan);
+                box-shadow: 0 0 12px var(--cyan);
+                animation: pulse 2s infinite;
+            }
+            .hero h1 {
+                font-size: clamp(32px, 5vw, 54px);
+                font-weight: 800;
+                margin: 0 0 14px;
+                background: linear-gradient(
+                    120deg,
+                    #f8fafc 20%,
+                    var(--cyan) 60%,
+                    var(--violet) 100%
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .hero .sub {
+                font-family: var(--font-display);
+                font-size: clamp(16px, 2vw, 21px);
+                color: var(--text-muted);
+                font-weight: 600;
+                margin: 0 0 30px;
+            }
+            .hero-meta {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px;
+                margin-top: 34px;
+            }
+            @media (max-width: 760px) {
+                .hero-meta {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .hero-meta .card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 18px 20px;
+            }
+            .hero-meta .card .label {
+                font-family: var(--font-mono);
+                font-size: 11px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--cyan);
+                margin-bottom: 6px;
+            }
+            .hero-meta .card .value {
+                font-size: 14.5px;
+                color: var(--text);
+            }
+
+            /* ---------- Layout ---------- */
+            .wrap {
+                max-width: 1180px;
+                margin: 0 auto;
+                padding: 0 28px 40px;
+            }
+            section.chapter {
+                margin-top: 64px;
+                padding-top: 20px;
+                border-top: 1px solid var(--border);
+                opacity: 0;
+                transform: translateY(24px);
+                transition:
+                    opacity 0.7s ease,
+                    transform 0.7s ease;
+            }
+            section.chapter.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .chapter-head {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                flex-wrap: wrap;
+                margin-bottom: 6px;
+            }
+            .chapter-num {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                color: var(--bg);
+                background: var(--cyan);
+                border-radius: 8px;
+                padding: 4px 10px;
+                font-weight: 700;
+            }
+            .chapter-head h2 {
+                font-size: clamp(22px, 3vw, 30px);
+                margin: 0;
+            }
+            .k-badge {
+                font-family: var(--font-mono);
+                font-size: 11px;
+                letter-spacing: 0.06em;
+                border: 1px solid var(--border-strong);
+                border-radius: 999px;
+                padding: 4px 12px;
+                color: var(--amber);
+                background: rgba(251, 191, 36, 0.06);
+            }
+            .chapter-lead {
+                color: var(--text-muted);
+                font-size: 15px;
+                margin: 10px 0 26px;
+            }
+
+            h3.section-h {
+                font-size: 19px;
+                margin: 38px 0 14px;
+                padding-left: 14px;
+                border-left: 3px solid var(--violet);
+                color: #f1f5f9;
+            }
+
+            /* ---------- Callouts ---------- */
+            .callout {
+                border-radius: 14px;
+                padding: 20px 22px;
+                margin: 22px 0;
+                border: 1px solid var(--border);
+                background: var(--surface);
+                position: relative;
+            }
+            .callout .tag {
+                font-family: var(--font-mono);
+                font-size: 11px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+                display: block;
+            }
+            .callout.def {
+                border-left: 3px solid var(--cyan);
+            }
+            .callout.def .tag {
+                color: var(--cyan);
+            }
+            .callout.why {
+                border-left: 3px solid var(--violet);
+                background: rgba(167, 139, 250, 0.05);
+            }
+            .callout.why .tag {
+                color: var(--violet);
+            }
+            .callout.warn {
+                border-left: 3px solid var(--amber);
+                background: rgba(251, 191, 36, 0.06);
+            }
+            .callout.warn .tag {
+                color: var(--amber);
+            }
+            .callout.tip {
+                border-left: 3px solid var(--green);
+                background: rgba(52, 211, 153, 0.05);
+            }
+            .callout.tip .tag {
+                color: var(--green);
+            }
+            .callout p:last-child {
+                margin-bottom: 0;
+            }
+
+            /* ---------- Tables ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 20px 0;
+                border: 1px solid var(--border);
+                border-radius: 14px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14px;
+                min-width: 520px;
+            }
+            thead th {
+                text-align: left;
+                font-family: var(--font-mono);
+                font-size: 11.5px;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--cyan);
+                background: rgba(34, 211, 238, 0.06);
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border);
+                color: var(--text);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: rgba(148, 163, 184, 0.04);
+            }
+
+            /* ---------- Code ---------- */
+            .code-block {
+                background: #080d19;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 18px 0;
+                position: relative;
+            }
+            .code-block .lang {
+                position: absolute;
+                top: 10px;
+                right: 16px;
+                font-family: var(--font-mono);
+                font-size: 10.5px;
+                color: var(--text-muted);
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+            .code-block pre {
+                margin: 0;
+                font-family: var(--font-mono);
+                font-size: 13px;
+                color: #a5f3fc;
+                line-height: 1.7;
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+            .code-block .cm {
+                color: #64748b;
+            }
+
+            /* ---------- Diagram ---------- */
+            .diagram-wrap {
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 22px;
+                margin: 24px 0;
+                overflow-x: auto;
+            }
+            .diagram-caption {
+                font-family: var(--font-mono);
+                font-size: 11.5px;
+                color: var(--text-muted);
+                margin-top: 12px;
+                text-align: center;
+                letter-spacing: 0.03em;
+            }
+            .mermaid {
+                display: flex;
+                justify-content: center;
+            }
+
+            /* ---------- Compare grid (good/bad) ---------- */
+            .compare-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin: 20px 0;
+            }
+            @media (max-width: 700px) {
+                .compare-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .compare-col {
+                border-radius: 14px;
+                padding: 18px 20px;
+                border: 1px solid var(--border);
+            }
+            .compare-col.good {
+                background: rgba(52, 211, 153, 0.05);
+                border-color: rgba(52, 211, 153, 0.3);
+            }
+            .compare-col.bad {
+                background: rgba(248, 113, 113, 0.05);
+                border-color: rgba(248, 113, 113, 0.3);
+            }
+            .compare-col h4 {
+                font-family: var(--font-mono);
+                font-size: 12.5px;
+                letter-spacing: 0.06em;
+                margin: 0 0 12px;
+                text-transform: uppercase;
+            }
+            .compare-col.good h4 {
+                color: var(--green);
+            }
+            .compare-col.bad h4 {
+                color: var(--red);
+            }
+            .compare-col ul {
+                margin: 0;
+                padding-left: 20px;
+            }
+            .compare-col li {
+                margin-bottom: 8px;
+                font-size: 14px;
+                color: var(--text);
+            }
+
+            /* ---------- Step list ---------- */
+            .step-list {
+                list-style: none;
+                margin: 20px 0;
+                padding: 0;
+                counter-reset: step;
+            }
+            .step-list li {
+                position: relative;
+                padding: 6px 0 6px 42px;
+                margin-bottom: 10px;
+                font-size: 14.5px;
+                counter-increment: step;
+            }
+            .step-list li::before {
+                content: counter(step);
+                position: absolute;
+                left: 0;
+                top: 4px;
+                width: 28px;
+                height: 28px;
+                border-radius: 8px;
+                background: linear-gradient(135deg, var(--cyan), var(--violet));
+                color: #04121c;
+                font-family: var(--font-mono);
+                font-weight: 700;
+                font-size: 13px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* ---------- Toc grid ---------- */
+            .toc-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 14px;
+                margin: 26px 0 10px;
+            }
+            @media (max-width: 900px) {
+                .toc-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (max-width: 560px) {
+                .toc-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .toc-card {
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 16px 18px;
+                background: var(--surface);
+                transition:
+                    border-color 0.2s,
+                    transform 0.2s;
+            }
+            .toc-card:hover {
+                border-color: var(--cyan);
+                transform: translateY(-2px);
+                text-decoration: none;
+            }
+            .toc-card .n {
+                font-family: var(--font-mono);
+                color: var(--cyan);
+                font-size: 12px;
+            }
+            .toc-card .t {
+                color: var(--text);
+                font-size: 14px;
+                margin-top: 4px;
+                font-weight: 500;
+            }
+
+            /* ---------- Metric / summary grid ---------- */
+            .metric-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 14px;
+                margin: 24px 0;
+            }
+            @media (max-width: 900px) {
+                .metric-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            .metric-card {
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 16px 18px;
+                background: var(--surface);
+            }
+            .metric-card .k {
+                font-family: var(--font-mono);
+                font-size: 11px;
+                color: var(--violet);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+            .metric-card .v {
+                font-size: 14px;
+                margin-top: 6px;
+                color: var(--text);
+            }
+
+            /* ---------- Reference grid ---------- */
+            .ref-category {
+                margin: 26px 0 6px;
+            }
+            .ref-category h4 {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                color: var(--amber);
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                margin-bottom: 12px;
+            }
+            .ref-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 8px;
+            }
+            @media (max-width: 700px) {
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .ref-item {
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 12px 14px;
+                background: var(--surface);
+                font-size: 13px;
+            }
+            .ref-item .rt {
+                color: var(--text);
+                display: block;
+                margin-bottom: 4px;
+            }
+            .ref-item .ru {
+                font-family: var(--font-mono);
+                font-size: 12px;
+                color: var(--cyan);
+                word-break: break-all;
+            }
+
+            /* ---------- Alert (final) ---------- */
+            .alert {
+                border: 1px dashed var(--border-strong);
+                border-radius: 16px;
+                padding: 22px 24px;
+                margin: 40px 0;
+                background: radial-gradient(
+                    ellipse at top left,
+                    rgba(34, 211, 238, 0.06),
+                    transparent
+                );
+                font-size: 14.5px;
+                color: var(--text-muted);
+            }
+            .alert b {
+                color: var(--text);
+            }
+
+            /* ---------- Footer ---------- */
+            footer {
+                border-top: 1px solid var(--border);
+                margin-top: 60px;
+                padding: 34px 28px 60px;
+                text-align: center;
+                color: var(--text-muted);
+                font-family: var(--font-mono);
+                font-size: 12px;
+                letter-spacing: 0.05em;
+            }
+
+            /* ---------- Animations ---------- */
+            @keyframes fadeInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-18px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(18px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.35;
+                }
+            }
+            @keyframes growBar {
+                from {
+                    width: 0;
+                }
+                to {
+                    width: var(--w, 100%);
+                }
+            }
+
+            .pillbar {
+                height: 6px;
+                border-radius: 999px;
+                background: rgba(148, 163, 184, 0.12);
+                overflow: hidden;
+                margin: 14px 0 22px;
+            }
+            .pillbar span {
+                display: block;
+                height: 100%;
+                border-radius: 999px;
+                background: linear-gradient(90deg, var(--cyan), var(--violet));
+                animation: growBar 1.4s ease forwards;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="nav">
+            <div class="nav-inner">
+                <div class="nav-brand">GCP SECURITY FUNDAMENTALS</div>
+                <div class="nav-links">
+                    <a href="#ch1">01 IAM</a>
+                    <a href="#ch2">02 Custom Roles</a>
+                    <a href="#ch3">03 SA</a>
+                    <a href="#ch4">04 Peering</a>
+                    <a href="#ch5">05 IAP</a>
+                    <a href="#ch6">06 KMS</a>
+                    <a href="#ch7">07 GKE</a>
+                    <a href="#ch8">08 統合演習</a>
+                    <a href="#refs">参考文献</a>
+                </div>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <div class="eyebrow">Google Cloud Skill Boost 準拠教材</div>
+            <h1>Google Cloud セキュリティ基礎<br />完全ガイド</h1>
+            <p class="sub">
+                IAM / カスタムロール / サービスアカウント / VPC Peering / IAP / Cloud KMS / Private
+                GKE
+            </p>
+            <p style="max-width: 680px; color: var(--text-muted); font-size: 15px">
+                Google Cloud
+                を触り始めたばかりのエンジニア向けに、7つのハンズオンラボを「なぜその設定が必要なのか」という視点で再構成しました。
+                全体を貫くのは
+                <b style="color: var(--text)">最小権限の原則(Principle of Least Privilege)</b>
+                ただ一つです。
+            </p>
+            <div class="hero-meta">
+                <div class="card">
+                    <div class="label">対象読者</div>
+                    <div class="value">Google Cloud を触り始めたエンジニア</div>
+                </div>
+                <div class="card">
+                    <div class="label">前提知識</div>
+                    <div class="value">コンソール基本操作・gcloud の雛形が読める程度</div>
+                </div>
+                <div class="card">
+                    <div class="label">到達目標</div>
+                    <div class="value">IAM・ネットワーク・暗号化を横断した安全設計ができる</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="wrap">
+            <section style="margin-top: 10px">
+                <h3 class="section-h">0. この教材の全体像</h3>
+                <p>
+                    このガイドは、Google Cloud の「Implement Cloud Security
+                    Fundamentals」系スキルバッジで扱う7つのハンズオンラボを、単なる手順書ではなく<b>「なぜその設定が必要なのか」</b>という観点で再構成したものです。全体を貫く思想はただ一つ、<b>最小権限の原則</b>です。各章はこの原則を異なるレイヤー(誰が/何に対して/どの経路で)に適用したものだと考えると、バラバラに見える7つのラボが1本の線でつながります。
+                </p>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart TB subgraph L1["レイヤー1: 誰がアクセスできるか(IAM)"] direction
+                        LR A1[基本ロール<br />Owner/Editor/Viewer] --> A2[カスタムロール<br />必要な権限だけを束ねる]
+                        --> A3[サービスアカウント<br />人間以外のID] end subgraph L2["レイヤー2:
+                        どの経路でアクセスできるか(ネットワーク)"] direction LR B1[VPC Peering<br />プロジェクト間の内部通信]
+                        --> B2[IAP<br />アプリ層の認証プロキシ] --> B3[Private GKE<br />クラスタの外部露出を遮断]
+                        end subgraph L3["レイヤー3: データそのものを守る(暗号化)"] direction LR
+                        C1[Cloud KMS<br />鍵の生成と権限分離] --> C2[暗号化データの保存<br />Cloud
+                        Storage] end L1 --> L2 --> L3
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.0 — 3レイヤーで見る最小権限の原則の適用範囲
+                    </div>
+                </div>
+
+                <div class="callout tip">
+                    <span class="tag">Reading Tip</span>
+                    <p>
+                        各章の冒頭に「到達目標レベル」を記載しています。K1=記憶している、K2=理由を説明できる、K3=自分の要件に合わせて設計できる、という3段階です。
+                    </p>
+                </div>
+
+                <h3 class="section-h">目次</h3>
+                <div class="toc-grid">
+                    <a class="toc-card" href="#ch1"
+                        ><div class="n">CHAPTER 01</div>
+                        <div class="t">IAM基礎 — 誰が・何に・何をできるか</div></a
+                    >
+                    <a class="toc-card" href="#ch2"
+                        ><div class="n">CHAPTER 02</div>
+                        <div class="t">IAMカスタムロール — 権限を自分でデザインする</div></a
+                    >
+                    <a class="toc-card" href="#ch3"
+                        ><div class="n">CHAPTER 03</div>
+                        <div class="t">サービスアカウント — 人間ではないIDの管理</div></a
+                    >
+                    <a class="toc-card" href="#ch4"
+                        ><div class="n">CHAPTER 04</div>
+                        <div class="t">VPC Network Peering — プロジェクトをまたぐ内部通信</div></a
+                    >
+                    <a class="toc-card" href="#ch5"
+                        ><div class="n">CHAPTER 05</div>
+                        <div class="t">Identity-Aware Proxy — アプリ層のゼロトラスト</div></a
+                    >
+                    <a class="toc-card" href="#ch6"
+                        ><div class="n">CHAPTER 06</div>
+                        <div class="t">Cloud KMS — 鍵管理と暗号化</div></a
+                    >
+                    <a class="toc-card" href="#ch7"
+                        ><div class="n">CHAPTER 07</div>
+                        <div class="t">Private GKE クラスタ — ネットワーク隔離</div></a
+                    >
+                    <a class="toc-card" href="#ch8"
+                        ><div class="n">CHAPTER 08</div>
+                        <div class="t">総合演習 — 全レイヤーの統合設計</div></a
+                    >
+                    <a class="toc-card" href="#refs"
+                        ><div class="n">APPENDIX</div>
+                        <div class="t">参考文献 / 公式ドキュメント</div></a
+                    >
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 1 ================= -->
+            <section class="chapter" id="ch1">
+                <div class="chapter-head">
+                    <span class="chapter-num">01</span>
+                    <h2>IAM基礎 — 誰が・何に・何をできるか</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K1 記憶 → K2 理解</span>
+                <p class="chapter-lead">
+                    Cloud IAMの根本設計と、なぜ基本ロールを避けるべきかを理解する。
+                </p>
+
+                <div class="callout def">
+                    <span class="tag">Definition</span>
+                    <p>
+                        Cloud IAM(Identity and Access Management)は、Google
+                        Cloud上のあらゆる操作に対して「誰が(Principal)」「何に(Resource)」「何を(Role
+                        =
+                        権限の集合)」できるかを一元管理する仕組みです。ユーザーに直接パーミッションを渡すのではなく、<b>ロールという権限の束を経由して</b>付与する設計になっている点が最大の特徴です。
+                    </p>
+                </div>
+
+                <div class="callout why">
+                    <span class="tag">なぜこの設計なのか</span>
+                    <p>
+                        もしパーミッションを1つずつユーザーへ割り当てる方式だったら、数百人の組織では「誰が何をできるか」を追跡することが事実上不可能になります。ロールという中間層を挟むことで、職務ベースでロールをグループに割り当てられる、新機能追加時にGoogle側が事前定義ロールを自動更新してくれる、監査時に1箇所を確認すればよい、といったメリットが生まれます。
+                    </p>
+                </div>
+
+                <h3 class="section-h">基本ロール(Primitive Roles)の一覧</h3>
+                <p>
+                    IAM導入以前から存在する4つの基本ロールは、今でもラボでよく登場します。実務では基本的に<b>使用を避けるべき</b>ロールですが、仕組みを理解するために整理します。
+                </p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ロール名</th>
+                                <th>ロールID</th>
+                                <th>できること</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ブラウザ</td>
+                                <td><code>roles/browser</code></td>
+                                <td>
+                                    フォルダ・組織階層の閲覧のみ。プロジェクト内のリソース自体は見えない
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>閲覧者 (Viewer)</td>
+                                <td><code>roles/viewer</code></td>
+                                <td>状態を変更しない読み取り専用操作(既存リソースの閲覧)</td>
+                            </tr>
+                            <tr>
+                                <td>編集者 (Editor)</td>
+                                <td><code>roles/editor</code></td>
+                                <td>Viewerの全権限 + リソースの作成・変更・削除</td>
+                            </tr>
+                            <tr>
+                                <td>オーナー (Owner)</td>
+                                <td><code>roles/owner</code></td>
+                                <td>Editorの全権限 + 権限管理(IAMポリシー変更)+ 課金設定</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout warn">
+                    <span class="tag">なぜOwner/Editor/Viewerを避けるべきか</span>
+                    <p>
+                        これらは数千もの権限をサービス横断でまとめて付与してしまいます。「Cloud
+                        Storageのファイルを見せたいだけ」の相手にViewerを渡すと、BigQueryやCompute
+                        Engineの情報まで見えてしまいます。本番環境では事前定義ロール(例:
+                        <code>roles/storage.objectViewer</code
+                        >)またはカスタムロールを使うのが定石です。
+                    </p>
+                </div>
+
+                <h3 class="section-h">権限が伝播する仕組み</h3>
+                <p>
+                    IAMのポリシーはリソース階層(組織 → フォルダ → プロジェクト →
+                    個々のリソース)に沿って<b>継承</b>されます。上位で付与したロールは下位のすべての子リソースに効きます。
+                </p>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart TD Org[組織] -->|継承| Folder[フォルダ] Folder -->|継承|
+                        Proj[プロジェクト] Proj -->|継承| Res1[Cloud Storage バケット] Proj
+                        -->|継承| Res2[Compute Engine インスタンス] Proj -->|継承| Res3[BigQuery
+                        データセット] Owner["Owner ロールを<br />プロジェクトに付与"]
+                        -.->|自動的に配下すべてに適用| Res1 Owner -.->|自動的に配下すべてに適用|
+                        Res2 Owner -.->|自動的に配下すべてに適用| Res3
+                    </div>
+                    <div class="diagram-caption">Fig.1 — IAMポリシーのリソース階層継承</div>
+                </div>
+
+                <h3 class="section-h">ハンズオンで確認する2つの挙動</h3>
+                <p>
+                    ラボでは2つのユーザー(Owner権限のUser1、Viewer権限のUser2)を使って以下を体験します。
+                </p>
+                <ol class="step-list">
+                    <li>
+                        <b
+                            >Viewerロールを持つユーザーはIAMページの「アクセス権を付与」ボタン自体が押せない</b
+                        >
+                        —
+                        <code>resourcemanager.projects.setIamPolicy</code>
+                        権限がないため。権限管理を行うにはOwnerまたはそれに準ずるIAM関連ロールが必要。
+                    </li>
+                    <li>
+                        <b
+                            >プロジェクトロールを剥奪しても、リソース個別のロールが残っていればアクセスは可能</b
+                        >
+                        — プロジェクトのViewerロールを削除しても、Cloud Storageバケットに個別に
+                        <code>roles/storage.objectViewer</code>
+                        を付与しておけば、そのバケットだけは引き続き閲覧できます。
+                    </li>
+                </ol>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        sequenceDiagram actor U2 as User2 (Viewer剥奪後) participant Console as
+                        Cloud Console participant Bucket as Cloud Storage バケット U2->>Console:
+                        プロジェクトのリソース一覧を見ようとする Console-->>U2: Permission
+                        Denied(プロジェクトViewerがない) U2->>Bucket: バケットに直接アクセス(gcloud
+                        storage ls) Note over Bucket: roles/storage.objectViewer
+                        が個別に付与されている Bucket-->>U2: ファイル一覧を取得できる
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.2 — プロジェクト権限とリソース個別権限は独立して機能する
+                    </div>
+                </div>
+
+                <h3 class="section-h">ベストプラクティス</h3>
+                <div class="compare-grid">
+                    <div class="compare-col good">
+                        <h4>✅ 推奨</h4>
+                        <ul>
+                            <li>
+                                事前定義ロール(例: <code>roles/storage.objectViewer</code>)を使う
+                            </li>
+                            <li>必要な範囲(バケット単位・データセット単位)にロールを絞る</li>
+                            <li>権限変更後は反映まで最大80秒程度かかることを見込んで検証する</li>
+                            <li>定期的にIAMポリシーの棚卸しを行う</li>
+                        </ul>
+                    </div>
+                    <div class="compare-col bad">
+                        <h4>❌ 避けるべき</h4>
+                        <ul>
+                            <li>基本ロール(Owner/Editor/Viewer)を安易に付与する</li>
+                            <li>プロジェクト全体にまとめてロールを付与する</li>
+                            <li>変更直後にエラーだと即座に「壊れた」と判断する</li>
+                            <li>一度付与した権限を放置する</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 2 ================= -->
+            <section class="chapter" id="ch2">
+                <div class="chapter-head">
+                    <span class="chapter-num">02</span>
+                    <h2>IAMカスタムロール — 権限を自分でデザインする</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K2 理解 → K3 適用</span>
+                <p class="chapter-lead">
+                    権限の命名規則を理解し、自分で最小限のロールを設計・運用できるようになる。
+                </p>
+
+                <div class="callout def">
+                    <span class="tag">Definition</span>
+                    <p>
+                        カスタムロールとは、Google
+                        が用意した事前定義ロールでは粒度が合わない場合に、<b>自分で権限(Permission)を1つずつ選んで束ねて作るロール</b>です。組織レベルまたはプロジェクトレベルで作成でき、Googleによる自動更新の対象にはなりません(自分でメンテナンスする必要があります)。
+                    </p>
+                </div>
+
+                <h3 class="section-h">権限の命名規則を理解する</h3>
+                <p>
+                    Cloud IAMの権限はすべて
+                    <code>&lt;サービス&gt;.&lt;リソース&gt;.&lt;動詞&gt;</code>
+                    という統一フォーマットに従います。多くの場合、1つの権限が1つのREST
+                    APIメソッドに対応しています。
+                </p>
+                <div class="code-block">
+                    <span class="lang">permission format</span>
+                    <pre><span class="cm"># compute.instances.list   → Compute Engine の instances リソースを一覧表示できる
+# compute.instances.stop   → Compute Engine の instances リソースを停止できる
+# storage.buckets.get      → Cloud Storage の bucket 情報を取得できる
+# pubsub.topics.publish    → Pub/Sub の topic にメッセージを発行できる</span></pre>
+                </div>
+
+                <h3 class="section-h">事前定義ロール vs カスタムロールの比較</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>観点</th>
+                                <th>事前定義ロール</th>
+                                <th>カスタムロール</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>管理主体</td>
+                                <td>Google</td>
+                                <td>自分(プロジェクト/組織の管理者)</td>
+                            </tr>
+                            <tr>
+                                <td>新機能追加時の更新</td>
+                                <td>自動</td>
+                                <td>手動でメンテナンスが必要</td>
+                            </tr>
+                            <tr>
+                                <td>粒度</td>
+                                <td>サービス単位で比較的大きい</td>
+                                <td>権限を1つずつ自由に選択できる</td>
+                            </tr>
+                            <tr>
+                                <td>付与できる階層</td>
+                                <td>全階層</td>
+                                <td>組織レベル or プロジェクトレベル(フォルダ不可)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout warn">
+                    <span class="tag">プロジェクトレベルの制約</span>
+                    <p>
+                        プロジェクトレベルのカスタムロールには、組織やフォルダでしか意味を持たない権限を含めることはできません。IAMの権限は階層を下方向にしか継承されないためです。
+                    </p>
+                </div>
+
+                <h3 class="section-h">カスタムロールを作る2つの方法</h3>
+                <p><b>方法A: YAMLファイルによる定義</b></p>
+                <div class="code-block">
+                    <span class="lang">yaml</span>
+                    <pre>
+title: "Role Editor"
+description: "App Versionsへの編集アクセス"
+stage: "ALPHA"
+includedPermissions:
+- appengine.versions.create
+- appengine.versions.delete</pre
+                    >
+                </div>
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+gcloud iam roles create editor \
+  --project $DEVSHELL_PROJECT_ID \
+  --file role-definition.yaml</pre
+                    >
+                </div>
+
+                <p><b>方法B: フラグによる直接指定</b></p>
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+gcloud iam roles create viewer \
+  --project $DEVSHELL_PROJECT_ID \
+  --title "Role Viewer" \
+  --description "カスタムロールの説明" \
+  --permissions compute.instances.get,compute.instances.list \
+  --stage ALPHA</pre
+                    >
+                </div>
+
+                <h3 class="section-h">etag による楽観的ロック</h3>
+                <p>
+                    複数の管理者が同時にロールを更新しようとすると、片方の変更が意図せず上書きされる恐れがあります。Cloud
+                    IAMはこれを防ぐために <code>etag</code> というバージョン識別子を使います。
+                </p>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        sequenceDiagram participant Admin as 管理者 participant IAM as Cloud IAM
+                        Admin->>IAM: describe でロール定義を取得(etag AAA) Admin->>Admin:
+                        ローカルで権限を追加編集 Admin->>IAM: update でetag AAA を添えて送信 alt
+                        etagが一致 IAM-->>Admin: 更新成功、新しいetag BBB が発行される else
+                        他の変更が先に入りetagが不一致 IAM-->>Admin: 更新拒否(競合を検出) end
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.3 — etag による Read-Modify-Write の競合防止
+                    </div>
+                </div>
+
+                <h3 class="section-h">カスタムロールのライフサイクル</h3>
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart LR A["作成<br />iam roles create"] --> B["更新<br />iam roles
+                        update"] B --> C["無効化<br />stage DISABLED"] C --> D["削除<br />iam roles
+                        delete"] D -->|7日以内なら| E["復元<br />iam roles undelete"] D -->|7日経過|
+                        F["完全削除プロセス<br />最大30日、計37日で完全消滅"] F -->
+                        G["37日後、同じRole IDが<br />再利用可能になる"]
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.4 — カスタムロールのライフサイクル(作成〜完全消滅)
+                    </div>
+                </div>
+
+                <div class="callout warn">
+                    <span class="tag">無効化と削除の違い</span>
+                    <p>
+                        <code>DISABLED</code>
+                        にしても既存のポリシーバインディングは残ったまま(効果が無くなるだけ)です。誤って権限が広がりすぎたロールを一時停止したい場合は、削除より先に無効化を検討すると安全です。
+                    </p>
+                </div>
+
+                <h3 class="section-h">ベストプラクティス</h3>
+                <div class="compare-grid">
+                    <div class="compare-col good">
+                        <h4>✅ 推奨</h4>
+                        <ul>
+                            <li>「本当に必要な権限」だけをリストアップしてから作成する</li>
+                            <li>更新前に必ず <code>describe</code> して最新のetagを確認する</li>
+                            <li>説明文に「どの事前定義ロールを参考にしたか」を書いておく</li>
+                            <li>廃止時は <code>DEPRECATED</code> にして移行先を案内する</li>
+                        </ul>
+                    </div>
+                    <div class="compare-col bad">
+                        <h4>❌ 避けるべき</h4>
+                        <ul>
+                            <li>とりあえず広めの権限を付与して後で絞ろうとする</li>
+                            <li>ローカルにキャッシュした古い定義を使い回して更新する</li>
+                            <li>説明が空欄のまま放置する</li>
+                            <li>突然削除して依存しているユーザーを詰まらせる</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 3 ================= -->
+            <section class="chapter" id="ch3">
+                <div class="chapter-head">
+                    <span class="chapter-num">03</span>
+                    <h2>サービスアカウント — 人間ではないIDの管理</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K2 理解 → K3 適用</span>
+                <p class="chapter-lead">
+                    「ID」と「リソース」という2つの立場でサービスアカウントを扱えるようになる。
+                </p>
+
+                <div class="callout def">
+                    <span class="tag">Definition</span>
+                    <p>
+                        サービスアカウントとは、人間ではなく<b>アプリケーションやVMのためのGoogleアカウント</b>です。APIを呼び出す際、エンドユーザーを介さずに「アプリそのもの」として認証・認可を行うために使われます。一意なメールアドレス形式の識別子を持ちます。
+                    </p>
+                </div>
+
+                <div class="callout why">
+                    <span class="tag">なぜ人間のアカウントを使い回してはいけないのか</span>
+                    <p>
+                        個人アカウントの認証情報をVMやバッチ処理が使っていると、退職・異動で処理が止まる、個人アカウントの過剰な権限がそのままアプリに渡る、監査ログで「誰が」「何の目的で」実行したのかが曖昧になる、といった問題が生まれます。サービスアカウントを使うことでアプリの識別・権限・監査を人間のライフサイクルと分離できます。
+                    </p>
+                </div>
+
+                <h3 class="section-h">サービスアカウントの種類</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>種類</th>
+                                <th>例</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Compute Engine デフォルトSA</td>
+                                <td>
+                                    <code
+                                        >PROJECT_NUMBER-compute@developer.gserviceaccount.com</code
+                                    >
+                                </td>
+                                <td>Compute Engine APIを有効化すると自動作成</td>
+                            </tr>
+                            <tr>
+                                <td>App Engine デフォルトSA</td>
+                                <td><code>PROJECT_ID@appspot.gserviceaccount.com</code></td>
+                                <td>App Engineアプリを含むプロジェクトに自動作成</td>
+                            </tr>
+                            <tr>
+                                <td>ユーザー管理SA</td>
+                                <td><code>任意の名前@PROJECT_ID.iam.gserviceaccount.com</code></td>
+                                <td>開発者が明示的に作成</td>
+                            </tr>
+                            <tr>
+                                <td>Google管理SA(サービスエージェント)</td>
+                                <td>
+                                    <code>PROJECT_NUMBER@cloudservices.gserviceaccount.com</code>
+                                </td>
+                                <td>
+                                    Google内部処理用。デフォルトでEditorロールを持つため変更・削除は非推奨
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-h">「ID」としての利用と「リソース」としての利用</h3>
+                <p>
+                    サービスアカウントは<b>2つの立場</b>で登場する点が初学者にとって混乱しやすいポイントです。
+                </p>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart TB subgraph Case1["ケース1: サービスアカウントを「ID」として扱う"]
+                        VM["Compute Engine VM"] -->|"このVMとして動作する"|
+                        SA1["サービスアカウント"] SA1 -->|"IAMロールを付与"| R1["Cloud Storage /
+                        BigQuery"] end subgraph Case2["ケース2:
+                        サービスアカウントを「リソース」として扱う"] U["人間のユーザー"]
+                        -->|"serviceAccountUser を付与"| SA2["サービスアカウント"] SA2
+                        -->|"このSAとしてVMを起動できる"| VM2["VMインスタンス"] end
+                    </div>
+                    <div class="diagram-caption">Fig.5 — サービスアカウントの2つの立場</div>
+                </div>
+
+                <p>
+                    この2つを分けて設計することで、「VMを起動できる人」と「VMが実際に持つ権限」を独立してコントロールできます。
+                </p>
+
+                <h3 class="section-h">実例: BigQueryにアクセスするサービスアカウント</h3>
+                <ol class="step-list">
+                    <li><code>bigquery-qwiklab</code> という名前でサービスアカウントを作成</li>
+                    <li>
+                        <code>BigQuery Data Viewer</code> と
+                        <code>BigQuery User</code> のロールを付与
+                    </li>
+                    <li>
+                        Compute Engineインスタンス作成時、このサービスアカウントを Access Scope
+                        として明示的に紐付ける
+                    </li>
+                    <li>
+                        VM内のPythonコードは
+                        <code>compute_engine.Credentials(service_account_email=...)</code>
+                        で認証情報を取得し、ユーザー介在なしにBigQueryへクエリを実行する
+                    </li>
+                </ol>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        sequenceDiagram participant App as Pythonアプリ(VM上) participant Meta as
+                        VMメタデータサーバー participant BQ as BigQuery API App->>Meta:
+                        サービスアカウントの認証情報を要求 Meta-->>App:
+                        一時的なアクセストークンを返却 App->>BQ: トークンを添えてクエリを実行 Note
+                        over BQ: bigquery-qwiklab SA が必要なロールを持つことを確認 BQ-->>App:
+                        クエリ結果を返却
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.6 — サービスアカウント経由のBigQueryアクセス
+                    </div>
+                </div>
+
+                <h3 class="section-h">ベストプラクティス</h3>
+                <div class="compare-grid">
+                    <div class="compare-col good">
+                        <h4>✅ 推奨</h4>
+                        <ul>
+                            <li>ワークロードごとに専用のサービスアカウントを作成する</li>
+                            <li>SAには必要最小限のロールだけを付与する</li>
+                            <li>90日以上認証実績がないSAは無効化・削除を検討する</li>
+                            <li>誰がそのSAを「使える」か明示的に管理する</li>
+                        </ul>
+                    </div>
+                    <div class="compare-col bad">
+                        <h4>❌ 避けるべき</h4>
+                        <ul>
+                            <li>すべてのVM/アプリでデフォルトSA(強い権限)を使い回す</li>
+                            <li>とりあえずEditorやOwnerを付与する</li>
+                            <li>使われなくなったSAを放置する</li>
+                            <li>SAの鍵をローカルにダウンロードして共有する</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 4 ================= -->
+            <section class="chapter" id="ch4">
+                <div class="chapter-head">
+                    <span class="chapter-num">04</span>
+                    <h2>VPC Network Peering — プロジェクトをまたぐ内部通信</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K2 理解 → K3 適用</span>
+                <p class="chapter-lead">
+                    双方向合意という設計思想を理解し、疎通確認までを組み立てられるようになる。
+                </p>
+
+                <div class="callout def">
+                    <span class="tag">Definition</span>
+                    <p>
+                        VPC Network
+                        Peeringは、2つのVPCネットワーク(同一プロジェクト内・別プロジェクト・別組織のいずれでも可)を、<b>内部IPアドレスだけで直接接続する</b>仕組みです。ゲートウェイやVPN機器を経由せず、まるで同じネットワーク内にいるかのように通信できます。
+                    </p>
+                </div>
+
+                <h3 class="section-h">なぜVPNや外部IPより優れているのか</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>観点</th>
+                                <th>外部IP経由の通信</th>
+                                <th>VPN</th>
+                                <th>VPC Peering</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>レイテンシ</td>
+                                <td>高い(インターネット経由)</td>
+                                <td>中程度(暗号化オーバーヘッド)</td>
+                                <td>低い(同一ネットワーク内相当)</td>
+                            </tr>
+                            <tr>
+                                <td>セキュリティ</td>
+                                <td>サービスがインターネットに露出</td>
+                                <td>内部化されるが構成が複雑</td>
+                                <td>内部化され露出面がない</td>
+                            </tr>
+                            <tr>
+                                <td>コスト</td>
+                                <td>通常の帯域課金</td>
+                                <td>トンネル維持コストが発生</td>
+                                <td>内部IP通信のため有利</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-h">双方向の設定が必要という重要な特性</h3>
+                <p>
+                    VPC
+                    Peeringで最もつまずきやすいポイントは、<b>片側だけの設定では有効化されない</b>ことです。
+                </p>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        sequenceDiagram participant A as project-A (network-a) participant B as
+                        project-B (network-b) A->>A: ピア接続 "peer-ab" を作成(相手先 project-B /
+                        network-b) Note over A: 状態 = INACTIVE(Waiting for peer network to connect)
+                        B->>B: ピア接続 "peer-ba" を作成(相手先 project-A / network-a) Note over
+                        A,B: 双方の設定が揃った瞬間に状態 = ACTIVE A-->>B:
+                        ルートが自動的に交換される B-->>A: 内部IPでの相互通信が可能になる
+                    </div>
+                    <div class="diagram-caption">Fig.7 — VPC Peeringの双方向合意モデル</div>
+                </div>
+
+                <div class="callout why">
+                    <span class="tag">なぜこの設計なのか</span>
+                    <p>
+                        ピア接続の作成は、相手のVPCに対するIAMロールを一切付与しません。つまり「あなたのネットワークに繋ぎたい」という一方的な申請にすぎず、相手側の管理者が同意(自分の側にも同じ接続を作成)することで初めて成立します。他人のネットワークに勝手に接続できてしまう事態を防ぐための安全設計です。
+                    </p>
+                </div>
+
+                <h3 class="section-h">疎通確認までの流れ</h3>
+                <ol class="step-list">
+                    <li>
+                        <code>project-A</code> に <code>network-a</code>(サブネット
+                        <code>10.0.0.0/16</code>)を作成し、VM <code>vm-a</code> を配置
+                    </li>
+                    <li>
+                        <code>project-B</code> に <code>network-b</code>(サブネット
+                        <code>10.8.0.0/16</code>)を作成し、VM <code>vm-b</code> を配置
+                    </li>
+                    <li>SSH/ICMPを許可するファイアウォールルールをそれぞれ作成</li>
+                    <li>
+                        双方向のピア接続(<code>peer-ab</code> / <code>peer-ba</code>)を作成し
+                        <code>ACTIVE</code> になったことを確認
+                    </li>
+                    <li>
+                        <code>vm-b</code> から <code>vm-a</code> の内部IPへ
+                        <code>ping</code> を実行し、パケットロス0%であることを確認
+                    </li>
+                </ol>
+
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+# project-A側
+gcloud compute networks subnets create network-a-subnet --network network-a \
+    --range 10.0.0.0/16 --region "REGION_1"
+
+# project-B側
+gcloud compute networks subnets create network-b-subnet --network network-b \
+    --range 10.8.0.0/16 --region "REGION_2"</pre
+                    >
+                </div>
+
+                <div class="callout warn">
+                    <span class="tag">サブネットのIP範囲重複に注意</span>
+                    <p>
+                        ピア接続先とサブネットの範囲が重複していると、ピアリング自体が失敗します。設計段階でIPアドレス計画を必ず立てましょう。
+                    </p>
+                </div>
+
+                <h3 class="section-h">ベストプラクティス</h3>
+                <div class="compare-grid">
+                    <div class="compare-col good">
+                        <h4>✅ 推奨</h4>
+                        <ul>
+                            <li>ピアリング前にIPアドレス範囲の重複がないか確認する</li>
+                            <li>両側で名前(peer-ab / peer-ba)を対応付けて管理する</li>
+                            <li>必要な通信だけをファイアウォールルールで許可する</li>
+                            <li>重要サービスの接続には consensus モードを検討する</li>
+                        </ul>
+                    </div>
+                    <div class="compare-col bad">
+                        <h4>❌ 避けるべき</h4>
+                        <ul>
+                            <li>とりあえずデフォルトのCIDRで作成して後から気づく</li>
+                            <li>名前をランダムにして後から追跡できなくする</li>
+                            <li>ピアリング=無制限アクセスだと誤解して全許可にする</li>
+                            <li>誰でも片側から一方的に削除できる状態を放置する</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 5 ================= -->
+            <section class="chapter" id="ch5">
+                <div class="chapter-head">
+                    <span class="chapter-num">05</span>
+                    <h2>Identity-Aware Proxy (IAP) — アプリ層のゼロトラスト</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K2 理解 → K3 適用</span>
+                <p class="chapter-lead">
+                    ヘッダーなりすましのリスクとJWT暗号検証の重要性を理解する。
+                </p>
+
+                <div class="callout def">
+                    <span class="tag">Definition</span>
+                    <p>
+                        IAP(Identity-Aware
+                        Proxy)は、HTTPSでアクセスするアプリケーションの手前に立ち、<b>ネットワークレベルのファイアウォールではなく、アプリケーションレベルの認証・認可</b>でアクセス制御を行うGoogle
+                        Cloudのサービスです。VPNを使わずにゼロトラストアクセスを実現します。
+                    </p>
+                </div>
+
+                <div class="callout why">
+                    <span class="tag">なぜVPNではなくIAPなのか</span>
+                    <p>
+                        従来型のVPNは「一度ネットワークに入れば内部は信頼される」という前提に立っています。しかしVPN経由で侵入されると内部のあらゆるリソースへ横展開されるリスクを抱えています。IAPは<b>リクエストごと・ユーザーごとに認証と認可を行う</b>ため、境界ではなくID(誰がアクセスしているか)を信頼の基準にします。
+                    </p>
+                </div>
+
+                <h3 class="section-h">認証・認可・ヘッダー伝播の流れ</h3>
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        sequenceDiagram actor User as ユーザー participant IAP as Identity-Aware
+                        Proxy participant GIS as Google Identity Service participant App as Cloud
+                        Run アプリ User->>IAP: アプリのURLへHTTPSリクエスト IAP->>GIS:
+                        サインインを要求 GIS-->>User: Googleログイン画面を表示 User->>GIS:
+                        認証情報を入力 GIS-->>IAP: 認証済みIDを返却 IAP->>IAP:
+                        IAM許可ポリシーを確認(IAP-secured Web App User) alt 権限あり IAP->>App:
+                        リクエスト転送 + 認証ユーザー情報のヘッダーを付与 App-->>User:
+                        ユーザー情報を含むレスポンス else 権限なし IAP-->>User: アクセス拒否画面 end
+                    </div>
+                    <div class="diagram-caption">Fig.8 — IAPによる認証・認可フロー</div>
+                </div>
+
+                <div class="code-block">
+                    <span class="lang">python</span>
+                    <pre>
+user_email = request.headers.get('X-Goog-Authenticated-User-Email')
+user_id = request.headers.get('X-Goog-Authenticated-User-ID')</pre
+                    >
+                </div>
+
+                <h3 class="section-h">「なりすまし」の危険性とJWT暗号検証</h3>
+                <p>
+                    ここが本チャプターの一番重要なポイントです。<b
+                        >IAPが無効化・バイパスされた場合、アプリはそれを検知できません。</b
+                    >
+                    IAPがオフの状態で同じヘッダー名を偽装したリクエストを送ると、アプリはそれを正規のIAP経由のリクエストだと誤認してしまいます。
+                </p>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart LR subgraph Danger["⚠ 危険な状態:
+                        IAPがオフ、ヘッダーだけを信頼している"] Attacker["攻撃者"]
+                        -->|"認証ヘッダーを偽装"| App1["アプリ"] App1 -->|"ヘッダーをそのまま信用"|
+                        Result1["なりすまし成功"] end subgraph Safe["✅ 安全な状態:
+                        署名付きJWTを検証している"] Attacker2["攻撃者"]
+                        -->|"JWTアサーションを偽装しようとする"| App2["アプリ"] App2
+                        -->|"Googleの公開鍵で署名を検証"| Result2["署名が一致しない"] Result2 -->
+                        Result3["拒否される(なりすまし不可)"] end
+                    </div>
+                    <div class="diagram-caption">Fig.9 — ヘッダー信頼とJWT検証の安全性比較</div>
+                </div>
+
+                <p>
+                    対策として
+                    <code>X-Goog-IAP-JWT-Assertion</code>
+                    ヘッダーに含まれる<b>暗号署名付きのアサーション</b>をアプリ側で検証する方法があります。この署名はGoogleの秘密鍵でしか生成できないため、IAPを経由していないリクエストは検証に失敗します。
+                </p>
+
+                <div class="code-block">
+                    <span class="lang">python</span>
+                    <pre>
+def user():
+    assertion = request.headers.get('X-Goog-IAP-JWT-Assertion')
+    if assertion is None:
+        return None, None
+    info = jwt.decode(
+        assertion,
+        keys(),               # Googleの公開鍵セット
+        algorithms=['ES256'],
+        audience=audience()   # 保護対象アプリを表すオーディエンス
+    )
+    return info['email'], info['sub']</pre
+                    >
+                </div>
+
+                <h3 class="section-h">素のヘッダー参照 vs JWT暗号検証の比較</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>観点</th>
+                                <th>ヘッダーをそのまま参照</th>
+                                <th>JWTを暗号検証</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>実装の手間</td>
+                                <td>低い(ヘッダーを読むだけ)</td>
+                                <td>やや高い(公開鍵取得・署名検証が必要)</td>
+                            </tr>
+                            <tr>
+                                <td>IAPがオフ/迂回された場合</td>
+                                <td>❌ 偽装ヘッダーをそのまま信用</td>
+                                <td>✅ 署名検証に失敗し検知できる</td>
+                            </tr>
+                            <tr>
+                                <td>推奨される用途</td>
+                                <td>リスクの低い社内ツール試作段階</td>
+                                <td>機密性の高い本番アプリケーション</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-h">ベストプラクティス</h3>
+                <div class="compare-grid">
+                    <div class="compare-col good">
+                        <h4>✅ 推奨</h4>
+                        <ul>
+                            <li>機密性の高いアプリではJWTアサーションを検証する</li>
+                            <li>IAP有効化配下のバックエンドも直接アクセス経路を遮断する</li>
+                            <li><code>IAP-secured Web App User</code> は必要な範囲だけに絞る</li>
+                            <li>
+                                Cloud Runは <code>run.app</code> 直接URLを無効化しLB経由を強制する
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="compare-col bad">
+                        <h4>❌ 避けるべき</h4>
+                        <ul>
+                            <li>ヘッダーの値を無条件に信頼する</li>
+                            <li>IAP設定後もバックエンドへの直接アクセス経路を放置する</li>
+                            <li>組織全体に大盤振る舞いする</li>
+                            <li>デフォルトURLが誰でも叩ける状態を放置する</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 6 ================= -->
+            <section class="chapter" id="ch6">
+                <div class="chapter-head">
+                    <span class="chapter-num">06</span>
+                    <h2>Cloud KMS — 鍵管理と暗号化</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K2 理解 → K3 適用</span>
+                <p class="chapter-lead">鍵の管理者と利用者を分離する設計思想を理解する。</p>
+
+                <div class="callout def">
+                    <span class="tag">Definition</span>
+                    <p>
+                        Cloud KMS(Key Management Service)は、Google
+                        Cloud上のサービスや自作アプリケーションで使う<b>暗号鍵をクラウド上で一元的に生成・管理・利用するサービス</b>です。KeyRing(鍵のグループ)とCryptoKey(実際の鍵)という2階層のリソースモデルを持ちます。
+                    </p>
+                </div>
+
+                <h3 class="section-h">リソース階層</h3>
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart TB PRJ["プロジェクト"] --> KR["KeyRing: labkey (location global)"]
+                        KR --> CK["CryptoKey: qwiklab (purpose encryption)"] CK --> V1["Key Version
+                        1"] CK --> V2["Key Version 2 (ローテーション後)"]
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.10 — KeyRing / CryptoKey / Key Version の階層構造
+                    </div>
+                </div>
+
+                <p>
+                    <b>KeyRing</b>
+                    は特定のロケーションに鍵をグループ化する入れ物。環境別(test/staging/prod)やデータの機密度別に分けるのが一般的で、<b>一度作成すると削除できません</b>(コストは発生しません)。<b
+                        >CryptoKey</b
+                    >
+                    は実際に暗号化/復号に使われる鍵で、複数の
+                    <b>Key Version</b> を持ち、ローテーションのたびに新バージョンが追加されます。
+                </p>
+
+                <h3 class="section-h">暗号化・復号のワークフロー</h3>
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart LR P["平文データ (1.txt)"] -->|"base64エンコード"|
+                        B64["Base64文字列"] B64 -->|"encrypt API を呼び出し"| KMS["Cloud KMS
+                        CryptoKey qwiklab"] KMS -->|"ciphertext を返却"| ENC["暗号化データ
+                        (1.encrypted)"] ENC -->|"アップロード"| GCS["Cloud Storage バケット"] ENC
+                        -.->|"decrypt API を呼び出し(検証用)"| KMS KMS -.->|"plaintext を返却"| P
+                    </div>
+                    <div class="diagram-caption">Fig.11 — 暗号化・復号ワークフロー</div>
+                </div>
+
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+# 平文をbase64エンコード
+PLAINTEXT=$(cat 1.txt | base64 -w0)
+
+# encryptエンドポイントを呼び出し、結果からciphertextだけ抽出
+curl -v "https://cloudkms.googleapis.com/v1/projects/$DEVSHELL_PROJECT_ID/locations/global/keyRings/$KEYRING_NAME/cryptoKeys/$CRYPTOKEY_NAME:encrypt" \
+  -d "{\"plaintext\":\"$PLAINTEXT\"}" \
+  -H "Authorization:Bearer $(gcloud auth application-default print-access-token)" \
+  -H "Content-Type:application/json" \
+| jq .ciphertext -r > 1.encrypted</pre
+                    >
+                </div>
+
+                <div class="callout tip">
+                    <span class="tag">重要な性質</span>
+                    <p>
+                        Cloud
+                        KMSは確率的暗号化を採用しているため、<b>同じ平文を同じ鍵で2回暗号化しても異なる暗号文になります</b>。暗号文からパターンを推測されるリスクを下げるための仕様です。
+                    </p>
+                </div>
+
+                <h3 class="section-h">権限分離: 「鍵の管理」と「鍵の使用」は別の権限</h3>
+                <p>
+                    KMSを理解する上で最も重要な設計思想が、<b>鍵の管理者(admin)と鍵の利用者(encrypter/decrypter)を役割として分離できる</b>ことです。
+                </p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ロール</th>
+                                <th>権限ID</th>
+                                <th>できること</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cloud KMS 管理者</td>
+                                <td><code>roles/cloudkms.admin</code></td>
+                                <td>KeyRingの作成、CryptoKeyの作成・無効化・破棄などの管理操作</td>
+                            </tr>
+                            <tr>
+                                <td>暗号化・復号 実行者</td>
+                                <td><code>roles/cloudkms.cryptoKeyEncrypterDecrypter</code></td>
+                                <td>
+                                    <code>encrypt</code>/<code>decrypt</code>
+                                    APIのみ呼び出せる(鍵そのものの管理は不可)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart TB Admin["鍵管理者 roles/cloudkms.admin"]
+                        -->|"KeyRing/CryptoKeyの作成・破棄"| KR["KeyRing / CryptoKey"]
+                        App["アプリ用SA roles/cloudkms.cryptoKeyEncrypterDecrypter"] -->|"encrypt /
+                        decrypt APIのみ呼び出し可"| KR App -.->|"鍵の削除・無効化はできない"| KR
+                    </div>
+                    <div class="diagram-caption">Fig.12 — 鍵の管理権限と実行権限の分離</div>
+                </div>
+
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+# 鍵管理権限を付与
+gcloud kms keyrings add-iam-policy-binding $KEYRING_NAME \
+    --location global --member user:$USER_EMAIL \
+    --role roles/cloudkms.admin
+
+# 暗号化/復号の実行権限を別途付与
+gcloud kms keyrings add-iam-policy-binding $KEYRING_NAME \
+    --location global --member user:$USER_EMAIL \
+    --role roles/cloudkms.cryptoKeyEncrypterDecrypter</pre
+                    >
+                </div>
+
+                <h3 class="section-h">鍵のライフサイクルと監査</h3>
+                <ul style="color: var(--text); padding-left: 20px">
+                    <li>
+                        CryptoKeyとKeyRingは<b>削除不可</b>(命名の衝突を防ぐため)。実質的な無効化は「キーバージョンの破棄(destroy)」で行います。
+                    </li>
+                    <li>
+                        鍵のローテーションは<b>既存の暗号化データを自動で再暗号化しません</b>。鍵の漏洩が疑われる場合は、データの再暗号化・IAMアクセスの取り消し・キーバージョンの破棄をセットで行う必要があります。
+                    </li>
+                    <li>
+                        Cloud Audit Logs(Admin Activity / Data
+                        Access)で「誰が・いつ・どの鍵に対して何をしたか」を追跡できます。
+                    </li>
+                </ul>
+
+                <h3 class="section-h">ベストプラクティス</h3>
+                <div class="compare-grid">
+                    <div class="compare-col good">
+                        <h4>✅ 推奨</h4>
+                        <ul>
+                            <li>鍵の管理権限とアプリの暗号化実行権限を別ロールで分離する</li>
+                            <li>環境やデータの機密度別にKeyRingを分ける</li>
+                            <li>鍵侵害の疑いがあればアクセス取消+再暗号化+鍵破棄をセットで行う</li>
+                            <li>Cloud Audit Logsで鍵の利用状況を定期的に確認する</li>
+                        </ul>
+                    </div>
+                    <div class="compare-col bad">
+                        <h4>❌ 避けるべき</h4>
+                        <ul>
+                            <li>同じSAに管理権限と実行権限の両方を渡す</li>
+                            <li>全環境の鍵を1つのKeyRingに雑多にまとめる</li>
+                            <li>ローテーションだけすれば安全だと誤解する</li>
+                            <li>監査ログを見ずに「設定したから安全」で放置する</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 7 ================= -->
+            <section class="chapter" id="ch7">
+                <div class="chapter-head">
+                    <span class="chapter-num">07</span>
+                    <h2>Private GKE クラスタ — Kubernetesのネットワーク隔離</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K2 理解 → K3 適用</span>
+                <p class="chapter-lead">
+                    露出面を段階的に絞り込むという考え方でクラスタネットワークを設計できるようになる。
+                </p>
+
+                <div class="callout def">
+                    <span class="tag">Definition</span>
+                    <p>
+                        Private
+                        GKEクラスタとは、<b>コントロールプレーン(マスター)をパブリックインターネットから到達不可能にした</b>GKEクラスタです。ノードにはプライベートIPアドレスのみが割り当てられ、ノードとコントロールプレーン間の通信はVPC
+                        Peeringを通じて行われます。
+                    </p>
+                </div>
+
+                <div class="callout why">
+                    <span class="tag">なぜノードに外部IPを持たせないのか</span>
+                    <p>
+                        通常のKubernetesクラスタでは、ノードが外部IPを持つとインターネットから直接ノードのポートへアクセスされるリスクが生まれます。プライベートノードにすることで<b
+                            >攻撃対象領域(Attack Surface)をVPC内部に限定</b
+                        >できます。
+                    </p>
+                </div>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart TB subgraph VPC["自分のVPCネットワーク"] subgraph
+                        Subnet["ノード用サブネット"] Nodes["GKEノード群(内部IPのみ)"] end
+                        PodRange["Podセカンダリレンジ 例:10.40.0.0/14"]
+                        SvcRange["Serviceセカンダリレンジ 例:10.0.16.0/20"] end subgraph
+                        GoogleVPC["Google管理VPC(ピア接続)"] CP["コントロールプレーン
+                        例:172.16.0.16/28"] end Nodes <-->|"VPC Peering(自動構成)"| CP
+                        Allowed["許可された外部IP(master-authorized-networks)"]
+                        -.->|"認可された通信のみ通す"| CP Internet(("インターネット"))
+                        -.->|"直接アクセス不可"| Nodes Internet -.->|"直接アクセス不可(デフォルト)"|
+                        CP
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.13 — Private GKEクラスタのネットワーク構成
+                    </div>
+                </div>
+
+                <h3 class="section-h">Master Authorized Networks(承認済みネットワーク)</h3>
+                <p>
+                    プライベートクラスタでも、管理者はどこかからkubectlでクラスタを操作する必要があります。そこで使うのが<b
+                        >Master Authorized Networks</b
+                    >で、「このCIDR範囲からのみコントロールプレーンへのアクセスを許可する」という許可リストです。
+                </p>
+
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+gcloud container clusters create private-cluster \
+    --enable-private-nodes \
+    --master-ipv4-cidr 172.16.0.16/28 \
+    --enable-ip-alias \
+    --create-subnetwork "" \
+    --machine-type e2-medium
+
+# 特定の外部IP(例: 自分のVMのNAT IP)だけを許可
+gcloud container clusters update private-cluster \
+    --enable-master-authorized-networks \
+    --master-authorized-networks &lt;MY_EXTERNAL_RANGE&gt;/32</pre
+                    >
+                </div>
+
+                <h3 class="section-h">パブリックエンドポイントを完全に無効化する</h3>
+                <p>
+                    さらにセキュリティレベルを上げたい場合、コントロールプレーンの<b>パブリックエンドポイント自体を無効化(<code>--enable-private-endpoint</code>)</b>できます。この設定を行うと、VPC外部からは一切コントロールプレーンに到達できなくなり、同じVPC内の踏み台ホスト(bastion/jumphost)経由でのみ操作可能になります。
+                </p>
+
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart LR subgraph WithPublic["--enable-private-endpoint なし"]
+                        Admin1["管理者(社外)"] -->|"承認済みIPなら到達可"|
+                        CP1["コントロールプレーン(パブリックIPあり)"] end subgraph
+                        WithoutPublic["--enable-private-endpoint あり(より安全)"]
+                        Admin2["管理者(社外)"] -.->|"到達不可"|
+                        CP2["コントロールプレーン(パブリックIPなし)"]
+                        Jump["踏み台ホスト(同一VPC内)"] -->|"内部IP経由でのみ到達可"| CP2 Admin2
+                        -->|"まずVPN/IAPで踏み台に接続"| Jump end
+                    </div>
+                    <div class="diagram-caption">Fig.14 — パブリックエンドポイント無効化の効果</div>
+                </div>
+
+                <div class="callout warn">
+                    <span class="tag">--internal-ip フラグを忘れずに</span>
+                    <p>
+                        パブリックエンドポイントを無効化したクラスタでは、<code
+                            >gcloud container clusters get-credentials</code
+                        >
+                        の際に
+                        <code>--internal-ip</code>
+                        を付けないと、存在しないパブリックIPへ接続しようとして失敗します。
+                    </p>
+                </div>
+
+                <h3 class="section-h">カスタムサブネットとセカンダリレンジ</h3>
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+gcloud compute networks subnets create my-subnet \
+    --network default \
+    --range 10.0.4.0/22 \
+    --enable-private-ip-google-access \
+    --region=$REGION \
+    --secondary-range my-svc-range=10.0.32.0/20,my-pod-range=10.4.0.0/14</pre
+                    >
+                </div>
+                <p>
+                    <code>--enable-private-ip-google-access</code>
+                    を有効にすることで、外部IPを持たないノードでもGoogle
+                    API群に到達できるようになります。
+                </p>
+
+                <h3 class="section-h">ベストプラクティス</h3>
+                <div class="compare-grid">
+                    <div class="compare-col good">
+                        <h4>✅ 推奨</h4>
+                        <ul>
+                            <li>
+                                本番クラスタは <code>--enable-private-nodes</code> を基本設定にする
+                            </li>
+                            <li>
+                                機密性の高いワークロードは
+                                <code>--enable-private-endpoint</code> も検討する
+                            </li>
+                            <li>
+                                Master Authorized Networksは <code>/32</code> など狭い範囲で許可する
+                            </li>
+                            <li>IPアドレス計画を事前に立て他のVPC/オンプレと重複させない</li>
+                        </ul>
+                    </div>
+                    <div class="compare-col bad">
+                        <h4>❌ 避けるべき</h4>
+                        <ul>
+                            <li>ノードに外部IPを持たせたまま本番運用する</li>
+                            <li>パブリックエンドポイントを無条件に許可し続ける</li>
+                            <li><code>0.0.0.0/0</code> のような広すぎる範囲を許可する</li>
+                            <li>セカンダリレンジを行き当たりばったりで割り当てる</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAPTER 8 ================= -->
+            <section class="chapter" id="ch8">
+                <div class="chapter-head">
+                    <span class="chapter-num">08</span>
+                    <h2>総合演習 — 全レイヤーを統合したセキュアなクラスタ設計</h2>
+                </div>
+                <span class="k-badge">到達目標レベル: K3 適用</span>
+                <p class="chapter-lead">
+                    7つの要素を統合し、実際のチャレンジラボ形式の設計課題を解けるようになる。
+                </p>
+
+                <p>
+                    ここまでの7つの要素(IAM基礎/カスタムロール/サービスアカウント/VPC
+                    Peering/IAP/KMS/Private
+                    GKE)を統合すると、実際の「チャレンジラボ」で問われるような設計課題を解けるようになります。題材は、架空の企業「Jooli
+                    Inc.」のOrcaチームが、開発チーム向けに安全なGKEクラスタを構築するというシナリオです。
+                </p>
+
+                <h3 class="section-h">要件の整理</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>要件</th>
+                                <th>対応するChapter</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>クラスタは専用の最小権限サービスアカウントを使う</td>
+                                <td>Chapter 3(サービスアカウント)</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Storage操作用にカスタムロールを作成し、SAへバインドする</td>
+                                <td>Chapter 2(カスタムロール)</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Privateクラスタとし、パブリックエンドポイントも無効化する</td>
+                                <td>Chapter 7(Private GKE)</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    Master Authorized Networksに管理用jumphostのIPだけを登録する
+                                </td>
+                                <td>Chapter 7(Private GKE)</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>クラスタは指定のカスタムサブネットに配置する</td>
+                                <td>Chapter 7 / VPC設計</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>jumphostからkubectlでの疎通を確認する</td>
+                                <td>Chapter 4 + Chapter 7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-h">統合アーキテクチャ図</h3>
+                <div class="diagram-wrap">
+                    <div class="mermaid">
+                        flowchart TB subgraph IAMLayer["① IAMレイヤー: 最小権限の設計"]
+                        SA["専用サービスアカウント"] CR["カスタムロール: storage操作4権限"]
+                        BR1["roles/monitoring.viewer"] BR2["roles/monitoring.metricWriter"]
+                        BR3["roles/logging.logWriter"] SA --> CR SA --> BR1 SA --> BR2 SA --> BR3
+                        end subgraph NetworkLayer["② ネットワークレイヤー: 隔離設計"] VPC2["Orca
+                        Build VPC"] Subnet2["orca-build-subnet"] MgmtSubnet["orca-mgmt-subnet"]
+                        Jump["orca-jumphost"] VPC2 --> Subnet2 MgmtSubnet --> Jump end subgraph
+                        ClusterLayer["③ クラスタレイヤー: Private GKE"] PrivCluster["Cluster<br />private-nodes
+                        / private-endpoint / authorized-networks"] end SA
+                        -->|"サービスアカウントとして指定"| PrivCluster Subnet2
+                        -->|"デプロイ先ネットワーク"| PrivCluster Jump -->|"internal-ip 経由 kubectl
+                        接続"| PrivCluster PrivCluster -->|"jumphostの内部IPを/32で登録"| Jump
+                    </div>
+                    <div class="diagram-caption">
+                        Fig.15 — IAM・ネットワーク・クラスタを統合したセキュア設計
+                    </div>
+                </div>
+
+                <h3 class="section-h">手順の骨格(gcloudコマンド抜粋)</h3>
+                <div class="code-block">
+                    <span class="lang">bash</span>
+                    <pre>
+# 1. カスタムロールの作成(Storage操作に限定)
+gcloud iam roles create orca_custom_role \
+    --project $DEVSHELL_PROJECT_ID \
+    --title "Custom Security Role" \
+    --permissions storage.buckets.get,storage.objects.get,storage.objects.list,storage.objects.update,storage.objects.create
+
+# 2. 専用サービスアカウントの作成
+gcloud iam service-accounts create orca-sa --display-name "orca-cluster-sa"
+
+# 3. 組込みロール + カスタムロールをバインド(例)
+gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
+    --member="serviceAccount:orca-sa@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com" \
+    --role="roles/monitoring.viewer"
+
+# 4. Privateクラスタの作成(パブリックエンドポイントも無効化)
+gcloud container clusters create orca-cluster-name \
+    --service-account=orca-sa@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com \
+    --subnetwork=orca-build-subnet \
+    --enable-private-nodes \
+    --enable-private-endpoint \
+    --enable-master-authorized-networks \
+    --enable-ip-alias \
+    --zone=ZONE
+
+# 5. jumphostの内部IPをMaster Authorized Networksに追加
+gcloud container clusters update orca-cluster-name \
+    --enable-master-authorized-networks \
+    --master-authorized-networks=&lt;JUMPHOST_INTERNAL_IP&gt;/32 \
+    --zone=ZONE
+
+# 6. jumphostから internal-ip 経由で認証情報を取得
+gcloud container clusters get-credentials orca-cluster-name \
+    --internal-ip --zone=ZONE --project=$DEVSHELL_PROJECT_ID
+
+# 7. 疎通テスト用の簡易アプリをデプロイ
+kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0</pre
+                    >
+                </div>
+
+                <h3 class="section-h">このシナリオが示す設計原則</h3>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="k">Principle 01</div>
+                        <div class="v">権限は役割ごとに最小の粒度で分離する</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="k">Principle 02</div>
+                        <div class="v">ネットワークの露出面を段階的に絞り込む</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="k">Principle 03</div>
+                        <div class="v">管理経路自体も専用の踏み台に限定する</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="k">Principle 04</div>
+                        <div class="v">すべての操作をCloud Audit Logsで追跡可能にする</div>
+                    </div>
+                </div>
+                <p>
+                    この3つはそれぞれ Chapter 1〜3(IAM)、Chapter 4〜5(ネットワーク露出)、Chapter
+                    7(クラスタ隔離)で学んだ内容の応用そのものです。
+                </p>
+            </section>
+
+            <!-- ================= SUMMARY ================= -->
+            <section class="chapter">
+                <div class="chapter-head">
+                    <span class="chapter-num">＋</span>
+                    <h2>ベストプラクティス総まとめ表</h2>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>レイヤー</th>
+                                <th>原則</th>
+                                <th>具体的な実践</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>IAM全般</td>
+                                <td>最小権限の原則</td>
+                                <td>
+                                    基本ロールを避け、事前定義ロール/カスタムロールで必要な権限だけを付与する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>カスタムロール</td>
+                                <td>変更管理の徹底</td>
+                                <td>etagで競合を防ぎ、廃止時はDEPRECATEDで移行猶予を設ける</td>
+                            </tr>
+                            <tr>
+                                <td>サービスアカウント</td>
+                                <td>ID/リソースの分離設計</td>
+                                <td>
+                                    ワークロードごとに専用SAを作り「誰が使えるか」と「何ができるか」を別々に管理する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>VPC Peering</td>
+                                <td>双方向合意の原則</td>
+                                <td>
+                                    両側が明示的に接続を作成した場合のみ有効化される設計を活用し、IP設計を事前に行う
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IAP</td>
+                                <td>ゼロトラスト</td>
+                                <td>
+                                    ネットワーク境界ではなくIDを信頼の基準にし、機密データはJWT署名検証まで行う
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cloud KMS</td>
+                                <td>権限分離</td>
+                                <td>
+                                    鍵の管理者と利用者のロールを分け、侵害時は「取り消し+再暗号化+鍵破棄」をセットで行う
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Private GKE</td>
+                                <td>露出面の最小化</td>
+                                <td>
+                                    ノードのプライベート化、パブリックエンドポイント無効化、承認済みネットワークの<code>/32</code>運用を組み合わせる
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>全体</td>
+                                <td>監査可能性</td>
+                                <td>
+                                    Cloud Audit
+                                    Logsで「誰が・いつ・何を」変更したかを常に追跡できる状態を保つ
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ================= REFERENCES ================= -->
+            <section class="chapter" id="refs">
+                <div class="chapter-head">
+                    <span class="chapter-num">📚</span>
+                    <h2>参考文献 / 公式ドキュメント一覧</h2>
+                </div>
+                <p class="chapter-lead">
+                    各章の内容の根拠となる Google Cloud
+                    公式ドキュメントです(検索により最新性を確認済み)。
+                </p>
+
+                <div class="ref-category">
+                    <h4>IAM基礎・カスタムロール・サービスアカウント</h4>
+                    <div class="ref-grid">
+                        <div class="ref-item">
+                            <span class="rt">IAM overview</span
+                            ><span class="ru">https://cloud.google.com/iam/docs/overview</span>
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Roles and permissions(基本ロール・事前定義ロール)</span
+                            ><span class="ru"
+                                >https://cloud.google.com/iam/docs/roles-overview</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Create and manage custom roles</span
+                            ><span class="ru"
+                                >https://cloud.google.com/iam/docs/creating-custom-roles</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Service accounts overview</span
+                            ><span class="ru"
+                                >https://cloud.google.com/iam/docs/service-account-overview</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Quickstart: Grant an IAM role</span
+                            ><span class="ru"
+                                >https://cloud.google.com/iam/docs/grant-role-console</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Access control for organization resources(etag)</span
+                            ><span class="ru"
+                                >https://cloud.google.com/resource-manager/docs/access-control-org</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">gcloud iam roles リファレンス</span
+                            ><span class="ru"
+                                >https://cloud.google.com/sdk/gcloud/reference/iam/roles</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ref-category">
+                    <h4>VPC Network Peering</h4>
+                    <div class="ref-grid">
+                        <div class="ref-item">
+                            <span class="rt">VPC Network Peering 概要</span
+                            ><span class="ru">https://cloud.google.com/vpc/docs/vpc-peering</span>
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Set up and manage VPC Network Peering</span
+                            ><span class="ru"
+                                >https://cloud.google.com/vpc/docs/using-vpc-peering</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">About peering connections(接続モード・状態)</span
+                            ><span class="ru"
+                                >https://cloud.google.com/vpc/docs/about-peering-connections</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">VPC networks overview</span
+                            ><span class="ru">https://cloud.google.com/vpc/docs/vpc</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ref-category">
+                    <h4>Identity-Aware Proxy (IAP)</h4>
+                    <div class="ref-grid">
+                        <div class="ref-item">
+                            <span class="rt">IAP overview(概念)</span
+                            ><span class="ru"
+                                >https://cloud.google.com/iap/docs/concepts-overview</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">IAP documentation トップ</span
+                            ><span class="ru">https://cloud.google.com/iap/docs</span>
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Using IAP for TCP forwarding</span
+                            ><span class="ru"
+                                >https://cloud.google.com/iap/docs/using-tcp-forwarding</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">IAP Concepts一覧(ベストプラクティス等)</span
+                            ><span class="ru">https://cloud.google.com/iap/docs/concepts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ref-category">
+                    <h4>Cloud KMS</h4>
+                    <div class="ref-grid">
+                        <div class="ref-item">
+                            <span class="rt">Cloud Key Management Service overview</span
+                            ><span class="ru"
+                                >https://cloud.google.com/kms/docs/key-management-service</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Cloud KMS resources(KeyRing/CryptoKeyの構造)</span
+                            ><span class="ru"
+                                >https://cloud.google.com/kms/docs/resource-hierarchy</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Cloud KMS FAQ(削除不可・ローテーション挙動)</span
+                            ><span class="ru">https://cloud.google.com/kms/docs/faq</span>
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Cloud KMS documentation トップ</span
+                            ><span class="ru">https://cloud.google.com/kms/docs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ref-category">
+                    <h4>Private GKE クラスタ</h4>
+                    <div class="ref-grid">
+                        <div class="ref-item">
+                            <span class="rt">Best practices for GKE networking</span
+                            ><span class="ru"
+                                >https://cloud.google.com/kubernetes-engine/docs/best-practices/networking</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt"
+                                >About network isolation in GKE(承認済みネットワーク)</span
+                            ><span class="ru"
+                                >https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt"
+                                >Best practices for hardening your cluster's security</span
+                            ><span class="ru"
+                                >https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">GKE security overview</span
+                            ><span class="ru"
+                                >https://cloud.google.com/kubernetes-engine/docs/concepts/security-overview</span
+                            >
+                        </div>
+                        <div class="ref-item">
+                            <span class="rt">Protecting cluster metadata(最小権限ノードSA)</span
+                            ><span class="ru"
+                                >https://cloud.google.com/kubernetes-engine/docs/how-to/protecting-cluster-metadata</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert">
+                    📝 <b>このガイドの使い方</b>:
+                    各Chapterは独立して読めるように書いていますが、Chapter
+                    8(総合演習)で全体がどうつながるかを体感すると、点在していた知識が線になります。実際に自分のプロジェクトで手を動かしながら、各章の「✅
+                    推奨」列をチェックリストとして使ってみてください。
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            GOOGLE CLOUD SECURITY FUNDAMENTALS GUIDE — GENERATED FOR HANDS-ON LEARNING · MERMAID
+            DIAGRAMS RENDERED CLIENT-SIDE
+        </footer>
+
+        <script>
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                securityLevel: 'loose',
+                fontFamily: 'IBM Plex Sans JP, Space Mono, sans-serif',
+                themeVariables: {
+                    background: '#0f172a',
+                    primaryColor: '#0f2536',
+                    primaryTextColor: '#e2e8f0',
+                    primaryBorderColor: '#22d3ee',
+                    lineColor: '#64748b',
+                    secondaryColor: '#1e1b3a',
+                    tertiaryColor: '#0b1220',
+                    edgeLabelBackground: '#0b1220',
+                    clusterBkg: '#0b1220',
+                    clusterBorder: '#a78bfa',
+                    fontSize: '14px',
+                    actorBkg: '#0f2536',
+                    actorBorder: '#22d3ee',
+                    actorTextColor: '#e2e8f0',
+                    signalColor: '#94a3b8',
+                    signalTextColor: '#e2e8f0',
+                    noteBkgColor: '#1e1b3a',
+                    noteTextColor: '#e2e8f0',
+                    noteBorderColor: '#a78bfa',
+                },
+            });
+
+            // Scroll reveal for chapters
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('visible');
+                            observer.unobserve(e.target);
+                        }
+                    });
+                },
+                { threshold: 0.08 },
+            );
+            document.querySelectorAll('section.chapter').forEach((el) => observer.observe(el));
+        </script>
+    </body>
+</html>
