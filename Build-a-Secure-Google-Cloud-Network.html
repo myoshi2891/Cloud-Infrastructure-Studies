@@ -971,11 +971,11 @@ flowchart TB
 
         <h3>6-3. 必須のファイアウォールルール 2 つ</h3>
         <div class="code is-good">
-          <div class="code__bar">1 — ユーザーからの HTTP を許可</div>
+          <div class="code__bar">1 — ロードバランサからの HTTP を許可</div>
           <pre>gcloud compute firewall-rules create default-allow-http \
   <span class="fl">--network</span>=default <span class="fl">--action</span>=allow <span class="fl">--direction</span>=ingress \
   <span class="fl">--rules</span>=tcp:80 \
-  <span class="fl">--source-ranges</span>=0.0.0.0/0 \
+  <span class="fl">--source-ranges</span>=35.191.0.0/16,130.211.0.0/22 \
   <span class="fl">--target-tags</span>=http-server</pre>
         </div>
         <div class="code is-good">
@@ -988,7 +988,7 @@ flowchart TB
         </div>
         <div class="callout callout--warn">
           <span class="callout__k">超重要 · ヘルスチェックの IP 範囲</span>
-          <p>ヘルスチェックのプローブは <code>130.211.0.0/22</code> と <code>35.191.0.0/16</code> から来ます。この 2 範囲を許可しないとバックエンドが <strong>unhealthy</strong> と判定され、<strong>トラフィックが一切流れません</strong>。LB トラブルの大半はこの設定漏れが原因です。</p>
+          <p>ヘルスチェックのプローブは <code>130.211.0.0/22</code> と <code>35.191.0.0/16</code> から来ます。この 2 範囲を許可しないとバックエンドが <strong>unhealthy</strong> と判定され、<strong>トラフィックが一切流れません</strong>。LB トラブルの大半はこの設定漏れが原因です。プロキシ型の Application Load Balancer ではバックエンドが受け取るのはユーザー IP ではなく Google の上記フロントエンド範囲からのトラフィックなので、<code>0.0.0.0/0</code> の全開放は不要です。<strong>リージョン外部 ALB</strong> の場合はこれに加えて<strong>プロキシ専用サブネット</strong>の範囲も許可してください。</p>
         </div>
 
         <h3>6-4. 負荷分散モード</h3>
@@ -1352,15 +1352,23 @@ flowchart LR
   const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
   const sections = [...document.querySelectorAll("main section[id]")];
 
+  const visible = new Set();
   const spy = new IntersectionObserver(
     (entries) => {
+      // まず可視状態のセクション集合を更新する（エントリ順に依存させない）
       entries.forEach((e) => {
-        if (e.isIntersecting) {
-          links.forEach((l) => l.classList.remove("is-active"));
-          const active = map.get(e.target.id);
-          if (active) active.classList.add("is-active");
-        }
+        if (e.isIntersecting) visible.add(e.target.id);
+        else visible.delete(e.target.id);
       });
+      // ドキュメント順で最初に可視なセクションを唯一のアクティブとして採用する
+      const activeId = sections
+        .map((s) => s.id)
+        .find((id) => visible.has(id));
+      if (!activeId) return;
+      // 選定後に一度だけクラスを付け替える（境界付近のちらつき防止）
+      links.forEach((l) => l.classList.remove("is-active"));
+      const active = map.get(activeId);
+      if (active) active.classList.add("is-active");
     },
     { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
   );
