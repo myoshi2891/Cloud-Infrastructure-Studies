@@ -110,6 +110,11 @@ export const EXAMS: Exam[] = [
                 href: '/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network',
                 pct: '実践',
             },
+            {
+                label: 'アプリ開発環境構築ガイド',
+                href: '/gcl/associate-cloud-engineer/set-up-an-app-dev-environment-on-google-cloud',
+                pct: '実践',
+            },
         ],
         badge: '実践向け',
         icon: '⚙️',
