@@ -6,7 +6,7 @@
 | 対象コース | Set Up an App Dev Environment on Google Cloud（Google Skills / course_templates/637） |
 | 対象読者 | Google Cloud 初学者〜ジュニアクラウドエンジニア |
 | 想定学習時間 | 約1時間15分（コース本編）＋ Challenge Lab 1時間 |
-| 扱う技術要素 | Cloud Storage / Identity and Access Management（IAM）/ Cloud Functions（Cloud Run functions）/ Pub/Sub |
+| 扱う技術要素 | Cloud Storage / Identity and Access Management（IAM）/ Cloud Functions（Cloud Run functions）/ Pub/Sub (※Cloud Monitoring は対象外) |
 | 最終更新 | 2026-07-01 |
 
 ---
@@ -17,7 +17,7 @@
 2. [コース全体像とラーニングパス](#2-コース全体像とラーニングパス)
 3. [Cloud Storage — オブジェクトストレージの基礎](#3-cloud-storage--オブジェクトストレージの基礎)
 4. [Cloud IAM — アクセス制御の基礎](#4-cloud-iam--アクセス制御の基礎)
-5. [Cloud Functions（Cloud Run functions）— イベント駆動サーバーレス](#5-cloud-functionscloud-run-functions--イベント駆動サーバーレス)
+5. [Cloud Functions（Cloud Run functions）— イベント駆動サーバーレス](#5-cloud-functions-cloud-run-functions--イベント駆動サーバーレス)
 6. [Pub/Sub — 非同期メッセージング](#6-pubsub--非同期メッセージング)
 7. [総合演習：Challenge Lab（GSP315）徹底解説](#7-総合演習challenge-labgsp315徹底解説)
 8. [サービス横断ベストプラクティス早見表](#8-サービス横断ベストプラクティス早見表)
@@ -350,7 +350,7 @@ flowchart LR
 
 ### 6.3 具体例
 
-Challenge Lab のシナリオでは、サムネイル生成が完了したことを知らせるためのトピックを用意し、Cloud Function がそこにメッセージを発行します。この時点ではサブスクリプションを作らず「送信先の箱」だけを用意するのがポイントです（後続の消費者が必要になった時点でサブスクリプションを追加できます）。
+Challenge Lab のシナリオでは、サムネイル生成が完了したことを知らせるためのトピックを用意し、Cloud Function がそこにメッセージを発行します。この時点ではサブスクリプションを作らず「送信先の箱」だけを用意するのがポイントです。ただし、メッセージ保持（Message Retention）機能が有効化されていない限り、サブスクリプション作成前にトピックへ送信されたメッセージは破棄されます。後続の消費者へメッセージを確実に届けるためには、Publish が開始される前にサブスクリプションを作成しておくか、トピック側でメッセージ保持を有効にする必要がある点に注意してください。
 
 ### 6.4 コード例（gcloud CLI）
 
