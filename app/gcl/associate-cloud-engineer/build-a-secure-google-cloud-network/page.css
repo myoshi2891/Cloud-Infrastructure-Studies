@@ -698,3 +698,76 @@
     background: var(--cyan);
   }
 }
+
+/* ---------- Glossary (用語解説ボックス) ---------- */
+.secure-network-page .glossary {
+  margin-top: 2.8rem;
+  padding: 1.4rem 1.6rem 1.6rem;
+  background: linear-gradient(135deg, rgba(86,207,225,0.06) 0%, rgba(76,201,240,0.04) 100%);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--cyan);
+  border-radius: var(--r);
+  position: relative;
+  overflow: hidden;
+}
+
+.secure-network-page .glossary::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle at top right, rgba(86,207,225,0.10), transparent 60%);
+  pointer-events: none;
+}
+
+.secure-network-page .glossary__title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin: 0 0 1.1rem;
+}
+
+.secure-network-page .glossary__title::before {
+  content: '📖';
+  font-size: 0.9rem;
+}
+
+.secure-network-page .glossary__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.8rem;
+}
+
+.secure-network-page .glossary__item {
+  padding: 0.75rem 1rem;
+  background: rgba(11, 24, 48, 0.55);
+  border: 1px solid rgba(86,207,225,0.12);
+  border-radius: calc(var(--r) - 4px);
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.secure-network-page .glossary__item:hover {
+  border-color: rgba(86,207,225,0.35);
+  background: rgba(86,207,225,0.06);
+}
+
+.secure-network-page .glossary__term {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cyan-deep);
+  margin-bottom: 0.25rem;
+}
+
+.secure-network-page .glossary__def {
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
