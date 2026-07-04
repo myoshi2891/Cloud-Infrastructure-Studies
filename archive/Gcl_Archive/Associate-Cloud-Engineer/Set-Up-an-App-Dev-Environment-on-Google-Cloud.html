@@ -389,6 +389,7 @@
 
         <div class="diagram">
           <p class="diagram__cap">Fig 2.1 — 学習パイプラインの全体像</p>
+          <!-- htmlhint spec-char-escape:false -->
           <pre class="mermaid">
 flowchart LR
     A["① Cloud Storage<br/>バケット作成・オブジェクト操作"] --> B["② Cloud IAM<br/>権限の確認・付与・削除"]
@@ -401,6 +402,7 @@ flowchart LR
     style D fill:#FBBC05,color:#000,stroke:#FBBC05
     style E fill:#673AB7,color:#fff,stroke:#673AB7
           </pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
 
         <h3><span class="mk">2.1</span>なぜこの順番で学ぶのか</h3>
@@ -449,6 +451,7 @@ flowchart LR
         <h3><span class="mk">3.3</span>具体例（コンソールでの操作フロー）</h3>
         <div class="diagram">
           <p class="diagram__cap">Fig 3.1 — バケット作成〜アップロードの流れ</p>
+          <!-- htmlhint spec-char-escape:false -->
           <pre class="mermaid">
 sequenceDiagram
     participant U as 利用者
@@ -460,6 +463,7 @@ sequenceDiagram
     U->>S: オブジェクト（画像など）をアップロード
     S-->>U: オブジェクトURLを返却
           </pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
         <p>バケット名は<strong>グローバルネームスペースで一意</strong>である必要がありますが、オブジェクト名はバケット内でのみ一意であれば構いません。</p>
 
@@ -523,6 +527,7 @@ gcloud storage ls gs://${BUCKET_NAME}/</code></pre>
         </p>
         <div class="diagram">
           <p class="diagram__cap">Fig 4.1 — Principal / Role / Permission / Resource の関係</p>
+          <!-- htmlhint spec-char-escape:false -->
           <pre class="mermaid">
 flowchart LR
     P["Principal<br/>ユーザー / SA / グループ"] -->|付与される| R["Role<br/>ロール"]
@@ -533,6 +538,7 @@ flowchart LR
     style Perm fill:#34A853,color:#fff,stroke:#34A853
     style Res fill:#EA4335,color:#fff,stroke:#EA4335
           </pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
 
         <h3><span class="mk">4.2</span>なぜ使うか</h3>
@@ -546,6 +552,7 @@ flowchart LR
         <p>このコースでは、プロジェクトに参加している「前任のクラウドエンジニア」のアクセス権を確認し、不要になった時点で削除する、実務でも頻出のシナリオを扱います。</p>
         <div class="diagram">
           <p class="diagram__cap">Fig 4.2 — 前任エンジニアのアクセス権を取り消す</p>
+          <!-- htmlhint spec-char-escape:false -->
           <pre class="mermaid">
 sequenceDiagram
     participant Owner as あなた(Owner)
@@ -556,6 +563,7 @@ sequenceDiagram
     Owner->>IAM: 前任エンジニアの roles/viewer を削除
     IAM-->>Prev: アクセス権が失効
           </pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
 
         <h3><span class="mk">4.4</span>コード例（gcloud CLI）</h3>
@@ -609,6 +617,7 @@ gcloud storage buckets add-iam-policy-binding gs://${BUCKET_NAME} \
         </p>
         <div class="diagram">
           <p class="diagram__cap">Fig 5.1 — アップロードをトリガーにしたイベント処理パイプライン</p>
+          <!-- htmlhint spec-char-escape:false -->
           <pre class="mermaid">
 flowchart LR
     S["Cloud Storage<br/>ファイルアップロード"] -->|finalized イベント| EA["Eventarc<br/>トリガー"]
@@ -620,6 +629,7 @@ flowchart LR
     style CF fill:#34A853,color:#fff,stroke:#34A853
     style PS fill:#EA4335,color:#fff,stroke:#EA4335
           </pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
 
         <h3><span class="mk">5.2</span>なぜ使うか</h3>
@@ -721,6 +731,7 @@ gcloud functions deploy generateThumbnail \
         </p>
         <div class="diagram">
           <p class="diagram__cap">Fig 6.1 — 1トピックから複数の Subscriber へのファンアウト</p>
+          <!-- htmlhint spec-char-escape:false -->
           <pre class="mermaid">
 flowchart LR
     Pub["Publisher<br/>Cloud Function など"] -->|publish| T["Topic"]
@@ -733,6 +744,7 @@ flowchart LR
     style Sub1 fill:#34A853,color:#fff,stroke:#34A853
     style Sub2 fill:#34A853,color:#fff,stroke:#34A853
           </pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
 
         <h3><span class="mk">6.2</span>なぜ使うか</h3>
@@ -799,6 +811,7 @@ gcloud pubsub subscriptions pull ${TOPIC_NAME}-sub --auto-ack --limit=5</code></
         <h3><span class="mk">7.2</span>統合アーキテクチャ図</h3>
         <div class="diagram">
           <p class="diagram__cap">Fig 7.1 — GSP315 の統合アーキテクチャ</p>
+          <!-- htmlhint spec-char-escape:false -->
           <pre class="mermaid">
 flowchart TD
     subgraph T1["Task 1: Storage"]
@@ -823,6 +836,7 @@ flowchart TD
     style F fill:#34A853,color:#fff,stroke:#34A853
     style I fill:#FBBC05,color:#000,stroke:#FBBC05
           </pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
 
         <h3><span class="mk">7.3</span>タスク一覧</h3>
@@ -994,41 +1008,6 @@ flowchart TD
 
 <!-- ===================== Scripts ===================== -->
 <script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: "base",
-    securityLevel: "loose",
-    flowchart: { htmlLabels: true, curve: "basis", padding: 14 },
-    sequence: { useMaxWidth: true, mirrorActors: false },
-    themeVariables: {
-      fontFamily: '"Noto Sans JP", "Outfit", sans-serif',
-      fontSize: "14px",
-      background: "#120e19",
-      primaryColor: "#241c33",
-      primaryTextColor: "#ece7f5",
-      primaryBorderColor: "#a97bff",
-      secondaryColor: "#2a2140",
-      tertiaryColor: "#1d1729",
-      lineColor: "#a97bff",
-      mainBkg: "#241c33",
-      nodeBorder: "#a97bff",
-      clusterBkg: "rgba(169,123,255,0.06)",
-      clusterBorder: "#4a3a6b",
-      titleColor: "#f5c451",
-      edgeLabelBackground: "#120e19",
-      actorBkg: "#241c33",
-      actorBorder: "#a97bff",
-      actorTextColor: "#ece7f5",
-      signalColor: "#a97bff",
-      signalTextColor: "#cbbfe4",
-      noteBkgColor: "rgba(245,196,81,0.12)",
-      noteBorderColor: "#f5c451",
-      noteTextColor: "#f3dfa0"
-    }
-  });
-
   /* ---- Scroll spy for TOC (document-order single active) ---- */
   const links = [...document.querySelectorAll(".toc a")];
   const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
@@ -1050,6 +1029,47 @@ flowchart TD
     { rootMargin: "-20% 0px -70% 0px", threshold: 0 }
   );
   sections.forEach((s) => spy.observe(s));
+
+  // Dynamic import for Mermaid to prevent CDN failure from blocking the scroll-spy logic
+  import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs")
+    .then((module) => {
+      const mermaid = module.default;
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: "base",
+        securityLevel: "loose",
+        flowchart: { htmlLabels: true, curve: "basis", padding: 14 },
+        sequence: { useMaxWidth: true, mirrorActors: false },
+        themeVariables: {
+          fontFamily: '"Noto Sans JP", "Outfit", sans-serif',
+          fontSize: "14px",
+          background: "#120e19",
+          primaryColor: "#241c33",
+          primaryTextColor: "#ece7f5",
+          primaryBorderColor: "#a97bff",
+          secondaryColor: "#2a2140",
+          tertiaryColor: "#1d1729",
+          lineColor: "#a97bff",
+          mainBkg: "#241c33",
+          nodeBorder: "#a97bff",
+          clusterBkg: "rgba(169,123,255,0.06)",
+          clusterBorder: "#4a3a6b",
+          titleColor: "#f5c451",
+          edgeLabelBackground: "#120e19",
+          actorBkg: "#241c33",
+          actorBorder: "#a97bff",
+          actorTextColor: "#ece7f5",
+          signalColor: "#a97bff",
+          signalTextColor: "#cbbfe4",
+          noteBkgColor: "rgba(245,196,81,0.12)",
+          noteBorderColor: "#f5c451",
+          noteTextColor: "#f3dfa0"
+        }
+      });
+    })
+    .catch((err) => {
+      console.error("Failed to load Mermaid from CDN:", err);
+    });
 </script>
 
 </body>
