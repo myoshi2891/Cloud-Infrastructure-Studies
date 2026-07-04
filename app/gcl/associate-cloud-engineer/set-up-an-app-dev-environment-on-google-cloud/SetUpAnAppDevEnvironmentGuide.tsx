@@ -177,7 +177,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                             <div className="code">
                                 <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">bash</span></div>
                                 <pre dangerouslySetInnerHTML={{ __html: `<code><span class="cm"># 環境変数の準備</span>
-<span class="kw">export</span> PROJECT_ID=\$(gcloud config get-value project)
+<span class="kw">export</span> PROJECT_ID=$(gcloud config get-value project)
 <span class="kw">export</span> BUCKET_NAME="\${PROJECT_ID}-photos"
 <span class="kw">export</span> REGION="asia-northeast1"
 
@@ -357,14 +357,14 @@ gcloud storage buckets add-iam-policy-binding gs://\${BUCKET_NAME} \\
                                     <div className="code-line">  <span className="kw">const</span> event = cloudEvent.data;</div>
                                     <div className="code-line">  <span className="kw">const</span> {"{ bucket: bucketName, name: fileName }"} = event;</div>
                                     <div className="code-line">&nbsp;</div>
-                                    <div className="code-line">  <span className="cm">// 冪等性の確保：既にサムネイルなら再処理しない。拡張子なしのサムネイル名（例：xxx_thumb）も含む</span></div>
-                                    <div className="code-line">  <span className="kw">if</span> (fileName.includes(<span className="st">'_thumb'</span>) || fileName.endsWith(<span className="st">'_thumb'</span>)) {"{"}</div>
+                                    <div className="code-line">  <span className="cm">{"// 冪等性の確保：既にサムネイルなら再処理しない。拡張子なしのサムネイル名（例：xxx_thumb）も含む"}</span></div>
+                                    <div className="code-line">  <span className="kw">if</span> (fileName.includes(<span className="st">{"'_thumb'"}</span>) || fileName.endsWith(<span className="st">{"'_thumb'"}</span>)) {"{"}</div>
                                     <div className="code-line">    console.log(<span className="st">{`\`Skip: \${fileName} is already a thumbnail\``}</span>);</div>
                                     <div className="code-line">    <span className="kw">return</span>;</div>
                                     <div className="code-line">  {"}"}</div>
                                     <div className="code-line">&nbsp;</div>
                                     <div className="code-line">  <span className="kw">const</span> bucket = storage.bucket(bucketName);</div>
-                                    <div className="code-line">  <span className="kw">const</span> dotIndex = fileName.lastIndexOf(<span className="st">'.'</span>);</div>
+                                    <div className="code-line">  <span className="kw">const</span> dotIndex = fileName.lastIndexOf(<span className="st">{"'.'"}</span>);</div>
                                     <div className="code-line">  <span className="kw">const</span> {"thumbName = dotIndex !== -1 ? `${fileName.slice(0, dotIndex)}_thumb${fileName.slice(dotIndex)}` : `${fileName}_thumb`;"}</div>
                                     <div className="code-line">&nbsp;</div>
                                     <div className="code-line">  <span className="kw">await</span> pipeline(</div>
