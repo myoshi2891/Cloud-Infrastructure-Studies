@@ -92,7 +92,7 @@ app/
         AceSection3Guide.tsx        # 本文＋インタラクション（client。進捗バー/scroll spy/チェックリスト）
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（10図）
-        page.css                    # ページ固有スタイル（token 整合）
+        page.module.css             # ページ固有スタイル（token 整合）
       cloud-load-balancing-guide/
         page.tsx                    # Cloud Load Balancing 完全入門（Server。メタデータ定義）
         CloudLoadBalancingGuide.tsx # 本文＋インタラクション（client。進捗バー/scroll spy/コピー機能）
@@ -104,19 +104,19 @@ app/
         DevelopYourGcpNetworkGuide.tsx # 本文＋インタラクション（client。チェックリスト等）
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（14図）
-        page.css                    # ページ固有スタイル
+        page.module.css             # ページ固有スタイル
       build-a-secure-google-cloud-network/
         page.tsx                    # 安全なGoogle Cloudネットワーク構築（Server。メタデータ定義）
         BuildASecureGoogleCloudNetworkGuide.tsx # 本文＋インタラクション（client。アニメーション、Mermaid等）
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（11図）
-        page.css                    # ページ固有スタイル
+        page.module.css             # ページ固有スタイル
       set-up-an-app-dev-environment-on-google-cloud/
         page.tsx                    # アプリ開発環境構築ガイド（Server。メタデータ定義）
         SetUpAnAppDevEnvironmentGuide.tsx # 本文＋インタラクション（client。Mermaid等）
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（7図）
-        page.css                    # ページ固有スタイル
+        page.module.css             # ページ固有スタイル
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装
