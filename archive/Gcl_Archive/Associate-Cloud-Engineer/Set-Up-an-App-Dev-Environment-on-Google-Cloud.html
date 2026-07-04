@@ -651,9 +651,11 @@ flowchart LR
         <p>Cloud Storage への画像アップロードをトリガーにサムネイルを生成し、完了を Pub/Sub に通知する処理の概念的な骨組みです。</p>
         <div class="code">
           <div class="code__bar"><i></i><i></i><i></i><span class="code__lang">javascript</span></div>
+          <!-- htmlhint spec-char-escape:false -->
           <pre><code><span class="kw">const</span> functions = <span class="kw">require</span>(<span class="st">'@google-cloud/functions-framework'</span>);
 <span class="kw">const</span> { Storage } = <span class="kw">require</span>(<span class="st">'@google-cloud/storage'</span>);
 <span class="kw">const</span> { PubSub } = <span class="kw">require</span>(<span class="st">'@google-cloud/pubsub'</span>);
+<span class="kw">const</span> { pipeline } = <span class="kw">require</span>(<span class="st">'stream/promises'</span>);
 <span class="kw">const</span> sharp = <span class="kw">require</span>(<span class="st">'sharp'</span>);
 
 <span class="kw">const</span> storage = <span class="kw">new</span> Storage();
@@ -663,24 +665,27 @@ functions.cloudEvent(<span class="st">'generateThumbnail'</span>, <span class="k
   <span class="kw">const</span> event = cloudEvent.data;
   <span class="kw">const</span> { bucket: bucketName, name: fileName } = event;
 
-  <span class="cm">// 冪等性の確保：既にサムネイルなら再処理しない</span>
-  <span class="kw">if</span> (fileName.includes(<span class="st">'_thumb'</span>)) {
+  <span class="cm">// 冪等性の確保：既にサムネイルなら再処理しない。拡張子なしのサムネイル名（例：xxx_thumb）も含む</span>
+  <span class="kw">if</span> (fileName.includes(<span class="st">'_thumb'</span>) || fileName.endsWith(<span class="st">'_thumb'</span>)) {
     console.log(<span class="st">`Skip: ${fileName} is already a thumbnail`</span>);
     <span class="kw">return</span>;
   }
 
   <span class="kw">const</span> bucket = storage.bucket(bucketName);
-  <span class="kw">const</span> thumbName = fileName.replace(/(\.[^.]+)$/, <span class="st">'_thumb$1'</span>);
+  <span class="kw">const</span> dotIndex = fileName.lastIndexOf(<span class="st">'.'</span>);
+  <span class="kw">const</span> thumbName = dotIndex !== -1 ? <span class="st">`${fileName.slice(0, dotIndex)}_thumb${fileName.slice(dotIndex)}`</span> : <span class="st">`${fileName}_thumb`</span>;
 
-  <span class="kw">await</span> bucket.file(fileName)
-    .createReadStream()
-    .pipe(sharp().resize(<span class="vr">64</span>, <span class="vr">64</span>))
-    .pipe(bucket.file(thumbName).createWriteStream());
+  <span class="kw">await</span> pipeline(
+    bucket.file(fileName).createReadStream(),
+    sharp().resize(<span class="vr">64</span>, <span class="vr">64</span>),
+    bucket.file(thumbName).createWriteStream()
+  );
 
   <span class="kw">await</span> pubsub.topic(process.env.TOPIC_NAME).publishMessage({
     data: Buffer.from(JSON.stringify({ thumbnail: thumbName })),
   });
 });</code></pre>
+          <!-- htmlhint spec-char-escape:true -->
         </div>
         <div class="code">
           <div class="code__bar"><i></i><i></i><i></i><span class="code__lang">bash — deploy</span></div>
