@@ -1,7 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import Page from '@/app/gcl/associate-cloud-engineer/set-up-an-app-dev-environment-on-google-cloud/page';
 import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/set-up-an-app-dev-environment-on-google-cloud/constants';
+
+// MermaidDiagram コンポーネントをモック化
+vi.mock('@/components/MermaidDiagram', () => ({
+    MermaidDiagram: function DummyMermaidDiagram({ chart }: { chart: string }) {
+        return <pre data-testid="mermaid">{chart}</pre>;
+    },
+}));
 
 describe('Set Up an App Dev Environment on Google Cloud ページ', () => {
     let container: HTMLElement;
