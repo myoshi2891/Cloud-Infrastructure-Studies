@@ -343,36 +343,41 @@ gcloud storage buckets add-iam-policy-binding gs://\${BUCKET_NAME} \\
                             <p>Cloud Storage への画像アップロードをトリガーにサムネイルを生成し、完了を Pub/Sub に通知する処理の概念的な骨組みです。</p>
                             <div className="code">
                                 <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">javascript</span></div>
-                                <pre dangerouslySetInnerHTML={{ __html: `<code><span class="kw">const</span> functions = <span class="kw">require</span>('@google-cloud/functions-framework');
-<span class="kw">const</span> { Storage } = <span class="kw">require</span>('@google-cloud/storage');
-<span class="kw">const</span> { PubSub } = <span class="kw">require</span>('@google-cloud/pubsub');
-<span class="kw">const</span> sharp = <span class="kw">require</span>('sharp');
-
-<span class="kw">const</span> storage = <span class="kw">new</span> Storage();
-<span class="kw">const</span> pubsub = <span class="kw">new</span> PubSub();
-
-functions.cloudEvent('generateThumbnail', <span class="kw">async</span> (cloudEvent) => {
-  <span class="kw">const</span> event = cloudEvent.data;
-  <span class="kw">const</span> { bucket: bucketName, name: fileName } = event;
-
-  <span class="cm">// 冪等性の確保：既にサムネイルなら再処理しない</span>
-  <span class="kw">if</span> (fileName.includes('_thumb')) {
-    console.log(\`Skip: \${fileName} is already a thumbnail\`);
-    <span class="kw">return</span>;
-  }
-
-  <span class="kw">const</span> bucket = storage.bucket(bucketName);
-  <span class="kw">const</span> thumbName = fileName.replace(/(\\.[^.]+)\$/, '_thumb$1');
-
-  <span class="kw">await</span> bucket.file(fileName)
-    .createReadStream()
-    .pipe(sharp().resize(<span class="vr">64</span>, <span class="vr">64</span>))
-    .pipe(bucket.file(thumbName).createWriteStream());
-
-  <span class="kw">await</span> pubsub.topic(process.env.TOPIC_NAME).publishMessage({
-    data: Buffer.from(JSON.stringify({ thumbnail: thumbName })),
-  });
-});</code>` }} />
+                                <pre>
+                                    <div className="code-line"><span className="kw">const</span> functions = <span className="kw">require</span>(<span className="st">{'@google-cloud/functions-framework'}</span>);</div>
+                                    <div className="code-line"><span className="kw">const</span> {"{ Storage }"} = <span className="kw">require</span>(<span className="st">{'@google-cloud/storage'}</span>);</div>
+                                    <div className="code-line"><span className="kw">const</span> {"{ PubSub }"} = <span className="kw">require</span>(<span className="st">{'@google-cloud/pubsub'}</span>);</div>
+                                    <div className="code-line"><span className="kw">const</span> {"{ pipeline }"} = <span className="kw">require</span>(<span class="st">{'stream/promises'}</span>);</div>
+                                    <div className="code-line"><span className="kw">const</span> sharp = <span class="kw">require</span>(<span class="st">{'sharp'}</span>);</div>
+                                    <div className="code-line">&nbsp;</div>
+                                    <div className="code-line"><span className="kw">const</span> storage = <span class="kw">new</span> Storage();</div>
+                                    <div className="code-line"><span className="kw">const</span> pubsub = <span class="kw">new</span> PubSub();</div>
+                                    <div className="code-line">&nbsp;</div>
+                                    <div className="code-line">functions.cloudEvent(<span className="st">{'generateThumbnail'}</span>, <span class="kw">async</span> (cloudEvent) =&gt; {"{"}</div>
+                                    <div className="code-line">  <span class="kw">const</span> event = cloudEvent.data;</div>
+                                    <div className="code-line">  <span class="kw">const</span> {"{ bucket: bucketName, name: fileName }"} = event;</div>
+                                    <div className="code-line">&nbsp;</div>
+                                    <div className="code-line">  <span className="cm">// 冪等性の確保：既にサムネイルなら再処理しない。拡張子なしのサムネイル名（例：xxx_thumb）も含む</span></div>
+                                    <div className="code-line">  <span className="kw">if</span> (fileName.includes(<span className="st">'_thumb'</span>) || fileName.endsWith(<span class="st">'_thumb'</span>)) {"{"}</div>
+                                    <div className="code-line">    console.log(<span class="st">{`\`Skip: \${fileName} is already a thumbnail\``}</span>);</div>
+                                    <div className="code-line">    <span class="kw">return</span>;</div>
+                                    <div className="code-line">  {"}"}</div>
+                                    <div className="code-line">&nbsp;</div>
+                                    <div className="code-line">  <span class="kw">const</span> bucket = storage.bucket(bucketName);</div>
+                                    <div className="code-line">  <span class="kw">const</span> dotIndex = fileName.lastIndexOf(<span class="st">'.'</span>);</div>
+                                    <div className="code-line">  <span class="kw">const</span> {"thumbName = dotIndex !== -1 ? `${fileName.slice(0, dotIndex)}_thumb${fileName.slice(dotIndex)}` : `${fileName}_thumb`;"}</div>
+                                    <div className="code-line">&nbsp;</div>
+                                    <div className="code-line">  <span class="kw">await</span> pipeline(</div>
+                                    <div className="code-line">    bucket.file(fileName).createReadStream(),</div>
+                                    <div className="code-line">    sharp().resize(<span class="vr">64</span>, <span class="vr">64</span>),</div>
+                                    <div className="code-line">    bucket.file(thumbName).createWriteStream()</div>
+                                    <div className="code-line">  );</div>
+                                    <div className="code-line">&nbsp;</div>
+                                    <div className="code-line">  <span class="kw">await</span> {"pubsub.topic(process.env.TOPIC_NAME).publishMessage({"}</div>
+                                    <div className="code-line">    {"data: Buffer.from(JSON.stringify({ thumbnail: thumbName })),"}</div>
+                                    <div className="code-line">  {"});"}</div>
+                                    <div className="code-line">{"}"});</div>
+                                </pre>
                             </div>
                             <div className="code">
                                 <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">bash — deploy</span></div>
