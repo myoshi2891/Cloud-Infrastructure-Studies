@@ -1,5 +1,5 @@
 # Google Cloud セキュリティ基礎 完全ガイド
-### IAM / カスタムロール / サービスアカウント / VPC Peering / IAP / Cloud KMS / Private GKE
+## IAM / カスタムロール / サービスアカウント / VPC Peering / IAP / Cloud KMS / Private GKE
 
 > **対象読者**: Google Cloud を触り始めたばかりのエンジニア、Skill Boost のラボを一通りこなしたが「なぜそうするのか」を体系的に理解したい方
 > **前提知識**: Google Cloud コンソールの基本操作、`gcloud` コマンドの雛形が読める程度
@@ -25,9 +25,9 @@
 
 ## 0. この教材の全体像
 
-このガイドは、Google Cloud の「Implement Cloud Security Fundamentals」系スキルバッジで扱う7つのハンズオンラボ(IAM基礎/IAMカスタムロール/サービスアカウント/VPCピアリング/IAP/Cloud KMS/Private GKE/総合チャレンジラボ)を、単なる手順書ではなく **「なぜその設定が必要なのか」** という観点で再構成したものです。
+このガイドは、Google Cloud の「Implement Cloud Security Fundamentals」系スキルバッジで扱う8つのハンズオンラボ(IAM基礎/IAMカスタムロール/サービスアカウント/VPCピアリング/IAP/Cloud KMS/Private GKE/総合チャレンジラボ)を、単なる手順書ではなく **「なぜその設定が必要なのか」** という観点で再構成したものです。
 
-全体を貫く思想はただ一つ、**最小権限の原則(Principle of Least Privilege)** です。各章はこの原則を異なるレイヤー(誰が/何に対して/どの経路で)に適用したものだと考えると、バラバラに見える7つのラボが1本の線でつながります。
+全体を貫く思想はただ一つ、**最小権限の原則(Principle of Least Privilege)** です。各章はこの原則を異なるレイヤー(誰が/何に対して/どの経路で)に適用したものだと考えると、バラバラに見える8つのラボが1本の線でつながります。
 
 ```mermaid
 flowchart TB
@@ -145,7 +145,7 @@ sequenceDiagram
 
 Cloud IAMの権限はすべて `<サービス>.<リソース>.<動詞>` という統一フォーマットに従います。
 
-```
+```text
 compute.instances.list   → Compute Engine の instances リソースを一覧表示できる
 compute.instances.stop   → Compute Engine の instances リソースを停止できる
 storage.buckets.get      → Cloud Storage の bucket 情報を取得できる
@@ -303,8 +303,13 @@ flowchart TB
 
 1. `bigquery-qwiklab` という名前でサービスアカウントを作成
 2. `BigQuery Data Viewer` と `BigQuery User` のロールを付与(BigQueryを使うのに必要十分な権限だけ)
-3. Compute Engineインスタンス作成時、このサービスアカウントを **Access Scope として明示的に紐付ける**
+3. Compute Engineインスタンス作成時、このサービスアカウントをVMにアタッチ（接続）し、アクセススコープ（Access Scope）を個別に設定する（アクセス制御をIAMに一任するため「すべてのCloud APIへのフルアクセスを許可」に設定することを推奨）
 4. VM内のPythonコードは `compute_engine.Credentials(service_account_email=...)` で認証情報を取得し、ユーザーの介在なしにBigQueryへクエリを実行する
+
+> 💡 **サービスアカウントのアタッチとアクセススコープの分離**
+> サービスアカウントを VM に紐付ける（アタッチする）ことと、アクセススコープを設定することは別概念です。
+> - **サービスアカウントのアタッチ**: VM が API を呼び出す際の「アイデンティティ（ID）」を定義します。
+> - **アクセススコープ**: VM から Google Cloud API へのレガシーな認限制限フィルターです。現在のベストプラクティスでは、アクセススコープは「すべての API へのフルアクセス（Allow full access to all Cloud APIs）」とし、実際の権限はアタッチしたサービスアカウントに付与された IAM ロールのみで厳密に制御（最小権限の原則）します。
 
 ```mermaid
 sequenceDiagram
@@ -597,7 +602,14 @@ gcloud kms keyrings add-iam-policy-binding $KEYRING_NAME \
 
 ### 7.1 定義
 
-Private GKEクラスタとは、**コントロールプレーン(マスター)をパブリックインターネットから到達不可能にした**GKEクラスタです。ノードにはプライベートIPアドレスのみが割り当てられ、ノードとコントロールプレーン間の通信はVPC Peeringを通じて行われます。
+**Private GKEクラスタ（プライベートクラスター）**とは、クラスタ内のすべての**ノードにパブリックIPを割り当てず、プライベートIPのみを持たせる**ことで、ノードをインターネットから直接露出させずにネットワーク的に隔離したクラスタです。ノードとコントロールプレーン（マスター）間の通信は、自動的に構成される VPC ネットワークピアリングを経由して行われます。
+
+コントロールプレーン側の接続エンドポイントは、以下の設定によってコントロールプレーン自体へのアクセス元を制御します。これらはプライベートノードの構成とは独立して設計されます。
+
+- **プライベートエンドポイント（`--enable-private-endpoint`）**:
+  コントロールプレーンにパブリックIPを割り当てず、インターネットからの到達性を完全に遮断します。クラスタの管理（kubectlの実行など）は、同じVPC内、またはVPN/Interconnect等を経由したオンプレミス環境など、内部ネットワークからのみに限定されます。
+- **パブリックエンドポイント（デフォルト / `--no-enable-private-endpoint`）**:
+  コントロールプレーンにパブリックIPが割り当てられ、外部からも到達可能です。このパブリックIPへの接続は、後述の「Master Authorized Networks（承認済みネットワーク）」で厳密に発信元制限をかけることで安全性を確保します。
 
 ### 7.2 なぜノードに外部IPを持たせないのか
 
