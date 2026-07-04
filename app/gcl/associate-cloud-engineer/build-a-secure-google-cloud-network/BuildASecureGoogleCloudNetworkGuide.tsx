@@ -1,14 +1,11 @@
-'use client';
-
-/**
- * Build a Secure Google Cloud Network ガイドのクライアントコンポーネント。
- * 本文マークアップ、Mermaid図のレンダリング、パケットフローアニメーションを含む。
- */
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import NavBar from './NavBar';
 
+/**
+ * Build a Secure Google Cloud Network ガイドのサーバーコンポーネント。
+ * 本文マークアップ、Mermaid図のレンダリング、パケットフローアニメーションの親構造を提供する。
+ */
 export default function BuildASecureGoogleCloudNetworkGuide() {
     return (
         <div className="secure-network-page">
@@ -278,7 +275,7 @@ export default function BuildASecureGoogleCloudNetworkGuide() {
                                             <td>本番環境</td>
                                         </tr>
                                         <tr>
-                                            <td>制御のの自由度</td>
+                                            <td>制御の自由度</td>
                                             <td>
                                                 <span className="ng">低い</span>
                                             </td>
