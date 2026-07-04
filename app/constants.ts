@@ -105,6 +105,11 @@ export const EXAMS: Exam[] = [
                 href: '/gcl/associate-cloud-engineer/develop-your-gcp-network',
                 pct: '実践',
             },
+            {
+                label: '安全なGoogle Cloudネットワーク構築',
+                href: '/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network',
+                pct: '実践',
+            },
         ],
         badge: '実践向け',
         icon: '⚙️',
