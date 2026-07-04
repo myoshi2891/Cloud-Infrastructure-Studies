@@ -17,7 +17,7 @@
 2. [コース全体像とラーニングパス](#2-コース全体像とラーニングパス)
 3. [Cloud Storage — オブジェクトストレージの基礎](#3-cloud-storage--オブジェクトストレージの基礎)
 4. [Cloud IAM — アクセス制御の基礎](#4-cloud-iam--アクセス制御の基礎)
-5. [Cloud Functions（Cloud Run functions）— イベント駆動サーバーレス](#5-cloud-functions-cloud-run-functions--イベント駆動サーバーレス)
+5. [Cloud Functions（Cloud Run functions）— イベント駆動サーバーレス](#5-cloud-functions-cloud-run-functions-イベント駆動サーバーレス)
 6. [Pub/Sub — 非同期メッセージング](#6-pubsub--非同期メッセージング)
 7. [総合演習：Challenge Lab（GSP315）徹底解説](#7-総合演習challenge-labgsp315徹底解説)
 8. [サービス横断ベストプラクティス早見表](#8-サービス横断ベストプラクティス早見表)
