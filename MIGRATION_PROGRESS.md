@@ -7,9 +7,31 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **テスト数:** プロジェクト全体で 81 テストファイル (合計 572 テストケース) パス
+- **テスト数:** プロジェクト全体で 81 テストファイル (合計 580 テストケース) パス
 - **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-07-04T10:16:00.000Z
+- **最終更新日時(UTC):** 2026-07-04T13:41:00.000Z
+
+---
+
+## 2026-07-04: ACE「Google Cloud ネットワークセキュリティ実践ガイド」用語解説追加 (完了)
+
+### 目的
+
+`build-a-secure-google-cloud-network` の各セクションにネットワーク関連の専門用語説明（glossary）を追加し、学習効果を高める。
+
+### 完了済みステップ
+
+- [x] **テスト作成（Red）**: `__tests__/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network/page.test.tsx` に各セクションの用語解説表示を確認するテストを追加。
+- [x] **実装（Green）**: `BuildASecureGoogleCloudNetworkGuide.tsx` の各セクション（S1〜S8）の末尾に、CSS設計に基づいた美しく機能的な `.glossary` コンポーネントを実装。
+- [x] **スタイル定義**: `page.css` に `.glossary` コンポーネントのレスポンシブおよびテーマ整合スタイルを追加。
+- [x] **全体テスト通過**: プロジェクト全体の 580 テストケースがすべてパスすることを確認。
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network/BuildASecureGoogleCloudNetworkGuide.tsx](app/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network/BuildASecureGoogleCloudNetworkGuide.tsx)
+- [app/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network/page.css](app/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network/page.css)
+- [__tests__/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network/page.test.tsx](__tests__/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network/page.test.tsx)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ---
 
