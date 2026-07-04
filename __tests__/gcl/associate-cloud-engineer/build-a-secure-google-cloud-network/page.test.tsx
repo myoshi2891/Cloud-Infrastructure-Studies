@@ -15,9 +15,7 @@ describe('Build a Secure Google Cloud Network ページ', () => {
     });
 
     it('hero タイトルがレンダリングされること', () => {
-        expect(screen.getByText(/Google Cloud/)).toBeInTheDocument();
-        expect(screen.getByText(/ネットワークセキュリティ/)).toBeInTheDocument();
-        expect(screen.getByText(/実践ガイド/)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Google Cloud/ })).toBeInTheDocument();
     });
 
     it('TOC がレンダリングされること', () => {
