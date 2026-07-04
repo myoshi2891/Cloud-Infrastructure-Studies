@@ -20,8 +20,6 @@
 
   --font-disp: var(--font-display), sans-serif;
   --font-jp:   var(--font-body), sans-serif;
-  --font-body: var(--font-body), sans-serif;
-  --font-mono: var(--font-mono), monospace;
 
   --maxw: 1000px;
   --r: 14px;
@@ -240,19 +238,19 @@
 .app-dev-environment-page .mermaid > div {
   width: 100%;
 }
-.app-dev-environment-page .mermaid :global(svg) {
+.app-dev-environment-page .mermaid svg {
   display: block;
   margin: 0 auto;
   max-width: 100% !important;
   height: auto !important;
   overflow: visible;
 }
-.app-dev-environment-page .mermaidTarget :global(foreignObject) { overflow: visible; }
-.app-dev-environment-page .mermaidTarget :global(foreignObject > div),
-.app-dev-environment-page .mermaidTarget :global(.nodeLabel),
-.app-dev-environment-page .mermaidTarget :global(.edgeLabel) { overflow: visible; }
-.app-dev-environment-page .mermaidTarget :global(.node .nodeLabel),
-.app-dev-environment-page .mermaidTarget :global(.node .nodeLabel *) { color: #ffffff !important; }
+.app-dev-environment-page .mermaid-target foreignObject { overflow: visible; }
+.app-dev-environment-page .mermaid-target foreignObject > div,
+.app-dev-environment-page .mermaid-target .nodeLabel,
+.app-dev-environment-page .mermaid-target .edgeLabel { overflow: visible; }
+.app-dev-environment-page .mermaid-target .node .nodeLabel,
+.app-dev-environment-page .mermaid-target .node .nodeLabel * { color: #ffffff !important; }
 
 /* ---------- Divider ---------- */
 .app-dev-environment-page .rule { height: 1px; background: linear-gradient(90deg, var(--line), transparent); border: none; margin: 3.2rem 0 0; }
