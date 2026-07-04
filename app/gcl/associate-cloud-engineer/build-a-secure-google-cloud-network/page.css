@@ -1,4 +1,5 @@
 /* Build a Secure Google Cloud Network ページ固有のスタイル */
+/* TODO: The local tokens in .secure-network-page (such as --ink, --panel, and --cyan) should be promoted to app/globals.css and reused via established theme variables to avoid defining custom properties at the component level. */
 .secure-network-page {
   --ink:        #0a1428;
   --ink-2:      #0c1830;
