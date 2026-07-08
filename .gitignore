@@ -114,9 +114,7 @@ test-results/
 playwright-report/
 .lighthouseci/
 
-archive/
-Aws/archive/
-Gcl_Archive/
+/archive/
 tsconfig.tsbuildinfo
 infra-md-to-nextjs-migration.skill
 .gemini/settings.json
