@@ -124,3 +124,4 @@ docs/skills
 .claude/settings.json
 .playwright-mcp
 tmp/
+/plans/
