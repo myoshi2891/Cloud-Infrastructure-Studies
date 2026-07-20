@@ -16,6 +16,8 @@ The founding rule survives unchanged: **the advisor never edits source code.** I
 
 ### Dispatch
 
+Before spawning the executor or making any changes, record the current HEAD SHA of the repository (or the default branch of the worktree) as `<base-sha>` (e.g., via `git rev-parse HEAD`). This SHA will be used as a stable reference to review only the changes introduced by the executor.
+
 Spawn **one** `general-purpose` subagent with `isolation: "worktree"`. Executor model: default `sonnet`; use what the user named if they named one (`execute 003 haiku`).
 
 The subagent prompt must contain:
@@ -37,7 +39,7 @@ The subagent prompt must contain:
 
 3. The report format:
 
-```
+```markdown
 STATUS: COMPLETE | STOPPED
 STEPS: per step — done/skipped + verification command result
 STOPPED BECAUSE: (only if STOPPED) which STOP condition, what was observed
@@ -52,8 +54,8 @@ Note on fresh worktrees: they share git history but not `node_modules` or build 
 Review like a tech lead reviewing a PR against the spec — never fix anything yourself:
 
 1. **Re-run every done criterion** in the worktree. Don't trust the executor's report — verify.
-2. **Scope compliance**: `git -C <worktree> diff --stat` against the plan's in-scope list. Any file outside scope fails review, full stop.
-3. **Read the full diff.** Judge it against "Why this matters" (does it solve the actual problem?) and the repo conventions named in the plan (does it look like the rest of the codebase?).
+2. **Scope compliance**: `git -C <worktree> diff --stat <base-sha>..HEAD` against the plan's in-scope list (using the recorded pre-dispatch `<base-sha>` to capture committed changes). Any file outside scope fails review, full stop. Do not rely on an unqualified `git diff` after the commit.
+3. **Read the full diff**: Inspect the committed changes using `git -C <worktree> diff <base-sha>..HEAD`. Judge it against "Why this matters" (does it solve the actual problem?) and the repo conventions named in the plan (does it look like the rest of the codebase?).
 4. **Audit the new tests.** Executors game criteria — a test that asserts nothing meaningful passes `pnpm test` and proves nothing. Read what the tests assert.
 
 ### Verdict
