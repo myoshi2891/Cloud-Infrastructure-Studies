@@ -81,7 +81,7 @@ Wait for the selection. Do not write 30 plans nobody asked for. If running non-i
 
 For each selected finding, write one plan file using the template in [references/plan-template.md](references/plan-template.md) — read it before writing the first plan. Plans go in:
 
-```
+```text
 plans/
   README.md          ← index: priority order, dependency graph, status table
   001-<slug>.md
