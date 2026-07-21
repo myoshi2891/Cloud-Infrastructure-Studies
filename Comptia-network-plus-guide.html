@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CompTIA Network+ 試験 完全ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #0b0d10;
+                --color-background-secondary: #14171c;
+                --color-background-tertiary: #1c2027;
+                --color-background-info: #16202c;
+                --color-background-danger: #2a1618;
+                --color-background-success: #12211a;
+                --color-background-warning: #241d10;
+
+                --color-text-primary: #e8eaed;
+                --color-text-secondary: #a8adb8;
+                --color-text-tertiary: #8b93a3;
+                --color-text-info: #7aa7e0;
+                --color-text-danger: #e0787a;
+                --color-text-success: #7ac98a;
+                --color-text-warning: #d9b25c;
+
+                --color-border-primary: #2a2f38;
+                --color-border-secondary: #21252c;
+                --color-border-tertiary: #191c22;
+
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+                    'Yu Gothic', 'Noto Sans JP', Meiryo, sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: flex;
+                min-height: 100vh;
+                align-items: flex-start;
+            }
+
+            .sidebar {
+                width: 280px;
+                flex-shrink: 0;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                overflow-y: auto;
+                padding: 28px 18px 40px;
+            }
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 4px 10px 20px;
+            }
+            .sidebar-brand i {
+                font-size: 20px;
+                color: var(--color-text-info);
+            }
+            .sidebar-brand span {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .sidebar nav li {
+                margin-bottom: 2px;
+            }
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 500;
+            }
+            .sidebar nav a i {
+                font-size: 15px;
+                color: var(--color-text-tertiary);
+                width: 16px;
+                text-align: center;
+            }
+            .sidebar nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+            .sidebar nav a:hover i {
+                color: var(--color-text-info);
+            }
+
+            .content {
+                flex: 1;
+                min-width: 0;
+                padding: 56px 64px 100px;
+            }
+
+            header.page-header {
+                margin-bottom: 44px;
+                padding-bottom: 24px;
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+            header.page-header .eyebrow {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--color-text-info);
+                margin-bottom: 10px;
+            }
+            header.page-header h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 10px;
+            }
+            header.page-header p.lead {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                max-width: 760px;
+                margin: 0 0 20px;
+            }
+
+            .badges {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                font-size: 13px;
+                color: var(--color-text-secondary);
+                font-weight: 500;
+            }
+            .badge i {
+                color: var(--color-text-info);
+                font-size: 14px;
+            }
+
+            section {
+                scroll-margin-top: 24px;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 52px 0 18px;
+                padding-top: 20px;
+                border-top: 1px solid var(--color-border-tertiary);
+            }
+            section:first-of-type h2 {
+                margin-top: 0;
+                padding-top: 0;
+                border-top: none;
+            }
+            h2 i {
+                font-size: 17px;
+                color: var(--color-text-info);
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 12px;
+                color: var(--color-text-primary);
+            }
+
+            p {
+                font-size: 16px;
+                line-height: 1.7;
+                color: var(--color-text-secondary);
+                margin: 0 0 16px;
+            }
+            strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            ul,
+            ol {
+                margin: 0 0 16px;
+                padding-left: 22px;
+                color: var(--color-text-secondary);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+            li strong {
+                color: var(--color-text-primary);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 4px 0 8px;
+                font-size: 14px;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 11px 14px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                vertical-align: top;
+            }
+            th {
+                color: var(--color-text-primary);
+                font-weight: 500;
+                background: var(--color-background-tertiary);
+            }
+            td {
+                color: var(--color-text-secondary);
+            }
+            .table-wrap {
+                overflow-x: auto;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                margin: 16px 0 6px;
+            }
+            .table-wrap table {
+                margin: 0;
+            }
+            .table-wrap th:first-child,
+            .table-wrap td:first-child {
+                padding-left: 18px;
+            }
+
+            .source-note {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                margin: 0 0 28px;
+            }
+            .source-note i {
+                font-size: 12px;
+                margin-right: 4px;
+            }
+            .source-note a {
+                color: var(--color-text-info);
+                text-decoration: none;
+            }
+            .source-note a:hover {
+                text-decoration: underline;
+            }
+
+            .callout {
+                display: flex;
+                gap: 12px;
+                padding: 16px 18px;
+                border-radius: var(--border-radius-lg);
+                border: 1px solid var(--color-border-primary);
+                margin: 20px 0 28px;
+            }
+            .callout i {
+                font-size: 17px;
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            .callout p {
+                margin: 0;
+                font-size: 14px;
+                color: var(--color-text-secondary);
+            }
+            .callout.info {
+                background: var(--color-background-info);
+            }
+            .callout.info i {
+                color: var(--color-text-info);
+            }
+            .callout.warning {
+                background: var(--color-background-warning);
+            }
+            .callout.warning i {
+                color: var(--color-text-warning);
+            }
+
+            .domain-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 14px;
+                margin: 20px 0 8px;
+            }
+            .domain-card {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 18px;
+            }
+            .domain-card .pct {
+                font-size: 24px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+            .domain-card .label {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                margin-top: 6px;
+                line-height: 1.5;
+            }
+
+            .diagram-wrap {
+                text-align: center;
+                margin: 22px 0 8px;
+                padding: 22px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+            }
+            .diagram-caption {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                margin: -2px 0 24px;
+                text-align: center;
+            }
+            .mermaid {
+                overflow: visible;
+            }
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .domain-block {
+                padding: 20px 22px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                margin: 0 0 18px;
+            }
+            .domain-block h3 {
+                margin-top: 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .domain-block h3 i {
+                color: var(--color-text-info);
+                font-size: 16px;
+            }
+            .domain-block .weight {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                font-weight: 400;
+                margin-left: auto;
+            }
+
+            .faq-item {
+                border-bottom: 1px solid var(--color-border-secondary);
+                padding: 4px 0;
+            }
+            .faq-item summary {
+                cursor: pointer;
+                padding: 14px 4px;
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+            .faq-item summary::marker {
+                color: var(--color-text-tertiary);
+            }
+            .faq-item p {
+                padding: 0 4px 16px;
+                margin: 0;
+            }
+
+            footer.page-footer {
+                margin-top: 64px;
+                padding-top: 24px;
+                border-top: 1px solid var(--color-border-primary);
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+            }
+            footer.page-footer a {
+                color: var(--color-text-info);
+                text-decoration: none;
+            }
+            footer.page-footer a:hover {
+                text-decoration: underline;
+            }
+            footer.page-footer .refs {
+                margin-top: 10px;
+            }
+            footer.page-footer .refs li {
+                margin-bottom: 6px;
+            }
+
+            @media (max-width: 900px) {
+                .layout {
+                    flex-direction: column;
+                }
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border-primary);
+                }
+                .content {
+                    padding: 40px 24px 80px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <i class="ti ti-network"></i>
+                    <span>Network+ 完全ガイド</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#overview"><i class="ti ti-info-circle"></i>Network+とは</a>
+                        </li>
+                        <li>
+                            <a href="#audience"><i class="ti ti-users"></i>対象者</a>
+                        </li>
+                        <li>
+                            <a href="#exam-info"
+                                ><i class="ti ti-clipboard-list"></i>試験の基本情報</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#domains"><i class="ti ti-chart-pie"></i>出題範囲と配点</a>
+                        </li>
+                        <li>
+                            <a href="#domain-detail"
+                                ><i class="ti ti-list-details"></i>各ドメインの詳細</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#osi"><i class="ti ti-stack-2"></i>OSI参照モデル</a>
+                        </li>
+                        <li>
+                            <a href="#roadmap"><i class="ti ti-route"></i>学習ステップ</a>
+                        </li>
+                        <li>
+                            <a href="#materials"><i class="ti ti-books"></i>学習教材の選び方</a>
+                        </li>
+                        <li>
+                            <a href="#exam-day"
+                                ><i class="ti ti-calendar-event"></i>試験当日の流れ</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#study-time"><i class="ti ti-clock"></i>学習時間の目安</a>
+                        </li>
+                        <li>
+                            <a href="#faq"><i class="ti ti-help-circle"></i>よくある質問</a>
+                        </li>
+                        <li>
+                            <a href="#summary"><i class="ti ti-checklist"></i>まとめ</a>
+                        </li>
+                        <li>
+                            <a href="#references"><i class="ti ti-link"></i>参考文献・出典</a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="content">
+                <header class="page-header">
+                    <div class="eyebrow">初学者のためのステップバイステップ解説</div>
+                    <h1>CompTIA Network+ 試験 完全ガイド</h1>
+                    <p class="lead">
+                        世界トップクラスのインフラアーキテクト／ソフトウェアエンジニアの視点から、CompTIA
+                        Network+
+                        資格について「何を」「なぜ」「どう学ぶか」を初学者にもわかりやすく整理しました。最新の公式試験情報（V9
+                        / N10-009）に基づいています。
+                    </p>
+                    <div class="badges">
+                        <span class="badge"><i class="ti ti-tag"></i>試験コード N10-009</span>
+                        <span class="badge"><i class="ti ti-clock"></i>90分・最大90問</span>
+                        <span class="badge"
+                            ><i class="ti ti-target-arrow"></i>合格ライン 720/900</span
+                        >
+                        <span class="badge"
+                            ><i class="ti ti-calendar"></i>2024年6月20日リリース</span
+                        >
+                    </div>
+                </header>
+
+                <section id="overview">
+                    <h2><i class="ti ti-info-circle"></i>1. CompTIA Network+ とは何か</h2>
+                    <p>
+                        CompTIA Network+ は、米国の非営利業界団体 CompTIA
+                        が提供するベンダーニュートラル（特定メーカーに依存しない）なネットワーク技術者向け認定資格です。特定企業の製品知識ではなく、TCP/IP・ルーティング・スイッチング・無線LAN・クラウド・セキュリティといった「ネットワークの基礎体力」そのものを証明する資格として、業界で広く認知されています。
+                    </p>
+                    <p>この資格を取得すると、以下のような能力を客観的に証明できます。</p>
+                    <ul>
+                        <li>有線・無線ネットワーク機器を設計・導入できる</li>
+                        <li>ネットワークのドキュメント化やライフサイクル管理ができる</li>
+                        <li>クラウドや仮想ネットワークの基本概念を理解している</li>
+                        <li>障害を体系的な手順で切り分け、復旧できる</li>
+                        <li>基本的なセキュリティ対策を実装できる</li>
+                    </ul>
+                    <p>
+                        Network+ は「CompTIA Core」シリーズの一部で、前段の
+                        A+（PCやOSの基礎）から一歩進み、次段の Security+ や Cloud+、CCNA
+                        などへの橋渡し役を担う、いわば<strong>ネットワークエンジニアとしての最初の共通言語</strong>を身につける資格です。
+                    </p>
+                </section>
+
+                <section id="audience">
+                    <h2><i class="ti ti-users"></i>2. この資格はどんな人に向いているか</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>主な対象者</td>
+                                    <td>
+                                        未経験からネットワーク・インフラ分野を目指す人、社内SE、ヘルプデスク担当者、サーバー/インフラエンジニア志望者
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>推奨される前提資格</td>
+                                    <td>CompTIA A+（必須ではないが推奨）</td>
+                                </tr>
+                                <tr>
+                                    <td>推奨される実務経験</td>
+                                    <td>
+                                        ジュニアネットワーク管理者・ネットワークサポート技術者として9〜12ヶ月程度
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>取得後に想定される職務</td>
+                                    <td>
+                                        テクニカルサポートスペシャリスト、ネットワークオペレーションスペシャリスト、システム管理者（NICE
+                                        / DoD 8140の職務区分に基づく）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>次のステップの資格例</td>
+                                    <td>
+                                        CompTIA Security+、CompTIA Cloud+、ベンダー資格（CCNAなど）
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-external-link"></i>出典:
+                        <a
+                            href="https://www.comptia.org/en-us/certifications/network/"
+                            target="_blank"
+                            rel="noopener"
+                            >CompTIA公式サイト「Network+ (Plus) Certification」</a
+                        >
+                    </p>
+                    <p>
+                        実務未経験でも受験は可能ですが、公式には上記の経験レベルが推奨されています。独学の場合は、自宅ラボやシミュレーターで手を動かしながら学ぶことが理解の定着に役立ちます。
+                    </p>
+                </section>
+
+                <section id="exam-info">
+                    <h2><i class="ti ti-clipboard-list"></i>3. 試験の基本情報</h2>
+                    <p>
+                        2026年7月時点で最新の試験バージョンは<strong
+                            >V9（試験コード N10-009）</strong
+                        >です。旧バージョン N10-008
+                        からの改訂版として、2024年6月20日にリリースされました。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>試験バージョン</td>
+                                    <td>V9</td>
+                                </tr>
+                                <tr>
+                                    <td>試験コード</td>
+                                    <td>N10-009</td>
+                                </tr>
+                                <tr>
+                                    <td>リリース日</td>
+                                    <td>2024年6月20日</td>
+                                </tr>
+                                <tr>
+                                    <td>問題数</td>
+                                    <td>最大90問（多肢選択式 + パフォーマンスベース問題の混在）</td>
+                                </tr>
+                                <tr>
+                                    <td>試験時間</td>
+                                    <td>90分</td>
+                                </tr>
+                                <tr>
+                                    <td>合格ライン</td>
+                                    <td>720点（100〜900点のスケール中）</td>
+                                </tr>
+                                <tr>
+                                    <td>出題言語</td>
+                                    <td>英語・ドイツ語・日本語・ポルトガル語・スペイン語</td>
+                                </tr>
+                                <tr>
+                                    <td>退役目安</td>
+                                    <td>リリースからおよそ3年後（2027年頃と推定）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-external-link"></i>出典:
+                        <a
+                            href="https://www.comptia.org/en-us/certifications/network/"
+                            target="_blank"
+                            rel="noopener"
+                            >CompTIA公式サイト「Network+ (Plus) Certification」</a
+                        >
+                    </p>
+                    <div class="callout info">
+                        <i class="ti ti-bulb"></i>
+                        <p>
+                            「パフォーマンスベース問題」とは、選択肢から選ぶだけでなく、シミュレーション画面上でネットワーク構成やコマンド操作を実際に行わせるタイプの実技系設問です。知識の暗記だけでなく、実際の操作手順を体で覚えておく必要があります。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="domains">
+                    <h2><i class="ti ti-chart-pie"></i>4. 出題範囲と配点（5つのドメイン）</h2>
+                    <p>
+                        Network+ (N10-009)
+                        の出題範囲は、以下の5つの「ドメイン」に分かれています。ドメインごとの配点比率を把握することは、学習の優先順位を決めるうえで非常に重要です。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+pie showData
+    title Network+ (N10-009) ドメイン別配点
+    "1. ネットワークの概念 (23%)" : 23
+    "2. ネットワークの実装 (20%)" : 20
+    "3. ネットワークの運用 (19%)" : 19
+    "4. ネットワークセキュリティ (14%)" : 14
+    "5. ネットワークのトラブルシューティング (24%)" : 24
+        </pre
+                        >
+                    </div>
+                    <p class="diagram-caption">
+                        出典データ: CompTIA公式サイトの試験目標概要にもとづく配点比率
+                    </p>
+
+                    <div class="domain-grid">
+                        <div class="domain-card">
+                            <div class="pct">23%</div>
+                            <div class="label">
+                                1. ネットワークの概念<br />用語・OSIモデル・プロトコル・トポロジー
+                            </div>
+                        </div>
+                        <div class="domain-card">
+                            <div class="pct">20%</div>
+                            <div class="label">
+                                2. ネットワークの実装<br />ルーティング・スイッチング・無線設定
+                            </div>
+                        </div>
+                        <div class="domain-card">
+                            <div class="pct">19%</div>
+                            <div class="label">
+                                3. ネットワークの運用<br />ドキュメント化・監視・災害復旧
+                            </div>
+                        </div>
+                        <div class="domain-card">
+                            <div class="pct">14%</div>
+                            <div class="label">
+                                4. ネットワークセキュリティ<br />認証・攻撃手法・防御策
+                            </div>
+                        </div>
+                        <div class="domain-card">
+                            <div class="pct">24%</div>
+                            <div class="label">
+                                5. トラブルシューティング<br />障害の切り分けと診断
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        最も配点が高いのは「トラブルシューティング（24%）」で、次いで「概念（23%）」です。この2つだけで全体の約半分を占めるため、学習の軸に据えるべき分野といえます。
+                    </p>
+                </section>
+
+                <section id="domain-detail">
+                    <h2><i class="ti ti-list-details"></i>5. 各ドメインの詳細解説</h2>
+
+                    <div class="domain-block">
+                        <h3>
+                            <i class="ti ti-topology-star-3"></i>5.1 ネットワークの概念<span
+                                class="weight"
+                                >23%</span
+                            >
+                        </h3>
+                        <p>ネットワークを理解するための「語彙」と「地図」にあたる分野です。</p>
+                        <ul>
+                            <li><strong>OSI参照モデルの7層</strong>（第6章で詳しく解説）</li>
+                            <li>
+                                <strong>ネットワーク機器</strong
+                                >：ルーター、スイッチ、ファイアウォール、IDS/IPS、ロードバランサー、プロキシ、NAS、SANなど
+                            </li>
+                            <li>
+                                <strong>クラウドの基礎概念</strong
+                                >：NFV、VPC、クラウドゲートウェイ、デプロイモデル（パブリック/プライベート/ハイブリッド）、サービスモデル（SaaS/IaaS/PaaS）
+                            </li>
+                            <li>
+                                <strong>ポートとプロトコル</strong
+                                >：FTP、SFTP、SSH、Telnet、SMTP、DNS、DHCP、HTTP/HTTPS、SNMP、LDAP、RDP、SIPなど
+                            </li>
+                            <li>
+                                <strong>トラフィックの種類</strong
+                                >：ユニキャスト、マルチキャスト、エニーキャスト、ブロードキャスト
+                            </li>
+                            <li>
+                                <strong>伝送メディア</strong
+                                >：無線（802.11、セルラー、衛星）、有線（光ファイバー、同軸ケーブル、DACケーブル）
+                            </li>
+                            <li>
+                                <strong>コネクタ・トランシーバー</strong
+                                >：SC、LC、ST、MPO、RJ11、RJ45、F型、BNCなど
+                            </li>
+                            <li>
+                                <strong>ネットワークトポロジー</strong
+                                >：メッシュ、ハイブリッド、スター型、スパイン&amp;リーフ、ポイントツーポイント、3層構造、コラプスドコア
+                            </li>
+                            <li>
+                                <strong>IPv4アドレッシング</strong
+                                >：パブリック/プライベート、APIPA、RFC1918、ループバック、サブネット化（VLSM、CIDR）、アドレスクラス（A〜E）
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="domain-block">
+                        <h3>
+                            <i class="ti ti-settings"></i>5.2 ネットワークの実装<span class="weight"
+                                >20%</span
+                            >
+                        </h3>
+                        <p>実際に「動くネットワーク」を組み立てる分野です。</p>
+                        <ul>
+                            <li>
+                                <strong>ルーティング技術</strong
+                                >：静的/動的ルーティング（BGP、EIGRP、OSPF）、経路選択、NAT、PAT、FHRP、VIP、サブインターフェース
+                            </li>
+                            <li>
+                                <strong>スイッチング技術</strong
+                                >：VLAN、インターフェース設定、スパニングツリー、MTU、ジャンボフレーム
+                            </li>
+                            <li>
+                                <strong>無線機器の設定</strong
+                                >：チャネル、周波数帯、SSID、ネットワークタイプ、暗号化方式、ゲストネットワーク、認証方式、アンテナ、アクセスポイント
+                            </li>
+                            <li>
+                                <strong>物理的な設置</strong>：設置上の注意点、電源要件、環境要因
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="domain-block">
+                        <h3>
+                            <i class="ti ti-server-2"></i>5.3 ネットワークの運用<span class="weight"
+                                >19%</span
+                            >
+                        </h3>
+                        <p>構築したネットワークを「維持し続ける」ための分野です。</p>
+                        <ul>
+                            <li>
+                                <strong>ドキュメント管理</strong
+                                >：物理図/論理図、ラック図、ケーブルマップ、ネットワーク図、資産管理、IPAM、SLA、無線サーベイ
+                            </li>
+                            <li>
+                                <strong>ライフサイクル管理</strong
+                                >：EOL、EOS、ソフトウェア管理、廃棄・撤去
+                            </li>
+                            <li><strong>変更管理</strong>：変更申請プロセスの追跡</li>
+                            <li>
+                                <strong>構成管理</strong
+                                >：本番構成、バックアップ構成、ベースライン構成
+                            </li>
+                            <li>
+                                <strong>ネットワーク監視</strong
+                                >：SNMP、フローデータ、パケットキャプチャ、ベースラインメトリクス、ログ集約、API連携、ポートミラーリング
+                            </li>
+                            <li>
+                                <strong>災害復旧</strong
+                                >：RPO、RTO、MTTR、MTBF、コールド/ウォーム/ホットサイト、アクティブ-アクティブ/パッシブ構成
+                            </li>
+                            <li>
+                                <strong>ネットワークサービス</strong
+                                >：DHCP、SLAAC、DNS、NTP、PTP、NTS
+                            </li>
+                            <li>
+                                <strong>アクセス管理</strong>：VPN、SSH、GUI、API、コンソール接続
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="domain-block">
+                        <h3>
+                            <i class="ti ti-shield-lock"></i>5.4 ネットワークセキュリティ<span
+                                class="weight"
+                                >14%</span
+                            >
+                        </h3>
+                        <p>配点は最も低いですが、実務では最重要とも言える分野です。</p>
+                        <ul>
+                            <li>
+                                <strong>論理的セキュリティ</strong
+                                >：暗号化、PKI、IAM、多要素認証（MFA）、SSO、RADIUS、LDAP、SAML、TACACS+、最小権限の原則、ロールベースアクセス制御、ジオフェンシング
+                            </li>
+                            <li><strong>物理的セキュリティ</strong>：監視カメラ、施錠管理</li>
+                            <li><strong>欺瞞技術</strong>：ハニーポット、ハニーネット</li>
+                            <li>
+                                <strong>セキュリティ用語</strong
+                                >：リスク、脆弱性、エクスプロイト、脅威、CIAトライアド（機密性・完全性・可用性）
+                            </li>
+                            <li>
+                                <strong>監査とコンプライアンス</strong>：データローカリティ、PCI
+                                DSS、GDPR
+                            </li>
+                            <li>
+                                <strong>ネットワークセグメンテーション</strong
+                                >：IoT、IIoT、SCADA、ICS、OT、ゲストネットワーク、BYOD
+                            </li>
+                            <li>
+                                <strong>攻撃の種類</strong
+                                >：DoS/DDoS、VLANホッピング、MACフラッディング、ARP/DNSポイズニング、不正機器、Evil
+                                Twin、中間者攻撃、ソーシャルエンジニアリング
+                            </li>
+                            <li>
+                                <strong>防御機能</strong
+                                >：デバイスハードニング、NAC、鍵管理、ACL、URL/コンテンツフィルタリング、信頼/非信頼ゾーン、スクリーンドサブネット
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="domain-block">
+                        <h3>
+                            <i class="ti ti-alert-triangle"></i>5.5
+                            ネットワークのトラブルシューティング<span class="weight"
+                                >24%・最重要ドメイン</span
+                            >
+                        </h3>
+                        <p>
+                            配点が最も高いこのドメインの核心は、<strong>体系立った障害切り分けの手順（トラブルシューティング方法論）</strong>です。CompTIAが定義する手順は以下の流れで進みます。
+                        </p>
+
+                        <div class="diagram-wrap">
+                            <pre class="mermaid">
+flowchart TD
+    A["1. 問題を特定する"] --> B["2. 推定原因の仮説を立てる"]
+    B --> C["3. 仮説を検証する"]
+    C -->|"仮説が誤りだった"| B
+    C -->|"仮説が正しいと確認"| D["4. 対応計画を立てて実行する"]
+    D --> E["5. システム全体の動作を検証する"]
+    E --> F["6. 対応内容を文書化する"]
+          </pre
+                            >
+                        </div>
+                        <p class="diagram-caption">
+                            CompTIA標準の障害対応フレームワーク（A+ / Security+ とも共通）
+                        </p>
+
+                        <p>このドメインでは、この方法論に加えて以下も問われます。</p>
+                        <ul>
+                            <li>
+                                <strong>ケーブル・物理層の問題</strong
+                                >：ケーブル種別の誤り、信号劣化、終端処理の不良、TX/RXの入れ違い、エラーカウンタ増加、PoE不良、トランシーバーの規格不一致
+                            </li>
+                            <li>
+                                <strong>ネットワークサービスの問題</strong
+                                >：STPやVLAN割り当ての不備、ACL設定ミス、ルーティングテーブルやデフォルトゲートウェイの誤り、アドレスプールの枯渇
+                            </li>
+                            <li>
+                                <strong>性能問題</strong>：輻輳、レイテンシ、パケットロス、無線干渉
+                            </li>
+                            <li>
+                                <strong>診断ツール</strong
+                                >：プロトコルアナライザー、コマンドラインツール（ping、tracert/traceroute、nslookupなど）、ケーブルテスター、Wi-Fiアナライザー
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-external-link"></i>出典:
+                        <a
+                            href="https://www.comptia.org/en-us/certifications/network/"
+                            target="_blank"
+                            rel="noopener"
+                            >CompTIA公式サイト「Network+ (Plus) Certification」出題目標一覧</a
+                        >
+                    </p>
+                </section>
+
+                <section id="osi">
+                    <h2><i class="ti ti-stack-2"></i>6. 基礎知識：OSI参照モデル</h2>
+                    <p>
+                        ネットワークの概念ドメインで必ず出題されるのが
+                        OSI参照モデルです。7つの層それぞれの役割を最初に押さえておくと、以降のプロトコル学習が格段に理解しやすくなります。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>レイヤー</th>
+                                    <th>名称</th>
+                                    <th>役割のイメージ</th>
+                                    <th>代表的なプロトコル・技術例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>7</td>
+                                    <td>アプリケーション層</td>
+                                    <td>利用者が触れるアプリの通信仕様</td>
+                                    <td>HTTP/HTTPS, DNS, SMTP</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>プレゼンテーション層</td>
+                                    <td>データの形式変換・暗号化・圧縮</td>
+                                    <td>SSL/TLS, JPEG</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>セッション層</td>
+                                    <td>通信の開始・維持・終了の管理</td>
+                                    <td>NetBIOS, RPC</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>トランスポート層</td>
+                                    <td>信頼性のあるデータ転送の制御</td>
+                                    <td>TCP, UDP</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>ネットワーク層</td>
+                                    <td>経路選択（ルーティング）</td>
+                                    <td>IP, ICMP</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>データリンク層</td>
+                                    <td>同一ネットワーク内の通信制御</td>
+                                    <td>Ethernet, MACアドレス, スイッチ</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>物理層</td>
+                                    <td>電気信号・光信号などの物理伝送</td>
+                                    <td>ケーブル, コネクタ, ハブ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout info">
+                        <i class="ti ti-bulb"></i>
+                        <p>
+                            学習のコツとして、上位層（7〜5）は「アプリやセッションの世界」、中位層（4〜3）は「データを届ける仕組み」、下位層（2〜1）は「物理的な配線の世界」と大まかに区分して覚えると整理しやすくなります。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="roadmap">
+                    <h2><i class="ti ti-route"></i>7. 学習を始めるステップバイステップ</h2>
+                    <p>以下は、初学者がゼロから合格までたどる標準的な学習ロードマップです。</p>
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+flowchart TD
+    A["ステップ1<br/>A+相当の基礎知識を確認する"] --> B["ステップ2<br/>学習教材を選ぶ<br/>独学書籍 / CertMaster / スクール"]
+    B --> C["ステップ3<br/>ドメインごとに学習する<br/>概念→実装→運用→セキュリティ→トラブルシューティング"]
+    C --> D["ステップ4<br/>模擬試験で理解度を測定する"]
+    D --> E{"合格ライン相当の<br/>得点に達したか"}
+    E -->|"未達"| F["ステップ5<br/>弱点ドメインを重点的に復習する"]
+    F --> C
+    E -->|"到達"| G["ステップ6<br/>試験を申し込む"]
+    G --> H["ステップ7<br/>試験当日を迎える<br/>90分 / 最大90問"]
+    H --> I{"720点以上か<br/>100〜900点満点"}
+    I -->|"合格"| J["Network+認定を取得"]
+    I -->|"不合格"| K["スコアレポートで弱点を分析"]
+    K --> C
+        </pre>
+                    </div>
+                    <p class="diagram-caption">
+                        ステップ3〜5の「学習 → 模擬試験 → 復習」ループを繰り返すのが合格への近道
+                    </p>
+                    <p>
+                        ポイントは、このループを配点の高いドメイン（トラブルシューティング24%・概念23%）を中心に何周も回すことです。一度で完璧を目指すより、反復による定着を重視するほうが効率的です。
+                    </p>
+                </section>
+
+                <section id="materials">
+                    <h2><i class="ti ti-books"></i>8. 学習教材の選び方</h2>
+                    <p>
+                        CompTIAは公式学習製品として「CertMaster」シリーズを提供しており、学習段階に応じて4種類から選べます。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>製品</th>
+                                    <th>主な対象者</th>
+                                    <th>主な内容</th>
+                                    <th>目安時間</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CertMaster Perform</td>
+                                    <td>実務経験ゼロから実技力もまとめて身につけたい人</td>
+                                    <td>講義・動画・実機/シミュレーションラボ・模擬試験</td>
+                                    <td>30〜60時間</td>
+                                </tr>
+                                <tr>
+                                    <td>CertMaster Learn</td>
+                                    <td>基礎知識をゼロから体系的に積み上げたい人</td>
+                                    <td>講義・動画・シミュレーションラボ・模擬試験</td>
+                                    <td>25〜40時間</td>
+                                </tr>
+                                <tr>
+                                    <td>CertMaster Practice</td>
+                                    <td>一定の知識・経験があり弱点を仕上げたい人</td>
+                                    <td>タイム制模擬試験、分野別クイズ、習熟度スコア</td>
+                                    <td>10〜20時間</td>
+                                </tr>
+                                <tr>
+                                    <td>CertMaster Labs</td>
+                                    <td>実際の操作を通じて実践力を鍛えたい人</td>
+                                    <td>実際の仮想マシン環境でのハンズオン課題</td>
+                                    <td>15〜25時間</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-external-link"></i>出典:
+                        <a
+                            href="https://www.comptia.org/en-us/certifications/network/"
+                            target="_blank"
+                            rel="noopener"
+                            >CompTIA公式サイト「Network+ (Plus) Certification」学習製品比較表</a
+                        >
+                    </p>
+                    <h3>独学で進める場合の考え方</h3>
+                    <ul>
+                        <li>知識ゼロに近い場合 → Learn（またはPerform）で基礎から積み上げる</li>
+                        <li>
+                            ある程度知識がある場合 →
+                            Practiceで弱点を把握してから、必要な範囲だけLearnで補強する
+                        </li>
+                        <li>
+                            手を動かす経験が不足している場合 → Labsやホームラボ、GNS3/Packet
+                            Tracerなどのシミュレーターソフトを併用する
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="exam-day">
+                    <h2><i class="ti ti-calendar-event"></i>9. 試験当日の流れ</h2>
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    A["会場到着<br/>身分証で本人確認"] --> B["受験規約・NDAへの同意"]
+    B --> C["試験開始<br/>90分 / 最大90問"]
+    C --> D["回答・見直し"]
+    D --> E["試験終了を確定"]
+    E --> F["その場でスコアレポートを受け取る<br/>合格ライン: 720/900点"]
+        </pre>
+                    </div>
+                    <p>
+                        試験はテストセンターでの受験、またはオンライン監督下（オンラインプロクタリング）での受験のいずれかを選べるのが一般的です。詳細な受験方式や予約方法は、公式サイトまたは試験申込プラットフォームで最新情報を確認してください。
+                    </p>
+                </section>
+
+                <section id="study-time">
+                    <h2><i class="ti ti-clock"></i>10. 学習時間の目安</h2>
+                    <p>
+                        学習教材ごとの目安時間（第8章）を踏まえると、経験レベル別のおおよその総学習期間は次のように整理できます。あくまで一般的な目安であり、個人差があります。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>経験レベル</th>
+                                    <th>想定される学習アプローチ</th>
+                                    <th>目安総学習時間</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>IT未経験・A+未取得</td>
+                                    <td>Learn（またはPerform）でゼロから体系的に学習</td>
+                                    <td>40〜60時間程度</td>
+                                </tr>
+                                <tr>
+                                    <td>A+取得済み・実務未経験</td>
+                                    <td>Learn + Practiceで知識を補強しつつ演習</td>
+                                    <td>25〜40時間程度</td>
+                                </tr>
+                                <tr>
+                                    <td>実務経験あり（9〜12ヶ月相当）</td>
+                                    <td>Practice中心に弱点補強</td>
+                                    <td>10〜20時間程度</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        1日1〜2時間の学習ペースであれば、未経験者でもおおむね1〜2ヶ月程度で一巡できる計算になります。ただし、トラブルシューティング（24%）と概念（23%）は反復学習が必要なため、余裕を持ったスケジュールを組むことをおすすめします。
+                    </p>
+                </section>
+
+                <section id="faq">
+                    <h2><i class="ti ti-help-circle"></i>11. よくある質問（FAQ）</h2>
+                    <details class="faq-item" open>
+                        <summary>CompTIA A+ を先に取っていないと受験できませんか？</summary>
+                        <p>
+                            A+ は必須の前提資格ではありません。ただし公式には「A+相当の知識 +
+                            9〜12ヶ月の実務経験」が推奨レベルとして示されているため、未経験者はA+の内容（PCやOSの基礎）に軽く触れておくと理解がスムーズです。
+                        </p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>パフォーマンスベース問題とは何ですか？</summary>
+                        <p>
+                            選択肢を選ぶだけの設問とは異なり、シミュレーション画面上でネットワーク構成やコマンド操作を実際に行わせる実技形式の設問です。知識だけでなく操作手順の習熟が求められます。
+                        </p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>不合格だった場合はどうすればよいですか？</summary>
+                        <p>
+                            試験後に配布されるスコアレポートで、ドメインごとの得点傾向を確認できます。弱点ドメインを重点的に復習し、再受験の計画を立てましょう（第7章のステップ7〜ステップ5のループを参照）。
+                        </p>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Network+ の次に取得すべき資格は？</summary>
+                        <p>
+                            セキュリティ分野に進みたい場合は CompTIA
+                            Security+、クラウド分野に進みたい場合は CompTIA
+                            Cloud+、特定ベンダー技術を深めたい場合は Cisco CCNA
+                            などが一般的な進路として挙げられます。
+                        </p>
+                    </details>
+                </section>
+
+                <section id="summary">
+                    <h2><i class="ti ti-checklist"></i>12. まとめ</h2>
+                    <p>
+                        CompTIA Network+ (N10-009)
+                        は、以下の5ドメインから幅広く出題される、ベンダーニュートラルなネットワーク基礎資格です。
+                    </p>
+                    <ul>
+                        <li>ネットワークの概念（23%）</li>
+                        <li>ネットワークの実装（20%）</li>
+                        <li>ネットワークの運用（19%）</li>
+                        <li>ネットワークセキュリティ（14%）</li>
+                        <li>ネットワークのトラブルシューティング（24%）</li>
+                    </ul>
+                    <p>
+                        配点の高い「トラブルシューティング」と「概念」を学習の軸に据え、「学習 →
+                        模擬試験 →
+                        弱点復習」のループを回すことが、効率的な合格への近道です。OSI参照モデルのような基礎的な地図を最初に頭に入れておくことで、以降の学習全体の理解速度が大きく変わります。
+                    </p>
+                    <div class="callout warning">
+                        <i class="ti ti-alert-circle"></i>
+                        <p>
+                            試験内容・配点・料金・退役時期などは予告なく変更される場合があります。受験前に必ず公式サイトで最新情報をご確認ください。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="references">
+                    <h2><i class="ti ti-link"></i>13. 参考文献・出典</h2>
+                    <p>
+                        本ガイドの試験詳細・出題範囲・学習教材情報は、以下のCompTIA公式ページの内容に基づいています。
+                    </p>
+                </section>
+
+                <footer class="page-footer">
+                    <div>アクセス日: 2026年7月21日</div>
+                    <ul class="refs">
+                        <li>
+                            <i class="ti ti-external-link"></i> CompTIA公式サイト「Network+ (Plus)
+                            Certification」 —
+                            <a
+                                href="https://www.comptia.org/en-us/certifications/network/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.comptia.org/en-us/certifications/network/</a
+                            >
+                        </li>
+                    </ul>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+        <script>
+            (function () {
+                var themeVariables = {
+                    background: 'transparent',
+                    primaryColor: '#5b21b6',
+                    primaryTextColor: '#ede9fe',
+                    primaryBorderColor: '#ddd6fe',
+                    lineColor: '#8f8aa8',
+                    secondaryColor: '#115e59',
+                    secondaryTextColor: '#ccfbf1',
+                    secondaryBorderColor: '#99f6e4',
+                    tertiaryColor: '#1c2027',
+                    tertiaryTextColor: '#e8eaed',
+                    tertiaryBorderColor: '#2a2f38',
+                    mainBkg: '#5b21b6',
+                    nodeTextColor: '#ede9fe',
+                    nodeBorder: '#ddd6fe',
+                    clusterBkg: '#1c2027',
+                    edgeLabelBackground: '#14171c',
+                    fontFamily:
+                        '-apple-system, BlinkMacSystemFont, Hiragino Kaku Gothic ProN, Hiragino Sans, Yu Gothic, Noto Sans JP, Meiryo, sans-serif',
+                    fontSize: '16px',
+                    pie1: '#7c3aed',
+                    pie2: '#0d9488',
+                    pie3: '#e2643e',
+                    pie4: '#d6579c',
+                    pie5: '#64748b',
+                    pieOuterStrokeColor: '#2a2f38',
+                    pieOpacity: '0.9',
+                    pieSectionTextColor: '#f5f5f7',
+                    pieTitleTextColor: '#e8eaed',
+                    pieLegendTextColor: '#c7cbd3',
+                    pieStrokeColor: '#0b0d10',
+                };
+
+                function renderDiagrams() {
+                    if (typeof mermaid === 'undefined') {
+                        console.error('mermaid failed to load from CDN');
+                        return;
+                    }
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        themeVariables: themeVariables,
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            nodeSpacing: 45,
+                            rankSpacing: 50,
+                        },
+                        pie: { useMaxWidth: false },
+                    });
+                    mermaid.run({ querySelector: '.mermaid' }).catch(function (err) {
+                        console.error('mermaid render failed', err);
+                    });
+                }
+
+                if (document.fonts && document.fonts.ready) {
+                    document.fonts.ready.then(renderDiagrams).catch(renderDiagrams);
+                } else {
+                    renderDiagrams();
+                }
+            })();
+        </script>
+    </body>
+</html>

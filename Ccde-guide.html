@@ -1,0 +1,1499 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCDE認定 完全ガイド ― 初学者のためのステップバイステップ解説</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;700;900&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+        <style>
+            :root {
+                --navy-deep: #082238;
+                --navy: #0a2e4d;
+                --navy-mid: #123a57;
+                --navy-light: #1b4a70;
+                --paper: #f5f8fa;
+                --paper-card: #ffffff;
+                --ink: #10202e;
+                --ink-soft: #3f5566;
+                --line-cyan: #7fb3d5;
+                --line-cyan-soft: rgba(127, 179, 213, 0.28);
+                --amber: #e8a33d;
+                --amber-deep: #c9832a;
+                --teal: #3f8e76;
+                --rose: #a85468;
+                --purple: #786a9e;
+                --font-display: 'Noto Serif JP', serif;
+                --font-body: 'Noto Sans JP', sans-serif;
+                --font-mono: 'JetBrains Mono', monospace;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                font-family: var(--font-body);
+                background:
+                    linear-gradient(var(--paper), var(--paper)),
+                    repeating-linear-gradient(
+                        0deg,
+                        var(--line-cyan-soft) 0 1px,
+                        transparent 1px 48px
+                    ),
+                    repeating-linear-gradient(
+                        90deg,
+                        var(--line-cyan-soft) 0 1px,
+                        transparent 1px 48px
+                    );
+                background-blend-mode: normal;
+                color: var(--ink);
+                line-height: 1.9;
+                font-size: 16px;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+            }
+
+            /* ---------- corner registration marks (decorative, blueprint drafting sheet motif) ---------- */
+            .reg-mark {
+                position: fixed;
+                width: 22px;
+                height: 22px;
+                pointer-events: none;
+                z-index: 50;
+                opacity: 0.55;
+            }
+            .reg-mark::before,
+            .reg-mark::after {
+                content: '';
+                position: absolute;
+                background: var(--line-cyan);
+            }
+            .reg-mark::before {
+                top: 50%;
+                left: 0;
+                right: 0;
+                height: 1.5px;
+                transform: translateY(-50%);
+            }
+            .reg-mark::after {
+                left: 50%;
+                top: 0;
+                bottom: 0;
+                width: 1.5px;
+                transform: translateX(-50%);
+            }
+            .reg-tl {
+                top: 14px;
+                left: 14px;
+            }
+            .reg-tr {
+                top: 14px;
+                right: 14px;
+            }
+            .reg-bl {
+                bottom: 14px;
+                left: 14px;
+            }
+            .reg-br {
+                bottom: 14px;
+                right: 14px;
+            }
+            @media (max-width: 600px) {
+                .reg-mark {
+                    display: none;
+                }
+            }
+
+            /* ---------- layout shell ---------- */
+            .page {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 40px 24px 80px;
+            }
+
+            /* ---------- title block (engineering drawing title block) ---------- */
+            .titleblock {
+                background: var(--navy);
+                color: #f5f9fb;
+                border: 1px solid var(--navy-deep);
+                border-radius: 4px;
+                overflow: hidden;
+                margin-bottom: 36px;
+                box-shadow: 0 12px 32px -18px rgba(8, 34, 56, 0.55);
+            }
+            .titleblock-top {
+                padding: 22px 26px 16px;
+                border-bottom: 1px solid rgba(127, 179, 213, 0.3);
+            }
+            .titleblock-eyebrow {
+                font-family: var(--font-mono);
+                font-size: 12px;
+                letter-spacing: 0.16em;
+                color: var(--line-cyan);
+                text-transform: uppercase;
+                margin: 0 0 8px;
+            }
+            .titleblock-title {
+                font-family: var(--font-display);
+                font-weight: 900;
+                font-size: clamp(24px, 4vw, 34px);
+                margin: 0;
+                line-height: 1.4;
+            }
+            .titleblock-sub {
+                font-size: 14.5px;
+                color: #cfe1ee;
+                margin: 10px 0 0;
+            }
+            .titleblock-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                font-family: var(--font-mono);
+                font-size: 12.5px;
+            }
+            .tb-field {
+                padding: 12px 16px;
+                border-right: 1px solid rgba(127, 179, 213, 0.25);
+                border-top: 1px solid rgba(127, 179, 213, 0.25);
+            }
+            .tb-field:last-child {
+                border-right: none;
+            }
+            .tb-label {
+                color: var(--line-cyan);
+                letter-spacing: 0.06em;
+                display: block;
+                margin-bottom: 4px;
+            }
+            .tb-value {
+                color: #f5f9fb;
+            }
+            @media (max-width: 680px) {
+                .titleblock-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+            /* ---------- hero ---------- */
+            .hero {
+                margin: 0 0 40px;
+            }
+            .hero h1 {
+                font-family: var(--font-display);
+                font-weight: 900;
+                font-size: clamp(26px, 5vw, 40px);
+                line-height: 1.5;
+                margin: 0 0 14px;
+                color: var(--navy);
+            }
+            .hero p {
+                font-size: 16.5px;
+                color: var(--ink-soft);
+                max-width: 64ch;
+            }
+            .hero .accent {
+                color: var(--amber-deep);
+            }
+
+            /* ---------- table of contents ---------- */
+            .toc {
+                background: var(--paper-card);
+                border: 1px solid var(--line-cyan-soft);
+                border-left: 4px solid var(--amber);
+                border-radius: 4px;
+                padding: 20px 24px;
+                margin-bottom: 56px;
+            }
+            .toc-title {
+                font-family: var(--font-mono);
+                font-size: 12px;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--amber-deep);
+                margin: 0 0 12px;
+                font-weight: 700;
+            }
+            .toc ol {
+                columns: 2;
+                -webkit-columns: 2;
+                margin: 0;
+                padding-left: 20px;
+                font-size: 14.5px;
+            }
+            .toc li {
+                margin-bottom: 8px;
+                break-inside: avoid;
+            }
+            .toc a {
+                color: var(--navy);
+                text-decoration: none;
+                border-bottom: 1px dashed var(--line-cyan);
+            }
+            .toc a:hover {
+                color: var(--amber-deep);
+                border-color: var(--amber-deep);
+            }
+            @media (max-width: 600px) {
+                .toc ol {
+                    columns: 1;
+                }
+            }
+
+            /* ---------- section sheets ---------- */
+            section.sheet {
+                margin-bottom: 64px;
+                scroll-margin-top: 24px;
+            }
+            .sheet-head {
+                display: flex;
+                align-items: baseline;
+                gap: 14px;
+                margin-bottom: 18px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid var(--navy);
+            }
+            .sheet-num {
+                font-family: var(--font-mono);
+                font-weight: 700;
+                font-size: 13px;
+                color: #fff;
+                background: var(--navy);
+                border: 1.5px solid var(--navy-deep);
+                border-radius: 50%;
+                width: 34px;
+                height: 34px;
+                min-width: 34px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .sheet-head h2 {
+                font-family: var(--font-display);
+                font-weight: 700;
+                font-size: clamp(20px, 3.4vw, 26px);
+                margin: 0;
+                color: var(--navy);
+            }
+            .sheet-head .sheet-eyebrow {
+                display: block;
+                font-family: var(--font-mono);
+                font-size: 11.5px;
+                letter-spacing: 0.14em;
+                color: var(--amber-deep);
+                text-transform: uppercase;
+                margin-bottom: 2px;
+            }
+            .sheet-body p {
+                margin: 0 0 16px;
+            }
+            .sheet-body h3 {
+                font-family: var(--font-body);
+                font-weight: 700;
+                font-size: 17px;
+                color: var(--navy);
+                margin: 28px 0 10px;
+                padding-left: 12px;
+                border-left: 3px solid var(--line-cyan);
+            }
+
+            /* ---------- diagram cards ---------- */
+            .diagram-card {
+                background: var(--navy);
+                border: 1px solid var(--navy-deep);
+                border-radius: 6px;
+                padding: 22px 18px 12px;
+                margin: 22px 0 10px;
+                overflow-x: auto;
+            }
+            .diagram-card .mermaid {
+                display: flex;
+                justify-content: center;
+            }
+            .diagram-caption {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 8px;
+                font-size: 13px;
+                color: var(--ink-soft);
+                margin: 0 0 30px;
+                padding: 0 2px;
+            }
+            .diagram-caption .cap-label {
+                font-weight: 600;
+                color: var(--ink);
+            }
+            .diagram-caption a {
+                color: var(--navy);
+            }
+
+            /* ---------- tables ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 18px 0 8px;
+            }
+            table.data {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14.5px;
+                background: var(--paper-card);
+            }
+            table.data caption {
+                display: none;
+            }
+            table.data thead th {
+                background: var(--navy);
+                color: #fff;
+                text-align: left;
+                padding: 10px 14px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            table.data tbody td,
+            table.data tbody th {
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--line-cyan-soft);
+                vertical-align: top;
+            }
+            table.data tbody th {
+                text-align: left;
+                color: var(--navy);
+                font-weight: 600;
+                white-space: nowrap;
+            }
+            table.data tbody tr:nth-child(even) {
+                background: #f7fafc;
+            }
+            table.data td.num,
+            table.data th.num {
+                font-family: var(--font-mono);
+            }
+            .src-note {
+                font-size: 12.5px;
+                color: var(--ink-soft);
+                margin: 6px 0 30px;
+            }
+            .src-note a {
+                color: var(--navy);
+            }
+
+            /* ---------- callouts / glossary ---------- */
+            .callout {
+                border-left: 3px solid var(--amber);
+                background: #fff8ec;
+                padding: 12px 16px;
+                border-radius: 0 4px 4px 0;
+                margin: 16px 0;
+                font-size: 14.5px;
+            }
+            .callout strong {
+                color: var(--amber-deep);
+            }
+
+            .glossary-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+                margin-top: 10px;
+            }
+            @media (max-width: 680px) {
+                .glossary-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .gterm {
+                background: var(--paper-card);
+                border: 1px solid var(--line-cyan-soft);
+                border-radius: 4px;
+                padding: 14px 16px;
+            }
+            .gterm dt {
+                font-family: var(--font-mono);
+                font-weight: 700;
+                color: var(--navy);
+                font-size: 13.5px;
+                margin-bottom: 6px;
+            }
+            .gterm dd {
+                margin: 0;
+                font-size: 13.5px;
+                color: var(--ink-soft);
+            }
+
+            /* ---------- FAQ ---------- */
+            .faq-item {
+                border-top: 1px solid var(--line-cyan-soft);
+                padding: 16px 0;
+            }
+            .faq-q {
+                font-weight: 700;
+                color: var(--navy);
+                display: flex;
+                gap: 10px;
+                margin: 0 0 8px;
+            }
+            .faq-q .q-mark {
+                font-family: var(--font-mono);
+                color: var(--amber-deep);
+                min-width: 20px;
+            }
+            .faq-a {
+                margin: 0;
+                padding-left: 30px;
+                color: var(--ink-soft);
+                font-size: 14.5px;
+            }
+
+            /* ---------- sources ---------- */
+            .sources ol {
+                padding-left: 20px;
+            }
+            .sources li {
+                margin-bottom: 14px;
+                font-size: 14px;
+            }
+            .sources a {
+                color: var(--navy);
+                word-break: break-all;
+            }
+            .sources .src-desc {
+                display: block;
+                color: var(--ink-soft);
+                font-size: 13px;
+                margin-top: 2px;
+            }
+
+            footer.closing {
+                margin-top: 40px;
+                padding-top: 20px;
+                border-top: 2px solid var(--navy);
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+                font-family: var(--font-mono);
+                font-size: 11.5px;
+                color: var(--ink-soft);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="reg-mark reg-tl"></div>
+        <div class="reg-mark reg-tr"></div>
+        <div class="reg-mark reg-bl"></div>
+        <div class="reg-mark reg-br"></div>
+
+        <div class="page">
+            <!-- ============ TITLE BLOCK ============ -->
+            <div class="titleblock">
+                <div class="titleblock-top">
+                    <p class="titleblock-eyebrow">
+                        Cisco Certification Blueprint / 認定資格 解説図面
+                    </p>
+                    <h1 class="titleblock-title">
+                        CCDE（Cisco Certified Design Expert）認定 完全ガイド
+                    </h1>
+                    <p class="titleblock-sub">
+                        初学者のためのステップバイステップ解説 ―
+                        全体像・試験構成・出題範囲・再認定までを1枚に整理
+                    </p>
+                </div>
+                <div class="titleblock-grid">
+                    <div class="tb-field">
+                        <span class="tb-label">対象試験</span
+                        ><span class="tb-value">400-007（筆記）+ 実技試験</span>
+                    </div>
+                    <div class="tb-field">
+                        <span class="tb-label">現行バージョン</span
+                        ><span class="tb-value">CCDE v3.1</span>
+                    </div>
+                    <div class="tb-field">
+                        <span class="tb-label">認定レベル</span
+                        ><span class="tb-value">Expert（最上位）</span>
+                    </div>
+                    <div class="tb-field">
+                        <span class="tb-label">有効期間</span><span class="tb-value">3年</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ HERO ============ -->
+            <div class="hero">
+                <h1>
+                    ネットワークという都市の、<br /><span class="accent">青写真</span>を描く資格。
+                </h1>
+                <p>
+                    CCDEは、特定の製品や設定手順ではなく「複雑なネットワークをどう設計し、どうアーキテクチャとして組み立てるか」を問う、Cisco認定資格の中でも最上位クラス（Expertレベル）の資格です。このガイドでは、公式情報をもとに、前提知識ゼロの状態からでも全体像がつかめるように、試験の仕組みを順番に解説していきます。
+                </p>
+            </div>
+
+            <!-- ============ TOC ============ -->
+            <nav class="toc">
+                <p class="toc-title">目次 / Index</p>
+                <ol>
+                    <li><a href="#what-is-ccde">1. CCDEとは何か</a></li>
+                    <li><a href="#overall-flow">2. 認定までの全体フロー</a></li>
+                    <li><a href="#prerequisites">3. 受験資格・推奨される経験</a></li>
+                    <li><a href="#step1-written">4. STEP1：筆記試験（400-007）</a></li>
+                    <li><a href="#step2-practical">5. STEP2：実技試験</a></li>
+                    <li><a href="#certifications-earned">6. 合格後に得られる認定</a></li>
+                    <li><a href="#costs">7. 費用まとめ</a></li>
+                    <li><a href="#recertification">8. 再認定（3年ごと）</a></li>
+                    <li><a href="#roadmap">9. 初学者向け学習ロードマップ</a></li>
+                    <li><a href="#glossary">10. 初学者のための用語辞典</a></li>
+                    <li><a href="#faq">11. よくある質問</a></li>
+                    <li><a href="#sources">12. 参考情報源</a></li>
+                </ol>
+            </nav>
+
+            <!-- ============ 1. CCDEとは ============ -->
+            <section class="sheet" id="what-is-ccde">
+                <div class="sheet-head">
+                    <div class="sheet-num">01</div>
+                    <div>
+                        <span class="sheet-eyebrow">Overview</span>
+                        <h2>CCDEとは何か</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        CCDEは、複雑なエンタープライズ
+                        ネットワークを設計し、アーキテクチャとして構築するスキルを証明する、Cisco認定資格の最上位カテゴリ「Expert」に属する資格です。実装や運用そのものよりも、ビジネス要件と技術要件を整理し、拡張性・回復性・コストなどの複数の観点からトレードオフを判断して「設計を決定し、その根拠を説明する」能力が問われます。
+                    </p>
+                    <p>
+                        取得を目指す代表的な職種としては、ソリューションアーキテクト、ネットワークアーキテクト、ネットワークデザイナーなどが挙げられており、シニアレベルやリーダー職を目指すエンジニアの多くが取得を検討する資格として位置づけられています。
+                    </p>
+                    <h3>CCIEとの違い（ざっくりしたイメージ）</h3>
+                    <p>
+                        同じExpertレベルの資格であるCCIEが「特定技術領域を実装・運用できる力」を検証するのに対し、CCDEは特定のベンダー技術に閉じず「ネットワーク全体の設計判断ができる力」を検証する、という役割分担で語られることが多い資格です。どちらが上位というより、実装寄りか設計寄りかという専門性の違いだと捉えると理解しやすくなります。
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 2. 全体フロー ============ -->
+            <section class="sheet" id="overall-flow">
+                <div class="sheet-head">
+                    <div class="sheet-num">02</div>
+                    <div>
+                        <span class="sheet-eyebrow">Big Picture</span>
+                        <h2>認定までの全体フロー</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        CCDE認定を取得するまでの流れは、大きく分けて「筆記試験」と「実技試験」の2段階です。まずは全体像を1枚のフローチャートで確認しましょう。
+                    </p>
+
+                    <div class="diagram-card">
+                        <pre class="mermaid">
+flowchart TD
+    Pre["実務経験 5〜7年を推奨<br/>（正式な出願資格は無し）"]
+    Pre --> Step1["STEP 1<br/>CCDE筆記試験 400-007 v3.1<br/>2時間・90〜110問"]
+    Step1 -->|合格| Spec["Cisco Certified Design Expert<br/>Specialist 認定を取得"]
+    Spec --> Choice{"実技試験のエレクティブを<br/>1つ選択する"}
+    Choice --> E1["AI Infrastructure"]
+    Choice --> E2["Large Scale Networks"]
+    Choice --> E3["On-Prem and<br/>Cloud Services"]
+    Choice --> E4["Workforce Mobility"]
+    E1 --> Step2["STEP 2<br/>CCDE実技試験 v3.1<br/>8時間・シナリオベース"]
+    E2 --> Step2
+    E3 --> Step2
+    E4 --> Step2
+    Step2 -->|合格| Goal["CCDE認定 取得<br/>＋ 選択したエレクティブの<br/>Specialist認定"]
+    Goal --> Recert["3年ごとの再認定<br/>（再試験 または CE単位）"]
+
+    classDef stage fill:#123A57,stroke:#7FB3D5,color:#F5F9FB,stroke-width:1.5px;
+    classDef decision fill:#3A2A10,stroke:#E8A33D,color:#FBF1DF,stroke-width:2px;
+    classDef goal fill:#123A57,stroke:#3F8E76,color:#F5F9FB,stroke-width:2px;
+    class Pre,Step1,Step2,E1,E2,E3,E4,Spec stage;
+    class Choice decision;
+    class Goal,Recert goal;
+        </pre>
+                    </div>
+                    <p class="diagram-caption">
+                        <span class="cap-label">図1：CCDE認定 取得フロー全体像</span>
+                        <a href="#sources"
+                            >出典：Cisco公式CCDEページ／Exams and Trainingページ（参考情報源 [2][3]
+                            参照）</a
+                        >
+                    </p>
+
+                    <p>
+                        ポイントは、実技試験を受ける前に「4つのエレクティブ（専門領域）」から1つを選ぶ必要があること、そして筆記試験の合格だけでも独立した認定（Specialist）が得られることです。この2点は初学者がつまずきやすいポイントなので、次の章以降で詳しく見ていきます。
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 3. 受験資格 ============ -->
+            <section class="sheet" id="prerequisites">
+                <div class="sheet-head">
+                    <div class="sheet-num">03</div>
+                    <div>
+                        <span class="sheet-eyebrow">Eligibility</span>
+                        <h2>受験資格・推奨される経験</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        CCDEには「この資格を持っていないと受験できない」という正式な前提条件はありません。ただし、試験内容そのものが非常に高度であるため、受験前に出題範囲を十分に理解しておくことが強く推奨されています。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>公式な前提資格</th>
+                                    <td>なし（オープンな受験資格）</td>
+                                </tr>
+                                <tr>
+                                    <th>推奨される実務経験</th>
+                                    <td>
+                                        ネットワークの設計・アーキテクチャ構築、プリセールスなど関連業務における
+                                        5〜7年程度の経験
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>想定される受験者像</th>
+                                    <td>
+                                        シニアネットワークエンジニア／ソリューションアーキテクト／ネットワークアーキテクトを目指す人
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        出典：<a
+                            href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/expert/ccde.html"
+                            target="_blank"
+                            rel="noopener"
+                            >Cisco公式 CCDEページ（日本語）</a
+                        >、<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/index.html"
+                            target="_blank"
+                            rel="noopener"
+                            >CCDE Overview（英語）</a
+                        >
+                    </p>
+
+                    <div class="callout">
+                        <strong>初学者向けメモ：</strong
+                        >「前提資格がない＝簡単」ではありません。実際には出題範囲そのものが実務経験を前提にした内容であるため、経験が浅い段階でいきなり合格を狙うのは現実的ではない、という点は理解しておきましょう。
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 4. STEP1 筆記試験 ============ -->
+            <section class="sheet" id="step1-written">
+                <div class="sheet-head">
+                    <div class="sheet-num">04</div>
+                    <div>
+                        <span class="sheet-eyebrow">Step 1 / Written Exam</span>
+                        <h2>筆記試験（400-007 CCDE v3.1）</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        最初の関門となるのが、試験コード「400-007」と呼ばれる筆記試験です。2時間の選択式試験で、90〜110問が出題されます。ネットワーク設計、テクノロジー、ビジネス要件と技術要件に基づいた仕様の作成、事業戦略といった領域の知識・スキルに焦点を当てた試験です。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>試験コード</th>
+                                    <td class="num">400-007（CCDE v3.1）</td>
+                                </tr>
+                                <tr>
+                                    <th>試験時間</th>
+                                    <td class="num">2時間（120分）</td>
+                                </tr>
+                                <tr>
+                                    <th>出題形式</th>
+                                    <td>選択式（クローズドブック・参考資料の持ち込み不可）</td>
+                                </tr>
+                                <tr>
+                                    <th>問題数</th>
+                                    <td class="num">90〜110問</td>
+                                </tr>
+                                <tr>
+                                    <th>試験言語</th>
+                                    <td>英語のみ</td>
+                                </tr>
+                                <tr>
+                                    <th>受験費用の目安</th>
+                                    <td class="num">
+                                        US$450（Cisco Learning Creditsでの支払いも可）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>実施会場</th>
+                                    <td>Pearson VUEテストセンター</td>
+                                </tr>
+                                <tr>
+                                    <th>合格後に得られるもの</th>
+                                    <td>Cisco Certified Design Expert Specialist 認定</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        出典：<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/current-list/400-007-ccde.html"
+                            target="_blank"
+                            rel="noopener"
+                            >400-007 CCDE 試験ページ</a
+                        >、<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/exams-and-training.html"
+                            target="_blank"
+                            rel="noopener"
+                            >CCDE Exams and Training</a
+                        >
+                    </p>
+
+                    <h3>出題範囲（5つのドメイン）</h3>
+                    <p>
+                        筆記試験の出題範囲は、Cisco公式の「Unified Exam
+                        Topics」で5つのドメインに整理されており、それぞれに配点比率（重み）が決まっています。
+                    </p>
+
+                    <div class="diagram-card">
+                        <pre class="mermaid">
+pie showData
+    title CCDE筆記試験（400-007 v3.1）出題範囲の配分
+    "1.0 ビジネス戦略設計 (15%)" : 15
+    "2.0 制御/データ/管理プレーンと運用設計 (25%)" : 25
+    "3.0 ネットワーク設計 (30%)" : 30
+    "4.0 サービス設計 (15%)" : 15
+    "5.0 セキュリティ設計 (15%)" : 15
+        </pre
+                        >
+                    </div>
+                    <p class="diagram-caption">
+                        <span class="cap-label">図2：筆記試験ドメイン別の配点比率</span>
+                        <span
+                            >出典：Cisco公式「CCDE v3.1 Unified Exam Topics」（参考情報源 [5]
+                            参照）</span
+                        >
+                    </p>
+
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th class="num">No.</th>
+                                    <th>ドメイン</th>
+                                    <th class="num">配点</th>
+                                    <th>主な内容（例）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="num">1.0</td>
+                                    <th>ビジネス戦略設計</th>
+                                    <td class="num">15%</td>
+                                    <td>
+                                        プロジェクト管理手法（Waterfall／Agile）の設計への影響、事業継続性、環境的持続可能性、AI／機械学習のビジネス観点
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="num">2.0</td>
+                                    <th>制御・データ・管理プレーンと運用設計</th>
+                                    <td class="num">25%</td>
+                                    <td>
+                                        エンドツーエンドのトラフィックフロー、自動化・オーケストレーション、SD-WANやコントローラベースのアーキテクチャ、可観測性（Observability）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="num">3.0</td>
+                                    <th>ネットワーク設計</th>
+                                    <td class="num">30%</td>
+                                    <td>
+                                        回復性・拡張性・セキュアなモジュール型ネットワーク設計、移行／変革計画、AIを活用したネットワーク設計ユースケース
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="num">4.0</td>
+                                    <th>サービス設計</th>
+                                    <td class="num">15%</td>
+                                    <td>
+                                        音声・映像・バックアップ・データセンターレプリケーション・IoT・ストレージなどのサービス設計、クラウド／ハイブリッド構成
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="num">5.0</td>
+                                    <th>セキュリティ設計</th>
+                                    <td class="num">15%</td>
+                                    <td>
+                                        セグメンテーション、ネットワークアクセス制御、CIA
+                                        triad、規制遵守、AIが企業のセキュリティポリシーに与える影響
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        出典：<a
+                            href="https://learningcontent.cisco.com/documents/marketing/exam-topics/CCDE_v3.1_Unified_Exam_Topics_12132024.pdf"
+                            target="_blank"
+                            rel="noopener"
+                            >CCDE v3.1 Unified Exam Topics（公式PDF）</a
+                        >
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 5. STEP2 実技試験 ============ -->
+            <section class="sheet" id="step2-practical">
+                <div class="sheet-head">
+                    <div class="sheet-num">05</div>
+                    <div>
+                        <span class="sheet-eyebrow">Step 2 / Practical Exam</span>
+                        <h2>実技試験（CCDE v3.1 Practical）</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        筆記試験に合格すると、次は8時間のシナリオベース実技試験に進めます。この試験は「コアモジュール」と「エレクティブ（選択制の専門分野）」の2部構成になっているのが大きな特徴です。実技試験の開始時に、4つのエレクティブから1つを選択します。
+                    </p>
+
+                    <div class="diagram-card">
+                        <pre class="mermaid">
+flowchart LR
+    Core["コアモジュール<br/>（全受験者に共通）<br/>エンタープライズアーキテクチャ<br/>全般の技術・設計力"]
+    Elective["エレクティブモジュール<br/>（4分野から1つを選択）"]
+    Core --> Merge(("8時間の<br/>統合シナリオ試験"))
+    Elective --> Merge
+    Merge --> Result["合格でCCDE認定 ＋<br/>選択したエレクティブの<br/>Specialist認定を取得"]
+
+    classDef stage fill:#123A57,stroke:#7FB3D5,color:#F5F9FB,stroke-width:1.5px;
+    classDef merge fill:#3A2A10,stroke:#E8A33D,color:#FBF1DF,stroke-width:2px;
+    classDef goal fill:#123A57,stroke:#3F8E76,color:#F5F9FB,stroke-width:2px;
+    class Core,Elective stage;
+    class Merge merge;
+    class Result goal;
+        </pre>
+                    </div>
+                    <p class="diagram-caption">
+                        <span class="cap-label">図3：実技試験の構成（コア＋エレクティブ）</span>
+                        <span>出典：Cisco公式 Exams and Trainingページ（参考情報源 [3] 参照）</span>
+                    </p>
+
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>試験時間</th>
+                                    <td class="num">8時間</td>
+                                </tr>
+                                <tr>
+                                    <th>出題形式</th>
+                                    <td>
+                                        シナリオベースの実技課題（クローズドブック・参考資料の持ち込み不可）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>受験費用の目安</th>
+                                    <td class="num">
+                                        US$1,600（Cisco Learning Creditsでの支払いも可）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>受験可能時期</th>
+                                    <td>筆記試験合格後、18か月以内に初回受験が必要</td>
+                                </tr>
+                                <tr>
+                                    <th>実施会場</th>
+                                    <td>Ciscoが指定する専用の認定試験会場</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        出典：<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/exams-and-training.html"
+                            target="_blank"
+                            rel="noopener"
+                            >CCDE Exams and Training</a
+                        >、<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/policies.html"
+                            target="_blank"
+                            rel="noopener"
+                            >Exam, Testing, and Certification Policies</a
+                        >
+                    </p>
+
+                    <h3>4つのエレクティブ（専門領域）</h3>
+                    <p>
+                        2025年2月から、実技試験は新しい「Specialist」体系に移行しました。AI
+                        Infrastructureという新しい選択肢が加わり、選んだエレクティブごとに個別のSpecialist認定が発行される仕組みになっています。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th>エレクティブ</th>
+                                    <th>概要</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>AI Infrastructure</th>
+                                    <td>
+                                        AI・機械学習ワークロード向けのネットワークとコンピューティング基盤を設計・最適化する力を検証
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Large Scale Networks</th>
+                                    <td>
+                                        大規模ネットワークにおけるトランスポート技術、レイヤー2/3の制御プレーン、仮想化・自動化の統合力を検証
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>On-Prem and Cloud Services</th>
+                                    <td>
+                                        オンプレミスとクラウドを統合するトランスポート技術、L3接続、仮想化・自動化、データセンター設計の力を検証
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Workforce Mobility</th>
+                                    <td>
+                                        ID管理などのネットワークセキュリティ、無線・キャンパスネットワークの設計力を検証
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        出典：<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/exams-and-training.html"
+                            target="_blank"
+                            rel="noopener"
+                            >CCDE Exams and Training</a
+                        >
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 6. 得られる認定 ============ -->
+            <section class="sheet" id="certifications-earned">
+                <div class="sheet-head">
+                    <div class="sheet-num">06</div>
+                    <div>
+                        <span class="sheet-eyebrow">What You Earn</span>
+                        <h2>合格後に得られる認定</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        CCDEの面白い点は、途中経過ごとに独立した認定が発行されることです。筆記試験に合格した時点で「CCDE
+                        Specialist」が、実技試験に合格した時点で「CCDE認定」および選択したエレクティブごとの「Specialist認定」が付与されます。途中で挫折しても、それまでの努力がゼロにならない設計になっている点は、初学者にとって心強いポイントです。
+                    </p>
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th>合格した試験</th>
+                                    <th>得られる認定</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>筆記試験（400-007）</th>
+                                    <td>Cisco Certified Design Expert Specialist 認定</td>
+                                </tr>
+                                <tr>
+                                    <th>実技試験（選択したエレクティブ）</th>
+                                    <td>
+                                        CCDE認定 ＋ 選択したエレクティブごとのExpert Specialist認定
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        出典：<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/exams-and-training.html"
+                            target="_blank"
+                            rel="noopener"
+                            >CCDE Exams and Training</a
+                        >
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 7. 費用まとめ ============ -->
+            <section class="sheet" id="costs">
+                <div class="sheet-head">
+                    <div class="sheet-num">07</div>
+                    <div>
+                        <span class="sheet-eyebrow">Budget</span>
+                        <h2>費用まとめ</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        CCDEはExpertレベルの資格らしく、受験費用も相応の水準です。事前に概算を把握しておくと計画が立てやすくなります。
+                    </p>
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th>試験</th>
+                                    <th class="num">費用目安</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>筆記試験（400-007）</th>
+                                    <td class="num">US$450</td>
+                                </tr>
+                                <tr>
+                                    <th>実技試験</th>
+                                    <td class="num">US$1,600</td>
+                                </tr>
+                                <tr>
+                                    <th>合計目安</th>
+                                    <td class="num">約 US$2,050</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        為替レートや実施時期により変動します。Cisco Learning
+                        Creditsでの支払いにも対応しています。出典：<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/exams-and-training.html"
+                            target="_blank"
+                            rel="noopener"
+                            >CCDE Exams and Training</a
+                        >
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 8. 再認定 ============ -->
+            <section class="sheet" id="recertification">
+                <div class="sheet-head">
+                    <div class="sheet-num">08</div>
+                    <div>
+                        <span class="sheet-eyebrow">Recertification</span>
+                        <h2>再認定（有効期間は3年）</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        CCDE認定の有効期間は3年です。取得して終わりではなく、期限内に一定のアクションを取らないと失効してしまう点に注意が必要です。再認定には主に3つの方法があります。
+                    </p>
+
+                    <div class="diagram-card">
+                        <pre class="mermaid">
+flowchart TD
+    Start["CCDE認定を取得<br/>（有効期間3年のカウント開始）"]
+    Start --> Ask{"有効期限までに<br/>再認定できたか？"}
+    Ask -->|再試験に合格| Renew1["再認定完了"]
+    Ask -->|CE単位を必要数取得| Renew2["再認定完了"]
+    Ask -->|上位／隣接資格に合格| Renew3["再認定完了"]
+    Ask -->|何もしなかった| Expire["認定が失効<br/>→ 試験からやり直し"]
+    Renew1 --> Cycle["新たに3年間の<br/>有効期間がスタート"]
+    Renew2 --> Cycle
+    Renew3 --> Cycle
+
+    classDef stage fill:#123A57,stroke:#7FB3D5,color:#F5F9FB,stroke-width:1.5px;
+    classDef decision fill:#3A2A10,stroke:#E8A33D,color:#FBF1DF,stroke-width:2px;
+    classDef bad fill:#3A1414,stroke:#A85468,color:#FBE3E7,stroke-width:2px;
+    classDef good fill:#123A57,stroke:#3F8E76,color:#F5F9FB,stroke-width:2px;
+    class Start,Cycle stage;
+    class Ask decision;
+    class Renew1,Renew2,Renew3 good;
+    class Expire bad;
+        </pre>
+                    </div>
+                    <p class="diagram-caption">
+                        <span class="cap-label">図4：CCDE認定の再認定サイクル</span>
+                        <span>出典：Cisco公式 再認定ポリシー（参考情報源 [6][7] 参照）</span>
+                    </p>
+
+                    <div class="table-wrap">
+                        <table class="data">
+                            <thead>
+                                <tr>
+                                    <th>方法</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>再試験に合格する</th>
+                                    <td>現行の筆記試験または実技試験に再度合格する</td>
+                                </tr>
+                                <tr>
+                                    <th>CE（継続教育）単位を貯める</th>
+                                    <td>
+                                        Cisco Continuing
+                                        Educationプログラムの対象研修・活動を通じて、必要単位数を取得する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>上位／隣接資格に合格する</th>
+                                    <td>
+                                        より上位の認定試験に合格することでも、再認定として扱われる場合がある
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="src-note">
+                        出典：<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/recertification/index.html"
+                            target="_blank"
+                            rel="noopener"
+                            >Recertification Policy</a
+                        >、<a
+                            href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/continuing-education/index.html"
+                            target="_blank"
+                            rel="noopener"
+                            >Continuing Education Program</a
+                        >
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 9. 学習ロードマップ ============ -->
+            <section class="sheet" id="roadmap">
+                <div class="sheet-head">
+                    <div class="sheet-num">09</div>
+                    <div>
+                        <span class="sheet-eyebrow">Study Plan</span>
+                        <h2>初学者向け学習ロードマップ（提案）</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        ここまでの情報を踏まえて、初学者がCCDEを目指す場合に取り得る学習の順序を、一般的な流れとして整理しました。あくまで一例として参考にしてください。
+                    </p>
+
+                    <div class="diagram-card">
+                        <pre class="mermaid">
+flowchart TD
+    A["1. 現場での設計・アーキテクチャ経験を積む<br/>（5〜7年が目安）"] --> B["2. 公式Unified Exam Topicsで<br/>出題範囲全体を確認する"]
+    B --> C["3. 5つのドメインごとに<br/>知識を体系的にインプットする"]
+    C --> D["4. 実際の設計事例で<br/>トレードオフ分析を練習する"]
+    D --> E["5. 筆記試験（400-007）を<br/>Pearson VUEで予約・受験する"]
+    E --> F["6. 実技試験のエレクティブを検討し<br/>模擬シナリオで演習する"]
+    F --> G["7. CCDE実技試験（8時間）を<br/>予約・受験する"]
+
+    classDef step fill:#123A57,stroke:#7FB3D5,color:#F5F9FB,stroke-width:1.5px;
+    class A,B,C,D,E,F,G step;
+        </pre>
+                    </div>
+                    <p class="diagram-caption">
+                        <span class="cap-label">図5：学習ロードマップの一例</span>
+                        <span>作成：本ガイドの著者による整理案</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 10. 用語辞典 ============ -->
+            <section class="sheet" id="glossary">
+                <div class="sheet-head">
+                    <div class="sheet-num">10</div>
+                    <div>
+                        <span class="sheet-eyebrow">Glossary</span>
+                        <h2>初学者のための用語辞典</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        出題範囲の説明に出てくる専門用語のうち、初学者がつまずきやすいものを簡単にまとめました。
+                    </p>
+                    <dl class="glossary-grid">
+                        <div class="gterm">
+                            <dt>HLD（High-Level Design）</dt>
+                            <dd>
+                                詳細な設定値ではなく、システム全体の構成方針・構造を示す「概要設計」のこと。CCDE筆記試験が検証する中心的な能力。
+                            </dd>
+                        </div>
+                        <div class="gterm">
+                            <dt>ROI / CAPEX・OPEX</dt>
+                            <dd>
+                                ROIは投資対効果。CAPEXは設備投資（初期費用）、OPEXは運用費用（継続的なコスト）を指し、設計提案の妥当性を説明する際の判断材料になる。
+                            </dd>
+                        </div>
+                        <div class="gterm">
+                            <dt>SD-WAN</dt>
+                            <dd>
+                                ソフトウェアで制御される広域ネットワーク。拠点間の通信経路を集中管理し、柔軟に制御できるアーキテクチャ。
+                            </dd>
+                        </div>
+                        <div class="gterm">
+                            <dt>オーケストレーション／自動化</dt>
+                            <dd>
+                                設定変更や運用作業を、人手ではなくソフトウェア・APIを通じて自動的に実行する仕組み。CI/CDのような開発手法をネットワーク運用に応用する考え方も含む。
+                            </dd>
+                        </div>
+                        <div class="gterm">
+                            <dt>可観測性（Observability）</dt>
+                            <dd>
+                                ネットワークの状態や挙動を、ログ・メトリクスなどから継続的に把握できる状態のこと。障害の予兆把握や原因調査に直結する。
+                            </dd>
+                        </div>
+                        <div class="gterm">
+                            <dt>CIA triad</dt>
+                            <dd>
+                                情報セキュリティの基本原則である「機密性（Confidentiality）」「完全性（Integrity）」「可用性（Availability）」の頭文字を取ったもの。
+                            </dd>
+                        </div>
+                        <div class="gterm">
+                            <dt>SaaS / PaaS / IaaS</dt>
+                            <dd>
+                                クラウドサービスの提供形態の分類。ソフトウェア、開発プラットフォーム、インフラのどこまでを事業者が管理するかで区分される。
+                            </dd>
+                        </div>
+                        <div class="gterm">
+                            <dt>Cisco Learning Credits</dt>
+                            <dd>
+                                Ciscoの研修・試験費用の支払いに利用できる、Cisco独自のプリペイド型クレジット制度。
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
+
+            <!-- ============ 11. FAQ ============ -->
+            <section class="sheet" id="faq">
+                <div class="sheet-head">
+                    <div class="sheet-num">11</div>
+                    <div>
+                        <span class="sheet-eyebrow">FAQ</span>
+                        <h2>よくある質問</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <div class="faq-item">
+                        <p class="faq-q">
+                            <span class="q-mark">Q.</span
+                            >筆記試験に合格したら、実技試験はいつまでに受ければいい？
+                        </p>
+                        <p class="faq-a">
+                            Cisco公式の試験ポリシーでは、筆記試験合格後18か月以内に実技試験の初回受験をする必要があるとされています。計画的なスケジュールを組みましょう。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <p class="faq-q">
+                            <span class="q-mark">Q.</span
+                            >試験に落ちてしまったら、すぐに再受験できる？
+                        </p>
+                        <p class="faq-a">
+                            筆記試験に不合格の場合は5暦日、実技試験に不合格の場合は30暦日の待機期間を経てから再受験の予約が可能になります。また、一度合格した筆記試験（同一試験番号）を再度受けるには180日以上の間隔が必要です。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <p class="faq-q">
+                            <span class="q-mark">Q.</span>試験は日本語で受けられる？
+                        </p>
+                        <p class="faq-a">
+                            筆記試験（400-007）の試験言語は英語のみとされています。受験を検討する際は、この点を踏まえて準備を進める必要があります。
+                        </p>
+                    </div>
+                    <div class="faq-item">
+                        <p class="faq-q">
+                            <span class="q-mark">Q.</span>実技試験のエレクティブは後から変更できる？
+                        </p>
+                        <p class="faq-a">
+                            エレクティブは実技試験の当日に選択する仕組みです。事前にどの分野を選ぶかを検討し、それに沿った学習を進めておくことが推奨されています。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 12. 参考情報源 ============ -->
+            <section class="sheet sources" id="sources">
+                <div class="sheet-head">
+                    <div class="sheet-num">12</div>
+                    <div>
+                        <span class="sheet-eyebrow">Sources</span>
+                        <h2>参考情報源</h2>
+                    </div>
+                </div>
+                <div class="sheet-body">
+                    <p>
+                        本ガイドの内容は、以下のCisco公式ページ・公式資料をもとに作成しています。最新情報は必ず公式サイトでご確認ください。
+                    </p>
+                    <ol>
+                        <li>
+                            <a
+                                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/expert/ccde.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/expert/ccde.html</a
+                            >
+                            <span class="src-desc"
+                                >CCDE認定プログラム（Cisco公式・日本語ページ）</span
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/index.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/index.html</a
+                            >
+                            <span class="src-desc">CCDE Overview（Cisco公式・英語ページ）</span>
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/exams-and-training.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/design/ccde/exams-and-training.html</a
+                            >
+                            <span class="src-desc"
+                                >CCDE Exams and
+                                Training（試験構成・費用・エレクティブの最新情報）</span
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/current-list/400-007-ccde.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/exams/current-list/400-007-ccde.html</a
+                            >
+                            <span class="src-desc">400-007 CCDE 試験ページ（筆記試験の詳細）</span>
+                        </li>
+                        <li>
+                            <a
+                                href="https://learningcontent.cisco.com/documents/marketing/exam-topics/CCDE_v3.1_Unified_Exam_Topics_12132024.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningcontent.cisco.com/documents/marketing/exam-topics/CCDE_v3.1_Unified_Exam_Topics_12132024.pdf</a
+                            >
+                            <span class="src-desc"
+                                >CCDE v3.1 Unified Exam Topics（公式PDF・出題ドメインと配点）</span
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/recertification/index.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/recertification/index.html</a
+                            >
+                            <span class="src-desc">Recertification Policy（再認定ポリシー）</span>
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/continuing-education/index.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/continuing-education/index.html</a
+                            >
+                            <span class="src-desc"
+                                >Cisco Continuing Education Program（CE単位による再認定）</span
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/exams/policies.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/exams/policies.html</a
+                            >
+                            <span class="src-desc"
+                                >Exam, Testing, and Certification
+                                Policies（再受験の待機期間・18か月ルールなど）</span
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://learningnetwork.cisco.com/s/ccde-v3-1-unified-exam-topics"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningnetwork.cisco.com/s/ccde-v3-1-unified-exam-topics</a
+                            >
+                            <span class="src-desc"
+                                >Cisco Learning Network：CCDE v3.1 Unified Exam Topics and Study
+                                Guide</span
+                            >
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <footer class="closing">
+                <span>DRAWING: CCDE-GUIDE-001</span>
+                <span>REV: v3.1</span>
+                <span>SHEET: 1 / 1</span>
+            </footer>
+        </div>
+
+        <script>
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'base',
+                themeVariables: {
+                    background: '#0A2E4D',
+                    primaryColor: '#123A57',
+                    primaryTextColor: '#F5F9FB',
+                    primaryBorderColor: '#7FB3D5',
+                    lineColor: '#7FB3D5',
+                    secondaryColor: '#1B4A70',
+                    tertiaryColor: '#123A57',
+                    fontFamily: 'Noto Sans JP, sans-serif',
+                    fontSize: '14.5px',
+                    edgeLabelBackground: '#0A2E4D',
+                    clusterBkg: '#123A57',
+                    clusterBorder: '#7FB3D5',
+                    titleColor: '#E8A33D',
+                    nodeTextColor: '#F5F9FB',
+                    pie1: '#E8A33D',
+                    pie2: '#3F8E76',
+                    pie3: '#3B7CA8',
+                    pie4: '#A85468',
+                    pie5: '#786A9E',
+                    pieOuterStrokeColor: '#F5F9FB',
+                    pieOpacity: 1,
+                    pieTitleTextColor: '#F5F9FB',
+                    pieSectionTextColor: '#0A2E4D',
+                    pieLegendTextColor: '#F5F9FB',
+                    pieStrokeColor: '#0A2E4D',
+                },
+                flowchart: { curve: 'basis', htmlLabels: true },
+                securityLevel: 'loose',
+            });
+        </script>
+    </body>
+</html>
