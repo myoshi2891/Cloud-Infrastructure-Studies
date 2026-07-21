@@ -676,6 +676,11 @@
 
                     <div class="diagram-wrap">
                         <pre class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {
+  "pie1": "#7c3aed", "pie2": "#0d9488", "pie3": "#e2643e", "pie4": "#d6579c", "pie5": "#64748b",
+  "pieTitleTextColor": "#e8eaed", "pieLegendTextColor": "#c7cbd3", "pieSectionTextColor": "#f5f5f7",
+  "pieStrokeColor": "#0b0d10", "pieOuterStrokeColor": "#2a2f38", "pieOpacity": "0.9"
+}}}%%
 pie showData
     title Network+ (N10-009) ドメイン別配点
     "1. ネットワークの概念 (23%)" : 23
@@ -1241,38 +1246,32 @@ flowchart LR
         <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
         <script>
             (function () {
-                var themeVariables = {
-                    background: 'transparent',
-                    primaryColor: '#5b21b6',
-                    primaryTextColor: '#ede9fe',
-                    primaryBorderColor: '#ddd6fe',
-                    lineColor: '#8f8aa8',
-                    secondaryColor: '#115e59',
-                    secondaryTextColor: '#ccfbf1',
-                    secondaryBorderColor: '#99f6e4',
-                    tertiaryColor: '#1c2027',
-                    tertiaryTextColor: '#e8eaed',
-                    tertiaryBorderColor: '#2a2f38',
-                    mainBkg: '#5b21b6',
-                    nodeTextColor: '#ede9fe',
-                    nodeBorder: '#ddd6fe',
-                    clusterBkg: '#1c2027',
-                    edgeLabelBackground: '#14171c',
-                    fontFamily:
-                        '-apple-system, BlinkMacSystemFont, Hiragino Kaku Gothic ProN, Hiragino Sans, Yu Gothic, Noto Sans JP, Meiryo, sans-serif',
-                    fontSize: '16px',
-                    pie1: '#7c3aed',
-                    pie2: '#0d9488',
-                    pie3: '#e2643e',
-                    pie4: '#d6579c',
-                    pie5: '#64748b',
-                    pieOuterStrokeColor: '#2a2f38',
-                    pieOpacity: '0.9',
-                    pieSectionTextColor: '#f5f5f7',
-                    pieTitleTextColor: '#e8eaed',
-                    pieLegendTextColor: '#c7cbd3',
-                    pieStrokeColor: '#0b0d10',
-                };
+                function forcePieContrast() {
+                    var palette = ['#7c3aed', '#0d9488', '#e2643e', '#d6579c', '#64748b'];
+                    document
+                        .querySelectorAll(".mermaid svg[aria-roledescription='pie']")
+                        .forEach(function (svg) {
+                            svg.querySelectorAll('.pieTitleText').forEach(function (el) {
+                                el.style.fill = '#e8eaed';
+                            });
+                            svg.querySelectorAll('.legend text, .legend tspan').forEach(
+                                function (el) {
+                                    el.style.fill = '#c7cbd3';
+                                },
+                            );
+                            svg.querySelectorAll('.slice').forEach(function (el) {
+                                el.style.fill = '#f5f5f7';
+                            });
+                            svg.querySelectorAll('path.pieCircle').forEach(function (el, i) {
+                                el.style.fill = palette[i % palette.length];
+                                el.style.stroke = '#0b0d10';
+                            });
+                            svg.querySelectorAll('.legend rect').forEach(function (el, i) {
+                                el.style.fill = palette[i % palette.length];
+                                el.style.stroke = palette[i % palette.length];
+                            });
+                        });
+                }
 
                 function renderDiagrams() {
                     if (typeof mermaid === 'undefined') {
@@ -1282,7 +1281,27 @@ flowchart LR
                     mermaid.initialize({
                         startOnLoad: false,
                         theme: 'base',
-                        themeVariables: themeVariables,
+                        themeVariables: {
+                            background: 'transparent',
+                            primaryColor: '#5b21b6',
+                            primaryTextColor: '#ede9fe',
+                            primaryBorderColor: '#ddd6fe',
+                            lineColor: '#8f8aa8',
+                            secondaryColor: '#115e59',
+                            secondaryTextColor: '#ccfbf1',
+                            secondaryBorderColor: '#99f6e4',
+                            tertiaryColor: '#1c2027',
+                            tertiaryTextColor: '#e8eaed',
+                            tertiaryBorderColor: '#2a2f38',
+                            mainBkg: '#5b21b6',
+                            nodeTextColor: '#ede9fe',
+                            nodeBorder: '#ddd6fe',
+                            clusterBkg: '#1c2027',
+                            edgeLabelBackground: '#14171c',
+                            fontFamily:
+                                '-apple-system, BlinkMacSystemFont, Hiragino Kaku Gothic ProN, Hiragino Sans, Yu Gothic, Noto Sans JP, Meiryo, sans-serif',
+                            fontSize: '16px',
+                        },
                         flowchart: {
                             useMaxWidth: false,
                             htmlLabels: true,
@@ -1291,9 +1310,12 @@ flowchart LR
                         },
                         pie: { useMaxWidth: false },
                     });
-                    mermaid.run({ querySelector: '.mermaid' }).catch(function (err) {
-                        console.error('mermaid render failed', err);
-                    });
+                    mermaid
+                        .run({ querySelector: '.mermaid' })
+                        .then(forcePieContrast)
+                        .catch(function (err) {
+                            console.error('mermaid render failed', err);
+                        });
                 }
 
                 if (document.fonts && document.fonts.ready) {

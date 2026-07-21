@@ -159,8 +159,7 @@
                 z-index: 1;
                 display: grid;
                 grid-template-columns: 272px minmax(0, 1fr);
-                max-width: 1240px;
-                margin: 0 auto;
+                width: 100%;
             }
 
             nav.toc {
@@ -214,12 +213,12 @@
             }
 
             main {
-                padding: 0 28px 100px;
+                padding: 0 48px 100px;
                 min-width: 0;
             }
             .content-col {
-                max-width: 800px;
-                margin: 0 auto;
+                width: 100%;
+                max-width: none;
                 padding-top: 8px;
             }
 
@@ -419,11 +418,24 @@
                 color: var(--paper-faint);
                 margin-top: 10px;
                 letter-spacing: 0.03em;
+                text-align: center;
             }
-            .mermaid {
-                display: flex;
-                justify-content: center;
-                min-width: 560px;
+            .mermaid-target {
+                display: block;
+                width: 100%;
+                min-height: 48px;
+                text-align: center;
+            }
+            .mermaid-target .diagram-loading {
+                font-family: var(--font-mono);
+                font-size: 12.5px;
+                color: var(--paper-faint);
+            }
+            .mermaid-target svg {
+                display: block !important;
+                margin: 0 auto !important;
+                max-width: 100%;
+                height: auto;
             }
 
             /* ===== Tables ===== */
@@ -694,14 +706,8 @@
                             <div class="tech-frame">
                                 <span class="corner tl"></span><span class="corner tr"></span
                                 ><span class="corner bl"></span><span class="corner br"></span>
-                                <div class="mermaid">
-                                    flowchart BT A["エントリーレベル&lt;br/&gt;(CCSTなど)"] -->
-                                    B["アソシエイトレベル&lt;br/&gt;(CCNA)"] B -->
-                                    C["プロフェッショナルレベル&lt;br/&gt;(CCNP Enterprise)"] C -->
-                                    D["エキスパートレベル&lt;br/&gt;(CCIE Enterprise
-                                    Infrastructure)"] D --> E["アーキテクトレベル&lt;br/&gt;(Cisco
-                                    Certified Architect)"] style D
-                                    fill:#FFB238,stroke:#0A2E4D,stroke-width:2px,color:#0A2E4D
+                                <div id="diag-hierarchy" class="mermaid-target">
+                                    <span class="diagram-loading">図を読み込み中…</span>
                                 </div>
                             </div>
                             <p class="diagram-caption">
@@ -733,18 +739,14 @@
                             <div class="tech-frame">
                                 <span class="corner tl"></span><span class="corner tr"></span
                                 ><span class="corner bl"></span><span class="corner br"></span>
-                                <div class="mermaid">
-                                    flowchart LR Start(["学習開始"]) -->
-                                    Q["ステップ1&lt;br/&gt;クオリファイ試験&lt;br/&gt;ENCOR
-                                    350-401&lt;br/&gt;(120分・筆記形式)"] Q -- 合格 -->
-                                    L["ステップ2&lt;br/&gt;ラボ試験&lt;br/&gt;CCIE EI Lab
-                                    v1.1&lt;br/&gt;(8時間・実技形式)"] Q -- 不合格 --> Q L -- 合格
-                                    --> Cert(["CCIE Enterprise&lt;br/&gt;Infrastructure 認定取得"])
-                                    L -- 不合格 --> L Cert --> Recert["3年ごとに再認定が必要"] style
-                                    Cert fill:#FFB238,stroke:#0A2E4D,stroke-width:2px,color:#0A2E4D
+                                <div id="diag-roadmap" class="mermaid-target">
+                                    <span class="diagram-loading">図を読み込み中…</span>
                                 </div>
                             </div>
-                            <p class="diagram-caption">FIG.02 — 認定取得までの2ステップフロー</p>
+                            <p class="diagram-caption">
+                                FIG.02 —
+                                認定取得までの2ステップフロー（各ステップとも不合格の場合は再受験することで再挑戦できます）
+                            </p>
                         </div>
 
                         <div class="table-wrap">
@@ -987,12 +989,8 @@
                             <div class="tech-frame">
                                 <span class="corner tl"></span><span class="corner tr"></span
                                 ><span class="corner bl"></span><span class="corner br"></span>
-                                <div class="mermaid">
-                                    flowchart LR subgraph Lab["ラボ試験 合計8時間"] direction LR
-                                    M1["モジュール1：Design&lt;br/&gt;(設計)&lt;br/&gt;制限時間
-                                    3時間"] M2["モジュール2：Deploy, Operate,
-                                    Optimize&lt;br/&gt;(導入・運用・最適化)&lt;br/&gt;制限時間
-                                    5時間"] M1 --> M2 end
+                                <div id="diag-lab-modules" class="mermaid-target">
+                                    <span class="diagram-loading">図を読み込み中…</span>
                                 </div>
                             </div>
                             <p class="diagram-caption">FIG.03 — ラボ試験のモジュール構成</p>
@@ -1188,21 +1186,8 @@
                             <div class="tech-frame">
                                 <span class="corner tl"></span><span class="corner tr"></span
                                 ><span class="corner bl"></span><span class="corner br"></span>
-                                <div class="mermaid">
-                                    flowchart TD
-                                    S1["CCNA相当の基礎知識を習得&lt;br/&gt;(L2/L3の基本、IPアドレッシングなど)"]
-                                    --> S2["CCNP
-                                    Enterprise/ENCORの&lt;br/&gt;教材・公式コースで体系的に学習"] S2
-                                    --> S3["ENCOR 350-401 を受験・合格"] S3 --> S4["CCIE
-                                    EIラボ試験の&lt;br/&gt;公式ブループリントを精読"] S4 -->
-                                    S5["仮想/実機ラボ環境で&lt;br/&gt;各技術をハンズオン練習"] S5
-                                    -->
-                                    S6["Designモジュールの練習&lt;br/&gt;(要件からのネットワーク設計)"]
-                                    S6 --> S7["Deploy/Operate/Optimize&lt;br/&gt;モジュールの練習"]
-                                    S7 --> S8["模擬試験・タイムマネジメント練習"] S8 -->
-                                    S9["ラボ試験の予約・受験"] S9 --> S10(["CCIE Enterprise
-                                    Infrastructure&lt;br/&gt;認定取得"]) style S10
-                                    fill:#FFB238,stroke:#0A2E4D,stroke-width:2px,color:#0A2E4D
+                                <div id="diag-study-roadmap" class="mermaid-target">
+                                    <span class="diagram-loading">図を読み込み中…</span>
                                 </div>
                             </div>
                             <p class="diagram-caption">FIG.04 — 初学者向け学習ロードマップ</p>
@@ -1371,31 +1356,128 @@
 
         <button class="back-to-top" id="backToTop" aria-label="ページ上部へ戻る">↑</button>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
         <script>
+            // ---- Mermaid diagram sources (JSテンプレートリテラル方式：IDEやHTMLパーサーに一切触れさせない) ----
+            var DIAGRAMS = {
+                'diag-hierarchy':
+                    'flowchart BT\n' +
+                    'A["エントリーレベル (CCSTなど)"] --> B["アソシエイトレベル (CCNA)"]\n' +
+                    'B --> C["プロフェッショナルレベル (CCNP Enterprise)"]\n' +
+                    'C --> D["エキスパートレベル (CCIE Enterprise Infrastructure)"]\n' +
+                    'D --> E["アーキテクトレベル (Cisco Certified Architect)"]\n' +
+                    'style D fill:#FFB238,stroke:#0A2E4D,stroke-width:2px,color:#0A2E4D',
+
+                'diag-roadmap':
+                    'flowchart LR\n' +
+                    'Start(["学習開始"]) --> Q["ステップ1: クオリファイ試験 ENCOR 350-401 (120分 筆記)"]\n' +
+                    'Q -- 合格 --> L["ステップ2: ラボ試験 CCIE EI Lab v1.1 (8時間 実技)"]\n' +
+                    'L -- 合格 --> Cert(["CCIE Enterprise Infrastructure 認定取得"])\n' +
+                    'Cert --> Recert["3年ごとに再認定が必要"]\n' +
+                    'style Cert fill:#FFB238,stroke:#0A2E4D,stroke-width:2px,color:#0A2E4D',
+
+                'diag-lab-modules':
+                    'flowchart LR\n' +
+                    'subgraph Lab["ラボ試験 合計8時間"]\n' +
+                    'direction LR\n' +
+                    'M1["モジュール1 Design 設計 3時間"]\n' +
+                    'M2["モジュール2 Deploy Operate Optimize 5時間"]\n' +
+                    'M1 --> M2\n' +
+                    'end',
+
+                'diag-study-roadmap':
+                    'flowchart TD\n' +
+                    'S1["CCNA相当の基礎知識を習得 (L2・L3の基本など)"] --> S2["CCNP Enterprise・ENCOR教材で体系的に学習"]\n' +
+                    'S2 --> S3["ENCOR 350-401 を受験・合格"]\n' +
+                    'S3 --> S4["ラボ試験の公式ブループリントを精読"]\n' +
+                    'S4 --> S5["仮想・実機ラボでハンズオン練習"]\n' +
+                    'S5 --> S6["Designモジュールの練習 (要件からの設計)"]\n' +
+                    'S6 --> S7["Deploy・Operate・Optimizeモジュールの練習"]\n' +
+                    'S7 --> S8["模擬試験・タイムマネジメント練習"]\n' +
+                    'S8 --> S9["ラボ試験の予約・受験"]\n' +
+                    'S9 --> S10(["CCIE Enterprise Infrastructure 認定取得"])\n' +
+                    'style S10 fill:#FFB238,stroke:#0A2E4D,stroke-width:2px,color:#0A2E4D',
+            };
+
             mermaid.initialize({
-                startOnLoad: true,
-                theme: 'base',
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
                 themeVariables: {
-                    background: '#0A2E4D',
                     primaryColor: '#123F68',
                     primaryTextColor: '#EAF2F8',
                     primaryBorderColor: '#6FCBE8',
                     lineColor: '#6FCBE8',
                     secondaryColor: '#154A78',
-                    secondaryTextColor: '#EAF2F8',
-                    secondaryBorderColor: '#3E6E8C',
                     tertiaryColor: '#0F3D63',
-                    tertiaryTextColor: '#EAF2F8',
-                    tertiaryBorderColor: '#3E6E8C',
+                    background: '#0A2E4D',
+                    mainBkg: '#123F68',
+                    nodeBorder: '#6FCBE8',
                     clusterBkg: '#0F3D63',
                     clusterBorder: '#6FCBE8',
-                    fontFamily: 'Noto Sans JP, sans-serif',
-                    fontSize: '14px',
+                    titleColor: '#EAF2F8',
                     edgeLabelBackground: '#0A2E4D',
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    fontSize: '14px',
                 },
-                flowchart: { curve: 'basis', htmlLabels: true },
+                flowchart: { curve: 'basis', padding: 20 },
             });
+
+            // ---- SVG後処理：width/height属性除去、自然px幅+maxWidth:100%、viewBoxの下端余白確保 ----
+            function applySvgFixups(svgEl) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.display = 'block';
+                svgEl.style.margin = '0 auto';
+                svgEl.style.height = 'auto';
+                svgEl.style.overflow = 'visible';
+                var viewBox = svgEl.getAttribute('viewBox');
+                if (viewBox) {
+                    var parts = viewBox.split(/\s+/).map(Number);
+                    if (
+                        parts.length === 4 &&
+                        parts.every(function (n) {
+                            return isFinite(n);
+                        })
+                    ) {
+                        var x = parts[0],
+                            y = parts[1],
+                            w = parts[2],
+                            h = parts[3];
+                        svgEl.style.width = w + 'px';
+                        svgEl.style.maxWidth = '100%';
+                        svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + 15));
+                    }
+                }
+            }
+
+            // ---- 手動レンダリングループ(startOnLoad:falseのため) ----
+            async function renderAllDiagrams() {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (e) {}
+                }
+                var entries = Object.keys(DIAGRAMS);
+                for (var i = 0; i < entries.length; i++) {
+                    var id = entries[i];
+                    var container = document.getElementById(id);
+                    if (!container) continue;
+                    try {
+                        var result = await mermaid.render('svg-' + id, DIAGRAMS[id]);
+                        container.innerHTML = result.svg;
+                        var svgEl = container.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl);
+                    } catch (err) {
+                        console.error('Mermaid render failed for', id, err);
+                        container.innerHTML =
+                            '<p style="color:#FF8C6B;font-family:\'M PLUS 1 Code\',monospace;font-size:12.5px;">図の描画に失敗しました（' +
+                            id +
+                            '）</p>';
+                    }
+                }
+            }
+            renderAllDiagrams();
 
             // ---- Mobile TOC toggle ----
             var tocToggle = document.getElementById('tocToggle');
