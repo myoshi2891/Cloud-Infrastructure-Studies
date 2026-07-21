@@ -1,0 +1,1717 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA 200-301「Network Access」徹底解説 | 初学者向けステップバイステップガイド</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --surface: #0e1b2e;
+                --surface-2: #122036;
+                --surface-3: #0b1626;
+                --border: #1e2f4d;
+                --text: #dbe4f5;
+                --text-muted: #8fa2c4;
+                --accent: #7c9eff;
+                --accent-soft: rgba(124, 158, 255, 0.12);
+                --accent-soft-2: rgba(124, 158, 255, 0.22);
+                --warn: #e0a84f;
+                --warn-bg: rgba(224, 168, 79, 0.09);
+                --font-display: 'Space Grotesk', sans-serif;
+                --font-body: 'Inter', sans-serif;
+                --font-mono: 'JetBrains Mono', monospace;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-body);
+                line-height: 1.75;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4 {
+                font-family: var(--font-display);
+                color: #f2f5fc;
+                letter-spacing: -0.01em;
+                line-height: 1.3;
+            }
+            h1 {
+                font-size: 2.4rem;
+                margin: 0 0 0.75rem;
+            }
+            h2 {
+                font-size: 1.7rem;
+                margin: 3rem 0 1rem;
+                padding-top: 1.25rem;
+                border-top: 1px solid var(--border);
+            }
+            h3 {
+                font-size: 1.25rem;
+                margin: 2rem 0 0.75rem;
+                color: var(--accent);
+            }
+            h4 {
+                font-size: 1.05rem;
+                margin: 1.5rem 0 0.5rem;
+                color: var(--text);
+            }
+
+            p {
+                margin: 0 0 1.1rem;
+                color: var(--text);
+            }
+            ul,
+            ol {
+                margin: 0 0 1.1rem;
+                padding-left: 1.4rem;
+            }
+            li {
+                margin-bottom: 0.4rem;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                background: var(--surface-3);
+                color: #ffd9a0;
+                padding: 0.15em 0.4em;
+                border-radius: 4px;
+                font-size: 0.88em;
+                white-space: nowrap;
+            }
+            pre.config {
+                font-family: var(--font-mono);
+                background: var(--surface-3);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 1.1rem 1.3rem;
+                overflow-x: auto;
+                font-size: 0.88rem;
+                color: #cfe0ff;
+                line-height: 1.65;
+                margin: 1.2rem 0 1.6rem;
+            }
+            pre.config .prompt {
+                color: var(--text-muted);
+            }
+            pre.config .cmd {
+                color: #8fd3a8;
+            }
+            pre.config .comment {
+                color: var(--text-muted);
+                font-style: italic;
+            }
+
+            /* layout */
+            .layout {
+                display: flex;
+                align-items: flex-start;
+                min-height: 100vh;
+            }
+            .sidebar {
+                width: 300px;
+                flex-shrink: 0;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                overflow-y: auto;
+                border-right: 1px solid var(--border);
+                padding: 2rem 1.5rem 2rem;
+                background: var(--surface);
+            }
+            .sidebar-brand {
+                font-family: var(--font-display);
+                font-weight: 600;
+                font-size: 0.95rem;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                margin-bottom: 1.5rem;
+            }
+            .sidebar-brand span {
+                display: block;
+                color: var(--accent);
+                font-size: 1.3rem;
+                letter-spacing: 0;
+                text-transform: none;
+                margin-top: 0.3rem;
+            }
+            .toc {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                font-size: 0.9rem;
+            }
+            .toc li {
+                margin-bottom: 0.15rem;
+            }
+            .toc a {
+                display: block;
+                padding: 0.45rem 0.7rem;
+                border-radius: 6px;
+                color: var(--text-muted);
+                border-left: 2px solid transparent;
+            }
+            .toc a:hover {
+                background: var(--accent-soft);
+                text-decoration: none;
+                color: var(--text);
+            }
+            .toc a.active {
+                background: var(--accent-soft-2);
+                color: #fff;
+                border-left: 2px solid var(--accent);
+                font-weight: 500;
+            }
+
+            .content {
+                flex: 1;
+                min-width: 0;
+                padding: 3.5rem 4.5rem 6rem;
+            }
+
+            .hero-badges {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.6rem;
+                margin: 1.2rem 0 2rem;
+            }
+            .badge {
+                font-family: var(--font-mono);
+                font-size: 0.78rem;
+                padding: 0.35rem 0.75rem;
+                border-radius: 999px;
+                background: var(--surface-2);
+                border: 1px solid var(--border);
+                color: var(--text-muted);
+            }
+            .badge.accent {
+                color: var(--accent);
+                border-color: var(--accent-soft-2);
+            }
+
+            .lede {
+                font-size: 1.15rem;
+                color: var(--text-muted);
+                max-width: 52em;
+            }
+
+            section {
+                scroll-margin-top: 1.5rem;
+                opacity: 0;
+                transform: translateY(14px);
+                transition:
+                    opacity 0.6s ease,
+                    transform 0.6s ease;
+            }
+            section.in-view {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .callout {
+                border-left: 4px solid var(--accent);
+                background: var(--surface);
+                padding: 1.1rem 1.4rem;
+                border-radius: 0 8px 8px 0;
+                margin: 1.6rem 0;
+            }
+            .callout p:last-child {
+                margin-bottom: 0;
+            }
+            .callout-title {
+                font-weight: 600;
+                color: var(--accent);
+                display: block;
+                margin-bottom: 0.4rem;
+            }
+            .callout.warn {
+                border-left-color: var(--warn);
+                background: var(--warn-bg);
+            }
+            .callout.warn .callout-title {
+                color: var(--warn);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1.3rem 0 1.8rem;
+                font-size: 0.93rem;
+            }
+            thead th {
+                background: var(--surface-2);
+                color: var(--accent);
+                text-align: left;
+                padding: 0.7rem 1rem;
+                border-bottom: 2px solid var(--border);
+                font-family: var(--font-display);
+                font-weight: 600;
+                font-size: 0.85rem;
+                letter-spacing: 0.02em;
+            }
+            td {
+                padding: 0.65rem 1rem;
+                border-bottom: 1px solid var(--border);
+                vertical-align: top;
+                color: var(--text);
+            }
+            tbody tr:hover {
+                background: var(--accent-soft);
+            }
+
+            .diagram-wrap {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                margin: 1.6rem 0 2rem;
+                padding: 0.5rem 0.5rem 0.25rem;
+            }
+            .diagram-caption {
+                font-size: 0.82rem;
+                color: var(--text-muted);
+                text-align: center;
+                padding: 0.4rem 0 0.8rem;
+                font-family: var(--font-mono);
+            }
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                background: transparent;
+                padding: 1.25rem 0.5rem;
+                margin: 0;
+            }
+
+            footer.page-footer {
+                margin-top: 4rem;
+                padding-top: 2rem;
+                border-top: 1px solid var(--border);
+                color: var(--text-muted);
+                font-size: 0.85rem;
+            }
+
+            @media (max-width: 960px) {
+                .layout {
+                    flex-direction: column;
+                }
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                .content {
+                    padding: 2.5rem 1.5rem 4rem;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+                section {
+                    opacity: 1;
+                    transform: none;
+                    transition: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-brand">CCNA 200-301<span>Network Access</span></div>
+                <ol class="toc">
+                    <li><a href="#overview">1. このセクションの全体像</a></li>
+                    <li><a href="#prerequisites">2. 前提知識：スイッチングの基礎</a></li>
+                    <li><a href="#vlan">3. 2.1 VLANの設定と検証</a></li>
+                    <li><a href="#trunk">4. 2.2 スイッチ間接続（トランク）</a></li>
+                    <li><a href="#discovery">5. 2.3 CDP・LLDP</a></li>
+                    <li><a href="#etherchannel">6. 2.4 EtherChannel（LACP）</a></li>
+                    <li><a href="#stp">7. 2.5 Rapid PVST+</a></li>
+                    <li><a href="#wireless-arch">8. 2.6 無線アーキテクチャ／APモード</a></li>
+                    <li><a href="#wlan-physical">9. 2.7 WLAN物理接続</a></li>
+                    <li><a href="#mgmt-access">10. 2.8 デバイス管理アクセス</a></li>
+                    <li><a href="#wlan-gui">11. 2.9 WLAN GUI設定</a></li>
+                    <li><a href="#exam-tips">12. 試験対策：引っかけポイント</a></li>
+                    <li><a href="#hands-on">13. ハンズオン学習の進め方</a></li>
+                    <li><a href="#summary">14. まとめ表</a></li>
+                    <li><a href="#sources">15. 参考資料・出典</a></li>
+                </ol>
+            </nav>
+
+            <main class="content">
+                <header>
+                    <h1>CCNA 200-301「Network Access」セクション徹底解説</h1>
+                    <p class="lede">
+                        初学者向けステップバイステップガイド —
+                        VLANからトランク、EtherChannel、スパニングツリー、無線LANアーキテクチャまで、アクセス層の技術を基礎から積み上げて理解します。
+                    </p>
+                    <div class="hero-badges">
+                        <span class="badge accent">試験コード 200-301</span>
+                        <span class="badge accent">ドメイン 2.0 Network Access</span>
+                        <span class="badge">配点 20%（v1.1ブループリント）</span>
+                        <span class="badge">前提知識：なし</span>
+                    </div>
+                </header>
+
+                <section id="overview">
+                    <h2>1. このセクションの全体像</h2>
+                    <p>
+                        CCNA 200-301試験は6つのドメインで構成されており、その中で「<strong
+                            >Network Access</strong
+                        >」はスイッチング技術（レイヤー2）とワイヤレスの基礎を扱うドメインです。VLAN、トランク、EtherChannel、スパニングツリー、そして無線LANの仕組みまで、企業ネットワークの「入り口」となるアクセス層の技術が範囲になります。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                A["1.0 Network Fundamentals<br/>20%"] --> B["2.0 Network Access<br/>20%（本ガイドの範囲）"]
+                                B --> C["3.0 IP Connectivity<br/>25%"]
+                                C --> D["4.0 IP Services<br/>10%"]
+                                D --> E["5.0 Security Fundamentals<br/>15%"]
+                                E --> F["6.0 Automation and Programmability<br/>10%"]
+
+                                style B fill:#7c9eff,color:#07111e,stroke:#3d5aa8,stroke-width:2px
+                        </script>
+                        <p class="diagram-caption">
+                            図1：CCNA 200-301の6ドメインと配点（v1.1ブループリント）
+                        </p>
+                    </div>
+
+                    <p>
+                        Network
+                        Accessドメインは、以下の9つの試験トピック（2.1〜2.9）で構成されています。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>番号</th>
+                                <th>トピック</th>
+                                <th>ひとことで言うと</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2.1</td>
+                                <td>VLANの設定と検証</td>
+                                <td>1台のスイッチをどう論理的に分割するか</td>
+                            </tr>
+                            <tr>
+                                <td>2.2</td>
+                                <td>スイッチ間接続（トランク）</td>
+                                <td>複数のVLANを1本のリンクでどう運ぶか</td>
+                            </tr>
+                            <tr>
+                                <td>2.3</td>
+                                <td>CDP・LLDP</td>
+                                <td>隣接機器をどう自動的に発見するか</td>
+                            </tr>
+                            <tr>
+                                <td>2.4</td>
+                                <td>EtherChannel（LACP）</td>
+                                <td>複数の物理リンクを1本にまとめる方法</td>
+                            </tr>
+                            <tr>
+                                <td>2.5</td>
+                                <td>Rapid PVST+</td>
+                                <td>ループをどう防ぐか</td>
+                            </tr>
+                            <tr>
+                                <td>2.6</td>
+                                <td>ワイヤレスアーキテクチャ・APモード</td>
+                                <td>無線APの動作方式の違い</td>
+                            </tr>
+                            <tr>
+                                <td>2.7</td>
+                                <td>WLANコンポーネントの物理接続</td>
+                                <td>AP・WLC・LAGがどう配線されるか</td>
+                            </tr>
+                            <tr>
+                                <td>2.8</td>
+                                <td>デバイス管理アクセス</td>
+                                <td>管理者はどうやって機器にログインするか</td>
+                            </tr>
+                            <tr>
+                                <td>2.9</td>
+                                <td>ワイヤレスLAN GUI設定</td>
+                                <td>WLCのGUIでどうSSIDを作るか</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout warn">
+                        <span class="callout-title">⚠️ 2026年7月時点の重要な注意事項</span>
+                        <p>
+                            Ciscoは2026年5月20日に、200-301
+                            CCNAの大規模改訂版「v2.0」を発表しました。v2.0は<strong>2027年2月3日</strong>から実施され、それまでは現行の<strong>v1.1が引き続き有効</strong>です。v2.0ではNetwork
+                            Accessドメインは「Switching and Network
+                            Access」に改称され配点が20%→25%に増加し、"troubleshoot（トラブルシュートせよ）"という動詞を使った出題が大幅に増える予定です。本ガイドは<strong>現行v1.1</strong>の内容に基づいて解説しています。受験予定日がv2.0切り替え後になる方は、Cisco
+                            Learning Networkで最新のブループリントを必ず確認してください。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="prerequisites">
+                    <h2>2. 前提知識の確認：スイッチングの基礎</h2>
+                    <p>
+                        VLANやトランクを理解する前に、スイッチが行っている最も基本的な動作を押さえておきましょう。これは1.0
+                        Network Fundamentalsドメインの範囲ですが、Network
+                        Accessを理解する土台になります。
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>MACアドレステーブル</strong
+                            >：スイッチは受信したフレームの送信元MACアドレスと、それが届いたポート番号を対応づけて記憶します。
+                        </li>
+                        <li>
+                            <strong>フレームの転送（フォワーディング）</strong
+                            >：宛先MACアドレスがテーブルにあれば、該当ポートだけにフレームを送ります（ユニキャスト転送）。
+                        </li>
+                        <li>
+                            <strong>フラッディング</strong
+                            >：宛先MACアドレスがテーブルにない場合、受信したポート以外の全ポートにフレームをコピーして送信します。
+                        </li>
+                    </ul>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TD
+                                S["スイッチがフレームを受信"] --> Q{"宛先MACアドレスは<br/>MACアドレステーブルにある？"}
+                                Q -- ある --> U["該当ポートのみへ転送<br/>（ユニキャスト転送）"]
+                                Q -- ない --> F["受信ポート以外の<br/>全ポートへコピー送信<br/>（フラッディング）"]
+                        </script>
+                        <p class="diagram-caption">図2：スイッチのフレーム転送判断フロー</p>
+                    </div>
+
+                    <p>
+                        この「1つのスイッチは1つのブロードキャストドメイン」という前提を、VLANによってどう分割するかが次章のテーマです。
+                    </p>
+                </section>
+
+                <section id="vlan">
+                    <h2>3. 2.1 VLANの設定と検証</h2>
+
+                    <h3>3.1 VLANとは何か、なぜ必要か</h3>
+                    <p>
+                        VLAN（Virtual
+                        LAN）は、1台の物理スイッチを複数の論理的なブロードキャストドメインに分割する技術です。物理的な配線を変えずに、部署やフロアごとにネットワークを分離できます。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>理由</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>セキュリティ</td>
+                                <td>部署間の通信を論理的に分離できる</td>
+                            </tr>
+                            <tr>
+                                <td>ブロードキャスト制御</td>
+                                <td>
+                                    ブロードキャストの届く範囲を小さくし、無駄なトラフィックを減らす
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>柔軟性</td>
+                                <td>
+                                    物理的な配置に関係なく、同じ部署のユーザーを同じVLANに所属させられる
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>管理のしやすさ</td>
+                                <td>論理グループごとにポリシーやIPサブネットを適用しやすい</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                subgraph SW["1台の物理スイッチ"]
+                                    direction LR
+                                    subgraph V10["VLAN 10（総務部）"]
+                                        P1["ポート1"]
+                                        P2["ポート2"]
+                                    end
+                                    subgraph V20["VLAN 20（開発部）"]
+                                        P3["ポート3"]
+                                        P4["ポート4"]
+                                    end
+                                    subgraph V99["VLAN 99（管理用）"]
+                                        P5["ポート5"]
+                                    end
+                                end
+                        </script>
+                        <p class="diagram-caption">図3：1台の物理スイッチをVLANで論理分割</p>
+                    </div>
+
+                    <p>
+                        同じVLAN内のポート同士はレイヤー2で自由に通信できますが、VLANをまたぐ通信（InterVLAN
+                        Routing）にはレイヤー3のルーティング機能が必要です。これは次のドメイン（3.0
+                        IP
+                        Connectivity）で扱う範囲ですが、試験トピック2.1では「異なるVLAN間は直接通信できない」という概念の理解までが範囲になります。
+                    </p>
+
+                    <h3>3.2 アクセスポート（データVLANとボイスVLAN）</h3>
+                    <p>
+                        アクセスポートは、単一のVLANにのみ所属するスイッチポートです。PCやプリンタなどのエンドデバイスを接続するのが基本用途です。
+                    </p>
+                    <p>
+                        CiscoのIP電話を接続する場合は、1つの物理ポートに<strong>データVLAN</strong>と<strong>ボイスVLAN</strong>の2つを割り当てることができます。IP電話にPCを直列接続（デイジーチェーン）する構成が典型例です。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                PC["PC"] --> Phone["Cisco IP電話"]
+                                Phone -- "1本のケーブル" --> SWPort["スイッチのアクセスポート"]
+                                SWPort -.->|"データVLAN 10（PC宛のトラフィック）"| DataVLAN["VLAN 10"]
+                                SWPort -.->|"ボイスVLAN 20（音声トラフィック）"| VoiceVLAN["VLAN 20"]
+                        </script>
+                        <p class="diagram-caption">
+                            図4：IP電話 + PCのデイジーチェーン構成とデータ／ボイスVLAN
+                        </p>
+                    </div>
+
+                    <pre class="config"><span class="comment">! VLANの作成</span>
+Switch(config)# <span class="cmd">vlan 10</span>
+Switch(config-vlan)# <span class="cmd">name SOMU</span>
+Switch(config-vlan)# <span class="cmd">exit</span>
+
+<span class="comment">! アクセスポートへの割り当て（データ＋ボイス）</span>
+Switch(config)# <span class="cmd">interface gi0/1</span>
+Switch(config-if)# <span class="cmd">switchport mode access</span>
+Switch(config-if)# <span class="cmd">switchport access vlan 10</span>
+Switch(config-if)# <span class="cmd">switchport voice vlan 20</span>
+
+<span class="comment">! 検証</span>
+Switch# <span class="cmd">show vlan brief</span>
+Switch# <span class="cmd">show interfaces gi0/1 switchport</span></pre>
+
+                    <h3>3.3 デフォルトVLAN</h3>
+                    <p>
+                        Cisco Catalystスイッチは、工場出荷時点で<strong>VLAN 1</strong
+                        >が存在し、すべてのポートがデフォルトでVLAN 1に所属しています。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>特性</th>
+                                <th>VLAN 1について</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>削除できるか</td>
+                                <td>できない（作成・削除不可の特殊VLAN）</td>
+                            </tr>
+                            <tr>
+                                <td>デフォルトの用途</td>
+                                <td>全ポートの初期所属VLAN</td>
+                            </tr>
+                            <tr>
+                                <td>運用上の推奨</td>
+                                <td>
+                                    ユーザーデータ用には使わず、管理VLANやユーザーVLANを別途明示的に作成する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CDP／VTP／STPなどの制御プロトコル</td>
+                                <td>デフォルトでVLAN 1上を流れる</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        セキュリティのベストプラクティスとして、VLAN
+                        1をそのまま使い続けず、未使用ポートは別のVLAN（いわゆる「ブラックホールVLAN」）に割り当てておくという考え方も、実務およびCCNAの理解として押さえておくとよいでしょう。
+                    </p>
+
+                    <h3>3.4 検証コマンドのまとめ</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>コマンド</th>
+                                <th>確認できる内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>show vlan brief</code></td>
+                                <td>VLAN ID・名前・所属ポート一覧</td>
+                            </tr>
+                            <tr>
+                                <td><code>show interfaces status</code></td>
+                                <td>各ポートのVLAN所属とリンク状態</td>
+                            </tr>
+                            <tr>
+                                <td><code>show mac address-table</code></td>
+                                <td>MACアドレスとVLAN・ポートの対応</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="trunk">
+                    <h2>4. 2.2 スイッチ間接続（トランク）の設定と検証</h2>
+
+                    <h3>4.1 トランクポートとは</h3>
+                    <p>
+                        VLANが複数のスイッチにまたがる場合、スイッチ同士を結ぶリンクで複数のVLANのトラフィックを1本の物理リンクで運ぶ必要があります。このためのポートモードが<strong>トランクポート</strong>です。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                subgraph SW1["スイッチA"]
+                                    A10["VLAN 10"]
+                                    A20["VLAN 20"]
+                                end
+                                subgraph SW2["スイッチB"]
+                                    B10["VLAN 10"]
+                                    B20["VLAN 20"]
+                                end
+                                SW1 <-->|"トランクリンク<br/>（VLAN 10・20 を1本で伝送）"| SW2
+                        </script>
+                        <p class="diagram-caption">図5：トランクリンクによる複数VLANの伝送</p>
+                    </div>
+
+                    <h3>4.2 IEEE 802.1Q タギング</h3>
+                    <p>
+                        トランクリンクを通過するフレームには、802.1Qという規格に基づき<strong>4バイトのVLANタグ</strong>が挿入され、どのVLANに属するフレームかを識別できるようにします。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                F1["元のイーサネットフレーム"] --> Tag["802.1Qタグを挿入<br/>(VLAN IDを含む4バイト)"]
+                                Tag --> F2["タグ付きフレームとしてトランクを通過"]
+                                F2 --> Untag["受信側スイッチがタグを除去し<br/>該当VLANのアクセスポートへ転送"]
+                        </script>
+                        <p class="diagram-caption">図6：802.1Qタギングの流れ</p>
+                    </div>
+
+                    <pre class="config"><span class="comment">! トランクポートの設定</span>
+Switch(config)# <span class="cmd">interface gi0/1</span>
+Switch(config-if)# <span class="cmd">switchport trunk encapsulation dot1q</span>
+Switch(config-if)# <span class="cmd">switchport mode trunk</span>
+Switch(config-if)# <span class="cmd">switchport trunk allowed vlan 10,20,30</span>
+Switch(config-if)# <span class="cmd">switchport trunk native vlan 99</span>
+
+<span class="comment">! 検証</span>
+Switch# <span class="cmd">show interfaces trunk</span></pre>
+
+                    <h3>4.3 ネイティブVLAN</h3>
+                    <p>
+                        802.1Qでは、1つだけ<strong>タグを付けずに送るVLAN</strong>を指定でき、これを<strong>ネイティブVLAN</strong>と呼びます（デフォルトはVLAN
+                        1）。
+                    </p>
+                    <p>
+                        試験で頻出なのが「<strong>ネイティブVLANミスマッチ</strong>」です。トランクの両端でネイティブVLANの設定が食い違っていると、CDPが警告ログを出し、そのVLANのトラフィックが意図しないVLANに漏れる、あるいはループの原因になることがあります。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>状態</th>
+                                <th>結果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>両端のネイティブVLANが一致</td>
+                                <td>正常に動作</td>
+                            </tr>
+                            <tr>
+                                <td>両端のネイティブVLANが不一致</td>
+                                <td>
+                                    ログにネイティブVLANミスマッチの警告が出力される／セキュリティ・到達性の問題が発生し得る
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                SW1["スイッチA<br/>ネイティブVLAN = 1"] ---|"トランクリンク"| SW2["スイッチB<br/>ネイティブVLAN = 99"]
+                                SW1 -.->|"CDPが不一致を検出"| Warn["⚠ Native VLAN mismatch ログ"]
+                                SW2 -.-> Warn
+                        </script>
+                        <p class="diagram-caption">図7：ネイティブVLANミスマッチの検出</p>
+                    </div>
+                </section>
+
+                <section id="discovery">
+                    <h2>5. 2.3 レイヤー2ディスカバリプロトコル（CDP・LLDP）</h2>
+                    <p>
+                        隣接するネットワーク機器を自動的に発見し、ネットワーク構成図（トポロジー）の正確性を検証するための仕組みです。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>CDP（Cisco Discovery Protocol）</th>
+                                <th>LLDP（Link Layer Discovery Protocol）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>標準化</td>
+                                <td>Cisco独自プロトコル</td>
+                                <td>IEEE 802.1AB（ベンダー中立の業界標準）</td>
+                            </tr>
+                            <tr>
+                                <td>対応機器</td>
+                                <td>主にCisco機器</td>
+                                <td>Cisco機器・他ベンダー機器の両方</td>
+                            </tr>
+                            <tr>
+                                <td>デフォルト状態</td>
+                                <td>多くのCisco機器で有効</td>
+                                <td>機種により無効の場合あり（有効化が必要なことがある）</td>
+                            </tr>
+                            <tr>
+                                <td>取得できる情報の例</td>
+                                <td>機器種別、OSバージョン、隣接ポート、IPアドレスなど</td>
+                                <td>同様の隣接情報（TLV形式）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <pre class="config"><span class="comment">! CDPの確認</span>
+Switch# <span class="cmd">show cdp neighbors</span>
+Switch# <span class="cmd">show cdp neighbors detail</span>
+
+<span class="comment">! LLDPの有効化と確認</span>
+Switch(config)# <span class="cmd">lldp run</span>
+Switch# <span class="cmd">show lldp neighbors</span></pre>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                R1["Cisco ルータ"] <-->|"CDP / LLDP<br/>アドバタイズメント"| SW1["Cisco スイッチ"]
+                                SW1 <-->|"LLDP<br/>（他ベンダー機器との相互運用）"| Other["他社製スイッチ"]
+                        </script>
+                        <p class="diagram-caption">図8：CDPとLLDPの適用範囲の違い</p>
+                    </div>
+
+                    <div class="callout">
+                        <span class="callout-title">💡 試験のポイント</span>
+                        <p>
+                            異なるベンダーの機器が混在する環境では、CDPは使えないためLLDPが必須になります。「ベンダーが違う環境で隣接情報を取得したい」という問題文が出たら、LLDPが正解になる可能性が高いです。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="etherchannel">
+                    <h2>6. 2.4 EtherChannel（LACP）</h2>
+
+                    <h3>6.1 EtherChannelの目的</h3>
+                    <p>
+                        複数の物理リンクを論理的に束ねて1本の高帯域なリンクとして扱う技術です。帯域幅の増加に加え、リンク冗長性（1本が切れても通信が継続する）というメリットもあります。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                subgraph SW1["スイッチA"]
+                                    P1["Gi0/1"]
+                                    P2["Gi0/2"]
+                                end
+                                subgraph SW2["スイッチB"]
+                                    P3["Gi0/1"]
+                                    P4["Gi0/2"]
+                                end
+                                P1 === P3
+                                P2 === P4
+                                P1 -.-> PC["Port-channel 1<br/>（論理インターフェイス）"]
+                                P2 -.-> PC
+                        </script>
+                        <p class="diagram-caption">
+                            図9：2本の物理リンクをEtherChannelとして束ねる
+                        </p>
+                    </div>
+
+                    <h3>6.2 EtherChannelのネゴシエーションプロトコル</h3>
+                    <p>
+                        EtherChannelを自動的にネゴシエートするプロトコルには2種類あり、CCNAで問われるのは主にLACPです。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>プロトコル</th>
+                                <th>標準化</th>
+                                <th>モードの組み合わせ例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>LACP（Link Aggregation Control Protocol）</td>
+                                <td>IEEE 802.3ad（業界標準）</td>
+                                <td>active + active／active + passive</td>
+                            </tr>
+                            <tr>
+                                <td>PAgP（Port Aggregation Protocol）</td>
+                                <td>Cisco独自</td>
+                                <td>desirable + desirable／desirable + auto</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>モード</th>
+                                <th>動作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>active</code></td>
+                                <td>積極的にLACPネゴシエーションを開始する</td>
+                            </tr>
+                            <tr>
+                                <td><code>passive</code></td>
+                                <td>
+                                    相手からのネゴシエーション要求を待つ（自分からは開始しない）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>on</code></td>
+                                <td>
+                                    ネゴシエーションを行わず強制的にチャネルを形成する（プロトコルを使わないモード）
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout warn">
+                        <span class="callout-title">⚠️ 重要</span>
+                        <p>
+                            <code>passive</code
+                            >同士の組み合わせではネゴシエーションが成立せず、EtherChannelは形成されません。必ずどちらか一方が<code>active</code>である必要があります。
+                        </p>
+                    </div>
+
+                    <pre class="config"><span class="comment">! LACPでEtherChannelを構成</span>
+Switch(config)# <span class="cmd">interface range gi0/1-2</span>
+Switch(config-if-range)# <span class="cmd">channel-group 1 mode active</span>
+Switch(config-if-range)# <span class="cmd">exit</span>
+Switch(config)# <span class="cmd">interface port-channel 1</span>
+Switch(config-if)# <span class="cmd">switchport mode trunk</span>
+
+<span class="comment">! 検証</span>
+Switch# <span class="cmd">show etherchannel summary</span>
+Switch# <span class="cmd">show interfaces port-channel 1</span></pre>
+                </section>
+
+                <section id="stp">
+                    <h2>7. 2.5 Rapid PVST+ スパニングツリープロトコル</h2>
+
+                    <h3>7.1 なぜスパニングツリーが必要か</h3>
+                    <p>
+                        冗長化のためにスイッチ同士を複数のリンクで接続すると、レイヤー2ではループが発生し、ブロードキャストストームやMACアドレステーブルの不安定化を引き起こします。スパニングツリープロトコル（STP）は、冗長リンクの一部を論理的にブロックすることでループを防ぎます。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                SW1["スイッチA<br/>（ルートブリッジ）"]
+                                SW2["スイッチB"]
+                                SW3["スイッチC"]
+                                SW1 ---|"転送（Forwarding）"| SW2
+                                SW1 ---|"転送（Forwarding）"| SW3
+                                SW2 -.-|"ブロック（Discarding）"| SW3
+                        </script>
+                        <p class="diagram-caption">
+                            図10：ルートブリッジと1リンクのブロックによるループ防止
+                        </p>
+                    </div>
+
+                    <h3>7.2 ルートブリッジの選出</h3>
+                    <p>
+                        STPはまず、トポロジー内から基準となる<strong>ルートブリッジ</strong>を1台選出します。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>選出基準（優先順）</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1. ブリッジプライオリティが最小</td>
+                                <td>デフォルトは32768。値が小さいほど優先される</td>
+                            </tr>
+                            <tr>
+                                <td>2. MACアドレスが最小</td>
+                                <td>プライオリティが同値の場合のタイブレーク</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        運用では、意図的にルートブリッジにしたいスイッチのプライオリティを下げて固定することが一般的です。
+                    </p>
+
+                    <pre class="config"><span class="comment">! ルートブリッジの固定</span>
+Switch(config)# <span class="cmd">spanning-tree vlan 10 root primary</span>
+Switch(config)# <span class="cmd">spanning-tree vlan 10 priority 4096</span>
+
+<span class="comment">! 検証</span>
+Switch# <span class="cmd">show spanning-tree vlan 10</span></pre>
+
+                    <h3>7.3 ポートの役割（ロール）</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>役割</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ルートポート（Root Port）</td>
+                                <td>
+                                    非ルートブリッジ上で、ルートブリッジへの最短コストを持つ1ポート
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>指定ポート（Designated Port）</td>
+                                <td>各セグメントで転送を担当する1ポート</td>
+                            </tr>
+                            <tr>
+                                <td>非指定ポート（Non-Designated / Blocking）</td>
+                                <td>ループ防止のため転送をブロックされるポート</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>7.4 ポートの状態（Rapid PVST+ = RSTPベース）</h3>
+                    <p>
+                        従来の802.1D
+                        STPでは4つの状態（Blocking→Listening→Learning→Forwarding）でしたが、Rapid
+                        PVST+の基盤であるRSTP（802.1w）ではこれが集約され、収束が大幅に高速化されています。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                D["Discarding<br/>（学習も転送もしない）"] --> L["Learning<br/>（MACアドレスは学習するが転送はしない）"]
+                                L --> F["Forwarding<br/>（学習も転送も行う）"]
+                        </script>
+                        <p class="diagram-caption">図11：Rapid PVST+のポート状態遷移</p>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>従来のSTP（802.1D）</th>
+                                <th>Rapid PVST+ / RSTP（802.1w）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Blocking</td>
+                                <td>Discarding</td>
+                            </tr>
+                            <tr>
+                                <td>Listening</td>
+                                <td>Discarding</td>
+                            </tr>
+                            <tr>
+                                <td>Learning</td>
+                                <td>Learning</td>
+                            </tr>
+                            <tr>
+                                <td>Forwarding</td>
+                                <td>Forwarding</td>
+                            </tr>
+                            <tr>
+                                <td>収束に数十秒</td>
+                                <td>収束は数秒以内</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>7.5 PortFastとガード機能</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>機能</th>
+                                <th>目的</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PortFast</td>
+                                <td>
+                                    エンドデバイス（PCなど）を接続するアクセスポートで、STPの各段階を待たず即座にForwarding状態にする
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BPDU Guard</td>
+                                <td>
+                                    PortFastが有効なポートでBPDUを受信した場合、ポートを即座にerr-disable状態にする（不正なスイッチ接続を防止）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BPDU Filter</td>
+                                <td>該当ポートでBPDUの送受信自体を行わないようにする</td>
+                            </tr>
+                            <tr>
+                                <td>Root Guard</td>
+                                <td>
+                                    指定したポートで、より優れたBPDU（＝ルートブリッジになろうとする機器）を受信した場合にそのポートをブロックし、意図しないルートブリッジの変更を防止する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Loop Guard</td>
+                                <td>
+                                    本来BPDUを受信し続けるはずのポートでBPDUが届かなくなった場合に、誤って転送状態へ遷移することを防ぐ
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TD
+                                Port["アクセスポート（PortFast有効）"] --> Check{"BPDUを受信した？"}
+                                Check -- "受信した（想定外）" --> Action["BPDU Guardにより<br/>ポートをerr-disableへ"]
+                                Check -- "受信しない（想定通り）" --> Normal["通常どおりForwarding継続"]
+                        </script>
+                        <p class="diagram-caption">図12：BPDU Guardの判断フロー</p>
+                    </div>
+
+                    <pre
+                        class="config"
+                    ><span class="comment">! PortFastとBPDU Guardの設定（アクセスポート）</span>
+Switch(config)# <span class="cmd">interface gi0/1</span>
+Switch(config-if)# <span class="cmd">spanning-tree portfast</span>
+Switch(config-if)# <span class="cmd">spanning-tree bpduguard enable</span></pre>
+
+                    <div class="callout">
+                        <span class="callout-title">💡 試験のポイント</span>
+                        <p>
+                            PortFastは「PCなど末端デバイス用」、BPDU GuardやRoot
+                            Guardは「不正な機器やトポロジー変更を防ぐための保護機能」という役割の違いを混同しないようにしましょう。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="wireless-arch">
+                    <h2>8. 2.6 Ciscoワイヤレスアーキテクチャ と APモード</h2>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>アーキテクチャ</th>
+                                <th>概要</th>
+                                <th>制御プレーンの場所</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>自律型（Autonomous）AP</td>
+                                <td>AP単体で無線制御（RF管理・認証など）を完結させる</td>
+                                <td>AP自身</td>
+                            </tr>
+                            <tr>
+                                <td>分離MAC（Split-MAC）／集中型（コントローラベース）</td>
+                                <td>
+                                    AP（Lightweight
+                                    AP）はデータ転送に専念し、無線制御はWLC（Wireless LAN
+                                    Controller）に集約する
+                                </td>
+                                <td>WLC（コントローラ）</td>
+                            </tr>
+                            <tr>
+                                <td>クラウド管理型</td>
+                                <td>
+                                    APの管理・可視化をクラウド上のダッシュボードで行う（例：Cisco
+                                    Meraki）
+                                </td>
+                                <td>クラウド上のコントローラ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                subgraph Autonomous["自律型アーキテクチャ"]
+                                    AP1["自律AP<br/>（制御ロジックを内蔵）"]
+                                end
+                                subgraph SplitMac["分離MAC（コントローラベース）アーキテクチャ"]
+                                    AP2["Lightweight AP<br/>（データ転送のみ）"] <-->|"CAPWAP<br/>トンネル"| WLC["WLC<br/>（無線制御を集中管理）"]
+                                end
+                                subgraph Cloud["クラウド管理型アーキテクチャ"]
+                                    AP3["クラウド管理AP"] <-->|"インターネット経由"| CloudCtrl["クラウドダッシュボード"]
+                                end
+                        </script>
+                        <p class="diagram-caption">図13：3種類のワイヤレスアーキテクチャの比較</p>
+                    </div>
+
+                    <p>
+                        コントローラベースのアーキテクチャでは、APとWLCの間の通信は<strong>CAPWAP</strong>（Control
+                        And Provisioning of Wireless Access
+                        Points）というトンネルプロトコルでカプセル化されます。多数のAPを一元管理できることが最大のメリットです。
+                    </p>
+                </section>
+
+                <section id="wlan-physical">
+                    <h2>9. 2.7 WLANコンポーネントの物理接続</h2>
+                    <p>
+                        コントローラベースのワイヤレス環境における、実際の配線と論理構成を確認します。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                AP["Lightweight AP"] -->|"アクセスポート<br/>（管理VLAN）"| SW["アクセススイッチ"]
+                                SW -->|"トランクポート<br/>（複数のクライアントVLANを伝送）"| Dist["ディストリビューションスイッチ"]
+                                Dist -->|"LAG（複数リンクの束ね）"| WLC["WLC"]
+                        </script>
+                        <p class="diagram-caption">図14：AP・スイッチ・WLCの物理接続</p>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>コンポーネント</th>
+                                <th>接続タイプ</th>
+                                <th>補足</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AP → アクセススイッチ</td>
+                                <td>アクセスポート（多くは管理用VLAN）</td>
+                                <td>PoEで給電されることが多い</td>
+                            </tr>
+                            <tr>
+                                <td>アクセススイッチ → 上位スイッチ</td>
+                                <td>トランクポート</td>
+                                <td>複数のクライアントVLANを一括で伝送</td>
+                            </tr>
+                            <tr>
+                                <td>上位スイッチ → WLC</td>
+                                <td>LAG（Link Aggregation）</td>
+                                <td>
+                                    WLCに集中する多数のAPトラフィックを高帯域・冗長構成で受け止める
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="mgmt-access">
+                    <h2>10. 2.8 ネットワークデバイスの管理アクセス</h2>
+                    <p>
+                        ネットワーク機器へ管理者としてログインする方法は複数あり、セキュリティ特性が異なります。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>方式</th>
+                                <th>暗号化</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>コンソール</td>
+                                <td>なし（物理接続のため通常は暗号化不要）</td>
+                                <td>初期設定・障害時のアウトオブバンド接続</td>
+                            </tr>
+                            <tr>
+                                <td>Telnet</td>
+                                <td>暗号化なし（平文）</td>
+                                <td>
+                                    現在は非推奨。試験では「安全でない」選択肢として登場しやすい
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SSH</td>
+                                <td>暗号化あり</td>
+                                <td>リモート管理の標準的な方式</td>
+                            </tr>
+                            <tr>
+                                <td>HTTP</td>
+                                <td>暗号化なし</td>
+                                <td>Web GUI管理（非推奨）</td>
+                            </tr>
+                            <tr>
+                                <td>HTTPS</td>
+                                <td>暗号化あり</td>
+                                <td>Web GUI管理（推奨）</td>
+                            </tr>
+                            <tr>
+                                <td>TACACS+ / RADIUS</td>
+                                <td>認証通信は暗号化（TACACS+はペイロード全体を暗号化）</td>
+                                <td>
+                                    集中管理されたAAA（認証・認可・アカウンティング）サーバーとの連携
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>クラウド管理</td>
+                                <td>クラウドサービス側の暗号化通信に依存</td>
+                                <td>Meraki等のクラウドダッシュボード経由での管理</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TD
+                                Admin["管理者"] --> Choice{"どの方式で接続する？"}
+                                Choice -->|"物理的に近い／初期設定"| Console["コンソール接続"]
+                                Choice -->|"リモートでCLI操作"| SSH["SSH（推奨）"]
+                                Choice -->|"リモートでGUI操作"| HTTPS["HTTPS（推奨）"]
+                                Choice -->|"複数台の認証を集中管理したい"| AAA["TACACS+ / RADIUS"]
+                        </script>
+                        <p class="diagram-caption">図15：管理アクセス方式の選択フロー</p>
+                    </div>
+
+                    <div class="callout">
+                        <span class="callout-title">💡 試験のポイント</span>
+                        <p>
+                            「安全な管理アクセス方法はどれか」と問われたら、Telnet／HTTPではなくSSH／HTTPSを選ぶのが基本です。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="wlan-gui">
+                    <h2>11. 2.9 ワイヤレスLAN GUI設定の解釈</h2>
+                    <p>
+                        このトピックは、WLCのGUI画面上で行うWLAN作成の流れを「読み解ける」ことが求められます（CLIでのフルコンフィグではなく、GUI操作の理解が中心です）。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TD
+                                Step1["① WLAN作成<br/>（SSID名・WLAN IDを指定）"] --> Step2["② セキュリティ設定<br/>（WPA2/WPA3、認証方式を選択）"]
+                                Step2 --> Step3["③ QoSプロファイルの適用<br/>（音声・映像・データなどの優先度設定）"]
+                                Step3 --> Step4["④ 詳細設定<br/>（VLANマッピング、帯域制御など）"]
+                                Step4 --> Step5["⑤ WLANを有効化してAPへ配信"]
+                        </script>
+                        <p class="diagram-caption">図16：WLC GUIでのWLAN作成フロー</p>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>設定項目</th>
+                                <th>GUI上で確認・設定する内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>WLAN作成</td>
+                                <td>SSID名、WLAN ID、有効/無効の切り替え</td>
+                            </tr>
+                            <tr>
+                                <td>セキュリティ設定</td>
+                                <td>
+                                    WPA2-Personal（PSK）／WPA2-Enterprise／WPA3などの選択、事前共有キーの設定
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>QoSプロファイル</td>
+                                <td>
+                                    Platinum（音声）／Gold（映像）／Silver（ベストエフォート）／Bronze（バックグラウンド）といった優先度クラス
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>詳細設定</td>
+                                <td>
+                                    クライアントVLANのマッピング、ブロードキャストSSIDの有無、セッションタイムアウトなど
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="exam-tips">
+                    <h2>12. 試験対策：頻出の引っかけポイント</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>引っかけやすいポイント</th>
+                                <th>正しい理解</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>VLANとIPサブネットを同一視してしまう</td>
+                                <td>
+                                    VLANはレイヤー2のブロードキャストドメイン、サブネットはレイヤー3の概念。多くの設計では1対1で対応させるが、概念としては別物
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ネイティブVLANはタグが付くと誤解する</td>
+                                <td>ネイティブVLANのフレームだけはタグなしで送信される</td>
+                            </tr>
+                            <tr>
+                                <td>LACP passive同士で組んでしまう</td>
+                                <td>
+                                    passive同士ではネゴシエーションが成立しないため、必ず片方はactiveにする
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PortFastとBPDU Guardを混同する</td>
+                                <td>
+                                    PortFastは「早く転送状態にする」機能、BPDU
+                                    Guardは「不正なBPDU受信時にポートを止める」保護機能
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>STPのポート状態を旧バージョンの4状態で覚えてしまう</td>
+                                <td>
+                                    Rapid
+                                    PVST+（RSTP）ではDiscarding／Learning／Forwardingの3状態に整理されている
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CDPを他ベンダー機器でも使えると誤解する</td>
+                                <td>CDPはCisco専用。ベンダー混在環境ではLLDPを使う</td>
+                            </tr>
+                            <tr>
+                                <td>Telnet・HTTPを安全な管理方式として選んでしまう</td>
+                                <td>暗号化されないため非推奨。SSH・HTTPSが基本</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="hands-on">
+                    <h2>13. ハンズオン学習の進め方</h2>
+                    <p>
+                        読むだけでなく、実際に手を動かすことがこのドメインの理解を大きく左右します。Cisco
+                        Packet
+                        Tracerなどのシミュレータで、以下のような構成を組んで検証すると効果的です。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                SW1["スイッチ1"] ---|"トランク"| SW2["スイッチ2"]
+                                SW2 ---|"トランク"| SW3["スイッチ3"]
+                                SW1 ---|"トランク（冗長リンク）"| SW3
+                                SW1 --- PC1["PC（VLAN10）"]
+                                SW2 --- PC2["PC（VLAN20）"]
+                        </script>
+                        <p class="diagram-caption">図17：3台スイッチによる演習トポロジー</p>
+                    </div>
+
+                    <p><strong>おすすめの演習ステップ</strong></p>
+                    <ol>
+                        <li>
+                            3台のスイッチで上図のようなループのあるトポロジーを作り、2つ以上のVLANを作成する
+                        </li>
+                        <li>
+                            各スイッチ間のリンクをトランクとして設定し、<code
+                                >show interfaces trunk</code
+                            >
+                            で許可VLANとネイティブVLANを確認する
+                        </li>
+                        <li>
+                            <code>show spanning-tree vlan 10</code>
+                            を実行し、どのスイッチがルートブリッジになっているか、どのポートがブロックされているかを確認する
+                        </li>
+                        <li>
+                            <code>spanning-tree vlan 10 priority 4096</code>
+                            で意図的にルートブリッジを変更し、収束後のポート役割の変化を観察する
+                        </li>
+                        <li>
+                            2本のリンクでEtherChannelを構成し、<code
+                                >channel-group 1 mode active</code
+                            >
+                            で束ね、<code>show etherchannel summary</code> で状態を確認する
+                        </li>
+                        <li>
+                            1本のリンクをあえて切断し、EtherChannelとSTPそれぞれの挙動（フェイルオーバーの速さ）を比較する
+                        </li>
+                    </ol>
+                </section>
+
+                <section id="summary">
+                    <h2>14. セクション全体のまとめ表</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>試験トピック</th>
+                                <th>キーワード</th>
+                                <th>主要コマンド例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2.1 VLAN</td>
+                                <td>アクセスポート、データ/ボイスVLAN、デフォルトVLAN</td>
+                                <td>
+                                    <code>switchport access vlan</code>,
+                                    <code>show vlan brief</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.2 トランク</td>
+                                <td>802.1Q、ネイティブVLAN</td>
+                                <td>
+                                    <code>switchport mode trunk</code>,
+                                    <code>show interfaces trunk</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.3 CDP/LLDP</td>
+                                <td>隣接機器の自動検出</td>
+                                <td>
+                                    <code>show cdp neighbors</code>,
+                                    <code>show lldp neighbors</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.4 EtherChannel</td>
+                                <td>LACP active/passive</td>
+                                <td>
+                                    <code>channel-group mode active</code>,
+                                    <code>show etherchannel summary</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.5 Rapid PVST+</td>
+                                <td>ルートブリッジ、ポート役割・状態、PortFast、各種ガード</td>
+                                <td>
+                                    <code>spanning-tree vlan root primary</code>,
+                                    <code>show spanning-tree</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.6 無線アーキテクチャ</td>
+                                <td>自律型／分離MAC／クラウド管理型</td>
+                                <td>（GUI・概念理解が中心）</td>
+                            </tr>
+                            <tr>
+                                <td>2.7 WLAN物理接続</td>
+                                <td>AP・WLC・LAGの配線</td>
+                                <td>（物理構成の理解が中心）</td>
+                            </tr>
+                            <tr>
+                                <td>2.8 管理アクセス</td>
+                                <td>Telnet/SSH/HTTP/HTTPS/TACACS+/RADIUS</td>
+                                <td>（安全性の比較理解が中心）</td>
+                            </tr>
+                            <tr>
+                                <td>2.9 WLAN GUI設定</td>
+                                <td>SSID作成、セキュリティ、QoSプロファイル</td>
+                                <td>（WLC GUI操作の理解が中心）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="sources">
+                    <h2>15. 参考資料・出典</h2>
+                    <p>
+                        本ガイドの試験範囲・配点・トピック構成は、以下のCisco公式情報および関連情報に基づいています。
+                    </p>
+                    <ul>
+                        <li>
+                            Cisco公式 CCNA認定ページ（日本語）：<br /><a
+                                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html</a
+                            >
+                        </li>
+                        <li>
+                            Cisco公式 200-301 CCNA試験トピックス
+                            v1.1（英語PDF、現行ブループリント）：<br /><a
+                                href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf</a
+                            >
+                        </li>
+                        <li>
+                            Cisco公式 200-301 CCNA試験トピックス（日本語PDF）：<br /><a
+                                href="https://www.cisco.com/c/dam/global/ja_jp/training-events/training-certifications/exam-topics/200-301-CCNA.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/c/dam/global/ja_jp/training-events/training-certifications/exam-topics/200-301-CCNA.pdf</a
+                            >
+                        </li>
+                        <li>
+                            Cisco公式 200-301 CCNA
+                            v2.0試験トピックス（2027年2月3日開始予定の次期ブループリント）：<br /><a
+                                href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301_CCNA_v2.0_Exam_Topics_PDF.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301_CCNA_v2.0_Exam_Topics_PDF.pdf</a
+                            >
+                        </li>
+                        <li>
+                            CCNA v1.1からv2.0への移行スケジュールに関する解説記事：<br /><a
+                                href="https://trainingcamp.com/articles/ccna-is-changing-in-2027-take-the-current-exam-or-wait-for-v2-0/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://trainingcamp.com/articles/ccna-is-changing-in-2027-take-the-current-exam-or-wait-for-v2-0/</a
+                            >
+                        </li>
+                    </ul>
+                    <p>
+                        試験トピックスはCiscoの都合により予告なく変更される場合があります。受験前には必ず<a
+                            href="https://learningnetwork.cisco.com/s/ccna-exam-topics"
+                            target="_blank"
+                            rel="noopener"
+                            >Cisco Learning Network</a
+                        >で最新のブループリントをご確認ください。
+                    </p>
+                </section>
+
+                <footer class="page-footer">
+                    CCNA 200-301「Network Access」徹底解説ガイド &middot; Domain 2.0 &middot; 20% of
+                    exam (v1.1 blueprint)
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+        <script>
+            // --- dedent helper: strips common leading whitespace introduced by
+            // source-file indentation, so mermaid receives clean diagram syntax ---
+            function dedent(str) {
+                const lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n[ \t]*$/, '')
+                    .split('\n');
+                const indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return (l.match(/^[ \t]*/) || [''])[0].length;
+                    });
+                const min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(min);
+                    })
+                    .join('\n');
+            }
+
+            // Convert every <script type="text/plain" class="mermaid-source"> into a
+            // <pre class="mermaid"> element containing the dedented raw text. Because
+            // the source lives inside a <script> tag, the HTML parser never touches
+            // tags like <br/> written inside the diagram labels.
+            document.querySelectorAll('script.mermaid-source').forEach(function (el) {
+                const pre = document.createElement('pre');
+                pre.className = 'mermaid';
+                pre.textContent = dedent(el.textContent);
+                el.replaceWith(pre);
+            });
+
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'base',
+                themeVariables: {
+                    background: '#07111e',
+                    primaryColor: '#122036',
+                    primaryTextColor: '#e8edf7',
+                    primaryBorderColor: '#7c9eff',
+                    lineColor: '#7c9eff',
+                    secondaryColor: '#1b2c4a',
+                    tertiaryColor: '#0e1a2e',
+                    fontSize: '16px',
+                    fontFamily: 'Inter, sans-serif',
+                },
+                flowchart: {
+                    useMaxWidth: false,
+                    htmlLabels: true,
+                    curve: 'basis',
+                },
+            });
+
+            // Sidebar scroll-spy + gentle section reveal.
+            // Two separate observers on purpose: a ratio-based check doesn't work for
+            // scroll-spy here because section heights vary wildly (a short section like
+            // #discovery vs. a long one like #stp), so a fixed intersectionRatio
+            // threshold would rarely cross for tall sections. Instead the spy observer
+            // just watches a thin band near the top of the viewport.
+            const sections = document.querySelectorAll('main section[id]');
+            const links = document.querySelectorAll('.toc a');
+
+            const revealObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) entry.target.classList.add('in-view');
+                    });
+                },
+                { threshold: 0, rootMargin: '0px 0px -10% 0px' },
+            );
+
+            const spyObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        const id = entry.target.getAttribute('id');
+                        const link = document.querySelector('.toc a[href="#' + id + '"]');
+                        if (entry.isIntersecting) {
+                            links.forEach(function (l) {
+                                l.classList.remove('active');
+                            });
+                            if (link) link.classList.add('active');
+                        }
+                    });
+                },
+                { threshold: 0, rootMargin: '-15% 0px -75% 0px' },
+            );
+
+            sections.forEach(function (s) {
+                revealObserver.observe(s);
+                spyObserver.observe(s);
+            });
+        </script>
+    </body>
+</html>
