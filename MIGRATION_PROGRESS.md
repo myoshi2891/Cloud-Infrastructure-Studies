@@ -25,6 +25,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 2 (Green / Skeleton & Content)**: `feat(ccna): migrate all content, css, and diagrams for ccna beginner guide` (`page.tsx`, `CcnaBeginnerGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全12セクション・テーブル・Mermaid 5図の完璧な移行)
 - [x] **Step 3 (Refactor / Integration)**: `refactor(ccna): integrate ccna beginner guide into routing and update docs` (`app/constants.ts` への Provider: Cisco および CCNA エントリ追加、`app/globals.css` へのテーマ変数・ユーティリティ追加、`CLAUDE.md` / `GEMINI.md` の更新)
 - [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive ccna beginner guide html` (`MIGRATION_PROGRESS.md` の更新、ソースファイル `Ccna-beginner-guide.html` および `.md` の `Gcl_Archive/Cisco/` への退避)
+- [x] **Step 5 (Layout & Nav Adjustment)**: `feat(nav): expand main content width and add Cisco provider to hamburger nav tree` (`app/navigation.ts` の `PROVIDER_LABEL`/`PROVIDER_ORDER` への Cisco 追加によるハンバーガーメニュー反映、`page.css` のメイン幅100%拡張)
 
 ### 関連ファイル
 
