@@ -7,9 +7,36 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **テスト数:** プロジェクト全体で 81 テストファイル (合計 580 テストケース) パス
+- **テスト数:** プロジェクト全体で 82 テストファイル パス
 - **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-07-04T13:41:00.000Z
+- **最終更新日時(UTC):** 2026-07-23T01:16:00.000Z
+
+---
+
+## 2026-07-23: Cisco「CCNA試験 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-beginner-guide.html`（静的HTML・1572行）を、正準の設計パターン（NavBar + page.tsx + CcnaBeginnerGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/beginner-guide` ルートへ移行・追加する。また、データ駆動ナビゲーション（`app/constants.ts` / `app/globals.css`）に Cisco Provider と CCNA エントリを追加し、グローバルナビゲーションに自動反映する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for ccna beginner guide page` (`__tests__/cisco/ccna/beginner-guide/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green / Skeleton & Content)**: `feat(ccna): migrate all content, css, and diagrams for ccna beginner guide` (`page.tsx`, `CcnaBeginnerGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全12セクション・テーブル・Mermaid 5図の完璧な移行)
+- [x] **Step 3 (Refactor / Integration)**: `refactor(ccna): integrate ccna beginner guide into routing and update docs` (`app/constants.ts` への Provider: Cisco および CCNA エントリ追加、`app/globals.css` へのテーマ変数・ユーティリティ追加、`CLAUDE.md` / `GEMINI.md` の更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive ccna beginner guide html` (`MIGRATION_PROGRESS.md` の更新、ソースファイル `Ccna-beginner-guide.html` および `.md` の `Gcl_Archive/Cisco/` への退避)
+
+### 関連ファイル
+
+- [app/cisco/ccna/beginner-guide/page.tsx](app/cisco/ccna/beginner-guide/page.tsx)
+- [app/cisco/ccna/beginner-guide/CcnaBeginnerGuide.tsx](app/cisco/ccna/beginner-guide/CcnaBeginnerGuide.tsx)
+- [app/cisco/ccna/beginner-guide/NavBar.tsx](app/cisco/ccna/beginner-guide/NavBar.tsx)
+- [app/cisco/ccna/beginner-guide/constants.ts](app/cisco/ccna/beginner-guide/constants.ts)
+- [app/cisco/ccna/beginner-guide/page.css](app/cisco/ccna/beginner-guide/page.css)
+- [__tests__/cisco/ccna/beginner-guide/page.test.tsx](__tests__/cisco/ccna/beginner-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [app/globals.css](app/globals.css)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ---
 
