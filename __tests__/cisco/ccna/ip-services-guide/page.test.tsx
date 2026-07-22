@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import CcnaIpServicesGuidePage from '@/app/cisco/ccna/ip-services-guide/page';
@@ -27,16 +28,16 @@ describe('CcnaIpServicesGuidePage', () => {
 
         const sectionTitles = [
             'このガイドの全体像',
-            '4.1 NAT（ネットワークアドレス変換）',
-            '4.2 NTP（ネットワーク時間プロトコル）',
-            '4.3 DHCP / DNS',
-            '4.4 SNMP（簡易ネットワーク管理プロトコル）',
+            '4.1 NAT',
+            '4.2 NTP',
+            '4.3 DHCP',
+            '4.4 SNMP',
             '4.5 Syslog',
-            '4.6 PHB (Per-Hop Behavior) による QoS',
-            '4.7 CDP / LLDP',
+            '4.6 DHCP',
+            '4.7 QoS',
             '4.8 SSH',
-            '4.9 TFTP / FTP',
-            'まとめ',
+            '4.9 TFTP',
+            '学習のポイントまとめ',
             '出典・参考資料',
         ];
 

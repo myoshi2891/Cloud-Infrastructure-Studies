@@ -1,0 +1,380 @@
+.ccna-ip-services-page {
+    --bg: var(--color-background, #07111e);
+    --bg-elevated: #0c1a2c;
+    --bg-card: var(--color-card, #0f2138);
+    --accent: #7c9eff;
+    --accent-soft: rgba(124, 158, 255, 0.14);
+    --accent-strong: #a9c1ff;
+    --text: var(--color-foreground, #e7ecf6);
+    --text-dim: var(--color-muted-foreground, #96a7c4);
+    --text-faint: #6b7d9c;
+    --border: rgba(124, 158, 255, 0.18);
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --danger: #ff8080;
+    --danger-soft: rgba(255, 107, 107, 0.12);
+    --code-bg: #0a1729;
+    --sidebar-width: 280px;
+
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    min-height: 100vh;
+}
+
+.ccna-ip-services-page .layout {
+    display: block;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Sidebar */
+.ccna-ip-services-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    width: var(--sidebar-width);
+    bottom: 0;
+    overflow-y: auto;
+    background: var(--bg-elevated);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.25rem 3rem;
+    z-index: 40;
+    scrollbar-width: thin;
+}
+
+.ccna-ip-services-page .sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ccna-ip-services-page .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(124, 158, 255, 0.25);
+    border-radius: 3px;
+}
+
+.ccna-ip-services-page .sidebar-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+}
+
+.ccna-ip-services-page .sidebar-subtitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 0.35rem;
+    line-height: 1.3;
+}
+
+.ccna-ip-services-page .sidebar-badge {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.75rem;
+    margin-bottom: 1.8rem;
+}
+
+.ccna-ip-services-page .nav-group-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-dim);
+    margin: 1.4rem 0 0.5rem;
+    font-weight: 600;
+}
+
+.ccna-ip-services-page .sidebar nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ccna-ip-services-page .sidebar nav a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.88rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    border-left: 2px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ccna-ip-services-page .sidebar nav a:hover {
+    color: var(--text);
+    background: var(--accent-soft);
+}
+
+.ccna-ip-services-page .sidebar nav a.active {
+    color: var(--accent-strong);
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+    font-weight: 600;
+}
+
+/* Main Content */
+.ccna-ip-services-page .main {
+    margin-left: var(--sidebar-width);
+    padding: 3rem 4rem 8rem;
+    max-width: 100%;
+}
+
+.ccna-ip-services-page .section {
+    padding-top: 1.2rem;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 2rem);
+}
+
+.ccna-ip-services-page h1 {
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+    line-height: 1.35;
+    margin: 0 0 0.6rem;
+    background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ccna-ip-services-page h2 {
+    font-size: 1.55rem;
+    color: var(--text);
+    margin: 3.2rem 0 1rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+}
+
+.ccna-ip-services-page .section:first-of-type h2 {
+    border-top: none;
+    padding-top: 0;
+}
+
+.ccna-ip-services-page h3 {
+    font-size: 1.18rem;
+    color: var(--accent-strong);
+    margin: 2rem 0 0.8rem;
+}
+
+.ccna-ip-services-page p {
+    color: var(--text);
+    margin: 0 0 1.1rem;
+}
+
+.ccna-ip-services-page strong {
+    color: var(--accent-strong);
+    font-weight: 600;
+}
+
+.ccna-ip-services-page .lede {
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    border-left: 3px solid var(--accent);
+    padding: 0.9rem 1.3rem;
+    background: var(--bg-elevated);
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 2.2rem;
+}
+
+.ccna-ip-services-page .callout {
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.6rem 0;
+}
+
+.ccna-ip-services-page .callout-title {
+    color: var(--accent-strong);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.ccna-ip-services-page .callout.warn {
+    background: var(--danger-soft);
+    border-color: rgba(255, 128, 128, 0.35);
+}
+
+.ccna-ip-services-page .callout.warn .callout-title {
+    color: var(--danger);
+}
+
+/* TOC Grid */
+.ccna-ip-services-page .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.8rem;
+    margin: 1.5rem 0 2rem;
+}
+
+.ccna-ip-services-page .toc-grid a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: all 0.2s ease;
+}
+
+.ccna-ip-services-page .toc-grid a:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    background: var(--accent-soft);
+}
+
+.ccna-ip-services-page .toc-grid .num {
+    font-weight: 700;
+    color: var(--accent);
+    font-family: var(--font-mono, monospace);
+}
+
+/* Tables */
+.ccna-ip-services-page .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin: 1.6rem 0 2.2rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.ccna-ip-services-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+}
+
+.ccna-ip-services-page thead th {
+    background: var(--bg-elevated);
+    color: var(--accent-strong);
+    text-align: left;
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.ccna-ip-services-page tbody td {
+    padding: 0.75rem 1.1rem;
+    border-bottom: 1px solid rgba(124, 158, 255, 0.08);
+    color: var(--text-dim);
+}
+
+.ccna-ip-services-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ccna-ip-services-page tbody tr:hover {
+    background: rgba(124, 158, 255, 0.05);
+}
+
+/* Code blocks & syntax highlighting */
+.ccna-ip-services-page .code-block {
+    position: relative;
+    margin: 1.4rem 0 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--code-bg);
+}
+
+.ccna-ip-services-page .code-block .code-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 1.1rem;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    background: rgba(124, 158, 255, 0.06);
+    border-bottom: 1px solid var(--border);
+}
+
+.ccna-ip-services-page .code-block pre {
+    margin: 0;
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.ccna-ip-services-page .code-line {
+    white-space: pre;
+    display: block;
+}
+
+.ccna-ip-services-page .code-comment {
+    color: #6b7d9c;
+    font-style: italic;
+}
+
+.ccna-ip-services-page .code-prompt {
+    color: #7c9eff;
+    font-weight: 600;
+}
+
+.ccna-ip-services-page .code-command {
+    color: #e7ecf6;
+}
+
+.ccna-ip-services-page .code-keyword {
+    color: #ff9e64;
+    font-weight: 600;
+}
+
+.ccna-ip-services-page .code-number {
+    color: #73daca;
+}
+
+/* Mermaid Diagrams */
+.ccna-ip-services-page .mermaid-wrap {
+    margin: 1.8rem 0;
+    padding: 1.2rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+}
+
+/* Sources footer */
+.ccna-ip-services-page .sources {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.ccna-ip-services-page .sources ul {
+    padding-left: 1.2rem;
+    color: var(--text-dim);
+}
+
+.ccna-ip-services-page .sources a {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.ccna-ip-services-page .sources a:hover {
+    color: var(--accent-strong);
+}
+
+@media (max-width: 992px) {
+    .ccna-ip-services-page .sidebar {
+        display: none;
+    }
+    .ccna-ip-services-page .main {
+        margin-left: 0;
+        padding: 2rem 1.5rem 6rem;
+    }
+}
