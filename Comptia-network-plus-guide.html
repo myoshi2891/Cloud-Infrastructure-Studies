@@ -6,7 +6,7 @@
         <title>CompTIA Network+ 試験 完全ガイド</title>
         <link
             rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css"
         />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
         <style>
@@ -21,7 +21,7 @@
 
                 --color-text-primary: #e8eaed;
                 --color-text-secondary: #a8adb5;
-                --color-text-tertiary: #6b7280;
+                --color-text-tertiary: #8f96a3;
                 --color-text-info: #7dd3fc;
                 --color-text-danger: #f87171;
                 --color-text-success: #6ee7b7;
@@ -49,6 +49,12 @@
                 --c-coral-800: #9a3412;
                 --c-coral-200: #fed7aa;
                 --c-coral-100: #ffedd5;
+                --c-pink-800: #831843;
+                --c-pink-200: #fbcfe8;
+                --c-pink-100: #fce7f3;
+                --c-amber-800: #92400e;
+                --c-amber-200: #fde68a;
+                --c-amber-100: #fef3c7;
             }
 
             * {
@@ -82,16 +88,49 @@
                 overflow-y: auto;
                 background: var(--color-background-secondary);
                 border-right: 1px solid var(--color-border-tertiary);
-                padding: 28px 20px;
+                padding: 24px 18px 28px 18px;
+            }
+
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 6px 6px 18px 6px;
+                margin-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+            .sidebar-brand-icon {
+                width: 30px;
+                height: 30px;
+                border-radius: var(--border-radius-md);
+                background: var(--c-purple-800);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .sidebar-brand-icon i {
+                font-size: 16px;
+                color: var(--c-purple-100);
+            }
+            .sidebar-brand-text {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                line-height: 1.3;
+            }
+            .sidebar-brand-sub {
+                font-size: 11px;
+                color: var(--color-text-tertiary);
             }
 
             .sidebar-title {
-                font-size: 12px;
+                font-size: 11px;
                 font-weight: 500;
                 color: var(--color-text-tertiary);
                 text-transform: uppercase;
                 letter-spacing: 0.06em;
-                margin: 0 0 14px 4px;
+                margin: 0 0 10px 8px;
             }
 
             .sidebar nav a {
@@ -108,24 +147,22 @@
                     background 0.15s,
                     color 0.15s;
             }
-
             .sidebar nav a i {
-                font-size: 16px;
+                font-size: 15px;
                 color: var(--color-text-tertiary);
                 flex-shrink: 0;
+                width: 16px;
+                text-align: center;
             }
-
             .sidebar nav a:hover {
                 background: var(--color-background-tertiary);
                 color: var(--color-text-primary);
             }
-
             .sidebar nav a.active {
                 background: var(--color-background-tertiary);
                 color: var(--color-text-primary);
                 font-weight: 500;
             }
-
             .sidebar nav a.active i {
                 color: var(--color-text-info);
             }
@@ -133,11 +170,27 @@
             .content {
                 flex: 1;
                 min-width: 0;
-                padding: 56px 72px 120px 72px;
+                padding: 0 72px 120px 72px;
+                position: relative;
+            }
+
+            .progress-track {
+                position: sticky;
+                top: 0;
+                z-index: 5;
+                height: 3px;
+                width: 100%;
+                background: var(--color-background-secondary);
+                margin: 0 -72px;
+            }
+            .progress-fill {
+                height: 100%;
+                width: 0%;
+                background: var(--color-text-info);
             }
 
             .doc-header {
-                margin-bottom: 48px;
+                margin: 44px 0 40px 0;
                 padding-bottom: 32px;
                 border-bottom: 1px solid var(--color-border-tertiary);
             }
@@ -163,16 +216,26 @@
             h2 {
                 font-size: 18px;
                 font-weight: 500;
-                margin: 48px 0 16px 0;
+                margin: 52px 0 18px 0;
                 padding-top: 8px;
                 scroll-margin-top: 24px;
                 display: flex;
                 align-items: center;
                 gap: 10px;
             }
-            h2 i {
+            h2 .h2-icon {
+                width: 30px;
+                height: 30px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            h2 .h2-icon i {
+                font-size: 15px;
                 color: var(--color-text-info);
-                font-size: 20px;
             }
             h3 {
                 font-size: 16px;
@@ -205,8 +268,43 @@
                 color: var(--color-text-primary);
             }
 
-            a.inline-link {
-                color: var(--color-text-info);
+            .stat-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 14px;
+                margin: 28px 0 4px 0;
+            }
+            .stat-card {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-left: 3px solid var(--stat-accent, var(--c-purple-200));
+                border-radius: var(--border-radius-lg);
+                padding: 16px 18px;
+            }
+            .stat-card-top {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+            .stat-card-top i {
+                font-size: 16px;
+                color: var(--stat-accent, var(--c-purple-200));
+            }
+            .stat-card-top span {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+            }
+            .stat-card-value {
+                font-size: 20px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            @media (max-width: 900px) {
+                .stat-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
             }
 
             table {
@@ -217,16 +315,14 @@
                 background: var(--color-background-secondary);
                 border-radius: var(--border-radius-lg);
                 overflow: hidden;
+                border: 1px solid var(--color-border-tertiary);
             }
-
             th,
             td {
                 text-align: left;
                 padding: 12px 16px;
-                border-bottom: 1px solid var(--color-border-tertiary);
                 vertical-align: top;
             }
-
             th {
                 color: var(--color-text-secondary);
                 font-weight: 500;
@@ -234,10 +330,16 @@
                 text-transform: uppercase;
                 letter-spacing: 0.04em;
                 background: var(--color-background-tertiary);
+                border-bottom: 2px solid var(--color-border-secondary);
             }
-
+            td {
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
             tr:last-child td {
                 border-bottom: none;
+            }
+            tbody tr:nth-child(even) td {
+                background: rgba(255, 255, 255, 0.015);
             }
             td.num {
                 color: var(--color-text-tertiary);
@@ -249,6 +351,15 @@
                 white-space: nowrap;
             }
 
+            .domain-dot {
+                display: inline-block;
+                width: 9px;
+                height: 9px;
+                border-radius: 50%;
+                margin-right: 8px;
+                vertical-align: middle;
+            }
+
             .callout {
                 display: flex;
                 gap: 12px;
@@ -256,8 +367,8 @@
                 border-radius: var(--border-radius-lg);
                 margin: 20px 0 28px 0;
                 font-size: 14px;
+                border: 1px solid var(--color-border-tertiary);
             }
-
             .callout i {
                 font-size: 18px;
                 flex-shrink: 0;
@@ -265,21 +376,18 @@
             }
             .callout-info {
                 background: var(--color-background-info);
-                color: var(--color-text-primary);
             }
             .callout-info i {
                 color: var(--color-text-info);
             }
             .callout-warning {
                 background: var(--color-background-warning);
-                color: var(--color-text-primary);
             }
             .callout-warning i {
                 color: var(--color-text-warning);
             }
             .callout-success {
                 background: var(--color-background-success);
-                color: var(--color-text-primary);
             }
             .callout-success i {
                 color: var(--color-text-success);
@@ -295,13 +403,32 @@
                 background: var(--color-background-secondary);
                 border: 1px solid var(--color-border-tertiary);
                 border-radius: var(--border-radius-xl);
-                padding: 28px 20px;
                 margin: 20px 0 28px 0;
+                overflow: hidden;
+            }
+            .diagram-head {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 14px 20px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                background: rgba(255, 255, 255, 0.015);
+            }
+            .diagram-head i {
+                font-size: 15px;
+                color: var(--diagram-accent, var(--c-purple-200));
+            }
+            .diagram-head span {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--color-text-secondary);
+            }
+            .diagram-body {
+                padding: 24px 20px 8px 20px;
                 text-align: center;
                 overflow-x: auto;
             }
-
-            .diagram-block svg {
+            .diagram-body svg {
                 display: block;
                 margin: 0 auto;
                 max-width: 100%;
@@ -310,35 +437,57 @@
             .diagram-caption {
                 font-size: 12px;
                 color: var(--color-text-tertiary);
-                margin-top: 12px;
+                padding: 0 20px 18px 20px;
+                text-align: center;
+            }
+            .diagram-error {
+                color: var(--color-text-danger);
+                font-size: 13px;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                justify-content: center;
             }
 
             .domain-card {
                 border: 1px solid var(--color-border-tertiary);
+                border-left: 3px solid var(--domain-accent, var(--c-purple-200));
                 border-radius: var(--border-radius-lg);
-                padding: 20px 22px;
+                padding: 22px 24px;
                 margin-bottom: 18px;
                 background: var(--color-background-secondary);
             }
-
             .domain-card-head {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
-                margin-bottom: 10px;
+                gap: 12px;
+                margin-bottom: 12px;
             }
-
+            .domain-num {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: var(--domain-accent-bg, var(--c-purple-800));
+                color: var(--domain-accent-text, var(--c-purple-100));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                font-weight: 500;
+                flex-shrink: 0;
+            }
             .domain-card-head h3 {
                 margin: 0;
+                flex: 1;
             }
-
             .domain-weight {
                 font-size: 12px;
                 font-weight: 500;
                 padding: 3px 10px;
                 border-radius: var(--border-radius-md);
-                color: var(--color-text-info);
-                background: var(--color-background-info);
+                color: var(--domain-accent-text, var(--c-purple-100));
+                background: var(--domain-accent-bg, var(--c-purple-800));
                 white-space: nowrap;
             }
 
@@ -377,7 +526,6 @@
                 border-radius: var(--border-radius-lg);
                 margin-bottom: 12px;
             }
-
             .ref-box-left {
                 display: flex;
                 align-items: center;
@@ -410,15 +558,6 @@
                 background: var(--color-background-tertiary);
             }
 
-            code {
-                font-family: var(--font-mono);
-                font-size: 13px;
-                background: var(--color-background-tertiary);
-                padding: 2px 6px;
-                border-radius: 4px;
-                color: var(--color-text-info);
-            }
-
             .footer-note {
                 font-size: 12px;
                 color: var(--color-text-tertiary);
@@ -437,7 +576,10 @@
                     position: relative;
                 }
                 .content {
-                    padding: 32px 20px 80px 20px;
+                    padding: 0 20px 80px 20px;
+                }
+                .progress-track {
+                    margin: 0 -20px;
                 }
             }
         </style>
@@ -445,6 +587,13 @@
     <body>
         <div class="layout">
             <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <div class="sidebar-brand-icon"><i class="ti ti-certificate"></i></div>
+                    <div>
+                        <div class="sidebar-brand-text">Network+ ガイド</div>
+                        <div class="sidebar-brand-sub">N10-009 / V9</div>
+                    </div>
+                </div>
                 <div class="sidebar-title">目次</div>
                 <nav id="side-nav">
                     <a href="#overview"><i class="ti ti-network"></i>1. Network+とは何か</a>
@@ -466,6 +615,10 @@
             </aside>
 
             <main class="content">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+
                 <div class="doc-header">
                     <div class="doc-eyebrow">
                         <i class="ti ti-certificate"></i>N10-009 / V9 対応
@@ -475,10 +628,40 @@
                         初学者のためのステップバイステップ解説 ― 最新の公式試験情報（V9 / 試験コード
                         N10-009）に基づいています
                     </p>
+
+                    <div class="stat-grid">
+                        <div class="stat-card" style="--stat-accent: var(--c-purple-200)">
+                            <div class="stat-card-top">
+                                <i class="ti ti-list-details"></i><span>出題ドメイン</span>
+                            </div>
+                            <div class="stat-card-value">5 分野</div>
+                        </div>
+                        <div class="stat-card" style="--stat-accent: var(--c-teal-200)">
+                            <div class="stat-card-top">
+                                <i class="ti ti-help-circle"></i><span>問題数（最大）</span>
+                            </div>
+                            <div class="stat-card-value">90問</div>
+                        </div>
+                        <div class="stat-card" style="--stat-accent: var(--c-coral-200)">
+                            <div class="stat-card-top">
+                                <i class="ti ti-clock-hour-4"></i><span>試験時間</span>
+                            </div>
+                            <div class="stat-card-value">90分</div>
+                        </div>
+                        <div class="stat-card" style="--stat-accent: var(--c-amber-200)">
+                            <div class="stat-card-top">
+                                <i class="ti ti-target-arrow"></i><span>合格ライン</span>
+                            </div>
+                            <div class="stat-card-value">720 / 900</div>
+                        </div>
+                    </div>
                 </div>
 
                 <section id="overview">
-                    <h2><i class="ti ti-network"></i>1. CompTIA Network+ とは何か</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-network"></i></span>1. CompTIA
+                        Network+ とは何か
+                    </h2>
                     <p>
                         CompTIA Network+ は、米国の非営利業界団体 CompTIA
                         が提供するベンダーニュートラル（特定メーカーに依存しない）なネットワーク技術者向け認定資格です。特定企業の製品知識ではなく、TCP/IP・ルーティング・スイッチング・無線LAN・クラウド・セキュリティといった「ネットワークの基礎体力」そのものを証明する資格として、業界で広く認知されています。
@@ -499,7 +682,10 @@
                 </section>
 
                 <section id="audience">
-                    <h2><i class="ti ti-users"></i>2. この資格はどんな人に向いているか</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-users"></i></span>2.
+                        この資格はどんな人に向いているか
+                    </h2>
                     <table>
                         <thead>
                             <tr>
@@ -547,7 +733,10 @@
                 </section>
 
                 <section id="exam-info">
-                    <h2><i class="ti ti-info-circle"></i>3. 試験の基本情報</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-info-circle"></i></span>3.
+                        試験の基本情報
+                    </h2>
                     <p>
                         2026年7月時点で最新の試験バージョンは
                         <strong>V9（試験コード N10-009）</strong> です。旧バージョン N10-008
@@ -605,24 +794,30 @@
                 </section>
 
                 <section id="domains-overview">
-                    <h2><i class="ti ti-chart-pie"></i>4. 出題範囲と配点（5つのドメイン）</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-chart-pie"></i></span>4.
+                        出題範囲と配点（5つのドメイン）
+                    </h2>
                     <p>
                         Network+ (N10-009)
                         の出題範囲は、以下の5つの「ドメイン」に分かれています。ドメインごとの配点比率を把握することは、学習の優先順位を決めるうえで非常に重要です。
                     </p>
 
                     <div class="diagram-block">
-                        <pre class="mermaid">
-pie showData
-    title Network+ (N10-009) ドメイン別配点
-    "1. ネットワークの概念 (23%)" : 23
-    "2. ネットワークの実装 (20%)" : 20
-    "3. ネットワークの運用 (19%)" : 19
-    "4. ネットワークセキュリティ (14%)" : 14
-    "5. トラブルシューティング (24%)" : 24
-        </pre
-                        >
-                        <div class="diagram-caption">図: ドメイン別の配点比率</div>
+                        <div class="diagram-head" style="--diagram-accent: var(--c-purple-200)">
+                            <i class="ti ti-chart-pie"></i><span>図: ドメイン別の配点比率</span>
+                        </div>
+                        <div class="diagram-body" id="dg-pie"></div>
+                        <script type="text/mermaid" data-target="dg-pie">
+                            %%{init: {'theme':'base','themeVariables':{"pie1":"#4c1d95","pie2":"#115e59","pie3":"#9a3412","pie4":"#831843","pie5":"#92400e","pieOuterStrokeColor":"#3a3f4a","pieSectionTextColor":"#e8eaed","pieOpacity":1,"pieTitleTextColor":"#e8eaed","pieLegendTextColor":"#e8eaed","pieLegendTextSize":"15px","pieSectionTextSize":"15px"}}}%%
+                            pie showData
+                                title Network+ (N10-009) ドメイン別配点
+                                "1. ネットワークの概念 (23%)" : 23
+                                "2. ネットワークの実装 (20%)" : 20
+                                "3. ネットワークの運用 (19%)" : 19
+                                "4. ネットワークセキュリティ (14%)" : 14
+                                "5. トラブルシューティング (24%)" : 24
+                        </script>
                     </div>
 
                     <table>
@@ -637,31 +832,61 @@ pie showData
                         <tbody>
                             <tr>
                                 <td class="num">1</td>
-                                <td>ネットワークの概念</td>
+                                <td>
+                                    <span
+                                        class="domain-dot"
+                                        style="background: var(--c-purple-200)"
+                                    ></span
+                                    >ネットワークの概念
+                                </td>
                                 <td class="pct">23%</td>
                                 <td>用語・OSIモデル・プロトコル・トポロジーなどの土台知識</td>
                             </tr>
                             <tr>
                                 <td class="num">2</td>
-                                <td>ネットワークの実装</td>
+                                <td>
+                                    <span
+                                        class="domain-dot"
+                                        style="background: var(--c-teal-200)"
+                                    ></span
+                                    >ネットワークの実装
+                                </td>
                                 <td class="pct">20%</td>
                                 <td>ルーティング・スイッチング・無線設定など「構築する力」</td>
                             </tr>
                             <tr>
                                 <td class="num">3</td>
-                                <td>ネットワークの運用</td>
+                                <td>
+                                    <span
+                                        class="domain-dot"
+                                        style="background: var(--c-coral-200)"
+                                    ></span
+                                    >ネットワークの運用
+                                </td>
                                 <td class="pct">19%</td>
                                 <td>ドキュメント化・監視・災害復旧など「運用する力」</td>
                             </tr>
                             <tr>
                                 <td class="num">4</td>
-                                <td>ネットワークセキュリティ</td>
+                                <td>
+                                    <span
+                                        class="domain-dot"
+                                        style="background: var(--c-pink-200)"
+                                    ></span
+                                    >ネットワークセキュリティ
+                                </td>
                                 <td class="pct">14%</td>
                                 <td>認証・攻撃手法・防御策など「守る力」</td>
                             </tr>
                             <tr>
                                 <td class="num">5</td>
-                                <td>ネットワークのトラブルシューティング</td>
+                                <td>
+                                    <span
+                                        class="domain-dot"
+                                        style="background: var(--c-amber-200)"
+                                    ></span
+                                    >ネットワークのトラブルシューティング
+                                </td>
                                 <td class="pct">24%</td>
                                 <td>障害を切り分け、直す「診断する力」</td>
                             </tr>
@@ -673,11 +898,22 @@ pie showData
                 </section>
 
                 <section id="domains-detail">
-                    <h2><i class="ti ti-list-details"></i>5. 各ドメインの詳細解説</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-list-details"></i></span>5.
+                        各ドメインの詳細解説
+                    </h2>
 
-                    <div class="domain-card">
+                    <div
+                        class="domain-card"
+                        style="
+                            --domain-accent: var(--c-purple-200);
+                            --domain-accent-bg: var(--c-purple-800);
+                            --domain-accent-text: var(--c-purple-100);
+                        "
+                    >
                         <div class="domain-card-head">
-                            <h3>5.1 ネットワークの概念</h3>
+                            <div class="domain-num">1</div>
+                            <h3>ネットワークの概念</h3>
                             <span class="domain-weight">23%</span>
                         </div>
                         <p>ネットワークを理解するための「語彙」と「地図」にあたる分野です。</p>
@@ -718,9 +954,17 @@ pie showData
                         </ul>
                     </div>
 
-                    <div class="domain-card">
+                    <div
+                        class="domain-card"
+                        style="
+                            --domain-accent: var(--c-teal-200);
+                            --domain-accent-bg: var(--c-teal-800);
+                            --domain-accent-text: var(--c-teal-100);
+                        "
+                    >
                         <div class="domain-card-head">
-                            <h3>5.2 ネットワークの実装</h3>
+                            <div class="domain-num">2</div>
+                            <h3>ネットワークの実装</h3>
                             <span class="domain-weight">20%</span>
                         </div>
                         <p>実際に「動くネットワーク」を組み立てる分野です。</p>
@@ -743,9 +987,17 @@ pie showData
                         </ul>
                     </div>
 
-                    <div class="domain-card">
+                    <div
+                        class="domain-card"
+                        style="
+                            --domain-accent: var(--c-coral-200);
+                            --domain-accent-bg: var(--c-coral-800);
+                            --domain-accent-text: var(--c-coral-100);
+                        "
+                    >
                         <div class="domain-card-head">
-                            <h3>5.3 ネットワークの運用</h3>
+                            <div class="domain-num">3</div>
+                            <h3>ネットワークの運用</h3>
                             <span class="domain-weight">19%</span>
                         </div>
                         <p>構築したネットワークを「維持し続ける」ための分野です。</p>
@@ -781,9 +1033,17 @@ pie showData
                         </ul>
                     </div>
 
-                    <div class="domain-card">
+                    <div
+                        class="domain-card"
+                        style="
+                            --domain-accent: var(--c-pink-200);
+                            --domain-accent-bg: var(--c-pink-800);
+                            --domain-accent-text: var(--c-pink-100);
+                        "
+                    >
                         <div class="domain-card-head">
-                            <h3>5.4 ネットワークセキュリティ</h3>
+                            <div class="domain-num">4</div>
+                            <h3>ネットワークセキュリティ</h3>
                             <span class="domain-weight">14%</span>
                         </div>
                         <p>配点は最も低いですが、実務では最重要とも言える分野です。</p>
@@ -818,9 +1078,17 @@ pie showData
                         </ul>
                     </div>
 
-                    <div class="domain-card">
+                    <div
+                        class="domain-card"
+                        style="
+                            --domain-accent: var(--c-amber-200);
+                            --domain-accent-bg: var(--c-amber-800);
+                            --domain-accent-text: var(--c-amber-100);
+                        "
+                    >
                         <div class="domain-card-head">
-                            <h3>5.5 ネットワークのトラブルシューティング ― 最重要ドメイン</h3>
+                            <div class="domain-num">5</div>
+                            <h3>ネットワークのトラブルシューティング ― 最重要ドメイン</h3>
                             <span class="domain-weight">24%</span>
                         </div>
                         <p>
@@ -828,19 +1096,24 @@ pie showData
                         </p>
 
                         <div class="diagram-block">
-                            <pre class="mermaid">
-flowchart TD
-    A["1. 問題を特定する"] --> B["2. 仮説を立てる"]
-    B --> C["3. 仮説を検証する"]
-    C -->|"誤りだった"| B
-    C -->|"正しいと確認"| D["4. 対応計画を実行する"]
-    D --> E["5. 動作を検証する"]
-    E --> F["6. 対応内容を文書化する"]
-          </pre
-                            >
-                            <div class="diagram-caption">
-                                図: CompTIA標準のトラブルシューティング方法論（6ステップ）
+                            <div class="diagram-head" style="--diagram-accent: var(--c-amber-200)">
+                                <i class="ti ti-list-numbers"></i
+                                ><span
+                                    >図:
+                                    CompTIA標準のトラブルシューティング方法論（6ステップ）</span
+                                >
                             </div>
+                            <div class="diagram-body" id="dg-troubleshoot"></div>
+                            <script type="text/mermaid" data-target="dg-troubleshoot">
+                                %%{init: {'theme':'base','themeVariables':{"primaryColor":"#92400e","primaryTextColor":"#fef3c7","primaryBorderColor":"#fde68a","lineColor":"#5a6270","edgeLabelBackground":"#15181d","mainBkg":"#92400e","nodeBorder":"#fde68a","textColor":"#e8eaed","fontSize":"16px"}}}%%
+                                flowchart TD
+                                    A["1. 問題を特定する"] --> B["2. 仮説を立てる"]
+                                    B --> C["3. 仮説を検証する"]
+                                    C -->|"誤りだった"| B
+                                    C -->|"正しいと確認"| D["4. 対応計画を実行する"]
+                                    D --> E["5. 動作を検証する"]
+                                    E --> F["6. 対応内容を文書化する"]
+                            </script>
                         </div>
 
                         <div class="callout callout-warning">
@@ -874,7 +1147,10 @@ flowchart TD
                 </section>
 
                 <section id="osi">
-                    <h2><i class="ti ti-stack-2"></i>6. 基礎知識：OSI参照モデル</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-stack-2"></i></span>6.
+                        基礎知識：OSI参照モデル
+                    </h2>
                     <p>
                         ネットワークの概念ドメインで必ず出題されるのが
                         OSI参照モデルです。7つの層それぞれの役割を最初に押さえておくと、以降のプロトコル学習が格段に理解しやすくなります。
@@ -942,27 +1218,33 @@ flowchart TD
                 </section>
 
                 <section id="roadmap">
-                    <h2><i class="ti ti-route"></i>7. 学習を始めるステップバイステップ</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-route"></i></span>7.
+                        学習を始めるステップバイステップ
+                    </h2>
                     <p>以下は、初学者がゼロから合格までたどる標準的な学習ロードマップです。</p>
 
                     <div class="diagram-block">
-                        <pre class="mermaid">
-flowchart TD
-    A["ステップ1: 基礎知識を確認する"] --> B["ステップ2: 学習教材を選ぶ"]
-    B --> C["ステップ3: ドメインごとに学習する"]
-    C --> D["ステップ4: 模擬試験で理解度を測定する"]
-    D --> E{"合格ライン相当の得点か"}
-    E -->|"未達"| F["ステップ5: 弱点ドメインを復習する"]
-    F --> C
-    E -->|"到達"| G["ステップ6: 試験を申し込む"]
-    G --> H["ステップ7: 試験当日を迎える"]
-    H --> I{"720点以上か"}
-    I -->|"合格"| J["Network+認定を取得"]
-    I -->|"不合格"| K["スコアレポートで弱点を分析"]
-    K --> C
-        </pre
-                        >
-                        <div class="diagram-caption">図: 初学者向け学習ロードマップ</div>
+                        <div class="diagram-head" style="--diagram-accent: var(--c-purple-200)">
+                            <i class="ti ti-route"></i><span>図: 初学者向け学習ロードマップ</span>
+                        </div>
+                        <div class="diagram-body" id="dg-roadmap"></div>
+                        <script type="text/mermaid" data-target="dg-roadmap">
+                            %%{init: {'theme':'base','themeVariables':{"primaryColor":"#4c1d95","primaryTextColor":"#ede9fe","primaryBorderColor":"#ddd6fe","lineColor":"#5a6270","edgeLabelBackground":"#15181d","mainBkg":"#4c1d95","nodeBorder":"#ddd6fe","textColor":"#e8eaed","fontSize":"16px"}}}%%
+                            flowchart TD
+                                A["ステップ1: 基礎知識を確認する"] --> B["ステップ2: 学習教材を選ぶ"]
+                                B --> C["ステップ3: ドメインごとに学習する"]
+                                C --> D["ステップ4: 模擬試験で理解度を測定する"]
+                                D --> E{"合格ライン相当の得点か"}
+                                E -->|"未達"| F["ステップ5: 弱点ドメインを復習する"]
+                                F --> C
+                                E -->|"到達"| G["ステップ6: 試験を申し込む"]
+                                G --> H["ステップ7: 試験当日を迎える"]
+                                H --> I{"720点以上か"}
+                                I -->|"合格"| J["Network+認定を取得"]
+                                I -->|"不合格"| K["スコアレポートで弱点を分析"]
+                                K --> C
+                        </script>
                     </div>
 
                     <p>
@@ -972,7 +1254,9 @@ flowchart TD
                 </section>
 
                 <section id="materials">
-                    <h2><i class="ti ti-books"></i>8. 学習教材の選び方</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-books"></i></span>8. 学習教材の選び方
+                    </h2>
                     <p>
                         CompTIAは公式学習製品として「CertMaster」シリーズを提供しており、学習段階に応じて4種類から選べます。
                     </p>
@@ -1032,21 +1316,26 @@ flowchart TD
                 </section>
 
                 <section id="exam-day">
-                    <h2><i class="ti ti-calendar-event"></i>9. 試験当日の流れ</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-calendar-event"></i></span>9.
+                        試験当日の流れ
+                    </h2>
 
                     <div class="diagram-block">
-                        <script type="text/plain" class="mermaid-source">
-flowchart LR
-    A["会場到着 本人確認"] --> B["受験規約への同意"]
-    B --> C["試験開始 90分 最大90問"]
-    C --> D["回答 見直し"]
-    D --> E["試験終了を確定"]
-    E --> F["スコアレポート受領"]
-                        </script>
-                        <div class="mermaid"></div>
-                        <div class="diagram-caption">
-                            図: 試験当日の流れ（合格ライン: 720/900点）
+                        <div class="diagram-head" style="--diagram-accent: var(--c-coral-200)">
+                            <i class="ti ti-calendar-event"></i
+                            ><span>図: 試験当日の流れ（合格ライン: 720/900点）</span>
                         </div>
+                        <div class="diagram-body" id="dg-examday"></div>
+                        <script type="text/mermaid" data-target="dg-examday">
+                            %%{init: {'theme':'base','themeVariables':{"primaryColor":"#9a3412","primaryTextColor":"#ffedd5","primaryBorderColor":"#fed7aa","lineColor":"#5a6270","edgeLabelBackground":"#15181d","mainBkg":"#9a3412","nodeBorder":"#fed7aa","textColor":"#e8eaed","fontSize":"16px"}}}%%
+                            flowchart LR
+                                A["会場到着 本人確認"] --> B["受験規約への同意"]
+                                B --> C["試験開始 90分 最大90問"]
+                                C --> D["回答 見直し"]
+                                D --> E["試験終了を確定"]
+                                E --> F["スコアレポート受領"]
+                        </script>
                     </div>
 
                     <p>
@@ -1055,7 +1344,10 @@ flowchart LR
                 </section>
 
                 <section id="study-time">
-                    <h2><i class="ti ti-clock-hour-4"></i>10. 学習時間の目安</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-clock-hour-4"></i></span>10.
+                        学習時間の目安
+                    </h2>
                     <p>
                         学習教材ごとの目安時間（第8章）を踏まえると、経験レベル別のおおよその総学習期間は次のように整理できます。あくまで一般的な目安であり、個人差があります。
                     </p>
@@ -1094,7 +1386,10 @@ flowchart LR
                 </section>
 
                 <section id="faq">
-                    <h2><i class="ti ti-help-circle"></i>11. よくある質問（FAQ）</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-help-circle"></i></span>11.
+                        よくある質問（FAQ）
+                    </h2>
 
                     <div class="faq-item">
                         <div class="faq-q">
@@ -1139,7 +1434,9 @@ flowchart LR
                 </section>
 
                 <section id="summary">
-                    <h2><i class="ti ti-checklist"></i>12. まとめ</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-checklist"></i></span>12. まとめ
+                    </h2>
                     <p>
                         CompTIA Network+ (N10-009)
                         は、以下の5ドメインから幅広く出題される、ベンダーニュートラルなネットワーク基礎資格です。
@@ -1159,7 +1456,9 @@ flowchart LR
                 </section>
 
                 <section id="references">
-                    <h2><i class="ti ti-link"></i>13. 参考文献・出典</h2>
+                    <h2>
+                        <span class="h2-icon"><i class="ti ti-link"></i></span>13. 参考文献・出典
+                    </h2>
                     <p>
                         本ガイドの試験詳細・出題範囲・学習教材情報は、以下のCompTIA公式ページの内容に基づいています（アクセス日:
                         2026年7月21日）。
@@ -1196,69 +1495,48 @@ flowchart LR
         </div>
 
         <script>
-            document.querySelectorAll('.mermaid-source').forEach((srcScript) => {
-                let container = srcScript.nextElementSibling;
-                if (!container || !container.classList.contains('mermaid')) {
-                    container = document.createElement('div');
-                    container.className = 'mermaid';
-                    srcScript.parentNode.insertBefore(container, srcScript.nextSibling);
-                }
-                container.textContent = srcScript.textContent;
-            });
             mermaid.initialize({
                 startOnLoad: false,
                 theme: 'base',
                 securityLevel: 'loose',
-                fontFamily: 'var(--font-sans)',
+                fontFamily:
+                    '-apple-system, BlinkMacSystemFont, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif',
                 flowchart: {
                     useMaxWidth: false,
                     htmlLabels: true,
                     nodeSpacing: 45,
                     rankSpacing: 50,
+                    curve: 'basis',
                 },
                 pie: { useMaxWidth: false },
-                themeVariables: {
-                    background: 'transparent',
-                    fontFamily:
-                        '-apple-system, BlinkMacSystemFont, Hiragino Kaku Gothic ProN, Hiragino Sans, Meiryo, sans-serif',
-                    fontSize: '16px',
-                    primaryColor: '#4c1d95',
-                    primaryTextColor: '#ede9fe',
-                    primaryBorderColor: '#ddd6fe',
-                    lineColor: '#3a3f4a',
-                    secondaryColor: '#115e59',
-                    secondaryTextColor: '#ccfbf1',
-                    secondaryBorderColor: '#99f6e4',
-                    tertiaryColor: '#9a3412',
-                    tertiaryTextColor: '#ffedd5',
-                    tertiaryBorderColor: '#fed7aa',
-                    mainBkg: '#4c1d95',
-                    nodeBorder: '#ddd6fe',
-                    clusterBkg: '#1c2027',
-                    edgeLabelBackground: '#15181d',
-                    titleColor: '#e8eaed',
-                    textColor: '#e8eaed',
-                    nodeTextColor: '#ede9fe',
-                    pie1: '#4c1d95',
-                    pie2: '#115e59',
-                    pie3: '#9a3412',
-                    pie4: '#831843',
-                    pie5: '#1e40af',
-                    pieOuterStrokeColor: '#3a3f4a',
-                    pieSectionTextColor: '#e8eaed',
-                    pieOpacity: 1,
-                },
             });
 
-            async function renderDiagrams() {
+            async function renderAllDiagrams() {
                 if (document.fonts && document.fonts.ready) {
-                    await document.fonts.ready;
+                    try {
+                        await document.fonts.ready;
+                    } catch (e) {}
                 }
-                await mermaid.run({ querySelector: '.mermaid' });
+                const blocks = document.querySelectorAll('script[type="text/mermaid"]');
+                let idx = 0;
+                for (const block of blocks) {
+                    idx++;
+                    const targetId = block.getAttribute('data-target');
+                    const target = document.getElementById(targetId);
+                    const source = block.textContent.trim();
+                    if (!target) continue;
+                    try {
+                        const { svg } = await mermaid.render('mmd-svg-' + idx, source);
+                        target.innerHTML = svg;
+                    } catch (err) {
+                        target.innerHTML =
+                            '<div class="diagram-error"><i class="ti ti-alert-circle"></i>図の描画に失敗しました（コンソールに詳細を出力しています）</div>';
+                        console.error('Mermaid render error [' + targetId + ']:', err);
+                    }
+                }
             }
-            renderDiagrams();
+            renderAllDiagrams();
 
-            // scrollspy for sidebar nav
             const navLinks = Array.from(document.querySelectorAll('#side-nav a'));
             const sections = navLinks.map((a) => document.querySelector(a.getAttribute('href')));
             const observer = new IntersectionObserver(
@@ -1278,6 +1556,16 @@ flowchart LR
             sections.forEach((sec) => {
                 if (sec) observer.observe(sec);
             });
+
+            const progressFill = document.getElementById('progress-fill');
+            function updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+                progressFill.style.width = pct + '%';
+            }
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            updateProgress();
         </script>
     </body>
 </html>

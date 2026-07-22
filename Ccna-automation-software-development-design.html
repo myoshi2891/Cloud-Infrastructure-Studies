@@ -1,0 +1,1931 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA Automation認定「ソフトウェア開発と設計」完全ガイド</title>
+        <meta
+            name="description"
+            content="CCNA Automation認定（200-901 CCNAAUTO）の試験ドメイン「1.0 Software Development and Design」を初学者向けにステップバイステップで解説するガイド"
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0d1b2e;
+                --bg-card: #0f2138;
+                --bg-card-2: #122a46;
+                --border: rgba(124, 158, 255, 0.16);
+                --border-strong: rgba(124, 158, 255, 0.32);
+                --accent: #7c9eff;
+                --accent-2: #5eead4;
+                --text-primary: #e7edf7;
+                --text-secondary: #9fb3c8;
+                --text-muted: #5f7291;
+                --font-display: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+                --font-body: 'Noto Sans JP', 'Zen Kaku Gothic New', sans-serif;
+                --font-mono: 'JetBrains Mono', monospace;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text-primary);
+                font-family: var(--font-body);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .layout {
+                display: block;
+                min-height: 100vh;
+            }
+
+            /* ---------- Sidebar ---------- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 300px;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 28px 22px 40px;
+                z-index: 10;
+            }
+
+            .sidebar-brand {
+                font-family: var(--font-display);
+                font-weight: 900;
+                font-size: 0.95rem;
+                letter-spacing: 0.04em;
+                color: var(--text-secondary);
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+
+            .sidebar-brand span {
+                display: block;
+                color: var(--accent);
+                font-size: 1.3rem;
+                letter-spacing: 0;
+                text-transform: none;
+                margin-top: 4px;
+            }
+
+            .sidebar-sub {
+                font-size: 0.78rem;
+                color: var(--text-muted);
+                margin: 8px 0 28px;
+                line-height: 1.6;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .sidebar-nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 0.87rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+
+            .sidebar-nav a:hover {
+                background: rgba(124, 158, 255, 0.08);
+                color: var(--text-primary);
+            }
+
+            .sidebar-nav a.active {
+                background: rgba(124, 158, 255, 0.12);
+                color: var(--accent);
+                border-left: 2px solid var(--accent);
+                font-weight: 500;
+            }
+
+            .sidebar-footer {
+                margin-top: 32px;
+                padding-top: 20px;
+                border-top: 1px solid var(--border);
+                font-size: 0.74rem;
+                color: var(--text-muted);
+                line-height: 1.7;
+            }
+
+            .sidebar-footer a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+
+            /* ---------- Main ---------- */
+            .main {
+                margin-left: 300px;
+                max-width: none;
+                padding: 0 0 100px;
+            }
+
+            .prose,
+            .hero,
+            .section,
+            .footer {
+                max-width: none;
+            }
+
+            .hero {
+                padding: 72px 64px 48px;
+                border-bottom: 1px solid var(--border);
+                background:
+                    radial-gradient(ellipse at top left, rgba(124, 158, 255, 0.1), transparent 55%),
+                    radial-gradient(
+                        ellipse at bottom right,
+                        rgba(94, 234, 212, 0.08),
+                        transparent 50%
+                    );
+            }
+
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-family: var(--font-mono);
+                font-size: 0.78rem;
+                letter-spacing: 0.06em;
+                color: var(--accent-2);
+                background: rgba(94, 234, 212, 0.08);
+                border: 1px solid rgba(94, 234, 212, 0.25);
+                padding: 6px 14px;
+                border-radius: 999px;
+                margin-bottom: 24px;
+            }
+
+            .hero h1 {
+                font-family: var(--font-display);
+                font-weight: 900;
+                font-size: clamp(2rem, 4vw, 3rem);
+                line-height: 1.3;
+                margin: 0 0 20px;
+                background: linear-gradient(120deg, var(--accent) 10%, var(--accent-2) 90%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                color: transparent;
+            }
+
+            .hero p.lead {
+                font-size: 1.05rem;
+                color: var(--text-secondary);
+                max-width: 760px;
+                margin: 0 0 28px;
+            }
+
+            .hero-net {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                margin-bottom: 8px;
+            }
+
+            .hero-net svg {
+                display: block;
+            }
+
+            .hero-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .hero-meta .chip {
+                font-family: var(--font-mono);
+                font-size: 0.8rem;
+                color: var(--text-secondary);
+                border: 1px solid var(--border-strong);
+                border-radius: 8px;
+                padding: 8px 14px;
+                background: var(--bg-card);
+            }
+
+            .section {
+                padding: 56px 64px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .section:last-of-type {
+                border-bottom: none;
+            }
+
+            .section-kicker {
+                font-family: var(--font-mono);
+                font-size: 0.8rem;
+                color: var(--accent-2);
+                letter-spacing: 0.04em;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                font-family: var(--font-display);
+                font-weight: 700;
+                font-size: 1.7rem;
+                margin: 0 0 22px;
+                color: var(--text-primary);
+                padding-bottom: 14px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            h3 {
+                font-family: var(--font-display);
+                font-weight: 700;
+                font-size: 1.2rem;
+                margin: 34px 0 14px;
+                color: var(--accent);
+            }
+
+            p {
+                color: var(--text-secondary);
+                margin: 0 0 16px;
+            }
+            strong {
+                color: var(--text-primary);
+                font-weight: 700;
+            }
+
+            ul,
+            ol {
+                color: var(--text-secondary);
+                padding-left: 22px;
+                margin: 0 0 18px;
+            }
+            li {
+                margin-bottom: 8px;
+            }
+
+            blockquote {
+                margin: 0 0 24px;
+                padding: 16px 20px;
+                border-left: 3px solid var(--accent);
+                background: var(--bg-card);
+                border-radius: 0 10px 10px 0;
+                color: var(--text-secondary);
+                font-size: 0.94rem;
+            }
+
+            blockquote p:last-child {
+                margin-bottom: 0;
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            /* ---------- Tables ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 8px 0 28px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.92rem;
+                background: var(--bg-card);
+            }
+
+            thead th {
+                text-align: left;
+                font-family: var(--font-display);
+                font-weight: 700;
+                color: var(--accent);
+                background: var(--bg-card-2);
+                padding: 13px 18px;
+                border-bottom: 1px solid var(--border-strong);
+                white-space: nowrap;
+            }
+
+            tbody td {
+                padding: 13px 18px;
+                border-bottom: 1px solid var(--border);
+                color: var(--text-secondary);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            tbody td strong,
+            tbody td code {
+                color: var(--text-primary);
+            }
+
+            /* ---------- Code ---------- */
+            pre {
+                background: #0a1728;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 0 0 24px;
+            }
+
+            pre code,
+            code {
+                font-family: var(--font-mono) !important;
+                font-size: 0.86rem;
+                line-height: 1.7;
+                background: none !important;
+            }
+
+            p code,
+            li code {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 2px 6px;
+                font-size: 0.85em;
+                color: var(--accent-2);
+            }
+
+            /* ---------- Mermaid ---------- */
+            .diagram-frame {
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                background: var(--bg-card);
+                padding: 20px 8px;
+                margin: 8px 0 12px;
+            }
+
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .caption {
+                font-size: 0.8rem;
+                color: var(--text-muted);
+                text-align: center;
+                margin: 0 0 28px;
+                font-family: var(--font-mono);
+            }
+
+            /* ---------- Checklist ---------- */
+            ul.checklist {
+                list-style: none;
+                padding-left: 0;
+            }
+            ul.checklist li {
+                position: relative;
+                padding-left: 30px;
+                margin-bottom: 12px;
+                color: var(--text-secondary);
+            }
+            ul.checklist li::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 3px;
+                width: 16px;
+                height: 16px;
+                border: 1.5px solid var(--accent);
+                border-radius: 4px;
+            }
+
+            /* ---------- Details / Quiz ---------- */
+            details {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 18px;
+                margin-bottom: 12px;
+            }
+            details[open] {
+                border-color: var(--border-strong);
+            }
+            summary {
+                cursor: pointer;
+                font-weight: 700;
+                color: var(--accent);
+                font-size: 0.95rem;
+            }
+            summary::marker {
+                color: var(--accent-2);
+            }
+            details p {
+                margin: 12px 0 0;
+            }
+
+            /* ---------- Footer / Sources ---------- */
+            .footer {
+                padding: 48px 64px 64px;
+            }
+
+            .source-list {
+                list-style: none;
+                padding: 0;
+                margin: 0 0 22px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .source-list li {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 18px;
+                color: var(--text-secondary);
+                font-size: 0.9rem;
+            }
+
+            .source-list a {
+                font-weight: 500;
+            }
+
+            .disclaimer {
+                font-size: 0.82rem;
+                color: var(--text-muted);
+                border-top: 1px solid var(--border);
+                padding-top: 20px;
+                margin-top: 8px;
+            }
+
+            a:focus-visible,
+            summary:focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: 2px;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+                * {
+                    transition: none !important;
+                    animation: none !important;
+                }
+            }
+
+            @media (max-width: 960px) {
+                .sidebar {
+                    position: static;
+                    width: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                .main {
+                    margin-left: 0;
+                }
+                .hero,
+                .section,
+                .footer {
+                    padding-left: 24px;
+                    padding-right: 24px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-brand">CCNA AUTOMATION<span>学習ガイド</span></div>
+                <p class="sidebar-sub">200-901 CCNAAUTO<br />1.0 ソフトウェア開発と設計</p>
+                <nav class="sidebar-nav">
+                    <a href="#sec-1" data-nav>1. この認定と試験について</a>
+                    <a href="#sec-2" data-nav>2. 試験全体のドメイン構成</a>
+                    <a href="#sec-3" data-nav>3. データフォーマットの比較</a>
+                    <a href="#sec-4" data-nav>4. データのパース</a>
+                    <a href="#sec-5" data-nav>5. テスト駆動開発 (TDD)</a>
+                    <a href="#sec-6" data-nav>6. 開発手法の比較</a>
+                    <a href="#sec-7" data-nav>7. コードの構造化</a>
+                    <a href="#sec-8" data-nav>8. デザインパターン</a>
+                    <a href="#sec-9" data-nav>9. バージョン管理の利点</a>
+                    <a href="#sec-10" data-nav>10. Gitの基本操作</a>
+                    <a href="#sec-11" data-nav>11. 実践シナリオ</a>
+                    <a href="#sec-12" data-nav>12. チェックリスト・クイズ</a>
+                    <a href="#sec-13" data-nav>13. 参考ソース</a>
+                </nav>
+                <div class="sidebar-footer">
+                    非公式の学習補助資料です。<br />
+                    公式情報は
+                    <a
+                        href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
+                        target="_blank"
+                        rel="noopener"
+                        >Cisco公式ページ</a
+                    >
+                    をご確認ください。
+                </div>
+            </aside>
+
+            <main class="main">
+                <header class="hero">
+                    <div class="hero-eyebrow">CCNA AUTOMATION &middot; 200-901 CCNAAUTO</div>
+                    <div class="hero-net" aria-hidden="true">
+                        <svg
+                            width="180"
+                            height="28"
+                            viewBox="0 0 180 28"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <line
+                                x1="14"
+                                y1="14"
+                                x2="60"
+                                y2="6"
+                                stroke="#7c9eff"
+                                stroke-width="1.5"
+                                opacity="0.6"
+                            />
+                            <line
+                                x1="60"
+                                y1="6"
+                                x2="110"
+                                y2="20"
+                                stroke="#7c9eff"
+                                stroke-width="1.5"
+                                opacity="0.6"
+                            />
+                            <line
+                                x1="110"
+                                y1="20"
+                                x2="166"
+                                y2="12"
+                                stroke="#5eead4"
+                                stroke-width="1.5"
+                                opacity="0.6"
+                            />
+                            <circle
+                                cx="14"
+                                cy="14"
+                                r="6"
+                                fill="#0f2138"
+                                stroke="#7c9eff"
+                                stroke-width="2"
+                            />
+                            <circle
+                                cx="60"
+                                cy="6"
+                                r="5"
+                                fill="#0f2138"
+                                stroke="#7c9eff"
+                                stroke-width="2"
+                            />
+                            <circle
+                                cx="110"
+                                cy="20"
+                                r="5"
+                                fill="#0f2138"
+                                stroke="#5eead4"
+                                stroke-width="2"
+                            />
+                            <circle
+                                cx="166"
+                                cy="12"
+                                r="6"
+                                fill="#0f2138"
+                                stroke="#5eead4"
+                                stroke-width="2"
+                            />
+                        </svg>
+                    </div>
+                    <h1>ソフトウェア開発と設計 完全ガイド</h1>
+                    <p class="lead">
+                        Cisco公式の「CCNA Automation」認定ページおよび公式試験トピックPDF（200-901
+                        CCNAAUTO v1.1）に基づき、試験ドメイン
+                        <strong>「1.0 Software Development and Design」</strong>
+                        を、初学者でも理解できるようステップバイステップで解説します。
+                        本ガイドはCisco社が発行する公式教材ではなく、非公式の学習補助資料です。
+                    </p>
+                    <div class="hero-meta">
+                        <span class="chip">試験時間: 120分</span>
+                        <span class="chip">出題言語: 英語 / 日本語</span>
+                        <span class="chip">前提資格: なし</span>
+                        <span class="chip">本ドメインの出題比率: 15%</span>
+                    </div>
+                </header>
+
+                <article class="prose">
+                    <!-- 1 -->
+                    <section class="section" id="sec-1">
+                        <div class="section-kicker">01 / 13</div>
+                        <h2>この認定と試験について</h2>
+                        <p>
+                            CCNA
+                            Automationは、ネットワークの自動化・プログラマビリティ領域における第一歩となる認定資格です。合格には、コア試験である
+                            <strong
+                                >「Automating Networks Using Cisco Platforms（200-901
+                                CCNAAUTO）v1.1」</strong
+                            >
+                            を突破する必要があります。
+                        </p>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>試験時間</td>
+                                        <td>120分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>出題言語</td>
+                                        <td>英語・日本語</td>
+                                    </tr>
+                                    <tr>
+                                        <td>前提資格</td>
+                                        <td>
+                                            なし（1年以上のソフトウェア開発経験、特にPythonの実務経験があると学習がスムーズ）
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>有効期限</td>
+                                        <td>3年間（継続教育クレジットまたは再受験で更新可能）</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>
+                            この試験は、単なる「ネットワークの知識」だけでなく、<strong>ソフトウェア開発の基礎知識</strong>と<strong>Ciscoプラットフォームを操作する自動化スキル</strong>の両方を問う点が最大の特徴です。
+                            本ガイドで扱う「1.0
+                            ソフトウェア開発と設計」は、その土台となる最初のドメインにあたります。
+                        </p>
+                    </section>
+
+                    <!-- 2 -->
+                    <section class="section" id="sec-2">
+                        <div class="section-kicker">02 / 13</div>
+                        <h2>試験全体のドメイン構成</h2>
+                        <p>
+                            試験は6つのドメインで構成されており、それぞれに出題比率（重み）が設定されています。
+                        </p>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ドメイン番号</th>
+                                        <th>ドメイン名</th>
+                                        <th>出題比率</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.0</td>
+                                        <td>ソフトウェア開発と設計</td>
+                                        <td>15%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.0</td>
+                                        <td>APIの理解と活用</td>
+                                        <td>20%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.0</td>
+                                        <td>Ciscoプラットフォームと開発</td>
+                                        <td>15%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.0</td>
+                                        <td>アプリケーション導入とセキュリティ</td>
+                                        <td>15%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5.0</td>
+                                        <td>インフラとオートメーション</td>
+                                        <td>20%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.0</td>
+                                        <td>ネットワークの基礎</td>
+                                        <td>15%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                pie title CCNAAUTO 200-901 出題比率
+                                    "1.0 ソフトウェア開発と設計" : 15
+                                    "2.0 APIの理解と活用" : 20
+                                    "3.0 Ciscoプラットフォームと開発" : 15
+                                    "4.0 アプリケーション導入とセキュリティ" : 15
+                                    "5.0 インフラとオートメーション" : 20
+                                    "6.0 ネットワークの基礎" : 15
+                            </script>
+                        </div>
+                        <p class="caption">図: 6ドメインの出題比率</p>
+
+                        <p>
+                            「1.0
+                            ソフトウェア開発と設計」は全体の15%を占め、以下の8つの小項目（サブトピック）で構成されています。本ガイドではこの8項目すべてを順番に解説します。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    ROOT["1.0 ソフトウェア開発と設計<br/>出題比率 15%"]
+                                    ROOT --> N11["1.1 データフォーマットの比較"]
+                                    ROOT --> N12["1.2 データのパース"]
+                                    ROOT --> N13["1.3 テスト駆動開発(TDD)"]
+                                    ROOT --> N14["1.4 開発手法の比較"]
+                                    ROOT --> N15["1.5 コードの構造化"]
+                                    ROOT --> N16["1.6 デザインパターン"]
+                                    ROOT --> N17["1.7 バージョン管理の利点"]
+                                    ROOT --> N18["1.8 Gitの基本操作"]
+                            </script>
+                        </div>
+                        <p class="caption">図: ドメイン1.0を構成する8つのサブトピック</p>
+
+                        <blockquote>
+                            <p>
+                                補足：Cisco公式の試験概要ページでは、この領域は「Python、Git、共通データ形式（XML・JSON・YAML）を含むソフトウェア開発スキルの実践」と紹介されています（出典は巻末参照）。
+                            </p>
+                        </blockquote>
+                    </section>
+
+                    <!-- 3 -->
+                    <section class="section" id="sec-3">
+                        <div class="section-kicker">03 / 13 &middot; 試験目標 1.1</div>
+                        <h2>データフォーマットの比較（XML / JSON / YAML）</h2>
+
+                        <h3>なぜ学ぶのか</h3>
+                        <p>
+                            ネットワーク自動化では、機器の設定情報やAPIのレスポンスを「人間にも機械にも読み書きしやすい形式」でやり取りします。その代表格が
+                            <strong>XML・JSON・YAML</strong>
+                            の3つです。試験では、それぞれの特徴を理解し、状況に応じて使い分けられるかが問われます。
+                        </p>
+
+                        <h3>3つのフォーマットの比較表</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>観点</th>
+                                        <th>XML</th>
+                                        <th>JSON</th>
+                                        <th>YAML</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>読みやすさ</td>
+                                        <td>タグが多く冗長</td>
+                                        <td>シンプルで読みやすい</td>
+                                        <td>インデント主体で最も人間向き</td>
+                                    </tr>
+                                    <tr>
+                                        <td>構造の表現方法</td>
+                                        <td>開始・終了タグで囲む</td>
+                                        <td>波括弧・角括弧・コロン</td>
+                                        <td>インデントとハイフンのみ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>コメント</td>
+                                        <td>標準では不可</td>
+                                        <td>不可</td>
+                                        <td>可能（<code>#</code>）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>データ型</td>
+                                        <td>基本は文字列（スキーマで型定義も可）</td>
+                                        <td>文字列・数値・真偽値・null・配列・オブジェクト</td>
+                                        <td>JSONの上位互換（アンカーや複数行文字列なども可）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>主な利用場面</td>
+                                        <td>SOAP API、レガシーな設定ファイル</td>
+                                        <td>REST APIのリクエスト/レスポンス</td>
+                                        <td>Ansible Playbook、Kubernetes、CI/CD定義ファイル</td>
+                                    </tr>
+                                    <tr>
+                                        <td>拡張子</td>
+                                        <td><code>.xml</code></td>
+                                        <td><code>.json</code></td>
+                                        <td><code>.yml</code> / <code>.yaml</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>同じ情報を3つの形式で書いてみる</h3>
+                        <p>
+                            同じネットワーク機器の情報を、それぞれの形式で表現すると次のようになります。
+                        </p>
+
+                        <p><strong>XML</strong></p>
+                        <script type="text/plain" data-code="xml">
+                            <device>
+                              <hostname>Router1</hostname>
+                              <interface>
+                                <name>GigabitEthernet0/1</name>
+                                <status>up</status>
+                              </interface>
+                            </device>
+                        </script>
+
+                        <p><strong>JSON</strong></p>
+                        <script type="text/plain" data-code="json">
+                            {
+                              "hostname": "Router1",
+                              "interface": {
+                                "name": "GigabitEthernet0/1",
+                                "status": "up"
+                              }
+                            }
+                        </script>
+
+                        <p><strong>YAML</strong></p>
+                        <script type="text/plain" data-code="yaml">
+                            hostname: Router1
+                            interface:
+                              name: GigabitEthernet0/1
+                              status: up
+                        </script>
+
+                        <p>
+                            同じ内容でも、XMLはタグで、JSONは記号で、YAMLはインデントだけで階層構造を表現していることがわかります。
+                        </p>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                REST
+                                API（ドメイン2.0で詳しく学習）のやり取りは<strong>JSON</strong>が主流
+                            </li>
+                            <li>
+                                Ansibleの設定ファイルやCisco
+                                NSOのモデルは<strong>YAML</strong>が主流
+                            </li>
+                            <li>
+                                古いSOAPベースのAPIや一部のネットワーク機器の設定エクスポートには<strong>XML</strong>が使われることがある
+                            </li>
+                            <li>
+                                試験では「どの形式が読みやすいか」「どの形式にコメントが書けるか」のような比較知識が問われやすい
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 4 -->
+                    <section class="section" id="sec-4">
+                        <div class="section-kicker">04 / 13 &middot; 試験目標 1.2</div>
+                        <h2>データフォーマットをPythonのデータ構造にパースする</h2>
+
+                        <h3>「パース」とは何か</h3>
+                        <p>
+                            「パース（parse）」とは、テキストとして書かれたデータ（XML/JSON/YAML）を、プログラムが直接操作できるデータ構造（Pythonの
+                            <code>dict</code> や <code>list</code> など）に変換する処理のことです。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    A["テキストファイル<br/>(XML / JSON / YAML)"] --> B["専用のパーサーライブラリ<br/>(json / yaml / xml.etree.ElementTree)"]
+                                    B --> C["Pythonのデータ構造<br/>(dict / list / str / int / bool)"]
+                                    C --> D["スクリプト内でキー・インデックス指定で自由に操作"]
+                            </script>
+                        </div>
+                        <p class="caption">図: テキストからPythonデータ構造へのパースの流れ</p>
+
+                        <h3>JSONをパースする例</h3>
+                        <script type="text/plain" data-code="python">
+                            import json
+
+                            raw_text = '{"hostname": "Router1", "status": "up"}'
+
+                            # JSON文字列 → Pythonのdict型に変換
+                            parsed = json.loads(raw_text)
+
+                            print(parsed["hostname"])   # Router1
+                            print(type(parsed))         # <class 'dict'>
+                        </script>
+
+                        <h3>YAMLをパースする例</h3>
+                        <script type="text/plain" data-code="python">
+                            import yaml
+
+                            with open("device.yaml") as f:
+                                config = yaml.safe_load(f)
+
+                            print(config["hostname"])   # Router1
+                            print(type(config))         # <class 'dict'>
+                        </script>
+
+                        <h3>XMLをパースする例</h3>
+                        <script type="text/plain" data-code="python">
+                            import xml.etree.ElementTree as ET
+
+                            tree = ET.fromstring("<device><hostname>Router1</hostname></device>")
+                            hostname = tree.find("hostname").text
+
+                            print(hostname)              # Router1
+                        </script>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                JSONとYAMLは、パースすると多くの場合
+                                <strong
+                                    >Pythonの <code>dict</code>（辞書型）または
+                                    <code>list</code>（リスト型）</strong
+                                >
+                                になる
+                            </li>
+                            <li>
+                                XMLはやや特殊で、<strong>ツリー構造（要素オブジェクト）</strong>としてパースされることが多い
+                            </li>
+                            <li>
+                                試験では「このコードを実行した結果、変数の型は何になるか」といった読解問題が出やすいため、<code
+                                    >type()</code
+                                >
+                                で型を確認する習慣をつけておくと良い
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 5 -->
+                    <section class="section" id="sec-5">
+                        <div class="section-kicker">05 / 13 &middot; 試験目標 1.3</div>
+                        <h2>テスト駆動開発（TDD）の概念</h2>
+
+                        <h3>TDDとは</h3>
+                        <p>
+                            テスト駆動開発（Test-Driven
+                            Development）とは、<strong>「実装コードを書く前に、まずテストコードを書く」</strong>という開発スタイルです。
+                            一般的に次の3ステップを繰り返します。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    A["① Red<br/>まだ実装がないので失敗するテストを書く"] --> B["② Green<br/>テストが通る最小限の実装をする"]
+                                    B --> C["③ Refactor<br/>動作を変えずにコードを整理・改善する"]
+                                    C --> A
+                            </script>
+                        </div>
+                        <p class="caption">図: Red → Green → Refactor のサイクル</p>
+
+                        <h3>コード例で見るTDDの流れ</h3>
+                        <script type="text/plain" data-code="python">
+                            # ① Red: 先にテストを書く（この時点ではadd関数は存在しないので失敗する）
+                            def test_add():
+                                assert add(2, 3) == 5
+
+                            # ② Green: テストが通る最小限の実装を書く
+                            def add(a, b):
+                                return a + b
+
+                            # ③ Refactor: 必要であれば、動作を変えずにコードを整理する
+                            #    （このシンプルな例ではこれ以上の改善は不要）
+                        </script>
+
+                        <h3>なぜTDDが重要なのか</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>メリット</th>
+                                        <th>説明</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>仕様の明確化</td>
+                                        <td>
+                                            「何ができれば正しいか」を先に定義するため、実装の目的がぶれにくい
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>安心してリファクタリングできる</td>
+                                        <td>
+                                            テストがあることで、後からコードを変更しても壊れていないか即座に確認できる
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>自動化との相性</td>
+                                        <td>
+                                            ネットワーク自動化スクリプトも、意図しない設定変更を防ぐためにテストが重要
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>バグの早期発見</td>
+                                        <td>
+                                            実装直後にテストを実行するため、問題を早い段階で見つけられる
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                試験で問われるのは実装力そのものよりも<strong>「TDDという考え方・サイクルを説明できるか」</strong>という概念理解
+                            </li>
+                            <li>
+                                Red → Green → Refactor
+                                の順番と、それぞれの段階で何をするかを覚えておく
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 6 -->
+                    <section class="section" id="sec-6">
+                        <div class="section-kicker">06 / 13 &middot; 試験目標 1.4</div>
+                        <h2>ソフトウェア開発手法の比較（Agile / Lean / Waterfall）</h2>
+
+                        <h3>3つの開発手法の比較表</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>Waterfall</th>
+                                        <th>Agile</th>
+                                        <th>Lean</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>進め方</td>
+                                        <td>要件定義→設計→実装→テスト→リリースを一方向に進める</td>
+                                        <td>
+                                            短い反復（スプリント）を繰り返しながら少しずつ完成させる
+                                        </td>
+                                        <td>無駄を徹底的に排除し、価値の提供に集中する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>変更への強さ</td>
+                                        <td>弱い（後工程での仕様変更がしにくい）</td>
+                                        <td>強い（都度フィードバックを反映できる）</td>
+                                        <td>強い（継続的な改善を前提とする）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ドキュメント量</td>
+                                        <td>事前に詳細な文書を作成する</td>
+                                        <td>必要最小限、動くソフトウェアを重視</td>
+                                        <td>必要な分だけ、ムダな文書は作らない</td>
+                                    </tr>
+                                    <tr>
+                                        <td>向いている場面</td>
+                                        <td>要件が最初から固まっている大規模プロジェクト</td>
+                                        <td>要件変化が多いプロダクト開発、スタートアップ</td>
+                                        <td>製造業由来の考え方をITに応用したい場合</td>
+                                    </tr>
+                                    <tr>
+                                        <td>キーワード</td>
+                                        <td>フェーズ、マイルストーン</td>
+                                        <td>スプリント、イテレーション、ふりかえり</td>
+                                        <td>カイゼン、ムダの排除、価値の流れ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>フローで見る違い</h3>
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    subgraph WF["Waterfall（直線的に進む）"]
+                                        direction TB
+                                        W1["要件定義"] --> W2["設計"] --> W3["実装"] --> W4["テスト"] --> W5["リリース"]
+                                    end
+                                    subgraph AG["Agile（反復して進む）"]
+                                        direction TB
+                                        A1["計画"] --> A2["設計"] --> A3["実装"] --> A4["テスト"] --> A5["ふりかえり"] --> A1
+                                    end
+                            </script>
+                        </div>
+                        <p class="caption">
+                            図: Waterfall（直線的）とAgile（反復的）の進み方の違い
+                        </p>
+
+                        <p>
+                            Waterfallは前の工程が終わってから次に進む「一方通行」のイメージ、Agileは短いサイクルを何度も回しながら少しずつ機能を追加していく「反復」のイメージです。
+                        </p>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                「後戻りしにくいのはどれか」「短いサイクルで開発するのはどれか」のような特徴のマッチングが出題されやすい
+                            </li>
+                            <li>
+                                Leanは「開発プロセスそのもの」というより「ムダを減らす考え方」である点がAgileとの違い
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 7 -->
+                    <section class="section" id="sec-7">
+                        <div class="section-kicker">07 / 13 &middot; 試験目標 1.5</div>
+                        <h2>コードを関数・クラス・モジュールに整理する利点</h2>
+
+                        <h3>なぜコードを整理するのか</h3>
+                        <p>
+                            自動化スクリプトが数行で済むうちは良いですが、規模が大きくなるとコードを整理する仕組みが必要になります。Pythonでは主に3段階の単位でコードを整理します。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    M["モジュール<br/>(1つの.pyファイル、または複数ファイルをまとめたパッケージ)"] --> C1["クラス: DeviceManager"]
+                                    M --> C2["クラス: ConfigParser"]
+                                    C1 --> F1["メソッド: connect()"]
+                                    C1 --> F2["メソッド: get_status()"]
+                                    C2 --> F3["メソッド: load_yaml()"]
+                            </script>
+                        </div>
+                        <p class="caption">図: モジュール・クラス・メソッドの階層関係</p>
+
+                        <h3>それぞれの単位と利点</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>単位</th>
+                                        <th>説明</th>
+                                        <th>主な利点</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>関数（Function）</td>
+                                        <td>特定の処理をひとまとまりにしたもの</td>
+                                        <td>
+                                            同じ処理を何度も書かずに再利用できる／処理の意図が名前からわかる
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>クラス（Class）</td>
+                                        <td>
+                                            データ（属性）と処理（メソッド）をひとまとめにした設計図
+                                        </td>
+                                        <td>
+                                            関連する状態と振る舞いをまとめて管理できる／複数のインスタンスを独立して扱える
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>モジュール（Module）</td>
+                                        <td>
+                                            関数やクラスをまとめた1つのファイル（または複数ファイルのパッケージ）
+                                        </td>
+                                        <td>
+                                            機能ごとにファイルを分割できる／他のスクリプトから
+                                            <code>import</code> して再利用できる
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>コード例</h3>
+                        <script type="text/plain" data-code="python">
+                            # config_utils.py というモジュールの中に、
+                            # ConfigParserというクラスを定義する例
+
+                            class ConfigParser:
+                                def __init__(self, filepath):
+                                    self.filepath = filepath
+
+                                def load_yaml(self):
+                                    import yaml
+                                    with open(self.filepath) as f:
+                                        return yaml.safe_load(f)
+
+                                def get_hostname(self, config):
+                                    return config.get("hostname")
+                        </script>
+
+                        <script type="text/plain" data-code="python">
+                            # 別のスクリプトから再利用する
+
+                            from config_utils import ConfigParser
+
+                            parser = ConfigParser("device.yaml")
+                            config = parser.load_yaml()
+                            print(parser.get_hostname(config))
+                        </script>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                「関数＝処理のまとまり」「クラス＝データと処理のまとまり」「モジュール＝ファイル単位のまとまり」という粒度の違いを整理して覚える
+                            </li>
+                            <li>
+                                目的は一貫して<strong>再利用性・可読性・保守性の向上</strong>であることを押さえておく
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 8 -->
+                    <section class="section" id="sec-8">
+                        <div class="section-kicker">08 / 13 &middot; 試験目標 1.6</div>
+                        <h2>代表的なデザインパターン（MVCとObserver）</h2>
+                        <p>
+                            デザインパターンとは、ソフトウェア設計でよく出会う問題に対する「定石（型）」のことです。試験では
+                            <strong>MVC</strong> と <strong>Observer</strong> の2つが対象です。
+                        </p>
+
+                        <h3>MVCパターン</h3>
+                        <p>
+                            MVCは「Model（データとロジック）」「View（画面表示）」「Controller（入力の処理）」の3つの役割にコードを分離する設計パターンです。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    U["ユーザーの操作"] --> Ctrl["Controller<br/>入力を受け取り、何をすべきか判断する"]
+                                    Ctrl --> Mo["Model<br/>データの保持とビジネスロジック"]
+                                    Mo --> V["View<br/>画面・結果の表示"]
+                                    V --> U
+                                    Ctrl --> V
+                            </script>
+                        </div>
+                        <p class="caption">図: MVCパターンにおける3つの役割の関係</p>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>役割</th>
+                                        <th>説明</th>
+                                        <th>ネットワーク自動化での例</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Model</td>
+                                        <td>データそのものと、それを扱うロジック</td>
+                                        <td>機器のステータス情報、設定データ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>View</td>
+                                        <td>ユーザーに見える部分</td>
+                                        <td>ダッシュボードの画面、CLIの出力</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Controller</td>
+                                        <td>ユーザーの入力を受けてModelを更新する</td>
+                                        <td>Webhookを受け取り処理を振り分ける部分</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>
+                            <strong>利点</strong
+                            >：役割ごとにコードが分離されているため、画面デザインだけを変更したい場合でもロジックに手を入れずに済む、といった<strong>保守性・拡張性の高さ</strong>が得られます。
+                        </p>
+
+                        <h3>Observerパターン</h3>
+                        <p>
+                            Observerパターンは、ある対象（Subject）の状態が変化したときに、それを購読している複数の相手（Observer）へ自動的に通知する設計パターンです。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                sequenceDiagram
+                                    participant OA as ObserverA
+                                    participant OB as ObserverB
+                                    participant S as Subject
+                                    OA->>S: 通知してほしいと登録する
+                                    OB->>S: 通知してほしいと登録する
+                                    Note over S: 監視対象の状態が変化した
+                                    S-->>OA: 変化を通知する
+                                    S-->>OB: 変化を通知する
+                            </script>
+                        </div>
+                        <p class="caption">図: Observerパターンの通知の流れ</p>
+
+                        <p>
+                            <strong>利点</strong
+                            >：通知する側（Subject）は「誰が見ているか」を細かく意識せずに済み、新しいObserverを追加してもSubject側のコードを変更する必要がありません。
+                            ネットワーク自動化では、機器の状態変化をWebhookで複数のシステムに通知する仕組みなどがこの考え方に近いパターンです。
+                        </p>
+
+                        <script type="text/plain" data-code="python">
+                            class Subject:
+                                def __init__(self):
+                                    self._observers = []
+
+                                def subscribe(self, observer):
+                                    self._observers.append(observer)
+
+                                def notify(self, event):
+                                    for observer in self._observers:
+                                        observer.update(event)
+
+                            class LogObserver:
+                                def update(self, event):
+                                    print(f"ログに記録: {event}")
+
+                            class AlertObserver:
+                                def update(self, event):
+                                    print(f"アラート送信: {event}")
+
+                            subject = Subject()
+                            subject.subscribe(LogObserver())
+                            subject.subscribe(AlertObserver())
+                            subject.notify("インターフェースがダウンしました")
+                        </script>
+
+                        <h3>2つのパターンの比較</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>パターン</th>
+                                        <th>目的</th>
+                                        <th>主な構成要素</th>
+                                        <th>典型的な利用例</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>MVC</td>
+                                        <td>画面・ロジック・データを分離し保守性を高める</td>
+                                        <td>Model / View / Controller</td>
+                                        <td>Web管理画面、監視ダッシュボード</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Observer</td>
+                                        <td>状態変化を複数の相手に自動で伝える</td>
+                                        <td>Subject（発行者）/ Observer（購読者）</td>
+                                        <td>イベント通知、Webhook、GUIのイベント処理</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                「役割を分離するのはどちらか」＝MVC、「変化を通知するのはどちらか」＝Observer、という対応を覚える
+                            </li>
+                            <li>
+                                試験では実装の細部よりも「なぜこのパターンを使う利点があるのか」という設計意図の理解が問われる
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 9 -->
+                    <section class="section" id="sec-9">
+                        <div class="section-kicker">09 / 13 &middot; 試験目標 1.7</div>
+                        <h2>バージョン管理の利点</h2>
+
+                        <h3>バージョン管理とは</h3>
+                        <p>
+                            バージョン管理システム（Version Control System,
+                            VCS）は、ファイルの変更履歴を記録し、いつ・誰が・何を変更したかを追跡できる仕組みです。Gitはその代表例です。
+                        </p>
+
+                        <h3>なぜ必要なのか</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>課題</th>
+                                        <th>バージョン管理がない場合</th>
+                                        <th>バージョン管理がある場合</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>変更履歴の把握</td>
+                                        <td>
+                                            <code>config_final_v2_本当に最終.yaml</code>
+                                            のようなファイル名で管理しがち
+                                        </td>
+                                        <td>いつ・誰が・なぜ変更したかがコミット履歴として残る</td>
+                                    </tr>
+                                    <tr>
+                                        <td>複数人での共同作業</td>
+                                        <td>上書き事故や作業の衝突が起きやすい</td>
+                                        <td>ブランチで作業を分離し、あとでマージできる</td>
+                                    </tr>
+                                    <tr>
+                                        <td>問題発生時の切り戻し</td>
+                                        <td>どこまで戻せば良いか分からない</td>
+                                        <td>特定のコミットまで簡単に戻せる</td>
+                                    </tr>
+                                    <tr>
+                                        <td>変更内容の説明</td>
+                                        <td>「何を変えたか」を口頭やメモに頼る</td>
+                                        <td><code>diff</code> で変更差分を正確に確認できる</td>
+                                    </tr>
+                                    <tr>
+                                        <td>監査・レビュー</td>
+                                        <td>変更の妥当性を後から検証しにくい</td>
+                                        <td>コミット単位でレビューでき、変更理由も記録に残る</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>ネットワーク自動化での重要性</h3>
+                        <p>
+                            ネットワーク機器の設定（YAML/JSONで表現された「インフラのコード」）をGitで管理することで、<strong>「いつ・誰が・どの設定をどう変えたか」を追跡できる</strong>ようになります。
+                            これは、インフラをコードとして扱う考え方（Infrastructure as
+                            Code）の土台にもなる重要な概念です。
+                        </p>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                「変更履歴の追跡」「共同作業の容易化」「切り戻しの容易さ」「変更内容の可視化」の4点が代表的な利点
+                            </li>
+                            <li>
+                                試験では「バージョン管理がなぜ重要か」という理由を説明できるかが問われる
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 10 -->
+                    <section class="section" id="sec-10">
+                        <div class="section-kicker">10 / 13 &middot; 試験目標 1.8</div>
+                        <h2>Gitの基本操作</h2>
+
+                        <h3>Gitにおける4つの領域</h3>
+                        <p>
+                            Gitの操作を理解するには、まず「データがどこにあるか」という4つの領域を押さえることが近道です。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    WD["作業ディレクトリ<br/>(Working Directory)"] -- "git add" --> ST["ステージングエリア<br/>(Staging Area)"]
+                                    ST -- "git commit" --> LOCAL["ローカルリポジトリ<br/>(Local Repository)"]
+                                    LOCAL -- "git push" --> REMOTE["リモートリポジトリ<br/>(GitHub など)"]
+                                    REMOTE -- "git pull / git clone" --> WD
+                            </script>
+                        </div>
+                        <p class="caption">
+                            図: 作業ディレクトリからリモートリポジトリまでの4つの領域
+                        </p>
+
+                        <h3>各コマンドの役割</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>コマンド</th>
+                                        <th>目的</th>
+                                        <th>動きのイメージ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>git clone &lt;url&gt;</code></td>
+                                        <td>リモートリポジトリを丸ごと自分のPCに複製する</td>
+                                        <td>リモート → ローカル（新規取得）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git add &lt;file&gt;</code></td>
+                                        <td>変更をステージングエリアに追加する</td>
+                                        <td>作業ディレクトリ → ステージング</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git rm &lt;file&gt;</code></td>
+                                        <td>ファイルを追跡対象から削除する</td>
+                                        <td>作業ディレクトリ／ステージング</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git commit -m "..."</code></td>
+                                        <td>ステージング内容をローカルの履歴として記録する</td>
+                                        <td>ステージング → ローカルリポジトリ</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git push</code></td>
+                                        <td>ローカルの変更をリモートへ反映する</td>
+                                        <td>ローカル → リモート</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git pull</code></td>
+                                        <td>リモートの変更を取得し、ローカルに反映する</td>
+                                        <td>リモート → ローカル</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git branch &lt;name&gt;</code></td>
+                                        <td>新しい作業の分岐（ブランチ）を作成する</td>
+                                        <td>ローカルリポジトリ内</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git merge &lt;branch&gt;</code></td>
+                                        <td>別ブランチの変更を現在のブランチに取り込む</td>
+                                        <td>ローカルリポジトリ内</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git diff</code></td>
+                                        <td>変更差分を確認する</td>
+                                        <td>任意の2つの状態間の比較</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>ブランチとマージのイメージ</h3>
+                        <p>
+                            新しい機能はいきなり本流（main）に手を入れず、専用のブランチを作って作業するのが一般的です。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    M1["main: 初期コミット"] --> M2["main: 新機能の開発を開始"]
+                                    M2 --> B1["feature: 新機能を実装"]
+                                    B1 --> B2["feature: テストを追加"]
+                                    M2 --> M3["main: 別件の修正(hotfix)"]
+                                    M3 --> M4["main: featureブランチをマージ"]
+                                    B2 --> M4
+                                    M4 --> M5["main: リリース"]
+                            </script>
+                        </div>
+                        <p class="caption">図: ブランチの分岐とマージのイメージ</p>
+
+                        <h3>コンフリクト（衝突）が起きたら</h3>
+                        <p>
+                            同じ箇所を別々のブランチで変更していると、マージ時に「コンフリクト」が発生します。Gitは競合箇所を次のような目印つきでファイルに書き込むので、
+                            どちらを残すか（または両方を活かすか）を手動で判断して解消します。
+                        </p>
+
+                        <script type="text/plain" data-code="plaintext">
+                            <<<<<<< HEAD
+                            （現在のブランチでの変更内容）
+                            =======
+                            （マージしようとしているブランチでの変更内容）
+                            >>>>>>> feature-branch
+                        </script>
+
+                        <p>解消手順の流れは次の通りです。</p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    A["git merge を実行"] --> B{"コンフリクトが発生したか"}
+                                    B -- "いいえ" --> F["自動でマージ完了"]
+                                    B -- "はい" --> C["競合箇所を手動で編集して解決"]
+                                    C --> D["git add で解決済みとしてマークする"]
+                                    D --> E["git commit でマージを確定する"]
+                            </script>
+                        </div>
+                        <p class="caption">図: マージコンフリクト解消の流れ</p>
+
+                        <h3>diffで差分を確認する</h3>
+                        <script type="text/plain" data-code="bash">
+                            git diff
+                        </script>
+
+                        <script type="text/plain" data-code="diff">
+                            - hostname: Router1
+                            + hostname: Router1-Core
+                        </script>
+
+                        <p>
+                            <code>-</code> が削除された行、<code>+</code>
+                            が追加された行を示し、変更内容を一目で確認できます。
+                        </p>
+
+                        <h3>学習のポイント</h3>
+                        <ul>
+                            <li>
+                                各コマンドが「Gitの4つの領域のうち、どこからどこへデータを動かすものか」を対応づけて覚える
+                            </li>
+                            <li>
+                                <code>merge</code> でコンフリクトが起きた場合の対処の流れ（手動編集
+                                → <code>add</code> → <code>commit</code>）は特に問われやすい
+                            </li>
+                            <li>
+                                <code>diff</code>
+                                は「変更前後の差分を可視化するもの」という位置づけを理解しておく
+                            </li>
+                        </ul>
+                    </section>
+
+                    <!-- 11 -->
+                    <section class="section" id="sec-11">
+                        <div class="section-kicker">11 / 13</div>
+                        <h2>実践シナリオでつなげて理解する</h2>
+                        <p>
+                            ここまで学んだ8つの項目は、実際の自動化業務では次のように連携して使われます。
+                        </p>
+
+                        <div class="diagram-frame">
+                            <script type="text/plain" data-mermaid>
+                                flowchart TB
+                                    S1["ネットワーク設定をYAMLファイルで管理する"] --> S2["Pythonスクリプトでパースし、辞書型データに変換する"]
+                                    S2 --> S3["関数・クラス・モジュールとしてコードを整理する"]
+                                    S3 --> S4["TDDでテストを書きながら実装を進める"]
+                                    S4 --> S5["Gitでバージョン管理し、ブランチで安全に作業する"]
+                                    S5 --> S6["チームでレビューし、リモートリポジトリへpushする"]
+                                    S6 --> S7["MVCやObserverパターンを活かした自動化ツールに組み込む"]
+                            </script>
+                        </div>
+                        <p class="caption">図: ソフトウェア開発と設計 8項目の実践フロー</p>
+
+                        <p>
+                            このように、「1.0
+                            ソフトウェア開発と設計」の8項目は独立した知識ではなく、<strong>現場の自動化スクリプト1本を作るまでの一連の流れ</strong>を分解したものだと捉えると理解しやすくなります。
+                        </p>
+                    </section>
+
+                    <!-- 12 -->
+                    <section class="section" id="sec-12">
+                        <div class="section-kicker">12 / 13</div>
+                        <h2>学習チェックリスト・理解度クイズ</h2>
+
+                        <h3>チェックリスト</h3>
+                        <ul class="checklist">
+                            <li>
+                                XML・JSON・YAMLの違いを、コメントの可否・読みやすさの観点で説明できる
+                            </li>
+                            <li>
+                                JSON/YAML/XMLをパースした結果、Pythonでどのようなデータ型になるか説明できる
+                            </li>
+                            <li>TDDのRed→Green→Refactorのサイクルを説明できる</li>
+                            <li>Waterfall・Agile・Leanの特徴の違いを説明できる</li>
+                            <li>関数・クラス・モジュールそれぞれの役割と利点を説明できる</li>
+                            <li>MVCパターンの3つの役割と、Observerパターンの仕組みを説明できる</li>
+                            <li>バージョン管理がもたらす4つの利点を説明できる</li>
+                            <li>
+                                <code>clone</code> / <code>add</code> / <code>commit</code> /
+                                <code>push</code> / <code>pull</code> / <code>branch</code> /
+                                <code>merge</code> / <code>diff</code> の役割をそれぞれ説明できる
+                            </li>
+                        </ul>
+
+                        <h3>理解度クイズ（簡易）</h3>
+
+                        <details>
+                            <summary>Q1. コメントを書けるデータフォーマットはどれ？</summary>
+                            <p>
+                                YAMLです。<code>#</code>
+                                を使ってコメントを記述できます。JSONとXML（標準）ではコメントは書けません。
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Q2. TDDで最初に行うのはどのステップ？</summary>
+                            <p>
+                                Red（失敗するテストを先に書く）です。実装よりも先にテストを書く点がTDDの特徴です。
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Q3. 短い反復（スプリント）を繰り返す開発手法はどれ？</summary>
+                            <p>
+                                Agile（アジャイル）です。Waterfallは一方向に進む手法、Leanはムダの排除に主眼を置いた考え方です。
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>
+                                Q4.
+                                画面表示・入力処理・データを3つの役割に分離するデザインパターンはどれ？
+                            </summary>
+                            <p>
+                                MVC（Model・View・Controller）です。状態変化を複数の相手に自動通知するのはObserverパターンです。
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>
+                                Q5. マージ時にコンフリクトが発生した場合、次に行うべき操作の順番は？
+                            </summary>
+                            <p>
+                                競合箇所を手動で編集して解決する →
+                                <code>git add</code> で解決済みとしてマークする →
+                                <code>git commit</code> でマージを確定する、の順番です。
+                            </p>
+                        </details>
+                    </section>
+
+                    <!-- 13 -->
+                    <section class="section" id="sec-13">
+                        <div class="section-kicker">13 / 13</div>
+                        <h2>参考ソース</h2>
+                        <p>
+                            本ドキュメントの試験概要・試験ドメイン構成・出題比率は、以下のCisco公式ページおよび公式PDFの公開情報に基づいています。
+                        </p>
+
+                        <ul class="source-list">
+                            <li>
+                                <a
+                                    href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >CCNA Automation Certification（Cisco公式）</a
+                                ><br />
+                                認定資格の概要ページ
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >CCNA Automation Exam and Training（Cisco公式）</a
+                                ><br />
+                                対応するコア試験（200-901 CCNAAUTO）の情報ページ
+                            </li>
+                            <li>
+                                <a
+                                    href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Automating Networks Using Cisco Platforms
+                                    v1.1（200-901）試験トピックPDF（Cisco公式）</a
+                                ><br />
+                                「1.0 Software Development and
+                                Design」を含む全6ドメインの詳細な出題トピック一覧・出題比率の一次情報
+                            </li>
+                        </ul>
+
+                        <p>
+                            技術的な用語・概念（データ形式、デザインパターン、Git等）の解説にあたっては、下記のような一般的に広く参照される技術資料も参考にしています。個別の技術仕様の最新情報は、それぞれの公式ドキュメントも合わせてご確認ください。
+                        </p>
+
+                        <ul class="source-list">
+                            <li>
+                                <a href="https://git-scm.com/doc" target="_blank" rel="noopener"
+                                    >Git公式ドキュメント</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.json.org/json-ja.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >JSON仕様</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://yaml.org/" target="_blank" rel="noopener"
+                                    >YAML仕様</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://agilemanifesto.org/iso/ja/manifesto.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Agile Manifesto（アジャイルソフトウェア開発宣言）</a
+                                >
+                            </li>
+                        </ul>
+
+                        <p class="disclaimer">
+                            本ドキュメントは学習補助を目的とした非公式資料です。試験内容は予告なく変更される場合があるため、受験前に必ずCisco公式サイトで最新の試験トピックをご確認ください。
+                        </p>
+                    </section>
+                </article>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+
+        <script>
+            (function () {
+                function dedent(text) {
+                    var lines = text.replace(/\r\n/g, '\n').split('\n');
+                    while (lines.length && lines[0].trim() === '') lines.shift();
+                    while (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
+                    var minIndent = Infinity;
+                    lines.forEach(function (line) {
+                        if (line.trim() === '') return;
+                        var match = line.match(/^[ \t]*/);
+                        minIndent = Math.min(minIndent, match[0].length);
+                    });
+                    if (!isFinite(minIndent)) minIndent = 0;
+                    return lines
+                        .map(function (line) {
+                            return line.slice(minIndent);
+                        })
+                        .join('\n');
+                }
+
+                function injectMermaid() {
+                    document.querySelectorAll('script[data-mermaid]').forEach(function (script) {
+                        var pre = document.createElement('pre');
+                        pre.className = 'mermaid';
+                        pre.textContent = dedent(script.textContent);
+                        script.parentNode.replaceChild(pre, script);
+                    });
+                }
+
+                function injectCode() {
+                    document.querySelectorAll('script[data-code]').forEach(function (script) {
+                        var lang = script.getAttribute('data-code') || 'plaintext';
+                        var pre = document.createElement('pre');
+                        var code = document.createElement('code');
+                        code.className = 'language-' + lang;
+                        code.textContent = dedent(script.textContent);
+                        pre.appendChild(code);
+                        script.parentNode.replaceChild(pre, script);
+                    });
+                }
+
+                function setupSidebarObserver() {
+                    var sections = document.querySelectorAll('main section[id]');
+                    var navLinks = document.querySelectorAll('.sidebar-nav a[data-nav]');
+                    var map = {};
+                    navLinks.forEach(function (link) {
+                        map[link.getAttribute('href').slice(1)] = link;
+                    });
+                    if (!('IntersectionObserver' in window)) return;
+                    var observer = new IntersectionObserver(
+                        function (entries) {
+                            entries.forEach(function (entry) {
+                                var link = map[entry.target.id];
+                                if (!link) return;
+                                if (entry.isIntersecting) {
+                                    navLinks.forEach(function (l) {
+                                        l.classList.remove('active');
+                                    });
+                                    link.classList.add('active');
+                                }
+                            });
+                        },
+                        { rootMargin: '-20% 0px -70% 0px' },
+                    );
+                    sections.forEach(function (s) {
+                        observer.observe(s);
+                    });
+                }
+
+                injectMermaid();
+                injectCode();
+
+                if (window.hljs) {
+                    document.querySelectorAll('pre code').forEach(function (block) {
+                        hljs.highlightElement(block);
+                    });
+                }
+
+                if (window.mermaid) {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        themeVariables: {
+                            background: '#07111e',
+                            primaryColor: '#122a46',
+                            primaryTextColor: '#e7edf7',
+                            primaryBorderColor: '#7c9eff',
+                            lineColor: '#7c9eff',
+                            secondaryColor: '#0f2138',
+                            tertiaryColor: '#0f2138',
+                            textColor: '#e7edf7',
+                        },
+                        flowchart: { useMaxWidth: false, htmlLabels: true },
+                        securityLevel: 'loose',
+                    });
+                    mermaid.run({ querySelector: '.mermaid' });
+                }
+
+                setupSidebarObserver();
+            })();
+        </script>
+    </body>
+</html>
