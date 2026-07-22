@@ -111,18 +111,18 @@ Cisco の認定試験には共通する特徴として、「**受験資格その
 
 現在の **CCNP Automation** 認定を取得するための試験構成は、以下の2階建てになっています。
 
-1. **コア試験（必須）**：350-901 AUTOCOR (Automating Cisco Network Infrastructure Solutions)
-2. **コンセントレーション試験（選択）**：対象の集中試験から1つを選択して受験（300-435 ENAUTO または 300-635 DCNAUTO）
+1. **コア試験（必須）**：350-901 AUTOCOR (Designing, Deploying and Managing Network Automation Systems)
+2. **コンセントレーション試験（選択）**：対象の集中試験から1つを選択して受験（300-435 ENAUTO: Automating and Programming Cisco Enterprise Solutions または 300-635 DCNAUTO: Automating Cisco Data Center Networking Solutions）
 
 ```mermaid
 flowchart TB
-    Start(["受験を開始する"]) --> Core["コア試験に合格する<br/>350-901 AUTOCOR"]
+    Start(["受験を開始する"]) --> Core["コア試験に合格する<br/>350-901 AUTOCOR<br/>Designing, Deploying and Managing Network Automation Systems"]
     Core --> Choose["集中試験を選択して受験"]
 
     subgraph Concentrations["CCNP Automation 集中試験（いずれか1つを選択）"]
         direction TB
-        C1["300-435 ENAUTO<br/>Automating Enterprise Solutions"]
-        C2["300-635 DCNAUTO<br/>Automating Data Center Solutions"]
+        C1["300-435 ENAUTO<br/>Automating and Programming Cisco Enterprise Solutions"]
+        C2["300-635 DCNAUTO<br/>Automating Cisco Data Center Networking Solutions"]
     end
 
     Choose --> Concentrations
