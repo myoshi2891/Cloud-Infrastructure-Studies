@@ -48,14 +48,17 @@ describe('CcnaSoftwareDevDesignPage', () => {
         });
     });
 
-    it('renders sidebar navigation links', () => {
-        render(<CcnaSoftwareDevDesignPage />);
+    it('renders sidebar navigation links without invalid class attributes', () => {
+        const { container } = render(<CcnaSoftwareDevDesignPage />);
 
         const tocNav = screen.getByRole('navigation', { name: /目次ナビゲーション/i });
         expect(tocNav).toBeInTheDocument();
 
         const links = screen.getAllByRole('link', { name: /データフォーマットの比較|テスト駆動開発|Gitの基本操作/i });
         expect(links.length).toBeGreaterThan(0);
+
+        const aside = container.querySelector('aside');
+        expect(aside).not.toHaveAttribute('class', 'sidebar');
     });
 
     it('renders 12 mermaid diagrams', () => {
