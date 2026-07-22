@@ -9,7 +9,31 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **次の作業:** (なし)
 - **テスト数:** プロジェクト全体で 83 テストファイル パス
 - **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-07-23T01:25:00.000Z
+- **最終更新日時(UTC):** 2026-07-23T02:35:00.000Z
+
+## 2026-07-23: Cisco「CCNA 200-301 IP Services 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-ip-services-guide.html`（静的HTML・1680行）を、正準の設計パターン（NavBar + page.tsx + CcnaIpServicesGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/ip-services-guide` ルートへ移行・追加する。また、グローバルナビゲーション（`app/constants.ts`）の CCNA エントリに「4.0 IP Services（IP サービス）」を追加・同期する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for ccna ip services guide page` (`__tests__/cisco/ccna/ip-services-guide/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green)**: `feat(ccna): migrate all content, css, and diagrams for ccna ip services guide` (`page.tsx`, `CcnaIpServicesGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全12セクション・テーブル・Mermaid 12図の完璧な移行)
+- [x] **Step 3 (Refactor / Integration & Archive & Docs Sync)**: `refactor(ccna): integrate ccna ip services guide into routing and update docs` (`app/constants.ts` へのドメイン追加、`Ccna-ip-services-guide.html` の `Gcl_Archive/Cisco/` への退避、`CLAUDE.md` / `GEMINI.md` / `MIGRATION_PROGRESS.md` の更新)
+
+### 関連ファイル
+
+- [app/cisco/ccna/ip-services-guide/page.tsx](app/cisco/ccna/ip-services-guide/page.tsx)
+- [app/cisco/ccna/ip-services-guide/CcnaIpServicesGuide.tsx](app/cisco/ccna/ip-services-guide/CcnaIpServicesGuide.tsx)
+- [app/cisco/ccna/ip-services-guide/NavBar.tsx](app/cisco/ccna/ip-services-guide/NavBar.tsx)
+- [app/cisco/ccna/ip-services-guide/constants.ts](app/cisco/ccna/ip-services-guide/constants.ts)
+- [app/cisco/ccna/ip-services-guide/page.css](app/cisco/ccna/ip-services-guide/page.css)
+- [__tests__/cisco/ccna/ip-services-guide/page.test.tsx](__tests__/cisco/ccna/ip-services-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [Gcl_Archive/Cisco/Ccna-ip-services-guide.html](Gcl_Archive/Cisco/Ccna-ip-services-guide.html)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ## 2026-07-23: Cisco「CCNA 200-301 IP Connectivity（IP接続性）編」移行 (完了)
 

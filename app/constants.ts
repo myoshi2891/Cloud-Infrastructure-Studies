@@ -245,6 +245,11 @@ export const EXAMS: Exam[] = [
                 href: '/cisco/ccna/ip-connectivity-guide',
                 pct: '25%',
             },
+            {
+                label: '4.0 IP Services（IP サービス）',
+                href: '/cisco/ccna/ip-services-guide',
+                pct: '10%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',
