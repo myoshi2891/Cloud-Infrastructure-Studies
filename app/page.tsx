@@ -15,6 +15,7 @@ const cardColorMap: Record<ColorKey, string> = {
     'card-cdl': `card-cdl ${styles.cardCdl}`,
     'card-agwa': `card-agwa ${styles.cardAgwa}`,
     'card-pcne': `card-pcne ${styles.cardPcne}`,
+    'card-ccna': `card-ccna ${styles.cardCcna}`,
     // coming-soon の試験はホームでフィルタするため CSS Module 未割当でよい
     'card-aws-saa': 'card-aws-saa',
 };
