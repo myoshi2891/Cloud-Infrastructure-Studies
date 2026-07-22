@@ -93,19 +93,29 @@ describe('MermaidDiagram', () => {
     });
 
     describe('applySvgFixups', () => {
-        it('viewBox の自然幅および縦高さを最適調整し、豆粒化と過大伸張を防ぐこと', () => {
+        it('指定がない小さな縦長図の表示領域を既定値で調整すること', () => {
             // Arrange: 細い縦長 flowchart 相当の viewBox
             const svg = makeSvg('0 0 250 600');
 
             // Act
             applySvgFixups(svg, 'flowchart TD\nA-->B');
 
-            // Assert: maxWidth が '100%' となり、width がスケーリングされ 480px、maxHeight が 580px となる
+            // Assert: 共通の既定値では小さい図を拡大し、過度な縦長表示を抑える
             expect(svg.style.maxWidth).toBe('100%');
             expect(svg.style.width).toBe('480px');
             expect(svg.style.maxHeight).toBe('580px');
             // flowchart は viewBox 高さを +15 拡張する
             expect(svg.getAttribute('viewBox')).toBe('0 0 250 615');
+        });
+
+        it('個別指定された図は自然倍率を維持して文字を拡大縮小しないこと', () => {
+            const svg = makeSvg('0 0 250 600');
+
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            expect(svg.style.width).toBe('250px');
+            expect(svg.style.maxWidth).toBe('100%');
+            expect(svg.style.maxHeight).toBe('none');
         });
 
         it('viewBox が無い場合は max-width:100% のフォールバックを維持すること', () => {
