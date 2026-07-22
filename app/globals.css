@@ -55,6 +55,9 @@
     --color-theme-aws-bg: hsl(35 100% 50% / 0.20);
     --color-theme-aws-fg: hsl(35 95% 65%);
 
+    --color-theme-cisco-bg: hsl(215 70% 50% / 0.20);
+    --color-theme-cisco-fg: hsl(215 95% 70%);
+
     /* Google Brand Colors (central tokens) */
     --color-google-blue: #4285f4;
     --color-google-green: #34a853;
@@ -182,6 +185,11 @@ body {
 @utility icon-theme-aws-saa {
     background: var(--color-theme-aws-bg);
     color: var(--color-theme-aws-fg);
+}
+
+@utility icon-theme-ccna {
+    background: var(--color-theme-cisco-bg);
+    color: var(--color-theme-cisco-fg);
 }
 
 .code-line {
