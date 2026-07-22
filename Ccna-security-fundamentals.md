@@ -133,7 +133,7 @@ flowchart LR
 
 ### 設定コマンド例
 
-```
+```text
 ! コンソールポートへのパスワード設定
 Router(config)# line console 0
 Router(config-line)# password <CONSOLE_PASSWORD>
@@ -159,7 +159,7 @@ Router(config)# service password-encryption
 - `login` コマンドを入れ忘れると、パスワードを設定してもログイン時に要求されないため注意。
 - ローカルアカウントを使う場合は `username <name> secret <password>` と `login local` の組み合わせを使う（後述のAAAの基礎にもつながる）。
 
-```
+```text
 Router(config)# username admin secret <USER_SECRET_PASSWORD>
 Router(config)# line vty 0 4
 Router(config-line)# login local
