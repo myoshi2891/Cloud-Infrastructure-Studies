@@ -54,4 +54,14 @@ describe('CcnaIpConnectivityGuidePage', () => {
         const diagrams = screen.getAllByTestId('mermaid-diagram');
         expect(diagrams).toHaveLength(7);
     });
+
+    it('renders code lines with syntax highlighting classes', () => {
+        const { container } = render(<CcnaIpConnectivityGuidePage />);
+
+        const codeLines = container.querySelectorAll('.code-line');
+        expect(codeLines.length).toBeGreaterThan(0);
+
+        const comments = container.querySelectorAll('.code-comment');
+        expect(comments.length).toBeGreaterThan(0);
+    });
 });
