@@ -600,7 +600,7 @@
                     </p>
 
                     <div class="diagram-card">
-                        <pre class="mermaid">
+                        <script type="text/plain" class="mermaid-source">
 flowchart TD
     Pre["実務経験 5〜7年を推奨<br/>（正式な出願資格は無し）"]
     Pre --> Step1["STEP 1<br/>CCDE筆記試験 400-007 v3.1<br/>2時間・90〜110問"]
@@ -623,7 +623,8 @@ flowchart TD
     class Pre,Step1,Step2,E1,E2,E3,E4,Spec stage;
     class Choice decision;
     class Goal,Recert goal;
-        </pre>
+                        </script>
+                        <div class="mermaid"></div>
                     </div>
                     <p class="diagram-caption">
                         <span class="cap-label">図1：CCDE認定 取得フロー全体像</span>
@@ -1461,8 +1462,17 @@ flowchart TD
         </div>
 
         <script>
+            document.querySelectorAll('.mermaid-source').forEach((srcScript) => {
+                let container = srcScript.nextElementSibling;
+                if (!container || !container.classList.contains('mermaid')) {
+                    container = document.createElement('div');
+                    container.className = 'mermaid';
+                    srcScript.parentNode.insertBefore(container, srcScript.nextSibling);
+                }
+                container.textContent = srcScript.textContent;
+            });
             mermaid.initialize({
-                startOnLoad: true,
+                startOnLoad: false,
                 theme: 'base',
                 themeVariables: {
                     background: '#0A2E4D',
@@ -1494,6 +1504,7 @@ flowchart TD
                 flowchart: { curve: 'basis', htmlLabels: true },
                 securityLevel: 'loose',
             });
+            mermaid.run({ querySelector: '.mermaid' });
         </script>
     </body>
 </html>
