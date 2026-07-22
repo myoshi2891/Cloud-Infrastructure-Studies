@@ -1,4 +1,5 @@
 # CCNA Automation「APIの理解と活用」完全ガイド
+
 ## 〜試験項目 2.0 Understanding and Using APIs をステップバイステップで攻略する〜
 
 > 本ガイドは、Cisco公式サイトの CCNA Automation 認定ページおよび公式試験トピック（Exam Topics）PDFの内容にもとづいて作成した**非公式の学習補助資料**です。試験内容は予告なく変更される場合があるため、必ず記事末尾の一次情報源（Cisco公式サイト）もあわせてご確認ください。
@@ -467,7 +468,11 @@ def get_with_retry(url, headers, max_retries=3):
             # レート制限：Retry-Afterヘッダーの秒数だけ待って再試行
             retry_after = response.headers.get("Retry-After")
             try:
-                wait_seconds = int(retry_after) if retry_after is not None else 2 ** attempt
+                parsed_val = int(retry_after) if retry_after is not None else -1
+                if 0 <= parsed_val <= 3600:
+                    wait_seconds = parsed_val
+                else:
+                    wait_seconds = 2 ** attempt
             except (ValueError, TypeError):
                 wait_seconds = 2 ** attempt
             print(f"レート制限中。{wait_seconds}秒待機して再試行します。")
