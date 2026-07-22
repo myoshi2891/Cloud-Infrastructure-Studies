@@ -37,7 +37,7 @@ if (typeof window !== 'undefined') {
             attributeBackgroundColorEven: '#0f2040',
             attributeBackgroundColorOdd: '#0d1a2e',
             fontFamily: "'Noto Sans JP', sans-serif",
-            fontSize: '13px',
+            fontSize: '16px',
         },
         flowchart: { curve: 'basis', padding: 20 },
         sequence: { actorMargin: 60, mirrorActors: true },
