@@ -4,12 +4,27 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
+const DIAGRAM_DISPLAY: Record<string, { frameWidth: number; preserveNaturalScale: boolean }> = {
+    'overview-pie': { frameWidth: 760, preserveNaturalScale: true },
+    'packet-flow': { frameWidth: 760, preserveNaturalScale: true },
+    'forwarding-logic': { frameWidth: 760, preserveNaturalScale: true },
+    'static-route-topology': { frameWidth: 980, preserveNaturalScale: true },
+    'ospf-neighbor-states': { frameWidth: 760, preserveNaturalScale: true },
+    'ospf-dr-bdr-selection': { frameWidth: 760, preserveNaturalScale: true },
+    'fhrp-concept': { frameWidth: 900, preserveNaturalScale: true },
+};
+
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
+    const display = DIAGRAM_DISPLAY[id] ?? { frameWidth: 760, preserveNaturalScale: true };
     return (
-        <div className="mermaid-wrap">
-            <MermaidDiagram chart={chart} ariaLabel={label} />
+        <div className="mermaid-wrap" style={{ maxWidth: `${display.frameWidth}px` }}>
+            <MermaidDiagram
+                chart={chart}
+                ariaLabel={label}
+                preserveNaturalScale={display.preserveNaturalScale}
+            />
         </div>
     );
 }

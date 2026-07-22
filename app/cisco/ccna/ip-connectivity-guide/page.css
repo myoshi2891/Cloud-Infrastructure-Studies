@@ -309,31 +309,23 @@
 
 /* Mermaid Wrapper */
 .ccna-ip-connectivity-page .mermaid-wrap {
-    background: var(--bg-card);
-    padding: 1.75rem;
-    border-radius: 12px;
-    border: 1px solid var(--border);
     margin: 2rem auto;
-    /* コンテナの最大幅を制限することで SVG が幅いっぱいに見える適切なサイズで表示される */
-    max-width: 760px;
     width: 100%;
-    overflow-x: auto;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* コンテナ制約（max-width: 760px）内で mermaidWrapper が幅を引き継ぐよう明示。
-   SKILL.md「小図が小さくなりすぎる問題」対策: display:block の block 文脈で幅を確保 */
+/* MermaidDiagram 自身がカードを描画するため、外側は図ごとの表示領域だけを確保する。 */
 .ccna-ip-connectivity-page .mermaid-wrap > div {
     width: 100%;
+    margin: 0;
 }
 
-/* SKILL.md「SVG 幅の鉄則」: applySvgFixups がセットする自然 px 幅を尊重し
-   width は上書きしない。max-width:100% でコンテナより広い図のみ縮小する。
-   width:100%!important は小さい flowchart LR 図を異常拡大させるため使わない。 */
+/* SKILL.md「SVG 幅の鉄則」: viewBox の自然幅を維持し、狭い画面にだけ縮小する。 */
 .ccna-ip-connectivity-page .mermaid-wrap svg {
     max-width: 100%;
+    max-height: none;
     height: auto;
     display: block;
+    font-size: 1rem;
 }
 
 @media (max-width: 1024px) {
