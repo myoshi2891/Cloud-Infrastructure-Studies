@@ -48,7 +48,7 @@ describe('CcnaSoftwareDevDesignPage', () => {
         });
     });
 
-    it('renders sidebar navigation links without invalid class attributes', () => {
+    it('renders sidebar navigation links correctly', () => {
         const { container } = render(<CcnaSoftwareDevDesignPage />);
 
         const tocNav = screen.getByRole('navigation', { name: /目次ナビゲーション/i });
@@ -58,7 +58,7 @@ describe('CcnaSoftwareDevDesignPage', () => {
         expect(links.length).toBeGreaterThan(0);
 
         const aside = container.querySelector('aside');
-        expect(aside).not.toHaveAttribute('class', 'sidebar');
+        expect(aside).toHaveClass('sidebar');
     });
 
     it('renders 12 mermaid diagrams', () => {

@@ -49,7 +49,7 @@ export function NavBar() {
     }, []);
 
     return (
-        <aside class="sidebar" className="sidebar" id="sidebar">
+        <aside className="sidebar" id="sidebar">
             <div className="sidebar-brand">
                 CCNA AUTOMATION<span>学習ガイド</span>
             </div>
