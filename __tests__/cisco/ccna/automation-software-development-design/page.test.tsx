@@ -67,4 +67,16 @@ describe('CcnaSoftwareDevDesignPage', () => {
         const diagrams = screen.getAllByTestId('mermaid-diagram');
         expect(diagrams).toHaveLength(12);
     });
+
+    it('renders code blocks with syntax highlighting classes', () => {
+        const { container } = render(<CcnaSoftwareDevDesignPage />);
+
+        const keywords = container.querySelectorAll('span.keyword');
+        const comments = container.querySelectorAll('span.comment');
+        const strings = container.querySelectorAll('span.string');
+
+        expect(keywords.length).toBeGreaterThan(0);
+        expect(comments.length).toBeGreaterThan(0);
+        expect(strings.length).toBeGreaterThan(0);
+    });
 });
