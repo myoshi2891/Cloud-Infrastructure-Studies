@@ -371,23 +371,27 @@
 
 /* ---------- Mermaid ---------- */
 .ccna-software-dev-design-page .diagram-frame {
-    border: 1px solid var(--ccna-border);
-    border-radius: 14px;
-    background: var(--ccna-bg-card);
-    padding: 20px 16px;
     margin: 12px 0 8px;
 }
 
 .ccna-software-dev-design-page .mermaid-wrap {
     display: block;
     width: 100%;
+    margin: 0 auto;
+}
+
+.ccna-software-dev-design-page .mermaid-wrap > div {
+    width: 100%;
+    margin: 0;
 }
 
 .ccna-software-dev-design-page .mermaid-wrap svg {
     display: block;
     margin: 0 auto;
-    max-width: 100%;
+    max-width: none !important;
+    max-height: none;
     height: auto;
+    font-size: 1rem;
 }
 
 .ccna-software-dev-design-page .caption {

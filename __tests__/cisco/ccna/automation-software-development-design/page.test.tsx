@@ -4,8 +4,13 @@ import CcnaSoftwareDevDesignPage from '@/app/cisco/ccna/automation-software-deve
 
 // Mock MermaidDiagram to avoid dynamic import / browser execution issues in Vitest
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel?: string }) => (
-        <div data-testid="mermaid-diagram" data-chart={chart} aria-label={ariaLabel}>
+    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: { chart: string; ariaLabel?: string; preserveNaturalScale?: boolean }) => (
+        <div
+            data-testid="mermaid-diagram"
+            data-chart={chart}
+            data-natural-scale={preserveNaturalScale}
+            aria-label={ariaLabel}
+        >
             Mermaid Diagram Mock
         </div>
     ),
@@ -62,10 +67,29 @@ describe('CcnaSoftwareDevDesignPage', () => {
     });
 
     it('renders 12 mermaid diagrams', () => {
-        render(<CcnaSoftwareDevDesignPage />);
+        const { container } = render(<CcnaSoftwareDevDesignPage />);
 
         const diagrams = screen.getAllByTestId('mermaid-diagram');
         expect(diagrams).toHaveLength(12);
+        diagrams.forEach((diagram) => expect(diagram).toHaveAttribute('data-natural-scale', 'true'));
+
+        const widths: Record<string, string> = {
+            'diag-0': '760px',
+            'diag-1': '1200px',
+            'diag-2': '760px',
+            'diag-3': '760px',
+            'diag-4': '940px',
+            'diag-5': '940px',
+            'diag-6': '760px',
+            'diag-7': '900px',
+            'diag-8': '860px',
+            'diag-9': '900px',
+            'diag-10': '760px',
+            'diag-11': '760px',
+        };
+        Object.entries(widths).forEach(([id, width]) => {
+            expect(container.querySelector(`[data-diagram-id="${id}"]`)).toHaveStyle({ maxWidth: width });
+        });
     });
 
     it('renders code blocks with syntax highlighting classes', () => {
