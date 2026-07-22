@@ -1,51 +1,67 @@
 .ccna-ip-connectivity-page {
-    --bg: #07111e;
-    --bg-elevated: #0d1c30;
-    --bg-card: #0f2138;
+    --bg: var(--color-background, #07111e);
+    --bg-elevated: #0d1b2e;
+    --bg-card: var(--color-card, #0f2138);
     --accent: #7c9eff;
     --accent-soft: rgba(124, 158, 255, 0.14);
-    --text: #e6edf7;
-    --text-dim: #9fb3c8;
-    --border: rgba(255, 255, 255, 0.08);
-    --code-bg: #0a1729;
-    --sidebar-width: 300px;
-    background: var(--bg);
+    --accent-strong: #a7c0ff;
+    --text: var(--color-foreground, #e6edf7);
+    --text-dim: var(--color-muted-foreground, #9fb3c8);
+    --text-faint: #6b7d9c;
+    --border: rgba(124, 158, 255, 0.16);
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --code-bg: #091424;
+    --sidebar-width: 280px;
+
+    background-color: var(--bg);
     color: var(--text);
+    line-height: 1.85;
     min-height: 100vh;
 }
 
 .ccna-ip-connectivity-page .layout {
-    display: flex;
-    max-width: 1400px;
-    margin: 0 auto;
+    display: block;
+    min-height: 100vh;
+    width: 100%;
 }
 
-/* Sidebar */
+/* Sidebar (Fixed position with header & disclaimer height sync) */
 .ccna-ip-connectivity-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
     width: var(--sidebar-width);
-    flex-shrink: 0;
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    bottom: 0;
     overflow-y: auto;
     background: var(--bg-elevated);
-    border-right: 1px solid var(--border);
-    padding: 28px 20px;
+    border-right: 1px solid var(--border-soft);
+    padding: 2rem 1.25rem 3rem;
+    z-index: 40;
+    scrollbar-width: thin;
+}
+
+.ccna-ip-connectivity-page .sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ccna-ip-connectivity-page .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(124, 158, 255, 0.25);
+    border-radius: 3px;
 }
 
 .ccna-ip-connectivity-page .sidebar-title {
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    color: var(--text-dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    color: var(--text-faint);
+    margin-bottom: 0.35rem;
 }
 
 .ccna-ip-connectivity-page .sidebar-subtitle {
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--text);
-    margin-bottom: 24px;
+    color: var(--accent-strong);
+    margin: 0 0 1.75rem;
     line-height: 1.5;
 }
 
@@ -56,60 +72,66 @@
 }
 
 .ccna-ip-connectivity-page .sidebar li {
-    margin-bottom: 4px;
+    margin: 0;
 }
 
 .ccna-ip-connectivity-page .nav-link {
     display: block;
-    padding: 9px 12px;
+    padding: 0.55rem 0.75rem;
+    margin-bottom: 0.2rem;
     border-radius: 8px;
     color: var(--text-dim);
     text-decoration: none;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     border-left: 2px solid transparent;
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .ccna-ip-connectivity-page .nav-link:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--accent-soft);
     color: var(--text);
 }
 
 .ccna-ip-connectivity-page .nav-link.active {
     background: var(--accent-soft);
-    color: #9cb5ff;
+    color: var(--accent-strong);
     border-left-color: var(--accent);
     font-weight: 600;
 }
 
-/* Main */
+/* Main Content (Full Width) */
 .ccna-ip-connectivity-page .main {
-    flex: 1;
-    min-width: 0;
-    padding: 40px 60px;
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    max-width: none;
+    padding: 3rem 4rem 6rem;
 }
 
 .ccna-ip-connectivity-page .hero {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 40px;
-    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
 }
 
 .ccna-ip-connectivity-page .hero-eyebrow {
-    color: var(--accent);
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    margin-bottom: 12px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .ccna-ip-connectivity-page .hero h1 {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     font-weight: 800;
-    line-height: 1.35;
-    margin: 0 0 16px 0;
-
+    line-height: 1.3;
+    margin: 0 0 1.2rem 0;
     background: linear-gradient(135deg, #ffffff 0%, #a5c0ee 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -118,34 +140,34 @@
 .ccna-ip-connectivity-page .hero p {
     font-size: 1.1rem;
     color: var(--text-dim);
-    line-height: 1.8;
+    line-height: 1.85;
     margin: 0;
 }
 
 /* Article Prose */
 .ccna-ip-connectivity-page .prose section {
-    margin-bottom: 60px;
-    scroll-margin-top: 40px;
+    margin-bottom: 4rem;
+    scroll-margin-top: 80px;
 }
 
 .ccna-ip-connectivity-page .prose h2 {
-    font-size: 1.55rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--text);
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-    margin: 0 0 24px 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-soft);
+    margin: 0 0 1.75rem 0;
 }
 
 .ccna-ip-connectivity-page .prose h3 {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text);
-    margin: 32px 0 16px 0;
+    margin: 2.25rem 0 1rem 0;
 }
 
 .ccna-ip-connectivity-page .prose p {
-    margin: 0 0 16px 0;
+    margin: 0 0 1.2rem 0;
     color: var(--text-dim);
     line-height: 1.85;
 }
@@ -154,24 +176,28 @@
     color: var(--text);
 }
 
+.ccna-ip-connectivity-page .prose inline-code,
 .ccna-ip-connectivity-page .prose code {
-    background: var(--code-bg);
+    background: rgba(124, 158, 255, 0.1);
     color: #aed6ff;
-    padding: 2px 8px;
+    padding: 0.15rem 0.45rem;
     border-radius: 4px;
     font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
     font-size: 0.9em;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(124, 158, 255, 0.2);
 }
 
 /* Callout */
 .ccna-ip-connectivity-page .callout {
-    background: var(--accent-soft);
+    background: rgba(124, 158, 255, 0.08);
     border-left: 4px solid var(--accent);
-    padding: 20px 24px;
+    padding: 1.25rem 1.5rem;
     border-radius: 0 12px 12px 0;
-    margin: 24px 0;
+    margin: 1.75rem 0;
     color: var(--text);
+    border-top: 1px solid var(--border-soft);
+    border-right: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
 }
 
 .ccna-ip-connectivity-page .callout strong {
@@ -182,7 +208,7 @@
 .ccna-ip-connectivity-page table {
     width: 100%;
     border-collapse: collapse;
-    margin: 24px 0;
+    margin: 1.75rem 0;
     background: var(--bg-card);
     border-radius: 10px;
     overflow: hidden;
@@ -191,9 +217,9 @@
 
 .ccna-ip-connectivity-page th,
 .ccna-ip-connectivity-page td {
-    padding: 14px 18px;
+    padding: 0.9rem 1.2rem;
     text-align: left;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-soft);
     font-size: 0.95rem;
 }
 
@@ -211,50 +237,93 @@
     color: var(--text-dim);
 }
 
-/* Code Block */
+/* Enhanced Code Block with Line Wrapping and Syntax Highlighting */
 .ccna-ip-connectivity-page .code-block {
-    background: var(--code-bg);
-    padding: 20px 24px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
+    background: linear-gradient(180deg, #091424 0%, #060e1a 100%);
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(124, 158, 255, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     overflow-x: auto;
     font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     line-height: 1.7;
-    margin: 20px 0;
+    margin: 1.75rem 0;
     color: #e6edf7;
-    white-space: pre;
 }
 
-.ccna-ip-connectivity-page .code-block .comment {
-    color: #6c89a7;
+.ccna-ip-connectivity-page .code-line {
+    white-space: pre;
+    min-height: 1.7em;
+    padding: 0 0.25rem;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+}
+
+.ccna-ip-connectivity-page .code-line:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Syntax Highlighting Colors */
+.ccna-ip-connectivity-page .code-comment {
+    color: #7ee787;
     font-style: italic;
+    font-weight: 500;
+}
+
+.ccna-ip-connectivity-page .code-prompt {
+    color: #ff7b72;
+    font-weight: 700;
+}
+
+.ccna-ip-connectivity-page .code-cmd {
+    color: #79c0ff;
+    font-weight: 600;
+}
+
+.ccna-ip-connectivity-page .code-kw {
+    color: #d2a8ff;
+    font-weight: 600;
+}
+
+.ccna-ip-connectivity-page .code-net {
+    color: #a5d6ff;
+}
+
+.ccna-ip-connectivity-page .code-flag {
+    color: #ffa657;
+}
+
+.ccna-ip-connectivity-page .code-num {
+    color: #f2cc60;
+    font-weight: 600;
+}
+
+.ccna-ip-connectivity-page .code-code {
+    color: #7ee787;
+    font-weight: 700;
 }
 
 /* Mermaid Wrapper */
 .ccna-ip-connectivity-page .mermaid-wrap {
     background: var(--bg-card);
-    padding: 24px;
+    padding: 1.75rem;
     border-radius: 12px;
     border: 1px solid var(--border);
-    margin: 28px 0;
+    margin: 2rem 0;
     overflow-x: auto;
     display: flex;
     justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 1024px) {
-    .ccna-ip-connectivity-page .layout {
-        flex-direction: column;
-    }
     .ccna-ip-connectivity-page .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
+        display: none;
     }
     .ccna-ip-connectivity-page .main {
-        padding: 24px 20px;
+        margin-left: 0;
+        width: 100%;
+        padding: 2rem 1.25rem 4rem;
     }
 }

@@ -101,21 +101,51 @@ export function CcnaIpConnectivityGuide() {
                                 Cisco IOSで <code>show ip route</code> コマンドを実行すると表示されます。
                             </p>
 
-                            <pre className="code-block">
-                                <span className="comment">
-                                    ! show ip route の出力例
-                                </span>
-                                {'\n'}
-                                Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP{'\n'}
-                                D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area{'\n'}
-                                {'\n'}
-                                Gateway of last resort is 192.168.1.1 to network 0.0.0.0{'\n'}
-                                {'\n'}C 192.168.10.0/24 is directly connected, GigabitEthernet0/0
-                                {'\n'}L 192.168.10.1/32 is directly connected, GigabitEthernet0/0
-                                {'\n'}S 10.1.0.0/16 [1/0] via 192.168.1.2{'\n'}O 172.16.0.0/16
-                                [110/20] via 192.168.1.3, 00:12:45, GigabitEthernet0/1{'\n'}S*
-                                0.0.0.0/0 [1/0] via 192.168.1.1
-                            </pre>
+                            <div className="code-block">
+                                <div className="code-line">
+                                    <span className="code-comment">! show ip route の出力例</span>
+                                </div>
+                                <div className="code-line">
+                                    Codes: <span className="code-code">C</span> - connected,{' '}
+                                    <span className="code-code">S</span> - static,{' '}
+                                    <span className="code-code">R</span> - RIP,{' '}
+                                    <span className="code-code">M</span> - mobile,{' '}
+                                    <span className="code-code">B</span> - BGP
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-code">D</span> - EIGRP,{' '}
+                                    <span className="code-code">EX</span> - EIGRP external,{' '}
+                                    <span className="code-code">O</span> - OSPF,{' '}
+                                    <span className="code-code">IA</span> - OSPF inter area
+                                </div>
+                                <div className="code-line"></div>
+                                <div className="code-line">
+                                    Gateway of last resort is{' '}
+                                    <span className="code-net">192.168.1.1</span> to network{' '}
+                                    <span className="code-net">0.0.0.0</span>
+                                </div>
+                                <div className="code-line"></div>
+                                <div className="code-line">
+                                    <span className="code-code">C</span>      {' '}
+                                    <span className="code-net">192.168.10.0/24</span> is directly connected, GigabitEthernet0/0
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-code">L</span>      {' '}
+                                    <span className="code-net">192.168.10.1/32</span> is directly connected, GigabitEthernet0/0
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-code">S</span>      {' '}
+                                    <span className="code-net">10.1.0.0/16</span> [<span className="code-num">1</span>/<span className="code-num">0</span>] via <span className="code-net">192.168.1.2</span>
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-code">O</span>      {' '}
+                                    <span className="code-net">172.16.0.0/16</span> [<span className="code-num">110</span>/<span className="code-num">20</span>] via <span className="code-net">192.168.1.3</span>, 00:12:45, GigabitEthernet0/1
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-code">S*</span>     {' '}
+                                    <span className="code-net">0.0.0.0/0</span> [<span className="code-num">1</span>/<span className="code-num">0</span>] via <span className="code-net">192.168.1.1</span>
+                                </div>
+                            </div>
 
                             <h3>1-2. 各構成要素の意味（試験で問われるポイント）</h3>
                             <table>
@@ -487,28 +517,28 @@ export function CcnaIpConnectivityGuide() {
                             />
 
                             <h3>3-3. IOS設定例</h3>
-                            <pre className="code-block">
-                                <span className="comment">
-                                    ! プライマリ経路（デフォルトのAD=1）
-                                </span>
-                                {'\n'}
-                                R1(config)# ip route 10.10.20.0 255.255.255.0
-                                192.168.1.2{'\n'}
-                                {'\n'}
-                                <span className="comment">
-                                    !
-                                    フローティングスタティック（バックアップ経路。AD=200に設定し優先度を下げる）
-                                </span>
-                                {'\n'}
-                                R1(config)# ip route 10.10.20.0 255.255.255.0
-                                192.168.10.2 200{'\n'}
-                                {'\n'}
-                                <span className="comment">
-                                    ! IPv6スタティックルート（IPv4と考え方は同じ）
-                                </span>
-                                {'\n'}
-                                R1(config)# ipv6 route 2001:db8:20::/64 2001:db8:1::2
-                            </pre>
+                            <div className="code-block">
+                                <div className="code-line">
+                                    <span className="code-comment">! プライマリ経路（デフォルトのAD=1）</span>
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-prompt">R1(config)#</span> <span className="code-cmd">ip route</span> <span className="code-net">10.10.20.0 255.255.255.0 192.168.1.2</span>
+                                </div>
+                                <div className="code-line"></div>
+                                <div className="code-line">
+                                    <span className="code-comment">! フローティングスタティック（バックアップ経路。AD=200に設定し優先度を下げる）</span>
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-prompt">R1(config)#</span> <span className="code-cmd">ip route</span> <span className="code-net">10.10.20.0 255.255.255.0 192.168.10.2</span> <span className="code-num">200</span>
+                                </div>
+                                <div className="code-line"></div>
+                                <div className="code-line">
+                                    <span className="code-comment">! IPv6スタティックルート（IPv4と考え方は同じ）</span>
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-prompt">R1(config)#</span> <span className="code-cmd">ipv6 route</span> <span className="code-net">2001:db8:20::/64 2001:db8:1::2</span>
+                                </div>
+                            </div>
 
                             <p>
                                 R2経由の経路（AD=1）が生きている限り、ルーティングテーブルにはR2経由の経路のみが載ります。R2経由の経路が消えた（リンクダウンした）場合にのみ、AD=200のR3経由の経路がルーティングテーブルに現れ、通信が自動的に切り替わります。これが「フローティング（浮動）」と呼ばれる理由です。
@@ -677,13 +707,20 @@ export function CcnaIpConnectivityGuide() {
                             </div>
 
                             <h3>4-5. 設定例</h3>
-                            <pre className="code-block">
-                                R1(config)# router ospf 1{'\n'}
-                                R1(config-router)# router-id 1.1.1.1{'\n'}
-                                R1(config-router)# network 192.168.1.0 0.0.0.255 area
-                                0{'\n'}
-                                R1(config-router)# network 10.10.20.0 0.0.0.255 area 0
-                            </pre>
+                            <div className="code-block">
+                                <div className="code-line">
+                                    <span className="code-prompt">R1(config)#</span> <span className="code-cmd">router ospf</span> <span className="code-num">1</span>
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-prompt">R1(config-router)#</span> <span className="code-kw">router-id</span> <span className="code-net">1.1.1.1</span>
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-prompt">R1(config-router)#</span> <span className="code-kw">network</span> <span className="code-net">192.168.1.0 0.0.0.255</span> <span className="code-flag">area 0</span>
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-prompt">R1(config-router)#</span> <span className="code-kw">network</span> <span className="code-net">10.10.20.0 0.0.0.255</span> <span className="code-flag">area 0</span>
+                                </div>
+                            </div>
                             <p>
                                 「シングルエリア」という名前の通り、CCNAで問われるOSPFはすべて
                                 <code>area 0</code>
