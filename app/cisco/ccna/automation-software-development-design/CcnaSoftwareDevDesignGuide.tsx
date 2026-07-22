@@ -234,13 +234,13 @@ export function CcnaSoftwareDevDesignGuide() {
                             <p><strong>XML</strong></p>
                             <pre>
                                 <code>
-                                    <div className="code-line">&lt;device&gt;</div>
-                                    <div className="code-line">  &lt;hostname&gt;Router1&lt;/hostname&gt;</div>
-                                    <div className="code-line">  &lt;interface&gt;</div>
-                                    <div className="code-line">    &lt;name&gt;GigabitEthernet0/1&lt;/name&gt;</div>
-                                    <div className="code-line">    &lt;status&gt;up&lt;/status&gt;</div>
-                                    <div className="code-line">  &lt;/interface&gt;</div>
-                                    <div className="code-line">&lt;/device&gt;</div>
+                                    <div className="code-line"><span className="tag">&lt;device&gt;</span></div>
+                                    <div className="code-line">  <span className="tag">&lt;hostname&gt;</span><span className="string">Router1</span><span className="tag">&lt;/hostname&gt;</span></div>
+                                    <div className="code-line">  <span className="tag">&lt;interface&gt;</span></div>
+                                    <div className="code-line">    <span className="tag">&lt;name&gt;</span><span className="string">GigabitEthernet0/1</span><span className="tag">&lt;/name&gt;</span></div>
+                                    <div className="code-line">    <span className="tag">&lt;status&gt;</span><span className="string">up</span><span className="tag">&lt;/status&gt;</span></div>
+                                    <div className="code-line">  <span className="tag">&lt;/interface&gt;</span></div>
+                                    <div className="code-line"><span className="tag">&lt;/device&gt;</span></div>
                                 </code>
                             </pre>
 
@@ -248,10 +248,10 @@ export function CcnaSoftwareDevDesignGuide() {
                             <pre>
                                 <code>
                                     <div className="code-line">{`{`}</div>
-                                    <div className="code-line">{`  "hostname": "Router1",`}</div>
-                                    <div className="code-line">{`  "interface": {`}</div>
-                                    <div className="code-line">{`    "name": "GigabitEthernet0/1",`}</div>
-                                    <div className="code-line">{`    "status": "up"`}</div>
+                                    <div className="code-line">{`  `}<span className="attr">&quot;hostname&quot;</span>: <span className="string">&quot;Router1&quot;</span>,</div>
+                                    <div className="code-line">{`  `}<span className="attr">&quot;interface&quot;</span>: {`{`}</div>
+                                    <div className="code-line">{`    `}<span className="attr">&quot;name&quot;</span>: <span className="string">&quot;GigabitEthernet0/1&quot;</span>,</div>
+                                    <div className="code-line">{`    `}<span className="attr">&quot;status&quot;</span>: <span className="string">&quot;up&quot;</span></div>
                                     <div className="code-line">{`  }`}</div>
                                     <div className="code-line">{`}`}</div>
                                 </code>
@@ -260,10 +260,10 @@ export function CcnaSoftwareDevDesignGuide() {
                             <p><strong>YAML</strong></p>
                             <pre>
                                 <code>
-                                    <div className="code-line">hostname: Router1</div>
-                                    <div className="code-line">interface:</div>
-                                    <div className="code-line">  name: GigabitEthernet0/1</div>
-                                    <div className="code-line">  status: up</div>
+                                    <div className="code-line"><span className="attr">hostname</span>: <span className="string">Router1</span></div>
+                                    <div className="code-line"><span className="attr">interface</span>:</div>
+                                    <div className="code-line">  <span className="attr">name</span>: <span className="string">GigabitEthernet0/1</span></div>
+                                    <div className="code-line">  <span className="attr">status</span>: <span className="string">up</span></div>
                                 </code>
                             </pre>
 
@@ -297,40 +297,40 @@ export function CcnaSoftwareDevDesignGuide() {
                             <h3>JSONをパースする例</h3>
                             <pre>
                                 <code>
-                                    <div className="code-line">import json</div>
+                                    <div className="code-line"><span className="keyword">import</span> json</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">{`raw_text = '{"hostname": "Router1", "status": "up"}'`}</div>
+                                    <div className="code-line">raw_text = <span className="string">{`'{"hostname": "Router1", "status": "up"}'`}</span></div>
                                     <div className="code-line"></div>
-                                    <div className="code-line"># JSON文字列 → Pythonのdict型に変換</div>
-                                    <div className="code-line">parsed = json.loads(raw_text)</div>
+                                    <div className="code-line"><span className="comment"># JSON文字列 → Pythonのdict型に変換</span></div>
+                                    <div className="code-line">parsed = json.<span className="function">loads</span>(raw_text)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">{`print(parsed["hostname"])   # Router1`}</div>
-                                    <div className="code-line">{`print(type(parsed))         # <class 'dict'>`}</div>
+                                    <div className="code-line"><span className="function">print</span>(parsed[<span className="string">&quot;hostname&quot;</span>])   <span className="comment"># Router1</span></div>
+                                    <div className="code-line"><span className="function">print</span>(<span className="function">type</span>(parsed))         <span className="comment"># &lt;class &apos;dict&apos;&gt;</span></div>
                                 </code>
                             </pre>
 
                             <h3>YAMLをパースする例</h3>
                             <pre>
                                 <code>
-                                    <div className="code-line">import yaml</div>
+                                    <div className="code-line"><span className="keyword">import</span> yaml</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">{`with open("device.yaml") as f:`}</div>
-                                    <div className="code-line">    config = yaml.safe_load(f)</div>
+                                    <div className="code-line"><span className="keyword">with</span> <span className="function">open</span>(<span className="string">&quot;device.yaml&quot;</span>) <span className="keyword">as</span> f:</div>
+                                    <div className="code-line">    config = yaml.<span className="function">safe_load</span>(f)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">{`print(config["hostname"])   # Router1`}</div>
-                                    <div className="code-line">{`print(type(config))         # <class 'dict'>`}</div>
+                                    <div className="code-line"><span className="function">print</span>(config[<span className="string">&quot;hostname&quot;</span>])   <span className="comment"># Router1</span></div>
+                                    <div className="code-line"><span className="function">print</span>(<span className="function">type</span>(config))         <span className="comment"># &lt;class &apos;dict&apos;&gt;</span></div>
                                 </code>
                             </pre>
 
                             <h3>XMLをパースする例</h3>
                             <pre>
                                 <code>
-                                    <div className="code-line">import xml.etree.ElementTree as ET</div>
+                                    <div className="code-line"><span className="keyword">import</span> xml.etree.ElementTree <span className="keyword">as</span> ET</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">{`tree = ET.fromstring("<device><hostname>Router1</hostname></device>")`}</div>
-                                    <div className="code-line">{`hostname = tree.find("hostname").text`}</div>
+                                    <div className="code-line">tree = ET.<span className="function">fromstring</span>(<span className="string">&quot;&lt;device&gt;&lt;hostname&gt;Router1&lt;/hostname&gt;&lt;/device&gt;&quot;</span>)</div>
+                                    <div className="code-line">hostname = tree.<span className="function">find</span>(<span className="string">&quot;hostname&quot;</span>).text</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">print(hostname)              # Router1</div>
+                                    <div className="code-line"><span className="function">print</span>(hostname)              <span className="comment"># Router1</span></div>
                                 </code>
                             </pre>
 
@@ -365,16 +365,16 @@ export function CcnaSoftwareDevDesignGuide() {
                             <h3>コード例で見るTDDの流れ</h3>
                             <pre>
                                 <code>
-                                    <div className="code-line"># ① Red: 先にテストを書く（この時点ではadd関数は存在しないので失敗する）</div>
-                                    <div className="code-line">def test_add():</div>
-                                    <div className="code-line">    assert add(2, 3) == 5</div>
+                                    <div className="code-line"><span className="comment"># ① Red: 先にテストを書く（この時点ではadd関数は存在しないので失敗する）</span></div>
+                                    <div className="code-line"><span className="keyword">def</span> <span className="function">test_add</span>():</div>
+                                    <div className="code-line">    <span className="keyword">assert</span> <span className="function">add</span>(<span className="number">2</span>, <span className="number">3</span>) == <span className="number">5</span></div>
                                     <div className="code-line"></div>
-                                    <div className="code-line"># ② Green: テストが通る最小限の実装を書く</div>
-                                    <div className="code-line">def add(a, b):</div>
-                                    <div className="code-line">    return a + b</div>
+                                    <div className="code-line"><span className="comment"># ② Green: テストが通る最小限の実装を書く</span></div>
+                                    <div className="code-line"><span className="keyword">def</span> <span className="function">add</span>(a, b):</div>
+                                    <div className="code-line">    <span className="keyword">return</span> a + b</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line"># ③ Refactor: 必要であれば、動作を変えずにコードを整理する</div>
-                                    <div className="code-line">#    （このシンプルな例ではこれ以上の改善は不要）</div>
+                                    <div className="code-line"><span className="comment"># ③ Refactor: 必要であれば、動作を変えずにコードを整理する</span></div>
+                                    <div className="code-line"><span className="comment">#    （このシンプルな例ではこれ以上の改善は不要）</span></div>
                                 </code>
                             </pre>
 
@@ -531,32 +531,32 @@ export function CcnaSoftwareDevDesignGuide() {
                             <h3>コード例</h3>
                             <pre>
                                 <code>
-                                    <div className="code-line"># config_utils.py というモジュールの中に、</div>
-                                    <div className="code-line"># ConfigParserというクラスを定義する例</div>
+                                    <div className="code-line"><span className="comment"># config_utils.py というモジュールの中に、</span></div>
+                                    <div className="code-line"><span className="comment"># ConfigParserというクラスを定義する例</span></div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">class ConfigParser:</div>
-                                    <div className="code-line">    def __init__(self, filepath):</div>
+                                    <div className="code-line"><span className="keyword">class</span> <span className="function">ConfigParser</span>:</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">__init__</span>(self, filepath):</div>
                                     <div className="code-line">        self.filepath = filepath</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">    def load_yaml(self):</div>
-                                    <div className="code-line">        import yaml</div>
-                                    <div className="code-line">        with open(self.filepath) as f:</div>
-                                    <div className="code-line">            return yaml.safe_load(f)</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">load_yaml</span>(self):</div>
+                                    <div className="code-line">        <span className="keyword">import</span> yaml</div>
+                                    <div className="code-line">        <span className="keyword">with</span> <span className="function">open</span>(self.filepath) <span className="keyword">as</span> f:</div>
+                                    <div className="code-line">            <span className="keyword">return</span> yaml.<span className="function">safe_load</span>(f)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">    def get_hostname(self, config):</div>
-                                    <div className="code-line">{`        return config.get("hostname")`}</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">get_hostname</span>(self, config):</div>
+                                    <div className="code-line">        <span className="keyword">return</span> config.<span className="function">get</span>(<span className="string">&quot;hostname&quot;</span>)</div>
                                 </code>
                             </pre>
 
                             <pre>
                                 <code>
-                                    <div className="code-line"># 別のスクリプトから再利用する</div>
+                                    <div className="code-line"><span className="comment"># 別のスクリプトから再利用する</span></div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">from config_utils import ConfigParser</div>
+                                    <div className="code-line"><span className="keyword">from</span> config_utils <span className="keyword">import</span> ConfigParser</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">{`parser = ConfigParser("device.yaml")`}</div>
-                                    <div className="code-line">config = parser.load_yaml()</div>
-                                    <div className="code-line">{`print(parser.get_hostname(config))`}</div>
+                                    <div className="code-line">parser = <span className="function">ConfigParser</span>(<span className="string">&quot;device.yaml&quot;</span>)</div>
+                                    <div className="code-line">config = parser.<span className="function">load_yaml</span>()</div>
+                                    <div className="code-line"><span className="function">print</span>(parser.<span className="function">get_hostname</span>(config))</div>
                                 </code>
                             </pre>
 
@@ -632,29 +632,29 @@ export function CcnaSoftwareDevDesignGuide() {
 
                             <pre>
                                 <code>
-                                    <div className="code-line">class Subject:</div>
-                                    <div className="code-line">    def __init__(self):</div>
+                                    <div className="code-line"><span className="keyword">class</span> <span className="function">Subject</span>:</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">__init__</span>(self):</div>
                                     <div className="code-line">        self._observers = []</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">    def subscribe(self, observer):</div>
-                                    <div className="code-line">        self._observers.append(observer)</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">subscribe</span>(self, observer):</div>
+                                    <div className="code-line">        self._observers.<span className="function">append</span>(observer)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">    def notify(self, event):</div>
-                                    <div className="code-line">        for observer in self._observers:</div>
-                                    <div className="code-line">            observer.update(event)</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">notify</span>(self, event):</div>
+                                    <div className="code-line">        <span className="keyword">for</span> observer <span className="keyword">in</span> self._observers:</div>
+                                    <div className="code-line">            observer.<span className="function">update</span>(event)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">class LogObserver:</div>
-                                    <div className="code-line">    def update(self, event):</div>
-                                    <div className="code-line">{`        print(f"ログに記録: {event}")`}</div>
+                                    <div className="code-line"><span className="keyword">class</span> <span className="function">LogObserver</span>:</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">update</span>(self, event):</div>
+                                    <div className="code-line">        <span className="function">print</span>(<span className="string">f&quot;ログに記録: &#123;event&#125;&quot;</span>)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">class AlertObserver:</div>
-                                    <div className="code-line">    def update(self, event):</div>
-                                    <div className="code-line">{`        print(f"アラート送信: {event}")`}</div>
+                                    <div className="code-line"><span className="keyword">class</span> <span className="function">AlertObserver</span>:</div>
+                                    <div className="code-line">    <span className="keyword">def</span> <span className="function">update</span>(self, event):</div>
+                                    <div className="code-line">        <span className="function">print</span>(<span className="string">f&quot;アラート送信: &#123;event&#125;&quot;</span>)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">subject = Subject()</div>
-                                    <div className="code-line">subject.subscribe(LogObserver())</div>
-                                    <div className="code-line">subject.subscribe(AlertObserver())</div>
-                                    <div className="code-line">{`subject.notify("インターフェースがダウンしました")`}</div>
+                                    <div className="code-line">subject = <span className="function">Subject</span>()</div>
+                                    <div className="code-line">subject.<span className="function">subscribe</span>(<span className="function">LogObserver</span>())</div>
+                                    <div className="code-line">subject.<span className="function">subscribe</span>(<span className="function">AlertObserver</span>())</div>
+                                    <div className="code-line">subject.<span className="function">notify</span>(<span className="string">&quot;インターフェースがダウンしました&quot;</span>)</div>
                                 </code>
                             </pre>
 
@@ -843,11 +843,11 @@ export function CcnaSoftwareDevDesignGuide() {
 
                             <pre>
                                 <code>
-                                    <div className="code-line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</div>
+                                    <div className="code-line"><span className="diff-del">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span></div>
                                     <div className="code-line">（現在のブランチでの変更内容）</div>
                                     <div className="code-line">=======</div>
                                     <div className="code-line">（マージしようとしているブランチでの変更内容）</div>
-                                    <div className="code-line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-branch</div>
+                                    <div className="code-line"><span className="diff-add">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-branch</span></div>
                                 </code>
                             </pre>
 
@@ -861,14 +861,14 @@ export function CcnaSoftwareDevDesignGuide() {
                             <h3>diffで差分を確認する</h3>
                             <pre>
                                 <code>
-                                    <div className="code-line">git diff</div>
+                                    <div className="code-line"><span className="function">git</span> diff</div>
                                 </code>
                             </pre>
 
                             <pre>
                                 <code>
-                                    <div className="code-line">- hostname: Router1</div>
-                                    <div className="code-line">+ hostname: Router1-Core</div>
+                                    <div className="code-line"><span className="diff-del">- hostname: Router1</span></div>
+                                    <div className="code-line"><span className="diff-add">+ hostname: Router1-Core</span></div>
                                 </code>
                             </pre>
 

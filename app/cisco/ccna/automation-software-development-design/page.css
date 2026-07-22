@@ -319,6 +319,46 @@
     white-space: pre;
 }
 
+/* ---------- Syntax Highlighting ---------- */
+.ccna-software-dev-design-page .code-line .comment,
+.ccna-software-dev-design-page .comment {
+    color: #5c6370;
+    font-style: italic;
+}
+.ccna-software-dev-design-page .code-line .keyword,
+.ccna-software-dev-design-page .keyword {
+    color: #c678dd;
+    font-weight: 600;
+}
+.ccna-software-dev-design-page .code-line .string,
+.ccna-software-dev-design-page .string {
+    color: #98c379;
+}
+.ccna-software-dev-design-page .code-line .function,
+.ccna-software-dev-design-page .function {
+    color: #61afef;
+}
+.ccna-software-dev-design-page .code-line .number,
+.ccna-software-dev-design-page .number {
+    color: #d19a66;
+}
+.ccna-software-dev-design-page .code-line .tag,
+.ccna-software-dev-design-page .tag {
+    color: #e06c75;
+}
+.ccna-software-dev-design-page .code-line .attr,
+.ccna-software-dev-design-page .attr {
+    color: #d19a66;
+}
+.ccna-software-dev-design-page .code-line .diff-add,
+.ccna-software-dev-design-page .diff-add {
+    color: #98c379;
+}
+.ccna-software-dev-design-page .code-line .diff-del,
+.ccna-software-dev-design-page .diff-del {
+    color: #e06c75;
+}
+
 .ccna-software-dev-design-page p code,
 .ccna-software-dev-design-page li code {
     background: var(--ccna-bg-card);
