@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA 200-301 徹底解説：IP Connectivity（IP接続性）編</title>
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0d1c30;
+                --bg-card: #0f2138;
+                --accent: #7c9eff;
+                --accent-soft: rgba(124, 158, 255, 0.14);
+                --text: #e6edf7;
+                --text-dim: #9fb3c8;
+                --border: rgba(255, 255, 255, 0.08);
+                --code-bg: #0a1729;
+                --sidebar-width: 300px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    'Hiragino Kaku Gothic ProN',
+                    'Yu Gothic',
+                    'Segoe UI',
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    sans-serif;
+                line-height: 1.85;
+                font-size: 16px;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* ---------- Sidebar ---------- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 28px 20px;
+                z-index: 10;
+            }
+
+            .sidebar-title {
+                font-size: 0.78rem;
+                letter-spacing: 0.08em;
+                color: var(--text-dim);
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+
+            .sidebar-subtitle {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 24px;
+                line-height: 1.5;
+            }
+
+            .sidebar ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar li {
+                margin-bottom: 4px;
+            }
+
+            .nav-link {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                color: var(--text-dim);
+                text-decoration: none;
+                font-size: 0.92rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+
+            .nav-link:hover {
+                background: var(--accent-soft);
+                color: var(--text);
+            }
+
+            .nav-link.active {
+                background: var(--accent-soft);
+                color: var(--accent);
+                border-left: 2px solid var(--accent);
+                font-weight: 700;
+            }
+
+            .nav-badge {
+                display: inline-block;
+                font-size: 0.72rem;
+                color: var(--accent);
+                background: var(--accent-soft);
+                border-radius: 999px;
+                padding: 2px 8px;
+                margin-top: 18px;
+                margin-bottom: 10px;
+            }
+
+            /* ---------- Content ---------- */
+            .content {
+                margin-left: var(--sidebar-width);
+                padding: 56px 64px 120px;
+            }
+
+            .hero {
+                margin-bottom: 56px;
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .hero-eyebrow {
+                color: var(--accent);
+                font-size: 0.85rem;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-bottom: 14px;
+            }
+
+            .hero h1 {
+                font-size: 2.3rem;
+                line-height: 1.4;
+                margin: 0 0 18px;
+                background: linear-gradient(90deg, #ffffff, #a9c1ff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .hero p {
+                color: var(--text-dim);
+                font-size: 1.05rem;
+                max-width: none;
+            }
+
+            section {
+                margin-bottom: 64px;
+                scroll-margin-top: 24px;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                color: var(--text);
+                border-left: 4px solid var(--accent);
+                padding-left: 14px;
+                margin: 0 0 24px;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+                color: var(--accent);
+                margin: 36px 0 14px;
+            }
+
+            p,
+            li {
+                color: var(--text);
+                max-width: none;
+            }
+
+            ul,
+            ol {
+                padding-left: 1.4em;
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            .callout {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-left: 3px solid var(--accent);
+                border-radius: 10px;
+                padding: 18px 22px;
+                margin: 20px 0;
+                color: var(--text-dim);
+            }
+
+            .callout strong {
+                color: var(--text);
+            }
+
+            /* ---------- Tables ---------- */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0 28px;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                overflow: hidden;
+                font-size: 0.94rem;
+            }
+
+            th,
+            td {
+                text-align: left;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border);
+                vertical-align: top;
+            }
+
+            th {
+                background: rgba(124, 158, 255, 0.1);
+                color: var(--accent);
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            /* ---------- Code blocks ---------- */
+            pre.code-block {
+                background: var(--code-bg);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 20px 22px;
+                overflow-x: auto;
+                font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                font-size: 0.88rem;
+                color: #c9d6e8;
+                line-height: 1.6;
+                margin: 18px 0 28px;
+            }
+
+            pre.code-block .comment {
+                color: #6f88a8;
+            }
+
+            /* ---------- Mermaid ---------- */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 24px;
+                margin: 22px 0 30px;
+                overflow-x: auto;
+            }
+
+            .mermaid-caption {
+                text-align: center;
+                color: var(--text-dim);
+                font-size: 0.85rem;
+                margin-top: -18px;
+                margin-bottom: 30px;
+            }
+
+            /* ---------- Sources ---------- */
+            .source-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .source-list li {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px 18px;
+                margin-bottom: 12px;
+            }
+
+            .source-list .label {
+                display: block;
+                color: var(--text-dim);
+                font-size: 0.85rem;
+                margin-bottom: 4px;
+            }
+
+            .footnote {
+                color: var(--text-dim);
+                font-size: 0.85rem;
+                margin-top: 24px;
+            }
+
+            /* ---------- Mobile ---------- */
+            @media (max-width: 860px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                .content {
+                    margin-left: 0;
+                    padding: 32px 22px 90px;
+                }
+                .hero h1 {
+                    font-size: 1.7rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-title">Cisco CCNA 200-301</div>
+                <div class="sidebar-subtitle">IP Connectivity 完全ガイド</div>
+                <ul>
+                    <li><a href="#overview" class="nav-link">0. 全体像</a></li>
+                    <li><a href="#ch1" class="nav-link">第1章｜ルーティングテーブル</a></li>
+                    <li><a href="#ch2" class="nav-link">第2章｜フォワーディング決定</a></li>
+                    <li><a href="#ch3" class="nav-link">第3章｜スタティックルーティング</a></li>
+                    <li><a href="#ch4" class="nav-link">第4章｜シングルエリアOSPFv2</a></li>
+                    <li><a href="#ch5" class="nav-link">第5章｜FHRP</a></li>
+                    <li><a href="#summary" class="nav-link">まとめ</a></li>
+                    <li><a href="#sources" class="nav-link">参考ソース</a></li>
+                </ul>
+                <div class="nav-badge">出題比率 25%（最大）</div>
+            </nav>
+
+            <main class="content">
+                <header class="hero" id="overview">
+                    <div class="hero-eyebrow">
+                        CCNA 200-301 v1.1 ブループリント &middot; 3.0 IP Connectivity
+                    </div>
+                    <h1>CCNA 200-301 徹底解説<br />IP Connectivity（IP接続性）編</h1>
+                    <p>
+                        CCNA 200-301試験は6つのドメインで構成されており、そのうち「IP
+                        Connectivity」は<strong style="color: var(--text)"
+                            >単独で最も出題比率が高い分野（25%）</strong
+                        >です。ルーティングの基礎を理解していないと、この後に学ぶIP
+                        ServicesやSecurity
+                        Fundamentalsの理解も浅くなってしまうため、CCNA学習の中核と言える範囲です。
+                    </p>
+                </header>
+
+                <section id="overview-body">
+                    <h2>0. このガイドの全体像</h2>
+
+                    <script type="text/plain" class="mermaid-source">
+                        pie showData
+                            title CCNA 200-301（v1.1）ドメイン別 出題比率
+                            "IP Connectivity (25%)" : 25
+                            "Network Fundamentals (20%)" : 20
+                            "Network Access (20%)" : 20
+                            "Security Fundamentals (15%)" : 15
+                            "IP Services (10%)" : 10
+                            "Automation and Programmability (10%)" : 10
+                    </script>
+
+                    <p>
+                        このガイドでは、公式試験ブループリント（v1.1）の「3.0 IP
+                        Connectivity」に定義された以下の5つのサブトピックを、初学者向けに順番通り・図解付きで解説します。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>番号</th>
+                                <th>サブトピック</th>
+                                <th>本ガイドの章</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3.1</td>
+                                <td>ルーティングテーブルの構成要素を解釈する</td>
+                                <td>第1章</td>
+                            </tr>
+                            <tr>
+                                <td>3.2</td>
+                                <td>
+                                    ルータがデフォルトでフォワーディング決定を行う仕組みを判断する
+                                </td>
+                                <td>第2章</td>
+                            </tr>
+                            <tr>
+                                <td>3.3</td>
+                                <td>IPv4/IPv6のスタティックルーティングを設定・検証する</td>
+                                <td>第3章</td>
+                            </tr>
+                            <tr>
+                                <td>3.4</td>
+                                <td>シングルエリアOSPFv2を設定・検証する</td>
+                                <td>第4章</td>
+                            </tr>
+                            <tr>
+                                <td>3.5</td>
+                                <td>
+                                    ファーストホップ冗長プロトコル（FHRP）の目的・機能・概念を説明する
+                                </td>
+                                <td>第5章</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout">
+                        出典：Cisco「CCNA Exam v1.1 (200-301)」公式試験トピック（PDF）<br />
+                        <a
+                            href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf"
+                            target="_blank"
+                            rel="noopener"
+                            >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf</a
+                        >
+                    </div>
+                </section>
+
+                <section id="ch1">
+                    <h2>第1章｜3.1 ルーティングテーブルの構成要素を解釈する</h2>
+
+                    <h3>1-1. ルーティングテーブルとは何か</h3>
+                    <p>
+                        ルータは、パケットをどのインターフェースに転送すべきかを判断するために「ルーティングテーブル（経路表）」を持っています。これは「宛先ネットワークへ行くには、どの道（インターフェース／次のルータ）を通ればよいか」を記録した地図のようなものです。
+                    </p>
+                    <p>
+                        以下は、Cisco IOSで
+                        <code>show ip route</code>
+                        コマンドを実行したときの出力例です（学習用の簡略例）。
+                    </p>
+
+                    <pre class="code-block">
+R1# show ip route
+
+Codes: L - local, C - connected, S - static, R - RIP, O - OSPF,
+       B - BGP, D - EIGRP, * - candidate default, IA - OSPF inter area
+
+Gateway of last resort is 203.0.113.1 to network 0.0.0.0
+
+S*   0.0.0.0/0 [1/0] via 203.0.113.1
+C    192.168.1.0/24 is directly connected, GigabitEthernet0/0
+L    192.168.1.1/32 is directly connected, GigabitEthernet0/0
+O    10.10.20.0/24 [110/20] via 192.168.1.2, 00:12:41, GigabitEthernet0/1</pre
+                    >
+
+                    <h3>1-2. 各構成要素の意味（試験で問われるポイント）</h3>
+                    <p>
+                        試験トピック3.1では、以下の7つの構成要素を正確に読み取れることが求められます。
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>構成要素</th>
+                                <th>出力例での該当箇所</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>a. ルーティングプロトコルコード</strong></td>
+                                <td>
+                                    <code>S</code>, <code>C</code>, <code>L</code>, <code>O</code>
+                                </td>
+                                <td>
+                                    その経路をどうやって学習したかを示す1〜2文字の記号（S=スタティック、C=直接接続、L=ローカル、O=OSPF等）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>b. プレフィックス</strong></td>
+                                <td><code>10.10.20.0</code></td>
+                                <td>パケットの宛先が属するネットワークアドレス</td>
+                            </tr>
+                            <tr>
+                                <td><strong>c. ネットワークマスク</strong></td>
+                                <td><code>/24</code>（＝255.255.255.0）</td>
+                                <td>
+                                    プレフィックスの有効ビット長。ネットワーク部とホスト部の境界を示す
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>d. ネクストホップ</strong></td>
+                                <td><code>via 192.168.1.2</code></td>
+                                <td>
+                                    このネットワーク宛のパケットを次に転送すべき隣接ルータのIPアドレス
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>e. アドミニストレーティブディスタンス（AD）</strong>
+                                </td>
+                                <td><code>[110/20]</code> の <strong>110</strong></td>
+                                <td>
+                                    その経路情報源（プロトコル）の「信頼度」。数値が小さいほど信頼される
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>f. メトリック</strong></td>
+                                <td><code>[110/20]</code> の <strong>20</strong></td>
+                                <td>同一プロトコル内で最適経路を決めるためのコスト値</td>
+                            </tr>
+                            <tr>
+                                <td><strong>g. ゲートウェイ・オブ・ラストリゾート</strong></td>
+                                <td><code>Gateway of last resort is 203.0.113.1...</code></td>
+                                <td>
+                                    ルーティングテーブルに一致する経路が無い場合に使われる「その他すべて」の転送先
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout">
+                        <strong>💡 初学者がつまずきやすいポイント</strong><br />
+                        <code>[110/20]</code>
+                        のような表記は「<strong>[AD/メトリック]</strong>」の順番で書かれています。AD（信頼度）が先、メトリック（コスト）が後です。試験ではこの順番を逆に覚えて失点するケースが非常に多いので、「AD
+                        → メトリック」の順で暗記しましょう。
+                    </div>
+
+                    <h3>1-3. パケット転送の流れ（全体イメージ）</h3>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TD
+                            A["パケットがルータのインターフェースに到着"] --> B["宛先IPアドレスを確認"]
+                            B --> C{"ルーティングテーブルに<br>一致するエントリはあるか？"}
+                            C -- "一致するエントリあり" --> D["該当エントリのネクストホップ／<br>出力インターフェースへ転送"]
+                            C -- "一致するエントリなし" --> E{"ゲートウェイ・オブ・ラストリゾート<br>（デフォルトルート）は設定されているか？"}
+                            E -- "設定あり" --> F["デフォルトルート経由で転送"]
+                            E -- "設定なし" --> G["パケットを破棄し、<br>送信元へICMP到達不能を返す"]
+                    </script>
+                </section>
+
+                <section id="ch2">
+                    <h2>第2章｜3.2 ルータのフォワーディング決定ロジック</h2>
+                    <p>
+                        同じ宛先に対して複数の経路情報がある場合、ルータは以下の<strong>3段階の優先順位</strong>で「どの経路を実際に使うか」を決定します。これが試験トピック3.2の核心です。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TD
+                            Start(["複数の経路候補がある"]) --> Step1{"① 最長プレフィックスマッチ<br>（Longest Prefix Match）<br>より長い（詳細な）プレフィックスは？"}
+                            Step1 -- "プレフィックス長が最長の<br>エントリが1つに絞れる" --> UseRoute["その経路を採用"]
+                            Step1 -- "プレフィックス長が同じ経路が<br>複数残る" --> Step2{"② アドミニストレーティブ<br>ディスタンス（AD）<br>より小さいADは？"}
+                            Step2 -- "ADが最小のエントリが<br>1つに絞れる" --> UseRoute
+                            Step2 -- "AD値も同じ<br>（同一プロトコル間）" --> Step3{"③ メトリック<br>より小さいメトリックは？"}
+                            Step3 --> UseRoute
+                    </script>
+
+                    <h3>2-1. ①最長プレフィックスマッチ（Longest Prefix Match）</h3>
+                    <p>
+                        <strong>最も優先される</strong
+                        >ルール。宛先IPアドレスに対して、より長い（より詳細な＝ホスト数が少ない）プレフィックスを持つ経路が常に優先されます。
+                    </p>
+                    <p>例：宛先 <code>10.10.20.5</code> へのパケットがある場合</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>候補経路</th>
+                                <th>プレフィックス長</th>
+                                <th>採用される？</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>10.0.0.0/8</code></td>
+                                <td>/8（大まかな範囲）</td>
+                                <td>❌ 不採用</td>
+                            </tr>
+                            <tr>
+                                <td><code>10.10.0.0/16</code></td>
+                                <td>/16</td>
+                                <td>❌ 不採用</td>
+                            </tr>
+                            <tr>
+                                <td><code>10.10.20.0/24</code></td>
+                                <td>/24（最も詳細）</td>
+                                <td>✅ <strong>採用</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        →
+                        プレフィックス長が異なる場合は、ADやメトリックを比較するまでもなく、最長一致が常に勝ちます。
+                    </p>
+
+                    <h3>2-2. ②アドミニストレーティブディスタンス（AD）</h3>
+                    <p>
+                        プレフィックス長が同じ経路が複数の情報源（プロトコル）から学習された場合に比較される「情報源の信頼度」です。<strong
+                            >数値が小さいほど優先されます。</strong
+                        >
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>経路情報源</th>
+                                <th>デフォルトAD値</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>直接接続（Connected）</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>スタティックルート</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>EIGRP サマリールート</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>外部BGP（eBGP）</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td>EIGRP（内部）</td>
+                                <td>90</td>
+                            </tr>
+                            <tr>
+                                <td>OSPF</td>
+                                <td>110</td>
+                            </tr>
+                            <tr>
+                                <td>IS-IS</td>
+                                <td>115</td>
+                            </tr>
+                            <tr>
+                                <td>RIP</td>
+                                <td>120</td>
+                            </tr>
+                            <tr>
+                                <td>EIGRP（外部）</td>
+                                <td>170</td>
+                            </tr>
+                            <tr>
+                                <td>内部BGP（iBGP）</td>
+                                <td>200</td>
+                            </tr>
+                            <tr>
+                                <td>未知（到達不能）</td>
+                                <td>255</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="callout">
+                        💡
+                        この表は「フローティングスタティックルート」（第3章）を理解するための前提知識になります。
+                    </div>
+
+                    <h3>2-3. ③メトリック</h3>
+                    <p>
+                        プレフィックス長・AD値の両方が同じ場合、<strong>最後</strong>に比較されるのがメトリックです。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>プロトコル</th>
+                                <th>メトリックの計算基準（概要）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>RIP</td>
+                                <td>ホップ数（経由するルータの数）</td>
+                            </tr>
+                            <tr>
+                                <td>OSPF</td>
+                                <td>コスト（帯域幅の逆数を基準とした値）</td>
+                            </tr>
+                            <tr>
+                                <td>EIGRP</td>
+                                <td>帯域幅・遅延などを組み合わせた複合値</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="ch3">
+                    <h2>第3章｜3.3 IPv4/IPv6スタティックルーティングの設定・検証</h2>
+
+                    <h3>3-1. スタティックルートの4分類</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>種類</th>
+                                <th>書式イメージ（IOS）</th>
+                                <th>用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>デフォルトルート</strong></td>
+                                <td><code>ip route 0.0.0.0 0.0.0.0 &lt;next-hop&gt;</code></td>
+                                <td>
+                                    「その他すべて」の宛先に一致する経路。ゲートウェイ・オブ・ラストリゾートになる
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>ネットワークルート</strong></td>
+                                <td>
+                                    <code>ip route 10.10.20.0 255.255.255.0 &lt;next-hop&gt;</code>
+                                </td>
+                                <td>特定のネットワーク（サブネット）宛の経路</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ホストルート</strong></td>
+                                <td>
+                                    <code
+                                        >ip route 10.10.20.5 255.255.255.255 &lt;next-hop&gt;</code
+                                    >
+                                </td>
+                                <td>単一のホスト（/32）宛の経路</td>
+                            </tr>
+                            <tr>
+                                <td><strong>フローティングスタティック</strong></td>
+                                <td>
+                                    <code
+                                        >ip route 10.10.20.0 255.255.255.0 &lt;next-hop&gt;
+                                        200</code
+                                    >
+                                </td>
+                                <td>
+                                    AD値をあえて高く設定し、通常時は使われない「バックアップ経路」として機能させる
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>3-2. 構成例（トポロジ）</h3>
+                    <p>
+                        以下は、R1がR2（プライマリ）とR3（バックアップ）の2経路でネットワーク
+                        <code>10.10.20.0/24</code> に到達できる構成です。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        graph LR
+                            R1["R1（本社ルータ）"]
+                            R2["R2（プライマリ回線）"]
+                            R3["R3（バックアップ回線）"]
+                            LAN["10.10.20.0/24<br>（拠点LAN）"]
+
+                            R1 -- "G0/0<br>（プライマリ経路）" --> R2
+                            R1 -- "G0/1<br>（バックアップ経路）" --> R3
+                            R2 --> LAN
+                            R3 --> LAN
+                    </script>
+
+                    <h3>3-3. IOS設定例</h3>
+                    <pre
+                        class="code-block"
+                    ><span class="comment">! プライマリ経路（デフォルトのAD=1）</span>
+R1(config)# ip route 10.10.20.0 255.255.255.0 192.168.1.2
+
+<span class="comment">! フローティングスタティック（バックアップ経路。AD=200に設定し優先度を下げる）</span>
+R1(config)# ip route 10.10.20.0 255.255.255.0 192.168.10.2 200
+
+<span class="comment">! IPv6スタティックルート（IPv4と考え方は同じ）</span>
+R1(config)# ipv6 route 2001:db8:20::/64 2001:db8:1::2</pre>
+
+                    <p>
+                        R2経由の経路（AD=1）が生きている限り、ルーティングテーブルにはR2経由の経路のみが載ります。R2経由の経路が消えた（リンクダウンした）場合にのみ、AD=200のR3経由の経路がルーティングテーブルに現れ、通信が自動的に切り替わります。これが「フローティング（浮動）」と呼ばれる理由です。
+                    </p>
+
+                    <h3>3-4. 検証コマンド</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>コマンド</th>
+                                <th>用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>show ip route</code></td>
+                                <td>IPv4ルーティングテーブル全体を確認</td>
+                            </tr>
+                            <tr>
+                                <td><code>show ip route static</code></td>
+                                <td>スタティックルートのみを絞り込んで確認</td>
+                            </tr>
+                            <tr>
+                                <td><code>show ipv6 route</code></td>
+                                <td>IPv6ルーティングテーブルを確認</td>
+                            </tr>
+                            <tr>
+                                <td><code>ping</code> / <code>traceroute</code></td>
+                                <td>実際の到達性を確認</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="ch4">
+                    <h2>第4章｜3.4 シングルエリアOSPFv2の設定・検証</h2>
+
+                    <h3>4-1. OSPFの基本動作</h3>
+                    <p>
+                        OSPF（Open Shortest Path
+                        First）はリンクステート型のルーティングプロトコルです。ルータ同士が「隣接関係（アジェセンシー）」を確立し、リンク状態情報（LSA）を交換し合うことで、ネットワーク全体のトポロジを学習し、最短経路を計算します。
+                    </p>
+
+                    <h3>4-2. ネイバー隣接関係（Neighbor Adjacency）の確立ステート</h3>
+                    <p>
+                        2台のOSPFルータが隣接関係を確立するまでには、以下のステートを順番に遷移します。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        stateDiagram-v2
+                            [*] --> Down
+                            Down --> Init : Hello受信前
+                            Init --> TwoWay : 自分のRouter IDが<br>相手のHelloに含まれるのを確認
+                            TwoWay --> ExStart : マスター/スレーブを決定
+                            ExStart --> Exchange : DBD（データベース記述）<br>パケットを交換
+                            Exchange --> Loading : LSR/LSUで<br>詳細情報を要求
+                            Loading --> Full : LSDB（リンクステート<br>データベース）が完全に同期
+                            Full --> [*]
+                    </script>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ステート</th>
+                                <th>状態の意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Down</td>
+                                <td>隣接ルータからHelloパケットを受信していない初期状態</td>
+                            </tr>
+                            <tr>
+                                <td>Init</td>
+                                <td>
+                                    Helloパケットを受信したが、相手のHelloに自分のRouter
+                                    IDがまだ含まれていない
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2-Way</td>
+                                <td>
+                                    双方向の疎通を確認（マルチアクセス網ではDR/BDR選出がこの時点で行われる）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ExStart</td>
+                                <td>DBD交換のためのマスター／スレーブ関係を決定</td>
+                            </tr>
+                            <tr>
+                                <td>Exchange</td>
+                                <td>
+                                    DBD（データベース記述パケット）を交換し、互いが持つLSAの一覧を確認
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Loading</td>
+                                <td>不足しているLSAの詳細をLSR/LSUでやり取り</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Full</strong></td>
+                                <td><strong>LSDBが完全に同期し、隣接関係が確立完了</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>4-3. ネットワークタイプ：ポイントツーポイント vs ブロードキャスト</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ネットワークタイプ</th>
+                                <th>代表例</th>
+                                <th>DR/BDR選出</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ポイントツーポイント</strong></td>
+                                <td>シリアル回線、ルータ間の直接リンク</td>
+                                <td>不要（2台のみのため）</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ブロードキャスト</strong></td>
+                                <td>Ethernetセグメント（マルチアクセス）</td>
+                                <td><strong>必要</strong>（DR/BDRを選出）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        ブロードキャスト型のマルチアクセスネットワーク（例：同一Ethernetセグメントに3台以上のルータ）では、全ルータ同士がフルメッシュで隣接関係を結ぶと非効率（LSA交換の組み合わせ爆発）になるため、代表ルータ（DR）とバックアップ（BDR）を選出し、他のルータはDR/BDRとのみフル隣接関係を結びます。
+                    </p>
+
+                    <h3>4-4. DR/BDR選出ロジック</h3>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TD
+                            A["セグメント内のOSPFルータで<br>DR/BDRを選出開始"] --> B{"OSPFプライオリティが<br>最も高いルータは？<br>（0は選出対象外）"}
+                            B -- "1台に絞れる" --> C["そのルータがDRになる"]
+                            B -- "同点が複数" --> D{"Router IDが<br>最も高いルータは？"}
+                            D --> C
+                            C --> E["同様の基準で<br>2番目に高いルータがBDRになる"]
+                    </script>
+
+                    <div class="callout">
+                        <strong>💡 Router IDの決定順序（重要）</strong>
+                        <ol style="margin-top: 10px">
+                            <li><code>router-id</code> コマンドで明示的に設定された値（最優先）</li>
+                            <li>ループバックインターフェースの中で最も高いIPアドレス</li>
+                            <li>
+                                物理インターフェースの中で最も高いIPアドレス（ループバックが無い場合）
+                            </li>
+                        </ol>
+                    </div>
+
+                    <h3>4-5. 設定例</h3>
+                    <pre class="code-block">
+R1(config)# router ospf 1
+R1(config-router)# router-id 1.1.1.1
+R1(config-router)# network 192.168.1.0 0.0.0.255 area 0
+R1(config-router)# network 10.10.20.0 0.0.0.255 area 0</pre
+                    >
+                    <p>
+                        「シングルエリア」という名前の通り、CCNAで問われるOSPFはすべて
+                        <code>area 0</code
+                        >（バックボーンエリア）のみで構成されるシンプルな構成です。
+                    </p>
+
+                    <h3>4-6. 検証コマンド</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>コマンド</th>
+                                <th>確認できる内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>show ip ospf neighbor</code></td>
+                                <td>隣接関係のステート（Fullになっているか）</td>
+                            </tr>
+                            <tr>
+                                <td><code>show ip protocols</code></td>
+                                <td>有効なルーティングプロトコルの設定概要</td>
+                            </tr>
+                            <tr>
+                                <td><code>show ip ospf interface</code></td>
+                                <td>インターフェースごとのOSPF設定・DR/BDR情報</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="ch5">
+                    <h2>第5章｜3.5 ファーストホップ冗長プロトコル（FHRP）</h2>
+
+                    <h3>5-1. なぜFHRPが必要か</h3>
+                    <p>
+                        一般的なホスト（PC等）は、デフォルトゲートウェイとして<strong>1つのIPアドレス</strong>しか設定できません。もしそのデフォルトゲートウェイ（ルータ）が故障すると、そのセグメントは外部と通信できなくなってしまいます。
+                    </p>
+                    <p>
+                        FHRP（First Hop Redundancy
+                        Protocol）は、<strong>複数の物理ルータで1つの仮想IPアドレス（仮想ゲートウェイ）を共有</strong>することで、1台が故障してももう1台が自動的に処理を引き継ぐ仕組みです。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        graph TB
+                            Host["ホストPC<br>デフォルトゲートウェイ：<br>仮想IP 192.168.1.254"]
+                            VIP(("仮想IP<br>192.168.1.254"))
+                            RA["ルータA（Active/Master）<br>実IP：192.168.1.1"]
+                            RB["ルータB（Standby/Backup）<br>実IP：192.168.1.2"]
+
+                            Host --> VIP
+                            VIP -. 正常時 .-> RA
+                            VIP -. RA障害時に自動切替 .-> RB
+                    </script>
+
+                    <h3>5-2. 代表的なFHRPの比較</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>プロトコル</th>
+                                <th>種別</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>HSRP</strong>（Hot Standby Router Protocol）</td>
+                                <td>Cisco独自</td>
+                                <td>Active/Standby方式。最も基本的で試験でも頻出</td>
+                            </tr>
+                            <tr>
+                                <td><strong>VRRP</strong>（Virtual Router Redundancy Protocol）</td>
+                                <td>業界標準（RFC）</td>
+                                <td>HSRPと似た仕組みだが、マルチベンダー環境で利用可能</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GLBP</strong>（Gateway Load Balancing Protocol）</td>
+                                <td>Cisco独自</td>
+                                <td>
+                                    複数ルータで<strong>負荷分散</strong>しながら冗長性も確保できる
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout">
+                        📌
+                        CCNA試験トピック3.5は「configure」ではなく「describe（説明する）」という動詞であることに注目してください。つまり<strong>詳細な設定コマンドの暗記よりも、「目的・機能・概念」を説明できることが求められています</strong>。「なぜ必要か」「HSRP/VRRP/GLBPの違いは何か」を言葉で説明できるようにしておきましょう。
+                    </div>
+                </section>
+
+                <section id="summary">
+                    <h2>まとめ：学習の進め方</h2>
+                    <ol>
+                        <li>
+                            <strong>3.1→3.2は必ずセットで理解する</strong
+                            >：ルーティングテーブルの読み方（3.1）が分からないと、フォワーディング決定ロジック（3.2）も理解できません。
+                        </li>
+                        <li>
+                            <strong>AD値の表（第2章）は暗記必須</strong
+                            >：フローティングスタティック（3.3）にも直結する重要な数値です。
+                        </li>
+                        <li>
+                            <strong>OSPFはステート遷移とDR/BDRが頻出</strong>：<code
+                                >show ip ospf neighbor</code
+                            >
+                            の出力を読んで、今どのステートにいるかを判断できるように練習しましょう。
+                        </li>
+                        <li>
+                            <strong>FHRPは概念理解が中心</strong
+                            >：コマンドよりも「なぜ必要か」「3種類の違い」を説明できるようにしておきましょう。
+                        </li>
+                        <li>
+                            出題比率25%はドメイン中最大です。学習時間の配分に迷ったら、まずIP
+                            Connectivityを優先してください。
+                        </li>
+                    </ol>
+                </section>
+
+                <section id="sources">
+                    <h2>参考ソース（出典）</h2>
+                    <p>
+                        本ガイドの試験範囲・出題比率・トピック構成は、以下のCisco公式情報に基づいています。
+                    </p>
+                    <ul class="source-list">
+                        <li>
+                            <span class="label">Cisco「CCNA」認定ページ（日本語）</span>
+                            <a
+                                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html</a
+                            >
+                        </li>
+                        <li>
+                            <span class="label"
+                                >Cisco「CCNA Exam v1.1
+                                (200-301)」公式試験トピックPDF（ドメイン別出題比率・3.0 IP
+                                Connectivityの詳細トピック一覧の一次情報）</span
+                            >
+                            <a
+                                href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf</a
+                            >
+                        </li>
+                        <li>
+                            <span class="label">Cisco Learning Network「CCNA Exam Topics」</span>
+                            <a
+                                href="https://learningnetwork.cisco.com/s/ccna-exam-topics"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningnetwork.cisco.com/s/ccna-exam-topics</a
+                            >
+                        </li>
+                    </ul>
+                    <p class="footnote">
+                        ※
+                        試験内容はCiscoにより予告なく変更される場合があります。最新の出題範囲は必ず上記公式ソースでご確認ください。
+                    </p>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                const lines = str
+                    .replace(/^<br>/, '')
+                    .replace(/<br>[ \t]*$/, '')
+                    .split('<br>');
+                const indents = lines
+                    .filter((l) => l.trim().length > 0)
+                    .map((l) => l.match(/^[ \t]*/)[0].length);
+                const min = indents.length ? Math.min(...indents) : 0;
+                return lines.map((l) => l.slice(min)).join('<br>');
+            }
+
+            document.querySelectorAll('script.mermaid-source').forEach((el) => {
+                const pre = document.createElement('pre');
+                pre.className = 'mermaid';
+                pre.textContent = dedent(el.textContent);
+                el.parentNode.replaceChild(pre, el);
+            });
+
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                themeVariables: {
+                    background: '#07111e',
+                    primaryColor: '#12233d',
+                    primaryTextColor: '#e6edf7',
+                    primaryBorderColor: '#7c9eff',
+                    lineColor: '#7c9eff',
+                    secondaryColor: '#0f2138',
+                    tertiaryColor: '#0d1c30',
+                    fontSize: '16px',
+                },
+                flowchart: { useMaxWidth: false, htmlLabels: true },
+                state: { useMaxWidth: false },
+                pie: { useMaxWidth: false },
+            });
+
+            // ---- Scroll-spy: two observers ----
+            const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+            const sections = navLinks
+                .map((link) => document.querySelector(link.getAttribute('href')))
+                .filter(Boolean);
+
+            function setActive(id) {
+                navLinks.forEach((link) => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                });
+            }
+
+            // Reveal-style observer (generous margin) — kept for potential future animation hooks
+            const revealObserver = new IntersectionObserver(() => {}, {
+                root: null,
+                rootMargin: '0px 0px -40% 0px',
+                threshold: 0,
+            });
+            sections.forEach((sec) => revealObserver.observe(sec));
+
+            // Thin band near top of viewport, dedicated to nav-link highlighting
+            const navObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            setActive(entry.target.id);
+                        }
+                    });
+                },
+                {
+                    root: null,
+                    rootMargin: '-15% 0px -75% 0px',
+                    threshold: 0,
+                },
+            );
+            sections.forEach((sec) => navObserver.observe(sec));
+
+            // Set initial active state
+            if (sections.length) setActive(sections[0].id);
+        </script>
+    </body>
+</html>
