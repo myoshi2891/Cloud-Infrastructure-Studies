@@ -84,7 +84,10 @@
     text-decoration: none;
     font-size: 0.88rem;
     border-left: 2px solid transparent;
-    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .ccna-ip-connectivity-page .nav-link:hover {
@@ -318,12 +321,19 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* コンテナ制約（max-width: 760px）内で SVG を幅いっぱいに広げる。
-   applySvgFixups がセットする絶対 px 幅を上書き。他ページへの影響なし。 */
+/* コンテナ制約（max-width: 760px）内で mermaidWrapper が幅を引き継ぐよう明示。
+   SKILL.md「小図が小さくなりすぎる問題」対策: display:block の block 文脈で幅を確保 */
+.ccna-ip-connectivity-page .mermaid-wrap > div {
+    width: 100%;
+}
+
+/* SKILL.md「SVG 幅の鉄則」: applySvgFixups がセットする自然 px 幅を尊重し
+   width は上書きしない。max-width:100% でコンテナより広い図のみ縮小する。
+   width:100%!important は小さい flowchart LR 図を異常拡大させるため使わない。 */
 .ccna-ip-connectivity-page .mermaid-wrap svg {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 @media (max-width: 1024px) {
