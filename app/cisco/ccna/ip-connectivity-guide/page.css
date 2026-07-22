@@ -310,14 +310,20 @@
     padding: 1.75rem;
     border-radius: 12px;
     border: 1px solid var(--border);
-    margin: 2rem 0;
+    margin: 2rem auto;
+    /* コンテナの最大幅を制限することで SVG が幅いっぱいに見える適切なサイズで表示される */
+    max-width: 760px;
+    width: 100%;
     overflow-x: auto;
-    overflow-y: auto;
-    max-height: 640px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* コンテナ制約（max-width: 760px）内で SVG を幅いっぱいに広げる。
+   applySvgFixups がセットする絶対 px 幅を上書き。他ページへの影響なし。 */
+.ccna-ip-connectivity-page .mermaid-wrap svg {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
 }
 
 @media (max-width: 1024px) {
