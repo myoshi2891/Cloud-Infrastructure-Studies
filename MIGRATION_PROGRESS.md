@@ -11,6 +11,30 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ビルド:** リンターパス / ビルドはローカル確認
 - **最終更新日時(UTC):** 2026-07-23T01:25:00.000Z
 
+## 2026-07-23: Cisco「CCNA 200-301 IP Connectivity（IP接続性）編」移行 (完了)
+
+### 目的
+
+`Ccna-ip-connectivity-guide.html`（静的HTML・1180行）を、正準の設計パターン（NavBar + page.tsx + CcnaIpConnectivityGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/ip-connectivity-guide` ルートへ移行・追加する。また、グローバルナビゲーション（`app/constants.ts`）の CCNA エントリに「3.0 IP Connectivity（IP接続性）」を追加・同期する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for ccna ip connectivity guide page` (`__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green)**: `feat(ccna): migrate all content, css, and diagrams for ccna ip connectivity guide` (`page.tsx`, `CcnaIpConnectivityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全6章＋まとめ＋参考ソース、テーブル、Mermaid 7図の完璧な移行)
+- [x] **Step 3 (Refactor / Integration & Archive & Docs Sync)**: `refactor(ccna): integrate ccna ip connectivity guide into routing and sync docs` (`app/constants.ts` へのドメイン追加、`Ccna-ip-connectivity-guide.html` / `.md` の `archive/Cisco/` への退避、`MIGRATION_PROGRESS.md` の更新)
+
+### 関連ファイル
+
+- [app/cisco/ccna/ip-connectivity-guide/page.tsx](app/cisco/ccna/ip-connectivity-guide/page.tsx)
+- [app/cisco/ccna/ip-connectivity-guide/CcnaIpConnectivityGuide.tsx](app/cisco/ccna/ip-connectivity-guide/CcnaIpConnectivityGuide.tsx)
+- [app/cisco/ccna/ip-connectivity-guide/NavBar.tsx](app/cisco/ccna/ip-connectivity-guide/NavBar.tsx)
+- [app/cisco/ccna/ip-connectivity-guide/constants.ts](app/cisco/ccna/ip-connectivity-guide/constants.ts)
+- [app/cisco/ccna/ip-connectivity-guide/page.css](app/cisco/ccna/ip-connectivity-guide/page.css)
+- [__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx](__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [archive/Cisco/Ccna-ip-connectivity-guide.html](archive/Cisco/Ccna-ip-connectivity-guide.html)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
 ---
 
 ## 2026-07-23: Cisco「CCNA Automation ソフトウェア開発と設計 完全ガイド」移行 (完了)

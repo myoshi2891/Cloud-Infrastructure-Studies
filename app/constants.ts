@@ -240,6 +240,11 @@ export const EXAMS: Exam[] = [
                 href: '/cisco/ccna/automation-software-development-design',
                 pct: '15%',
             },
+            {
+                label: '3.0 IP Connectivity（IP接続性）',
+                href: '/cisco/ccna/ip-connectivity-guide',
+                pct: '25%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',
