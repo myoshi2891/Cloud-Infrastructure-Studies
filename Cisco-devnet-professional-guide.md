@@ -109,29 +109,36 @@ Cisco の認定試験には共通する特徴として、「**受験資格その
 
 ## 6. 認定取得の仕組み（コア試験＋コンセントレーション試験）
 
-DevNet Professionalを取得するための試験構成は、次の2階建てになっています。
+現在の **CCNP Automation** 認定を取得するための試験構成は、以下の2階建てになっています。
 
 1. **コア試験（必須）**：350-901 AUTOCOR (Automating Cisco Network Infrastructure Solutions)
-2. **Automation Professional 集中試験（選択）**：2種類の専用集中試験から1つを選択して受験
+2. **コンセントレーション試験（選択）**：対象の集中試験から1つを選択して受験（300-435 ENAUTO または 300-635 DCNAUTO）
 
 ```mermaid
 flowchart TB
     Start(["受験を開始する"]) --> Core["コア試験に合格する<br/>350-901 AUTOCOR"]
     Core --> Choose["集中試験を選択して受験"]
 
-    subgraph Concentrations["Automation Professional 集中試験（いずれか1つを選択）"]
+    subgraph Concentrations["CCNP Automation 集中試験（いずれか1つを選択）"]
         direction TB
-        C1["300-910 DEVOPS<br/>DevOps Solutions & Practices"]
-        C2["300-920 DEVWBX<br/>Webex Applications & Devices"]
+        C1["300-435 ENAUTO<br/>Automating Enterprise Solutions"]
+        C2["300-635 DCNAUTO<br/>Automating Data Center Solutions"]
     end
 
     Choose --> Concentrations
     Concentrations --> Result["CCNP Automation 認定を取得"]
 ```
 
-- コア試験に合格すると、その時点で「DevNet Specialist - Core」認定が付与される
-- コンセントレーション試験に合格すると、選んだ分野に応じた「DevNet Specialist - （分野名）」認定が付与される
-- **両方に合格して初めて DevNet Professional 認定が成立する**
+- 必須のコア試験（350-901 AUTOCOR）と選択コンセントレーション試験（300-435 ENAUTO / 300-635 DCNAUTO のいずれか）の両方に合格することで、**CCNP Automation 認定**が授与されます。
+
+### 【参考】旧制度（過去の DevNet 認定体系）
+
+以前の制度体系（DevNet Professional / DevNet Specialist）に関する情報は以下の通りです。現在の制度とは異なる歴史的経緯の情報としてご参照ください。
+
+- **旧認定名称**: DevNet Specialist (Core / 各分野), DevNet Professional
+- **旧選択試験の例**:
+  - `300-910 DEVOPS` (DevOps Solutions & Practices)
+  - `300-920 DEVWBX` (Webex Applications & Devices)
 
 （出典: [Cisco Certified DevNet Professional 認定とトレーニングプログラム](https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-professional.html)、[DevNet Professional At-a-Glance（PDF）](https://www.cisco.com/c/dam/global/ja_jp/training-events/training-certifications/certifications/devnet/jp-devnet-professional-at-a-glance.pdf)）
 
