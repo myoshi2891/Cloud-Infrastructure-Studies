@@ -1,0 +1,337 @@
+.ccna-beginner-page {
+    --ccna-bg: var(--color-background, #07111e);
+    --ccna-bg-elevated: #0d1b2e;
+    --ccna-bg-card: var(--color-card, #101f34);
+    --ccna-border: rgba(124, 158, 255, 0.16);
+    --ccna-border-soft: rgba(255, 255, 255, 0.06);
+    --ccna-accent: #7c9eff;
+    --ccna-accent-soft: rgba(124, 158, 255, 0.12);
+    --ccna-accent-strong: #a7c0ff;
+    --ccna-text: var(--color-foreground, #e7ecf6);
+    --ccna-text-dim: var(--color-muted-foreground, #9fb0cc);
+    --ccna-text-faint: #6b7d9c;
+    --ccna-warn: #ffcf7c;
+    --ccna-warn-bg: rgba(255, 207, 124, 0.08);
+    --ccna-warn-border: rgba(255, 207, 124, 0.35);
+    --ccna-radius: 10px;
+
+    background-color: var(--ccna-bg);
+    color: var(--ccna-text);
+    line-height: 1.85;
+    min-height: 100vh;
+}
+
+.ccna-beginner-page .layout {
+    display: block;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.ccna-beginner-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    width: 280px;
+    bottom: 0;
+    overflow-y: auto;
+    background: var(--ccna-bg-elevated);
+    border-right: 1px solid var(--ccna-border-soft);
+    padding: 2rem 1.25rem 3rem;
+    z-index: 40;
+    scrollbar-width: thin;
+}
+
+.ccna-beginner-page .sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+.ccna-beginner-page .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(124, 158, 255, 0.25);
+    border-radius: 3px;
+}
+
+.ccna-beginner-page .sidebar-brand {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ccna-text-faint);
+    margin-bottom: 0.35rem;
+}
+
+.ccna-beginner-page .sidebar-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ccna-accent-strong);
+    margin: 0 0 1.75rem;
+    line-height: 1.5;
+}
+
+.ccna-beginner-page .toc {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.ccna-beginner-page .toc li {
+    margin: 0;
+}
+.ccna-beginner-page .toc a {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    margin-bottom: 0.15rem;
+    border-radius: 8px;
+    color: var(--ccna-text-dim);
+    text-decoration: none;
+    font-size: 0.88rem;
+    border-left: 2px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.ccna-beginner-page .toc a:hover {
+    background: var(--ccna-accent-soft);
+    color: var(--ccna-text);
+}
+.ccna-beginner-page .toc a.active {
+    background: var(--ccna-accent-soft);
+    color: var(--ccna-accent-strong);
+    border-left: 2px solid var(--ccna-accent);
+    font-weight: 600;
+}
+
+/* ---------- Main ---------- */
+.ccna-beginner-page main {
+    margin-left: 280px;
+    padding: 3rem 4rem 6rem;
+    max-width: 1100px;
+}
+
+@media (max-width: 900px) {
+    .ccna-beginner-page .sidebar {
+        display: none;
+    }
+    .ccna-beginner-page main {
+        margin-left: 0;
+        padding: 2rem 1.25rem 4rem;
+    }
+}
+
+.ccna-beginner-page .hero {
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--ccna-border-soft);
+}
+
+.ccna-beginner-page .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ccna-accent);
+    background: var(--ccna-accent-soft);
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1.25rem;
+}
+
+.ccna-beginner-page h1 {
+    font-size: 2.2rem;
+    line-height: 1.35;
+    margin: 0 0 1.1rem;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.ccna-beginner-page .hero-lead {
+    color: var(--ccna-text-dim);
+    font-size: 1.05rem;
+    max-width: 56em;
+}
+
+.ccna-beginner-page section {
+    margin-bottom: 4rem;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.ccna-beginner-page h2 {
+    font-size: 1.55rem;
+    color: #fff;
+    margin: 0 0 1.4rem;
+    padding-top: 0.25rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+}
+
+.ccna-beginner-page h2 .num {
+    color: var(--ccna-accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.ccna-beginner-page h3 {
+    font-size: 1.15rem;
+    color: var(--ccna-accent-strong);
+    margin: 2.2rem 0 0.9rem;
+}
+
+.ccna-beginner-page p {
+    color: var(--ccna-text-dim);
+    margin: 0 0 1.1rem;
+}
+
+.ccna-beginner-page strong {
+    color: var(--ccna-text);
+}
+
+.ccna-beginner-page a {
+    color: var(--ccna-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.ccna-beginner-page a:hover {
+    color: var(--ccna-accent-strong);
+}
+
+/* ---------- Tables ---------- */
+.ccna-beginner-page .table-wrap {
+    overflow-x: auto;
+    margin: 0 0 1.6rem;
+    border: 1px solid var(--ccna-border);
+    border-radius: var(--ccna-radius);
+}
+.ccna-beginner-page table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 520px;
+    font-size: 0.92rem;
+}
+.ccna-beginner-page thead th {
+    background: var(--ccna-bg-card);
+    color: var(--ccna-accent-strong);
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--ccna-border);
+    white-space: nowrap;
+}
+.ccna-beginner-page tbody td {
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid var(--ccna-border-soft);
+    color: var(--ccna-text-dim);
+    vertical-align: top;
+}
+.ccna-beginner-page tbody tr:last-child td {
+    border-bottom: none;
+}
+.ccna-beginner-page tbody tr:hover td {
+    background: rgba(124, 158, 255, 0.045);
+}
+
+/* ---------- Callouts ---------- */
+.ccna-beginner-page .callout {
+    border: 1px solid var(--ccna-border);
+    background: var(--ccna-bg-card);
+    border-left: 3px solid var(--ccna-accent);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 0 0 1.6rem;
+    color: var(--ccna-text-dim);
+    font-size: 0.94rem;
+}
+.ccna-beginner-page .callout strong {
+    color: var(--ccna-accent-strong);
+}
+.ccna-beginner-page .callout.warn {
+    border-left-color: var(--ccna-warn);
+    background: var(--ccna-warn-bg);
+    border-color: var(--ccna-warn-border);
+}
+.ccna-beginner-page .callout.warn strong {
+    color: var(--ccna-warn);
+}
+
+/* ---------- Source list ---------- */
+.ccna-beginner-page .source-line {
+    font-size: 0.86rem;
+    color: var(--ccna-text-faint);
+    margin: 0 0 1.6rem;
+    padding-top: 0.4rem;
+    border-top: 1px dashed var(--ccna-border-soft);
+}
+.ccna-beginner-page .source-line a {
+    color: var(--ccna-text-dim);
+}
+.ccna-beginner-page .source-line a:hover {
+    color: var(--ccna-accent);
+}
+
+.ccna-beginner-page ul,
+.ccna-beginner-page ol {
+    color: var(--ccna-text-dim);
+    padding-left: 1.4rem;
+}
+.ccna-beginner-page li {
+    margin-bottom: 0.4rem;
+}
+
+/* ---------- FAQ ---------- */
+.ccna-beginner-page .faq-item {
+    background: var(--ccna-bg-card);
+    border: 1px solid var(--ccna-border);
+    border-radius: var(--ccna-radius);
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 0.9rem;
+}
+.ccna-beginner-page .faq-q {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+.ccna-beginner-page .faq-a {
+    color: var(--ccna-text-dim);
+    margin: 0;
+}
+
+/* ---------- Mermaid ---------- */
+.ccna-beginner-page .diagram-wrap {
+    margin: 1.4rem 0 1.8rem;
+    width: 100%;
+}
+.ccna-beginner-page .mermaid-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: var(--ccna-bg-card);
+    border: 1px solid var(--ccna-border);
+    border-radius: var(--ccna-radius);
+    padding: 1.5rem 1rem;
+    overflow-x: auto;
+}
+
+/* ---------- Reference list ---------- */
+.ccna-beginner-page .ref-group {
+    margin-bottom: 1.6rem;
+}
+.ccna-beginner-page .ref-group h3 {
+    margin-top: 0;
+}
+.ccna-beginner-page .ref-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.ccna-beginner-page .ref-list li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--ccna-border-soft);
+    color: var(--ccna-text-dim);
+    font-size: 0.92rem;
+}
+.ccna-beginner-page .ref-list li:last-child {
+    border-bottom: none;
+}
+.ccna-beginner-page .ref-list a {
+    word-break: break-all;
+}
+
+.ccna-beginner-page footer {
+    border-top: 1px solid var(--ccna-border-soft);
+    padding-top: 2rem;
+    color: var(--ccna-text-faint);
+    font-size: 0.85rem;
+}
