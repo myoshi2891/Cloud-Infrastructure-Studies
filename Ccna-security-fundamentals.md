@@ -136,20 +136,22 @@ flowchart LR
 ```
 ! コンソールポートへのパスワード設定
 Router(config)# line console 0
-Router(config-line)# password Cisco123!
+Router(config-line)# password <CONSOLE_PASSWORD>
 Router(config-line)# login
 
 ! VTY（Telnet/SSHでのリモートアクセス）へのパスワード設定
 Router(config)# line vty 0 4
-Router(config-line)# password Cisco123!
+Router(config-line)# password <VTY_PASSWORD>
 Router(config-line)# login
 
 ! 特権EXECモードへのパスワード設定（enable secretは暗号化される）
-Router(config)# enable secret MyStrongSecret!
+Router(config)# enable secret <ENABLE_SECRET_PASSWORD>
 
-! 平文で保存されるパスワードを暗号化して表示させる
+! 平文で表示・保存されるパスワードを可視化防止のための弱い難読化（Type 7）に変換する（※強力な暗号化ではないため、設定ファイル自体のアクセス制御・保護が別途必要）
 Router(config)# service password-encryption
 ```
+
+> **注意**: 上記コマンド例の `<CONSOLE_PASSWORD>`, `<VTY_PASSWORD>`, `<ENABLE_SECRET_PASSWORD>`, `<USER_SECRET_PASSWORD>` 等の表記は安全なプレースホルダーです。これらは必ず環境ごとに固有で強力なパスワードに置き換え、本番環境で使い回さないでください。
 
 ### 覚えておきたいポイント
 
@@ -158,7 +160,7 @@ Router(config)# service password-encryption
 - ローカルアカウントを使う場合は `username <name> secret <password>` と `login local` の組み合わせを使う（後述のAAAの基礎にもつながる）。
 
 ```
-Router(config)# username admin secret StrongPass123!
+Router(config)# username admin secret <USER_SECRET_PASSWORD>
 Router(config)# line vty 0 4
 Router(config-line)# login local
 Router(config-line)# transport input ssh
@@ -427,7 +429,7 @@ CCNAでは、AAAを実現する代表的なプロトコルとして **RADIUS** �
 |---|---|---|
 | 開発元 | 業界標準（オープン） | Cisco独自プロトコル |
 | トランスポート層 | UDP | TCP |
-| 暗号化範囲 | パスワード部分のみ暗号化 | パケット全体を暗号化 |
+| 暗号化範囲 | 標準RADIUSはパケット全体を暗号化せず主にUser-Password属性を保護 | 完全暗号化ではなくパケット本体の難読化（セキュアなトランスポート推奨） |
 | 認証と認可 | 認証と認可を一体で処理 | 認証・認可・アカウンティングを分離して処理可能 |
 | 主な用途 | ネットワークアクセス認証（Wi-Fi、VPNなど）で広く利用 | Cisco機器の管理アクセス（デバイスログイン）で多用 |
 
