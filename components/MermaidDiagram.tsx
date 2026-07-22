@@ -101,11 +101,15 @@ export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
     // ⚠️ SKILL.md「SVG 幅の鉄則」: viewBox 由来の自然 px 幅 + maxWidth:100%。
-    // width:'100%' は viewBox のみで intrinsic サイズを持たない SVG をコンテナ全幅へ
-    // 伸ばし、小さい flowchart LR 図を異常拡大させるため使わない。
-    // 自然 px + maxWidth:100% なら「親より広い図のみ縮小、小さい図は等倍」となる。
-    svgEl.style.width = `${w}px`;
+    // 小さすぎる図（w < 550px）は豆粒化を防ぐため視認性の高いサイズ（最大 650px）にスケーリング。
+    // 縦長すぎる図（h > 550px）は maxHeight: 580px で画面占有を適正化。
+    let targetWidth = w;
+    if (w > 0 && w < 550) {
+        targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
+    }
+    svgEl.style.width = `${targetWidth}px`;
     svgEl.style.maxWidth = '100%';
+    svgEl.style.maxHeight = h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 

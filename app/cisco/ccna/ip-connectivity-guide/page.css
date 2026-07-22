@@ -312,8 +312,11 @@
     border: 1px solid var(--border);
     margin: 2rem 0;
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 640px;
     display: flex;
     justify-content: center;
+    align-items: center;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
