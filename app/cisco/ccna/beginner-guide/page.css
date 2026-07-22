@@ -292,18 +292,23 @@
 
 /* ---------- Mermaid ---------- */
 .ccna-beginner-page .diagram-wrap {
-    margin: 1.4rem 0 1.8rem;
+    margin: 1.4rem auto 1.8rem;
     width: 100%;
 }
 .ccna-beginner-page .mermaid-container {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    background: var(--ccna-bg-card);
-    border: 1px solid var(--ccna-border);
-    border-radius: var(--ccna-radius);
-    padding: 1.5rem 1rem;
-    overflow-x: auto;
+    display: block;
+}
+.ccna-beginner-page .mermaid-container > div {
+    width: 100%;
+    margin: 0;
+}
+.ccna-beginner-page .mermaid-container svg {
+    display: block;
+    max-width: none !important;
+    max-height: none;
+    height: auto;
+    font-size: 1rem;
 }
 
 /* ---------- Reference list ---------- */

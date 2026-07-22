@@ -4,8 +4,13 @@ import CcnaBeginnerGuidePage from '@/app/cisco/ccna/beginner-guide/page';
 
 // Mock MermaidDiagram to avoid dynamic import / browser execution issues in Vitest
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel?: string }) => (
-        <div data-testid="mermaid-diagram" data-chart={chart} aria-label={ariaLabel}>
+    MermaidDiagram: ({ chart, ariaLabel, preserveNaturalScale }: { chart: string; ariaLabel?: string; preserveNaturalScale?: boolean }) => (
+        <div
+            data-testid="mermaid-diagram"
+            data-chart={chart}
+            data-natural-scale={preserveNaturalScale}
+            aria-label={ariaLabel}
+        >
             Mermaid Diagram Mock
         </div>
     ),
@@ -58,9 +63,21 @@ describe('CcnaBeginnerGuidePage', () => {
     });
 
     it('renders 5 mermaid diagrams', () => {
-        render(<CcnaBeginnerGuidePage />);
+        const { container } = render(<CcnaBeginnerGuidePage />);
 
         const diagrams = screen.getAllByTestId('mermaid-diagram');
         expect(diagrams).toHaveLength(5);
+        diagrams.forEach((diagram) => expect(diagram).toHaveAttribute('data-natural-scale', 'true'));
+
+        const widths: Record<string, string> = {
+            m1: '1100px',
+            m2: '760px',
+            m3: '760px',
+            m4: '760px',
+            m5: '1240px',
+        };
+        Object.entries(widths).forEach(([id, width]) => {
+            expect(container.querySelector(`[data-diagram-id="${id}"]`)).toHaveStyle({ maxWidth: width });
+        });
     });
 });

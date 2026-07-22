@@ -4,13 +4,26 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
+const DIAGRAM_DISPLAY: Record<string, { frameWidth: number }> = {
+    m1: { frameWidth: 1100 },
+    m2: { frameWidth: 760 },
+    m3: { frameWidth: 760 },
+    m4: { frameWidth: 760 },
+    m5: { frameWidth: 1240 },
+};
+
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
+    const display = DIAGRAM_DISPLAY[id] ?? { frameWidth: 760 };
     return (
-        <div className="diagram-wrap">
+        <div
+            className="diagram-wrap"
+            data-diagram-id={id}
+            style={{ maxWidth: `${display.frameWidth}px` }}
+        >
             <div className="mermaid-container">
-                <MermaidDiagram chart={chart} ariaLabel={label} />
+                <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
             </div>
         </div>
     );
