@@ -1,5 +1,4 @@
-# Cisco Certified DevNet Professional 認定 徹底解説ガイド
-### 〜初学者のためのステップバイステップ入門〜
+## 〜初学者のためのステップバイステップ入門〜
 
 > このガイドは、Cisco 公式サイトの情報をもとに、**Cisco Certified DevNet Professional** 認定について「そもそも何を証明する資格なのか」「どんな試験に合格すればよいのか」「どう学習を進めればよいのか」を、初めて DevNet 認定に触れる方でも理解できるように整理したものです。
 > 図解はすべて Mermaid のフローチャートで、比較情報はすべて Markdown の表で表現しています。
@@ -56,30 +55,27 @@ DevNet認定には、易しい順に「Associate → Specialist → Professional
 
 ```mermaid
 flowchart TB
-    Associate["Cisco Certified DevNet Associate<br/>試験: 200-901 DEVASC 1本のみ"]
-    Associate --> ProfessionalGoal["Cisco Certified DevNet Professional を目指す"]
+    Associate["CCNA Automation<br/>(旧: 200-901 DEVASC)"] --> ProfessionalGoal["CCNP Automation 認定を目指す"]
 
-    subgraph ProfPath["DevNet Professional 認定までの流れ"]
+    subgraph ProfPath["CCNP Automation 認定までの流れ (現行制度)"]
         direction TB
-        CoreExam["コア試験に合格<br/>350-901 DEVCOR"] --> CoreSpecialist["自動的に付与:<br/>DevNet Specialist - Core"]
-        ConcExam["コンセントレーション試験に合格<br/>専門分野を1つ選択"] --> ConcSpecialist["自動的に付与:<br/>DevNet Specialist - 専門分野"]
-        CoreSpecialist --> BothDone["コア + コンセントレーション<br/>両方に合格"]
+        CoreExam["コア試験に合格<br/>350-901 AUTOCOR"] --> CoreSpecialist["自動的に付与:<br/>Specialist - Automation Core"]
+        ConcExam["Automation Professional 集中試験から1つ選択して合格"] --> ConcSpecialist["自動的に付与:<br/>Specialist - Automation Concentration"]
+        CoreSpecialist --> BothDone["コア + 集中試験<br/>両方に合格"]
         ConcSpecialist --> BothDone
-        BothDone --> ProfCert["Cisco Certified DevNet Professional 認定"]
+        BothDone --> ProfCert["CCNP Automation 認定"]
     end
 
     ProfessionalGoal --> CoreExam
     ProfessionalGoal --> ConcExam
-    ProfCert --> Expert["Cisco Certified DevNet Expert<br/>現在は CCIE Automation に名称変更"]
+    ProfCert --> Expert["CCIE Automation"]
 ```
 
-- **DevNet Associate**：正式な前提条件はないが、1年以上のPython開発経験が推奨される入門レベル
-- **DevNet Professional**：コア試験＋コンセントレーション試験の合格が必要。合格した時点でそれぞれ「Specialist」認定も得られる
-- **DevNet Expert（現CCIE Automation）**：コア試験に加え、実技（ハンズオンラボ）試験に合格する必要がある最上位レベル
+- **CCNA Automation**：正式な前提条件はないが、1年以上のPython開発経験が推奨される入門レベル
+- **CCNP Automation**（現行制度）：350-901 AUTOCOR コア試験＋Automation Professional 集中試験（2種類から選択）の合格が必要
+- **CCIE Automation**：コア試験に加え、実技（ハンズオンラボ）試験に合格する必要がある最上位レベル
 
-（出典: [DevNet 認定 - トレーニング & 認定](https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet.html)、[Cisco Certified DevNet Associate 認定とトレーニングプログラム](https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/devnet/cisco-certified-devnet-associate.html)、[CCIE Automation（旧 DevNet Expert）](https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccie-automation/index.html)）
-
-> **補足（最新情報）**：Cisco公式サイト上のリンク構造を確認したところ、旧称「Cisco Certified DevNet Expert」のページは現在「**CCIE Automation**」のページへ転送される仕様になっており、最上位認定の名称がCCIE Automationへ変更されていることが確認できました。学習時期によっては旧名称の情報と混在する可能性があるため、最新の名称は公式サイトで都度確認することをおすすめします。
+> **注記（2026年2月2日以前の旧制度について）**：旧制度では「Cisco Certified DevNet Professional」として350-901 DEVCORおよび8種類の旧コンセントレーション試験が運用されていました。現在は「CCNP Automation」制度へ完全改定されています。
 
 ---
 
@@ -115,28 +111,22 @@ Cisco の認定試験には共通する特徴として、「**受験資格その
 
 DevNet Professionalを取得するための試験構成は、次の2階建てになっています。
 
-1. **コア試験（必須・1種類のみ）**：ソフトウェア開発・設計に関する共通知識を問う試験
-2. **コンセントレーション試験（選択式・8種類から1つ）**：自動化やDevOpsなど、自分の専門分野を選んで受験する試験
+1. **コア試験（必須）**：350-901 AUTOCOR (Automating Cisco Network Infrastructure Solutions)
+2. **Automation Professional 集中試験（選択）**：2種類の専用集中試験から1つを選択して受験
 
 ```mermaid
 flowchart TB
-    Start(["受験を開始する"]) --> Core["コア試験に合格する<br/>350-901 DEVCOR（120分）"]
-    Core --> Choose["専門分野を1つ選び<br/>コンセントレーション試験を受験"]
+    Start(["受験を開始する"]) --> Core["コア試験に合格する<br/>350-901 AUTOCOR"]
+    Core --> Choose["集中試験を選択して受験"]
 
-    subgraph Concentrations["コンセントレーション試験（いずれか1つに合格・すべて90分）"]
+    subgraph Concentrations["Automation Professional 集中試験（いずれか1つを選択）"]
         direction TB
-        C1["300-435 ENAUTO<br/>エンタープライズ自動化"]
-        C2["300-835 CLAUTO<br/>コラボレーション自動化"]
-        C3["300-635 DCAUTO<br/>データセンター自動化"]
-        C4["300-535 SPAUTO<br/>サービスプロバイダー自動化"]
-        C5["300-735 SAUTO<br/>セキュリティ自動化"]
-        C6["300-910 DEVOPS<br/>DevOps"]
-        C7["300-915 DEVIOT<br/>IoT/エッジ"]
-        C8["300-920 DEVWBX<br/>Webex開発"]
+        C1["300-910 DEVOPS<br/>DevOps Solutions & Practices"]
+        C2["300-920 DEVWBX<br/>Webex Applications & Devices"]
     end
 
     Choose --> Concentrations
-    Concentrations --> Result["Cisco Certified DevNet Professional 認定を取得"]
+    Concentrations --> Result["CCNP Automation 認定を取得"]
 ```
 
 - コア試験に合格すると、その時点で「DevNet Specialist - Core」認定が付与される
@@ -191,18 +181,14 @@ flowchart LR
 
 ## 8. コンセントレーション試験（専門分野選択式試験）一覧
 
-コンセントレーション試験は8種類あり、**すべて試験時間は90分**です（コア試験より短い点に注意）。それぞれ、対応する他のCisco認定トラック（CCNPシリーズなど）とも関連付けられているものが多く、既に別トラックを学習中の人は一部知識を流用できます。
+### 現行制度（CCNP Automation）の集中試験
 
-| 試験コード | 正式名称（略称） | 試験時間 | 主な学習内容 | 関連するCCNPトラック |
-|---|---|---|---|---|
-| 300-435 ENAUTO | Automating Cisco Enterprise Solutions | 90分 | プログラミングの概念、Python、API、コントローラ、自動化ツール | CCNP Enterprise |
-| 300-835 CLAUTO | Automating Cisco Collaboration Solutions | 90分 | コラボレーション製品向けのAPI・自動化プロトコル、Python | CCNP Collaboration |
-| 300-635 DCAUTO | Automating Cisco Data Center Solutions | 90分 | データセンターのオーケストレーション、自動化ツール | CCNP Data Center |
-| 300-535 SPAUTO | Automating Cisco Service Provider Solutions | 90分 | サービスプロバイダー向けオーケストレーション、プログラミングOS | CCNP Service Provider |
-| 300-735 SAUTO | Automating Cisco Security Solutions | 90分 | RESTful API、データモデル、ファイアウォール/Web/DNS/クラウドのセキュリティ、ISE | CCNP Security |
-| 300-910 DEVOPS | Implementing DevOps Solutions and Practices using Cisco Platforms | 90分 | クラウドマイクロサービス、インフラプロセスの自動コンフィグレーション・管理・スケーラビリティ | （DevNet系列のみ） |
-| 300-915 DEVIOT | Developing Solutions using Cisco IoT and Edge Platforms | 90分 | Cisco IOx/EFM、IoTデータ仮想化、IoT向けセキュリティ手法 | （DevNet系列のみ） |
-| 300-920 DEVWBX | Developing Applications for Cisco Webex and Webex Devices | 90分 | Webex API基礎、Meetings、デバイス、メッセージング、管理とコンプライアンス | （DevNet系列のみ） |
+| 試験コード | 正式名称（略称） | 試験時間 | 主な学習内容 |
+|---|---|---|---|
+| 300-910 DEVOPS | Implementing DevOps Solutions and Practices using Cisco Platforms | 90分 | クラウドマイクロサービス、インフラプロセスの自動コンフィグレーション・管理・スケーラビリティ |
+| 300-920 DEVWBX | Developing Applications for Cisco Webex and Webex Devices | 90分 | Webex API基礎、Meetings、デバイス、メッセージング、管理とコンプライアンス |
+
+> **2026年2月2日以前の旧制度（参考）**：旧DevNet Professional制度では 350-901 DEVCOR をコア試験とし、300-435 ENAUTO, 300-835 CLAUTO, 300-635 DCAUTO, 300-535 SPAUTO, 300-735 SAUTO, 300-915 DEVIOT 等のコンセントレーション試験が提供されていました。現在これらは各トラックの自動化集中試験および旧制度情報として明確に区分されています。
 
 ### コンセントレーション試験の選び方（考え方の目安）
 
