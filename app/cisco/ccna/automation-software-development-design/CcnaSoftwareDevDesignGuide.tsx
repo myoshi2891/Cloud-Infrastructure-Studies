@@ -299,13 +299,13 @@ export function CcnaSoftwareDevDesignGuide() {
                                 <code>
                                     <div className="code-line">import json</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">raw_text = '&#123;"hostname": "Router1", "status": "up"&#125;'</div>
+                                    <div className="code-line">{`raw_text = '{"hostname": "Router1", "status": "up"}'`}</div>
                                     <div className="code-line"></div>
                                     <div className="code-line"># JSON文字列 → Pythonのdict型に変換</div>
                                     <div className="code-line">parsed = json.loads(raw_text)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">print(parsed["hostname"])   # Router1</div>
-                                    <div className="code-line">print(type(parsed))         # &lt;class 'dict'&gt;</div>
+                                    <div className="code-line">{`print(parsed["hostname"])   # Router1`}</div>
+                                    <div className="code-line">{`print(type(parsed))         # <class 'dict'>`}</div>
                                 </code>
                             </pre>
 
@@ -314,11 +314,11 @@ export function CcnaSoftwareDevDesignGuide() {
                                 <code>
                                     <div className="code-line">import yaml</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">with open("device.yaml") as f:</div>
+                                    <div className="code-line">{`with open("device.yaml") as f:`}</div>
                                     <div className="code-line">    config = yaml.safe_load(f)</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">print(config["hostname"])   # Router1</div>
-                                    <div className="code-line">print(type(config))         # &lt;class 'dict'&gt;</div>
+                                    <div className="code-line">{`print(config["hostname"])   # Router1`}</div>
+                                    <div className="code-line">{`print(type(config))         # <class 'dict'>`}</div>
                                 </code>
                             </pre>
 
@@ -327,8 +327,8 @@ export function CcnaSoftwareDevDesignGuide() {
                                 <code>
                                     <div className="code-line">import xml.etree.ElementTree as ET</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">tree = ET.fromstring("&lt;device&gt;&lt;hostname&gt;Router1&lt;/hostname&gt;&lt;/device&gt;")</div>
-                                    <div className="code-line">hostname = tree.find("hostname").text</div>
+                                    <div className="code-line">{`tree = ET.fromstring("<device><hostname>Router1</hostname></device>")`}</div>
+                                    <div className="code-line">{`hostname = tree.find("hostname").text`}</div>
                                     <div className="code-line"></div>
                                     <div className="code-line">print(hostname)              # Router1</div>
                                 </code>
@@ -544,7 +544,7 @@ export function CcnaSoftwareDevDesignGuide() {
                                     <div className="code-line">            return yaml.safe_load(f)</div>
                                     <div className="code-line"></div>
                                     <div className="code-line">    def get_hostname(self, config):</div>
-                                    <div className="code-line">        return config.get("hostname")</div>
+                                    <div className="code-line">{`        return config.get("hostname")`}</div>
                                 </code>
                             </pre>
 
@@ -554,9 +554,9 @@ export function CcnaSoftwareDevDesignGuide() {
                                     <div className="code-line"></div>
                                     <div className="code-line">from config_utils import ConfigParser</div>
                                     <div className="code-line"></div>
-                                    <div className="code-line">parser = ConfigParser("device.yaml")</div>
+                                    <div className="code-line">{`parser = ConfigParser("device.yaml")`}</div>
                                     <div className="code-line">config = parser.load_yaml()</div>
-                                    <div className="code-line">print(parser.get_hostname(config))</div>
+                                    <div className="code-line">{`print(parser.get_hostname(config))`}</div>
                                 </code>
                             </pre>
 
@@ -645,16 +645,16 @@ export function CcnaSoftwareDevDesignGuide() {
                                     <div className="code-line"></div>
                                     <div className="code-line">class LogObserver:</div>
                                     <div className="code-line">    def update(self, event):</div>
-                                    <div className="code-line">        print(f"ログに記録: &#123;event&#125;")</div>
+                                    <div className="code-line">{`        print(f"ログに記録: {event}")`}</div>
                                     <div className="code-line"></div>
                                     <div className="code-line">class AlertObserver:</div>
                                     <div className="code-line">    def update(self, event):</div>
-                                    <div className="code-line">        print(f"アラート送信: &#123;event&#125;")</div>
+                                    <div className="code-line">{`        print(f"アラート送信: {event}")`}</div>
                                     <div className="code-line"></div>
                                     <div className="code-line">subject = Subject()</div>
                                     <div className="code-line">subject.subscribe(LogObserver())</div>
                                     <div className="code-line">subject.subscribe(AlertObserver())</div>
-                                    <div className="code-line">subject.notify("インターフェースがダウンしました")</div>
+                                    <div className="code-line">{`subject.notify("インターフェースがダウンしました")`}</div>
                                 </code>
                             </pre>
 
@@ -795,7 +795,7 @@ export function CcnaSoftwareDevDesignGuide() {
                                             <td>作業ディレクトリ／ステージング</td>
                                         </tr>
                                         <tr>
-                                            <td><code>git commit -m "..."</code></td>
+                                            <td><code>{`git commit -m "..."`}</code></td>
                                             <td>ステージング内容をローカルの履歴として記録する</td>
                                             <td>ステージング → ローカルリポジトリ</td>
                                         </tr>
