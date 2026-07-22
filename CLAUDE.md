@@ -204,6 +204,12 @@ app/
         NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
         constants.ts                # Mermaid 図定義（5図）
         page.css                    # ページ固有スタイル
+      automation-software-development-design/
+        page.tsx                    # CCNA Automation ソフトウェア開発と設計 完全ガイド（Server。メタデータ定義）
+        CcnaSoftwareDevDesignGuide.tsx # 本文＋インタラクション（client。全13セクション、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（12図）
+        page.css                    # ページ固有スタイル
 
 components/
   Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要。検索フィルタ・active リンク判定 (usePathname)・最近見たページ表示を内包

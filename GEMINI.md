@@ -34,10 +34,11 @@
   - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
   - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
   - `/app/cisco/ccna/beginner-guide`: Cisco CCNA試験 完全ガイド。
+  - `/app/cisco/ccna/automation-software-development-design`: CCNA Automation ソフトウェア開発と設計 完全ガイド。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` ※実装準備中、constants の `status` を変更するだけで Drawer に自動反映）
-- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド含む）
+- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイドおよび `automation-software-development-design/page.tsx` 含む）
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。新試験はここに追加する。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。

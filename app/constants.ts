@@ -235,6 +235,11 @@ export const EXAMS: Exam[] = [
                 href: '/cisco/ccna/beginner-guide',
                 pct: '入門',
             },
+            {
+                label: '1.0 ソフトウェア開発と設計',
+                href: '/cisco/ccna/automation-software-development-design',
+                pct: '15%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',
