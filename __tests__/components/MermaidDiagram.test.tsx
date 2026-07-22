@@ -93,16 +93,17 @@ describe('MermaidDiagram', () => {
     });
 
     describe('applySvgFixups', () => {
-        it('viewBox の自然幅を max-width(px) として上限化し、過大拡大を防ぐこと', () => {
+        it('viewBox の自然幅および縦高さを最適調整し、豆粒化と過大伸張を防ぐこと', () => {
             // Arrange: 細い縦長 flowchart 相当の viewBox
             const svg = makeSvg('0 0 250 600');
 
             // Act
             applySvgFixups(svg, 'flowchart TD\nA-->B');
 
-            // Assert: maxWidth が '100%' となり、width が自然幅 250px となる
+            // Assert: maxWidth が '100%' となり、width がスケーリングされ 480px、maxHeight が 580px となる
             expect(svg.style.maxWidth).toBe('100%');
-            expect(svg.style.width).toBe('250px');
+            expect(svg.style.width).toBe('480px');
+            expect(svg.style.maxHeight).toBe('580px');
             // flowchart は viewBox 高さを +15 拡張する
             expect(svg.getAttribute('viewBox')).toBe('0 0 250 615');
         });
@@ -146,4 +147,3 @@ describe('MermaidDiagram', () => {
         }
     });
 });
-
