@@ -236,6 +236,11 @@ export const EXAMS: Exam[] = [
                 pct: '入門',
             },
             {
+                label: '2.0 APIの理解と活用',
+                href: '/cisco/ccna/automation-api-guide',
+                pct: '20%',
+            },
+            {
                 label: '6.0 自動化とプログラマビリティ',
                 href: '/cisco/ccna/automation-software-development-design',
                 pct: '10%',

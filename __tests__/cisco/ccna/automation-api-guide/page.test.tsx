@@ -22,7 +22,7 @@ describe('CcnaAutomationApiPage', () => {
 
         const mainHeading = screen.getByRole('heading', {
             level: 1,
-            name: /APIの理解と活用 完全ガイド/i,
+            name: /CCNA Automation「APIの理解と活用」完全ガイド/i,
         });
         expect(mainHeading).toBeInTheDocument();
 
@@ -33,26 +33,27 @@ describe('CcnaAutomationApiPage', () => {
         render(<CcnaAutomationApiPage />);
 
         const sectionTitles = [
-            'この記事について',
-            'CCNA Automation 試験の全体像',
-            '学習ロードマップ',
-            'Step 0: そもそも「API」とは何か',
-            'Step 1（試験項目2.8）: APIの方式を比較する',
-            'Step 2（試験項目2.1）: ドキュメントからREST APIリクエストを組み立てる',
-            'Step 3（試験項目2.6）: HTTPレスポンスの構造を読み解く',
-            'Step 4（試験項目2.4）: 主要なHTTPステータスコードを理解する',
-            'Step 5（試験項目2.7）: API認証方式を使い分ける',
-            'Step 6（試験項目2.3）: APIを使ううえでの制約を理解する',
-            'Step 7（試験項目2.2）: Webhookの活用パターンを理解する',
-            'Step 8（試験項目2.5）: ステータスコードから障害を切り分ける',
-            'Step 9（試験項目2.9）: Pythonのrequestsライブラリで実装する',
-            'まとめ: 試験項目とこのガイドの対応表',
-            'さらに学ぶために（関連する試験項目とのつながり）',
-            '出典・参考資料',
+            '1. この記事について',
+            '2. CCNA Automation 試験の全体像',
+            '3. 学習ロードマップ',
+            '4. Step 0: そもそも「API」とは何か',
+            '5. Step 1（試験項目2.8）: APIの方式を比較する',
+            '6. Step 2（試験項目2.1）: ドキュメントからREST APIリクエストを組み立てる',
+            '7. Step 3（試験項目2.6）: HTTPレスポンスの構造を読み解く',
+            '8. Step 4（試験項目2.4）: 主要なHTTPステータスコードを理解する',
+            '9. Step 5（試験項目2.7）: API認証方式を使い分ける',
+            '10. Step 6（試験項目2.3）: APIを使ううえでの制約を理解する',
+            '11. Step 7（試験項目2.2）: Webhookの活用パターンを理解する',
+            '12. Step 8（試験項目2.5）: ステータスコードから障害を切り分ける',
+            '13. Step 9（試験項目2.9）: Pythonのrequestsライブラリで実装する',
+            '14. まとめ: 試験項目とこのガイドの対応表',
+            '15. さらに学ぶために（関連する試験項目とのつながり）',
+            '16. 出典・参考資料',
         ];
 
         sectionTitles.forEach((title) => {
-            expect(screen.getByText(new RegExp(title, 'i'))).toBeInTheDocument();
+            const headings = screen.getAllByRole('heading', { level: 2, name: new RegExp(title, 'i') });
+            expect(headings.length).toBeGreaterThan(0);
         });
     });
 
