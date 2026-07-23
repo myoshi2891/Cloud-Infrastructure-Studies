@@ -11,11 +11,11 @@ const DIAGRAM_DISPLAY: Record<string, { frameWidth: number }> = {
 };
 
 /**
- * 指定されたIDに対応する Mermaid ダイアグラムを描画するコンポーネント。
+ * Renders the Mermaid diagram associated with an identifier.
  *
- * @param props - コンポーネントのプロパティ
- * @param props.id - ダイアグラムの識別ID
- * @param props.label - アクセシビリティ用のダイアグラム説明ラベル
+ * @param props - Component properties.
+ * @param props.id - Identifier of the diagram to render.
+ * @param props.label - Accessibility label describing the diagram.
  */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
@@ -35,8 +35,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * CCNA初心者ガイドのメインコンポーネント。
- * 全12セクションの学習コンテンツとサイドバーナビゲーションをレンダリングします。
+ * Renders a beginner-friendly guide to the Cisco CCNA certification.
+ *
+ * The guide includes twelve learning sections, diagrams, reference links, frequently asked questions, and sidebar navigation.
  */
 export function CcnaBeginnerGuide() {
     return (

@@ -12,6 +12,12 @@ const DIAGRAM_DISPLAY: Record<string, { frameWidth: number; preserveNaturalScale
     'fhrp-concept': { frameWidth: 900, preserveNaturalScale: true },
 };
 
+/**
+ * Renders a configured Mermaid diagram with its display settings.
+ *
+ * @param id - The diagram identifier used to select its chart and display options
+ * @param label - The accessible label for the rendered diagram
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -31,6 +37,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/**
+ * Renders the CCNA 200-301 IP Connectivity study guide.
+ */
 export function CcnaIpConnectivityGuide() {
     return (
         <div className="ccna-ip-connectivity-page">

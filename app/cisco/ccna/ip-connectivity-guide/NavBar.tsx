@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { TOC_ITEMS } from './constants';
 
+/**
+ * Renders a sidebar table of contents for the IP Connectivity study guide and highlights the visible section.
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('overview');
 

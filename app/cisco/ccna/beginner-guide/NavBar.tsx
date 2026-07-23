@@ -18,7 +18,7 @@ const TOC_ITEMS = [
 ];
 
 /**
- * スクロール位置に同期してアクティブな目次項目を追従表示するナビゲーションバーコンポーネント。
+ * Displays a table-of-contents navigation bar that tracks the active section as the page is scrolled.
  */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('sec1');
