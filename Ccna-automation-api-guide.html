@@ -28,8 +28,8 @@
                 --border: rgba(148, 178, 255, 0.14);
                 --border-strong: rgba(148, 178, 255, 0.3);
                 --text: #eaf0fb;
-                --text-muted: #93a4c7;
-                --text-faint: #5f6d8c;
+                --text-muted: #bbc9e6;
+                --text-faint: #9eb2dd;
                 --accent: #6fd8ff;
                 --accent-2: #9b8cff;
                 --accent-soft: rgba(111, 216, 255, 0.12);
@@ -135,7 +135,7 @@
 
             .sidebar__eyebrow {
                 font-family: var(--font-mono);
-                font-size: 0.7rem;
+                font-size: 1rem;
                 letter-spacing: 0.12em;
                 text-transform: uppercase;
                 color: var(--accent);
@@ -148,7 +148,7 @@
                 line-height: 1.4;
             }
             .sidebar__sub {
-                font-size: 0.8rem;
+                font-size: 1rem;
                 color: var(--text-faint);
                 margin: 0 0 1.5rem;
             }
@@ -167,7 +167,7 @@
                 border-radius: 8px;
                 color: var(--text-muted);
                 text-decoration: none;
-                font-size: 0.85rem;
+                font-size: 1rem;
                 border-left: 2px solid transparent;
                 transition:
                     background 0.15s ease,
@@ -186,7 +186,7 @@
             }
             .sidebar-nav .group-label {
                 font-family: var(--font-mono);
-                font-size: 0.68rem;
+                font-size: 1rem;
                 letter-spacing: 0.1em;
                 text-transform: uppercase;
                 color: var(--text-faint);
@@ -200,7 +200,7 @@
                 margin-top: 2rem;
                 padding-top: 1.25rem;
                 border-top: 1px solid var(--border);
-                font-size: 0.75rem;
+                font-size: 1rem;
                 color: var(--text-faint);
                 line-height: 1.6;
             }
@@ -231,7 +231,7 @@
                 align-items: center;
                 gap: 0.5rem;
                 font-family: var(--font-mono);
-                font-size: 0.78rem;
+                font-size: 1rem;
                 letter-spacing: 0.1em;
                 text-transform: uppercase;
                 color: var(--accent);
@@ -273,7 +273,7 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 0.4rem;
-                font-size: 0.8rem;
+                font-size: 1rem;
                 color: var(--text-muted);
                 background: var(--bg-card);
                 border: 1px solid var(--border);
@@ -303,7 +303,7 @@
             }
             .signal-strip__node {
                 font-family: var(--font-mono);
-                font-size: 0.85rem;
+                font-size: 1rem;
                 color: var(--text-muted);
                 white-space: nowrap;
                 z-index: 2;
@@ -325,7 +325,7 @@
                 left: 0;
                 transform: translate(0, -50%);
                 font-family: var(--font-mono);
-                font-size: 0.72rem;
+                font-size: 1rem;
                 font-weight: 600;
                 padding: 0.25rem 0.6rem;
                 border-radius: 999px;
@@ -477,7 +477,7 @@
             table {
                 width: 100%;
                 border-collapse: collapse;
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
             thead th {
                 text-align: left;
@@ -509,7 +509,7 @@
             }
             code.inline {
                 font-family: var(--font-mono);
-                font-size: 0.85em;
+                font-size: 1em;
                 background: rgba(111, 216, 255, 0.1);
                 color: var(--accent);
                 padding: 0.1em 0.4em;
@@ -524,7 +524,7 @@
                 padding: 1.1rem 1.4rem;
                 margin: 1.75rem 0;
                 color: var(--text);
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
             .callout strong {
                 color: var(--accent);
@@ -546,7 +546,7 @@
                 justify-content: space-between;
                 align-items: center;
                 font-family: var(--font-mono);
-                font-size: 0.72rem;
+                font-size: 1rem;
                 letter-spacing: 0.06em;
                 text-transform: uppercase;
                 color: var(--text-faint);
@@ -564,7 +564,7 @@
                 padding: 1.2rem 1.4rem !important;
                 overflow-x: auto;
                 font-family: var(--font-mono);
-                font-size: 0.84rem;
+                font-size: 1rem;
                 line-height: 1.7;
             }
             .code-block-wrap code {
@@ -578,24 +578,25 @@
             /* ---------- Diagrams ---------- */
             .diagram {
                 margin: 2rem 0 0.75rem;
+                overflow-x: auto;
             }
             pre.mermaid {
                 width: 100%;
                 display: flex;
-                justify-content: center;
+                justify-content: safe center;
                 background: transparent;
                 border: none;
                 padding: 0;
                 margin: 0;
             }
             .mermaid svg {
-                max-width: min(100%, 880px) !important;
+                max-width: none;
                 height: auto;
             }
             .diagram__caption {
                 text-align: center;
                 color: var(--text-faint);
-                font-size: 0.82rem;
+                font-size: 1rem;
                 margin: 0.85rem 0 2.5rem;
             }
 
@@ -605,7 +606,7 @@
                 padding-top: 2.5rem;
                 border-top: 1px solid var(--border);
                 color: var(--text-faint);
-                font-size: 0.85rem;
+                font-size: 1rem;
             }
             .footer a {
                 color: var(--text-muted);
@@ -615,7 +616,7 @@
                 margin-top: 1.5rem;
                 color: var(--accent);
                 text-decoration: none;
-                font-size: 0.85rem;
+                font-size: 1rem;
             }
 
             /* ---------- Responsive ---------- */
@@ -1946,6 +1947,7 @@
                     B1["リクエスト送信"] --> B2["すぐにジョブID/受付IDだけを受信"]
                     B2 --> B3["別途ポーリングまたはWebhookで完了結果を取得"]
                 end
+                Sync ~~~ Async
         </script>
 
         <script type="text/plain" id="mmd-request-anatomy">
@@ -1956,6 +1958,7 @@
                     U["② URL（エンドポイント）<br/>どのリソースを操作するか"]
                     H["③ ヘッダー<br/>認証情報・データ形式など"]
                     B["④ ボディ<br/>送信するデータ（主にJSON）"]
+                    M ~~~ U ~~~ H ~~~ B
                 end
                 Request --> Server[("APIサーバー")]
                 Server --> Response["HTTPレスポンス"]
@@ -2009,6 +2012,7 @@
                     W1["イベントが発生する"] --> W2["サーバー側から登録済みURLへ自動でHTTP POST"]
                     W2 --> W3["アプリ側は受信して処理するだけ"]
                 end
+                Polling ~~~ Webhook
         </script>
 
         <script type="text/plain" id="mmd-troubleshoot">
@@ -2210,11 +2214,27 @@
                             noteBkgColor: '#1a2b45',
                             noteTextColor: '#eaf0fb',
                             noteBorderColor: 'rgba(148,178,255,0.35)',
+                            fontSize: '16px',
+                            actorFontSize: '16px',
+                            noteFontSize: '16px',
+                            messageFontSize: '16px',
+                            sequenceNumberSize: '16px',
                         },
                         flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
                         sequence: { useMaxWidth: false },
                     });
-                    mermaid.run({ querySelector: '.mermaid' });
+                    mermaid.run({ querySelector: '.mermaid' }).then(function () {
+                        // Belt-and-braces: force every piece of diagram text (native SVG
+                        // text/tspan as well as HTML foreignObject labels) to exactly 1rem,
+                        // overriding any smaller mermaid-internal defaults.
+                        document.querySelectorAll('.mermaid svg').forEach(function (svg) {
+                            svg.querySelectorAll(
+                                'text, tspan, foreignObject, foreignObject *',
+                            ).forEach(function (el) {
+                                el.style.setProperty('font-size', '16px', 'important');
+                            });
+                        });
+                    });
                 }
 
                 // --- sidebar active-link highlighting ---
