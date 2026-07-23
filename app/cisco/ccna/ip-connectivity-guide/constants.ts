@@ -62,7 +62,7 @@ graph LR
     'ospf-neighbor-states': `
 stateDiagram-v2
     [*] --> Down
-    Down --> Init : Hello受信前
+    Down --> Init : Helloパケット受信
     Init --> TwoWay : 自分のRouter IDが<br>相手のHelloに含まれるのを確認
     TwoWay --> ExStart : マスター/スレーブを決定
     ExStart --> Exchange : DBD（データベース記述）<br>パケットを交換

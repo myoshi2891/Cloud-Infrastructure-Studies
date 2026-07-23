@@ -1,5 +1,3 @@
-'use client';
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
@@ -824,7 +822,7 @@ export function CcnaIpConnectivityGuide() {
                                             <strong>VRRP</strong>（Virtual Router Redundancy
                                             Protocol）
                                         </td>
-                                        <td>標準規格（IEEE）</td>
+                                        <td>標準規格（IETF）</td>
                                         <td>
                                             MasterとBackup構成。マルチベンダーで利用可能。
                                         </td>
