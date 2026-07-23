@@ -17,6 +17,9 @@ const NAV_ITEMS = [
     { id: 'sources', label: '出典・参考資料' },
 ];
 
+/**
+ * Renders a sidebar table of contents with links to guide sections and highlights the section currently in view.
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('overview');
 

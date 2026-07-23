@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * CCNA初心者ガイドページのルートコンポーネント。
+ * Renders the CCNA beginner guide page.
  */
 export default function CcnaBeginnerGuidePage() {
     return <CcnaBeginnerGuide />;

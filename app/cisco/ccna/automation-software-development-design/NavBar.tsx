@@ -24,7 +24,7 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 /**
- * スクロール位置に応じた目次追従（スクロールスパイ）と各セクションへのスムーズなアンカー遷移を担当するナビゲーションコンポーネント。
+ * Renders a sidebar table of contents that tracks the visible section and smoothly scrolls to selected sections.
  */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('sec-1');

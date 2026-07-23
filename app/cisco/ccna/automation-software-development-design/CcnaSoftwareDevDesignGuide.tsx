@@ -20,7 +20,11 @@ const DIAGRAM_DISPLAY: Record<string, { frameWidth: number }> = {
 };
 
 /**
- * 指定された ID の Mermaid ダイアグラムとラベルを受け取り、適切な最大幅で図表を表示するコンポーネント。
+ * Renders a Mermaid diagram with its accessibility label and configured display width.
+ *
+ * @param id - The identifier used to select the diagram and its display settings.
+ * @param label - The accessible label for the diagram.
+ * @returns The diagram element, or `null` when no diagram matches `id`.
  */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
@@ -38,7 +42,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * CCNA Automation「ソフトウェア開発と設計」の完全ガイド全体を構成するメインコンポーネント。
+ * Renders the complete CCNA Automation guide to software development and design.
  */
 export function CcnaSoftwareDevDesignGuide() {
     return (

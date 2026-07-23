@@ -2,6 +2,9 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/**
+ * Renders a comprehensive Japanese-language guide to the CCNA 200-301 IP Services topics.
+ */
 export function CcnaIpServicesGuide() {
     return (
         <div className="ccna-ip-services-page">

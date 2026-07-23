@@ -9,8 +9,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * CCNA Automation認定「ソフトウェア開発と設計」ガイドのページエントリポイント（Server Component）。
- * ページのメタデータを提供し、メインガイドコンポーネントをレンダリングします。
+ * Renders the CCNA Automation software development and design guide page.
  */
 export default function CcnaSoftwareDevDesignPage() {
     return <CcnaSoftwareDevDesignGuide />;
