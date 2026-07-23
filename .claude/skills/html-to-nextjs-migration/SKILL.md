@@ -222,7 +222,7 @@ GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` �
 | --- | --- | --- |
 | Invalid DOM property | `<div class="sidebar">` | `<div className="sidebar">` （JSXでは `className` に統一） |
 | Unescaped entities | `parsed["hostname"]` (raw text) | `{`print(parsed["hostname"])`}` や `&quot;` / `&apos;` でラップ（`react/no-unescaped-entities` 解消） |
-| Monochrome code blocks | ハイライト無しの単色 `<pre><code>` | 各行 `.code-line` に `<span className="keyword|string|comment|function|tag|attr">` を付与し色分け |
+| Monochrome code blocks | ハイライト無しの単色 `<pre><code>` | 各行 `.code-line` に `<span className="keyword\|string\|comment\|function\|tag\|attr">` を付与し色分け |
 | Invalid property | `scrollbar-: none;` | `scrollbar-width: none;` |
 | z-index duplication | `nav { z-index: 100; }` in CSS + `z-50` in JSX | Single source: Tailwind `z-50` in JSX only |
 | Responsive outside @media | `.box { grid-template-columns: 1fr; }` at root | Wrap in `@media (max-width: 768px) { ... }` |
