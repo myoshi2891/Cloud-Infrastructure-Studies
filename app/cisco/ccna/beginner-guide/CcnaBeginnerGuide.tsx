@@ -1,5 +1,3 @@
-'use client';
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';

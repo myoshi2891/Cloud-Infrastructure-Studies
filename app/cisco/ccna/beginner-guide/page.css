@@ -1,4 +1,5 @@
 .ccna-beginner-page {
+    /* TODO(tech-debt): 以下のスコープ変数 (--ccna-bg-elevated, --ccna-accent*, --ccna-text-faint, --ccna-warn*, --ccna-radius) は差分安全性のために維持していますが、将来的に globals.css の3層テーマアーキテクチャトークン (--color-card, --color-primary, --color-muted, --radius-lg 等) へ置換する必要があります。 */
     --ccna-bg: var(--color-background, #07111e);
     --ccna-bg-elevated: #0d1b2e;
     --ccna-bg-card: var(--color-card, #101f34);
@@ -100,8 +101,8 @@
 .ccna-beginner-page main {
     margin-left: 280px;
     padding: 3rem 4rem 6rem;
-    width: calc(100% - 280px);
-    max-width: none;
+    max-width: 1000px;
+    margin-inline: auto;
 }
 
 @media (max-width: 900px) {
@@ -240,9 +241,9 @@
     color: var(--ccna-accent-strong);
 }
 .ccna-beginner-page .callout.warn {
+    border-color: var(--ccna-warn-border);
     border-left-color: var(--ccna-warn);
     background: var(--ccna-warn-bg);
-    border-color: var(--ccna-warn-border);
 }
 .ccna-beginner-page .callout.warn strong {
     color: var(--ccna-warn);
