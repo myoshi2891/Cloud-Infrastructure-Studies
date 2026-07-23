@@ -1,0 +1,2282 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA Automation「APIの理解と活用」完全ガイド</title>
+        <meta
+            name="description"
+            content="CCNA Automation（200-901 CCNAAUTO）試験項目2.0 Understanding and Using APIs を初学者向けにステップバイステップで解説するガイド"
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css"
+        />
+
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0d1c30;
+                --bg-card: #0f2036;
+                --border: rgba(148, 178, 255, 0.14);
+                --border-strong: rgba(148, 178, 255, 0.3);
+                --text: #eaf0fb;
+                --text-muted: #bbc9e6;
+                --text-faint: #9eb2dd;
+                --accent: #6fd8ff;
+                --accent-2: #9b8cff;
+                --accent-soft: rgba(111, 216, 255, 0.12);
+                --success: #7ee7a8;
+                --warning: #ffcf7c;
+                --danger: #ff9393;
+                --code-bg: #0a1727;
+                --font-display: 'Space Grotesk', 'Hiragino Sans', sans-serif;
+                --font-body: 'Inter', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+                --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-body);
+                font-size: 16px;
+                line-height: 1.8;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            :focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: 3px;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* ---------- Sidebar ---------- */
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 60;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                border: 1px solid var(--border-strong);
+                background: var(--bg-elevated);
+                color: var(--text);
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+            .sidebar-toggle span,
+            .sidebar-toggle span::before,
+            .sidebar-toggle span::after {
+                display: block;
+                width: 18px;
+                height: 2px;
+                background: var(--text);
+                position: relative;
+                border-radius: 2px;
+            }
+            .sidebar-toggle span::before,
+            .sidebar-toggle span::after {
+                content: '';
+                position: absolute;
+            }
+            .sidebar-toggle span::before {
+                top: -6px;
+            }
+            .sidebar-toggle span::after {
+                top: 6px;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 300px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 2.25rem 1.5rem 3rem;
+                z-index: 40;
+                scrollbar-width: thin;
+                scrollbar-color: var(--border-strong) transparent;
+            }
+            .sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--border-strong);
+                border-radius: 3px;
+            }
+
+            .sidebar__eyebrow {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--accent);
+            }
+            .sidebar__title {
+                font-family: var(--font-display);
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin: 0.5rem 0 0.25rem;
+                line-height: 1.4;
+            }
+            .sidebar__sub {
+                font-size: 1rem;
+                color: var(--text-faint);
+                margin: 0 0 1.5rem;
+            }
+
+            .sidebar-nav {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .sidebar-nav li {
+                margin: 0.1rem 0;
+            }
+            .sidebar-nav a {
+                display: block;
+                padding: 0.45rem 0.65rem;
+                border-radius: 8px;
+                color: var(--text-muted);
+                text-decoration: none;
+                font-size: 1rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+            .sidebar-nav a:hover {
+                color: var(--text);
+                background: rgba(255, 255, 255, 0.03);
+            }
+            .sidebar-nav a.active {
+                color: var(--text);
+                background: var(--accent-soft);
+                border-left-color: var(--accent);
+                font-weight: 600;
+            }
+            .sidebar-nav .group-label {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--text-faint);
+                margin: 1.1rem 0.65rem 0.4rem;
+            }
+            .sidebar-nav .group-label:first-child {
+                margin-top: 0;
+            }
+
+            .sidebar__source {
+                margin-top: 2rem;
+                padding-top: 1.25rem;
+                border-top: 1px solid var(--border);
+                font-size: 1rem;
+                color: var(--text-faint);
+                line-height: 1.6;
+            }
+            .sidebar__source a {
+                color: var(--text-muted);
+                word-break: break-all;
+            }
+
+            /* ---------- Main ---------- */
+            .main {
+                margin-left: 300px;
+                max-width: none;
+                padding: 4.5rem 4.5rem 6rem;
+            }
+            .prose,
+            .section,
+            .hero,
+            .footer {
+                max-width: none;
+            }
+
+            /* ---------- Hero ---------- */
+            .hero {
+                margin-bottom: 4rem;
+            }
+            .hero__eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--accent);
+                background: var(--accent-soft);
+                border: 1px solid rgba(111, 216, 255, 0.35);
+                padding: 0.35rem 0.8rem;
+                border-radius: 999px;
+                margin-bottom: 1.5rem;
+            }
+            .hero h1 {
+                font-family: var(--font-display);
+                font-size: clamp(2rem, 4vw, 3.1rem);
+                line-height: 1.25;
+                font-weight: 700;
+                margin: 0 0 1rem;
+                background: linear-gradient(
+                    120deg,
+                    var(--text) 20%,
+                    var(--accent) 65%,
+                    var(--accent-2) 100%
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .hero__lead {
+                font-size: 1.05rem;
+                color: var(--text-muted);
+                max-width: 62ch;
+                margin: 0 0 2rem;
+            }
+            .hero__chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.6rem;
+                margin-bottom: 2.5rem;
+            }
+            .chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                font-size: 1rem;
+                color: var(--text-muted);
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                padding: 0.4rem 0.85rem;
+                border-radius: 999px;
+            }
+            .chip strong {
+                color: var(--text);
+                font-weight: 600;
+            }
+            .chip--accent {
+                border-color: rgba(111, 216, 255, 0.4);
+                color: var(--accent);
+            }
+
+            /* signature element: request/response signal strip */
+            .signal-strip {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1.5rem;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.6rem 2rem;
+            }
+            .signal-strip__node {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                color: var(--text-muted);
+                white-space: nowrap;
+                z-index: 2;
+            }
+            .signal-strip__track {
+                position: relative;
+                flex: 1;
+                height: 2px;
+                background: linear-gradient(
+                    90deg,
+                    rgba(111, 216, 255, 0.15),
+                    rgba(155, 140, 255, 0.15)
+                );
+                border-radius: 2px;
+            }
+            .signal-strip__packet {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translate(0, -50%);
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                font-weight: 600;
+                padding: 0.25rem 0.6rem;
+                border-radius: 999px;
+                opacity: 0;
+                white-space: nowrap;
+            }
+            .signal-strip__packet--req {
+                background: rgba(111, 216, 255, 0.18);
+                color: var(--accent);
+                border: 1px solid rgba(111, 216, 255, 0.4);
+                animation: travelRight 3.6s ease-in-out infinite;
+            }
+            .signal-strip__packet--res {
+                background: rgba(126, 231, 168, 0.18);
+                color: var(--success);
+                border: 1px solid rgba(126, 231, 168, 0.4);
+                animation: travelLeft 3.6s ease-in-out infinite;
+                animation-delay: 1.8s;
+            }
+            @keyframes travelRight {
+                0% {
+                    left: 0%;
+                    opacity: 0;
+                }
+                8% {
+                    opacity: 1;
+                }
+                42% {
+                    left: calc(100% - 70px);
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 0;
+                    left: calc(100% - 70px);
+                }
+            }
+            @keyframes travelLeft {
+                0% {
+                    left: calc(100% - 70px);
+                    opacity: 0;
+                }
+                8% {
+                    opacity: 1;
+                }
+                42% {
+                    left: 0%;
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 0;
+                    left: 0%;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .signal-strip__packet--req,
+                .signal-strip__packet--res {
+                    animation: none;
+                    opacity: 1;
+                    left: 12%;
+                }
+                .signal-strip__packet--res {
+                    left: auto;
+                    right: 12%;
+                }
+                html {
+                    scroll-behavior: auto;
+                }
+            }
+
+            /* ---------- Section typography ---------- */
+            .section {
+                margin: 4.5rem 0;
+            }
+            .section:first-of-type {
+                margin-top: 0;
+            }
+            .section h2 {
+                display: flex;
+                align-items: baseline;
+                gap: 0.9rem;
+                font-family: var(--font-display);
+                font-size: 1.65rem;
+                font-weight: 700;
+                color: var(--text);
+                margin: 0 0 1.5rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+            .section h2 .num {
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--accent);
+                background: var(--accent-soft);
+                border: 1px solid rgba(111, 216, 255, 0.35);
+                border-radius: 8px;
+                padding: 0.15rem 0.55rem;
+                flex-shrink: 0;
+            }
+            .section h3 {
+                font-family: var(--font-display);
+                font-size: 1.15rem;
+                font-weight: 600;
+                color: var(--accent);
+                margin: 2.25rem 0 1rem;
+            }
+            .section p {
+                color: var(--text-muted);
+                margin: 0 0 1.1rem;
+            }
+            .section p strong,
+            .section li strong {
+                color: var(--text);
+            }
+            .section ul,
+            .section ol {
+                color: var(--text-muted);
+                padding-left: 1.4rem;
+            }
+            .section li {
+                margin: 0.45rem 0;
+            }
+            .section li::marker {
+                color: var(--accent);
+            }
+
+            .lede {
+                font-size: 1.02rem;
+                color: var(--text-muted);
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 1.4rem 1.6rem;
+            }
+
+            /* ---------- Tables ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 1.5rem 0 2rem;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+            }
+            thead th {
+                text-align: left;
+                font-family: var(--font-display);
+                font-weight: 600;
+                color: var(--accent);
+                background: rgba(111, 216, 255, 0.05);
+                padding: 0.75rem 1.1rem;
+                border-bottom: 1px solid var(--border-strong);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 0.7rem 1.1rem;
+                border-bottom: 1px solid var(--border);
+                color: var(--text-muted);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                color: var(--text);
+                background: rgba(255, 255, 255, 0.015);
+            }
+            td:first-child,
+            th:first-child {
+                color: var(--text);
+                font-weight: 600;
+            }
+            code.inline {
+                font-family: var(--font-mono);
+                font-size: 1em;
+                background: rgba(111, 216, 255, 0.1);
+                color: var(--accent);
+                padding: 0.1em 0.4em;
+                border-radius: 5px;
+            }
+
+            /* ---------- Callouts ---------- */
+            .callout {
+                border-left: 3px solid var(--accent);
+                background: var(--accent-soft);
+                border-radius: 0 12px 12px 0;
+                padding: 1.1rem 1.4rem;
+                margin: 1.75rem 0;
+                color: var(--text);
+                font-size: 1rem;
+            }
+            .callout strong {
+                color: var(--accent);
+            }
+            .callout--warn {
+                border-left-color: var(--warning);
+                background: rgba(255, 207, 124, 0.08);
+            }
+            .callout--warn strong {
+                color: var(--warning);
+            }
+
+            /* ---------- Code blocks ---------- */
+            .code-block-wrap {
+                margin: 1.6rem 0;
+            }
+            .code-block-wrap__label {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--text-faint);
+                background: var(--code-bg);
+                border: 1px solid var(--border);
+                border-bottom: none;
+                border-radius: 10px 10px 0 0;
+                padding: 0.55rem 1.1rem;
+            }
+            .code-block-wrap pre {
+                margin: 0;
+                background: var(--code-bg) !important;
+                border: 1px solid var(--border);
+                border-radius: 0 0 10px 10px;
+                padding: 1.2rem 1.4rem !important;
+                overflow-x: auto;
+                font-family: var(--font-mono);
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            .code-block-wrap code {
+                font-family: var(--font-mono);
+                background: none !important;
+            }
+            .code-block-wrap:not(:has(.code-block-wrap__label)) pre {
+                border-radius: 10px;
+            }
+
+            /* ---------- Diagrams ---------- */
+            .diagram {
+                margin: 2rem 0 0.75rem;
+                overflow-x: auto;
+            }
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+            .mermaid svg {
+                max-width: none;
+                height: auto;
+            }
+            .diagram__caption {
+                text-align: center;
+                color: var(--text-faint);
+                font-size: 1rem;
+                margin: 0.85rem 0 2.5rem;
+            }
+
+            /* ---------- Footer ---------- */
+            .footer {
+                margin-top: 5rem;
+                padding-top: 2.5rem;
+                border-top: 1px solid var(--border);
+                color: var(--text-faint);
+                font-size: 1rem;
+            }
+            .footer a {
+                color: var(--text-muted);
+            }
+            .footer__top {
+                display: inline-block;
+                margin-top: 1.5rem;
+                color: var(--accent);
+                text-decoration: none;
+                font-size: 1rem;
+            }
+
+            /* ---------- Responsive ---------- */
+            @media (max-width: 980px) {
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 5rem 1.25rem 4rem;
+                }
+                .signal-strip {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+                .signal-strip__track {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="sidebar-toggle" aria-label="目次を開閉する" id="sidebarToggle">
+            <span></span>
+        </button>
+
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar__eyebrow">CCNA Automation ・ 200-901 CCNAAUTO</div>
+                <div class="sidebar__title">APIの理解と活用 完全ガイド</div>
+                <p class="sidebar__sub">試験ドメイン 2.0 Understanding and Using APIs（配点20%）</p>
+
+                <ul class="sidebar-nav">
+                    <li class="group-label">イントロ</li>
+                    <li><a href="#sec-1">1. この記事について</a></li>
+                    <li><a href="#sec-2">2. 試験の全体像</a></li>
+                    <li><a href="#sec-3">3. 学習ロードマップ</a></li>
+
+                    <li class="group-label">基礎編</li>
+                    <li><a href="#sec-4">Step 0. APIとは何か</a></li>
+                    <li><a href="#sec-5">Step 1（2.8）API方式の比較</a></li>
+
+                    <li class="group-label">リクエストとレスポンス</li>
+                    <li><a href="#sec-6">Step 2（2.1）リクエスト構築</a></li>
+                    <li><a href="#sec-7">Step 3（2.6）レスポンス構造</a></li>
+                    <li><a href="#sec-8">Step 4（2.4）ステータスコード</a></li>
+
+                    <li class="group-label">認証と運用</li>
+                    <li><a href="#sec-9">Step 5（2.7）認証方式</a></li>
+                    <li><a href="#sec-10">Step 6（2.3）APIの制約</a></li>
+                    <li><a href="#sec-11">Step 7（2.2）Webhook</a></li>
+                    <li><a href="#sec-12">Step 8（2.5）トラブルシュート</a></li>
+
+                    <li class="group-label">実装</li>
+                    <li><a href="#sec-13">Step 9（2.9）Python実装</a></li>
+
+                    <li class="group-label">まとめ</li>
+                    <li><a href="#sec-14">14. 対応表</a></li>
+                    <li><a href="#sec-15">15. さらに学ぶために</a></li>
+                    <li><a href="#sec-16">16. 出典・参考資料</a></li>
+                </ul>
+
+                <div class="sidebar__source">
+                    一次情報源:<br />
+                    <a
+                        href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
+                        target="_blank"
+                        rel="noopener"
+                        >Cisco CCNA Automation 公式ページ</a
+                    >
+                </div>
+            </nav>
+
+            <main class="main">
+                <header class="hero">
+                    <div class="hero__eyebrow">
+                        CCNA Automation &middot; Domain 2.0 &middot; 配点20%
+                    </div>
+                    <h1>「APIの理解と活用」を<br />ステップバイステップで攻略する</h1>
+                    <p class="hero__lead">
+                        Cisco公式の試験トピック（Exam Topics）にもとづき、200-901 CCNAAUTO
+                        v1.1の試験ドメイン 「2.0 Understanding and Using
+                        APIs」を、初学者でも迷わない順序に再構成して解説します。
+                    </p>
+                    <div class="hero__chips">
+                        <span class="chip chip--accent"
+                            ><strong>試験名</strong>&nbsp;Automating Networks Using Cisco Platforms
+                            v1.1</span
+                        >
+                        <span class="chip"><strong>試験コード</strong>&nbsp;200-901 CCNAAUTO</span>
+                        <span class="chip"><strong>試験時間</strong>&nbsp;120分</span>
+                        <span class="chip"
+                            ><strong>本ガイドの範囲</strong>&nbsp;ドメイン2.0（配点20%）</span
+                        >
+                    </div>
+                    <div class="signal-strip" aria-hidden="true">
+                        <span class="signal-strip__node">Client（自作スクリプト）</span>
+                        <span class="signal-strip__track">
+                            <span class="signal-strip__packet signal-strip__packet--req"
+                                >GET /networks</span
+                            >
+                            <span class="signal-strip__packet signal-strip__packet--res"
+                                >200 OK</span
+                            >
+                        </span>
+                        <span class="signal-strip__node">API Server（Meraki等）</span>
+                    </div>
+                </header>
+
+                <div class="prose">
+                    <section id="sec-1" class="section">
+                        <h2><span class="num">01</span>この記事について</h2>
+                        <p>
+                            Ciscoは2026年、これまでの「DevNet Associate」認定を「<strong
+                                >CCNA Automation</strong
+                            >」として刷新しました。 対応する試験は<strong
+                                >Automating Networks Using Cisco Platforms v1.1（200-901
+                                CCNAAUTO）</strong
+                            >で、120分・合否判定の試験です。 以前DevNet
+                            Associateに合格していた人は、自動的にCCNA
+                            Automation保持者として扱われます。
+                        </p>
+                        <p>
+                            この試験の6つの出題ドメインのうち、最も配点比率が高いのが<strong
+                                >「2.0 Understanding and Using
+                                APIs（APIの理解と活用）」で配点20%</strong
+                            >です。
+                            ネットワーク自動化はほぼ必ずAPI経由で行われるため、この分野はCCNA
+                            Automation全体の土台となる最重要パートといえます。
+                        </p>
+                        <p>
+                            本ガイドでは、この「2.0 Understanding and Using
+                            APIs」に含まれる9つの小項目（2.1〜2.9）を、<strong>初学者でも迷わないようにステップ順に並び替えて</strong>解説します。
+                            試験の公式な項番とは順番が異なりますが、「概念 → リクエスト → レスポンス
+                            → 認証 → 制約 → Webhook → トラブルシューティング →
+                            実装」という理解しやすい流れに再構成しています。
+                        </p>
+                        <p class="callout">
+                            本ガイドは、Cisco公式サイトのCCNA
+                            Automation認定ページおよび公式試験トピック（Exam
+                            Topics）PDFの内容にもとづいて作成した<strong>非公式の学習補助資料</strong>です。
+                            試験内容は予告なく変更される場合があるため、必ずページ末尾の一次情報源（Cisco公式サイト）もあわせてご確認ください。
+                        </p>
+                    </section>
+
+                    <section id="sec-2" class="section">
+                        <h2><span class="num">02</span>CCNA Automation 試験の全体像</h2>
+                        <p>
+                            CCNA Automation認定を取得するには、以下の1科目に合格する必要があります。
+                        </p>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項目</th>
+                                        <th>内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>試験名</td>
+                                        <td>
+                                            Automating Networks Using Cisco Platforms v1.1（200-901
+                                            CCNAAUTO）
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>試験時間</td>
+                                        <td>120分</td>
+                                    </tr>
+                                    <tr>
+                                        <td>出題言語</td>
+                                        <td>英語・日本語</td>
+                                    </tr>
+                                    <tr>
+                                        <td>受験料</td>
+                                        <td>US $300（または Cisco Learning Credits）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>有効期間</td>
+                                        <td>合格から3年間</td>
+                                    </tr>
+                                    <tr>
+                                        <td>前提条件</td>
+                                        <td>
+                                            特になし（Python等のソフトウェア開発経験1年以上が推奨）
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>
+                            試験は次の6つのドメインで構成されており、本ガイドが扱うのは<strong>ドメイン2.0</strong>です。
+                        </p>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ドメイン番号</th>
+                                        <th>ドメイン名</th>
+                                        <th>出題比率</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.0</td>
+                                        <td>
+                                            Software Development and
+                                            Design（ソフトウェア開発と設計）
+                                        </td>
+                                        <td>15%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.0</td>
+                                        <td>
+                                            <strong
+                                                >Understanding and Using
+                                                APIs（APIの理解と活用）</strong
+                                            >
+                                        </td>
+                                        <td><strong>20%</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3.0</td>
+                                        <td>
+                                            Cisco Platforms and
+                                            Development（Ciscoプラットフォームと開発）
+                                        </td>
+                                        <td>15%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.0</td>
+                                        <td>
+                                            Application Deployment and
+                                            Security（アプリケーションの展開とセキュリティ）
+                                        </td>
+                                        <td>15%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5.0</td>
+                                        <td>Infrastructure and Automation（インフラと自動化）</td>
+                                        <td>20%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6.0</td>
+                                        <td>Network Fundamentals（ネットワーク基礎）</td>
+                                        <td>15%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>
+                            ドメイン2.0に含まれる公式の小項目（2.1〜2.9）は以下の通りです。詳細は本ガイドの各ステップで解説します。
+                        </p>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>項番</th>
+                                        <th>公式の項目名（原文）</th>
+                                        <th>内容の要約</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2.1</td>
+                                        <td>
+                                            Construct a REST API request to accomplish a task given
+                                            API documentation
+                                        </td>
+                                        <td>ドキュメントを見てREST APIリクエストを組み立てる</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.2</td>
+                                        <td>Describe common usage patterns related to webhooks</td>
+                                        <td>Webhookの一般的な利用パターンを説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.3</td>
+                                        <td>Describe the constraints when consuming APIs</td>
+                                        <td>APIを利用する際の制約を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.4</td>
+                                        <td>
+                                            Explain common HTTP response codes associated with REST
+                                            APIs
+                                        </td>
+                                        <td>代表的なHTTPレスポンスコードを説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.5</td>
+                                        <td>
+                                            Troubleshoot a problem given the HTTP response code,
+                                            request and API documentation
+                                        </td>
+                                        <td>
+                                            レスポンスコードとリクエスト、ドキュメントから問題を切り分ける
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.6</td>
+                                        <td>
+                                            Interpret the parts of an HTTP response (response code,
+                                            headers, body)
+                                        </td>
+                                        <td>HTTPレスポンスの構成要素を読み解く</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.7</td>
+                                        <td>
+                                            Utilize common API authentication mechanisms: basic,
+                                            custom token, and API keys
+                                        </td>
+                                        <td>
+                                            主要な認証方式（Basic・カスタムトークン・APIキー）を使う
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.8</td>
+                                        <td>
+                                            Compare common API styles (REST, RPC, synchronous, and
+                                            asynchronous)
+                                        </td>
+                                        <td>APIの方式（REST/RPC、同期/非同期）を比較する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.9</td>
+                                        <td>
+                                            Construct a Python script that calls a REST API using
+                                            the requests library
+                                        </td>
+                                        <td>
+                                            requestsライブラリでREST
+                                            APIを呼び出すPythonスクリプトを書く
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section id="sec-3" class="section">
+                        <h2><span class="num">03</span>学習ロードマップ</h2>
+                        <div class="diagram" data-mermaid-src="mmd-roadmap"></div>
+                        <p class="diagram__caption">
+                            図: Step 0〜9の学習の流れ（かっこ内は公式の試験項番）
+                        </p>
+                        <p>
+                            この順番で学ぶ理由はシンプルです。<strong>「概念（何ができるか）」を先に理解してから「作法（どう書くか）」を学び、最後に「実装（コードにする）」へ進む</strong>という、初学者にとって最も挫折しにくい流れになっています。
+                        </p>
+                    </section>
+
+                    <section id="sec-4" class="section">
+                        <h2><span class="num">04</span>Step 0: そもそも「API」とは何か</h2>
+                        <p>
+                            CCNA
+                            Automationで扱うAPIのほとんどは、Web上でHTTP通信を使ってやり取りする「Web
+                            API」です。まずは比喩で全体像をつかみましょう。
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>クライアント（あなたのスクリプト）</strong> =
+                                レストランのお客さん
+                            </li>
+                            <li><strong>API</strong> = 注文を受けて厨房に伝えるウェイター</li>
+                            <li><strong>APIサーバー（Cisco Meraki、Webexなど）</strong> = 厨房</li>
+                        </ul>
+                        <p>
+                            お客さんは厨房に直接入って調理しません。「メニュー（APIドキュメント）」を見て、決められた形式でウェイター（API）に注文し、料理（データ）を受け取ります。
+                            ネットワーク自動化も同じで、Pythonスクリプトが直接ネットワーク機器の内部処理を書き換えるのではなく、<strong>あらかじめ定義された作法（API）を通じて</strong>タスクを依頼します。
+                        </p>
+                        <p>
+                            CCNA Automationで登場する代表的なCisco APIには、Meraki Dashboard
+                            API、Cisco Catalyst Center API、Webex API、ACI API、Cisco Catalyst
+                            SD-WAN API、NSO
+                            APIなどがあり、いずれも土台となる考え方はこのガイドで学ぶ内容と共通しています。
+                        </p>
+                    </section>
+
+                    <section id="sec-5" class="section">
+                        <h2>
+                            <span class="num">05</span>Step 1（試験項目2.8）: APIの方式を比較する
+                        </h2>
+                        <p>
+                            コードを書く前に、まず「APIにはいくつかの流派（スタイル）がある」ことを理解しておきましょう。試験項目2.8では、<strong
+                                >REST と RPC</strong
+                            >、<strong>同期と非同期</strong>という2つの軸での比較が問われます。
+                        </p>
+
+                        <h3>5.1 REST vs RPC</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>観点</th>
+                                        <th>REST</th>
+                                        <th>RPC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>考え方</td>
+                                        <td>
+                                            「リソース（モノ）」をURLで表現し、HTTPメソッドで操作する
+                                        </td>
+                                        <td>「手続き（関数）」をリモートから呼び出す感覚</td>
+                                    </tr>
+                                    <tr>
+                                        <td>例</td>
+                                        <td>
+                                            <code class="inline">GET /devices/123</code> →
+                                            IDが123の機器情報を取得
+                                        </td>
+                                        <td>
+                                            <code class="inline"
+                                                >callMethod("getDevice", {id:123})</code
+                                            >
+                                            のような呼び出し
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>状態管理</td>
+                                        <td>ステートレス（各リクエストが独立）</td>
+                                        <td>実装によって異なる</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CCNA Automationでの位置づけ</td>
+                                        <td>Cisco製品APIの主流（Meraki、Webexなど）</td>
+                                        <td>gRPCなど一部の自動化ツールで使用</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>5.2 同期 vs 非同期</h3>
+                        <div class="diagram" data-mermaid-src="mmd-syncasync"></div>
+                        <p class="diagram__caption">図: 同期処理と非同期処理の違い</p>
+
+                        <ul>
+                            <li>
+                                <strong>同期</strong>:
+                                「レストランで注文して、料理ができるまでその場で待つ」イメージ。シンプルだが、処理に時間がかかる操作（例:
+                                大規模な設定変更）には不向き。
+                            </li>
+                            <li>
+                                <strong>非同期</strong>:
+                                「注文票（受付番号）だけ先にもらって、呼ばれたら取りに行く」イメージ。時間のかかる処理（機器の一括アップグレードなど）でよく使われ、完了通知には次章のWebhookやポーリングが使われる。
+                            </li>
+                        </ul>
+
+                        <p class="callout">
+                            <strong>試験のポイント</strong>:
+                            「REST/RPC」と「同期/非同期」は別の軸です。例えば「RESTで非同期処理を実装する（ジョブIDを返すREST
+                            API）」という組み合わせも普通に存在します。混同しないようにしましょう。
+                        </p>
+                    </section>
+
+                    <section id="sec-6" class="section">
+                        <h2>
+                            <span class="num">06</span>Step 2（試験項目2.1）: ドキュメントからREST
+                            APIリクエストを組み立てる
+                        </h2>
+                        <p>
+                            REST
+                            APIへのリクエストは、次の4つの要素で構成されます。この構造を体に染み込ませることが、試験項目2.1の核心です。
+                        </p>
+
+                        <div class="diagram" data-mermaid-src="mmd-request-anatomy"></div>
+                        <p class="diagram__caption">
+                            図: HTTPリクエストの4要素とAPIサーバーとのやり取り
+                        </p>
+
+                        <h3>6.1 各要素の役割</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>要素</th>
+                                        <th>役割</th>
+                                        <th>具体例</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>メソッド</td>
+                                        <td>何をしたいか（動詞）</td>
+                                        <td>
+                                            <code class="inline">GET</code>=取得、<code
+                                                class="inline"
+                                                >POST</code
+                                            >=作成、<code class="inline">PUT</code>/<code
+                                                class="inline"
+                                                >PATCH</code
+                                            >=更新、<code class="inline">DELETE</code>=削除
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>URL</td>
+                                        <td>どのリソースに対してか（名詞）</td>
+                                        <td>
+                                            <code class="inline"
+                                                >/organizations/{orgId}/networks</code
+                                            >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ヘッダー</td>
+                                        <td>付帯情報</td>
+                                        <td>
+                                            <code class="inline">Authorization</code>（認証）、<code
+                                                class="inline"
+                                                >Content-Type: application/json</code
+                                            >（データ形式）
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ボディ</td>
+                                        <td>送信データ</td>
+                                        <td>
+                                            <code class="inline">{"name": "Branch-01"}</code>
+                                            のようなJSON
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>6.2 ドキュメントから組み立てる実践例</h3>
+                        <p>
+                            CCNA Automationの試験項目3.9.aでは「Meraki、Cisco Catalyst
+                            Center、ACI、Cisco Catalyst
+                            SD-WAN、NSOを使ってネットワーク機器の一覧を取得する」ことが具体的に問われます。
+                            ここではMeraki Dashboard
+                            APIを例に、ドキュメントを見てリクエストを組み立てる手順を体験してみましょう。
+                        </p>
+                        <p><strong>手順</strong></p>
+                        <ol>
+                            <li>
+                                APIドキュメントで目的の操作（「組織配下のネットワーク一覧を取得したい」）を探す
+                            </li>
+                            <li>
+                                対応するメソッドとエンドポイントを確認する（例:
+                                <code class="inline"
+                                    >GET /organizations/{organizationId}/networks</code
+                                >）
+                            </li>
+                            <li>認証方法（後述のStep 5）をヘッダーに設定する</li>
+                            <li>
+                                必要なパスパラメータ（<code class="inline">{organizationId}</code
+                                >）を実際の値に置き換える
+                            </li>
+                        </ol>
+
+                        <div
+                            class="code-block-wrap"
+                            data-code-src="code-http-request"
+                            data-lang="http"
+                        >
+                            <div class="code-block-wrap__label">
+                                <span>組み立てた結果（例）</span><span>HTTP</span>
+                            </div>
+                        </div>
+
+                        <p>
+                            このように、APIドキュメントは「メニュー表」であり、そこに書かれた形式に沿って過不足なくリクエストを組み立てることが2.1のスキルです。
+                        </p>
+                    </section>
+
+                    <section id="sec-7" class="section">
+                        <h2>
+                            <span class="num">07</span>Step 3（試験項目2.6）:
+                            HTTPレスポンスの構造を読み解く
+                        </h2>
+                        <p>
+                            リクエストを送ると、APIサーバーはHTTPレスポンスを返します。レスポンスも3つの部分から構成されています。
+                        </p>
+
+                        <div class="diagram" data-mermaid-src="mmd-response-anatomy"></div>
+                        <p class="diagram__caption">図: HTTPレスポンスの3つの構成要素</p>
+
+                        <div
+                            class="code-block-wrap"
+                            data-code-src="code-http-response"
+                            data-lang="http"
+                        >
+                            <div class="code-block-wrap__label">
+                                <span>レスポンス例</span><span>HTTP</span>
+                            </div>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>部分</th>
+                                        <th>この例での内容</th>
+                                        <th>意味</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ステータスライン</td>
+                                        <td><code class="inline">200 OK</code></td>
+                                        <td>リクエストが成功したことを示す</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ヘッダー</td>
+                                        <td>
+                                            <code class="inline"
+                                                >Content-Type: application/json</code
+                                            >
+                                        </td>
+                                        <td>ボディがJSON形式であることを示す</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ボディ</td>
+                                        <td>ネットワーク情報の配列</td>
+                                        <td>実際に取得したデータ本体</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>
+                            ボディの中身（JSON）をPythonの辞書やリストに変換する処理は、試験ドメイン1.0（1.2
+                            データ形式のパース）ともつながっています。あわせて押さえておくと理解が深まります。
+                        </p>
+                    </section>
+
+                    <section id="sec-8" class="section">
+                        <h2>
+                            <span class="num">08</span>Step 4（試験項目2.4）:
+                            主要なHTTPステータスコードを理解する
+                        </h2>
+                        <p>
+                            ステータスコードは3桁の数字で、<strong>先頭の数字が「大分類」</strong>を表します。
+                        </p>
+
+                        <div class="diagram" data-mermaid-src="mmd-status-categories"></div>
+                        <p class="diagram__caption">図: HTTPステータスコードの5つの大分類</p>
+
+                        <h3>8.1 分類ごとの意味</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>分類</th>
+                                        <th>意味</th>
+                                        <th>代表的なコード</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1xx</td>
+                                        <td>情報提供のみ（処理継続中）</td>
+                                        <td>100 Continue</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2xx</td>
+                                        <td>リクエスト成功</td>
+                                        <td>200 OK、201 Created、204 No Content</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3xx</td>
+                                        <td>別の場所への転送・未更新</td>
+                                        <td>301 Moved Permanently、304 Not Modified</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4xx</td>
+                                        <td>クライアント（リクエスト側）に原因あり</td>
+                                        <td>400、401、403、404、429</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5xx</td>
+                                        <td>サーバー側に原因あり</td>
+                                        <td>500、502、503</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>8.2 CCNA Automationで特に重要なコード</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>コード</th>
+                                        <th>名称</th>
+                                        <th>よくある原因</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>200</td>
+                                        <td>OK</td>
+                                        <td>GETやPUTなどが正常に完了</td>
+                                    </tr>
+                                    <tr>
+                                        <td>201</td>
+                                        <td>Created</td>
+                                        <td>POSTでリソースが新規作成された</td>
+                                    </tr>
+                                    <tr>
+                                        <td>204</td>
+                                        <td>No Content</td>
+                                        <td>DELETEなど、成功したがボディを返さない</td>
+                                    </tr>
+                                    <tr>
+                                        <td>400</td>
+                                        <td>Bad Request</td>
+                                        <td>リクエストの構文やパラメータの誤り</td>
+                                    </tr>
+                                    <tr>
+                                        <td>401</td>
+                                        <td>Unauthorized</td>
+                                        <td>認証情報が無い、または無効</td>
+                                    </tr>
+                                    <tr>
+                                        <td>403</td>
+                                        <td>Forbidden</td>
+                                        <td>認証はできているが権限（スコープ）が不足</td>
+                                    </tr>
+                                    <tr>
+                                        <td>404</td>
+                                        <td>Not Found</td>
+                                        <td>URLやリソースIDの誤り、存在しないリソース</td>
+                                    </tr>
+                                    <tr>
+                                        <td>429</td>
+                                        <td>Too Many Requests</td>
+                                        <td>レート制限（後述）に抵触</td>
+                                    </tr>
+                                    <tr>
+                                        <td>500</td>
+                                        <td>Internal Server Error</td>
+                                        <td>サーバー側の不具合</td>
+                                    </tr>
+                                    <tr>
+                                        <td>503</td>
+                                        <td>Service Unavailable</td>
+                                        <td>サーバーが一時的に過負荷・メンテナンス中</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section id="sec-9" class="section">
+                        <h2>
+                            <span class="num">09</span>Step 5（試験項目2.7）:
+                            API認証方式を使い分ける
+                        </h2>
+                        <p>
+                            「誰がリクエストしているか」をサーバーに証明する方法にはいくつかの種類があります。試験項目2.7では、<strong>Basic認証・カスタムトークン・APIキー</strong>の3種類が問われます。
+                        </p>
+
+                        <h3>9.1 3つの認証方式の比較</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>方式</th>
+                                        <th>仕組み</th>
+                                        <th>ヘッダー例</th>
+                                        <th>特徴</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Basic認証</td>
+                                        <td>ユーザー名とパスワードをBase64エンコードして送る</td>
+                                        <td>
+                                            <code class="inline"
+                                                >Authorization: Basic dXNlcjpwYXNz</code
+                                            >
+                                        </td>
+                                        <td>
+                                            実装は簡単だが、パスワードが漏れると影響が大きい。必ずHTTPS上で使う
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>カスタムトークン</td>
+                                        <td>事前に取得したトークン文字列を送る</td>
+                                        <td>
+                                            <code class="inline"
+                                                >Authorization: Bearer &lt;token&gt;</code
+                                            >
+                                        </td>
+                                        <td>
+                                            OAuth等で発行される一時的なトークンが多く、有効期限や権限範囲（スコープ）を持てる
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>APIキー</td>
+                                        <td>サービスごとに発行された固定のキー文字列を送る</td>
+                                        <td>専用ヘッダー、またはクエリパラメータ</td>
+                                        <td>
+                                            実装がシンプルで長期利用に向くが、漏えい時の影響範囲が広い
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>9.2 認証の流れ（シーケンス図）</h3>
+                        <div class="diagram" data-mermaid-src="mmd-auth-sequence"></div>
+                        <p class="diagram__caption">図: APIキー/トークンによる認証の基本フロー</p>
+
+                        <h3>9.3 Cisco製品での実例</h3>
+                        <p>
+                            Cisco Meraki Dashboard APIでは、APIキーを<code class="inline"
+                                >Authorization: Bearer &lt;APIキー&gt;</code
+                            >ヘッダーで送る方式（v1）と、旧バージョンで使われていた専用ヘッダー<code
+                                class="inline"
+                                >X-Cisco-Meraki-API-Key</code
+                            >が存在します。
+                            また、セキュリティ上の配慮として、<strong>APIキーが誤っている場合はあえて403ではなく404を返す</strong>設計になっており、これは「リソースの存在自体を第三者に推測させない」ための工夫です。
+                            試験項目2.5（トラブルシューティング）でもこうした「一見不自然に見えるコードの意図」を理解しているかが問われます。
+                        </p>
+                    </section>
+
+                    <section id="sec-10" class="section">
+                        <h2>
+                            <span class="num">10</span>Step 6（試験項目2.3）:
+                            APIを使ううえでの制約を理解する
+                        </h2>
+                        <p>
+                            APIは「無制限に、好きなだけ」呼び出せるわけではありません。試験項目2.3では、代表的な制約を理解しているかが問われます。
+                        </p>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>制約</th>
+                                        <th>内容</th>
+                                        <th>典型的なサイン</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>レート制限</td>
+                                        <td>一定時間内に呼び出せる回数の上限</td>
+                                        <td>
+                                            <code class="inline">429 Too Many Requests</code>、<code
+                                                class="inline"
+                                                >Retry-After</code
+                                            >ヘッダー
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ページネーション</td>
+                                        <td>一度のリクエストで返せる件数に上限がある</td>
+                                        <td>レスポンスに次ページへのリンク/トークンが含まれる</td>
+                                    </tr>
+                                    <tr>
+                                        <td>バージョニング</td>
+                                        <td>APIの仕様変更に備え、URLにバージョン番号を含む</td>
+                                        <td>
+                                            <code class="inline">/api/v1/...</code> のような表記
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ペイロードサイズ制限</td>
+                                        <td>一度に送信・受信できるデータ量の上限</td>
+                                        <td>大きすぎるリクエストで400や413系のエラー</td>
+                                    </tr>
+                                    <tr>
+                                        <td>タイムアウト</td>
+                                        <td>一定時間内にレスポンスが返らないと打ち切られる</td>
+                                        <td>クライアント側の接続エラー</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>10.1 レート制限への対処（再試行フロー）</h3>
+                        <div class="diagram" data-mermaid-src="mmd-rate-limit"></div>
+                        <p class="diagram__caption">
+                            図: 429エラーに対する待機・再試行の基本パターン
+                        </p>
+
+                        <p>
+                            Cisco Meraki Dashboard
+                            APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると<code
+                                class="inline"
+                                >429</code
+                            >が返され、<code class="inline">Retry-After</code
+                            >ヘッダーで待機すべき秒数が示されます。
+                            自動化スクリプトを書く際は、こうした制約を前提に「失敗したら少し待って再試行する」処理を組み込むことが実務でも試験でも重要です。
+                        </p>
+                    </section>
+
+                    <section id="sec-11" class="section">
+                        <h2>
+                            <span class="num">11</span>Step 7（試験項目2.2）:
+                            Webhookの活用パターンを理解する
+                        </h2>
+                        <p>
+                            「APIサーバーに変化がないか、こちらから何度も聞きに行く」方式（ポーリング）に対して、「変化があったらサーバー側から知らせてもらう」方式が<strong>Webhook</strong>です。
+                        </p>
+
+                        <div class="diagram" data-mermaid-src="mmd-polling-webhook"></div>
+                        <p class="diagram__caption">図: ポーリング方式とWebhook方式の違い</p>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>観点</th>
+                                        <th>ポーリング</th>
+                                        <th>Webhook</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>通信の主体</td>
+                                        <td>クライアントが定期的に問い合わせる</td>
+                                        <td>サーバー側がイベント発生時に通知する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>リアルタイム性</td>
+                                        <td>問い合わせ間隔に依存する</td>
+                                        <td>ほぼリアルタイム</td>
+                                    </tr>
+                                    <tr>
+                                        <td>サーバー負荷</td>
+                                        <td>変化がなくても毎回リクエストが発生する</td>
+                                        <td>変化があったときだけ通信が発生する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>実装の要点</td>
+                                        <td>間隔設計、無駄打ちの許容</td>
+                                        <td>受信用エンドポイントの用意、署名検証</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>11.1 Webhookの一般的な利用パターン</h3>
+                        <ol>
+                            <li>
+                                <strong>事前登録</strong>: 「このイベント（例:
+                                メッセージ投稿）が起きたら、このURLにPOSTしてください」とAPI提供元へ登録する
+                            </li>
+                            <li>
+                                <strong>イベント発火</strong>:
+                                実際にイベントが発生すると、登録先URLへHTTP
+                                POSTでデータが送られてくる
+                            </li>
+                            <li>
+                                <strong>受信処理</strong>:
+                                受信側アプリはPOSTされたJSONの中身（どのリソースで、どんな種類のイベントが起きたか）を見て処理を分岐する
+                            </li>
+                            <li>
+                                <strong>署名検証</strong>:
+                                なりすまし防止のため、送信元がシークレットキーで生成した署名をヘッダーで検証してから処理するのがベストプラクティス
+                            </li>
+                            <li>
+                                <strong>速やかな応答</strong>:
+                                受信側は重い処理を後回しにし、まず200系のステータスを素早く返すのが定石（応答が遅いと再送されたり、登録が無効化されたりする場合がある）
+                            </li>
+                        </ol>
+
+                        <p>
+                            Webex APIのWebhookでは、「どのリソース（例:
+                            メッセージ、会議室）」「どんな種類のイベント（作成・更新・削除など）」「通知先URL」を指定して登録し、実際の通知にはそのイベントに関するデータ本体が添えられます。
+                            機微な情報を含む場合はメタデータのみが渡され、詳細は別途本体のAPIから取得する設計になっている点も、Webhookが「万能ではなく制約もある仕組み」であることを示しています。
+                        </p>
+                    </section>
+
+                    <section id="sec-12" class="section">
+                        <h2>
+                            <span class="num">12</span>Step 8（試験項目2.5）:
+                            ステータスコードから障害を切り分ける
+                        </h2>
+                        <p>
+                            試験項目2.5は、「ステータスコード」「送ったリクエストの内容」「APIドキュメント」の3つを突き合わせて原因を推測する、いわば総合力を問う項目です。
+                        </p>
+
+                        <div class="diagram" data-mermaid-src="mmd-troubleshoot"></div>
+                        <p class="diagram__caption">
+                            図: ステータスコード別のトラブルシューティング分岐
+                        </p>
+
+                        <h3>12.1 よくある原因と対処の対応表</h3>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>症状（ステータスコード）</th>
+                                        <th>疑うべき原因</th>
+                                        <th>確認・対処のヒント</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>400 Bad Request</td>
+                                        <td>必須パラメータの欠落、型の不一致、JSON構文ミス</td>
+                                        <td>
+                                            ドキュメントの必須項目一覧とリクエストボディを1つずつ突合する
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>401 Unauthorized</td>
+                                        <td>トークン期限切れ、認証ヘッダーの書式誤り</td>
+                                        <td>
+                                            ヘッダー名・Bearer等のプレフィックス・キーの有効性を確認する
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>403 Forbidden</td>
+                                        <td>認証は通っているが権限不足</td>
+                                        <td>
+                                            発行したトークン/キーに必要なスコープ（権限範囲）が付与されているか確認する
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>404 Not Found</td>
+                                        <td>URLタイプミス、削除済み/存在しないID</td>
+                                        <td>
+                                            パスパラメータの値やAPIバージョン（v1等）を再確認する
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>429 Too Many Requests</td>
+                                        <td>短時間の連続リクエストによるレート制限抵触</td>
+                                        <td>
+                                            Retry-Afterヘッダーの秒数を尊重し、リトライ間隔を調整する
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5xx系</td>
+                                        <td>サーバー側の一時的な障害</td>
+                                        <td>
+                                            自分側の問題ではないため、時間をおいて再試行し、継続する場合はサポート窓口へ
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>
+                            トラブルシューティングの基本姿勢は「<strong>まずステータスコードで大分類を絞り込み、次にレスポンスのボディに含まれるエラーメッセージやヘッダーで詳細を特定し、最後にドキュメントの該当箇所と実際のリクエストを見比べる</strong>」という順序です。
+                        </p>
+                    </section>
+
+                    <section id="sec-13" class="section">
+                        <h2>
+                            <span class="num">13</span>Step 9（試験項目2.9）:
+                            Pythonのrequestsライブラリで実装する
+                        </h2>
+                        <p>
+                            ここまでの知識を、実際にPythonコードへ落とし込みます。試験項目2.9は「requestsライブラリを使ってREST
+                            APIを呼び出すスクリプトを書ける」ことを問う項目です。
+                        </p>
+
+                        <h3>13.1 基本形（GETリクエスト）</h3>
+                        <div class="code-block-wrap" data-code-src="code-py-get" data-lang="python">
+                            <div class="code-block-wrap__label">
+                                <span>get_networks.py</span><span>Python</span>
+                            </div>
+                        </div>
+
+                        <h3>13.2 POSTリクエスト（データを送る場合）</h3>
+                        <div
+                            class="code-block-wrap"
+                            data-code-src="code-py-post"
+                            data-lang="python"
+                        >
+                            <div class="code-block-wrap__label">
+                                <span>create_network.py</span><span>Python</span>
+                            </div>
+                        </div>
+
+                        <h3>13.3 制約・障害対応を組み込んだ実装（Step 6・8の応用）</h3>
+                        <div
+                            class="code-block-wrap"
+                            data-code-src="code-py-retry"
+                            data-lang="python"
+                        >
+                            <div class="code-block-wrap__label">
+                                <span>retry_helper.py</span><span>Python</span>
+                            </div>
+                        </div>
+
+                        <p>
+                            このように、単に<code class="inline">requests.get()</code
+                            >を呼ぶだけでなく、<strong>ステータスコードごとに適切な分岐処理を書けること</strong>が、試験でもCiscoのネットワーク自動化の実務でも求められるスキルです。
+                        </p>
+                    </section>
+
+                    <section id="sec-14" class="section">
+                        <h2><span class="num">14</span>まとめ: 試験項目とこのガイドの対応表</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>公式項番</th>
+                                        <th>内容</th>
+                                        <th>本ガイドの該当箇所</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2.1</td>
+                                        <td>REST APIリクエストの組み立て</td>
+                                        <td>Step 2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.2</td>
+                                        <td>Webhookの利用パターン</td>
+                                        <td>Step 7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.3</td>
+                                        <td>APIの制約</td>
+                                        <td>Step 6</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.4</td>
+                                        <td>HTTPレスポンスコード</td>
+                                        <td>Step 4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.5</td>
+                                        <td>トラブルシューティング</td>
+                                        <td>Step 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.6</td>
+                                        <td>HTTPレスポンスの構造</td>
+                                        <td>Step 3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.7</td>
+                                        <td>API認証方式</td>
+                                        <td>Step 5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.8</td>
+                                        <td>APIスタイルの比較</td>
+                                        <td>Step 1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2.9</td>
+                                        <td>requestsライブラリでの実装</td>
+                                        <td>Step 9</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section id="sec-15" class="section">
+                        <h2>
+                            <span class="num">15</span
+                            >さらに学ぶために（関連する試験項目とのつながり）
+                        </h2>
+                        <p>
+                            「2.0 Understanding and Using
+                            APIs」は独立した知識ではなく、他のドメインの土台にもなっています。学習が一段落したら、次のつながりも意識すると理解が立体的になります。
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>ドメイン3.0（Cisco Platforms and Development）</strong>:
+                                ここで学んだREST APIの知識を、Meraki／Cisco Catalyst
+                                Center／ACI／Cisco Catalyst SD-WAN／NSO／Webex／UCS
+                                Managerなど、実際のCisco製品APIに適用していきます（3.1, 3.2〜3.6,
+                                3.9）。
+                            </li>
+                            <li>
+                                <strong>ドメイン5.0（Infrastructure and Automation）</strong>:
+                                「Pythonスクリプトが何を自動化しているかを読み解く（5.7）」「RESTCONF/NETCONFの結果を解釈する（5.10）」「YANGモデルを読む（5.11）」「APIコールを含むシーケンス図を読み解く（5.14）」など、APIの知識をより実践的なインフラ自動化の文脈で使う項目が続きます。
+                            </li>
+                            <li>
+                                <strong>ドメイン1.0（Software Development and Design）</strong>:
+                                レスポンスボディのJSON/XML/YAMLをPythonのデータ構造にパースする力（1.2）は、Step
+                                3・Step 9の内容と直結しています。
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section id="sec-16" class="section">
+                        <h2><span class="num">16</span>出典・参考資料</h2>
+                        <p>本ガイドの内容は、以下の一次情報源にもとづいています。</p>
+                        <ul>
+                            <li>
+                                Cisco「CCNA Automation certification」公式ページ<br />
+                                <a
+                                    href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html</a
+                                >
+                            </li>
+                            <li>
+                                Cisco「CCNA Automation Exam and
+                                Training」公式ページ（試験名・時間・受験料等）<br />
+                                <a
+                                    href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html</a
+                                >
+                            </li>
+                            <li>
+                                Cisco 公式 試験トピック（Exam Topics）PDF: Automating Networks Using
+                                Cisco Platforms v1.1（200-901 CCNAAUTO）<br />
+                                <a
+                                    href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf</a
+                                >
+                            </li>
+                            <li>
+                                Cisco Meraki Developer Hub「Authentication - Meraki Dashboard API
+                                v1」<br />
+                                <a
+                                    href="https://developer.cisco.com/meraki/api-v1/authorization/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://developer.cisco.com/meraki/api-v1/authorization/</a
+                                >
+                            </li>
+                            <li>
+                                Cisco Meraki Developer Hub「Getting Started - Meraki Dashboard API
+                                v1」<br />
+                                <a
+                                    href="https://developer.cisco.com/meraki/api-v1/getting-started/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://developer.cisco.com/meraki/api-v1/getting-started/</a
+                                >
+                            </li>
+                            <li>
+                                Cisco Meraki Documentation「Cisco Meraki Dashboard
+                                API」（404によるリソース秘匿の設計、レート制限の考え方）<br />
+                                <a
+                                    href="https://documentation.meraki.com/Platform_Management/Dashboard_Administration/Operate_and_Maintain/How-Tos/Cisco_Meraki_Dashboard_API"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://documentation.meraki.com/Platform_Management/Dashboard_Administration/Operate_and_Maintain/How-Tos/Cisco_Meraki_Dashboard_API</a
+                                >
+                            </li>
+                            <li>
+                                Webex for Developers「APIs -
+                                Webhooks」（Webhookの概念と利用パターン）<br />
+                                <a
+                                    href="https://developer-usgov.webex.com/docs/webhooks"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://developer-usgov.webex.com/docs/webhooks</a
+                                >
+                            </li>
+                            <li>
+                                Webex for Developers「Webex Admin -
+                                Webhooks」（データ／メタデータの扱い）<br />
+                                <a
+                                    href="https://developer.webex.com/admin/docs/api/guides/webhooks"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://developer.webex.com/admin/docs/api/guides/webhooks</a
+                                >
+                            </li>
+                            <li>
+                                MDN Web Docs「HTTP response status
+                                codes」（HTTPステータスコードの一般的な定義）<br />
+                                <a
+                                    href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status</a
+                                >
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <footer class="footer">
+                    <p>
+                        試験内容・出題比率・URLは変更される可能性があります。受験前には必ずCisco公式ページで最新情報をご確認ください。
+                    </p>
+                    <a class="footer__top" href="#sec-1">↑ 目次の先頭に戻る</a>
+                </footer>
+            </main>
+        </div>
+
+        <!-- ============ raw sources (dedent()されてから描画される) ============ -->
+
+        <script type="text/plain" id="mmd-roadmap">
+            flowchart TB
+                Start(["学習スタート"]) --> S0["Step 0<br/>APIとは何か"]
+                S0 --> S1["Step 1（2.8）<br/>API方式の比較"]
+                S1 --> S2["Step 2（2.1）<br/>REST APIリクエストの構築"]
+                S2 --> S3["Step 3（2.6）<br/>HTTPレスポンスの読み解き"]
+                S3 --> S4["Step 4（2.4）<br/>HTTPステータスコード"]
+                S4 --> S5["Step 5（2.7）<br/>API認証方式"]
+                S5 --> S6["Step 6（2.3）<br/>APIの制約"]
+                S6 --> S7["Step 7（2.2）<br/>Webhookの活用"]
+                S7 --> S8["Step 8（2.5）<br/>トラブルシューティング"]
+                S8 --> S9["Step 9（2.9）<br/>Pythonでの実装"]
+                S9 --> Goal(["ドメイン2.0 習得完了"])
+        </script>
+
+        <script type="text/plain" id="mmd-syncasync">
+            flowchart TB
+                subgraph Sync["同期（Synchronous）"]
+                    A1["リクエスト送信"] --> A2["処理完了までクライアントが待機"]
+                    A2 --> A3["レスポンスを受信して次の処理へ"]
+                end
+                subgraph Async["非同期（Asynchronous）"]
+                    B1["リクエスト送信"] --> B2["すぐにジョブID/受付IDだけを受信"]
+                    B2 --> B3["別途ポーリングまたはWebhookで完了結果を取得"]
+                end
+                Sync ~~~ Async
+        </script>
+
+        <script type="text/plain" id="mmd-request-anatomy">
+            flowchart TB
+                subgraph Request["HTTPリクエストの4要素"]
+                    direction TB
+                    M["① メソッド<br/>GET / POST / PUT / PATCH / DELETE"]
+                    U["② URL（エンドポイント）<br/>どのリソースを操作するか"]
+                    H["③ ヘッダー<br/>認証情報・データ形式など"]
+                    B["④ ボディ<br/>送信するデータ（主にJSON）"]
+                    M ~~~ U ~~~ H ~~~ B
+                end
+                Request --> Server[("APIサーバー")]
+                Server --> Response["HTTPレスポンス"]
+        </script>
+
+        <script type="text/plain" id="mmd-response-anatomy">
+            flowchart TB
+                Resp["HTTPレスポンス"] --> R1["① ステータスライン<br/>例: HTTP/1.1 200 OK"]
+                Resp --> R2["② ヘッダー<br/>例: Content-Type, Retry-After"]
+                Resp --> R3["③ ボディ<br/>例: JSON形式のデータ"]
+        </script>
+
+        <script type="text/plain" id="mmd-status-categories">
+            flowchart TB
+                Code["HTTPステータスコード"] --> C1["1xx: 情報レスポンス"]
+                Code --> C2["2xx: 成功"]
+                Code --> C3["3xx: リダイレクト"]
+                Code --> C4["4xx: クライアント側エラー"]
+                Code --> C5["5xx: サーバー側エラー"]
+        </script>
+
+        <script type="text/plain" id="mmd-auth-sequence">
+            sequenceDiagram
+                participant Client as クライアント（自作スクリプト）
+                participant API as APIサーバー
+                Client->>API: リクエスト + Authorizationヘッダー
+                API->>API: 認証情報を検証
+                alt 認証成功
+                    API-->>Client: 200 OK + データ本体（JSON）
+                else 認証失敗
+                    API-->>Client: 401 Unauthorized
+                end
+        </script>
+
+        <script type="text/plain" id="mmd-rate-limit">
+            flowchart TB
+                Req["APIリクエスト送信"] --> Check{"レスポンスは<br/>429 Too Many Requests?"}
+                Check -- いいえ --> Done["正常終了・データ取得"]
+                Check -- はい --> Wait["Retry-Afterヘッダーの秒数だけ待機"]
+                Wait --> Backoff["指数バックオフで再試行回数を管理"]
+                Backoff --> Req
+        </script>
+
+        <script type="text/plain" id="mmd-polling-webhook">
+            flowchart TB
+                subgraph Polling["ポーリング方式"]
+                    P1["一定間隔でAPIに問い合わせる"] --> P2["毎回、変化の有無を確認する"]
+                    P2 --> P1
+                end
+                subgraph Webhook["Webhook方式"]
+                    W1["イベントが発生する"] --> W2["サーバー側から登録済みURLへ自動でHTTP POST"]
+                    W2 --> W3["アプリ側は受信して処理するだけ"]
+                end
+                Polling ~~~ Webhook
+        </script>
+
+        <script type="text/plain" id="mmd-troubleshoot">
+            flowchart TB
+                Err["エラーが発生した"] --> Q1{"ステータスコードは？"}
+                Q1 -- 400 --> R1["リクエストの構文・必須パラメータを<br/>ドキュメントと照合する"]
+                Q1 -- 401 --> R2["認証情報（トークン/APIキー）の<br/>有効性・記載場所を確認する"]
+                Q1 -- 403 --> R3["権限（スコープ）がドキュメント通りか確認する"]
+                Q1 -- 404 --> R4["URL・エンドポイント・IDの綴りを見直す"]
+                Q1 -- 429 --> R5["レート制限。Retry-Afterに従い待機・再試行"]
+                Q1 -- "5xx" --> R6["サーバー側の問題。時間をおいて再試行、<br/>解消しなければサポートへ連絡"]
+        </script>
+
+        <script type="text/plain" id="code-http-request">
+            GET https://api.meraki.com/api/v1/organizations/549236/networks HTTP/1.1
+            Host: api.meraki.com
+            Authorization: Bearer <APIキー>
+        </script>
+
+        <script type="text/plain" id="code-http-response">
+            HTTP/1.1 200 OK
+            Content-Type: application/json
+            X-Request-Id: 7a1c2e3f
+
+            [
+              {
+                "id": "N_1234",
+                "name": "Branch-01",
+                "timeZone": "Asia/Tokyo"
+              }
+            ]
+        </script>
+
+        <script type="text/plain" id="code-py-get">
+            import requests
+
+            url = "https://api.meraki.com/api/v1/organizations/549236/networks"
+            headers = {
+                "Authorization": "Bearer <APIキー>",
+                "Content-Type": "application/json",
+            }
+
+            response = requests.get(url, headers=headers, timeout=10)
+
+            # ステータスコードを確認する（試験項目2.4・2.6と直結）
+            if response.status_code == 200:
+                networks = response.json()  # JSON文字列をPythonのlist/dictへ変換
+                for network in networks:
+                    print(network["id"], network["name"])
+            else:
+                print(f"エラー: {response.status_code} - {response.text}")
+        </script>
+
+        <script type="text/plain" id="code-py-post">
+            import requests
+
+            url = "https://api.meraki.com/api/v1/organizations/549236/networks"
+            headers = {
+                "Authorization": "Bearer <APIキー>",
+                "Content-Type": "application/json",
+            }
+            payload = {
+                "name": "Branch-02",
+                "productTypes": ["appliance", "switch"],
+                "timeZone": "Asia/Tokyo",
+            }
+
+            response = requests.post(url, headers=headers, json=payload, timeout=10)
+
+            if response.status_code == 201:
+                print("作成成功:", response.json())
+            else:
+                print(f"作成失敗: {response.status_code} - {response.text}")
+        </script>
+
+        <script type="text/plain" id="code-py-retry">
+            import time
+            import requests
+
+            def get_with_retry(url, headers, max_retries=3):
+                for attempt in range(max_retries):
+                    response = requests.get(url, headers=headers, timeout=10)
+
+                    if response.status_code == 200:
+                        return response.json()
+
+                    if response.status_code == 429:
+                        # レート制限：Retry-Afterヘッダーの秒数だけ待って再試行
+                        wait_seconds = int(response.headers.get("Retry-After", 2 ** attempt))
+                        print(f"レート制限中。{wait_seconds}秒待機して再試行します。")
+                        time.sleep(wait_seconds)
+                        continue
+
+                    if response.status_code >= 500:
+                        # サーバー側エラー：指数バックオフで再試行
+                        time.sleep(2 ** attempt)
+                        continue
+
+                    # 400/401/403/404などクライアント側の問題は再試行しても解決しないため、
+                    # ここでエラー内容をログに残して処理を打ち切る
+                    raise RuntimeError(f"リクエスト失敗: {response.status_code} - {response.text}")
+
+                raise RuntimeError("再試行の上限に達しました。")
+        </script>
+
+        <!-- ============ libraries ============ -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/http.min.js"></script>
+
+        <script>
+            function dedent(str) {
+                const lines = str
+                    .replace(/^\n/, '')
+                    .replace(/[ \t]+$/, '')
+                    .split('\n');
+                while (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
+                const nonEmpty = lines.filter(function (l) {
+                    return l.trim().length > 0;
+                });
+                const indent = nonEmpty.length
+                    ? Math.min.apply(
+                          null,
+                          nonEmpty.map(function (l) {
+                              return (l.match(/^[ \t]*/) || [''])[0].length;
+                          }),
+                      )
+                    : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(indent);
+                    })
+                    .join('\n');
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                // --- inject mermaid diagrams ---
+                document.querySelectorAll('[data-mermaid-src]').forEach(function (container) {
+                    const srcEl = document.getElementById(
+                        container.getAttribute('data-mermaid-src'),
+                    );
+                    if (!srcEl) return;
+                    const pre = document.createElement('pre');
+                    pre.className = 'mermaid';
+                    pre.textContent = dedent(srcEl.textContent);
+                    container.appendChild(pre);
+                });
+
+                // --- inject code blocks ---
+                document.querySelectorAll('[data-code-src]').forEach(function (container) {
+                    const srcEl = document.getElementById(container.getAttribute('data-code-src'));
+                    if (!srcEl) return;
+                    const lang = container.getAttribute('data-lang') || 'plaintext';
+                    const code = document.createElement('code');
+                    code.className = 'language-' + lang;
+                    code.textContent = dedent(srcEl.textContent);
+                    const pre = document.createElement('pre');
+                    pre.appendChild(code);
+                    container.appendChild(pre);
+                    if (window.hljs) {
+                        try {
+                            hljs.highlightElement(code);
+                        } catch (e) {
+                            /* ignore highlight errors */
+                        }
+                    }
+                });
+
+                // --- mermaid init & render ---
+                if (window.mermaid) {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: 'Inter, sans-serif',
+                        themeVariables: {
+                            background: '#07111e',
+                            primaryColor: '#10233c',
+                            primaryTextColor: '#eaf0fb',
+                            primaryBorderColor: '#6fd8ff',
+                            lineColor: '#6fd8ff',
+                            secondaryColor: '#0f2036',
+                            tertiaryColor: '#0d1c30',
+                            textColor: '#eaf0fb',
+                            mainBkg: '#10233c',
+                            nodeBorder: '#6fd8ff',
+                            clusterBkg: '#0d1c30',
+                            clusterBorder: 'rgba(148,178,255,0.35)',
+                            edgeLabelBackground: '#0d1c30',
+                            actorBkg: '#10233c',
+                            actorBorder: '#6fd8ff',
+                            actorTextColor: '#eaf0fb',
+                            signalColor: '#93a4c7',
+                            signalTextColor: '#eaf0fb',
+                            labelBoxBkgColor: '#10233c',
+                            labelBoxBorderColor: '#6fd8ff',
+                            loopTextColor: '#eaf0fb',
+                            noteBkgColor: '#1a2b45',
+                            noteTextColor: '#eaf0fb',
+                            noteBorderColor: 'rgba(148,178,255,0.35)',
+                            fontSize: '16px',
+                            actorFontSize: '16px',
+                            noteFontSize: '16px',
+                            messageFontSize: '16px',
+                            sequenceNumberSize: '16px',
+                        },
+                        flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+                        sequence: { useMaxWidth: false },
+                    });
+                    mermaid.run({ querySelector: '.mermaid' }).then(function () {
+                        // Belt-and-braces: force every piece of diagram text (native SVG
+                        // text/tspan as well as HTML foreignObject labels) to exactly 1rem,
+                        // overriding any smaller mermaid-internal defaults.
+                        document.querySelectorAll('.mermaid svg').forEach(function (svg) {
+                            svg.querySelectorAll(
+                                'text, tspan, foreignObject, foreignObject *',
+                            ).forEach(function (el) {
+                                el.style.setProperty('font-size', '16px', 'important');
+                            });
+                        });
+                    });
+                }
+
+                // --- sidebar active-link highlighting ---
+                const sections = document.querySelectorAll('main .section');
+                const navLinks = document.querySelectorAll('.sidebar-nav a');
+                const linkMap = new Map();
+                navLinks.forEach(function (link) {
+                    linkMap.set(link.getAttribute('href').slice(1), link);
+                });
+
+                const observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            const link = linkMap.get(entry.target.id);
+                            if (!link || !entry.isIntersecting) return;
+                            navLinks.forEach(function (l) {
+                                l.classList.remove('active');
+                            });
+                            link.classList.add('active');
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach(function (sec) {
+                    observer.observe(sec);
+                });
+
+                // --- mobile sidebar toggle ---
+                const toggleBtn = document.getElementById('sidebarToggle');
+                const sidebarEl = document.getElementById('sidebar');
+                if (toggleBtn && sidebarEl) {
+                    toggleBtn.addEventListener('click', function () {
+                        sidebarEl.classList.toggle('open');
+                    });
+                    navLinks.forEach(function (a) {
+                        a.addEventListener('click', function () {
+                            sidebarEl.classList.remove('open');
+                        });
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

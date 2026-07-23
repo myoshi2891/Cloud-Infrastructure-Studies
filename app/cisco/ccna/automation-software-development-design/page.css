@@ -1,0 +1,502 @@
+.ccna-software-dev-design-page {
+    background: var(--color-background, #08090f);
+    color: var(--color-foreground, #e2e8f0);
+    font-family: var(--font-body, 'Noto Sans JP', sans-serif);
+    font-size: 16px;
+    line-height: 1.85;
+    min-height: 100vh;
+}
+
+.ccna-software-dev-design-page .layout {
+    display: block;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.ccna-software-dev-design-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: var(--color-card-secondary, #0d1b2e);
+    border-right: 1px solid var(--color-border, #1e2840);
+    padding: 24px 18px 36px;
+    z-index: 40;
+}
+
+.ccna-software-dev-design-page .sidebar-brand {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 900;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    color: var(--color-muted-foreground, #94a3b8);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.ccna-software-dev-design-page .sidebar-brand span {
+    display: block;
+    color: var(--color-primary, #7c9eff);
+    font-size: 1.2rem;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-top: 4px;
+}
+
+.ccna-software-dev-design-page .sidebar-sub {
+    font-size: 0.76rem;
+    color: var(--color-muted-foreground, #64748b);
+    margin: 8px 0 24px;
+    line-height: 1.6;
+}
+
+.ccna-software-dev-design-page .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.ccna-software-dev-design-page .sidebar-nav a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--color-muted-foreground, #94a3b8);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-left: 2px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ccna-software-dev-design-page .sidebar-nav a:hover {
+    background: rgba(124, 158, 255, 0.08);
+    color: var(--color-foreground, #e2e8f0);
+}
+
+.ccna-software-dev-design-page .sidebar-nav a.active {
+    background: rgba(124, 158, 255, 0.12);
+    color: var(--color-primary, #7c9eff);
+    border-left: 2px solid var(--color-primary, #7c9eff);
+    font-weight: 500;
+}
+
+.ccna-software-dev-design-page .sidebar-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-border, #1e2840);
+    font-size: 0.74rem;
+    color: var(--color-muted-foreground, #64748b);
+    line-height: 1.7;
+}
+
+.ccna-software-dev-design-page .sidebar-footer a {
+    color: var(--color-primary, #7c9eff);
+    text-decoration: none;
+}
+
+/* ---------- Main Content ---------- */
+.ccna-software-dev-design-page .main {
+    margin-left: 280px;
+    padding: 0 0 100px;
+}
+
+.ccna-software-dev-design-page .hero {
+    padding: 64px 48px 40px;
+    border-bottom: 1px solid var(--color-border, #1e2840);
+    background:
+        radial-gradient(ellipse at top left, rgba(124, 158, 255, 0.1), transparent 55%),
+        radial-gradient(ellipse at bottom right, rgba(94, 234, 212, 0.08), transparent 50%);
+}
+
+.ccna-software-dev-design-page .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--color-theme-cisco-fg, #5eead4);
+    background: rgba(94, 234, 212, 0.08);
+    border: 1px solid rgba(94, 234, 212, 0.25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+}
+
+.ccna-software-dev-design-page .hero h1 {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 900;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    line-height: 1.3;
+    margin: 0 0 18px;
+    background: linear-gradient(120deg, var(--color-primary, #7c9eff) 10%, var(--color-theme-cisco-fg, #5eead4) 90%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.ccna-software-dev-design-page .hero p.lead {
+    font-size: 1.05rem;
+    color: var(--color-muted-foreground, #94a3b8);
+    max-width: 760px;
+    margin: 0 0 24px;
+}
+
+.ccna-software-dev-design-page .hero-net {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.ccna-software-dev-design-page .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.ccna-software-dev-design-page .hero-meta .chip {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8rem;
+    color: var(--color-muted-foreground, #94a3b8);
+    border: 1px solid var(--color-border, rgba(124, 158, 255, 0.3));
+    border-radius: 8px;
+    padding: 6px 14px;
+    background: var(--color-card, #0e1117);
+}
+
+.ccna-software-dev-design-page .hero > *,
+.ccna-software-dev-design-page .section > * {
+    max-width: 1000px;
+    margin-inline: auto;
+}
+
+.ccna-software-dev-design-page .section {
+    padding: 48px 48px;
+    border-bottom: 1px solid var(--color-border, #1e2840);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+}
+
+.ccna-software-dev-design-page .section-kicker {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8rem;
+    color: var(--color-theme-cisco-fg, #5eead4);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+}
+
+.ccna-software-dev-design-page h2 {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin: 0 0 20px;
+    color: var(--color-foreground, #e2e8f0);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border, #1e2840);
+}
+
+.ccna-software-dev-design-page h3 {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 32px 0 14px;
+    color: var(--color-primary, #7c9eff);
+}
+
+.ccna-software-dev-design-page p {
+    color: var(--color-muted-foreground, #94a3b8);
+    margin: 0 0 16px;
+}
+
+.ccna-software-dev-design-page strong {
+    color: var(--color-foreground, #e2e8f0);
+    font-weight: 700;
+}
+
+.ccna-software-dev-design-page ul,
+.ccna-software-dev-design-page ol {
+    color: var(--color-muted-foreground, #94a3b8);
+    padding-left: 22px;
+    margin: 0 0 18px;
+}
+
+.ccna-software-dev-design-page li {
+    margin-bottom: 8px;
+}
+
+.ccna-software-dev-design-page blockquote {
+    margin: 0 0 24px;
+    padding: 16px 20px;
+    border-left: 3px solid var(--color-primary, #7c9eff);
+    background: var(--color-card, #0e1117);
+    border-radius: 0 10px 10px 0;
+    color: var(--color-muted-foreground, #94a3b8);
+    font-size: 0.94rem;
+}
+
+.ccna-software-dev-design-page blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.ccna-software-dev-design-page a {
+    color: var(--color-primary, #7c9eff);
+}
+
+/* ---------- Tables ---------- */
+.ccna-software-dev-design-page .table-wrap {
+    overflow-x: auto;
+    margin: 8px 0 28px;
+    border: 1px solid var(--color-border, #1e2840);
+    border-radius: 12px;
+}
+
+.ccna-software-dev-design-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    background: var(--color-card, #0e1117);
+}
+
+.ccna-software-dev-design-page thead th {
+    text-align: left;
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700;
+    color: var(--color-primary, #7c9eff);
+    background: var(--color-card-secondary, #112030);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border, rgba(124, 158, 255, 0.3));
+    white-space: nowrap;
+}
+
+.ccna-software-dev-design-page tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border, #1e2840);
+    color: var(--color-muted-foreground, #94a3b8);
+    vertical-align: top;
+}
+
+.ccna-software-dev-design-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ccna-software-dev-design-page tbody tr:hover {
+    background: rgba(124, 158, 255, 0.05);
+}
+
+.ccna-software-dev-design-page tbody td strong,
+.ccna-software-dev-design-page tbody td code {
+    color: var(--color-foreground, #e2e8f0);
+}
+
+/* ---------- Code & Line formatting ---------- */
+.ccna-software-dev-design-page pre {
+    background: #0a1728;
+    border: 1px solid var(--color-border, #1e2840);
+    border-radius: 12px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 0 0 24px;
+}
+
+.ccna-software-dev-design-page pre code,
+.ccna-software-dev-design-page code {
+    font-family: var(--font-mono, monospace) !important;
+    font-size: 0.86rem;
+    line-height: 1.7;
+    background: none !important;
+}
+
+.ccna-software-dev-design-page .code-line {
+    white-space: pre;
+}
+
+/* ---------- Syntax Highlighting ---------- */
+.ccna-software-dev-design-page .code-line .comment,
+.ccna-software-dev-design-page .comment {
+    color: #5c6370;
+    font-style: italic;
+}
+.ccna-software-dev-design-page .code-line .keyword,
+.ccna-software-dev-design-page .keyword {
+    color: #c678dd;
+    font-weight: 600;
+}
+.ccna-software-dev-design-page .code-line .string,
+.ccna-software-dev-design-page .string {
+    color: #98c379;
+}
+.ccna-software-dev-design-page .code-line .function,
+.ccna-software-dev-design-page .function {
+    color: #61afef;
+}
+.ccna-software-dev-design-page .code-line .number,
+.ccna-software-dev-design-page .number {
+    color: #d19a66;
+}
+.ccna-software-dev-design-page .code-line .tag,
+.ccna-software-dev-design-page .tag {
+    color: #e06c75;
+}
+.ccna-software-dev-design-page .code-line .attr,
+.ccna-software-dev-design-page .attr {
+    color: #d19a66;
+}
+.ccna-software-dev-design-page .code-line .diff-add,
+.ccna-software-dev-design-page .diff-add {
+    color: #98c379;
+}
+.ccna-software-dev-design-page .code-line .diff-del,
+.ccna-software-dev-design-page .diff-del {
+    color: #e06c75;
+}
+
+.ccna-software-dev-design-page p code,
+.ccna-software-dev-design-page li code {
+    background: var(--color-card, #0e1117);
+    border: 1px solid var(--color-border, #1e2840);
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-size: 0.85em;
+    color: var(--color-theme-cisco-fg, #5eead4);
+}
+
+/* ---------- Mermaid ---------- */
+.ccna-software-dev-design-page .diagram-frame {
+    margin: 12px 0 8px;
+}
+
+.ccna-software-dev-design-page .mermaid-wrap {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.ccna-software-dev-design-page .mermaid-wrap > div {
+    width: 100%;
+    margin: 0;
+}
+
+.ccna-software-dev-design-page .mermaid-wrap svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: none;
+    height: auto;
+    font-size: 1rem;
+}
+
+.ccna-software-dev-design-page .caption {
+    font-size: 0.8rem;
+    color: var(--color-muted-foreground, #64748b);
+    text-align: center;
+    margin: 0 0 28px;
+    font-family: var(--font-mono, monospace);
+}
+
+/* ---------- Checklist ---------- */
+.ccna-software-dev-design-page ul.checklist {
+    list-style: none;
+    padding-left: 0;
+}
+
+.ccna-software-dev-design-page ul.checklist li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    color: var(--color-muted-foreground, #94a3b8);
+}
+
+.ccna-software-dev-design-page ul.checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--color-primary, #7c9eff);
+    border-radius: 4px;
+}
+
+/* ---------- Details / Quiz ---------- */
+.ccna-software-dev-design-page details {
+    background: var(--color-card, #0e1117);
+    border: 1px solid var(--color-border, #1e2840);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+
+.ccna-software-dev-design-page details[open] {
+    border-color: var(--color-border, rgba(124, 158, 255, 0.3));
+}
+
+.ccna-software-dev-design-page summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-primary, #7c9eff);
+    font-size: 0.95rem;
+}
+
+.ccna-software-dev-design-page summary::marker {
+    color: var(--color-theme-cisco-fg, #5eead4);
+}
+
+.ccna-software-dev-design-page details p {
+    margin: 12px 0 0;
+}
+
+/* ---------- Footer / Sources ---------- */
+.ccna-software-dev-design-page .footer {
+    padding: 48px 48px 64px;
+}
+
+.ccna-software-dev-design-page .source-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ccna-software-dev-design-page .source-list li {
+    background: var(--color-card, #0e1117);
+    border: 1px solid var(--color-border, #1e2840);
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: var(--color-muted-foreground, #94a3b8);
+    font-size: 0.9rem;
+}
+
+.ccna-software-dev-design-page .source-list a {
+    font-weight: 500;
+}
+
+.ccna-software-dev-design-page .disclaimer {
+    font-size: 0.82rem;
+    color: var(--color-muted-foreground, #64748b);
+    border-top: 1px solid var(--color-border, #1e2840);
+    padding-top: 20px;
+    margin-top: 8px;
+}
+
+@media (max-width: 960px) {
+    .ccna-software-dev-design-page .sidebar {
+        position: static;
+        width: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border, #1e2840);
+    }
+    .ccna-software-dev-design-page .main {
+        margin-left: 0;
+    }
+    .ccna-software-dev-design-page .hero,
+    .ccna-software-dev-design-page .section,
+    .ccna-software-dev-design-page .footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

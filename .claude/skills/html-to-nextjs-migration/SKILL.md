@@ -216,10 +216,13 @@ GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` �
 5. Place `@keyframes` definitions that are page-specific in the page CSS, not globals
 6. Import the CSS at the top of the page component: `import './page.css';`
 
-#### CSS Pitfalls Checklist (learned from code reviews)
+#### CSS & JSX Pitfalls Checklist (learned from code reviews & user feedback)
 
 | Issue | Wrong | Correct |
 | --- | --- | --- |
+| Invalid DOM property | `<div class="sidebar">` | `<div className="sidebar">` （JSXでは `className` に統一） |
+| Unescaped entities | `parsed["hostname"]` (raw text) | `{`print(parsed["hostname"])`}` や `&quot;` / `&apos;` でラップ（`react/no-unescaped-entities` 解消） |
+| Monochrome code blocks | ハイライト無しの単色 `<pre><code>` | 各行 `.code-line` に `<span className="keyword\|string\|comment\|function\|tag\|attr">` を付与し色分け |
 | Invalid property | `scrollbar-: none;` | `scrollbar-width: none;` |
 | z-index duplication | `nav { z-index: 100; }` in CSS + `z-50` in JSX | Single source: Tailwind `z-50` in JSX only |
 | Responsive outside @media | `.box { grid-template-columns: 1fr; }` at root | Wrap in `@media (max-width: 768px) { ... }` |
@@ -379,6 +382,9 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 - **Pages are server-rendered by default** — no `useState`/`useEffect` in `page.tsx`。**例外**: 進捗バー・scroll spy・チェックリスト等を持つリッチガイドは「正準リファレンス §1」の通り、Server `page.tsx`（`metadata` + `<XxxGuide/>` を返すだけ）と client `XxxGuide.tsx`（`'use client'`）に分割する。Server に状態を持ち込まない。
 - **Always use fallback values** for CSS vars that may not be defined: `var(--radius-lg, 16px)`
 - **Never use `{"\n"}` for line breaks inside `.code-block`** — 各行を `<div className="code-line">...</div>` でラップすること
+- **Never leave code blocks unhighlighted** — 各コードブロックには `<span className="keyword|string|comment|function|tag|attr">` タグとスコープ CSS による構文ハイライト（色分け）を必ず適用すること
+- **Never leave unescaped quotes (' or ") or angle brackets in JSX text nodes** — `react/no-unescaped-entities` 回避のため、テンプレートリテラル `{`...`}` や HTML エンティティ (`&quot;`, `&apos;`) または `span` ラッパーを徹底すること
+- **Never mix `class` and `className`** — JSX 内では必ず `className` に統一し、不適切な `class` 属性の残留を防ぐこと
 - **Never align tabular data with spaces in `.code-block`** — デシジョンテーブルや行列データは `<table>` 要素を使うこと
 - **Never remove page-specific anchor nav bars** — `'use client'` コンポーネントとして移行し `top: calc(var(--header-h) + var(--disclaimer-height))` を設定すること
 - **Never duplicate page scope classes in CSS selectors** — ページクラスは最上位の1回のみ使用すること

@@ -1,0 +1,1983 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CompTIA Network+ (N10-009) Networking Concepts ステップバイステップガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #131318;
+                --color-background-secondary: #1a1a22;
+                --color-background-tertiary: #23232e;
+                --color-background-info: #17273a;
+                --color-background-danger: #331a1d;
+                --color-background-success: #163023;
+                --color-background-warning: #33270f;
+
+                --color-text-primary: #eeeef3;
+                --color-text-secondary: #b3b3c0;
+                --color-text-tertiary: #797986;
+                --color-text-info: #86caf2;
+                --color-text-danger: #ec9a9a;
+                --color-text-success: #8ce0b3;
+                --color-text-warning: #edc986;
+
+                --color-border-tertiary: #292935;
+                --color-border-secondary: #34343f;
+                --color-border-primary: #454551;
+
+                --color-accent-purple: #b3a1fb;
+                --color-accent-purple-bg: #241f3d;
+                --color-accent-teal: #6ee8d3;
+                --color-accent-teal-bg: #123330;
+
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', Meiryo, sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: grid;
+                grid-template-columns: 272px 1fr;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                position: sticky;
+                top: 0;
+                align-self: start;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 28px 18px;
+            }
+
+            .sidebar-header {
+                padding: 0 8px 20px 8px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                margin-bottom: 16px;
+            }
+
+            .sidebar-header .badge {
+                display: inline-block;
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--color-accent-purple);
+                background: var(--color-accent-purple-bg);
+                border-radius: var(--border-radius-md);
+                padding: 3px 8px;
+                margin-bottom: 10px;
+            }
+
+            .sidebar-header h1 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 0 0 4px 0;
+                color: var(--color-text-primary);
+            }
+
+            .sidebar-header p {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                margin: 0;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 400;
+                padding: 8px 10px 8px 8px;
+                border-left: 2px solid transparent;
+                border-radius: var(--border-radius-md);
+            }
+
+            .sidebar nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                border-left: 2px solid var(--color-accent-teal);
+            }
+
+            .sidebar nav a i {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                width: 18px;
+                text-align: center;
+            }
+
+            .sidebar nav .nav-group-label {
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                padding: 14px 10px 6px 10px;
+            }
+
+            .content {
+                padding: 48px 64px 96px 64px;
+            }
+
+            .content section,
+            .content header {
+                scroll-margin-top: 24px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 0 0 12px 0;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 46px 0 16px 0;
+                padding: 3px 0 3px 14px;
+                border-left: 3px solid var(--color-accent-purple);
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 28px 0 12px 0;
+                padding-left: 14px;
+                border-left: 2px solid var(--color-border-secondary);
+            }
+
+            section:first-of-type h2:first-child {
+                margin-top: 0;
+            }
+
+            .hero {
+                padding-bottom: 32px;
+                margin-bottom: 8px;
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+
+            .hero-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-accent-purple);
+                background: var(--color-accent-purple-bg);
+                border-radius: var(--border-radius-md);
+                padding: 6px 12px;
+                margin-bottom: 18px;
+            }
+
+            .hero-title {
+                font-size: 22px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 0 0 10px 0;
+            }
+            .hero-sub {
+                font-size: 14px;
+                color: var(--color-text-secondary);
+                margin: 0 0 22px 0;
+                max-width: 720px;
+            }
+
+            .hero-stats {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .hero-stat {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                color: var(--color-text-secondary);
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                padding: 8px 14px;
+            }
+
+            .hero-stat i {
+                color: var(--color-accent-teal);
+                font-size: 15px;
+            }
+
+            p {
+                margin: 0 0 14px 0;
+                color: var(--color-text-secondary);
+            }
+
+            strong {
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            a.inline-link {
+                color: var(--color-text-info);
+            }
+
+            .eyebrow {
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                margin-bottom: 6px;
+            }
+
+            .callout {
+                display: flex;
+                gap: 10px;
+                align-items: flex-start;
+                border: 1px solid var(--color-border-secondary);
+                border-left: 3px solid var(--color-text-info);
+                border-radius: var(--border-radius-lg);
+                padding: 14px 16px;
+                margin: 0 0 20px 0;
+                background: var(--color-background-info);
+            }
+
+            .callout i {
+                font-size: 16px;
+                color: var(--color-text-info);
+                margin-top: 2px;
+            }
+            .callout p {
+                margin: 0;
+                font-size: 13px;
+                color: var(--color-text-secondary);
+            }
+
+            .toc-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0 6px;
+                margin: 16px 0 8px 0;
+            }
+            .toc-table tr {
+                background: var(--color-background-secondary);
+            }
+            .toc-table tr:hover {
+                background: var(--color-background-tertiary);
+            }
+            .toc-table td {
+                padding: 11px 14px;
+                font-size: 14px;
+                color: var(--color-text-secondary);
+            }
+            .toc-table td:first-child {
+                width: 90px;
+                color: var(--color-accent-purple);
+                font-weight: 500;
+                border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+            }
+            .toc-table td:last-child {
+                border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+            }
+
+            table.data {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 12px 0 22px 0;
+                font-size: 14px;
+            }
+
+            table.data th {
+                text-align: left;
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+                padding: 10px 12px;
+                border-bottom: 2px solid var(--color-accent-purple);
+            }
+
+            table.data td {
+                padding: 9px 12px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+
+            table.data tr:last-child td {
+                border-bottom: none;
+            }
+            table.data tr:nth-child(even) td {
+                background: var(--color-background-secondary);
+            }
+            table.data tr:hover td {
+                background: var(--color-background-tertiary);
+            }
+
+            .mermaid-wrap {
+                text-align: center;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-top: 2px solid var(--color-accent-teal);
+                border-radius: var(--border-radius-lg);
+                padding: 24px 16px;
+                margin: 8px 0 22px 0;
+            }
+
+            .mermaid-wrap svg {
+                display: block;
+                margin: 0 auto;
+                max-width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+
+            .mermaid-caption {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                text-align: center;
+                margin: -12px 0 22px 0;
+            }
+
+            .code-block {
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                padding: 14px 16px;
+                margin: 8px 0 20px 0;
+                overflow-x: auto;
+            }
+
+            .code-block pre {
+                margin: 0;
+                font-family: var(--font-mono);
+                font-size: 13px;
+                color: var(--color-text-primary);
+                line-height: 1.6;
+                white-space: pre;
+            }
+
+            .code-block pre code.hljs {
+                background: transparent !important;
+                padding: 0;
+                font-family: var(--font-mono);
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            .formula {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                background: var(--color-background-tertiary);
+                border-radius: var(--border-radius-md);
+                padding: 10px 14px;
+                color: var(--color-text-info);
+                margin: 0 0 18px 0;
+            }
+
+            .summary-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin: 12px 0 24px 0;
+            }
+
+            .footnote {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                margin: 0 0 24px 0;
+            }
+
+            .references {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .references li {
+                padding: 12px 0;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                font-size: 13px;
+                color: var(--color-text-secondary);
+            }
+            .references li:last-child {
+                border-bottom: none;
+            }
+            .references a {
+                color: var(--color-text-info);
+                text-decoration: none;
+                word-break: break-all;
+            }
+            .references a:hover {
+                text-decoration: underline;
+            }
+
+            @media (max-width: 860px) {
+                .layout {
+                    grid-template-columns: 1fr;
+                }
+                .sidebar {
+                    position: static;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border-tertiary);
+                }
+                .content {
+                    padding: 32px 20px 72px 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <span class="badge">Domain 1.0 · 23%</span>
+                    <h1>Networking Concepts</h1>
+                    <p>CompTIA Network+ (N10-009)</p>
+                </div>
+                <nav>
+                    <a href="#intro"><i class="ti ti-info-circle"></i>はじめに</a>
+                    <div class="nav-group-label">Step by step</div>
+                    <a href="#step1"><i class="ti ti-layers-intersect"></i>1. OSI参照モデル</a>
+                    <a href="#step2"><i class="ti ti-router"></i>2. ネットワーク機器</a>
+                    <a href="#step3"><i class="ti ti-cloud"></i>3. クラウドの概念</a>
+                    <a href="#step4"><i class="ti ti-plug-connected"></i>4. ポート/プロトコル</a>
+                    <a href="#step5"><i class="ti ti-cable"></i>5. 伝送メディア</a>
+                    <a href="#step6"><i class="ti ti-topology-star-3"></i>6. トポロジー</a>
+                    <a href="#step7"><i class="ti ti-binary"></i>7. IPv4アドレッシング</a>
+                    <a href="#step8"><i class="ti ti-rocket"></i>8. 進化する環境</a>
+                    <div class="nav-group-label">Wrap up</div>
+                    <a href="#summary"><i class="ti ti-checklist"></i>まとめ</a>
+                    <a href="#references"><i class="ti ti-books"></i>参考文献・出典</a>
+                </nav>
+            </aside>
+            <main class="content">
+                <header class="hero" id="intro">
+                    <span class="hero-badge"
+                        ><i class="ti ti-certificate"></i>CompTIA Network+ (N10-009)
+                        試験対策ガイド</span
+                    >
+                    <h1 class="hero-title">Domain 1.0: Networking Concepts</h1>
+                    <p class="hero-sub">
+                        出題比率23%を占めるネットワーク基礎分野を、公式Exam
+                        Objectivesの1.1〜1.8に沿って8ステップで解説します。
+                    </p>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <i class="ti ti-list-numbers"></i><span>8 ステップ構成</span>
+                        </div>
+                        <div class="hero-stat">
+                            <i class="ti ti-percentage"></i><span>出題比率 23%</span>
+                        </div>
+                        <div class="hero-stat">
+                            <i class="ti ti-topology-star-3"></i><span>Mermaid図解 19点</span>
+                        </div>
+                    </div>
+                </header>
+
+                <section id="overview">
+                    <h2>この章について</h2>
+                    <p>
+                        CompTIA Network+
+                        は、企業ネットワークの構築・運用・保守・トラブルシューティングに必要な知識を証明する資格です。試験は5つのドメインで構成されており、その中でも
+                        <strong>Domain 1.0 Networking Concepts</strong> は出題比率が23%と、Domain
+                        5.0 Network Troubleshooting（24%）に次いで2番目に大きい配点を占めています。
+                    </p>
+                    <p>
+                        この章は、公式の Exam Objectives に定義された
+                        <strong>1.1〜1.8</strong>
+                        の8つのサブ目標を、そのままステップ1〜8として扱い、初学者でも順を追って理解できるように解説します。図解はすべて
+                        Mermaid、比較や一覧はすべて表を使用しています。
+                    </p>
+                    <div class="callout">
+                        <i class="ti ti-alert-circle"></i>
+                        <p>
+                            本ガイドは学習用の解説であり、CompTIA
+                            の公式教材ではありません。試験直前は必ず公式サイト（末尾の参考文献を参照）で最新情報を確認してください。
+                        </p>
+                    </div>
+                    <table class="toc-table">
+                        <tr>
+                            <td>ステップ1</td>
+                            <td>1.1 OSI参照モデル</td>
+                        </tr>
+                        <tr>
+                            <td>ステップ2</td>
+                            <td>1.2 ネットワーク機器・アプリケーション・機能</td>
+                        </tr>
+                        <tr>
+                            <td>ステップ3</td>
+                            <td>1.3 クラウドの概念と接続オプション</td>
+                        </tr>
+                        <tr>
+                            <td>ステップ4</td>
+                            <td>1.4 ポート・プロトコル・トラフィックの種類</td>
+                        </tr>
+                        <tr>
+                            <td>ステップ5</td>
+                            <td>1.5 伝送メディアとトランシーバー</td>
+                        </tr>
+                        <tr>
+                            <td>ステップ6</td>
+                            <td>1.6 ネットワークトポロジーとアーキテクチャ</td>
+                        </tr>
+                        <tr>
+                            <td>ステップ7</td>
+                            <td>1.7 IPv4アドレッシング</td>
+                        </tr>
+                        <tr>
+                            <td>ステップ8</td>
+                            <td>1.8 進化するネットワーク環境のユースケース</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="step1">
+                    <h2>ステップ1（1.1）: OSI参照モデルを理解する</h2>
+                    <p>
+                        OSI（Open Systems
+                        Interconnection）参照モデルは、ネットワーク通信を7つの層に分解した概念モデルです。実際のプロトコルスタック（TCP/IPモデル）と1対1で対応するわけではありませんが、「どの層で何が起きているか」を整理して考えるための共通言語として、試験でも実務でも頻繁に使われます。
+                    </p>
+
+                    <h3>7つの層</h3>
+                    <table class="data">
+                        <tr>
+                            <th>層番号</th>
+                            <th>層の名前（英語）</th>
+                            <th>日本語</th>
+                            <th>主なPDU</th>
+                            <th>代表的な例</th>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Application</td>
+                            <td>アプリケーション層</td>
+                            <td>Data</td>
+                            <td>HTTP, DNS, SMTP</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Presentation</td>
+                            <td>プレゼンテーション層</td>
+                            <td>Data</td>
+                            <td>暗号化, 文字コード変換, 圧縮</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Session</td>
+                            <td>セッション層</td>
+                            <td>Data</td>
+                            <td>セッションの確立・維持・終了</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Transport</td>
+                            <td>トランスポート層</td>
+                            <td>Segment / Datagram</td>
+                            <td>TCP, UDP</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Network</td>
+                            <td>ネットワーク層</td>
+                            <td>Packet</td>
+                            <td>IP, ルーター</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Data Link</td>
+                            <td>データリンク層</td>
+                            <td>Frame</td>
+                            <td>Ethernet, スイッチ, MACアドレス</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Physical</td>
+                            <td>物理層</td>
+                            <td>Bit</td>
+                            <td>ケーブル, コネクタ, 電気/光信号</td>
+                        </tr>
+                    </table>
+
+                    <h3>層の並び</h3>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TD
+    A["Layer 7: Application"] --> B["Layer 6: Presentation"]
+    B --> C["Layer 5: Session"]
+    C --> D["Layer 4: Transport"]
+    D --> E["Layer 3: Network"]
+    E --> F["Layer 2: Data Link"]
+    F --> G["Layer 1: Physical"]
+</pre
+                        >
+                    </div>
+
+                    <h3>カプセル化と非カプセル化</h3>
+                    <p>
+                        データを送信するとき、Application層で作られたデータは各層を降りるたびにヘッダーが付加されます。これを「カプセル化」と呼びます。受信側では逆に、各層でヘッダーを取り除きながら上位層へ渡します。これが「非カプセル化」です。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+%%{init: {"themeVariables": {"fontSize": "15px"}, "flowchart": {"rankSpacing": 34}}}%%
+flowchart TB
+    subgraph Sender["送信側: カプセル化"]
+        direction LR
+        SA["Application data"] --> SP["+ Presentation"] --> SS["+ Session"] --> ST["+ Transport header"] --> SN["+ Network header"] --> SD["+ Data Link header/trailer"] --> SPh["Physical: bit列"]
+    end
+    subgraph Receiver["受信側: 非カプセル化"]
+        direction LR
+        RPh["Physical: bit列を受信"] --> RD["Data Link を処理"] --> RN["Network を処理"] --> RT["Transport を処理"] --> RS["Session を処理"] --> RP["Presentation を処理"] --> RA["Application data を受け取る"]
+    end
+    Sender -->|"ネットワーク経由で伝送"| Receiver
+</pre
+                        >
+                    </div>
+
+                    <h3>学習のポイント</h3>
+                    <p>
+                        トラブルシューティングでは「OSIモデルの上から下（またはその逆）に切り分けていく」考え方の土台になります。スイッチは基本的にLayer
+                        2、ルーターはLayer 3で動作しますが、マルチレイヤースイッチのようにLayer
+                        3機能を持つ機器も存在します。
+                    </p>
+                </section>
+
+                <section id="step2">
+                    <h2>ステップ2（1.2）: ネットワーク機器・アプリケーション・機能</h2>
+                    <p>
+                        ネットワークを構成する物理/仮想アプライアンス、アプリケーション、機能を整理します。
+                    </p>
+
+                    <h3>物理/仮想アプライアンス</h3>
+                    <table class="data">
+                        <tr>
+                            <th>機器</th>
+                            <th>主に動作するOSI層</th>
+                            <th>役割</th>
+                        </tr>
+                        <tr>
+                            <td>Router（ルーター）</td>
+                            <td>Layer 3</td>
+                            <td>異なるネットワーク間でパケットを転送する経路選択装置</td>
+                        </tr>
+                        <tr>
+                            <td>Switch（スイッチ）</td>
+                            <td>Layer 2（一部Layer 3対応）</td>
+                            <td>MACアドレスを基に同一ネットワーク内でフレームを転送する</td>
+                        </tr>
+                        <tr>
+                            <td>Firewall（ファイアウォール）</td>
+                            <td>Layer 3〜7</td>
+                            <td>通信ルールに基づき許可/拒否を判断し、ネットワークを保護する</td>
+                        </tr>
+                        <tr>
+                            <td>IDS/IPS</td>
+                            <td>Layer 3〜7</td>
+                            <td>不正な通信パターンを検知（IDS）または遮断（IPS）する</td>
+                        </tr>
+                        <tr>
+                            <td>Load balancer（ロードバランサー）</td>
+                            <td>Layer 4〜7</td>
+                            <td>
+                                複数サーバーへ通信を分散し、可用性とスケーラビリティを向上させる
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Proxy（プロキシ）</td>
+                            <td>Layer 7</td>
+                            <td>
+                                クライアントに代わって外部と通信を仲介し、キャッシュやフィルタリングを行う
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NAS</td>
+                            <td>Layer 7（ファイル単位）</td>
+                            <td>ネットワーク経由でファイル単位のストレージを提供する</td>
+                        </tr>
+                        <tr>
+                            <td>SAN</td>
+                            <td>専用ネットワーク</td>
+                            <td>ブロック単位のストレージを高速な専用ネットワークで提供する</td>
+                        </tr>
+                        <tr>
+                            <td>Wireless Access Point</td>
+                            <td>Layer 1〜2</td>
+                            <td>無線クライアントを有線ネットワークへ接続する</td>
+                        </tr>
+                        <tr>
+                            <td>Wireless Controller</td>
+                            <td>管理プレーン</td>
+                            <td>複数のAPを一元的に構成・管理する</td>
+                        </tr>
+                    </table>
+
+                    <h3>アプリケーションと機能</h3>
+                    <table class="data">
+                        <tr>
+                            <th>用語</th>
+                            <th>説明</th>
+                        </tr>
+                        <tr>
+                            <td>CDN</td>
+                            <td>
+                                コンテンツを地理的に分散したサーバーにキャッシュし、利用者に近い場所から配信することで速度と可用性を高める
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>VPN</td>
+                            <td>
+                                公衆ネットワーク上に暗号化されたトンネルを作り、プライベートな通信を実現する機能
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>QoS</td>
+                            <td>
+                                音声やビデオなど遅延に敏感なトラフィックを優先的に処理する仕組み
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>TTL</td>
+                            <td>
+                                パケットがネットワーク上を巡回し続けないよう、ホップごとに減算されるカウンター
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>一般的な配置イメージ</h3>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    Internet(["Internet"]) --> FW["Firewall"]
+    FW --> RTR["Router"]
+    RTR --> IDS["IDS/IPS"]
+    IDS --> CSW["Core switch"]
+    CSW --> LB["Load balancer"]
+    LB --> SRV1["Web server 1"]
+    LB --> SRV2["Web server 2"]
+    CSW --> PROXY["Proxy server"]
+    CSW --> WC["Wireless controller"]
+    WC --> AP1["Access point 1"]
+    WC --> AP2["Access point 2"]
+    CSW --> NAS["NAS"]
+    CSW --> SAN["SAN"]
+</pre
+                        >
+                    </div>
+                </section>
+
+                <section id="step3">
+                    <h2>ステップ3（1.3）: クラウドの概念と接続オプション</h2>
+
+                    <h3>基本用語</h3>
+                    <table class="data">
+                        <tr>
+                            <th>用語</th>
+                            <th>説明</th>
+                        </tr>
+                        <tr>
+                            <td>NFV</td>
+                            <td>
+                                ルーターやファイアウォールなどのネットワーク機能をソフトウェアとして仮想化する技術
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>VPC</td>
+                            <td>
+                                パブリッククラウド内に論理的に分離された、専用のプライベートネットワーク空間
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Network security group</td>
+                            <td>VPC内のリソースに適用するステートフルなファイアウォールルール</td>
+                        </tr>
+                        <tr>
+                            <td>Network security list</td>
+                            <td>サブネット単位で適用される、ステートレスなアクセス制御リスト</td>
+                        </tr>
+                        <tr>
+                            <td>Internet gateway</td>
+                            <td>
+                                VPC内のパブリックサブネットとインターネットを接続するゲートウェイ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NAT gateway</td>
+                            <td>
+                                プライベートサブネットが送信専用でインターネットにアクセスするためのアドレス変換ゲートウェイ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Direct Connect</td>
+                            <td>
+                                公衆インターネットを経由せず、専用線でオンプレミス環境とクラウドを接続するサービス
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Scalability</td>
+                            <td>
+                                リソースを追加/削除して需要の変化に対応できる能力（計画的な拡張）
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Elasticity</td>
+                            <td>需要に応じてリソースを自動的に、かつ迅速に増減できる能力</td>
+                        </tr>
+                        <tr>
+                            <td>Multitenancy</td>
+                            <td>
+                                複数の顧客が物理基盤を共有しつつ、論理的に分離された環境を利用する仕組み
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>クラウドゲートウェイの構成イメージ</h3>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    subgraph VPC["Virtual Private Cloud"]
+        PUB["パブリックサブネット"]
+        PRIV["プライベートサブネット"]
+    end
+    PUB --> IGW["Internet gateway"]
+    IGW --> INET(["Internet"])
+    PRIV --> NATGW["NAT gateway"]
+    NATGW --> IGW
+</pre
+                        >
+                    </div>
+
+                    <h3>デプロイモデル</h3>
+                    <table class="data">
+                        <tr>
+                            <th>モデル</th>
+                            <th>説明</th>
+                            <th>主な用途</th>
+                        </tr>
+                        <tr>
+                            <td>Public</td>
+                            <td>クラウド事業者が複数の顧客に共有基盤を提供</td>
+                            <td>コスト重視、迅速な立ち上げ</td>
+                        </tr>
+                        <tr>
+                            <td>Private</td>
+                            <td>特定の組織専用の基盤</td>
+                            <td>厳格な規制・セキュリティ要件</td>
+                        </tr>
+                        <tr>
+                            <td>Hybrid</td>
+                            <td>パブリックとプライベートを組み合わせて利用</td>
+                            <td>機密データはプライベート、需要変動はパブリックで吸収</td>
+                        </tr>
+                    </table>
+
+                    <h3>サービスモデルと責任分界</h3>
+                    <table class="data">
+                        <tr>
+                            <th>レイヤー</th>
+                            <th>IaaS</th>
+                            <th>PaaS</th>
+                            <th>SaaS</th>
+                        </tr>
+                        <tr>
+                            <td>アプリケーション・データ</td>
+                            <td>利用者が管理</td>
+                            <td>利用者が管理</td>
+                            <td>提供者が管理</td>
+                        </tr>
+                        <tr>
+                            <td>ランタイム・ミドルウェア</td>
+                            <td>利用者が管理</td>
+                            <td>提供者が管理</td>
+                            <td>提供者が管理</td>
+                        </tr>
+                        <tr>
+                            <td>OS</td>
+                            <td>利用者が管理</td>
+                            <td>提供者が管理</td>
+                            <td>提供者が管理</td>
+                        </tr>
+                        <tr>
+                            <td>仮想化・サーバー・ストレージ・ネットワーク</td>
+                            <td>提供者が管理</td>
+                            <td>提供者が管理</td>
+                            <td>提供者が管理</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="step4">
+                    <h2>ステップ4（1.4）: ポート・プロトコル・トラフィックの種類</h2>
+
+                    <h3>主要なプロトコルとポート番号</h3>
+                    <table class="data">
+                        <tr>
+                            <th>プロトコル</th>
+                            <th>ポート番号</th>
+                            <th>トランスポート</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>FTP</td>
+                            <td>20 / 21</td>
+                            <td>TCP</td>
+                            <td>ファイル転送（非暗号化）</td>
+                        </tr>
+                        <tr>
+                            <td>SFTP</td>
+                            <td>22</td>
+                            <td>TCP</td>
+                            <td>SSH上で暗号化されたファイル転送</td>
+                        </tr>
+                        <tr>
+                            <td>SSH</td>
+                            <td>22</td>
+                            <td>TCP</td>
+                            <td>暗号化されたリモートCLIアクセス</td>
+                        </tr>
+                        <tr>
+                            <td>Telnet</td>
+                            <td>23</td>
+                            <td>TCP</td>
+                            <td>非暗号化のリモートCLIアクセス（レガシー）</td>
+                        </tr>
+                        <tr>
+                            <td>SMTP</td>
+                            <td>25</td>
+                            <td>TCP</td>
+                            <td>メール送信</td>
+                        </tr>
+                        <tr>
+                            <td>DNS</td>
+                            <td>53</td>
+                            <td>TCP/UDP</td>
+                            <td>ドメイン名の名前解決</td>
+                        </tr>
+                        <tr>
+                            <td>DHCP</td>
+                            <td>67 / 68</td>
+                            <td>UDP</td>
+                            <td>IPアドレスなどの自動配布</td>
+                        </tr>
+                        <tr>
+                            <td>TFTP</td>
+                            <td>69</td>
+                            <td>UDP</td>
+                            <td>認証なしの簡易ファイル転送</td>
+                        </tr>
+                        <tr>
+                            <td>HTTP</td>
+                            <td>80</td>
+                            <td>TCP</td>
+                            <td>非暗号化のWeb通信</td>
+                        </tr>
+                        <tr>
+                            <td>NTP</td>
+                            <td>123</td>
+                            <td>UDP</td>
+                            <td>時刻同期</td>
+                        </tr>
+                        <tr>
+                            <td>SNMP</td>
+                            <td>161 / 162</td>
+                            <td>UDP</td>
+                            <td>機器の監視・管理</td>
+                        </tr>
+                        <tr>
+                            <td>LDAP</td>
+                            <td>389</td>
+                            <td>TCP</td>
+                            <td>ディレクトリサービスへの問い合わせ</td>
+                        </tr>
+                        <tr>
+                            <td>HTTPS</td>
+                            <td>443</td>
+                            <td>TCP</td>
+                            <td>TLSで暗号化されたWeb通信</td>
+                        </tr>
+                        <tr>
+                            <td>SMB</td>
+                            <td>445</td>
+                            <td>TCP</td>
+                            <td>Windowsのファイル/プリンター共有</td>
+                        </tr>
+                        <tr>
+                            <td>Syslog</td>
+                            <td>514</td>
+                            <td>UDP</td>
+                            <td>ログメッセージの収集</td>
+                        </tr>
+                        <tr>
+                            <td>SMTPS</td>
+                            <td>587</td>
+                            <td>TCP</td>
+                            <td>暗号化されたメール送信</td>
+                        </tr>
+                        <tr>
+                            <td>LDAPS</td>
+                            <td>636</td>
+                            <td>TCP</td>
+                            <td>暗号化されたディレクトリサービス通信</td>
+                        </tr>
+                        <tr>
+                            <td>SQL Server</td>
+                            <td>1433</td>
+                            <td>TCP</td>
+                            <td>Microsoft SQL Serverへの接続</td>
+                        </tr>
+                        <tr>
+                            <td>RDP</td>
+                            <td>3389</td>
+                            <td>TCP</td>
+                            <td>Windowsのリモートデスクトップ接続</td>
+                        </tr>
+                        <tr>
+                            <td>SIP</td>
+                            <td>5060 / 5061</td>
+                            <td>TCP/UDP</td>
+                            <td>VoIPの呼制御シグナリング（5061はTLS）</td>
+                        </tr>
+                    </table>
+
+                    <h3>IPの種類</h3>
+                    <table class="data">
+                        <tr>
+                            <th>プロトコル</th>
+                            <th>説明</th>
+                        </tr>
+                        <tr>
+                            <td>ICMP</td>
+                            <td>ping や traceroute など、エラー通知・診断に使われる</td>
+                        </tr>
+                        <tr>
+                            <td>TCP</td>
+                            <td>コネクション指向で信頼性のある通信</td>
+                        </tr>
+                        <tr>
+                            <td>UDP</td>
+                            <td>コネクションレスで低遅延な通信</td>
+                        </tr>
+                        <tr>
+                            <td>GRE</td>
+                            <td>異なるプロトコルのパケットをカプセル化してトンネリングする</td>
+                        </tr>
+                        <tr>
+                            <td>IPSec</td>
+                            <td>AH、ESP、IKEを用いてIP通信を暗号化・認証する</td>
+                        </tr>
+                    </table>
+
+                    <h3>トラフィックの種類</h3>
+                    <table class="data">
+                        <tr>
+                            <th>種類</th>
+                            <th>説明</th>
+                            <th>典型的な用途</th>
+                        </tr>
+                        <tr>
+                            <td>Unicast</td>
+                            <td>1台の送信元から1台の受信先へ送る通信</td>
+                            <td>Webアクセスなど一般的な通信</td>
+                        </tr>
+                        <tr>
+                            <td>Multicast</td>
+                            <td>1台の送信元から、参加登録した複数の受信先へ送る通信</td>
+                            <td>IPTV配信、ルーティングプロトコルの通知</td>
+                        </tr>
+                        <tr>
+                            <td>Anycast</td>
+                            <td>同じアドレスを持つ複数の宛先のうち、最も近い1台が応答する通信</td>
+                            <td>パブリックDNSサーバー、CDN</td>
+                        </tr>
+                        <tr>
+                            <td>Broadcast</td>
+                            <td>同一ネットワークセグメント内の全ホストへ送る通信</td>
+                            <td>ARP要求、DHCP要求</td>
+                        </tr>
+                    </table>
+
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    S1["送信元"] --> R1["受信先（1台のみ）"]
+</pre
+                        >
+                    </div>
+                    <p class="mermaid-caption">Unicast: 送信元と受信先が1対1</p>
+
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    S2["送信元"] --> G1["グループ参加者A"]
+    S2 --> G2["グループ参加者B"]
+</pre
+                        >
+                    </div>
+                    <p class="mermaid-caption">Multicast: 参加登録した相手だけに届く</p>
+
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    S3["送信元"] --> N1["最も近い宛先（応答する）"]
+    S3 -.-> N2["他のエニーキャスト宛先（応答しない）"]
+</pre
+                        >
+                    </div>
+                    <p class="mermaid-caption">
+                        Anycast: 同じアドレスを持つ複数拠点のうち最も近い1つが応答する
+                    </p>
+
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    S4["送信元"] --> B1["ホストA"]
+    S4 --> B2["ホストB"]
+    S4 --> B3["ホストC"]
+</pre
+                        >
+                    </div>
+                    <p class="mermaid-caption">Broadcast: 同一セグメント上の全ホストへ届く</p>
+
+                    <h3>実装例: ポートの疎通確認をPythonで行う</h3>
+                    <p>
+                        試験範囲ではありませんが、上表のポート番号を実際に確認する感覚をつかむために、TCPポートへの疎通確認を行う簡単なPythonの例を示します。
+                    </p>
+                    <div class="code-block">
+                        <pre><code class="language-python">import socket
+
+def check_tcp_port(host, port, timeout=2):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.settimeout(timeout)
+        result = sock.connect_ex((host, port))
+        return result == 0
+
+targets = [("example.com", 443), ("example.com", 80)]
+for host, port in targets:
+    is_open = check_tcp_port(host, port)
+    print(f"{host}:{port} -&gt; {'open' if is_open else 'closed/filtered'}")</code></pre>
+                    </div>
+                </section>
+
+                <section id="step5">
+                    <h2>ステップ5（1.5）: 伝送メディアとトランシーバー</h2>
+
+                    <h3>無線メディア</h3>
+                    <table class="data">
+                        <tr>
+                            <th>種類</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>802.11 standards</td>
+                            <td>Wi-Fiの規格群。世代ごとに速度や周波数帯が異なる</td>
+                        </tr>
+                        <tr>
+                            <td>Cellular</td>
+                            <td>4G/5Gなど携帯電話ネットワーク経由の通信</td>
+                        </tr>
+                        <tr>
+                            <td>Satellite</td>
+                            <td>
+                                地上インフラが届かない地域での通信手段。レイテンシが比較的大きい
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>有線メディア</h3>
+                    <table class="data">
+                        <tr>
+                            <th>種類</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>802.3 standards</td>
+                            <td>Ethernetの規格群</td>
+                        </tr>
+                        <tr>
+                            <td>Single-mode fiber</td>
+                            <td>コア径が細く、長距離・高速伝送に向く光ファイバー</td>
+                        </tr>
+                        <tr>
+                            <td>Multimode fiber</td>
+                            <td>コア径が太く、短〜中距離向けで比較的安価な光ファイバー</td>
+                        </tr>
+                        <tr>
+                            <td>DAC cable</td>
+                            <td>銅線を使った短距離の高速接続ケーブル（Twinaxial cableを含む）</td>
+                        </tr>
+                        <tr>
+                            <td>Coaxial cable</td>
+                            <td>中心導体を絶縁体とシールドで覆った構造</td>
+                        </tr>
+                        <tr>
+                            <td>Cable speeds</td>
+                            <td>ケーブルやコネクタが対応する伝送速度</td>
+                        </tr>
+                        <tr>
+                            <td>Plenum vs. non-plenum</td>
+                            <td>プレナム空間で使用可能な難燃性ケーブルかどうかの区分</td>
+                        </tr>
+                    </table>
+
+                    <h3>トランシーバー</h3>
+                    <table class="data">
+                        <tr>
+                            <th>分類</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>Protocol: Ethernet</td>
+                            <td>一般的なLAN/WAN向けのイーサネット通信を行うトランシーバー</td>
+                        </tr>
+                        <tr>
+                            <td>Protocol: Fibre Channel</td>
+                            <td>SANなど、ストレージ専用ネットワークで使われる高速プロトコル</td>
+                        </tr>
+                        <tr>
+                            <td>Form factor: SFP</td>
+                            <td>小型の着脱式トランシーバーモジュール</td>
+                        </tr>
+                        <tr>
+                            <td>Form factor: QSFP</td>
+                            <td>SFPの4チャネル版で、より高速な伝送に対応</td>
+                        </tr>
+                    </table>
+
+                    <h3>コネクタの種類</h3>
+                    <table class="data">
+                        <tr>
+                            <th>コネクタ</th>
+                            <th>主な用途</th>
+                        </tr>
+                        <tr>
+                            <td>SC</td>
+                            <td>光ファイバー用、プッシュプル式で着脱しやすい</td>
+                        </tr>
+                        <tr>
+                            <td>LC</td>
+                            <td>光ファイバー用、小型で高密度配線に向く</td>
+                        </tr>
+                        <tr>
+                            <td>ST</td>
+                            <td>光ファイバー用、バヨネット式</td>
+                        </tr>
+                        <tr>
+                            <td>MPO</td>
+                            <td>複数の光ファイバー心線を一括で接続する高密度コネクタ</td>
+                        </tr>
+                        <tr>
+                            <td>RJ11</td>
+                            <td>電話回線用の小型コネクタ</td>
+                        </tr>
+                        <tr>
+                            <td>RJ45</td>
+                            <td>より対線を使ったEthernet用コネクタ</td>
+                        </tr>
+                        <tr>
+                            <td>F-type</td>
+                            <td>同軸ケーブル用（ケーブルテレビ・ケーブルインターネットなど）</td>
+                        </tr>
+                        <tr>
+                            <td>BNC</td>
+                            <td>同軸ケーブル用、バヨネット式</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="step6">
+                    <h2>ステップ6（1.6）: ネットワークトポロジーとアーキテクチャ</h2>
+
+                    <h3>Mesh（メッシュ）</h3>
+                    <p>
+                        すべての、または多くのノードが相互に接続される構成。冗長性が高い一方、配線・管理コストが増加する。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    A["ノードA"] --- B["ノードB"]
+    A --- C["ノードC"]
+    A --- D["ノードD"]
+    B --- C
+    B --- D
+    C --- D
+</pre
+                        >
+                    </div>
+
+                    <h3>Star / Hub and spoke（スター型）</h3>
+                    <p>
+                        中心のハブにすべてのノードが接続される構成。管理はしやすいが、中心が単一障害点になりやすい。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TD
+    S["中心のスイッチ"]
+    S --- H1["ホストA"]
+    S --- H2["ホストB"]
+    S --- H3["ホストC"]
+    S --- H4["ホストD"]
+</pre
+                        >
+                    </div>
+
+                    <h3>Hybrid（ハイブリッド）</h3>
+                    <p>
+                        複数のトポロジーを組み合わせた構成。冗長性の高いメッシュ構成のコアに、管理しやすいスター構成のアクセス層をぶら下げる例。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TD
+    subgraph Core["メッシュ構成のコア"]
+        C1["コアスイッチ1"] --- C2["コアスイッチ2"]
+        C1 --- C3["コアスイッチ3"]
+        C2 --- C3
+    end
+    C1 --- S1["アクセススイッチA"]
+    S1 --- H1["ホスト"]
+    S1 --- H2["ホスト"]
+    C2 --- S2["アクセススイッチB"]
+    S2 --- H3["ホスト"]
+</pre
+                        >
+                    </div>
+
+                    <h3>Spine and leaf（スパイン・リーフ）</h3>
+                    <p>
+                        データセンターでよく使われる構成。すべてのLeafスイッチがすべてのSpineスイッチに接続され、East-Westトラフィックを高速かつ低遅延で処理できる。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TD
+    SP1["Spine 1"]
+    SP2["Spine 2"]
+    L1["Leaf 1"]
+    L2["Leaf 2"]
+    L3["Leaf 3"]
+    SP1 --- L1
+    SP1 --- L2
+    SP1 --- L3
+    SP2 --- L1
+    SP2 --- L2
+    SP2 --- L3
+</pre
+                        >
+                    </div>
+
+                    <h3>Point to point（ポイントツーポイント）</h3>
+                    <p>2つの拠点・機器間を直接1本のリンクで接続する、最もシンプルな構成。</p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    A["拠点Aのルーター"] --- B["拠点Bのルーター"]
+</pre
+                        >
+                    </div>
+
+                    <h3>Three-tier hierarchical model（3層階層モデル）</h3>
+                    <p>
+                        Core、Distribution、Accessの3層で構成される、伝統的なエンタープライズネットワーク設計。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TD
+    Core["Core layer"]
+    D1["Distribution 1"]
+    D2["Distribution 2"]
+    A1["Access 1"]
+    A2["Access 2"]
+    A3["Access 3"]
+    A4["Access 4"]
+    Core --- D1
+    Core --- D2
+    D1 --- A1
+    D1 --- A2
+    D2 --- A3
+    D2 --- A4
+</pre
+                        >
+                    </div>
+
+                    <h3>Collapsed core（コラプスドコア）</h3>
+                    <p>
+                        CoreとDistributionの役割を1つの層に統合し、2層構成にしたもの。小〜中規模ネットワークで採用される。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TD
+    CD["Collapsed core / distribution layer"]
+    A1["Access 1"]
+    A2["Access 2"]
+    A3["Access 3"]
+    CD --- A1
+    CD --- A2
+    CD --- A3
+</pre
+                        >
+                    </div>
+
+                    <h3>トラフィックフロー: North-South と East-West</h3>
+                    <p>
+                        <strong>North-South</strong
+                        >はデータセンターの外部と内部の間を流れる通信、<strong>East-West</strong>はデータセンター内部のサーバー間・階層内で流れる通信です。
+                    </p>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TB
+    Client(["外部クライアント"]) -->|"North-South"| DC["データセンターの入口"]
+    DC --> Srv1["サーバー1"]
+    Srv1 <-->|"East-West"| Srv2["サーバー2"]
+    Srv2 <-->|"East-West"| Srv3["サーバー3"]
+</pre
+                        >
+                    </div>
+
+                    <h3>トポロジー比較表</h3>
+                    <table class="data">
+                        <tr>
+                            <th>トポロジー</th>
+                            <th>冗長性</th>
+                            <th>拡張性</th>
+                            <th>管理の複雑さ</th>
+                            <th>代表的な利用場面</th>
+                        </tr>
+                        <tr>
+                            <td>Mesh</td>
+                            <td>非常に高い</td>
+                            <td>低い</td>
+                            <td>高い</td>
+                            <td>重要な基幹ネットワーク</td>
+                        </tr>
+                        <tr>
+                            <td>Star/Hub and spoke</td>
+                            <td>低い</td>
+                            <td>高い</td>
+                            <td>低い</td>
+                            <td>一般的なオフィスLAN</td>
+                        </tr>
+                        <tr>
+                            <td>Hybrid</td>
+                            <td>部分ごとに調整可能</td>
+                            <td>高い</td>
+                            <td>中程度</td>
+                            <td>大規模企業ネットワーク</td>
+                        </tr>
+                        <tr>
+                            <td>Spine and leaf</td>
+                            <td>高い</td>
+                            <td>非常に高い</td>
+                            <td>中程度</td>
+                            <td>データセンター</td>
+                        </tr>
+                        <tr>
+                            <td>Point to point</td>
+                            <td>なし</td>
+                            <td>低い</td>
+                            <td>非常に低い</td>
+                            <td>拠点間専用線</td>
+                        </tr>
+                        <tr>
+                            <td>Three-tier</td>
+                            <td>高い</td>
+                            <td>高い</td>
+                            <td>高い</td>
+                            <td>大規模キャンパスネットワーク</td>
+                        </tr>
+                        <tr>
+                            <td>Collapsed core</td>
+                            <td>中程度</td>
+                            <td>中程度</td>
+                            <td>低い</td>
+                            <td>中小規模ネットワーク</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="step7">
+                    <h2>ステップ7（1.7）: IPv4アドレッシング</h2>
+
+                    <h3>パブリックとプライベート</h3>
+                    <table class="data">
+                        <tr>
+                            <th>区分</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>Public IP</td>
+                            <td>インターネット上で一意に識別されるアドレス</td>
+                        </tr>
+                        <tr>
+                            <td>Private IP</td>
+                            <td>組織内など限定された範囲でのみ使われるアドレス</td>
+                        </tr>
+                        <tr>
+                            <td>RFC1918</td>
+                            <td>10.0.0.0/8、172.16.0.0/12、192.168.0.0/16 の3つの範囲</td>
+                        </tr>
+                        <tr>
+                            <td>APIPA</td>
+                            <td>
+                                DHCPサーバーが見つからない場合に自動的に割り当てられる
+                                169.254.0.0/16 の範囲
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Loopback/localhost</td>
+                            <td>自分自身を指すアドレス。IPv4では 127.0.0.0/8</td>
+                        </tr>
+                    </table>
+
+                    <h3>IPv4アドレスクラス</h3>
+                    <table class="data">
+                        <tr>
+                            <th>クラス</th>
+                            <th>先頭ビットパターン</th>
+                            <th>範囲（先頭オクテット）</th>
+                            <th>デフォルトマスク</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>Class A</td>
+                            <td>0</td>
+                            <td>1〜126</td>
+                            <td>/8</td>
+                            <td>大規模ネットワーク</td>
+                        </tr>
+                        <tr>
+                            <td>Class B</td>
+                            <td>10</td>
+                            <td>128〜191</td>
+                            <td>/16</td>
+                            <td>中規模ネットワーク</td>
+                        </tr>
+                        <tr>
+                            <td>Class C</td>
+                            <td>110</td>
+                            <td>192〜223</td>
+                            <td>/24</td>
+                            <td>小規模ネットワーク</td>
+                        </tr>
+                        <tr>
+                            <td>Class D</td>
+                            <td>1110</td>
+                            <td>224〜239</td>
+                            <td>―</td>
+                            <td>マルチキャスト専用</td>
+                        </tr>
+                        <tr>
+                            <td>Class E</td>
+                            <td>1111</td>
+                            <td>240〜255</td>
+                            <td>―</td>
+                            <td>実験・予約用</td>
+                        </tr>
+                    </table>
+
+                    <h3>サブネッティング: VLSMとCIDR</h3>
+                    <p>
+                        <strong>CIDR</strong
+                        >は、クラスの概念にとらわれず「/24」のようなプレフィックス長でネットワーク部とホスト部の境界を柔軟に表現する記法です。<strong>VLSM</strong>は、1つのネットワークを必要なホスト数に応じて異なるサイズのサブネットに分割する手法です。
+                    </p>
+                    <table class="data">
+                        <tr>
+                            <th>CIDR表記</th>
+                            <th>サブネットマスク</th>
+                            <th>利用可能ホスト数</th>
+                        </tr>
+                        <tr>
+                            <td>/24</td>
+                            <td>255.255.255.0</td>
+                            <td>254</td>
+                        </tr>
+                        <tr>
+                            <td>/25</td>
+                            <td>255.255.255.128</td>
+                            <td>126</td>
+                        </tr>
+                        <tr>
+                            <td>/26</td>
+                            <td>255.255.255.192</td>
+                            <td>62</td>
+                        </tr>
+                        <tr>
+                            <td>/27</td>
+                            <td>255.255.255.224</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>/28</td>
+                            <td>255.255.255.240</td>
+                            <td>14</td>
+                        </tr>
+                        <tr>
+                            <td>/29</td>
+                            <td>255.255.255.248</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>/30</td>
+                            <td>255.255.255.252</td>
+                            <td>2</td>
+                        </tr>
+                    </table>
+                    <div class="formula">
+                        利用可能ホスト数 = 2^(32 - プレフィックス長) - 2　例: /27 → 2^5 - 2 = 30
+                    </div>
+
+                    <h3>同一サブネット判定の手順</h3>
+                    <div
+                        class="mermaid-wrap"
+                        style="max-width: 560px; margin-left: auto; margin-right: auto"
+                    >
+                        <pre class="mermaid">
+%%{init: {"themeVariables": {"fontSize": "13px"}, "flowchart": {"nodeSpacing": 18, "rankSpacing": 24}}}%%
+flowchart TD
+    Start["ホストAとホストBのIPアドレスを比較する"] --> Mask["両方のIPアドレスにサブネットマスクをAND演算で適用する"]
+    Mask --> Compare{"結果のネットワークアドレスは一致するか"}
+    Compare -->|"一致する"| Same["同一サブネット: Layer 2で直接通信できる"]
+    Compare -->|"一致しない"| Diff["異なるサブネット: ルーターを経由する必要がある"]
+</pre
+                        >
+                    </div>
+
+                    <h3>VLSM設計の考え方（例）</h3>
+                    <p>
+                        1つの 192.168.1.0/24
+                        ネットワークを、必要なホスト数が異なる3つの部門に割り当てる例です。
+                    </p>
+                    <table class="data">
+                        <tr>
+                            <th>部門</th>
+                            <th>必要ホスト数</th>
+                            <th>割り当てるCIDR</th>
+                            <th>割り当て範囲（例）</th>
+                        </tr>
+                        <tr>
+                            <td>営業部</td>
+                            <td>100台</td>
+                            <td>/25（126台まで）</td>
+                            <td>192.168.1.0/25</td>
+                        </tr>
+                        <tr>
+                            <td>開発部</td>
+                            <td>50台</td>
+                            <td>/26（62台まで）</td>
+                            <td>192.168.1.128/26</td>
+                        </tr>
+                        <tr>
+                            <td>管理部</td>
+                            <td>20台</td>
+                            <td>/27（30台まで）</td>
+                            <td>192.168.1.192/27</td>
+                        </tr>
+                    </table>
+
+                    <h3>実装例: PythonのipaddressモジュールでVLSMを検算する</h3>
+                    <div class="code-block">
+                        <pre><code class="language-python">import ipaddress
+
+base_network = ipaddress.ip_network("192.168.1.0/24")
+required_hosts = {"sales": 100, "dev": 50, "admin": 20}
+
+for name, hosts in required_hosts.items():
+    prefix = 32
+    while (2 ** (32 - prefix)) - 2 &lt; hosts:
+        prefix -= 1
+    print(f"{name}: needs {hosts} hosts -&gt; /{prefix} "
+          f"({(2 ** (32 - prefix)) - 2} usable hosts)")</code></pre>
+                    </div>
+                </section>
+
+                <section id="step8">
+                    <h2>ステップ8（1.8）: 進化するネットワーク環境のユースケース</h2>
+                    <p>
+                        近年のネットワークは、ソフトウェアによる自動化・仮想化・セキュリティモデルの変化を強く受けています。
+                    </p>
+
+                    <h3>SDNとSD-WAN</h3>
+                    <p>
+                        SDNは、従来ネットワーク機器に分散していた制御プレーンを中央のコントローラーに集約し、データプレーンと分離する考え方です。SD-WANはこの考え方を拠点間WAN回線に適用したものです。
+                    </p>
+                    <table class="data">
+                        <tr>
+                            <th>特性</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>Application aware</td>
+                            <td>アプリケーションの種類を認識し、経路や優先度を最適化できる</td>
+                        </tr>
+                        <tr>
+                            <td>Zero-touch provisioning</td>
+                            <td>機器を現地で手動設定せずに、自動でネットワークへ組み込める</td>
+                        </tr>
+                        <tr>
+                            <td>Transport agnostic</td>
+                            <td>回線の種類を問わず利用できる</td>
+                        </tr>
+                        <tr>
+                            <td>Central policy management</td>
+                            <td>ポリシーを一元管理し、全拠点へ一括配布できる</td>
+                        </tr>
+                    </table>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart TB
+    subgraph ControlPlane["Control plane"]
+        Controller["SDNコントローラー"]
+    end
+    subgraph DataPlane["Data plane"]
+        SW1["スイッチ1"]
+        SW2["スイッチ2"]
+        SW3["スイッチ3"]
+    end
+    Controller -->|"ポリシー配布"| SW1
+    Controller -->|"ポリシー配布"| SW2
+    Controller -->|"ポリシー配布"| SW3
+</pre
+                        >
+                    </div>
+
+                    <h3>VXLAN</h3>
+                    <p>
+                        Layer 2のフレームをLayer
+                        3のUDPパケットでカプセル化し、離れたデータセンター同士でも同一のLayer
+                        2セグメントを拡張できるようにする技術です。データセンター間接続（DCI）でよく使われます。
+                    </p>
+
+                    <h3>Zero Trust Architecture（ZTA）</h3>
+                    <p>
+                        「社内ネットワークだから安全」という前提を置かず、すべてのアクセスをその都度検証する考え方です。
+                    </p>
+                    <table class="data">
+                        <tr>
+                            <th>原則</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>Policy-based authentication</td>
+                            <td>状況に応じたポリシーで認証する</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization</td>
+                            <td>認証後も、そのリソースへのアクセスを許可するか個別に判断する</td>
+                        </tr>
+                        <tr>
+                            <td>Least privilege access</td>
+                            <td>必要最小限の権限のみを付与する</td>
+                        </tr>
+                    </table>
+
+                    <h3>SASE / SSE</h3>
+                    <p>
+                        SASEは、SD-WANのようなネットワーク機能とファイアウォールやゼロトラストアクセスなどのセキュリティ機能をクラウド上で統合して提供するアーキテクチャです。SSEはそのうちセキュリティ機能部分に焦点を当てた概念です。
+                    </p>
+
+                    <h3>IaC（Infrastructure as Code）</h3>
+                    <p>
+                        ネットワーク機器の構成を、手作業ではなくコードとして管理し、自動化・再現性・変更履歴の追跡を実現する考え方です。
+                    </p>
+                    <table class="data">
+                        <tr>
+                            <th>分類</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>Automation</td>
+                            <td>
+                                Playbooks/templates、構成ドリフトの検知とコンプライアンス確認、アップグレードの自動化、動的インベントリ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Source control</td>
+                            <td>
+                                バージョン管理、中央リポジトリでの一元管理、変更の競合検出、ブランチによる並行作業
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    Code["構成コード"] --> VCS["バージョン管理"]
+    VCS --> Review["レビュー・競合検出"]
+    Review --> Apply["自動適用"]
+    Apply --> Devices["ネットワーク機器"]
+    Devices -->|"構成ドリフトを検知"| Drift["コンプライアンスチェック"]
+    Drift -.->|"差分があれば再適用"| Code
+</pre
+                        >
+                    </div>
+
+                    <h3>IPv6アドレッシング</h3>
+                    <p>
+                        IPv4アドレスの枯渇問題を緩和するために設計された、128ビットのアドレス体系です。
+                    </p>
+                    <table class="data">
+                        <tr>
+                            <th>移行技術</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>Tunneling</td>
+                            <td>IPv6パケットをIPv4ネットワーク上でカプセル化して伝送する</td>
+                        </tr>
+                        <tr>
+                            <td>Dual stack</td>
+                            <td>1台の機器がIPv4とIPv6の両方を同時に扱えるようにする</td>
+                        </tr>
+                        <tr>
+                            <td>NAT64</td>
+                            <td>
+                                IPv6のみのネットワークからIPv4のリソースへアクセスできるようにアドレス変換する
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="summary">
+                    <h2>まとめとポイント整理</h2>
+                    <table class="data">
+                        <tr>
+                            <th>ステップ</th>
+                            <th>一言でまとめると</th>
+                        </tr>
+                        <tr>
+                            <td>1.1 OSIモデル</td>
+                            <td>通信を7層に分解して考える共通言語</td>
+                        </tr>
+                        <tr>
+                            <td>1.2 ネットワーク機器</td>
+                            <td>各機器がどのOSI層で何を担当するかを整理する</td>
+                        </tr>
+                        <tr>
+                            <td>1.3 クラウド概念</td>
+                            <td>デプロイモデル・サービスモデル・責任分界の理解が鍵</td>
+                        </tr>
+                        <tr>
+                            <td>1.4 ポート/プロトコル</td>
+                            <td>代表的なポート番号と、TCP/UDPの違い、トラフィック種類を暗記する</td>
+                        </tr>
+                        <tr>
+                            <td>1.5 伝送メディア</td>
+                            <td>有線/無線、コネクタの種類と用途を対応づける</td>
+                        </tr>
+                        <tr>
+                            <td>1.6 トポロジー</td>
+                            <td>冗長性・拡張性・管理コストのトレードオフで比較する</td>
+                        </tr>
+                        <tr>
+                            <td>1.7 IPv4アドレッシング</td>
+                            <td>クラス、プライベート範囲、CIDR/VLSMの計算に慣れる</td>
+                        </tr>
+                        <tr>
+                            <td>1.8 進化する環境</td>
+                            <td>SDN、VXLAN、ゼロトラスト、SASE、IaC、IPv6の概念レベルの理解</td>
+                        </tr>
+                    </table>
+                    <p>
+                        Networking
+                        Conceptsは他の全ドメイン（実装・運用・セキュリティ・トラブルシューティング）の土台になる分野です。特にOSIモデル、ポート番号、IPv4サブネッティングの3つは、他のドメインの問題を解く際にも繰り返し登場するため、優先的に固めておくことをお勧めします。
+                    </p>
+                </section>
+
+                <section id="references">
+                    <h2>参考文献・出典</h2>
+                    <ul class="references">
+                        <li>
+                            CompTIA Network+ (Plus) Certification
+                            公式ページ（試験概要・出題比率・スキル一覧）<br /><a
+                                href="https://www.comptia.org/en-us/certifications/network/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.comptia.org/en-us/certifications/network/</a
+                            >
+                        </li>
+                        <li>
+                            CompTIA Network+ N10-009 Certification Exam: Exam Objectives Version
+                            4.0（公式試験目標PDF、Domain 1.0 Networking Concepts
+                            の詳細な内訳の出典）<br /><a
+                                href="https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-network-n10-009-exam-objectives-(4-0)-(1).pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-network-n10-009-exam-objectives-(4-0)-(1).pdf</a
+                            >
+                        </li>
+                        <li>
+                            CompTIA Blog「The New Network+ (N10-009) Exam: Your Questions
+                            Answered」（N10-008からN10-009への変更点）<br /><a
+                                href="https://www.comptia.org/en-us/blog/the-new-network-n10-009-exam-your-questions-answered/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.comptia.org/en-us/blog/the-new-network-n10-009-exam-your-questions-answered/</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://unpkg.com/mermaid@10.9.1/dist/mermaid.min.js"></script>
+        <script>
+            hljs.highlightAll();
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                themeVariables: {
+                    fontSize: '16px',
+                    primaryColor: '#2a1f3d',
+                    primaryTextColor: '#e9e9ee',
+                    primaryBorderColor: '#8a7fd1',
+                    lineColor: '#6d6d78',
+                    secondaryColor: '#123a3a',
+                    tertiaryColor: '#3d2418',
+                },
+                flowchart: {
+                    useMaxWidth: false,
+                    nodeSpacing: 45,
+                    rankSpacing: 45,
+                },
+                securityLevel: 'loose',
+            });
+
+            document.fonts.ready.then(function () {
+                mermaid.run({ querySelector: '.mermaid' });
+            });
+        </script>
+    </body>
+</html>

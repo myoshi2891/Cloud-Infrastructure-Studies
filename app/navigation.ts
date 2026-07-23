@@ -43,9 +43,10 @@ type NavExamInput = {
 const PROVIDER_LABEL: Record<Provider, string> = {
     GCP: 'Google Cloud',
     AWS: 'Amazon Web Services',
+    Cisco: 'Cisco',
 };
 
-const PROVIDER_ORDER: readonly Provider[] = ['GCP', 'AWS'];
+const PROVIDER_ORDER: readonly Provider[] = ['GCP', 'AWS', 'Cisco'];
 
 /**
  * Convert exam inputs into a provider-grouped navigation tree.

@@ -7,9 +7,112 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **テスト数:** プロジェクト全体で 81 テストファイル (合計 580 テストケース) パス
+- **テスト数:** プロジェクト全体で 83 テストファイル パス
 - **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-07-04T13:41:00.000Z
+- **最終更新日時(UTC):** 2026-07-23T02:35:00.000Z
+
+## 2026-07-23: Cisco「CCNA 200-301 IP Services 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-ip-services-guide.html`（静的HTML・1680行）を、正準の設計パターン（NavBar + page.tsx + CcnaIpServicesGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/ip-services-guide` ルートへ移行・追加する。また、グローバルナビゲーション（`app/constants.ts`）の CCNA エントリに「4.0 IP Services（IP サービス）」を追加・同期する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for ccna ip services guide page` (`__tests__/cisco/ccna/ip-services-guide/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green)**: `feat(ccna): migrate all content, css, and diagrams for ccna ip services guide` (`page.tsx`, `CcnaIpServicesGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全12セクション・テーブル・Mermaid 12図の完璧な移行)
+- [x] **Step 3 (Refactor / Integration & Archive & Docs Sync)**: `refactor(ccna): integrate ccna ip services guide into routing and update docs` (`app/constants.ts` へのドメイン追加、`Ccna-ip-services-guide.html` の `Gcl_Archive/Cisco/` への退避、`CLAUDE.md` / `GEMINI.md` / `MIGRATION_PROGRESS.md` の更新)
+
+### 関連ファイル
+
+- [app/cisco/ccna/ip-services-guide/page.tsx](app/cisco/ccna/ip-services-guide/page.tsx)
+- [app/cisco/ccna/ip-services-guide/CcnaIpServicesGuide.tsx](app/cisco/ccna/ip-services-guide/CcnaIpServicesGuide.tsx)
+- [app/cisco/ccna/ip-services-guide/NavBar.tsx](app/cisco/ccna/ip-services-guide/NavBar.tsx)
+- [app/cisco/ccna/ip-services-guide/constants.ts](app/cisco/ccna/ip-services-guide/constants.ts)
+- [app/cisco/ccna/ip-services-guide/page.css](app/cisco/ccna/ip-services-guide/page.css)
+- [__tests__/cisco/ccna/ip-services-guide/page.test.tsx](__tests__/cisco/ccna/ip-services-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [Gcl_Archive/Cisco/Ccna-ip-services-guide.html](Gcl_Archive/Cisco/Ccna-ip-services-guide.html)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+## 2026-07-23: Cisco「CCNA 200-301 IP Connectivity（IP接続性）編」移行 (完了)
+
+### 目的
+
+`Ccna-ip-connectivity-guide.html`（静的HTML・1180行）を、正準の設計パターン（NavBar + page.tsx + CcnaIpConnectivityGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/ip-connectivity-guide` ルートへ移行・追加する。また、グローバルナビゲーション（`app/constants.ts`）の CCNA エントリに「3.0 IP Connectivity（IP接続性）」を追加・同期する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for ccna ip connectivity guide page` (`__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green)**: `feat(ccna): migrate all content, css, and diagrams for ccna ip connectivity guide` (`page.tsx`, `CcnaIpConnectivityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全6章＋まとめ＋参考ソース、テーブル、Mermaid 7図の完璧な移行)
+- [x] **Step 3 (Refactor / Integration & Archive & Docs Sync)**: `refactor(ccna): integrate ccna ip connectivity guide into routing and sync docs` (`app/constants.ts` へのドメイン追加、`Ccna-ip-connectivity-guide.html` / `.md` の `archive/Cisco/html/` への退避、`MIGRATION_PROGRESS.md` の更新)
+- [x] **Step 4 (Layout Expansion & Syntax Highlighting)**: `feat(ccna): update layout to full width and add vibrant syntax highlighting to code blocks` (レイアウトを画面いっぱいの全幅表示へ拡張、コードブロックを `.code-line` 構造化し、コメント・プロンプト・コマンド・数値等の視認性の高いシンタックスハイライトを追加)
+- [x] **Step 5 (Mermaid Diagram Sizing Fix)**: `feat(mermaid): optimize diagram sizing for small and extra tall diagrams` (図解の豆粒化と過大縦伸張を解消するため、`applySvgFixups` で小型図の適正拡大・縦長図の最大高さ上限および垂直スクロール制御を導入)
+
+### 関連ファイル
+
+- [app/cisco/ccna/ip-connectivity-guide/page.tsx](app/cisco/ccna/ip-connectivity-guide/page.tsx)
+- [app/cisco/ccna/ip-connectivity-guide/CcnaIpConnectivityGuide.tsx](app/cisco/ccna/ip-connectivity-guide/CcnaIpConnectivityGuide.tsx)
+- [app/cisco/ccna/ip-connectivity-guide/NavBar.tsx](app/cisco/ccna/ip-connectivity-guide/NavBar.tsx)
+- [app/cisco/ccna/ip-connectivity-guide/constants.ts](app/cisco/ccna/ip-connectivity-guide/constants.ts)
+- [app/cisco/ccna/ip-connectivity-guide/page.css](app/cisco/ccna/ip-connectivity-guide/page.css)
+- [__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx](__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [archive/Cisco/html/Ccna-ip-connectivity-guide.html](archive/Cisco/html/Ccna-ip-connectivity-guide.html)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
+
+## 2026-07-23: Cisco「CCNA Automation ソフトウェア開発と設計 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-automation-software-development-design.html`（静的HTML・1932行）を、正準の設計パターン（NavBar + page.tsx + CcnaSoftwareDevDesignGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-software-development-design` ルートへ移行・追加する。また、グローバルナビゲーション（`app/constants.ts`）の CCNA エントリに「1.0 ソフトウェア開発と設計」を追加・同期する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add tests for ccna automation software development design page` (`__tests__/cisco/ccna/automation-software-development-design/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green)**: `feat(ccna): implement ccna automation software development design page` (`page.tsx`, `CcnaSoftwareDevDesignGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全13セクション・テーブル・Mermaid 12図の完璧な移行)
+- [x] **Step 3 (Refactor / Integration & Archive)**: `refactor(ccna): integrate ccna automation software development design page into routing and sync docs` (`app/constants.ts` へのドメイン追加、`Ccna-automation-software-development-design.html` の `Gcl_Archive/Cisco/` への退避、`CLAUDE.md` / `GEMINI.md` / `MIGRATION_PROGRESS.md` の更新)
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-software-development-design/page.tsx](app/cisco/ccna/automation-software-development-design/page.tsx)
+- [app/cisco/ccna/automation-software-development-design/CcnaSoftwareDevDesignGuide.tsx](app/cisco/ccna/automation-software-development-design/CcnaSoftwareDevDesignGuide.tsx)
+- [app/cisco/ccna/automation-software-development-design/NavBar.tsx](app/cisco/ccna/automation-software-development-design/NavBar.tsx)
+- [app/cisco/ccna/automation-software-development-design/constants.ts](app/cisco/ccna/automation-software-development-design/constants.ts)
+- [app/cisco/ccna/automation-software-development-design/page.css](app/cisco/ccna/automation-software-development-design/page.css)
+- [__tests__/cisco/ccna/automation-software-development-design/page.test.tsx](__tests__/cisco/ccna/automation-software-development-design/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
+
+## 2026-07-23: Cisco「CCNA試験 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-beginner-guide.html`（静的HTML・1572行）を、正準の設計パターン（NavBar + page.tsx + CcnaBeginnerGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/beginner-guide` ルートへ移行・追加する。また、データ駆動ナビゲーション（`app/constants.ts` / `app/globals.css`）に Cisco Provider と CCNA エントリを追加し、グローバルナビゲーションに自動反映する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for ccna beginner guide page` (`__tests__/cisco/ccna/beginner-guide/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green / Skeleton & Content)**: `feat(ccna): migrate all content, css, and diagrams for ccna beginner guide` (`page.tsx`, `CcnaBeginnerGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全12セクション・テーブル・Mermaid 5図の完璧な移行)
+- [x] **Step 3 (Refactor / Integration)**: `refactor(ccna): integrate ccna beginner guide into routing and update docs` (`app/constants.ts` への Provider: Cisco および CCNA エントリ追加、`app/globals.css` へのテーマ変数・ユーティリティ追加、`CLAUDE.md` / `GEMINI.md` の更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive ccna beginner guide html` (`MIGRATION_PROGRESS.md` の更新、ソースファイル `Ccna-beginner-guide.html` および `.md` の `Gcl_Archive/Cisco/` への退避)
+- [x] **Step 5 (Layout & Nav Adjustment)**: `feat(nav): expand main content width and add Cisco provider to hamburger nav tree` (`app/navigation.ts` の `PROVIDER_LABEL`/`PROVIDER_ORDER` への Cisco 追加によるハンバーガーメニュー反映、`page.css` のメイン幅100%拡張)
+
+### 関連ファイル
+
+- [app/cisco/ccna/beginner-guide/page.tsx](app/cisco/ccna/beginner-guide/page.tsx)
+- [app/cisco/ccna/beginner-guide/CcnaBeginnerGuide.tsx](app/cisco/ccna/beginner-guide/CcnaBeginnerGuide.tsx)
+- [app/cisco/ccna/beginner-guide/NavBar.tsx](app/cisco/ccna/beginner-guide/NavBar.tsx)
+- [app/cisco/ccna/beginner-guide/constants.ts](app/cisco/ccna/beginner-guide/constants.ts)
+- [app/cisco/ccna/beginner-guide/page.css](app/cisco/ccna/beginner-guide/page.css)
+- [__tests__/cisco/ccna/beginner-guide/page.test.tsx](__tests__/cisco/ccna/beginner-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [app/globals.css](app/globals.css)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ---
 

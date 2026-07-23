@@ -429,6 +429,32 @@
     color: var(--color-theme-pcne-fg);
 }
 
+.cardCcna {
+    border-color: var(--color-theme-cisco-bg);
+}
+.cardCcna::before {
+    background: radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        color-mix(in srgb, var(--color-theme-cisco-fg) 8%, transparent),
+        transparent
+    );
+}
+.cardCcna:hover,
+.cardCcna:focus-within {
+    border-color: color-mix(in srgb, var(--color-theme-cisco-fg) 50%, transparent);
+}
+.cardCcna:hover::before,
+.cardCcna:focus-within::before {
+    opacity: 1;
+}
+
+.cardCcna .ctaBtn:hover,
+.cardCcna .ctaBtn:focus-visible {
+    background: color-mix(in srgb, var(--color-theme-cisco-fg) 15%, transparent);
+    border-color: color-mix(in srgb, var(--color-theme-cisco-fg) 50%, transparent);
+    color: var(--color-theme-cisco-fg);
+}
+
 .statsSection {
     padding: 40px 24px 80px;
     border-top: 1px solid var(--color-border);

@@ -1,6 +1,6 @@
 /** ホームページで使用する試験データと統計の定数 */
 
-export type Provider = 'GCP' | 'AWS';
+export type Provider = 'GCP' | 'AWS' | 'Cisco';
 
 export interface ExamDomain {
     label: string;
@@ -14,7 +14,8 @@ export type ColorKey =
     | 'card-cdl'
     | 'card-agwa'
     | 'card-pcne'
-    | 'card-aws-saa';
+    | 'card-aws-saa'
+    | 'card-ccna';
 
 export interface Exam {
     id: string;
@@ -217,6 +218,42 @@ export const EXAMS: Exam[] = [
         icon: '🏗',
         provider: 'AWS',
         status: 'coming-soon',
+    },
+    {
+        id: 'ccna',
+        label: 'Cisco Certified Network Associate',
+        abbr: 'CCNA',
+        level: 'Associate',
+        score: '~90-120問 / 120分',
+        color: 'card-ccna',
+        href: '/cisco/ccna/beginner-guide',
+        description:
+            'シスコ認定のネットワーク基礎・アクセス・IP接続/サービス・セキュリティ・自動化の知識と実務スキルを認定。',
+        domains: [
+            {
+                label: '完全ビギナーガイド',
+                href: '/cisco/ccna/beginner-guide',
+                pct: '入門',
+            },
+            {
+                label: '6.0 自動化とプログラマビリティ',
+                href: '/cisco/ccna/automation-software-development-design',
+                pct: '10%',
+            },
+            {
+                label: '3.0 IP Connectivity（IP接続性）',
+                href: '/cisco/ccna/ip-connectivity-guide',
+                pct: '25%',
+            },
+            {
+                label: '4.0 IP Services（IP サービス）',
+                href: '/cisco/ccna/ip-services-guide',
+                pct: '10%',
+            },
+        ],
+        badge: 'ネットワーク基礎',
+        icon: '🌐',
+        provider: 'Cisco',
     },
 ];
 

@@ -11,17 +11,6 @@ import NavBar from './NavBar';
 export default function SetUpAnAppDevEnvironmentGuide() {
     return (
         <div className="app-dev-environment-page">
-            {/* ===================== Top bar ===================== */}
-            {/* グローバルヘッダーが常駐するため、ここは元のブランド表記のみをヘッダー直下のアクセントとして表示 */}
-            <div className="topbar" style={{ display: 'none' }}>
-                <div className="topbar__brand">
-                    <span className="topbar__dots"><i></i><i></i><i></i><i></i></span>
-                    App Dev Environment on Google Cloud
-                </div>
-                <span className="topbar__tag">course_templates / 637</span>
-                <a className="topbar__src" href="https://www.skills.google/course_templates/637" target="_blank" rel="noopener">skills.google ↗</a>
-            </div>
-
             <div className="shell">
                 <NavBar />
 

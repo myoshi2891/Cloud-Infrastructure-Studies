@@ -1,20 +1,13 @@
 ---
 name: fix-mermaid
 description: >
-  Use this skill to fix Mermaid diagram syntax errors inside HTML, Markdown, and TSX files.
-  Trigger when the user mentions: "mermaid error", "Syntax error in text",
-  "mermaid not rendering", "diagram is broken", "all diagrams crashed",
-  or references a Mermaid version error (e.g. "mermaid version 10.9.5").
-  Fixes formatter-induced indentation pollution and statement concatenation
-  that break Mermaid v10 parsing.
-allowed-tools:
-  - Read
-  - Edit
-  - Grep
-  - Bash
+  Fix Mermaid syntax, rendering, clipping, readability, and sizing problems in HTML,
+  Markdown, React, and TSX. Use when diagrams fail to render, Mermaid reports a syntax
+  or version error, labels are clipped or unreadable, diagrams are too large or small,
+  different diagram types need individual sizing, or SVG/card layout is unbalanced.
 ---
 
-# Mermaid v10 構文修正スキル
+# Mermaid 構文・描画修正スキル
 
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
@@ -285,46 +278,46 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 
    個別 ID セレクタ（`#diag-0 svg` 等）は CSS Modules でも変換されないため、グローバル ID セレクタ経由で最大幅（`max-width`）を制御できます。
 
-#### ⚠️ Mermaid 図が小さくなりすぎる問題（2026年6月追記 — Next.js TSX 実装固有）
+#### ⚠️ サイズ調整は図ごとに行い、文字の実効サイズを変えない
 
-**症状**: 図が画面の中央付近に極端に小さく（幅 200px 程度）表示され、コンテナの右側が空白になる。
+サイズ問題を直す前に、対象ページの**全図**について `id`、図種（TD/LR/state/pie等）、SVG `viewBox` の `w/h`、親要素の実幅を一覧化する。1枚だけ見て共通値を変えない。
 
-**根本原因**:
+**文字サイズと図の表示倍率を分離する**。Mermaid の設定が16px（標準環境の1rem）でも、SVG全体を拡縮すると見かけの文字サイズも変わる。
 
 ```text
-.mermaid { display: flex; justify-content: center; }
-  └── .mermaidWrapper (MermaidDiagram.module.css) ← flex item = fit-content 幅に縮小される
-        └── svg { width: ${w}px; max-width: 100%; }   ← 100% = mermaidWrapper 幅 = 縮小後の小サイズ
+実効文字px = Mermaid文字px × min(表示SVG幅 / viewBox幅, 高さ上限 / viewBox高さ)
 ```
 
-flex コンテナ内の flex item は `width` 未指定の場合 `fit-content` 相当 of width に縮小される。`mermaidWrapper` はデフォルトで `overflow-x: auto` を持つため、SVG の自然 px 幅を超えるとクリップせずスクロールになるが、SVG 自体は `maxWidth:100%` = 縮小後の `mermaidWrapper` 幅に制限されて小さく表示される。
+1remを維持する図は `表示SVG幅 = viewBox幅`、`max-height:none` にする。カード内幅は `viewBox幅 + 左右padding + border` 以上を確保する。これ未満では `max-width:100%` がSVGを縮め、文字も1rem未満になる。`1rem=16px` と決めつけず、対象ページのルートfont-sizeを確認する。16px以外ならMermaidの採寸前に同じ実効px値を設定し、描画後のCSSだけで文字を変えない（ノード寸法と不一致になる）。`max-width:100%` は狭い画面での縮小用として残す。モバイルでも厳密に1remを維持する要件なら、SVGを縮めず親に `overflow-x:auto` を付ける。
 
-**修正パターン（page.css の `.mermaid` スコープ）**:
+**禁止事項**:
 
-```css
-/* ❌ この書き方は mermaidWrapper を fit-content 幅に縮小してしまう */
-.page-scope .mermaid {
-    display: flex;
-    justify-content: center;
-}
+- 異なる図種へ同じ `minWidth` / `maxHeight` を一括適用しない
+- `targetWidth = max(viewBoxWidth, 560)` のようにSVG全体を拡大しない（文字も巨大化する）
+- 縦長図へ `max-height` を付けない（横幅と文字まで縮小する）
+- 親を `fit-content` にしない（子の `width:100%` と循環し、LR図が縮む）
+- 1ページの問題を直すために共通コンポーネントの既定動作を変更しない
 
-/* ✅ 修正: display:block + width:100% で flex item の縮小を回避 */
-.page-scope .mermaid {
-    display: block;
-    width: 100%;
-}
-/* MermaidDiagram.module.css の .mermaidWrapper にも幅を引き継がせる */
-.page-scope .mermaid > div {
-    width: 100%;
-}
-.page-scope .mermaid svg {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
+**個別対応の正準手順**:
+
+1. 共通コンポーネントの既定動作を維持し、自然倍率を選べる任意propを追加する。
+2. ページ側に図IDごとの設定表を置き、カード幅と自然倍率の使用有無を個別指定する。
+3. 親は `display:block; width:100%` とし、図別 `max-width` で `viewBox幅 + 左右padding + border` 以上の表示領域を確保する。
+4. SVGは自然幅 + `max-width:100%` + `height:auto` を使う。図を広く見せたい場合はSVGを拡大せず、カード幅やMermaid DSLの `nodeSpacing` / `rankSpacing` をその図だけ調整する。
+5. TD、LR、state、pieを最低1枚ずつ確認し、修正対象外の図が縮小・拡大していないことを確認する。
+
+```tsx
+const DISPLAY = {
+  'vertical-flow': { frameWidth: measured.verticalFlowFrame, naturalScale: true },
+  'wide-topology': { frameWidth: measured.wideTopologyFrame, naturalScale: true },
+} as const;
+
+<div style={{ maxWidth: DISPLAY[id].frameWidth, width: '100%' }}>
+  <MermaidDiagram preserveNaturalScale={DISPLAY[id].naturalScale} />
+</div>
 ```
 
-> **チェックリスト**: Mermaid 図が小さい場合は、まず `.mermaid` の直接の親と、`.mermaid` 自身が `display:flex` の flex item になっていないか確認する。`display:block; width:100%` に変更するだけで解消する。
+自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` を検証する。既定動作のテストも残し、他ページへの波及を防ぐ。
 
 
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
@@ -369,7 +362,7 @@ mermaid.initialize({
         lineColor: '#5f7fb8', secondaryColor: '#0f9d58', tertiaryColor: '#0d1a2e',
         background: '#060b14', mainBkg: '#0f2040', nodeBorder: '#1a73e8',
         clusterBkg: '#0d1a2e', titleColor: '#e8f0fe', edgeLabelBackground: '#0d1a2e',
-        fontFamily: "'Noto Sans JP', sans-serif", fontSize: '13px',
+        fontFamily: "'Noto Sans JP', sans-serif", fontSize: '16px', // 標準環境の1rem
     },
     flowchart: { curve: 'basis', padding: 20 },
     sequence: { actorMargin: 60, mirrorActors: true },

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-GCP/AWS 資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer、AWS Certified Solutions Architect – Associate ※準備中）を目的としたNext.js学習アプリ。
+GCP/AWS/Cisco 資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate、AWS Certified Solutions Architect – Associate ※準備中）を目的としたNext.js学習アプリ。
 
 試験データの正本は `app/constants.ts` の `EXAMS` 配列。ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` で自動生成されるため、新試験追加時は **`Header.tsx` を直接編集しない**。新試験追加の手順は ① `app/constants.ts` の `EXAMS` にエントリ追加、② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加、③ 試験ページ作成 の 3 ファイルのみ変更すれば Header に自動反映される。
 
@@ -196,6 +196,32 @@ app/
     professional-cloud-network-engineer-step-by-step/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）
+  cisco/
+    ccna/
+      beginner-guide/
+        page.tsx                    # Cisco CCNA試験 完全ガイド（Server。メタデータ定義）
+        CcnaBeginnerGuide.tsx       # 本文＋インタラクション（client。全12セクション、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（5図）
+        page.css                    # ページ固有スタイル
+      automation-software-development-design/
+        page.tsx                    # CCNA Automation ソフトウェア開発と設計 完全ガイド（Server。メタデータ定義）
+        CcnaSoftwareDevDesignGuide.tsx # 本文＋インタラクション（client。全13セクション、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（12図）
+        page.css                    # ページ固有スタイル
+      ip-connectivity-guide/
+        page.tsx                    # CCNA 200-301 IP Connectivity 完全ガイド（Server。メタデータ定義）
+        CcnaIpConnectivityGuide.tsx # 本文＋インタラクション（client。全6章＋まとめ、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（7図）
+        page.css                    # ページ固有スタイル
+      ip-services-guide/
+        page.tsx                    # CCNA 200-301 IP Services 完全ガイド（Server。メタデータ定義）
+        CcnaIpServicesGuide.tsx     # 本文＋インタラクション（client。全12セクション、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（12図）
+        page.css                    # ページ固有スタイル
 
 components/
   Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要。検索フィルタ・active リンク判定 (usePathname)・最近見たページ表示を内包

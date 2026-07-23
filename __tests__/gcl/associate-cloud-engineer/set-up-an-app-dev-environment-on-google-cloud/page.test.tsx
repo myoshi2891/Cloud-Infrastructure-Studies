@@ -51,4 +51,8 @@ describe('Set Up an App Dev Environment on Google Cloud ページ', () => {
             expect(DIAGRAMS[id as keyof typeof DIAGRAMS]).toBeTruthy();
         }
     });
+
+    it('topbar が存在しないこと', () => {
+        expect(container.querySelector('.topbar')).toBeNull();
+    });
 });

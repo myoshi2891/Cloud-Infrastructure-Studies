@@ -12,6 +12,8 @@ export interface MermaidDiagramProps {
     ariaLabel: string;
     /** ルートクラス名の追加（任意） */
     className?: string;
+    /** SVGをviewBoxの自然倍率で表示し、文字の描画サイズを維持する */
+    preserveNaturalScale?: boolean;
 }
 
 if (typeof window !== 'undefined') {
@@ -37,7 +39,7 @@ if (typeof window !== 'undefined') {
             attributeBackgroundColorEven: '#0f2040',
             attributeBackgroundColorOdd: '#0d1a2e',
             fontFamily: "'Noto Sans JP', sans-serif",
-            fontSize: '13px',
+            fontSize: '16px',
         },
         flowchart: { curve: 'basis', padding: 20 },
         sequence: { actorMargin: 60, mirrorActors: true },
@@ -74,14 +76,18 @@ const toCodeLines = (text: string): { line: string; key: string }[] => {
  * 文字列を DOMParser/XMLSerializer で往復させると foreignObject 内の HTML（htmlLabels）の
  * 名前空間が壊れてラベルが空になるため、innerHTML 注入後の実 DOM を操作する。
  *
- * - width/height 属性を除去し、width:100% / height:auto でアスペクト比を維持
+ * - width/height 属性を除去し、viewBox の自然幅 / height:auto で比率を維持
  * - overflow:visible で viewBox から数px はみ出す描画の途切れを防止
  * - viewBox の高さを拡張（flowchart は +15、sequence/state は下部にアクター/メモが伸びるため +110）
  *
  * @param svgEl 注入済みの SVG 要素
  * @param chart 元の DSL（図種別の判定に使用）
  */
-export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
+export const applySvgFixups = (
+    svgEl: SVGSVGElement,
+    chart: string,
+    preserveNaturalScale = false
+): void => {
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
     svgEl.style.height = 'auto';
@@ -101,11 +107,14 @@ export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
     // ⚠️ SKILL.md「SVG 幅の鉄則」: viewBox 由来の自然 px 幅 + maxWidth:100%。
-    // width:'100%' は viewBox のみで intrinsic サイズを持たない SVG をコンテナ全幅へ
-    // 伸ばし、小さい flowchart LR 図を異常拡大させるため使わない。
-    // 自然 px + maxWidth:100% なら「親より広い図のみ縮小、小さい図は等倍」となる。
-    svgEl.style.width = `${w}px`;
+    // preserveNaturalScale は文字を1rem相当の自然倍率で見せたい図に個別指定する。
+    let targetWidth = w;
+    if (!preserveNaturalScale && w > 0 && w < 550) {
+        targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
+    }
+    svgEl.style.width = `${targetWidth}px`;
     svgEl.style.maxWidth = '100%';
+    svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 
@@ -115,7 +124,12 @@ export const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
  * - SSR / 初回マウント前は DSL を `<pre className="codeblock" aria-hidden>` として見せてハイドレーションエラーを防ぐ。
  * - jsdom 等 `getBBox` が無い環境ではフォールバック表示（DSL の `<pre>`）のまま描画しない。
  */
-export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel, className }) => {
+export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
+    chart,
+    ariaLabel,
+    className,
+    preserveNaturalScale = false,
+}) => {
     const reactId = useId();
     const [isMounted, setIsMounted] = useState(false);
     const [rendered, setRendered] = useState(false);
@@ -169,9 +183,9 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, ariaLabel
         if (!rendered || !svgStr) return;
         const svgEl = targetRef.current?.querySelector('svg');
         if (svgEl instanceof SVGSVGElement) {
-            applySvgFixups(svgEl, chart);
+            applySvgFixups(svgEl, chart, preserveNaturalScale);
         }
-    }, [svgStr, rendered, chart]);
+    }, [svgStr, rendered, chart, preserveNaturalScale]);
 
     // マウント前、またはブラウザ環境でない（jsdomテストなど）場合は、ハイドレーション不一致を防ぐためフォールバックを表示
     const showFallback = !isMounted || !canRenderInBrowser() || (!rendered && !error);
