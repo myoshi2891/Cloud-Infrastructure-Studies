@@ -91,7 +91,7 @@ flowchart LR
 
 **設定例（IOS）:**
 
-```
+```text
 Router(config)# ip nat inside source static 192.168.1.10 203.0.113.10
 Router(config)# interface GigabitEthernet0/0
 Router(config-if)# ip nat inside
@@ -125,7 +125,7 @@ flowchart LR
 
 **設定例（IOS）:**
 
-```
+```text
 Router(config)# ip nat pool NAT-POOL 203.0.113.20 203.0.113.29 netmask 255.255.255.0
 Router(config)# access-list 1 permit 192.168.1.0 0.0.0.255
 Router(config)# ip nat inside source list 1 pool NAT-POOL
@@ -173,7 +173,7 @@ flowchart TB
 
 ### 設定例
 
-```
+```text
 ! クライアントモード：上位のNTPサーバーと時刻同期する
 Router(config)# ntp server 192.168.1.1
 
@@ -183,7 +183,7 @@ Router(config)# ntp master 3
 
 **検証コマンド：**
 
-```
+```text
 Router# show ntp status
 Router# show ntp associations
 ```
@@ -337,7 +337,7 @@ flowchart LR
 
 ### 設定例
 
-```
+```text
 Router(config)# logging host 192.168.1.100
 Router(config)# logging trap warning
 Router(config)# logging facility local5
@@ -355,7 +355,7 @@ Router(config)# logging facility local5
 
 ルーターのインターフェース自体をDHCPクライアントとして動作させ、ISPなどから動的にIPアドレスを取得することも可能です（家庭用ルーターのWAN側などでよく使われる動作です）。
 
-```
+```text
 Router(config)# interface GigabitEthernet0/1
 Router(config-if)# ip address dhcp
 ```
@@ -386,7 +386,7 @@ flowchart LR
 
 クライアント側のサブネットに接続されたルーターのインターフェースに設定します。
 
-```
+```text
 Router(config)# interface GigabitEthernet0/0
 Router(config-if)# ip helper-address 192.168.99.10
 ```
@@ -468,7 +468,7 @@ flowchart TB
 
 ### SSH設定の手順
 
-```
+```text
 ! ① ホスト名とドメイン名を設定（RSA鍵生成の前提条件）
 Router(config)# hostname R1
 R1(config)# ip domain-name example.local
@@ -490,7 +490,7 @@ R1(config-line)# login local
 
 ### 検証コマンド
 
-```
+```text
 R1# show ip ssh
 R1# show ssh
 ```
@@ -525,7 +525,7 @@ flowchart LR
 
 ### 設定例（IOSでの実行コマンド）
 
-```
+```text
 ! 現在の設定をTFTPサーバーにバックアップ
 Router# copy running-config tftp
 Address or name of remote host []? 192.168.1.50
