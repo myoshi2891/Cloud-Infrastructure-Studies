@@ -79,14 +79,14 @@ describe('CcnaAutomationApiPage', () => {
 
         const widths: Record<string, string> = {
             'diag-0': '760px',
-            'diag-1': '860px',
-            'diag-2': '760px',
-            'diag-3': '760px',
-            'diag-4': '760px',
-            'diag-5': '760px',
-            'diag-6': '760px',
-            'diag-7': '860px',
-            'diag-8': '860px',
+            'diag-1': '1280px',
+            'diag-2': '900px',
+            'diag-3': '900px',
+            'diag-4': '1100px',
+            'diag-5': '900px',
+            'diag-6': '800px',
+            'diag-7': '1280px',
+            'diag-8': '1280px',
         };
         Object.entries(widths).forEach(([id, width]) => {
             expect(container.querySelector(`[data-diagram-id="${id}"]`)).toHaveStyle({ maxWidth: width });

@@ -3,6 +3,33 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
 
+const DIAGRAM_DISPLAY: Record<string, { frameWidth: number }> = {
+    'diag-0': { frameWidth: 760 },
+    'diag-1': { frameWidth: 1280 },
+    'diag-2': { frameWidth: 900 },
+    'diag-3': { frameWidth: 900 },
+    'diag-4': { frameWidth: 1100 },
+    'diag-5': { frameWidth: 900 },
+    'diag-6': { frameWidth: 800 },
+    'diag-7': { frameWidth: 1280 },
+    'diag-8': { frameWidth: 1280 },
+};
+
+function Diagram({ id, label }: { id: string; label: string }) {
+    const chart = DIAGRAMS[id];
+    if (!chart) return null;
+    const display = DIAGRAM_DISPLAY[id] ?? { frameWidth: 760 };
+    return (
+        <div
+            className="diagram-container"
+            data-diagram-id={id}
+            style={{ maxWidth: `${display.frameWidth}px`, width: '100%' }}
+        >
+            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
+        </div>
+    );
+}
+
 export function CcnaAutomationApiGuide() {
     return (
         <div className="ccna-automation-api-page">
@@ -179,9 +206,7 @@ export function CcnaAutomationApiGuide() {
                     {/* Section 3 */}
                     <section id="sec-3" className="section">
                         <h2 className="section-title">3. 学習ロードマップ</h2>
-                        <div className="diagram-container" data-diagram-id="diag-0" style={{ maxWidth: '760px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-0']} preserveNaturalScale ariaLabel="学習ロードマップ" />
-                        </div>
+                        <Diagram id="diag-0" label="学習ロードマップ" />
                         <p>
                             この順番で学ぶ理由はシンプルです。<strong>「概念（何ができるか）」を先に理解してから「作法（どう書くか）」を学び、最後に「実装（コードにする）」へ進む</strong>という、初学者にとって最も挫折しにくい流れになっています。
                         </p>
@@ -246,9 +271,7 @@ export function CcnaAutomationApiGuide() {
                         </table>
 
                         <h3 className="subsection-title">5.2 同期 vs 非同期</h3>
-                        <div className="diagram-container" data-diagram-id="diag-1" style={{ maxWidth: '860px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-1']} preserveNaturalScale ariaLabel="同期 vs 非同期" />
-                        </div>
+                        <Diagram id="diag-1" label="同期 vs 非同期" />
                         <ul>
                             <li><strong>同期</strong>: 「レストランで注文して、料理ができるまでその場で待つ」イメージ。シンプルだが、処理に時間がかかる操作（例: 大規模な設定変更）には不向き。</li>
                             <li><strong>非同期</strong>: 「注文票（受付番号）だけ先にもらって、呼ばれたら取りに行く」イメージ。時間のかかる処理（機器の一括アップグレードなど）でよく使われ、完了通知には次章のWebhookやポーリングが使われる。</li>
@@ -264,9 +287,7 @@ export function CcnaAutomationApiGuide() {
                         <p>
                             REST APIへのリクエストは、次の4つの要素で構成されます。この構造を体に染み込ませることが、試験項目2.1の核心です。
                         </p>
-                        <div className="diagram-container" data-diagram-id="diag-2" style={{ maxWidth: '760px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-2']} preserveNaturalScale ariaLabel="HTTPリクエストの4要素" />
-                        </div>
+                        <Diagram id="diag-2" label="HTTPリクエストの4要素" />
 
                         <h3 className="subsection-title">6.1 各要素の役割</h3>
                         <table>
@@ -324,9 +345,7 @@ export function CcnaAutomationApiGuide() {
                     <section id="sec-7" className="section">
                         <h2 className="section-title">7. Step 3（試験項目2.6）: HTTPレスポンスの構造を読み解く</h2>
                         <p>リクエストを送ると、APIサーバーはHTTPレスポンスを返します。レスポンスも3つの部分から構成されています。</p>
-                        <div className="diagram-container" data-diagram-id="diag-3" style={{ maxWidth: '760px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-3']} preserveNaturalScale ariaLabel="HTTPレスポンスの構造" />
-                        </div>
+                        <Diagram id="diag-3" label="HTTPレスポンスの構造" />
 
                         <p><strong>レスポンス例</strong></p>
                         <div className="code-block">
@@ -376,9 +395,7 @@ export function CcnaAutomationApiGuide() {
                     <section id="sec-8" className="section">
                         <h2 className="section-title">8. Step 4（試験項目2.4）: 主要なHTTPステータスコードを理解する</h2>
                         <p>ステータスコードは3桁の数字で、<strong>先頭の数字が「大分類」</strong>を表します。</p>
-                        <div className="diagram-container" data-diagram-id="diag-4" style={{ maxWidth: '760px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-4']} preserveNaturalScale ariaLabel="HTTPステータスコードの分類" />
-                        </div>
+                        <Diagram id="diag-4" label="HTTPステータスコードの分類" />
 
                         <h3 className="subsection-title">8.1 分類ごとの意味</h3>
                         <table>
@@ -520,9 +537,7 @@ export function CcnaAutomationApiGuide() {
                         </table>
 
                         <h3 className="subsection-title">9.2 認証の流れ（シーケンス図）</h3>
-                        <div className="diagram-container" data-diagram-id="diag-5" style={{ maxWidth: '760px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-5']} preserveNaturalScale ariaLabel="認証の流れ" />
-                        </div>
+                        <Diagram id="diag-5" label="認証の流れ" />
 
                         <h3 className="subsection-title">9.3 Cisco製品での実例</h3>
                         <p>
@@ -572,9 +587,7 @@ export function CcnaAutomationApiGuide() {
                         </table>
 
                         <h3 className="subsection-title">10.1 レート制限への対処（再試行フロー）</h3>
-                        <div className="diagram-container" data-diagram-id="diag-6" style={{ maxWidth: '760px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-6']} preserveNaturalScale ariaLabel="レート制限への対処" />
-                        </div>
+                        <Diagram id="diag-6" label="レート制限への対処" />
                         <p>
                             Cisco Meraki Dashboard APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると<code>429</code>が返され、<code>Retry-After</code>ヘッダーで待機すべき秒数が示されます。
                         </p>
@@ -584,9 +597,7 @@ export function CcnaAutomationApiGuide() {
                     <section id="sec-11" className="section">
                         <h2 className="section-title">11. Step 7（試験項目2.2）: Webhookの活用パターンを理解する</h2>
                         <p>「APIサーバーに変化がないか、こちらから何度も聞きに行く」方式（ポーリング）に対して、「変化があったらサーバー側から知らせてもらう」方式が <strong>Webhook</strong> です。</p>
-                        <div className="diagram-container" data-diagram-id="diag-7" style={{ maxWidth: '860px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-7']} preserveNaturalScale ariaLabel="ポーリング vs Webhook" />
-                        </div>
+                        <Diagram id="diag-7" label="ポーリング vs Webhook" />
 
                         <table>
                             <thead>
@@ -634,9 +645,7 @@ export function CcnaAutomationApiGuide() {
                     <section id="sec-12" className="section">
                         <h2 className="section-title">12. Step 8（試験項目2.5）: ステータスコードから障害を切り分ける</h2>
                         <p>試験項目2.5は、「ステータスコード」「送ったリクエストの内容」「APIドキュメント」の3つを突き合わせて原因を推測する、いわば総合力を問う項目です。</p>
-                        <div className="diagram-container" data-diagram-id="diag-8" style={{ maxWidth: '860px' }}>
-                            <MermaidDiagram chart={DIAGRAMS['diag-8']} preserveNaturalScale ariaLabel="障害切り分けフロー" />
-                        </div>
+                        <Diagram id="diag-8" label="障害切り分けフロー" />
 
                         <h3 className="subsection-title">12.1 よくある原因と対処の対応表</h3>
                         <table>
