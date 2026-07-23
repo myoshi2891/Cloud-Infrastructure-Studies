@@ -429,7 +429,7 @@ import requests
 
 url = "https://api.meraki.com/api/v1/organizations/549236/networks"
 headers = {
-    "Authorization": "Bearer <APIキー>",
+    "X-Cisco-Meraki-API-Key": "<APIキー>",
     "Content-Type": "application/json",
 }
 payload = {

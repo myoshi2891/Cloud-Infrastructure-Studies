@@ -214,7 +214,8 @@ flowchart LR
 | HTTPS（HTTP Secure） | 443 | TCP | TLSで暗号化されたWeb通信 |
 | SMB（Server Message Block） | 445 | TCP | Windowsのファイル/プリンター共有 |
 | Syslog | 514 | UDP | ログメッセージの収集 |
-| SMTPS（SMTP Secure） | 587 | TCP | 暗号化されたメール送信（メール投稿用） |
+| SMTPS（SMTP Secure / 暗黙TLS） | 465 | TCP | 暗号化されたメール送信（Implicit TLS） |
+| SMTP Submission（STARTTLS） | 587 | TCP | メール投稿（STARTTLSによる明示的暗号化） |
 | LDAPS（LDAP over SSL） | 636 | TCP | 暗号化されたディレクトリサービス通信 |
 | SQL Server | 1433 | TCP | Microsoft SQL Serverへの接続 |
 | RDP（Remote Desktop Protocol） | 3389 | TCP | Windowsのリモートデスクトップ接続 |
@@ -491,6 +492,8 @@ flowchart TB
 | /30 | 255.255.255.252 | 2 |
 
 計算式: 利用可能ホスト数 = 2^(32 − プレフィックス長) − 2（ネットワークアドレスとブロードキャストアドレスの2つを除く）
+
+> 💡 **適用範囲の注意**: 本計算式（`- 2`）は通常サブネット（/30以下）に適用されます。P2Pリンク用の `/31`（RFC 3021により利用可能ホスト2）や単一ホストルートの `/32`（利用可能ホスト1）には適用されません。
 
 例: /27 の場合 → 2^(32−27) − 2 = 2^5 − 2 = 30
 

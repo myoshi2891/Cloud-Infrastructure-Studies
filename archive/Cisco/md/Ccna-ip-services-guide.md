@@ -280,7 +280,8 @@ flowchart LR
     M -->|"① GET：情報を取得したい"| A
     A -->|"② GET Response：値を返す"| M
     M -->|"③ SET：設定値を変更したい"| A
-    A -->|"④ TRAP：異常発生時、自発的に通知"| M
+    A -->|"④ SET Response / 完了"| M
+    A -.-|"独立通知：TRAP（自発的な異常通知）"|-> M
 ```
 
 - **GET/GET-NEXT**：マネージャーがエージェントに値を「聞きに行く」（ポーリング）
@@ -405,17 +406,15 @@ QoS（Quality of Service）は、限られた帯域の中で音声やビデオ�
 ```mermaid
 flowchart LR
     A["① 分類<br/>Classification"] --> B["② マーキング<br/>Marking"]
-    B --> C["③ キューイング<br/>Queuing"]
-    C --> D["④ 輻輳管理<br/>Congestion Management"]
-    D --> E["⑤ ポリシング<br/>Policing"]
-    D --> F["⑥ シェーピング<br/>Shaping"]
+    B --> C["③ ポリシング / シェーピング<br/>Policing / Shaping"]
+    C --> D["④ キューイング<br/>Queuing"]
+    D --> E["⑤ 輻輳管理 / 送出<br/>Congestion Mgmt"]
 
     style A fill:#1f4e79,color:#fff
     style B fill:#2c5f8a,color:#fff
     style C fill:#3d7ab5,color:#fff
     style D fill:#5a94cc,color:#fff
     style E fill:#7ba9d6,color:#fff
-    style F fill:#7ba9d6,color:#fff
 ```
 
 ### 各ステップの意味
@@ -424,10 +423,9 @@ flowchart LR
 |---|---|
 | ① 分類（Classification） | トラフィックを種類ごとに識別する（例：音声、動画、通常データ） |
 | ② マーキング（Marking） | 分類結果をパケットのヘッダーに書き込む（CoS、ToS、DSCPなど） |
-| ③ キューイング（Queuing） | 優先度に応じて複数の待ち行列（キュー）に振り分ける |
-| ④ 輻輳管理（Congestion Management） | 帯域が混雑した際、優先度の高いキューから先に送出する |
-| ⑤ ポリシング（Policing） | 規定速度を超えたトラフィックを**破棄**または再マーキングする |
-| ⑥ シェーピング（Shaping） | 規定速度を超えたトラフィックを**バッファに溜めて遅延させ**、平準化して送出する |
+| ③ ポリシング / シェーピング（Policing / Shaping） | 規定速度超過時の処理（破棄/再マーキング、またはバッファリングによる平準化） |
+| ④ キューイング（Queuing） | 優先度に応じて複数の待ち行列（キュー）に振り分ける |
+| ⑤ 輻輳管理（Congestion Management） | 帯域混雑時、優先度の高いキューから順にパケットを送出する |
 
 ### ポリシングとシェーピングの違い（頻出比較）
 
@@ -479,14 +477,16 @@ R1(config)# ip domain-name example.local
 R1(config)# crypto key generate rsa
 ! （鍵長を聞かれたら 2048 などを入力）
 
-! ③ ローカル認証用のユーザーを作成
-R1(config)# username admin privilege 15 secret StrongPass123
+! ③ ローカル認証用のユーザーを作成（※<PASSWORD>は各自の環境に応じた強固なパスワードに置換してください）
+R1(config)# username admin privilege 15 secret <PASSWORD>
 
 ! ④ VTYラインでSSHのみを許可し、ローカル認証を使う
 R1(config)# line vty 0 15
 R1(config-line)# transport input ssh
 R1(config-line)# login local
 ```
+
+> ⚠️ **セキュリティ注記**: 上記設定例の `<PASSWORD>` は実環境では再利用せず、必ず強固なパスワードを設定してください。
 
 ### 検証コマンド
 

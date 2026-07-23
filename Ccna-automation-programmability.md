@@ -1,5 +1,5 @@
 # CCNA 200-301 試験対策ガイド
-# 6.0 自動化とプログラマビリティ（Automation and Programmability）
+## 6.0 自動化とプログラマビリティ（Automation and Programmability）
 
 > 本ガイドは、Cisco CCNA 200-301 認定試験（v1.1 ブループリント）の出題範囲のうち、
 > **ドメイン6「自動化とプログラマビリティ」**（出題比率 **10%**）を、
