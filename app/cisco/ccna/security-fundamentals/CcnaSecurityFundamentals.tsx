@@ -91,6 +91,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.overview}
                                 ariaLabel="Security Fundamentals（5.0）のサブトピック全体像"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: Security Fundamentals（5.0）のサブトピック全体像</p>
@@ -152,6 +153,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s51_concepts}
                                 ariaLabel="脆弱性・脅威・エクスプロイト・緩和策の関係"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: 脆弱性・脅威・エクスプロイト・緩和策の関係</p>
@@ -182,6 +184,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s52_program}
                                 ariaLabel="セキュリティプログラムの3要素"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: セキュリティプログラムの3要素</p>
@@ -235,28 +238,32 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s53_access}
                                 ariaLabel="デバイスへの主なアクセス経路"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: デバイスへの主なアクセス経路</p>
 
                         <h3>設定コマンド例</h3>
-                        <pre><code>
-                            <div className="code-line">! コンソールポートへのパスワード設定</div>
-                            <div className="code-line">Router(config)# line console 0</div>
-                            <div className="code-line">Router(config-line)# password Cisco123!</div>
-                            <div className="code-line">Router(config-line)# login</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! VTY（Telnet/SSHでのリモートアクセス）へのパスワード設定</div>
-                            <div className="code-line">Router(config)# line vty 0 4</div>
-                            <div className="code-line">Router(config-line)# password Cisco123!</div>
-                            <div className="code-line">Router(config-line)# login</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! 特権EXECモードへのパスワード設定（enable secretは暗号化される）</div>
-                            <div className="code-line">Router(config)# enable secret MyStrongSecret!</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! 平文で保存されるパスワードを暗号化して表示させる</div>
-                            <div className="code-line">Router(config)# service password-encryption</div>
-                        </code></pre>
+                        <div className="code-block">
+                            <div className="code-header">Cisco IOS CLI — ローカルパスワード設定例</div>
+                            <pre>
+                                <span className="code-line"><span className="code-comment">! コンソールポートへのパスワード設定</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">line console</span> <span className="code-number">0</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-line)#</span> <span className="code-command">password</span> <span className="code-keyword">Cisco123!</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-line)#</span> <span className="code-command">login</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! VTY（Telnet/SSHでのリモートアクセス）へのパスワード設定</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">line vty</span> <span className="code-number">0 4</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-line)#</span> <span className="code-command">password</span> <span className="code-keyword">Cisco123!</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-line)#</span> <span className="code-command">login</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! 特権EXECモードへのパスワード設定（enable secretは暗号化される）</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">enable secret</span> <span className="code-keyword">MyStrongSecret!</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! 平文で保存されるパスワードを暗号化して表示させる</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">service password-encryption</span></span>
+                            </pre>
+                        </div>
 
                         <h3>覚えておきたいポイント</h3>
                         <ul>
@@ -264,12 +271,16 @@ export function CcnaSecurityFundamentals() {
                             <li><code>login</code> コマンドを入れ忘れると、パスワードを設定してもログイン時に要求されないため注意。</li>
                             <li>ローカルアカウントを使う場合は <code>username &lt;name&gt; secret &lt;password&gt;</code> と <code>login local</code> の組み合わせを使う（後述のAAAの基礎にもつながる）。</li>
                         </ul>
-                        <pre><code>
-                            <div className="code-line">Router(config)# username admin secret StrongPass123!</div>
-                            <div className="code-line">Router(config)# line vty 0 4</div>
-                            <div className="code-line">Router(config-line)# login local</div>
-                            <div className="code-line">Router(config-line)# transport input ssh</div>
-                        </code></pre>
+
+                        <div className="code-block">
+                            <div className="code-header">Cisco IOS CLI — ローカルユーザーとSSHの有効化</div>
+                            <pre>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">username</span> <span className="code-keyword">admin</span> <span className="code-command">secret</span> <span className="code-keyword">StrongPass123!</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">line vty</span> <span className="code-number">0 4</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-line)#</span> <span className="code-command">login local</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-line)#</span> <span className="code-command">transport input</span> <span className="code-keyword">ssh</span></span>
+                            </pre>
+                        </div>
                     </section>
 
                     <hr />
@@ -286,6 +297,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s54_policy}
                                 ariaLabel="パスワードポリシーの要素"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: パスワードポリシーの要素</p>
@@ -343,6 +355,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s55_vpn}
                                 ariaLabel="サイト間VPNとリモートアクセスVPNの構成比較"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: サイト間VPNとリモートアクセスVPNの構成比較</p>
@@ -469,29 +482,33 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s56_acl}
                                 ariaLabel="ACLによるパケット照合フロー"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: ACLによるパケット照合フロー</p>
 
                         <h3>設定コマンド例</h3>
-                        <pre><code>
-                            <div className="code-line">! 標準ACL：192.168.10.0/24からのアクセスのみ許可</div>
-                            <div className="code-line">Router(config)# access-list 10 permit 192.168.10.0 0.0.0.255</div>
-                            <div className="code-line">Router(config)# access-list 10 deny any</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! 拡張ACL：192.168.10.0/24からWebサーバー(HTTPS)へのアクセスのみ許可</div>
-                            <div className="code-line">Router(config)# access-list 110 permit tcp 192.168.10.0 0.0.0.255 host 203.0.113.10 eq 443</div>
-                            <div className="code-line">Router(config)# access-list 110 deny ip any any</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! 名前付き拡張ACLの例</div>
-                            <div className="code-line">Router(config)# ip access-list extended BLOCK-TELNET</div>
-                            <div className="code-line">Router(config-ext-nacl)# deny tcp any any eq 23</div>
-                            <div className="code-line">Router(config-ext-nacl)# permit ip any any</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! インターフェースへの適用（inbound方向）</div>
-                            <div className="code-line">Router(config)# interface GigabitEthernet0/1</div>
-                            <div className="code-line">Router(config-if)# ip access-group 110 in</div>
-                        </code></pre>
+                        <div className="code-block">
+                            <div className="code-header">Cisco IOS CLI — ACL設定の構成例</div>
+                            <pre>
+                                <span className="code-line"><span className="code-comment">! 標準ACL：192.168.10.0/24からのアクセスのみ許可</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">access-list</span> <span className="code-number">10</span> <span className="code-keyword">permit</span> <span className="code-param">192.168.10.0 0.0.0.255</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">access-list</span> <span className="code-number">10</span> <span className="code-keyword">deny</span> <span className="code-param">any</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! 拡張ACL：192.168.10.0/24からWebサーバー(HTTPS)へのアクセスのみ許可</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">access-list</span> <span className="code-number">110</span> <span className="code-keyword">permit</span> <span className="code-param">tcp 192.168.10.0 0.0.0.255 host 203.0.113.10 eq 443</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">access-list</span> <span className="code-number">110</span> <span className="code-keyword">deny</span> <span className="code-param">ip any any</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! 名前付き拡張ACLの例</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">ip access-list extended</span> <span className="code-keyword">BLOCK-TELNET</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-ext-nacl)#</span> <span className="code-command">deny</span> <span className="code-param">tcp any any eq 23</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-ext-nacl)#</span> <span className="code-command">permit</span> <span className="code-param">ip any any</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! インターフェースへの適用（inbound方向）</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">interface</span> <span className="code-param">GigabitEthernet0/1</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-if)#</span> <span className="code-command">ip access-group</span> <span className="code-number">110</span> <span className="code-keyword">in</span></span>
+                            </pre>
+                        </div>
 
                         <h3>設定・検証時のよくあるミス（試験で狙われやすいポイント）</h3>
                         <ul>
@@ -517,6 +534,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s57_l2sec}
                                 ariaLabel="レイヤー2セキュリティ機能の連携"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: レイヤー2セキュリティ機能の連携</p>
@@ -560,28 +578,31 @@ export function CcnaSecurityFundamentals() {
                         </div>
 
                         <h3>設定コマンド例</h3>
-                        <pre><code>
-                            <div className="code-line">! --- ポートセキュリティ ---</div>
-                            <div className="code-line">Switch(config)# interface FastEthernet0/1</div>
-                            <div className="code-line">Switch(config-if)# switchport mode access</div>
-                            <div className="code-line">Switch(config-if)# switchport port-security</div>
-                            <div className="code-line">Switch(config-if)# switchport port-security maximum 2</div>
-                            <div className="code-line">Switch(config-if)# switchport port-security violation restrict</div>
-                            <div className="code-line">Switch(config-if)# switchport port-security mac-address sticky</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! --- DHCPスヌーピング ---</div>
-                            <div className="code-line">Switch(config)# ip dhcp snooping</div>
-                            <div className="code-line">Switch(config)# ip dhcp snooping vlan 10</div>
-                            <div className="code-line">Switch(config)# interface GigabitEthernet0/1</div>
-                            <div className="code-line">Switch(config-if)# ip dhcp snooping trust</div>
-                            <div className="code-line">! 正規のDHCPサーバーに接続するアップリンクポートのみ「信頼」に設定する</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">! --- 動的ARPインスペクション (DAI) ---</div>
-                            <div className="code-line">Switch(config)# ip arp inspection vlan 10</div>
-                            <div className="code-line">Switch(config)# interface GigabitEthernet0/1</div>
-                            <div className="code-line">Switch(config-if)# ip arp inspection trust</div>
-                            <div className="code-line">! DHCPスヌーピングと同じアップリンクポートを信頼設定にする</div>
-                        </code></pre>
+                        <div className="code-block">
+                            <div className="code-header">Cisco Catalyst Switch CLI — レイヤー2防御設定例</div>
+                            <pre>
+                                <span className="code-line"><span className="code-comment">! --- ポートセキュリティ ---</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config)#</span> <span className="code-command">interface</span> <span className="code-param">FastEthernet0/1</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config-if)#</span> <span className="code-command">switchport mode access</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config-if)#</span> <span className="code-command">switchport port-security</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config-if)#</span> <span className="code-command">switchport port-security maximum</span> <span className="code-number">2</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config-if)#</span> <span className="code-command">switchport port-security violation</span> <span className="code-keyword">restrict</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config-if)#</span> <span className="code-command">switchport port-security mac-address</span> <span className="code-keyword">sticky</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! --- DHCPスヌーピング ---</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config)#</span> <span className="code-command">ip dhcp snooping</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config)#</span> <span className="code-command">ip dhcp snooping vlan</span> <span className="code-number">10</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config)#</span> <span className="code-command">interface</span> <span className="code-param">GigabitEthernet0/1</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config-if)#</span> <span className="code-command">ip dhcp snooping</span> <span className="code-keyword">trust</span></span>
+                                <span className="code-line"><span className="code-comment">! 正規のDHCPサーバーに接続するアップリンクポートのみ「信頼」に設定する</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-comment">! --- 動的ARPインスペクション (DAI) ---</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config)#</span> <span className="code-command">ip arp inspection vlan</span> <span className="code-number">10</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config)#</span> <span className="code-command">interface</span> <span className="code-param">GigabitEthernet0/1</span></span>
+                                <span className="code-line"><span className="code-prompt">Switch(config-if)#</span> <span className="code-command">ip arp inspection</span> <span className="code-keyword">trust</span></span>
+                                <span className="code-line"><span className="code-comment">! DHCPスヌーピングと同じアップリンクポートを信頼設定にする</span></span>
+                            </pre>
+                        </div>
 
                         <h3>ポートセキュリティの違反モード（Violation Mode）</h3>
                         <div className="table-wrap">
@@ -624,6 +645,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s58_aaa}
                                 ariaLabel="AAAの処理シーケンス"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: AAAの処理シーケンス</p>
@@ -702,15 +724,18 @@ export function CcnaSecurityFundamentals() {
                         </div>
 
                         <h3>設定コマンド例（概念理解用）</h3>
-                        <pre><code>
-                            <div className="code-line">Router(config)# aaa new-model</div>
-                            <div className="code-line">Router(config)# radius server MyRadius</div>
-                            <div className="code-line">Router(config-radius-server)# address ipv4 192.168.1.100</div>
-                            <div className="code-line">Router(config-radius-server)# key MySharedSecret</div>
-                            <div className="code-line"></div>
-                            <div className="code-line">Router(config)# aaa authentication login default group radius local</div>
-                            <div className="code-line">! まずRADIUSサーバーで認証し、応答がなければローカルアカウントにフォールバック</div>
-                        </code></pre>
+                        <div className="code-block">
+                            <div className="code-header">Cisco IOS CLI — AAAとRADIUSサーバーの設定例</div>
+                            <pre>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">aaa new-model</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">radius server</span> <span className="code-keyword">MyRadius</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-radius-server)#</span> <span className="code-command">address ipv4</span> <span className="code-param">192.168.1.100</span></span>
+                                <span className="code-line"><span className="code-prompt">Router(config-radius-server)#</span> <span className="code-command">key</span> <span className="code-keyword">MySharedSecret</span></span>
+                                <span className="code-line"></span>
+                                <span className="code-line"><span className="code-prompt">Router(config)#</span> <span className="code-command">aaa authentication login default group radius local</span></span>
+                                <span className="code-line"><span className="code-comment">! まずRADIUSサーバーで認証し、応答がなければローカルアカウントにフォールバック</span></span>
+                            </pre>
+                        </div>
                     </section>
 
                     <hr />
@@ -727,6 +752,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s59_wireless}
                                 ariaLabel="無線セキュリティ規格の進化"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: 無線セキュリティ規格の進化</p>
@@ -800,6 +826,7 @@ export function CcnaSecurityFundamentals() {
                             <MermaidDiagram
                                 chart={DIAGRAMS.s510_gui}
                                 ariaLabel="WLC GUIでのWLAN設定フロー"
+                                preserveNaturalScale
                             />
                         </div>
                         <p className="diagram-caption">図: WLC GUIでのWLAN設定フロー</p>

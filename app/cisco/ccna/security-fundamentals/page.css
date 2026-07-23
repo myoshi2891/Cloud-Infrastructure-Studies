@@ -101,7 +101,10 @@
 /* ---- Main Content ---- */
 .ccna-security-page main {
     margin-left: 290px;
-    padding: 3rem 3.5rem 6rem;
+    padding-top: calc(var(--disclaimer-height, 0px) + 2.5rem);
+    padding-bottom: 6rem;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
     max-width: calc(100% - 290px);
     width: 100%;
 }
@@ -117,7 +120,7 @@
     .ccna-security-page main {
         margin-left: 0;
         max-width: 100%;
-        padding: 2rem 1.25rem 4rem;
+        padding: calc(var(--disclaimer-height, 0px) + 1.5rem) 1.25rem 4rem;
     }
 }
 
@@ -163,7 +166,7 @@
 
 .ccna-security-page section {
     margin-bottom: 3.5rem;
-    scroll-margin-top: 5rem;
+    scroll-margin-top: calc(var(--disclaimer-height, 0px) + 5rem);
 }
 
 .ccna-security-page h2 {
@@ -211,25 +214,68 @@
     color: #d7e0ff;
 }
 
-.ccna-security-page pre:not(.mermaid) {
-    background: #0a1428 !important;
-    border: 1px solid rgba(124, 158, 255, 0.22);
+/* ---- Code Block & Syntax Highlighting ---- */
+.ccna-security-page .code-block {
+    margin: 1.4rem 0 1.8rem;
     border-radius: 10px;
-    padding: 1.2rem 1.4rem;
-    overflow-x: auto;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin: 1.2rem 0 1.6rem;
+    overflow: hidden;
+    background: #060b14;
+    border: 1px solid rgba(124, 158, 255, 0.22);
 }
 
-.ccna-security-page pre:not(.mermaid) code {
-    background: none;
-    padding: 0;
-    color: #e7ecfb;
+.ccna-security-page .code-header {
+    padding: 0.45rem 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: #93a3c9;
+    background: rgba(124, 158, 255, 0.08);
+    border-bottom: 1px solid rgba(124, 158, 255, 0.18);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ccna-security-page .code-block pre {
+    background: transparent !important;
+    border: none;
+    margin: 0;
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.7;
 }
 
 .ccna-security-page .code-line {
     white-space: pre;
+    display: block;
+}
+
+.ccna-security-page .code-comment {
+    color: #6b7d9c;
+    font-style: italic;
+}
+
+.ccna-security-page .code-prompt {
+    color: #7c9eff;
+    font-weight: 600;
+}
+
+.ccna-security-page .code-command {
+    color: #ff9e64;
+    font-weight: 600;
+}
+
+.ccna-security-page .code-keyword {
+    color: #7ee2b8;
+    font-weight: 600;
+}
+
+.ccna-security-page .code-number {
+    color: #73daca;
+}
+
+.ccna-security-page .code-param {
+    color: #e7ecfb;
 }
 
 /* ---- Tables ---- */
