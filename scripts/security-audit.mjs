@@ -56,10 +56,26 @@ export function hasBlockingVulnerabilities(summary) {
 }
 
 /**
+ * Decide whether a `spawnSync` result for `bun audit` represents a genuine process failure
+ * (as opposed to a normal run that merely reported advisories).
+ *
+ * `bun audit` uses exit code 0 when no vulnerabilities are found and exit code 1 when one or
+ * more advisories exist — in both cases JSON is emitted on stdout and must be parsed. Only a
+ * spawn error, a received signal, or an exit code >= 2 indicates the audit could not run.
+ *
+ * @param {{ error?: unknown; status?: number | null; signal?: NodeJS.Signals | null }} result
+ * @returns {boolean} `true` when the audit process itself failed and its output cannot be trusted.
+ */
+export function isAuditProcessFailure(result) {
+    if (result.error || result.signal) return true;
+    return typeof result.status === 'number' && result.status >= 2;
+}
+
+/**
  * Run `bun audit --json` and parse its JSON output.
  *
  * @returns {unknown} The parsed JSON object produced by `bun audit --json`, or an empty object when no JSON output is present.
- * @throws {Error} If the audit process fails (spawn error, non-zero exit status, or received signal) or if the captured output cannot be parsed as JSON.
+ * @throws {Error} If the audit process fails (spawn error, exit status >= 2, or received signal) or if the captured output cannot be parsed as JSON.
  */
 function runBunAudit() {
     const result = spawnSync('bun', ['audit', '--json'], {
@@ -67,7 +83,7 @@ function runBunAudit() {
         stdio: ['ignore', 'pipe', 'pipe'],
         timeout: 15000,
     });
-    if (result.error || result.status !== 0 || result.signal) {
+    if (isAuditProcessFailure(result)) {
         const errorMsg = result.error ? result.error.message : 'None';
         const stderrStr = result.stderr ? result.stderr.toString() : 'None';
         throw new Error(
