@@ -99,7 +99,7 @@
 /* ---------- Main Content ---------- */
 .ccna-automation-api-page .main {
     margin-left: 280px;
-    max-width: 960px;
+    max-width: 100%;
     padding: 48px 48px 96px;
 }
 
@@ -146,7 +146,7 @@
 .ccna-automation-api-page .hero-desc {
     font-size: 1.05rem;
     color: var(--color-muted-foreground, #94a3b8);
-    max-width: 780px;
+    max-width: 100%;
     line-height: 1.8;
 }
 
@@ -269,11 +269,27 @@
 
 /* Diagram Container */
 .ccna-automation-api-page .diagram-container {
-    background: rgba(13, 27, 46, 0.5);
-    border: 1px solid var(--color-border, #1e2840);
-    border-radius: 12px;
-    padding: 24px;
-    margin: 24px 0;
-    display: flex;
-    justify-content: center;
+    margin: 24px auto;
+    display: block;
+    width: 100%;
+}
+
+.ccna-automation-api-page .diagram-container > div {
+    width: 100%;
+    margin: 0;
+}
+
+.ccna-automation-api-page .diagram-container svg {
+    display: block;
+    margin: 0 auto;
+    max-width: none !important;
+    max-height: none;
+    height: auto !important;
+    font-size: 1rem;
+}
+
+/* 添付画像で小さかった比較図だけを拡大する。他の7図には適用しない。 */
+.ccna-automation-api-page .diagram-container[data-diagram-id='diag-1'] svg,
+.ccna-automation-api-page .diagram-container[data-diagram-id='diag-7'] svg {
+    width: 1200px !important;
 }
