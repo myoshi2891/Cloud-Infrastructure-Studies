@@ -68,4 +68,11 @@ describe('CcnaSecurityFundamentalsPage', () => {
         expect(navElement).toBeInTheDocument();
         expect(getAllByText(/基本概念/i).length).toBeGreaterThan(0);
     });
+
+    it('renders all 11 mermaid diagrams correctly', () => {
+        const { getAllByTestId } = render(<CcnaSecurityFundamentalsPage />);
+
+        const diagrams = getAllByTestId('mermaid-diagram');
+        expect(diagrams).toHaveLength(11);
+    });
 });
