@@ -102,6 +102,7 @@ flowchart TB
 同じネットワーク機器の情報を、それぞれの形式で表現すると次のようになります。
 
 **XML**
+
 ```xml
 <device>
   <hostname>Router1</hostname>
@@ -113,6 +114,7 @@ flowchart TB
 ```
 
 **JSON**
+
 ```json
 {
   "hostname": "Router1",
@@ -124,6 +126,7 @@ flowchart TB
 ```
 
 **YAML**
+
 ```yaml
 hostname: Router1
 interface:
@@ -501,7 +504,7 @@ flowchart TB
 
 同じ箇所を別々のブランチで変更していると、マージ時に「コンフリクト」が発生します。Gitは競合箇所を次のような目印つきでファイルに書き込むので、どちらを残すか（または両方を活かすか）を手動で判断して解消します。
 
-```
+```text
 <<<<<<< HEAD
 （現在のブランチでの変更内容）
 =======
