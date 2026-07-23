@@ -825,7 +825,7 @@
                                     </tr>
                                     <tr>
                                         <td>コメント</td>
-                                        <td>標準では不可</td>
+                                        <td>可能（<code>&lt;!-- コメント --&gt;</code>）</td>
                                         <td>不可</td>
                                         <td>可能（<code>#</code>）</td>
                                     </tr>
@@ -897,8 +897,10 @@
                                 API（ドメイン2.0で詳しく学習）のやり取りは<strong>JSON</strong>が主流
                             </li>
                             <li>
-                                Ansibleの設定ファイルやCisco
-                                NSOのモデルは<strong>YAML</strong>が主流
+                                Ansibleの設定ファイル（Playbook）には<strong>YAML</strong>が使われる
+                            </li>
+                            <li>
+                                Cisco NSOのデータモデル定義には<strong>YANG</strong>が使われる（YANGはデータモデル記述言語）
                             </li>
                             <li>
                                 古いSOAPベースのAPIや一部のネットワーク機器の設定エクスポートには<strong>XML</strong>が使われることがある

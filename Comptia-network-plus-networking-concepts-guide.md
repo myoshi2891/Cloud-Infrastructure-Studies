@@ -147,8 +147,8 @@ flowchart LR
 | --- | --- |
 | NFV（Network Functions Virtualization） | ルーターやファイアウォールなどのネットワーク機能をソフトウェアとして仮想化する技術 |
 | VPC（Virtual Private Cloud） | パブリッククラウド内に論理的に分離された、専用のプライベートネットワーク空間 |
-| Network security group | VPC内のリソース（インスタンス単位など）に適用するステートフルなファイアウォールルール |
-| Network security list | サブネット単位で適用される、ステートレスなアクセス制御リスト |
+| Network security group | VPC内のリソース（VNIC/インスタンス単位）に適用するアクセス制御ルール（ステートフル/ステートレス規則を設定可能） |
+| Network security list | サブネット単位で適用されるアクセス制御リスト（OCIなどではステートフル/ステートレス規則をどちらも選択・設定可能） |
 | Internet gateway | VPC内のパブリックサブネットとインターネットを接続するゲートウェイ |
 | NAT gateway | プライベートサブネットが送信専用でインターネットにアクセスするためのアドレス変換ゲートウェイ |
 | Direct Connect | 公衆インターネットを経由せず、専用線でオンプレミス環境とクラウドを接続するサービス |

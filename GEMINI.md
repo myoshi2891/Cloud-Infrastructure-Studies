@@ -40,7 +40,7 @@
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` ※実装準備中、constants の `status` を変更するだけで Drawer に自動反映）
-- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`automation-software-development-design/page.tsx`、`ip-connectivity-guide/page.tsx` 含む）
+- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`automation-software-development-design/page.tsx`、`ip-connectivity-guide/page.tsx`、`ip-services-guide/page.tsx` 含む）
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。新試験はここに追加する。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
