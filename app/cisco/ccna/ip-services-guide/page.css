@@ -120,7 +120,7 @@
     font-size: clamp(1.7rem, 3vw, 2.5rem);
     line-height: 1.35;
     margin: 0 0 0.6rem;
-    background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+    background: linear-gradient(90deg, var(--color-primary, #a9c1ff), var(--color-accent, #7c9eff));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -128,10 +128,10 @@
 
 .ccna-ip-services-page h2 {
     font-size: 1.55rem;
-    color: var(--text);
+    color: var(--color-foreground, #e7ecf6);
     margin: 3.2rem 0 1rem;
     padding-top: 1.4rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
 }
 
 .ccna-ip-services-page .section:first-of-type h2 {
@@ -141,40 +141,40 @@
 
 .ccna-ip-services-page h3 {
     font-size: 1.18rem;
-    color: var(--accent-strong);
+    color: var(--color-primary, #a9c1ff);
     margin: 2rem 0 0.8rem;
 }
 
 .ccna-ip-services-page p {
-    color: var(--text);
+    color: var(--color-foreground, #e7ecf6);
     margin: 0 0 1.1rem;
 }
 
 .ccna-ip-services-page strong {
-    color: var(--accent-strong);
+    color: var(--color-primary, #a9c1ff);
     font-weight: 600;
 }
 
 .ccna-ip-services-page .lede {
     font-size: 1.08rem;
-    color: var(--text-dim);
-    border-left: 3px solid var(--accent);
+    color: var(--color-muted-foreground, #96a7c4);
+    border-left: 3px solid var(--color-accent, #7c9eff);
     padding: 0.9rem 1.3rem;
-    background: var(--bg-elevated);
+    background: var(--color-card, #0c1a2c);
     border-radius: 0 10px 10px 0;
     margin-bottom: 2.2rem;
 }
 
 .ccna-ip-services-page .callout {
-    background: var(--accent-soft);
-    border: 1px solid var(--border);
+    background: rgba(124, 158, 255, 0.14);
+    border: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
     border-radius: 12px;
     padding: 1.2rem 1.5rem;
     margin: 1.6rem 0;
 }
 
 .ccna-ip-services-page .callout-title {
-    color: var(--accent-strong);
+    color: var(--color-primary, #a9c1ff);
     font-weight: 700;
     font-size: 0.85rem;
     text-transform: uppercase;
@@ -183,12 +183,12 @@
 }
 
 .ccna-ip-services-page .callout.warn {
-    background: var(--danger-soft);
+    background: rgba(248, 113, 113, 0.14);
     border-color: rgba(255, 128, 128, 0.35);
 }
 
 .ccna-ip-services-page .callout.warn .callout-title {
-    color: var(--danger);
+    color: var(--color-destructive, #f87171);
 }
 
 /* TOC Grid */
@@ -204,24 +204,24 @@
     align-items: center;
     gap: 0.6rem;
     padding: 0.75rem 1rem;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    background: var(--color-card, #0c1a2c);
+    border: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
     border-radius: 10px;
-    color: var(--text);
+    color: var(--color-foreground, #e7ecf6);
     text-decoration: none;
     font-size: 0.92rem;
     transition: all 0.2s ease;
 }
 
 .ccna-ip-services-page .toc-grid a:hover {
-    border-color: var(--accent);
+    border-color: var(--color-accent, #7c9eff);
     transform: translateY(-2px);
-    background: var(--accent-soft);
+    background: rgba(124, 158, 255, 0.14);
 }
 
 .ccna-ip-services-page .toc-grid .num {
     font-weight: 700;
-    color: var(--accent);
+    color: var(--color-accent, #7c9eff);
     font-family: var(--font-mono, monospace);
 }
 
@@ -230,7 +230,7 @@
     width: 100%;
     overflow-x: auto;
     margin: 1.6rem 0 2.2rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
     border-radius: 12px;
 }
 
@@ -241,18 +241,18 @@
 }
 
 .ccna-ip-services-page thead th {
-    background: var(--bg-elevated);
-    color: var(--accent-strong);
+    background: var(--color-card, #0c1a2c);
+    color: var(--color-primary, #a9c1ff);
     text-align: left;
     padding: 0.8rem 1.1rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
     white-space: nowrap;
 }
 
 .ccna-ip-services-page tbody td {
     padding: 0.75rem 1.1rem;
     border-bottom: 1px solid rgba(124, 158, 255, 0.08);
-    color: var(--text-dim);
+    color: var(--color-muted-foreground, #96a7c4);
 }
 
 .ccna-ip-services-page tbody tr:last-child td {
@@ -268,9 +268,9 @@
     position: relative;
     margin: 1.4rem 0 2rem;
     border-radius: 12px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
     overflow: hidden;
-    background: var(--code-bg);
+    background: var(--color-card-secondary, #0a1728);
 }
 
 .ccna-ip-services-page .code-block .code-label {
@@ -280,9 +280,9 @@
     padding: 0.55rem 1.1rem;
     font-family: var(--font-mono, monospace);
     font-size: 0.72rem;
-    color: var(--text-dim);
+    color: var(--color-muted-foreground, #96a7c4);
     background: rgba(124, 158, 255, 0.06);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
 }
 
 .ccna-ip-services-page .code-block pre {
@@ -326,8 +326,8 @@
 .ccna-ip-services-page .mermaid-wrap {
     margin: 1.8rem 0;
     padding: 1.2rem;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    background: var(--color-card, #0c1a2c);
+    border: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
     border-radius: 12px;
     display: flex;
     justify-content: center;
@@ -339,21 +339,21 @@
 .ccna-ip-services-page .sources {
     margin-top: 4rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));
 }
 
 .ccna-ip-services-page .sources ul {
     padding-left: 1.2rem;
-    color: var(--text-dim);
+    color: var(--color-muted-foreground, #96a7c4);
 }
 
 .ccna-ip-services-page .sources a {
-    color: var(--accent);
+    color: var(--color-accent, #7c9eff);
     text-decoration: underline;
 }
 
 .ccna-ip-services-page .sources a:hover {
-    color: var(--accent-strong);
+    color: var(--color-primary, #a9c1ff);
 }
 
 @media (max-width: 992px) {

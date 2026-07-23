@@ -730,7 +730,7 @@ export function CcnaIpServicesGuide() {
                             <p style={{ marginBottom: 0 }}>
                                 <code>ip helper-address</code> は
                                 <strong>クライアント側のサブネットに面したインターフェース</strong>
-                                に設定する点、アンドこのコマンドはDHCP以外にも複数のUDPブロードキャストサービス（TFTP、DNSなど）を中継できる点を押さえておきましょう。
+                                に設定する点、およびこのコマンドはDHCP以外にも複数のUDPブロードキャストサービス（TFTP、DNSなど）を中継できる点を押さえておきましょう。
                             </p>
                         </div>
                     </section>
@@ -1007,7 +1007,7 @@ export function CcnaIpServicesGuide() {
                                     </tr>
                                     <tr>
                                         <td>信頼性</td>
-                                        <td>低い（コネクションレス、エラー訂正が簡易）</td>
+                                        <td>UDP上でACK・タイムアウト再送を行うが、停止待ち方式で機能が限定的</td>
                                         <td>高い（コネクション指向）</td>
                                     </tr>
                                     <tr>
@@ -1055,7 +1055,7 @@ export function CcnaIpServicesGuide() {
                                 <div className="code-line">
                                     Destination filename [running-config]?
                                 </div>
-                                <br />
+                                <div className="code-line"></div>
                                 <div className="code-line">
                                     <span className="code-comment">
                                         ! TFTPサーバーからIOSイメージをルーターのflashへ復元
@@ -1075,7 +1075,7 @@ export function CcnaIpServicesGuide() {
                                 functions）」が問われる項目です。TFTPは
                                 <strong>認証なし・UDP</strong>、FTPは
                                 <strong>認証あり・TCP</strong>
-                                という対比、アンドIOSイメージや設定ファイルのバックアップ／復元という代表的な用途を押さえておきましょう。
+                                という対比、およびIOSイメージや設定ファイルのバックアップ／復元という代表的な用途を押さえておきましょう。
                             </p>
                         </div>
                     </section>
