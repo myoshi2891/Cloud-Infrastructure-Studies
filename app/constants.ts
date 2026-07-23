@@ -255,6 +255,11 @@ export const EXAMS: Exam[] = [
                 href: '/cisco/ccna/ip-services-guide',
                 pct: '10%',
             },
+            {
+                label: '5.0 Security Fundamentals（セキュリティ基礎）',
+                href: '/cisco/ccna/security-fundamentals',
+                pct: '15%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',
