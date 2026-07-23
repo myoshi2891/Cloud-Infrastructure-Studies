@@ -1,6 +1,3 @@
-'use client';
-
-import React from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
@@ -900,7 +897,7 @@ export function CcnaIpServicesGuide() {
                                         ip domain-name example.local
                                     </span>
                                 </div>
-                                <br />
+                                <div className="code-line" />
                                 <div className="code-line">
                                     <span className="code-comment">! ② RSA鍵ペアを生成</span>
                                 </div>
@@ -913,7 +910,7 @@ export function CcnaIpServicesGuide() {
                                         ! （鍵長を聞かれたら 2048 などを入力）
                                     </span>
                                 </div>
-                                <br />
+                                <div className="code-line" />
                                 <div className="code-line">
                                     <span className="code-comment">
                                         ! ③ ローカル認証用のユーザーを作成
@@ -925,7 +922,7 @@ export function CcnaIpServicesGuide() {
                                         username admin privilege 15 secret StrongPass123
                                     </span>
                                 </div>
-                                <br />
+                                <div className="code-line" />
                                 <div className="code-line">
                                     <span className="code-comment">
                                         ! ④ VTYラインでSSHのみを許可し、ローカル認証を使う
