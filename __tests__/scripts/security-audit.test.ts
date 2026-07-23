@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import {
     parseAuditOutput,
     hasBlockingVulnerabilities,
+    isAuditProcessFailure,
 } from '../../scripts/security-audit.mjs';
 
 const FIXTURES_DIR = resolve(process.cwd(), '__tests__/scripts/__fixtures__');
@@ -78,5 +79,28 @@ describe('security-audit / hasBlockingVulnerabilities', () => {
         const json = loadFixture('bun-audit-vulnerable.json');
         const summary = parseAuditOutput(json);
         expect(hasBlockingVulnerabilities(summary)).toBe(true);
+    });
+});
+
+describe('security-audit / isAuditProcessFailure', () => {
+    it('should treat exit status 0 (no vulnerabilities) as a successful run', () => {
+        expect(isAuditProcessFailure({ error: null, status: 0, signal: null })).toBe(false);
+    });
+
+    it('should treat exit status 1 (vulnerabilities found, JSON emitted) as a successful run', () => {
+        // bun audit exits 1 whenever any advisory exists; that is a normal result, not a crash.
+        expect(isAuditProcessFailure({ error: null, status: 1, signal: null })).toBe(false);
+    });
+
+    it('should treat exit status >= 2 as a process failure', () => {
+        expect(isAuditProcessFailure({ error: null, status: 2, signal: null })).toBe(true);
+    });
+
+    it('should treat a spawn error as a process failure', () => {
+        expect(isAuditProcessFailure({ error: new Error('ENOENT'), status: null, signal: null })).toBe(true);
+    });
+
+    it('should treat termination by signal as a process failure', () => {
+        expect(isAuditProcessFailure({ error: null, status: null, signal: 'SIGTERM' })).toBe(true);
     });
 });
