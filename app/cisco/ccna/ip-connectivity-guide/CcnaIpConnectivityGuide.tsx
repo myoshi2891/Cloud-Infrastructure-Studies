@@ -19,7 +19,11 @@ function Diagram({ id, label }: { id: string; label: string }) {
     if (!chart) return null;
     const display = DIAGRAM_DISPLAY[id] ?? { frameWidth: 760, preserveNaturalScale: true };
     return (
-        <div className="mermaid-wrap" style={{ maxWidth: `${display.frameWidth}px` }}>
+        <div
+            className="mermaid-wrap"
+            data-diagram-id={id}
+            style={{ maxWidth: `${display.frameWidth}px` }}
+        >
             <MermaidDiagram
                 chart={chart}
                 ariaLabel={label}
