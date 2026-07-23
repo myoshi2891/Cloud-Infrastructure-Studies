@@ -69,10 +69,22 @@ describe('CcnaSecurityFundamentalsPage', () => {
         expect(getAllByText(/基本概念/i).length).toBeGreaterThan(0);
     });
 
-    it('renders all 11 mermaid diagrams correctly', () => {
+    it('renders all 11 mermaid diagrams with natural scale enabled', () => {
         const { getAllByTestId } = render(<CcnaSecurityFundamentalsPage />);
 
         const diagrams = getAllByTestId('mermaid-diagram');
         expect(diagrams).toHaveLength(11);
+        diagrams.forEach((d) => {
+            expect(d.getAttribute('data-natural-scale')).toBe('true');
+        });
+    });
+
+    it('renders CLI code blocks with syntax highlighting classes', () => {
+        const { container } = render(<CcnaSecurityFundamentalsPage />);
+
+        const comments = container.querySelectorAll('.code-comment');
+        const prompts = container.querySelectorAll('.code-prompt');
+        expect(comments.length).toBeGreaterThan(0);
+        expect(prompts.length).toBeGreaterThan(0);
     });
 });
