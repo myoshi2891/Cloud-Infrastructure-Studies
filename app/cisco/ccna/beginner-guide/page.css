@@ -25,6 +25,7 @@
 .ccna-beginner-page .layout {
     display: block;
     min-height: 100vh;
+    padding-left: 280px;
 }
 
 /* ---------- Sidebar ---------- */
@@ -99,18 +100,19 @@
 
 /* ---------- Main ---------- */
 .ccna-beginner-page main {
-    margin-left: 280px;
     padding: 3rem 4rem 6rem;
     max-width: 1000px;
     margin-inline: auto;
 }
 
 @media (max-width: 900px) {
+    .ccna-beginner-page .layout {
+        padding-left: 0;
+    }
     .ccna-beginner-page .sidebar {
         display: none;
     }
     .ccna-beginner-page main {
-        margin-left: 0;
         width: 100%;
         padding: 2rem 1.25rem 4rem;
     }

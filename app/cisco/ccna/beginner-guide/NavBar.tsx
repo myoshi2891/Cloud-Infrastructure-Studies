@@ -17,6 +17,9 @@ const TOC_ITEMS = [
     { id: 'sec12', label: '12. 参考情報源' },
 ];
 
+/**
+ * スクロール位置に同期してアクティブな目次項目を追従表示するナビゲーションバーコンポーネント。
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('sec1');
 
