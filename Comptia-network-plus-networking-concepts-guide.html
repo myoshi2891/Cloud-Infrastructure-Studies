@@ -174,17 +174,16 @@
                 font-size: 18px;
                 font-weight: 500;
                 color: var(--color-text-primary);
-                margin: 46px 0 16px 0;
-                padding: 3px 0 3px 14px;
-                border-left: 3px solid var(--color-accent-purple);
+                margin: 58px 0 20px 0;
+                padding-bottom: 14px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                letter-spacing: 0.01em;
             }
             h3 {
                 font-size: 16px;
                 font-weight: 500;
                 color: var(--color-text-primary);
-                margin: 28px 0 12px 0;
-                padding-left: 14px;
-                border-left: 2px solid var(--color-border-secondary);
+                margin: 32px 0 14px 0;
             }
 
             section:first-of-type h2:first-child {
@@ -192,8 +191,8 @@
             }
 
             .hero {
-                padding-bottom: 32px;
-                margin-bottom: 8px;
+                padding-bottom: 36px;
+                margin-bottom: 12px;
                 border-bottom: 1px solid var(--color-border-secondary);
             }
 
@@ -201,49 +200,42 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
-                font-size: 12px;
+                font-size: 11px;
                 font-weight: 500;
+                letter-spacing: 0.03em;
                 color: var(--color-accent-purple);
                 background: var(--color-accent-purple-bg);
                 border-radius: var(--border-radius-md);
                 padding: 6px 12px;
-                margin-bottom: 18px;
+                margin-bottom: 20px;
             }
 
             .hero-title {
                 font-size: 22px;
                 font-weight: 500;
                 color: var(--color-text-primary);
-                margin: 0 0 10px 0;
+                margin: 0 0 12px 0;
+                letter-spacing: 0.01em;
             }
             .hero-sub {
                 font-size: 14px;
                 color: var(--color-text-secondary);
-                margin: 0 0 22px 0;
-                max-width: 720px;
+                margin: 0 0 18px 0;
+                max-width: 640px;
             }
 
-            .hero-stats {
-                display: flex;
-                gap: 10px;
-                flex-wrap: wrap;
-            }
-
-            .hero-stat {
-                display: flex;
-                align-items: center;
-                gap: 8px;
+            .hero-meta {
                 font-size: 13px;
-                color: var(--color-text-secondary);
-                background: var(--color-background-secondary);
-                border: 1px solid var(--color-border-tertiary);
-                border-radius: var(--border-radius-md);
-                padding: 8px 14px;
+                color: var(--color-text-tertiary);
+                margin: 0;
             }
 
-            .hero-stat i {
-                color: var(--color-accent-teal);
-                font-size: 15px;
+            .hero-meta span {
+                color: var(--color-text-secondary);
+            }
+            .hero-meta .dot {
+                margin: 0 10px;
+                color: var(--color-border-primary);
             }
 
             p {
@@ -292,29 +284,32 @@
 
             .toc-table {
                 width: 100%;
-                border-collapse: separate;
-                border-spacing: 0 6px;
-                margin: 16px 0 8px 0;
+                border-collapse: collapse;
+                margin: 20px 0 8px 0;
             }
             .toc-table tr {
-                background: var(--color-background-secondary);
+                border-bottom: 1px solid var(--color-border-tertiary);
             }
-            .toc-table tr:hover {
-                background: var(--color-background-tertiary);
+            .toc-table tr:last-child {
+                border-bottom: none;
             }
             .toc-table td {
-                padding: 11px 14px;
+                padding: 13px 4px;
                 font-size: 14px;
-                color: var(--color-text-secondary);
             }
             .toc-table td:first-child {
-                width: 90px;
-                color: var(--color-accent-purple);
-                font-weight: 500;
-                border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+                width: 76px;
+                white-space: nowrap;
+                color: var(--color-text-tertiary);
+                font-family: var(--font-mono);
+                font-size: 12px;
+                letter-spacing: 0.02em;
             }
             .toc-table td:last-child {
-                border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+                color: var(--color-text-secondary);
+            }
+            .toc-table tr:hover td:last-child {
+                color: var(--color-accent-teal);
             }
 
             table.data {
@@ -330,7 +325,7 @@
                 color: var(--color-text-primary);
                 font-weight: 500;
                 padding: 10px 12px;
-                border-bottom: 2px solid var(--color-accent-purple);
+                border-bottom: 1px solid var(--color-border-primary);
             }
 
             table.data td {
@@ -489,26 +484,17 @@
             </aside>
             <main class="content">
                 <header class="hero" id="intro">
-                    <span class="hero-badge"
-                        ><i class="ti ti-certificate"></i>CompTIA Network+ (N10-009)
-                        試験対策ガイド</span
-                    >
+                    <span class="hero-badge">CompTIA Network+ (N10-009) 試験対策ガイド</span>
                     <h1 class="hero-title">Domain 1.0: Networking Concepts</h1>
                     <p class="hero-sub">
                         出題比率23%を占めるネットワーク基礎分野を、公式Exam
                         Objectivesの1.1〜1.8に沿って8ステップで解説します。
                     </p>
-                    <div class="hero-stats">
-                        <div class="hero-stat">
-                            <i class="ti ti-list-numbers"></i><span>8 ステップ構成</span>
-                        </div>
-                        <div class="hero-stat">
-                            <i class="ti ti-percentage"></i><span>出題比率 23%</span>
-                        </div>
-                        <div class="hero-stat">
-                            <i class="ti ti-topology-star-3"></i><span>Mermaid図解 19点</span>
-                        </div>
-                    </div>
+                    <p class="hero-meta">
+                        <span>8 ステップ構成</span><span class="dot">・</span
+                        ><span>出題比率 23%</span><span class="dot">・</span
+                        ><span>Mermaid図解 19点</span>
+                    </p>
                 </header>
 
                 <section id="overview">
