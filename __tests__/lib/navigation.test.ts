@@ -217,9 +217,8 @@ describe('toNavTree', () => {
 
             // Assert
             const providers = result.map((g: NavGroup) => g.provider);
-            expect(providers).toContain('GCP');
-            expect(providers).toContain('AWS');
-            expect(providers).toContain('Cisco');
+            expect(result).toHaveLength(3);
+            expect(providers).toEqual(['GCP', 'AWS', 'Cisco']);
         });
 
         it('Cisco グループに ccna 試験が含まれる', () => {
