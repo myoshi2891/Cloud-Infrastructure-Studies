@@ -1,18 +1,6 @@
 .ccna-software-dev-design-page {
-    --ccna-bg: #07111e;
-    --ccna-bg-elevated: #0d1b2e;
-    --ccna-bg-card: #0f2138;
-    --ccna-bg-card-2: #122a46;
-    --ccna-border: rgba(124, 158, 255, 0.16);
-    --ccna-border-strong: rgba(124, 158, 255, 0.32);
-    --ccna-accent: #7c9eff;
-    --ccna-accent-2: #5eead4;
-    --ccna-text-primary: #e7edf7;
-    --ccna-text-secondary: #9fb3c8;
-    --ccna-text-muted: #5f7291;
-
-    background: var(--ccna-bg);
-    color: var(--ccna-text-primary);
+    background: var(--color-background, #08090f);
+    color: var(--color-foreground, #e2e8f0);
     font-family: var(--font-body, 'Noto Sans JP', sans-serif);
     font-size: 16px;
     line-height: 1.85;
@@ -180,9 +168,15 @@
     background: var(--ccna-bg-card);
 }
 
+.ccna-software-dev-design-page .hero > *,
+.ccna-software-dev-design-page .section > * {
+    max-width: 1000px;
+    margin-inline: auto;
+}
+
 .ccna-software-dev-design-page .section {
     padding: 48px 48px;
-    border-bottom: 1px solid var(--ccna-border);
+    border-bottom: 1px solid var(--color-border, #1e2840);
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
 }
 
@@ -388,7 +382,7 @@
 .ccna-software-dev-design-page .mermaid-wrap svg {
     display: block;
     margin: 0 auto;
-    max-width: none !important;
+    max-width: 100%;
     max-height: none;
     height: auto;
     font-size: 1rem;

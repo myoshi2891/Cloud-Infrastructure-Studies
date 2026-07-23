@@ -19,6 +19,9 @@ const DIAGRAM_DISPLAY: Record<string, { frameWidth: number }> = {
     'diag-11': { frameWidth: 760 },
 };
 
+/**
+ * 指定された ID の Mermaid ダイアグラムとラベルを受け取り、適切な最大幅で図表を表示するコンポーネント。
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -34,6 +37,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/**
+ * CCNA Automation「ソフトウェア開発と設計」の完全ガイド全体を構成するメインコンポーネント。
+ */
 export function CcnaSoftwareDevDesignGuide() {
     return (
         <div className="ccna-software-dev-design-page">

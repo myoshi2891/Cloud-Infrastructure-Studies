@@ -23,6 +23,9 @@ const NAV_ITEMS: NavItem[] = [
     { id: 'sec-13', label: '13. 参考ソース' },
 ];
 
+/**
+ * スクロール位置に応じた目次追従（スクロールスパイ）と各セクションへのスムーズなアンカー遷移を担当するナビゲーションコンポーネント。
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('sec-1');
 
