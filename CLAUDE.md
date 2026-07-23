@@ -210,6 +210,12 @@ app/
         NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
         constants.ts                # Mermaid 図定義（12図）
         page.css                    # ページ固有スタイル
+      ip-connectivity-guide/
+        page.tsx                    # CCNA 200-301 IP Connectivity 完全ガイド（Server。メタデータ定義）
+        CcnaIpConnectivityGuide.tsx # 本文＋インタラクション（client。全6章＋まとめ、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（7図）
+        page.css                    # ページ固有スタイル
       ip-services-guide/
         page.tsx                    # CCNA 200-301 IP Services 完全ガイド（Server。メタデータ定義）
         CcnaIpServicesGuide.tsx     # 本文＋インタラクション（client。全12セクション、Mermaid等）

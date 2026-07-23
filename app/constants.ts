@@ -236,9 +236,9 @@ export const EXAMS: Exam[] = [
                 pct: '入門',
             },
             {
-                label: '1.0 ソフトウェア開発と設計',
+                label: '6.0 自動化とプログラマビリティ',
                 href: '/cisco/ccna/automation-software-development-design',
-                pct: '15%',
+                pct: '10%',
             },
             {
                 label: '3.0 IP Connectivity（IP接続性）',

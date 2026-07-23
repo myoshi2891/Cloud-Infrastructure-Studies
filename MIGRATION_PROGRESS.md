@@ -45,7 +45,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - [x] **Step 1 (Red)**: `test(ccna): add failing tests for ccna ip connectivity guide page` (`__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx` テストの作成)
 - [x] **Step 2 (Green)**: `feat(ccna): migrate all content, css, and diagrams for ccna ip connectivity guide` (`page.tsx`, `CcnaIpConnectivityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全6章＋まとめ＋参考ソース、テーブル、Mermaid 7図の完璧な移行)
-- [x] **Step 3 (Refactor / Integration & Archive & Docs Sync)**: `refactor(ccna): integrate ccna ip connectivity guide into routing and sync docs` (`app/constants.ts` へのドメイン追加、`Ccna-ip-connectivity-guide.html` / `.md` の `archive/Cisco/` への退避、`MIGRATION_PROGRESS.md` の更新)
+- [x] **Step 3 (Refactor / Integration & Archive & Docs Sync)**: `refactor(ccna): integrate ccna ip connectivity guide into routing and sync docs` (`app/constants.ts` へのドメイン追加、`Ccna-ip-connectivity-guide.html` / `.md` の `archive/Cisco/html/` への退避、`MIGRATION_PROGRESS.md` の更新)
 - [x] **Step 4 (Layout Expansion & Syntax Highlighting)**: `feat(ccna): update layout to full width and add vibrant syntax highlighting to code blocks` (レイアウトを画面いっぱいの全幅表示へ拡張、コードブロックを `.code-line` 構造化し、コメント・プロンプト・コマンド・数値等の視認性の高いシンタックスハイライトを追加)
 - [x] **Step 5 (Mermaid Diagram Sizing Fix)**: `feat(mermaid): optimize diagram sizing for small and extra tall diagrams` (図解の豆粒化と過大縦伸張を解消するため、`applySvgFixups` で小型図の適正拡大・縦長図の最大高さ上限および垂直スクロール制御を導入)
 
@@ -58,7 +58,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/ccna/ip-connectivity-guide/page.css](app/cisco/ccna/ip-connectivity-guide/page.css)
 - [__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx](__tests__/cisco/ccna/ip-connectivity-guide/page.test.tsx)
 - [app/constants.ts](app/constants.ts)
-- [archive/Cisco/Ccna-ip-connectivity-guide.html](archive/Cisco/Ccna-ip-connectivity-guide.html)
+- [archive/Cisco/html/Ccna-ip-connectivity-guide.html](archive/Cisco/html/Ccna-ip-connectivity-guide.html)
 - [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
 ---
