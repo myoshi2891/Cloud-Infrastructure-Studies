@@ -92,8 +92,8 @@
 
 /* Main Content */
 .ccna-ip-connectivity-page .main {
-    max-width: 1000px;
-    margin-inline: auto;
+    max-width: 100%;
+    margin-inline: 0;
     padding: 3rem 4rem 6rem;
 }
 
@@ -298,6 +298,8 @@
 .ccna-ip-connectivity-page .mermaid-wrap {
     margin: 2rem auto;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 /* MermaidDiagram 自身がカードを描画するため、外側は図ごとの表示領域だけを確保する。 */

@@ -141,7 +141,7 @@
 .ccna-software-dev-design-page .hero p.lead {
     font-size: 1.05rem;
     color: var(--color-muted-foreground, #94a3b8);
-    max-width: 760px;
+    max-width: 100%;
     margin: 0 0 24px;
 }
 
@@ -170,8 +170,8 @@
 
 .ccna-software-dev-design-page .hero > *,
 .ccna-software-dev-design-page .section > * {
-    max-width: 1000px;
-    margin-inline: auto;
+    max-width: 100%;
+    margin-inline: 0;
 }
 
 .ccna-software-dev-design-page .section {
@@ -365,11 +365,14 @@
 
 /* ---------- Mermaid ---------- */
 .ccna-software-dev-design-page .diagram-frame {
-    margin: 12px 0 8px;
+    margin: 24px auto 16px;
+    display: flex;
+    justify-content: center;
 }
 
 .ccna-software-dev-design-page .mermaid-wrap {
-    display: block;
+    display: flex;
+    justify-content: center;
     width: 100%;
     margin: 0 auto;
 }
