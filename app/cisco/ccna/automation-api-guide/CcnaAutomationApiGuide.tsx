@@ -255,7 +255,7 @@ export function CcnaAutomationApiGuide() {
                                 <tr>
                                     <td>例</td>
                                     <td><code>GET /devices/123</code> → IDが123の機器情報を取得</td>
-                                    <td><code>callMethod("getDevice", &#123;id:123&#125;)</code> のような呼び出し</td>
+                                    <td><code>callMethod(&quot;getDevice&quot;, &#123;id:123&#125;)</code> のような呼び出し</td>
                                 </tr>
                                 <tr>
                                     <td>状態管理</td>
@@ -317,7 +317,7 @@ export function CcnaAutomationApiGuide() {
                                 <tr>
                                     <td>ボディ</td>
                                     <td>送信データ</td>
-                                    <td><code>&#123;"name": "Branch-01"&#125;</code> のようなJSON</td>
+                                    <td><code>&#123;&quot;name&quot;: &quot;Branch-01&quot;&#125;</code> のようなJSON</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -355,9 +355,9 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line"></div>
                             <div className="code-line">[</div>
                             <div className="code-line">  &#123;</div>
-                            <div className="code-line">    <span className="string">"id"</span>: <span className="string">"N_1234"</span>,</div>
-                            <div className="code-line">    <span className="string">"name"</span>: <span className="string">"Branch-01"</span>,</div>
-                            <div className="code-line">    <span className="string">"timeZone"</span>: <span className="string">"Asia/Tokyo"</span></div>
+                            <div className="code-line">    <span className="string">&quot;id&quot;</span>: <span className="string">&quot;N_1234&quot;</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;name&quot;</span>: <span className="string">&quot;Branch-01&quot;</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;timeZone&quot;</span>: <span className="string">&quot;Asia/Tokyo&quot;</span></div>
                             <div className="code-line">  &#125;</div>
                             <div className="code-line">]</div>
                         </div>
@@ -700,10 +700,10 @@ export function CcnaAutomationApiGuide() {
                         <div className="code-block">
                             <div className="code-line"><span className="keyword">import</span> requests</div>
                             <div className="code-line"></div>
-                            <div className="code-line">url = <span className="string">"https://api.meraki.com/api/v1/organizations/549236/networks"</span></div>
+                            <div className="code-line">url = <span className="string">&quot;https://api.meraki.com/api/v1/organizations/549236/networks&quot;</span></div>
                             <div className="code-line">headers = &#123;</div>
-                            <div className="code-line">    <span className="string">"Authorization"</span>: <span className="string">"Bearer &lt;APIキー&gt;"</span>,</div>
-                            <div className="code-line">    <span className="string">"Content-Type"</span>: <span className="string">"application/json"</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;Authorization&quot;</span>: <span className="string">&quot;Bearer &lt;APIキー&gt;&quot;</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;Content-Type&quot;</span>: <span className="string">&quot;application/json&quot;</span>,</div>
                             <div className="code-line">&#125;</div>
                             <div className="code-line"></div>
                             <div className="code-line">response = requests.<span className="function">get</span>(url, headers=headers, timeout=<span className="number">10</span>)</div>
@@ -712,32 +712,32 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line"><span className="keyword">if</span> response.status_code == <span className="number">200</span>:</div>
                             <div className="code-line">    networks = response.<span className="function">json</span>()  <span className="comment"># JSON文字列をPythonのlist/dictへ変換</span></div>
                             <div className="code-line">    <span className="keyword">for</span> network <span className="keyword">in</span> networks:</div>
-                            <div className="code-line">        <span className="function">print</span>(network[<span className="string">"id"</span>], network[<span className="string">"name"</span>])</div>
+                            <div className="code-line">        <span className="function">print</span>(network[<span className="string">&quot;id&quot;</span>], network[<span className="string">&quot;name&quot;</span>])</div>
                             <div className="code-line"><span className="keyword">else</span>:</div>
-                            <div className="code-line">    <span className="function">print</span>(f<span className="string">"エラー: &#123;response.status_code&#125; - &#123;response.text&#125;"</span>)</div>
+                            <div className="code-line">    <span className="function">print</span>(f<span className="string">&quot;エラー: &#123;response.status_code&#125; - &#123;response.text&#125;&quot;</span>)</div>
                         </div>
 
                         <h3 className="subsection-title">13.2 POSTリクエスト（データを送る場合）</h3>
                         <div className="code-block">
                             <div className="code-line"><span className="keyword">import</span> requests</div>
                             <div className="code-line"></div>
-                            <div className="code-line">url = <span className="string">"https://api.meraki.com/api/v1/organizations/549236/networks"</span></div>
+                            <div className="code-line">url = <span className="string">&quot;https://api.meraki.com/api/v1/organizations/549236/networks&quot;</span></div>
                             <div className="code-line">headers = &#123;</div>
-                            <div className="code-line">    <span className="string">"X-Cisco-Meraki-API-Key"</span>: <span className="string">"&lt;APIキー&gt;"</span>,</div>
-                            <div className="code-line">    <span className="string">"Content-Type"</span>: <span className="string">"application/json"</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;X-Cisco-Meraki-API-Key&quot;</span>: <span className="string">&quot;&lt;APIキー&gt;&quot;</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;Content-Type&quot;</span>: <span className="string">&quot;application/json&quot;</span>,</div>
                             <div className="code-line">&#125;</div>
                             <div className="code-line">payload = &#123;</div>
-                            <div className="code-line">    <span className="string">"name"</span>: <span className="string">"Branch-02"</span>,</div>
-                            <div className="code-line">    <span className="string">"productTypes"</span>: [<span className="string">"appliance"</span>, <span className="string">"switch"</span>],</div>
-                            <div className="code-line">    <span className="string">"timeZone"</span>: <span className="string">"Asia/Tokyo"</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;name&quot;</span>: <span className="string">&quot;Branch-02&quot;</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;productTypes&quot;</span>: [<span className="string">&quot;appliance&quot;</span>, <span className="string">&quot;switch&quot;</span>],</div>
+                            <div className="code-line">    <span className="string">&quot;timeZone&quot;</span>: <span className="string">&quot;Asia/Tokyo&quot;</span>,</div>
                             <div className="code-line">&#125;</div>
                             <div className="code-line"></div>
                             <div className="code-line">response = requests.<span className="function">post</span>(url, headers=headers, json=payload, timeout=<span className="number">10</span>)</div>
                             <div className="code-line"></div>
                             <div className="code-line"><span className="keyword">if</span> response.status_code == <span className="number">201</span>:</div>
-                            <div className="code-line">    <span className="function">print</span>(<span className="string">"作成成功:"</span>, response.<span className="function">json</span>())</div>
+                            <div className="code-line">    <span className="function">print</span>(<span className="string">&quot;作成成功:&quot;</span>, response.<span className="function">json</span>())</div>
                             <div className="code-line"><span className="keyword">else</span>:</div>
-                            <div className="code-line">    <span className="function">print</span>(f<span className="string">"作成失敗: &#123;response.status_code&#125; - &#123;response.text&#125;"</span>)</div>
+                            <div className="code-line">    <span className="function">print</span>(f<span className="string">&quot;作成失敗: &#123;response.status_code&#125; - &#123;response.text&#125;&quot;</span>)</div>
                         </div>
 
                         <h3 className="subsection-title">13.3 制約・障害対応を組み込んだ実装（Step 6・8の応用）</h3>
@@ -750,7 +750,7 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">        <span className="keyword">try</span>:</div>
                             <div className="code-line">            response = requests.<span className="function">get</span>(url, headers=headers, timeout=<span className="number">10</span>)</div>
                             <div className="code-line">        <span className="keyword">except</span> requests.exceptions.RequestException <span className="keyword">as</span> e:</div>
-                            <div className="code-line">            <span className="function">print</span>(f<span className="string">"通信エラー発生 (&#123;e&#125;)。再試行します。"</span>)</div>
+                            <div className="code-line">            <span className="function">print</span>(f<span className="string">&quot;通信エラー発生 (&#123;e&#125;)。再試行します。&quot;</span>)</div>
                             <div className="code-line">            time.<span className="function">sleep</span>(<span className="number">2</span> ** attempt)</div>
                             <div className="code-line">            <span className="keyword">continue</span></div>
                             <div className="code-line"></div>
@@ -759,7 +759,7 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line"></div>
                             <div className="code-line">        <span className="keyword">if</span> response.status_code == <span className="number">429</span>:</div>
                             <div className="code-line">            <span className="comment"># レート制限：Retry-Afterヘッダーの秒数だけ待って再試行</span></div>
-                            <div className="code-line">            retry_after = response.headers.<span className="function">get</span>(<span className="string">"Retry-After"</span>)</div>
+                            <div className="code-line">            retry_after = response.headers.<span className="function">get</span>(<span className="string">&quot;Retry-After&quot;</span>)</div>
                             <div className="code-line">            <span className="keyword">try</span>:</div>
                             <div className="code-line">                parsed_val = <span className="function">int</span>(retry_after) <span className="keyword">if</span> retry_after <span className="keyword">is not</span> <span className="keyword">None</span> <span className="keyword">else</span> -<span className="number">1</span></div>
                             <div className="code-line">                <span className="keyword">if</span> <span className="number">0</span> &lt;= parsed_val &lt;= <span className="number">3600</span>:</div>
@@ -768,7 +768,7 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">                    wait_seconds = <span className="number">2</span> ** attempt</div>
                             <div className="code-line">            <span className="keyword">except</span> (<span className="function">ValueError</span>, <span className="function">TypeError</span>):</div>
                             <div className="code-line">                wait_seconds = <span className="number">2</span> ** attempt</div>
-                            <div className="code-line">            <span className="function">print</span>(f<span className="string">"レート制限中。&#123;wait_seconds&#125;秒待機して再試行します。"</span>)</div>
+                            <div className="code-line">            <span className="function">print</span>(f<span className="string">&quot;レート制限中。&#123;wait_seconds&#125;秒待機して再試行します。&quot;</span>)</div>
                             <div className="code-line">            time.<span className="function">sleep</span>(wait_seconds)</div>
                             <div className="code-line">            <span className="keyword">continue</span></div>
                             <div className="code-line"></div>
@@ -777,9 +777,9 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">            time.<span className="function">sleep</span>(<span className="number">2</span> ** attempt)</div>
                             <div className="code-line">            <span className="keyword">continue</span></div>
                             <div className="code-line"></div>
-                            <div className="code-line">        <span className="keyword">raise</span> <span className="function">RuntimeError</span>(f<span className="string">"リクエスト失敗: &#123;response.status_code&#125; - &#123;response.text&#125;"</span>)</div>
+                            <div className="code-line">        <span className="keyword">raise</span> <span className="function">RuntimeError</span>(f<span className="string">&quot;リクエスト失敗: &#123;response.status_code&#125; - &#123;response.text&#125;&quot;</span>)</div>
                             <div className="code-line"></div>
-                            <div className="code-line">    <span className="keyword">raise</span> <span className="function">RuntimeError</span>(<span className="string">"再試行の上限に達しました。"</span>)</div>
+                            <div className="code-line">    <span className="keyword">raise</span> <span className="function">RuntimeError</span>(<span className="string">&quot;再試行の上限に達しました。&quot;</span>)</div>
                         </div>
                     </section>
 
