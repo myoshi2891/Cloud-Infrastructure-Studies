@@ -62,14 +62,14 @@
                 font-weight: 400;
             }
             body {
-                display: grid;
-                grid-template-columns: 280px 1fr;
+                display: block;
                 min-height: 100vh;
             }
             aside.sidebar {
-                position: sticky;
+                position: fixed;
                 top: 0;
-                align-self: start;
+                left: 0;
+                width: 280px;
                 height: 100vh;
                 overflow-y: auto;
                 padding: 32px 20px;
@@ -106,6 +106,13 @@
                 background: var(--color-background-tertiary);
                 color: var(--color-text-primary);
             }
+            .sidebar nav a.active {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-info);
+            }
+            .sidebar nav a.active i {
+                color: var(--color-text-info);
+            }
             .sidebar nav a i {
                 font-size: 16px;
                 color: var(--color-text-tertiary);
@@ -120,6 +127,7 @@
                 padding: 4px 10px;
             }
             main.content {
+                margin-left: 280px;
                 padding: 56px 64px 96px 64px;
             }
             .eyebrow {
@@ -205,7 +213,7 @@
                 gap: 12px;
                 background: var(--color-background-tertiary);
                 border: 1px solid var(--color-border-secondary);
-                border-left: 3px solid var(--diagram-teal-stroke);
+                border-left: 3px solid #99f6e4;
                 border-radius: var(--border-radius-lg);
                 padding: 16px 18px;
                 margin: 20px 0 28px 0;
@@ -233,18 +241,22 @@
                 font-size: 14px;
             }
             .mermaid-wrap {
-                text-align: center;
+                display: flex;
+                justify-content: center;
                 margin: 28px 0;
                 padding: 20px;
                 background: var(--color-background-secondary);
                 border: 1px solid var(--color-border-secondary);
                 border-radius: var(--border-radius-lg);
+                overflow-x: auto;
+            }
+            .mermaid-wrap pre.mermaid {
+                margin: 0;
             }
             .mermaid-wrap svg {
                 max-width: 100%;
                 height: auto;
                 display: block;
-                margin: 0 auto;
                 overflow: visible;
             }
             .step-list {
@@ -269,8 +281,8 @@
                 width: 24px;
                 height: 24px;
                 border-radius: 50%;
-                background: var(--diagram-purple-fill);
-                color: var(--diagram-purple-text);
+                background: #5b21b6;
+                color: #ede9fe;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -329,16 +341,15 @@
                 font-size: 13px;
             }
             @media (max-width: 900px) {
-                body {
-                    grid-template-columns: 1fr;
-                }
                 aside.sidebar {
                     position: static;
+                    width: 100%;
                     height: auto;
                     border-right: none;
                     border-bottom: 1px solid var(--color-border-primary);
                 }
                 main.content {
+                    margin-left: 0;
                     padding: 32px 20px 64px 20px;
                 }
             }
@@ -626,9 +637,9 @@ flowchart LR
     C --> D["EOL 新規販売終了"]
     D --> E["EOS サポート終了"]
     E --> F["廃棄・除却 Decommissioning"]
-    classDef purple fill:var(--diagram-purple-fill),stroke:var(--diagram-purple-stroke),color:var(--diagram-purple-text),stroke-width:1px;
-    classDef coral fill:var(--diagram-coral-fill),stroke:var(--diagram-coral-stroke),color:var(--diagram-coral-text),stroke-width:1px;
-    classDef teal fill:var(--diagram-teal-fill),stroke:var(--diagram-teal-stroke),color:var(--diagram-teal-text),stroke-width:1px;
+    classDef purple fill:#5b21b6,stroke:#ddd6fe,color:#ede9fe,stroke-width:1px;
+    classDef coral fill:#9a3412,stroke:#fed7aa,color:#ffedd5,stroke-width:1px;
+    classDef teal fill:#115e59,stroke:#99f6e4,color:#ccfbf1,stroke-width:1px;
     class A,B,C purple
     class D,E coral
     class F teal
@@ -691,9 +702,9 @@ flowchart TD
     E --> F["変更の実施"]
     F --> G["動作検証"]
     G --> H["結果の文書化"]
-    classDef purple fill:var(--diagram-purple-fill),stroke:var(--diagram-purple-stroke),color:var(--diagram-purple-text),stroke-width:1px;
-    classDef coral fill:var(--diagram-coral-fill),stroke:var(--diagram-coral-stroke),color:var(--diagram-coral-text),stroke-width:1px;
-    classDef teal fill:var(--diagram-teal-fill),stroke:var(--diagram-teal-stroke),color:var(--diagram-teal-text),stroke-width:1px;
+    classDef purple fill:#5b21b6,stroke:#ddd6fe,color:#ede9fe,stroke-width:1px;
+    classDef coral fill:#9a3412,stroke:#fed7aa,color:#ffedd5,stroke-width:1px;
+    classDef teal fill:#115e59,stroke:#99f6e4,color:#ccfbf1,stroke-width:1px;
     class A,B,D,E,F,G purple
     class C coral
     class H teal
@@ -752,8 +763,8 @@ flowchart LR
     B -. 差分を検知 .-> A
     B --> C["バックアップ構成 Backup Config"]
     C -->|障害・誤設定時に復元| B
-    classDef purple fill:var(--diagram-purple-fill),stroke:var(--diagram-purple-stroke),color:var(--diagram-purple-text),stroke-width:1px;
-    classDef teal fill:var(--diagram-teal-fill),stroke:var(--diagram-teal-stroke),color:var(--diagram-teal-text),stroke-width:1px;
+    classDef purple fill:#5b21b6,stroke:#ddd6fe,color:#ede9fe,stroke-width:1px;
+    classDef teal fill:#115e59,stroke:#99f6e4,color:#ccfbf1,stroke-width:1px;
     class A,C purple
     class B teal
 </pre
@@ -814,9 +825,9 @@ flowchart LR
     D --> F["ログ集約 Log Aggregation"]
     F --> G["API連携・ダッシュボード"]
     G --> H["ベースライン比較とアラート発報"]
-    classDef purple fill:var(--diagram-purple-fill),stroke:var(--diagram-purple-stroke),color:var(--diagram-purple-text),stroke-width:1px;
-    classDef coral fill:var(--diagram-coral-fill),stroke:var(--diagram-coral-stroke),color:var(--diagram-coral-text),stroke-width:1px;
-    classDef teal fill:var(--diagram-teal-fill),stroke:var(--diagram-teal-stroke),color:var(--diagram-teal-text),stroke-width:1px;
+    classDef purple fill:#5b21b6,stroke:#ddd6fe,color:#ede9fe,stroke-width:1px;
+    classDef coral fill:#9a3412,stroke:#fed7aa,color:#ffedd5,stroke-width:1px;
+    classDef teal fill:#115e59,stroke:#99f6e4,color:#ccfbf1,stroke-width:1px;
     class A,D,F,G purple
     class E coral
     class H teal
@@ -884,9 +895,9 @@ flowchart LR
     A["直近のバックアップ取得"] -->|RPO 許容できるデータ損失期間| B["障害発生"]
     B -->|RTO 許容できる復旧時間の目標| C["サービス復旧完了"]
     C -->|MTTR 実際にかかった平均修復時間| D["通常運用へ復帰"]
-    classDef purple fill:var(--diagram-purple-fill),stroke:var(--diagram-purple-stroke),color:var(--diagram-purple-text),stroke-width:1px;
-    classDef coral fill:var(--diagram-coral-fill),stroke:var(--diagram-coral-stroke),color:var(--diagram-coral-text),stroke-width:1px;
-    classDef teal fill:var(--diagram-teal-fill),stroke:var(--diagram-teal-stroke),color:var(--diagram-teal-text),stroke-width:1px;
+    classDef purple fill:#5b21b6,stroke:#ddd6fe,color:#ede9fe,stroke-width:1px;
+    classDef coral fill:#9a3412,stroke:#fed7aa,color:#ffedd5,stroke-width:1px;
+    classDef teal fill:#115e59,stroke:#99f6e4,color:#ccfbf1,stroke-width:1px;
     class A purple
     class B coral
     class C,D teal
@@ -969,9 +980,9 @@ flowchart LR
     subgraph AP["アクティブ-パッシブ構成"]
     S3["サイトA 稼働中"] --> S4["サイトB 待機系"]
     end
-    classDef purple fill:var(--diagram-purple-fill),stroke:var(--diagram-purple-stroke),color:var(--diagram-purple-text),stroke-width:1px;
-    classDef teal fill:var(--diagram-teal-fill),stroke:var(--diagram-teal-stroke),color:var(--diagram-teal-text),stroke-width:1px;
-    classDef coral fill:var(--diagram-coral-fill),stroke:var(--diagram-coral-stroke),color:var(--diagram-coral-text),stroke-width:1px;
+    classDef purple fill:#5b21b6,stroke:#ddd6fe,color:#ede9fe,stroke-width:1px;
+    classDef teal fill:#115e59,stroke:#99f6e4,color:#ccfbf1,stroke-width:1px;
+    classDef coral fill:#9a3412,stroke:#fed7aa,color:#ffedd5,stroke-width:1px;
     class S1,S2 purple
     class S3 teal
     class S4 coral
@@ -1140,8 +1151,8 @@ flowchart TD
     A -->|API 自動化・スクリプト連携| D
     A -->|VPN経由でリモートアクセス| B["社内ネットワーク"]
     B --> D
-    classDef purple fill:var(--diagram-purple-fill),stroke:var(--diagram-purple-stroke),color:var(--diagram-purple-text),stroke-width:1px;
-    classDef teal fill:var(--diagram-teal-fill),stroke:var(--diagram-teal-stroke),color:var(--diagram-teal-text),stroke-width:1px;
+    classDef purple fill:#5b21b6,stroke:#ddd6fe,color:#ede9fe,stroke-width:1px;
+    classDef teal fill:#115e59,stroke:#99f6e4,color:#ccfbf1,stroke-width:1px;
     class A,D purple
     class B teal
 </pre
@@ -1280,14 +1291,17 @@ flowchart TD
         <script>
             mermaid.initialize({
                 startOnLoad: false,
-                theme: 'base',
+                theme: 'dark',
+                securityLevel: 'loose',
                 themeVariables: {
                     darkMode: true,
                     background: '#14171c',
                     primaryColor: '#5b21b6',
                     primaryBorderColor: '#ddd6fe',
                     primaryTextColor: '#ede9fe',
-                    lineColor: '#22262e',
+                    lineColor: '#3d4451',
+                    mainBkg: '#5b21b6',
+                    nodeBorder: '#ddd6fe',
                     textColor: '#e8eaed',
                     fontSize: '16px',
                     actorBkg: '#5b21b6',
@@ -1299,11 +1313,21 @@ flowchart TD
                     noteBorderColor: '#99f6e4',
                     noteTextColor: '#ccfbf1',
                     clusterBkg: '#1c2027',
-                    clusterBorder: '#22262e',
-                    edgeLabelBackground: '#14171c',
-                    pieOuterStrokeColor: '#22262e',
-                    pieSectionTextColor: '#e8eaed',
-                    pieLegendTextColor: '#a8adb5',
+                    clusterBorder: '#3d4451',
+                    edgeLabelBackground: '#1c2027',
+                    pie1: '#8b5cf6',
+                    pie2: '#2dd4bf',
+                    pie3: '#fbbf24',
+                    pie4: '#f472b6',
+                    pie5: '#60a5fa',
+                    pieOpacity: '1',
+                    pieStrokeColor: '#14171c',
+                    pieStrokeWidth: '2px',
+                    pieOuterStrokeColor: '#3d4451',
+                    pieSectionTextColor: '#14171c',
+                    pieSectionTextSize: '16px',
+                    pieLegendTextColor: '#e8eaed',
+                    pieTitleTextColor: '#e8eaed',
                 },
                 flowchart: {
                     useMaxWidth: false,
@@ -1311,23 +1335,92 @@ flowchart TD
                     nodeSpacing: 45,
                     rankSpacing: 50,
                     curve: 'basis',
+                    padding: 20,
                 },
                 sequence: {
                     useMaxWidth: false,
                     actorMargin: 60,
                     boxMargin: 10,
+                    mirrorActors: true,
                 },
                 pie: {
                     useMaxWidth: false,
                 },
             });
+
+            function applySvgFixups(svgEl, chart) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.overflow = 'visible';
+                var viewBox = svgEl.getAttribute('viewBox');
+                if (viewBox) {
+                    var parts = viewBox.split(/\s+/).map(Number);
+                    if (
+                        parts.length === 4 &&
+                        parts.every(function (n) {
+                            return isFinite(n);
+                        })
+                    ) {
+                        var trimmed = chart.trim();
+                        var isSeqOrState =
+                            trimmed.indexOf('sequenceDiagram') === 0 ||
+                            trimmed.indexOf('stateDiagram') === 0;
+                        var extra = isSeqOrState ? 110 : 15;
+                        var x = parts[0],
+                            y = parts[1],
+                            w = parts[2],
+                            h = parts[3] + extra;
+                        svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + h);
+                        svgEl.style.width = w + 'px';
+                    }
+                }
+                svgEl.style.maxWidth = '100%';
+            }
+
             async function renderDiagrams() {
+                var blocks = Array.prototype.slice.call(document.querySelectorAll('pre.mermaid'));
+                var sources = blocks.map(function (el) {
+                    return el.textContent;
+                });
                 if (document.fonts && document.fonts.ready) {
                     await document.fonts.ready;
                 }
-                await mermaid.run({ querySelector: '.mermaid' });
+                await mermaid.run({ querySelector: 'pre.mermaid' });
+                blocks.forEach(function (el, i) {
+                    var svg = el.querySelector('svg');
+                    if (svg) applySvgFixups(svg, sources[i]);
+                });
             }
             renderDiagrams();
+
+            function setupActiveNav() {
+                var links = Array.prototype.slice.call(
+                    document.querySelectorAll(".sidebar nav a[href^='#']"),
+                );
+                var sections = links
+                    .map(function (link) {
+                        return document.querySelector(link.getAttribute('href'));
+                    })
+                    .filter(Boolean);
+                if (!('IntersectionObserver' in window) || sections.length === 0) return;
+                var observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (!entry.isIntersecting) return;
+                            var id = '#' + entry.target.id;
+                            links.forEach(function (link) {
+                                link.classList.toggle('active', link.getAttribute('href') === id);
+                            });
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+                sections.forEach(function (section) {
+                    observer.observe(section);
+                });
+            }
+            setupActiveNav();
         </script>
     </body>
 </html>
