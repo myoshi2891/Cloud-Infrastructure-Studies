@@ -594,7 +594,7 @@
                                         <td>拡張子ごとのファイル数を集計する</td>
                                         <td>
                                             <code
-                                                >find . -type f -exec basename {} + | sed -n 's/.*\.\([^.]*\)$/\1/p' | sort | uniq -c |
+                                                >find . -type f -exec basename {} \; | sed -n 's/.*\.\([^.]*\)$/\1/p' | sort | uniq -c |
                                                 sort -rn</code
                                             >
                                         </td>

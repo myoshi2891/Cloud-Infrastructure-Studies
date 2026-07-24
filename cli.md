@@ -101,7 +101,7 @@ find [検索開始パス] [条件] [アクション]
 | 直近60分以内に更新されたファイルを探す | `find . -mmin -60 -type f` | `-mmin -60` は「60分以内に更新」を意味する |
 | 7日以上前の `.log` ファイルを確認する | `find /var/log -name "*.log" -mtime +6` | `-mtime +6` は「更新から7日以上経過」。まずは確認のみで削除しない |
 | 空のディレクトリを一括削除する | `find . -type d -empty -delete` | `-delete` は該当した空ディレクトリのみ削除 |
-| 拡張子ごとのファイル数を集計する | `find . -type f -exec basename {} + | sed -n 's/.*\.\([^.]*\)$/\1/p' | sort | uniq -c | sort -rn` | `find` 結果を `basename` で変換後、拡張子のみ抽出して集計するパイプライン |
+| 拡張子ごとのファイル数を集計する | `find . -type f -exec basename {} \; | sed -n 's/.*\.\([^.]*\)$/\1/p' | sort | uniq -c | sort -rn` | `find` 結果を `basename` で変換後、拡張子のみ抽出して集計するパイプライン |
 | 特定文字列を含むファイル一覧を安全に取得する | `find . -name "*.js" -print0 \| xargs -0 grep -l "TODO"` | `-print0` と `xargs -0` の組み合わせでファイル名の空白・改行に対応 |
 | パーミッションが777のファイルを検出する | `find . -type f -perm 0777` | 権限が緩すぎるファイルの棚卸しに使う |
 | 一時ファイルを確認しながら削除する | `find . -name "*.tmp" -print0 \| xargs -0 -n 1 -p rm` | `-p` で1件ずつ実行確認が出るため学習中も安全 |
