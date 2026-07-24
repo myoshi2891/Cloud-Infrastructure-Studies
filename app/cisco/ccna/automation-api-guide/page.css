@@ -71,12 +71,12 @@
 }
 
 .ccna-automation-api-page .sidebar-nav a:hover {
-    background: rgba(124, 158, 255, 0.08);
+    background: var(--color-accent-hover);
     color: var(--color-foreground);
 }
 
 .ccna-automation-api-page .sidebar-nav a.active {
-    background: rgba(124, 158, 255, 0.12);
+    background: var(--color-accent-active);
     color: var(--color-primary);
     border-left: 2px solid var(--color-primary);
     font-weight: 500;

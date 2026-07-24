@@ -23,6 +23,8 @@
     --color-card-foreground: #e2e8f0;
     --color-accent-purple: #8b5cf6;
     --color-accent: #7c9eff;
+    --color-accent-hover: rgba(124, 158, 255, 0.08);
+    --color-accent-active: rgba(124, 158, 255, 0.12);
     --color-muted: #c5d1e1;
     --color-muted-foreground: #94a3b8;
     --color-border: #1e2840;
