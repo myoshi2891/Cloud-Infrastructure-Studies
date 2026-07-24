@@ -56,15 +56,10 @@ export function hasBlockingVulnerabilities(summary) {
 }
 
 /**
- * Decide whether a `spawnSync` result for `bun audit` represents a genuine process failure
- * (as opposed to a normal run that merely reported advisories).
+ * Determines whether a `spawnSync` result indicates that the audit process failed.
  *
- * `bun audit` uses exit code 0 when no vulnerabilities are found and exit code 1 when one or
- * more advisories exist — in both cases JSON is emitted on stdout and must be parsed. Only a
- * spawn error, a received signal, or an exit code >= 2 indicates the audit could not run.
- *
- * @param {{ error?: unknown; status?: number | null; signal?: NodeJS.Signals | null }} result
- * @returns {boolean} `true` when the audit process itself failed and its output cannot be trusted.
+ * @param {{ error?: unknown; status?: number | null; signal?: NodeJS.Signals | null }} result - The audit process result.
+ * @returns {boolean} `true` if a spawn error, signal, or exit status of 2 or greater is present; `false` otherwise.
  */
 export function isAuditProcessFailure(result) {
     if (result.error || result.signal) return true;

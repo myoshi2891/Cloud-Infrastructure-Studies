@@ -7,9 +7,9 @@ import { DIAGRAMS } from './constants';
 import './page.css';
 
 /**
- * Main content component for CCNA Security Fundamentals guide.
- * Faithfully migrated from original archive/Cisco/html/Ccna-security-fundamentals.html
- * without any text omission, summary, or truncation.
+ * Renders the CCNA 200-301 Security Fundamentals study guide.
+ *
+ * @returns The study guide page content
  */
 export function CcnaSecurityFundamentals() {
     return (
