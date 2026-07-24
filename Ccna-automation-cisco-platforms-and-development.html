@@ -1,0 +1,1868 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA Automation 徹底解説｜Cisco Platforms and Development</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-panel: #0d1b2c;
+                --bg-panel-2: #101f34;
+                --bg-code: #0a1424;
+                --border: rgba(124, 158, 255, 0.18);
+                --border-soft: rgba(124, 158, 255, 0.1);
+                --accent: #7c9eff;
+                --accent-2: #ffd479;
+                --accent-2-soft: rgba(255, 212, 121, 0.14);
+                --text: #e8edf7;
+                --text-muted: #9aa8c4;
+                --text-faint: #6b7a99;
+                --radius: 14px;
+                --sidebar-width: 300px;
+                --font-sans:
+                    'Noto Sans JP', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                    sans-serif;
+                --font-mono:
+                    ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+                font-size: 17px;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-sans);
+                line-height: 1.9;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- Layout: block (not grid) to avoid fixed-sidebar shrink trap ---------- */
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-panel);
+                border-right: 1px solid var(--border);
+                padding: 32px 22px 48px;
+                z-index: 20;
+            }
+
+            .sidebar .brand {
+                font-weight: 700;
+                font-size: 1.05rem;
+                letter-spacing: 0.02em;
+                color: var(--text);
+                margin-bottom: 4px;
+            }
+            .sidebar .brand-sub {
+                font-size: 1rem;
+                color: var(--text-faint);
+                margin-bottom: 28px;
+                display: block;
+            }
+
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .sidebar nav li {
+                margin-bottom: 2px;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 9px 12px;
+                font-size: 1rem;
+                color: var(--text-muted);
+                border-left: 2px solid transparent;
+                border-radius: 6px;
+                transition: all 0.15s ease;
+            }
+            .sidebar nav a:hover {
+                color: var(--text);
+                background: rgba(124, 158, 255, 0.06);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                color: var(--accent);
+                border-left: 2px solid var(--accent);
+                background: rgba(124, 158, 255, 0.09);
+                font-weight: 600;
+            }
+
+            /* ---------- Main content: full width beside fixed sidebar, no narrow max-width ---------- */
+            .content {
+                margin-left: var(--sidebar-width);
+                width: auto;
+                max-width: none;
+                padding: 0 64px 100px;
+            }
+
+            .hero,
+            .section,
+            .prose,
+            .footer {
+                max-width: none;
+            }
+
+            .hero {
+                padding: 72px 0 40px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 48px;
+            }
+            .hero .kicker {
+                display: inline-block;
+                font-size: 1rem;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                background: rgba(124, 158, 255, 0.1);
+                border: 1px solid var(--border);
+                padding: 6px 14px;
+                border-radius: 999px;
+                margin-bottom: 22px;
+            }
+            .hero h1 {
+                font-size: clamp(2rem, 4vw, 3.1rem);
+                line-height: 1.35;
+                margin: 0 0 20px;
+                font-weight: 900;
+                background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                color: transparent;
+            }
+            .hero .lead {
+                font-size: 1.15rem;
+                color: var(--text-muted);
+                max-width: none;
+                margin: 0 0 28px;
+            }
+
+            .meta-bar {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 14px;
+                margin-top: 8px;
+            }
+            .meta-chip {
+                background: var(--bg-panel-2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 12px 18px;
+                font-size: 1rem;
+                color: var(--text-muted);
+            }
+            .meta-chip b {
+                color: var(--text);
+                display: block;
+                font-size: 1.05rem;
+                margin-bottom: 2px;
+            }
+
+            .notice-box {
+                background: var(--bg-panel-2);
+                border: 1px solid var(--border);
+                border-left: 3px solid var(--accent);
+                border-radius: 10px;
+                padding: 20px 24px;
+                margin: 28px 0;
+                color: var(--text-muted);
+                font-size: 1rem;
+            }
+            .notice-box strong {
+                color: var(--text);
+            }
+
+            /* ---------- Sections ---------- */
+            .section {
+                padding-top: 12px;
+                margin-bottom: 64px;
+                scroll-margin-top: 24px;
+            }
+            .section h2 {
+                font-size: 1.75rem;
+                color: var(--text);
+                margin: 0 0 6px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .section h2 .num {
+                color: var(--accent-2);
+                font-family: var(--font-mono);
+                font-size: 1.1rem;
+            }
+            .section .section-intro {
+                color: var(--text-muted);
+                margin-bottom: 28px;
+            }
+            .section h3 {
+                font-size: 1.3rem;
+                color: var(--accent);
+                margin: 40px 0 14px;
+            }
+            .section h4 {
+                font-size: 1.08rem;
+                color: var(--text);
+                margin: 26px 0 10px;
+            }
+
+            .prose p {
+                margin: 0 0 18px;
+                color: var(--text);
+            }
+            .prose ul,
+            .prose ol {
+                margin: 0 0 20px;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .prose li {
+                margin-bottom: 8px;
+            }
+            .prose strong {
+                color: var(--accent-2);
+            }
+
+            /* ---------- Callouts ---------- */
+            .callout {
+                background: var(--accent-2-soft);
+                border: 1px solid rgba(255, 212, 121, 0.35);
+                border-left: 3px solid var(--accent-2);
+                border-radius: 10px;
+                padding: 18px 22px;
+                margin: 26px 0;
+                font-size: 1rem;
+            }
+            .callout .callout-label {
+                font-weight: 700;
+                color: var(--accent-2);
+                display: block;
+                margin-bottom: 6px;
+            }
+
+            /* ---------- Tables (markdown-table equivalent, semantic HTML) ---------- */
+            .table-wrapper {
+                overflow-x: auto;
+                margin: 26px 0;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+                background: var(--bg-panel-2);
+                border-radius: var(--radius);
+                overflow: hidden;
+            }
+            thead th {
+                text-align: left;
+                padding: 14px 18px;
+                background: rgba(124, 158, 255, 0.12);
+                color: var(--accent);
+                font-weight: 700;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 13px 18px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.04);
+            }
+            tr.highlight td {
+                background: rgba(255, 212, 121, 0.08);
+            }
+            tr.highlight td:first-child {
+                border-left: 3px solid var(--accent-2);
+            }
+
+            /* ---------- Diagrams ---------- */
+            .diagram-wrapper {
+                overflow-x: auto;
+                margin: 30px 0;
+                background: var(--bg-panel-2);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 28px 12px;
+            }
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                margin: 0;
+            }
+            .mermaid svg {
+                max-width: none;
+            }
+            .diagram-caption {
+                text-align: center;
+                color: var(--text-faint);
+                font-size: 1rem;
+                margin-top: 14px;
+            }
+
+            /* ---------- Code blocks ---------- */
+            .code-label {
+                font-size: 1rem;
+                color: var(--text-faint);
+                margin: 24px 0 -14px;
+                font-family: var(--font-mono);
+            }
+            pre.code-block {
+                background: var(--bg-code);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 22px 24px;
+                overflow-x: auto;
+                margin: 14px 0 26px;
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            pre.code-block code {
+                font-family: var(--font-mono);
+                background: none;
+                padding: 0;
+            }
+
+            /* ---------- Roadmap steps ---------- */
+            .step-list {
+                counter-reset: step;
+                list-style: none;
+                padding: 0;
+                margin: 24px 0;
+            }
+            .step-list li {
+                counter-increment: step;
+                position: relative;
+                padding: 6px 0 6px 46px;
+                margin-bottom: 16px;
+                color: var(--text);
+            }
+            .step-list li::before {
+                content: counter(step);
+                position: absolute;
+                left: 0;
+                top: 2px;
+                width: 32px;
+                height: 32px;
+                background: rgba(124, 158, 255, 0.14);
+                border: 1px solid var(--border);
+                color: var(--accent);
+                font-weight: 700;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+            }
+
+            /* ---------- Footer ---------- */
+            .footer {
+                border-top: 1px solid var(--border-soft);
+                padding-top: 32px;
+                color: var(--text-faint);
+                font-size: 1rem;
+            }
+            .refs-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                counter-reset: ref;
+            }
+            .refs-list li {
+                counter-increment: ref;
+                padding: 12px 0 12px 40px;
+                position: relative;
+                border-bottom: 1px solid var(--border-soft);
+                font-size: 1rem;
+            }
+            .refs-list li::before {
+                content: counter(ref);
+                position: absolute;
+                left: 0;
+                top: 12px;
+                color: var(--accent-2);
+                font-family: var(--font-mono);
+                font-weight: 700;
+            }
+            .refs-list a {
+                word-break: break-all;
+            }
+            .refs-list .ref-desc {
+                color: var(--text-muted);
+                display: block;
+                margin-bottom: 4px;
+            }
+
+            /* ---------- Responsive ---------- */
+            @media (max-width: 960px) {
+                .sidebar {
+                    display: none;
+                }
+                .content {
+                    margin-left: 0;
+                    padding: 0 24px 80px;
+                }
+                .hero {
+                    padding: 48px 0 32px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <span class="brand">CCNA Automation 解説</span>
+                <span class="brand-sub">3.0 Cisco Platforms and Development</span>
+                <nav>
+                    <ul>
+                        <li><a href="#intro">はじめに</a></li>
+                        <li><a href="#overview">試験全体像とドメインの位置づけ</a></li>
+                        <li><a href="#map">ドメイン全体マップ</a></li>
+                        <li><a href="#s31">3.1 SDKとPythonスクリプト</a></li>
+                        <li><a href="#platforms">3.2〜3.5 プラットフォーム全体像</a></li>
+                        <li><a href="#s36">3.6 デバイスレベルAPI</a></li>
+                        <li><a href="#s37">3.7 DevNetリソースの選択</a></li>
+                        <li><a href="#s38">3.8 モデル駆動型プログラマビリティ</a></li>
+                        <li><a href="#s39">3.9 実践コード構築</a></li>
+                        <li><a href="#roadmap">学習ロードマップ</a></li>
+                        <li><a href="#tips">試験対策のポイント</a></li>
+                        <li><a href="#summary">まとめ</a></li>
+                        <li><a href="#references">参考文献・出典一覧</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="content">
+                <header class="hero">
+                    <span class="kicker">CCNA Automation 200-901 CCNAAUTO v1.1</span>
+                    <h1>Cisco Platforms and Development<br />徹底解説ガイド</h1>
+                    <p class="lead">
+                        CCNA Automation認定試験（旧称：Cisco Certified DevNet
+                        Associate）の6ドメインのうち、 「3.0 Cisco Platforms and
+                        Development」（配点15%）を初学者向けにステップバイステップで解説します。
+                        図解はすべてMermaid、表はすべてMarkdown相当の構造化テーブルで構成し、ASCIIアートは一切使用していません。
+                    </p>
+                    <div class="meta-bar">
+                        <div class="meta-chip"><b>試験コード</b>200-901 CCNAAUTO v1.1</div>
+                        <div class="meta-chip"><b>試験時間</b>120分</div>
+                        <div class="meta-chip"><b>受験言語</b>英語 / 日本語</div>
+                        <div class="meta-chip"><b>受験料</b>US$300（Cisco Learning Credits可）</div>
+                    </div>
+                    <div class="notice-box">
+                        <strong>本ガイドについて：</strong> 2026年2月3日より、本試験は旧称「DevNet
+                        Associate（DEVASC）」から「CCNA
+                        Automation」へ名称変更されましたが、試験内容そのものは変更されていません。本ガイドは公式ブループリントに準拠した最新の製品名称（Secure
+                        Endpoint、XDRなど）を使用しつつ、旧名称（AMP、ThreatGridなど）にも適宜言及します。
+                    </div>
+                </header>
+
+                <!-- ============ はじめに ============ -->
+                <section class="section" id="intro">
+                    <h2>はじめに</h2>
+                    <div class="prose">
+                        <p>
+                            CCNA
+                            Automation認定は、Ciscoが提供する自動化・プログラマビリティ分野の入門レベル認定です。
+                            ネットワークエンジニアがソフトウェア開発のスキルを身につけ、逆にソフトウェア開発者がネットワークの基礎を理解するための「橋渡し」となる資格として位置づけられています。
+                        </p>
+                        <p>
+                            このガイドで扱う<strong>「3.0 Cisco Platforms and Development」</strong
+                            >ドメインは、平たく言えば
+                            「Ciscoの各種製品（ネットワーク管理・コンピュート・コラボレーション・セキュリティ）を、それぞれのAPIを使ってプログラムから操作する方法を理解しているか」を問う分野です。
+                            個々の製品の細かい操作方法を丸暗記するのではなく、<strong>「どの製品が何のためにあり、どんな種類のAPIを持っているか」を体系的に把握すること</strong>が合格への近道になります。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- ============ 試験全体像 ============ -->
+                <section class="section" id="overview">
+                    <h2>CCNA Automation試験の全体像とこのドメインの位置づけ</h2>
+                    <div class="prose">
+                        <p>
+                            CCNA Automation認定を取得するには、単一の試験「<strong
+                                >Automating Networks Using Cisco Platforms（200-901
+                                CCNAAUTO）v1.1</strong
+                            >」に合格する必要があります。
+                            試験時間は120分、受験言語は英語と日本語に対応しています。試験は以下の6つのドメインで構成されており、それぞれに配点比率が定められています。
+                        </p>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ドメイン番号</th>
+                                    <th>ドメイン名（英語）</th>
+                                    <th>配点比率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.0</td>
+                                    <td>Software Development and Design</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>2.0</td>
+                                    <td>Understanding and Using APIs</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td><strong>3.0</strong></td>
+                                    <td><strong>Cisco Platforms and Development</strong></td>
+                                    <td><strong>15%</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>4.0</td>
+                                    <td>Application Deployment and Security</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>5.0</td>
+                                    <td>Infrastructure and Automation</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>6.0</td>
+                                    <td>Network Fundamentals</td>
+                                    <td>15%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                A["CCNA Automation<br/>200-901 CCNAAUTO v1.1"] --> D1["1.0 Software Development<br/>and Design（15%）"]
+                                A --> D2["2.0 Understanding and<br/>Using APIs（20%）"]
+                                A --> D3["3.0 Cisco Platforms<br/>and Development（15%）"]
+                                A --> D4["4.0 Application Deployment<br/>and Security（15%）"]
+                                A --> D5["5.0 Infrastructure and<br/>Automation（20%）"]
+                                A --> D6["6.0 Network<br/>Fundamentals（15%）"]
+                                D1 ~~~ D2 ~~~ D3 ~~~ D4 ~~~ D5 ~~~ D6
+
+                                style D3 fill:#ffe08a,stroke:#d99a00,stroke-width:2px,color:#241a00
+                        </script>
+                    </div>
+
+                    <div class="prose">
+                        <p>
+                            「2.0 Understanding and Using
+                            APIs」がAPIの<strong>一般的な仕組み</strong>（REST、HTTPメソッド、認証方式など）を扱うのに対し、
+                            「3.0 Cisco Platforms and
+                            Development」は、その知識を<strong>Cisco固有の製品</strong>に適用する力を問う点が違いです。両ドメインはセットで学習すると理解が深まります。
+                        </p>
+                    </div>
+
+                    <div class="callout">
+                        <span class="callout-label">💡 ポイント</span>
+                        Ciscoは認定試験のブループリントを定期的に見直しており、DevNet
+                        Associate（v1.0）からCCNA Automation（v1.1）への移行時にも、
+                        セキュリティ製品の名称更新（AMP→Secure Endpoint、ThreatGrid→Secure Malware
+                        Analytics、XDRの追加）など細かな改訂が行われています。
+                        学習の際は必ず最新の公式ブループリントを確認してください。
+                    </div>
+                </section>
+
+                <!-- ============ ドメイン全体マップ ============ -->
+                <section class="section" id="map">
+                    <h2>Cisco Platforms and Developmentドメインの全体マップ</h2>
+                    <div class="prose">
+                        <p>
+                            このドメインは、公式ブループリント上で以下の9つの学習項目（3.1〜3.9）に細分化されています。
+                        </p>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>番号</th>
+                                    <th>学習項目（要約）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>3.1</td>
+                                    <td>Cisco SDKのドキュメントを基にPythonスクリプトを構築する</td>
+                                </tr>
+                                <tr>
+                                    <td>3.2</td>
+                                    <td>
+                                        ネットワーク管理プラットフォームとAPIの機能を説明する（Meraki,
+                                        Cisco DNA Center, ACI, Cisco SD-WAN, NSO）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.3</td>
+                                    <td>
+                                        コンピュート管理プラットフォームとAPIの機能を説明する（UCS
+                                        Manager, UCS Director, Intersight）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.4</td>
+                                    <td>
+                                        コラボレーションプラットフォームとAPIの機能を説明する（Webex,
+                                        Webex Devices, CUCM（AXL/UDS）, Finesse）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.5</td>
+                                    <td>
+                                        セキュリティプラットフォームとAPIの機能を説明する（XDR,
+                                        Firepower, Umbrella, Secure Endpoint, ISE, Secure Malware
+                                        Analytics）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.6</td>
+                                    <td>
+                                        IOS
+                                        XEおよびNX-OSのデバイスレベルAPIと動的インターフェースを説明する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.7</td>
+                                    <td>
+                                        シナリオに応じて適切なDevNetリソースを特定する（Sandbox,
+                                        Code Exchange, サポート, フォーラム, Learning Labs,
+                                        APIドキュメント）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.8</td>
+                                    <td>
+                                        モデル駆動型プログラマビリティの概念を適用する（YANG,
+                                        RESTCONF, NETCONF）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.9</td>
+                                    <td>
+                                        要件とAPIリファレンスドキュメントに基づき、特定の操作を行うコードを構築する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                Start(["3.0 Cisco Platforms<br/>and Development"]) --> T1["3.1 SDKで<br/>Pythonスクリプトを構築"]
+                                T1 --> T2["3.2 ネットワーク管理<br/>プラットフォームAPI"]
+                                T2 --> T3["3.3 コンピュート管理<br/>プラットフォームAPI"]
+                                T3 --> T4["3.4 コラボレーション<br/>プラットフォームAPI"]
+                                T4 --> T5["3.5 セキュリティ<br/>プラットフォームAPI"]
+                                T5 --> T6["3.6 IOS XE/NX-OS<br/>デバイスレベルAPI"]
+                                T6 --> T7["3.7 DevNetリソースの<br/>活用"]
+                                T7 --> T8["3.8 モデル駆動型<br/>プログラマビリティ"]
+                                T8 --> T9["3.9 実践：APIドキュメント<br/>からコードを構築"]
+                        </script>
+                    </div>
+
+                    <div class="prose">
+                        <p>
+                            前半（3.1〜3.6）が「各プラットフォームを<strong>知る</strong>」フェーズ、後半（3.7〜3.9）が「学んだ知識を<strong>使う</strong>」フェーズだとイメージすると理解しやすくなります。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- ============ 3.1 ============ -->
+                <section class="section" id="s31">
+                    <h2><span class="num">3.1</span> Cisco SDKを使ったPythonスクリプトの構築</h2>
+
+                    <h3>SDKとは何か、なぜ使うのか</h3>
+                    <div class="prose">
+                        <p>
+                            SDK（Software Development
+                            Kit）とは、APIを直接叩く（HTTPリクエストを自分で組み立てる）代わりに、
+                            あらかじめ用意された関数やクラスを呼び出すだけでAPI操作ができるようにしたライブラリです。
+                            生のREST
+                            APIを<code>requests</code>ライブラリで叩く場合と比較すると、次のようなメリットがあります。
+                        </p>
+                        <ul>
+                            <li>認証ヘッダーの付与やURLの組み立てを自動化してくれる</li>
+                            <li>
+                                レスポンスのJSONを、扱いやすいPythonオブジェクトとして受け取れる
+                            </li>
+                            <li>
+                                エラー発生時に、わかりやすい例外（Exception）として通知してくれる
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3>基本的なワークフロー</h3>
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                S1["SDKをインストールする<br/>例: pip install meraki"] --> S2["認証情報を準備する<br/>APIキー / アクセストークン"]
+                                S2 --> S3["SDKクライアントを初期化する"]
+                                S3 --> S4["SDKのメソッドを呼び出す<br/>例: dashboard.organizations.getOrganizations()"]
+                                S4 --> S5{"エラーは<br/>発生したか"}
+                                S5 -->|"Yes"| S6["例外をキャッチして<br/>ログに出力する"]
+                                S5 -->|"No"| S7["取得したデータを<br/>業務ロジックで利用する"]
+                        </script>
+                    </div>
+
+                    <h3>コード例：Meraki SDKで組織一覧を取得する</h3>
+                    <script type="text/plain" class="code-src" data-lang="python">
+                        import meraki
+
+                        # APIキーはMerakiダッシュボードの
+                        # Organization > Configure > API & Webhooks から発行する
+                        API_KEY = "YOUR_API_KEY"
+
+                        # SDKクライアントを初期化する
+                        dashboard = meraki.DashboardAPI(API_KEY, suppress_logging=True)
+
+                        # 所属する組織（Organization）の一覧を取得する
+                        organizations = dashboard.organizations.getOrganizations()
+
+                        for org in organizations:
+                            print(f"組織名: {org['name']} / ID: {org['id']}")
+                    </script>
+
+                    <div class="prose">
+                        <p>
+                            このように、Meraki公式のPython
+                            SDK（<code>meraki</code>パッケージ）を使うと、認証ヘッダーの組み立てやページネーション処理をSDKが肩代わりしてくれるため、
+                            開発者は「何を取得したいか」に集中できます。試験では、SDKのドキュメント（メソッド名・引数・戻り値）を読んで、空欄になったコードを補完する形式の設問が出題される傾向があります。
+                        </p>
+                    </div>
+
+                    <div class="callout">
+                        <span class="callout-label">💡 試験対策</span>
+                        SDKの内部実装を暗記する必要はありません。「このSDKはどの製品向けか」「認証にはどんな情報が必要か」「戻り値はどんな形（リスト／辞書）か」を、公式ドキュメントを見ながら読み解く練習をしておきましょう。
+                    </div>
+                </section>
+
+                <!-- ============ 3.2-3.5 ============ -->
+                <section class="section" id="platforms">
+                    <h2>
+                        <span class="num">3.2〜3.5</span> Cisco製品プラットフォームとAPIの全体像
+                    </h2>
+                    <div class="prose">
+                        <p>
+                            3.2から3.5までは、いずれも「<strong>特定のCisco製品群が、どんなAPIを持ち、何ができるかを説明する</strong>」という共通のパターンを持つ学習項目です。
+                            まずは全体像を俯瞰してから、各カテゴリーの詳細を見ていきましょう。
+                        </p>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                subgraph NW["ネットワーク管理プラットフォーム 3.2"]
+                                    direction TB
+                                    N1["Meraki"]
+                                    N2["Cisco DNA Center<br/>（現Catalyst Center）"]
+                                    N3["ACI"]
+                                    N4["Cisco SD-WAN"]
+                                    N5["NSO"]
+                                    N1 ~~~ N2 ~~~ N3 ~~~ N4 ~~~ N5
+                                end
+
+                                subgraph CP["コンピュート管理プラットフォーム 3.3"]
+                                    direction TB
+                                    C1["UCS Manager"]
+                                    C2["UCS Director"]
+                                    C3["Intersight"]
+                                    C1 ~~~ C2 ~~~ C3
+                                end
+
+                                subgraph CL["コラボレーションプラットフォーム 3.4"]
+                                    direction TB
+                                    L1["Webex"]
+                                    L2["Webex Devices"]
+                                    L3["CUCM（AXL / UDS）"]
+                                    L4["Finesse"]
+                                    L1 ~~~ L2 ~~~ L3 ~~~ L4
+                                end
+
+                                subgraph SEC["セキュリティプラットフォーム 3.5"]
+                                    direction TB
+                                    S1["XDR"]
+                                    S2["Firepower"]
+                                    S3["Umbrella"]
+                                    S4["Secure Endpoint"]
+                                    S5["ISE"]
+                                    S6["Secure Malware Analytics"]
+                                    S1 ~~~ S2 ~~~ S3 ~~~ S4 ~~~ S5 ~~~ S6
+                                end
+
+                                NW ~~~ CP ~~~ CL ~~~ SEC
+                        </script>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ドメイン</th>
+                                    <th>代表的なCisco製品</th>
+                                    <th>主なAPIの形式</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>3.2 ネットワーク管理</td>
+                                    <td>Meraki, Cisco DNA Center, ACI, Cisco SD-WAN, NSO</td>
+                                    <td>REST（Meraki Dashboard API、DNA Center Intent APIなど）</td>
+                                </tr>
+                                <tr>
+                                    <td>3.3 コンピュート管理</td>
+                                    <td>UCS Manager, UCS Director, Intersight</td>
+                                    <td>
+                                        XML API（UCS Manager）、REST（UCS Director / Intersight）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.4 コラボレーション</td>
+                                    <td>Webex, Webex Devices, CUCM, Finesse</td>
+                                    <td>REST（Webex API）、SOAP（CUCM AXL）、REST（CUCM UDS）</td>
+                                </tr>
+                                <tr>
+                                    <td>3.5 セキュリティ</td>
+                                    <td>
+                                        XDR, Firepower, Umbrella, Secure Endpoint, ISE, Secure
+                                        Malware Analytics
+                                    </td>
+                                    <td>REST（各製品ともにREST APIを提供）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3.2 ネットワーク管理プラットフォームとAPI</h3>
+                    <div class="prose">
+                        <p>
+                            このカテゴリーは、複数のネットワークデバイスを一元的に管理する「コントローラー」製品群です。
+                            試験対策として、まず押さえておきたいのはそれぞれの製品が<strong>どの領域を管理するか</strong>という役割分担です。
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>Meraki</strong
+                                >：クラウド管理型のスイッチ・アクセスポイント・セキュリティアプライアンスを、Meraki
+                                Dashboard（クラウドUI）とそのREST
+                                APIから一元管理する。組織（Organization）&gt;
+                                ネットワーク（Network）&gt;
+                                デバイス（Device）という階層構造を持つ点が特徴。
+                            </li>
+                            <li>
+                                <strong>Cisco DNA Center（現Catalyst Center）</strong
+                                >：エンタープライズキャンパスネットワークのインテントベース管理コントローラー。「Intent
+                                API」と呼ばれるノースバウンドREST
+                                APIを通じて、ビジネス意図（例：新しいSSIDを展開したい）を宣言的に指定できる。
+                            </li>
+                            <li>
+                                <strong>ACI（Application Centric Infrastructure）</strong
+                                >：データセンターネットワークをポリシーベースで自動化するSDN基盤。APIC（Application
+                                Policy Infrastructure Controller）が中心的なコントローラーとなる。
+                            </li>
+                            <li>
+                                <strong>Cisco SD-WAN</strong
+                                >：拠点間WANをソフトウェア定義で管理する製品群。vManageコントローラーがAPIの窓口となる。
+                            </li>
+                            <li>
+                                <strong>NSO（Network Services Orchestrator）</strong
+                                >：マルチベンダー環境でのサービス単位のオーケストレーションを担う製品。YANGモデルを核としたサービスパッケージという概念を持つ。
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                App["外部アプリケーション<br/>自動化スクリプト"] -->|"Northbound API: REST"| Ctrl["コントローラー層<br/>DNA Center / Meraki Dashboard<br/>APIC / vManage / NSO"]
+                                Ctrl -->|"Southbound: NETCONF・RESTCONF・CLIなど"| Dev["ネットワークデバイス群<br/>スイッチ・ルーター・WLC"]
+                        </script>
+                    </div>
+
+                    <h4>
+                        コード例：Cisco DNA Center（Catalyst Center）のIntent
+                        APIでデバイス一覧を取得する
+                    </h4>
+                    <script type="text/plain" class="code-src" data-lang="python">
+                        import requests
+                        requests.packages.urllib3.disable_warnings()
+
+                        DNAC = "https://sandboxdnac.cisco.com"
+                        AUTH = ("devnetuser", "Cisco123!")
+
+                        # 1. 認証トークンを取得する（Intent API）
+                        resp = requests.post(f"{DNAC}/dna/system/api/v1/auth/token", auth=AUTH, verify=False)
+                        token = resp.json()["Token"]
+
+                        # 2. 取得したトークンをヘッダーに設定してデバイス一覧を取得する
+                        headers = {"X-Auth-Token": token}
+                        devices = requests.get(
+                            f"{DNAC}/dna/intent/api/v1/network-device",
+                            headers=headers,
+                            verify=False,
+                        )
+
+                        for device in devices.json()["response"]:
+                            print(device["hostname"], device["managementIpAddress"])
+                    </script>
+
+                    <h3>3.3 コンピュート管理プラットフォームとAPI</h3>
+                    <div class="prose">
+                        <p>サーバー（コンピュート）リソースを管理するための製品群です。</p>
+                        <ul>
+                            <li>
+                                <strong>UCS Manager</strong
+                                >：シャーシに組み込まれたブレードサーバー群を管理する組み込み型の管理ソフトウェア。XMLベースのAPIを提供する。
+                            </li>
+                            <li>
+                                <strong>UCS Director</strong
+                                >：データセンター全体のインフラ（コンピュート・ストレージ・ネットワーク）を横断的にオーケストレーションするプラットフォーム。REST
+                                APIを提供する。
+                            </li>
+                            <li>
+                                <strong>Intersight</strong
+                                >：クラウドベースのインフラ管理プラットフォーム。API認証にAPIキー＋秘密鍵によるHTTPリクエスト署名（signature）方式を採用しており、単純なAPIキー方式のMerakiやDNA
+                                Centerとは認証方式が異なる点が試験でも問われやすいポイントです。
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3>3.4 コラボレーションプラットフォームとAPI</h3>
+                    <div class="prose">
+                        <ul>
+                            <li>
+                                <strong>Webex</strong
+                                >：チャット・ビデオ会議・通話などを提供するコラボレーションプラットフォーム。ブループリント上は歴史的経緯から「Webex
+                                Teams」と表記されることがありますが、製品としては「Webex」に統合されています。REST
+                                APIで、スペース（部屋）・メンバーシップ（参加者）・メッセージなどのリソースを操作します。
+                            </li>
+                            <li>
+                                <strong>Webex Devices</strong>：Webex Room
+                                KitやDeskシリーズなどの物理デバイスを制御するxAPI（デバイス側のAPI）。
+                            </li>
+                            <li>
+                                <strong>CUCM（Cisco Unified Communication Manager）</strong
+                                >：企業向けのIP電話交換基盤。<strong>AXL</strong>（SOAPベースの管理系API、ユーザーや電話機の設定操作向け）と、<strong>UDS</strong>（RESTベースのユーザー向けAPI、ディレクトリ検索など）という2種類のインターフェースを持つ点が試験の頻出ポイントです。
+                            </li>
+                            <li>
+                                <strong>Finesse</strong
+                                >：コンタクトセンター向けのエージェントデスクトップアプリケーションで、REST
+                                APIおよびJavaScript向けのAPIを提供する。
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h4>
+                        コード例：Webex APIでメッセージを送信する（webexpythonsdk／旧webexteamssdk）
+                    </h4>
+                    <script type="text/plain" class="code-src" data-lang="python">
+                        from webexteamssdk import WebexTeamsAPI
+
+                        # 環境変数 WEBEX_TEAMS_ACCESS_TOKEN からアクセストークンを自動読込
+                        api = WebexTeamsAPI()
+
+                        # 指定したスペース（部屋）にメッセージを送信する
+                        api.messages.create(roomId="ROOM_ID_HERE", text="自動化スクリプトからの通知です")
+                    </script>
+
+                    <div class="callout">
+                        <span class="callout-label">💡 豆知識</span>
+                        かつて<code>ciscosparkapi</code>という名前だったこのライブラリは、Webex
+                        Teamsへのブランド変更に伴い<code>webexteamssdk</code>に改称され、
+                        現在はさらに<code>webexpythonsdk</code>（Python
+                        3.10以降向け）へと移行が進んでいます。 試験のブループリント上の表記（Webex
+                        Teams）と、実際の開発現場での最新の呼称（Webex／webexpythonsdk）にはズレがあることを理解しておきましょう。
+                    </div>
+
+                    <h3>3.5 セキュリティプラットフォームとAPI</h3>
+                    <div class="prose">
+                        <p>
+                            セキュリティ製品群です。v1.1のブループリントでは、下記のように一部の製品名が更新されています。
+                        </p>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>旧名称（DEVASC v1.0）</th>
+                                    <th>現行名称（CCNAAUTO v1.1）</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>－</td>
+                                    <td><strong>XDR</strong>（新規追加）</td>
+                                    <td>
+                                        複数のセキュリティ製品からのテレメトリを統合し、脅威検知・対応を自動化するプラットフォーム
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Firepower</td>
+                                    <td>Firepower（変更なし）</td>
+                                    <td>
+                                        次世代ファイアウォール（NGFW）。FMC（管理センター）やFDM（デバイスマネージャー）経由でREST
+                                        APIを提供
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Umbrella</td>
+                                    <td>Umbrella（変更なし）</td>
+                                    <td>
+                                        クラウドベースのDNS/Webセキュリティサービス。Investigate
+                                        APIやEnforcement APIを提供
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>AMP</td>
+                                    <td><strong>Secure Endpoint</strong></td>
+                                    <td>
+                                        エンドポイント（PCやサーバー）向けのマルウェア対策・EDR製品
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ISE</td>
+                                    <td>ISE（変更なし）</td>
+                                    <td>
+                                        Identity Services
+                                        Engine。ネットワークアクセス制御（NAC）を担う。ERS
+                                        APIやpxGrid連携が代表的
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ThreatGrid</td>
+                                    <td><strong>Secure Malware Analytics</strong></td>
+                                    <td>サンドボックス型のマルウェア解析プラットフォーム</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="prose">
+                        <p>
+                            このカテゴリーは「Describe（説明する）」レベルの知識が中心のため、コードを暗記するよりも、
+                            <strong
+                                >それぞれの製品が守る対象（ネットワーク境界／エンドポイント／DNS／ID）と役割の違い</strong
+                            >を整理しておくことが得点につながります。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- ============ 3.6 ============ -->
+                <section class="section" id="s36">
+                    <h2>
+                        <span class="num">3.6</span> IOS XE /
+                        NX-OSのデバイスレベルAPIと動的インターフェース
+                    </h2>
+                    <div class="prose">
+                        <p>
+                            3.2〜3.5がコントローラー経由の管理であったのに対し、3.6では<strong
+                                >デバイス単体（IOS
+                                XEを搭載したルーター／スイッチ、NX-OSを搭載したデータセンタースイッチ）に直接組み込まれたプログラマビリティ機能</strong
+                            >を扱います。
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>NETCONF / RESTCONF</strong
+                                >：デバイス上で直接有効化できる、標準化されたモデル駆動型のプロトコル（詳細は次章で解説）。
+                            </li>
+                            <li>
+                                <strong>gRPC / gNMI</strong
+                                >：ストリーミングテレメトリなど、より高頻度・低遅延なデータ収集に向く比較的新しいインターフェース。
+                            </li>
+                            <li>
+                                <strong>NX-API</strong
+                                >：NX-OSデバイス向けのREST風API。CLIコマンドをそのままJSON/XML経由で実行できる点が特徴。
+                            </li>
+                            <li>
+                                <strong>Guest Shell / On-box Python</strong
+                                >：デバイスのOS内に隔離されたLinuxコンテナ環境（Guest
+                                Shell）を用意し、その中でPythonスクリプトを直接実行できる「動的インターフェース」。デバイス自身にちょっとした自動化ロジックを持たせたい場合に使う。
+                            </li>
+                            <li>
+                                <strong>EEM（Embedded Event Manager）</strong
+                                >：デバイス内で発生したイベント（インターフェースダウンなど）をトリガーに、あらかじめ登録したアクション（Tclスクリプトなど）を自動実行する仕組み。
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h4>コード例：NETCONFでIOS XEデバイスの設定を取得する（ncclientライブラリ）</h4>
+                    <script type="text/plain" class="code-src" data-lang="python">
+                        from ncclient import manager
+
+                        # DevNet常設Sandbox（IOS XE on CSR）に接続する
+                        with manager.connect(
+                            host="ios-xe-mgmt.cisco.com",
+                            port=10000,
+                            username="developer",
+                            password="C1sco12345",
+                            hostkey_verify=False,
+                        ) as m:
+                            # YANGフィルタを使ってinterface設定のみを取得する
+                            filter_xml = """
+                            <filter>
+                              <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+                                <interface/>
+                              </native>
+                            </filter>
+                            """
+                            result = m.get_config(source="running", filter=filter_xml)
+                            print(result)
+                    </script>
+
+                    <div class="callout">
+                        <span class="callout-label">💡 試験対策</span>
+                        「コントローラー経由（3.2〜3.5）」と「デバイス直接（3.6）」の違いを混同しないようにしましょう。同じNETCONF/RESTCONFという技術要素でも、3.6ではデバイス単体への適用、3.8ではその背景にあるモデル駆動の考え方そのものが問われます。
+                    </div>
+                </section>
+
+                <!-- ============ 3.7 ============ -->
+                <section class="section" id="s37">
+                    <h2><span class="num">3.7</span> シナリオに応じたDevNetリソースの選択</h2>
+                    <div class="prose">
+                        <p>
+                            Cisco
+                            DevNetは、開発者向けに複数の学習・検証リソースを無償で提供しています。
+                            試験では「このような状況で、あなたはどのリソースを使うべきか」という選択式の設問が出題されます。
+                        </p>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                Q["利用シーン別<br/>DevNetリソースの選び方"] --> R1["実機相当の環境で<br/>動作を試したい<br/>→ DevNet Sandbox"]
+                                R1 --> R2["すぐに使える<br/>サンプルコードが欲しい<br/>→ Code Exchange"]
+                                R2 --> R3["APIのエンドポイントや<br/>認証方式を確認したい<br/>→ API Documentation"]
+                                R3 --> R4["技術的な疑問や<br/>不具合を相談したい<br/>→ Support / Community Forums"]
+                                R4 --> R5["体系立てて<br/>基礎から学びたい<br/>→ Learning Labs"]
+                        </script>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>リソース</th>
+                                    <th>主な用途</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>DevNet Sandbox</td>
+                                    <td>
+                                        実機相当の仮想環境を無料で予約・常設利用し、APIコールやコードの動作確認を行う（Always-On型／Reservation型の2種類がある）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Code Exchange</td>
+                                    <td>
+                                        Ciscoおよびコミュニティが公開するサンプルコード・SDK・Ansible/Terraformコンテンツを検索・参照する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>API Documentation</td>
+                                    <td>
+                                        各プラットフォームのエンドポイント仕様・パラメータ・認証方式を確認する一次情報源
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Support / Community Forums</td>
+                                    <td>
+                                        技術的な質問や不具合の相談、他の開発者との情報交換を行う場
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Learning Labs</td>
+                                    <td>
+                                        ステップバイステップで体系的に学べる学習コンテンツ（試験対策にも活用しやすい）
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <span class="callout-label">💡 豆知識</span>
+                        DevNet
+                        SandboxにはAlways-On（予約不要・常時稼働・共有環境）とReservation（事前予約制・自分専用の隔離環境）の2種類があります。管理者権限が必要な検証を行いたい場合はReservation型を選ぶ必要がある、という違いも押さえておきましょう。
+                    </div>
+                </section>
+
+                <!-- ============ 3.8 ============ -->
+                <section class="section" id="s38">
+                    <h2>
+                        <span class="num">3.8</span> モデル駆動型プログラマビリティ（YANG / NETCONF
+                        / RESTCONF）
+                    </h2>
+
+                    <h3>なぜ「モデル駆動」なのか</h3>
+                    <div class="prose">
+                        <p>
+                            従来、ネットワーク機器の設定はCLI（コマンドラインインターフェース）を通じて行われてきました。しかしCLIの出力形式はベンダーやOSバージョンによってまちまちで、プログラムから解析するのは非常に手間がかかります。
+                            そこで登場したのが、<strong>設定項目の構造とデータ型をあらかじめ「モデル」として定義しておき、そのモデルに沿ってプログラムから安全に設定を読み書きする</strong>という考え方です。この中核を担うのが<strong>YANG</strong>というデータモデリング言語です。
+                        </p>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                Y["YANGモデル<br/>設定項目の構造とデータ型を定義"] --> P{"どちらのプロトコルで<br/>アクセスするか"}
+                                P -->|"NETCONF"| N["XMLベース<br/>SSH（既定ポート830）を利用<br/>candidate/running設定を明確に区別"]
+                                P -->|"RESTCONF"| R["HTTP(S)ベース<br/>JSONまたはXML<br/>GET/POST/PUT/PATCH/DELETEで操作"]
+                                N --> D["ネットワークデバイスの<br/>設定へ反映"]
+                                R --> D
+                        </script>
+                    </div>
+
+                    <h3>NETCONFとRESTCONFの比較</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>NETCONF</th>
+                                    <th>RESTCONF</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>トランスポート</td>
+                                    <td>SSH（既定ポート830）</td>
+                                    <td>HTTPS（既定ポート443）</td>
+                                </tr>
+                                <tr>
+                                    <td>データ形式</td>
+                                    <td>XML</td>
+                                    <td>JSONまたはXML</td>
+                                </tr>
+                                <tr>
+                                    <td>操作モデル</td>
+                                    <td>RPCベース（get-config、edit-configなど）</td>
+                                    <td>HTTP動詞ベース（GET/POST/PUT/PATCH/DELETE）</td>
+                                </tr>
+                                <tr>
+                                    <td>データストアの扱い</td>
+                                    <td>running／candidate／startupを明確に区別できる</td>
+                                    <td>基本的にrunning相当のデータストアのみを対象とする</td>
+                                </tr>
+                                <tr>
+                                    <td>ベースとなるモデル</td>
+                                    <td>YANG</td>
+                                    <td>YANG</td>
+                                </tr>
+                                <tr>
+                                    <td>向いている用途</td>
+                                    <td>トランザクション性を要する一括設定変更</td>
+                                    <td>REST APIに慣れた開発者による単純なCRUD操作</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>コード例：RESTCONFでIOS XEデバイスのインターフェース一覧を取得する</h4>
+                    <script type="text/plain" class="code-src" data-lang="python">
+                        import requests
+                        requests.packages.urllib3.disable_warnings()
+
+                        # DevNet常設Sandbox（IOS XE on CSR）のRESTCONFエンドポイント
+                        url = "https://ios-xe-mgmt.cisco.com:9443/restconf/data/ietf-interfaces:interfaces"
+                        headers = {"Accept": "application/yang-data+json"}
+                        auth = ("developer", "C1sco12345")
+
+                        resp = requests.get(url, headers=headers, auth=auth, verify=False)
+                        print(resp.json())
+                    </script>
+
+                    <div class="callout">
+                        <span class="callout-label">💡 試験対策</span>
+                        NETCONF・RESTCONFの「既定ポート」と「DevNet
+                        Sandboxで実際に使われるポート」は異なる場合があります（例：常設Sandboxでは踏み台の都合上、NETCONFが10000番、RESTCONFが9443番になっていることがある）。
+                        試験では一般的な既定値（NETCONF=830、RESTCONF=443）で問われることが多いため、まずは標準ポートを正確に覚え、その上で実機演習時の差異は「環境固有の設定」として区別して理解しましょう。
+                    </div>
+                </section>
+
+                <!-- ============ 3.9 ============ -->
+                <section class="section" id="s39">
+                    <h2><span class="num">3.9</span> 実践：APIドキュメントを基にしたコード構築</h2>
+                    <div class="prose">
+                        <p>
+                            3.9は、これまで学んだ知識を統合し、「与えられたAPIリファレンスドキュメントを読んで、具体的な操作を行うコードを完成させる」実践的な項目です。
+                            公式に例示されている代表的なシナリオは次の2つです。
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>3.9.a</strong>：Meraki、Cisco DNA Center、ACI、Cisco
+                                SD-WAN、NSOのいずれかを使って、ネットワークデバイスの一覧を取得する
+                            </li>
+                            <li>
+                                <strong>3.9.b</strong>：Webex（Webex
+                                Teams）でスペース・参加者・メッセージを管理する
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3>3.9.a：Meraki APIでネットワークデバイス一覧を取得する</h3>
+                    <div class="prose">
+                        <p>
+                            Merakiの管理構造は「組織（Organization）→ ネットワーク（Network）→
+                            デバイス（Device）」という階層になっており、
+                            デバイス一覧を得るには、まず組織を取得し、その中のネットワークをたどってデバイスを収集するという流れになります。
+                        </p>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            sequenceDiagram
+                                participant Dev as 自動化スクリプト
+                                participant API as Meraki Dashboard API
+
+                                Dev->>API: GET /organizations
+                                API-->>Dev: 200 OK（organizations一覧）
+                                Dev->>API: GET /organizations/{orgId}/networks
+                                API-->>Dev: 200 OK（networks一覧）
+                                Dev->>API: GET /networks/{networkId}/devices
+                                API-->>Dev: 200 OK（devices一覧）
+                        </script>
+                    </div>
+
+                    <script type="text/plain" class="code-src" data-lang="python">
+                        import meraki
+
+                        dashboard = meraki.DashboardAPI("YOUR_API_KEY", suppress_logging=True)
+
+                        # 1. 組織一覧を取得する
+                        orgs = dashboard.organizations.getOrganizations()
+
+                        # 2. 各組織のネットワークをたどり、デバイスを収集する
+                        for org in orgs:
+                            networks = dashboard.organizations.getOrganizationNetworks(org["id"])
+                            for net in networks:
+                                devices = dashboard.networks.getNetworkDevices(net["id"])
+                                for device in devices:
+                                    print(f"{org['name']} / {net['name']} / {device.get('name', device['serial'])}")
+                    </script>
+
+                    <h3>3.9.b：Webex APIでスペース・参加者・メッセージを管理する</h3>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            sequenceDiagram
+                                participant Bot as Webexボット/スクリプト
+                                participant WebexAPI as Webex API
+
+                                Bot->>WebexAPI: POST /v1/rooms（スペースを作成）
+                                WebexAPI-->>Bot: 200 OK（roomId）
+                                Bot->>WebexAPI: POST /v1/memberships（参加者を追加）
+                                WebexAPI-->>Bot: 200 OK
+                                Bot->>WebexAPI: POST /v1/messages（メッセージを送信）
+                                WebexAPI-->>Bot: 200 OK（messageId）
+                        </script>
+                    </div>
+
+                    <script type="text/plain" class="code-src" data-lang="python">
+                        from webexteamssdk import WebexTeamsAPI
+
+                        api = WebexTeamsAPI()
+
+                        # 1. 新しいスペース（部屋）を作成する
+                        room = api.rooms.create(title="自動化通知スペース")
+
+                        # 2. 参加者（メンバー）を追加する
+                        api.memberships.create(room.id, personEmail="teammate@example.com")
+
+                        # 3. メッセージを送信する
+                        api.messages.create(room.id, text="スペースの準備が整いました")
+                    </script>
+
+                    <div class="prose">
+                        <p>
+                            このように、3.9は単体の知識ではなく、<strong>「どのAPIをどの順番で呼び出せば目的を達成できるか」という設計力</strong>を問う項目です。
+                            試験ではコードの一部が空欄になった穴埋め形式（ドラッグ＆ドロップ）で出題される傾向があるため、単純な暗記ではなく「このAPI呼び出しの後には、論理的に何をする必要があるか」を考える練習をしておくとよいでしょう。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- ============ 学習ロードマップ ============ -->
+                <section class="section" id="roadmap">
+                    <h2>学習ロードマップ：ハンズオンの進め方</h2>
+                    <div class="prose">
+                        <p>
+                            知識のインプットだけでなく、実際に手を動かすことがこのドメインの理解を大きく助けます。以下の順序でDevNet
+                            Sandboxを活用した学習を進めることをおすすめします。
+                        </p>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <script type="text/plain" class="mermaid-src">
+                            flowchart TB
+                                L1["Step 1<br/>DevNet Sandboxアカウントを準備する"] --> L2["Step 2<br/>Meraki SandboxでREST APIの基本を体験する"]
+                                L2 --> L3["Step 3<br/>Cisco DNA Center（Catalyst Center）<br/>SandboxでIntent APIを試す"]
+                                L3 --> L4["Step 4<br/>Webex APIでメッセージ送信を自動化する"]
+                                L4 --> L5["Step 5<br/>IOS XE SandboxでNETCONF/RESTCONFを試す"]
+                                L5 --> L6["Step 6<br/>3.9形式の複合シナリオに挑戦する"]
+                        </script>
+                    </div>
+
+                    <ol class="step-list">
+                        <li>
+                            <strong>Step 1</strong
+                            >：<code>developer.cisco.com</code>でDevNetアカウントを作成し、Sandboxカタログにアクセスできる状態にする。
+                        </li>
+                        <li>
+                            <strong>Step 2</strong>：Meraki Always-On
+                            Sandboxを使い、組織・ネットワーク・デバイスの階層構造を実際のAPIレスポンスで確認する。
+                        </li>
+                        <li>
+                            <strong>Step 3</strong>：Cisco DNA Center（Catalyst
+                            Center）Sandboxで認証トークンを取得し、Intent
+                            APIでデバイス一覧を取得する。
+                        </li>
+                        <li>
+                            <strong>Step 4</strong
+                            >：自分のWebexアカウントでアクセストークンを発行し、スペース作成からメッセージ送信までを自動化するスクリプトを書く。
+                        </li>
+                        <li>
+                            <strong>Step 5</strong>：IOS XE Always-On
+                            Sandboxに対して、<code>ncclient</code>（NETCONF）と<code>requests</code>（RESTCONF）の両方でアクセスし、挙動の違いを体感する。
+                        </li>
+                        <li>
+                            <strong>Step 6</strong
+                            >：Meraki＋Webexなど複数のAPIを組み合わせ、「特定の条件を満たしたらWebexへ通知する」といった3.9形式の複合シナリオを自作してみる。
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- ============ 試験対策のポイント ============ -->
+                <section class="section" id="tips">
+                    <h2>試験対策のポイントとよくある誤解</h2>
+                    <div class="prose">
+                        <ul>
+                            <li>
+                                <strong>製品名の変更に注意する</strong>：AMP→Secure
+                                Endpoint、ThreatGrid→Secure Malware Analytics、DNA Center→Catalyst
+                                Centerなど、Ciscoは製品ブランドを頻繁に見直しています。ブループリント上の表記と、実際の開発現場での最新名称の両方を把握しておきましょう。
+                            </li>
+                            <li>
+                                <strong>NETCONFとRESTCONFのポート番号を混同しない</strong
+                                >：一般的な既定値はNETCONF=830（SSH）、RESTCONF=443（HTTPS）です。DevNet
+                                Sandbox特有の代替ポート（例：10000番、9443番）は環境固有の設定であり、試験の一般知識としては標準ポートを優先して覚えましょう。
+                            </li>
+                            <li>
+                                <strong>Meraki APIの階層構造を理解する</strong
+                                >：Organization（組織）&gt; Network（ネットワーク）&gt;
+                                Device（デバイス）という3階層をたどらないとデバイス情報にたどり着けない点は頻出のポイントです。
+                            </li>
+                            <li>
+                                <strong>CUCMのAXLとUDSを混同しない</strong>：AXLは管理者向けのSOAP
+                                API（設定変更を伴う操作向け）、UDSはエンドユーザー向けのREST
+                                API（ディレクトリ検索など、比較的軽量な参照操作向け）という役割の違いを押さえましょう。
+                            </li>
+                            <li>
+                                <strong>「コントローラー経由」と「デバイス直接」を区別する</strong
+                                >：3.2〜3.5で学ぶプラットフォームは基本的に複数デバイスをまとめて管理するコントローラー層であり、3.6・3.8で学ぶNETCONF/RESTCONF/YANGはデバイス単体（またはコントローラーの背後にある技術基盤）に関する知識です。
+                            </li>
+                            <li>
+                                <strong>DevNetリソースの使い分け</strong
+                                >：「試したい」ならSandbox、「コードが欲しい」ならCode
+                                Exchange、「仕様を調べたい」ならAPI
+                                Documentation、「相談したい」ならSupport/Forums、「体系的に学びたい」ならLearning
+                                Labs、という対応関係を整理しておくと選択式問題で迷いません。
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ============ まとめ ============ -->
+                <section class="section" id="summary">
+                    <h2>まとめ</h2>
+                    <div class="prose">
+                        <p>
+                            「3.0 Cisco Platforms and
+                            Development」ドメインは、Cisco製品群を横断的に俯瞰する力を問う分野です。個々のAPIエンドポイントを丸暗記するのではなく、
+                        </p>
+                        <ol>
+                            <li>
+                                <strong>その製品が何を管理するものか</strong
+                                >（ネットワーク／コンピュート／コラボレーション／セキュリティ／デバイス単体）
+                            </li>
+                            <li>
+                                <strong>どんな種類のAPIを提供しているか</strong
+                                >（REST／SOAP／XML／NETCONF／RESTCONF）
+                            </li>
+                            <li><strong>どのDevNetリソースを使えば効率よく学べるか</strong></li>
+                        </ol>
+                        <p>
+                            という3つの軸で整理しながら学習を進めることで、着実に得点力を伸ばすことができます。ぜひDevNet
+                            Sandboxを積極的に活用し、実際にAPIを呼び出しながら知識を定着させてください。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- ============ 参考文献 ============ -->
+                <footer class="footer" id="references">
+                    <h2 style="color: var(--text); font-size: 1.5rem; margin-bottom: 20px">
+                        参考文献・出典一覧
+                    </h2>
+                    <p style="margin-bottom: 20px">
+                        本ガイドの作成にあたり、以下の一次情報源を参照しました。試験直前には必ず最新の公式情報をご確認ください。
+                    </p>
+                    <ul class="refs-list">
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco. "CCNA Automation
+                                Certification"（試験概要ページ・ユーザー提供URL）</span
+                            >
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco. "CCNA Automation Exam and
+                                Training"（試験名・試験時間・受験言語・受験料等）</span
+                            >
+                            <a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco Learning Network. "200-901 CCNAAUTO Exam Topics and Study
+                                Guide"（公式ブループリント）</span
+                            >
+                            <a
+                                href="https://learningnetwork.cisco.com/s/ccnaauto-exam-topics"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningnetwork.cisco.com/s/ccnaauto-exam-topics</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco Learning Network. "DevNet Certifications: Evolving to CCNA,
+                                CCNP, and CCIE
+                                Automation"（リブランディング公式告知、「試験内容は変更なし、名称のみ変更」の記載）</span
+                            >
+                            <a
+                                href="https://learningnetwork.cisco.com/s/question/0D5Kd0000Be56OZKQY/devnet-certifications-evolving-to-ccna-ccnp-and-ccie-automation-"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningnetwork.cisco.com/s/question/0D5Kd0000Be56OZKQY/devnet-certifications-evolving-to-ccna-ccnp-and-ccie-automation-</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco Live. George Koukis, Kareem Iskander. "BRKCRT-2080: Preparing
+                                for the DevNet Associate
+                                Certification"（2024年、公式セッション資料。3.1〜3.9の詳細な学習項目およびv1.0→v1.1の変更点を掲載）</span
+                            >
+                            <a
+                                href="https://www.ciscolive.com/c/dam/r/ciscolive/global-event/docs/2024/pdf/BRKCRT-2080.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.ciscolive.com/c/dam/r/ciscolive/global-event/docs/2024/pdf/BRKCRT-2080.pdf</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco DevNet. "Cisco DNA Center Platform APIs and Integrations
+                                Overview"（Intent APIの説明）</span
+                            >
+                            <a
+                                href="https://developer.cisco.com/docs/dna-center/2-3-5/overview/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/docs/dna-center/2-3-5/overview/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco Meraki Developer Hub. "Introduction - Meraki Dashboard API
+                                v1"</span
+                            >
+                            <a
+                                href="https://developer.cisco.com/meraki/api-v1/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/meraki/api-v1/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco Meraki Developer Hub. "Getting Started - Meraki Dashboard API
+                                v1"（組織→ネットワーク→デバイスの階層構造、Python
+                                SDKの使用例）</span
+                            >
+                            <a
+                                href="https://developer.cisco.com/meraki/api-v1/getting-started/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/meraki/api-v1/getting-started/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco DevNet. "Sandbox"（DevNet
+                                Sandboxの概要、Always-On／Reservationの違い）</span
+                            >
+                            <a
+                                href="https://developer.cisco.com/site/sandbox/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/site/sandbox/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco DevNet. "Cisco DevNet Sandbox Technical documentation"</span
+                            >
+                            <a
+                                href="https://developer.cisco.com/docs/sandbox/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/docs/sandbox/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc">DevNet Sandbox Catalog</span>
+                            <a
+                                href="https://devnetsandbox.cisco.com/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://devnetsandbox.cisco.com/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >webexteamssdk documentation. "Introduction"（Webex Python
+                                SDKの使用例、ciscosparkapi→webexteamssdk→webexpythonsdkへの変遷）</span
+                            >
+                            <a
+                                href="https://webexteamssdk.readthedocs.io/en/latest/user/intro.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://webexteamssdk.readthedocs.io/en/latest/user/intro.html</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >WebexCommunity. "WebexPythonSDK"
+                                GitHubリポジトリ（ライブラリ名称変遷の経緯）</span
+                            >
+                            <a
+                                href="https://github.com/WebexCommunity/WebexPythonSDK"
+                                target="_blank"
+                                rel="noopener"
+                                >https://github.com/WebexCommunity/WebexPythonSDK</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Roger Perkin (CCIE #50038). "What is Cisco Catalyst Center?"（DNA
+                                CenterからCatalyst Centerへの名称変更に関する解説）</span
+                            >
+                            <a
+                                href="https://www.rogerperkin.co.uk/cisco-catalyst-center/what-is-cisco-catalyst-center/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.rogerperkin.co.uk/cisco-catalyst-center/what-is-cisco-catalyst-center/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco. "Cisco Catalyst Center Data Sheet"（Catalyst Centerが旧DNA
+                                Centerであることの公式記載）</span
+                            >
+                            <a
+                                href="https://www.cisco.com/c/en/us/products/collateral/cloud-systems-management/dna-center/nb-06-dna-center-data-sheet-cte-en.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/c/en/us/products/collateral/cloud-systems-management/dna-center/nb-06-dna-center-data-sheet-cte-en.html</a
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-desc"
+                                >Cisco Community. "IOS XE on CSR Recommended Code Always On Sandbox"
+                                関連スレッド（NETCONF/RESTCONFの接続情報：ホスト名・ポート番号・認証情報）</span
+                            >
+                            <a
+                                href="https://community.cisco.com/t5/devnet-sandbox/ios-xe-on-csr-recommended-code-always-on-sandbox-offline/td-p/4393089"
+                                target="_blank"
+                                rel="noopener"
+                                >https://community.cisco.com/t5/devnet-sandbox/ios-xe-on-csr-recommended-code-always-on-sandbox-offline/td-p/4393089</a
+                            >
+                        </li>
+                    </ul>
+                    <p style="margin-top: 28px; font-size: 1rem">
+                        © CCNA Automation
+                        学習ガイドシリーズ／本ページは学習目的の非公式解説であり、Cisco Systems,
+                        Inc. の公式資料ではありません。
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                if (!str) return '';
+                const trimmed = str.replace(/^[ \t]*\n/, '').replace(/\n[ \t]*$/, '');
+                const lines = trimmed.split('\n');
+                const indents = lines
+                    .filter(function (line) {
+                        return line.trim().length > 0;
+                    })
+                    .map(function (line) {
+                        return (line.match(/^[ \t]*/) || [''])[0].length;
+                    });
+                const minIndent = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (line) {
+                        return line.slice(minIndent);
+                    })
+                    .join('\n');
+            }
+
+            function renderCodeBlocks() {
+                document.querySelectorAll('script.code-src').forEach(function (src) {
+                    const raw = dedent(src.textContent);
+                    const lang = src.dataset.lang || 'python';
+                    const pre = document.createElement('pre');
+                    pre.className = 'code-block';
+                    const code = document.createElement('code');
+                    code.className = 'language-' + lang;
+                    code.textContent = raw;
+                    pre.appendChild(code);
+                    src.replaceWith(pre);
+                    if (window.hljs) {
+                        hljs.highlightElement(code);
+                    }
+                });
+            }
+
+            function renderMermaidBlocks() {
+                document.querySelectorAll('script.mermaid-src').forEach(function (src) {
+                    const raw = dedent(src.textContent);
+                    const pre = document.createElement('pre');
+                    pre.className = 'mermaid';
+                    pre.textContent = raw;
+                    src.replaceWith(pre);
+                });
+            }
+
+            function initSidebarObserver() {
+                const links = document.querySelectorAll('.sidebar nav a');
+                const linkMap = new Map();
+                links.forEach(function (link) {
+                    linkMap.set(link.getAttribute('href').slice(1), link);
+                });
+
+                const observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            const link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach(function (l) {
+                                    l.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                document
+                    .querySelectorAll('main > section[id], main > footer[id]')
+                    .forEach(function (sec) {
+                        observer.observe(sec);
+                    });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                renderCodeBlocks();
+                renderMermaidBlocks();
+
+                if (window.mermaid) {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        themeVariables: {
+                            fontSize: '16px',
+                            primaryColor: '#13233c',
+                            primaryTextColor: '#e8edf7',
+                            primaryBorderColor: '#7c9eff',
+                            lineColor: '#7c9eff',
+                            secondaryColor: '#101f34',
+                            tertiaryColor: '#0d1b2c',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 10, bottom: 28 },
+                        },
+                        sequence: { useMaxWidth: false },
+                    });
+                    mermaid.run({ querySelector: '.mermaid' });
+                }
+
+                initSidebarObserver();
+            });
+        </script>
+    </body>
+</html>
