@@ -15,6 +15,12 @@ const DIAGRAM_DISPLAY: Record<string, { frameWidth: number }> = {
     'diag-8': { frameWidth: 1280 },
 };
 
+/**
+ * Renders a responsive Mermaid diagram for the specified diagram identifier.
+ *
+ * @param id - The diagram identifier used to select the chart and display width
+ * @param label - The accessible label for the rendered diagram
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -30,6 +36,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/**
+ * Renders a CCNA Automation guide covering API concepts, usage patterns, and implementation.
+ */
 export function CcnaAutomationApiGuide() {
     return (
         <div className="ccna-automation-api-page">
