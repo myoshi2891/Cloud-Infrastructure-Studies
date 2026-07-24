@@ -490,14 +490,14 @@ flowchart LR
 flowchart TD
     Start([ストレージ要件を確認]) --> Q1{複数インスタンスから<br/>同時アクセスするか？}
     Q1 -->|いいえ・単一インスタンス専有| Q2{超低レイテンシの<br/>ブロックストレージが必要?}
-    Q1 -->|はい・共有アクセス| Q3{POSIX互換の<br/>ファイルシステムが必要?}
+    Q1 -->|はい・共有アクセス| Q3{共有ファイルストレージが<br/>必要か？}
     Q2 -->|はい| EBS["Amazon EBS<br/>(ブロックストレージ)"]
     Q2 -->|いいえ・一時利用でよい| InstanceStore["インスタンスストア<br/>(一時的な高速ローカルディスク)"]
-    Q3 -->|はい・Linux/Windows| Q4{OSの種類は?}
+    Q3 -->|はい| Q4{用途・OSの種類は?}
     Q3 -->|いいえ・オブジェクト単位でよい| S3["Amazon S3<br/>(オブジェクトストレージ)"]
     Q4 -->|Linux| EFS["Amazon EFS<br/>(NFS共有ファイルストレージ)"]
     Q4 -->|Windows| FSxW["Amazon FSx for Windows<br/>File Server (SMB)"]
-    Q3 -->|高性能計算・機械学習向け| FSxLustre["Amazon FSx for Lustre<br/>(HPC向け並列ファイルシステム)"]
+    Q4 -->|HPC・機械学習| FSxLustre["Amazon FSx for Lustre<br/>(HPC向け並列ファイルシステム)"]
 ```
 
 | ストレージ種別 | サービス例 | 特徴 |
@@ -780,7 +780,7 @@ flowchart TD
 
 #### サーバーレス・コンテナによるコスト最適化
 
-- Lambdaは通常のオンデマンド実行時（Provisioned Concurrency除く）、実行時間のみの課金のためアイドル時の実行環境料金が発生せず、リクエスト数が変動するワークロードでコスト効率が良い
+- Lambdaは通常のオンデマンド実行時（Provisioned Concurrency除く）、リクエスト数と実行時間の両方で課金され、アイドル時の実行環境料金が原則発生しないため、リクエスト数が変動するワークロードでコスト効率が良い
 - Fargate SpotはFargateタスクにもSpot割引を適用でき、バッチ的なコンテナワークロードのコストを削減できる
 - EC2 Hibernate（休止）機能で、開発・検証環境など断続利用のインスタンスの起動時間を短縮しコストを抑える
 

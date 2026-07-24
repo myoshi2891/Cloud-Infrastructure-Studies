@@ -1507,9 +1507,9 @@
                     </div>
                     <p>
                         <strong>ベストプラクティス</strong> -
-                        インターネットを経由させたくない機密性の高い通信は Direct Connect または VPN
-                        を選択する - 迅速な構築が優先ならVPN、帯域保証・低レイテンシが優先ならDirect
-                        Connectを選ぶ、という二択の判断軸を持つ
+                        インターネットを経由させたくない機密性の高い通信は VPN または Direct Connect（単体では非暗号化のため暗号化が必要な場合は MACsec や Site-to-Site VPN を組み合わせる）
+                        を選択する - 迅速かつ標準で暗号化される接続が優先ならVPN、専用線による帯域保証・低レイテンシが優先ならDirect
+                        Connectを選ぶ、という判断軸を持つ
                     </p>
                     <hr />
                     <h3 id="23-タスク13-適切なデータセキュリティコントロールの決定">
@@ -2804,7 +2804,7 @@
                                     <td>Spot Instances</td>
                                     <td>最大90%</td>
                                     <td>
-                                        AWSの余剰キャパシティを入札形式で利用。2分前通知で中断される可能性があるため、フォールトトレラントな処理向け
+                                        AWSの余剰キャパシティをSpot価格で利用。2分前通知で中断される可能性があるため、フォールトトレラントな処理向け
                                     </td>
                                 </tr>
                             </tbody>
@@ -2826,7 +2826,7 @@
                     </h4>
                     <ul>
                         <li>
-                            Lambdaは実行時間課金のためアイドルコストがゼロになり、リクエスト数が変動するワークロードでコスト効率が良い
+                            Lambdaは通常のオンデマンド実行時（Provisioned Concurrency除く）、リクエスト数と実行時間の両方で課金され、アイドル時の実行環境料金が原則発生しないため、リクエスト数が変動するワークロードでコスト効率が良い
                         </li>
                         <li>
                             Fargate
@@ -3358,54 +3358,65 @@
                 });
 
                 // --- mermaidソースをdedentしてpreへ流し込み、初期化 ---
-                mermaid.initialize({
-                    startOnLoad: false,
-                    theme: 'dark',
-                    themeVariables: {
-                        fontSize: '16px',
-                        background: '#0d1c30',
-                        primaryColor: '#112238',
-                        primaryTextColor: '#e7edf7',
-                        primaryBorderColor: '#7c9eff',
-                        lineColor: '#7c9eff',
-                        secondaryColor: '#1a2c46',
-                        tertiaryColor: '#0d1c30',
-                        textColor: '#e7edf7',
-                        mainBkg: '#112238',
-                        nodeBorder: '#7c9eff',
-                        clusterBkg: '#0d1c30',
-                        clusterBorder: 'rgba(124,158,255,0.35)',
-                        edgeLabelBackground: '#0d1c30',
-                    },
-                    flowchart: { useMaxWidth: false, htmlLabels: true },
-                    pie: { useMaxWidth: false },
-                });
+                if (typeof window.mermaid !== 'undefined' && window.mermaid) {
+                    try {
+                        mermaid.initialize({
+                            startOnLoad: false,
+                            theme: 'dark',
+                            themeVariables: {
+                                fontSize: '16px',
+                                background: '#0d1c30',
+                                primaryColor: '#112238',
+                                primaryTextColor: '#e7edf7',
+                                primaryBorderColor: '#7c9eff',
+                                lineColor: '#7c9eff',
+                                secondaryColor: '#1a2c46',
+                                tertiaryColor: '#0d1c30',
+                                textColor: '#e7edf7',
+                                mainBkg: '#112238',
+                                nodeBorder: '#7c9eff',
+                                clusterBkg: '#0d1c30',
+                                clusterBorder: 'rgba(124,158,255,0.35)',
+                                edgeLabelBackground: '#0d1c30',
+                            },
+                            flowchart: { useMaxWidth: false, htmlLabels: true },
+                            pie: { useMaxWidth: false },
+                        });
 
-                const sources = document.querySelectorAll('script.mermaid-source');
-                let renderQueue = [];
-                sources.forEach(function (src, i) {
-                    const targetId = src.getAttribute('data-target');
-                    const target = document.getElementById(targetId);
-                    const code = dedent(src.textContent);
-                    const renderId = 'mmd-svg-' + i;
-                    renderQueue.push({ code, target, renderId });
-                });
+                        const sources = document.querySelectorAll('script.mermaid-source');
+                        let renderQueue = [];
+                        sources.forEach(function (src, i) {
+                            const targetId = src.getAttribute('data-target');
+                            const target = document.getElementById(targetId);
+                            if (target && src.textContent) {
+                                const code = dedent(src.textContent);
+                                const renderId = 'mmd-svg-' + i;
+                                renderQueue.push({ code, target, renderId });
+                            }
+                        });
 
-                (async function renderAll() {
-                    for (const item of renderQueue) {
-                        try {
-                            const { svg } = await mermaid.render(item.renderId, item.code);
-                            item.target.innerHTML = svg;
-                        } catch (e) {
-                            item.target.innerHTML =
-                                '<div style="color:#ff8fa3;font-family:monospace;font-size:13px;">Mermaid parse error: ' +
-                                (e && e.message ? e.message : e) +
-                                '</div>';
-                            console.error('mermaid render failed', e);
-                        }
+                        (async function renderAll() {
+                            for (const item of renderQueue) {
+                                try {
+                                    const { svg } = await mermaid.render(item.renderId, item.code);
+                                    item.target.innerHTML = svg;
+                                } catch (e) {
+                                    item.target.innerHTML =
+                                        '<div style="color:#ff8fa3;font-family:monospace;font-size:13px;">Mermaid parse error: ' +
+                                        (e && e.message ? e.message : e) +
+                                        '</div>';
+                                    console.error('mermaid render failed', e);
+                                }
+                            }
+                            window.dispatchEvent(new Event('mermaid-rendered'));
+                        })();
+                    } catch (err) {
+                        console.error('Mermaid initialization failed:', err);
+                        document.querySelectorAll('.mermaid-wrap, script.mermaid-source').forEach(function(el) { el.style.display = 'none'; });
                     }
-                    window.dispatchEvent(new Event('mermaid-rendered'));
-                })();
+                } else {
+                    document.querySelectorAll('.mermaid-wrap, script.mermaid-source').forEach(function(el) { el.style.display = 'none'; });
+                }
 
                 // --- サイドバー ナビゲーション: スクロールスパイ (2オブザーバー方式) ---
                 const navLinks = Array.from(document.querySelectorAll('.nav-link'));

@@ -1,5 +1,6 @@
 # AWS Certified Solutions Architect - Associate (SAA-C03) 完全ガイド
-# ドメイン1: セキュアなアーキテクチャの設計
+
+## ドメイン1: セキュアなアーキテクチャの設計
 
 > 本ガイドは AWS 公式の [Exam Guide (SAA-C03)](https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html) および [Content Domain 1: Design Secure Architectures](https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain1.html) の公式タスクステートメントに基づき、初学者向けにステップバイステップで解説したものです。各セクションの根拠となる一次情報源のURLは本文中および末尾の「参考資料」に明記しています。
 
@@ -554,7 +555,7 @@ flowchart TD
 出典: [Rotate AWS KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html)
 
 ポイント:
-- 自動ローテーションは**年1回**行われ、キーIDやARNは変更されない(アプリケーション側の変更は不要)
+- 自動ローテーションのデフォルトは365日（年1回）だが、カスタマーマネージドキーでは周期を設定可能で、キーIDやARNは変更されない(アプリケーション側の変更は不要)
 - 過去のキーマテリアルはすべて保持されるため、古いバージョンで暗号化されたデータも引き続き復号可能
 - インポートされたキーマテリアル(EXTERNAL origin)は自動ローテーションの対象外で、手動または オンデマンドローテーション機能を使う必要がある
 - AWS KMSはデータキーの過度な再利用を推奨しておらず、データキー自体は「ラッピングキー」であるCMKよりも高頻度で使い捨てられる設計になっている
@@ -616,7 +617,7 @@ flowchart TB
     Vault -->|災害復旧のため複製| CrossRegion
 ```
 
-出典: [What is AWS Organizations?](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html)(AWS Backupによる組織全体のバックアップ自動適用に言及)
+出典: [Creating cross-Region copies](https://docs.aws.amazon.com/aws-backup/latest/devguide/cross-region-backup.html)(AWS Backupのクロスリージョンコピー機能に言及)
 
 データ復旧戦略を設計する際のポイント:
 - バックアップボールト自体もKMSで暗号化し、アクセス権限を最小化する

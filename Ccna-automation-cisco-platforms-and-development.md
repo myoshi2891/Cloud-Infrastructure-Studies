@@ -148,7 +148,7 @@ for org in organizations:
 
 ---
 
-## 3.2〜3.5 Cisco製品プラットフォームとAPIの全体像
+## 3.2〜3.5 Cisco製品プラットフォームとAPIの全体像 <a id="32-35-cisco製品プラットフォームとapiの全体像"></a>
 
 3.2から3.5までは、いずれも「**特定のCisco製品群が、どんなAPIを持ち、何ができるかを説明する**」という共通のパターンを持つ学習項目です。まずは全体像を俯瞰してから、各カテゴリーの詳細を見ていきましょう。
 
@@ -222,13 +222,12 @@ flowchart TB
 
 ```python
 import requests
-requests.packages.urllib3.disable_warnings()
 
 DNAC = "https://sandboxdnac.cisco.com"
 AUTH = ("devnetuser", "Cisco123!")
 
 # 1. 認証トークンを取得する（Intent API）
-resp = requests.post(f"{DNAC}/dna/system/api/v1/auth/token", auth=AUTH, verify=False)
+resp = requests.post(f"{DNAC}/dna/system/api/v1/auth/token", auth=AUTH)
 token = resp.json()["Token"]
 
 # 2. 取得したトークンをヘッダーに設定してデバイス一覧を取得する
@@ -236,7 +235,6 @@ headers = {"X-Auth-Token": token}
 devices = requests.get(
     f"{DNAC}/dna/intent/api/v1/network-device",
     headers=headers,
-    verify=False,
 )
 
 for device in devices.json()["response"]:
@@ -310,7 +308,6 @@ with manager.connect(
     port=10000,
     username="developer",
     password="C1sco12345",
-    hostkey_verify=False,
 ) as m:
     # YANGフィルタを使ってinterface設定のみを取得する
     filter_xml = """
@@ -383,14 +380,13 @@ flowchart TB
 
 ```python
 import requests
-requests.packages.urllib3.disable_warnings()
 
 # DevNet常設Sandbox（IOS XE on CSR）のRESTCONFエンドポイント
 url = "https://ios-xe-mgmt.cisco.com:9443/restconf/data/ietf-interfaces:interfaces"
 headers = {"Accept": "application/yang-data+json"}
 auth = ("developer", "C1sco12345")
 
-resp = requests.get(url, headers=headers, auth=auth, verify=False)
+resp = requests.get(url, headers=headers, auth=auth)
 print(resp.json())
 ```
 
