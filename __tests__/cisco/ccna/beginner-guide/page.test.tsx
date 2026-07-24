@@ -47,8 +47,10 @@ describe('CcnaBeginnerGuidePage', () => {
             '参考情報源（出典一覧）',
         ];
 
+        // 各 title はサイドバー目次リンクと本文見出しの両方に出現するため、
+        // getByText の単一マッチ要求ではなく getAllByText で「1 箇所以上に存在」を検証する
         sectionTitles.forEach((title) => {
-            expect(screen.getByText(new RegExp(title, 'i'))).toBeInTheDocument();
+            expect(screen.getAllByText(new RegExp(title, 'i')).length).toBeGreaterThan(0);
         });
     });
 
