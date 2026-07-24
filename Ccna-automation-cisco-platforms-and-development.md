@@ -227,7 +227,8 @@ DNAC = "https://sandboxdnac.cisco.com"
 AUTH = ("devnetuser", "Cisco123!")
 
 # 1. 認証トークンを取得する（Intent API）
-resp = requests.post(f"{DNAC}/dna/system/api/v1/auth/token", auth=AUTH)
+resp = requests.post(f"{DNAC}/dna/system/api/v1/auth/token", auth=AUTH, timeout=10)
+resp.raise_for_status()
 token = resp.json()["Token"]
 
 # 2. 取得したトークンをヘッダーに設定してデバイス一覧を取得する
@@ -235,7 +236,9 @@ headers = {"X-Auth-Token": token}
 devices = requests.get(
     f"{DNAC}/dna/intent/api/v1/network-device",
     headers=headers,
+    timeout=10,
 )
+devices.raise_for_status()
 
 for device in devices.json()["response"]:
     print(device["hostname"], device["managementIpAddress"])
@@ -386,7 +389,8 @@ url = "https://ios-xe-mgmt.cisco.com:9443/restconf/data/ietf-interfaces:interfac
 headers = {"Accept": "application/yang-data+json"}
 auth = ("developer", "C1sco12345")
 
-resp = requests.get(url, headers=headers, auth=auth)
+resp = requests.get(url, headers=headers, auth=auth, timeout=10)
+resp.raise_for_status()
 print(resp.json())
 ```
 
