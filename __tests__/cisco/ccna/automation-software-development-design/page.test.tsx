@@ -48,10 +48,11 @@ describe('CcnaSoftwareDevDesignPage', () => {
             '参考ソース',
         ];
 
-        // 各 title はサイドバー目次リンクと本文見出しの両方に出現するため、
-        // getByText の単一マッチ要求ではなく getAllByText で「1 箇所以上に存在」を検証する
+        // 各 title が h2 見出しとしてレンダリングされていることを検証する
         sectionTitles.forEach((title) => {
-            expect(screen.getAllByText(new RegExp(title, 'i')).length).toBeGreaterThan(0);
+            expect(
+                screen.getByRole('heading', { level: 2, name: new RegExp(title, 'i') }),
+            ).toBeInTheDocument();
         });
     });
 
