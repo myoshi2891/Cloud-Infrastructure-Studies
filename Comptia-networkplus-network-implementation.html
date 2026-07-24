@@ -476,9 +476,8 @@
             }
 
             .diagram svg {
-                max-width: 100%;
                 height: auto;
-                display: block;
+                display: inline-block;
                 margin: 0 auto;
                 overflow: visible;
             }
@@ -1101,7 +1100,7 @@
                             <tr>
                                 <td>802.11ax</td>
                                 <td>Wi-Fi 6 / 6E</td>
-                                <td>2.4 GHz / 5 GHz（6EはGHz帯追加）</td>
+                                <td>2.4 GHz / 5 GHz（6Eは6 GHz帯追加）</td>
                                 <td>約9.6 Gbps</td>
                             </tr>
                             <tr>
@@ -1336,39 +1335,39 @@
                                 CompTIA Network+
                                 公式認定ページ（試験概要・ドメイン別出題比率・出題範囲サマリー）
                             </div>
-                            <div class="ref-url">
+                            <a class="ref-url" href="https://www.comptia.org/en-us/certifications/network/" target="_blank" rel="noopener noreferrer">
                                 https://www.comptia.org/en-us/certifications/network/
-                            </div>
-                            <div class="ref-url">
+                            </a>
+                            <a class="ref-url" href="https://www.comptia.org/en/certifications/network/" target="_blank" rel="noopener noreferrer">
                                 https://www.comptia.org/en/certifications/network/
-                            </div>
+                            </a>
                         </li>
                         <li>
                             <div class="ref-title">
                                 CompTIA Blog「The New Network+ (N10-009) Exam: Your Questions
                                 Answered」（N10-009での変更点解説）
                             </div>
-                            <div class="ref-url">
+                            <a class="ref-url" href="https://www.comptia.org/en-us/blog/the-new-network-n10-009-exam-your-questions-answered/" target="_blank" rel="noopener noreferrer">
                                 https://www.comptia.org/en-us/blog/the-new-network-n10-009-exam-your-questions-answered/
-                            </div>
+                            </a>
                         </li>
                         <li>
                             <div class="ref-title">
                                 CompTIA Blog「What Is on the CompTIA Network+
                                 Exam?」（出題内容の概要）
                             </div>
-                            <div class="ref-url">
+                            <a class="ref-url" href="https://www.comptia.org/en-us/blog/what-is-on-the-comptia-network-exam/" target="_blank" rel="noopener noreferrer">
                                 https://www.comptia.org/en-us/blog/what-is-on-the-comptia-network-exam/
-                            </div>
+                            </a>
                         </li>
                         <li>
                             <div class="ref-title">
                                 CompTIA Blog「CompTIA Network+ N10-008 vs.
                                 N10-009」（旧バージョンとの比較）
                             </div>
-                            <div class="ref-url">
+                            <a class="ref-url" href="https://www.comptia.org/en-us/blog/comptia-network-n10-008-vs-n10-009-whats-the-difference/" target="_blank" rel="noopener noreferrer">
                                 https://www.comptia.org/en-us/blog/comptia-network-n10-008-vs-n10-009-whats-the-difference/
-                            </div>
+                            </a>
                         </li>
                     </ul>
                     <footer>
@@ -1387,12 +1386,13 @@
 
             var DIAGRAMS = {
                 'diag-pie-domain': [
-                    'pie title Network+ N10-009 ドメイン別出題比率',
-                    '"1.0 Networking Concepts (23%)" : 23',
-                    '"2.0 Network Implementation (20%)" : 20',
-                    '"3.0 Network Operations (19%)" : 19',
-                    '"4.0 Network Security (14%)" : 14',
-                    '"5.0 Network Troubleshooting (24%)" : 24',
+                    'pie',
+                    '    title Network+ N10-009 ドメイン別出題比率',
+                    '    "1.0 Networking Concepts (23%)" : 23',
+                    '    "2.0 Network Implementation (20%)" : 20',
+                    '    "3.0 Network Operations (19%)" : 19',
+                    '    "4.0 Network Security (14%)" : 14',
+                    '    "5.0 Network Troubleshooting (24%)" : 24',
                 ].join('\n'),
                 'diag-domain-pillars': [
                     'flowchart TD',
@@ -1403,13 +1403,14 @@
                 ].join('\n'),
                 'diag-route-decision': [
                     'flowchart TD',
-                    'A["パケットの宛先アドレスを確認"] --> B{"一致する経路が存在するか"}',
-                    'B -->|"存在しない"| C["パケットを破棄しICMP到達不能を返す"]',
-                    'B -->|"1件のみ存在"| D["その経路で転送"]',
-                    'B -->|"複数存在(プロトコルが異なる)"| E["Administrative Distanceが最小の経路を採用"]',
-                    'B -->|"複数存在(同一プロトコル内)"| F["メトリック値が最小の経路を採用"]',
-                    'E --> D',
-                    'F --> D',
+                    'A["パケットの宛先アドレスを確認"] --> B{"最長プレフィックス一致<br/>(Longest Prefix Match) を選択"}',
+                    'B --> C{"一致する候補経路が存在するか"}',
+                    'C -->|"存在しない"| D["パケットを破棄しICMP到達不能を返す"]',
+                    'C -->|"1件のみ存在"| E["その経路で転送"]',
+                    'C -->|"複数存在(同一プレフィックス長・異プロトコル)"| F["Administrative Distanceが最小の経路を採用"]',
+                    'C -->|"複数存在(同一プロトコル内)"| G["メトリック値が最小の経路を採用"]',
+                    'F --> E',
+                    'G --> E',
                 ].join('\n'),
                 'diag-nat-pat': [
                     'flowchart LR',

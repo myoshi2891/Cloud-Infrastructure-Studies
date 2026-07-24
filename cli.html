@@ -195,16 +195,14 @@
                 border-radius: 999px;
             }
 
-            section {
-                margin: 0 0 72px;
-                padding-top: 8px;
+            body.js-enabled section {
                 opacity: 0;
                 transform: translateY(14px);
                 transition:
                     opacity 0.5s ease,
                     transform 0.5s ease;
             }
-            section.is-visible {
+            body.js-enabled section.is-visible {
                 opacity: 1;
                 transform: translateY(0);
             }
@@ -400,7 +398,7 @@
                         </p>
                         <div class="meta-row">
                             <span class="pill">対象：ターミナル操作の基礎を理解した初学者</span>
-                            <span class="pill">環境：bash / zsh（Linux・macOS、WSL2可）</span>
+                            <span class="pill">環境：bash / zsh（Linuxメイン、macOS/WSL2対応 ※macOSではss/freeの代わりにlsof/top等、sed -iはsed -i ''を使用）</span>
                             <span class="pill">全15セクション・Mermaid図解7点</span>
                         </div>
                     </header>
@@ -631,7 +629,7 @@
                                         <td>一時ファイルを確認しながら削除する</td>
                                         <td>
                                             <code
-                                                >find . -name "*.tmp" -print0 | xargs -0 -p rm</code
+                                                >find . -name "*.tmp" -print0 | xargs -0 -n 1 -p rm</code
                                             >
                                         </td>
                                         <td>
@@ -1156,12 +1154,12 @@
                         <h3>7.2 ネットワーク疎通確認の切り分けフロー</h3>
                         <script type="text/plain" class="mermaid-source">
                             flowchart TD
-                                A[Webサービスに繋がらない] --> B[ping host で疎通確認]
-                                B --> C{応答がある?}
-                                C -->|No| D[ネットワーク経路 or ファイアウォールを疑う]
-                                C -->|Yes| E[dig host で名前解決を確認]
-                                E --> F{正しいIPに解決されている?}
-                                F -->|No| G[DNS設定を疑う]
+                                A[Webサービスに繋がらない] --> B[dig host で名前解決を確認]
+                                B --> C{正しいIPに解決されている?}
+                                C -->|No| D[DNS設定 or ホスト名設定を疑う]
+                                C -->|Yes| E[ping host / IP で疎通確認]
+                                E --> F{応答がある?}
+                                F -->|No| G[ネットワーク経路 or ICMP/FW設定を疑う]
                                 F -->|Yes| H[curl -I https の応答を確認]
                                 H --> I{ステータスコードは200番台か?}
                                 I -->|No| J[アプリケーション側のログを調査]
@@ -1955,19 +1953,26 @@
 
                 // ---------- IntersectionObserver #1: reveal-on-scroll ----------
                 const sections = document.querySelectorAll('section[id]');
-                const revealObserver = new IntersectionObserver(
-                    function (entries) {
-                        entries.forEach(function (entry) {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('is-visible');
-                            }
-                        });
-                    },
-                    { threshold: 0, rootMargin: '0px 0px -8% 0px' },
-                );
-                sections.forEach(function (s) {
-                    revealObserver.observe(s);
-                });
+                if (typeof IntersectionObserver === 'undefined') {
+                    sections.forEach(function (s) {
+                        s.classList.add('is-visible');
+                    });
+                } else {
+                    document.body.classList.add('js-enabled');
+                    const revealObserver = new IntersectionObserver(
+                        function (entries) {
+                            entries.forEach(function (entry) {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add('is-visible');
+                                }
+                            });
+                        },
+                        { threshold: 0, rootMargin: '0px 0px -8% 0px' },
+                    );
+                    sections.forEach(function (s) {
+                        revealObserver.observe(s);
+                    });
+                }
 
                 // ---------- IntersectionObserver #2: nav-link highlighting (thin band near top) ----------
                 const navLinks = document.querySelectorAll('.sidebar a');
