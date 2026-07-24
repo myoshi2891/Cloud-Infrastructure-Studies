@@ -324,7 +324,7 @@
 
 /* Mermaid Diagrams */
 .ccna-ip-services-page .mermaid-wrap {
-    margin: 1.8rem 0;
+    margin: 1.8rem auto;
     padding: 1.2rem;
     background: var(--color-card, #0c1a2c);
     border: 1px solid var(--color-border, rgba(124, 158, 255, 0.18));

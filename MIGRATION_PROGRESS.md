@@ -7,9 +7,36 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **テスト数:** プロジェクト全体で 83 テストファイル パス
+- **テスト数:** プロジェクト全体で 84 テストファイル パス
 - **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-07-23T02:35:00.000Z
+- **最終更新日時(UTC):** 2026-07-23T05:52:00.000Z
+
+## 2026-07-23: Cisco「CCNA Automation APIの理解と活用 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-automation-api-guide.html`（静的HTML）および `Ccna-automation-api-guide.md` を、正準の設計パターン（NavBar + page.tsx + CcnaAutomationApiGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-api-guide` ルートへ移行・追加する。また、グローバルナビゲーション（`app/constants.ts`）の CCNA エントリに「2.0 APIの理解と活用」を追加・同期する。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for ccna automation api guide` (`__tests__/cisco/ccna/automation-api-guide/page.test.tsx` テストの作成)
+- [x] **Step 2 (Green)**: `feat: implement ccna automation api guide to pass tests` (`page.tsx`, `CcnaAutomationApiGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全16セクション・テーブル・Mermaid 9図の完璧な移行、`app/constants.ts` へのドメイン追加)
+- [x] **Step 3 (Refactor / Archive & Docs Sync)**: `docs: archive html and md files for ccna automation api guide and update migration progress` (`Ccna-automation-api-guide.html` および `Ccna-automation-api-guide.md` の `archive/Cisco/` への移動、`MIGRATION_PROGRESS.md` の更新)
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-api-guide/page.tsx](app/cisco/ccna/automation-api-guide/page.tsx)
+- [app/cisco/ccna/automation-api-guide/CcnaAutomationApiGuide.tsx](app/cisco/ccna/automation-api-guide/CcnaAutomationApiGuide.tsx)
+- [app/cisco/ccna/automation-api-guide/NavBar.tsx](app/cisco/ccna/automation-api-guide/NavBar.tsx)
+- [app/cisco/ccna/automation-api-guide/constants.ts](app/cisco/ccna/automation-api-guide/constants.ts)
+- [app/cisco/ccna/automation-api-guide/page.css](app/cisco/ccna/automation-api-guide/page.css)
+- [__tests__/cisco/ccna/automation-api-guide/page.test.tsx](__tests__/cisco/ccna/automation-api-guide/page.test.tsx)
+- [app/constants.ts](app/constants.ts)
+- [archive/Cisco/html/Ccna-automation-api-guide.html](archive/Cisco/html/Ccna-automation-api-guide.html)
+- [archive/Cisco/md/Ccna-automation-api-guide.md](archive/Cisco/md/Ccna-automation-api-guide.md)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
 
 ## 2026-07-23: Cisco「CCNA 200-301 IP Services 完全ガイド」移行 (完了)
 

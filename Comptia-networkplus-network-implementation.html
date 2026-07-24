@@ -1,0 +1,1622 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="dark" />
+        <title>CompTIA Network+ (N10-009) Network Implementation 解説ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2/dist/tabler-icons.min.css"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5/400.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5/500.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/400.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/500.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5/500.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #0a0a0c;
+                --color-background-secondary: #131316;
+                --color-background-tertiary: #1c1c20;
+                --color-background-info: #11202f;
+                --color-background-success: #10231b;
+                --color-background-warning: #2a2110;
+                --color-background-danger: #2a1416;
+                --color-text-primary: #f0f0f2;
+                --color-text-secondary: #a6a6ad;
+                --color-text-tertiary: #707076;
+                --color-text-info: #82bced;
+                --color-text-success: #82cca2;
+                --color-text-warning: #e8c17c;
+                --color-text-danger: #e88c8c;
+                --color-border-primary: #29292e;
+                --color-border-secondary: #212126;
+                --color-border-tertiary: #1a1a1e;
+                --font-sans:
+                    'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
+                    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Segoe UI', sans-serif;
+                --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --c-purple-500: #8b5cf6;
+                --c-purple-800: #4c2d8f;
+                --c-purple-200: #d9cdf2;
+                --c-purple-100: #efe7fb;
+                --c-teal-500: #14b8a6;
+                --c-teal-800: #0f5c53;
+                --c-teal-200: #b8ece2;
+                --c-teal-100: #ddf7f1;
+                --c-coral-500: #f65f3f;
+                --c-coral-800: #7c3320;
+                --c-coral-200: #ffcdbb;
+                --c-coral-100: #ffe6db;
+                --c-pink-500: #ec4899;
+                --c-pink-800: #7c1f4c;
+                --c-pink-200: #f6c8e0;
+                --c-pink-100: #fbe3f0;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 1.7;
+            }
+
+            a {
+                color: var(--color-text-info);
+            }
+
+            .progress-track {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+                height: 3px;
+                width: 100%;
+                background: var(--color-border-primary);
+            }
+
+            .progress-fill {
+                height: 100%;
+                width: 0%;
+                background: color-mix(in srgb, var(--color-text-info) 80%, white);
+                transition: width 0.08s linear;
+            }
+
+            .layout {
+                display: flex;
+                min-height: calc(100vh - 3px);
+            }
+
+            .sidebar {
+                width: 272px;
+                flex-shrink: 0;
+                height: calc(100vh - 3px);
+                position: sticky;
+                top: 3px;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 24px 16px 40px 16px;
+            }
+
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 0 12px 20px 12px;
+                color: var(--color-text-primary);
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .sidebar-brand i {
+                color: color-mix(in srgb, var(--color-text-info) 85%, white);
+                font-size: 18px;
+            }
+
+            .sidebar-title {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                padding: 0 12px 12px 12px;
+                border-bottom: 1px solid var(--color-border-primary);
+                margin-bottom: 12px;
+            }
+
+            .nav-group {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+            .nav-item:hover {
+                background: var(--color-background-tertiary);
+            }
+
+            .nav-item.active {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .nav-num {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                font-family: var(--font-mono);
+                font-size: 11px;
+                background: var(--color-background-primary);
+                border: 1px solid var(--color-border-secondary);
+                color: var(--color-text-tertiary);
+                flex-shrink: 0;
+            }
+
+            .nav-item i.ti {
+                font-size: 16px;
+                width: 20px;
+                text-align: center;
+                color: var(--color-text-tertiary);
+                flex-shrink: 0;
+            }
+            .nav-item.active i.ti {
+                color: var(--color-text-info);
+            }
+
+            .num-purple {
+                color: color-mix(in srgb, var(--c-purple-500) 75%, white);
+                border-color: color-mix(in srgb, var(--c-purple-500) 45%, transparent);
+            }
+            .num-teal {
+                color: color-mix(in srgb, var(--c-teal-500) 75%, white);
+                border-color: color-mix(in srgb, var(--c-teal-500) 45%, transparent);
+            }
+            .num-coral {
+                color: color-mix(in srgb, var(--c-coral-500) 75%, white);
+                border-color: color-mix(in srgb, var(--c-coral-500) 45%, transparent);
+            }
+            .num-pink {
+                color: color-mix(in srgb, var(--c-pink-500) 75%, white);
+                border-color: color-mix(in srgb, var(--c-pink-500) 45%, transparent);
+            }
+
+            .nav-badge {
+                margin-left: auto;
+                font-family: var(--font-mono);
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+                background: var(--color-background-primary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-md);
+                padding: 1px 7px;
+            }
+
+            .content {
+                flex: 1;
+                min-width: 0;
+                width: 100%;
+                padding: 48px 64px 100px 64px;
+            }
+
+            .chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-family: var(--font-mono);
+                font-size: 12px;
+                font-weight: 500;
+                padding: 3px 10px;
+                border-radius: var(--border-radius-md);
+                border: 1px solid var(--color-border-primary);
+                color: var(--color-text-secondary);
+                background: var(--color-background-secondary);
+            }
+
+            .chip-purple {
+                color: color-mix(in srgb, var(--c-purple-500) 70%, white);
+                background: color-mix(
+                    in srgb,
+                    var(--c-purple-500) 16%,
+                    var(--color-background-secondary)
+                );
+                border-color: color-mix(in srgb, var(--c-purple-500) 42%, transparent);
+            }
+            .chip-teal {
+                color: color-mix(in srgb, var(--c-teal-500) 70%, white);
+                background: color-mix(
+                    in srgb,
+                    var(--c-teal-500) 16%,
+                    var(--color-background-secondary)
+                );
+                border-color: color-mix(in srgb, var(--c-teal-500) 42%, transparent);
+            }
+            .chip-coral {
+                color: color-mix(in srgb, var(--c-coral-500) 70%, white);
+                background: color-mix(
+                    in srgb,
+                    var(--c-coral-500) 16%,
+                    var(--color-background-secondary)
+                );
+                border-color: color-mix(in srgb, var(--c-coral-500) 42%, transparent);
+            }
+            .chip-pink {
+                color: color-mix(in srgb, var(--c-pink-500) 70%, white);
+                background: color-mix(
+                    in srgb,
+                    var(--c-pink-500) 16%,
+                    var(--color-background-secondary)
+                );
+                border-color: color-mix(in srgb, var(--c-pink-500) 42%, transparent);
+            }
+
+            .accent-purple {
+                color: color-mix(in srgb, var(--c-purple-500) 75%, white);
+            }
+            .accent-teal {
+                color: color-mix(in srgb, var(--c-teal-500) 75%, white);
+            }
+            .accent-coral {
+                color: color-mix(in srgb, var(--c-coral-500) 75%, white);
+            }
+            .accent-pink {
+                color: color-mix(in srgb, var(--c-pink-500) 75%, white);
+            }
+
+            .hero {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                gap: 40px;
+                flex-wrap: wrap;
+                padding-bottom: 32px;
+                margin-bottom: 8px;
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+
+            .hero-main {
+                flex: 1;
+                min-width: 320px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 14px 0 14px 0;
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 52px 0 16px 0;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            h2 i.ti {
+                font-size: 18px;
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 12px 0;
+                color: var(--color-text-primary);
+            }
+
+            p {
+                color: var(--color-text-secondary);
+                margin: 0 0 14px 0;
+            }
+
+            .lede {
+                color: var(--color-text-primary);
+                font-size: 16px;
+            }
+
+            strong {
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            .hero-stat {
+                text-align: right;
+                flex-shrink: 0;
+            }
+
+            .hero-stat-value {
+                font-family: var(--font-mono);
+                font-size: 52px;
+                font-weight: 500;
+                color: color-mix(in srgb, var(--color-text-info) 85%, white);
+                line-height: 1;
+            }
+
+            .hero-stat-value span {
+                font-size: 26px;
+                color: var(--color-text-tertiary);
+                margin-left: 2px;
+            }
+
+            .hero-stat-label {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                margin-top: 8px;
+            }
+
+            .step-tag {
+                margin-bottom: 14px;
+            }
+
+            .callout {
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 20px;
+                margin: 20px 0;
+                font-size: 14px;
+            }
+
+            .callout p {
+                margin: 0;
+                color: var(--color-text-secondary);
+            }
+
+            .callout-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+
+            .callout-info {
+                background: var(--color-background-info);
+            }
+            .callout-info .callout-title {
+                color: var(--color-text-info);
+            }
+
+            .callout-warning {
+                background: var(--color-background-warning);
+            }
+            .callout-warning .callout-title {
+                color: var(--color-text-warning);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 18px 0 28px 0;
+                font-size: 14px;
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                overflow: hidden;
+            }
+
+            caption {
+                text-align: left;
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            th,
+            td {
+                padding: 11px 16px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                text-align: left;
+                vertical-align: top;
+            }
+
+            thead th {
+                color: var(--color-text-secondary);
+                font-weight: 500;
+                background: var(--color-background-secondary);
+                letter-spacing: 0.01em;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: var(--color-background-tertiary);
+            }
+
+            .diagram-wrap {
+                margin: 24px 0 32px 0;
+            }
+
+            .diagram {
+                display: block;
+                text-align: center;
+                overflow-x: auto;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                padding: 24px 16px;
+                min-height: 60px;
+            }
+
+            .diagram svg {
+                height: auto;
+                display: inline-block;
+                margin: 0 auto;
+                overflow: visible;
+            }
+
+            .diagram-error {
+                color: var(--color-text-danger);
+                font-size: 13px;
+            }
+
+            .pillars {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 12px;
+                margin: 20px 0 32px 0;
+            }
+
+            .pillar {
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px;
+                background: var(--color-background-secondary);
+            }
+
+            .pillar i {
+                font-size: 20px;
+                margin-bottom: 10px;
+                display: block;
+            }
+
+            .pillar-title {
+                font-size: 14px;
+                color: var(--color-text-primary);
+                margin-bottom: 4px;
+            }
+
+            .pillar-desc {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+            }
+
+            .pillar-purple {
+                border-color: color-mix(
+                    in srgb,
+                    var(--c-purple-500) 35%,
+                    var(--color-border-primary)
+                );
+                background: color-mix(
+                    in srgb,
+                    var(--c-purple-500) 7%,
+                    var(--color-background-secondary)
+                );
+            }
+            .pillar-purple i {
+                color: color-mix(in srgb, var(--c-purple-500) 75%, white);
+            }
+            .pillar-teal {
+                border-color: color-mix(
+                    in srgb,
+                    var(--c-teal-500) 35%,
+                    var(--color-border-primary)
+                );
+                background: color-mix(
+                    in srgb,
+                    var(--c-teal-500) 7%,
+                    var(--color-background-secondary)
+                );
+            }
+            .pillar-teal i {
+                color: color-mix(in srgb, var(--c-teal-500) 75%, white);
+            }
+            .pillar-coral {
+                border-color: color-mix(
+                    in srgb,
+                    var(--c-coral-500) 35%,
+                    var(--color-border-primary)
+                );
+                background: color-mix(
+                    in srgb,
+                    var(--c-coral-500) 7%,
+                    var(--color-background-secondary)
+                );
+            }
+            .pillar-coral i {
+                color: color-mix(in srgb, var(--c-coral-500) 75%, white);
+            }
+            .pillar-pink {
+                border-color: color-mix(
+                    in srgb,
+                    var(--c-pink-500) 35%,
+                    var(--color-border-primary)
+                );
+                background: color-mix(
+                    in srgb,
+                    var(--c-pink-500) 7%,
+                    var(--color-background-secondary)
+                );
+            }
+            .pillar-pink i {
+                color: color-mix(in srgb, var(--c-pink-500) 75%, white);
+            }
+
+            .refs {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .refs li {
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-md);
+                padding: 12px 16px;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+
+            .refs .ref-title {
+                color: var(--color-text-primary);
+                margin-bottom: 4px;
+            }
+
+            .refs .ref-url {
+                color: var(--color-text-info);
+                font-size: 13px;
+                word-break: break-all;
+                font-family: var(--font-mono);
+            }
+
+            footer {
+                margin-top: 56px;
+                padding-top: 20px;
+                border-top: 1px solid var(--color-border-tertiary);
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+            }
+
+            @media (max-width: 860px) {
+                .sidebar {
+                    display: none;
+                }
+                .content {
+                    padding: 32px 20px 64px 20px;
+                }
+                .hero {
+                    align-items: flex-start;
+                }
+                .hero-stat {
+                    text-align: left;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-brand"><i class="ti ti-certificate"></i>Network+ Guide</div>
+                <div class="sidebar-title">目次｜Domain 2.0</div>
+                <nav class="nav-group">
+                    <a class="nav-item active" href="#overview"
+                        ><span class="nav-num">0</span>全体像</a
+                    >
+                    <a class="nav-item" href="#step1"
+                        ><span class="nav-num num-purple">1</span>ルーティング<span
+                            class="nav-badge"
+                            >2.1</span
+                        ></a
+                    >
+                    <a class="nav-item" href="#step2"
+                        ><span class="nav-num num-teal">2</span>スイッチング<span class="nav-badge"
+                            >2.2</span
+                        ></a
+                    >
+                    <a class="nav-item" href="#step3"
+                        ><span class="nav-num num-coral">3</span>ワイヤレス<span class="nav-badge"
+                            >2.3</span
+                        ></a
+                    >
+                    <a class="nav-item" href="#step4"
+                        ><span class="nav-num num-pink">4</span>物理設置<span class="nav-badge"
+                            >2.4</span
+                        ></a
+                    >
+                    <a class="nav-item" href="#step5"><span class="nav-num">5</span>まとめ</a>
+                    <a class="nav-item" href="#references"><i class="ti ti-link"></i>参考文献</a>
+                </nav>
+            </aside>
+            <main class="content">
+                <header class="hero">
+                    <div class="hero-main">
+                        <span class="chip"
+                            ><i class="ti ti-certificate"></i>CompTIA Network+ (N10-009)</span
+                        >
+                        <h1>Network Implementation ドメイン 徹底解説ガイド</h1>
+                        <p class="lede">
+                            初学者向けにステップバイステップで整理した、CompTIA Network+
+                            の「ネットワークの実装」ドメインの解説です。図解はすべてMermaidで、比較情報はすべて表で構成しています。
+                        </p>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">20<span>%</span></div>
+                        <div class="hero-stat-label">
+                            試験全体に占める<br />出題比率（Domain 2.0）
+                        </div>
+                    </div>
+                </header>
+
+                <section id="overview">
+                    <h2><i class="ti ti-layout-dashboard"></i>Step 0: 全体像を掴む</h2>
+                    <p>
+                        CompTIA Network+ (N10-009)
+                        は2024年6月に発表された最新バージョン（V9）です。試験は最大90問（多肢選択式とパフォーマンスベース問題の混在）、制限時間90分、合格ラインは900点満点中720点です。試験は5つのドメインで構成されています。
+                    </p>
+
+                    <table>
+                        <caption>
+                            Network+ N10-009 ドメイン別出題比率
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>ドメイン番号</th>
+                                <th>ドメイン名</th>
+                                <th>出題比率</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.0</td>
+                                <td>Networking Concepts（ネットワークの概念）</td>
+                                <td>23%</td>
+                            </tr>
+                            <tr>
+                                <td>2.0</td>
+                                <td>
+                                    <strong>Network Implementation（ネットワークの実装）</strong>
+                                </td>
+                                <td><strong>20%</strong></td>
+                            </tr>
+                            <tr>
+                                <td>3.0</td>
+                                <td>Network Operations（ネットワークの運用）</td>
+                                <td>19%</td>
+                            </tr>
+                            <tr>
+                                <td>4.0</td>
+                                <td>Network Security（ネットワークセキュリティ）</td>
+                                <td>14%</td>
+                            </tr>
+                            <tr>
+                                <td>5.0</td>
+                                <td>Network Troubleshooting（トラブルシューティング）</td>
+                                <td>24%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-pie-domain"></div></div>
+                    </div>
+
+                    <p>
+                        Network
+                        Implementationドメインは、公式の出題範囲上、次の4つのサブ領域（2.1〜2.4）で構成されています。「L3のルーティング
+                        → L2のスイッチング → 無線 →
+                        物理層」という、ネットワークを実際に組み立てる順序に沿って整理されています。
+                    </p>
+
+                    <div class="pillars">
+                        <div class="pillar pillar-purple">
+                            <i class="ti ti-route"></i>
+                            <div class="pillar-title">2.1 ルーティング技術</div>
+                            <div class="pillar-desc">静的/動的ルーティング、NAT/PAT、FHRP</div>
+                        </div>
+                        <div class="pillar pillar-teal">
+                            <i class="ti ti-topology-star-3"></i>
+                            <div class="pillar-title">2.2 スイッチング技術</div>
+                            <div class="pillar-desc">VLAN、STP、MTU</div>
+                        </div>
+                        <div class="pillar pillar-coral">
+                            <i class="ti ti-wifi"></i>
+                            <div class="pillar-title">2.3 ワイヤレス機器</div>
+                            <div class="pillar-desc">Wi-Fi規格、暗号化、認証</div>
+                        </div>
+                        <div class="pillar pillar-pink">
+                            <i class="ti ti-building-warehouse"></i>
+                            <div class="pillar-title">2.4 物理インストレーション</div>
+                            <div class="pillar-desc">設置・電源・環境要因</div>
+                        </div>
+                    </div>
+
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-domain-pillars"></div></div>
+                    </div>
+
+                    <div class="callout callout-info">
+                        <div class="callout-title"><i class="ti ti-info-circle"></i>補足</div>
+                        <p>
+                            旧バージョン（N10-008）ではデバイス比較の一部もこのドメインに含まれていましたが、N10-009では該当内容がDomain
+                            1.0（Networking
+                            Concepts）側に整理し直されています。教材購入時は必ず「N10-009」対応版であることを確認してください。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="step1">
+                    <div class="step-tag"><span class="chip chip-purple">Objective 2.1</span></div>
+                    <h2>
+                        <i class="ti ti-route accent-purple"></i>Step 1: ルーティング技術を理解する
+                    </h2>
+                    <p>
+                        ルーティングとは、異なるネットワーク（サブネット）間でパケットを転送する仕組みです。ここではルーターがどのように経路を決めているかを段階的に理解します。
+                    </p>
+
+                    <h3>1-1. 静的ルーティングと動的ルーティング</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>静的ルーティング (Static)</th>
+                                <th>動的ルーティング (Dynamic)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>設定方法</td>
+                                <td>管理者が手動で経路を1件ずつ設定</td>
+                                <td>プロトコルが自動で経路を学習・交換</td>
+                            </tr>
+                            <tr>
+                                <td>変化への対応</td>
+                                <td>構成変更時は手動修正が必要</td>
+                                <td>障害を自動検知し経路を再計算</td>
+                            </tr>
+                            <tr>
+                                <td>負荷</td>
+                                <td>ほぼゼロ</td>
+                                <td>制御パケット交換により一定の負荷</td>
+                            </tr>
+                            <tr>
+                                <td>向いている環境</td>
+                                <td>小規模・経路数が少ない環境</td>
+                                <td>中〜大規模で変化が多い環境</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>1-2. 主要な動的ルーティングプロトコル</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>プロトコル</th>
+                                <th>分類</th>
+                                <th>主な用途</th>
+                                <th>経路選択の基準</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>OSPF</td>
+                                <td>リンクステート型 IGP</td>
+                                <td>企業内ネットワーク（AS内）</td>
+                                <td>コスト（帯域幅ベース）</td>
+                            </tr>
+                            <tr>
+                                <td>EIGRP</td>
+                                <td>ハイブリッド型 IGP（Cisco独自）</td>
+                                <td>企業内ネットワーク（AS内）</td>
+                                <td>帯域幅・遅延の複合値</td>
+                            </tr>
+                            <tr>
+                                <td>BGP</td>
+                                <td>パスベクター型 EGP</td>
+                                <td>AS間・インターネット全体</td>
+                                <td>AS-PATH長などのポリシー属性</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        IGP（Interior Gateway
+                        Protocol）は自組織内（1つの自律システム＝AS）向け、EGP（Exterior Gateway
+                        Protocol）は組織間・インターネット全体向け、という役割分担で整理すると覚えやすくなります。
+                    </p>
+
+                    <h3>1-3. ルート選択の基準：Administrative DistanceとMetric</h3>
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-route-decision"></div></div>
+                    </div>
+
+                    <p>
+                        Administrative
+                        Distance（AD）は「どのルーティング情報源をどれだけ信頼するか」を示す0〜255の指標で、値が小さいほど優先されます。代表的なデフォルト値は次のとおりです。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>経路情報源</th>
+                                <th>デフォルトAD値</th>
+                                <th>備考</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>直接接続 (Connected)</td>
+                                <td><strong>0</strong></td>
+                                <td>最優先</td>
+                            </tr>
+                            <tr>
+                                <td>静的ルート (Static)</td>
+                                <td><strong>1</strong></td>
+                                <td>手動設定は原則優先される</td>
+                            </tr>
+                            <tr>
+                                <td>EIGRP</td>
+                                <td><strong>90</strong></td>
+                                <td>内部経路</td>
+                            </tr>
+                            <tr>
+                                <td>OSPF</td>
+                                <td><strong>110</strong></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>BGP（外部）</td>
+                                <td><strong>20</strong></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>BGP（内部）</td>
+                                <td><strong>200</strong></td>
+                                <td>最も信頼度が低い部類</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>1-4. アドレス変換：NATとPAT</h3>
+                    <p>
+                        NAT (Network Address Translation)
+                        は、プライベートIPアドレスをパブリックIPアドレスに変換してインターネット通信を可能にする技術です。PAT
+                        (Port Address Translation)
+                        はNATの一種で、ポート番号を組み合わせることで1つのパブリックIPを複数の内部端末で共有できるようにします。
+                    </p>
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-nat-pat"></div></div>
+                    </div>
+
+                    <h3>1-5. 冗長化の仕組み：FHRPとVIP</h3>
+                    <p>
+                        FHRP (First Hop Redundancy Protocol)
+                        は、クライアントのデフォルトゲートウェイを冗長化する仕組みです。複数台のルーターで1つの仮想IPアドレス（VIP）を共有し、Active機器の障害時も設定変更なしに自動でStandby機器へ切り替わります（代表例：HSRP、VRRP）。
+                    </p>
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-fhrp"></div></div>
+                    </div>
+
+                    <h3>1-6. サブインターフェース (Subinterfaces)</h3>
+                    <p>
+                        1つの物理インターフェースを論理的に複数に分割し、それぞれに異なるVLANやIPアドレスを割り当てる仕組みです。「Router
+                        on a
+                        Stick」と呼ばれる構成で、1本の物理トランクリンクを通じて複数VLAN間のルーティングを行う際によく使われます。
+                    </p>
+                </section>
+
+                <section id="step2">
+                    <div class="step-tag"><span class="chip chip-teal">Objective 2.2</span></div>
+                    <h2>
+                        <i class="ti ti-topology-star-3 accent-teal"></i>Step 2:
+                        スイッチング技術を理解する
+                    </h2>
+                    <p>
+                        スイッチはOSI参照モデルの主にデータリンク層（レイヤー2）で動作し、MACアドレスを基にフレームを転送します。ここでは実務で頻出するVLAN・インターフェース設定・STP・MTUを扱います。
+                    </p>
+
+                    <h3>2-1. VLANの基本</h3>
+                    <p>
+                        VLAN (Virtual LAN)
+                        は1台の物理スイッチを論理的に複数のブロードキャストドメインへ分割する技術です。部署やセキュリティ要件ごとにネットワークを分離でき、物理配線を変更せず柔軟な構成変更が可能になります。
+                    </p>
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-vlan"></div></div>
+                    </div>
+
+                    <h3>2-2. インターフェース設定</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ポートタイプ</th>
+                                <th>役割</th>
+                                <th>通過するVLAN数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>アクセスポート (Access)</td>
+                                <td>エンドユーザー端末を接続する</td>
+                                <td>1つのVLANのみ</td>
+                            </tr>
+                            <tr>
+                                <td>トランクポート (Trunk)</td>
+                                <td>
+                                    スイッチ間・ルーターとの接続に使用し複数VLANのタグ付きフレームを運ぶ
+                                </td>
+                                <td>複数（802.1Qでタグ付け）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>2-3. スパニングツリープロトコル (STP)</h3>
+                    <p>
+                        STPは冗長経路を持つスイッチ環境で発生しうる「ループ」を防ぐためのプロトコルです。各ポートは以下の状態を段階的に遷移し、最終的にループのない論理トポロジーを構築します。
+                    </p>
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-stp"></div></div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>状態</th>
+                                <th>動作内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Blocking</td>
+                                <td>BPDUは受信するがフレーム転送やMAC学習は行わない</td>
+                            </tr>
+                            <tr>
+                                <td>Listening</td>
+                                <td>BPDUの送受信でトポロジーを把握するが転送はしない</td>
+                            </tr>
+                            <tr>
+                                <td>Learning</td>
+                                <td>MACアドレステーブルの学習を開始するが転送はしない</td>
+                            </tr>
+                            <tr>
+                                <td>Forwarding</td>
+                                <td>通常どおりフレームを転送する（ループなしと判断された状態）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>2-4. MTUとジャンボフレーム</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>標準MTU</th>
+                                <th>ジャンボフレーム</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>一般的なサイズ</td>
+                                <td>1500バイト（Ethernet標準）</td>
+                                <td>9000バイト前後（機器依存）</td>
+                            </tr>
+                            <tr>
+                                <td>主な用途</td>
+                                <td>一般的なLAN通信</td>
+                                <td>ストレージネットワーク（iSCSIなど）や高スループット通信</td>
+                            </tr>
+                            <tr>
+                                <td>注意点</td>
+                                <td>経路上の全機器で同一MTU設定が必要</td>
+                                <td>経路上の全機器でジャンボフレーム対応が必須</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="step3">
+                    <div class="step-tag"><span class="chip chip-coral">Objective 2.3</span></div>
+                    <h2>
+                        <i class="ti ti-wifi accent-coral"></i>Step 3:
+                        ワイヤレス機器とテクノロジーを理解する
+                    </h2>
+                    <p>
+                        無線LANの設計では、周波数帯・SSID設計・暗号化方式・アクセスポイントの配置などを総合的に検討します。
+                    </p>
+
+                    <h3>3-1. 周波数帯とWi-Fi規格</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>規格</th>
+                                <th>Wi-Fi世代名</th>
+                                <th>周波数帯</th>
+                                <th>理論上の最大速度（目安）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>802.11a</td>
+                                <td>-</td>
+                                <td>5 GHz</td>
+                                <td>約54 Mbps</td>
+                            </tr>
+                            <tr>
+                                <td>802.11b</td>
+                                <td>-</td>
+                                <td>2.4 GHz</td>
+                                <td>約11 Mbps</td>
+                            </tr>
+                            <tr>
+                                <td>802.11g</td>
+                                <td>-</td>
+                                <td>2.4 GHz</td>
+                                <td>約54 Mbps</td>
+                            </tr>
+                            <tr>
+                                <td>802.11n</td>
+                                <td>Wi-Fi 4</td>
+                                <td>2.4 GHz / 5 GHz</td>
+                                <td>約600 Mbps</td>
+                            </tr>
+                            <tr>
+                                <td>802.11ac</td>
+                                <td>Wi-Fi 5</td>
+                                <td>5 GHz</td>
+                                <td>約3.5 Gbps</td>
+                            </tr>
+                            <tr>
+                                <td>802.11ax</td>
+                                <td>Wi-Fi 6 / 6E</td>
+                                <td>2.4 GHz / 5 GHz（6Eは6 GHz帯追加）</td>
+                                <td>約9.6 Gbps</td>
+                            </tr>
+                            <tr>
+                                <td>802.11be</td>
+                                <td>Wi-Fi 7</td>
+                                <td>2.4 GHz / 5 GHz / 6 GHz</td>
+                                <td>数十Gbps級（理論値）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="callout callout-warning">
+                        <div class="callout-title"><i class="ti ti-alert-triangle"></i>注意</div>
+                        <p>
+                            理論上の最大速度はカタログスペック上の値であり、実際のスループットは電波環境・端末数・干渉などで大きく変動します。試験対策としては「世代が新しいほど高速・高効率になる」という相対的な順序を押さえれば十分です。
+                        </p>
+                    </div>
+                    <p>
+                        2.4GHzは障害物に強く到達距離が長い一方、干渉を受けやすいという特徴があります。5GHz・6GHz帯は高速通信が可能な一方、直進性が強く障害物に弱いため、設置場所の設計（チャネル選定含む）が重要になります。
+                    </p>
+
+                    <h3>3-2. ネットワークタイプ</h3>
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-wireless-types"></div></div>
+                    </div>
+
+                    <h3>3-3. 認証と暗号化方式</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>方式</th>
+                                <th>暗号化アルゴリズム</th>
+                                <th>現在の位置づけ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>WEP</td>
+                                <td>RC4（脆弱性あり）</td>
+                                <td>非推奨・使用すべきではない</td>
+                            </tr>
+                            <tr>
+                                <td>WPA</td>
+                                <td>RC4 + TKIP</td>
+                                <td>非推奨（WEPの応急的な後継）</td>
+                            </tr>
+                            <tr>
+                                <td>WPA2</td>
+                                <td>AES-CCMP</td>
+                                <td>長らく標準として広く利用</td>
+                            </tr>
+                            <tr>
+                                <td>WPA3</td>
+                                <td>AES-GCMP、SAEによる強固な鍵交換</td>
+                                <td>現行の推奨規格</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-wireless-auth"></div></div>
+                    </div>
+                    <p>
+                        ゲストネットワークは、社内の本番VLANとは別のSSID・VLANとして分離し、来訪者や私物端末（BYOD）を隔離するために設計されます。
+                    </p>
+
+                    <h3>3-4. アンテナとアクセスポイントの配置</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>アンテナ種別</th>
+                                <th>特徴</th>
+                                <th>用途例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>無指向性 (Omnidirectional)</td>
+                                <td>全方向へ均等に電波を放射</td>
+                                <td>オフィスなど一般的な屋内カバレッジ</td>
+                            </tr>
+                            <tr>
+                                <td>指向性 (Directional / Yagi)</td>
+                                <td>特定方向へ電波を集中させ到達距離を伸ばす</td>
+                                <td>建物間の点対点リンク</td>
+                            </tr>
+                            <tr>
+                                <td>パラボラ (Parabolic)</td>
+                                <td>非常に狭いビーム角で長距離をカバー</td>
+                                <td>遠距離の拠点間接続</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        アクセスポイントの設置場所は、カバレッジの重なり（セル間のオーバーラップ）とチャネル干渉の回避を両立させるよう計画する必要があります。
+                    </p>
+                </section>
+
+                <section id="step4">
+                    <div class="step-tag"><span class="chip chip-pink">Objective 2.4</span></div>
+                    <h2>
+                        <i class="ti ti-building-warehouse accent-pink"></i>Step 4:
+                        物理インストレーションを理解する
+                    </h2>
+                    <p>
+                        どれほど論理設計が優れていても、物理的な設置環境が適切でなければネットワークは安定して稼働しません。設置・電源・環境要因を扱います。
+                    </p>
+
+                    <div class="diagram-wrap">
+                        <div class="diagram"><div id="diag-physical-install"></div></div>
+                    </div>
+
+                    <h3>4-1. 設置場所に関する考慮事項</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ラック配置</td>
+                                <td>保守のためのアクセススペース確保、機器の重量分散</td>
+                            </tr>
+                            <tr>
+                                <td>配線経路</td>
+                                <td>
+                                    ケーブルの最大長制限（例：銅線Ethernetは一般に100m）を踏まえた経路設計
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ケーブルマネジメント</td>
+                                <td>ラベリング、パッチパネルの活用、束線による整理整頓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>4-2. 電源に関する考慮事項</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>UPS（無停電電源装置）</td>
+                                <td>
+                                    停電時に一定時間電力を供給し安全なシャットダウンや電源切替の猶予を作る
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PDU（電源分配ユニット）</td>
+                                <td>ラック内の複数機器へ電源を分配・管理する</td>
+                            </tr>
+                            <tr>
+                                <td>冗長電源（デュアル電源）</td>
+                                <td>電源ユニット自体を二重化し片方の故障でも稼働を継続する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>4-3. 環境要因</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>温度・湿度管理</td>
+                                <td>
+                                    過度な発熱はハードウェア故障の主要因のため空調・気流設計が重要
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>防火・消火設備</td>
+                                <td>
+                                    通信機器室ではガス系消火設備など機器に配慮した消火方式が採用されることが多い
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>静電気対策</td>
+                                <td>部品交換時の静電気放電（ESD）による機器損傷を防ぐ対策</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="step5">
+                    <h2><i class="ti ti-checklist"></i>Step 5: 学習の進め方（まとめ）</h2>
+                    <div class="callout callout-info">
+                        <div class="callout-title">
+                            <i class="ti ti-bulb"></i>暗記より理解を優先する
+                        </div>
+                        <p>
+                            特にNAT/PAT、STP、AD値は暗記だけだと応用問題に対応しづらい領域です。図解の流れを自分の言葉で説明できるかを確認しましょう。
+                        </p>
+                    </div>
+                    <div class="callout callout-info">
+                        <div class="callout-title">
+                            <i class="ti ti-arrows-right-left"></i
+                            >Troubleshootingドメインとの接続を意識する
+                        </div>
+                        <p>
+                            出題比率24%のNetwork
+                            Troubleshootingドメインでは、ルーティングテーブル、VLAN割り当て、STP、ケーブル規格などNetwork
+                            Implementationで学んだ内容がそのまま前提知識になります。
+                        </p>
+                    </div>
+                    <div class="callout callout-info">
+                        <div class="callout-title">
+                            <i class="ti ti-device-laptop"></i>実機・シミュレータでの操作経験を積む
+                        </div>
+                        <p>
+                            パフォーマンスベース問題（PBQ）対策として、CompTIAの公式学習製品（CertMaster
+                            Learn/Practice/Labs）などでコマンドライン操作に慣れておくと得点が安定します。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="references">
+                    <h2><i class="ti ti-link"></i>参考文献・出典</h2>
+                    <p>
+                        本資料の試験範囲・出題比率・ドメイン構成に関する情報は、CompTIA公式サイトの記載に基づいています。
+                    </p>
+                    <ul class="refs">
+                        <li>
+                            <div class="ref-title">
+                                CompTIA Network+
+                                公式認定ページ（試験概要・ドメイン別出題比率・出題範囲サマリー）
+                            </div>
+                            <a class="ref-url" href="https://www.comptia.org/en-us/certifications/network/" target="_blank" rel="noopener noreferrer">
+                                https://www.comptia.org/en-us/certifications/network/
+                            </a>
+                            <a class="ref-url" href="https://www.comptia.org/en/certifications/network/" target="_blank" rel="noopener noreferrer">
+                                https://www.comptia.org/en/certifications/network/
+                            </a>
+                        </li>
+                        <li>
+                            <div class="ref-title">
+                                CompTIA Blog「The New Network+ (N10-009) Exam: Your Questions
+                                Answered」（N10-009での変更点解説）
+                            </div>
+                            <a class="ref-url" href="https://www.comptia.org/en-us/blog/the-new-network-n10-009-exam-your-questions-answered/" target="_blank" rel="noopener noreferrer">
+                                https://www.comptia.org/en-us/blog/the-new-network-n10-009-exam-your-questions-answered/
+                            </a>
+                        </li>
+                        <li>
+                            <div class="ref-title">
+                                CompTIA Blog「What Is on the CompTIA Network+
+                                Exam?」（出題内容の概要）
+                            </div>
+                            <a class="ref-url" href="https://www.comptia.org/en-us/blog/what-is-on-the-comptia-network-exam/" target="_blank" rel="noopener noreferrer">
+                                https://www.comptia.org/en-us/blog/what-is-on-the-comptia-network-exam/
+                            </a>
+                        </li>
+                        <li>
+                            <div class="ref-title">
+                                CompTIA Blog「CompTIA Network+ N10-008 vs.
+                                N10-009」（旧バージョンとの比較）
+                            </div>
+                            <a class="ref-url" href="https://www.comptia.org/en-us/blog/comptia-network-n10-008-vs-n10-009-whats-the-difference/" target="_blank" rel="noopener noreferrer">
+                                https://www.comptia.org/en-us/blog/comptia-network-n10-008-vs-n10-009-whats-the-difference/
+                            </a>
+                        </li>
+                    </ul>
+                    <footer>
+                        CompTIAの出題範囲（Exam
+                        Objectives）は改訂される場合があります。実際の受験前には、必ず上記の公式ページで最新の出題範囲PDFをご確認ください。
+                    </footer>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+        <script>
+            function cssVar(name) {
+                return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            }
+
+            var DIAGRAMS = {
+                'diag-pie-domain': [
+                    'pie',
+                    '    title Network+ N10-009 ドメイン別出題比率',
+                    '    "1.0 Networking Concepts (23%)" : 23',
+                    '    "2.0 Network Implementation (20%)" : 20',
+                    '    "3.0 Network Operations (19%)" : 19',
+                    '    "4.0 Network Security (14%)" : 14',
+                    '    "5.0 Network Troubleshooting (24%)" : 24',
+                ].join('\n'),
+                'diag-domain-pillars': [
+                    'flowchart TD',
+                    'A["Domain 2.0<br/>Network Implementation (20%)"] --> B["2.1 ルーティング技術<br/>(Routing)"]',
+                    'A --> C["2.2 スイッチング技術<br/>(Switching)"]',
+                    'A --> D["2.3 ワイヤレス機器<br/>(Wireless)"]',
+                    'A --> E["2.4 物理インストレーション<br/>(Physical)"]',
+                ].join('\n'),
+                'diag-route-decision': [
+                    'flowchart TD',
+                    'A["パケットの宛先アドレスを確認"] --> B{"最長プレフィックス一致<br/>(Longest Prefix Match) を選択"}',
+                    'B --> C{"一致する候補経路が存在するか"}',
+                    'C -->|"存在しない"| D["パケットを破棄しICMP到達不能を返す"]',
+                    'C -->|"1件のみ存在"| E["その経路で転送"]',
+                    'C -->|"複数存在(同一プレフィックス長・異プロトコル)"| F["Administrative Distanceが最小の経路を採用"]',
+                    'C -->|"複数存在(同一プロトコル内)"| G["メトリック値が最小の経路を採用"]',
+                    'F --> E',
+                    'G --> E',
+                ].join('\n'),
+                'diag-nat-pat': [
+                    'flowchart LR',
+                    'A["社内端末<br/>Private IP 192.168.1.10"] --> B["NAT/PATルーター"]',
+                    'B -->|"送信元IPとポートを変換テーブルに記録"| C["インターネット<br/>Public IP 203.0.113.5"]',
+                    'C --> D["宛先サーバー"]',
+                    'D -->|"応答パケット"| C',
+                    'C --> B',
+                    'B -->|"変換テーブルを参照し元のIPへ戻す"| A',
+                ].join('\n'),
+                'diag-fhrp': [
+                    'flowchart TD',
+                    'Client["クライアント端末<br/>デフォルトゲートウェイ=VIP"] --> VIP["仮想IPアドレス<br/>例 192.168.1.1"]',
+                    'VIP --> R1["ルーターA (Active)"]',
+                    'R1 -.->|"障害検知時に自動切替"| R2["ルーターB (Standby)"]',
+                ].join('\n'),
+                'diag-vlan': [
+                    'flowchart TB',
+                    'SW["L2スイッチ"] --> V10["VLAN 10<br/>営業部門"]',
+                    'SW --> V20["VLAN 20<br/>開発部門"]',
+                    'SW --> V99["VLAN 99<br/>管理用 (Native VLAN)"]',
+                    'V10 --> PC1["PC・IP電話"]',
+                    'V20 --> PC2["開発者端末"]',
+                ].join('\n'),
+                'diag-stp': [
+                    'stateDiagram-v2',
+                    '[*] --> Blocking',
+                    'Blocking --> Listening : タイマー経過',
+                    'Listening --> Learning : タイマー経過',
+                    'Learning --> Forwarding : タイマー経過',
+                    'Forwarding --> Blocking : トポロジー変化を検知',
+                ].join('\n'),
+                'diag-wireless-types': [
+                    'flowchart LR',
+                    'subgraph Infra["インフラストラクチャモード"]',
+                    'AP["アクセスポイント AP"] --- STA1["端末1"]',
+                    'AP --- STA2["端末2"]',
+                    'end',
+                    'subgraph AdHoc["アドホックモード"]',
+                    'D1["端末A"] --- D2["端末B"]',
+                    'end',
+                    'subgraph Mesh["メッシュネットワーク"]',
+                    'M1["AP1"] --- M2["AP2"]',
+                    'M2 --- M3["AP3"]',
+                    'M1 --- M3',
+                    'end',
+                ].join('\n'),
+                'diag-wireless-auth': [
+                    'flowchart TD',
+                    'A["クライアントがSSIDを検出"] --> B{"認証方式は"}',
+                    'B -->|"Open (認証なし)"| C["すぐに関連付け (Association)"]',
+                    'B -->|"PSK (WPA2/WPA3 Personal)"| D["事前共有鍵による4ウェイハンドシェイク"]',
+                    'B -->|"Enterprise (802.1X)"| E["RADIUSサーバーへ認証情報を転送"]',
+                    'D --> F["暗号鍵を生成し通信開始"]',
+                    'E --> F',
+                    'C --> F',
+                ].join('\n'),
+                'diag-physical-install': [
+                    'flowchart TD',
+                    'A["現地調査 (Site Survey)"] --> B["ラック配置・スペース計画"]',
+                    'B --> C["配線計画 (ケーブルマネジメント)"]',
+                    'C --> D["電源設計 (UPS・PDU・冗長化)"]',
+                    'D --> E["環境要因の確認 (温度・湿度・防火)"]',
+                    'E --> F["ラベリングとドキュメント化"]',
+                ].join('\n'),
+            };
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                themeVariables: {
+                    fontFamily: "'Noto Sans JP', 'Inter', sans-serif",
+                    fontSize: '16px',
+                    background: cssVar('--color-background-secondary'),
+                    primaryColor: cssVar('--c-purple-800'),
+                    primaryTextColor: cssVar('--c-purple-100'),
+                    primaryBorderColor: cssVar('--c-purple-200'),
+                    lineColor: cssVar('--color-border-primary'),
+                    secondaryColor: cssVar('--c-teal-800'),
+                    secondaryTextColor: cssVar('--c-teal-100'),
+                    secondaryBorderColor: cssVar('--c-teal-200'),
+                    tertiaryColor: cssVar('--c-coral-800'),
+                    tertiaryTextColor: cssVar('--c-coral-100'),
+                    tertiaryBorderColor: cssVar('--c-coral-200'),
+                    textColor: cssVar('--color-text-primary'),
+                    nodeTextColor: cssVar('--c-purple-100'),
+                    mainBkg: cssVar('--c-purple-800'),
+                    nodeBorder: cssVar('--c-purple-200'),
+                    clusterBkg: cssVar('--color-background-tertiary'),
+                    clusterBorder: cssVar('--color-border-primary'),
+                    titleColor: cssVar('--color-text-primary'),
+                    edgeLabelBackground: cssVar('--color-background-tertiary'),
+                    pie1: cssVar('--c-purple-800'),
+                    pie2: cssVar('--c-teal-800'),
+                    pie3: cssVar('--c-coral-800'),
+                    pie4: cssVar('--c-pink-800'),
+                    pie5: cssVar('--color-background-tertiary'),
+                    pieOuterStrokeColor: cssVar('--color-border-primary'),
+                    pieSectionTextColor: cssVar('--color-text-primary'),
+                    pieTitleTextColor: cssVar('--color-text-primary'),
+                },
+                flowchart: {
+                    htmlLabels: true,
+                    curve: 'basis',
+                    padding: 20,
+                    nodeSpacing: 45,
+                    rankSpacing: 50,
+                },
+            });
+
+            function applySvgFixups(svgEl, chart) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.overflow = 'visible';
+                svgEl.style.display = 'block';
+                svgEl.style.margin = '0 auto';
+                var viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) {
+                    return;
+                }
+                var parts = viewBox.split(/\s+/).map(Number);
+                if (
+                    parts.length !== 4 ||
+                    parts.some(function (n) {
+                        return !isFinite(n);
+                    })
+                ) {
+                    return;
+                }
+                var trimmed = chart.trim();
+                var isSequenceOrState =
+                    trimmed.indexOf('sequenceDiagram') === 0 ||
+                    trimmed.indexOf('stateDiagram') === 0;
+                var extraHeight = isSequenceOrState ? 110 : 15;
+                var x = parts[0],
+                    y = parts[1],
+                    w = parts[2],
+                    h = parts[3];
+                svgEl.style.width = w + 'px';
+                svgEl.style.maxWidth = '100%';
+                svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + extraHeight));
+            }
+
+            async function renderDiagrams() {
+                await document.fonts.ready;
+                var ids = Object.keys(DIAGRAMS);
+                for (var i = 0; i < ids.length; i++) {
+                    var id = ids[i];
+                    var target = document.getElementById(id);
+                    if (!target) {
+                        continue;
+                    }
+                    var src = DIAGRAMS[id];
+                    try {
+                        var result = await mermaid.render('svg-' + id, src);
+                        target.innerHTML = result.svg;
+                        var svgEl = target.querySelector('svg');
+                        if (svgEl) {
+                            applySvgFixups(svgEl, src);
+                        }
+                    } catch (err) {
+                        target.innerHTML =
+                            '<div class="diagram-error">diagram render error: ' + id + '</div>';
+                        console.error('mermaid render error', id, err);
+                    }
+                }
+            }
+            renderDiagrams();
+
+            var sections = document.querySelectorAll('main section[id]');
+            var navLinks = document.querySelectorAll('.nav-item');
+
+            var sectionObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (link) {
+                                link.classList.remove('active');
+                            });
+                            var active = document.querySelector(
+                                '.nav-item[href="#' + entry.target.id + '"]',
+                            );
+                            if (active) {
+                                active.classList.add('active');
+                            }
+                        }
+                    });
+                },
+                { rootMargin: '-35% 0px -55% 0px' },
+            );
+
+            sections.forEach(function (s) {
+                sectionObserver.observe(s);
+            });
+
+            var progressFill = document.getElementById('progressFill');
+            function updateProgress() {
+                var scrollTop = window.scrollY;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                progressFill.style.width = pct + '%';
+            }
+            window.addEventListener('scroll', updateProgress);
+            updateProgress();
+        </script>
+    </body>
+</html>

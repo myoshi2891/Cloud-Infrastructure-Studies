@@ -56,10 +56,21 @@ export function hasBlockingVulnerabilities(summary) {
 }
 
 /**
+ * Determines whether a `spawnSync` result indicates that the audit process failed.
+ *
+ * @param {{ error?: unknown; status?: number | null; signal?: NodeJS.Signals | null }} result - The audit process result.
+ * @returns {boolean} `true` if a spawn error, signal, or exit status of 2 or greater is present; `false` otherwise.
+ */
+export function isAuditProcessFailure(result) {
+    if (result.error || result.signal) return true;
+    return typeof result.status === 'number' && result.status >= 2;
+}
+
+/**
  * Run `bun audit --json` and parse its JSON output.
  *
  * @returns {unknown} The parsed JSON object produced by `bun audit --json`, or an empty object when no JSON output is present.
- * @throws {Error} If the audit process fails (spawn error, non-zero exit status, or received signal) or if the captured output cannot be parsed as JSON.
+ * @throws {Error} If the audit process fails (spawn error, exit status >= 2, or received signal) or if the captured output cannot be parsed as JSON.
  */
 function runBunAudit() {
     const result = spawnSync('bun', ['audit', '--json'], {
@@ -67,7 +78,7 @@ function runBunAudit() {
         stdio: ['ignore', 'pipe', 'pipe'],
         timeout: 15000,
     });
-    if (result.error || result.status !== 0 || result.signal) {
+    if (isAuditProcessFailure(result)) {
         const errorMsg = result.error ? result.error.message : 'None';
         const stderrStr = result.stderr ? result.stderr.toString() : 'None';
         throw new Error(

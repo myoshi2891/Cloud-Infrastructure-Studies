@@ -292,7 +292,7 @@ flowchart TD
 
 ### 設定コマンド例
 
-```
+```text
 ! 標準ACL：192.168.10.0/24からのアクセスのみ許可
 Router(config)# access-list 10 permit 192.168.10.0 0.0.0.255
 Router(config)# access-list 10 deny any

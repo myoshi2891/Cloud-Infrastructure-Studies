@@ -147,7 +147,7 @@
 .ccna-beginner-page .hero-lead {
     color: var(--ccna-text-dim);
     font-size: 1.05rem;
-    max-width: 56em;
+    max-width: 800px;
 }
 
 .ccna-beginner-page section {
@@ -297,10 +297,13 @@
 .ccna-beginner-page .diagram-wrap {
     margin: 1.4rem auto 1.8rem;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .ccna-beginner-page .mermaid-container {
     width: 100%;
-    display: block;
+    display: flex;
+    justify-content: center;
 }
 .ccna-beginner-page .mermaid-container > div {
     width: 100%;

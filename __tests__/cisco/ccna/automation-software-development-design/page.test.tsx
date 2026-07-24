@@ -48,8 +48,11 @@ describe('CcnaSoftwareDevDesignPage', () => {
             '参考ソース',
         ];
 
+        // 各 title が h2 見出しとしてレンダリングされていることを検証する
         sectionTitles.forEach((title) => {
-            expect(screen.getByText(new RegExp(title, 'i'))).toBeInTheDocument();
+            expect(
+                screen.getByRole('heading', { level: 2, name: new RegExp(title, 'i') }),
+            ).toBeInTheDocument();
         });
     });
 

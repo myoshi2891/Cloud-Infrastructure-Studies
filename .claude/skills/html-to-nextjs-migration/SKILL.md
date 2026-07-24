@@ -106,22 +106,22 @@ HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既
 }
 ```
 
-### 4. Mermaid 図の移行（MermaidDiagram を再利用・本体は読まない）
+### 4. Mermaid 図の移行（MermaidDiagram を再利用 & preserveNaturalScale 必須）
 
 HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)` ループは**再実装しない**。
 共有コンポーネント `components/MermaidDiagram.tsx` がフォント待ち・viewBox 見切れ対策・SSRフォールバックを内蔵済み。
 
 - `import { MermaidDiagram } from '@/components/MermaidDiagram';`
-- props は **`chart: string`** と **`ariaLabel: string`（必須）** のみ。
+- props は **`chart: string`**、**`ariaLabel: string`（必須）**、および **`preserveNaturalScale={true}`（必須：文字サイズが1rem未満に潰れるのを防ぐ）**。
 - `<script>` 内の `'graph LR\n...'` 文字列を `constants.ts` の `DIAGRAMS` に**テンプレートリテラル（`\n`→実改行）**で移植。`<br />` 等はそのまま。
-- 各 `<div class="mermaid" id="diag-N">` を `<MermaidDiagram chart={DIAGRAMS['diag-…']} ariaLabel="…" />` に置換（`.mermaid-wrap` で囲む）。
-- **TS strict（`noUncheckedIndexedAccess`）必須形**（Record の添字は `string | undefined`）:
+- 各 `<div class="mermaid" id="diag-N">` は直接インデックス参照せず、`DIAGRAMS[id]` の存在を検証した安全なコンポーネント（例: `<Diagram id="diag-N" label="..." />`）経由で `<MermaidDiagram chart={chart} ariaLabel="..." preserveNaturalScale />` に引き渡す（`.mermaid-wrap` で囲む）。
+- **TS strict（`noUncheckedIndexedAccess`）必須形**（Record の添字は `string | undefined` であるため、直接のインデックス参照を避け、以下のようになガード処理を行う）:
 
   ```tsx
   function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
-    return <div className="mermaid-wrap"><MermaidDiagram chart={chart} ariaLabel={label} /></div>;
+    return <div className="mermaid-wrap"><MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale /></div>;
   }
   ```
 
@@ -222,7 +222,10 @@ GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` �
 | --- | --- | --- |
 | Invalid DOM property | `<div class="sidebar">` | `<div className="sidebar">` （JSXでは `className` に統一） |
 | Unescaped entities | `parsed["hostname"]` (raw text) | `{`print(parsed["hostname"])`}` や `&quot;` / `&apos;` でラップ（`react/no-unescaped-entities` 解消） |
-| Monochrome code blocks | ハイライト無しの単色 `<pre><code>` | 各行 `.code-line` に `<span className="keyword\|string\|comment\|function\|tag\|attr">` を付与し色分け |
+| Monochrome code blocks | ハイライト無しの単色 `<pre><code>` | コードブロックの各要素（`.code-comment`, `.code-prompt`, `.code-keyword`, `.code-command`, `.code-number`, `.code-param` 等）を `<span>` でカラー装飾するか、プレーン整形のみ（Section 6の方針に従い使い分け） |
+| Mermaid 図の文字縮小 | `preserveNaturalScale` なしの `<MermaidDiagram>` | `<MermaidDiagram chart={...} ariaLabel="..." preserveNaturalScale />` を指定し 1rem (16px) サイズを維持 |
+| 誤ったアーカイブ先 | リポジトリ直下や `Gcl_Archive/` 単体 | 原本を保持したまま `archive/Cisco/html/` と `archive/Cisco/md/` 等の階層化フォルダへコピーして保存 |
+| 英語での計画書作成 | 英語で `implementation_plan.md` を作成 | `implementation_plan.md` や報告メッセージはすべて**日本語**で記述 |
 | Invalid property | `scrollbar-: none;` | `scrollbar-width: none;` |
 | z-index duplication | `nav { z-index: 100; }` in CSS + `z-50` in JSX | Single source: Tailwind `z-50` in JSX only |
 | Responsive outside @media | `.box { grid-template-columns: 1fr; }` at root | Wrap in `@media (max-width: 768px) { ... }` |
@@ -380,9 +383,14 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 - **Never place responsive overrides outside `@media` queries**
 - **Never use camelCase for `@keyframes` names** — use kebab-case
 - **Pages are server-rendered by default** — no `useState`/`useEffect` in `page.tsx`。**例外**: 進捗バー・scroll spy・チェックリスト等を持つリッチガイドは「正準リファレンス §1」の通り、Server `page.tsx`（`metadata` + `<XxxGuide/>` を返すだけ）と client `XxxGuide.tsx`（`'use client'`）に分割する。Server に状態を持ち込まない。
+- **Always specify `preserveNaturalScale={true}` for `<MermaidDiagram>`** — 図が無理やり縮小されて文字が 1rem 未満になるのを絶対防止する
+- **Apply CLI / code syntax highlighting appropriately** — コードブロックは Section 6 の方針に従い `.code-header`, `.code-line`, `.code-comment` 等のクラスでカラー装飾するか、プレーン整形のみ（`.code-line`）を適切に選択すること
+- **Always archive original files to correct subdirectories** — Cisco資料は原本を保持したまま `archive/Cisco/html/` および `archive/Cisco/md/` へそれぞれコピーして保存すること（削除厳禁）
+- **Always write implementation plans in Japanese** — `implementation_plan.md` や応答は必ず日本語で作成すること
+- **Never summarize or omit original text content** — 移行元の文章、図解、注意書き、テーブル、コマンド例は一切の省略・要約を禁止
 - **Always use fallback values** for CSS vars that may not be defined: `var(--radius-lg, 16px)`
 - **Never use `{"\n"}` for line breaks inside `.code-block`** — 各行を `<div className="code-line">...</div>` でラップすること
-- **Never leave code blocks unhighlighted** — 各コードブロックには `<span className="keyword|string|comment|function|tag|attr">` タグとスコープ CSS による構文ハイライト（色分け）を必ず適用すること
+- **Never leave code blocks improperly formatted** — Section 6 の方針に沿って構文ハイライトまたはプレーン整形を正しく適用すること
 - **Never leave unescaped quotes (' or ") or angle brackets in JSX text nodes** — `react/no-unescaped-entities` 回避のため、テンプレートリテラル `{`...`}` や HTML エンティティ (`&quot;`, `&apos;`) または `span` ラッパーを徹底すること
 - **Never mix `class` and `className`** — JSX 内では必ず `className` に統一し、不適切な `class` 属性の残留を防ぐこと
 - **Never align tabular data with spaces in `.code-block`** — デシジョンテーブルや行列データは `<table>` 要素を使うこと
