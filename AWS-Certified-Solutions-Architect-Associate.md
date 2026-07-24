@@ -1,6 +1,6 @@
 # AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド
 
-> 本ガイドは AWS 公式 [Exam Guide (SAA-C03)](https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html) の内容構成（4ドメイン・14タスクステートメント）に完全準拠し、初級者が「何を」「なぜ」「どのサービスで」解決するかを段階的に理解できるよう構成しています。
+> 本ガイドは AWS 公式 [Exam Guide (SAA-C03)](https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html) の対象バージョン (SAA-C03) の内容構成（4ドメイン・14タスクステートメント）に沿った構成であり、初級者が「何を」「なぜ」「どのサービスで」解決するかを段階的に理解できるよう構成しています。
 
 ---
 
@@ -131,12 +131,18 @@ flowchart TB
 ```mermaid
 flowchart TD
     Start([リクエスト発生]) --> Explicit{明示的な<br/>Denyが存在する?}
-    Explicit -->|はい| Deny1[アクセス拒否<br/>常に最優先]
-    Explicit -->|いいえ| SCP{SCP・境界で<br/>許可されている?}
-    SCP -->|いいえ| Deny2[アクセス拒否]
-    SCP -->|はい| Identity{IDベース or<br/>リソースベースポリシーで<br/>明示的Allowがある?}
-    Identity -->|いいえ| Deny3[デフォルト拒否<br/>暗黙のDeny]
-    Identity -->|はい| Allow[アクセス許可]
+    Explicit -->|はい| Deny[アクセス拒否<br/>常に最優先]
+    Explicit -->|いいえ| SCP{SCPで<br/>許可されている?}
+    SCP -->|いいえ| Deny
+    SCP -->|はい| PB{Permissions Boundaryで<br/>許可されている?}
+    PB -->|いいえ| Deny
+    PB -->|はい| Session{Session Policy / PDPで<br/>許可されている?}
+    Session -->|いいえ| Deny
+    Session -->|はい| RCP{Resource Control Policy (RCP)で<br/>許可されている?}
+    RCP -->|いいえ| Deny
+    RCP -->|はい| CheckAllow{Identity-based または<br/>Resource-based ポリシーで<br/>明示的 Allow がある?}
+    CheckAllow -->|いいえ| ImplicitDeny[デフォルト拒否<br/>暗黙のDeny]
+    CheckAllow -->|はい| Allow[アクセス許可]
 ```
 
 > **重要**: 明示的な `Deny` は常に他のあらゆる `Allow` に優先します。また、何も明示されていない場合はデフォルトで拒否（暗黙のDeny）される点も忘れずに。
@@ -269,7 +275,7 @@ flowchart TB
 | Direct Connect + VPN（併用） | 専用線を暗号化して使う、またはDCの障害時のフェイルオーバー用にVPNを併用 | セキュリティ要件が厳しい・DCの可用性を高めたい場合 |
 
 **ベストプラクティス**
-- インターネットを経由させたくない機密性の高い通信は Direct Connect または VPN を選択する
+- インターネットを経由させたくない機密性の高い通信は Direct Connect または VPN を選択する。なお Direct Connect 単体では通信が暗号化されないため、暗号化が必要な場合は「Direct Connect + Site-to-Site VPN」または対応環境での MACsec を利用する
 - 迅速な構築が優先ならVPN、帯域保証・低レイテンシが優先ならDirect Connectを選ぶ、という二択の判断軸を持つ
 
 ---
@@ -524,7 +530,8 @@ flowchart TD
 | M（汎用） | バランス型 | Webサーバー、中小規模DB、一般的なアプリケーション |
 | C（コンピューティング最適化） | 高いCPU性能 | バッチ処理、動画エンコード、科学計算、ゲームサーバー |
 | R（メモリ最適化） | 大容量メモリ | インメモリDB、リアルタイムビッグデータ分析 |
-| I / D（ストレージ最適化） | 高速ローカルNVMe | NoSQL DB、データウェアハウス、分散ファイルシステム |
+| I（ストレージ最適化） | 高速ローカルNVMe SSD | NoSQL DB、高IOPSのトランザクションDB |
+| D（ストレージ最適化） | 高密度HDDストレージ（D2/D3/D3en） | データレイク、分散ファイルシステム、ログ解析 |
 | G / P（高速コンピューティング） | GPU | 機械学習トレーニング、グラフィックスレンダリング |
 
 #### Auto Scalingの仕組み
@@ -633,7 +640,7 @@ flowchart TB
 |---|---|---|
 | AWS VPN | インターネット経由の暗号化トンネル | 迅速・低コストな拠点間/リモート接続 |
 | AWS Direct Connect | 専用線接続 | 大容量・安定した帯域、低レイテンシが必要な基幹接続 |
-| AWS PrivateLink | VPC間・VPCとAWSサービス間をインターネットを経由せずプライベート接続 | インターネットに公開せずSaaS/内部サービスにアクセスしたい場合 |
+| AWS PrivateLink | ENIを介したVPCとAWSサービス／公開サービス間のプライベート接続 | インターネットに公開せずSaaSや他アカウントの特定リソースにアクセスしたい場合 |
 | VPCピアリング | 2つのVPC間を1対1で直接接続 | 少数のVPC間で全面的なネットワーク到達性が必要な場合 |
 | AWS Transit Gateway | 多数のVPC・オンプレミスをハブ&スポーク型で集約接続 | 数十〜数百のVPCを接続するハイブリッド/マルチVPC環境 |
 
@@ -762,7 +769,7 @@ flowchart TD
 | On-Demand | 割引なし | 秒単位課金、コミットメント不要。短期・予測不能なワークロードに最適 |
 | Reserved Instances (RI) | 最大72% | 1年/3年の期間コミットで割引。特定のインスタンスファミリー・リージョンに紐づく（Standard RI）か、一定の柔軟性を持つ（Convertible RI） |
 | Savings Plans | 最大72% | 時間あたりの一定の利用額をコミットする代わりに割引。Compute Savings Plansはインスタンスファミリー・リージョン・OSをまたいで柔軟に適用可能 |
-| Spot Instances | 最大90% | AWSの余剰キャパシティを入札形式で利用。2分前通知で中断される可能性があるため、フォールトトレラントな処理向け |
+| Spot Instances | 最大90% | AWSの余剰キャパシティをスポット価格で利用。2分前通知で中断される可能性があるため、フォールトトレラントな処理向け |
 
 **ベストプラクティス**
 - 常時起動する予測可能な本番ワークロードにはSavings Plans/RIを適用し、コミットメントによる割引を最大化する
@@ -773,7 +780,7 @@ flowchart TD
 
 #### サーバーレス・コンテナによるコスト最適化
 
-- Lambdaは実行時間課金のためアイドルコストがゼロになり、リクエスト数が変動するワークロードでコスト効率が良い
+- Lambdaは通常のオンデマンド実行時（Provisioned Concurrency除く）、実行時間のみの課金のためアイドル時の実行環境料金が発生せず、リクエスト数が変動するワークロードでコスト効率が良い
 - Fargate SpotはFargateタスクにもSpot割引を適用でき、バッチ的なコンテナワークロードのコストを削減できる
 - EC2 Hibernate（休止）機能で、開発・検証環境など断続利用のインスタンスの起動時間を短縮しコストを抑える
 
@@ -813,14 +820,15 @@ flowchart TD
 
 ```mermaid
 flowchart TB
-    subgraph Cheap["転送コストが低い・無料に近い"]
+    subgraph Cheap["転送コストが低い・無料"]
         A["同一AZ内の通信"]
-        B["VPCエンドポイント経由の<br/>AWSサービスへのアクセス"]
+        B["Gateway エンドポイント経由の<br/>S3/DynamoDBアクセス（追加料金なし）"]
     end
     subgraph Costly["転送コストが高くなりやすい"]
         C["AZをまたぐ通信"]
         D["リージョンをまたぐ通信"]
         E["インターネットへのアウトバウンド通信<br/>(NAT Gateway経由含む)"]
+        F["Interface エンドポイント通信<br/>(時間料金・データ処理料金が発生)"]
     end
     Cheap -.-> Costly
 ```
