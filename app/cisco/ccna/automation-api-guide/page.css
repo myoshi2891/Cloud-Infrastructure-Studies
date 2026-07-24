@@ -1,7 +1,7 @@
 .ccna-automation-api-page {
-    background: var(--color-background, #08090f);
-    color: var(--color-foreground, #e2e8f0);
-    font-family: var(--font-body, 'Noto Sans JP', sans-serif);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
     font-size: 16px;
     line-height: 1.85;
     min-height: 100vh;
@@ -16,30 +16,30 @@
 /* ---------- Sidebar ---------- */
 .ccna-automation-api-page .sidebar {
     position: fixed;
-    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    top: calc(var(--header-h) + var(--disclaimer-height));
     left: 0;
     bottom: 0;
     width: 280px;
     overflow-y: auto;
-    background: var(--color-card-secondary, #0d1b2e);
-    border-right: 1px solid var(--color-border, #1e2840);
+    background: var(--color-card-secondary);
+    border-right: 1px solid var(--color-border);
     padding: 24px 18px 36px;
     z-index: 40;
 }
 
 .ccna-automation-api-page .sidebar-brand {
-    font-family: var(--font-display, sans-serif);
+    font-family: var(--font-display);
     font-weight: 900;
     font-size: 0.9rem;
     letter-spacing: 0.04em;
-    color: var(--color-muted-foreground, #94a3b8);
+    color: var(--color-muted-foreground);
     text-transform: uppercase;
     margin-bottom: 4px;
 }
 
 .ccna-automation-api-page .sidebar-brand span {
     display: block;
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-primary);
     font-size: 1.2rem;
     letter-spacing: 0;
     text-transform: none;
@@ -48,7 +48,7 @@
 
 .ccna-automation-api-page .sidebar-sub {
     font-size: 0.76rem;
-    color: var(--color-muted-foreground, #64748b);
+    color: var(--color-muted-foreground);
     margin: 8px 0 24px;
     line-height: 1.6;
 }
@@ -63,7 +63,7 @@
     display: block;
     padding: 8px 12px;
     border-radius: 8px;
-    color: var(--color-muted-foreground, #94a3b8);
+    color: var(--color-muted-foreground);
     text-decoration: none;
     font-size: 0.85rem;
     border-left: 2px solid transparent;
@@ -72,27 +72,27 @@
 
 .ccna-automation-api-page .sidebar-nav a:hover {
     background: rgba(124, 158, 255, 0.08);
-    color: var(--color-foreground, #e2e8f0);
+    color: var(--color-foreground);
 }
 
 .ccna-automation-api-page .sidebar-nav a.active {
     background: rgba(124, 158, 255, 0.12);
-    color: var(--color-primary, #7c9eff);
-    border-left: 2px solid var(--color-primary, #7c9eff);
+    color: var(--color-primary);
+    border-left: 2px solid var(--color-primary);
     font-weight: 500;
 }
 
 .ccna-automation-api-page .sidebar-footer {
     margin-top: 28px;
     padding-top: 18px;
-    border-top: 1px solid var(--color-border, #1e2840);
+    border-top: 1px solid var(--color-border);
     font-size: 0.74rem;
-    color: var(--color-muted-foreground, #64748b);
+    color: var(--color-muted-foreground);
     line-height: 1.7;
 }
 
 .ccna-automation-api-page .sidebar-footer a {
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-primary);
     text-decoration: none;
 }
 

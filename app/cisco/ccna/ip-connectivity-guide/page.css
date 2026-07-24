@@ -92,8 +92,8 @@
 
 /* Main Content */
 .ccna-ip-connectivity-page .main {
-    max-width: 100%;
-    margin-inline: 0;
+    max-width: 1000px;
+    margin-inline: auto;
     padding: 3rem 4rem 6rem;
 }
 

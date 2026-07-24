@@ -101,8 +101,8 @@
 /* ---------- Main ---------- */
 .ccna-beginner-page main {
     padding: 3rem 4rem 6rem;
-    max-width: 100%;
-    margin-inline: 0;
+    max-width: 1000px;
+    margin-inline: auto;
 }
 
 @media (max-width: 900px) {
@@ -147,7 +147,7 @@
 .ccna-beginner-page .hero-lead {
     color: var(--ccna-text-dim);
     font-size: 1.05rem;
-    max-width: 100%;
+    max-width: 800px;
 }
 
 .ccna-beginner-page section {

@@ -1,28 +1,3 @@
-export interface TocSection {
-    id: string;
-    title: string;
-    level?: number;
-}
-
-export const SECTIONS: TocSection[] = [
-    { id: 'sec-1', title: '1. この記事について' },
-    { id: 'sec-2', title: '2. CCNA Automation 試験の全体像' },
-    { id: 'sec-3', title: '3. 学習ロードマップ' },
-    { id: 'sec-4', title: '4. Step 0: そもそも「API」とは何か' },
-    { id: 'sec-5', title: '5. Step 1（試験項目2.8）: APIの方式を比較する' },
-    { id: 'sec-6', title: '6. Step 2（試験項目2.1）: REST APIリクエストを組み立てる' },
-    { id: 'sec-7', title: '7. Step 3（試験項目2.6）: HTTPレスポンスの構造を読み解く' },
-    { id: 'sec-8', title: '8. Step 4（試験項目2.4）: 主要なHTTPステータスコードを理解する' },
-    { id: 'sec-9', title: '9. Step 5（試験項目2.7）: API認証方式を使い分ける' },
-    { id: 'sec-10', title: '10. Step 6（試験項目2.3）: APIを使ううえでの制約を理解する' },
-    { id: 'sec-11', title: '11. Step 7（試験項目2.2）: Webhookの活用パターンを理解する' },
-    { id: 'sec-12', title: '12. Step 8（試験項目2.5）: ステータスコードから障害を切り分ける' },
-    { id: 'sec-13', title: '13. Step 9（試験項目2.9）: Pythonのrequestsライブラリで実装する' },
-    { id: 'sec-14', title: '14. まとめ: 試験項目とこのガイドの対応表' },
-    { id: 'sec-15', title: '15. さらに学ぶために（関連する試験項目とのつながり）' },
-    { id: 'sec-16', title: '16. 出典・参考資料' },
-];
-
 export const DIAGRAMS: Record<string, string> = {
     'diag-0': `flowchart TB
 Start(["学習スタート"]) --> S0["Step 0<br/>APIとは何か"]

@@ -111,8 +111,8 @@
 
 .ccna-ip-services-page .section {
     padding-top: 1.2rem;
-    max-width: 100%;
-    margin-inline: 0;
+    max-width: 1000px;
+    margin-inline: auto;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 2rem);
 }
 
