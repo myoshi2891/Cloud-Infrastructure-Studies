@@ -1,0 +1,2616 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA Automation ステップガイド | 5.0 Infrastructure and Automation</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0e1c30;
+                --bg-card: #101f35;
+                --text: #e7edf7;
+                --text-dim: #bcc9df;
+                --text-faint: #a5bce1;
+                --accent: #7c9eff;
+                --accent-soft: rgba(124, 158, 255, 0.12);
+                --accent-2: #4dd8c0;
+                --accent-2-soft: rgba(77, 216, 192, 0.12);
+                --border: rgba(124, 158, 255, 0.16);
+                --code-bg: #0a1424;
+                --radius: 14px;
+                --sidebar-w: 300px;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: 'Inter', sans-serif;
+                font-size: 16px;
+                line-height: 1.75;
+                -webkit-font-smoothing: antialiased;
+            }
+            h1,
+            h2,
+            h3,
+            h4 {
+                font-family: 'Space Grotesk', sans-serif;
+                color: var(--text);
+                line-height: 1.3;
+                font-weight: 600;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            code,
+            pre,
+            .mono {
+                font-family: 'JetBrains Mono', monospace;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-w);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 1.75rem 1.25rem 3rem;
+                z-index: 20;
+            }
+            .sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 3px;
+            }
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                font-family: 'Space Grotesk', sans-serif;
+                font-weight: 700;
+                font-size: 1rem;
+                color: var(--text);
+                margin-bottom: 0.35rem;
+            }
+            .brand-badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 9px;
+                background: linear-gradient(135deg, var(--accent), var(--accent-2));
+                color: #04101f;
+                font-weight: 700;
+                font-size: 1rem;
+            }
+            .brand-sub {
+                color: var(--text-faint);
+                font-size: 1rem;
+                margin-bottom: 1.4rem;
+            }
+            .nav-group-label {
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                font-size: 1rem;
+                color: var(--text-faint);
+                margin: 1.3rem 0 0.5rem;
+                font-weight: 600;
+            }
+            .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+                padding: 0.42rem 0.6rem;
+                border-radius: 8px;
+                color: var(--text-dim);
+                font-size: 1rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+            .nav-link:hover {
+                background: var(--accent-soft);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .nav-link.active {
+                background: var(--accent-soft);
+                color: var(--accent);
+                border-left: 2px solid var(--accent);
+            }
+            .nav-num {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--accent-2);
+                min-width: 2.1rem;
+                text-align: right;
+                flex: none;
+            }
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 0 0 6rem;
+            }
+            .section,
+            .prose,
+            .hero,
+            .footer {
+                max-width: none;
+            }
+
+            /* ---------- hero ---------- */
+            .hero {
+                padding: 4.5rem 4rem 3rem;
+                border-bottom: 1px solid var(--border);
+                background:
+                    radial-gradient(
+                        700px 320px at 85% -10%,
+                        rgba(124, 158, 255, 0.12),
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        500px 260px at 10% 0%,
+                        rgba(77, 216, 192, 0.08),
+                        transparent 60%
+                    );
+            }
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1rem;
+                color: var(--accent-2);
+                border: 1px solid var(--accent-2-soft);
+                background: var(--accent-2-soft);
+                padding: 0.3rem 0.7rem;
+                border-radius: 999px;
+                margin-bottom: 1.3rem;
+            }
+            .hero h1 {
+                font-size: 2.6rem;
+                margin: 0 0 1rem;
+                max-width: 900px;
+                background: linear-gradient(90deg, #e7edf7, var(--accent) 70%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero p.lead {
+                font-size: 1.08rem;
+                color: var(--text-dim);
+                max-width: 760px;
+                margin: 0 0 2rem;
+            }
+            .meta-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.7rem;
+            }
+            .chip {
+                display: flex;
+                flex-direction: column;
+                gap: 0.15rem;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 0.6rem 1rem;
+                min-width: 120px;
+            }
+            .chip .k {
+                font-size: 1rem;
+                color: var(--text-faint);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+            }
+            .chip .v {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1rem;
+                color: var(--text);
+            }
+            .chip.highlight {
+                border-color: rgba(124, 158, 255, 0.45);
+                background: var(--accent-soft);
+            }
+            .chip.highlight .v {
+                color: var(--accent);
+            }
+
+            /* ---------- content sections ---------- */
+            .section {
+                padding: 3.4rem 4rem;
+                border-bottom: 1px solid var(--border);
+            }
+            .section:last-of-type {
+                border-bottom: none;
+            }
+            .section-head {
+                display: flex;
+                align-items: flex-start;
+                gap: 1.1rem;
+                margin-bottom: 1.4rem;
+            }
+            .domain-chip {
+                flex: none;
+                font-family: 'JetBrains Mono', monospace;
+                font-weight: 700;
+                font-size: 1.05rem;
+                color: var(--bg);
+                background: linear-gradient(135deg, var(--accent), var(--accent-2));
+                border-radius: 10px;
+                padding: 0.5rem 0.85rem;
+                line-height: 1;
+            }
+            .section-head h2 {
+                font-size: 1.5rem;
+                margin: 0.15rem 0 0;
+            }
+            .section-head .weight-tag {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1rem;
+                color: var(--text-faint);
+                margin-top: 0.4rem;
+            }
+            .prose p {
+                color: var(--text-dim);
+                margin: 0 0 1.1rem;
+            }
+            .prose ul,
+            .prose ol {
+                color: var(--text-dim);
+                margin: 0 0 1.1rem;
+                padding-left: 1.4rem;
+            }
+            .prose li {
+                margin-bottom: 0.4rem;
+            }
+            .prose strong {
+                color: var(--text);
+            }
+            h3.subhead {
+                font-size: 1.05rem;
+                color: var(--accent);
+                margin: 2rem 0 0.8rem;
+                font-family: 'Space Grotesk', sans-serif;
+            }
+
+            /* ---------- tables ---------- */
+            .table-wrapper {
+                overflow-x: auto;
+                margin: 1.2rem 0 1.8rem;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 1rem;
+            }
+            thead th {
+                background: var(--bg-elevated);
+                color: var(--accent-2);
+                text-align: left;
+                padding: 0.7rem 1rem;
+                font-weight: 600;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 0.65rem 1rem;
+                border-bottom: 1px solid var(--border);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            code.inline {
+                background: var(--code-bg);
+                color: var(--accent-2);
+                padding: 0.12rem 0.4rem;
+                border-radius: 5px;
+                font-size: 1rem;
+            }
+
+            /* ---------- diagrams ---------- */
+            .diagram-wrapper {
+                overflow-x: auto;
+                margin: 1.6rem 0 2rem;
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 1.6rem;
+            }
+            .diagram-label {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1rem;
+                color: var(--text-faint);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-bottom: 0.8rem;
+            }
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                margin: 0;
+                background: transparent !important;
+            }
+            .mermaid svg {
+                max-width: none;
+            }
+
+            /* ---------- code blocks ---------- */
+            .code-wrapper {
+                margin: 1.2rem 0 1.8rem;
+            }
+            .code-label {
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 1rem;
+                color: var(--text-faint);
+                background: var(--bg-elevated);
+                border: 1px solid var(--border);
+                border-bottom: none;
+                border-radius: var(--radius) var(--radius) 0 0;
+                padding: 0.55rem 1rem;
+            }
+            pre {
+                margin: 0;
+                padding: 1.1rem 1.3rem;
+                overflow-x: auto;
+                background: var(--code-bg) !important;
+                border: 1px solid var(--border);
+                border-radius: 0 0 var(--radius) var(--radius);
+                font-size: 1rem;
+                line-height: 1.65;
+            }
+            .code-wrapper:not(:has(.code-label)) pre {
+                border-radius: var(--radius);
+            }
+            pre code {
+                background: transparent !important;
+            }
+
+            /* ---------- syntax highlighting theme (statically pre-rendered, no CDN needed) ---------- */
+            .hljs {
+                color: var(--text);
+            }
+            .hljs-comment {
+                color: var(--text-faint);
+                font-style: italic;
+            }
+            .hljs-keyword {
+                color: var(--accent);
+                font-weight: 600;
+            }
+            .hljs-built_in {
+                color: #6cc7ff;
+            }
+            .hljs-string {
+                color: var(--accent-2);
+            }
+            .hljs-number,
+            .hljs-literal {
+                color: #f2b880;
+            }
+            .hljs-attr,
+            .hljs-attribute {
+                color: #c3e88d;
+            }
+            .hljs-name,
+            .hljs-tag {
+                color: #ff8fa3;
+            }
+            .hljs-variable,
+            .hljs-subst {
+                color: var(--text);
+            }
+            .hljs-bullet,
+            .hljs-meta {
+                color: #ffcb6b;
+            }
+            .hljs-addition {
+                color: #8fd6a8;
+                background: rgba(111, 207, 151, 0.1);
+            }
+            .hljs-deletion {
+                color: #ff96a3;
+                background: rgba(255, 107, 129, 0.1);
+            }
+
+            /* ---------- callouts ---------- */
+            .callout {
+                border: 1px solid var(--accent-soft);
+                background: var(--accent-soft);
+                border-left: 3px solid var(--accent);
+                border-radius: 0 10px 10px 0;
+                padding: 1rem 1.3rem;
+                margin: 1.4rem 0;
+                color: var(--text-dim);
+                font-size: 1rem;
+            }
+            .callout strong {
+                color: var(--accent);
+            }
+
+            /* ---------- summary table ---------- */
+            .summary-table td:first-child,
+            .summary-table th:first-child {
+                white-space: nowrap;
+                color: var(--accent-2);
+                font-family: 'JetBrains Mono', monospace;
+            }
+
+            /* ---------- footer / sources ---------- */
+            .footer {
+                padding: 3rem 4rem 5rem;
+            }
+            .footer h2 {
+                font-size: 1.3rem;
+            }
+            .source-list {
+                list-style: none;
+                margin: 1.2rem 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.55rem;
+            }
+            .source-list li {
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 0.75rem 1rem;
+                background: var(--bg-card);
+                font-size: 1rem;
+                color: var(--text-dim);
+            }
+            .source-list .src-name {
+                color: var(--text);
+                font-weight: 600;
+                display: block;
+                margin-bottom: 0.15rem;
+            }
+            .source-list a {
+                word-break: break-all;
+            }
+            .disclaimer {
+                margin-top: 2rem;
+                padding: 1rem 1.3rem;
+                border: 1px dashed var(--border);
+                border-radius: 10px;
+                font-size: 1rem;
+                color: var(--text-faint);
+            }
+
+            /* ---------- mobile ---------- */
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 30;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                border: 1px solid var(--border);
+                background: var(--bg-elevated);
+                color: var(--text);
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                cursor: pointer;
+            }
+            @media (max-width: 960px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.2s ease;
+                    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                }
+                .hero,
+                .section,
+                .footer {
+                    padding-left: 1.6rem;
+                    padding-right: 1.6rem;
+                }
+                .hero {
+                    padding-top: 5rem;
+                }
+                .menu-toggle {
+                    display: flex;
+                }
+                .hero h1 {
+                    font-size: 1.9rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="menu-toggle" id="menuToggle" aria-label="目次を開く">☰</button>
+
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="brand"><span class="brand-badge">5.0</span> CCNA Automation</div>
+                <div class="brand-sub">Infrastructure and Automation ガイド</div>
+
+                <div class="nav-group-label">はじめに</div>
+                <a class="nav-link" href="#overview" data-section="overview"
+                    ><span class="nav-num">―</span><span>この記事について</span></a
+                >
+
+                <div class="nav-group-label">出題項目 5.1–5.14</div>
+                <a class="nav-link" href="#s5-1" data-section="s5-1"
+                    ><span class="nav-num">5.1</span><span>モデル駆動プログラマビリティ</span></a
+                >
+                <a class="nav-link" href="#s5-2" data-section="s5-2"
+                    ><span class="nav-num">5.2</span><span>コントローラー vs デバイス</span></a
+                >
+                <a class="nav-link" href="#s5-3" data-section="s5-3"
+                    ><span class="nav-num">5.3</span><span>シミュレーション・テスト</span></a
+                >
+                <a class="nav-link" href="#s5-4" data-section="s5-4"
+                    ><span class="nav-num">5.4</span><span>CI/CDパイプライン</span></a
+                >
+                <a class="nav-link" href="#s5-5" data-section="s5-5"
+                    ><span class="nav-num">5.5</span><span>Infrastructure as Code</span></a
+                >
+                <a class="nav-link" href="#s5-6" data-section="s5-6"
+                    ><span class="nav-num">5.6</span><span>自動化ツール</span></a
+                >
+                <a class="nav-link" href="#s5-7" data-section="s5-7"
+                    ><span class="nav-num">5.7</span><span>Pythonスクリプトの解釈</span></a
+                >
+                <a class="nav-link" href="#s5-8" data-section="s5-8"
+                    ><span class="nav-num">5.8</span><span>Ansible Playbookの解釈</span></a
+                >
+                <a class="nav-link" href="#s5-9" data-section="s5-9"
+                    ><span class="nav-num">5.9</span><span>Bashスクリプトの解釈</span></a
+                >
+                <a class="nav-link" href="#s5-10" data-section="s5-10"
+                    ><span class="nav-num">5.10</span><span>RESTCONF/NETCONF</span></a
+                >
+                <a class="nav-link" href="#s5-11" data-section="s5-11"
+                    ><span class="nav-num">5.11</span><span>YANGモデル</span></a
+                >
+                <a class="nav-link" href="#s5-12" data-section="s5-12"
+                    ><span class="nav-num">5.12</span><span>Unified Diff</span></a
+                >
+                <a class="nav-link" href="#s5-13" data-section="s5-13"
+                    ><span class="nav-num">5.13</span><span>コードレビュー</span></a
+                >
+                <a class="nav-link" href="#s5-14" data-section="s5-14"
+                    ><span class="nav-num">5.14</span><span>シーケンス図</span></a
+                >
+
+                <div class="nav-group-label">総括</div>
+                <a class="nav-link" href="#summary" data-section="summary"
+                    ><span class="nav-num">―</span><span>まとめ・学習の進め方</span></a
+                >
+                <a class="nav-link" href="#sources" data-section="sources"
+                    ><span class="nav-num">―</span><span>参考文献・出典</span></a
+                >
+            </nav>
+
+            <main class="main">
+                <header class="hero">
+                    <span class="eyebrow">CCNAAUTO 200-901 &middot; Domain 5.0</span>
+                    <h1>Infrastructure and Automation<br />ステップバイステップ解説ガイド</h1>
+                    <p class="lead">
+                        CCNA Automation認定の中核試験「Automating Networks Using Cisco Platforms
+                        v1.1（200-901 CCNAAUTO）」のうち、出題比率20%を占める「5.0 Infrastructure
+                        and
+                        Automation」ドメインを、初学者でも理解できるように図解と表を使って1項目ずつ解説します。
+                    </p>
+                    <div class="meta-chips">
+                        <div class="chip highlight">
+                            <span class="k">出題比率</span><span class="v">20%</span>
+                        </div>
+                        <div class="chip">
+                            <span class="k">試験コード</span><span class="v">200-901</span>
+                        </div>
+                        <div class="chip">
+                            <span class="k">試験時間</span><span class="v">120分</span>
+                        </div>
+                        <div class="chip">
+                            <span class="k">言語</span><span class="v">EN / JA</span>
+                        </div>
+                        <div class="chip">
+                            <span class="k">出題項目数</span><span class="v">5.1–5.14</span>
+                        </div>
+                    </div>
+                </header>
+
+                <section class="section prose" id="overview">
+                    <h2>この記事について</h2>
+                    <p>
+                        CCNA Automation認定（自動化系認定）の中核試験である
+                        <strong>200-901 CCNAAUTO</strong>
+                        は、6つのドメインで構成されています。本記事はその中でも配点が最も高いドメインの1つである
+                        <strong>「5.0 Infrastructure and Automation」（出題比率20%）</strong>
+                        に焦点を当て、公式出題項目（5.1〜5.14）を初学者でも理解できるようステップバイステップで解説します。
+                    </p>
+
+                    <h3 class="subhead">試験全体における本ドメインの位置づけ</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ドメイン名</th>
+                                    <th>出題比率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.0</td>
+                                    <td>Software Development and Design</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>2.0</td>
+                                    <td>Understanding and Using APIs</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>3.0</td>
+                                    <td>Cisco Platforms and Development</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>4.0</td>
+                                    <td>Application Deployment and Security</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5.0</strong></td>
+                                    <td>
+                                        <strong>Infrastructure and Automation（本記事）</strong>
+                                    </td>
+                                    <td><strong>20%</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>6.0</td>
+                                    <td>Network Fundamentals</td>
+                                    <td>15%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        「Understanding and Using
+                        APIs」と並んで最も配点の高いドメインであり、試験全体の1/5を占めます。内容は大きく3つの塊に整理できます。
+                    </p>
+                    <ol>
+                        <li><strong>自動化の考え方・原則</strong>（5.1, 5.2, 5.5, 5.13）</li>
+                        <li><strong>自動化を支えるツールと仕組み</strong>（5.3, 5.4, 5.6）</li>
+                        <li><strong>既存のコード／出力を読み解く力</strong>（5.7〜5.12, 5.14）</li>
+                    </ol>
+                    <p>
+                        CCNAAUTOでは「自分で書く」より「与えられたコードや出力を読んで、何が起きているかを説明できる」ことが繰り返し問われるのが特徴です。そのため本記事も、各項目で
+                        <strong
+                            >具体的なサンプル（YAML・Python・Bash・XML/JSON・diff）を読み解く練習</strong
+                        >
+                        を重視して構成しています。
+                    </p>
+
+                    <h3 class="subhead">全体の自動化ライフサイクルから見る5.0ドメイン</h3>
+                    <p>
+                        5.1〜5.14の各項目は、実務での自動化ワークフロー（意図の設計 → コード化 →
+                        レビュー → CI/CD → テスト →
+                        本番適用）のどこかに対応しています。まずは全体像を掴みましょう。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 0 &middot; 自動化ライフサイクル全体図
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["設計: モデル駆動の意図 YANGデータモデル"] --> B["コード化: Infrastructure as Code Ansible / Terraform / NSO"]
+                                B --> C["バージョン管理 Git commit diff"]
+                                C --> D["コードレビュー Pull Request"]
+                                D --> E["CIパイプライン Lint 構文チェック ビルド"]
+                                E --> F["シミュレーション テスト Cisco Modeling Labs pyATS"]
+                                F --> G{テスト結果は合格か}
+                                G -- いいえ --> A
+                                G -- はい --> H["本番適用 NETCONF RESTCONF コントローラーAPI"]
+                                H --> I["デバイス コントローラー"]
+                        </script>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ライフサイクルの段階</th>
+                                    <th>対応する出題項目</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>設計（モデル駆動プログラマビリティ）</td>
+                                    <td>5.1, 5.11</td>
+                                </tr>
+                                <tr>
+                                    <td>コード化（IaC / 自動化ツール）</td>
+                                    <td>5.5, 5.6, 5.8, 5.9</td>
+                                </tr>
+                                <tr>
+                                    <td>バージョン管理・レビュー</td>
+                                    <td>5.12, 5.13</td>
+                                </tr>
+                                <tr>
+                                    <td>CI/CDパイプライン</td>
+                                    <td>5.4</td>
+                                </tr>
+                                <tr>
+                                    <td>テスト・シミュレーション</td>
+                                    <td>5.3</td>
+                                </tr>
+                                <tr>
+                                    <td>本番適用・運用管理</td>
+                                    <td>5.2, 5.7, 5.10</td>
+                                </tr>
+                                <tr>
+                                    <td>コミュニケーション（設計共有）</td>
+                                    <td>5.14</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>それでは、出題項目の番号順に1つずつ見ていきます。</p>
+                </section>
+
+                <!-- ============ 5.1 ============ -->
+                <section class="section prose" id="s5-1">
+                    <div class="section-head">
+                        <span class="domain-chip">5.1</span>
+                        <div>
+                            <h2>モデル駆動プログラマビリティの価値</h2>
+                            <div class="weight-tag">
+                                Describe the value of model driven programmability for
+                                infrastructure automation
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        従来のネットワーク自動化は、SSHでCLIにログインし
+                        <code class="inline">show</code>
+                        コマンドの出力（人間向けのテキスト）を正規表現などで解析する<strong>「スクリーンスクレイピング」</strong>が主流でした。しかしこの方法には次のような弱点があります。
+                    </p>
+                    <ul>
+                        <li>
+                            OSのバージョンが変わるだけで出力フォーマットが変わり、解析ロジックが壊れる
+                        </li>
+                        <li>ベンダーやプラットフォームごとに解析コードを個別に書く必要がある</li>
+                        <li>出力が「表示用」であり、そもそも構造化されていないため解析が不安定</li>
+                    </ul>
+                    <p>
+                        これに対して<strong
+                            >モデル駆動プログラマビリティ（Model-Driven Programmability）</strong
+                        >は、<code class="inline">YANG</code>
+                        という<strong>データモデリング言語</strong>で定義された構造化データを、<code
+                            class="inline"
+                            >NETCONF</code
+                        >
+                        や
+                        <code class="inline">RESTCONF</code>
+                        といったプロトコルでやり取りする方式です。データが最初から構造化されている（JSON/XML）ため、パースが安定し、機種やベンダーが変わっても同じデータモデルであれば同じコードで扱えます。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.1 &middot; CLIスクリーンスクレイピング vs
+                            モデル駆動プログラマビリティ
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            %%{init: {'flowchart': {'subGraphTitleMargin': {'top': 10, 'bottom': 28}}}}%%
+                            flowchart TB
+                                subgraph legacy["CLIスクリーンスクレイピング"]
+                                    L1["Pythonスクリプト Expect"] --> L2["SSHでCLIにログイン"]
+                                    L2 --> L3["showコマンドの出力テキストを実行"]
+                                    L3 --> L4["正規表現でテキスト解析"]
+                                    L4 --> L5["ベンダーOSごとに解析ロジックが異なる"]
+                                end
+                                subgraph modeldriven["モデル駆動プログラマビリティ"]
+                                    M1["Pythonスクリプト"] --> M2["NETCONF RESTCONFで接続"]
+                                    M2 --> M3["YANGモデルに基づく構造化データを送受信"]
+                                    M3 --> M4["JSON XMLとしてそのままパース可能"]
+                                    M4 --> M5["ベンダーOSが違っても共通のモデルを利用"]
+                                end
+                                legacy ~~~ modeldriven
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">比較表</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>CLIスクリーンスクレイピング</th>
+                                    <th>モデル駆動プログラマビリティ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>データ形式</td>
+                                    <td>非構造化テキスト（表示用）</td>
+                                    <td>構造化データ（XML/JSON、YANGベース）</td>
+                                </tr>
+                                <tr>
+                                    <td>安定性</td>
+                                    <td>OSバージョンで出力が変わり壊れやすい</td>
+                                    <td>データモデルが変わらない限り安定</td>
+                                </tr>
+                                <tr>
+                                    <td>移植性</td>
+                                    <td>ベンダー/機種ごとに書き直しが必要</td>
+                                    <td>同一モデルなら共通コードで再利用可能</td>
+                                </tr>
+                                <tr>
+                                    <td>検証（Validation）</td>
+                                    <td>クライアント側で独自に実装</td>
+                                    <td>モデル定義（型・制約）に基づき検証可能</td>
+                                </tr>
+                                <tr>
+                                    <td>主なプロトコル</td>
+                                    <td>SSH + CLI</td>
+                                    <td>NETCONF, RESTCONF, gNMI</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>学習のポイント：</strong
+                        >出題では「なぜモデル駆動プログラマビリティが価値を持つのか」を一貫性・自動化のしやすさ・スケーラビリティという観点で説明できるかが問われます。丸暗記ではなく「CLI出力は人間向け、YANGモデルは機械向け」という軸で理解すると応用が効きます。
+                    </div>
+                </section>
+
+                <!-- ============ 5.2 ============ -->
+                <section class="section prose" id="s5-2">
+                    <div class="section-head">
+                        <span class="domain-chip">5.2</span>
+                        <div>
+                            <h2>コントローラーレベル管理とデバイスレベル管理の比較</h2>
+                            <div class="weight-tag">
+                                Compare controller-level to device-level management
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>ネットワークの自動化・管理には大きく2つのアプローチがあります。</p>
+                    <ul>
+                        <li>
+                            <strong>デバイスレベル管理</strong
+                            >：各デバイスに個別に接続し、NETCONF/RESTCONF/CLIなどで1台ずつ設定する方式。
+                        </li>
+                        <li>
+                            <strong>コントローラーレベル管理</strong>：Cisco Catalyst Center、ACI
+                            APIC、Meraki
+                            Dashboardのような<strong>コントローラー</strong>に対して指示を出し、コントローラーが配下の多数のデバイスへ設定を配布・一元管理する方式。
+                        </li>
+                    </ul>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.2 &middot; コントローラーレベル管理とデバイスレベル管理
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            %%{init: {'flowchart': {'subGraphTitleMargin': {'top': 10, 'bottom': 28}}}}%%
+                            flowchart TB
+                                subgraph ctrl["コントローラーレベル管理"]
+                                    A1["管理者 自動化スクリプト"] --> C1["コントローラー Catalyst Center ACI APIC Meraki Dashboard"]
+                                    C1 --> N1["デバイス1"]
+                                    C1 --> N2["デバイス2"]
+                                    C1 --> N3["デバイス3"]
+                                end
+                                subgraph dev["デバイスレベル管理"]
+                                    A2["管理者 自動化スクリプト"] --> N4["デバイス1"]
+                                    A2 --> N5["デバイス2"]
+                                    A2 --> N6["デバイス3"]
+                                end
+                                ctrl ~~~ dev
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">比較表</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>コントローラーレベル管理</th>
+                                    <th>デバイスレベル管理</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>抽象度</td>
+                                    <td>高い（意図ベースの単一API）</td>
+                                    <td>低い（デバイス個別のAPI/CLI）</td>
+                                </tr>
+                                <tr>
+                                    <td>スケーラビリティ</td>
+                                    <td>高い（多数デバイスを一括操作）</td>
+                                    <td>低い（台数分の接続・処理が必要）</td>
+                                </tr>
+                                <tr>
+                                    <td>一貫性の担保</td>
+                                    <td>コントローラーが状態を一元管理</td>
+                                    <td>スクリプト側で整合性を担保する必要</td>
+                                </tr>
+                                <tr>
+                                    <td>きめ細かい制御</td>
+                                    <td>コントローラーの機能範囲に依存</td>
+                                    <td>デバイス固有機能へフルアクセス可能</td>
+                                </tr>
+                                <tr>
+                                    <td>代表例</td>
+                                    <td>Cisco Catalyst Center, ACI APIC, Meraki Dashboard</td>
+                                    <td>各デバイスへのNETCONF/RESTCONF/CLI接続</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>学習のポイント：</strong
+                        >「規模が大きくなるほどコントローラーレベルの価値が高まる」「デバイス固有の細かい機能を使いたい場合はデバイスレベルが必要になる場合がある」というトレードオフの理解が重要です。
+                    </div>
+                </section>
+
+                <!-- ============ 5.3 ============ -->
+                <section class="section prose" id="s5-3">
+                    <div class="section-head">
+                        <span class="domain-chip">5.3</span>
+                        <div>
+                            <h2>ネットワークシミュレーション・テストツール</h2>
+                            <div class="weight-tag">
+                                Describe the use and roles of network simulation and test tools
+                                (Cisco Modeling Labs, pyATS)
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        自動化コードや設定変更は、本番環境にいきなり適用するとリスクが大きいため、<strong>仮想環境での事前検証</strong>が欠かせません。
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Cisco Modeling Labs（CML）</strong
+                            >：仮想ルーター/スイッチなどでネットワークトポロジーをまるごとシミュレーションできるプラットフォーム。設計・テスト・トラブルシューティング・学習に使われます。
+                        </li>
+                        <li>
+                            <strong>pyATS（Python Automated Test System）</strong
+                            >：Python製のテスト自動化フレームワーク。ネットワーク機器に対する検証（状態確認、設定差分検出など）をコードとして記述し、CI/CDパイプラインに組み込めます。
+                        </li>
+                    </ul>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.3 &middot; CML + pyATS を使った検証ワークフロー
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["自動化コード 設定変更を作成"] --> B["Cisco Modeling Labsで仮想トポロジーを構築"]
+                                B --> C["仮想ラボ上で変更を適用"]
+                                C --> D["pyATSでテストスイートを実行"]
+                                D --> E{テスト結果}
+                                E -- 合格 --> F["本番ネットワークへ展開"]
+                                E -- 不合格 --> A
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">比較表</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ツール</th>
+                                    <th>主な役割</th>
+                                    <th>特徴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cisco Modeling Labs（CML）</td>
+                                    <td>仮想ネットワークの構築・シミュレーション</td>
+                                    <td>
+                                        実機イメージに近い仮想ノードでトポロジーを再現、GUIとAPIの両方を提供
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pyATS</td>
+                                    <td>ネットワークの自動テスト・検証</td>
+                                    <td>
+                                        Python製、CI/CDに統合しやすい、Genieライブラリと組み合わせて機種差分を吸収
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>学習のポイント：</strong
+                        >CMLは「作る前に試す（設計・検証用の仮想環境）」、pyATSは「作った後に確かめる（自動テスト・検証フレームワーク）」という役割分担で覚えると整理しやすいです。
+                    </div>
+                </section>
+
+                <!-- ============ 5.4 ============ -->
+                <section class="section prose" id="s5-4">
+                    <div class="section-head">
+                        <span class="domain-chip">5.4</span>
+                        <div>
+                            <h2>インフラ自動化におけるCI/CDパイプライン</h2>
+                            <div class="weight-tag">
+                                Describe the components and benefits of CI/CD pipeline in
+                                infrastructure automation
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        CI/CD（継続的インテグレーション／継続的デリバリー）は、ソフトウェア開発の考え方をネットワークインフラの変更管理に適用したものです。コードの変更を<strong>小さく、頻繁に、自動テストを通しながら</strong>本番へ届けることで、変更に伴うリスクを下げます。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.4 &middot; インフラ自動化のCI/CDパイプライン
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["コードをGitへコミット プッシュ"] --> B["CIトリガー"]
+                                B --> C["Lint 構文チェック"]
+                                C --> D["ビルド"]
+                                D --> E["自動テスト シミュレーション環境で検証"]
+                                E --> F{テスト合格}
+                                F -- いいえ --> A
+                                F -- はい --> G["ステージング環境へデプロイ"]
+                                G --> H["承認"]
+                                H --> I["本番環境へデプロイ"]
+                                I --> J["モニタリング ロールバック待機"]
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">構成要素と利点</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>構成要素</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>バージョン管理（Git）</td>
+                                    <td>変更内容と履歴の一元管理、トリガーの起点</td>
+                                </tr>
+                                <tr>
+                                    <td>Lint／構文チェック</td>
+                                    <td>コードやAnsible Playbookなどの記述ミスを早期検出</td>
+                                </tr>
+                                <tr>
+                                    <td>ビルド</td>
+                                    <td>
+                                        必要なアーティファクト（パッケージ、コンテナイメージ等）の生成
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>自動テスト</td>
+                                    <td>CML/pyATSなどを用いた仮想環境での事前検証</td>
+                                </tr>
+                                <tr>
+                                    <td>ステージング環境</td>
+                                    <td>本番に近い環境での最終確認</td>
+                                </tr>
+                                <tr>
+                                    <td>承認プロセス</td>
+                                    <td>人間によるレビュー・ゲート</td>
+                                </tr>
+                                <tr>
+                                    <td>デプロイ（本番適用）</td>
+                                    <td>自動化ツールによる実際の設定投入</td>
+                                </tr>
+                                <tr>
+                                    <td>モニタリング／ロールバック</td>
+                                    <td>異常時に前の状態へ迅速に戻す仕組み</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>利点</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>リスクの低減</td>
+                                    <td>小さい変更を都度検証するため大規模障害を防ぎやすい</td>
+                                </tr>
+                                <tr>
+                                    <td>再現性</td>
+                                    <td>誰が実行しても同じ手順・同じ結果になる</td>
+                                </tr>
+                                <tr>
+                                    <td>スピード</td>
+                                    <td>手動作業を排除し、変更のリードタイムを短縮</td>
+                                </tr>
+                                <tr>
+                                    <td>可視化</td>
+                                    <td>パイプラインの各段階の成功／失敗が記録・追跡できる</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============ 5.5 ============ -->
+                <section class="section prose" id="s5-5">
+                    <div class="section-head">
+                        <span class="domain-chip">5.5</span>
+                        <div>
+                            <h2>Infrastructure as Code（IaC）の原則</h2>
+                            <div class="weight-tag">
+                                Describe the principles of infrastructure as code
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        Infrastructure as
+                        Code（IaC）とは、サーバーやネットワークの構成を<strong>手作業ではなくコードとして記述し、バージョン管理・自動適用する</strong>考え方です。
+                    </p>
+                    <p>代表的な原則は次の通りです。</p>
+                    <ul>
+                        <li>
+                            <strong>宣言的（Declarative）</strong
+                            >：「どうやるか」ではなく「どうあるべきか（Desired State）」を記述する
+                        </li>
+                        <li>
+                            <strong>冪等性（Idempotency）</strong
+                            >：同じコードを何度実行しても結果が変わらない
+                        </li>
+                        <li>
+                            <strong>単一の情報源（Single Source of Truth）</strong
+                            >：構成はコードリポジトリが正であり、手作業の変更は「ドリフト」とみなす
+                        </li>
+                        <li>
+                            <strong>再現性・一貫性</strong
+                            >：同じコードから何度でも同じ環境を再現できる
+                        </li>
+                        <li>
+                            <strong>バージョン管理との統合</strong
+                            >：変更履歴・レビュー・ロールバックがコードの管理と一体化する
+                        </li>
+                    </ul>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.5 &middot; IaCによる状態の収束ループ
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["望ましい状態をコードで宣言 Desired State"] --> B["バージョン管理システムで管理"]
+                                B --> C["自動化ツールが適用 Ansible Terraform NSO"]
+                                C --> D["実際の状態 Actual State"]
+                                D --> E{Desired Stateと一致しているか}
+                                E -- 一致 --> F["変更なし 冪等性"]
+                                E -- 不一致ドリフト --> C
+                        </script>
+                    </div>
+
+                    <div class="callout">
+                        <strong>学習のポイント：</strong
+                        >「宣言的」と「冪等性」の2語は頻出です。「同じPlaybook/Terraformコードを2回実行しても2回目は何も変わらない」という感覚がまさに冪等性であり、IaCの信頼性の根幹です。
+                    </div>
+                </section>
+
+                <!-- ============ 5.6 ============ -->
+                <section class="section prose" id="s5-6">
+                    <div class="section-head">
+                        <span class="domain-chip">5.6</span>
+                        <div>
+                            <h2>自動化ツールの機能（Ansible, Terraform, Cisco NSO）</h2>
+                            <div class="weight-tag">
+                                Describe the capabilities of automation tools such as Ansible,
+                                Terraform, and Cisco NSO
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        CCNAAUTOでは、代表的な3つの自動化ツールの<strong>役割の違い</strong>を理解しているかが問われます。
+                    </p>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ツール</th>
+                                    <th>主な用途</th>
+                                    <th>記述言語</th>
+                                    <th>動作方式</th>
+                                    <th>状態管理</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Ansible</strong></td>
+                                    <td>サーバー/ネットワーク機器の構成管理、アプリ配備</td>
+                                    <td>YAML（Playbook）</td>
+                                    <td>エージェントレス（SSH/APIでプッシュ型）</td>
+                                    <td>実行のたびに現在の状態をチェックし収束させる</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Terraform</strong></td>
+                                    <td>
+                                        クラウドやインフラリソースのプロビジョニング（VM、ネットワーク、サブネット等）
+                                    </td>
+                                    <td>HCL</td>
+                                    <td>宣言的、プロバイダー経由でAPIを呼び出す</td>
+                                    <td>ステートファイルで管理対象の状態を保持</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cisco NSO</strong></td>
+                                    <td>
+                                        マルチベンダー環境でのネットワークサービスのオーケストレーション
+                                    </td>
+                                    <td>YANGベースのサービスモデル</td>
+                                    <td>トランザクション的（全成功 or 全ロールバック）</td>
+                                    <td>サービスモデルと実機構成の同期を一元管理</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">Figure 5.6 &middot; ツールの役割分担</div>
+                        <script type="text/plain" class="mermaid-source">
+                            %%{init: {'flowchart': {'subGraphTitleMargin': {'top': 10, 'bottom': 28}}}}%%
+                            flowchart TB
+                                subgraph provision["インフラのプロビジョニング"]
+                                    T1["Terraform"] --> R1["クラウド 仮想リソース VMやネットワーク"]
+                                end
+                                subgraph configure["OSサービスの構成管理"]
+                                    A1["Ansible"] --> R2["サーバーOS設定 パッケージ サービス起動"]
+                                end
+                                subgraph orchestrate["ネットワークサービスのオーケストレーション"]
+                                    N1["Cisco NSO"] --> R3["マルチベンダーのネットワークサービス管理"]
+                                end
+                                provision ~~~ configure ~~~ orchestrate
+                        </script>
+                    </div>
+
+                    <div class="callout">
+                        <strong>学習のポイント：</strong
+                        >3つは競合というより補完関係にあることが多いです。Terraformで土台となるインフラを用意し、Ansibleでその上のOS/サービスを構成し、NSOで複数ベンダーのネットワークサービスを一元的にオーケストレーションする、という組み合わせがよく使われます。
+                    </div>
+                </section>
+
+                <!-- ============ 5.7 ============ -->
+                <section class="section prose" id="s5-7">
+                    <div class="section-head">
+                        <span class="domain-chip">5.7</span>
+                        <div>
+                            <h2>PythonスクリプトのワークフローをCisco APIから読み解く</h2>
+                            <div class="weight-tag">
+                                Identify the workflow being automated by a Python script that uses
+                                Cisco APIs (ACI, Meraki, Catalyst Center, RESTCONF)
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        出題では、Meraki・Cisco Catalyst
+                        Center・ACI・RESTCONFなどのAPIを呼び出すPythonスクリプトが提示され、「このスクリプトは何を自動化しているか」を特定させる形式が出ます。読み解く際は次の流れを意識します。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.7 &middot; Cisco APIを呼び出すPythonスクリプトの流れ
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["Pythonスクリプト起動"] --> B["requestsライブラリでAPIキー トークンを付与"]
+                                B --> C["Cisco APIへHTTPリクエスト Meraki Catalyst Center ACI RESTCONF"]
+                                C --> D["JSON XMLレスポンスを受信"]
+                                D --> E["レスポンスをパースして必要な情報を抽出"]
+                                E --> F["結果を表示 後続処理へ渡す"]
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">
+                        サンプルコード（Meraki APIでネットワーク配下のデバイス一覧を取得）
+                    </h3>
+                    <div class="code-wrapper">
+                        <div class="code-label">devices.py</div>
+                        <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> requests
+
+BASE_URL = <span class="hljs-string">&quot;https://api.meraki.com/api/v1&quot;</span>
+headers = {
+    <span class="hljs-string">&quot;Authorization&quot;</span>: <span class="hljs-string">&quot;Bearer &lt;API_KEY&gt;&quot;</span>,
+    <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span>,
+}
+
+network_id = <span class="hljs-string">&quot;N_123456789&quot;</span>
+response = requests.get(
+    <span class="hljs-string">f&quot;<span class="hljs-subst">{BASE_URL}</span>/networks/<span class="hljs-subst">{network_id}</span>/devices&quot;</span>,
+    headers=headers,
+)
+
+<span class="hljs-keyword">if</span> response.status_code == <span class="hljs-number">200</span>:
+    devices = response.json()
+    <span class="hljs-keyword">for</span> device <span class="hljs-keyword">in</span> devices:
+        <span class="hljs-built_in">print</span>(device[<span class="hljs-string">&quot;name&quot;</span>], device[<span class="hljs-string">&quot;model&quot;</span>], device[<span class="hljs-string">&quot;serial&quot;</span>])
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;エラー: <span class="hljs-subst">{response.status_code}</span>&quot;</span>)</code></pre>
+                    </div>
+
+                    <h3 class="subhead">読み解きのポイント</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>確認するポイント</th>
+                                    <th>このスクリプトでの内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>どのAPIエンドポイントを呼んでいるか</td>
+                                    <td>
+                                        <code class="inline">/networks/{network_id}/devices</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>認証方式は何か</td>
+                                    <td>Bearerトークン（カスタムトークン方式）</td>
+                                </tr>
+                                <tr>
+                                    <td>HTTPメソッドは何か</td>
+                                    <td>GET（取得系の操作）</td>
+                                </tr>
+                                <tr>
+                                    <td>レスポンスをどう扱っているか</td>
+                                    <td>JSONをパースしてデバイス名・機種・シリアルを表示</td>
+                                </tr>
+                                <tr>
+                                    <td>このスクリプトが自動化している業務</td>
+                                    <td>特定ネットワーク配下のデバイス一覧の取得</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="subhead">Cisco主要プラットフォームAPIの早見表</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>プラットフォーム</th>
+                                    <th>領域</th>
+                                    <th>典型的なタスク例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Meraki</td>
+                                    <td>クラウド管理型ネットワーク</td>
+                                    <td>
+                                        デバイス一覧取得、クライアント一覧取得、ネットワーク設定変更
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cisco Catalyst Center</td>
+                                    <td>エンタープライズネットワーク管理</td>
+                                    <td>
+                                        デバイスインベントリ取得、テンプレート適用、ヘルス状態確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ACI</td>
+                                    <td>データセンターSDN</td>
+                                    <td>テナント/EPG（エンドポイントグループ）の作成・照会</td>
+                                </tr>
+                                <tr>
+                                    <td>RESTCONF</td>
+                                    <td>デバイス単体のモデル駆動API</td>
+                                    <td>インターフェース設定の取得・変更（YANGモデルベース）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============ 5.8 ============ -->
+                <section class="section prose" id="s5-8">
+                    <div class="section-head">
+                        <span class="domain-chip">5.8</span>
+                        <div>
+                            <h2>Ansible Playbookのワークフローの解釈</h2>
+                            <div class="weight-tag">
+                                Interpret the workflow being automated by an Ansible playbook
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        Ansible
+                        Playbookは、対象ホストに対して行う一連の作業（Task）をYAMLで記述したものです。出題では「このPlaybookは何をしているか」を読み解く力が問われます。特に<strong>パッケージ管理・サービスに関連するユーザー管理・基本的なサービス設定・起動停止</strong>がよく出るパターンです。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.8 &middot; Ansible Playbookの実行フロー
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["ansible-playbook実行"] --> B["Inventoryから対象ホストを特定"]
+                                B --> C["Play開始 hosts becomeを適用"]
+                                C --> D["Task1 パッケージ管理 yum apt module"]
+                                D --> E["Task2 ユーザー管理 user module"]
+                                E --> F["Task3 サービス設定 template copy module"]
+                                F --> G["Task4 サービス起動停止 service systemd module"]
+                                G --> H{Taskで変更が発生したか}
+                                H -- はい --> I["Handlerを実行 例 サービス再起動"]
+                                H -- いいえ --> J["Play完了"]
+                                I --> J
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">サンプルPlaybook</h3>
+                    <div class="code-wrapper">
+                        <div class="code-label">webserver_setup.yml</div>
+                        <pre><code class="hljs language-yaml"><span class="hljs-meta">---</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Webサーバーの基本セットアップ</span>
+  <span class="hljs-attr">hosts:</span> <span class="hljs-string">web_servers</span>
+  <span class="hljs-attr">become:</span> <span class="hljs-literal">true</span>
+
+  <span class="hljs-attr">tasks:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginxパッケージをインストール</span>
+      <span class="hljs-attr">apt:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+        <span class="hljs-attr">state:</span> <span class="hljs-string">present</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">webadminユーザーを作成</span>
+      <span class="hljs-attr">user:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">webadmin</span>
+        <span class="hljs-attr">groups:</span> <span class="hljs-string">www-data</span>
+        <span class="hljs-attr">shell:</span> <span class="hljs-string">/bin/bash</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx設定ファイルを配置</span>
+      <span class="hljs-attr">template:</span>
+        <span class="hljs-attr">src:</span> <span class="hljs-string">nginx.conf.j2</span>
+        <span class="hljs-attr">dest:</span> <span class="hljs-string">/etc/nginx/nginx.conf</span>
+      <span class="hljs-attr">notify:</span> <span class="hljs-string">nginxを再起動</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginxサービスを起動し自動起動を有効化</span>
+      <span class="hljs-attr">service:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+        <span class="hljs-attr">state:</span> <span class="hljs-string">started</span>
+        <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
+
+  <span class="hljs-attr">handlers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginxを再起動</span>
+      <span class="hljs-attr">service:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">nginx</span>
+        <span class="hljs-attr">state:</span> <span class="hljs-string">restarted</span></code></pre>
+                    </div>
+
+                    <h3 class="subhead">読み解きのポイント</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Playbookの要素</th>
+                                    <th>このサンプルでの内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>対象ホスト（hosts）</td>
+                                    <td><code class="inline">web_servers</code> グループ</td>
+                                </tr>
+                                <tr>
+                                    <td>権限昇格（become）</td>
+                                    <td>有効（root権限で実行）</td>
+                                </tr>
+                                <tr>
+                                    <td>パッケージ管理タスク</td>
+                                    <td>
+                                        <code class="inline">apt</code> モジュールで
+                                        <code class="inline">nginx</code> をインストール
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ユーザー管理タスク</td>
+                                    <td>
+                                        <code class="inline">user</code> モジュールで
+                                        <code class="inline">webadmin</code> を作成
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>サービス設定タスク</td>
+                                    <td>
+                                        <code class="inline">template</code>
+                                        モジュールで設定ファイルを配置
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>起動・停止タスク</td>
+                                    <td>
+                                        <code class="inline">service</code>
+                                        モジュールで起動＋自動起動を有効化
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Handler（変更時のみ実行）</td>
+                                    <td>
+                                        設定ファイルが変更された場合のみ
+                                        <code class="inline">nginx</code> を再起動
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============ 5.9 ============ -->
+                <section class="section prose" id="s5-9">
+                    <div class="section-head">
+                        <span class="domain-chip">5.9</span>
+                        <div>
+                            <h2>Bashスクリプトのワークフローの解釈</h2>
+                            <div class="weight-tag">
+                                Interpret the workflow being automated by a bash script
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        Bashスクリプトは、ファイル管理・アプリのインストール・ユーザー管理・ディレクトリ操作などをまとめて自動化する際によく使われます。出題では、スクリプトを読んで「何を目的とした処理か」を答える形式が中心です。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.9 &middot; Bashスクリプトの処理フロー
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["スクリプト実行開始"] --> B["ディレクトリ移動 cd"]
+                                B --> C["条件分岐でファイル存在確認 if -f"]
+                                C --> D["パッケージインストール apt-get yum install"]
+                                D --> E["ユーザー作成 useradd"]
+                                E --> F["ファイルコピー権限設定 cp chmod chown"]
+                                F --> G["処理結果をログへ出力"]
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">サンプルスクリプト</h3>
+                    <div class="code-wrapper">
+                        <div class="code-label">setup.sh</div>
+                        <pre><code class="hljs language-bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-built_in">set</span> -e
+
+APP_DIR=<span class="hljs-string">&quot;/opt/myapp&quot;</span>
+LOG_FILE=<span class="hljs-string">&quot;/var/log/myapp_setup.log&quot;</span>
+
+<span class="hljs-built_in">cd</span> <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</span>&quot;</span> || <span class="hljs-built_in">exit</span> 1
+
+<span class="hljs-keyword">if</span> [ ! -f <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</span>/config.yaml&quot;</span> ]; <span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;config.yamlが見つかりません。新規作成します。&quot;</span> &gt;&gt; <span class="hljs-string">&quot;<span class="hljs-variable">$LOG_FILE</span>&quot;</span>
+    cp <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</span>/config.yaml.default&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</span>/config.yaml&quot;</span>
+<span class="hljs-keyword">fi</span>
+
+apt-get update &amp;&amp; apt-get install -y python3-pip
+
+<span class="hljs-keyword">if</span> ! id <span class="hljs-string">&quot;appuser&quot;</span> &amp;&gt;/dev/null; <span class="hljs-keyword">then</span>
+    useradd -m -s /bin/bash appuser
+<span class="hljs-keyword">fi</span>
+
+chown -R appuser:appuser <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</span>&quot;</span>
+chmod 750 <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</span>&quot;</span>
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;セットアップ完了: <span class="hljs-subst">$(date)</span>&quot;</span> &gt;&gt; <span class="hljs-string">&quot;<span class="hljs-variable">$LOG_FILE</span>&quot;</span></code></pre>
+                    </div>
+
+                    <h3 class="subhead">読み解きのポイント</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>行・処理</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="inline">set -e</code></td>
+                                    <td>
+                                        コマンドが失敗した時点でスクリプトを終了する（エラー時の安全策）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">cd "$APP_DIR"</code></td>
+                                    <td>作業ディレクトリへ移動（ディレクトリナビゲーション）</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">if [ ! -f ... ]</code></td>
+                                    <td>ファイルが存在しない場合のみ処理を実行する条件分岐</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">apt-get install</code></td>
+                                    <td>パッケージ（アプリ）のインストール</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">id ... || useradd</code></td>
+                                    <td>ユーザーが存在しなければ作成する（ユーザー管理）</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code class="inline">chown</code> /
+                                        <code class="inline">chmod</code>
+                                    </td>
+                                    <td>所有者・権限設定（ファイル管理）</td>
+                                </tr>
+                                <tr>
+                                    <td>ログ出力</td>
+                                    <td>実行結果を後から追跡できるよう記録</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============ 5.10 ============ -->
+                <section class="section prose" id="s5-10">
+                    <div class="section-head">
+                        <span class="domain-chip">5.10</span>
+                        <div>
+                            <h2>RESTCONF/NETCONFクエリ結果の解釈</h2>
+                            <div class="weight-tag">
+                                Interpret the results of a RESTCONF or NETCONF query
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        RESTCONFとNETCONFは、どちらも<strong>YANGデータモデルに基づくモデル駆動プログラマビリティ</strong>を実現するプロトコルですが、トランスポートやデータ形式に違いがあります。
+                    </p>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>RESTCONF</th>
+                                    <th>NETCONF</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>トランスポート</td>
+                                    <td>HTTPS</td>
+                                    <td>SSH</td>
+                                </tr>
+                                <tr>
+                                    <td>データ形式</td>
+                                    <td>JSON（またはXML）</td>
+                                    <td>XML</td>
+                                </tr>
+                                <tr>
+                                    <td>操作方法</td>
+                                    <td>GET/POST/PUT/PATCH/DELETEなどHTTPメソッド</td>
+                                    <td>
+                                        <code class="inline">&lt;get-config&gt;</code>,
+                                        <code class="inline">&lt;edit-config&gt;</code>
+                                        などのRPC操作
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>設計思想</td>
+                                    <td>RESTfulなWeb API親和性</td>
+                                    <td>
+                                        トランザクション性・複数candidate/runningデータストア管理に強み
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>主なユースケース</td>
+                                    <td>Web/自動化ツールとの連携がしやすい</td>
+                                    <td>厳密な設定変更のトランザクション管理</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.10 &middot; RESTCONF/NETCONFのクエリ応答シーケンス
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            sequenceDiagram
+                                participant C as クライアント Python Postman
+                                participant D as ネットワークデバイス
+                                C->>D: GETリクエスト RESTCONF HTTPS JSON
+                                D-->>C: 200 OK 設定 状態データ JSON
+                                C->>D: get-config NETCONF SSH XML RPC
+                                D-->>C: rpc-reply 設定データ XML
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">RESTCONFレスポンス例（JSON）</h3>
+                    <div class="code-wrapper">
+                        <div class="code-label">restconf-response.json</div>
+                        <pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;ietf-interfaces:interface&quot;</span>: [
+    {
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;GigabitEthernet0/1&quot;</span>,
+      <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;iana-if-type:ethernetCsmacd&quot;</span>,
+      <span class="hljs-attr">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">&quot;ietf-ip:ipv4&quot;</span>: {
+        <span class="hljs-attr">&quot;address&quot;</span>: [
+          { <span class="hljs-attr">&quot;ip&quot;</span>: <span class="hljs-string">&quot;192.0.2.1&quot;</span>, <span class="hljs-attr">&quot;netmask&quot;</span>: <span class="hljs-string">&quot;255.255.255.0&quot;</span> }
+        ]
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+
+                    <h3 class="subhead">NETCONFレスポンス例（XML／rpc-reply）</h3>
+                    <div class="code-wrapper">
+                        <div class="code-label">netconf-response.xml</div>
+                        <pre><code class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">rpc-reply</span> <span class="hljs-attr">message-id</span>=<span class="hljs-string">&quot;101&quot;</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">interfaces</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;urn:ietf:params:xml:ns:yang:ietf-interfaces&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">interface</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>GigabitEthernet0/1<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">enabled</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">enabled</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">interface</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">interfaces</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">rpc-reply</span>&gt;</span></code></pre>
+                    </div>
+
+                    <h3 class="subhead">読み解きのポイント</h3>
+                    <ul>
+                        <li>
+                            RESTCONFの結果は基本的に<strong>JSONのキーバリュー構造</strong>としてそのままPythonの辞書に変換しやすい。
+                        </li>
+                        <li>
+                            NETCONFの結果は<strong>XMLの入れ子構造</strong>（<code class="inline"
+                                >&lt;rpc-reply&gt;</code
+                            >
+                            → <code class="inline">&lt;data&gt;</code> →
+                            モデルの要素）になっており、XPathやXMLパーサーで要素を辿って値を取得する。
+                        </li>
+                        <li>
+                            どちらも「どのYANGモデルの、どの要素の値を取得・設定しているか」を対応づけて読むのが基本です。
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- ============ 5.11 ============ -->
+                <section class="section prose" id="s5-11">
+                    <div class="section-head">
+                        <span class="domain-chip">5.11</span>
+                        <div>
+                            <h2>基本的なYANGモデルの解釈</h2>
+                            <div class="weight-tag">Interpret basic YANG models</div>
+                        </div>
+                    </div>
+
+                    <p>
+                        YANG（Yet Another Next
+                        Generation）は、ネットワーク機器の設定・状態データを<strong>構造化して定義するためのデータモデリング言語</strong>です（RFC
+                        7950）。NETCONFやRESTCONFでやり取りされるデータの「型定義書」のような役割を果たします。
+                    </p>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="inline">module</code></td>
+                                    <td>YANGモデル全体の名前空間・単位</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">container</code></td>
+                                    <td>関連するデータをグループ化する入れ物（リストではない）</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">list</code></td>
+                                    <td>
+                                        複数のインスタンスを持てる要素（<code class="inline"
+                                            >key</code
+                                        >
+                                        で一意に識別）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">leaf</code></td>
+                                    <td>単一の値を持つデータ項目（型を持つ）</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">leaf-list</code></td>
+                                    <td>同じ型の値を複数持てるリスト</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">key</code></td>
+                                    <td>
+                                        <code class="inline">list</code>
+                                        内の各エントリを一意に識別するための項目
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">type</code></td>
+                                    <td>データ型（string, boolean, uint16など）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="subhead">
+                        サンプルYANGモデル（簡略版・ietf-interfacesの一部を模したもの）
+                    </h3>
+                    <div class="code-wrapper">
+                        <div class="code-label">example-interfaces.yang</div>
+                        <pre><code class="hljs language-plaintext">module example-interfaces {
+  namespace &quot;urn:example:interfaces&quot;;
+  prefix &quot;if&quot;;
+
+  container interfaces {
+    list interface {
+      key &quot;name&quot;;
+
+      leaf name {
+        type string;
+      }
+      leaf enabled {
+        type boolean;
+      }
+      leaf mtu {
+        type uint16;
+      }
+      leaf-list address {
+        type string;
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+
+                    <h3 class="subhead">モデルの階層構造</h3>
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">Figure 5.11 &middot; YANGモデルのツリー構造</div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                M["module interfaces"] --> C1["container interfaces"]
+                                C1 --> L1["list interface key name"]
+                                L1 --> F1["leaf name type string"]
+                                L1 --> F2["leaf enabled type boolean"]
+                                L1 --> F3["leaf mtu type uint16"]
+                                L1 --> LL["leaf-list address"]
+                        </script>
+                    </div>
+
+                    <div class="callout">
+                        <strong>学習のポイント：</strong
+                        >出題では複雑なYANGモデル定義そのものを暗記する必要はなく、「<code
+                            class="inline"
+                            >list</code
+                        >
+                        はキーを持つ複数エントリ、<code class="inline">leaf</code> は単一の値、<code
+                            class="inline"
+                            >container</code
+                        >
+                        は単なるグループ化」という構造上の役割の違いを読み取れれば十分対応できます。
+                    </div>
+                </section>
+
+                <!-- ============ 5.12 ============ -->
+                <section class="section prose" id="s5-12">
+                    <div class="section-head">
+                        <span class="domain-chip">5.12</span>
+                        <div>
+                            <h2>Unified Diffの解釈</h2>
+                            <div class="weight-tag">Interpret a unified diff</div>
+                        </div>
+                    </div>
+
+                    <p>
+                        Unified
+                        Diff（統一diff形式）は、Gitなどのバージョン管理システムで<strong>2つのファイル（変更前・変更後）の差分</strong>を表現する標準的なフォーマットです。コードレビューやPull
+                        Requestの差分表示で日常的に目にします。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.12 &middot; diffが生まれるまでのワークフロー
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["変更前ファイル a"] --> C["diffコマンドで比較"]
+                                B["変更後ファイル b"] --> C
+                                C --> D["Unified Diff形式で出力"]
+                                D --> E["レビュアーが変更内容を確認"]
+                                E --> F["問題なければパッチを適用"]
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">Unified Diffのサンプル</h3>
+                    <div class="code-wrapper">
+                        <div class="code-label">playbook.yml.diff</div>
+                        <pre><code class="hljs language-diff"><span class="hljs-comment">--- a/playbook.yml</span>
+<span class="hljs-comment">+++ b/playbook.yml</span>
+<span class="hljs-meta">@@ -5,7 +5,7 @@</span>
+   tasks:
+     - name: nginxパッケージをインストール
+       apt:
+<span class="hljs-deletion">-        name: nginx</span>
+<span class="hljs-addition">+        name: nginx=1.18.0-6ubuntu14</span>
+         state: present
+
+     - name: webadminユーザーを作成
+       user:</code></pre>
+                    </div>
+
+                    <h3 class="subhead">構文要素の意味</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>記号・要素</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="inline">--- a/...</code></td>
+                                    <td>変更前ファイル（オリジナル）を示す行</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">+++ b/...</code></td>
+                                    <td>変更後ファイルを示す行</td>
+                                </tr>
+                                <tr>
+                                    <td><code class="inline">@@ -5,7 +5,7 @@</code></td>
+                                    <td>
+                                        ハンク（変更箇所）の位置。変更前ファイルの5行目から7行分、変更後も5行目から7行分を意味する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>行頭が <code class="inline">-</code></td>
+                                    <td>変更前ファイルにのみ存在した行（削除された行）</td>
+                                </tr>
+                                <tr>
+                                    <td>行頭が <code class="inline">+</code></td>
+                                    <td>変更後ファイルにのみ存在する行（追加された行）</td>
+                                </tr>
+                                <tr>
+                                    <td>行頭が空白</td>
+                                    <td>変更前後で変わらない「文脈（コンテキスト）」の行</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>読み解きのポイント：</strong>上記の例では、<code class="inline"
+                            >nginx</code
+                        >
+                        パッケージのバージョン指定なしのインストールを、<code class="inline"
+                            >nginx=1.18.0-6ubuntu14</code
+                        >
+                        という特定バージョン固定のインストールに変更していることが読み取れます。「何が削除され、何が追加されたか」を
+                        <code class="inline">-</code> と
+                        <code class="inline">+</code> の行から素早く特定する練習をしておきましょう。
+                    </div>
+                </section>
+
+                <!-- ============ 5.13 ============ -->
+                <section class="section prose" id="s5-13">
+                    <div class="section-head">
+                        <span class="domain-chip">5.13</span>
+                        <div>
+                            <h2>コードレビューの原則と利点</h2>
+                            <div class="weight-tag">
+                                Describe the principles and benefits of a code review process
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        コードレビューは、他のメンバーが書いたコード（Playbook、Terraformコード、Pythonスクリプトなど）を<strong>マージ前に第三者が確認するプロセス</strong>です。インフラ自動化ではコード1つの誤りが本番ネットワーク全体に影響しうるため、特に重要視されます。
+                    </p>
+
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.13 &middot; コードレビューのワークフロー
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                A["開発者がPull Requestを作成"] --> B["CIが自動チェックを実行 Lint Unit Test"]
+                                B --> C{自動チェック合格}
+                                C -- いいえ --> A
+                                C -- はい --> D["レビュアーがコードを確認"]
+                                D --> E{修正依頼あり}
+                                E -- はい --> A
+                                E -- いいえ --> F["承認 Approve"]
+                                F --> G["masterブランチへマージ"]
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">コードレビューの原則</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>原則</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>小さい単位でレビューする</td>
+                                    <td>
+                                        変更が大きすぎるとレビューの質が下がるため、小さく分割する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>客観的な基準を持つ</td>
+                                    <td>スタイルガイドやチェックリストに基づいて評価する</td>
+                                </tr>
+                                <tr>
+                                    <td>自動チェックを併用する</td>
+                                    <td>
+                                        Lintやユニットテストで機械的に検出できる問題は自動化に任せる
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>建設的なフィードバック</td>
+                                    <td>個人攻撃ではなく、コードの改善点を具体的に伝える</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="subhead">コードレビューの利点</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>利点</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>品質向上</td>
+                                    <td>バグや設計上の問題を本番投入前に発見できる</td>
+                                </tr>
+                                <tr>
+                                    <td>知識共有</td>
+                                    <td>チーム内でコードやシステムの理解が広がる</td>
+                                </tr>
+                                <tr>
+                                    <td>一貫性の担保</td>
+                                    <td>コーディング規約や設計方針の統一が図れる</td>
+                                </tr>
+                                <tr>
+                                    <td>リスク低減</td>
+                                    <td>
+                                        重大な設定ミスがネットワーク全体に波及する前に防止できる
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============ 5.14 ============ -->
+                <section class="section prose" id="s5-14">
+                    <div class="section-head">
+                        <span class="domain-chip">5.14</span>
+                        <div>
+                            <h2>APIコールを含むシーケンス図の解釈</h2>
+                            <div class="weight-tag">
+                                Interpret a sequence diagram that includes API calls
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        シーケンス図（Sequence
+                        Diagram）は、複数のコンポーネント（クライアント、APIサーバー、認証サーバー、デバイスなど）が<strong>時間の流れに沿ってどのようにやり取りするか</strong>を表現する図です。API連携の全体的な流れを理解・説明する際によく使われます。
+                    </p>
+
+                    <h3 class="subhead">読み方の基本ルール</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>図の要素</th>
+                                    <th>意味</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>縦の線（ライフライン）</td>
+                                    <td>各参加者（Participant）が存在する時間軸</td>
+                                </tr>
+                                <tr>
+                                    <td>実線の矢印（→）</td>
+                                    <td>同期的なリクエスト（呼び出し）</td>
+                                </tr>
+                                <tr>
+                                    <td>破線の矢印（--&gt;）</td>
+                                    <td>レスポンス（応答）</td>
+                                </tr>
+                                <tr>
+                                    <td>上から下への時間順</td>
+                                    <td>図の上にあるやり取りほど時間的に先に発生する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="subhead">サンプルのシーケンス図</h3>
+                    <div class="diagram-wrapper">
+                        <div class="diagram-label">
+                            Figure 5.14 &middot; API連携のシーケンス図の例
+                        </div>
+                        <script type="text/plain" class="mermaid-source">
+                            sequenceDiagram
+                                participant U as 利用者アプリ
+                                participant Auth as 認証サーバー
+                                participant API as Cisco APIサーバー
+                                participant Dev as ネットワークデバイス
+                                U->>Auth: 認証情報を送信 client_id secret
+                                Auth-->>U: アクセストークンを返却
+                                U->>API: APIリクエスト トークン Authorization Header
+                                API->>Dev: 内部的に設定 状態を取得
+                                Dev-->>API: 応答データ
+                                API-->>U: JSON形式でレスポンス
+                        </script>
+                    </div>
+
+                    <h3 class="subhead">読み解きのポイント</h3>
+                    <p>上記の図から、次のような流れを説明できるようになることが目標です。</p>
+                    <ol>
+                        <li>
+                            利用者アプリはまず認証サーバーに認証情報（client_id/secretなど）を送信する
+                        </li>
+                        <li>認証サーバーはアクセストークンを発行して利用者アプリへ返す</li>
+                        <li>
+                            利用者アプリは、そのトークンをAuthorizationヘッダーに付けてCisco
+                            APIサーバーへリクエストする
+                        </li>
+                        <li>Cisco APIサーバーは内部的にネットワークデバイスへ問い合わせる</li>
+                        <li>得られた応答データはJSON形式で最終的に利用者アプリへ返却される</li>
+                    </ol>
+                    <p>
+                        このように「誰が」「誰に」「何を」送り、「どんな順序で」応答が返ってくるかを、矢印の向きと上下の順序から追えるようにしておきましょう。
+                    </p>
+                </section>
+
+                <!-- ============ SUMMARY ============ -->
+                <section class="section prose" id="summary">
+                    <h2>まとめ・学習の進め方</h2>
+
+                    <h3 class="subhead">5.0 Infrastructure and Automation 全項目の早見表</h3>
+                    <div class="table-wrapper">
+                        <table class="summary-table">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>タイトル</th>
+                                    <th>ひとことまとめ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5.1</td>
+                                    <td>モデル駆動プログラマビリティの価値</td>
+                                    <td>YANG構造化データによる自動化の一貫性・スケーラビリティ</td>
+                                </tr>
+                                <tr>
+                                    <td>5.2</td>
+                                    <td>コントローラー vs デバイスレベル管理</td>
+                                    <td>抽象度とスケールのトレードオフ</td>
+                                </tr>
+                                <tr>
+                                    <td>5.3</td>
+                                    <td>シミュレーション・テストツール</td>
+                                    <td>CMLで作る前に試し、pyATSで作った後に確かめる</td>
+                                </tr>
+                                <tr>
+                                    <td>5.4</td>
+                                    <td>CI/CDパイプライン</td>
+                                    <td>小さく・頻繁に・自動テストしながら安全に届ける</td>
+                                </tr>
+                                <tr>
+                                    <td>5.5</td>
+                                    <td>Infrastructure as Codeの原則</td>
+                                    <td>宣言的・冪等性・単一の情報源</td>
+                                </tr>
+                                <tr>
+                                    <td>5.6</td>
+                                    <td>自動化ツール（Ansible/Terraform/NSO）</td>
+                                    <td>
+                                        プロビジョニング・構成管理・オーケストレーションの補完関係
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5.7</td>
+                                    <td>Pythonスクリプトのワークフロー識別</td>
+                                    <td>どのAPI・どの操作・何を自動化しているかを特定する</td>
+                                </tr>
+                                <tr>
+                                    <td>5.8</td>
+                                    <td>Ansible Playbookの解釈</td>
+                                    <td>Task単位で処理内容とHandlerの発火条件を追う</td>
+                                </tr>
+                                <tr>
+                                    <td>5.9</td>
+                                    <td>Bashスクリプトの解釈</td>
+                                    <td>ファイル/ユーザー/パッケージ操作の目的を読み取る</td>
+                                </tr>
+                                <tr>
+                                    <td>5.10</td>
+                                    <td>RESTCONF/NETCONFクエリ結果の解釈</td>
+                                    <td>JSON(REST)とXML(NETCONF)の構造を読み解く</td>
+                                </tr>
+                                <tr>
+                                    <td>5.11</td>
+                                    <td>YANGモデルの解釈</td>
+                                    <td>module/container/list/leafの役割の違い</td>
+                                </tr>
+                                <tr>
+                                    <td>5.12</td>
+                                    <td>Unified Diffの解釈</td>
+                                    <td>
+                                        <code class="inline">-</code>/<code class="inline">+</code
+                                        >/文脈行から変更内容を特定する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5.13</td>
+                                    <td>コードレビューの原則と利点</td>
+                                    <td>品質・知識共有・一貫性・リスク低減</td>
+                                </tr>
+                                <tr>
+                                    <td>5.14</td>
+                                    <td>シーケンス図の解釈</td>
+                                    <td>参加者・矢印の向き・時間順序を追う</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="subhead">学習の進め方のおすすめ</h3>
+                    <ol>
+                        <li>
+                            まず<strong>5.5（IaCの原則）と5.6（ツールの役割分担）</strong>で全体感を掴む
+                        </li>
+                        <li>
+                            次に<strong>5.1・5.2・5.11</strong>でモデル駆動プログラマビリティとYANGの基礎を固める
+                        </li>
+                        <li>
+                            <strong>5.7〜5.10・5.12・5.14</strong
+                            >は、実際に短いサンプルコード／出力／図を読んで「何をしているか」を口頭で説明する練習を繰り返す（試験本番と同じ形式の練習になります）
+                        </li>
+                        <li>
+                            <strong>5.3・5.4・5.13</strong
+                            >はプロセス・原則の理解が中心なので、キーワード（CI/CD、シミュレーション、コードレビュー）と目的をセットで覚える
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- ============ SOURCES ============ -->
+                <footer class="footer prose" id="sources">
+                    <h2>参考文献・出典</h2>
+                    <p>本記事は以下の一次情報源に基づいて作成しています。</p>
+                    <ul class="source-list">
+                        <li>
+                            <span class="src-name"
+                                >Cisco &middot; CCNA Automation certification（認定概要）</span
+                            ><a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >Cisco &middot; CCNA Automation Exam and Training（試験詳細）</span
+                            ><a
+                                href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >Cisco Learning Network &middot; CCNAAUTO 200-901 Exam
+                                Topics（出題項目一覧ページ）</span
+                            ><a
+                                href="https://learningnetwork.cisco.com/s/ccnaauto-exam-topics"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningnetwork.cisco.com/s/ccnaauto-exam-topics</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >Cisco &middot; Automating Networks Using Cisco Platforms
+                                v1.1（200-901）公式出題項目PDF（一次情報源・本記事5.0ドメインの項目番号の出典）</span
+                            ><a
+                                href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >Cisco DevNet &middot; Cisco Modeling Labs（CML）製品情報</span
+                            ><a
+                                href="https://developer.cisco.com/modeling-labs/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/modeling-labs/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name">Cisco DevNet &middot; pyATSドキュメント</span
+                            ><a
+                                href="https://developer.cisco.com/docs/pyats/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/docs/pyats/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >Cisco DevNet &middot; Cisco Network Services
+                                Orchestrator（NSO）</span
+                            ><a
+                                href="https://developer.cisco.com/site/nso/"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.cisco.com/site/nso/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >IETF &middot; RFC 7950: The YANG 1.1 Data Modeling Language</span
+                            ><a
+                                href="https://www.rfc-editor.org/rfc/rfc7950"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.rfc-editor.org/rfc/rfc7950</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >IETF &middot; RFC 6241: Network Configuration
+                                Protocol（NETCONF）</span
+                            ><a
+                                href="https://www.rfc-editor.org/rfc/rfc6241"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.rfc-editor.org/rfc/rfc6241</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name">IETF &middot; RFC 8040: RESTCONF Protocol</span
+                            ><a
+                                href="https://www.rfc-editor.org/rfc/rfc8040"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.rfc-editor.org/rfc/rfc8040</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name">Ansible &middot; 公式ドキュメント</span
+                            ><a href="https://docs.ansible.com/" target="_blank" rel="noopener"
+                                >https://docs.ansible.com/</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >HashiCorp &middot; Terraform公式ドキュメント</span
+                            ><a
+                                href="https://developer.hashicorp.com/terraform/docs"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/docs</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-name"
+                                >Git &middot; git-diff公式ドキュメント（Unified Diff形式）</span
+                            ><a
+                                href="https://git-scm.com/docs/git-diff"
+                                target="_blank"
+                                rel="noopener"
+                                >https://git-scm.com/docs/git-diff</a
+                            >
+                        </li>
+                    </ul>
+                    <div class="disclaimer">
+                        <strong>免責事項：</strong
+                        >出題比率・出題項目の番号（5.1〜5.14）はCiscoが公開する公式出題項目PDF（上表参照）に基づいていますが、Cisco公式の記載どおり「実際の試験ではガイドラインに記載のない関連トピックが出題される場合があり、内容は予告なく変更される可能性があります」。最新の出題範囲は必ず上記のCisco公式ページで確認してください。
+                    </div>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+
+        <script>
+            // ---- dedent(): strip common leading indentation from <script type="text/plain"> sources ----
+            function dedent(str) {
+                const lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n[ \t]*$/, '')
+                    .split('\n');
+                const indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return (l.match(/^[ \t]*/) || [''])[0].length;
+                    });
+                const minIndent = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(minIndent);
+                    })
+                    .join('\n');
+            }
+
+            // ---- inject dedented mermaid sources into <pre class="mermaid"> elements ----
+            document.querySelectorAll('script.mermaid-source').forEach(function (script) {
+                const clean = dedent(script.textContent);
+                const pre = document.createElement('pre');
+                pre.className = 'mermaid';
+                pre.textContent = clean;
+                script.parentNode.insertBefore(pre, script.nextSibling);
+            });
+        </script>
+
+        <script>
+            // ---- Mermaid rendering (isolated: a CDN hiccup here must not block syntax highlighting or nav) ----
+            try {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    themeVariables: {
+                        fontSize: '16px',
+                        primaryColor: '#132743',
+                        primaryTextColor: '#e7edf7',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#7c9eff',
+                        secondaryColor: '#0d1b2e',
+                        tertiaryColor: '#0d1b2e',
+                        background: '#07111e',
+                        mainBkg: '#132743',
+                        nodeBorder: '#7c9eff',
+                        clusterBkg: '#0d1b2e',
+                        clusterBorder: '#4dd8c0',
+                        textColor: '#e7edf7',
+                        edgeLabelBackground: '#07111e',
+                    },
+                    flowchart: {
+                        useMaxWidth: false,
+                        htmlLabels: true,
+                        subGraphTitleMargin: { top: 10, bottom: 28 },
+                    },
+                    sequence: {
+                        useMaxWidth: false,
+                    },
+                });
+                mermaid.run();
+            } catch (e) {
+                console.error('Mermaid rendering failed:', e);
+            }
+        </script>
+
+        <script>
+            // ---- sidebar: mobile toggle ----
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            menuToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+            });
+            document.querySelectorAll('.nav-link').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    sidebar.classList.remove('open');
+                });
+            });
+
+            // ---- sidebar: active section highlighting via IntersectionObserver ----
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('[id]');
+            const linkMap = {};
+            navLinks.forEach(function (link) {
+                linkMap[link.getAttribute('data-section')] = link;
+            });
+
+            const observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        const id = entry.target.getAttribute('id');
+                        const link = linkMap[id];
+                        if (!link) return;
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (l) {
+                                l.classList.remove('active');
+                            });
+                            link.classList.add('active');
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px', threshold: 0 },
+            );
+
+            sections.forEach(function (section) {
+                if (linkMap[section.getAttribute('id')]) observer.observe(section);
+            });
+        </script>
+    </body>
+</html>
