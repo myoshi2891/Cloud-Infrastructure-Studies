@@ -1,0 +1,1611 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA Automation 試験対策ガイド：Network Fundamentals ドメイン徹底解説</title>
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0d1626;
+                --bg-card: #101c30;
+                --border: #1f2b42;
+                --accent: #7c9eff;
+                --accent-soft: #3a4a6b;
+                --accent-dim: rgba(124, 158, 255, 0.12);
+                --text: #e8edf7;
+                --text-dim: #aab5cc;
+                --text-faint: #7686a3;
+                --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+                line-height: 1.85;
+                font-size: 16px;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 2rem 1.25rem 3rem;
+                z-index: 10;
+            }
+
+            .sidebar .brand {
+                font-size: 1rem;
+                letter-spacing: 0.08em;
+                color: var(--text-faint);
+                text-transform: uppercase;
+                margin-bottom: 0.35rem;
+            }
+
+            .sidebar .brand-title {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 1.75rem;
+                line-height: 1.5;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-direction: column;
+                gap: 0.15rem;
+            }
+
+            .sidebar .nav-group-label {
+                font-size: 1rem;
+                color: var(--text-faint);
+                letter-spacing: 0.06em;
+                margin: 1.1rem 0 0.35rem;
+                text-transform: uppercase;
+            }
+
+            .sidebar a {
+                display: block;
+                padding: 0.45rem 0.6rem;
+                border-radius: 6px;
+                color: var(--text-dim);
+                text-decoration: none;
+                font-size: 1rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+
+            .sidebar a:hover {
+                background: var(--accent-dim);
+                color: var(--text);
+            }
+
+            .sidebar a.active {
+                background: var(--accent-dim);
+                color: var(--accent);
+                border-left: 2px solid var(--accent);
+                font-weight: 600;
+            }
+
+            .main {
+                margin-left: 280px;
+                padding: 3.5rem 4rem 8rem;
+                max-width: none;
+            }
+
+            .prose,
+            .section,
+            .hero,
+            .footer {
+                max-width: none;
+            }
+
+            .hero {
+                padding-bottom: 2.5rem;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 3rem;
+            }
+
+            .hero .eyebrow {
+                display: inline-block;
+                font-size: 1rem;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                background: var(--accent-dim);
+                border: 1px solid var(--accent-soft);
+                padding: 0.3rem 0.8rem;
+                border-radius: 999px;
+                margin-bottom: 1.25rem;
+            }
+
+            .hero h1 {
+                font-size: 2.1rem;
+                line-height: 1.5;
+                margin: 0 0 1rem;
+                background: linear-gradient(90deg, #ffffff 0%, var(--accent) 100%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .hero .lede {
+                color: var(--text-dim);
+                font-size: 1.02rem;
+                max-width: 74ch;
+            }
+
+            .meta-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin-top: 1.75rem;
+            }
+
+            .meta-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 0.85rem 1.15rem;
+                min-width: 150px;
+            }
+
+            .meta-card .k {
+                font-size: 1rem;
+                color: var(--text-faint);
+                letter-spacing: 0.04em;
+                margin-bottom: 0.25rem;
+            }
+
+            .meta-card .v {
+                font-size: 1rem;
+                font-weight: 600;
+                color: var(--text);
+            }
+
+            section.section {
+                margin-bottom: 4rem;
+                scroll-margin-top: 2rem;
+            }
+
+            h2.step-title {
+                font-size: 1.55rem;
+                color: var(--text);
+                display: flex;
+                align-items: baseline;
+                gap: 0.7rem;
+                margin: 0 0 1.5rem;
+                padding-bottom: 0.85rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            h2.step-title .step-num {
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--accent);
+                background: var(--accent-dim);
+                border: 1px solid var(--accent-soft);
+                border-radius: 6px;
+                padding: 0.15rem 0.6rem;
+                white-space: nowrap;
+            }
+
+            h3.sub-title {
+                font-size: 1.15rem;
+                color: var(--text);
+                margin: 2.25rem 0 0.9rem;
+            }
+
+            p {
+                color: var(--text-dim);
+            }
+
+            strong {
+                color: var(--text);
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            code {
+                font-family: var(--mono);
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--accent);
+                padding: 0.1rem 0.4rem;
+                border-radius: 4px;
+                font-size: 1em;
+            }
+
+            ul,
+            ol {
+                color: var(--text-dim);
+                padding-left: 1.4rem;
+            }
+
+            li {
+                margin-bottom: 0.5rem;
+            }
+
+            li::marker {
+                color: var(--accent);
+            }
+
+            .callout {
+                background: var(--bg-card);
+                border: 1px solid var(--accent-soft);
+                border-left: 3px solid var(--accent);
+                border-radius: 8px;
+                padding: 1.1rem 1.4rem;
+                margin: 1.5rem 0;
+                color: var(--text-dim);
+            }
+
+            .callout strong {
+                color: var(--accent);
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+                margin: 1.25rem 0 1.75rem;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+            }
+
+            table.data-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 1rem;
+                min-width: 480px;
+            }
+
+            table.data-table th {
+                background: var(--bg-elevated);
+                color: var(--accent);
+                text-align: left;
+                padding: 0.75rem 1rem;
+                font-weight: 600;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+
+            table.data-table td {
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid var(--border);
+                color: var(--text-dim);
+                vertical-align: top;
+            }
+
+            table.data-table tr:last-child td {
+                border-bottom: none;
+            }
+
+            table.data-table tr:nth-child(even) td {
+                background: rgba(124, 158, 255, 0.03);
+            }
+
+            table.data-table td strong,
+            table.data-table td code {
+                color: var(--text);
+            }
+
+            .diagram-block {
+                margin: 1.75rem 0 2.25rem;
+            }
+
+            .diagram-caption {
+                font-size: 1rem;
+                color: var(--text-faint);
+                margin-top: 0.6rem;
+                text-align: center;
+            }
+
+            .diagram-wrapper {
+                overflow-x: auto;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 1.5rem 1rem;
+            }
+
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                margin: 0;
+            }
+
+            pre.mermaid svg {
+                flex-shrink: 0;
+                max-width: none;
+            }
+
+            .domain-highlight td:first-child,
+            .domain-highlight th:first-child {
+                color: var(--accent);
+            }
+
+            tr.this-domain td {
+                background: var(--accent-dim) !important;
+            }
+
+            .footer {
+                margin-top: 5rem;
+                padding-top: 2rem;
+                border-top: 1px solid var(--border);
+                color: var(--text-faint);
+                font-size: 1rem;
+            }
+
+            .footer h2.step-title {
+                border-bottom: 1px solid var(--border);
+            }
+
+            .ref-list {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .ref-list li {
+                margin-bottom: 1rem;
+                padding-left: 0;
+            }
+
+            .ref-list .ref-name {
+                display: block;
+                color: var(--text);
+                font-weight: 600;
+                margin-bottom: 0.2rem;
+            }
+
+            .ref-list .ref-url {
+                font-family: var(--mono);
+                font-size: 1rem;
+                color: var(--accent);
+                word-break: break-all;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    max-height: none;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 2rem 1.25rem 5rem;
+                }
+                .hero h1 {
+                    font-size: 1.6rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar">
+                <div class="brand">CCNA Automation ／ 200-901 CCNAAUTO</div>
+                <div class="brand-title">Network Fundamentals<br />ドメイン解説ガイド</div>
+                <nav id="toc">
+                    <a href="#overview">はじめに</a>
+                    <a href="#step0">Step 0：ドメイン全体像</a>
+                    <div class="nav-group-label">6.1〜6.4：基礎知識と機器</div>
+                    <a href="#step1">Step 1：MAC/VLAN（6.1）</a>
+                    <a href="#step2">Step 2：IPアドレス系（6.2）</a>
+                    <a href="#step3">Step 3：ネットワーク機器（6.3）</a>
+                    <a href="#step4">Step 4：トポロジ図（6.4）</a>
+                    <div class="nav-group-label">6.5〜6.7：仕組みとサービス</div>
+                    <a href="#step5">Step 5：3つのPlane（6.5）</a>
+                    <a href="#step6">Step 6：IPサービス（6.6）</a>
+                    <a href="#step7">Step 7：ポート番号（6.7）</a>
+                    <div class="nav-group-label">6.8〜6.9：診断と応用</div>
+                    <a href="#step8">Step 8：接続トラブル診断（6.8）</a>
+                    <a href="#step9">Step 9：ネットワーク制約（6.9）</a>
+                    <div class="nav-group-label">まとめ</div>
+                    <a href="#summary">学習のポイント</a>
+                    <a href="#references">参考情報源</a>
+                </nav>
+            </nav>
+
+            <main class="main">
+                <header class="hero prose">
+                    <span class="eyebrow">CCNA Automation 試験対策ガイド</span>
+                    <h1>Network Fundamentals ドメイン徹底解説</h1>
+                    <p class="lede">
+                        対象試験：Automating Networks Using Cisco Platforms v1.1（200-901 CCNAAUTO）
+                        ／ 対象ドメイン：6.0 Network Fundamentals（出題比率 15%） ／
+                        対象読者：ネットワーク自動化を学び始めたばかりの初学者
+                    </p>
+                    <div class="meta-grid">
+                        <div class="meta-card">
+                            <div class="k">試験時間</div>
+                            <div class="v">120分</div>
+                        </div>
+                        <div class="meta-card">
+                            <div class="k">受験言語</div>
+                            <div class="v">英語・日本語</div>
+                        </div>
+                        <div class="meta-card">
+                            <div class="k">受験料</div>
+                            <div class="v">US $300</div>
+                        </div>
+                        <div class="meta-card">
+                            <div class="k">本ドメインの出題比率</div>
+                            <div class="v">15%</div>
+                        </div>
+                    </div>
+                </header>
+
+                <section id="overview" class="section prose">
+                    <h2 class="step-title">はじめに：このガイドの位置づけ</h2>
+                    <p>
+                        <strong>CCNA Automation</strong> は、Cisco が2026年に「DevNet
+                        Associate」から名称変更した資格で、
+                        ネットワークの基礎知識とソフトウェア開発・自動化スキルの両方を証明する認定資格です。
+                        取得には、120分の試験
+                        <strong
+                            >200-901 CCNAAUTO（Automating Networks Using Cisco Platforms
+                            v1.1）</strong
+                        >
+                        に合格する必要があります。日本語での受験も可能です。
+                    </p>
+                    <p>
+                        この試験は次の6つのドメインで構成されており、その中で本ガイドが扱う
+                        <strong>「6.0 Network Fundamentals」は出題比率15%</strong> を占めます。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table domain-highlight">
+                            <thead>
+                                <tr>
+                                    <th>ドメイン番号</th>
+                                    <th>ドメイン名</th>
+                                    <th>出題比率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.0</td>
+                                    <td>Software Development and Design</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>2.0</td>
+                                    <td>Understanding and Using APIs</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>3.0</td>
+                                    <td>Cisco Platforms and Development</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>4.0</td>
+                                    <td>Application Deployment and Security</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>5.0</td>
+                                    <td>Infrastructure and Automation</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr class="this-domain">
+                                    <td><strong>6.0</strong></td>
+                                    <td><strong>Network Fundamentals</strong></td>
+                                    <td><strong>15%</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        「自動化やプログラミングの資格なのに、なぜネットワークの基礎知識が問われるのか？」と疑問に思うかもしれません。
+                        理由はシンプルで、<strong
+                            >ネットワークの仕組みを理解していないと、API呼び出しの失敗やアプリケーションの接続不良が
+                            「コードの問題」なのか「ネットワークの問題」なのかを切り分けられない</strong
+                        >
+                        からです。
+                        このドメインは、自動化エンジニアが最低限押さえておくべきネットワークの土台を確認するためのものです。
+                    </p>
+                </section>
+
+                <section id="step0" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 0</span> Network Fundamentalsドメインの全体像
+                    </h2>
+                    <p>
+                        このドメインは、公式Exam Topicsにおいて 6.1〜6.9
+                        の9つの小項目に分かれています。まずは全体像を掴みましょう。
+                    </p>
+
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-0">
+                                flowchart TB
+                                    A["6.0 Network Fundamentals<br/>（出題比率 15%）"] --> B["基礎知識<br/>6.1 MAC/VLAN　6.2 IPアドレス系"]
+                                    B --> C["機器とトポロジ<br/>6.3 ネットワーク機器　6.4 トポロジ図の解読"]
+                                    C --> D["機器内部の仕組み<br/>6.5 Management/Data/Control Plane"]
+                                    D --> E["ネットワークサービス<br/>6.6 IPサービス　6.7 ポート番号"]
+                                    E --> F["トラブルシューティング<br/>6.8 接続診断　6.9 制約の影響"]
+                            </script>
+                            <pre class="mermaid" id="diagram-0"></pre>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>項番</th>
+                                    <th>学習内容</th>
+                                    <th>該当ステップ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>6.1</td>
+                                    <td>MACアドレスとVLANの目的・使い方</td>
+                                    <td>Step 1</td>
+                                </tr>
+                                <tr>
+                                    <td>6.2</td>
+                                    <td>
+                                        IPアドレス、ルート、サブネットマスク/プレフィックス、ゲートウェイ
+                                    </td>
+                                    <td>Step 2</td>
+                                </tr>
+                                <tr>
+                                    <td>6.3</td>
+                                    <td>
+                                        スイッチ・ルーター・ファイアウォール・ロードバランサーなど機器の機能
+                                    </td>
+                                    <td>Step 3</td>
+                                </tr>
+                                <tr>
+                                    <td>6.4</td>
+                                    <td>基本的なネットワークトポロジ図の解読</td>
+                                    <td>Step 4</td>
+                                </tr>
+                                <tr>
+                                    <td>6.5</td>
+                                    <td>ネットワーク機器のManagement/Data/Control Planeの機能</td>
+                                    <td>Step 5</td>
+                                </tr>
+                                <tr>
+                                    <td>6.6</td>
+                                    <td>DHCP・DNS・NAT・SNMP・NTPというIPサービスの機能</td>
+                                    <td>Step 6</td>
+                                </tr>
+                                <tr>
+                                    <td>6.7</td>
+                                    <td>SSH・Telnet・HTTP・HTTPS・NETCONFなど代表的なポート番号</td>
+                                    <td>Step 7</td>
+                                </tr>
+                                <tr>
+                                    <td>6.8</td>
+                                    <td>
+                                        NAT不良・ポート遮断・プロキシ・VPNに起因する接続トラブルの診断
+                                    </td>
+                                    <td>Step 8</td>
+                                </tr>
+                                <tr>
+                                    <td>6.9</td>
+                                    <td>ネットワークの制約がアプリケーションに与える影響</td>
+                                    <td>Step 9</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="step1" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 1</span> MACアドレスとVLAN（6.1）
+                    </h2>
+
+                    <h3 class="sub-title">MACアドレスとは</h3>
+                    <p>
+                        MACアドレス（Media Access Control
+                        Address）は、ネットワークインターフェース（NIC）ごとに割り当てられた
+                        <strong>48ビット（6バイト）の物理アドレス</strong>
+                        です。IPアドレスのように後から人間が変更する前提のものではなく、
+                        機器の出荷時に焼き込まれる一意な識別子です。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>構成要素</th>
+                                    <th>ビット数</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>OUI（Organizationally Unique Identifier）</td>
+                                    <td>上位24ビット</td>
+                                    <td>製造ベンダーを識別する部分（IEEEが割り当て）</td>
+                                </tr>
+                                <tr>
+                                    <td>デバイス固有部分</td>
+                                    <td>下位24ビット</td>
+                                    <td>ベンダー内で一意になるように製造時に割り当てられる部分</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        表記例：<code>AA:BB:CC:11:22:33</code>（コロン区切り16進数）。スイッチはこのMACアドレスをもとに
+                        <strong>MACアドレステーブル</strong>
+                        を作成し、どのポートの先にどの端末がいるかを学習してフレームを転送します。
+                    </p>
+
+                    <h3 class="sub-title">VLANとは</h3>
+                    <p>
+                        VLAN（Virtual LAN）は、<strong
+                            >1台の物理スイッチを論理的に複数のネットワークへ分割する</strong
+                        >
+                        技術です。
+                        同じVLANに属するポート同士は同じブロードキャストドメインとして通信できますが、異なるVLAN同士は直接通信できず、
+                        通信させるにはルーターやL3スイッチによるルーティングが必要になります。
+                    </p>
+                    <p>VLANを使う主な理由：</p>
+                    <ul>
+                        <li>
+                            部署やシステムの単位でネットワークを論理分離し、セキュリティを高める
+                        </li>
+                        <li>ブロードキャストトラフィックの範囲を限定し、無駄な通信を減らす</li>
+                        <li>
+                            物理的な配線を変更せずに、ポートの割り当て変更だけでネットワーク構成を変えられる
+                        </li>
+                    </ul>
+
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-1">
+                                flowchart TB
+                                    subgraph SW["L2スイッチ"]
+                                        direction TB
+                                        P1["ポート1-4<br/>VLAN 10（営業部）"]
+                                        P2["ポート5-8<br/>VLAN 20（開発部）"]
+                                    end
+                                    PC1["PC（営業部）"] --> P1
+                                    PC2["PC（営業部）"] --> P1
+                                    PC3["PC（開発部）"] --> P2
+                                    PC4["PC（開発部）"] --> P2
+                                    P1 -.->|"同じスイッチでも直接通信不可"| P2
+                            </script>
+                            <pre class="mermaid" id="diagram-1"></pre>
+                        </div>
+                        <p class="diagram-caption">
+                            同じスイッチに接続していても、異なるVLAN同士は直接通信できない
+                        </p>
+                    </div>
+
+                    <p>
+                        上図のように、同じスイッチに接続していても、VLAN 10とVLAN
+                        20の端末同士は直接通信できません。
+                        両者を通信させたい場合は、後述するルーター（またはL3スイッチ）が間に入る必要があります。
+                    </p>
+                </section>
+
+                <section id="step2" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 2</span>
+                        IPアドレス・ルート・サブネットマスク/プレフィックス・ゲートウェイ（6.2）
+                    </h2>
+
+                    <h3 class="sub-title">IPアドレスの基本</h3>
+                    <p>
+                        IPv4アドレスは32ビットで構成され、<code>192.168.1.10</code>
+                        のように8ビットずつ4つに区切った10進数（オクテット）で
+                        表記します。ネットワークを自動化する上では、<strong
+                            >「どこまでがネットワーク部で、どこからがホスト部か」</strong
+                        >
+                        を正しく読めることが重要です。
+                    </p>
+
+                    <h3 class="sub-title">サブネットマスクとプレフィックス表記</h3>
+                    <p>
+                        サブネットマスクは、IPアドレスのうちネットワーク部を示すビットを表します。近年はサブネットマスクの代わりに
+                        <strong>CIDR表記（プレフィックス表記）</strong> である
+                        <code>/24</code> のような形式がよく使われます。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>CIDR表記</th>
+                                    <th>サブネットマスク</th>
+                                    <th>ネットワーク部のビット数</th>
+                                    <th>1ネットワークあたりの利用可能ホスト数（目安）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>/24</td>
+                                    <td>255.255.255.0</td>
+                                    <td>24ビット</td>
+                                    <td>254台</td>
+                                </tr>
+                                <tr>
+                                    <td>/25</td>
+                                    <td>255.255.255.128</td>
+                                    <td>25ビット</td>
+                                    <td>126台</td>
+                                </tr>
+                                <tr>
+                                    <td>/26</td>
+                                    <td>255.255.255.192</td>
+                                    <td>26ビット</td>
+                                    <td>62台</td>
+                                </tr>
+                                <tr>
+                                    <td>/16</td>
+                                    <td>255.255.0.0</td>
+                                    <td>16ビット</td>
+                                    <td>約65,534台</td>
+                                </tr>
+                                <tr>
+                                    <td>/8</td>
+                                    <td>255.0.0.0</td>
+                                    <td>8ビット</td>
+                                    <td>約1,677万台</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="sub-title">プライベートIPアドレス範囲</h3>
+                    <p>
+                        社内ネットワークなど、インターネットに直接公開しないネットワークでは、以下のプライベートIPアドレス範囲
+                        （RFC 1918）が使われます。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>範囲</th>
+                                    <th>CIDR表記</th>
+                                    <th>主な用途</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10.0.0.0 〜 10.255.255.255</td>
+                                    <td>10.0.0.0/8</td>
+                                    <td>大規模企業ネットワーク</td>
+                                </tr>
+                                <tr>
+                                    <td>172.16.0.0 〜 172.31.255.255</td>
+                                    <td>172.16.0.0/12</td>
+                                    <td>中規模ネットワーク</td>
+                                </tr>
+                                <tr>
+                                    <td>192.168.0.0 〜 192.168.255.255</td>
+                                    <td>192.168.0.0/16</td>
+                                    <td>家庭用・小規模オフィス</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="sub-title">デフォルトゲートウェイとルート</h3>
+                    <p>
+                        <strong>デフォルトゲートウェイ</strong>
+                        とは、端末が「自分と異なるネットワーク宛て」の通信を送るときに
+                        最初に転送する先（通常はルーターのインターフェース）です。<strong
+                            >ルート（経路情報）</strong
+                        >
+                        は、
+                        「どの宛先ネットワークには、どのインターフェース・次のホップを通れば到達できるか」という情報で、
+                        ルーターはこの情報をもとにパケットを転送します。
+                    </p>
+
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-2">
+                                flowchart TB
+                                    subgraph NetA["ネットワークA：192.168.1.0/24"]
+                                        PCA["PC-A<br/>192.168.1.10"]
+                                        GWA["デフォルトゲートウェイ<br/>192.168.1.1"]
+                                    end
+                                    subgraph NetB["ネットワークB：192.168.2.0/24"]
+                                        GWB["デフォルトゲートウェイ<br/>192.168.2.1"]
+                                        PCB["PC-B<br/>192.168.2.10"]
+                                    end
+                                    PCA -->|"①別ネットワーク宛てなのでGWへ送る"| GWA
+                                    GWA -->|"②ルーティングテーブルを参照して転送"| GWB
+                                    GWB -->|"③宛先ネットワークへ届ける"| PCB
+                            </script>
+                            <pre class="mermaid" id="diagram-2"></pre>
+                        </div>
+                    </div>
+
+                    <p>
+                        PC-Aが同じネットワーク（192.168.1.0/24）内の端末と通信する場合はゲートウェイを経由せず直接通信しますが、
+                        PC-Bのような別ネットワーク宛ての通信は、必ずデフォルトゲートウェイ（ルーター）を経由します。
+                    </p>
+                </section>
+
+                <section id="step3" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 3</span> ネットワーク機器の役割（6.3）
+                    </h2>
+                    <p>
+                        自動化対象となる代表的なネットワーク機器と、その役割を整理します。まず前提として、OSI参照モデルの
+                        主要レイヤーを簡単に押さえておくと機器の役割が理解しやすくなります。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>レイヤー</th>
+                                    <th>名称</th>
+                                    <th>関連する技術・機器の例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>L7</td>
+                                    <td>アプリケーション層</td>
+                                    <td>HTTP、DNS、ロードバランサーのURLベース振り分け</td>
+                                </tr>
+                                <tr>
+                                    <td>L4</td>
+                                    <td>トランスポート層</td>
+                                    <td>TCP/UDP、ポート番号、L4ロードバランシング</td>
+                                </tr>
+                                <tr>
+                                    <td>L3</td>
+                                    <td>ネットワーク層</td>
+                                    <td>IPアドレス、ルーティング、ルーター</td>
+                                </tr>
+                                <tr>
+                                    <td>L2</td>
+                                    <td>データリンク層</td>
+                                    <td>MACアドレス、VLAN、スイッチ</td>
+                                </tr>
+                                <tr>
+                                    <td>L1</td>
+                                    <td>物理層</td>
+                                    <td>ケーブル、光ファイバー、物理ポート</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="sub-title">代表的なネットワーク機器</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>機器</th>
+                                    <th>主なレイヤー</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>スイッチ（L2スイッチ）</td>
+                                    <td>L2</td>
+                                    <td>
+                                        MACアドレステーブルをもとにフレームを転送。VLANによるセグメント分割を行う
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ルーター</td>
+                                    <td>L3</td>
+                                    <td>
+                                        IPアドレス・ルーティングテーブルをもとに、異なるネットワーク間でパケットを転送する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ファイアウォール</td>
+                                    <td>L3〜L7</td>
+                                    <td>
+                                        通信のフィルタリング、アクセス制御、脅威検知・防御を行う
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ロードバランサー</td>
+                                    <td>L4〜L7</td>
+                                    <td>
+                                        1つの仮想IP（VIP）宛ての通信を複数のサーバーへ振り分け、可用性と拡張性を高める
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>自動化の観点でのポイント：</strong>
+                        これらの機器はそれぞれ異なるAPI・プロトコル（RESTCONF、NETCONF、ベンダー独自API等）で操作されることが多く、
+                        「どの機器が、どのレイヤーで、何をしているか」を理解していないと自動化スクリプトが何を制御しているのか
+                        把握できません。
+                    </div>
+                </section>
+
+                <section id="step4" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 4</span> ネットワークトポロジ図の読み方（6.4）
+                    </h2>
+                    <p>
+                        試験では、スイッチ・ルーター・ファイアウォール・ロードバランサー・ポート番号などを含む基本的なトポロジ図を
+                        読み解く問題が出題されます。以下は典型的な構成例です。
+                    </p>
+
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-3">
+                                flowchart TB
+                                    Client["クライアントPC"] --> SW1["L2スイッチ"]
+                                    SW1 --> RTR["ルーター"]
+                                    RTR --> FW["ファイアウォール"]
+                                    FW --> LB["ロードバランサー<br/>仮想IP 203.0.113.10:443"]
+                                    LB --> SRV1["Webサーバー1<br/>10.0.1.11:8080"]
+                                    LB --> SRV2["Webサーバー2<br/>10.0.1.12:8080"]
+                            </script>
+                            <pre class="mermaid" id="diagram-3"></pre>
+                        </div>
+                    </div>
+
+                    <p>このようなトポロジ図を読み解くときのチェックポイント：</p>
+                    <ul>
+                        <li>
+                            <strong>通信の入口から出口までの経路</strong
+                            >：クライアント→スイッチ→ルーター→ファイアウォール→ロードバランサー→サーバー、という順に、どの機器を経由するかを追う
+                        </li>
+                        <li>
+                            <strong>境界（レイヤーの切り替わり地点）</strong
+                            >：VLANの境界はスイッチ、ネットワークの境界はルーター、というようにどこで何が変わるかを意識する
+                        </li>
+                        <li>
+                            <strong>ポート番号の意味</strong>：<code>203.0.113.10:443</code>
+                            のような表記は「そのIPアドレスの443番ポート（HTTPS）で待ち受けている」ことを示す
+                        </li>
+                        <li>
+                            <strong>通信がどこで変換・分散されるか</strong
+                            >：ロードバランサーの仮想IP宛ての通信が、内部的にどのサーバーへ振り分けられるか
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="step5" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 5</span> Management / Data / Control
+                        Plane（6.5）
+                    </h2>
+                    <p>
+                        ネットワーク機器（ルーターやスイッチ）の内部動作は、役割ごとに3つの「プレーン」に分けて理解すると
+                        自動化の対象範囲が明確になります。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>プレーン</th>
+                                    <th>役割</th>
+                                    <th>具体例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Management Plane（管理プレーン）</td>
+                                    <td>機器の設定・監視・運用管理を行う</td>
+                                    <td>SSH、SNMP、NETCONF/RESTCONFによるアクセス</td>
+                                </tr>
+                                <tr>
+                                    <td>Control Plane（制御プレーン）</td>
+                                    <td>
+                                        経路情報や制御情報の学習・交換を行う（いわば機器の「頭脳」）
+                                    </td>
+                                    <td>
+                                        OSPFやBGPなどのルーティングプロトコル、STP、MACアドレステーブルの学習
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Data Plane（データプレーン）</td>
+                                    <td>
+                                        実際のユーザートラフィック（パケット/フレーム）を転送する（いわば機器の「手足」）
+                                    </td>
+                                    <td>受信したパケットの実転送処理（フォワーディング）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-4">
+                                flowchart TB
+                                    subgraph Device["ネットワーク機器（ルーター/スイッチ）"]
+                                        direction TB
+                                        MP["Management Plane<br/>SSH・SNMP・NETCONFによる設定/監視"]
+                                        CP["Control Plane<br/>ルーティングプロトコル・MACアドレス学習"]
+                                        DP["Data Plane<br/>実際のパケット/フレーム転送"]
+                                        MP ~~~ CP
+                                        CP ~~~ DP
+                                    end
+                            </script>
+                            <pre class="mermaid" id="diagram-4"></pre>
+                        </div>
+                    </div>
+
+                    <p>
+                        自動化スクリプトの多くは
+                        <strong>Management Plane</strong> を経由して機器を操作します
+                        （例：NETCONFで設定を投入する、SNMPで状態を取得する）。一方で、実際にユーザーの通信を運ぶのは
+                        <strong>Data Plane</strong>
+                        であり、両者は別物であることを区別して理解しておくことが重要です。
+                    </p>
+                </section>
+
+                <section id="step6" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 6</span>
+                        IPサービス（DHCP・DNS・NAT・SNMP・NTP）（6.6）
+                    </h2>
+                    <p>
+                        ネットワーク自動化の現場でも頻繁に登場する、5つの代表的なIPサービスを解説します。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>サービス</th>
+                                    <th>正式名称</th>
+                                    <th>主な役割</th>
+                                    <th>主なポート</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>DHCP</td>
+                                    <td>Dynamic Host Configuration Protocol</td>
+                                    <td>IPアドレス等をクライアントへ自動的に割り当てる</td>
+                                    <td>UDP 67（サーバー）／68（クライアント）</td>
+                                </tr>
+                                <tr>
+                                    <td>DNS</td>
+                                    <td>Domain Name System</td>
+                                    <td>ドメイン名とIPアドレスを相互に変換する（名前解決）</td>
+                                    <td>UDP/TCP 53</td>
+                                </tr>
+                                <tr>
+                                    <td>NAT</td>
+                                    <td>Network Address Translation</td>
+                                    <td>プライベートIPアドレスとグローバルIPアドレスを変換する</td>
+                                    <td>ポートではなくアドレス変換の技術</td>
+                                </tr>
+                                <tr>
+                                    <td>SNMP</td>
+                                    <td>Simple Network Management Protocol</td>
+                                    <td>機器の状態監視、情報収集、障害の自発通知を行う</td>
+                                    <td>UDP 161（ポーリング）／162（Trap）</td>
+                                </tr>
+                                <tr>
+                                    <td>NTP</td>
+                                    <td>Network Time Protocol</td>
+                                    <td>ネットワーク機器間で時刻を同期する</td>
+                                    <td>UDP 123</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="sub-title">DHCP：IPアドレスの自動割り当て</h3>
+                    <p>DHCPは「DORA」と呼ばれる4段階のやり取りでIPアドレスを割り当てます。</p>
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-5">
+                                sequenceDiagram
+                                    participant Client as クライアントPC
+                                    participant Server as DHCPサーバー
+                                    Client->>Server: ① Discover（ブロードキャストで探索）
+                                    Server->>Client: ② Offer（IPアドレス候補を提示）
+                                    Client->>Server: ③ Request（提示されたIPアドレスを要求）
+                                    Server->>Client: ④ ACK（割り当てを確定）
+                            </script>
+                            <pre class="mermaid" id="diagram-5"></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-title">DNS：名前解決の流れ</h3>
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-6">
+                                sequenceDiagram
+                                    participant PC as クライアントPC
+                                    participant Resolver as DNSキャッシュサーバー
+                                    participant Root as ルートDNSサーバー
+                                    participant TLD as .comサーバー
+                                    participant Auth as 権威DNSサーバー
+                                    PC->>Resolver: www.example.com のIPアドレスは？
+                                    Resolver->>Root: 問い合わせ
+                                    Root-->>Resolver: .comサーバーの場所を回答
+                                    Resolver->>TLD: 問い合わせ
+                                    TLD-->>Resolver: 権威DNSサーバーの場所を回答
+                                    Resolver->>Auth: 問い合わせ
+                                    Auth-->>Resolver: IPアドレスを回答
+                                    Resolver-->>PC: IPアドレスを返す
+                            </script>
+                            <pre class="mermaid" id="diagram-6"></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-title">NAT：アドレス変換の考え方</h3>
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-7">
+                                flowchart LR
+                                    PC["社内PC<br/>10.0.0.5:50000"] --> RTR["ルーター（NAT）<br/>変換テーブルを保持"]
+                                    RTR --> INET["インターネット側<br/>送信元：203.0.113.1:60001"]
+                            </script>
+                            <pre class="mermaid" id="diagram-7"></pre>
+                        </div>
+                    </div>
+                    <p>
+                        社内のプライベートIPアドレスは、インターネットへ出る際にルーター（またはファイアウォール）で
+                        グローバルIPアドレスへ変換されます。この変換テーブルの不整合や枯渇が、後述する「NAT
+                        Problem」の 原因になります。
+                    </p>
+
+                    <h3 class="sub-title">SNMP：機器の監視</h3>
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-8">
+                                flowchart LR
+                                    NMS["監視サーバー（NMS）"] -->|"①ポーリング（Get/GetNext）"| Device["ネットワーク機器<br/>（SNMPエージェント）"]
+                                    Device -->|"②応答"| NMS
+                                    Device -.->|"③Trap（異常時に自発通知）"| NMS
+                            </script>
+                            <pre class="mermaid" id="diagram-8"></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-title">NTP：時刻同期の階層構造</h3>
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-9">
+                                flowchart TB
+                                    S0["Stratum 0<br/>原子時計・GPS等の高精度時刻源"] --> S1["Stratum 1<br/>NTPサーバー"]
+                                    S1 --> S2["Stratum 2<br/>社内NTPサーバー"]
+                                    S2 --> S3["Stratum 3<br/>各クライアント機器"]
+                            </script>
+                            <pre class="mermaid" id="diagram-9"></pre>
+                        </div>
+                    </div>
+                    <p>
+                        NTPでは、時刻源からの距離（階層）を「Stratum」という数値で表します。ログの時刻がずれていると
+                        障害発生時刻の突き合わせができなくなるため、自動化・運用の現場でも時刻同期は地味に重要な要素です。
+                    </p>
+                </section>
+
+                <section id="step7" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 7</span> プロトコルとポート番号（6.7）
+                    </h2>
+                    <p>
+                        自動化スクリプトでAPIやCLIに接続する際、どのポートを使うかを把握しておくことは、接続トラブルの
+                        切り分けにも直結します。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>プロトコル</th>
+                                    <th>ポート番号</th>
+                                    <th>トランスポート</th>
+                                    <th>主な用途</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SSH</td>
+                                    <td>22</td>
+                                    <td>TCP</td>
+                                    <td>
+                                        機器へのセキュアなリモートログイン・管理プレーンアクセス
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Telnet</td>
+                                    <td>23</td>
+                                    <td>TCP</td>
+                                    <td>暗号化されないリモートログイン（現在は非推奨）</td>
+                                </tr>
+                                <tr>
+                                    <td>HTTP</td>
+                                    <td>80</td>
+                                    <td>TCP</td>
+                                    <td>平文でのWebアクセス・REST APIアクセス</td>
+                                </tr>
+                                <tr>
+                                    <td>HTTPS</td>
+                                    <td>443</td>
+                                    <td>TCP</td>
+                                    <td>TLSで暗号化されたWebアクセス・REST APIアクセス</td>
+                                </tr>
+                                <tr>
+                                    <td>NETCONF</td>
+                                    <td>830</td>
+                                    <td>TCP（SSH上）</td>
+                                    <td>
+                                        モデル駆動型プログラマビリティによる機器の設定取得・投入
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>DNS</td>
+                                    <td>53</td>
+                                    <td>UDP/TCP</td>
+                                    <td>名前解決</td>
+                                </tr>
+                                <tr>
+                                    <td>DHCP</td>
+                                    <td>67 / 68</td>
+                                    <td>UDP</td>
+                                    <td>IPアドレスの自動割り当て</td>
+                                </tr>
+                                <tr>
+                                    <td>SNMP</td>
+                                    <td>161 / 162</td>
+                                    <td>UDP</td>
+                                    <td>機器の監視・自発通知（Trap）</td>
+                                </tr>
+                                <tr>
+                                    <td>NTP</td>
+                                    <td>123</td>
+                                    <td>UDP</td>
+                                    <td>時刻同期</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        これらのポート番号は、後述する「アプリケーション接続トラブルの切り分け」において、ファイアウォールで
+                        どのポートが遮断されているかを特定する際の基礎知識になります。
+                    </p>
+                </section>
+
+                <section id="step8" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 8</span>
+                        アプリケーション接続トラブルの切り分け（6.8）
+                    </h2>
+                    <p>
+                        自動化スクリプトやAPIクライアントから接続できないとき、原因を「NAT不良」「ポート遮断」「プロキシ」
+                        「VPN」の観点で切り分ける考え方を整理します。
+                    </p>
+
+                    <div class="diagram-block">
+                        <div class="diagram-wrapper">
+                            <script type="text/plain" class="mermaid-src" data-target="diagram-10">
+                                flowchart TB
+                                    Start["アプリケーションに接続できない"] --> Q1{"宛先IPへのping/tracerouteは通るか？"}
+                                    Q1 -->|"通らない"| A1["経路上のルーティング・ACLによる<br/>遮断を疑う"]
+                                    Q1 -->|"通る"| Q2{"対象ポートへの接続テストは成功するか？"}
+                                    Q2 -->|"失敗"| A2["Transport Port Blocked<br/>（FW/ACLによるポート遮断）"]
+                                    Q2 -->|"成功"| Q3{"社内⇔社外をまたぐ通信か？"}
+                                    Q3 -->|"はい"| Q4{"NAT変換後のアドレスで正しく到達できるか？"}
+                                    Q4 -->|"いいえ"| A3["NAT Problem<br/>（変換設定の誤り・アドレス枯渇）"]
+                                    Q4 -->|"はい"| Q5{"プロキシ経由の通信か？"}
+                                    Q3 -->|"いいえ"| Q5
+                                    Q5 -->|"はい"| A4["Proxy設定の問題<br/>（認証・除外設定の誤り）"]
+                                    Q5 -->|"いいえ"| Q6{"VPN経由の通信か？"}
+                                    Q6 -->|"はい"| A5["VPN Problem<br/>（トンネル未確立・ルート未配布）"]
+                                    Q6 -->|"いいえ"| A6["アプリケーション層の問題<br/>（DNS誤設定・証明書エラー等）を確認"]
+                            </script>
+                            <pre class="mermaid" id="diagram-10"></pre>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-title">症状から原因を推測するための早見表</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>疑われる原因</th>
+                                    <th>確認方法の例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>特定サーバーの特定ポートにだけ接続できない</td>
+                                    <td>Transport Port Blocked</td>
+                                    <td>対象ポートへの接続テスト、FW/ACLのログ確認</td>
+                                </tr>
+                                <tr>
+                                    <td>社外から社内のアプリケーションに到達できない</td>
+                                    <td>NAT Problem</td>
+                                    <td>NAT変換テーブル、グローバルIPの割当状況の確認</td>
+                                </tr>
+                                <tr>
+                                    <td>特定URL・宛先だけアクセスできない</td>
+                                    <td>Proxy設定の誤り</td>
+                                    <td>プロキシの除外リスト・認証設定の確認</td>
+                                </tr>
+                                <tr>
+                                    <td>拠点間の通信だけ失敗する</td>
+                                    <td>VPN Problem</td>
+                                    <td>VPNトンネルの状態、ルーティング配布状況の確認</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>切り分けの基本方針：</strong>
+                        「まずネットワーク経路を疑い、その後にアプリケーション層を疑う」という順序で進めるのが基本です。
+                        自動化エンジニアであっても、コードを直す前にネットワークパスを確認する習慣が重要になります。
+                    </div>
+                </section>
+
+                <section id="step9" class="section prose">
+                    <h2 class="step-title">
+                        <span class="step-num">Step 9</span>
+                        ネットワーク制約がアプリケーションに与える影響（6.9）
+                    </h2>
+                    <p>
+                        最後に、ネットワークの物理的・構成的な制約が、アプリケーションの動作にどう影響するかを整理します。
+                    </p>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ネットワーク制約</th>
+                                    <th>アプリケーションへの影響</th>
+                                    <th>対策の例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>帯域幅（Bandwidth）不足</td>
+                                    <td>レスポンス遅延、タイムアウトの増加</td>
+                                    <td>QoS設定、帯域増強、キャッシュの活用</td>
+                                </tr>
+                                <tr>
+                                    <td>遅延（Latency）／RTTの増大</td>
+                                    <td>リアルタイム性の低下（音声・映像品質の劣化）</td>
+                                    <td>CDNの活用、エッジコンピューティングの活用</td>
+                                </tr>
+                                <tr>
+                                    <td>MTU／パケットフラグメンテーション</td>
+                                    <td>パケット分割によるオーバーヘッド、通信エラー</td>
+                                    <td>MTUサイズの調整、Path MTU Discoveryの利用</td>
+                                </tr>
+                                <tr>
+                                    <td>パケットロス</td>
+                                    <td>再送増加によるスループット低下</td>
+                                    <td>信頼性の高いプロトコルの選択、QoSの適用</td>
+                                </tr>
+                                <tr>
+                                    <td>ファイアウォール／ACLによる通信制限</td>
+                                    <td>特定ポート・プロトコルの通信が失敗する</td>
+                                    <td>事前の通信要件確認、必要なポートの申請・開放</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        これらは一見「ネットワーク側の話」に見えますが、自動化やアプリケーション開発を行う上でも、
+                        <strong
+                            >「なぜこのAPI呼び出しはタイムアウトするのか」「なぜこの自動化ジョブは特定拠点でだけ失敗するのか」</strong
+                        >
+                        を理解するための土台になります。
+                    </p>
+                </section>
+
+                <section id="summary" class="section prose">
+                    <h2 class="step-title">まとめ：学習のポイント</h2>
+                    <ul>
+                        <li>
+                            <strong>Network Fundamentalsは出題比率15%</strong>
+                            で、6つのドメインの中では中程度の比率だが、他ドメイン（特に「5.0
+                            Infrastructure and Automation」）の理解の土台になる
+                        </li>
+                        <li>
+                            <strong>6.1〜6.4</strong>
+                            は「モノの名前と役割」を覚える暗記寄りの範囲：MACアドレス、VLAN、IPアドレス、サブネット、ゲートウェイ、各種ネットワーク機器、トポロジ図の読み方
+                        </li>
+                        <li>
+                            <strong>6.5</strong> は機器内部の「動作の分類」（Management/Control/Data
+                            Plane）を理解する範囲
+                        </li>
+                        <li>
+                            <strong>6.6〜6.7</strong>
+                            はIPサービス（DHCP・DNS・NAT・SNMP・NTP）とポート番号という「実務で頻出する具体的な仕組み」を押さえる範囲
+                        </li>
+                        <li>
+                            <strong>6.8〜6.9</strong>
+                            は「トラブルシューティングの考え方」を問う応用範囲であり、他の項目の理解を前提とした総合問題になりやすい
+                        </li>
+                        <li>
+                            学習の順序としては、<strong
+                                >用語（6.1〜6.4）→ 仕組み（6.5〜6.7）→
+                                応用・診断（6.8〜6.9）</strong
+                            >
+                            の順に進めると理解しやすい
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="references" class="section prose footer">
+                    <h2 class="step-title">参考情報源</h2>
+                    <p>
+                        本ガイドの内容は、以下のCisco公式情報源に基づいて作成しています。最新情報は変更される可能性があるため、
+                        学習の際は必ず一次情報を確認してください。
+                    </p>
+                    <ul class="ref-list">
+                        <li>
+                            <span class="ref-name">CCNA Automation Certification（資格概要）</span>
+                            <span class="ref-url"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html</span
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-name"
+                                >CCNA Automation Exam and
+                                Training（試験概要・受験情報：試験名、時間、言語、費用など）</span
+                            >
+                            <span class="ref-url"
+                                >https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html</span
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-name"
+                                >Automating Networks Using Cisco Platforms v1.1（200-901）Exam
+                                Topics（公式出題範囲PDF：本ガイドの6.1〜6.9の項目立てはこの一次資料に基づく）</span
+                            >
+                            <span class="ref-url"
+                                >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf</span
+                            >
+                        </li>
+                        <li>
+                            <span class="ref-name"
+                                >Cisco Learning Network：CCNAAUTO Exam Topics and Study
+                                Guide（コミュニティ上の出題範囲ページ）</span
+                            >
+                            <span class="ref-url"
+                                >https://learningnetwork.cisco.com/s/ccnaauto-exam-topics</span
+                            >
+                        </li>
+                    </ul>
+                    <p>
+                        補足：CCNA Automationは、Ciscoが2026年に「DevNet
+                        Associate」から名称変更した資格です。既存のDevNet Associate
+                        資格保有者は、自動的にCCNA Automation資格保有者として扱われます。
+                    </p>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                var lines = str.replace(/^\n/, '').replace(/\s+$/, '').split('\n');
+                var indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return l.match(/^\s*/)[0].length;
+                    });
+                var min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(min);
+                    })
+                    .join('\n');
+            }
+
+            document.querySelectorAll('script.mermaid-src').forEach(function (el) {
+                var target = document.getElementById(el.dataset.target);
+                if (target) {
+                    target.textContent = dedent(el.textContent);
+                }
+            });
+
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'base',
+                themeVariables: {
+                    background: 'transparent',
+                    primaryColor: '#152238',
+                    primaryTextColor: '#e8edf7',
+                    primaryBorderColor: '#7c9eff',
+                    secondaryColor: '#101c30',
+                    tertiaryColor: '#101c30',
+                    lineColor: '#7c9eff',
+                    textColor: '#e8edf7',
+                    mainBkg: '#152238',
+                    nodeBorder: '#7c9eff',
+                    clusterBkg: '#0d1626',
+                    clusterBorder: '#3a4a6b',
+                    titleColor: '#e8edf7',
+                    edgeLabelBackground: '#0d1626',
+                    fontSize: '16px',
+                    actorBkg: '#152238',
+                    actorBorder: '#7c9eff',
+                    actorTextColor: '#e8edf7',
+                    actorLineColor: '#3a4a6b',
+                    signalColor: '#aab5cc',
+                    signalTextColor: '#e8edf7',
+                    labelBoxBkgColor: '#152238',
+                    labelBoxBorderColor: '#7c9eff',
+                    labelTextColor: '#e8edf7',
+                    loopTextColor: '#e8edf7',
+                    noteBkgColor: '#1f2b42',
+                    noteTextColor: '#e8edf7',
+                    noteBorderColor: '#3a4a6b',
+                    activationBkgColor: '#1f2b42',
+                    activationBorderColor: '#7c9eff',
+                },
+                flowchart: {
+                    useMaxWidth: false,
+                    subGraphTitleMargin: { top: 10, bottom: 28 },
+                },
+                sequence: {
+                    useMaxWidth: false,
+                },
+            });
+
+            var navLinks = Array.prototype.slice.call(document.querySelectorAll('.sidebar a'));
+            var sections = navLinks
+                .map(function (a) {
+                    return document.querySelector(a.getAttribute('href'));
+                })
+                .filter(Boolean);
+
+            var observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        var link = navLinks.filter(function (a) {
+                            return a.getAttribute('href') === '#' + entry.target.id;
+                        })[0];
+                        if (!link) {
+                            return;
+                        }
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (a) {
+                                a.classList.remove('active');
+                            });
+                            link.classList.add('active');
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+
+            sections.forEach(function (s) {
+                observer.observe(s);
+            });
+        </script>
+    </body>
+</html>
