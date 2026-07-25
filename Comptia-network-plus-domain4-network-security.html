@@ -359,18 +359,48 @@
                 color: var(--text-tertiary);
             }
 
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 30;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                border: 1px solid var(--border-primary);
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                cursor: pointer;
+            }
+
             @media (max-width: 900px) {
                 .sidebar {
-                    display: none;
+                    transform: translateX(-100%);
+                    visibility: hidden;
+                    transition: transform 0.2s ease, visibility 0.2s ease;
+                    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
+                    z-index: 20;
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                    visibility: visible;
                 }
                 .main {
                     margin-left: 0;
                     padding: 32px 20px 64px;
                 }
+                .menu-toggle {
+                    display: flex;
+                }
             }
         </style>
     </head>
     <body>
+        <button class="menu-toggle" id="menuToggle" aria-label="目次を開く" aria-expanded="false">☰</button>
         <div class="layout">
             <nav class="sidebar">
                 <div class="sidebar-title">Domain 4.0 Network Security</div>
@@ -1565,6 +1595,26 @@
                     }
                 }
             });
+
+            // Mobile sidebar toggle
+            var sidebar = document.querySelector('.sidebar');
+            var menuToggle = document.getElementById('menuToggle');
+            if (sidebar && menuToggle) {
+                function updateSidebarState(isOpen) {
+                    sidebar.classList.toggle('open', isOpen);
+                    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    menuToggle.setAttribute('aria-label', isOpen ? '目次を閉じる' : '目次を開く');
+                }
+                menuToggle.addEventListener('click', function () {
+                    var isOpen = !sidebar.classList.contains('open');
+                    updateSidebarState(isOpen);
+                });
+                document.querySelectorAll('.sidebar-nav a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        updateSidebarState(false);
+                    });
+                });
+            }
 
             (function () {
                 var links = document.querySelectorAll('.sidebar-nav a');
