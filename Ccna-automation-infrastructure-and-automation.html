@@ -534,11 +534,13 @@
             @media (max-width: 960px) {
                 .sidebar {
                     transform: translateX(-100%);
-                    transition: transform 0.2s ease;
+                    visibility: hidden;
+                    transition: transform 0.2s ease, visibility 0.2s ease;
                     box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
                 }
                 .sidebar.open {
                     transform: translateX(0);
+                    visibility: visible;
                 }
                 .main {
                     margin-left: 0;
@@ -562,7 +564,7 @@
         </style>
     </head>
     <body>
-        <button class="menu-toggle" id="menuToggle" aria-label="目次を開く">☰</button>
+        <button class="menu-toggle" id="menuToggle" aria-label="目次を開く" aria-expanded="false">☰</button>
 
         <div class="layout">
             <nav class="sidebar" id="sidebar">
@@ -2564,7 +2566,10 @@ chmod 750 <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</
                         useMaxWidth: false,
                     },
                 });
-                mermaid.run();
+                const runPromise = mermaid.run();
+                if (runPromise && typeof runPromise.catch === 'function') {
+                    runPromise.catch((e) => console.error('Mermaid rendering failed:', e));
+                }
             } catch (e) {
                 console.error('Mermaid rendering failed:', e);
             }
@@ -2574,12 +2579,18 @@ chmod 750 <span class="hljs-string">&quot;<span class="hljs-variable">$APP_DIR</
             // ---- sidebar: mobile toggle ----
             const sidebar = document.getElementById('sidebar');
             const menuToggle = document.getElementById('menuToggle');
+            function updateSidebarState(isOpen) {
+                sidebar.classList.toggle('open', isOpen);
+                menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                menuToggle.setAttribute('aria-label', isOpen ? '目次を閉じる' : '目次を開く');
+            }
             menuToggle.addEventListener('click', function () {
-                sidebar.classList.toggle('open');
+                const isOpen = !sidebar.classList.contains('open');
+                updateSidebarState(isOpen);
             });
             document.querySelectorAll('.nav-link').forEach(function (link) {
                 link.addEventListener('click', function () {
-                    sidebar.classList.remove('open');
+                    updateSidebarState(false);
                 });
             });
 
