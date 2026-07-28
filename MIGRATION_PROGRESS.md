@@ -21,6 +21,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA Domain 1 guide page` (`page.tsx`, `Domain1Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
 - [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(aws-saa): integrate Domain 1 into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
 - [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive Domain 1 HTML` (`MIGRATION_PROGRESS.md` の更新、元HTML `AWS-Certified-Solutions-Architect-Associate-Domain1.html` を `archive/Aws/SAA/html/` へ、MD を `archive/Aws/SAA/md/` へアーカイブ移動)
+- [x] **Step 5 (Full-width Layout & 1rem Text Scale & Pie Chart Styling)**: `feat(aws-saa): expand layout to full width, ensure 1rem diagram text scaling, and refine pie chart styling` (`main-content` の全幅 100% 化、`.diagram-container` のスクロールコンテナ化・1rem文字サイズ保護、円グラフ `d01` のダークテーマ配色最適化)
 
 ### 関連ファイル
 
