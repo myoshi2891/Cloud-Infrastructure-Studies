@@ -222,6 +222,11 @@ export const EXAMS: Exam[] = [
                 href: '/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud',
                 pct: 'ハンズオン',
             },
+            {
+                label: 'セキュリティ基礎 完全ガイド',
+                href: '/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide',
+                pct: 'ハンズオン',
+            },
         ],
         badge: 'ハンズオン',
         icon: '🛠️',

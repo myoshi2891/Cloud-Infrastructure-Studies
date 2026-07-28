@@ -124,6 +124,12 @@ app/
           NavBar.tsx                  # サイドバーナビ
           constants.ts                # Mermaid 図定義（14図）
           page.css                    # ページ固有スタイル
+        gcp-security-fundamentals-guide/
+          page.tsx                    # Google Cloud セキュリティ基礎 完全ガイド（Server。メタデータ定義）
+          GcpSecurityFundamentalsGuide.tsx # 本文＋インタラクション（client。Mermaid等）
+          NavBar.tsx                  # サイドバーナビ
+          constants.ts                # Mermaid 図定義（16図）
+          page.css                    # ページ固有スタイル
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装
