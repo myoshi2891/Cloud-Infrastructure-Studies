@@ -18,20 +18,20 @@ describe('AWS SAA Domain 3 Guide Page', () => {
         expect(h1Elements.length).toBeGreaterThan(0);
         expect(h1Elements[0]).toHaveTextContent(/ドメイン3: 高性能なアーキテクチャの設計/i);
 
-        expect(screen.getByText(/Task 3.1: 高性能かつ費用対効果の高いストレージソリューションの決定/i)).toBeInTheDocument();
-        expect(screen.getByText(/Task 3.2: 高性能で弾力性のあるコンピューティングソリューションの決定/i)).toBeInTheDocument();
-        expect(screen.getByText(/Task 3.3: 高性能なデータベースソリューションの設計/i)).toBeInTheDocument();
-        expect(screen.getByText(/Task 3.4: 高性能なネットワークアーキテクチャの設計/i)).toBeInTheDocument();
-        expect(screen.getByText(/Task 3.5: 高性能なデータアクセスのためのデータ転送・インジェスチョンソリューション/i)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Task 3.1: 高性能・スケーラブルなストレージ/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Task 3.2: 高性能で弾力性のあるコンピューティング/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Task 3.3: 高性能なデータベースソリューション/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Task 3.4: 高性能・スケーラブルなネットワーク/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Task 3.5: 高性能なデータ取り込み・変換/i })).toBeInTheDocument();
     });
 
-    it('contains valid mermaid diagrams', () => {
-        expect(Object.keys(DIAGRAMS).length).toBeGreaterThan(0);
+    it('contains 27 valid mermaid diagrams in constants', () => {
+        expect(Object.keys(DIAGRAMS).length).toBe(27);
     });
 
-    it('renders syntax highlighted elements in code blocks', () => {
+    it('renders tables correctly in the guide', () => {
         const { container } = render(<Domain3Guide />);
-        const codeLines = container.querySelectorAll('.code-line');
-        expect(codeLines.length).toBeGreaterThan(0);
+        const tables = container.querySelectorAll('table');
+        expect(tables.length).toBeGreaterThan(0);
     });
 });
