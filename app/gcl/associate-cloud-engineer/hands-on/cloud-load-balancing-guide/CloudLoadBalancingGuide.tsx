@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import NavBar from './NavBar';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
-import { DIAGRAMS, REVISION_DATE } from './constants';
+import { DIAGRAMS, REVISION_DATE, type DiagramId } from './constants';
 import styles from './page.module.css';
 
 /**
@@ -42,7 +42,7 @@ function CopyButton({ code }: { code: string }) {
  * @param label - The label shown for the figure and used as the diagram's accessible name.
  * @returns The rendered diagram, or `null` when no diagram exists for `id`.
  */
-function Diagram({ id, label }: { id: string; label: string }) {
+function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
