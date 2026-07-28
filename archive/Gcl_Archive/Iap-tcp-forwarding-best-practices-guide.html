@@ -1,0 +1,1581 @@
+<!doctype html>
+
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>IAP（Identity-Aware Proxy）TCP フォワーディング ベストプラクティスガイド</title>
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elev-1: #0b1729;
+                --bg-elev-2: #0f1e34;
+                --border: #1c2e4a;
+                --border-soft: #16253d;
+                --text: #e7edf7;
+                --text-soft: #a9b8d3;
+                --text-faint: #6f83a5;
+                --accent: #7c9eff;
+                --accent-soft: #34456e;
+                --accent-glow: rgba(124, 158, 255, 0.18);
+                --good: #56d6a8;
+                --warn: #f2b866;
+                --code-bg: #0a1526;
+                --sidebar-w: 300px;
+                --maxw: 980px;
+                --serif-jp: 'Noto Serif JP', 'Hiragino Mincho ProN', serif;
+                --sans-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background:
+                    radial-gradient(1200px 800px at 85% -10%, var(--accent-glow), transparent 60%),
+                    var(--bg);
+                color: var(--text);
+                font-family: var(--sans-jp);
+                line-height: 1.85;
+                font-size: 16px;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- Layout ---------- */
+            .layout {
+                display: flex;
+                align-items: flex-start;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                position: sticky;
+                top: 0;
+                width: var(--sidebar-w);
+                flex: 0 0 var(--sidebar-w);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elev-1);
+                border-right: 1px solid var(--border-soft);
+                padding: 28px 20px 60px;
+                scrollbar-width: thin;
+                scrollbar-color: var(--accent-soft) transparent;
+                z-index: 30;
+            }
+            .sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--accent-soft);
+                border-radius: 4px;
+            }
+
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 22px;
+                padding-bottom: 18px;
+                border-bottom: 1px solid var(--border-soft);
+            }
+            .brand-badge {
+                width: 34px;
+                height: 34px;
+                border-radius: 9px;
+                background: linear-gradient(135deg, var(--accent), #4a6fd6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                font-weight: 700;
+                color: #051023;
+                flex-shrink: 0;
+            }
+            .brand-text {
+                font-size: 13px;
+                color: var(--text-soft);
+                line-height: 1.4;
+            }
+            .brand-text strong {
+                color: var(--text);
+                display: block;
+                font-size: 14px;
+            }
+
+            .nav-list,
+            .nav-sublist {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .nav-item {
+                margin-bottom: 2px;
+            }
+            .nav-link {
+                display: block;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                color: var(--text-soft);
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+            .nav-link:hover {
+                background: var(--bg-elev-2);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .nav-sublist {
+                margin-left: 10px;
+                border-left: 1px solid var(--border-soft);
+                padding-left: 4px;
+            }
+            .nav-sublink {
+                font-size: 12.5px;
+                padding: 6px 12px;
+                color: var(--text-faint);
+            }
+            .nav-link.active {
+                background: var(--accent-glow);
+                color: var(--accent);
+                border-left-color: var(--accent);
+                font-weight: 600;
+            }
+            .nav-sublink.active {
+                color: var(--accent);
+                font-weight: 600;
+                border-left-color: var(--accent);
+            }
+
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 50;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                background: var(--bg-elev-2);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            main {
+                flex: 1 1 auto;
+                min-width: 0;
+                padding: 56px 64px 100px;
+            }
+
+            .page-header {
+                margin-bottom: 40px;
+                padding-bottom: 28px;
+                border-bottom: 1px solid var(--border-soft);
+            }
+            .eyebrow {
+                display: inline-block;
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                background: var(--accent-glow);
+                border: 1px solid var(--accent-soft);
+                padding: 4px 12px;
+                border-radius: 999px;
+                margin-bottom: 16px;
+            }
+            .page-header h1 {
+                font-size: 30px;
+                line-height: 1.5;
+                margin: 0 0 14px;
+                color: #fff;
+                letter-spacing: 0.01em;
+            }
+            .page-header .subtitle {
+                font-size: 15.5px;
+                color: var(--text-soft);
+                margin: 0;
+            }
+            .meta-line {
+                margin-top: 18px;
+                font-size: 13.5px;
+                color: var(--text-faint);
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px 22px;
+            }
+            .meta-line b {
+                color: var(--text-soft);
+                font-weight: 600;
+            }
+
+            /* ---------- Content typography ---------- */
+            .content-section {
+                margin-bottom: 8px;
+                opacity: 0;
+                transform: translateY(14px);
+                transition:
+                    opacity 0.6s ease,
+                    transform 0.6s ease;
+            }
+            .content-section.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            h2 {
+                font-size: 23px;
+                color: #fff;
+                margin: 56px 0 20px;
+                padding-top: 4px;
+                scroll-margin-top: 24px;
+                display: flex;
+                align-items: baseline;
+                gap: 10px;
+            }
+            .content-section:first-of-type h2 {
+                margin-top: 8px;
+            }
+            h3 {
+                font-size: 18px;
+                color: var(--accent);
+                margin: 34px 0 14px;
+                scroll-margin-top: 24px;
+            }
+            p {
+                color: var(--text-soft);
+                margin: 14px 0;
+            }
+            strong {
+                color: var(--text);
+                font-weight: 700;
+            }
+            ul,
+            ol {
+                color: var(--text-soft);
+                padding-left: 1.5em;
+                margin: 14px 0;
+            }
+            li {
+                margin: 6px 0;
+            }
+            li::marker {
+                color: var(--accent);
+            }
+            hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 40px 0;
+            }
+            code {
+                background: var(--code-bg);
+                color: #ffd9a0;
+                padding: 2px 6px;
+                border-radius: 5px;
+                font-size: 0.88em;
+                font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            }
+            pre {
+                background: var(--code-bg);
+                border: 1px solid var(--border-soft);
+                border-radius: 10px;
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 20px 0;
+            }
+            pre code {
+                background: none;
+                padding: 0;
+                color: #d7e1f5;
+                font-size: 13.5px;
+                line-height: 1.7;
+            }
+
+            blockquote {
+                margin: 20px 0;
+                padding: 14px 20px;
+                background: var(--bg-elev-2);
+                border-left: 3px solid var(--accent);
+                border-radius: 0 8px 8px 0;
+                color: var(--text-soft);
+                font-size: 14.5px;
+            }
+            blockquote p {
+                margin: 4px 0;
+                color: var(--text-soft);
+            }
+            blockquote a {
+                font-weight: 600;
+            }
+
+            .table-scroll {
+                overflow-x: auto;
+                margin: 22px 0;
+                border-radius: 10px;
+                border: 1px solid var(--border-soft);
+                -webkit-overflow-scrolling: touch;
+            }
+            table {
+                width: 100%;
+                min-width: 560px;
+                border-collapse: collapse;
+                margin: 0;
+                font-size: 14px;
+            }
+            thead th {
+                background: var(--bg-elev-2);
+                color: var(--accent);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 600;
+                border-bottom: 1px solid var(--border);
+                overflow-wrap: break-word;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-soft);
+                vertical-align: top;
+                overflow-wrap: break-word;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: rgba(124, 158, 255, 0.045);
+            }
+            @media (max-width: 900px) {
+                table {
+                    min-width: 620px;
+                }
+            }
+
+            /* ---------- Mermaid ---------- */
+            pre.mermaid {
+                background: var(--bg-elev-1);
+                border: 1px solid var(--border-soft);
+                border-radius: 12px;
+                padding: 24px;
+                display: flex;
+                justify-content: safe center;
+                width: 100%;
+                overflow-x: auto;
+            }
+            pre.mermaid svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* ---------- Reference grid ---------- */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px 16px;
+                list-style: none;
+                padding: 0;
+                margin: 20px 0;
+            }
+            .ref-card {
+                background: var(--bg-elev-1);
+                border: 1px solid var(--border-soft);
+                border-radius: 10px;
+                padding: 13px 16px;
+                font-size: 13.5px;
+                transition:
+                    border-color 0.15s ease,
+                    background 0.15s ease;
+            }
+            .ref-card:hover {
+                border-color: var(--accent-soft);
+                background: var(--bg-elev-2);
+            }
+            .ref-card a {
+                color: var(--text);
+            }
+            .ref-card a::after {
+                content: ' ↗';
+                color: var(--accent);
+            }
+            .ref-card a:hover {
+                color: var(--accent);
+            }
+
+            footer.page-footer {
+                margin-top: 60px;
+                padding-top: 24px;
+                border-top: 1px solid var(--border-soft);
+                color: var(--text-faint);
+                font-size: 12.5px;
+            }
+
+            /* ---------- Responsive ---------- */
+            @media (max-width: 900px) {
+                .sidebar {
+                    position: fixed;
+                    left: 0;
+                    top: 0;
+                    height: 100vh;
+                    transform: translateX(-105%);
+                    transition: transform 0.25s ease;
+                    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.4);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                main {
+                    padding: 90px 20px 80px;
+                }
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+                h2 {
+                    font-size: 20px;
+                }
+                .page-header h1 {
+                    font-size: 24px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button aria-label="メニューを開く" class="sidebar-toggle" id="sidebarToggle">☰</button>
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="brand">
+                    <div class="brand-badge">IAP</div>
+                    <div class="brand-text">
+                        <strong>TCP フォワーディング</strong>ベストプラクティスガイド
+                    </div>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            data-target="1-このガイドについて"
+                            href="#1-このガイドについて"
+                            >1. このガイドについて</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            data-target="2-iapとは何かなぜ使うのか"
+                            href="#2-iapとは何かなぜ使うのか"
+                            >2. IAPとは何か、なぜ使うのか</a
+                        >
+                        <ul class="nav-sublist">
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="21-課題-踏み台サーバーと外部ipのリスク"
+                                    href="#21-課題-踏み台サーバーと外部ipのリスク"
+                                    >2.1 課題: 「踏み台サーバー」と外部IPのリスク</a
+                                >
+                            </li>
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="22-iapというアプローチ"
+                                    href="#22-iapというアプローチ"
+                                    >2.2 IAPというアプローチ</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            data-target="3-全体アーキテクチャ"
+                            href="#3-全体アーキテクチャ"
+                            >3. 全体アーキテクチャ</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-target="4-作業の全体像" href="#4-作業の全体像"
+                            >4. 作業の全体像</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-target="5-ステップ別解説" href="#5-ステップ別解説"
+                            >5. ステップ別解説</a
+                        >
+                        <ul class="nav-sublist">
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="51-task-1-iap-tcp-forwarding-apiの有効化"
+                                    href="#51-task-1-iap-tcp-forwarding-apiの有効化"
+                                    >5.1 Task 1: IAP TCP forwarding APIの有効化</a
+                                >
+                            </li>
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="52-task-2-vmインスタンスの作成ベストプラクティス注記"
+                                    href="#52-task-2-vmインスタンスの作成ベストプラクティス注記"
+                                    >5.2 Task 2: VMインスタンスの作成（ベストプラクティス注記）</a
+                                >
+                            </li>
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="53-task-3-接続不可であることの確認"
+                                    href="#53-task-3-接続不可であることの確認"
+                                    >5.3 Task 3: 接続不可であることの確認</a
+                                >
+                            </li>
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="54-task-4-ファイアウォールルールの作成重要な差分あり"
+                                    href="#54-task-4-ファイアウォールルールの作成重要な差分あり"
+                                    >5.4 Task 4: ファイアウォールルールの作成（重要な差分あり）</a
+                                >
+                            </li>
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="55-task-5-iam権限の付与最小権限の原則"
+                                    href="#55-task-5-iam権限の付与最小権限の原則"
+                                    >5.5 Task 5: IAM権限の付与（最小権限の原則）</a
+                                >
+                            </li>
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="56-task-6-iap-desktopでの接続"
+                                    href="#56-task-6-iap-desktopでの接続"
+                                    >5.6 Task 6: IAP Desktopでの接続</a
+                                >
+                            </li>
+                            <li class="nav-subitem">
+                                <a
+                                    class="nav-link nav-sublink"
+                                    data-target="57-task-7-gcloud-cliによるsshrdpトンネリング"
+                                    href="#57-task-7-gcloud-cliによるsshrdpトンネリング"
+                                    >5.7 Task 7: gcloud CLIによるSSH/RDPトンネリング</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            data-target="6-本番環境への適用時のベストプラクティスまとめ"
+                            href="#6-本番環境への適用時のベストプラクティスまとめ"
+                            >6. 本番環境への適用時のベストプラクティスまとめ</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link"
+                            data-target="7-トラブルシューティング"
+                            href="#7-トラブルシューティング"
+                            >7. トラブルシューティング</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-target="8-まとめ" href="#8-まとめ">8. まとめ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-target="9-参考文献" href="#9-参考文献"
+                            >9. 参考文献</a
+                        >
+                    </li>
+                </ul>
+            </nav>
+            <main>
+                <header class="page-header">
+                    <span class="eyebrow">GOOGLE CLOUD ・ SECURITY</span>
+                    <h1>
+                        IAP（Identity-Aware Proxy）TCP フォワーディング ベストプラクティスガイド
+                    </h1>
+                    <p class="subtitle">
+                        外部IPなしのVMへ安全に接続する ― 初学者向けステップバイステップ解説
+                    </p>
+                    <div class="meta-line">
+                        <span
+                            ><b>対象読者:</b> Google Cloud
+                            を学び始めた初学者〜VMの踏み台構成を見直したいエンジニア</span
+                        >
+                        <span
+                            ><b>前提知識:</b>
+                            コンソールの基本操作、VPC・ファイアウォールの初歩</span
+                        >
+                    </div>
+                </header>
+                <section class="content-section" data-heading-id="1-このガイドについて">
+                    <h2 id="1-このガイドについて">1. このガイドについて</h2>
+                    <p>
+                        このガイドは、「外部IPアドレスを持たないVM（Linux/Windows）に、Identity-Aware
+                        Proxy（IAP）のTCPフォワーディング機能を使って安全にSSH/RDP接続する」というハンズオン内容を題材に、<strong>実務で使うベストプラクティス</strong>の観点から解説し直したものです。
+                    </p>
+                    <p>
+                        ハンズオンそのものは学習用に単純化されているため、本ガイドでは各ステップについて
+                    </p>
+                    <ol type="1">
+                        <li>ハンズオンで行っている操作の意味</li>
+                        <li>
+                            本番環境で採用すべきベストプラクティス（ハンズオンとの差分がある場合は明記）
+                        </li>
+                        <li>公式ドキュメントなど根拠となる出典URL</li>
+                    </ol>
+                    <p>の3点をセットで示します。</p>
+                    <hr />
+                </section>
+                <section class="content-section" data-heading-id="2-iapとは何かなぜ使うのか">
+                    <h2 id="2-iapとは何かなぜ使うのか">2. IAPとは何か、なぜ使うのか</h2>
+                    <h3 id="21-課題-踏み台サーバーと外部ipのリスク">
+                        2.1 課題: 「踏み台サーバー」と外部IPのリスク
+                    </h3>
+                    <p>
+                        従来型のインフラでは、社内ネットワークの外からVMに接続するために、以下のいずれかが必要でした。
+                    </p>
+                    <ul>
+                        <li>VMに外部IPアドレスを割り当てて直接SSH/RDPを開放する</li>
+                        <li>
+                            踏み台（Bastion）サーバーを外部公開し、そこを経由して内部VMへ接続する
+                        </li>
+                    </ul>
+                    <p>
+                        どちらの方式も、<strong>インターネットに露出するポートが常に存在する</strong>という点で攻撃対象領域（アタックサーフェス）を広げてしまいます。
+                    </p>
+                    <h3 id="22-iapというアプローチ">2.2 IAPというアプローチ</h3>
+                    <p>
+                        IAP TCP フォワーディングは、Google が提唱する
+                        <strong>BeyondCorp（ゼロトラストネットワーク）</strong>
+                        の考え方に基づく機能です。VM側にはポートを外部公開せず、代わりに次の流れでアクセスを仲介します。
+                    </p>
+                    <ul>
+                        <li>
+                            クライアント（gcloud CLI・ブラウザ・IAP
+                            Desktopなど）がIAPに対してHTTPSでトンネル確立を要求する
+                        </li>
+                        <li>
+                            IAPは要求元のIDに対して
+                            <strong>IAMポリシー</strong
+                            >（「誰が」「どのVMに」アクセスできるか）を判定する
+                        </li>
+                        <li>
+                            許可された場合のみ、HTTPSでラップされたTCPトラフィック（SSHやRDP）をVMの内部IPへ中継する
+                        </li>
+                    </ul>
+                    <p>
+                        つまり「ネットワークの位置（社内かどうか）」ではなく「<strong>IDと権限</strong>」でアクセス可否を決めるのがIAPの本質です。この仕組みにより、VMは外部IPアドレスを一切持たずに運用できます。
+                    </p>
+                    <blockquote>
+                        <p>
+                            参考:
+                            <a href="https://docs.cloud.google.com/iap/docs/tcp-forwarding-overview"
+                                >TCP forwarding overview（Google Cloud公式）</a
+                            >
+                        </p>
+                    </blockquote>
+                    <hr />
+                </section>
+                <section class="content-section" data-heading-id="3-全体アーキテクチャ">
+                    <h2 id="3-全体アーキテクチャ">3. 全体アーキテクチャ</h2>
+                    <p>ハンズオンで構築する構成は次の通りです。</p>
+                    <pre class="mermaid">
+flowchart LR
+    subgraph Client["管理者のクライアント"]
+        A["gcloud CLI / ブラウザSSH / RDPクライアント"]
+    end
+
+    subgraph GCP["Google Cloud プロジェクト"]
+        IAP["Identity-Aware Proxy&lt;br/&gt;TCPフォワーディング"]
+        subgraph VPC["VPCネットワーク"]
+            FW["ファイアウォールルール&lt;br/&gt;送信元: 35.235.240.0/20&lt;br/&gt;ポート: TCP 22 / 3389 を許可"]
+            L["linux-iap&lt;br/&gt;（外部IPなし）"]
+            W["windows-iap&lt;br/&gt;（外部IPなし）"]
+            C["windows-connectivity&lt;br/&gt;（外部IPあり・検証用の踏み台）"]
+        end
+    end
+
+    A --&gt;|"HTTPSトンネルを確立"| IAP
+    IAP --&gt;|"IAMポリシーで可否判定"| FW
+    FW --&gt; L
+    FW --&gt; W
+    C -.-&gt;|"IAP Desktop / gcloud を実行"| IAP</pre
+                    >
+                    <ul>
+                        <li>
+                            <code>linux-iap</code> と
+                            <code>windows-iap</code>
+                            は<strong>外部IPアドレスを持たない</strong>デモ用インスタンスです。
+                        </li>
+                        <li>
+                            <code>windows-connectivity</code>
+                            は、学習のために外部IPを持たせた検証専用VMで、ここから
+                            <code>gcloud</code> やIAP Desktopを操作してIAP経由の接続を確認します。
+                        </li>
+                        <li>
+                            実際の本番運用では、この「踏み台的に使うクライアント」自体も管理者の手元PC（会社支給端末など）に置き換えることができます。
+                        </li>
+                    </ul>
+                    <hr />
+                </section>
+                <section class="content-section" data-heading-id="4-作業の全体像">
+                    <h2 id="4-作業の全体像">4. 作業の全体像</h2>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr class="header">
+                                    <th>#</th>
+                                    <th>タスク</th>
+                                    <th>目的</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="odd">
+                                    <td>1</td>
+                                    <td>IAP TCP forwarding APIの有効化</td>
+                                    <td>プロジェクトでIAPのTCP機能を使えるようにする</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>2</td>
+                                    <td>VMインスタンスの作成</td>
+                                    <td>外部IPなしのVM2台＋検証用VM1台を用意する</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>3</td>
+                                    <td>接続不可であることの確認</td>
+                                    <td>「外部IPがないと直接は繋がらない」ことを体感する</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>4</td>
+                                    <td>ファイアウォールルールの作成</td>
+                                    <td>IAPの送信元IP範囲からの通信のみを許可する</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>5</td>
+                                    <td>IAM権限の付与</td>
+                                    <td>「誰が」IAPトンネルを使えるかを最小権限で設定する</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>6</td>
+                                    <td>IAP Desktopでの接続</td>
+                                    <td>GUIツールでSSH/RDP接続を体験する</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>7</td>
+                                    <td>gcloud CLIでのトンネリング</td>
+                                    <td>CLIでSSHトンネル・RDPトンネルを手動で張る</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr />
+                </section>
+                <section class="content-section" data-heading-id="5-ステップ別解説">
+                    <h2 id="5-ステップ別解説">5. ステップ別解説</h2>
+                    <h3 id="51-task-1-iap-tcp-forwarding-apiの有効化">
+                        5.1 Task 1: IAP TCP forwarding APIの有効化
+                    </h3>
+                    <p>
+                        <strong>操作</strong>: ナビゲーションメニュー →
+                        「APIとサービス」→「ライブラリ」→「Cloud Identity-Aware Proxy
+                        API」を検索して有効化する。
+                    </p>
+                    <p>
+                        <strong>ポイント</strong>:
+                        IAPは「HTTPS経由でIAP対応アプリを保護する機能」と「TCPフォワーディングでVMに接続する機能」の2つの側面がありますが、どちらも同じ
+                        <code>Cloud Identity-Aware Proxy API</code>
+                        の有効化が前提になります。API自体の有効化は課金を発生させるものではなく、以降の設定（ファイアウォール・IAM）が本体です。
+                    </p>
+                    <blockquote>
+                        <p>
+                            参考:
+                            <a href="https://docs.cloud.google.com/iap/docs"
+                                >Identity-Aware Proxy ドキュメント（Google Cloud公式）</a
+                            >
+                        </p>
+                    </blockquote>
+                    <hr />
+                    <h3 id="52-task-2-vmインスタンスの作成ベストプラクティス注記">
+                        5.2 Task 2: VMインスタンスの作成（ベストプラクティス注記）
+                    </h3>
+                    <p>ハンズオンでは3台のVMを作成します。</p>
+                    <ul>
+                        <li><code>linux-iap</code>: Linux、外部IPなし</li>
+                        <li><code>windows-iap</code>: Windows Server、外部IPなし</li>
+                        <li>
+                            <code>windows-connectivity</code>:
+                            検証用、外部IPあり、フルアクセスのアクセススコープ
+                        </li>
+                    </ul>
+                    <p><strong>本番運用でのベストプラクティス</strong>:</p>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr class="header">
+                                    <th>項目</th>
+                                    <th>ハンズオンの設定</th>
+                                    <th>本番でのベストプラクティス</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="odd">
+                                    <td>外部IP</td>
+                                    <td>業務VMは「なし」に設定</td>
+                                    <td>
+                                        同様に「なし」を徹底し、必要な外向き通信はCloud
+                                        NATで代替する
+                                    </td>
+                                </tr>
+                                <tr class="even">
+                                    <td>サービスアカウントのアクセススコープ</td>
+                                    <td>検証VMのみ「Cloud APIへのフルアクセス」を許可</td>
+                                    <td>
+                                        本番VMでは用途に応じた<strong>最小限のスコープ</strong>、または専用サービスアカウント＋IAMロールの組み合わせを使う
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>ネットワークタグ</td>
+                                    <td>特に設定なし</td>
+                                    <td>
+                                        ファイアウォールルールの対象を絞るため、役割ごとにネットワークタグを付与しておく
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        「フルアクセス」のアクセススコープはハンズオンを単純化するためのものであり、本番環境では権限の過剰付与（Over-Privilege）につながるため推奨されません。
+                    </p>
+                    <hr />
+                    <h3 id="53-task-3-接続不可であることの確認">
+                        5.3 Task 3: 接続不可であることの確認
+                    </h3>
+                    <p>
+                        外部IPを持たない
+                        <code>linux-iap</code> にSSHボタンで接続しようとするとエラーになり、<code
+                            >windows-iap</code
+                        >
+                        へのRDPも同様に失敗します。これは<strong>設計通りの動作</strong>です。
+                    </p>
+                    <p>
+                        <strong>学びのポイント</strong>:
+                        SSH/RDPボタン自体はクリックできる状態でも、実際には「外部IPアドレスがないため接続できません」というメッセージが表示されます。これは、外部IPの有無とコンソールUIの見た目が必ずしも一致しないため、VM詳細ページでボタンにカーソルを合わせて明示的に確認する習慣が重要であることを示しています。
+                    </p>
+                    <hr />
+                    <h3 id="54-task-4-ファイアウォールルールの作成重要な差分あり">
+                        5.4 Task 4: ファイアウォールルールの作成（重要な差分あり）
+                    </h3>
+                    <p>ハンズオンの設定はこちらです。</p>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr class="header">
+                                    <th>項目</th>
+                                    <th>設定値</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="odd">
+                                    <td>名前</td>
+                                    <td>allow-ingress-from-iap</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>トラフィックの方向</td>
+                                    <td>Ingress</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>ターゲット</td>
+                                    <td>ネットワーク内のすべてのインスタンス</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>ソースフィルタ</td>
+                                    <td>IPv4範囲</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>ソースIPv4範囲</td>
+                                    <td><code>35.235.240.0/20</code></td>
+                                </tr>
+                                <tr class="even">
+                                    <td>プロトコルとポート</td>
+                                    <td>TCP 22（SSH）、3389（RDP）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <code>35.235.240.0/20</code> は
+                        <strong>IAPがTCPフォワーディングに使用する固定のIPアドレス範囲</strong
+                        >であり、この範囲以外からの通信を許可しても、IAP経由の接続は成立しません。IPv6環境の場合は
+                        <code>2600:2d00:1:7::/64</code> を使用します。
+                    </p>
+                    <blockquote>
+                        <p>
+                            参考:
+                            <a href="https://docs.cloud.google.com/iap/docs/using-tcp-forwarding"
+                                >Use IAP for TCP forwarding（Google Cloud公式）</a
+                            >
+                        </p>
+                    </blockquote>
+                    <p>
+                        <strong>ベストプラクティスとの差分</strong>:
+                        ハンズオンでは学習を簡単にするため「ネットワーク内のすべてのインスタンス」をターゲットにしていますが、これはGoogle自身が「多くの場合、避けるべき選択肢」と明言している設定です。理由は、対象を絞らないと、本来意図していない他のVMまでこのルールの影響範囲に入ってしまうためです。
+                    </p>
+                    <pre class="mermaid">
+flowchart TD
+    Start["VMへのアクセス要件を確認"] --&gt; Source["送信元: 35.235.240.0/20 を許可"]
+    Source --&gt; Target{"ターゲットの絞り込み方法"}
+    Target --&gt;|"避けるべき"| All["すべてのインスタンス"]
+    Target --&gt;|"推奨"| Tag["特定のターゲットタグ"]
+    Target --&gt;|"より厳密に管理したい場合"| SA["特定のサービスアカウント"]</pre
+                    >
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr class="header">
+                                    <th>方式</th>
+                                    <th>特徴</th>
+                                    <th>向いているケース</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="odd">
+                                    <td>すべてのインスタンス</td>
+                                    <td>設定は簡単だが、意図しないVMにも適用されるリスクがある</td>
+                                    <td>検証・学習環境のみ</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>ターゲットタグ</td>
+                                    <td>ワークロードの役割ごとにグルーピングしやすい</td>
+                                    <td>多くの本番環境での標準的な選択</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>ターゲットサービスアカウント</td>
+                                    <td>
+                                        タグより厳格。編集権限だけでなく該当サービスアカウントの使用権限も必要になるため改ざんされにくい
+                                    </td>
+                                    <td>ワークロードIDベースでアクセス制御したい環境</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <blockquote>
+                        <p>参考:</p>
+                        <ul>
+                            <li>
+                                <a href="https://docs.cloud.google.com/firewall/docs/firewalls"
+                                    >VPC firewall rules（Google
+                                    Cloud公式・ターゲットの絞り込み方針）</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://handbook.gitlab.com/handbook/security/best-practices/google-cloud-security-best-practices/"
+                                    >Google Cloud Security Best Practices（GitLab Handbook）</a
+                                >
+                            </li>
+                        </ul>
+                    </blockquote>
+                    <hr />
+                    <h3 id="55-task-5-iam権限の付与最小権限の原則">
+                        5.5 Task 5: IAM権限の付与（最小権限の原則）
+                    </h3>
+                    <p>
+                        ハンズオンでは、「セキュリティ」→「Identity-Aware Proxy」の「SSH and TCP
+                        Resources」タブから、<strong>VM単位で</strong>
+                        <code>windows-connectivity</code>
+                        のサービスアカウントと学習用アカウントに
+                        <code>roles/iap.tunnelResourceAccessor</code>（IAP-Secured Tunnel
+                        User）ロールを付与します。
+                    </p>
+                    <pre class="mermaid">
+sequenceDiagram
+    participant U as 管理者
+    participant G as gcloud CLI
+    participant IAP as IAP TCPフォワーディング
+    participant IAM as IAMポリシー
+    participant VM as linux-iap（内部IPのみ）
+
+    U-&gt;&gt;G: gcloud compute ssh linux-iap
+    G-&gt;&gt;IAP: HTTPSトンネル確立を要求
+    IAP-&gt;&gt;IAM: roles/iap.tunnelResourceAccessor を持つか確認
+    IAM--&gt;&gt;IAP: 許可 または 拒否 を返す
+    alt 許可された場合
+        IAP-&gt;&gt;VM: 内部IP宛にSSHトラフィックを転送
+        VM--&gt;&gt;IAP: SSHセッション応答
+        IAP--&gt;&gt;G: トンネル経由で応答を転送
+        G--&gt;&gt;U: ターミナルセッションが開始
+    else 拒否された場合
+        IAP--&gt;&gt;G: 403 Permission Denied
+        G--&gt;&gt;U: エラーを表示
+    end</pre
+                    >
+                    <p>
+                        <strong>このハンズオンが既に良い点</strong>:
+                        <code>roles/iap.tunnelResourceAccessor</code>
+                        を<strong>プロジェクト全体ではなくVM単位</strong>で付与している点は、最小権限の原則（Principle
+                        of Least Privilege）に沿ったベストプラクティスです。
+                    </p>
+                    <p>
+                        <strong>さらに踏み込んだベストプラクティス</strong>:
+                        本番環境では、VM単位の付与に加えて
+                        <strong>IAM条件（IAM Conditions）</strong>
+                        を使い、特定のポート番号のみに限定したり、コントラクター向けに有効期限付きでアクセスを許可したりすることが推奨されます。
+                    </p>
+                    <pre class="mermaid">
+flowchart TD
+    A["プリンシパルを決定"] --&gt; B{"付与範囲"}
+    B --&gt;|"避けるべき"| C["プロジェクト全体&lt;br/&gt;（全VMにアクセス可）"]
+    B --&gt;|"推奨（ハンズオンの方式）"| D["VM単位で&lt;br/&gt;iap.tunnelResourceAccessor を付与"]
+    D --&gt; E{"さらに絞り込むか"}
+    E --&gt;|"推奨: IAM Conditionsを利用"| F["ポート番号・有効期限などで&lt;br/&gt;アクセス範囲を制限"]
+    E --&gt;|"利用しない"| G["VM単位の権限のみ"]</pre
+                    >
+                    <p>
+                        CLIで同等の設定を行う場合の代表的なコマンドは次の通りです（値は環境に合わせて置き換えてください）。
+                    </p>
+                    <pre
+                        class="bash"
+                    ><code class="bash language-bash">gcloud compute instances add-iam-policy-binding INSTANCE_NAME \
+  --zone=ZONE \
+  --member="user:EMAIL" \
+  --role="roles/iap.tunnelResourceAccessor"</code></pre>
+                    <p>さらにポートを絞り込む場合は <code>--condition</code> を付与します。</p>
+                    <pre
+                        class="bash"
+                    ><code class="bash language-bash">gcloud compute instances add-iam-policy-binding INSTANCE_NAME \
+  --zone=ZONE \
+  --member="group:EMAIL" \
+  --role="roles/iap.tunnelResourceAccessor" \
+  --condition="expression=destination.port==22,title=ssh-only"</code></pre>
+                    <blockquote>
+                        <p>参考:</p>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/iap/docs/using-tcp-forwarding"
+                                    >Use IAP for TCP forwarding（ロール付与のガイド・Google
+                                    Cloud公式）</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/iam/docs/roles-permissions/iap"
+                                    >Identity-Aware Proxy roles and permissions（Google
+                                    Cloud公式）</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://oneuptime.com/blog/post/2026-02-17-how-to-restrict-iap-tcp-tunneling-to-specific-vm-instances-and-ports-using-iam-conditions-in-gcp/view"
+                                    >How to Restrict IAP TCP Tunneling to Specific VM Instances and
+                                    Ports（IAM Conditionsの実践例）</a
+                                >
+                            </li>
+                        </ul>
+                    </blockquote>
+                    <hr />
+                    <h3 id="56-task-6-iap-desktopでの接続">5.6 Task 6: IAP Desktopでの接続</h3>
+                    <p>
+                        IAP Desktopは、GoogleのSolutions
+                        Architectsチームが開発するオープンソースのWindowsアプリケーションで、IAP
+                        TCPフォワーディングを使ってSSH/RDP接続をGUIで管理できます（Googleの公式サポート対象製品ではない点に注意してください）。
+                    </p>
+                    <p><strong>接続までの流れ</strong>:</p>
+                    <ol type="1">
+                        <li><code>windows-connectivity</code> インスタンスへRDP接続する</li>
+                        <li>
+                            デスクトップ上のIAP Desktopを起動し、Googleアカウントでサインインする
+                        </li>
+                        <li>接続先プロジェクトを追加する</li>
+                        <li>
+                            対象VM（<code>windows-iap</code>）をダブルクリックし、初回接続時は「Generate
+                            new credentials」で認証情報を生成する
+                        </li>
+                    </ol>
+                    <p>
+                        IAP Desktop自体も内部的にはIAP
+                        TCPフォワーディングを利用しているため、<strong
+                            >Task 4のファイアウォールルールとTask
+                            5のIAMロールが正しく設定されていることが前提</strong
+                        >になります。
+                    </p>
+                    <blockquote>
+                        <p>参考:</p>
+                        <ul>
+                            <li>
+                                <a href="https://github.com/GoogleCloudPlatform/iap-desktop"
+                                    >IAP Desktop 公式GitHubリポジトリ</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://googlecloudplatform.github.io/iap-desktop/control-access-to-vms/"
+                                    >Control access to VMs（IAP Desktop公式ドキュメント）</a
+                                >
+                            </li>
+                        </ul>
+                    </blockquote>
+                    <hr />
+                    <h3 id="57-task-7-gcloud-cliによるsshrdpトンネリング">
+                        5.7 Task 7: gcloud CLIによるSSH/RDPトンネリング
+                    </h3>
+                    <p>
+                        <strong>SSH接続の場合</strong>は、<code>gcloud compute ssh</code>
+                        コマンドが自動的にIAP経由のトンネルを検知して利用します。
+                    </p>
+                    <pre
+                        class="bash"
+                    ><code class="bash language-bash">gcloud compute ssh linux-iap --zone=ZONE</code></pre>
+                    <p>
+                        <strong>RDP接続の場合</strong
+                        >は、RDPプロトコル自体がgcloudに組み込まれていないため、<strong>手動でローカルにトンネルを張り</strong>、Windowsのリモートデスクトップ接続アプリからそのトンネル（<code>localhost:ポート番号</code>）へ接続します。
+                    </p>
+                    <pre
+                        class="bash"
+                    ><code class="bash language-bash">gcloud compute start-iap-tunnel windows-iap 3389 \
+  --local-host-port=localhost:0 \
+  --zone=ZONE</code></pre>
+                    <p>
+                        <code>--local-host-port=localhost:0</code>
+                        はローカルの空きポートを自動的に割り当てる指定です。表示された
+                        <code>Listening on port [XXXX]</code>
+                        のポート番号を、リモートデスクトップ接続アプリの接続先に
+                        <code>localhost:XXXX</code> として入力します。
+                    </p>
+                    <pre class="mermaid">
+flowchart LR
+    A["gcloud compute start-iap-tunnel&lt;br/&gt;windows-iap 3389"] --&gt; B["ローカルに&lt;br/&gt;listeningポートが開く"]
+    B --&gt; C["RDPクライアントで&lt;br/&gt;localhost:ポート番号 に接続"]
+    C --&gt; D["IAPがHTTPS経由で&lt;br/&gt;windows-iapの3389番へ中継"]</pre
+                    >
+                    <blockquote>
+                        <p>
+                            参考:
+                            <a
+                                href="https://docs.cloud.google.com/sdk/gcloud/reference/compute/start-iap-tunnel"
+                                >gcloud compute start-iap-tunnel リファレンス（Google Cloud公式）</a
+                            >
+                        </p>
+                    </blockquote>
+                    <hr />
+                </section>
+                <section
+                    class="content-section"
+                    data-heading-id="6-本番環境への適用時のベストプラクティスまとめ"
+                >
+                    <h2 id="6-本番環境への適用時のベストプラクティスまとめ">
+                        6. 本番環境への適用時のベストプラクティスまとめ
+                    </h2>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr class="header">
+                                    <th>領域</th>
+                                    <th>ハンズオンの内容</th>
+                                    <th>本番運用でのベストプラクティス</th>
+                                    <th>根拠</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="odd">
+                                    <td>外部IP</td>
+                                    <td>デモVMは外部IPなし</td>
+                                    <td>全ての内部向けVMで外部IPを持たない方針を徹底</td>
+                                    <td>
+                                        <a
+                                            href="https://docs.cloud.google.com/iap/docs/tcp-forwarding-overview"
+                                            >TCP forwarding overview</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr class="even">
+                                    <td>ファイアウォールのターゲット</td>
+                                    <td>すべてのインスタンス</td>
+                                    <td>
+                                        ターゲットタグ、またはより厳密にはターゲットサービスアカウントで絞り込む
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://docs.cloud.google.com/firewall/docs/firewalls"
+                                            >VPC firewall rules</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>ファイアウォールの送信元</td>
+                                    <td><code>35.235.240.0/20</code>（IPv4）</td>
+                                    <td>
+                                        同左。IPv6環境では <code>2600:2d00:1:7::/64</code> も追加
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://docs.cloud.google.com/iap/docs/using-tcp-forwarding"
+                                            >Use IAP for TCP forwarding</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr class="even">
+                                    <td>IAMロールの付与範囲</td>
+                                    <td>VM単位で付与（既にベストプラクティス）</td>
+                                    <td>VM単位の付与に加えIAM Conditionsでポート・期限を制限</td>
+                                    <td>
+                                        <a
+                                            href="https://docs.cloud.google.com/iam/docs/roles-permissions/iap"
+                                            >Identity-Aware Proxy roles and permissions</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>サービスアカウントのスコープ</td>
+                                    <td>検証VMにフルアクセスを許可</td>
+                                    <td>
+                                        用途ごとの最小権限スコープ、または専用サービスアカウント運用
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://handbook.gitlab.com/handbook/security/best-practices/google-cloud-security-best-practices/"
+                                            >Google Cloud Security Best Practices</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr class="even">
+                                    <td>監査</td>
+                                    <td>特に扱っていない</td>
+                                    <td>
+                                        Cloud
+                                        LoggingでIAPトンネルの接続ログ（誰が・いつ・どのVMへ）を記録・監視する
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://oneuptime.com/blog/post/2026-02-17-how-to-restrict-iap-tcp-tunneling-to-specific-vm-instances-and-ports-using-iam-conditions-in-gcp/view"
+                                            >How to Restrict IAP TCP Tunneling...（監査ログの例）</a
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr />
+                </section>
+                <section class="content-section" data-heading-id="7-トラブルシューティング">
+                    <h2 id="7-トラブルシューティング">7. トラブルシューティング</h2>
+                    <pre class="mermaid">
+flowchart TD
+    Fail["SSH/RDP接続に失敗する"] --&gt; C1{"ファイアウォールルールは&lt;br/&gt;存在するか"}
+    C1 --&gt;|"いいえ"| Fix1["35.235.240.0/20 からの&lt;br/&gt;TCP 22/3389 を許可するルールを作成"]
+    C1 --&gt;|"はい"| C2{"送信元範囲・ポート番号は&lt;br/&gt;正しいか"}
+    C2 --&gt;|"いいえ"| Fix2["ポート番号とIP範囲の&lt;br/&gt;設定を見直す"]
+    C2 --&gt;|"はい"| C3{"IAMロールは&lt;br/&gt;付与されているか"}
+    C3 --&gt;|"いいえ"| Fix3["対象VMまたはプロジェクトに&lt;br/&gt;roles/iap.tunnelResourceAccessor を付与"]
+    C3 --&gt;|"はい"| C4{"社内プロキシ経由の&lt;br/&gt;アクセスか"}
+    C4 --&gt;|"はい"| Fix4["IAP for TCPのドメインを&lt;br/&gt;社内ネットワークで許可リストに追加"]
+    C4 --&gt;|"いいえ"| C5["Cloud Loggingで&lt;br/&gt;AuthorizeUserの監査ログを確認"]</pre
+                    >
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr class="header">
+                                    <th>症状</th>
+                                    <th>主な原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="odd">
+                                    <td>SSH/RDPボタンを押しても接続できない</td>
+                                    <td>外部IPがない状態でIAP未設定</td>
+                                    <td>Task 4・Task 5の設定を確認</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>ファイアウォールルールはあるのに繋がらない</td>
+                                    <td>送信元範囲やポート番号の記載ミス</td>
+                                    <td><code>35.235.240.0/20</code> とポート22/3389を再確認</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>「Permission denied」エラー</td>
+                                    <td>IAMロールが未付与、または付与先の粒度が誤っている</td>
+                                    <td>
+                                        該当プリンシパルに対象VM単位で
+                                        <code>roles/iap.tunnelResourceAccessor</code> を付与
+                                    </td>
+                                </tr>
+                                <tr class="even">
+                                    <td>社内ネットワークからだけ繋がらない</td>
+                                    <td>社内プロキシがIAP用ドメインをブロックしている</td>
+                                    <td>IAP for TCP用ドメインを社内プロキシの許可リストに追加</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <blockquote>
+                        <p>
+                            参考:
+                            <a href="https://docs.cloud.google.com/iap/docs/using-tcp-forwarding"
+                                >Use IAP for TCP forwarding（社内プロキシに関する注意事項）</a
+                            >
+                        </p>
+                    </blockquote>
+                    <hr />
+                </section>
+                <section class="content-section" data-heading-id="8-まとめ">
+                    <h2 id="8-まとめ">8. まとめ</h2>
+                    <ul>
+                        <li>
+                            IAP
+                            TCPフォワーディングは、VMに外部IPを持たせずに「IDと権限」でSSH/RDPアクセスを制御する、ゼロトラストに基づいた仕組みである
+                        </li>
+                        <li>
+                            最低限必要なのは「①API有効化」「②IAPのIP範囲からのファイアウォール許可」「③IAM
+                            <code>roles/iap.tunnelResourceAccessor</code> の付与」の3点
+                        </li>
+                        <li>
+                            ハンズオンの設定をそのまま本番へ持ち込むと、<strong>ファイアウォールのターゲットが広すぎる</strong>（すべてのインスタンス）という点が主な改善ポイントになる
+                        </li>
+                        <li>
+                            IAM側は既にVM単位で権限を絞る良い設計になっており、さらにIAM
+                            Conditionsでポートや期限を絞ることで、より安全な運用に近づけられる
+                        </li>
+                    </ul>
+                    <hr />
+                </section>
+                <section class="content-section" data-heading-id="9-参考文献">
+                    <h2 id="9-参考文献">9. 参考文献</h2>
+                    <ul class="ref-grid">
+                        <li class="ref-card">
+                            <a href="https://docs.cloud.google.com/iap/docs/tcp-forwarding-overview"
+                                >TCP forwarding overview（Identity-Aware Proxy）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a href="https://docs.cloud.google.com/iap/docs"
+                                >Identity-Aware Proxy documentation（目次ページ）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a href="https://docs.cloud.google.com/iap/docs/using-tcp-forwarding"
+                                >Use IAP for TCP forwarding</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a
+                                href="https://docs.cloud.google.com/chrome-enterprise-premium/docs/securing-virtual-machines"
+                                >Securing virtual machines with IAP（Chrome Enterprise Premium）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a href="https://docs.cloud.google.com/iap/docs/tcp-by-host"
+                                >Set up IAP TCP forwarding（IP/FQDN・Destination Group）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a
+                                href="https://docs.cloud.google.com/sdk/gcloud/reference/compute/start-iap-tunnel"
+                                >gcloud compute start-iap-tunnel リファレンス</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a href="https://docs.cloud.google.com/iam/docs/roles-permissions/iap"
+                                >Identity-Aware Proxy roles and permissions</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a href="https://docs.cloud.google.com/firewall/docs/firewalls"
+                                >VPC firewall rules（ターゲットの絞り込み方針）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a href="https://cloud.google.com/vpc/docs/add-remove-network-tags"
+                                >Add network tags（Virtual Private Cloud）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a
+                                href="https://handbook.gitlab.com/handbook/security/best-practices/google-cloud-security-best-practices/"
+                                >Google Cloud Security Best Practices（GitLab Handbook）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a
+                                href="https://oneuptime.com/blog/post/2026-02-17-how-to-restrict-iap-tcp-tunneling-to-specific-vm-instances-and-ports-using-iam-conditions-in-gcp/view"
+                                >How to Restrict IAP TCP Tunneling to Specific VM Instances and
+                                Ports（IAM Conditions実践例）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a href="https://github.com/GoogleCloudPlatform/iap-desktop"
+                                >IAP Desktop 公式GitHubリポジトリ</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a
+                                href="https://googlecloudplatform.github.io/iap-desktop/control-access-to-vms/"
+                                >Control access to VMs（IAP Desktop公式ドキュメント）</a
+                            >
+                        </li>
+                        <li class="ref-card">
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/iap-desktop/wiki/Installation"
+                                >Installation（IAP
+                                Desktop公式ドキュメント・ファイアウォールルール作成コマンド例）</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+                <footer class="page-footer">
+                    本ガイドは公開されているハンズオン教材の内容を基に、Google
+                    Cloud公式ドキュメント等を出典として再構成したものです。各セクション内のリンク先で最新情報をご確認ください。
+                </footer>
+            </main>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            // --- highlight.js (isolated) ---
+            try {
+                if (typeof hljs !== 'undefined') {
+                    hljs.highlightAll();
+                }
+            } catch (e) {
+                console.error('highlight.js init failed', e);
+            }
+
+            // --- mermaid (isolated) ---
+            try {
+                if (typeof mermaid !== 'undefined') {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        fontFamily: 'Noto Sans JP, sans-serif',
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#0b1729',
+                            primaryColor: '#122544',
+                            primaryTextColor: '#e7edf7',
+                            primaryBorderColor: '#7c9eff',
+                            lineColor: '#7c9eff',
+                            secondaryColor: '#0f1e34',
+                            tertiaryColor: '#0a1526',
+                            edgeLabelBackground: '#0b1729',
+                            clusterBkg: '#0d1a2e',
+                            clusterBorder: '#2a3f63',
+                            actorBkg: '#122544',
+                            actorBorder: '#7c9eff',
+                            actorTextColor: '#e7edf7',
+                            signalColor: '#a9b8d3',
+                            signalTextColor: '#e7edf7',
+                            labelBoxBkgColor: '#122544',
+                            labelBoxBorderColor: '#7c9eff',
+                            labelTextColor: '#e7edf7',
+                            noteBkgColor: '#1c2e4a',
+                            noteTextColor: '#e7edf7',
+                            noteBorderColor: '#7c9eff',
+                        },
+                        flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+                        sequence: { useMaxWidth: false },
+                    });
+                    mermaid.run({ querySelector: '.mermaid' });
+                }
+            } catch (e) {
+                console.error('mermaid init failed', e);
+            }
+
+            // --- sidebar toggle (mobile) ---
+            (function () {
+                var btn = document.getElementById('sidebarToggle');
+                var sidebar = document.getElementById('sidebar');
+                if (!btn || !sidebar) return;
+                btn.addEventListener('click', function () {
+                    sidebar.classList.toggle('open');
+                });
+                sidebar.querySelectorAll('a.nav-link').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        sidebar.classList.remove('open');
+                    });
+                });
+            })();
+
+            // --- reveal-on-scroll observer ---
+            (function () {
+                var targets = document.querySelectorAll('.content-section');
+                if (!targets.length || typeof IntersectionObserver === 'undefined') {
+                    targets.forEach(function (t) {
+                        t.classList.add('is-visible');
+                    });
+                    return;
+                }
+                var revealObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                revealObserver.unobserve(entry.target);
+                            }
+                        });
+                    },
+                    { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.03 },
+                );
+                targets.forEach(function (t) {
+                    revealObserver.observe(t);
+                });
+            })();
+
+            // --- scroll-spy nav highlight observer (separate, thin band) ---
+            (function () {
+                var headings = document.querySelectorAll('main h2[id], main h3[id]');
+                var navLinks = {};
+                document.querySelectorAll('.nav-link').forEach(function (a) {
+                    navLinks[a.getAttribute('data-target')] = a;
+                });
+                if (!headings.length || typeof IntersectionObserver === 'undefined') return;
+
+                function setActive(id) {
+                    Object.keys(navLinks).forEach(function (k) {
+                        navLinks[k].classList.toggle('active', k === id);
+                    });
+                }
+
+                var spy = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                var id = entry.target.getAttribute('id');
+                                if (navLinks[id]) setActive(id);
+                            }
+                        });
+                    },
+                    { root: null, rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                headings.forEach(function (h) {
+                    spy.observe(h);
+                });
+            })();
+        </script>
+    </body>
+</html>
