@@ -22,6 +22,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 3 (Refactor / Content Migration & CSS Mapping)**: `feat(ace): migrate all content, css mapping, and mermaid diagrams for gcp security fundamentals guide` (全8章・演習・表・Mermaid 16図の完全移植、コードブロック `.code-line` 構造化、scoped CSS 整合)
 - [x] **Step 4 (Refactor / Integration & Nav)**: `refactor(ace): integrate gcp security fundamentals guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
 - [x] **Step 5 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive source html` (`MIGRATION_PROGRESS.md` の更新、元HTML `Gcp-security-fundamentals-guide.html` を `archive/Gcl_Archive/Hands-on/html/` へ退避)
+- [x] **Step 6 (1rem Text Scale & Full Width Expansion)**: `feat(ace): expand layout to full width and ensure 1rem text scale for diagrams in gcp security guide` (画面幅100%全幅拡張、.diagram-wrap スクロールと自然 px 倍率適用により 16図の 1rem 自然文字サイズ表示を保証)
 
 ### 関連ファイル
 
