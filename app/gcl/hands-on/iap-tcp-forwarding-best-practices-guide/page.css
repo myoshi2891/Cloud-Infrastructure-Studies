@@ -178,7 +178,7 @@
 .iap-guide-page main {
     flex: 1 1 auto;
     min-width: 0;
-    max-width: var(--maxw);
+    width: 100%;
     padding: 40px 48px 100px;
 }
 
