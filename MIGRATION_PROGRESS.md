@@ -7,7 +7,31 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-07-28T15:26:00.000Z
+- **最終更新日時(UTC):** 2026-07-28T15:44:00.000Z
+
+## 2026-07-28: AWS「AWS SAA-C03 ドメイン3: 高性能なアーキテクチャの設計」移行 (完了)
+
+### 目的
+
+`AWS-Certified-Solutions-Architect-Associate-Domain3.html`（静的HTML・3470行・27個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client Domain3Guide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/aws/solutions-architect-associate/domain3` ルートへ完全移行する。文章・表・27個のMermaid図・補足説明・チェックリストの一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for AWS SAA Domain 3 guide page` (`__tests__/aws/solutions-architect-associate/domain3/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA Domain 3 guide page` (`page.tsx`, `Domain3Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(aws-saa): integrate Domain 3 into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive Domain 3 HTML and MD files` (`MIGRATION_PROGRESS.md` の更新、元HTML `AWS-Certified-Solutions-Architect-Associate-Domain3.html` を `archive/Aws/SAA/html/` へ、MD を `archive/Aws/SAA/md/` へアーカイブ移動)
+
+### 関連ファイル
+
+- [app/aws/solutions-architect-associate/domain3/page.tsx](app/aws/solutions-architect-associate/domain3/page.tsx)
+- [app/aws/solutions-architect-associate/domain3/Domain3Guide.tsx](app/aws/solutions-architect-associate/domain3/Domain3Guide.tsx)
+- [app/aws/solutions-architect-associate/domain3/NavBar.tsx](app/aws/solutions-architect-associate/domain3/NavBar.tsx)
+- [app/aws/solutions-architect-associate/domain3/constants.ts](app/aws/solutions-architect-associate/domain3/constants.ts)
+- [app/aws/solutions-architect-associate/domain3/page.css](app/aws/solutions-architect-associate/domain3/page.css)
+- [__tests__/aws/solutions-architect-associate/domain3/page.test.tsx](__tests__/aws/solutions-architect-associate/domain3/page.test.tsx)
+- [archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain3.html](archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain3.html)
+- [archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain3.md](archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain3.md)
 
 ## 2026-07-28: AWS「AWS SAA-C03 ドメイン2: 回復力のあるアーキテクチャの設計」移行 (完了)
 
