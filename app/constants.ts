@@ -248,6 +248,11 @@ export const EXAMS: Exam[] = [
                 href: '/aws/solutions-architect-associate',
                 pct: '完全解説',
             },
+            {
+                label: 'ドメイン1: セキュアなアーキテクチャの設計',
+                href: '/aws/solutions-architect-associate/domain1',
+                pct: '30%',
+            },
         ],
         badge: 'ソリューションアーキテクト',
         icon: '🏗',
