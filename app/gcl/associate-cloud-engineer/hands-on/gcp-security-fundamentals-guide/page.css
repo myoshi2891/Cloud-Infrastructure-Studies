@@ -61,12 +61,14 @@
     backdrop-filter: blur(14px);
     background: rgba(3, 7, 18, 0.82);
     border-bottom: 1px solid var(--border);
+    width: 100%;
 }
 
 .gcp-security-page .nav-inner {
-    max-width: 1180px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 14px 28px;
+    padding: 14px clamp(16px, 4vw, 40px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -105,11 +107,12 @@
     }
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero (Full Width Expansion) ---------- */
 .gcp-security-page .hero {
-    max-width: 1180px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 64px 28px 40px;
+    padding: 64px clamp(16px, 4vw, 40px) 40px;
 }
 
 .gcp-security-page .hero .eyebrow {
@@ -156,15 +159,9 @@
 
 .gcp-security-page .hero-meta {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
     margin-top: 34px;
-}
-
-@media (max-width: 760px) {
-    .gcp-security-page .hero-meta {
-        grid-template-columns: 1fr;
-    }
 }
 
 .gcp-security-page .hero-meta .card {
@@ -188,11 +185,12 @@
     color: var(--text);
 }
 
-/* ---------- Layout ---------- */
+/* ---------- Layout (Full Width Expansion) ---------- */
 .gcp-security-page .wrap {
-    max-width: 1180px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 0 28px 40px;
+    padding: 0 clamp(16px, 4vw, 40px) 60px;
 }
 
 .gcp-security-page section.chapter {
@@ -314,6 +312,7 @@
     margin: 20px 0;
     border: 1px solid var(--border);
     border-radius: 14px;
+    width: 100%;
 }
 
 .gcp-security-page table {
@@ -360,6 +359,7 @@
     overflow-x: auto;
     margin: 18px 0;
     position: relative;
+    width: 100%;
 }
 
 .gcp-security-page .code-block .lang {
@@ -389,21 +389,24 @@
     color: #64748b;
 }
 
-/* ---------- Diagram ---------- */
+/* ---------- Diagram & 1rem Text Scaling (.claude/skills/fix-mermaid 準拠) ---------- */
 .gcp-security-page .diagram-wrap {
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 22px;
+    padding: 24px;
     margin: 24px 0;
+    width: 100%;
+    max-width: 100%;
     overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .gcp-security-page .diagram-caption {
     font-family: var(--font-mono);
     font-size: 11.5px;
     color: var(--text-muted);
-    margin-top: 12px;
+    margin-top: 14px;
     text-align: center;
     letter-spacing: 0.03em;
 }
@@ -411,20 +414,23 @@
 .gcp-security-page .mermaid {
     display: flex;
     justify-content: center;
+    width: 100%;
+    min-width: min-content;
+}
+
+.gcp-security-page .mermaid :global(svg) {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto !important;
 }
 
 /* ---------- Compare grid (good/bad) ---------- */
 .gcp-security-page .compare-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 16px;
     margin: 20px 0;
-}
-
-@media (max-width: 700px) {
-    .gcp-security-page .compare-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 .gcp-security-page .compare-col {
@@ -507,21 +513,9 @@
 /* ---------- Toc grid ---------- */
 .gcp-security-page .toc-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
     margin: 20px 0;
-}
-
-@media (max-width: 850px) {
-    .gcp-security-page .toc-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 550px) {
-    .gcp-security-page .toc-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 .gcp-security-page .toc-card {
