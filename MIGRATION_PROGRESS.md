@@ -7,7 +7,34 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-07-28T11:42:00.000Z
+- **最終更新日時(UTC):** 2026-07-28T13:48:00.000Z
+
+## 2026-07-28: ACE / Hands-on「Google Cloud セキュリティ基礎 完全ガイド」移行 (完了)
+
+### 目的
+
+`Gcp-security-fundamentals-guide.html`（静的HTML・2368行・16個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client GcpSecurityFundamentalsGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide` ルートへ完全移行する。文章・表・16個のMermaid図・コードブロック・注意書きの一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ace): add failing tests for gcp security fundamentals guide page` (`__tests__/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(ace): implement gcp security fundamentals guide page skeleton to pass tests` (`page.tsx`, `GcpSecurityFundamentalsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 最小構成実装とテスト通過)
+- [x] **Step 3 (Refactor / Content Migration & CSS Mapping)**: `feat(ace): migrate all content, css mapping, and mermaid diagrams for gcp security fundamentals guide` (全8章・演習・表・Mermaid 16図の完全移植、コードブロック `.code-line` 構造化、scoped CSS 整合)
+- [x] **Step 4 (Refactor / Integration & Nav)**: `refactor(ace): integrate gcp security fundamentals guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 5 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive source html` (`MIGRATION_PROGRESS.md` の更新、元HTML `Gcp-security-fundamentals-guide.html` を `archive/Gcl_Archive/Hands-on/html/` へ退避)
+
+### 関連ファイル
+
+- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.tsx](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.tsx)
+- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx)
+- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/NavBar.tsx](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/NavBar.tsx)
+- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/constants.ts](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/constants.ts)
+- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.css](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.css)
+- [__tests__/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.test.tsx](__tests__/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.test.tsx)
+- [archive/Gcl_Archive/Hands-on/html/Gcp-security-fundamentals-guide.html](archive/Gcl_Archive/Hands-on/html/Gcp-security-fundamentals-guide.html)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
 
 ## 2026-07-28: ACE「Google Cloud アプリ開発環境構築 完全ガイド」移行 (完了)
 
