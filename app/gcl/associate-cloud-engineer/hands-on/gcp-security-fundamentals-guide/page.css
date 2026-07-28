@@ -389,7 +389,13 @@
     color: #64748b;
 }
 
-/* ---------- Diagram & 1rem Text Scaling (.claude/skills/fix-mermaid 準拠) ---------- */
+/* ---------- Diagram & 1rem Text Scaling (.claude/skills/fix-mermaid 準拠) ----------
+   鉄則: preserveNaturalScale=true の場合は 表示SVG幅 = viewBox幅。
+   親 .diagram-wrap に overflow-x:auto を置き、内側 .mermaid は幅を min-content にして
+   SVG が自然幅（viewBox幅px）より縮まらないようにする。
+   max-width:100% は .mermaid の外側（.diagram-wrap）が担い、SVG 自体には maxWidth は
+   applySvgFixups が width:${w}px + maxWidth:100% で付与済みのため CSS から重複指定しない。
+   ---------------------------------------------------------------- */
 .gcp-security-page .diagram-wrap {
     background: var(--surface-2);
     border: 1px solid var(--border);
@@ -397,9 +403,10 @@
     padding: 24px;
     margin: 24px 0;
     width: 100%;
-    max-width: 100%;
+    /* スクロールコンテナ: SVG が画面幅より広い場合は横スクロールで自然サイズを維持 */
     overflow-x: auto;
     scrollbar-width: thin;
+    scrollbar-color: var(--cyan) transparent;
 }
 
 .gcp-security-page .diagram-caption {
@@ -411,17 +418,19 @@
     letter-spacing: 0.03em;
 }
 
+/* .mermaid は内側コンテナ。min-content にして SVG の自然幅を縮めない。
+   幅が viewBox 幅より小さいと max-width:100% が SVG を縮小して文字が 1rem 未満になる。 */
 .gcp-security-page .mermaid {
     display: flex;
     justify-content: center;
-    width: 100%;
-    min-width: min-content;
+    /* min-content で内側の SVG の自然幅（px）を確保 */
+    width: min-content;
+    min-width: 100%;
 }
 
-.gcp-security-page .mermaid :global(svg) {
+/* SVG 自体のサイズは applySvgFixups が style で注入するため、CSS では layout 責務のみ */
+.gcp-security-page .mermaid svg {
     display: block;
-    margin: 0 auto;
-    max-width: 100%;
     height: auto !important;
 }
 
