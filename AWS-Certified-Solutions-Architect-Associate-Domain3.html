@@ -445,7 +445,7 @@
         </style>
     </head>
     <body>
-        <button id="sidebar-toggle" class="sidebar-toggle" aria-label="メニューを開閉">☰</button>
+        <button id="sidebar-toggle" class="sidebar-toggle" aria-controls="sidebar-nav" aria-expanded="false" aria-label="メニューを開く">☰</button>
         <div id="app-root">
             <header class="hero" id="top">
                 <p class="hero-eyebrow">AWS Certified Solutions Architect - Associate (SAA-C03)</p>
@@ -3535,12 +3535,23 @@
                 const toggle = document.getElementById('sidebar-toggle');
                 const nav = document.getElementById('sidebar-nav');
                 if (!toggle || !nav) return;
+
+                const syncToggleState = () => {
+                    const isOpen = nav.classList.contains('open');
+                    toggle.setAttribute('aria-expanded', String(isOpen));
+                    toggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+                };
+
                 toggle.addEventListener('click', () => {
                     nav.classList.toggle('open');
+                    syncToggleState();
                 });
                 nav.querySelectorAll('a').forEach((a) => {
                     a.addEventListener('click', () => {
-                        if (window.innerWidth <= 980) nav.classList.remove('open');
+                        if (window.innerWidth <= 980) {
+                            nav.classList.remove('open');
+                            syncToggleState();
+                        }
                     });
                 });
             }

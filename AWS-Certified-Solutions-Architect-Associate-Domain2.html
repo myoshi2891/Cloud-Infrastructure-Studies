@@ -2928,7 +2928,9 @@
                 await mermaid.run({ querySelector: '.mermaid' });
             }
 
-            renderMermaidDiagrams();
+            renderMermaidDiagrams().catch((error) => {
+                console.error('Mermaid diagram rendering failed:', error);
+            });
 
             // ---- Sidebar toggle (mobile) ----
             const sidebarToggle = document.getElementById('sidebarToggle');

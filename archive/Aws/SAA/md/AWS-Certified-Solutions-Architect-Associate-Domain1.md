@@ -533,7 +533,7 @@ flowchart LR
 | カスタマー管理キー(CMK) | 利用者が作成・管理 | ポリシー、ローテーション、有効/無効化を利用者が制御できる |
 | インポートされたキー | 利用者が外部で生成し持ち込む | AWSによる自動ローテーション対象外(手動ローテーションが必要) |
 
-暗号化キーへのアクセスはIAMポリシーだけでなく**キーポリシー(リソースベースポリシー)**でも制御され、両方の共通部分が実効権限になります。
+暗号化キーへのアクセスは、**キーポリシー(リソースベースポリシー)**単独でも許可できます。IAMポリシーで権限を付与する場合は、同一アカウントのIAMへ認可を委任する記述がキーポリシーに必要です。これらに加えて、KMS Grantsも権限を付与する認可経路です。
 
 出典: [AWS Key Management Service best practices](https://docs.aws.amazon.com/pdfs/prescriptive-guidance/latest/aws-kms-best-practices/aws-kms-best-practices.pdf)
 
@@ -555,9 +555,9 @@ flowchart TD
 出典: [Rotate AWS KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html)
 
 ポイント:
-- 自動ローテーションのデフォルトは365日（年1回）だが、カスタマーマネージドキーでは周期を設定可能で、キーIDやARNは変更されない(アプリケーション側の変更は不要)
+- カスタマーマネージドキーの自動ローテーションはデフォルトで無効。有効化した場合のデフォルト間隔は365日（年1回）で、周期を設定可能。対象は対称暗号化のAWS_KMSオリジンキーで、キーIDやARNは変更されない(アプリケーション側の変更は不要)
 - 過去のキーマテリアルはすべて保持されるため、古いバージョンで暗号化されたデータも引き続き復号可能
-- インポートされたキーマテリアル(EXTERNAL origin)は自動ローテーションの対象外で、手動または オンデマンドローテーション機能を使う必要がある
+- インポートされたキーマテリアル(EXTERNAL origin)は自動ローテーションの対象外。ただし対称暗号化キーであればオンデマンドローテーションを利用できる
 - AWS KMSはデータキーの過度な再利用を推奨しておらず、データキー自体は「ラッピングキー」であるCMKよりも高頻度で使い捨てられる設計になっている
 
 出典: [Rotate AWS KMS keys](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html)

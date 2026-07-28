@@ -3454,15 +3454,20 @@
 
                 // 進捗バー(記事の読了位置)
                 const progressBar = document.getElementById('navProgressBar');
+                const article = document.querySelector('.article');
+                let progressFrame = null;
                 function updateProgress() {
-                    const article = document.querySelector('.article');
-                    const total = article.scrollHeight - window.innerHeight;
-                    const scrolled = Math.min(
-                        Math.max(window.scrollY - article.offsetTop + 200, 0),
-                        total,
-                    );
-                    const pct = total > 0 ? (scrolled / total) * 100 : 0;
-                    progressBar.style.width = pct + '%';
+                    if (progressFrame !== null) return;
+                    progressFrame = requestAnimationFrame(function () {
+                        const total = article.scrollHeight - window.innerHeight;
+                        const scrolled = Math.min(
+                            Math.max(window.scrollY - article.offsetTop + 200, 0),
+                            total,
+                        );
+                        const pct = total > 0 ? (scrolled / total) * 100 : 0;
+                        progressBar.style.width = pct + '%';
+                        progressFrame = null;
+                    });
                 }
                 window.addEventListener('scroll', updateProgress, { passive: true });
                 updateProgress();
