@@ -20,15 +20,11 @@ export const DIAGRAMS: Record<string, string> = {
     style D fill:#a78bfa,color:#12081f,stroke:#a78bfa
     style F fill:#22d3ee,color:#04141a,stroke:#22d3ee`,
 
-    'diag-storage-console': `flowchart LR
-    A[Navigation Menu] --> B["Cloud Storage > Buckets"]
-    B --> C["+ Create"]
-    C --> D[バケット名を入力]
-    D --> E["Location Type: Region を選択"]
-    E --> F["Storage Class: Standard"]
-    F --> G["Access Control: Uniform"]
-    G --> H["Enforce public access prevention を解除"]
-    H --> I[Create]
+    'diag-storage-console': `flowchart TD
+    A[Navigation Menu] --> B["Cloud Storage > Buckets"] --> C["+ Create"]
+    C --> D[バケット名を入力] --> E["Location Type: Region を選択"]
+    E --> F["Storage Class: Standard"] --> G["Access Control: Uniform"]
+    G --> H["Enforce public access prevention を確認"] --> I[Create]
     style A fill:#0f172a,color:#e6edf3,stroke:#4285F4
     style I fill:#00ffa3,color:#04180f,stroke:#00ffa3`,
 
@@ -107,16 +103,11 @@ export const DIAGRAMS: Record<string, string> = {
     style Eventarc fill:#a78bfa,color:#12081f,stroke:#a78bfa
     style Func fill:#00ffa3,color:#04180f,stroke:#00ffa3`,
 
-    'diag-functions-deploy': `flowchart LR
-    A["Cloud Run > Services"] --> B["WRITE A FUNCTION"]
-    B --> C[サービス名・リージョン設定]
-    C --> D["認証: Allow public access または要認証を選択"]
-    D --> E["Execution Environment: 第2世代 を選択"]
-    E --> F[Revision Scaling設定]
-    F --> G[ソースコード編集]
-    G --> H["SAVE and REDEPLOY"]
-    H --> I["TESTでイベントを模擬送信"]
-    I --> J["Observability > Logs で確認"]
+    'diag-functions-deploy': `flowchart TD
+    A["Cloud Run > Services"] --> B["WRITE A FUNCTION"] --> C[サービス名・リージョン設定]
+    C --> D["認証: Allow public access または要認証を選択"] --> E["Execution Environment: 第2世代 を選択"]
+    E --> F[Revision Scaling設定] --> G[ソースコード編集]
+    G --> H["SAVE and REDEPLOY"] --> I["TESTでイベントを模擬送信"] --> J["Observability > Logs で確認"]
     style H fill:#00ffa3,color:#04180f,stroke:#00ffa3`,
 
     'diag-functions-sa': `flowchart LR

@@ -460,17 +460,18 @@
     background: var(--bg-panel);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 26px;
+    padding: 24px;
     margin: 24px 0;
     overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .app-dev-environment-page .diagram-caption {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.76rem;
     color: var(--text-dim);
     text-align: center;
-    margin-top: 10px;
+    margin-top: 14px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
 }
@@ -479,10 +480,20 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    min-width: min-content;
+}
+
+.app-dev-environment-page .mermaid-wrap > div {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
 }
 
 .app-dev-environment-page .mermaid-wrap svg {
-    max-width: 100% !important;
+    display: block;
+    margin: 0 auto;
     height: auto !important;
 }
 

@@ -9,7 +9,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
     if (!chart) return null;
     return (
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
+            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale={true} />
         </div>
     );
 }
