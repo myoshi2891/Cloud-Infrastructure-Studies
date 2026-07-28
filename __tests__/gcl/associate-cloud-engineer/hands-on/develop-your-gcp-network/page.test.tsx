@@ -20,6 +20,7 @@ describe('Develop Your Google Cloud Network ページ', () => {
 
     it('ページがレンダリングされること', () => {
         expect(container).toBeTruthy();
+        expect(container.querySelector('.shell')).toBeTruthy();
     });
 
     it('hero タイトルがレンダリングされること', () => {
