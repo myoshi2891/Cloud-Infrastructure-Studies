@@ -1133,108 +1133,143 @@ export function GcpSecurityFundamentalsGuide() {
                         <h2>参考文献 / 公式ドキュメント一覧</h2>
                     </div>
                     <p className="chapter-lead">
-                        各章の内容の根拠となる Google Cloud 公式ドキュメントです(検索により最新性を確認済み)。
+                        各章の内容の根拠となる Google Cloud 公式ドキュメントです（検索により最新性を確認済み）。
                     </p>
 
-                    <div style={{ margin: '24px 0' }}>
-                        <h4 style={{ color: 'var(--cyan)', marginBottom: '12px' }}>IAM基礎・カスタムロール・サービスアカウント</h4>
-                        <div className="hero-meta">
-                            <div className="card">
-                                <div className="label">IAM overview</div>
-                                <div className="value"><a href="https://cloud.google.com/iam/docs/overview" target="_blank" rel="noopener noreferrer">https://cloud.google.com/iam/docs/overview</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Roles and permissions</div>
-                                <div className="value"><a href="https://cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer">https://cloud.google.com/iam/docs/roles-overview</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Create and manage custom roles</div>
-                                <div className="value"><a href="https://cloud.google.com/iam/docs/creating-custom-roles" target="_blank" rel="noopener noreferrer">https://cloud.google.com/iam/docs/creating-custom-roles</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Service accounts overview</div>
-                                <div className="value"><a href="https://cloud.google.com/iam/docs/service-account-overview" target="_blank" rel="noopener noreferrer">https://cloud.google.com/iam/docs/service-account-overview</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Access control for org (etag)</div>
-                                <div className="value"><a href="https://cloud.google.com/resource-manager/docs/access-control-org" target="_blank" rel="noopener noreferrer">https://cloud.google.com/resource-manager/docs/access-control-org</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">gcloud iam roles リファレンス</div>
-                                <div className="value"><a href="https://cloud.google.com/sdk/gcloud/reference/iam/roles" target="_blank" rel="noopener noreferrer">https://cloud.google.com/sdk/gcloud/reference/iam/roles</a></div>
-                            </div>
-                        </div>
+                    <div className="refs-group">
+                        <div className="refs-group-label">IAM基礎・カスタムロール・サービスアカウント</div>
+                        <ul className="refs-list">
+                            <li className="ref-item">
+                                <span className="ref-title">IAM Overview</span>
+                                <a className="ref-link" href="https://cloud.google.com/iam/docs/overview" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/iam/docs/overview
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Roles and Permissions</span>
+                                <a className="ref-link" href="https://cloud.google.com/iam/docs/roles-overview" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/iam/docs/roles-overview
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Create and Manage Custom Roles</span>
+                                <a className="ref-link" href="https://cloud.google.com/iam/docs/creating-custom-roles" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/iam/docs/creating-custom-roles
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Service Accounts Overview</span>
+                                <a className="ref-link" href="https://cloud.google.com/iam/docs/service-account-overview" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/iam/docs/service-account-overview
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Access Control for Org (etag)</span>
+                                <a className="ref-link" href="https://cloud.google.com/resource-manager/docs/access-control-org" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/resource-manager/docs/access-control-org
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">gcloud iam roles リファレンス</span>
+                                <a className="ref-link" href="https://cloud.google.com/sdk/gcloud/reference/iam/roles" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/sdk/gcloud/reference/iam/roles
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div style={{ margin: '24px 0' }}>
-                        <h4 style={{ color: 'var(--cyan)', marginBottom: '12px' }}>VPC Network Peering</h4>
-                        <div className="hero-meta">
-                            <div className="card">
-                                <div className="label">VPC Network Peering 概要</div>
-                                <div className="value"><a href="https://cloud.google.com/vpc/docs/vpc-peering" target="_blank" rel="noopener noreferrer">https://cloud.google.com/vpc/docs/vpc-peering</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Set up and manage VPC Peering</div>
-                                <div className="value"><a href="https://cloud.google.com/vpc/docs/using-vpc-peering" target="_blank" rel="noopener noreferrer">https://cloud.google.com/vpc/docs/using-vpc-peering</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">About peering connections</div>
-                                <div className="value"><a href="https://cloud.google.com/vpc/docs/about-peering-connections" target="_blank" rel="noopener noreferrer">https://cloud.google.com/vpc/docs/about-peering-connections</a></div>
-                            </div>
-                        </div>
+                    <div className="refs-group">
+                        <div className="refs-group-label">VPC Network Peering</div>
+                        <ul className="refs-list">
+                            <li className="ref-item">
+                                <span className="ref-title">VPC Network Peering 概要</span>
+                                <a className="ref-link" href="https://cloud.google.com/vpc/docs/vpc-peering" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/vpc/docs/vpc-peering
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Set Up and Manage VPC Peering</span>
+                                <a className="ref-link" href="https://cloud.google.com/vpc/docs/using-vpc-peering" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/vpc/docs/using-vpc-peering
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">About Peering Connections</span>
+                                <a className="ref-link" href="https://cloud.google.com/vpc/docs/about-peering-connections" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/vpc/docs/about-peering-connections
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div style={{ margin: '24px 0' }}>
-                        <h4 style={{ color: 'var(--cyan)', marginBottom: '12px' }}>Identity-Aware Proxy (IAP)</h4>
-                        <div className="hero-meta">
-                            <div className="card">
-                                <div className="label">IAP overview(概念)</div>
-                                <div className="value"><a href="https://cloud.google.com/iap/docs/concepts-overview" target="_blank" rel="noopener noreferrer">https://cloud.google.com/iap/docs/concepts-overview</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Using IAP for TCP forwarding</div>
-                                <div className="value"><a href="https://cloud.google.com/iap/docs/using-tcp-forwarding" target="_blank" rel="noopener noreferrer">https://cloud.google.com/iap/docs/using-tcp-forwarding</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">IAP Concepts一覧</div>
-                                <div className="value"><a href="https://cloud.google.com/iap/docs/concepts" target="_blank" rel="noopener noreferrer">https://cloud.google.com/iap/docs/concepts</a></div>
-                            </div>
-                        </div>
+                    <div className="refs-group">
+                        <div className="refs-group-label">Identity-Aware Proxy (IAP)</div>
+                        <ul className="refs-list">
+                            <li className="ref-item">
+                                <span className="ref-title">IAP Overview（概念）</span>
+                                <a className="ref-link" href="https://cloud.google.com/iap/docs/concepts-overview" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/iap/docs/concepts-overview
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Using IAP for TCP Forwarding</span>
+                                <a className="ref-link" href="https://cloud.google.com/iap/docs/using-tcp-forwarding" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/iap/docs/using-tcp-forwarding
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">IAP Concepts 一覧</span>
+                                <a className="ref-link" href="https://cloud.google.com/iap/docs/concepts" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/iap/docs/concepts
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div style={{ margin: '24px 0' }}>
-                        <h4 style={{ color: 'var(--cyan)', marginBottom: '12px' }}>Cloud KMS</h4>
-                        <div className="hero-meta">
-                            <div className="card">
-                                <div className="label">Cloud KMS overview</div>
-                                <div className="value"><a href="https://cloud.google.com/kms/docs/key-management-service" target="_blank" rel="noopener noreferrer">https://cloud.google.com/kms/docs/key-management-service</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Cloud KMS resources</div>
-                                <div className="value"><a href="https://cloud.google.com/kms/docs/resource-hierarchy" target="_blank" rel="noopener noreferrer">https://cloud.google.com/kms/docs/resource-hierarchy</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Cloud KMS FAQ</div>
-                                <div className="value"><a href="https://cloud.google.com/kms/docs/faq" target="_blank" rel="noopener noreferrer">https://cloud.google.com/kms/docs/faq</a></div>
-                            </div>
-                        </div>
+                    <div className="refs-group">
+                        <div className="refs-group-label">Cloud KMS</div>
+                        <ul className="refs-list">
+                            <li className="ref-item">
+                                <span className="ref-title">Cloud KMS Overview</span>
+                                <a className="ref-link" href="https://cloud.google.com/kms/docs/key-management-service" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/kms/docs/key-management-service
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Cloud KMS Resources</span>
+                                <a className="ref-link" href="https://cloud.google.com/kms/docs/resource-hierarchy" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/kms/docs/resource-hierarchy
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Cloud KMS FAQ</span>
+                                <a className="ref-link" href="https://cloud.google.com/kms/docs/faq" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/kms/docs/faq
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div style={{ margin: '24px 0' }}>
-                        <h4 style={{ color: 'var(--cyan)', marginBottom: '12px' }}>Private GKE クラスタ</h4>
-                        <div className="hero-meta">
-                            <div className="card">
-                                <div className="label">GKE networking best practices</div>
-                                <div className="value"><a href="https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters" target="_blank" rel="noopener noreferrer">https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters</a></div>
-                            </div>
-                            <div className="card">
-                                <div className="label">Master authorized networks</div>
-                                <div className="value"><a href="https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks" target="_blank" rel="noopener noreferrer">https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks</a></div>
-                            </div>
-                        </div>
+                    <div className="refs-group">
+                        <div className="refs-group-label">Private GKE クラスタ</div>
+                        <ul className="refs-list">
+                            <li className="ref-item">
+                                <span className="ref-title">GKE Networking Best Practices — Private Clusters</span>
+                                <a className="ref-link" href="https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/kubernetes-engine/docs/how-to/private-clusters
+                                </a>
+                            </li>
+                            <li className="ref-item">
+                                <span className="ref-title">Master Authorized Networks</span>
+                                <a className="ref-link" href="https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks" target="_blank" rel="noopener noreferrer">
+                                    cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </section>
             </div>
         </div>
     );
 }
+

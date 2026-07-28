@@ -564,3 +564,107 @@
     color: var(--text-muted);
     line-height: 1.5;
 }
+
+/* ---------- References Section ---------- */
+.gcp-security-page .refs-group {
+    margin: 28px 0;
+    padding: 0;
+}
+
+.gcp-security-page .refs-group-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    padding: 5px 12px;
+    border-left: 3px solid var(--cyan);
+    background: rgba(34, 211, 238, 0.05);
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.gcp-security-page .refs-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gcp-security-page .ref-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+}
+
+.gcp-security-page .ref-item:last-child {
+    border-bottom: none;
+}
+
+.gcp-security-page .ref-item:hover {
+    background: rgba(34, 211, 238, 0.04);
+}
+
+.gcp-security-page .ref-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    min-width: 240px;
+    flex-shrink: 0;
+}
+
+.gcp-security-page .ref-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--cyan);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.85;
+    transition: opacity 0.15s;
+}
+
+.gcp-security-page .ref-link::before {
+    content: '↗';
+    font-size: 11px;
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+
+.gcp-security-page .ref-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* モバイル対応: 縦並びに変換 */
+@media (max-width: 640px) {
+    .gcp-security-page .ref-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .gcp-security-page .ref-title {
+        min-width: unset;
+        white-space: normal;
+    }
+
+    .gcp-security-page .ref-link {
+        white-space: normal;
+        word-break: break-all;
+    }
+}
+
