@@ -20,6 +20,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for AWS SAA guide page` (`__tests__/aws/solutions-architect-associate/page.test.tsx` 失敗テストの作成)
 - [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA guide page components to pass tests` (`page.tsx`, `SaaGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
 - [x] **Step 3 (Refactor / Integration & Nav)**: `refactor/docs(aws-saa): integrate AWS SAA page into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 4 (Archive)**: `chore(aws-saa): archive AWS SAA source html and md files` (`AWS-Certified-Solutions-Architect-Associate.html` を `archive/Aws/SAA/html/` へ、`AWS-Certified-Solutions-Architect-Associate.md` を `archive/Aws/SAA/md/` へアーカイブ移動)
 
 ### 関連ファイル
 
