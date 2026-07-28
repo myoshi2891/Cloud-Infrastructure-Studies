@@ -1,3 +1,5 @@
+/* TODO: Replace these page-scoped tokens with globals.css theme tokens such as
+   --color-background when the guide theme is consolidated. */
 .gcp-security-page {
     --bg: #030712;
     --surface: #0b1220;
@@ -667,4 +669,3 @@
         word-break: break-all;
     }
 }
-

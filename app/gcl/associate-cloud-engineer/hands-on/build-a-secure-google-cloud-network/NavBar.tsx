@@ -71,6 +71,7 @@ export default function NavBar() {
                             else linkRefs.current.delete(sec.id);
                         }}
                     >
+                        <span className="h-no">{sec.no}</span>
                         <span className="h-name">{sec.name}</span>
                     </a>
                 ))}

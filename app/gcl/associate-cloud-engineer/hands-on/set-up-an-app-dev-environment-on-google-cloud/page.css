@@ -483,7 +483,7 @@
     min-width: min-content;
 }
 
-.app-dev-environment-page .mermaid-wrap > div {
+.app-dev-environment-page .mermaid-wrap .mermaid-target {
     background: transparent !important;
     border: none !important;
     padding: 0 !important;

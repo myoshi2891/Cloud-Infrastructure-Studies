@@ -537,7 +537,7 @@ export default function CloudLoadBalancingGuide() {
                         <div className="code-card">
                             <div className="code-bar">
                                 <span className="code-lang">bash</span>
-                                <CopyButton code={`gcloud compute instance-templates create lb-backend-template \\\n  --region=REGION --network=default --subnet=default \\\n  --tags=allow-health-check --machine-type=e2-medium \\\n  --image-family=debian-12 --image-project=debian-cloud \\\n  --metadata=startup-script='#!/bin/bash\n    apt-get update\n    apt-get install apache2 -y\n    a2ensite default-ssl\n    a2enmod ssl\n    vm_hostname="$(curl -H "Metadata-Flavor:Google" \\\n    http://169.254.169.254/computeMetadata/v1/instance/name)"\n    echo "Page served from: $vm_hostname" | tee /var/www/html/index.html\n    systemctl restart apache2'\n\ngcloud compute instance-groups managed create lb-backend-group \\\n  --template=lb-backend-template --size=2 --zone=ZONE\n\ngcloud compute firewall-rules create fw-allow-health-check \\\n  --network=default --action=allow --direction=ingress \\\n  --source-ranges=130.211.0.0/22,35.191.0.0/16 \\\n  --target-tags=allow-health-check --rules=tcp:80\n\ngcloud compute addresses create lb-ipv4-1 --ip-version=IPV4 --global\n\ngcloud compute health-checks create http http-basic-check --port 80\n\ngcloud compute backend-services create web-backend-service \\\n  --protocol=HTTP --port-name=http \\\n  --health-checks=http-basic-check --global\n\ngcloud compute backend-services add-backend web-backend-service \\\n  --instance-group=lb-backend-group \\\n  --instance-group-zone=ZONE --global\n\ngcloud compute url-maps create web-map-http \\\n  --default-service web-backend-service\n\ngcloud compute target-http-proxies create http-lb-proxy \\\n  --url-map web-map-http\n\ngcloud compute forwarding-rules create http-content-rule \\\n  --address=lb-ipv4-1 --global \\\n  --target-http-proxy=http-lb-proxy --ports=80`} />
+                                <CopyButton code={`gcloud compute instance-templates create lb-backend-template \\\n  --region=REGION --network=default --subnet=default \\\n  --tags=allow-health-check --machine-type=e2-medium \\\n  --image-family=debian-12 --image-project=debian-cloud \\\n  --metadata=startup-script='#!/bin/bash\n    apt-get update\n    apt-get install apache2 -y\n    a2ensite default-ssl\n    a2enmod ssl\n    vm_hostname="$(curl -H "Metadata-Flavor:Google" \\\n    http://169.254.169.254/computeMetadata/v1/instance/name)"\n    echo "Page served from: $vm_hostname" | tee /var/www/html/index.html\n    systemctl restart apache2'\n\ngcloud compute instance-groups managed create lb-backend-group \\\n  --template=lb-backend-template --size=2 --zone=ZONE\n\ngcloud compute instance-groups managed set-named-ports lb-backend-group \\\n  --named-ports=http:80 --zone=ZONE\n\ngcloud compute firewall-rules create fw-allow-health-check \\\n  --network=default --action=allow --direction=ingress \\\n  --source-ranges=130.211.0.0/22,35.191.0.0/16 \\\n  --target-tags=allow-health-check --rules=tcp:80\n\ngcloud compute addresses create lb-ipv4-1 --ip-version=IPV4 --global\n\ngcloud compute health-checks create http http-basic-check --port 80\n\ngcloud compute backend-services create web-backend-service \\\n  --protocol=HTTP --port-name=http \\\n  --health-checks=http-basic-check --global\n\ngcloud compute backend-services add-backend web-backend-service \\\n  --instance-group=lb-backend-group \\\n  --instance-group-zone=ZONE --global\n\ngcloud compute url-maps create web-map-http \\\n  --default-service web-backend-service\n\ngcloud compute target-http-proxies create http-lb-proxy \\\n  --url-map web-map-http\n\ngcloud compute forwarding-rules create http-content-rule \\\n  --address=lb-ipv4-1 --global \\\n  --target-http-proxy=http-lb-proxy --ports=80`} />
                             </div>
                             <pre><code>
                                 <div className="code-line"><span className="cmt"># 1. インスタンステンプレート（VMの設計図）を作成</span></div>
@@ -559,37 +559,41 @@ export default function CloudLoadBalancingGuide() {
                                 <div className="code-line">{"gcloud compute instance-groups managed create lb-backend-group \\"}</div>
                                 <div className="code-line">{"  --template=lb-backend-template --size=2 --zone=ZONE"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 3. ヘルスチェック用のファイアウォールルールを作成</span></div>
+                                <div className="code-line"><span className="cmt"># 3. MIG の named port を設定</span></div>
+                                <div className="code-line">{"gcloud compute instance-groups managed set-named-ports lb-backend-group \\"}</div>
+                                <div className="code-line">{"  --named-ports=http:80 --zone=ZONE"}</div>
+                                <div className="code-line">{" "}</div>
+                                <div className="code-line"><span className="cmt"># 4. ヘルスチェック用のファイアウォールルールを作成</span></div>
                                 <div className="code-line">{"gcloud compute firewall-rules create fw-allow-health-check \\"}</div>
                                 <div className="code-line">{"  --network=default --action=allow --direction=ingress \\"}</div>
                                 <div className="code-line">{"  --source-ranges=130.211.0.0/22,35.191.0.0/16 \\"}</div>
                                 <div className="code-line">{"  --target-tags=allow-health-check --rules=tcp:80"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 4. グローバル静的外部IPを予約</span></div>
+                                <div className="code-line"><span className="cmt"># 5. グローバル静的外部IPを予約</span></div>
                                 <div className="code-line">{"gcloud compute addresses create lb-ipv4-1 --ip-version=IPV4 --global"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 5. ヘルスチェックを作成</span></div>
+                                <div className="code-line"><span className="cmt"># 6. ヘルスチェックを作成</span></div>
                                 <div className="code-line">{"gcloud compute health-checks create http http-basic-check --port 80"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 6. バックエンドサービスを作成</span></div>
+                                <div className="code-line"><span className="cmt"># 7. バックエンドサービスを作成</span></div>
                                 <div className="code-line">{"gcloud compute backend-services create web-backend-service \\"}</div>
                                 <div className="code-line">{"  --protocol=HTTP --port-name=http \\"}</div>
                                 <div className="code-line">{"  --health-checks=http-basic-check --global"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 7. MIGをバックエンドサービスに追加</span></div>
+                                <div className="code-line"><span className="cmt"># 8. MIGをバックエンドサービスに追加</span></div>
                                 <div className="code-line">{"gcloud compute backend-services add-backend web-backend-service \\"}</div>
                                 <div className="code-line">{"  --instance-group=lb-backend-group \\"}</div>
                                 <div className="code-line">{"  --instance-group-zone=ZONE --global"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 8. URLマップを作成</span></div>
+                                <div className="code-line"><span className="cmt"># 9. URLマップを作成</span></div>
                                 <div className="code-line">{"gcloud compute url-maps create web-map-http \\"}</div>
                                 <div className="code-line">{"  --default-service web-backend-service"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 9. ターゲットHTTPプロキシを作成</span></div>
+                                <div className="code-line"><span className="cmt"># 10. ターゲットHTTPプロキシを作成</span></div>
                                 <div className="code-line">{"gcloud compute target-http-proxies create http-lb-proxy \\"}</div>
                                 <div className="code-line">{"  --url-map web-map-http"}</div>
                                 <div className="code-line">{" "}</div>
-                                <div className="code-line"><span className="cmt"># 10. グローバル転送ルールを作成</span></div>
+                                <div className="code-line"><span className="cmt"># 11. グローバル転送ルールを作成</span></div>
                                 <div className="code-line">{"gcloud compute forwarding-rules create http-content-rule \\"}</div>
                                 <div className="code-line">{"  --address=lb-ipv4-1 --global \\"}</div>
                                 <div className="code-line">{"  --target-http-proxy=http-lb-proxy --ports=80"}</div>

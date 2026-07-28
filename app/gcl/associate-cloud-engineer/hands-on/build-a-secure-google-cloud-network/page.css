@@ -49,11 +49,11 @@
 }
 
 .secure-network-page .rail-wrap {
-  position: fixed;
-  left: 0;
+  position: sticky;
   top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
-  bottom: 0;
   width: 280px;
+  height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
+  flex: 0 0 280px;
   z-index: 40;
   overflow-y: auto;
   padding: 1.6rem 1rem 2rem clamp(1rem, 4vw, 2.4rem);
@@ -107,7 +107,6 @@
 
 /* ---------- Main Content ---------- */
 .secure-network-page main {
-  margin-left: 280px;
   padding-bottom: 6rem;
   min-width: 0;
   flex: 1;
@@ -115,6 +114,7 @@
 
 .secure-network-page .wrap {
   max-width: 980px;
+  margin-inline: auto;
   padding: 0 clamp(1rem, 4vw, 2.4rem);
 }
 
@@ -242,7 +242,7 @@
 }
 
 .secure-network-page .node__t {
-  font-family: var(--font-tech);
+  font-family: 'Arial Narrow', Arial, sans-serif;
   font-weight: 600;
   font-size: 0.86rem;
 }
@@ -679,9 +679,6 @@
     border-right: none;
     border-bottom: 1px solid var(--line);
     padding: 1rem clamp(1rem, 4vw, 2.4rem);
-  }
-  .secure-network-page main {
-    margin-left: 0;
   }
   .secure-network-page .rail .hop {
     border-left: none;

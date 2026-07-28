@@ -27,8 +27,9 @@ export const DIAGRAMS = {
     Web -->|内部通信| FW --> Internal`,
 
     'diag-reachability-internal': `flowchart LR
-    A[VM-A] -->|"同じ VPC・同じ範囲"| B[VM-B 到達可能]
-    A -.->|別の VPC| C[VM-C 到達不可]
+    A[VM-A] -->|"同じ VPC + ファイアウォール許可ルール"| B[VM-B 到達可能]
+    A -.->|"別 VPC + 接続・経路なし"| C[VM-C 到達不可]
+    CNote["Peering・VPN・Interconnect などの接続と経路があれば<br/>別 VPC 間も通信可能"] -.-> C
     A -->|"外部 IP + ICMP 許可"| D[VM-D 到達可能]`,
 
     'diag-fw-network-tag': `flowchart TB

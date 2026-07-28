@@ -5,7 +5,7 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
-function Diagram({ id, label }: { id: string; label: string }) {
+function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -138,9 +138,9 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ロール名</th>
-                                    <th>ロールID</th>
-                                    <th>できること</th>
+                                    <th scope="col">ロール名</th>
+                                    <th scope="col">ロールID</th>
+                                    <th scope="col">できること</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -257,9 +257,9 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>観点</th>
-                                    <th>事前定義ロール</th>
-                                    <th>カスタムロール</th>
+                                    <th scope="col">観点</th>
+                                    <th scope="col">事前定義ロール</th>
+                                    <th scope="col">カスタムロール</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -399,9 +399,9 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>種類</th>
-                                    <th>例</th>
-                                    <th>説明</th>
+                                    <th scope="col">種類</th>
+                                    <th scope="col">例</th>
+                                    <th scope="col">説明</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -496,10 +496,10 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>観点</th>
-                                    <th>外部IP経由の通信</th>
-                                    <th>VPN</th>
-                                    <th>VPC Peering</th>
+                                    <th scope="col">観点</th>
+                                    <th scope="col">外部IP経由の通信</th>
+                                    <th scope="col">VPN</th>
+                                    <th scope="col">VPC Peering</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -661,9 +661,9 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>観点</th>
-                                    <th>ヘッダーをそのまま参照</th>
-                                    <th>JWTを暗号検証</th>
+                                    <th scope="col">観点</th>
+                                    <th scope="col">ヘッダーをそのまま参照</th>
+                                    <th scope="col">JWTを暗号検証</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -766,9 +766,9 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ロール</th>
-                                    <th>権限ID</th>
-                                    <th>できること</th>
+                                    <th scope="col">ロール</th>
+                                    <th scope="col">権限ID</th>
+                                    <th scope="col">できること</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -955,9 +955,9 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>要件</th>
-                                    <th>対応するChapter</th>
+                                    <th scope="col">#</th>
+                                    <th scope="col">要件</th>
+                                    <th scope="col">対応するChapter</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1075,9 +1075,9 @@ export function GcpSecurityFundamentalsGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>レイヤー</th>
-                                    <th>原則</th>
-                                    <th>具体的な実践</th>
+                                    <th scope="col">レイヤー</th>
+                                    <th scope="col">原則</th>
+                                    <th scope="col">具体的な実践</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1272,4 +1272,3 @@ export function GcpSecurityFundamentalsGuide() {
         </div>
     );
 }
-

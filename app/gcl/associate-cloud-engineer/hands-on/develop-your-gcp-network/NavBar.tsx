@@ -35,9 +35,15 @@ export default function NavBar() {
         const hops = hopRefs.current;
 
         const activate = (id: string) => {
-            hops.forEach((el) => el.classList.remove('active'));
+            hops.forEach((el) => {
+                el.classList.remove('active');
+                el.removeAttribute('aria-current');
+            });
             const target = hops.get(id);
-            if (target) target.classList.add('active');
+            if (target) {
+                target.classList.add('active');
+                target.setAttribute('aria-current', 'location');
+            }
         };
 
         const obs = new IntersectionObserver(

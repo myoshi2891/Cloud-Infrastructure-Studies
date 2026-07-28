@@ -84,10 +84,8 @@ export const DIAGRAMS = {
     nic2 <--> mynet["mynetwork"]`,
 
   'diag-observability': `flowchart TD
-    A["Compute Engine VM<br/>(lamp-1-vm)"] -->|メトリクス収集| B["Cloud Monitoring Agent<br/>(google-cloud-ops-agent)"]
-    A -->|ログ収集| C["Cloud Logging Agent"]
+    A["Compute Engine VM<br/>(lamp-1-vm)"] -->|メトリクスとログを収集| B["Google Cloud Ops Agent"]
     B --> D["Cloud Monitoring"]
-    C --> D
     D --> E["ダッシュボード"]
     D --> F["アラートポリシー"]
     D --> G["アップタイムチェック"]

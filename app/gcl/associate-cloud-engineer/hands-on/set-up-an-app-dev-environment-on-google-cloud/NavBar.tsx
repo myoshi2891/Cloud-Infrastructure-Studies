@@ -1,20 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
-const NAV_ITEMS = [
-    { id: 'overview', label: '概要' },
-    { id: 'architecture', label: '全体像' },
-    { id: 'storage', label: 'Storage' },
-    { id: 'iam', label: 'IAM' },
-    { id: 'monitoring', label: 'Monitoring' },
-    { id: 'functions', label: 'Functions' },
-    { id: 'pubsub', label: 'Pub/Sub' },
-    { id: 'challenge', label: 'Challenge Lab' },
-    { id: 'practices', label: '早見表' },
-    { id: 'troubleshoot', label: 'トラブル対応' },
-    { id: 'refs', label: '参考ソース' },
-];
+import { NAV_ITEMS } from './constants';
 
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('overview');

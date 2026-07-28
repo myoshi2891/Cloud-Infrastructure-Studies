@@ -38,7 +38,7 @@ export const DIAGRAMS: Record<string, string> = {
     style C fill:#00ffa3,color:#04180f,stroke:#00ffa3
     style D fill:#22d3ee,color:#04141a,stroke:#22d3ee`,
 
-    'diag-iam-basic': `graph TD
+    'diag-iam-basic': `flowchart TD
     Owner["Owner<br />(課金設定・権限管理も可能)"] --> Editor["Editor<br />(リソースの変更が可能)"]
     Editor --> Viewer["Viewer<br />(読み取り専用)"]
     style Owner fill:#f87171,color:#1a0505,stroke:#f87171
@@ -150,3 +150,17 @@ export const DIAGRAMS: Record<string, string> = {
     style Topic fill:#a78bfa,color:#12081f,stroke:#a78bfa
     style IAM fill:#f87171,color:#1a0505,stroke:#f87171`,
 };
+
+export const NAV_ITEMS = [
+    { id: 'overview', label: '概要' },
+    { id: 'architecture', label: '全体像' },
+    { id: 'storage', label: 'Storage' },
+    { id: 'iam', label: 'IAM' },
+    { id: 'monitoring', label: 'Monitoring' },
+    { id: 'functions', label: 'Functions' },
+    { id: 'pubsub', label: 'Pub/Sub' },
+    { id: 'challenge', label: 'Challenge Lab' },
+    { id: 'practices', label: '早見表' },
+    { id: 'troubleshoot', label: 'トラブル対応' },
+    { id: 'refs', label: '参考ソース' },
+] as const;

@@ -1,6 +1,6 @@
 export const REVISION_DATE = '2026年6月版';
 
-export const DIAGRAMS: Record<string, string> = {
+export const DIAGRAMS = {
     'diag-setup': `flowchart TD
     A[Start Lab をクリック] --> B[一時credentialsで<br/>Google Cloud コンソールにサインイン]
     B --> C[Cloud Shell をアクティブ化]
@@ -45,7 +45,8 @@ export const DIAGRAMS: Record<string, string> = {
     Q2 -->|いいえ<br/>TLS終端したい| ProxyNLB[プロキシ ネットワークLB<br/>L4]
     ALB --> Q3{公開範囲は？}
     PNLB --> Q3
+    ProxyNLB --> Q3
     Q3 -->|インターネット向け| Ext[外部LB]
     Q3 -->|VPC内のみ| Int[内部LB]`,
-};
+} as const;
 export type DiagramId = keyof typeof DIAGRAMS;

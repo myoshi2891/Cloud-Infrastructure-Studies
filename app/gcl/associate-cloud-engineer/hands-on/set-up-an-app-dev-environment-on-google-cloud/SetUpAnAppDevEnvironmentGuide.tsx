@@ -1,5 +1,3 @@
-'use client';
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import NavBar from './NavBar';
@@ -35,7 +33,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                         <table>
                             <tbody>
                                 <tr>
-                                    <td style={{ color: 'var(--text-muted)', width: '180px' }}>対象ラボ</td>
+                                    <th scope="row" style={{ width: '180px' }}>対象ラボ</th>
                                     <td>
                                         Cloud Storage（Console／CLI）、IAM Qwik Start、Cloud Monitoring
                                         LAMP、Cloud Run functions（Console／Pub/Sub
@@ -44,11 +42,11 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style={{ color: 'var(--text-muted)' }}>対象読者</td>
+                                    <th scope="row">対象読者</th>
                                     <td>Google Cloud 初学者 〜 ジュニアクラウドエンジニア</td>
                                 </tr>
                                 <tr>
-                                    <td style={{ color: 'var(--text-muted)' }}>扱う技術要素</td>
+                                    <th scope="row">扱う技術要素</th>
                                     <td>
                                         <code>Cloud Storage</code> / <code>IAM</code> /{' '}
                                         <code>Cloud Monitoring・Logging</code> /{' '}
@@ -57,7 +55,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style={{ color: 'var(--text-muted)' }}>最終更新</td>
+                                    <th scope="row">最終更新</th>
                                     <td>2026-07-01</td>
                                 </tr>
                             </tbody>
@@ -128,7 +126,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-arch-path" label="Fig 1.1 — 5サービスの依存関係と学習パス" />
-                        <div className="diagram-caption">Fig 1.1 — 5サービスの依存関係と学習パス</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 1.1 — 5サービスの依存関係と学習パス</div>
                     </div>
 
                     <h3 className="subhead">なぜこの順序で学ぶのか</h3>
@@ -272,7 +270,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                     <h3 className="subhead">コンソールでのバケット作成フロー</h3>
                     <div className="diagram-wrap">
                         <Diagram id="diag-storage-console" label="Fig 2.1 — コンソールでのバケット作成フロー" />
-                        <div className="diagram-caption">Fig 2.1 — コンソールでのバケット作成フロー</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 2.1 — コンソールでのバケット作成フロー</div>
                     </div>
 
                     <h3 className="subhead">CLI でのベストプラクティス</h3>
@@ -322,7 +320,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-storage-public" label="Fig 2.2 — 公開アクセス設計の意思決定フロー" />
-                        <div className="diagram-caption">Fig 2.2 — 公開アクセス設計の意思決定フロー</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 2.2 — 公開アクセス設計の意思決定フロー</div>
                     </div>
                 </section>
 
@@ -348,7 +346,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-iam-basic" label="Fig 3.1 — 基本ロールの包含関係" />
-                        <div className="diagram-caption">Fig 3.1 — 基本ロールの包含関係</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 3.1 — 基本ロールの包含関係</div>
                     </div>
 
                     <div className="table-wrap">
@@ -428,7 +426,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-iam-sequence" label="Fig 3.2 — IAM権限変更の伝播シーケンス" />
-                        <div className="diagram-caption">Fig 3.2 — IAM権限変更の伝播シーケンス</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 3.2 — IAM権限変更の伝播シーケンス</div>
                     </div>
 
                     <h3 className="subhead">権限を絞り込むための実践フロー</h3>
@@ -440,7 +438,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-iam-flow" label="Fig 3.3 — 最小権限ロール選定フロー" />
-                        <div className="diagram-caption">Fig 3.3 — 最小権限ロール選定フロー</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 3.3 — 最小権限ロール選定フロー</div>
                     </div>
                 </section>
 
@@ -471,7 +469,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-monitoring-agent" label="Fig 4.1 — Ops Agent を介したテレメトリー収集の流れ" />
-                        <div className="diagram-caption">
+                        <div className="diagram-caption" aria-hidden="true">
                             Fig 4.1 — Ops Agent を介したテレメトリー収集の流れ
                         </div>
                     </div>
@@ -538,7 +536,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-monitoring-alert" label="Fig 4.2 — アップタイムチェック〜アラート設計フロー" />
-                        <div className="diagram-caption">
+                        <div className="diagram-caption" aria-hidden="true">
                             Fig 4.2 — アップタイムチェック〜アラート設計フロー
                         </div>
                     </div>
@@ -593,7 +591,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-functions-triggers" label="Fig 5.1 — HTTPトリガーとイベント駆動トリガーの分岐" />
-                        <div className="diagram-caption">
+                        <div className="diagram-caption" aria-hidden="true">
                             Fig 5.1 — HTTPトリガーとイベント駆動トリガーの分岐
                         </div>
                     </div>
@@ -609,7 +607,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                     <h3 className="subhead">コンソールでのデプロイフロー</h3>
                     <div className="diagram-wrap">
                         <Diagram id="diag-functions-deploy" label="Fig 5.2 — コンソールでの関数デプロイフロー" />
-                        <div className="diagram-caption">Fig 5.2 — コンソールでの関数デプロイフロー</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 5.2 — コンソールでの関数デプロイフロー</div>
                     </div>
 
                     <h3 className="subhead">CLI でのデプロイと Pub/Sub トリガー</h3>
@@ -669,7 +667,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-functions-sa" label="Fig 5.3 — イベント配信とサービスアカウント権限構造" />
-                        <div className="diagram-caption">Fig 5.3 — イベント配信とサービスアカウント権限構造</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 5.3 — イベント配信とサービスアカウント権限構造</div>
                     </div>
 
                     <div className="gb-grid">
@@ -704,7 +702,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                     <h3 className="subhead">基本コンセプト</h3>
                     <div className="diagram-wrap">
                         <Diagram id="diag-pubsub-basic" label="Fig 6.1 — Publish/Subscribe の基本構造" />
-                        <div className="diagram-caption">Fig 6.1 — Publish/Subscribe の基本構造</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 6.1 — Publish/Subscribe の基本構造</div>
                     </div>
 
                     <p>
@@ -723,7 +721,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <div className="diagram-wrap">
                         <Diagram id="diag-pubsub-timing" label="Fig 6.2 — サブスクリプション作成タイミングの重要性" />
-                        <div className="diagram-caption">
+                        <div className="diagram-caption" aria-hidden="true">
                             Fig 6.2 — サブスクリプション作成タイミングの重要性
                         </div>
                     </div>
@@ -839,7 +837,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                     <h3 className="subhead">統合アーキテクチャ</h3>
                     <div className="diagram-wrap">
                         <Diagram id="diag-challenge-arch" label="Fig 7.1 — Challenge Lab 統合アーキテクチャ" />
-                        <div className="diagram-caption">Fig 7.1 — Challenge Lab 統合アーキテクチャ</div>
+                        <div className="diagram-caption" aria-hidden="true">Fig 7.1 — Challenge Lab 統合アーキテクチャ</div>
                     </div>
 
                     <h3 className="subhead">タスクごとの実装ポイント</h3>

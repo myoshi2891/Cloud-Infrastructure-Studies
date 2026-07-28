@@ -1,4 +1,4 @@
-export const DIAGRAMS: Record<string, string> = {
+export const DIAGRAMS = {
     'diag-0': `flowchart TB
 subgraph L1["レイヤー1: 誰がアクセスできるか(IAM)"]
 direction LR
@@ -185,4 +185,4 @@ SA -->|"サービスアカウントとして指定"| PrivCluster
 Subnet2 -->|"デプロイ先ネットワーク"| PrivCluster
 Jump -->|"internal-ip 経由 kubectl 接続"| PrivCluster
 PrivCluster -->|"jumphostの内部IPを/32で登録"| Jump`
-};
+} as const;
