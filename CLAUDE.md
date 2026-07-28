@@ -111,7 +111,7 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（11図）
         page.module.css             # ページ固有スタイル
-      set-up-an-app-dev-environment-on-google-cloud/
+      hands-on/set-up-an-app-dev-environment-on-google-cloud/
         page.tsx                    # アプリ開発環境構築 完全ガイド（Server。メタデータ定義）
         SetUpAnAppDevEnvironmentGuide.tsx # 本文＋インタラクション（client。Mermaid等）
         NavBar.tsx                  # サイドバーナビ
