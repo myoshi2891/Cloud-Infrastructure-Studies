@@ -27,4 +27,12 @@ describe('AWS SAA Domain 1 Guide Page', () => {
         expect(DIAGRAMS.d01).toContain('%%{init:');
         expect(DIAGRAMS.d01).toContain('pie1');
     });
+
+    it('renders syntax highlighted elements in JSON policy code block', () => {
+        const { container } = render(<Domain1Guide />);
+        const codeKeys = container.querySelectorAll('.code-key');
+        const codeStrings = container.querySelectorAll('.code-string');
+        expect(codeKeys.length).toBeGreaterThan(0);
+        expect(codeStrings.length).toBeGreaterThan(0);
+    });
 });
