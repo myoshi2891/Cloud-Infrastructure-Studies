@@ -14,6 +14,122 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/** SAA-C03 ドメイン配点 SVGドーナツチャート */
+function DomainPieChart() {
+    const domains = [
+        { label: 'D1 セキュアなアーキテクチャ', pct: 30, color: '#7c9eff', cls: 'd1' },
+        { label: 'D2 回復力のあるアーキテクチャ', pct: 26, color: '#61d0c4', cls: 'd2' },
+        { label: 'D3 高性能アーキテクチャ', pct: 24, color: '#f2b84b', cls: 'd3' },
+        { label: 'D4 コスト最適化アーキテクチャ', pct: 20, color: '#ff8fa3', cls: 'd4' },
+    ];
+    const r = 70;
+    const cx = 100;
+    const cy = 100;
+    const circum = 2 * Math.PI * r;
+    let cumulative = 0;
+    const slices = domains.map((d) => {
+        const offset = circum * (1 - cumulative / 100);
+        const len = circum * (d.pct / 100);
+        const startAngle = (cumulative / 100) * 360 - 90;
+        const midAngle = ((cumulative + d.pct / 2) / 100) * 360 - 90;
+        cumulative += d.pct;
+        return { ...d, offset, len, startAngle, midAngle };
+    });
+    return (
+        <div className="domain-pie-chart" aria-label="SAA-C03 出題ドメイン配点">
+            <div className="pie-svg-wrap">
+                <svg viewBox="0 0 200 200" aria-hidden="true">
+                    {slices.map((s) => (
+                        <circle
+                            key={s.cls}
+                            cx={cx}
+                            cy={cy}
+                            r={r}
+                            fill="none"
+                            stroke={s.color}
+                            strokeWidth="26"
+                            strokeDasharray={`${s.len} ${circum - s.len}`}
+                            strokeDashoffset={s.offset}
+                            strokeLinecap="butt"
+                        />
+                    ))}
+                    <circle cx={cx} cy={cy} r={57} fill="var(--bg-raised)" />
+                    <text x={cx} y={cy - 6} textAnchor="middle" fill="var(--aws-orange)" fontSize="11" fontFamily="var(--mono)" fontWeight="700" letterSpacing="0.06">SAA-C03</text>
+                    <text x={cx} y={cy + 9} textAnchor="middle" fill="var(--text-dim)" fontSize="9" fontFamily="var(--mono)">出題ドメイン配点</text>
+                </svg>
+            </div>
+            <ul className="pie-legend" aria-label="凡例">
+                {domains.map((d) => (
+                    <li key={d.cls} className="pie-legend-item">
+                        <span className="pie-dot" style={{ background: d.color }} aria-hidden="true" />
+                        <span className="pie-label">{d.label}</span>
+                        <span className="pie-pct" style={{ color: d.color }}>{d.pct}%</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+/** 参考文献カードセクション */
+const REF_CATEGORIES = [
+    {
+        id: 'exam-guide',
+        icon: '📋',
+        title: '公式 Exam Guide',
+        links: [
+            { label: 'SAA-C03 Exam Guide（全体）', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html' },
+            { label: 'Domain 1: Design Secure Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain1.html' },
+            { label: 'Domain 2: Design Resilient Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html' },
+            { label: 'Domain 3: Design High-Performing Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html' },
+            { label: 'Domain 4: Design Cost-Optimized Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain4.html' },
+        ],
+    },
+    {
+        id: 'well-arch',
+        icon: '🏗',
+        title: 'Well-Architected & ベストプラクティス',
+        links: [
+            { label: 'AWS Well-Architected Framework', href: 'https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html' },
+        ],
+    },
+    {
+        id: 'security',
+        icon: '🔐',
+        title: 'セキュリティ・ID管理',
+        links: [
+            { label: 'AWS Identity and Access Management ドキュメント', href: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html' },
+        ],
+    },
+    {
+        id: 'networking',
+        icon: '🌐',
+        title: 'ネットワーキング',
+        links: [
+            { label: 'Amazon VPC ユーザーガイド', href: 'https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html' },
+        ],
+    },
+    {
+        id: 'storage-compute',
+        icon: '💾',
+        title: 'ストレージ・コンピューティング',
+        links: [
+            { label: 'Amazon S3 ストレージクラス', href: 'https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html' },
+            { label: 'Amazon EC2 インスタンスタイプ', href: 'https://docs.aws.amazon.com/ec2/latest/instancetypes/instance-types.html' },
+        ],
+    },
+    {
+        id: 'database-cost',
+        icon: '🗄',
+        title: 'データベース・コスト管理',
+        links: [
+            { label: 'Amazon RDS ユーザーガイド', href: 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html' },
+            { label: 'AWS 購入オプション（Savings Plans）', href: 'https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html' },
+            { label: 'AWS Cost Management ドキュメント', href: 'https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html' },
+        ],
+    },
+];
+
 export default function SaaGuide() {
     return (
         <div className="aws-saa-page">
@@ -187,7 +303,7 @@ export default function SaaGuide() {
                         </blockquote>
 
                         <h3 id="13-ドメイン構成と配点">1.3 ドメイン構成と配点</h3>
-                        <Diagram id="mermaid-target-1" label="SAA-C03 出題ドメイン配点" />
+                        <DomainPieChart />
                         <div className="table-wrap">
                             <table>
                                 <thead>
@@ -2120,125 +2236,35 @@ export default function SaaGuide() {
 
                         {/* セクション 8 */}
                         <h2 id="8-参考文献出典一覧">8. 参考文献・出典一覧</h2>
-                        <ul>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    AWS Certified Solutions Architect - Associate (SAA-C03) Exam Guide（全体）
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain1.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Content Domain 1: Design Secure Architectures
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Content Domain 2: Design Resilient Architectures
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Content Domain 3: Design High-Performing Architectures
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain4.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Content Domain 4: Design Cost-Optimized Architectures
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    AWS Well-Architected Framework
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    AWS Identity and Access Management ドキュメント
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Amazon VPC ユーザーガイド
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Amazon S3 ストレージクラス
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/ec2/latest/instancetypes/instance-types.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Amazon EC2 インスタンスタイプ
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Amazon RDS ユーザーガイド
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    AWS 購入オプション（Savings Plans）
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    AWS Cost Management ドキュメント
-                                </a>
-                            </li>
-                        </ul>
+                        <p className="refs-intro">
+                            本ガイドはすべて AWS 公式ドキュメントを一次情報として作成しています。試験準備において下記の一次情報を直接参照することを強く推奨します。
+                        </p>
+                        <div className="refs-grid">
+                            {REF_CATEGORIES.map((cat) => (
+                                <div key={cat.id} className="refs-card">
+                                    <div className="refs-card-header">
+                                        <span className="refs-icon" aria-hidden="true">{cat.icon}</span>
+                                        <span className="refs-category">{cat.title}</span>
+                                        <span className="refs-badge">AWS Docs</span>
+                                    </div>
+                                    <ul className="refs-list">
+                                        {cat.links.map((link) => (
+                                            <li key={link.href} className="refs-list-item">
+                                                <a
+                                                    href={link.href}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="refs-link"
+                                                >
+                                                    <span className="refs-link-arrow" aria-hidden="true">↗</span>
+                                                    {link.label}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
                         <div className="footnote">
                             <hr />
                             <ol>
