@@ -252,24 +252,24 @@ export function Domain1Guide() {
                                     </button>
                                 </div>
                                 <pre>
-                                    <div className="code-line">{`{`}</div>
-                                    <div className="code-line">{`  "Version": "2012-10-17",`}</div>
-                                    <div className="code-line">{`  "Statement": [`}</div>
-                                    <div className="code-line">{`    {`}</div>
-                                    <div className="code-line">{`      "Effect": "Allow",`}</div>
-                                    <div className="code-line">{`      "Action": [`}</div>
-                                    <div className="code-line">{`        "s3:GetObject",`}</div>
-                                    <div className="code-line">{`        "s3:PutObject"`}</div>
-                                    <div className="code-line">{`      ],`}</div>
-                                    <div className="code-line">{`      "Resource": "arn:aws:s3:::my-company-bucket/*",`}</div>
-                                    <div className="code-line">{`      "Condition": {`}</div>
-                                    <div className="code-line">{`        "Bool": {`}</div>
-                                    <div className="code-line">{`          "aws:SecureTransport": "true"`}</div>
-                                    <div className="code-line">{`        }`}</div>
-                                    <div className="code-line">{`      }`}</div>
-                                    <div className="code-line">{`    }`}</div>
-                                    <div className="code-line">{`  ]`}</div>
-                                    <div className="code-line">{`}`}</div>
+                                    <div className="code-line"><span className="code-punctuation">{`{`}</span></div>
+                                    <div className="code-line">  <span className="code-key">{`"Version"`}</span><span className="code-punctuation">:</span> <span className="code-string">{`"2012-10-17"`}</span><span className="code-punctuation">,</span></div>
+                                    <div className="code-line">  <span className="code-key">{`"Statement"`}</span><span className="code-punctuation">: [</span></div>
+                                    <div className="code-line">    <span className="code-punctuation">{`{`}</span></div>
+                                    <div className="code-line">      <span className="code-key">{`"Effect"`}</span><span className="code-punctuation">:</span> <span className="code-string">{`"Allow"`}</span><span className="code-punctuation">,</span></div>
+                                    <div className="code-line">      <span className="code-key">{`"Action"`}</span><span className="code-punctuation">: [</span></div>
+                                    <div className="code-line">        <span className="code-string">{`"s3:GetObject"`}</span><span className="code-punctuation">,</span></div>
+                                    <div className="code-line">        <span className="code-string">{`"s3:PutObject"`}</span></div>
+                                    <div className="code-line">      <span className="code-punctuation">],</span></div>
+                                    <div className="code-line">      <span className="code-key">{`"Resource"`}</span><span className="code-punctuation">:</span> <span className="code-string">{`"arn:aws:s3:::my-company-bucket/*"`}</span><span className="code-punctuation">,</span></div>
+                                    <div className="code-line">      <span className="code-key">{`"Condition"`}</span><span className="code-punctuation">: {`{`}</span></div>
+                                    <div className="code-line">        <span className="code-key">{`"Bool"`}</span><span className="code-punctuation">: {`{`}</span></div>
+                                    <div className="code-line">          <span className="code-key">{`"aws:SecureTransport"`}</span><span className="code-punctuation">:</span> <span className="code-boolean">{`"true"`}</span></div>
+                                    <div className="code-line">        <span className="code-punctuation">{`}`}</span></div>
+                                    <div className="code-line">      <span className="code-punctuation">{`}`}</span></div>
+                                    <div className="code-line">    <span className="code-punctuation">{`}`}</span></div>
+                                    <div className="code-line">  <span className="code-punctuation">]</span></div>
+                                    <div className="code-line"><span className="code-punctuation">{`}`}</span></div>
                                 </pre>
                             </div>
                         </div>

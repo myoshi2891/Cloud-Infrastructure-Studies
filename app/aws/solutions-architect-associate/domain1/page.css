@@ -434,16 +434,39 @@
 }
 .aws-saa-domain1-page pre {
     margin: 0;
-    padding: 16px;
+    padding: 16px 20px;
     font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 13.5px;
+    line-height: 1.65;
     overflow-x: auto;
     white-space: pre;
     color: #e2e8f0;
+    background: #091322;
 }
 .aws-saa-domain1-page .code-line {
     white-space: pre;
+    display: block;
+}
+
+/* Syntax Highlighting */
+.aws-saa-domain1-page .code-key {
+    color: #7c9eff;
+    font-weight: 600;
+}
+.aws-saa-domain1-page .code-string {
+    color: #7fd9a8;
+}
+.aws-saa-domain1-page .code-boolean,
+.aws-saa-domain1-page .code-keyword {
+    color: #f0b86e;
+    font-weight: 600;
+}
+.aws-saa-domain1-page .code-punctuation {
+    color: #94a9c6;
+}
+.aws-saa-domain1-page .code-comment {
+    color: #64748b;
+    font-style: italic;
 }
 
 /* Practice questions & checklists */
