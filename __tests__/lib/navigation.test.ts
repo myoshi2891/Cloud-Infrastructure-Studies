@@ -256,6 +256,17 @@ describe('toNavTree', () => {
             expect(aws.exams.length).toBeGreaterThan(0);
             expect(aws.exams.some((e) => e.status === 'coming-soon')).toBe(true);
         });
+
+        it('overviewLabel が指定された場合、items の先頭ラベルにその文字列が使用されること', () => {
+            // Arrange & Act
+            const result = toNavTree(EXAMS);
+            const gcp = result.find((g) => g.provider === 'GCP');
+            const handsOn = gcp?.exams.find((e) => e.id === 'hands-on');
+
+            // Assert
+            expect(handsOn).toBeDefined();
+            expect(handsOn?.items[0]?.label).toBe('IAP（Identity-Aware Proxy）TCP フォワーディング');
+        });
     });
 
     describe('エッジケースと無効なデータ', () => {
