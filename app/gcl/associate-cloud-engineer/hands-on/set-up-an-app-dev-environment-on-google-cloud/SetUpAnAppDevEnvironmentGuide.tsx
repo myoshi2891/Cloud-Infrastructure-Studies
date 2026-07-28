@@ -880,16 +880,16 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                     </div>
 
                     <div className="code-block">
-                        <div className="code-line"><span className="code-comment">// タスク3: コード内の要点</span></div>
+                        <div className="code-line"><span className="code-comment">{`// タスク3: コード内の要点`}</span></div>
                         <div className="code-line">functions.cloudEvent(&apos;&apos;, async cloudEvent =&gt; &#123;</div>
                         <div className="code-line">  const event = cloudEvent.data;</div>
                         <div className="code-line">  const fileName = event.name;</div>
                         <div className="code-line">  const bucketName = event.bucket;</div>
-                        <div className="code-line">  <span className="code-comment">// ファイル名にすでに &quot;64x64_thumbnail&quot; が含まれていないかチェックする</span></div>
-                        <div className="code-line">  <span className="code-comment">// → これは無限ループ（サムネイルからさらにサムネイルを作る）を防ぐガード</span></div>
+                        <div className="code-line">  <span className="code-comment">{`// ファイル名にすでに "64x64_thumbnail" が含まれていないかチェックする`}</span></div>
+                        <div className="code-line">  <span className="code-comment">{`// → これは無限ループ（サムネイルからさらにサムネイルを作る）を防ぐガード`}</span></div>
                         <div className="code-line">  if (fileName.search(&quot;64x64_thumbnail&quot;) === -1) &#123;</div>
-                        <div className="code-line">  <span className="code-comment">// sharpでリサイズしてサムネイルを生成</span></div>
-                        <div className="code-line">  <span className="code-comment">// 生成後、Pub/Subトピックに完了メッセージを発行</span></div>
+                        <div className="code-line">  <span className="code-comment">{`// sharpでリサイズしてサムネイルを生成`}</span></div>
+                        <div className="code-line">  <span className="code-comment">{`// 生成後、Pub/Subトピックに完了メッセージを発行`}</span></div>
                         <div className="code-line">  &#125;</div>
                         <div className="code-line">&#125;);</div>
                     </div>
