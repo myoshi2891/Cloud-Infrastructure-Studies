@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Page from '@/app/gcl/associate-cloud-engineer/set-up-an-app-dev-environment-on-google-cloud/page';
-import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/set-up-an-app-dev-environment-on-google-cloud/constants';
+import Page from '@/app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page';
+import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/constants';
 
 // MermaidDiagram コンポーネントをモック化
 vi.mock('@/components/MermaidDiagram', () => ({
