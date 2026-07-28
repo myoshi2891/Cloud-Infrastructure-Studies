@@ -21,6 +21,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 2 (Green)**: `feat: implement GCP app dev environment complete guide component` (`page.tsx`, `SetUpAnAppDevEnvironmentGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全10章・表・Mermaid 14図の完全移行)
 - [x] **Step 3 (Refactor / Integration)**: `refactor: integrate GCP app dev environment guide into routing and update docs` (`app/constants.ts` EXAMSラベル調整、`CLAUDE.md` / `GEMINI.md` ドキュメント更新)
 - [x] **Step 4 (Fix & Move)**: `fix: resolve className console error and move page to hands-on route` (`class=` を `className=` に精査・修正、`hands-on` ルートへ配置変更)
+- [x] **Step 5 (ESLint / SonarQube Error Fix)**: `fix: wrap JSX comment text nodes in template literals to resolve react/jsx-no-comment-textnodes and S6438 errors` (883, 888, 889, 891, 892行目の `//` テキストノードを `{`// ...`}` に全件置換しエラー全件解消)
 
 ### 関連ファイル
 
