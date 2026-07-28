@@ -89,7 +89,7 @@ function Diagram({ id, label }: { id: DiagramId; label: string }) {
         <div className="diagram">
             <div className="cap">{label}</div>
             <div className="mermaid-wrap">
-                <MermaidDiagram chart={chart} ariaLabel={label} />
+                <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale={true} />
             </div>
         </div>
     );
