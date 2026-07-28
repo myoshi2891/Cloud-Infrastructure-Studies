@@ -49,4 +49,11 @@ describe('Google Cloud セキュリティ基礎 完全ガイド ページ', () =
             expect(el.getAttribute('data-preserve-natural-scale')).toBe('true');
         }
     });
+
+    it('全幅メインコンテナおよび 1rem 倍率用図解ラッパーが正しく配置されていること', () => {
+        const wrap = container.querySelector('.wrap');
+        expect(wrap).toBeTruthy();
+        const diagramWraps = container.querySelectorAll('.diagram-wrap');
+        expect(diagramWraps.length).toBe(16);
+    });
 });
