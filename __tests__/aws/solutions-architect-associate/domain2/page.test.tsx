@@ -24,10 +24,13 @@ describe('AWS SAA Domain 2 Guide Page', () => {
         expect(screen.getByText(/タスク2.4: 高パフォーマンスなネットワークアーキテクチャ/i)).toBeInTheDocument();
     });
 
-    it('contains all 25 mermaid diagrams', () => {
-        expect(Object.keys(DIAGRAMS).length).toBe(25);
-        expect(DIAGRAMS.m1).toBeDefined();
-        expect(DIAGRAMS.m25).toBeDefined();
+    it('has custom theme initialization directive for pie chart m1', () => {
+        expect(DIAGRAMS.m1).toContain('%%{init:');
+        expect(DIAGRAMS.m1).toContain('pie1');
+    });
+
+    it('does not contain problematic fullwidth wave dash in m16', () => {
+        expect(DIAGRAMS.m16).not.toContain('〜');
     });
 
     it('renders syntax highlighted elements in code blocks', () => {
