@@ -1,11 +1,4 @@
 export const DIAGRAMS: Record<string, string> = {
-    'mermaid-target-1': `pie showData
-    title SAA-C03 出題ドメイン配点
-    "ドメイン1: セキュアなアーキテクチャの設計 (30%)" : 30
-    "ドメイン2: 回復力のあるアーキテクチャの設計 (26%)" : 26
-    "ドメイン3: 高性能アーキテクチャの設計 (24%)" : 24
-    "ドメイン4: コスト最適化アーキテクチャの設計 (20%)" : 20`,
-
     'mermaid-target-2': `flowchart TB
     subgraph AWS["AWSの責任範囲：クラウドのセキュリティ"]
         A1[リージョン・AZ・エッジロケーションの物理セキュリティ]
@@ -180,8 +173,7 @@ export const DIAGRAMS: Record<string, string> = {
     GA --> ALB2[ALB - リージョンB]`,
 
     'mermaid-target-16': `flowchart TB
-    subgraph TGW["AWS Transit Gateway（ハブ）"]
-    end
+    TGW["AWS Transit Gateway（ハブ）"]
     VPC1[VPC A] --- TGW
     VPC2[VPC B] --- TGW
     VPC3[VPC C] --- TGW
@@ -251,3 +243,61 @@ export const DIAGRAMS: Record<string, string> = {
         P6["持続可能性<br/>Sustainability"]
     end`,
 };
+
+export const REF_CATEGORIES = [
+    {
+        id: 'exam-guide',
+        icon: '📋',
+        title: '公式 Exam Guide',
+        links: [
+            { label: 'SAA-C03 Exam Guide（全体）', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html' },
+            { label: 'Domain 1: Design Secure Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain1.html' },
+            { label: 'Domain 2: Design Resilient Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html' },
+            { label: 'Domain 3: Design High-Performing Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html' },
+            { label: 'Domain 4: Design Cost-Optimized Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain4.html' },
+        ],
+    },
+    {
+        id: 'well-arch',
+        icon: '🏗',
+        title: 'Well-Architected & ベストプラクティス',
+        links: [
+            { label: 'AWS Well-Architected Framework', href: 'https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html' },
+        ],
+    },
+    {
+        id: 'security',
+        icon: '🔐',
+        title: 'セキュリティ・ID管理',
+        links: [
+            { label: 'AWS Identity and Access Management ドキュメント', href: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html' },
+        ],
+    },
+    {
+        id: 'networking',
+        icon: '🌐',
+        title: 'ネットワーキング',
+        links: [
+            { label: 'Amazon VPC ユーザーガイド', href: 'https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html' },
+        ],
+    },
+    {
+        id: 'storage-compute',
+        icon: '💾',
+        title: 'ストレージ・コンピューティング',
+        links: [
+            { label: 'Amazon S3 ストレージクラス', href: 'https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html' },
+            { label: 'Amazon EC2 インスタンスタイプ', href: 'https://docs.aws.amazon.com/ec2/latest/instancetypes/instance-types.html' },
+        ],
+    },
+    {
+        id: 'database-cost',
+        icon: '🗄',
+        title: 'データベース・コスト管理',
+        links: [
+            { label: 'Amazon RDS ユーザーガイド', href: 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html' },
+            { label: 'AWS 購入オプション（Savings Plans）', href: 'https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html' },
+            { label: 'AWS Cost Management ドキュメント', href: 'https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html' },
+        ],
+    },
+] as const;

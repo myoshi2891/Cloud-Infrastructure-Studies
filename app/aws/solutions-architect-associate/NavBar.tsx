@@ -60,6 +60,7 @@ export default function NavBar() {
     return (
         <>
             <button
+                type="button"
                 className="nav-toggle"
                 id="navToggle"
                 aria-label="メニューを開く"

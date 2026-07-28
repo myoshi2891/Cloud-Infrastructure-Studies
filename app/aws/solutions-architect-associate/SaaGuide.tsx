@@ -2,7 +2,7 @@
 
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
-import { DIAGRAMS } from './constants';
+import { DIAGRAMS, REF_CATEGORIES } from './constants';
 
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
@@ -30,13 +30,11 @@ function DomainPieChart() {
     const slices = domains.map((d) => {
         const offset = circum * (1 - cumulative / 100);
         const len = circum * (d.pct / 100);
-        const startAngle = (cumulative / 100) * 360 - 90;
-        const midAngle = ((cumulative + d.pct / 2) / 100) * 360 - 90;
         cumulative += d.pct;
-        return { ...d, offset, len, startAngle, midAngle };
+        return { ...d, offset, len };
     });
     return (
-        <div className="domain-pie-chart" aria-label="SAA-C03 出題ドメイン配点">
+        <div className="domain-pie-chart" role="img" aria-label="SAA-C03 出題ドメイン配点">
             <div className="pie-svg-wrap">
                 <svg viewBox="0 0 200 200" aria-hidden="true">
                     {slices.map((s) => (
@@ -70,65 +68,6 @@ function DomainPieChart() {
         </div>
     );
 }
-
-/** 参考文献カードセクション */
-const REF_CATEGORIES = [
-    {
-        id: 'exam-guide',
-        icon: '📋',
-        title: '公式 Exam Guide',
-        links: [
-            { label: 'SAA-C03 Exam Guide（全体）', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html' },
-            { label: 'Domain 1: Design Secure Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain1.html' },
-            { label: 'Domain 2: Design Resilient Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html' },
-            { label: 'Domain 3: Design High-Performing Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html' },
-            { label: 'Domain 4: Design Cost-Optimized Architectures', href: 'https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain4.html' },
-        ],
-    },
-    {
-        id: 'well-arch',
-        icon: '🏗',
-        title: 'Well-Architected & ベストプラクティス',
-        links: [
-            { label: 'AWS Well-Architected Framework', href: 'https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html' },
-        ],
-    },
-    {
-        id: 'security',
-        icon: '🔐',
-        title: 'セキュリティ・ID管理',
-        links: [
-            { label: 'AWS Identity and Access Management ドキュメント', href: 'https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html' },
-        ],
-    },
-    {
-        id: 'networking',
-        icon: '🌐',
-        title: 'ネットワーキング',
-        links: [
-            { label: 'Amazon VPC ユーザーガイド', href: 'https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html' },
-        ],
-    },
-    {
-        id: 'storage-compute',
-        icon: '💾',
-        title: 'ストレージ・コンピューティング',
-        links: [
-            { label: 'Amazon S3 ストレージクラス', href: 'https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html' },
-            { label: 'Amazon EC2 インスタンスタイプ', href: 'https://docs.aws.amazon.com/ec2/latest/instancetypes/instance-types.html' },
-        ],
-    },
-    {
-        id: 'database-cost',
-        icon: '🗄',
-        title: 'データベース・コスト管理',
-        links: [
-            { label: 'Amazon RDS ユーザーガイド', href: 'https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html' },
-            { label: 'AWS 購入オプション（Savings Plans）', href: 'https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html' },
-            { label: 'AWS Cost Management ドキュメント', href: 'https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html' },
-        ],
-    },
-];
 
 export default function SaaGuide() {
     return (

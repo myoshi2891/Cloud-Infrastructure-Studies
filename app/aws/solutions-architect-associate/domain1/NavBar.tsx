@@ -20,6 +20,7 @@ export function NavBar({ activeId }: NavBarProps) {
     return (
         <>
             <button
+                type="button"
                 id="sidebar-toggle"
                 aria-label="目次を開閉する"
                 aria-expanded={isOpen}

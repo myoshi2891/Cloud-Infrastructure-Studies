@@ -1,3 +1,5 @@
+/* TODO: Promote --bg-elevated, --border, --text-faint, --accent, --amber,
+   --green, --code-bg, and --table-stripe to globals.css. */
 .aws-saa-domain1-page {
     --bg: var(--color-background, #07111e);
     --bg-elevated: #0d1a2c;
@@ -13,13 +15,13 @@
     --green: #7fd9a8;
     --code-bg: #0a1728;
     --table-stripe: #0c1c30;
-    --font-body: var(--font-body), 'IBM Plex Sans', sans-serif;
-    --font-display: var(--font-display), 'IBM Plex Sans', sans-serif;
-    --font-mono: var(--font-mono), monospace;
+    --sans: var(--font-body, 'IBM Plex Sans', sans-serif);
+    --display: var(--font-display, 'IBM Plex Sans', sans-serif);
+    --mono: var(--font-mono, monospace);
 
     background: var(--bg);
     color: var(--text);
-    font-family: var(--font-body);
+    font-family: var(--sans);
     font-size: 16px;
     line-height: 1.75;
     min-height: 100vh;

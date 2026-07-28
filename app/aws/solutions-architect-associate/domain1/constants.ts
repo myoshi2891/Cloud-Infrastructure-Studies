@@ -134,12 +134,12 @@ pie showData
     Client(["インターネット利用者"])
     Shield["AWS Shield<br/>(DDoS対策・L3/L4)"]
     WAF["AWS WAF<br/>(Webアプリ攻撃対策・L7)"]
-    ALBSG["セキュリティグループ<br/>(ステートフル・インスタンス単位)"]
+    ALBSG["セキュリティグループ<br/>(ステートフル・リソース/ENI単位)"]
     NACL["ネットワークACL<br/>(ステートレス・サブネット単位)"]
     Subnet["プライベートサブネット"]
     App["アプリケーション<br/>(最小権限のIAMロール)"]
 
-    Client --> Shield --> WAF --> ALBSG --> NACL --> Subnet --> App`,
+    Client --> Shield --> WAF --> NACL --> Subnet --> ALBSG --> App`,
 
     d09: `flowchart TD
     Q1{"制御したい対象は?"}
