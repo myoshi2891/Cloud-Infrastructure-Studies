@@ -204,19 +204,24 @@ export const EXAMS: Exam[] = [
         provider: 'GCP',
     },
     {
-        id: 'hands-on-iap-tcp-forwarding',
-        label: 'IAP TCP フォワーディング ガイド',
+        id: 'hands-on',
+        label: 'Hands-on',
         abbr: 'Hands-on',
         level: 'Practical',
         score: 'ハンズオン解説',
         color: 'card-ace',
         href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
         description:
-            '外部IPなしのVMへ安全にSSH/RDP接続するIAP TCPフォワーディングの実践ベストプラクティスガイド。',
+            'Google Cloud のハンズオン実践ガイド。IAP TCPフォワーディングやアプリ開発環境構築など。',
         domains: [
             {
                 label: 'IAP TCPフォワーディング ベストプラクティス',
                 href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'アプリ開発環境構築 完全ガイド',
+                href: '/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud',
                 pct: 'ハンズオン',
             },
         ],
