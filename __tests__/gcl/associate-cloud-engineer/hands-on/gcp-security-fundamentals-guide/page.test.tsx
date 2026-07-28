@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Page from '@/app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page';
@@ -27,14 +28,14 @@ describe('Google Cloud セキュリティ基礎 完全ガイド ページ', () =
 
     it('章の見出しがレンダリングされること', () => {
         expect(screen.getByRole('heading', { name: /0. この教材の全体像/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 1: IAM の基本と最小権限/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 2: カスタムロールの作成と管理/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 3: サービスアカウントのセキュアな運用/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 4: VPC Network Peering/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 5: Identity-Aware Proxy/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 6: Cloud KMS による鍵管理/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 7: Private GKE クラスタの構築/i })).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /Chapter 8: 統合演習/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /IAM基礎 — 誰が・何に・何をできるか/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /IAMカスタムロール — 権限を自分でデザインする/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /サービスアカウント — 人間ではないIDの管理/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /VPC Network Peering — プロジェクトをまたぐ内部通信/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Identity-Aware Proxy \(IAP\) — アプリ層のゼロトラスト/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Cloud KMS — 鍵管理と暗号化/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /Private GKE クラスタ — Kubernetesのネットワーク隔離/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /総合演習 — 全レイヤーを統合したセキュアなクラスタ設計/i })).toBeInTheDocument();
     });
 
     it('DIAGRAMS が16個の定義を持つこと', () => {
