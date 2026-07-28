@@ -96,26 +96,6 @@ export const EXAMS: Exam[] = [
                 href: '/gcl/associate-cloud-engineer/domain4',
                 pct: '20%',
             },
-            {
-                label: 'Cloud Load Balancing 完全入門',
-                href: '/gcl/associate-cloud-engineer/cloud-load-balancing-guide',
-                pct: '実践',
-            },
-            {
-                label: 'GCPネットワーク完全入門',
-                href: '/gcl/associate-cloud-engineer/develop-your-gcp-network',
-                pct: '実践',
-            },
-            {
-                label: '安全なGoogle Cloudネットワーク構築',
-                href: '/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network',
-                pct: '実践',
-            },
-            {
-                label: 'アプリ開発環境構築 完全ガイド',
-                href: '/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud',
-                pct: '実践',
-            },
         ],
         badge: '実践向け',
         icon: '⚙️',
@@ -212,11 +192,26 @@ export const EXAMS: Exam[] = [
         color: 'card-ace',
         href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
         description:
-            'Google Cloud のハンズオン実践ガイド。IAP TCPフォワーディングやアプリ開発環境構築など。',
+            'Google Cloud のハンズオン実践ガイド。IAP TCPフォワーディングやアプリ開発環境構築、ネットワーク構築など。',
         domains: [
             {
                 label: 'IAP TCPフォワーディング ベストプラクティス',
                 href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'Cloud Load Balancing 完全入門',
+                href: '/gcl/associate-cloud-engineer/hands-on/cloud-load-balancing-guide',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'GCPネットワーク完全入門',
+                href: '/gcl/associate-cloud-engineer/hands-on/develop-your-gcp-network',
+                pct: 'ハンズオン',
+            },
+            {
+                label: '安全なGoogle Cloudネットワーク構築',
+                href: '/gcl/associate-cloud-engineer/hands-on/build-a-secure-google-cloud-network',
                 pct: 'ハンズオン',
             },
             {
