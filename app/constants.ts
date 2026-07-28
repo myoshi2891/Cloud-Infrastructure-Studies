@@ -112,7 +112,7 @@ export const EXAMS: Exam[] = [
                 pct: '実践',
             },
             {
-                label: 'アプリ開発環境構築ガイド',
+                label: 'アプリ開発環境構築 完全ガイド',
                 href: '/gcl/associate-cloud-engineer/set-up-an-app-dev-environment-on-google-cloud',
                 pct: '実践',
             },
