@@ -64,5 +64,10 @@ describe('Google Cloud アプリ開発環境構築 完全ガイド ページ', (
             expect(DIAGRAMS[id as keyof typeof DIAGRAMS]).toBeTruthy();
         }
     });
+
+    it('コードコメントテキストが正しく表示されること', () => {
+        expect(screen.getByText(/\/\/ タスク3: コード内の要点/)).toBeInTheDocument();
+        expect(screen.getByText(/\/\/ sharpでリサイズしてサムネイルを生成/)).toBeInTheDocument();
+    });
 });
 
