@@ -2,6 +2,14 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import Page from '@/app/gcl/associate-cloud-engineer/hands-on/develop-your-gcp-network/page';
 import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/hands-on/develop-your-gcp-network/constants';
+import { vi } from 'vitest';
+
+// MermaidDiagram コンポーネントをモック化
+vi.mock('@/components/MermaidDiagram', () => ({
+    MermaidDiagram: function DummyMermaidDiagram({ chart, preserveNaturalScale }: { chart: string; preserveNaturalScale?: boolean }) {
+        return <pre data-testid="mermaid" data-preserve-natural-scale={preserveNaturalScale ? 'true' : 'false'}>{chart}</pre>;
+    },
+}));
 
 describe('Develop Your Google Cloud Network ページ', () => {
     let container: HTMLElement;
@@ -90,6 +98,14 @@ describe('Develop Your Google Cloud Network ページ', () => {
         for (const id of REFERENCED_IDS) {
             expect(DIAGRAMS).toHaveProperty(id);
             expect(DIAGRAMS[id as keyof typeof DIAGRAMS]).toBeTruthy();
+        }
+    });
+
+    it('すべての MermaidDiagram に preserveNaturalScale が設定されていること', () => {
+        const mermaids = screen.getAllByTestId('mermaid');
+        expect(mermaids.length).toBe(14);
+        for (const el of mermaids) {
+            expect(el.getAttribute('data-preserve-natural-scale')).toBe('true');
         }
     });
 });
