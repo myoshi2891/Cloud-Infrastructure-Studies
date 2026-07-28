@@ -248,6 +248,12 @@ app/
         NavBar.tsx                  # ドメイン1サイドバーナビ
         constants.ts                # Mermaid 図定義（14図）
         page.css                    # ドメイン1ページ固有スタイル
+      domain2/
+        page.tsx                    # ドメイン2: 回復力のあるアーキテクチャの設計 (Server)
+        Domain2Guide.tsx            # ドメイン2本文＋インタラクション (Client)
+        NavBar.tsx                  # ドメイン2サイドバーナビ
+        constants.ts                # Mermaid 図定義（25図）
+        page.css                    # ドメイン2ページ固有スタイル
 
 components/
   Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要。検索フィルタ・active リンク判定 (usePathname)・最近見たページ表示を内包
