@@ -888,8 +888,8 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                         <div className="code-line">  <span className="code-comment">// ファイル名にすでに &quot;64x64_thumbnail&quot; が含まれていないかチェックする</span></div>
                         <div className="code-line">  <span className="code-comment">// → これは無限ループ（サムネイルからさらにサムネイルを作る）を防ぐガード</span></div>
                         <div className="code-line">  if (fileName.search(&quot;64x64_thumbnail&quot;) === -1) &#123;</div>
-                        <div className="code-line">    <span class="code-comment">// sharpでリサイズしてサムネイルを生成</span></div>
-                        <div className="code-line">    <span class="code-comment">// 生成後、Pub/Subトピックに完了メッセージを発行</span></div>
+                        <div className="code-line">  <span className="code-comment">// sharpでリサイズしてサムネイルを生成</span></div>
+                        <div className="code-line">  <span className="code-comment">// 生成後、Pub/Subトピックに完了メッセージを発行</span></div>
                         <div className="code-line">  &#125;</div>
                         <div className="code-line">&#125;);</div>
                     </div>
