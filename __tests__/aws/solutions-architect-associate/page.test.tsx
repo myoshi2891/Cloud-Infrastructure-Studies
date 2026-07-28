@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import SaaGuide from '@/app/aws/solutions-architect-associate/SaaGuide';
@@ -12,6 +13,8 @@ vi.mock('@/components/MermaidDiagram', () => ({
 describe('AWS Solutions Architect Associate Guide Page', () => {
     it('renders main title and structure correctly', () => {
         render(<SaaGuide />);
-        expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/AWS Certified Solutions Architect – Associate/i);
+        const h1Elements = screen.getAllByRole('heading', { level: 1 });
+        expect(h1Elements.length).toBeGreaterThan(0);
+        expect(h1Elements[0]).toHaveTextContent(/Solutions Architect – Associate \(SAA-C03\)/i);
     });
 });
