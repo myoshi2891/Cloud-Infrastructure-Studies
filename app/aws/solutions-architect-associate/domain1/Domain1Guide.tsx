@@ -5,6 +5,7 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
+/** Renders a labeled Mermaid diagram for the requested diagram identifier. */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -16,6 +17,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/** Renders the interactive SAA-C03 Domain 1 study guide. */
 export function Domain1Guide() {
     const [activeId, setActiveId] = useState<string>('overview');
     const [scrollProgress, setScrollProgress] = useState<number>(0);
@@ -59,6 +61,7 @@ export function Domain1Guide() {
         return () => observer.disconnect();
     }, []);
 
+    /** Copies a code sample and briefly marks its index as copied. */
     const copyCode = (text: string, index: number) => {
         navigator.clipboard.writeText(text);
         setCopiedIndex(index);
@@ -151,9 +154,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>区分</th>
-                                            <th>責任主体</th>
-                                            <th>具体的な管理対象</th>
+                                            <th scope="col">区分</th>
+                                            <th scope="col">責任主体</th>
+                                            <th scope="col">具体的な管理対象</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -183,9 +186,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>コンポーネント</th>
-                                            <th>用途・特徴</th>
-                                            <th>ベストプラクティス</th>
+                                            <th scope="col">コンポーネント</th>
+                                            <th scope="col">用途・特徴</th>
+                                            <th scope="col">ベストプラクティス</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -328,8 +331,8 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>概念・サービス</th>
-                                            <th>概要と試験対策上の重要点</th>
+                                            <th scope="col">概念・サービス</th>
+                                            <th scope="col">概要と試験対策上の重要点</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -357,9 +360,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>項目</th>
-                                            <th>アイデンティティベースポリシー</th>
-                                            <th>リソースベースポリシー</th>
+                                            <th scope="col">項目</th>
+                                            <th scope="col">アイデンティティベースポリシー</th>
+                                            <th scope="col">リソースベースポリシー</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -426,9 +429,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>比較項目</th>
-                                            <th>セキュリティグループ (Security Group)</th>
-                                            <th>ネットワーク ACL (Network ACL)</th>
+                                            <th scope="col">比較項目</th>
+                                            <th scope="col">セキュリティグループ (Security Group)</th>
+                                            <th scope="col">ネットワーク ACL (Network ACL)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -478,9 +481,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>サービス</th>
-                                            <th>対応レイヤー</th>
-                                            <th>防御対象・機能</th>
+                                            <th scope="col">サービス</th>
+                                            <th scope="col">対応レイヤー</th>
+                                            <th scope="col">防御対象・機能</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -531,9 +534,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>機能・項目</th>
-                                            <th>AWS Secrets Manager</th>
-                                            <th>Systems Manager Parameter Store (SSM)</th>
+                                            <th scope="col">機能・項目</th>
+                                            <th scope="col">AWS Secrets Manager</th>
+                                            <th scope="col">Systems Manager Parameter Store (SSM)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -563,9 +566,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>方式</th>
-                                            <th>メリット</th>
-                                            <th>デメリット・特徴</th>
+                                            <th scope="col">方式</th>
+                                            <th scope="col">メリット</th>
+                                            <th scope="col">デメリット・特徴</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -622,9 +625,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>キータイプ</th>
-                                            <th>管理者</th>
-                                            <th>ローテーション・特徴</th>
+                                            <th scope="col">キータイプ</th>
+                                            <th scope="col">管理者</th>
+                                            <th scope="col">ローテーション・特徴</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -740,9 +743,9 @@ export function Domain1Guide() {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>問題のキーワード</th>
-                                            <th>誤り（引っかけ肢）</th>
-                                            <th>正解の選択肢</th>
+                                            <th scope="col">問題のキーワード</th>
+                                            <th scope="col">誤り（引っかけ肢）</th>
+                                            <th scope="col">正解の選択肢</th>
                                         </tr>
                                     </thead>
                                     <tbody>
