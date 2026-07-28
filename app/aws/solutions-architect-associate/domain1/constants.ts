@@ -1,5 +1,6 @@
 export const DIAGRAMS: Record<string, string> = {
-    d01: `pie showData
+    d01: `%%{init: {'theme': 'dark', 'themeVariables': { 'pie1': '#7c9eff', 'pie2': '#f0b86e', 'pie3': '#7fd9a8', 'pie4': '#a9c1ff', 'pieTitleTextSize': '18px', 'pieSectionTextSize': '14px', 'pieLegendTextSize': '14px' }}}%%
+pie showData
     title AWS SAA-C03 試験ドメイン別配点比率
     "ドメイン1: セキュアなアーキテクチャの設計 (30%)" : 30
     "ドメイン2: 回復力のあるアーキテクチャの設計 (26%)" : 26

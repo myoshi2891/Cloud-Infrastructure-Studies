@@ -166,7 +166,7 @@
 /* Main Content */
 .aws-saa-domain1-page .main-content {
     margin-left: 300px;
-    max-width: 980px;
+    max-width: 100%;
     padding: 40px 48px 100px;
 }
 
@@ -342,24 +342,60 @@
     border-bottom: none;
 }
 
-/* Diagrams */
+/* Diagrams & 1rem Text Scaling (.claude/skills/fix-mermaid 準拠) */
 .aws-saa-domain1-page .diagram-container {
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 24px;
     margin: 24px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
 }
 .aws-saa-domain1-page .diagram-title {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-faint);
     margin-bottom: 16px;
     text-align: center;
     letter-spacing: 0.05em;
+}
+.aws-saa-domain1-page .mermaid {
+    display: flex;
+    justify-content: center;
+    width: min-content;
+    min-width: 100%;
+}
+
+/* 円グラフ (d01) の洗練されたダークテーマ配色カスタマイズ */
+.aws-saa-domain1-page .diagram-container svg .pieOuterShape:nth-of-type(1),
+.aws-saa-domain1-page .diagram-container svg .legend:nth-of-type(1) rect,
+.aws-saa-domain1-page .diagram-container svg g.slice:nth-of-type(1) path {
+    fill: #7c9eff !important;
+}
+.aws-saa-domain1-page .diagram-container svg .pieOuterShape:nth-of-type(2),
+.aws-saa-domain1-page .diagram-container svg .legend:nth-of-type(2) rect,
+.aws-saa-domain1-page .diagram-container svg g.slice:nth-of-type(2) path {
+    fill: #f0b86e !important;
+}
+.aws-saa-domain1-page .diagram-container svg .pieOuterShape:nth-of-type(3),
+.aws-saa-domain1-page .diagram-container svg .legend:nth-of-type(3) rect,
+.aws-saa-domain1-page .diagram-container svg g.slice:nth-of-type(3) path {
+    fill: #7fd9a8 !important;
+}
+.aws-saa-domain1-page .diagram-container svg .pieOuterShape:nth-of-type(4),
+.aws-saa-domain1-page .diagram-container svg .legend:nth-of-type(4) rect,
+.aws-saa-domain1-page .diagram-container svg g.slice:nth-of-type(4) path {
+    fill: #a9c1ff !important;
+}
+.aws-saa-domain1-page .diagram-container svg .pieTitleText {
+    fill: #dbe6f5 !important;
+    font-weight: 700;
+}
+.aws-saa-domain1-page .diagram-container svg .legend text {
+    fill: #dbe6f5 !important;
 }
 
 /* Code blocks */
