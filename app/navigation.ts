@@ -38,6 +38,7 @@ type NavExamInput = {
     domains: ReadonlyArray<{ label: string; href: string }>;
     provider?: Provider;
     status?: NavExam['status'];
+    overviewLabel?: string;
 };
 
 const PROVIDER_LABEL: Record<Provider, string> = {
@@ -72,7 +73,7 @@ export function toNavTree(exams: ReadonlyArray<NavExamInput>): NavGroup[] {
             // exam.href（概要）と同一 href の domain がある場合は重複を除去する。
             // 例: PCNE では domains[0] が exam.href と一致するため React key の衝突を防ぐ。
             items: [
-                { label: '概要', href: exam.href },
+                { label: exam.overviewLabel ?? '概要', href: exam.href },
                 ...exam.domains
                     .filter((d) => d.href !== exam.href)
                     .map((d) => ({ label: d.label, href: d.href })),

@@ -32,6 +32,8 @@ export interface Exam {
     provider: Provider;
     /** 'coming-soon' のときホームページでは非表示、ナビには「準備中」として表示 */
     status?: 'available' | 'coming-soon';
+    /** ナビゲーションの先頭概要リンクの表示名（未指定時は '概要'） */
+    overviewLabel?: string;
 }
 
 export const EXAMS: Exam[] = [
@@ -186,6 +188,7 @@ export const EXAMS: Exam[] = [
     {
         id: 'hands-on',
         label: 'Hands-on',
+        overviewLabel: 'IAP（Identity-Aware Proxy）TCP フォワーディング',
         abbr: 'Hands-on',
         level: 'Practical',
         score: 'ハンズオン解説',
