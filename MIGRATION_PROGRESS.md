@@ -23,6 +23,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 4 (Fix & Move)**: `fix: resolve className console error and move page to hands-on route` (`class=` を `className=` に精査・修正、`hands-on` ルートへ配置変更)
 - [x] **Step 5 (ESLint / SonarQube Error Fix)**: `fix: wrap JSX comment text nodes in template literals to resolve react/jsx-no-comment-textnodes and S6438 errors` (883, 888, 889, 891, 892行目の `//` テキストノードを `{`// ...`}` に全件置換しエラー全件解消)
 - [x] **Step 6 (Hamburger Menu Navigation Update)**: `feat: update hamburger menu item label to Hands-on in EXAMS constant` (`app/constants.ts` の GCP ハンズオンエントリ表示名を「Hands-on」へ変更、ドメイン一覧の追加、`globals.css` のスタイル定義更新)
+- [x] **Step 7 (Mermaid 1rem Text Scale Fix)**: `fix: adjust Mermaid diagram layout and styles to ensure 1rem text size` (`page.css` の `max-width: 100% !important` 強制縮小を解除、`.diagram-wrap` に `overflow-x: auto` を適用し、`preserveNaturalScale={true}` による 1rem 自然倍率文字表示を保証)
 
 ### 関連ファイル
 
