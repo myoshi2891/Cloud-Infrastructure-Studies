@@ -5,8 +5,8 @@ import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/hands-on/set-up-an-
 
 // MermaidDiagram コンポーネントをモック化
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: function DummyMermaidDiagram({ chart }: { chart: string }) {
-        return <pre data-testid="mermaid">{chart}</pre>;
+    MermaidDiagram: function DummyMermaidDiagram({ chart, preserveNaturalScale }: { chart: string; preserveNaturalScale?: boolean }) {
+        return <pre data-testid="mermaid" data-preserve-natural-scale={preserveNaturalScale ? 'true' : 'false'}>{chart}</pre>;
     },
 }));
 
@@ -68,6 +68,14 @@ describe('Google Cloud アプリ開発環境構築 完全ガイド ページ', (
     it('コードコメントテキストが正しく表示されること', () => {
         expect(screen.getByText(/\/\/ タスク3: コード内の要点/)).toBeInTheDocument();
         expect(screen.getByText(/\/\/ sharpでリサイズしてサムネイルを生成/)).toBeInTheDocument();
+    });
+
+    it('すべての MermaidDiagram に preserveNaturalScale が設定されていること', () => {
+        const mermaids = screen.getAllByTestId('mermaid');
+        expect(mermaids.length).toBe(14);
+        for (const el of mermaids) {
+            expect(el.getAttribute('data-preserve-natural-scale')).toBe('true');
+        }
     });
 });
 
