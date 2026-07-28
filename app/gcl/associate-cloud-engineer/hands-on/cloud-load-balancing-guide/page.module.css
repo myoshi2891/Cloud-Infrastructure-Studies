@@ -176,11 +176,11 @@
     background:
         radial-gradient(
             circle at 20% 50%,
-            rgba(0, 200, 255, 0.07),
+            color-mix(in srgb, var(--color-theme-ace-accent) 7%, transparent),
             transparent 60%
             ),
-            #080f1c;
-    border: 1px solid rgba(66, 133, 244, 0.2);
+            var(--color-guide-deep-background);
+    border: 1px solid rgb(var(--color-google-blue-rgb) / 0.2);
     border-radius: 16px;
     padding: 18px;
     position: relative;
@@ -211,19 +211,19 @@
 }
 
 .container :global(.vz-ingress) {
-    fill: #0d1b2a;
+    fill: var(--color-guide-node-background);
     stroke: var(--color-theme-ace-accent);
     stroke-width: 1.6;
 }
 
 .container :global(.vz-backend) {
-    fill: #0d1b2a;
-    stroke: #274460;
+    fill: var(--color-guide-node-background);
+    stroke: var(--color-guide-border-strong);
     stroke-width: 1.4;
 }
 
 .container :global(.vz-hc) {
-    fill: #0d1b2a;
+    fill: var(--color-guide-node-background);
     stroke: var(--color-google-green);
     stroke-width: 1.4;
     stroke-dasharray: 4 3;
@@ -231,7 +231,7 @@
 
 .container :global(.vz-wire) {
     fill: none;
-    stroke: #274460;
+    stroke: var(--color-guide-border-strong);
     stroke-width: 1.4;
 }
 
