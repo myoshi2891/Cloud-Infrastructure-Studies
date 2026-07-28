@@ -22,6 +22,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 3 (Refactor / Integration)**: `refactor: integrate GCP app dev environment guide into routing and update docs` (`app/constants.ts` EXAMSラベル調整、`CLAUDE.md` / `GEMINI.md` ドキュメント更新)
 - [x] **Step 4 (Fix & Move)**: `fix: resolve className console error and move page to hands-on route` (`class=` を `className=` に精査・修正、`hands-on` ルートへ配置変更)
 - [x] **Step 5 (ESLint / SonarQube Error Fix)**: `fix: wrap JSX comment text nodes in template literals to resolve react/jsx-no-comment-textnodes and S6438 errors` (883, 888, 889, 891, 892行目の `//` テキストノードを `{`// ...`}` に全件置換しエラー全件解消)
+- [x] **Step 6 (Hamburger Menu Navigation Update)**: `feat: update hamburger menu item label to Hands-on in EXAMS constant` (`app/constants.ts` の GCP ハンズオンエントリ表示名を「Hands-on」へ変更、ドメイン一覧の追加、`globals.css` のスタイル定義更新)
 
 ### 関連ファイル
 
