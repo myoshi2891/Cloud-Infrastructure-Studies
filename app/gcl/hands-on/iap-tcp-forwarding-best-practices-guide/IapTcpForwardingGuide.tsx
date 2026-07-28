@@ -118,6 +118,7 @@ export default function IapTcpForwardingGuide() {
                         <MermaidDiagram
                             chart={DIAGRAMS.architecture}
                             ariaLabel="IAP TCPフォワーディング全体アーキテクチャ図"
+                            preserveNaturalScale={true}
                         />
 
                         <ul>
@@ -340,6 +341,7 @@ export default function IapTcpForwardingGuide() {
                         <MermaidDiagram
                             chart={DIAGRAMS.firewall}
                             ariaLabel="ファイアウォールターゲット設計フロー図"
+                            preserveNaturalScale={true}
                         />
 
                         <div className="table-scroll">
@@ -407,6 +409,7 @@ export default function IapTcpForwardingGuide() {
                         <MermaidDiagram
                             chart={DIAGRAMS.iamSequence}
                             ariaLabel="IAMアクセス検証シーケンス図"
+                            preserveNaturalScale={true}
                         />
 
                         <p>
@@ -419,6 +422,7 @@ export default function IapTcpForwardingGuide() {
                         <MermaidDiagram
                             chart={DIAGRAMS.iamDesign}
                             ariaLabel="IAM権限設計フロー図"
+                            preserveNaturalScale={true}
                         />
 
                         <p>
@@ -539,6 +543,7 @@ export default function IapTcpForwardingGuide() {
                         <MermaidDiagram
                             chart={DIAGRAMS.rdpTunnel}
                             ariaLabel="gcloud RDPトンネル構築フロー図"
+                            preserveNaturalScale={true}
                         />
 
                         <blockquote>
@@ -680,6 +685,7 @@ export default function IapTcpForwardingGuide() {
                         <MermaidDiagram
                             chart={DIAGRAMS.troubleshooting}
                             ariaLabel="トラブルシューティング決定ツリー図"
+                            preserveNaturalScale={true}
                         />
 
                         <div className="table-scroll">
