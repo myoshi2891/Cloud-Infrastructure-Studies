@@ -204,6 +204,27 @@ export const EXAMS: Exam[] = [
         provider: 'GCP',
     },
     {
+        id: 'hands-on-iap-tcp-forwarding',
+        label: 'IAP TCP フォワーディング ガイド',
+        abbr: 'Hands-on',
+        level: 'Practical',
+        score: 'ハンズオン解説',
+        color: 'card-ace',
+        href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
+        description:
+            '外部IPなしのVMへ安全にSSH/RDP接続するIAP TCPフォワーディングの実践ベストプラクティスガイド。',
+        domains: [
+            {
+                label: 'IAP TCPフォワーディング ベストプラクティス',
+                href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
+                pct: 'ハンズオン',
+            },
+        ],
+        badge: 'ハンズオン',
+        icon: '🛠️',
+        provider: 'GCP',
+    },
+    {
         id: 'aws-saa',
         label: 'AWS Certified Solutions Architect – Associate',
         abbr: 'SAA',
