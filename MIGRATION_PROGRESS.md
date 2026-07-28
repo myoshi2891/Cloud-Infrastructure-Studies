@@ -21,6 +21,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA Domain 2 guide page` (`page.tsx`, `Domain2Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
 - [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(aws-saa): integrate Domain 2 into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
 - [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive Domain 2 HTML and MD files` (`MIGRATION_PROGRESS.md` の更新、元HTML `AWS-Certified-Solutions-Architect-Associate-Domain2.html` を `archive/Aws/SAA/html/` へ、MD を `archive/Aws/SAA/md/` へアーカイブ移動)
+- [x] **Step 5 (Pie Chart Refinement & Mermaid Syntax Fixes)**: `fix(aws-saa): refine pie chart palette and resolve mermaid syntax errors in domain 2` (円グラフ `m1` の `init` テーマ適用による配色最適化、`m16` の全角波ダッシュ `〜` 除外、`m5` シーケンス図のスラッシュ除去、`m3`/`m4`/`m17`/`m18`/`m20`/`m22` のエッジ記述クォート保護、`m23` の `&` ノード結合展開による `Syntax error in text` 解消)
 
 ### 関連ファイル
 
