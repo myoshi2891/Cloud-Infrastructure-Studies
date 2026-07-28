@@ -27,6 +27,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 8 (Consolidate All Hands-on Routes & Navigation)**: `refactor: consolidate hands-on guides into Hands-on navigation group` (`cloud-load-balancing-guide`, `develop-your-gcp-network`, `build-a-secure-google-cloud-network` を `hands-on/` 配下へ移動し、`app/constants.ts` の ACE グループから重複リンクを削除して `Hands-on` グループへ全5ガイドを完了集約)
 - [x] **Step 9 (Custom Overview Label Navigation Update)**: `feat: add custom overviewLabel support and set Hands-on overview item to IAP TCP Forwarding` (`app/navigation.ts` の `toNavTree` に `overviewLabel` オプションを追加し、`Hands-on` アコーディオンの先頭リンク名を「概要」から「IAP（Identity-Aware Proxy）TCP フォワーディング」へ変更)
 - [x] **Step 10 (Develop Your GCP Network 1rem Text Scale Fix)**: `fix: adjust Mermaid diagram layout and styles to ensure 1rem text size in develop-your-gcp-network` (`DevelopYourGcpNetworkGuide.tsx` に `preserveNaturalScale={true}` を明示し、`page.css` のスクロールとスタイルを調整して 14個の全Mermaid図の1rem自然文字倍率表示を保証)
+- [x] **Step 11 (Full Width Main Content Layout Expansion)**: `feat: expand main content layout to full width in develop-your-gcp-network` (`page.css` の `.shell` コンテナの `max-width` 制限を解除・100%へ拡張し、メインコンテンツを画面横幅いっぱいに拡大表示)
 
 ### 関連ファイル
 
