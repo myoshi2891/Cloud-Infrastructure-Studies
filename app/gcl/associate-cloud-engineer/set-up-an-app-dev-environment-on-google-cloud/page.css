@@ -1,281 +1,679 @@
+/* GCP App Dev Environment Complete Guide - Page Specific CSS */
+
 .app-dev-environment-page {
-  /* ---- twilight canvas ---- */
-  --bg:        var(--color-background, #08090f);
-  --bg-2:      #120e19;
-  --panel:     var(--color-card, #0e1117);
-  --panel-2:   #241c33;
-  --line:      var(--color-border, #1e2840);
-  --line-soft: rgba(169, 123, 255, 0.14);
+    --bg-deep: var(--color-background, #030712);
+    --bg-panel: #0a1020;
+    --bg-panel-2: #0f172a;
+    --border: rgba(148, 163, 184, 0.14);
+    --border-bright: rgba(148, 163, 184, 0.28);
+    --text-main: var(--color-foreground, #e6edf3);
+    --text-muted: var(--color-muted-foreground, #8b98ac);
+    --text-dim: #586178;
+    --neon-green: var(--color-google-green, #00ffa3);
+    --neon-cyan: #22d3ee;
+    --neon-purple: #a78bfa;
+    --neon-amber: var(--color-google-yellow, #fbbf24);
+    --neon-red: var(--color-google-red, #f87171);
+    --neon-blue: var(--color-google-blue, #4285f4);
 
-  /* ---- functional service colors ---- */
-  --storage:   var(--color-google-blue, #4285f4);  /* Cloud Storage  */
-  --iam:       var(--color-google-red, #ea4335);  /* Cloud IAM      */
-  --func:      var(--color-google-green, #34a853);  /* Cloud Functions*/
-  --pubsub:    var(--color-google-yellow, #fbbc05);  /* Pub/Sub        */
-  --violet:    var(--color-theme-genai-fg, #a97bff);  /* Challenge / accent */
-
-  --text:      var(--color-foreground, #e2e8f0);
-  --muted:     var(--color-muted-foreground, #94a3b8);
-  --muted-2:   #7c6f96;
-
-  --font-disp: var(--font-display), sans-serif;
-  --font-jp:   var(--font-body), sans-serif;
-
-  --maxw: 1000px;
-  --r: 14px;
-
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(900px 520px at 88% -8%, rgba(169,123,255,0.13), transparent 60%),
-    radial-gradient(700px 480px at -6% 4%, rgba(91,157,255,0.09), transparent 60%);
-  color: var(--text);
-  font-family: var(--font-body);
-  line-height: 1.85;
-  -webkit-font-smoothing: antialiased;
-  letter-spacing: 0.01em;
-  min-height: 100vh;
+    background: var(--bg-deep);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    line-height: 1.75;
+    position: relative;
+    overflow-x: hidden;
+    padding-bottom: 60px;
 }
 
-.app-dev-environment-page * { box-sizing: border-box; }
-
-.app-dev-environment-page a { color: var(--violet); text-decoration: none; }
-.app-dev-environment-page a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.app-dev-environment-page ::selection { background: rgba(169,123,255,0.34); color: #fff; }
-.app-dev-environment-page :focus-visible { outline: 2px solid var(--pubsub); outline-offset: 3px; border-radius: 4px; }
-
-/* ---------- Layout shell ---------- */
-.app-dev-environment-page .shell {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-  width: 100%;
-  padding: 0 clamp(1rem, 4vw, 2.4rem);
+.app-dev-environment-page a {
+    color: var(--neon-cyan);
+    text-decoration: none;
 }
 
-/* ---------- Sidebar TOC (NavBar) ---------- */
-.app-dev-environment-page .rail-wrap {
-  position: fixed;
-  left: clamp(1rem, 4vw, 2.4rem);
-  top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
-  width: 250px;
-  height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px) - 48px);
-  overflow-y: auto;
-  border-right: 1px solid var(--line);
-  padding: 1.6rem 0.4rem 2rem 0;
-  z-index: 40;
-  scrollbar-width: none;
-}
-.app-dev-environment-page .rail-wrap::-webkit-scrollbar {
-  display: none;
+.app-dev-environment-page a:hover {
+    text-decoration: underline;
 }
 
-.app-dev-environment-page .rail-title {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted-2);
-  margin: 0 0 0.9rem 0.2rem;
+.app-dev-environment-page h1,
+.app-dev-environment-page h2,
+.app-dev-environment-page h3,
+.app-dev-environment-page h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: #fff;
+    margin: 0 0 0.5em;
 }
 
-.app-dev-environment-page .rail { counter-reset: toc; list-style: none; margin: 0; padding: 0; }
-.app-dev-environment-page .rail a {
-  display: flex; gap: 0.7rem; align-items: baseline;
-  padding: 0.42rem 0.5rem; border-radius: 8px;
-  color: var(--muted); line-height: 1.4; border-left: 2px solid transparent;
-  counter-increment: toc;
+.app-dev-environment-page code {
+    font-family: var(--font-mono);
 }
-.app-dev-environment-page .rail a::before {
-  content: counter(toc, decimal-leading-zero);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--muted-2);
-  flex: none;
-}
-.app-dev-environment-page .rail a:hover { color: var(--text); background: rgba(169,123,255,0.08); text-decoration: none; }
-.app-dev-environment-page .rail a.active { color: var(--text); background: rgba(169,123,255,0.12); border-left-color: var(--violet); }
-.app-dev-environment-page .rail a.active::before { color: var(--violet); }
 
-/* ---------- Main ---------- */
-.app-dev-environment-page main {
-  padding-bottom: 6rem;
-  min-width: 0;
-  grid-column: 2;
+/* ---------- STICKY SUB-NAVBAR ---------- */
+.app-dev-environment-page .sub-navbar {
+    position: sticky;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    z-index: 40;
+    background: rgba(3, 7, 18, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
 }
+
+.app-dev-environment-page .sub-navbar::-webkit-scrollbar {
+    height: 4px;
+}
+
+.app-dev-environment-page .sub-navbar::-webkit-scrollbar-thumb {
+    background: var(--neon-cyan);
+}
+
+.app-dev-environment-page .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 12px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-dev-environment-page .nav-brand {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--neon-green);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding-right: 14px;
+    border-right: 1px solid var(--border);
+}
+
+.app-dev-environment-page .nav-links {
+    display: flex;
+    gap: 16px;
+}
+
+.app-dev-environment-page .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.app-dev-environment-page .nav-links a:hover,
+.app-dev-environment-page .nav-links a.active {
+    color: var(--neon-cyan);
+    background: rgba(34, 211, 238, 0.08);
+    text-decoration: none;
+}
+
+/* ---------- LAYOUT ---------- */
 .app-dev-environment-page .wrap {
-  width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 2;
 }
 
-/* ---------- Hero ---------- */
-.app-dev-environment-page .hero { padding: clamp(2.6rem, 8vw, 5rem) 0 2rem; }
-.app-dev-environment-page .hero__eyebrow {
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  font-family: var(--font-mono); font-size: 0.74rem;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--violet); margin-bottom: 1.4rem;
-}
-.app-dev-environment-page .hero__eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--violet); }
-.app-dev-environment-page .hero h1 {
-  font-family: var(--font-disp); font-weight: 800;
-  font-size: clamp(2.1rem, 6vw, 3.8rem);
-  line-height: 1.14; letter-spacing: -0.02em; margin: 0 0 1.1rem;
-}
-.app-dev-environment-page .hero h1 .g1 { color: var(--storage); }
-.app-dev-environment-page .hero h1 .g2 { color: var(--iam); }
-.app-dev-environment-page .hero h1 .g3 { color: var(--func); }
-.app-dev-environment-page .hero h1 .g4 { color: var(--pubsub); }
-.app-dev-environment-page .hero__lead { font-family: var(--font-jp); font-size: clamp(1rem, 2.2vw, 1.18rem); color: var(--muted); max-width: 62ch; margin: 0 0 2rem; font-weight: 500; }
-.app-dev-environment-page .hero__meta { display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted-2); }
-.app-dev-environment-page .hero__meta b { color: var(--pubsub); font-weight: 500; }
-
-/* ---------- Signature: the pipeline rail ---------- */
-.app-dev-environment-page .rail-flow {
-  margin-top: 2.8rem;
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
-  border: 1px solid var(--line); border-radius: var(--r);
-  background: linear-gradient(180deg, var(--panel), var(--bg-2));
-  overflow: hidden;
-}
-.app-dev-environment-page .rail__stop {
-  position: relative; padding: 1.3rem 1rem 1.2rem;
-  border-right: 1px solid var(--line);
-}
-.app-dev-environment-page .rail__stop:last-child { border-right: none; }
-.app-dev-environment-page .rail__stop::before {
-  content: ""; position: absolute; left: 1rem; top: 2.55rem; right: -1px; height: 2px;
-  background: var(--c); opacity: 0.5;
-}
-.app-dev-environment-page .rail__stop:last-child::before { right: 1rem; }
-.app-dev-environment-page .rail__num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted-2); }
-.app-dev-environment-page .rail__node { width: 13px; height: 13px; border-radius: 50%; background: var(--c); margin: 0.5rem 0 0.7rem; box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent), 0 0 16px var(--c); }
-.app-dev-environment-page .rail__name { font-family: var(--font-disp); font-weight: 700; font-size: 0.98rem; color: var(--text); }
-.app-dev-environment-page .rail__role { font-family: var(--font-jp); font-size: 0.76rem; color: var(--muted); margin-top: 0.25rem; }
-.app-dev-environment-page .rail-flow .s1 { --c: var(--storage); }
-.app-dev-environment-page .rail-flow .s2 { --c: var(--iam); }
-.app-dev-environment-page .rail-flow .s3 { --c: var(--func); }
-.app-dev-environment-page .rail-flow .s4 { --c: var(--pubsub); }
-.app-dev-environment-page .rail-flow .s5 { --c: var(--violet); }
-
-/* ---------- Section station headers ---------- */
 .app-dev-environment-page section {
-  padding-top: 2.4rem;
-  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
+    padding: 72px 0;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 60px);
 }
-.app-dev-environment-page .station { display: flex; align-items: center; gap: 1rem; margin: 2.4rem 0 1.4rem; }
-.app-dev-environment-page .station__no {
-  font-family: var(--font-mono); font-weight: 700; font-size: 2.1rem; line-height: 1;
-  color: var(--c, var(--violet)); flex: none; min-width: 2.6ch;
-  text-shadow: 0 0 22px color-mix(in srgb, var(--c, var(--violet)) 40%, transparent);
+
+.app-dev-environment-page section:last-of-type {
+    border-bottom: none;
 }
-.app-dev-environment-page .station__body { min-width: 0; }
-.app-dev-environment-page .station__kicker { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-2); }
-.app-dev-environment-page .station h2 { font-family: var(--font-disp); font-weight: 700; font-size: clamp(1.5rem, 3.6vw, 2.05rem); line-height: 1.2; margin: 0.15rem 0 0; letter-spacing: -0.01em; }
-.app-dev-environment-page .station__chip { width: 11px; height: 11px; border-radius: 3px; background: var(--c, var(--violet)); display: inline-block; margin-right: 0.5rem; vertical-align: middle; box-shadow: 0 0 12px var(--c, var(--violet)); }
-.app-dev-environment-page .sec-storage { --c: var(--storage); }
-.app-dev-environment-page .sec-iam { --c: var(--iam); }
-.app-dev-environment-page .sec-func { --c: var(--func); }
-.app-dev-environment-page .sec-pubsub { --c: var(--pubsub); }
-.app-dev-environment-page .sec-violet { --c: var(--violet); }
 
-.app-dev-environment-page h3 { font-family: var(--font-jp); font-weight: 700; font-size: 1.14rem; margin: 2rem 0 0.7rem; color: var(--text); }
-.app-dev-environment-page h3 .mk { color: var(--c, var(--violet)); font-family: var(--font-mono); font-size: 0.85rem; margin-right: 0.5rem; }
-.app-dev-environment-page p { margin: 0.8rem 0; color: var(--muted); }
-.app-dev-environment-page strong { color: var(--text); font-weight: 700; }
-.app-dev-environment-page section p code,
-.app-dev-environment-page li code,
-.app-dev-environment-page td code { font-family: var(--font-mono); font-size: 0.85em; background: rgba(169,123,255,0.12); color: #ddc9ff; padding: 0.12em 0.42em; border-radius: 5px; }
-
-.app-dev-environment-page ul,
-.app-dev-environment-page ol { color: var(--muted); padding-left: 1.3rem; }
-.app-dev-environment-page li { margin: 0.35rem 0; }
-.app-dev-environment-page ul li::marker { color: var(--c, var(--violet)); }
-
-/* ---------- Callouts ---------- */
-.app-dev-environment-page .note {
-  display: flex; gap: 0.8rem; align-items: flex-start;
-  border: 1px solid var(--line); border-left: 3px solid var(--c, var(--violet));
-  background: color-mix(in srgb, var(--c, var(--violet)) 7%, var(--panel));
-  border-radius: 10px; padding: 0.9rem 1.1rem; margin: 1.3rem 0;
-  font-family: var(--font-jp); font-size: 0.92rem; color: var(--muted);
+/* ---------- HERO ---------- */
+.app-dev-environment-page .hero {
+    padding: 64px 0 48px;
+    text-align: left;
+    position: relative;
 }
-.app-dev-environment-page .note b { color: var(--text); }
-.app-dev-environment-page .note__ico { font-family: var(--font-mono); font-weight: 700; color: var(--c, var(--violet)); flex: none; }
 
-/* ---------- Tables ---------- */
-.app-dev-environment-page .tbl-wrap { overflow-x: auto; margin: 1.3rem 0; border: 1px solid var(--line); border-radius: 12px; }
-.app-dev-environment-page table { border-collapse: collapse; width: 100%; font-size: 0.88rem; min-width: 520px; }
-.app-dev-environment-page thead th { background: var(--panel-2); color: var(--text); font-family: var(--font-disp); font-weight: 600; text-align: left; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
-.app-dev-environment-page tbody td { padding: 0.68rem 0.9rem; border-bottom: 1px solid var(--line); color: var(--muted); vertical-align: top; }
-.app-dev-environment-page tbody tr:last-child td { border-bottom: none; }
-.app-dev-environment-page tbody tr:nth-child(even) { background: rgba(255,255,255,0.014); }
-.app-dev-environment-page .ok { color: var(--func); font-weight: 700; }
-.app-dev-environment-page .ng { color: var(--iam); font-weight: 700; }
-.app-dev-environment-page td .lead { color: var(--text); font-weight: 500; }
-
-/* ---------- Code blocks ---------- */
-.app-dev-environment-page .code {
-  position: relative; margin: 1.2rem 0;
-  border: 1px solid var(--line); border-radius: 12px;
-  background: var(--bg-2); overflow: hidden;
+.app-dev-environment-page .hero-eyebrow {
+    font-family: var(--font-mono);
+    color: var(--neon-green);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
 }
-.app-dev-environment-page .code__bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--line); background: var(--panel); }
-.app-dev-environment-page .code__bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--muted-2); opacity: 0.5; }
-.app-dev-environment-page .code__lang { margin-left: auto; font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted-2); letter-spacing: 0.05em; text-transform: uppercase; }
-.app-dev-environment-page .code pre { margin: 0; padding: 1rem 1.1rem; overflow-x: auto; }
-.app-dev-environment-page .code code { font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.75; color: #d7ccec; white-space: pre; }
-.app-dev-environment-page .code .cm { color: var(--muted-2); }
-.app-dev-environment-page .code .kw { color: var(--pubsub); }
-.app-dev-environment-page .code .st { color: var(--func); }
-.app-dev-environment-page .code .vr { color: var(--storage); }
 
-/* ---------- Diagram ---------- */
-.app-dev-environment-page .diagram { margin: 1.4rem 0; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-2); padding: 1.2rem; overflow-x: auto; }
-.app-dev-environment-page .diagram__cap { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted-2); letter-spacing: 0.04em; margin: 0 0 0.7rem; }
-
-/* Mermaid sizing and alignment */
-.app-dev-environment-page .mermaid {
-  display: block;
-  width: 100%;
+.app-dev-environment-page .hero h1 {
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    margin-top: 14px;
+    background: linear-gradient(
+        120deg,
+        #fff 30%,
+        var(--neon-cyan) 65%,
+        var(--neon-green) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
-.app-dev-environment-page .mermaid > div {
-  width: 100%;
+
+.app-dev-environment-page .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 720px;
+    margin-top: 18px;
 }
-.app-dev-environment-page .mermaid svg {
-  display: block;
-  margin: 0 auto;
-  max-width: 100% !important;
-  height: auto !important;
-  overflow: visible;
+
+.app-dev-environment-page .hero-meta-table {
+    margin-top: 36px;
 }
-.app-dev-environment-page .mermaid-target foreignObject { overflow: visible; }
-.app-dev-environment-page .mermaid-target foreignObject > div,
-.app-dev-environment-page .mermaid-target .nodeLabel,
-.app-dev-environment-page .mermaid-target .edgeLabel { overflow: visible; }
-.app-dev-environment-page .mermaid-target .node .nodeLabel,
-.app-dev-environment-page .mermaid-target .node .nodeLabel * { color: #ffffff !important; }
 
-/* ---------- Divider ---------- */
-.app-dev-environment-page .rule { height: 1px; background: linear-gradient(90deg, var(--line), transparent); border: none; margin: 3.2rem 0 0; }
+.app-dev-environment-page .pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neon-green);
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--neon-green);
+}
 
-/* ---------- Source list ---------- */
-.app-dev-environment-page .src-group { margin: 1.4rem 0; }
-.app-dev-environment-page .src-group h4 { font-family: var(--font-disp); font-weight: 600; font-size: 0.95rem; color: var(--text); margin: 1.3rem 0 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-.app-dev-environment-page .src-group h4 .dot { width: 9px; height: 9px; border-radius: 3px; }
-.app-dev-environment-page .src-list { list-style: none; padding: 0; margin: 0; }
-.app-dev-environment-page .src-list li { margin: 0.3rem 0; padding-left: 1rem; position: relative; word-break: break-all; }
-.app-dev-environment-page .src-list li::before { content: "↳"; position: absolute; left: 0; color: var(--muted-2); font-family: var(--font-mono); }
-.app-dev-environment-page .src-list a { color: var(--muted); font-family: var(--font-mono); font-size: 0.8rem; }
-.app-dev-environment-page .src-list a:hover { color: var(--violet); }
+/* ---------- TOC ---------- */
+.app-dev-environment-page .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
 
-/* ---------- Footer ---------- */
-.app-dev-environment-page footer { border-top: 1px solid var(--line); margin-top: 4rem; padding: 2.2rem 0 1rem; }
-.app-dev-environment-page footer p { font-family: var(--font-jp); font-size: 0.82rem; color: var(--muted-2); max-width: 70ch; }
+.app-dev-environment-page .toc-item {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: 0.25s;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
 
-/* ---------- Responsive ---------- */
+.app-dev-environment-page .toc-item:hover {
+    border-color: var(--neon-cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.12);
+}
+
+.app-dev-environment-page .toc-num {
+    font-family: var(--font-mono);
+    color: var(--neon-cyan);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.app-dev-environment-page .toc-item a {
+    color: var(--text-main);
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+/* ---------- CHAPTER HEADERS ---------- */
+.app-dev-environment-page .chapter-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.app-dev-environment-page .chapter-num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--bg-deep);
+    background: var(--neon-green);
+    padding: 6px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+}
+
+.app-dev-environment-page .chapter-head h2 {
+    margin: 0;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.app-dev-environment-page .chapter-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 6px;
+    max-width: 760px;
+}
+
+.app-dev-environment-page h3.subhead {
+    font-size: 1.08rem;
+    color: var(--neon-cyan);
+    margin-top: 40px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-left: 3px solid var(--neon-cyan);
+    padding-left: 12px;
+}
+
+/* ---------- TABLES ---------- */
+.app-dev-environment-page .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-panel);
+}
+
+.app-dev-environment-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 480px;
+}
+
+.app-dev-environment-page thead th {
+    background: var(--bg-panel-2);
+    color: var(--neon-green);
+    font-family: var(--font-mono);
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-bright);
+}
+
+.app-dev-environment-page tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    vertical-align: top;
+}
+
+.app-dev-environment-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.app-dev-environment-page tbody tr:hover {
+    background: rgba(34, 211, 238, 0.04);
+}
+
+.app-dev-environment-page td code,
+.app-dev-environment-page th code {
+    color: var(--neon-cyan);
+    background: rgba(34, 211, 238, 0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.86em;
+}
+
+/* ---------- CODE BLOCK ---------- */
+.app-dev-environment-page .code-block {
+    background: #050a14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin: 20px 0;
+    overflow-x: auto;
+    position: relative;
+}
+
+.app-dev-environment-page .code-block::before {
+    content: '● ● ●';
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.app-dev-environment-page .code-block pre {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: #c9e8ff;
+    white-space: pre;
+}
+
+.app-dev-environment-page .code-line {
+    white-space: pre;
+}
+
+.app-dev-environment-page .code-comment {
+    color: var(--text-dim);
+}
+
+.app-dev-environment-page .code-green {
+    color: var(--neon-green);
+}
+
+/* ---------- CALLOUTS / ALERTS ---------- */
+.app-dev-environment-page .callout {
+    border-left: 4px solid var(--neon-cyan);
+    background: rgba(34, 211, 238, 0.06);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 22px 0;
+    font-size: 0.92rem;
+}
+
+.app-dev-environment-page .callout-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.app-dev-environment-page .callout.info {
+    border-color: var(--neon-cyan);
+    background: rgba(34, 211, 238, 0.06);
+}
+
+.app-dev-environment-page .callout.info .callout-label {
+    color: var(--neon-cyan);
+}
+
+.app-dev-environment-page .callout.warning {
+    border-color: var(--neon-amber);
+    background: rgba(251, 191, 36, 0.06);
+}
+
+.app-dev-environment-page .callout.warning .callout-label {
+    color: var(--neon-amber);
+}
+
+.app-dev-environment-page .callout.danger {
+    border-color: var(--neon-red);
+    background: rgba(248, 113, 113, 0.07);
+}
+
+.app-dev-environment-page .callout.danger .callout-label {
+    color: var(--neon-red);
+}
+
+.app-dev-environment-page .callout.tip {
+    border-color: var(--neon-green);
+    background: rgba(0, 255, 163, 0.06);
+}
+
+.app-dev-environment-page .callout.tip .callout-label {
+    color: var(--neon-green);
+}
+
+/* ---------- GOOD / BAD ---------- */
+.app-dev-environment-page .gb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 22px 0;
+}
+
+.app-dev-environment-page .gb-card {
+    border-radius: 10px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+}
+
+.app-dev-environment-page .gb-card.good {
+    background: rgba(0, 255, 163, 0.05);
+    border-color: rgba(0, 255, 163, 0.3);
+}
+
+.app-dev-environment-page .gb-card.bad {
+    background: rgba(248, 113, 113, 0.05);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+
+.app-dev-environment-page .gb-title {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.app-dev-environment-page .gb-card.good .gb-title {
+    color: var(--neon-green);
+}
+
+.app-dev-environment-page .gb-card.bad .gb-title {
+    color: var(--neon-red);
+}
+
+/* ---------- MERMAID WRAP ---------- */
+.app-dev-environment-page .diagram-wrap {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 26px;
+    margin: 24px 0;
+    overflow-x: auto;
+}
+
+.app-dev-environment-page .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.app-dev-environment-page .mermaid-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.app-dev-environment-page .mermaid-wrap svg {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* ---------- METRIC GRID ---------- */
+.app-dev-environment-page .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.app-dev-environment-page .metric-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    transition: 0.25s;
+}
+
+.app-dev-environment-page .metric-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--neon-green);
+}
+
+.app-dev-environment-page .metric-val {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--neon-green);
+}
+
+.app-dev-environment-page .metric-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    margin-top: 4px;
+}
+
+/* ---------- REF GRID ---------- */
+.app-dev-environment-page .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.app-dev-environment-page .ref-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: 0.25s;
+}
+
+.app-dev-environment-page .ref-card:hover {
+    border-color: var(--neon-purple);
+    transform: translateX(4px);
+}
+
+.app-dev-environment-page .ref-cat {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--neon-purple);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.app-dev-environment-page .ref-title {
+    font-size: 0.9rem;
+    margin: 6px 0 4px;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.app-dev-environment-page .ref-url {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--neon-cyan);
+    word-break: break-all;
+}
+
+/* ---------- ARCH LAYERS ---------- */
+.app-dev-environment-page .arch-layers {
+    margin: 22px 0;
+    border-left: 2px solid var(--border-bright);
+    padding-left: 0;
+}
+
+.app-dev-environment-page .arch-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0 14px 20px;
+    border-left: 3px solid var(--neon-blue);
+    margin-left: -2px;
+    position: relative;
+}
+
+.app-dev-environment-page .arch-row + .arch-row {
+    border-top: 1px dashed var(--border);
+}
+
+.app-dev-environment-page .arch-row .arch-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #fff;
+    background: var(--neon-blue);
+    padding: 3px 10px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+.app-dev-environment-page .arch-row.storage {
+    border-color: var(--neon-blue);
+}
+
+.app-dev-environment-page .arch-row.storage .arch-tag {
+    background: var(--neon-blue);
+}
+
+.app-dev-environment-page .arch-row.iam {
+    border-color: var(--neon-red);
+}
+
+.app-dev-environment-page .arch-row.iam .arch-tag {
+    background: var(--neon-red);
+    color: #1a0505;
+}
+
+.app-dev-environment-page .arch-row.monitor {
+    border-color: var(--neon-amber);
+}
+
+.app-dev-environment-page .arch-row.monitor .arch-tag {
+    background: var(--neon-amber);
+    color: #1a1204;
+}
+
+.app-dev-environment-page .arch-row.func {
+    border-color: var(--neon-green);
+}
+
+.app-dev-environment-page .arch-row.func .arch-tag {
+    background: var(--neon-green);
+    color: #04180f;
+}
+
+.app-dev-environment-page .arch-row.pubsub {
+    border-color: var(--neon-purple);
+}
+
+.app-dev-environment-page .arch-row.pubsub .arch-tag {
+    background: var(--neon-purple);
+    color: #12081f;
+}
+
+.app-dev-environment-page .arch-row p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ---------- FOOTER ---------- */
+.app-dev-environment-page footer {
+    padding: 50px 0 30px;
+    text-align: center;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+}
+
+/* ---------- RESPONSIVE ---------- */
 @media (max-width: 900px) {
-  .app-dev-environment-page .shell { grid-template-columns: 1fr; }
-  .app-dev-environment-page .rail-wrap { display: none; }
-  .app-dev-environment-page .rail__stop::before { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .app-dev-environment-page * { animation: none !important; transition: none !important; }
+    .app-dev-environment-page .toc-grid {
+        grid-template-columns: 1fr;
+    }
+    .app-dev-environment-page .metric-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .app-dev-environment-page .ref-grid {
+        grid-template-columns: 1fr;
+    }
+    .app-dev-environment-page .gb-grid {
+        grid-template-columns: 1fr;
+    }
+    .app-dev-environment-page .hero {
+        padding: 48px 0 36px;
+    }
+    .app-dev-environment-page section {
+        padding: 52px 0;
+    }
 }

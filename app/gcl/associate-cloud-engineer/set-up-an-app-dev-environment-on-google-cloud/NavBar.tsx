@@ -1,80 +1,65 @@
 'use client';
 
-/**
- * Set Up an App Dev Environment ページ専用サイドレール NavBar。
- * セクションリンクと IntersectionObserver による scroll-spy を提供する。
- */
+import { useState, useEffect } from 'react';
 
-import { useEffect, useRef } from 'react';
+const NAV_ITEMS = [
+    { id: 'overview', label: '概要' },
+    { id: 'architecture', label: '全体像' },
+    { id: 'storage', label: 'Storage' },
+    { id: 'iam', label: 'IAM' },
+    { id: 'monitoring', label: 'Monitoring' },
+    { id: 'functions', label: 'Functions' },
+    { id: 'pubsub', label: 'Pub/Sub' },
+    { id: 'challenge', label: 'Challenge Lab' },
+    { id: 'practices', label: '早見表' },
+    { id: 'troubleshoot', label: 'トラブル対応' },
+    { id: 'refs', label: '参考ソース' },
+];
 
-/** サイドレールセクションリスト */
-const SECTIONS = [
-    { id: 's1', name: 'このガイドについて' },
-    { id: 's2', name: '全体像とパス' },
-    { id: 's3', name: 'Cloud Storage' },
-    { id: 's4', name: 'Cloud IAM' },
-    { id: 's5', name: 'Cloud Functions' },
-    { id: 's6', name: 'Pub/Sub' },
-    { id: 's7', name: 'Challenge Lab' },
-    { id: 's8', name: 'ベストプラクティス' },
-    { id: 's9', name: 'トラブルシューティング' },
-    { id: 's10', name: '参考ソース一覧' },
-] as const;
-
-/**
- * Renders the page's side navigation and highlights the section currently in view.
- */
 export default function NavBar() {
-    const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
+    const [activeId, setActiveId] = useState<string>('overview');
 
     useEffect(() => {
         if (typeof IntersectionObserver === 'undefined') return;
 
-        const observerTargets = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
-        const links = linkRefs.current;
-
-        const activate = (id: string) => {
-            links.forEach((el) => el.classList.remove('active'));
-            const target = links.get(id);
-            if (target) target.classList.add('active');
-        };
-
-        const obs = new IntersectionObserver(
+        const observer = new IntersectionObserver(
             (entries) => {
-                entries.forEach((e) => {
-                    if (e.isIntersecting) {
-                        activate(e.target.id);
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveId(entry.target.id);
                     }
                 });
             },
-            { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+            {
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0,
+            }
         );
 
-        observerTargets.forEach((s) => obs.observe(s));
+        NAV_ITEMS.forEach((item) => {
+            const el = document.getElementById(item.id);
+            if (el) observer.observe(el);
+        });
 
-        return () => {
-            obs.disconnect();
-        };
+        return () => observer.disconnect();
     }, []);
 
     return (
-        <aside className="rail-wrap">
-            <nav className="rail" aria-label="セクションナビゲーション">
-                <p className="rail-title">Contents</p>
-                {SECTIONS.map((sec) => (
-                    <a
-                        key={sec.id}
-                        href={`#${sec.id}`}
-                        className="hop"
-                        ref={(el) => {
-                            if (el) linkRefs.current.set(sec.id, el);
-                            else linkRefs.current.delete(sec.id);
-                        }}
-                    >
-                        <span className="h-name">{sec.name}</span>
-                    </a>
-                ))}
-            </nav>
-        </aside>
+        <nav className="sub-navbar" aria-label="セクションナビゲーション">
+            <div className="nav-inner">
+                <span className="nav-brand">GCP // App Dev Guide</span>
+                <div className="nav-links">
+                    {NAV_ITEMS.map((item) => (
+                        <a
+                            key={item.id}
+                            href={`#${item.id}`}
+                            className={activeId === item.id ? 'active' : ''}
+                        >
+                            {item.label}
+                        </a>
+                    ))}
+                </div>
+            </div>
+        </nav>
     );
 }

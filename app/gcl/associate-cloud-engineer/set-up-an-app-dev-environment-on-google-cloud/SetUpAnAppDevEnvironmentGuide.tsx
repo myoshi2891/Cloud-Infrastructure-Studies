@@ -4,672 +4,1415 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import NavBar from './NavBar';
 
-/**
- * Set Up an App Dev Environment on Google Cloud ガイドのクライアントコンポーネント。
- * 本文マークアップ、各セクションのコンテンツ、Mermaid図のレンダリングを含む。
- */
+function Diagram({ id, label }: { id: string; label: string }) {
+    const chart = DIAGRAMS[id];
+    if (!chart) return null;
+    return (
+        <div className="mermaid-wrap">
+            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
+        </div>
+    );
+}
+
 export default function SetUpAnAppDevEnvironmentGuide() {
     return (
         <div className="app-dev-environment-page">
-            <div className="shell">
-                <NavBar />
+            <NavBar />
 
-                {/* ===================== Main ===================== */}
-                <main>
-                    <div className="wrap">
-                        {/* ===================== Hero ===================== */}
-                        <header className="hero">
-                            <span className="hero__eyebrow">Google Cloud · ハンズオン学習ガイド</span>
-                            <h1>4つのサービスを繋いで<br /><span className="g1">保存</span>・<span className="g2">権限</span>・<span className="g3">処理</span>・<span className="g4">通知</span>を<br />ひとつのパイプラインにする。</h1>
-                            <p className="hero__lead">
-                                写真管理アプリ「Memories」を題材に、Cloud Storage・IAM・Cloud Functions・Pub/Sub を組み合わせた
-                                <strong>イベント駆動サーバーレス環境</strong>をゼロから構築します。各サービスを「定義 → なぜ使うか → 具体例 → コード → ベストプラクティス」の順で解説し、最後に Challenge Lab（GSP315）で統合します。
-                            </p>
-                            <div className="hero__meta">
-                                <span>対象：<b>初学者〜ジュニアエンジニア</b></span>
-                                <span>学習時間：<b>約1時間15分＋Lab 1時間</b></span>
-                                <span>最終更新：<b>2026-07-01</b></span>
-                            </div>
-
-                            {/* Signature: pipeline rail */}
-                            <div className="rail-flow" role="img" aria-label="学習パイプライン：Cloud Storage、IAM、Cloud Functions、Pub/Sub、Challenge Lab の5ステージ">
-                                <div className="rail__stop s1"><div className="rail__num">01</div><span className="rail__node"></span><div className="rail__name">Cloud Storage</div><div className="rail__role">データの置き場</div></div>
-                                <div className="rail__stop s2"><div className="rail__num">02</div><span className="rail__node"></span><div className="rail__name">Cloud IAM</div><div className="rail__role">アクセス制御</div></div>
-                                <div className="rail__stop s3"><div className="rail__num">03</div><span className="rail__node"></span><div className="rail__name">Functions</div><div className="rail__role">イベント処理</div></div>
-                                <div className="rail__stop s4"><div className="rail__num">04</div><span className="rail__node"></span><div className="rail__name">Pub/Sub</div><div className="rail__role">非同期通知</div></div>
-                                <div className="rail__stop s5"><div className="rail__num">05</div><span className="rail__node"></span><div className="rail__name">Challenge</div><div className="rail__role">GSP315 統合</div></div>
-                            </div>
-                        </header>
-
-                        {/* ===================== 1. About ===================== */}
-                        <section id="s1" className="sec-violet">
-                            <div className="station">
-                                <div className="station__no">01</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Orientation</span>
-                                    <h2><span className="station__chip"></span>このガイドについて</h2>
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">1.1</span>スコープに関する注記</h3>
-                            <p>
-                                Google Skills（旧 Google Cloud Skills Boost）の個別ラボページは、受講登録済みアカウントでのサインインが必須のため、ラボ ID 単位（<code>/labs/592541</code> 〜 <code>/labs/592550</code>）での本文取得はできません。そのため本ガイドは、以下の情報源を根拠として再構成しています。
-                            </p>
-                            <ul>
-                                <li>コース <code>course_templates/637</code> の<strong>公式コース概要</strong>に明記された技術スコープ：Cloud Storage、IAM、Cloud Functions、Pub/Sub</li>
-                                <li>本コース末尾の Challenge Lab（<code>labs/592550</code>）である <strong>GSP315</strong> の公開シナリオ・タスク構成</li>
-                                <li>各サービスの Google Cloud 公式ドキュメント（ベストプラクティスページ）</li>
-                            </ul>
-                            <p>
-                                一般的にこの構成のコースは、①Cloud Storage の基本操作、②IAM によるアクセス制御、③Cloud Functions（現行の Cloud Run functions）のデプロイ、④Pub/Sub のメッセージング、という4つの実習を経て、最後にこれらを統合する Challenge Lab（GSP315）で総仕上げを行います。本ガイドはこの流れに沿って各サービスを解説します。
-                            </p>
-
-                            <h3><span className="mk">1.2</span>提供された参照 URL の位置づけ</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead><tr><th scope="col">#</th><th scope="col">URL（末尾）</th><th scope="col">位置づけ（推定）</th></tr></thead>
-                                    <tbody>
-                                        <tr><td>1</td><td><code>labs/592541</code></td><td>コース前半：Cloud Storage 実習</td></tr>
-                                        <tr><td>2</td><td><code>labs/592542</code></td><td>Cloud Storage 実習（CLI/SDK）</td></tr>
-                                        <tr><td>3</td><td><code>labs/592543</code></td><td>Cloud IAM 実習</td></tr>
-                                        <tr><td>4</td><td><code>labs/592544</code></td><td>Cloud Functions 実習（コンソール）</td></tr>
-                                        <tr><td>5</td><td><code>labs/592545</code></td><td>Cloud Functions 実習（コマンドライン）</td></tr>
-                                        <tr><td>6</td><td><code>labs/592546</code></td><td>Pub/Sub 実習（コンソール）</td></tr>
-                                        <tr><td>7</td><td><code>labs/592547</code></td><td>Pub/Sub 実習（コマンドライン）</td></tr>
-                                        <tr><td>8</td><td><code>labs/592548</code></td><td>Pub/Sub 実習（補足／言語別クライアント）</td></tr>
-                                        <tr><td>9</td><td><code>labs/592549</code></td><td>復習クイズ／知識確認</td></tr>
-                                        <tr><td>10</td><td><code>labs/592550</code></td><td className="lead">Challenge Lab（GSP315）※確認済み</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="note">
-                                <span className="note__ico">⚠</span>
-                                <span>9番までの厳密なラベルはサインインしないと確認できないため「推定」です。ただし <b>10番目が Challenge Lab (GSP315)</b> であることは、複数の独立した情報源で一致しており確度は高いです。</span>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 2. Learning path ===================== */}
-                        <section id="s2" className="sec-violet">
-                            <div className="station">
-                                <div className="station__no">02</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Learning Path</span>
-                                    <h2><span className="station__chip"></span>コース全体像とラーニングパス</h2>
-                                </div>
-                            </div>
-                            <p>
-                                このコースは「写真管理アプリ Memories」というシナリオを軸に、<strong>ストレージ・権限管理・サーバーレス処理・非同期通知</strong>という、モダンなアプリ開発環境の基本4要素を一気通貫で学びます。
-                            </p>
-
-                            <div className="diagram">
-                                <p className="diagram__cap">Fig 2.1 — 学習パイプラインの全体像</p>
-                                <div className="mermaid" id="diag-learning-path">
-                                    <MermaidDiagram chart={DIAGRAMS['diag-learning-path']} ariaLabel="学習パイプラインの全体像" />
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">2.1</span>なぜこの順番で学ぶのか</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead><tr><th scope="col">順番</th><th scope="col">サービス</th><th scope="col">このコースにおける役割</th></tr></thead>
-                                    <tbody>
-                                        <tr><td>1</td><td className="lead">Cloud Storage</td><td>画像などの非構造化データを保存する「置き場」を作る</td></tr>
-                                        <tr><td>2</td><td className="lead">IAM</td><td>誰が・どのリソースに・何をできるかを制御する土台を理解する</td></tr>
-                                        <tr><td>3</td><td className="lead">Cloud Functions</td><td>アップロードを<strong>トリガー</strong>に自動処理（サムネイル生成など）を実行する</td></tr>
-                                        <tr><td>4</td><td className="lead">Pub/Sub</td><td>処理結果を他システムに<strong>非同期で通知</strong>する</td></tr>
-                                        <tr><td>5</td><td className="lead">Challenge Lab</td><td>上記すべてを組み合わせ、実務に近いシナリオを自力で完成させる</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <p>
-                                この流れは「ストレージにファイルが置かれる → 権限に基づいてイベントが検知される → 関数が起動して加工する → 完了をメッセージングで知らせる」という、<strong>サーバーレスなイベント駆動アーキテクチャの典型パターン</strong>そのものです。
-                            </p>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 3. Cloud Storage ===================== */}
-                        <section id="s3" className="sec-storage">
-                            <div className="station">
-                                <div className="station__no">03</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Object Storage</span>
-                                    <h2><span className="station__chip"></span>Cloud Storage — オブジェクトストレージの基礎</h2>
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">3.1</span>定義</h3>
-                            <p>
-                                Cloud Storage は、任意の量の非構造化データ（画像・動画・ログ・バックアップなど）を<strong>オブジェクト</strong>として保存できるフルマネージドのストレージサービスです。データは「<strong>バケット</strong>」と呼ばれるコンテナに格納され、各バケットはプロジェクトに属します。
-                            </p>
-
-                            <h3><span className="mk">3.2</span>なぜ使うか</h3>
-                            <ul>
-                                <li>サーバーの容量管理が不要で、ペタバイト級までシームレスにスケールする</li>
-                                <li>99.999999999%（イレブンナイン）の年間耐久性を持つ</li>
-                                <li>Standard／Nearline／Coldline／Archive の4クラスでアクセス頻度に応じたコスト最適化ができる</li>
-                                <li>Cloud Functions や Pub/Sub とイベント連携しやすい（本コースの核心）</li>
-                            </ul>
-
-                            <h3><span className="mk">3.3</span>具体例（コンソールでの操作フロー）</h3>
-                            <div className="diagram">
-                                <p className="diagram__cap">Fig 3.1 — バケット作成〜アップロードの流れ</p>
-                                <div className="mermaid" id="diag-storage-flow">
-                                    <MermaidDiagram chart={DIAGRAMS['diag-storage-flow']} ariaLabel="バケット作成からアップロードの流れ" />
-                                </div>
-                            </div>
-                            <p>バケット名は<strong>グローバルネームスペースで一意</strong>である必要がありますが、オブジェクト名はバケット内でのみ一意であれば構いません。</p>
-
-                            <h3><span className="mk">3.4</span>コード例（gcloud CLI）</h3>
-                            <div className="code">
-                                <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">bash</span></div>
-                                <pre dangerouslySetInnerHTML={{ __html: `<code><span class="cm"># 環境変数の準備</span>
-<span class="kw">export</span> PROJECT_ID=$(gcloud config get-value project)
-<span class="kw">export</span> BUCKET_NAME="\${PROJECT_ID}-photos"
-<span class="kw">export</span> REGION="asia-northeast1"
-
-<span class="cm"># リージョンバケットを作成</span>
-gcloud storage buckets create gs://\${BUCKET_NAME} \\
-  --project=\${PROJECT_ID} \\
-  --location=\${REGION} \\
-  --uniform-bucket-level-access
-
-<span class="cm"># オブジェクトをアップロード</span>
-gcloud storage cp ./sample.jpg gs://\${BUCKET_NAME}/
-
-<span class="cm"># バケット内の一覧を確認</span>
-gcloud storage ls gs://\${BUCKET_NAME}/</code>` }} />
-                            </div>
-                            <div className="note">
-                                <span className="note__ico">TIP</span>
-                                <span><code>gcloud storage</code> コマンドは従来の <code>gsutil</code> の後継で、より高速かつ一貫性のある挙動をします。新規学習では <b>gcloud storage を使うのがおすすめ</b>です。</span>
-                            </div>
-
-                            <h3><span className="mk">3.5</span>ベストプラクティス</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">項目</th>
-                                            <th scope="col">✅ 推奨</th>
-                                            <th scope="col">❌ 避けるべき</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>1</td><td className="lead">バケット命名</td><td>機密情報を含まない推測されにくい名前にする</td><td><code>mysecret-prod-bucket</code> のように機密情報を露出させる</td></tr>
-                                        <tr><td>2</td><td className="lead">アクセス制御</td><td>均一バケットレベルアクセス（IAMのみ）を有効化し最小権限で運用</td><td>オブジェクトごとにACLを個別設定して管理を複雑化させる</td></tr>
-                                        <tr><td>3</td><td className="lead">公開設定</td><td>公開が必要なオブジェクトだけを明示的に許可する</td><td>バケット全体をうっかり公開設定にする</td></tr>
-                                        <tr><td>4</td><td className="lead">ストレージクラス</td><td>アクセス頻度に応じて4クラスを使い分ける</td><td>すべて Standard のまま高コストを放置する</td></tr>
-                                        <tr><td>5</td><td className="lead">再試行戦略</td><td>新規コネクションでの再試行やヘッジドリクエストを実装する</td><td>同一パスへの単純リトライのみで「サーバー固着」を起こす</td></tr>
-                                        <tr><td>6</td><td className="lead">オブジェクト名</td><td>ランダム性のあるプレフィックスでホットスポットを回避する</td><td>連番やタイムスタンプのみの命名で書き込みを集中させる</td></tr>
-                                        <tr><td>7</td><td className="lead">ライフサイクル</td><td>ルールで古いデータを自動的に低コスト化・削除する</td><td>不要データを手動管理のまま放置しコストを増大させる</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 4. IAM ===================== */}
-                        <section id="s4" className="sec-iam">
-                            <div className="station">
-                                <div className="station__no">04</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Access Control</span>
-                                    <h2><span className="station__chip"></span>Cloud IAM — アクセス制御の基礎</h2>
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">4.1</span>定義</h3>
-                            <p>
-                                IAM（Identity and Access Management）は「<strong>誰が</strong>（Principal）」「<strong>どのリソースに</strong>（Resource）」「<strong>何をできるか</strong>（Permission）」を、ロールの付与によって制御する仕組みです。Google Cloud では権限を直接付与せず、権限をまとめた「<strong>ロール</strong>」を主体に紐づけます。
-                            </p>
-                            <div className="diagram">
-                                <p className="diagram__cap">Fig 4.1 — Principal / Role / Permission / Resource の関係</p>
-                                <div className="mermaid" id="diag-iam-relation">
-                                    <MermaidDiagram chart={DIAGRAMS['diag-iam-relation']} ariaLabel="Principal、Role、Permission、Resourceの関係" />
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">4.2</span>なぜ使うか</h3>
-                            <ul>
-                                <li>誤操作や不正アクセスの被害範囲（ブラストラディウス）を最小化できる</li>
-                                <li>Owner／Editor／Viewer の広範な基本ロールに頼らず、事前定義ロール（<code>roles/storage.objectViewer</code> など）で細かく制御できる</li>
-                                <li>退職者や異動者のアクセスを確実に取り消せる（Challenge Lab でも実施）</li>
-                            </ul>
-
-                            <h3><span className="mk">4.3</span>具体例</h3>
-                            <p>このコースでは、プロジェクトに参加している「前任のクラウドエンジニア」のアクセス権を確認し、不要になった時点で削除する、実務でも頻出のシナリオを扱います。</p>
-                            <div className="diagram">
-                                <p className="diagram__cap">Fig 4.2 — 前任エンジニアのアクセス権を取り消す</p>
-                                <div className="mermaid" id="diag-iam-revoke">
-                                    <MermaidDiagram chart={DIAGRAMS['diag-iam-revoke']} ariaLabel="前任エンジニアのアクセス権取り消しフロー" />
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">4.4</span>コード例（gcloud CLI）</h3>
-                            <div className="code">
-                                <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">bash</span></div>
-                                <pre dangerouslySetInnerHTML={{ __html: `<code><span class="cm"># 現在のIAMポリシーを確認</span>
-gcloud projects get-iam-policy \${PROJECT_ID}
-
-<span class="cm"># 特定ユーザーの roles/viewer を削除（最小権限の原則の実践）</span>
-gcloud projects remove-iam-policy-binding \${PROJECT_ID} \\
-  --member=<span class="st">"user:previous-engineer@example.com"</span> \\
-  --role=<span class="st">"roles/viewer"</span>
-
-<span class="cm"># バケット単位で最小権限を付与する例（リソース単位に絞る）</span>
-gcloud storage buckets add-iam-policy-binding gs://\${BUCKET_NAME} \\
-  --member=<span class="st">"serviceAccount:thumbnail-fn@\${PROJECT_ID}.iam.gserviceaccount.com"</span> \\
-  --role=<span class="st">"roles/storage.objectViewer"</span></code>` }} />
-                            </div>
-
-                            <h3><span className="mk">4.5</span>ベストプラクティス</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">項目</th>
-                                            <th scope="col">✅ 推奨</th>
-                                            <th scope="col">❌ 避けるべき</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>1</td><td className="lead">最小権限の原則</td><td>タスク遂行に必要な最小限の権限のみを付与する</td><td>とりあえず <code>roles/editor</code> や <code>roles/owner</code> を付与</td></tr>
-                                        <tr><td>2</td><td className="lead">付与範囲</td><td>バケットや関数などリソース単位でロールを絞り込む</td><td>プロジェクト全体に広いロールを付与する</td></tr>
-                                        <tr><td>3</td><td className="lead">サービスアカウント</td><td>用途ごとに専用SAを作成し機能を分離する</td><td>すべての関数で同一の高権限SAを共有する</td></tr>
-                                        <tr><td>4</td><td className="lead">定期棚卸し</td><td>IAM Recommender で未使用権限を定期的に削除する</td><td>付与した権限を放置し「権限の肥大化」を起こす</td></tr>
-                                        <tr><td>5</td><td className="lead">監査</td><td>Cloud Audit Logs で IAM 変更を継続的に監視する</td><td>権限変更を記録・追跡せず放置する</td></tr>
-                                        <tr><td>6</td><td className="lead">グループ活用</td><td>多数ユーザーへの付与はグループ単位で行う</td><td>ユーザーを1人ずつ列挙して管理コストを増やす</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 5. Cloud Functions ===================== */}
-                        <section id="s5" className="sec-func">
-                            <div className="station">
-                                <div className="station__no">05</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Serverless Compute</span>
-                                    <h2><span className="station__chip"></span>Cloud Functions（Cloud Run functions）</h2>
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">5.1</span>定義</h3>
-                            <p>
-                                Cloud Functions は、サーバー管理不要でイベント（HTTP リクエストや Cloud Storage への書き込みなど）に応じて単一目的のコードを実行できるサーバーレス実行環境です。第2世代（Gen2）は Cloud Run 上で稼働し、現在は「<strong>Cloud Run functions</strong>」という製品名に統合されています。内部的には Cloud Run サービスと Eventarc トリガーの組み合わせとして構成されます。
-                            </p>
-                            <div className="diagram">
-                                <p className="diagram__cap">Fig 5.1 — アップロードをトリガーにしたイベント処理パイプライン</p>
-                                <div className="mermaid" id="diag-func-pipeline">
-                                    <MermaidDiagram chart={DIAGRAMS['diag-func-pipeline']} ariaLabel="アップロードをトリガーにしたイベント処理パイプライン" />
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">5.2</span>なぜ使うか</h3>
-                            <ul>
-                                <li>インフラのプロビジョニング不要で、コードをデプロイするだけで即座にスケールする</li>
-                                <li>Cloud Storage・Pub/Sub・Firestore など多様なイベントソースと直接連携できる</li>
-                                <li>使った分だけの課金（リクエストが来ない間はコストが発生しない）</li>
-                            </ul>
-
-                            <h3><span className="mk">5.3</span>具体例（コンソールでのデプロイ手順）</h3>
-                            <ol>
-                                <li>関数名・リージョン・トリガー種別（Cloud Storage の <code>finalized</code> イベント）を設定する</li>
-                                <li>対象バケットを指定する</li>
-                                <li>エントリポイント（実行される関数名）とランタイム（例：Node.js 22）を設定する</li>
-                                <li>ソースコード（<code>index.js</code> と <code>package.json</code>）を記述してデプロイする</li>
-                            </ol>
-
-                            <h3><span className="mk">5.4</span>コード例（Node.js／概念コード）</h3>
-                            <p>Cloud Storage への画像アップロードをトリガーにサムネイルを生成し、完了を Pub/Sub に通知する処理の概念的な骨組みです。</p>
-                            <div className="code">
-                                <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">javascript</span></div>
-                                <pre>
-                                    <div className="code-line"><span className="kw">const</span> functions = <span className="kw">require</span>(<span className="st">{'@google-cloud/functions-framework'}</span>);</div>
-                                    <div className="code-line"><span className="kw">const</span> {"{ Storage }"} = <span className="kw">require</span>(<span className="st">{'@google-cloud/storage'}</span>);</div>
-                                    <div className="code-line"><span className="kw">const</span> {"{ PubSub }"} = <span className="kw">require</span>(<span className="st">{'@google-cloud/pubsub'}</span>);</div>
-                                    <div className="code-line"><span className="kw">const</span> {"{ pipeline }"} = <span className="kw">require</span>(<span className="st">{'stream/promises'}</span>);</div>
-                                    <div className="code-line"><span className="kw">const</span> sharp = <span className="kw">require</span>(<span className="st">{'sharp'}</span>);</div>
-                                    <div className="code-line">&nbsp;</div>
-                                    <div className="code-line"><span className="kw">const</span> storage = <span className="kw">new</span> Storage();</div>
-                                    <div className="code-line"><span className="kw">const</span> pubsub = <span className="kw">new</span> PubSub();</div>
-                                    <div className="code-line">&nbsp;</div>
-                                    <div className="code-line">functions.cloudEvent(<span className="st">{'generateThumbnail'}</span>, <span className="kw">async</span> (cloudEvent) =&gt; {"{"}</div>
-                                    <div className="code-line">  <span className="kw">const</span> event = cloudEvent.data;</div>
-                                    <div className="code-line">  <span className="kw">const</span> {"{ bucket: bucketName, name: fileName }"} = event;</div>
-                                    <div className="code-line">&nbsp;</div>
-                                    <div className="code-line">  <span className="cm">{"// 冪等性の確保：既にサムネイルなら再処理しない。拡張子なしのサムネイル名（例：xxx_thumb）も含む"}</span></div>
-                                    <div className="code-line">  <span className="kw">if</span> (fileName.includes(<span className="st">{"'_thumb'"}</span>) || fileName.endsWith(<span className="st">{"'_thumb'"}</span>)) {"{"}</div>
-                                    <div className="code-line">    console.log(<span className="st">{`\`Skip: \${fileName} is already a thumbnail\``}</span>);</div>
-                                    <div className="code-line">    <span className="kw">return</span>;</div>
-                                    <div className="code-line">  {"}"}</div>
-                                    <div className="code-line">&nbsp;</div>
-                                    <div className="code-line">  <span className="kw">const</span> bucket = storage.bucket(bucketName);</div>
-                                    <div className="code-line">  <span className="kw">const</span> dotIndex = fileName.lastIndexOf(<span className="st">{"'.'"}</span>);</div>
-                                    <div className="code-line">  <span className="kw">const</span> {"thumbName = dotIndex !== -1 ? `${fileName.slice(0, dotIndex)}_thumb${fileName.slice(dotIndex)}` : `${fileName}_thumb`;"}</div>
-                                    <div className="code-line">&nbsp;</div>
-                                    <div className="code-line">  <span className="kw">await</span> pipeline(</div>
-                                    <div className="code-line">    bucket.file(fileName).createReadStream(),</div>
-                                    <div className="code-line">    sharp().resize(<span className="vr">64</span>, <span className="vr">64</span>),</div>
-                                    <div className="code-line">    bucket.file(thumbName).createWriteStream()</div>
-                                    <div className="code-line">  );</div>
-                                    <div className="code-line">&nbsp;</div>
-                                    <div className="code-line">  <span className="kw">await</span> {"pubsub.topic(process.env.TOPIC_NAME).publishMessage({"}</div>
-                                    <div className="code-line">    {"data: Buffer.from(JSON.stringify({ thumbnail: thumbName })),"}</div>
-                                    <div className="code-line">  {"});"}</div>
-                                    <div className="code-line">{"}"});</div>
-                                </pre>
-                            </div>
-                            <div className="code">
-                                <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">bash — deploy</span></div>
-                                <pre dangerouslySetInnerHTML={{ __html: `<code><span class="cm"># デプロイ例（Gen2 / Cloud Storage トリガー）</span>
-gcloud functions deploy generateThumbnail \\
-  --gen2 \\
-  --runtime=nodejs22 \\
-  --region=\${REGION} \\
-  --source=. \\
-  --entry-point=generateThumbnail \\
-  --trigger-event-filters="type=google.cloud.storage.object.v1.finalized" \\
-  --trigger-event-filters="bucket=\${BUCKET_NAME}" \\
-  --set-env-vars=TOPIC_NAME=\${TOPIC_NAME} \\
-  --max-instances=2</code>` }} />
-                            </div>
-
-                            <h3><span className="mk">5.5</span>ベストプラクティス</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">項目</th>
-                                            <th scope="col">✅ 推奨</th>
-                                            <th scope="col">❌ 避けるべき</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>1</td><td className="lead">冪等性</td><td>同じイベントで複数回呼ばれても同じ結果になるよう設計する</td><td>副作用のある処理を無条件に繰り返し実行する</td></tr>
-                                        <tr><td>2</td><td className="lead">無限ループ防止</td><td>生成物が自分自身をトリガーしないようファイル名等でガードする</td><td>生成物が再度トリガー対象になり無限ループが発生する</td></tr>
-                                        <tr><td>3</td><td className="lead">コールドスタート対策</td><td>依存を最小化し、重い初期化はグローバルスコープで1回だけ</td><td>毎回の呼び出しで重い処理を再初期化する</td></tr>
-                                        <tr><td>4</td><td className="lead">権限</td><td>関数専用SAを作り必要な権限のみ付与する</td><td>デフォルトSA（Editor相当）をそのまま使う</td></tr>
-                                        <tr><td>5</td><td className="lead">依存の固定</td><td><code>package-lock.json</code> 等でバージョンを固定する</td><td>バージョン未指定で環境ごとに挙動が変わる</td></tr>
-                                        <tr><td>6</td><td className="lead">エラーハンドリング</td><td>例外を捕捉しログ出力、必要に応じ再試行ポリシーを設定</td><td>未処理の例外でクラッシュし原因追跡が困難になる</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 6. Pub/Sub ===================== */}
-                        <section id="s6" className="sec-pubsub">
-                            <div className="station">
-                                <div className="station__no">06</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Async Messaging</span>
-                                    <h2><span className="station__chip"></span>Pub/Sub — 非同期メッセージング</h2>
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">6.1</span>定義</h3>
-                            <p>
-                                Pub/Sub は、メッセージの送信者（Publisher）と受信者（Subscriber）を分離する<strong>非同期メッセージングサービス</strong>です。Publisher は「<strong>トピック</strong>」にメッセージを送信し、Subscriber は「<strong>サブスクリプション</strong>」を通じてメッセージを受信します。
-                            </p>
-                            <div className="diagram">
-                                <p className="diagram__cap">Fig 6.1 — 1トピックから複数の Subscriber へのファンアウト</p>
-                                <div className="mermaid" id="diag-pubsub-fanout">
-                                    <MermaidDiagram chart={DIAGRAMS['diag-pubsub-fanout']} ariaLabel="1トピックから複数のSubscriberへのファンアウト" />
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">6.2</span>なぜ使うか</h3>
-                            <ul>
-                                <li>Publisher と Subscriber が互いの稼働状況を意識せず疎結合で連携できる</li>
-                                <li>1トピックに複数のサブスクリプションを紐づける「ファンアウト」で、同じイベントを複数システムに配信できる</li>
-                                <li>サービス障害時にもメッセージが保持され、リトライや再処理が可能</li>
-                            </ul>
-
-                            <h3><span className="mk">6.3</span>具体例</h3>
-                            <p>Challenge Lab のシナリオでは、サムネイル生成完了を知らせるトピックを用意し、Cloud Function がそこにメッセージを発行します。この時点では<strong>サブスクリプションを作らず「送信先の箱」だけを用意する</strong>のがポイントです（後続の消費者が必要になった時点で追加できます）。</p>
-
-                            <h3><span className="mk">6.4</span>コード例（gcloud CLI）</h3>
-                            <div className="code">
-                                <div className="code__bar"><i></i><i></i><i></i><span className="code__lang">bash</span></div>
-                                <pre dangerouslySetInnerHTML={{ __html: `<code><span class="cm"># トピックを作成</span>
-gcloud pubsub topics create \${TOPIC_NAME}
-
-<span class="cm"># 動作確認用にサブスクリプションを作成</span>
-gcloud pubsub subscriptions create \${TOPIC_NAME}-sub \\
-  --topic=\${TOPIC_NAME}
-
-<span class="cm"># テストメッセージを発行</span>
-gcloud pubsub topics publish \${TOPIC_NAME} \\
-  --message="thumbnail generated"
-
-<span class="cm"># サブスクリプションからメッセージを取得</span>
-gcloud pubsub subscriptions pull \${TOPIC_NAME}-sub --auto-ack --limit=5</code>` }} />
-                            </div>
-
-                            <h3><span className="mk">6.5</span>ベストプラクティス</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">項目</th>
-                                            <th scope="col">✅ 推奨</th>
-                                            <th scope="col">❌ 避けるべき</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td>1</td><td className="lead">Publisher再利用</td><td>クライアントを使い回して接続確立のオーバーヘッドを避ける</td><td>リクエストごとに新しいクライアントを生成する</td></tr>
-                                        <tr><td>2</td><td className="lead">メッセージ保持</td><td>Publish前にサブスクリプションを用意するか保持を有効化する</td><td>サブスクリプション不在のままPublishし、メッセージを失う</td></tr>
-                                        <tr><td>3</td><td className="lead">冪等な処理</td><td>「少なくとも1回配信」を前提に重複処理に耐える設計にする</td><td>メッセージが必ず1回だけ届く前提で実装する</td></tr>
-                                        <tr><td>4</td><td className="lead">デッドレターキュー</td><td>失敗し続けるメッセージをデッドレタートピックへ退避させる</td><td>失敗メッセージが際限なく再配信され続ける</td></tr>
-                                        <tr><td>5</td><td className="lead">順序保証</td><td>順序が必要な場合のみ ordering key を設定する</td><td>一律で順序保証を要求しスループットを落とす</td></tr>
-                                        <tr><td>6</td><td className="lead">バッチ処理</td><td>クライアントのバッチ機能でスループットとコストを最適化する</td><td>1メッセージ1リクエストで大量発行しコストを増大させる</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 7. Challenge Lab ===================== */}
-                        <section id="s7" className="sec-violet">
-                            <div className="station">
-                                <div className="station__no">07</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Capstone · GSP315</span>
-                                    <h2><span className="station__chip"></span>総合演習：Challenge Lab（GSP315）</h2>
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">7.1</span>シナリオ概要</h3>
-                            <p>
-                                あなたは Jooli 社のジュニアクラウドエンジニアとして、写真管理アプリ「Memories」の開発チームから、アプリ開発環境の初期構築を依頼されます。<strong>ステップバイステップの手順書は与えられず</strong>、これまでの実習で得たスキルをもとに自力でタスクを完了させる、実務に近いシナリオです。
-                            </p>
-
-                            <h3><span className="mk">7.2</span>統合アーキテクチャ図</h3>
-                            <div className="diagram">
-                                <p className="diagram__cap">Fig 7.1 — GSP315 の統合アーキテクチャ</p>
-                                <div className="mermaid" id="diag-gsp315-arch">
-                                    <MermaidDiagram chart={DIAGRAMS['diag-gsp315-arch']} ariaLabel="GSP315の統合アーキテクチャ" />
-                                </div>
-                            </div>
-
-                            <h3><span className="mk">7.3</span>タスク一覧</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead><tr><th scope="col">タスク</th><th scope="col">内容</th><th scope="col">主な技術</th></tr></thead>
-                                    <tbody>
-                                        <tr><td className="lead">Task 1</td><td>写真保存用の Cloud Storage バケットを作成する</td><td>Cloud Storage</td></tr>
-                                        <tr><td className="lead">Task 2</td><td>Cloud Run function が使用する Pub/Sub トピックを作成する</td><td>Pub/Sub</td></tr>
-                                        <tr><td className="lead">Task 3</td><td>アップロードをトリガーにサムネイルを生成する関数(Gen2)を作成・デプロイ</td><td>Functions / Eventarc</td></tr>
-                                        <tr><td className="lead">Task 4</td><td>画像をアップロードしてインフラ全体の動作を検証する</td><td>Storage / Functions / Pub/Sub</td></tr>
-                                        <tr><td className="lead">Task 5</td><td>前任のクラウドエンジニアのプロジェクトアクセスを削除する</td><td>IAM</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <h3><span className="mk">7.4</span>手順ごとの解説</h3>
-                            <p><strong>Task 1: バケット作成</strong> — ラボパネルに指定されたバケット名（例：<code>qwiklabs-gcp-XX-xxxxxxxx-bucket</code>）を使い、リージョンを選択してデフォルト設定で作成します。バケット名は採点システムが検証するため、<strong>指定された名前を正確に使用</strong>することが重要です。</p>
-                            <p><strong>Task 2: Pub/Sub トピック作成</strong> — 関数が処理完了後にメッセージを発行するためのトピックを作成します。この段階ではサブスクリプションの作成は要求されていません（関数が Publisher として使うだけのため）。</p>
-                            <p><strong>Task 3: Cloud Run function（サムネイル生成）</strong></p>
-                            <ul>
-                                <li>トリガー：対象バケットへの Cloud Storage <code>finalized</code> イベント</li>
-                                <li>エントリポイントは<strong>コード内の関数名と完全に一致</strong>させる（不一致はデプロイ後の動作不良の典型的な原因）</li>
-                                <li>Eventarc がイベントを読み取れるよう、Cloud Storage サービスエージェントへ <code>roles/pubsub.publisher</code> を付与するなど権限伝播が必要な場合がある（数分のタイムラグあり）</li>
-                            </ul>
-                            <p><strong>Task 4: 動作検証</strong> — 指定の画像（例：<code>map.jpg</code>）をアップロードし、数十秒〜数分後にサムネイルが生成されることを確認します。生成されない場合は関数の「トリガー」タブで設定が正しく保存されているか確認し、必要ならトリガーを再作成します。</p>
-                            <p><strong>Task 5: IAM クリーンアップ</strong> — プロジェクトには「あなた（Owner）」と「前任エンジニア（Viewer）」の2プリンシパルが存在します。前任エンジニアの <code>roles/viewer</code> バインディングを削除し、最小権限の原則を実践して完了します。</p>
-
-                            <h3><span className="mk">7.5</span>よくあるエラーと対処</h3>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead><tr><th scope="col">症状</th><th scope="col">想定される原因</th><th scope="col">対処</th></tr></thead>
-                                    <tbody>
-                                        <tr><td className="lead">サムネイルが生成されない</td><td>Eventarc/Storage サービスエージェント権限が未伝播</td><td>数分待って再アップロード、または権限設定を再確認</td></tr>
-                                        <tr><td className="lead">デプロイ成功だが関数がエラー終了</td><td>エントリポイント名とコード内の関数名が不一致</td><td>「エントリポイント」欄を関数名と完全一致させる</td></tr>
-                                        <tr><td className="lead">サムネイルが無限に生成される</td><td>生成物自身が再度トリガー対象になっている</td><td>ファイル名にサフィックスを付け既存サムネイルを除外</td></tr>
-                                        <tr><td className="lead">Pub/Sub Publish でエラー</td><td>Storage サービスエージェントに <code>roles/pubsub.publisher</code> 未付与</td><td>該当サービスエージェントへ IAM ロールを追加</td></tr>
-                                        <tr><td className="lead">権限削除が完了と判定されない</td><td>削除対象のメンバー／ロール指定が誤り</td><td><code>get-iam-policy</code> で現状確認してから正確に削除</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 8. Cross-cutting BP ===================== */}
-                        <section id="s8" className="sec-violet">
-                            <div className="station">
-                                <div className="station__no">08</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Cheat Sheet</span>
-                                    <h2><span className="station__chip"></span>サービス横断ベストプラクティス早見表</h2>
-                                </div>
-                            </div>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead><tr><th scope="col">観点</th><th scope="col">Cloud Storage</th><th scope="col">IAM</th><th scope="col">Cloud Functions</th><th scope="col">Pub/Sub</th></tr></thead>
-                                    <tbody>
-                                        <tr><td className="lead">最小権限</td><td>バケット単位でロールを付与</td><td>リソース単位で付与</td><td>関数専用SAを用意</td><td>トピック/サブ単位で絞る</td></tr>
-                                        <tr><td className="lead">スケール対策</td><td>ランダムプレフィックスでホットスポット回避</td><td>該当なし</td><td>コールドスタート対策・依存最小化</td><td>バッチ発行で最適化</td></tr>
-                                        <tr><td className="lead">信頼性</td><td>ライフサイクル管理・再試行戦略</td><td>定期的な権限棚卸し</td><td>冪等な処理設計</td><td>デッドレターキュー・冪等Subscriber</td></tr>
-                                        <tr><td className="lead">可観測性</td><td>アクセスログ・監査ログ</td><td>Cloud Audit Logs</td><td>Cloud Logging でエラー監視</td><td>未処理メッセージ滞留を監視</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 9. Troubleshooting ===================== */}
-                        <section id="s9" className="sec-iam">
-                            <div className="station">
-                                <div className="station__no">09</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">Troubleshooting</span>
-                                    <h2><span className="station__chip"></span>よくあるエラーとトラブルシューティング</h2>
-                                </div>
-                            </div>
-                            <div className="tbl-wrap">
-                                <table>
-                                    <thead><tr><th scope="col">カテゴリ</th><th scope="col">症状</th><th scope="col">チェックポイント</th></tr></thead>
-                                    <tbody>
-                                        <tr><td className="lead">権限伝播遅延</td><td>「Permission denied」が数分後に解消する</td><td>Eventarc/Storage サービスエージェントへの権限付与直後は数分の伝播待ちが必要</td></tr>
-                                        <tr><td className="lead">バケット名の衝突</td><td>バケット作成に失敗する</td><td>バケット名はグローバルで一意。プロジェクトID等を含めて一意性を担保する</td></tr>
-                                        <tr><td className="lead">関数のタイムアウト</td><td>大きな画像処理で関数がタイムアウトする</td><td>メモリ／タイムアウト設定を見直すか、ストリーム処理でメモリ使用量を削減</td></tr>
-                                        <tr><td className="lead">メッセージ消失</td><td>Publishしたのにメッセージが届かない</td><td>サブスクリプション未作成のままPublishしていないか確認（保持設定も検討）</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <hr className="rule" />
-
-                        {/* ===================== 10. Sources ===================== */}
-                        <section id="s10" className="sec-violet">
-                            <div className="station">
-                                <div className="station__no">10</div>
-                                <div className="station__body">
-                                    <span className="station__kicker">References</span>
-                                    <h2><span className="station__chip"></span>参考ソース一覧</h2>
-                                </div>
-                            </div>
-
-                            <div className="src-group">
-                                <h4><span className="dot" style={{ background: 'var(--violet)' }}></span>10.1 提供されたコース URL（本ガイドの対象範囲）</h4>
-                                <ul className="src-list">
-                                    <li><a href="https://www.skills.google/course_templates/637" target="_blank" rel="noopener">skills.google/course_templates/637（コース概要）</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592541" target="_blank" rel="noopener">labs/592541</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592542" target="_blank" rel="noopener">labs/592542</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592543" target="_blank" rel="noopener">labs/592543</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592544" target="_blank" rel="noopener">labs/592544</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592545" target="_blank" rel="noopener">labs/592545</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592546" target="_blank" rel="noopener">labs/592546</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592547" target="_blank" rel="noopener">labs/592547</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592548" target="_blank" rel="noopener">labs/592548</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592549" target="_blank" rel="noopener">labs/592549</a></li>
-                                    <li><a href="https://www.skills.google/course_templates/637/labs/592550" target="_blank" rel="noopener">labs/592550（Challenge Lab: GSP315）</a></li>
-                                </ul>
-                            </div>
-
-                            <div className="src-group">
-                                <h4><span className="dot" style={{ background: 'var(--storage)' }}></span>10.2 Cloud Storage</h4>
-                                <ul className="src-list">
-                                    <li><a href="https://cloud.google.com/storage/docs/best-practices" target="_blank" rel="noopener">cloud.google.com/storage/docs/best-practices</a></li>
-                                    <li><a href="https://cloud.google.com/storage/docs/access-control/best-practices-access-control" target="_blank" rel="noopener">storage/docs/access-control/best-practices-access-control</a></li>
-                                    <li><a href="https://cloud.google.com/storage/docs/best-practices-media-workload" target="_blank" rel="noopener">storage/docs/best-practices-media-workload</a></li>
-                                </ul>
-                                <h4><span className="dot" style={{ background: 'var(--iam)' }}></span>10.3 IAM</h4>
-                                <ul className="src-list">
-                                    <li><a href="https://cloud.google.com/iam/docs/using-iam-securely" target="_blank" rel="noopener">iam/docs/using-iam-securely</a></li>
-                                    <li><a href="https://cloud.google.com/iam/docs/best-practices-service-accounts" target="_blank" rel="noopener">iam/docs/best-practices-service-accounts</a></li>
-                                    <li><a href="https://cloud.google.com/iam/docs/pam-best-practices" target="_blank" rel="noopener">iam/docs/pam-best-practices</a></li>
-                                </ul>
-                                <h4><span className="dot" style={{ background: 'var(--func)' }}></span>10.4 Cloud Functions / Cloud Run functions</h4>
-                                <ul className="src-list">
-                                    <li><a href="https://cloud.google.com/run/docs/tips/functions-best-practices" target="_blank" rel="noopener">run/docs/tips/functions-best-practices</a></li>
-                                    <li><a href="https://cloud.google.com/run/docs/write-functions" target="_blank" rel="noopener">run/docs/write-functions</a></li>
-                                    <li><a href="https://cloud.google.com/functions/docs/concepts/overview" target="_blank" rel="noopener">functions/docs/concepts/overview</a></li>
-                                    <li><a href="https://cloud.google.com/blog/products/application-development/least-privilege-for-cloud-functions-using-cloud-iam" target="_blank" rel="noopener">blog: least-privilege-for-cloud-functions-using-cloud-iam</a></li>
-                                </ul>
-                                <h4><span className="dot" style={{ background: 'var(--pubsub)' }}></span>10.5 Pub/Sub</h4>
-                                <ul className="src-list">
-                                    <li><a href="https://cloud.google.com/pubsub/docs/pubsub-basics" target="_blank" rel="noopener">pubsub/docs/pubsub-basics</a></li>
-                                    <li><a href="https://cloud.google.com/pubsub/docs/publish-best-practices" target="_blank" rel="noopener">pubsub/docs/publish-best-practices</a></li>
-                                    <li><a href="https://cloud.google.com/pubsub/docs/subscribe-best-practices" target="_blank" rel="noopener">pubsub/docs/subscribe-best-practices</a></li>
-                                    <li><a href="https://cloud.google.com/pubsub/docs/overview" target="_blank" rel="noopener">pubsub/docs/overview</a></li>
-                                    <li><a href="https://cloud.google.com/pubsub/docs/publish-message-overview" target="_blank" rel="noopener">pubsub/docs/publish-message-overview</a></li>
-                                </ul>
-                            </div>
-
-                            <div className="src-group">
-                                <h4><span className="dot" style={{ background: 'var(--muted-2)' }}></span>10.6 Challenge Lab（GSP315）シナリオ確認に使用したソース</h4>
-                                <p>以下は公式ドキュメントではなく、GSP315 のシナリオ・タスク構成を裏付けるために参照したコミュニティ／サードパーティ記事です。コード例はいずれも本ガイド用に独自に書き直しており、これらからの転載ではありません。</p>
-                                <ul className="src-list">
-                                    <li><a href="https://www.cloudskillsboost.google/course_templates/637/labs/592550" target="_blank" rel="noopener">cloudskillsboost.google/…/labs/592550（Challenge Lab 本体）</a></li>
-                                    <li><a href="https://medium.com/@willtorber/set-up-an-app-dev-environment-on-google-cloud-7f11ee1efd88" target="_blank" rel="noopener">medium.com/@willtorber/set-up-an-app-dev-environment…</a></li>
-                                    <li><a href="https://github.com/tariqsheikhsw/GoogleCloudArchitectLabs" target="_blank" rel="noopener">github.com/tariqsheikhsw/GoogleCloudArchitectLabs</a></li>
-                                </ul>
-                            </div>
-                        </section>
-
-                        <footer>
-                            <p>本ガイドは Google Cloud の公式ドキュメントと、公開されているコース／ラボ情報をもとに作成した学習補助資料です。実際のラボ画面の項目名や採点基準はコースの更新により変更される場合があるため、最終的には受講中のラボパネルの指示を優先してください。</p>
-                        </footer>
+            <div className="wrap">
+                {/* ===================== HERO ===================== */}
+                <section className="hero" id="overview">
+                    <div className="hero-eyebrow">
+                        <span className="pulse-dot"></span>GOOGLE CLOUD SKILLS BOOST — COMPLETE GUIDE
                     </div>
-                </main>
+                    <h1>Google Cloud アプリ開発環境構築<br />完全ガイド</h1>
+                    <p className="hero-sub">
+                        Cloud Storage・IAM・Cloud Monitoring・Cloud Run functions・Pub/Sub
+                        を、初学者がステップバイステップで理解できるように再構成。すべての章に「なぜそうするのか」と公式ドキュメントの一次情報源を併記しています。
+                    </p>
+
+                    <div className="table-wrap hero-meta-table">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style={{ color: 'var(--text-muted)', width: '180px' }}>対象ラボ</td>
+                                    <td>
+                                        Cloud Storage（Console／CLI）、IAM Qwik Start、Cloud Monitoring
+                                        LAMP、Cloud Run functions（Console／Pub/Sub
+                                        トリガー）、Pub/Sub（Console／CLI／Python）、Challenge
+                                        Lab（GSP315「Memories」）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color: 'var(--text-muted)' }}>対象読者</td>
+                                    <td>Google Cloud 初学者 〜 ジュニアクラウドエンジニア</td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color: 'var(--text-muted)' }}>扱う技術要素</td>
+                                    <td>
+                                        <code>Cloud Storage</code> / <code>IAM</code> /{' '}
+                                        <code>Cloud Monitoring・Logging</code> /{' '}
+                                        <code>Cloud Run functions</code> / <code>Eventarc</code> /{' '}
+                                        <code>Pub/Sub</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style={{ color: 'var(--text-muted)' }}>最終更新</td>
+                                    <td>2026-07-01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 className="subhead" style={{ marginTop: '48px' }}>目次</h3>
+                    <div className="toc-grid">
+                        <div className="toc-item">
+                            <span className="toc-num">01</span>
+                            <a href="#architecture">全体アーキテクチャとラーニングパス</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">02</span>
+                            <a href="#storage">Cloud Storage — オブジェクトストレージの基礎</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">03</span>
+                            <a href="#iam">IAM — アクセス制御の基礎</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">04</span>
+                            <a href="#monitoring">Cloud Monitoring — 可観測性の基礎</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">05</span>
+                            <a href="#functions">Cloud Run functions — イベント駆動サーバーレス</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">06</span>
+                            <a href="#pubsub">Pub/Sub — 非同期メッセージング</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">07</span>
+                            <a href="#challenge">総合演習：Challenge Lab（GSP315）</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">08</span>
+                            <a href="#practices">サービス横断ベストプラクティス早見表</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">09</span>
+                            <a href="#troubleshoot">よくあるエラーとトラブルシューティング</a>
+                        </div>
+                        <div className="toc-item">
+                            <span className="toc-num">10</span>
+                            <a href="#refs">参考ソース一覧</a>
+                        </div>
+                    </div>
+
+                    <div className="callout tip" style={{ marginTop: '36px' }}>
+                        <span className="callout-label">Tip</span>
+                        各章は単独でも読めますが、これらのサービスは実際には疎結合に連携します。特に第7章の
+                        Challenge Lab では、Cloud Storage・Pub/Sub・Cloud Run functions・IAM
+                        が1つのイベント駆動パイプラインとして統合される様子を確認できます。
+                    </div>
+                </section>
+
+                {/* ===================== ARCHITECTURE ===================== */}
+                <section id="architecture">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.01</span>
+                        <h2>全体アーキテクチャとラーニングパス</h2>
+                    </div>
+                    <p className="chapter-desc">
+                        このコースで扱う5つのコアサービスは、次のような依存関係で学習すると理解が深まります。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-arch-path" label="Fig 1.1 — 5サービスの依存関係と学習パス" />
+                        <div className="diagram-caption">Fig 1.1 — 5サービスの依存関係と学習パス</div>
+                    </div>
+
+                    <h3 className="subhead">なぜこの順序で学ぶのか</h3>
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">サービス</th>
+                                    <th scope="col">役割</th>
+                                    <th scope="col">このコースでの位置づけ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><b>Cloud Storage</b></td>
+                                    <td>非構造化データ（画像・ファイル）の格納</td>
+                                    <td>すべてのイベントの起点になるデータレイク</td>
+                                </tr>
+                                <tr>
+                                    <td><b>IAM</b></td>
+                                    <td>「誰が」「何に」「どこまで」アクセスできるかの制御</td>
+                                    <td>全サービス共通の横断的なセキュリティレイヤー</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Cloud Monitoring</b></td>
+                                    <td>システムの健全性の可視化とアラート</td>
+                                    <td>運用フェーズで異常を検知する仕組み</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Cloud Run functions</b></td>
+                                    <td>イベントをトリガーに実行される軽量処理</td>
+                                    <td>Storage や Pub/Sub のイベントに反応する「のり」の役割</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Pub/Sub</b></td>
+                                    <td>サービス間の非同期メッセージング</td>
+                                    <td>疎結合なマイクロサービス連携を実現する基盤</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {/* ===================== CLOUD STORAGE ===================== */}
+                <section id="storage">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.02</span>
+                        <h2>Cloud Storage — オブジェクトストレージの基礎</h2>
+                    </div>
+
+                    <h3 className="subhead">定義</h3>
+                    <p>
+                        Cloud Storage
+                        は、世界規模でオブジェクト（ファイル）を格納・取得できるマネージド型のオブジェクトストレージサービスです。Web
+                        コンテンツの配信、アーカイブ／災害対策用のデータ保管、大容量データの配布など、幅広い用途に使えます。
+                    </p>
+
+                    <h3 className="subhead">理由（なぜバケットという概念があるのか）</h3>
+                    <p>
+                        Cloud Storage
+                        にデータを置くには、必ず<b>バケット</b>という入れ物を経由します。バケットはディレクトリのようにネストできず、フラットな名前空間の中でオブジェクトのキーとして「フォルダ風の階層」を疑似的に表現します。この設計により、Google
+                        は水平スケーラビリティと高い耐久性を両立させています。
+                    </p>
+
+                    <h3 className="subhead">バケット命名規則（重要）</h3>
+                    <p>
+                        バケット名は Cloud Storage
+                        の<b>単一のグローバル名前空間</b>を共有するため、プロジェクトをまたいで世界中で一意である必要があります。バケット名は小文字の英字、数字、ダッシュ（-）、アンダースコア（_）、ドット（.）のみを使用でき、スペースは使用できません。
+                    </p>
+
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">ルール</th>
+                                    <th scope="col">内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>使用可能文字</td>
+                                    <td>
+                                        小文字英数字、<code>-</code>、<code>_</code>、<code>.</code>
+                                        のみ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>開始／終了文字</td>
+                                    <td>数字または英字で開始・終了する必要がある</td>
+                                </tr>
+                                <tr>
+                                    <td>文字数</td>
+                                    <td>
+                                        3〜63文字（ドットを含む場合は最大222文字、各セグメントは63文字まで）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>IPアドレス形式</td>
+                                    <td>
+                                        ドット区切りの10進数表記（例: <code>192.168.5.4</code>）は不可
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>禁止プレフィックス</td>
+                                    <td><code>goog</code> から始まる名前は不可</td>
+                                </tr>
+                                <tr>
+                                    <td>禁止文字列</td>
+                                    <td>&quot;google&quot; や &quot;g00gle&quot; のような紛らわしい表記も使用不可</td>
+                                </tr>
+                                <tr>
+                                    <td>一意性</td>
+                                    <td>
+                                        グローバルに一意な名前空間を共有するため、既存の名前とは重複できない
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="callout warning">
+                        <span className="callout-label">Warning</span>
+                        バケット名は公開情報として誰でも見ることができるため、ユーザーID・メールアドレス・プロジェクト名・個人を特定できる情報（PII）をバケット名に含めるべきではありません。プロジェクトIDをそのままバケット名に使うラボの手順は学習用としては簡便ですが、本番環境では推測されにくいランダムな接尾辞を付けるのが推奨されます。
+                    </div>
+
+                    <div className="gb-grid">
+                        <div className="gb-card good">
+                            <div className="gb-title">✅ 良い例</div>
+                            命名: <code>mycompany-prod-images-x7k2p</code><br />
+                            アクセス制御: 用途ごとに最小権限のロールを付与<br />
+                            削除運用: 不要になったら空にして保持を検討
+                        </div>
+                        <div className="gb-card bad">
+                            <div className="gb-title">❌ 悪い例</div>
+                            命名: <code>mysecretproject-bucket</code><br />
+                            アクセス制御: プロジェクト全体に <code>allUsers</code> で公開<br />
+                            削除運用: すぐに削除して名前を再利用可能にする
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">コンソールでのバケット作成フロー</h3>
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-storage-console" label="Fig 2.1 — コンソールでのバケット作成フロー" />
+                        <div className="diagram-caption">Fig 2.1 — コンソールでのバケット作成フロー</div>
+                    </div>
+
+                    <h3 className="subhead">CLI でのベストプラクティス</h3>
+                    <div className="code-block">
+                        <div className="code-line"><span className="code-comment"># バケット作成（gcloud storage は gsutil の後継コマンド）</span></div>
+                        <div className="code-line">gcloud storage buckets create gs://&lt;YOUR-BUCKET-NAME&gt; \</div>
+                        <div className="code-line">  --location=REGION \</div>
+                        <div className="code-line">  --default-storage-class=STANDARD</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># オブジェクトのアップロード</span></div>
+                        <div className="code-line">gcloud storage cp ada.jpg gs://YOUR-BUCKET-NAME</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># フォルダ構造を模したコピー</span></div>
+                        <div className="code-line">gcloud storage cp gs://YOUR-BUCKET-NAME/ada.jpg gs://YOUR-BUCKET-NAME/image-folder/</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># 一覧表示（詳細付き）</span></div>
+                        <div className="code-line">gcloud storage ls -l gs://YOUR-BUCKET-NAME</div>
+                    </div>
+
+                    <p>
+                        <b>なぜ <code>gcloud storage</code> を使うのか</b>：旧来の
+                        <code>gsutil</code> コマンドと同等の操作ができますが、<code>gcloud</code> CLI
+                        に統合されたことで認証・出力フォーマットの一貫性が高まっています。ラボの一部では
+                        <code>gsutil</code> も登場しますが、現在は
+                        <code>gcloud storage</code> 系のコマンドが推奨されます。
+                    </p>
+
+                    <h3 className="subhead">公開アクセスとオブジェクト権限のベストプラクティス</h3>
+                    <p>
+                        ラボでは <code>allUsers</code> に
+                        <code>Storage Object Viewer</code>
+                        ロールを付与してオブジェクトを公開しますが、これは<b>学習目的の例</b>であり、本番運用では以下の原則を守る必要があります。
+                    </p>
+                    <ul>
+                        <li>
+                            オブジェクトを公開読み取り可能にする権限を使う際は、本当にそのオブジェクトを公開する意図があるかを必ず確認すること。一度「公開」されたデータはインターネット上のどこかにコピーされる可能性があり、実質的に読み取り制御を取り戻すことは不可能になる。
+                        </li>
+                        <li>
+                            個々のユーザーを大量に列挙するより、グループを使う方が望ましい。スケールしやすく、大量のオブジェクトに対するアクセス制御を一括で効率的に更新できる。
+                        </li>
+                        <li>
+                            均一バケットレベルアクセス（Uniform bucket-level
+                            access）を有効にし、オブジェクト単位の ACL 管理よりも IAM
+                            による一元管理を優先する。
+                        </li>
+                    </ul>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-storage-public" label="Fig 2.2 — 公開アクセス設計の意思決定フロー" />
+                        <div className="diagram-caption">Fig 2.2 — 公開アクセス設計の意思決定フロー</div>
+                    </div>
+                </section>
+
+                {/* ===================== IAM ===================== */}
+                <section id="iam">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.03</span>
+                        <h2>IAM — アクセス制御の基礎</h2>
+                    </div>
+
+                    <h3 className="subhead">定義</h3>
+                    <p>
+                        Identity and Access
+                        Management（IAM）は、「誰が（Identity）」「どのリソースに」「何ができるか（Role）」を一元管理する仕組みです。IAM
+                        ポリシーは、プリンシパル（ユーザー・グループ・サービスアカウント）にロール（権限の集合）を紐付けることで機能します。
+                    </p>
+
+                    <h3 className="subhead">基本ロール（Basic Roles）の理解</h3>
+                    <p>
+                        レガシーな基本ロールは
+                        Owner（<code>roles/owner</code>）、Editor（<code>roles/editor</code>）、Viewer（<code>roles/viewer</code>）の3つです。プリンシパルに基本ロールを付与すると、そのロールに含まれるすべての権限が付与されます。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-iam-basic" label="Fig 3.1 — 基本ロールの包含関係" />
+                        <div className="diagram-caption">Fig 3.1 — 基本ロールの包含関係</div>
+                    </div>
+
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">ロール</th>
+                                    <th scope="col">できること</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>roles/viewer</code></td>
+                                    <td>リソースの閲覧のみ（状態を変更する操作は不可）</td>
+                                </tr>
+                                <tr>
+                                    <td><code>roles/editor</code></td>
+                                    <td>Viewer の全権限 ＋ 既存リソースの変更</td>
+                                </tr>
+                                <tr>
+                                    <td><code>roles/owner</code></td>
+                                    <td>Editor の全権限 ＋ プロジェクトの権限管理・課金設定</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="callout danger">
+                        <span className="callout-label">Caution</span>
+                        基本ロール（Owner・Editor・Viewer）はすべての Google Cloud
+                        サービスにまたがる膨大な数の権限を含みます。本番環境では、代替手段がない場合を除き基本ロールを付与すべきではなく、必要最小限の事前定義ロールまたはカスタムロールを使用することが推奨されます。これは<b>最小権限の原則（Principle of Least Privilege）</b>と呼ばれ、IAM設計の最重要指針です。
+                    </div>
+
+                    <h3 className="subhead">事前定義ロールへの移行（本番運用のベストプラクティス）</h3>
+                    <p>
+                        ラボでは学習を簡単にするために基本ロールを使いますが、実運用では下表のようにサービス固有の事前定義ロールに置き換えるべきです。
+                    </p>
+
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">シナリオ</th>
+                                    <th scope="col">❌ ラボでの簡易設定</th>
+                                    <th scope="col">✅ 本番運用でのベストプラクティス</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cloud Storage の読み取り専用アクセス</td>
+                                    <td><code>roles/viewer</code>（プロジェクト全体）</td>
+                                    <td><code>roles/storage.objectViewer</code>（バケット単位）</td>
+                                </tr>
+                                <tr>
+                                    <td>Pub/Sub へのメッセージ発行</td>
+                                    <td><code>roles/editor</code></td>
+                                    <td><code>roles/pubsub.publisher</code>（トピック単位）</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Run functions のデプロイ</td>
+                                    <td><code>roles/owner</code></td>
+                                    <td>
+                                        <code>roles/cloudfunctions.developer</code> +{' '}
+                                        <code>roles/iam.serviceAccountUser</code>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 className="subhead">権限の伝播と反映時間</h3>
+                    <p>
+                        IAM
+                        ポリシーの変更は即座にではなく、システム全体に伝播するまで時間がかかることがあります。ラボの手順内でも「最大80秒程度かかる」という注記がありますが、これは
+                        Google のグローバルに分散したメタデータレイヤーの整合性モデルに起因します。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-iam-sequence" label="Fig 3.2 — IAM権限変更の伝播シーケンス" />
+                        <div className="diagram-caption">Fig 3.2 — IAM権限変更の伝播シーケンス</div>
+                    </div>
+
+                    <h3 className="subhead">権限を絞り込むための実践フロー</h3>
+                    <p>
+                        プリンシパルに付与すべき事前定義ロールを見つけるには、まず本番環境では基本ロールを候補から除外し、サービスエージェント用のロール（名前が
+                        &quot;Service Agent&quot;
+                        で終わるもの）も除外した上で、必要な権限を含む最も限定的な事前定義ロールを選びます。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-iam-flow" label="Fig 3.3 — 最小権限ロール選定フロー" />
+                        <div className="diagram-caption">Fig 3.3 — 最小権限ロール選定フロー</div>
+                    </div>
+                </section>
+
+                {/* ===================== MONITORING ===================== */}
+                <section id="monitoring">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.04</span>
+                        <h2>Cloud Monitoring — 可観測性の基礎</h2>
+                    </div>
+
+                    <h3 className="subhead">定義</h3>
+                    <p>
+                        Cloud Monitoring は、Google
+                        Cloud・AWS・オンプレミスのアプリケーションからメトリクス・イベント・メタデータを収集し、ダッシュボード・アラートを通じてシステムの健全性を可視化するサービスです。Cloud
+                        Logging と密に統合されており、両者を合わせて「Google Cloud
+                        Observability」と呼びます。
+                    </p>
+
+                    <h3 className="subhead">なぜエージェントが必要なのか</h3>
+                    <p>
+                        Compute Engine の VM は、ハイパーバイザー経由で CPU
+                        使用率やネットワークトラフィックなど一部のメトリクスを自動的に収集できますが、ディスク
+                        I/O の詳細やアプリケーション固有のログ・メトリクスを取得するには
+                        <b>Ops Agent</b> のインストールが必要です。Ops Agent は Compute Engine
+                        インスタンス上でログとメトリクスを収集し、ログは Cloud Logging へ、メトリクスは
+                        Cloud Monitoring へ送信します。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-monitoring-agent" label="Fig 4.1 — Ops Agent を介したテレメトリー収集の流れ" />
+                        <div className="diagram-caption">
+                            Fig 4.1 — Ops Agent を介したテレメトリー収集の流れ
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">インストール手順（ベストプラクティス比較）</h3>
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">方法</th>
+                                    <th scope="col">適したシーン</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>VM作成時にチェックボックスで自動インストール</td>
+                                    <td>新規VM、少数台のシンプルな運用</td>
+                                </tr>
+                                <tr>
+                                    <td>インストールスクリプトを SSH 内で実行</td>
+                                    <td>既存VMへの後付け、ラボでの学習</td>
+                                </tr>
+                                <tr>
+                                    <td>VM Extension Manager ポリシー</td>
+                                    <td>フリート全体への一括導入・自動アップグレード</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="code-block">
+                        <div className="code-line"><span className="code-comment"># Ops Agent のインストール（SSH ターミナル内）</span></div>
+                        <div className="code-line">curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh</div>
+                        <div className="code-line">sudo bash add-google-cloud-ops-agent-repo.sh --also-install</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># インストール状態の確認</span></div>
+                        <div className="code-line">sudo systemctl status google-cloud-ops-agent&quot;*&quot;</div>
+                    </div>
+
+                    <div className="callout info">
+                        <span className="callout-label">Note</span>
+                        デフォルトでは Ops Agent は Compute Engine
+                        のデフォルトサービスアカウントを使用し、そのサービスアカウントにはログとメトリクスの書き込みに必要な
+                        Logs Writer（<code>roles/logging.logWriter</code>）と Monitoring Metric Writer
+                        のロールが付与されています。本番環境では最小権限の専用サービスアカウントを VM
+                        にアタッチすることが推奨されます（第3章参照）。
+                    </div>
+
+                    <h3 className="subhead">アップタイムチェックとアラートポリシーの設計</h3>
+                    <div className="gb-grid">
+                        <div className="gb-card good">
+                            <div className="gb-title">✅ 良い例</div>
+                            チェック頻度: サービスの SLA に応じて調整（1〜5分間隔）<br />
+                            通知先: オンコール担当者のチャンネル（Slack/PagerDuty）<br />
+                            しきい値: 過去のベースラインを踏まえて設定
+                        </div>
+                        <div className="gb-card bad">
+                            <div className="gb-title">❌ 悪い例</div>
+                            チェック頻度: 常に最小間隔にしてコストを無駄にする<br />
+                            通知先: 個人のメールアドレスのみで属人化<br />
+                            しきい値: 根拠のない値を仮置きしたまま放置
+                        </div>
+                    </div>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-monitoring-alert" label="Fig 4.2 — アップタイムチェック〜アラート設計フロー" />
+                        <div className="diagram-caption">
+                            Fig 4.2 — アップタイムチェック〜アラート設計フロー
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">ダッシュボード設計の考え方</h3>
+                    <p>
+                        ラボでは CPU Load と Received Packets
+                        の2つのウィジェットを持つカスタムダッシュボードを作成します。実運用では、以下の「4大シグナル（Four
+                        Golden Signals）」を意識して設計すると効果的です。
+                    </p>
+
+                    <div className="metric-grid">
+                        <div className="metric-card">
+                            <div className="metric-val">Latency</div>
+                            <div className="metric-label">リクエスト応答時間</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-val">Traffic</div>
+                            <div className="metric-label">Received/Sent Packets</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-val">Errors</div>
+                            <div className="metric-label">5xx エラーレート</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-val">Saturation</div>
+                            <div className="metric-label">CPU load・ディスク使用率</div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* ===================== CLOUD RUN FUNCTIONS ===================== */}
+                <section id="functions">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.05</span>
+                        <h2>Cloud Run functions — イベント駆動サーバーレス</h2>
+                    </div>
+
+                    <h3 className="subhead">定義</h3>
+                    <p>
+                        Cloud Run function（旧称 Cloud
+                        Functions）は、HTTPリクエストやメッセージング、ファイルアップロードなどの「イベント」に応答して実行される単一目的のコードです。常時起動するサーバーが不要なため、突発的・断続的なワークロードに向いています。
+                    </p>
+
+                    <h3 className="subhead">トリガーの2種類</h3>
+                    <p>
+                        Cloud Run functions のイベント駆動トリガーは、Google Cloud
+                        プロジェクト内のイベントに反応します。これに対し HTTP トリガーは HTTP(S)
+                        リクエストに反応します。イベント駆動の関数をトリガーするには、CloudEvents 仕様の
+                        Google 実装である <b>Eventarc</b> を使う必要があります。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-functions-triggers" label="Fig 5.1 — HTTPトリガーとイベント駆動トリガーの分岐" />
+                        <div className="diagram-caption">
+                            Fig 5.1 — HTTPトリガーとイベント駆動トリガーの分岐
+                        </div>
+                    </div>
+
+                    <div className="callout info">
+                        <span className="callout-label">Note</span>
+                        Pub/Sub トリガーと Cloud Storage トリガーは、いずれも Eventarc
+                        トリガーの一種として実装されています。つまり「Pub/Sub
+                        トリガー」というラボのタスクは、内部的には Eventarc が Pub/Sub
+                        のイベントをフィルタリングして関数に配信する仕組みになっています。
+                    </div>
+
+                    <h3 className="subhead">コンソールでのデプロイフロー</h3>
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-functions-deploy" label="Fig 5.2 — コンソールでの関数デプロイフロー" />
+                        <div className="diagram-caption">Fig 5.2 — コンソールでの関数デプロイフロー</div>
+                    </div>
+
+                    <h3 className="subhead">CLI でのデプロイと Pub/Sub トリガー</h3>
+                    <div className="code-block">
+                        <div className="code-line"><span className="code-comment"># 関数のデプロイ（Pub/Sub トリガー、第2世代）</span></div>
+                        <div className="code-line">gcloud functions deploy nodejs-pubsub-function \</div>
+                        <div className="code-line">  --gen2 \</div>
+                        <div className="code-line">  --runtime=nodejs22 \</div>
+                        <div className="code-line">  --region=REGION \</div>
+                        <div className="code-line">  --source=. \</div>
+                        <div className="code-line">  --entry-point=helloPubSub \</div>
+                        <div className="code-line">  --trigger-topic cf-demo \</div>
+                        <div className="code-line">  --stage-bucket PROJECT_ID-bucket \</div>
+                        <div className="code-line">  --service-account cloudfunctionsa@PROJECT_ID.iam.gserviceaccount.com \</div>
+                        <div className="code-line">  --allow-unauthenticated</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># デプロイ状態の確認</span></div>
+                        <div className="code-line">gcloud functions describe nodejs-pubsub-function --region=REGION</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># トピックにメッセージを発行してテスト</span></div>
+                        <div className="code-line">gcloud pubsub topics publish cf-demo --message=&quot;Cloud Function Gen2&quot;</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># ログの確認</span></div>
+                        <div className="code-line">gcloud functions logs read nodejs-pubsub-function --region=REGION</div>
+                    </div>
+
+                    <h3 className="subhead">Cloud Storage トリガー作成のベストプラクティス</h3>
+                    <p>
+                        第7章の Challenge Lab で使う Cloud Storage トリガーは、次のように Eventarc の
+                        <code>google.cloud.storage.object.v1.finalized</code>
+                        イベントをフィルタリングして構築します。
+                    </p>
+
+                    <div className="code-block">
+                        <div className="code-line">gcloud eventarc triggers create TRIGGER_NAME \</div>
+                        <div className="code-line">  --location=REGION \</div>
+                        <div className="code-line">  --destination-run-service=SERVICE_NAME \</div>
+                        <div className="code-line">  --destination-run-region=REGION \</div>
+                        <div className="code-line">  --event-filters=&quot;type=google.cloud.storage.object.v1.finalized&quot; \</div>
+                        <div className="code-line">  --event-filters=&quot;bucket=BUCKET_NAME&quot; \</div>
+                        <div className="code-line">  --service-account=SERVICE_ACCOUNT_EMAIL</div>
+                    </div>
+
+                    <p>
+                        Eventarc
+                        トリガーの作成後、すぐに稼働するわけではなく、トリガーが完全に機能するまで<b>最大2分</b>ほどかかることがあります。ラボの手順で「サムネイル画像がすぐに反映されない」場合の多くは、この伝播待ちが原因です。
+                    </p>
+
+                    <h3 className="subhead">サービスアカウントとロールの整合性</h3>
+                    <p>
+                        Cloud Storage の直接イベントに対するトリガーを作成する前に、Cloud Storage
+                        のサービスエージェントに Pub/Sub
+                        パブリッシャーのロール（<code>roles/pubsub.publisher</code>）を付与する必要があります。これは、Cloud
+                        Storage の変更イベントが内部的に Pub/Sub 経由で Eventarc
+                        に配信される仕組みになっているためです。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-functions-sa" label="Fig 5.3 — イベント配信とサービスアカウント権限構造" />
+                        <div className="diagram-caption">Fig 5.3 — イベント配信とサービスアカウント権限構造</div>
+                    </div>
+
+                    <div className="gb-grid">
+                        <div className="gb-card good">
+                            <div className="gb-title">✅ 良い例</div>
+                            サービスアカウント: 関数専用の最小権限SAを作成・アタッチ<br />
+                            権限管理: 必要なロール（<code>eventReceiver</code>, <code>invoker</code>）のみを明示付与<br />
+                            認証設定: 要件に応じて IAM 認証を必須化
+                        </div>
+                        <div className="gb-card bad">
+                            <div className="gb-title">❌ 悪い例</div>
+                            サービスアカウント: Compute Engine のデフォルトSAを使い回す<br />
+                            権限管理: エラーのたびに権限を過剰に付与して回避<br />
+                            認証設定: 常に <code>--allow-unauthenticated</code> で公開
+                        </div>
+                    </div>
+                </section>
+
+                {/* ===================== PUB/SUB ===================== */}
+                <section id="pubsub">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.06</span>
+                        <h2>Pub/Sub — 非同期メッセージング</h2>
+                    </div>
+
+                    <h3 className="subhead">定義</h3>
+                    <p>
+                        Pub/Sub
+                        は、メッセージの送信者（Publisher）と受信者（Subscriber）を分離した非同期・スケーラブルなメッセージングサービスです。レイテンシは通常100ミリ秒程度で、ストリーミング分析やデータ統合パイプラインでのデータのロード・配信によく使われます。
+                    </p>
+
+                    <h3 className="subhead">基本コンセプト</h3>
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-pubsub-basic" label="Fig 6.1 — Publish/Subscribe の基本構造" />
+                        <div className="diagram-caption">Fig 6.1 — Publish/Subscribe の基本構造</div>
+                    </div>
+
+                    <p>
+                        Publisher（Producer
+                        とも呼ばれる）はメッセージを作成し、指定したトピックに対してメッセージングサービスに送信（Publish）します。Subscription
+                        は特定のトピックのメッセージを受信する意思を表す名前付きのエンティティで、Subscriber（Consumer
+                        とも呼ばれる）は指定した Subscription からメッセージを受信します。
+                    </p>
+
+                    <h3 className="subhead">なぜ「先にサブスクリプションを作る」のか</h3>
+                    <p>
+                        サブスクリプションが接続されていないトピックに発行を開始すると、そのメッセージは保持されず、後から接続されたサブスクリプションに配信することはできません。ラボの手順で「トピックを作成
+                        → サブスクリプションを作成 →
+                        メッセージを発行」という順序が徹底されているのは、このためです。
+                    </p>
+
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-pubsub-timing" label="Fig 6.2 — サブスクリプション作成タイミングの重要性" />
+                        <div className="diagram-caption">
+                            Fig 6.2 — サブスクリプション作成タイミングの重要性
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">コンソール・CLI・Python の3つのアプローチ比較</h3>
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">アプローチ</th>
+                                    <th scope="col">主なコマンド／操作</th>
+                                    <th scope="col">向いている用途</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>コンソール</td>
+                                    <td>Pub/Sub &gt; Topics &gt; Create topic</td>
+                                    <td>学習・GUIでの動作確認</td>
+                                </tr>
+                                <tr>
+                                    <td>gcloud CLI</td>
+                                    <td>
+                                        <code>gcloud pubsub topics create</code> /{' '}
+                                        <code>gcloud pubsub subscriptions pull</code>
+                                    </td>
+                                    <td>スクリプト化・自動化・CI/CD</td>
+                                </tr>
+                                <tr>
+                                    <td>Python クライアントライブラリ</td>
+                                    <td>
+                                        <code>publisher.py</code> /{' '}
+                                        <code>subscriber.py</code>（公式サンプル）
+                                    </td>
+                                    <td>アプリケーションへの組み込み</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="code-block">
+                        <div className="code-line"><span className="code-comment"># トピック作成</span></div>
+                        <div className="code-line">gcloud pubsub topics create myTopic</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># サブスクリプション作成（Pull型）</span></div>
+                        <div className="code-line">gcloud pubsub subscriptions create --topic myTopic mySubscription</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># メッセージ発行</span></div>
+                        <div className="code-line">gcloud pubsub topics publish myTopic --message &quot;Hello World&quot;</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># メッセージのPull（自動ACK）</span></div>
+                        <div className="code-line">gcloud pubsub subscriptions pull mySubscription --auto-ack</div>
+                        <div className="code-line"></div>
+                        <div className="code-line"><span className="code-comment"># 複数メッセージをまとめてPull</span></div>
+                        <div className="code-line">gcloud pubsub subscriptions pull mySubscription --limit=3</div>
+                    </div>
+
+                    <div className="callout tip">
+                        <span className="callout-label">Tip</span>
+                        <code>--auto-ack</code> を付けずに Pull
+                        すると、メッセージは確認応答（ACK）されないまま残り続け、確認応答期限が過ぎると再配信されます。ラボで「同じメッセージが1つずつしか出てこない」という挙動は、<code>pull</code> コマンドがデフォルトで1件しか返さない仕様によるものです。
+                    </div>
+
+                    <h3 className="subhead">Publish / Subscribe のベストプラクティス</h3>
+                    <p>
+                        Pub/Sub client library でメッセージを発行する際は、リクエストごとに新しい
+                        Publisher クライアントを作るのではなく、同じ Publisher
+                        クライアントを再利用する方が効率的です。新しい Publisher
+                        クライアントを作成した後の最初の発行リクエストは、認証済み接続を確立するのに時間がかかるためです。
+                    </p>
+                    <p>
+                        発行側でメッセージに順序キー（ordering
+                        key）を付けて同一リージョンに送信している場合、Subscriber
+                        側でもそのSubscriptionに対して順序付き配信を有効にすることで、メッセージを順序どおりに受信できます。
+                    </p>
+
+                    <div className="gb-grid">
+                        <div className="gb-card good">
+                            <div className="gb-title">✅ 良い例</div>
+                            クライアント管理: Publisher/Subscriberクライアントを使い回す<br />
+                            メッセージ順序: 必要な場合のみ ordering key を使用<br />
+                            重複耐性: アプリケーション側で重複配信に耐えられる設計
+                        </div>
+                        <div className="gb-card bad">
+                            <div className="gb-title">❌ 悪い例</div>
+                            クライアント管理: リクエストのたびに新規クライアントを生成<br />
+                            メッセージ順序: 全メッセージに不要な順序制御を強制しスループット低下<br />
+                            重複耐性: 重複が来ない前提でロジックを書く
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">信頼性設計（マルチゾーン／マルチリージョン）</h3>
+                    <p>
+                        Pub/Sub
+                        はゾーン間レプリケーションを組み込みで備えており、サービス自体の単一ゾーン障害への対処は不要ですが、クライアント側やネットワークの障害に対する耐性を持たせるには、リージョン内の複数ゾーンで十分なキャパシティを持つ
+                        Publisher と Subscriber を運用することがベストプラクティスです。
+                    </p>
+                </section>
+
+                {/* ===================== CHALLENGE LAB ===================== */}
+                <section id="challenge">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.07</span>
+                        <h2>総合演習：Challenge Lab（GSP315）&quot;Memories&quot; サムネイル生成システム</h2>
+                    </div>
+
+                    <h3 className="subhead">シナリオ</h3>
+                    <p>
+                        新設された &quot;Memories&quot;
+                        チーム向けに、写真をアップロードすると自動でサムネイルを生成するパイプラインを構築します。これは第2〜6章で学んだ全サービスの統合演習です。
+                    </p>
+
+                    <h3 className="subhead">統合アーキテクチャ</h3>
+                    <div className="diagram-wrap">
+                        <Diagram id="diag-challenge-arch" label="Fig 7.1 — Challenge Lab 統合アーキテクチャ" />
+                        <div className="diagram-caption">Fig 7.1 — Challenge Lab 統合アーキテクチャ</div>
+                    </div>
+
+                    <h3 className="subhead">タスクごとの実装ポイント</h3>
+
+                    <div className="arch-layers">
+                        <div className="arch-row storage">
+                            <span className="arch-tag">TASK 1</span>
+                            <p>
+                                <b>バケット作成</b> —{' '}
+                                <code>gcloud storage buckets create gs://&lt;Bucket Name&gt; --location=REGION</code>。指定された REGION／ZONE
+                                に必ず合わせて作成することが採点上のポイントです。標準サイズ（<code>e2-micro</code>／<code>e2-medium</code>）とリージョン指定はコスト管理の観点からも重要です。
+                            </p>
+                        </div>
+                        <div className="arch-row pubsub">
+                            <span className="arch-tag">TASK 2</span>
+                            <p>
+                                <b>Pub/Sub トピック作成</b> —{' '}
+                                <code>gcloud pubsub topics create &lt;Topic Name&gt;</code>。このトピックは、サムネイル生成完了後に Cloud Run function
+                                から通知を発行するために使われます（第6章参照）。
+                            </p>
+                        </div>
+                        <div className="arch-row func">
+                            <span className="arch-tag">TASK 3</span>
+                            <p>
+                                <b>Cloud Run function（サムネイル生成）</b> — Entry
+                                point：関数名（イベントを処理する関数）。Trigger：Cloud Storage（第5章の
+                                Eventarc トリガーと同じ仕組み）。ランタイム：Node.js
+                                22、第2世代（Execution environment）。
+                            </p>
+                        </div>
+                        <div className="arch-row iam">
+                            <span className="arch-tag">TASK 4</span>
+                            <p>
+                                <b>前任エンジニアのアクセス除去</b> —
+                                第3章で学んだ「最小権限の原則」の実践。退職・異動したメンバーのアクセスを速やかに取り消すことは、セキュリティ運用の基本です。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="code-block">
+                        <div className="code-line"><span className="code-comment">// タスク3: コード内の要点</span></div>
+                        <div className="code-line">functions.cloudEvent(&apos;&apos;, async cloudEvent =&gt; &#123;</div>
+                        <div className="code-line">  const event = cloudEvent.data;</div>
+                        <div className="code-line">  const fileName = event.name;</div>
+                        <div className="code-line">  const bucketName = event.bucket;</div>
+                        <div className="code-line">  <span className="code-comment">// ファイル名にすでに &quot;64x64_thumbnail&quot; が含まれていないかチェックする</span></div>
+                        <div className="code-line">  <span className="code-comment">// → これは無限ループ（サムネイルからさらにサムネイルを作る）を防ぐガード</span></div>
+                        <div className="code-line">  if (fileName.search(&quot;64x64_thumbnail&quot;) === -1) &#123;</div>
+                        <div className="code-line">    <span class="code-comment">// sharpでリサイズしてサムネイルを生成</span></div>
+                        <div className="code-line">    <span class="code-comment">// 生成後、Pub/Subトピックに完了メッセージを発行</span></div>
+                        <div className="code-line">  &#125;</div>
+                        <div className="code-line">&#125;);</div>
+                    </div>
+
+                    <div className="callout warning">
+                        <span className="callout-label">Important</span>
+                        この「すでにサムネイルかどうかをファイル名でチェックする」ロジックは、イベント駆動アーキテクチャで頻出する<b>無限ループ防止パターン</b>です。サムネイル生成が新しいオブジェクトを同じバケットに書き込むと、それ自体が新たな
+                        <code>object.finalized</code>
+                        イベントを発火させてしまうため、処理対象を判定するガード条件が不可欠です。
+                    </div>
+
+                    <div className="code-block">
+                        <div className="code-line"><span className="code-comment"># タスク4: Username 2（Viewerロール）からアクセスを除去</span></div>
+                        <div className="code-line">gcloud projects remove-iam-policy-binding PROJECT_ID \</div>
+                        <div className="code-line">  --member=&quot;user:PREVIOUS_ENGINEER_EMAIL&quot; \</div>
+                        <div className="code-line">  --role=&quot;roles/viewer&quot;</div>
+                    </div>
+
+                    <h3 className="subhead">必要な IAM ロールの整理</h3>
+                    <p>
+                        Cloud Run function サービスアカウントに
+                        <code>roles/run.invoker</code>（呼び出し許可）と
+                        <code>roles/eventarc.eventReceiver</code>（イベント受信許可）を付与し、Cloud
+                        Storage のサービスアカウントには
+                        <code>roles/pubsub.publisher</code>
+                        を付与して、オブジェクトがアップロードされた際にイベントを発行できるようにする必要があります。
+                    </p>
+
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">サービスアカウント</th>
+                                    <th scope="col">付与するロール</th>
+                                    <th scope="col">目的</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cloud Run function 用 SA</td>
+                                    <td><code>roles/eventarc.eventReceiver</code></td>
+                                    <td>Eventarc からイベントを受信</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Run function 用 SA</td>
+                                    <td><code>roles/run.invoker</code></td>
+                                    <td>関数（サービス）を呼び出し可能にする</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Storage サービスエージェント</td>
+                                    <td><code>roles/pubsub.publisher</code></td>
+                                    <td>オブジェクトイベントをEventarcに転送</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Run function 用 SA</td>
+                                    <td><code>roles/pubsub.publisher</code>（トピック単位）</td>
+                                    <td>処理完了メッセージを発行</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {/* ===================== PRACTICES TABLE ===================== */}
+                <section id="practices">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.08</span>
+                        <h2>サービス横断ベストプラクティス早見表</h2>
+                    </div>
+
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">カテゴリ</th>
+                                    <th scope="col">ベストプラクティス</th>
+                                    <th scope="col">該当章</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>コスト</td>
+                                    <td>
+                                        リージョン・ゾーンを指定し、不要なマルチリージョン設定を避ける
+                                    </td>
+                                    <td>CH.02, CH.07</td>
+                                </tr>
+                                <tr>
+                                    <td>コスト</td>
+                                    <td>
+                                        VM サイズは要件に応じて <code>e2-micro</code>／<code>e2-medium</code> を選択
+                                    </td>
+                                    <td>CH.04, CH.07</td>
+                                </tr>
+                                <tr>
+                                    <td>セキュリティ</td>
+                                    <td>基本ロール（Owner/Editor/Viewer）は本番で極力使わない</td>
+                                    <td>CH.03</td>
+                                </tr>
+                                <tr>
+                                    <td>セキュリティ</td>
+                                    <td>公開アクセスは範囲を最小限に、意図を明確にしてから設定</td>
+                                    <td>CH.02</td>
+                                </tr>
+                                <tr>
+                                    <td>セキュリティ</td>
+                                    <td>用途ごとに専用サービスアカウントを作成する</td>
+                                    <td>CH.05, CH.07</td>
+                                </tr>
+                                <tr>
+                                    <td>可用性</td>
+                                    <td>アップタイムチェックとアラートで異常を早期検知</td>
+                                    <td>CH.04</td>
+                                </tr>
+                                <tr>
+                                    <td>可用性</td>
+                                    <td>Pub/Sub Publisher/Subscriber をマルチゾーンで運用</td>
+                                    <td>CH.06</td>
+                                </tr>
+                                <tr>
+                                    <td>開発効率</td>
+                                    <td>Publisher/Subscriber クライアントを再利用する</td>
+                                    <td>CH.06</td>
+                                </tr>
+                                <tr>
+                                    <td>開発効率</td>
+                                    <td>イベント駆動関数には無限ループ防止のガード条件を入れる</td>
+                                    <td>CH.05, CH.07</td>
+                                </tr>
+                                <tr>
+                                    <td>運用</td>
+                                    <td>退職・異動したメンバーのIAMロールを速やかに除去する</td>
+                                    <td>CH.03, CH.07</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {/* ===================== TROUBLESHOOTING ===================== */}
+                <section id="troubleshoot">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.09</span>
+                        <h2>よくあるエラーとトラブルシューティング</h2>
+                    </div>
+
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">症状</th>
+                                    <th scope="col">原因</th>
+                                    <th scope="col">対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>バケット作成時に <code>409 Conflict</code></td>
+                                    <td>バケット名がグローバルに重複している</td>
+                                    <td>より一意性の高い名前（ランダムなサフィックス付き）に変更</td>
+                                </tr>
+                                <tr>
+                                    <td>IAM 権限変更後もアクセスが変わらない</td>
+                                    <td>ポリシーの伝播待ち（最大80秒程度）</td>
+                                    <td>数分待って再試行、または再ログイン</td>
+                                </tr>
+                                <tr>
+                                    <td>Cloud Run function の Eventarc トリガーが発火しない</td>
+                                    <td>トリガー作成直後で伝播が完了していない、または権限不足</td>
+                                    <td>
+                                        最大2分待つ、<code>roles/pubsub.publisher</code> 等の権限を確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>AccessDeniedException</code>（Pub/Sub 経由の Storage
+                                        操作）
+                                    </td>
+                                    <td>サービスエージェントへのロール付与が反映されていない</td>
+                                    <td>1分程度待って再実行</td>
+                                </tr>
+                                <tr>
+                                    <td>Pub/Sub の <code>pull</code> で0件しか返らない</td>
+                                    <td>
+                                        サブスクリプションが未接続の状態でメッセージを発行した、または既にACK済み
+                                    </td>
+                                    <td>先にサブスクリプションを作成してから発行する運用に変更</td>
+                                </tr>
+                                <tr>
+                                    <td>Ops Agent のステータスが &quot;Not detected&quot;</td>
+                                    <td>サービスアカウントの権限不足、またはエージェント未起動</td>
+                                    <td>
+                                        <code>roles/logging.logWriter</code>／Monitoring
+                                        関連ロールを確認しエージェントを再起動
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {/* ===================== REFERENCES ===================== */}
+                <section id="refs">
+                    <div className="chapter-head">
+                        <span className="chapter-num">CH.10</span>
+                        <h2>参考ソース一覧</h2>
+                    </div>
+                    <p className="chapter-desc">
+                        各章の内容を裏付ける一次情報源です。ラボの簡易設定を本番環境にそのまま持ち込まないよう、必ず最新のドキュメントを確認してください。
+                    </p>
+
+                    <h3 className="subhead">Cloud Storage</h3>
+                    <div className="ref-grid">
+                        <div className="ref-card">
+                            <div className="ref-cat">Naming</div>
+                            <div className="ref-title">About Cloud Storage buckets（バケット命名規則）</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/storage/docs/buckets"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/storage/docs/buckets
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Best Practices</div>
+                            <div className="ref-title">Best practices for Cloud Storage</div>
+                            <a
+                                className="ref-url"
+                                href="https://cloud.google.com/storage/docs/best-practices"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                cloud.google.com/storage/docs/best-practices
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">How-to</div>
+                            <div className="ref-title">Create a bucket</div>
+                            <a
+                                className="ref-url"
+                                href="https://cloud.google.com/storage/docs/creating-buckets"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                cloud.google.com/storage/docs/creating-buckets
+                            </a>
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">IAM</h3>
+                    <div className="ref-grid">
+                        <div className="ref-card">
+                            <div className="ref-cat">Concept</div>
+                            <div className="ref-title">Roles and permissions（基本ロールの定義）</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/iam/docs/roles-overview"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/iam/docs/roles-overview
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Best Practices</div>
+                            <div className="ref-title">
+                                Find the right predefined roles（最小権限の原則の実践）
+                            </div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/iam/docs/choose-predefined-roles"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/iam/docs/choose-predefined-roles
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Reference</div>
+                            <div className="ref-title">IAM roles for Cloud Storage</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/storage/docs/access-control/iam-roles"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/storage/docs/access-control/iam-roles
+                            </a>
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">Cloud Monitoring</h3>
+                    <div className="ref-grid">
+                        <div className="ref-card">
+                            <div className="ref-cat">How-to</div>
+                            <div className="ref-title">Installing the Ops Agent on individual VMs</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/monitoring/agent/ops-agent/installation"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/monitoring/agent/ops-agent/installation
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">How-to</div>
+                            <div className="ref-title">Install the Ops Agent during VM creation</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/monitoring/agent/ops-agent/install-agent-vm-creation"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/monitoring/agent/ops-agent/install-agent-vm-creation
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Fleet Mgmt</div>
+                            <div className="ref-title">Manage the Ops Agent via VM Extension Manager</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/monitoring/agent/ops-agent/agent-vmem-policies"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/monitoring/agent/ops-agent/agent-vmem-policies
+                            </a>
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">Cloud Run functions / Eventarc</h3>
+                    <div className="ref-grid">
+                        <div className="ref-card">
+                            <div className="ref-cat">Concept</div>
+                            <div className="ref-title">
+                                Cloud Run function triggers（トリガー種別の全体像）
+                            </div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/run/docs/function-triggers"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/run/docs/function-triggers
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Tutorial</div>
+                            <div className="ref-title">
+                                Trigger functions from Cloud Storage using Eventarc
+                            </div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/run/docs/tutorials/trigger-functions-storage"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/run/docs/tutorials/trigger-functions-storage
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Tutorial</div>
+                            <div className="ref-title">Trigger functions from Pub/Sub using Eventarc</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/run/docs/tutorials/pubsub-eventdriven"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/run/docs/tutorials/pubsub-eventdriven
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Tutorial</div>
+                            <div className="ref-title">
+                                Use Eventarc to receive events from Cloud Storage
+                            </div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/run/docs/tutorials/eventarc"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/run/docs/tutorials/eventarc
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">How-to</div>
+                            <div className="ref-title">Create triggers from Cloud Storage events</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/run/docs/triggering/storage-triggers"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/run/docs/triggering/storage-triggers
+                            </a>
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">Pub/Sub</h3>
+                    <div className="ref-grid">
+                        <div className="ref-card">
+                            <div className="ref-cat">Concept</div>
+                            <div className="ref-title">
+                                Overview of the Pub/Sub service（基本コンセプト）
+                            </div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/pubsub/docs/pubsub-basics"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/pubsub/docs/pubsub-basics
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Concept</div>
+                            <div className="ref-title">What is Pub/Sub?（ユースケースと設計思想）</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/pubsub/docs/overview"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/pubsub/docs/overview
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Best Practices</div>
+                            <div className="ref-title">Best practices to publish to a Pub/Sub topic</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/pubsub/docs/publish-best-practices"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/pubsub/docs/publish-best-practices
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Best Practices</div>
+                            <div className="ref-title">Best practices to subscribe to a Pub/Sub topic</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/pubsub/docs/subscribe-best-practices"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/pubsub/docs/subscribe-best-practices
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Reliability</div>
+                            <div className="ref-title">Pub/Sub: Introduction to reliability</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/pubsub/docs/reliability-intro"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/pubsub/docs/reliability-intro
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">How-to</div>
+                            <div className="ref-title">Publish messages to topics</div>
+                            <a
+                                className="ref-url"
+                                href="https://docs.cloud.google.com/pubsub/docs/publisher"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                docs.cloud.google.com/pubsub/docs/publisher
+                            </a>
+                        </div>
+                    </div>
+
+                    <h3 className="subhead">Challenge Lab（GSP315）関連の実装参考</h3>
+                    <div className="ref-grid">
+                        <div className="ref-card">
+                            <div className="ref-cat">Codelab</div>
+                            <div className="ref-title">
+                                Triggering Event Processing from Cloud Storage using
+                                Eventarc（類似構成）
+                            </div>
+                            <a
+                                className="ref-url"
+                                href="https://codelabs.developers.google.com/triggering-cloud-functions-from-cloud-storage"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                codelabs.developers.google.com/triggering-cloud-functions-from-cloud-storage
+                            </a>
+                        </div>
+                        <div className="ref-card">
+                            <div className="ref-cat">Codelab</div>
+                            <div className="ref-title">
+                                Getting Started with Event-driven Cloud Run functions
+                            </div>
+                            <a
+                                className="ref-url"
+                                href="https://codelabs.developers.google.com/codelabs/getting-started-cloud-run-functions-event-driven"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                codelabs.developers.google.com/codelabs/getting-started-cloud-run-functions-event-driven
+                            </a>
+                        </div>
+                    </div>
+                </section>
             </div>
+
+            <footer>
+                このガイドの使い方 —
+                各章末の公式ドキュメントURLは、ラボの手順だけでは触れられていない「なぜ」の部分を裏付ける一次情報源です。実際にプロジェクトへ適用する際は、必ず最新のドキュメントを確認し、ラボの簡易設定（基本ロールの多用、
+                <code>allUsers</code>
+                への公開など）をそのまま本番環境に持ち込まないよう注意してください。<br /><br />
+                Generated 2026-07-01 · Google Cloud App Dev Environment Guide
+            </footer>
         </div>
     );
 }
