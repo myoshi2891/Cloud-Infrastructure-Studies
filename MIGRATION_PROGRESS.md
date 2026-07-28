@@ -7,7 +7,31 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-07-28T13:48:00.000Z
+- **最終更新日時(UTC):** 2026-07-28T14:10:00.000Z
+
+## 2026-07-28: AWS「AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド」移行 (完了)
+
+### 目的
+
+`AWS-Certified-Solutions-Architect-Associate.html`（静的HTML・3485行・21個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client SaaGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/aws/solutions-architect-associate` ルートへ完全移行する。文章・表・21個のMermaid図・補足説明の一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for AWS SAA guide page` (`__tests__/aws/solutions-architect-associate/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA guide page components to pass tests` (`page.tsx`, `SaaGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor/docs(aws-saa): integrate AWS SAA page into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+
+### 関連ファイル
+
+- [app/aws/solutions-architect-associate/page.tsx](app/aws/solutions-architect-associate/page.tsx)
+- [app/aws/solutions-architect-associate/SaaGuide.tsx](app/aws/solutions-architect-associate/SaaGuide.tsx)
+- [app/aws/solutions-architect-associate/NavBar.tsx](app/aws/solutions-architect-associate/NavBar.tsx)
+- [app/aws/solutions-architect-associate/constants.ts](app/aws/solutions-architect-associate/constants.ts)
+- [app/aws/solutions-architect-associate/page.css](app/aws/solutions-architect-associate/page.css)
+- [__tests__/aws/solutions-architect-associate/page.test.tsx](__tests__/aws/solutions-architect-associate/page.test.tsx)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
 
 ## 2026-07-28: ACE / Hands-on「Google Cloud セキュリティ基礎 完全ガイド」移行 (完了)
 

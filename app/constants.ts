@@ -242,11 +242,16 @@ export const EXAMS: Exam[] = [
         href: '/aws/solutions-architect-associate',
         description:
             'AWS 上で可用性・コスト効率・耐障害性に優れたシステムを設計する能力を認定。VPC・EC2・S3・IAM・RDS など中核サービスを横断的に問う。',
-        domains: [],
-        badge: '準備中',
+        domains: [
+            {
+                label: '完全対策ガイド (SAA-C03)',
+                href: '/aws/solutions-architect-associate',
+                pct: '完全解説',
+            },
+        ],
+        badge: 'ソリューションアーキテクト',
         icon: '🏗',
         provider: 'AWS',
-        status: 'coming-soon',
     },
     {
         id: 'ccna',

@@ -232,9 +232,16 @@ app/
       ip-services-guide/
         page.tsx                    # CCNA 200-301 IP Services 完全ガイド（Server。メタデータ定義）
         CcnaIpServicesGuide.tsx     # 本文＋インタラクション（client。全12セクション、Mermaid等）
-        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
-        constants.ts                # Mermaid 図定義（12図）
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid 図定義（18図）
         page.css                    # ページ固有スタイル
+  aws/
+    solutions-architect-associate/
+      page.tsx                      # AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド (Server)
+      SaaGuide.tsx                  # 本文＋インタラクション (Client)
+      NavBar.tsx                    # サイドバーナビ
+      constants.ts                  # Mermaid 図定義（21図）
+      page.css                      # ページ固有スタイル
 
 components/
   Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要。検索フィルタ・active リンク判定 (usePathname)・最近見たページ表示を内包
