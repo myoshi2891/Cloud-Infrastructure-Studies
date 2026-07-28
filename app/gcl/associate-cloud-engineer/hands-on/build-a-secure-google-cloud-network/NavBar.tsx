@@ -9,16 +9,16 @@ import { useEffect, useRef } from 'react';
 
 /** サイドレールセクションリスト */
 const SECTIONS = [
-    { id: 's1', no: 'sec 01', name: '全体像' },
-    { id: 's2', no: 'sec 02', name: 'VPC の基礎' },
-    { id: 's3', no: 'sec 03', name: 'ファイアウォール設計' },
-    { id: 's4', no: 'sec 04', name: 'IAM と最小権限' },
-    { id: 's5', no: 'sec 05', name: 'IAP でゼロトラスト' },
-    { id: 's6', no: 'sec 06', name: '外部 LB と Cloud Armor' },
-    { id: 's7', no: 'sec 07', name: '内部 LB (ILB)' },
-    { id: 's8', no: 'sec 08', name: '総合演習' },
-    { id: 's9', no: 'sec 09', name: 'チェックリスト' },
-    { id: 's10', no: 'sec 10', name: '参考ソース' },
+    { id: 's1', name: '全体像' },
+    { id: 's2', name: 'VPC の基礎' },
+    { id: 's3', name: 'ファイアウォール設計' },
+    { id: 's4', name: 'IAM と最小権限' },
+    { id: 's5', name: 'IAP でゼロトラスト' },
+    { id: 's6', name: '外部 LB と Cloud Armor' },
+    { id: 's7', name: '内部 LB (ILB)' },
+    { id: 's8', name: '総合演習' },
+    { id: 's9', name: 'チェックリスト' },
+    { id: 's10', name: '参考ソース' },
 ] as const;
 
 /**
@@ -71,7 +71,6 @@ export default function NavBar() {
                             else linkRefs.current.delete(sec.id);
                         }}
                     >
-                        <span className="h-no">{sec.no}</span>
                         <span className="h-name">{sec.name}</span>
                     </a>
                 ))}
