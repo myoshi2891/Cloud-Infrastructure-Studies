@@ -362,7 +362,7 @@ flowchart TD
 
 | 項目 | 仕様の目安 |
 |---|---|
-| メモリ設定範囲 | 128 MB 〜 10,240 MB（64 MB単位で調整可能） |
+| メモリ設定範囲 | 128 MB 〜 10,240 MB（1 MB単位で調整可能） |
 | CPU | メモリ量に比例して自動割り当て（メモリを増やすとCPUも増える） |
 | 最大実行時間 | 900秒（15分） |
 | /tmp一時ストレージ | デフォルト512 MB、最大10,240 MBまで拡張可能 |
@@ -435,7 +435,7 @@ sequenceDiagram
 
 | 概念 | サービス | 特徴 |
 |---|---|---|
-| キュー(1対1) | Amazon SQS | メッセージはキューに保持され、1つのコンシューマーが処理。処理側の急増するバックログを吸収するバッファとして機能し、送信側と受信側の速度差を吸収する |
+| キュー(1対1) | Amazon SQS | 複数のコンシューマーが異なるメッセージを並列取得できる。取得された各メッセージは可視性タイムアウト中、その取得元コンシューマーに占有される。バックログを吸収するバッファとして送信側と受信側の速度差を吸収する |
 | パブリッシュ/サブスクライブ(1対多) | Amazon SNS | 1つのメッセージを複数のサブスクライバー（SQSキュー、Lambda、HTTPSエンドポイント等）に同時配信（ファンアウト） |
 | イベントルーティング | Amazon EventBridge | イベントの内容に基づき複数のターゲットへルールベースでルーティング。SaaS連携も可能 |
 
@@ -590,7 +590,7 @@ flowchart TD
 | プロビジョンドモード | 読み取り/書き込みキャパシティユニット(RCU/WCU)を事前に指定 | トラフィックが予測可能で、コストを最適化したい場合（Auto Scalingと組み合わせも可） |
 
 **データアクセスパターンの設計:**
-- **読み取り集約型(Read-heavy)**: DynamoDB Accelerator (DAX) によるマイクロ秒レベルのインメモリキャッシュ、または読み取りレプリカ/ElastiCacheの活用を検討
+- **読み取り集約型(Read-heavy)**: DynamoDB Accelerator (DAX) によるマイクロ秒レベルのインメモリキャッシュ、または ElastiCache／アプリケーション側キャッシュの活用を検討する。DAX のレプリカは DynamoDB 本体ではなくキャッシュ層内部の機能として扱う
 - **書き込み集約型(Write-heavy)**: パーティションキーの設計を分散させ「ホットパーティション」を避ける。オンデマンドモードやWCUの適切な設計が重要
 
 出典: [DynamoDBの読み取り/書き込みキャパシティモード](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html) / [DynamoDB Accelerator (DAX)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html)
