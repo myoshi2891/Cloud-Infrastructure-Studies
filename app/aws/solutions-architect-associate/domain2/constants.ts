@@ -1,4 +1,4 @@
-export const DIAGRAMS: Record<string, string> = {
+export const DIAGRAMS = {
     m1: `%%{init: {'theme': 'dark', 'themeVariables': { 'pie1': '#7c9eff', 'pie2': '#f0b86e', 'pie3': '#7fd9a8', 'pie4': '#a9c1ff', 'pieTitleTextSize': '18px', 'pieSectionTextSize': '14px', 'pieLegendTextSize': '14px' }}}%%
 pie showData
     title SAA-C03 出題ドメイン別の比率
@@ -348,4 +348,4 @@ pie showData
 
     style XRay fill:#2c5480,color:#fff
     style Map fill:#7c9eff,color:#000`,
-};
+} as const;

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Domain2Guide } from './Domain2Guide';
-import './page.css';
 
 export const metadata: Metadata = {
     title: 'AWS SAA-C03 ドメイン2: 回復力のあるアーキテクチャの設計 完全ガイド | Cloud Infrastructure Studies',

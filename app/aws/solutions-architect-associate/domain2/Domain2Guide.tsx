@@ -5,7 +5,7 @@ import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 import './page.css';
 
-function Diagram({ id, label }: { id: string; label: string }) {
+function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -1458,7 +1458,7 @@ export function Domain2Guide() {
                                     <td>
                                         S3/EBS/EFSの違い（オブジェクト/ブロック/ファイル）を判別できる
                                     </td>
-                                    <td>11 9's耐久性, 単一AZ, マルチAZ共有</td>
+                                    <td>11 9&apos;s耐久性, 単一AZ, マルチAZ共有</td>
                                 </tr>
                                 <tr>
                                     <td>6</td>

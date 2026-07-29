@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
@@ -1311,8 +1309,8 @@ export function Domain3Guide() {
                         <blockquote className="callout callout-practice">
                             <p>
                                 <strong>ベストプラクティス:</strong>
-                                「Lambda関数からRDSへの接続で"too many
-                                connections"エラーが発生する」という試験の典型的シナリオには<strong
+                                「Lambda関数からRDSへの接続で&quot;too many
+                                connections&quot;エラーが発生する」という試験の典型的シナリオには<strong
                                     >RDS Proxy</strong
                                 >が正解になりやすい。RDS
                                 Proxyはコネクションプーリングに加え、フェイルオーバー時の切り替え時間も短縮する。
