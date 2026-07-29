@@ -910,7 +910,8 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                         <code>gcloud eventarc triggers create --service-account</code>
                         で指定する Eventarc トリガー用サービスアカウントに
                         <code>roles/run.invoker</code>（呼び出し許可）と
-                        <code>roles/eventarc.eventReceiver</code>（イベント受信許可）、
+                        <code>roles/eventarc.eventReceiver</code>（イベント受信許可）を付与します。Eventarc
+                        トリガーの作成者・デプロイヤーには、指定するトリガー用サービスアカウントに対する
                         <code>roles/iam.serviceAccountUser</code>（サービスアカウント利用許可）を付与します。
                         関数コードが使用する Cloud Run function 実行時サービスアカウントとは分けて管理し、実行時 SA
                         にはコードが必要とする権限だけを付与します。Cloud
@@ -923,7 +924,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th scope="col">サービスアカウント</th>
+                                    <th scope="col">プリンシパル</th>
                                     <th scope="col">付与するロール</th>
                                     <th scope="col">目的</th>
                                 </tr>
@@ -940,9 +941,9 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                                     <td>関数（サービス）を呼び出し可能にする</td>
                                 </tr>
                                 <tr>
-                                    <td>Eventarc トリガー用 SA</td>
+                                    <td>Eventarc トリガー作成者・デプロイヤー</td>
                                     <td><code>roles/iam.serviceAccountUser</code></td>
-                                    <td>トリガーが指定されたサービスアカウントを使用</td>
+                                    <td><code>--service-account</code>でトリガー用 SA を関連付け</td>
                                 </tr>
                                 <tr>
                                     <td>Cloud Storage サービスエージェント</td>
