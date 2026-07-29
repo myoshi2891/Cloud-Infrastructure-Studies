@@ -63,6 +63,14 @@
     --color-guide-positive: #56d6a8;
     --color-guide-warning: #f2b866;
     --color-guide-code-background: #0a1526;
+    --color-guide-heading: #a7bfff;
+    --color-guide-table-background: #122238;
+    --color-guide-interactive-background: rgba(124, 158, 255, 0.15);
+    --color-guide-practice: #5fd4a8;
+    --color-guide-practice-background: rgba(95, 212, 168, 0.1);
+    --color-guide-practice-border: rgba(95, 212, 168, 0.3);
+    --color-guide-meta: #5f7291;
+    --color-guide-hero-start: #ffffff;
 
     --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
     --color-theme-cdl-fg: hsl(160 70% 65%);
