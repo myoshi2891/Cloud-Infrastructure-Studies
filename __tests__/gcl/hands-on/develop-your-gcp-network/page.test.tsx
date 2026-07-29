@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
-import Page from '@/app/gcl/associate-cloud-engineer/hands-on/develop-your-gcp-network/page';
-import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/hands-on/develop-your-gcp-network/constants';
+import Page from '@/app/gcl/hands-on/develop-your-gcp-network/page';
+import { DIAGRAMS } from '@/app/gcl/hands-on/develop-your-gcp-network/constants';
 import { vi } from 'vitest';
 
 // MermaidDiagram コンポーネントをモック化

@@ -1,5 +1,7 @@
 /** ホームページで使用する試験データと統計の定数 */
 
+import { HANDS_ON_ENABLED } from '@/lib/featureFlags';
+
 export type Provider = 'GCP' | 'AWS' | 'Cisco';
 
 export interface ExamDomain {
@@ -36,7 +38,7 @@ export interface Exam {
     overviewLabel?: string;
 }
 
-export const EXAMS: Exam[] = [
+const ALL_EXAMS: Exam[] = [
     {
         id: 'ace',
         label: 'Associate Cloud Engineer',
@@ -204,27 +206,27 @@ export const EXAMS: Exam[] = [
             },
             {
                 label: 'Cloud Load Balancing 完全入門',
-                href: '/gcl/associate-cloud-engineer/hands-on/cloud-load-balancing-guide',
+                href: '/gcl/hands-on/cloud-load-balancing-guide',
                 pct: 'ハンズオン',
             },
             {
                 label: 'GCPネットワーク完全入門',
-                href: '/gcl/associate-cloud-engineer/hands-on/develop-your-gcp-network',
+                href: '/gcl/hands-on/develop-your-gcp-network',
                 pct: 'ハンズオン',
             },
             {
                 label: '安全なGoogle Cloudネットワーク構築',
-                href: '/gcl/associate-cloud-engineer/hands-on/build-a-secure-google-cloud-network',
+                href: '/gcl/hands-on/build-a-secure-google-cloud-network',
                 pct: 'ハンズオン',
             },
             {
                 label: 'アプリ開発環境構築 完全ガイド',
-                href: '/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud',
+                href: '/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud',
                 pct: 'ハンズオン',
             },
             {
                 label: 'セキュリティ基礎 完全ガイド',
-                href: '/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide',
+                href: '/gcl/hands-on/gcp-security-fundamentals-guide',
                 pct: 'ハンズオン',
             },
         ],
@@ -315,6 +317,10 @@ export const EXAMS: Exam[] = [
         provider: 'Cisco',
     },
 ];
+
+export const EXAMS: Exam[] = HANDS_ON_ENABLED
+    ? ALL_EXAMS
+    : ALL_EXAMS.filter((exam) => exam.id !== 'hands-on');
 
 export interface Stat {
     value: string;

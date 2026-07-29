@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
-import Page from '@/app/gcl/associate-cloud-engineer/hands-on/cloud-load-balancing-guide/page';
+import Page from '@/app/gcl/hands-on/cloud-load-balancing-guide/page';
 
 describe('Cloud Load Balancing 完全入門 ページ', () => {
     let container: HTMLElement;

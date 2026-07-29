@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
-import Page from '@/app/gcl/associate-cloud-engineer/hands-on/build-a-secure-google-cloud-network/page';
-import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/hands-on/build-a-secure-google-cloud-network/constants';
+import Page from '@/app/gcl/hands-on/build-a-secure-google-cloud-network/page';
+import { DIAGRAMS } from '@/app/gcl/hands-on/build-a-secure-google-cloud-network/constants';
 
 vi.mock('@/components/MermaidDiagram', () => ({
     MermaidDiagram: ({ ariaLabel }: { ariaLabel?: string }) => (

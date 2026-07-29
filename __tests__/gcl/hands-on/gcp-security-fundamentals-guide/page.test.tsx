@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Page from '@/app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page';
-import { DIAGRAMS } from '@/app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/constants';
+import Page from '@/app/gcl/hands-on/gcp-security-fundamentals-guide/page';
+import { DIAGRAMS } from '@/app/gcl/hands-on/gcp-security-fundamentals-guide/constants';
 
 // MermaidDiagram コンポーネントをモック化
 vi.mock('@/components/MermaidDiagram', () => ({
