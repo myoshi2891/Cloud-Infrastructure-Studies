@@ -1,4 +1,5 @@
 # Google Cloud セキュアネットワーク構築ガイド
+
 ## bastion host + Identity-Aware Proxy(IAP) + juice-shop ファイアウォール設計
 
 対象: 「Build a Secure Google Cloud Network」スキルバッジの challenge lab
@@ -57,7 +58,7 @@ flowchart TD
 | Deny by default | 既存の過剰に緩いルールは削除し、必要な通信だけを明示的に許可する |
 | Network tags でターゲットを明示 | bastion / juice-shop それぞれに専用タグを付与し、ルールの適用範囲を一目で分かるようにする |
 | 管理アクセスは IAP 経由に統一 | 外部IPなしのVMに対し、Googleが管理する固定レンジ `35.235.240.0/20` からのSSHのみ許可する |
-| 多段（bastion経由）アクセス | juice-shop へのSSHは、内部ネットワーク（acme-mgmt-subnet）からのみに限定する |
+| 多段（bastion経由）アクセス | bastion 専用の送信元ネットワークタグを使い、juice-shop へのSSHを bastion からのみに限定する |
 
 > 出典:
 > - [VPC設計のベストプラクティスと参照アーキテクチャ](https://cloud.google.com/architecture/best-practices-vpc-design)
@@ -85,7 +86,7 @@ flowchart TD
 
     Admin -->|"HTTPS 暗号化トンネル"| IAP
     IAP -->|"許可: tcp22 from 35.235.240.0slash20"| Bastion
-    Bastion -->|"許可: tcp22 from acme-mgmt-subnet"| JuiceShop
+    Bastion -->|"許可: tcp22 from tag bastion-ssh-source"| JuiceShop
     PublicUser -->|"許可: tcp80 from 0.0.0.0slash0"| JuiceShop
 ```
 
@@ -189,15 +190,15 @@ gcloud compute instances add-tags juice-shop \
 
 ### Step 5: bastion経由でのみjuice-shopへSSHできるファイアウォールルールを作成し、タグを付与する
 
-acme-mgmt-subnet のCIDRを確認します（環境ごとに値が異なるため、必ず実際の値を調べてください）。
+bastion に送信元を識別する専用タグ `bastion-ssh-source` を付与します。このタグは juice-shop など、ほかのVMには付与しません。
 
 ```bash
-gcloud compute networks subnets describe acme-mgmt-subnet \
-  --region=<REGION> \
-  --format="value(ipCidrRange)"
+gcloud compute instances add-tags bastion \
+  --zone=<ZONE> \
+  --tags=bastion-ssh-source
 ```
 
-取得したCIDR（例として `10.10.20.0/24` のような値が返ります）を使ってルールを作成します。
+送信元タグと juice-shop 専用のターゲットタグを使ってルールを作成します。`source-ranges` は併用しません。
 
 ```bash
 gcloud compute firewall-rules create allow-ssh-internal \
@@ -205,7 +206,7 @@ gcloud compute firewall-rules create allow-ssh-internal \
   --direction=INGRESS \
   --action=ALLOW \
   --rules=tcp:22 \
-  --source-ranges=<ACME_MGMT_SUBNET_CIDR> \
+  --source-tags=bastion-ssh-source \
   --target-tags=ssh-internal
 ```
 
@@ -215,7 +216,7 @@ gcloud compute instances add-tags juice-shop \
   --tags=http-server,ssh-internal
 ```
 
-**ポイント**: source-rangesを `acme-mgmt-subnet` のCIDRに限定することで、「bastionが属するサブネットからの通信」だけがjuice-shopへのSSHを許可されます。`0.0.0.0/0` のような広すぎるレンジは、たとえ意図がbastion経由であっても採点上・実運用上どちらでも「過剰な許可」とみなされます。
+**ポイント**: `source-tags=bastion-ssh-source` により、そのタグを持つ bastion からの通信だけが juice-shop へのSSHを許可されます。同じサブネット上の別VMは許可されません。送信元タグをほかのVMへ使い回さず、`source-ranges` と組み合わせないでください。
 
 > 出典: [Add network tags — target tagsによるVM単位のルール適用](https://cloud.google.com/vpc/docs/add-remove-network-tags)
 
@@ -268,7 +269,7 @@ gcloud compute ssh bastion \
 |---|---|---|
 | `failed to connect to backend` | IAP用ファイアウォールルールが未作成、またはタグ不一致 | Step 3 のルールとbastionのタグ |
 | `Permission denied` | IAMロール `roles/iap.tunnelResourceAccessor` が未付与 | IAM設定 |
-| bastionからjuice-shopへSSHできない | acme-mgmt-subnetのCIDRが誤っている、juice-shopのタグ未付与 | Step 5 のsource-rangesとタグ |
+| bastionからjuice-shopへSSHできない | bastion の送信元タグ、または juice-shop のターゲットタグが未付与 | Step 5 の source-tags / target-tags |
 | HTTPで juice-shop にアクセスできない | HTTPルールのタグとjuice-shopのタグが不一致 | Step 4 のtarget-tagsとインスタンスタグ |
 
 > 出典: [Troubleshooting SSH errors](https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-ssh-errors)
@@ -281,7 +282,7 @@ gcloud compute ssh bastion \
 |---|---|---|---|---|---|---|
 | allow-ssh-iap | Ingress | 35.235.240.0/20 | tcp:22 | ssh-iap | bastion | IAP経由の管理SSHのみ許可 |
 | allow-http-world | Ingress | 0.0.0.0/0 | tcp:80 | http-server | juice-shop | Webサイトの公開 |
-| allow-ssh-internal | Ingress | acme-mgmt-subnetのCIDR | tcp:22 | ssh-internal | juice-shop | bastion経由のSSHのみ許可 |
+| allow-ssh-internal | Ingress | bastion-ssh-source タグ | tcp:22 | ssh-internal | juice-shop | bastion経由のSSHのみ許可 |
 
 このほかに残す/削除するルールがないか、最後に一覧を再確認してください。
 
@@ -294,7 +295,7 @@ gcloud compute firewall-rules list
 ## 8. よくある落とし穴
 
 - **タグの綴りミス**: ファイアウォールルールの `target-tags` とVMに付与した `tags` の文字列が完全一致していないと、ルールが適用されません。
-- **source-rangesの広げすぎ**: 「とりあえず動かしたい」ために `0.0.0.0/0` を使ってしまうと、採点・監査どちらでも減点対象になります。
+- **送信元タグの使い回し**: `bastion-ssh-source` をほかのVMにも付与すると、そのVMからも juice-shop へSSHできるため、bastion 専用にします。
 - **タグ反映の遅延**: source tagsを使うルールは、タグの追加・削除後に反映まで数秒〜数分のラグが出ることがあります。すぐに繋がらない場合は少し待ってから再試行してください。
 - **IAMロールの付与漏れ**: ファイアウォールルールが正しくても、ユーザーに `roles/iap.tunnelResourceAccessor` がないとIAPトンネルは確立できません。
 
