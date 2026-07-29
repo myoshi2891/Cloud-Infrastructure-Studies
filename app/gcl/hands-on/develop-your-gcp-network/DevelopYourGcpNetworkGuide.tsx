@@ -1094,8 +1094,8 @@ resource.labels.instance_id = <span class="s">"INSTANCE_ID"</span>  <span class=
 <span class="o">gcloud</span> compute instances create griffin-bastion \\
     <span class="f">--zone</span>=us-east1-b <span class="f">--machine-type</span>=e2-medium \\
     <span class="f">--tags</span>=iap-ssh \\
-    <span class="f">--network-interface</span>=network=griffin-dev-vpc,subnet=griffin-dev-mgmt \\
-    <span class="f">--network-interface</span>=network=griffin-prod-vpc,subnet=griffin-prod-mgmt
+    <span class="f">--network-interface</span>=network=griffin-dev-vpc,subnet=griffin-dev-mgmt,no-address \\
+    <span class="f">--network-interface</span>=network=griffin-prod-vpc,subnet=griffin-prod-mgmt,no-address
 
 <span class="c"># 外部 IP は付与せず、IAP TCP forwarding の送信元だけに SSH を許可</span>
 <span class="o">gcloud</span> compute firewall-rules create griffin-dev-allow-ssh \\
