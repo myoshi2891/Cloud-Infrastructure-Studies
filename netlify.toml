@@ -1,5 +1,5 @@
 [build]
-  command = "bun run build"
+  command = "NEXT_PUBLIC_ENABLE_HANDS_ON=false bun run build"
   publish = ".next"
 
 [build.environment]
