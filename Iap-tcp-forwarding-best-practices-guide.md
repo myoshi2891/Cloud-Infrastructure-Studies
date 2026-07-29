@@ -173,7 +173,9 @@ flowchart TD
 
 ### 5.5 Task 5: IAM権限の付与（最小権限の原則）
 
-ハンズオンでは、「セキュリティ」→「Identity-Aware Proxy」の「SSH and TCP Resources」タブから、**VM単位で** `windows-connectivity` のサービスアカウントと学習用アカウントに `roles/iap.tunnelResourceAccessor`（IAP-Secured Tunnel User）ロールを付与します。
+ハンズオンでは、「セキュリティ」→「Identity-Aware Proxy」の「SSH and TCP Resources」タブから、**VM単位で** `windows-connectivity` のサービスアカウントと学習用アカウントに `roles/iap.tunnelResourceAccessor`（IAP-Secured Tunnel User）ロールを付与します。このロールが許可するのは、対象VMへの **IAPトンネルの作成のみ**であり、SSH/RDPのログオン自体は許可しません。
+
+`gcloud compute ssh` で接続するには、IAP権限とは別に必要なCompute Engine権限があり、さらにゲストOS側でOS LoginまたはSSH鍵メタデータによる認可が必要です。RDP接続にも、WindowsのOS認証情報とリモートログオン権限が別途必要です。
 
 ```mermaid
 sequenceDiagram
@@ -181,24 +183,32 @@ sequenceDiagram
     participant G as gcloud CLI
     participant IAP as IAP TCPフォワーディング
     participant IAM as IAMポリシー
-    participant VM as linux-iap（内部IPのみ）
+    participant OS as linux-iapのゲストOS
 
     U->>G: gcloud compute ssh linux-iap
+    G->>IAM: 必要なCompute Engine権限を確認
+    IAM-->>G: 許可
     G->>IAP: HTTPSトンネル確立を要求
     IAP->>IAM: roles/iap.tunnelResourceAccessor を持つか確認
     IAM-->>IAP: 許可 または 拒否 を返す
     alt 許可された場合
-        IAP->>VM: 内部IP宛にSSHトラフィックを転送
-        VM-->>IAP: SSHセッション応答
-        IAP-->>G: トンネル経由で応答を転送
-        G-->>U: ターミナルセッションが開始
+        IAP-->>G: 対象VMへのトンネルを確立
+        G->>OS: トンネル経由でSSH認証
+        OS->>OS: OS LoginまたはSSH鍵を検証
+        alt OS側でも許可された場合
+            OS-->>G: SSHセッションを開始
+            G-->>U: ターミナルを表示
+        else OS側で拒否された場合
+            OS-->>G: SSH認証エラー
+            G-->>U: 接続失敗を表示
+        end
     else 拒否された場合
         IAP-->>G: 403 Permission Denied
         G-->>U: エラーを表示
     end
 ```
 
-**このハンズオンが既に良い点**: `roles/iap.tunnelResourceAccessor` を**プロジェクト全体ではなくVM単位**で付与している点は、最小権限の原則（Principle of Least Privilege）に沿ったベストプラクティスです。
+**このハンズオンが既に良い点**: `roles/iap.tunnelResourceAccessor` を**プロジェクト全体ではなくVM単位**で付与している点は、IAPトンネルを作成できる対象を絞るという意味で、最小権限の原則（Principle of Least Privilege）に沿ったベストプラクティスです。この付与は、ゲストOSへのSSH/RDPログオン権限の付与を代替するものではありません。
 
 **さらに踏み込んだベストプラクティス**: 本番環境では、VM単位の付与に加えて **IAM条件（IAM Conditions）** を使い、特定のポート番号のみに限定したり、コントラクター向けに有効期限付きでアクセスを許可したりすることが推奨されます。
 
@@ -212,7 +222,7 @@ flowchart TD
     E -->|"利用しない"| G["VM単位の権限のみ"]
 ```
 
-CLIで同等の設定を行う場合の代表的なコマンドは次の通りです（値は環境に合わせて置き換えてください）。
+CLIで同等のIAPトンネル権限を設定する代表的なコマンドは次の通りです（値は環境に合わせて置き換えてください）。このコマンドだけではSSH/RDP接続は完了しないため、利用する接続方式に応じてCompute Engine権限とゲストOS側の認可も設定してください。
 
 ```bash
 gcloud compute instances add-iam-policy-binding INSTANCE_NAME \
@@ -249,7 +259,7 @@ IAP Desktopは、GoogleのSolutions Architectsチームが開発するオープ�
 3. 接続先プロジェクトを追加する
 4. 対象VM（`windows-iap`）をダブルクリックし、初回接続時は「Generate new credentials」で認証情報を生成する
 
-IAP Desktop自体も内部的にはIAP TCPフォワーディングを利用しているため、**Task 4のファイアウォールルールとTask 5のIAMロールが正しく設定されていることが前提**になります。
+IAP Desktop自体も内部的にはIAP TCPフォワーディングを利用しているため、**Task 4のファイアウォールルールとTask 5のIAMロールが正しく設定されていることが前提**になります。加えて、RDPではWindowsのOS認証情報とリモートログオン権限が必要です。
 
 > 参考:
 > - [IAP Desktop 公式GitHubリポジトリ](https://github.com/GoogleCloudPlatform/iap-desktop)
