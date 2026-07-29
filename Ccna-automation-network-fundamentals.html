@@ -410,10 +410,10 @@
     </head>
     <body>
         <div class="layout">
-            <nav class="sidebar">
+            <aside class="sidebar">
                 <div class="brand">CCNA Automation ／ 200-901 CCNAAUTO</div>
                 <div class="brand-title">Network Fundamentals<br />ドメイン解説ガイド</div>
-                <nav id="toc">
+                <nav id="toc" aria-label="セクションナビゲーション">
                     <a href="#overview">はじめに</a>
                     <a href="#step0">Step 0：ドメイン全体像</a>
                     <div class="nav-group-label">6.1〜6.4：基礎知識と機器</div>
@@ -432,7 +432,7 @@
                     <a href="#summary">学習のポイント</a>
                     <a href="#references">参考情報源</a>
                 </nav>
-            </nav>
+            </aside>
 
             <main class="main">
                 <header class="hero prose">
@@ -1533,7 +1533,7 @@
             });
 
             mermaid.initialize({
-                startOnLoad: true,
+                startOnLoad: false,
                 theme: 'base',
                 themeVariables: {
                     background: 'transparent',
@@ -1575,6 +1575,7 @@
                     useMaxWidth: false,
                 },
             });
+            mermaid.run();
 
             var navLinks = Array.prototype.slice.call(document.querySelectorAll('.sidebar a'));
             var sections = navLinks
