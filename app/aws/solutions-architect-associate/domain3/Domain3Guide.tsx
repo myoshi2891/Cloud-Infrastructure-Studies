@@ -26,9 +26,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>タスク番号</th>
-                                        <th>タスク名（公式）</th>
-                                        <th>日本語訳</th>
+                                        <th scope="col">タスク番号</th>
+                                        <th scope="col">タスク名（公式）</th>
+                                        <th scope="col">日本語訳</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,7 +89,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-0'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-0'] || ''} ariaLabel="ドメイン3の5つの技術領域" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -129,10 +129,10 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>特性</th>
-                                        <th>オブジェクトストレージ<br />(Amazon S3)</th>
-                                        <th>ファイルストレージ<br />(Amazon EFS / FSx)</th>
-                                        <th>
+                                        <th scope="col">特性</th>
+                                        <th scope="col">オブジェクトストレージ<br />(Amazon S3)</th>
+                                        <th scope="col">ファイルストレージ<br />(Amazon EFS / FSx)</th>
+                                        <th scope="col">
                                             ブロックストレージ<br />(Amazon EBS /
                                             インスタンスストア)
                                         </th>
@@ -203,7 +203,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-1'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-1'] || ''} ariaLabel="ストレージサービスの選定フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -218,10 +218,10 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ストレージクラス</th>
-                                        <th>想定アクセス頻度</th>
-                                        <th>取得時間</th>
-                                        <th>可用性/耐久性の特徴</th>
+                                        <th scope="col">ストレージクラス</th>
+                                        <th scope="col">想定アクセス頻度</th>
+                                        <th scope="col">取得時間</th>
+                                        <th scope="col">可用性/耐久性の特徴</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -294,7 +294,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-2'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-2'] || ''} ariaLabel="S3ライフサイクルによるストレージ階層化" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -312,10 +312,10 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ボリュームタイプ</th>
-                                        <th>種別</th>
-                                        <th>最大IOPS目安</th>
-                                        <th>主な用途</th>
+                                        <th scope="col">ボリュームタイプ</th>
+                                        <th scope="col">種別</th>
+                                        <th scope="col">最大IOPS目安</th>
+                                        <th scope="col">主な用途</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -378,7 +378,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-3'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-3'] || ''} ariaLabel="EBSボリュームタイプの選定フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -429,7 +429,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-4'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-4'] || ''} ariaLabel="EFSパフォーマンスとスループットの選択" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -451,9 +451,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Storage Gatewayタイプ</th>
-                                        <th>提供プロトコル</th>
-                                        <th>主なユースケース</th>
+                                        <th scope="col">Storage Gatewayタイプ</th>
+                                        <th scope="col">提供プロトコル</th>
+                                        <th scope="col">主なユースケース</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -506,7 +506,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-5'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-5'] || ''} ariaLabel="Storage Gatewayタイプの選定フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -561,7 +561,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-6'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-6'] || ''} ariaLabel="コンピューティングサービスの全体マップ" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -569,10 +569,10 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>サービス</th>
-                                        <th>管理レベル</th>
-                                        <th>典型的ユースケース</th>
-                                        <th>ソース</th>
+                                        <th scope="col">サービス</th>
+                                        <th scope="col">管理レベル</th>
+                                        <th scope="col">典型的ユースケース</th>
+                                        <th scope="col">ソース</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -673,7 +673,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-7'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-7'] || ''} ariaLabel="EC2 Auto Scalingの構成と動作" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -682,9 +682,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ポリシー種別</th>
-                                        <th>動作</th>
-                                        <th>適したシナリオ</th>
+                                        <th scope="col">ポリシー種別</th>
+                                        <th scope="col">動作</th>
+                                        <th scope="col">適したシナリオ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -748,8 +748,8 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>項目</th>
-                                        <th>仕様の目安</th>
+                                        <th scope="col">項目</th>
+                                        <th scope="col">仕様の目安</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -810,7 +810,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-8'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-8'] || ''} ariaLabel="ECS・EKSとFargateの関係" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -845,14 +845,14 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-9'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-9'] || ''} ariaLabel="SQSによるキューイング構成" preserveNaturalScale />
         </div>
     </div>
                         </div>
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-10'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-10'] || ''} ariaLabel="SNSによるパブリッシュ・サブスクライブ構成" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -860,9 +860,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>概念</th>
-                                        <th>サービス</th>
-                                        <th>特徴</th>
+                                        <th scope="col">概念</th>
+                                        <th scope="col">サービス</th>
+                                        <th scope="col">特徴</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -948,7 +948,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-11'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-11'] || ''} ariaLabel="データベースタイプの選定フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -980,7 +980,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-12'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-12'] || ''} ariaLabel="RDSマルチAZと読み取りレプリカの比較" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -988,9 +988,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>目的</th>
-                                        <th>機能</th>
-                                        <th>ポイント</th>
+                                        <th scope="col">目的</th>
+                                        <th scope="col">機能</th>
+                                        <th scope="col">ポイント</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1042,7 +1042,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-13'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-13'] || ''} ariaLabel="Auroraの分散ストレージ構成" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1077,9 +1077,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>移行タイプ</th>
-                                        <th>定義</th>
-                                        <th>使用するツール</th>
+                                        <th scope="col">移行タイプ</th>
+                                        <th scope="col">定義</th>
+                                        <th scope="col">使用するツール</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1130,9 +1130,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>キャパシティモード</th>
-                                        <th>特徴</th>
-                                        <th>適したシナリオ</th>
+                                        <th scope="col">キャパシティモード</th>
+                                        <th scope="col">特徴</th>
+                                        <th scope="col">適したシナリオ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1189,8 +1189,8 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>エンジン</th>
-                                        <th>特徴</th>
+                                        <th scope="col">エンジン</th>
+                                        <th scope="col">特徴</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1232,14 +1232,14 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-14'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-14'] || ''} ariaLabel="キャッシュアサイド戦略の処理フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-15'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-15'] || ''} ariaLabel="ライトスルー戦略の処理フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1247,9 +1247,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>戦略</th>
-                                        <th>メリット</th>
-                                        <th>デメリット</th>
+                                        <th scope="col">戦略</th>
+                                        <th scope="col">メリット</th>
+                                        <th scope="col">デメリット</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1295,7 +1295,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-16'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-16'] || ''} ariaLabel="LambdaからRDS Proxyへの接続構成" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1354,7 +1354,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-17'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-17'] || ''} ariaLabel="複数AZのマルチティアVPC構成" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1389,7 +1389,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-18'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-18'] || ''} ariaLabel="ロードバランサーの選定フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1397,10 +1397,10 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ロードバランサー</th>
-                                        <th>レイヤー</th>
-                                        <th>主な特徴</th>
-                                        <th>典型的ユースケース</th>
+                                        <th scope="col">ロードバランサー</th>
+                                        <th scope="col">レイヤー</th>
+                                        <th scope="col">主な特徴</th>
+                                        <th scope="col">典型的ユースケース</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1458,7 +1458,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-19'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-19'] || ''} ariaLabel="ALBのパス・ホストベースルーティング" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1469,9 +1469,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>サービス</th>
-                                        <th>動作原理</th>
-                                        <th>適したシナリオ</th>
+                                        <th scope="col">サービス</th>
+                                        <th scope="col">動作原理</th>
+                                        <th scope="col">適したシナリオ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1512,7 +1512,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-20'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-20'] || ''} ariaLabel="CloudFrontとGlobal Acceleratorの比較" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1533,7 +1533,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-21'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-21'] || ''} ariaLabel="VPN・Direct Connect・PrivateLinkの接続構成" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1541,9 +1541,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>接続方式</th>
-                                        <th>経路</th>
-                                        <th>特徴</th>
+                                        <th scope="col">接続方式</th>
+                                        <th scope="col">経路</th>
+                                        <th scope="col">特徴</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1643,7 +1643,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-22'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-22'] || ''} ariaLabel="AWSデータレイクの全体構成" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1666,8 +1666,8 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>コンポーネント</th>
-                                        <th>役割</th>
+                                        <th scope="col">コンポーネント</th>
+                                        <th scope="col">役割</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1718,7 +1718,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-23'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-23'] || ''} ariaLabel="Kinesisストリーミングデータ処理" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1738,9 +1738,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>サービス</th>
-                                        <th>役割</th>
-                                        <th>ポイント</th>
+                                        <th scope="col">サービス</th>
+                                        <th scope="col">役割</th>
+                                        <th scope="col">ポイント</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1785,7 +1785,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-24'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-24'] || ''} ariaLabel="バッチ処理とストリーミング処理の比較" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1801,7 +1801,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-25'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-25'] || ''} ariaLabel="AWS GlueによるETL処理フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1832,7 +1832,7 @@ export function Domain3Guide() {
                         <div className="mermaid-wrapper">
                             <div className="mermaid-figure">
         <div className="mermaid-wrap">
-            <MermaidDiagram chart={DIAGRAMS['mermaid-26'] || ''} ariaLabel="Mermaid Diagram" preserveNaturalScale />
+            <MermaidDiagram chart={DIAGRAMS['mermaid-26'] || ''} ariaLabel="DataSyncとStorage Gatewayの選定フロー" preserveNaturalScale />
         </div>
     </div>
                         </div>
@@ -1857,9 +1857,9 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>サービス</th>
-                                        <th>転送方式</th>
-                                        <th>適したシナリオ</th>
+                                        <th scope="col">サービス</th>
+                                        <th scope="col">転送方式</th>
+                                        <th scope="col">適したシナリオ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1913,8 +1913,8 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ソース</th>
-                                        <th>URL</th>
+                                        <th scope="col">ソース</th>
+                                        <th scope="col">URL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1924,7 +1924,9 @@ export function Domain3Guide() {
                                             Exam Guide
                                         </td>
                                         <td>
-                                            https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html
+                                            <a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html">
+                                                https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1932,13 +1934,17 @@ export function Domain3Guide() {
                                             Content Domain 3: Design High-Performing Architectures
                                         </td>
                                         <td>
-                                            https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html
+                                            <a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html">
+                                                https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>In-Scope AWS Services</td>
                                         <td>
-                                            https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/saa-03-in-scope-services.html
+                                            <a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/saa-03-in-scope-services.html">
+                                                https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/saa-03-in-scope-services.html
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1949,65 +1955,89 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ソース</th>
-                                        <th>URL</th>
+                                        <th scope="col">ソース</th>
+                                        <th scope="col">URL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>Amazon S3 ユーザーガイド</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html
+                                            <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html">
+                                                https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon S3 ストレージクラス（公式）</td>
-                                        <td>https://aws.amazon.com/s3/storage-classes/</td>
+                                        <td>
+                                            <a href="https://aws.amazon.com/s3/storage-classes/">
+                                                https://aws.amazon.com/s3/storage-classes/
+                                            </a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>S3 Intelligent-Tiering</td>
                                         <td>
-                                            https://aws.amazon.com/s3/storage-classes/intelligent-tiering/
+                                            <a href="https://aws.amazon.com/s3/storage-classes/intelligent-tiering/">
+                                                https://aws.amazon.com/s3/storage-classes/intelligent-tiering/
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>S3 Glacier ストレージクラス</td>
-                                        <td>https://aws.amazon.com/s3/storage-classes/glacier/</td>
+                                        <td>
+                                            <a href="https://aws.amazon.com/s3/storage-classes/glacier/">
+                                                https://aws.amazon.com/s3/storage-classes/glacier/
+                                            </a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EBS の概要</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html
+                                            <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html">
+                                                https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EBS ボリュームタイプ</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html
+                                            <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html">
+                                                https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EFS とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html
+                                            <a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html">
+                                                https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EFS のパフォーマンス</td>
                                         <td>
-                                            https://docs.aws.amazon.com/efs/latest/ug/performance.html
+                                            <a href="https://docs.aws.amazon.com/efs/latest/ug/performance.html">
+                                                https://docs.aws.amazon.com/efs/latest/ug/performance.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EFS ストレージクラス</td>
                                         <td>
-                                            https://docs.aws.amazon.com/efs/latest/ug/storage-classes.html
+                                            <a href="https://docs.aws.amazon.com/efs/latest/ug/storage-classes.html">
+                                                https://docs.aws.amazon.com/efs/latest/ug/storage-classes.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Storage Gateway とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/storagegateway/latest/userguide/WhatIsStorageGateway.html
+                                            <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/WhatIsStorageGateway.html">
+                                                https://docs.aws.amazon.com/storagegateway/latest/userguide/WhatIsStorageGateway.html
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -2018,93 +2048,121 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ソース</th>
-                                        <th>URL</th>
+                                        <th scope="col">ソース</th>
+                                        <th scope="col">URL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>Amazon EC2 の概念</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+                                            <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html">
+                                                https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Lambda 開発者ガイド</td>
                                         <td>
-                                            https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+                                            <a href="https://docs.aws.amazon.com/lambda/latest/dg/welcome.html">
+                                                https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Lambda 関数のメモリ設定</td>
                                         <td>
-                                            https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html
+                                            <a href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html">
+                                                https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Lambda の設定に関するトラブルシューティング</td>
                                         <td>
-                                            https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-configuration.html
+                                            <a href="https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-configuration.html">
+                                                https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-configuration.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Fargate とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonECS/latest/userguide/what-is-fargate.html
+                                            <a href="https://docs.aws.amazon.com/AmazonECS/latest/userguide/what-is-fargate.html">
+                                                https://docs.aws.amazon.com/AmazonECS/latest/userguide/what-is-fargate.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon ECS とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
+                                            <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html">
+                                                https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EKS とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html
+                                            <a href="https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html">
+                                                https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Batch とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html
+                                            <a href="https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html">
+                                                https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EMR とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html
+                                            <a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html">
+                                                https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>EC2 Auto Scaling のスケーリングポリシー</td>
                                         <td>
-                                            https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-simple-step.html
+                                            <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-simple-step.html">
+                                                https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-simple-step.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Auto Scaling とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html
+                                            <a href="https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html">
+                                                https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon SQS とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
+                                            <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html">
+                                                https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon SNS とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/sns/latest/dg/welcome.html
+                                            <a href="https://docs.aws.amazon.com/sns/latest/dg/welcome.html">
+                                                https://docs.aws.amazon.com/sns/latest/dg/welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon EventBridge とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html
+                                            <a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html">
+                                                https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -2115,105 +2173,137 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ソース</th>
-                                        <th>URL</th>
+                                        <th scope="col">ソース</th>
+                                        <th scope="col">URL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>Amazon RDS とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon RDS マルチAZ配置</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon RDS 読み取りレプリカ</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon Aurora の概要</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon Aurora のストレージと信頼性</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.StorageReliability.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.StorageReliability.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.StorageReliability.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Aurora Serverless v2</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Aurora Global Database</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon DynamoDB 開発者ガイド</td>
                                         <td>
-                                            https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+                                            <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html">
+                                                https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>DynamoDB 読み取り/書き込みキャパシティモード</td>
                                         <td>
-                                            https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html
+                                            <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html">
+                                                https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>DynamoDB Accelerator (DAX)</td>
                                         <td>
-                                            https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html
+                                            <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html">
+                                                https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Database Migration Service とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html
+                                            <a href="https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html">
+                                                https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Schema Conversion Tool とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html
+                                            <a href="https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html">
+                                                https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon ElastiCache for Valkey の発表</td>
                                         <td>
-                                            https://aws.amazon.com/about-aws/whats-new/2024/10/amazon-elasticache-valkey
+                                            <a href="https://aws.amazon.com/about-aws/whats-new/2024/10/amazon-elasticache-valkey">
+                                                https://aws.amazon.com/about-aws/whats-new/2024/10/amazon-elasticache-valkey
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>ElastiCache のエンジン選択</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/SelectEngine.html
+                                            <a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/SelectEngine.html">
+                                                https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/SelectEngine.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>ElastiCache キャッシング戦略</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html
+                                            <a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html">
+                                                https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon RDS Proxy とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html
+                                            <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html">
+                                                https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -2224,69 +2314,89 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ソース</th>
-                                        <th>URL</th>
+                                        <th scope="col">ソース</th>
+                                        <th scope="col">URL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>VPC とサブネットの設定</td>
                                         <td>
-                                            https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html
+                                            <a href="https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html">
+                                                https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>VPC プライベートサブネット+NATのシナリオ</td>
                                         <td>
-                                            https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html
+                                            <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html">
+                                                https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Elastic Load Balancing の概要</td>
                                         <td>
-                                            https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/introduction.html
+                                            <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/introduction.html">
+                                                https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/introduction.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Application Load Balancer とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html
+                                            <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html">
+                                                https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Network Load Balancer とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html
+                                            <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html">
+                                                https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon CloudFront とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html
+                                            <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html">
+                                                https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Global Accelerator とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html
+                                            <a href="https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html">
+                                                https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Site-to-Site VPN とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html
+                                            <a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html">
+                                                https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Direct Connect とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html
+                                            <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html">
+                                                https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS PrivateLink とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html
+                                            <a href="https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html">
+                                                https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -2297,39 +2407,49 @@ export function Domain3Guide() {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>ソース</th>
-                                        <th>URL</th>
+                                        <th scope="col">ソース</th>
+                                        <th scope="col">URL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>AWS Lake Formation とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html
+                                            <a href="https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html">
+                                                https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Glue とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html
+                                            <a href="https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html">
+                                                https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Glue クローラ</td>
                                         <td>
-                                            https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html
+                                            <a href="https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html">
+                                                https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Glue の ETL プログラミング</td>
                                         <td>
-                                            https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl.html
+                                            <a href="https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl.html">
+                                                https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon Athena とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/athena/latest/ug/what-is.html
+                                            <a href="https://docs.aws.amazon.com/athena/latest/ug/what-is.html">
+                                                https://docs.aws.amazon.com/athena/latest/ug/what-is.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -2338,37 +2458,49 @@ export function Domain3Guide() {
                                             Suiteへの進化（AWS公式ブログ）
                                         </td>
                                         <td>
-                                            https://aws.amazon.com/blogs/business-intelligence/reimagine-business-intelligence-amazon-quicksight-evolves-to-amazon-quick-suite/
+                                            <a href="https://aws.amazon.com/blogs/business-intelligence/reimagine-business-intelligence-amazon-quicksight-evolves-to-amazon-quick-suite/">
+                                                https://aws.amazon.com/blogs/business-intelligence/reimagine-business-intelligence-amazon-quicksight-evolves-to-amazon-quick-suite/
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon Kinesis Data Streams とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+                                            <a href="https://docs.aws.amazon.com/streams/latest/dev/introduction.html">
+                                                https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon Data Firehose とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html
+                                            <a href="https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html">
+                                                https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS DataSync とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html
+                                            <a href="https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html">
+                                                https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>AWS Snow Family とは</td>
                                         <td>
-                                            https://docs.aws.amazon.com/snowball/latest/developer-guide/whatisSnowball.html
+                                            <a href="https://docs.aws.amazon.com/snowball/latest/developer-guide/whatisSnowball.html">
+                                                https://docs.aws.amazon.com/snowball/latest/developer-guide/whatisSnowball.html
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Amazon S3 向け VPC エンドポイント（PrivateLink）</td>
                                         <td>
-                                            https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html
+                                            <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html">
+                                                https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>

@@ -133,6 +133,7 @@ export function NavBar() {
                         <a
                             href={`#${item.id}`}
                             className={`nav-l2 ${activeId === item.id ? 'active' : ''}`}
+                            aria-current={activeId === item.id ? 'location' : undefined}
                         >
                             {item.title}
                         </a>
@@ -143,6 +144,7 @@ export function NavBar() {
                                         <a
                                             href={`#${sub.id}`}
                                             className={`nav-l3 ${activeId === sub.id ? 'active' : ''}`}
+                                            aria-current={activeId === sub.id ? 'location' : undefined}
                                         >
                                             {sub.title}
                                         </a>
