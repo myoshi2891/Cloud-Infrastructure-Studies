@@ -53,7 +53,7 @@
 .app-dev-environment-page .sub-navbar {
     position: sticky;
     top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
-    z-index: 40;
+    z-index: 100;
     background: rgba(3, 7, 18, 0.92);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
