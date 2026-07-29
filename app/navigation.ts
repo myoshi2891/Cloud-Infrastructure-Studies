@@ -38,6 +38,7 @@ type NavExamInput = {
     domains: ReadonlyArray<{ label: string; href: string }>;
     provider?: Provider;
     status?: NavExam['status'];
+    overviewLabel?: string;
 };
 
 const PROVIDER_LABEL: Record<Provider, string> = {
@@ -49,12 +50,12 @@ const PROVIDER_LABEL: Record<Provider, string> = {
 const PROVIDER_ORDER: readonly Provider[] = ['GCP', 'AWS', 'Cisco'];
 
 /**
- * Convert exam inputs into a provider-grouped navigation tree.
+ * Converts exam inputs into a navigation tree grouped by provider.
  *
- * Groups each input exam under its provider (defaults to `'GCP'` when `provider` is missing) and transforms exams into `NavExam` entries whose `items` start with a `'概要'` leaf followed by domain leaves (excluding any domain whose `href` equals the exam `href`).
+ * Exams without a provider are grouped under `GCP`. Each exam includes an overview link followed by domain links, excluding domains that use the exam's overview URL. Overview labels use `overviewLabel` when provided and `'概要'` otherwise.
  *
- * @param exams - Array of exam inputs to convert into navigation groups
- * @returns An array of `NavGroup` objects ordered by provider display order; each group includes `provider`, its display `label`, and the group's `exams`
+ * @param exams - Exam inputs to convert into navigation groups
+ * @returns Provider groups containing transformed exams in display order
  */
 export function toNavTree(exams: ReadonlyArray<NavExamInput>): NavGroup[] {
     if (exams.length === 0) return [];
@@ -72,7 +73,7 @@ export function toNavTree(exams: ReadonlyArray<NavExamInput>): NavGroup[] {
             // exam.href（概要）と同一 href の domain がある場合は重複を除去する。
             // 例: PCNE では domains[0] が exam.href と一致するため React key の衝突を防ぐ。
             items: [
-                { label: '概要', href: exam.href },
+                { label: exam.overviewLabel ?? '概要', href: exam.href },
                 ...exam.domains
                     .filter((d) => d.href !== exam.href)
                     .map((d) => ({ label: d.label, href: d.href })),

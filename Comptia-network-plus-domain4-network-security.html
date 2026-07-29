@@ -1,0 +1,1647 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CompTIA Network+ (N10-009) ドメイン4.0 ネットワークセキュリティ完全ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css"
+        />
+        <style>
+            :root {
+                --bg-primary: #07111e;
+                --bg-secondary: #0d1a2b;
+                --bg-tertiary: #142236;
+                --text-primary: #e6edf7;
+                --text-secondary: #c2d1e5;
+                --text-tertiary: #a8bddb;
+                --border-primary: #23334a;
+                --border-secondary: #1a2942;
+                --border-tertiary: #142236;
+                --accent: #7c9eff;
+                --color-info: #7c9eff;
+                --color-danger: #f87171;
+                --color-success: #4ade80;
+                --color-warning: #fbbf24;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Segoe UI',
+                    Roboto, 'Helvetica Neue', Arial, sans-serif;
+                --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+                --radius-md: 8px;
+                --radius-lg: 12px;
+                --radius-xl: 16px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 260px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-secondary);
+                border-right: 1px solid var(--border-primary);
+                padding: 24px 16px;
+            }
+
+            .sidebar-title {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                padding: 0 12px 12px;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .sidebar-nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 12px;
+                border-radius: var(--radius-md);
+                color: var(--text-secondary);
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            .sidebar-nav a i {
+                font-size: 16px;
+                color: var(--text-tertiary);
+            }
+
+            .sidebar-nav a:hover {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                text-decoration: none;
+            }
+
+            .sidebar-nav a.active {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                font-weight: 500;
+                border: 1px solid var(--border-primary);
+            }
+
+            .sidebar-nav a.active i {
+                color: var(--accent);
+            }
+
+            .main {
+                margin-left: 260px;
+                padding: 48px 56px 96px;
+            }
+
+            .hero {
+                padding-bottom: 32px;
+                margin-bottom: 32px;
+                border-bottom: 1px solid var(--border-primary);
+            }
+
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--accent);
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border-primary);
+                padding: 4px 10px;
+                border-radius: var(--radius-md);
+                margin-bottom: 16px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 12px;
+                line-height: 1.4;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 40px 0 16px;
+                padding-top: 4px;
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 12px;
+                color: var(--text-primary);
+            }
+            h4 {
+                font-size: 15px;
+                font-weight: 500;
+                margin: 20px 0 10px;
+                color: var(--text-secondary);
+            }
+
+            p {
+                margin: 0 0 14px;
+                color: var(--text-secondary);
+            }
+
+            .hero p {
+                font-size: 16px;
+                color: var(--text-secondary);
+                max-width: 720px;
+            }
+
+            .meta-badges {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 18px;
+            }
+
+            .badge {
+                font-size: 13px;
+                font-weight: 500;
+                padding: 5px 10px;
+                border-radius: var(--radius-md);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-primary);
+                color: var(--text-secondary);
+            }
+
+            section {
+                margin-bottom: 48px;
+                scroll-margin-top: 24px;
+            }
+
+            section > p,
+            .prose p {
+                color: var(--text-secondary);
+            }
+
+            .section-icon-title {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .section-icon-title i {
+                font-size: 20px;
+                color: var(--accent);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 16px 0 24px;
+                font-size: 14.5px;
+                border: 1px solid var(--border-primary);
+                border-radius: var(--radius-md);
+                overflow: hidden;
+            }
+
+            thead th {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                font-weight: 500;
+                text-align: left;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border-primary);
+            }
+
+            tbody td {
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border-secondary);
+                color: var(--text-secondary);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: var(--bg-secondary);
+            }
+
+            .callout {
+                display: flex;
+                gap: 12px;
+                padding: 14px 16px;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border-primary);
+                background: var(--bg-secondary);
+                margin: 18px 0;
+                font-size: 14.5px;
+            }
+
+            .callout i {
+                font-size: 18px;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+            .callout.info i {
+                color: var(--color-info);
+            }
+            .callout.warning i {
+                color: var(--color-warning);
+            }
+            .callout p {
+                margin: 0;
+                color: var(--text-secondary);
+            }
+
+            .diagram-wrapper {
+                display: flex;
+                justify-content: center;
+                margin: 20px 0 28px;
+                overflow-x: auto;
+                padding: 12px 0;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-primary);
+                border-radius: var(--radius-lg);
+            }
+
+            .mermaid-render svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .diagram-caption {
+                text-align: center;
+                font-size: 13px;
+                color: var(--text-tertiary);
+                margin: -16px 0 24px;
+            }
+
+            .checklist-table td:first-child {
+                width: 90%;
+            }
+            .checklist-table td:last-child {
+                text-align: center;
+                width: 10%;
+                color: var(--text-tertiary);
+            }
+
+            .ref-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .ref-item {
+                padding: 14px 16px;
+                border: 1px solid var(--border-primary);
+                border-radius: var(--radius-lg);
+                background: var(--bg-secondary);
+            }
+
+            .ref-item .ref-label {
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-success);
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                margin-bottom: 4px;
+            }
+
+            .ref-item.supplementary .ref-label {
+                color: var(--text-tertiary);
+            }
+
+            .ref-item .ref-title {
+                font-size: 14.5px;
+                color: var(--text-primary);
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            .ref-item .ref-url {
+                font-size: 13px;
+                word-break: break-all;
+            }
+
+            .footer-note {
+                margin-top: 56px;
+                padding-top: 24px;
+                border-top: 1px solid var(--border-primary);
+                font-size: 13px;
+                color: var(--text-tertiary);
+            }
+
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 30;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                border: 1px solid var(--border-primary);
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                cursor: pointer;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    visibility: hidden;
+                    transition: transform 0.2s ease, visibility 0.2s ease;
+                    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.4);
+                    z-index: 20;
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                    visibility: visible;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 32px 20px 64px;
+                }
+                .menu-toggle {
+                    display: flex;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="menu-toggle" id="menuToggle" aria-label="目次を開く" aria-expanded="false">☰</button>
+        <div class="layout">
+            <nav class="sidebar">
+                <div class="sidebar-title">Domain 4.0 Network Security</div>
+                <div class="sidebar-nav">
+                    <a href="#overview"><i class="ti ti-map"></i>全体像</a>
+                    <a href="#concepts"><i class="ti ti-lock"></i>4.1 基本概念</a>
+                    <a href="#attacks"><i class="ti ti-alert-triangle"></i>4.2 攻撃の種類</a>
+                    <a href="#defenses"><i class="ti ti-shield-check"></i>4.3 防御技術</a>
+                    <a href="#checklist"><i class="ti ti-list-check"></i>チェックリスト</a>
+                    <a href="#references"><i class="ti ti-external-link"></i>参考文献</a>
+                </div>
+            </nav>
+
+            <main class="main">
+                <div class="hero">
+                    <div class="hero-eyebrow">
+                        <i class="ti ti-certificate"></i>CompTIA Network+ N10-009 対策ガイド
+                    </div>
+                    <h1>ドメイン4.0「ネットワークセキュリティ」完全ガイド</h1>
+                    <p>
+                        CompTIA Network+ 認定試験(試験コード: N10-009 / V9)のドメイン4.0 Network
+                        Security(出題比率14%)を、初学者にもわかるようにステップバイステップで解説します。日本語での解説をベースに、試験に出る英語の技術用語はそのまま併記しています。
+                    </p>
+                    <div class="meta-badges">
+                        <span class="badge">試験コード N10-009</span>
+                        <span class="badge">ドメイン4.0 出題比率 14%</span>
+                        <span class="badge">対象: 初学者</span>
+                        <span class="badge">構成: 4.1 → 4.2 → 4.3</span>
+                    </div>
+                </div>
+
+                <section id="overview">
+                    <div class="section-icon-title">
+                        <i class="ti ti-map"></i>
+                        <h2 style="margin: 0">
+                            全体像:試験におけるネットワークセキュリティの位置づけ
+                        </h2>
+                    </div>
+                    <p>
+                        まずは、ドメイン4.0が試験全体のどこに位置し、どんなサブトピックで構成されているかを掴みましょう。
+                    </p>
+
+                    <h3>試験の基本情報</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>試験コード</td>
+                                <td>N10-009(V9)</td>
+                            </tr>
+                            <tr>
+                                <td>リリース日</td>
+                                <td>2024年6月20日</td>
+                            </tr>
+                            <tr>
+                                <td>出題数</td>
+                                <td>最大90問(多肢選択式 + performance-based question)</td>
+                            </tr>
+                            <tr>
+                                <td>試験時間</td>
+                                <td>90分</td>
+                            </tr>
+                            <tr>
+                                <td>合格ライン</td>
+                                <td>720点(100〜900点満点)</td>
+                            </tr>
+                            <tr>
+                                <td>推奨経験</td>
+                                <td>
+                                    CompTIA A+ 取得済み、または9〜12ヶ月程度のネットワーク実務経験
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>5つのドメインと出題比率</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ドメイン番号</th>
+                                <th>ドメイン名</th>
+                                <th>出題比率</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.0</td>
+                                <td>Networking Concepts(ネットワークの基礎概念)</td>
+                                <td>23%</td>
+                            </tr>
+                            <tr>
+                                <td>2.0</td>
+                                <td>Network Implementation(ネットワークの実装)</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>3.0</td>
+                                <td>Network Operations(ネットワークの運用)</td>
+                                <td>19%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4.0</strong></td>
+                                <td><strong>Network Security(ネットワークセキュリティ)</strong></td>
+                                <td><strong>14%</strong></td>
+                            </tr>
+                            <tr>
+                                <td>5.0</td>
+                                <td>Network Troubleshooting(トラブルシューティング)</td>
+                                <td>24%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout info">
+                        <i class="ti ti-info-circle"></i>
+                        <p>
+                            ドメイン4.0は単体では出題比率が最も小さいですが、CompTIAは「より深いセキュリティ内容はSecurity+側で扱う」という設計思想を取っており、Network+側はネットワーク技術者が最低限押さえるべき土台部分に絞られています。裏を返せば、ここに出る内容は運用者にとって「知らないでは済まされない」基礎知識です。
+                        </p>
+                    </div>
+
+                    <h3>ドメイン4.0の構造(3つのサブ目標)</h3>
+
+                    <script type="text/plain" class="mmd-src">
+                        flowchart TB
+                            A["Domain 4.0 Network Security 14 percent"]
+                            A --> B["4.1 基本概念 Basic Concepts"]
+                            A --> C["4.2 攻撃の種類 Attack Types"]
+                            A --> D["4.3 防御技術 Security Features"]
+                            B --> B1["論理セキュリティ 物理セキュリティ"]
+                            B --> B2["欺瞞技術 ハニーポット ハニーネット"]
+                            B --> B3["CIA Triad と監査コンプライアンス"]
+                            B --> B4["ネットワークセグメンテーション"]
+                            C --> C1["DoS DDoS VLANホッピング MACフラッディング"]
+                            C --> C2["ARP DNS のなりすまし攻撃"]
+                            C --> C3["evil twin on-path ソーシャルエンジニアリング"]
+                            D --> D1["デバイスハードニング NAC"]
+                            D --> D2["鍵管理 ACL コンテンツフィルタリング"]
+                            D --> D3["ゾーン設計 スクリーンドサブネット"]
+                            classDef purple fill:#241f3d,stroke:#8b6cf5,color:#e4defc;
+                            classDef coral fill:#3a2420,stroke:#fb7862,color:#ffd9cf;
+                            classDef teal fill:#0f2e2b,stroke:#2dd4bf,color:#ccfbf1;
+                            class B,B1,B2,B3,B4 purple;
+                            class C,C1,C2,C3 coral;
+                            class D,D1,D2,D3 teal;
+                    </script>
+                    <div class="diagram-wrapper"><div class="mermaid-render"></div></div>
+                    <div class="diagram-caption">図1: ドメイン4.0の3つのサブ目標とその内訳</div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>サブ目標</th>
+                                <th>公式タイトル(意訳)</th>
+                                <th>一言でいうと</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>4.1</td>
+                                <td>基本的なネットワークセキュリティの概念を説明する</td>
+                                <td>「何を」「なぜ」守るのかという土台の考え方</td>
+                            </tr>
+                            <tr>
+                                <td>4.2</td>
+                                <td>さまざまな攻撃の種類とネットワークへの影響を要約する</td>
+                                <td>「どう攻撃されるか」を知る</td>
+                            </tr>
+                            <tr>
+                                <td>4.3</td>
+                                <td>
+                                    シナリオに基づき、セキュリティ機能・防御技術・ソリューションを適用する
+                                </td>
+                                <td>「どう防ぐか」を実践する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        この3ステップは「概念 → 脅威 →
+                        対策」という自然な学習の流れになっています。以降、順に見ていきましょう。
+                    </p>
+                </section>
+
+                <section id="concepts">
+                    <div class="section-icon-title">
+                        <i class="ti ti-lock"></i>
+                        <h2 style="margin: 0">
+                            STEP 1: 4.1 基本的なネットワークセキュリティの概念
+                        </h2>
+                    </div>
+
+                    <h3>1-1 論理セキュリティ(Logical Security)</h3>
+                    <p>
+                        論理セキュリティとは、物理的な鍵やカメラではなく、データやアクセス権そのものを技術的に保護する仕組みを指します。
+                    </p>
+
+                    <h4>(a) 暗号化(Encryption)</h4>
+                    <p>
+                        データは「動いている状態」と「止まっている状態」の2つの場面で保護する必要があります。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>状態</th>
+                                <th>英語表記</th>
+                                <th>具体例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>通信中のデータ</td>
+                                <td>Data in transit</td>
+                                <td>HTTPS、VPN、TLSによる暗号化通信</td>
+                            </tr>
+                            <tr>
+                                <td>保存中のデータ</td>
+                                <td>Data at rest</td>
+                                <td>ディスク暗号化、データベースの暗号化</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>(b) 証明書と公開鍵基盤(PKI)</h4>
+                    <p>
+                        <strong>PKI(Public Key Infrastructure)</strong>:
+                        公開鍵と秘密鍵のペアを使い、通信相手の身元と、通信内容の暗号化・改ざん検知を同時に実現する仕組みです。<br />
+                        <strong>自己署名証明書(Self-signed certificate)</strong>:
+                        第三者の認証局(CA)を通さず自分で発行した証明書。社内検証環境などでは使われますが、外部向けサービスでは信頼性の面で推奨されません。
+                    </p>
+
+                    <h4>(c) IAM(Identity and Access Management)— 認証と認可の仕組み</h4>
+                    <p>
+                        IAMは「誰が」「何に」「どこまで」アクセスできるかを制御する枠組み全体を指します。試験では特に、次の要素を区別できることが重要です。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>要素</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Authentication(認証)</td>
+                                <td>「あなたは誰か」を確認するプロセス</td>
+                            </tr>
+                            <tr>
+                                <td>Authorization(認可)</td>
+                                <td>認証された相手に「何を許可するか」を決めるプロセス</td>
+                            </tr>
+                            <tr>
+                                <td>MFA(Multifactor Authentication)</td>
+                                <td>
+                                    パスワードに加え、SMSコードや生体認証など複数の要素で認証を強化する方式
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>SSO(Single Sign-On)</td>
+                                <td>1回のログインで複数のシステムにアクセスできる仕組み</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>認証・認可でよく使われるプロトコルの比較は次の通りです。</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>プロトコル</th>
+                                <th>主な用途</th>
+                                <th>通信の暗号化</th>
+                                <th>特徴</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>RADIUS</td>
+                                <td>ネットワーク機器・VPN・Wi-Fiの認証</td>
+                                <td>ペイロードの一部のみ暗号化</td>
+                                <td>
+                                    AAA(認証・認可・アカウンティング)の代表的プロトコル。UDPベース
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>TACACS+</td>
+                                <td>ネットワーク機器の管理者アクセス制御</td>
+                                <td>全体を暗号化</td>
+                                <td>
+                                    Cisco系機器で多用。認証・認可・アカウンティングを分離して制御可能
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LDAP</td>
+                                <td>ディレクトリサービスへの問い合わせ</td>
+                                <td>標準では平文(LDAPSで暗号化)</td>
+                                <td>ユーザー情報やグループ情報を一元管理</td>
+                            </tr>
+                            <tr>
+                                <td>SAML</td>
+                                <td>Webアプリのシングルサインオン</td>
+                                <td>XMLベースのアサーションを署名・暗号化</td>
+                                <td>クラウドサービスとの連携(SSO)で多用</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <script type="text/plain" class="mmd-src">
+                        flowchart LR
+                            U["ユーザー"] --> A1["認証 Authentication"]
+                            A1 --> M["多要素認証 MFA"]
+                            M --> S["AAAサーバーへ問い合わせ"]
+                            S --> R["RADIUS"]
+                            S --> T["TACACS plus"]
+                            S --> L["LDAP SAML"]
+                            R --> Z["認可 Authorization"]
+                            T --> Z
+                            L --> Z
+                            Z --> P["最小権限 RBAC を適用"]
+                            P --> G["リソースへのアクセス許可"]
+                            classDef teal fill:#0f2e2b,stroke:#2dd4bf,color:#ccfbf1;
+                            classDef purple fill:#241f3d,stroke:#8b6cf5,color:#e4defc;
+                            class R,T,L teal;
+                            class Z,P purple;
+                    </script>
+                    <div class="diagram-wrapper"><div class="mermaid-render"></div></div>
+                    <div class="diagram-caption">図2: IAMにおける認証・認可(AAA)の流れ</div>
+
+                    <p>その他、押さえておきたい関連用語:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>用語</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Time-based authentication</td>
+                                <td>
+                                    時刻に基づくワンタイムパスワードなど、時間の要素を組み込んだ認証
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Least privilege(最小権限の原則)</td>
+                                <td>
+                                    ユーザーには業務に必要な最小限の権限だけを与えるという考え方
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>RBAC(Role-Based Access Control)</td>
+                                <td>個人ではなく「役割(ロール)」単位で権限を割り当てる方式</td>
+                            </tr>
+                            <tr>
+                                <td>Geofencing(ジオフェンシング)</td>
+                                <td>
+                                    位置情報をもとに、特定の地理的範囲内からのみアクセスを許可する仕組み
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>1-2 物理セキュリティ(Physical Security)</h3>
+                    <p>
+                        論理セキュリティだけでは不十分で、サーバールームや配線盤への物理的な侵入対策も必要です。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>用語</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Camera(監視カメラ)</td>
+                                <td>不正な立ち入りの抑止・記録</td>
+                            </tr>
+                            <tr>
+                                <td>Locks(施錠)</td>
+                                <td>ラックや部屋そのものへの物理的アクセス制限</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>1-3 欺瞞技術(Deception Technologies)</h3>
+                    <p>
+                        攻撃者を「おとり」に誘導し、実際の資産を守りながら攻撃の手口を観察するための技術です。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>用語</th>
+                                <th>説明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Honeypot(ハニーポット)</td>
+                                <td>
+                                    攻撃者を引きつけるためにわざと用意した、脆弱に見える単体のシステムやサービス
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Honeynet(ハニーネット)</td>
+                                <td>
+                                    ハニーポットを複数組み合わせて構築した、より本物らしいおとりのネットワーク環境
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>1-4 セキュリティの基本用語</h3>
+                    <p>まずリスクに関する4つの用語の関係を整理しましょう。</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>用語</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Threat(脅威)</td>
+                                <td>
+                                    損害を引き起こす可能性のある要因そのもの(攻撃者、自然災害など)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Vulnerability(脆弱性)</td>
+                                <td>攻撃者に悪用され得る、システムやプロセスの弱点</td>
+                            </tr>
+                            <tr>
+                                <td>Exploit(エクスプロイト)</td>
+                                <td>脆弱性を実際に悪用するための具体的な手段・コード</td>
+                            </tr>
+                            <tr>
+                                <td>Risk(リスク)</td>
+                                <td>脅威が脆弱性を突いて実際に損害が発生する可能性とその影響度</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        続いて、情報セキュリティの目的を表す代表的なフレームワークが
+                        <strong>CIA Triad</strong> です。
+                    </p>
+
+                    <script type="text/plain" class="mmd-src">
+                        flowchart TB
+                            CIA["情報セキュリティの目的"]
+                            CIA --> C1["機密性 Confidentiality"]
+                            CIA --> I1["完全性 Integrity"]
+                            CIA --> A1["可用性 Availability"]
+                            C1 --> C2["暗号化とアクセス制御で保護"]
+                            I1 --> I2["改ざん検知 ハッシュ デジタル署名で保護"]
+                            A1 --> A2["冗長化と災害復旧対策で保護"]
+                            classDef purple fill:#241f3d,stroke:#8b6cf5,color:#e4defc;
+                            classDef teal fill:#0f2e2b,stroke:#2dd4bf,color:#ccfbf1;
+                            classDef coral fill:#3a2420,stroke:#fb7862,color:#ffd9cf;
+                            class C1,C2 purple;
+                            class I1,I2 teal;
+                            class A1,A2 coral;
+                    </script>
+                    <div class="diagram-wrapper"><div class="mermaid-render"></div></div>
+                    <div class="diagram-caption">図3: CIA Triad(機密性・完全性・可用性)</div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>要素</th>
+                                <th>意味</th>
+                                <th>侵害された場合の例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Confidentiality(機密性)</td>
+                                <td>許可された者だけが情報にアクセスできる状態を保つこと</td>
+                                <td>顧客情報の漏えい</td>
+                            </tr>
+                            <tr>
+                                <td>Integrity(完全性)</td>
+                                <td>情報が改ざんされず正確な状態を保つこと</td>
+                                <td>送金額の不正な書き換え</td>
+                            </tr>
+                            <tr>
+                                <td>Availability(可用性)</td>
+                                <td>必要な時に情報やシステムへアクセスできる状態を保つこと</td>
+                                <td>DDoS攻撃によるサービス停止</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout info">
+                        <i class="ti ti-info-circle"></i>
+                        <p>
+                            CIA
+                            Triadは米国立標準技術研究所(NIST)の情報セキュリティ文書群でも共通の基本モデルとして使われている、業界標準の考え方です。
+                        </p>
+                    </div>
+
+                    <h3>1-5 監査と規制コンプライアンス</h3>
+                    <p>
+                        企業ネットワークは、業界や地域ごとの法規制・基準に準拠する必要があります。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>概要</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Data locality(データローカリティ)</td>
+                                <td>データを特定の国・地域内に保存・処理する義務や制約</td>
+                            </tr>
+                            <tr>
+                                <td>PCI DSS(Payment Card Industry Data Security Standard)</td>
+                                <td>クレジットカード情報を扱う事業者向けのセキュリティ基準</td>
+                            </tr>
+                            <tr>
+                                <td>GDPR(General Data Protection Regulation)</td>
+                                <td>
+                                    EU域内の個人データ保護に関する規則。域外の事業者にも適用され得る
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>1-6 ネットワークセグメンテーション</h3>
+                    <p>
+                        すべての機器を1つのフラットなネットワークに置くと、1台が侵害された際の被害範囲が広がります。そこで、用途やリスクの性質ごとにネットワークを分割します。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>セグメント</th>
+                                <th>対象</th>
+                                <th>分離する理由</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>IoT / IIoT</td>
+                                <td>スマート機器、産業用IoT機器</td>
+                                <td>一般に更新頻度が低くセキュリティパッチが遅れがちなため</td>
+                            </tr>
+                            <tr>
+                                <td>SCADA / ICS / OT</td>
+                                <td>産業制御システム、運用技術全般</td>
+                                <td>
+                                    可用性が最優先され、停止や誤動作が物理的な事故に直結するため
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Guest(ゲスト)</td>
+                                <td>来訪者用のネットワーク</td>
+                                <td>社内システムへの直接アクセスを防ぐため</td>
+                            </tr>
+                            <tr>
+                                <td>BYOD(Bring Your Own Device)</td>
+                                <td>従業員の私物端末</td>
+                                <td>会社が管理しきれない端末からのリスクを限定するため</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="attacks">
+                    <div class="section-icon-title">
+                        <i class="ti ti-alert-triangle"></i>
+                        <h2 style="margin: 0">STEP 2: 4.2 攻撃の種類とネットワークへの影響</h2>
+                    </div>
+                    <p>まずは全体の分類を俯瞰します。</p>
+
+                    <script type="text/plain" class="mmd-src">
+                        flowchart TB
+                            ATK["4.2 攻撃の分類"]
+                            ATK --> D1["可用性への攻撃"]
+                            ATK --> D2["なりすまし 改ざん系攻撃"]
+                            ATK --> D3["不正デバイス系"]
+                            ATK --> D4["人的要因への攻撃"]
+                            D1 --> D1a["DoS DDoS"]
+                            D2 --> D2a["VLANホッピング MACフラッディング"]
+                            D2 --> D2b["ARP poisoning spoofing"]
+                            D2 --> D2c["DNS poisoning spoofing"]
+                            D2 --> D2d["on-path attack"]
+                            D3 --> D3a["rogue DHCP rogue AP"]
+                            D3 --> D3b["evil twin"]
+                            D4 --> D4a["phishing dumpster diving"]
+                            D4 --> D4b["shoulder surfing tailgating"]
+                            classDef coral fill:#3a2420,stroke:#fb7862,color:#ffd9cf;
+                            classDef pink fill:#3a1f30,stroke:#f472b6,color:#fbcfe8;
+                            class D1,D2,D3,D4 coral;
+                            class D1a,D2a,D2b,D2c,D2d,D3a,D3b,D4a,D4b pink;
+                    </script>
+                    <div class="diagram-wrapper"><div class="mermaid-render"></div></div>
+                    <div class="diagram-caption">図4: ネットワークへの攻撃の分類</div>
+
+                    <h3>2-1 攻撃の一覧表</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>攻撃</th>
+                                <th>何をするか</th>
+                                <th>主な影響</th>
+                                <th>代表的な対策</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DoS / DDoS</td>
+                                <td>大量のトラフィックやリクエストでシステムを過負荷にする</td>
+                                <td>可用性の喪失(サービス停止)</td>
+                                <td>レート制限、DDoS対策サービス、冗長構成</td>
+                            </tr>
+                            <tr>
+                                <td>VLANホッピング</td>
+                                <td>タグ付けの不備を突いて、本来アクセスできないVLANへ侵入する</td>
+                                <td>セグメンテーションの突破</td>
+                                <td>ネイティブVLANの変更、不要なトランクポートの無効化</td>
+                            </tr>
+                            <tr>
+                                <td>MACフラッディング</td>
+                                <td>大量の偽MACアドレスでスイッチのMACテーブルを溢れさせる</td>
+                                <td>スイッチがハブ化しトラフィックが盗聴される</td>
+                                <td>ポートセキュリティ、MACアドレス数の制限</td>
+                            </tr>
+                            <tr>
+                                <td>ARP poisoning / spoofing</td>
+                                <td>偽のARP応答でMACアドレスの対応関係を書き換える</td>
+                                <td>通信の盗聴・改ざん(on-path攻撃の前段階)</td>
+                                <td>Dynamic ARP Inspection、静的ARPエントリ</td>
+                            </tr>
+                            <tr>
+                                <td>DNS poisoning / spoofing</td>
+                                <td>DNSキャッシュや応答を偽装し、不正なIPアドレスへ誘導する</td>
+                                <td>フィッシングサイトへの誘導、通信の傍受</td>
+                                <td>DNSSEC、信頼できるリゾルバの利用</td>
+                            </tr>
+                            <tr>
+                                <td>Rogue devices / services</td>
+                                <td>許可されていないDHCPサーバーやAPをネットワークに接続する</td>
+                                <td>誤ったIP配布や通信の乗っ取り</td>
+                                <td>DHCP snooping、NACによる端末認証</td>
+                            </tr>
+                            <tr>
+                                <td>Evil twin</td>
+                                <td>正規のAPになりすました偽のアクセスポイントを設置する</td>
+                                <td>通信内容の盗聴、認証情報の窃取</td>
+                                <td>エンタープライズ認証(802.1X)、Wi-Fi異常検知</td>
+                            </tr>
+                            <tr>
+                                <td>On-path attack</td>
+                                <td>
+                                    通信経路上に割り込み、当事者に気づかれず通信を中継・傍受する
+                                </td>
+                                <td>通信内容の盗聴・改ざん</td>
+                                <td>暗号化通信(TLS)、証明書検証、ARP監視</td>
+                            </tr>
+                            <tr>
+                                <td>Social engineering</td>
+                                <td>技術ではなく人間の心理や行動の隙を突く</td>
+                                <td>認証情報の詐取、不正な物理侵入</td>
+                                <td>セキュリティ教育、入退室管理の徹底</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>2-2 ARP poisoningからon-path attackへの流れ</h3>
+                    <p>
+                        ARP poisoningは、on-path
+                        attack(いわゆる中間者攻撃)を成立させるための代表的な手口です。攻撃の流れを時系列で見てみましょう。
+                    </p>
+
+                    <script type="text/plain" class="mmd-src">
+                        sequenceDiagram
+                            participant Client as クライアント端末
+                            participant Attacker as 攻撃者
+                            participant Gateway as デフォルトゲートウェイ
+                            Attacker->>Client: 偽のARP応答 攻撃者のMACをゲートウェイのIPに紐付け
+                            Attacker->>Gateway: 偽のARP応答 攻撃者のMACをクライアントのIPに紐付け
+                            Client->>Attacker: 本来ゲートウェイ宛の通信が攻撃者に届く
+                            Attacker->>Gateway: 通信内容を中継しつつ盗聴 改ざん
+                            Gateway->>Attacker: 応答を返す
+                            Attacker->>Client: 応答を中継し気づかれないようにする
+                    </script>
+                    <div class="diagram-wrapper"><div class="mermaid-render"></div></div>
+                    <div class="diagram-caption">
+                        図5: ARP poisoning による on-path attack の成立過程
+                    </div>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-circle"></i>
+                        <p>
+                            ARP応答には本来「認証」の仕組みがないため、同一セグメント内であれば比較的容易に偽装できてしまう点が弱点です。これが、STEP
+                            3で扱う「セグメンテーション」や「監視」が重要になる理由の一つです。
+                        </p>
+                    </div>
+
+                    <h3>2-3 ソーシャルエンジニアリングの手口</h3>
+                    <p>技術的な脆弱性ではなく、人の心理的な隙を突く攻撃も試験範囲に含まれます。</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>手口</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Phishing(フィッシング)</td>
+                                <td>
+                                    正規の相手を装ったメールやメッセージで、認証情報や機密情報をだまし取る
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dumpster diving(ダンプスターダイビング)</td>
+                                <td>廃棄されたゴミの中から、書類やメモなど機密情報を探し出す</td>
+                            </tr>
+                            <tr>
+                                <td>Shoulder surfing(ショルダーサーフィン)</td>
+                                <td>背後や近くから画面や入力内容を盗み見る</td>
+                            </tr>
+                            <tr>
+                                <td>Tailgating(テールゲーティング)</td>
+                                <td>
+                                    認証された人の後ろにこっそりついて、施錠区画へ不正に入室する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>2-4 Malware(マルウェア)</h3>
+                    <p>
+                        ウイルス、ワーム、ランサムウェアなど、悪意のあるソフトウェア全般を指す総称です。Network+ではネットワーク経由での拡散や、感染した端末がネットワーク全体に与える影響という観点で押さえておけば十分です。
+                    </p>
+                </section>
+
+                <section id="defenses">
+                    <div class="section-icon-title">
+                        <i class="ti ti-shield-check"></i>
+                        <h2 style="margin: 0">
+                            STEP 3: 4.3 セキュリティ機能・防御技術・ソリューションの適用
+                        </h2>
+                    </div>
+                    <p>
+                        STEP
+                        1・2で「何を」「どう」守るかを学んだので、最後に具体的な防御の実装方法を見ていきます。
+                    </p>
+
+                    <h3>3-1 デバイスハードニング(Device Hardening)</h3>
+                    <p>機器そのものの攻撃対象領域(アタックサーフェス)を減らす基本的な対策です。</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>対策</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>不要なポート・サービスの無効化</td>
+                                <td>
+                                    使っていないポートやサービスを無効化し、攻撃可能な入口を減らす
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>デフォルトパスワードの変更</td>
+                                <td>
+                                    初期設定のパスワードを必ず変更し、既知の認証情報での侵入を防ぐ
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>3-2 NAC(Network Access Control)</h3>
+                    <p>ネットワークに接続しようとする端末を、接続前に検査・認証する仕組みです。</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>手法</th>
+                                <th>概要</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Port security(ポートセキュリティ)</td>
+                                <td>
+                                    スイッチのポートごとに接続を許可するMACアドレス数や種類を制限する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>802.1X</td>
+                                <td>
+                                    ポートベースの認証規格。RADIUSサーバーと連携し、認証が通るまでポートを閉じておく
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>MAC filtering(MACフィルタリング)</td>
+                                <td>許可リストに登録されたMACアドレスの端末のみ接続を許可する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>802.1Xによる認証の流れは次の通りです。</p>
+                    <script type="text/plain" class="mmd-src">
+                        sequenceDiagram
+                            participant PC as 端末 サプリカント
+                            participant SW as スイッチ オーセンティケーター
+                            participant AAA as RADIUSサーバー
+                            PC->>SW: 接続要求 ポートはまだ未認証状態
+                            SW->>PC: EAPで認証情報を要求
+                            PC->>SW: 証明書やIDなど認証情報を送信
+                            SW->>AAA: 認証情報を転送 802.1X
+                            AAA->>SW: 認証結果と割り当てVLANを返す
+                            SW->>PC: ポートを許可状態にしアクセスを開放
+                    </script>
+                    <div class="diagram-wrapper"><div class="mermaid-render"></div></div>
+                    <div class="diagram-caption">図6: 802.1Xによるポートベース認証の流れ</div>
+
+                    <h3>3-3 鍵管理(Key Management)</h3>
+                    <p>
+                        暗号化に使う鍵を、生成・配布・保管・失効までライフサイクル全体で適切に管理することです。鍵が漏えいすれば、暗号化そのものの意味がなくなるため、PKIやVPNの運用において重要な位置づけを持ちます。
+                    </p>
+
+                    <h3>3-4 セキュリティルール</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>機能</th>
+                                <th>概要</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ACL(Access Control List)</td>
+                                <td>
+                                    IPアドレスやポート番号などの条件で、通過させる通信・拒否する通信を定義するルール
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>URL filtering(URLフィルタリング)</td>
+                                <td>特定のWebサイトへのアクセスをURL単位で制限する</td>
+                            </tr>
+                            <tr>
+                                <td>Content filtering(コンテンツフィルタリング)</td>
+                                <td>
+                                    通信内容の種類(ファイル形式など)に基づいてアクセスを制限する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>3-5 ゾーン設計:trusted / untrusted / screened subnet</h3>
+                    <p>ネットワークを「信頼度」で区切り、境界に防御を集中させる考え方です。</p>
+
+                    <script type="text/plain" class="mmd-src">
+                        flowchart LR
+                            subgraph Untrusted["信頼できないゾーン"]
+                                Internet["インターネット"]
+                            end
+                            subgraph DMZ["スクリーンドサブネット 旧DMZ"]
+                                Web["公開Webサーバー"]
+                                DNSsv["公開DNSサーバー"]
+                                Mail["メールサーバー"]
+                            end
+                            subgraph Trusted["信頼できるゾーン"]
+                                LAN["社内LAN 業務端末"]
+                                DB["内部データベース"]
+                            end
+                            Internet -- "外部FW ACL URLフィルタ" --> DMZ
+                            DMZ -- "内部FW ACL" --> LAN
+                            LAN --> DB
+                            classDef danger fill:#3a1414,stroke:#f87171,color:#ffd6d6;
+                            classDef warning fill:#3a2f14,stroke:#fbbf24,color:#ffe9b8;
+                            classDef success fill:#0f2e1a,stroke:#4ade80,color:#c9f7d9;
+                            class Internet danger;
+                            class Web,DNSsv,Mail warning;
+                            class LAN,DB success;
+                    </script>
+                    <div class="diagram-wrapper"><div class="mermaid-render"></div></div>
+                    <div class="diagram-caption">
+                        図7: trusted / screened subnet / untrusted のゾーン設計
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ゾーン</th>
+                                <th>信頼度</th>
+                                <th>主な用途</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Untrusted zone(信頼できないゾーン)</td>
+                                <td>最も低い</td>
+                                <td>インターネットなど、管理外のネットワーク</td>
+                            </tr>
+                            <tr>
+                                <td>Screened subnet(スクリーンドサブネット)</td>
+                                <td>中間</td>
+                                <td>
+                                    外部公開が必要なWeb・DNS・メールサーバーなどを配置する緩衝地帯。以前はDMZ(demilitarized
+                                    zone)と呼ばれていた
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Trusted zone(信頼できるゾーン)</td>
+                                <td>高い</td>
+                                <td>
+                                    社内LANや内部データベースなど、外部から直接アクセスさせない領域
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        この設計により、仮に外部公開サーバーが一台侵害されても、内部FWがもう一段の壁となり、社内LANまで一気に到達されることを防ぎます。
+                    </p>
+                </section>
+
+                <section id="checklist">
+                    <div class="section-icon-title">
+                        <i class="ti ti-list-check"></i>
+                        <h2 style="margin: 0">ドメイン4.0 チェックリスト</h2>
+                    </div>
+                    <p>
+                        学習の最後に、公式の出題範囲(Exam
+                        Objectives)に沿って理解度を確認しましょう。
+                    </p>
+                    <table class="checklist-table">
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>確認</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>暗号化(in transit / at rest)の違いを説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>PKI・証明書の役割を説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>RADIUS / TACACS+ / LDAP / SAML の違いを説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>MFA・SSO・最小権限・RBACの意味を説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>ハニーポットとハニーネットの違いを説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>Risk / Vulnerability / Exploit / Threat の関係を説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>CIA Triad の3要素を説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>PCI DSS と GDPR の違いを説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>IoT/OT/Guest/BYODをなぜ分離するか説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    DoS/DDoS、VLANホッピング、MACフラッディングの違いを説明できる
+                                </td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ARP poisoning/spoofing と DNS poisoning/spoofing
+                                    の違いを説明できる
+                                </td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>Evil twin と on-path attack の関係を説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>代表的なソーシャルエンジニアリングの手口を4つ挙げられる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>デバイスハードニングの基本2点を説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>Port security / 802.1X / MAC filtering の違いを説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ACL・URLフィルタリング・コンテンツフィルタリングの違いを説明できる
+                                </td>
+                                <td>☐</td>
+                            </tr>
+                            <tr>
+                                <td>Screened subnet(旧DMZ)の役割を説明できる</td>
+                                <td>☐</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        すべてにチェックが付けば、ドメイン4.0の基礎は固まっています。次はドメイン5.0(Network
+                        Troubleshooting)に進み、実際の障害シナリオの中でこれらのセキュリティ知識がどう関わってくるかを学ぶと、知識がより実践的に定着します。
+                    </p>
+                </section>
+
+                <section id="references">
+                    <div class="section-icon-title">
+                        <i class="ti ti-external-link"></i>
+                        <h2 style="margin: 0">参考文献・出典(References)</h2>
+                    </div>
+                    <p>
+                        本記事は以下の一次情報・専門情報源を根拠に作成しています。内容の正確性を確認したい場合や、より詳しく学びたい場合はあわせてご参照ください。
+                    </p>
+
+                    <h3>公式情報源(Primary sources)</h3>
+                    <ul class="ref-list">
+                        <li class="ref-item">
+                            <div class="ref-label">Official</div>
+                            <div class="ref-title">
+                                CompTIA Network+ 公式認定ページ(試験概要・出題比率のサマリー)
+                            </div>
+                            <div class="ref-url">
+                                <a
+                                    href="https://www.comptia.org/en-us/certifications/network/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://www.comptia.org/en-us/certifications/network/</a
+                                >
+                            </div>
+                        </li>
+                        <li class="ref-item">
+                            <div class="ref-label">Official</div>
+                            <div class="ref-title">
+                                CompTIA Network+ N10-009 Certification Exam: Exam Objectives(Version
+                                4.0、ドメイン4.0の詳細な出題範囲の一次情報)
+                            </div>
+                            <div class="ref-url">
+                                <a
+                                    href="https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-network-n10-009-exam-objectives-(4-0)-(1).pdf"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-network-n10-009-exam-objectives-(4-0)-(1).pdf</a
+                                >
+                            </div>
+                        </li>
+                    </ul>
+
+                    <h3>補足・専門用語の確認に使った情報源(Supplementary sources)</h3>
+                    <ul class="ref-list">
+                        <li class="ref-item supplementary">
+                            <div class="ref-label">Supplementary</div>
+                            <div class="ref-title">
+                                NIST CSRC Glossary「confidentiality, integrity, availability」(CIA
+                                Triadの定義確認)
+                            </div>
+                            <div class="ref-url">
+                                <a
+                                    href="https://csrc.nist.gov/glossary/term/confidentiality_integrity_availability"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://csrc.nist.gov/glossary/term/confidentiality_integrity_availability</a
+                                >
+                            </div>
+                        </li>
+                        <li class="ref-item supplementary">
+                            <div class="ref-label">Supplementary</div>
+                            <div class="ref-title">
+                                Wikipedia「ARP
+                                spoofing」(ARPポイズニング/スプーフィングの仕組みの確認)
+                            </div>
+                            <div class="ref-url">
+                                <a
+                                    href="https://en.wikipedia.org/wiki/ARP_spoofing"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://en.wikipedia.org/wiki/ARP_spoofing</a
+                                >
+                            </div>
+                        </li>
+                        <li class="ref-item supplementary">
+                            <div class="ref-label">Supplementary</div>
+                            <div class="ref-title">
+                                Wikipedia「Screened subnet」(スクリーンドサブネット/DMZの構造の確認)
+                            </div>
+                            <div class="ref-url">
+                                <a
+                                    href="https://en.wikipedia.org/wiki/Screened_subnet"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://en.wikipedia.org/wiki/Screened_subnet</a
+                                >
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="footer-note">
+                        注記:
+                        CompTIAの出題範囲は改訂される可能性があります。実際の受験前には、必ず上記の公式ページで最新の試験コード・出題比率・出題範囲をご確認ください。
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                var lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n\s*$/, '')
+                    .split('\n');
+                var indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return l.match(/^\s*/)[0].length;
+                    });
+                var min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(min);
+                    })
+                    .join('\n');
+            }
+
+            function extendViewBox(svgEl, extra) {
+                var vb = svgEl.getAttribute('viewBox');
+                if (vb) {
+                    var parts = vb.split(/\s+/).map(Number);
+                    if (parts.length === 4) {
+                        parts[3] += extra;
+                        svgEl.setAttribute('viewBox', parts.join(' '));
+                    }
+                }
+                var h = svgEl.getAttribute('height');
+                if (h && !isNaN(parseFloat(h))) {
+                    svgEl.setAttribute('height', parseFloat(h) + extra);
+                }
+            }
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                flowchart: { useMaxWidth: false, htmlLabels: true },
+                sequence: { useMaxWidth: false },
+            });
+
+            document.fonts.ready.then(async function () {
+                var sources = document.querySelectorAll('script.mmd-src');
+                var i = 0;
+                for (var idx = 0; idx < sources.length; idx++) {
+                    var srcEl = sources[idx];
+                    i++;
+                    var code = dedent(srcEl.textContent);
+                    var wrapper = srcEl.nextElementSibling;
+                    var target = wrapper ? wrapper.querySelector('.mermaid-render') : null;
+                    if (!target) continue;
+                    var isSeqOrState = /^\s*(sequenceDiagram|stateDiagram)/.test(code);
+                    try {
+                        var result = await mermaid.render('mmd-render-' + i, code);
+                        target.innerHTML = result.svg;
+                        var svgEl = target.querySelector('svg');
+                        if (svgEl) extendViewBox(svgEl, isSeqOrState ? 110 : 15);
+                    } catch (e) {
+                        target.innerHTML =
+                            '<p style="color:var(--color-danger);padding:12px;">diagram render error: ' +
+                            e.message +
+                            '</p>';
+                    }
+                }
+            });
+
+            // Mobile sidebar toggle
+            var sidebar = document.querySelector('.sidebar');
+            var menuToggle = document.getElementById('menuToggle');
+            if (sidebar && menuToggle) {
+                function updateSidebarState(isOpen) {
+                    sidebar.classList.toggle('open', isOpen);
+                    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    menuToggle.setAttribute('aria-label', isOpen ? '目次を閉じる' : '目次を開く');
+                }
+                menuToggle.addEventListener('click', function () {
+                    var isOpen = !sidebar.classList.contains('open');
+                    updateSidebarState(isOpen);
+                });
+                document.querySelectorAll('.sidebar-nav a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        updateSidebarState(false);
+                    });
+                });
+            }
+
+            (function () {
+                var links = document.querySelectorAll('.sidebar-nav a');
+                var map = {};
+                links.forEach(function (a) {
+                    var id = a.getAttribute('href').replace('#', '');
+                    map[id] = a;
+                });
+                var observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var link = map[entry.target.id];
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach(function (a) {
+                                    a.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+                document.querySelectorAll('main section[id]').forEach(function (sec) {
+                    observer.observe(sec);
+                });
+            })();
+        </script>
+    </body>
+</html>

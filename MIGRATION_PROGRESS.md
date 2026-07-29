@@ -7,9 +7,169 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **テスト数:** プロジェクト全体で 84 テストファイル パス
-- **ビルド:** リンターパス / ビルドはローカル確認
-- **最終更新日時(UTC):** 2026-07-23T05:52:00.000Z
+- **最終更新日時(UTC):** 2026-07-28T15:44:00.000Z
+
+## 2026-07-28: AWS「AWS SAA-C03 ドメイン3: 高性能なアーキテクチャの設計」移行 (完了)
+
+### 目的
+
+`AWS-Certified-Solutions-Architect-Associate-Domain3.html`（静的HTML・3470行・27個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client Domain3Guide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/aws/solutions-architect-associate/domain3` ルートへ完全移行する。文章・表・27個のMermaid図・補足説明・チェックリストの一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for AWS SAA Domain 3 guide page` (`__tests__/aws/solutions-architect-associate/domain3/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA Domain 3 guide page` (`page.tsx`, `Domain3Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(aws-saa): integrate Domain 3 into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive Domain 3 HTML and MD files` (`MIGRATION_PROGRESS.md` の更新、元HTML `AWS-Certified-Solutions-Architect-Associate-Domain3.html` を `archive/Aws/SAA/html/` へ、MD を `archive/Aws/SAA/md/` へアーカイブ移動)
+
+### 関連ファイル
+
+- [app/aws/solutions-architect-associate/domain3/page.tsx](app/aws/solutions-architect-associate/domain3/page.tsx)
+- [app/aws/solutions-architect-associate/domain3/Domain3Guide.tsx](app/aws/solutions-architect-associate/domain3/Domain3Guide.tsx)
+- [app/aws/solutions-architect-associate/domain3/NavBar.tsx](app/aws/solutions-architect-associate/domain3/NavBar.tsx)
+- [app/aws/solutions-architect-associate/domain3/constants.ts](app/aws/solutions-architect-associate/domain3/constants.ts)
+- [app/aws/solutions-architect-associate/domain3/page.css](app/aws/solutions-architect-associate/domain3/page.css)
+- [__tests__/aws/solutions-architect-associate/domain3/page.test.tsx](__tests__/aws/solutions-architect-associate/domain3/page.test.tsx)
+- [archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain3.html](archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain3.html)
+- [archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain3.md](archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain3.md)
+
+## 2026-07-28: AWS「AWS SAA-C03 ドメイン2: 回復力のあるアーキテクチャの設計」移行 (完了)
+
+### 目的
+
+`AWS-Certified-Solutions-Architect-Associate-Domain2.html`（静的HTML・3000行・25個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client Domain2Guide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/aws/solutions-architect-associate/domain2` ルートへ完全移行する。文章・表・25個のMermaid図・補足説明・チェックリストの一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for AWS SAA Domain 2 guide page` (`__tests__/aws/solutions-architect-associate/domain2/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA Domain 2 guide page` (`page.tsx`, `Domain2Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(aws-saa): integrate Domain 2 into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive Domain 2 HTML and MD files` (`MIGRATION_PROGRESS.md` の更新、元HTML `AWS-Certified-Solutions-Architect-Associate-Domain2.html` を `archive/Aws/SAA/html/` へ、MD を `archive/Aws/SAA/md/` へアーカイブ移動)
+- [x] **Step 5 (Pie Chart Refinement & Mermaid Syntax Fixes)**: `fix(aws-saa): refine pie chart palette and resolve mermaid syntax errors in domain 2` (円グラフ `m1` の `init` テーマ適用による配色最適化、`m16` の全角波ダッシュ `〜` 除外、`m5` シーケンス図のスラッシュ除去、`m3`/`m4`/`m17`/`m18`/`m20`/`m22` のエッジ記述クォート保護、`m23` の `&` ノード結合展開による `Syntax error in text` 解消)
+
+### 関連ファイル
+
+- [app/aws/solutions-architect-associate/domain2/page.tsx](app/aws/solutions-architect-associate/domain2/page.tsx)
+- [app/aws/solutions-architect-associate/domain2/Domain2Guide.tsx](app/aws/solutions-architect-associate/domain2/Domain2Guide.tsx)
+- [app/aws/solutions-architect-associate/domain2/NavBar.tsx](app/aws/solutions-architect-associate/domain2/NavBar.tsx)
+- [app/aws/solutions-architect-associate/domain2/constants.ts](app/aws/solutions-architect-associate/domain2/constants.ts)
+- [app/aws/solutions-architect-associate/domain2/page.css](app/aws/solutions-architect-associate/domain2/page.css)
+- [__tests__/aws/solutions-architect-associate/domain2/page.test.tsx](__tests__/aws/solutions-architect-associate/domain2/page.test.tsx)
+- [archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain2.html](archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain2.html)
+- [archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain2.md](archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain2.md)
+
+## 2026-07-28: AWS「AWS SAA-C03 ドメイン1: セキュアなアーキテクチャの設計」移行 (完了)
+
+### 目的
+
+`AWS-Certified-Solutions-Architect-Associate-Domain1.html`（静的HTML・2680行・14個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client Domain1Guide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/aws/solutions-architect-associate/domain1` ルートへ完全移行する。文章・表・14個のMermaid図・補足説明の一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for AWS SAA Domain 1 guide page` (`__tests__/aws/solutions-architect-associate/domain1/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA Domain 1 guide page` (`page.tsx`, `Domain1Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(aws-saa): integrate Domain 1 into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive Domain 1 HTML` (`MIGRATION_PROGRESS.md` の更新、元HTML `AWS-Certified-Solutions-Architect-Associate-Domain1.html` を `archive/Aws/SAA/html/` へ、MD を `archive/Aws/SAA/md/` へアーカイブ移動)
+- [x] **Step 5 (Full-width Layout & 1rem Text Scale & Pie Chart Styling)**: `feat(aws-saa): expand layout to full width, ensure 1rem diagram text scaling, and refine pie chart styling` (`main-content` の全幅 100% 化、`.diagram-container` のスクロールコンテナ化・1rem文字サイズ保護、円グラフ `d01` のダークテーマ配色最適化)
+- [x] **Step 6 (Code Block Indentation & Syntax Highlighting)**: `feat(aws-saa): implement code block syntax highlighting and indentation` (JSON コードブロックのインデント構造化、`code-key`, `code-string`, `code-boolean`, `code-punctuation` による構文カラーハイライト装飾)
+
+### 関連ファイル
+
+- [app/aws/solutions-architect-associate/domain1/page.tsx](app/aws/solutions-architect-associate/domain1/page.tsx)
+- [app/aws/solutions-architect-associate/domain1/Domain1Guide.tsx](app/aws/solutions-architect-associate/domain1/Domain1Guide.tsx)
+- [app/aws/solutions-architect-associate/domain1/NavBar.tsx](app/aws/solutions-architect-associate/domain1/NavBar.tsx)
+- [app/aws/solutions-architect-associate/domain1/constants.ts](app/aws/solutions-architect-associate/domain1/constants.ts)
+- [app/aws/solutions-architect-associate/domain1/page.css](app/aws/solutions-architect-associate/domain1/page.css)
+- [__tests__/aws/solutions-architect-associate/domain1/page.test.tsx](__tests__/aws/solutions-architect-associate/domain1/page.test.tsx)
+- [archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain1.html](archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain1.html)
+- [archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain1.md](archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain1.md)
+
+
+## 2026-07-28: AWS「AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド」移行 (完了)
+
+### 目的
+
+`AWS-Certified-Solutions-Architect-Associate.html`（静的HTML・3485行・21個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client SaaGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/aws/solutions-architect-associate` ルートへ完全移行する。文章・表・21個のMermaid図・補足説明の一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for AWS SAA guide page` (`__tests__/aws/solutions-architect-associate/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(aws-saa): implement AWS SAA guide page components to pass tests` (`page.tsx`, `SaaGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor/docs(aws-saa): integrate AWS SAA page into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 4 (Archive)**: `chore(aws-saa): archive AWS SAA source html and md files` (`AWS-Certified-Solutions-Architect-Associate.html` を `archive/Aws/SAA/html/` へ、`AWS-Certified-Solutions-Architect-Associate.md` を `archive/Aws/SAA/md/` へアーカイブ移動)
+
+### 関連ファイル
+
+- [app/aws/solutions-architect-associate/page.tsx](app/aws/solutions-architect-associate/page.tsx)
+- [app/aws/solutions-architect-associate/SaaGuide.tsx](app/aws/solutions-architect-associate/SaaGuide.tsx)
+- [app/aws/solutions-architect-associate/NavBar.tsx](app/aws/solutions-architect-associate/NavBar.tsx)
+- [app/aws/solutions-architect-associate/constants.ts](app/aws/solutions-architect-associate/constants.ts)
+- [app/aws/solutions-architect-associate/page.css](app/aws/solutions-architect-associate/page.css)
+- [__tests__/aws/solutions-architect-associate/page.test.tsx](__tests__/aws/solutions-architect-associate/page.test.tsx)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
+
+## 2026-07-28: ACE / Hands-on「Google Cloud セキュリティ基礎 完全ガイド」移行 (完了)
+
+### 目的
+
+`Gcp-security-fundamentals-guide.html`（静的HTML・2368行・16個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client GcpSecurityFundamentalsGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/hands-on/gcp-security-fundamentals-guide` ルートへ完全移行する。文章・表・16個のMermaid図・コードブロック・注意書きの一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ace): add failing tests for gcp security fundamentals guide page` (`__tests__/gcl/hands-on/gcp-security-fundamentals-guide/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(ace): implement gcp security fundamentals guide page skeleton to pass tests` (`page.tsx`, `GcpSecurityFundamentalsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 最小構成実装とテスト通過)
+- [x] **Step 3 (Refactor / Content Migration & CSS Mapping)**: `feat(ace): migrate all content, css mapping, and mermaid diagrams for gcp security fundamentals guide` (全8章・演習・表・Mermaid 16図の完全移植、コードブロック `.code-line` 構造化、scoped CSS 整合)
+- [x] **Step 4 (Refactor / Integration & Nav)**: `refactor(ace): integrate gcp security fundamentals guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
+- [x] **Step 5 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive source html` (`MIGRATION_PROGRESS.md` の更新、元HTML `Gcp-security-fundamentals-guide.html` を `archive/Gcl_Archive/Hands-on/html/` へ退避)
+- [x] **Step 6 (1rem Text Scale & Full Width Expansion)**: `feat(ace): expand layout to full width and ensure 1rem text scale for diagrams in gcp security guide` (画面幅100%全幅拡張、.diagram-wrap スクロールと自然 px 倍率適用により 16図の 1rem 自然文字サイズ表示を保証)
+
+### 関連ファイル
+
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/page.tsx](app/gcl/hands-on/gcp-security-fundamentals-guide/page.tsx)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx](app/gcl/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/NavBar.tsx](app/gcl/hands-on/gcp-security-fundamentals-guide/NavBar.tsx)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/constants.ts](app/gcl/hands-on/gcp-security-fundamentals-guide/constants.ts)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/page.css](app/gcl/hands-on/gcp-security-fundamentals-guide/page.css)
+- [__tests__/gcl/hands-on/gcp-security-fundamentals-guide/page.test.tsx](__tests__/gcl/hands-on/gcp-security-fundamentals-guide/page.test.tsx)
+- [archive/Gcl_Archive/Hands-on/html/Gcp-security-fundamentals-guide.html](archive/Gcl_Archive/Hands-on/html/Gcp-security-fundamentals-guide.html)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
+
+## 2026-07-28: ACE「Google Cloud アプリ開発環境構築 完全ガイド」移行 (完了)
+
+### 目的
+
+`Gcp-app-dev-environment-complete-guide.html`（静的HTML・2246行）を、正準の設計パターン（NavBar + page.tsx + SetUpAnAppDevEnvironmentGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud` ルートへ完全移行する。文章・表・14個のMermaid図・コードブロック・注意書きの一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for GCP app dev environment complete guide` (`__tests__/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx` テスト更新)
+- [x] **Step 2 (Green)**: `feat: implement GCP app dev environment complete guide component` (`page.tsx`, `SetUpAnAppDevEnvironmentGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全10章・表・Mermaid 14図の完全移行)
+- [x] **Step 3 (Refactor / Integration)**: `refactor: integrate GCP app dev environment guide into routing and update docs` (`app/constants.ts` EXAMSラベル調整、`CLAUDE.md` / `GEMINI.md` ドキュメント更新)
+- [x] **Step 4 (Fix & Move)**: `fix: resolve className console error and move page to hands-on route` (`class=` を `className=` に精査・修正、`hands-on` ルートへ配置変更)
+- [x] **Step 5 (ESLint / SonarQube Error Fix)**: `fix: wrap JSX comment text nodes in template literals to resolve react/jsx-no-comment-textnodes and S6438 errors` (883, 888, 889, 891, 892行目の `//` テキストノードを `{`// ...`}` に全件置換しエラー全件解消)
+- [x] **Step 6 (Hamburger Menu Navigation Update)**: `feat: update hamburger menu item label to Hands-on in EXAMS constant` (`app/constants.ts` の GCP ハンズオンエントリ表示名を「Hands-on」へ変更、ドメイン一覧の追加、`globals.css` のスタイル定義更新)
+- [x] **Step 7 (Mermaid 1rem Text Scale Fix)**: `fix: adjust Mermaid diagram layout and styles to ensure 1rem text size` (`page.css` の `max-width: 100% !important` 強制縮小を解除、`.diagram-wrap` に `overflow-x: auto` を適用し、`preserveNaturalScale={true}` による 1rem 自然倍率文字表示を保証)
+- [x] **Step 8 (Consolidate All Hands-on Routes & Navigation)**: `refactor: consolidate hands-on guides into Hands-on navigation group` (`cloud-load-balancing-guide`, `develop-your-gcp-network`, `build-a-secure-google-cloud-network` を `hands-on/` 配下へ移動し、`app/constants.ts` の ACE グループから重複リンクを削除して `Hands-on` グループへ全5ガイドを完了集約)
+- [x] **Step 9 (Custom Overview Label Navigation Update)**: `feat: add custom overviewLabel support and set Hands-on overview item to IAP TCP Forwarding` (`app/navigation.ts` の `toNavTree` に `overviewLabel` オプションを追加し、`Hands-on` アコーディオンの先頭リンク名を「概要」から「IAP（Identity-Aware Proxy）TCP フォワーディング」へ変更)
+- [x] **Step 10 (Develop Your GCP Network 1rem Text Scale Fix)**: `fix: adjust Mermaid diagram layout and styles to ensure 1rem text size in develop-your-gcp-network` (`DevelopYourGcpNetworkGuide.tsx` に `preserveNaturalScale={true}` を明示し、`page.css` のスクロールとスタイルを調整して 14個の全Mermaid図の1rem自然文字倍率表示を保証)
+- [x] **Step 11 (Full Width Main Content Layout Expansion)**: `feat: expand main content layout to full width in develop-your-gcp-network` (`page.css` の `.shell` コンテナの `max-width` 制限を解除・100%へ拡張し、メインコンテンツを画面横幅いっぱいに拡大表示)
+
+### 関連ファイル
+
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.tsx](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.tsx)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/SetUpAnAppDevEnvironmentGuide.tsx](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/SetUpAnAppDevEnvironmentGuide.tsx)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/NavBar.tsx](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/NavBar.tsx)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/constants.ts](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/constants.ts)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.css](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.css)
+- [__tests__/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx](__tests__/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx)
+- [archive/Gcl_Archive/Associate-Cloud-Engineer/html/Gcp-app-dev-environment-complete-guide.html](archive/Gcl_Archive/Associate-Cloud-Engineer/html/Gcp-app-dev-environment-complete-guide.html)
+- [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
+
+---
 
 ## 2026-07-23: Cisco「CCNA Automation APIの理解と活用 完全ガイド」移行 (完了)
 

@@ -1,0 +1,675 @@
+/* GCP App Dev Environment Complete Guide - Page Specific CSS */
+
+.app-dev-environment-page {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    line-height: 1.75;
+    position: relative;
+    overflow-x: hidden;
+    padding-bottom: 60px;
+}
+
+.app-dev-environment-page a {
+    color: var(--color-theme-ace-accent);
+    text-decoration: none;
+}
+
+.app-dev-environment-page a:hover {
+    text-decoration: underline;
+}
+
+.app-dev-environment-page h1,
+.app-dev-environment-page h2,
+.app-dev-environment-page h3,
+.app-dev-environment-page h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: #fff;
+    margin: 0 0 0.5em;
+}
+
+.app-dev-environment-page code {
+    font-family: var(--font-mono);
+}
+
+/* ---------- STICKY SUB-NAVBAR ---------- */
+.app-dev-environment-page .sub-navbar {
+    position: sticky;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    z-index: 100;
+    background: rgba(3, 7, 18, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+}
+
+.app-dev-environment-page .sub-navbar::-webkit-scrollbar {
+    height: 4px;
+}
+
+.app-dev-environment-page .sub-navbar::-webkit-scrollbar-thumb {
+    background: var(--color-theme-ace-accent);
+}
+
+.app-dev-environment-page .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 12px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-dev-environment-page .nav-brand {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--color-google-green);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding-right: 14px;
+    border-right: 1px solid var(--color-border);
+}
+
+.app-dev-environment-page .nav-links {
+    display: flex;
+    gap: 16px;
+}
+
+.app-dev-environment-page .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--color-muted-foreground);
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.app-dev-environment-page .nav-links a:hover,
+.app-dev-environment-page .nav-links a.active {
+    color: var(--color-theme-ace-accent);
+    background: rgba(34, 211, 238, 0.08);
+    text-decoration: none;
+}
+
+/* ---------- LAYOUT ---------- */
+.app-dev-environment-page .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 2;
+}
+
+.app-dev-environment-page section {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--color-border);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 60px);
+}
+
+.app-dev-environment-page section:last-of-type {
+    border-bottom: none;
+}
+
+/* ---------- HERO ---------- */
+.app-dev-environment-page .hero {
+    padding: 64px 0 48px;
+    text-align: left;
+    position: relative;
+}
+
+.app-dev-environment-page .hero-eyebrow {
+    font-family: var(--font-mono);
+    color: var(--color-google-green);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.app-dev-environment-page .hero h1 {
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    margin-top: 14px;
+    background: linear-gradient(
+        120deg,
+        #fff 30%,
+        var(--color-theme-ace-accent) 65%,
+        var(--color-google-green) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.app-dev-environment-page .hero-sub {
+    font-size: 1.05rem;
+    color: var(--color-muted-foreground);
+    max-width: 720px;
+    margin-top: 18px;
+}
+
+.app-dev-environment-page .hero-meta-table {
+    margin-top: 36px;
+}
+
+.app-dev-environment-page .pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-google-green);
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--color-google-green);
+}
+
+/* ---------- TOC ---------- */
+.app-dev-environment-page .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.app-dev-environment-page .toc-item {
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: 0.25s;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.app-dev-environment-page .toc-item:hover {
+    border-color: var(--color-theme-ace-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 211, 238, 0.12);
+}
+
+.app-dev-environment-page .toc-num {
+    font-family: var(--font-mono);
+    color: var(--color-theme-ace-accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.app-dev-environment-page .toc-item a {
+    color: var(--color-foreground);
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+/* ---------- CHAPTER HEADERS ---------- */
+.app-dev-environment-page .chapter-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.app-dev-environment-page .chapter-num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--color-background);
+    background: var(--color-google-green);
+    padding: 6px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+}
+
+.app-dev-environment-page .chapter-head h2 {
+    margin: 0;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.app-dev-environment-page .chapter-desc {
+    color: var(--color-muted-foreground);
+    font-size: 0.95rem;
+    margin-top: 6px;
+    max-width: 760px;
+}
+
+.app-dev-environment-page h3.subhead {
+    font-size: 1.08rem;
+    color: var(--color-theme-ace-accent);
+    margin-top: 40px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-left: 3px solid var(--color-theme-ace-accent);
+    padding-left: 12px;
+}
+
+/* ---------- TABLES ---------- */
+.app-dev-environment-page .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-guide-surface-1);
+}
+
+.app-dev-environment-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 480px;
+}
+
+.app-dev-environment-page thead th {
+    background: var(--color-guide-surface-2);
+    color: var(--color-google-green);
+    font-family: var(--font-mono);
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--color-guide-border-strong);
+}
+
+.app-dev-environment-page tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-foreground);
+    vertical-align: top;
+}
+
+.app-dev-environment-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.app-dev-environment-page tbody tr:hover {
+    background: rgba(34, 211, 238, 0.04);
+}
+
+.app-dev-environment-page td code,
+.app-dev-environment-page th code {
+    color: var(--color-theme-ace-accent);
+    background: rgba(34, 211, 238, 0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.86em;
+}
+
+/* ---------- CODE BLOCK ---------- */
+.app-dev-environment-page .code-block {
+    background: #050a14;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin: 20px 0;
+    overflow-x: auto;
+    position: relative;
+}
+
+.app-dev-environment-page .code-block::before {
+    content: '● ● ●';
+    color: var(--color-guide-meta);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.app-dev-environment-page .code-block pre {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: #c9e8ff;
+    white-space: pre;
+}
+
+.app-dev-environment-page .code-line {
+    white-space: pre;
+}
+
+.app-dev-environment-page .code-comment {
+    color: var(--color-guide-meta);
+}
+
+.app-dev-environment-page .code-green {
+    color: var(--color-google-green);
+}
+
+/* ---------- CALLOUTS / ALERTS ---------- */
+.app-dev-environment-page .callout {
+    border-left: 4px solid var(--color-theme-ace-accent);
+    background: rgba(34, 211, 238, 0.06);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 22px 0;
+    font-size: 0.92rem;
+}
+
+.app-dev-environment-page .callout-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.app-dev-environment-page .callout.info {
+    border-color: var(--color-theme-ace-accent);
+    background: rgba(34, 211, 238, 0.06);
+}
+
+.app-dev-environment-page .callout.info .callout-label {
+    color: var(--color-theme-ace-accent);
+}
+
+.app-dev-environment-page .callout.warning {
+    border-color: var(--color-google-yellow);
+    background: rgba(251, 191, 36, 0.06);
+}
+
+.app-dev-environment-page .callout.warning .callout-label {
+    color: var(--color-google-yellow);
+}
+
+.app-dev-environment-page .callout.danger {
+    border-color: var(--color-google-red);
+    background: rgba(248, 113, 113, 0.07);
+}
+
+.app-dev-environment-page .callout.danger .callout-label {
+    color: var(--color-google-red);
+}
+
+.app-dev-environment-page .callout.tip {
+    border-color: var(--color-google-green);
+    background: rgba(0, 255, 163, 0.06);
+}
+
+.app-dev-environment-page .callout.tip .callout-label {
+    color: var(--color-google-green);
+}
+
+/* ---------- GOOD / BAD ---------- */
+.app-dev-environment-page .gb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 22px 0;
+}
+
+.app-dev-environment-page .gb-card {
+    border-radius: 10px;
+    padding: 18px 20px;
+    border: 1px solid var(--color-border);
+}
+
+.app-dev-environment-page .gb-card.good {
+    background: rgba(0, 255, 163, 0.05);
+    border-color: rgba(0, 255, 163, 0.3);
+}
+
+.app-dev-environment-page .gb-card.bad {
+    background: rgba(248, 113, 113, 0.05);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+
+.app-dev-environment-page .gb-title {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.app-dev-environment-page .gb-card.good .gb-title {
+    color: var(--color-google-green);
+}
+
+.app-dev-environment-page .gb-card.bad .gb-title {
+    color: var(--color-google-red);
+}
+
+/* ---------- MERMAID WRAP ---------- */
+.app-dev-environment-page .diagram-wrap {
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.app-dev-environment-page .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--color-guide-meta);
+    text-align: center;
+    margin-top: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.app-dev-environment-page .mermaid-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-width: min-content;
+}
+
+.app-dev-environment-page .mermaid-wrap .mermaid-target {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+}
+
+.app-dev-environment-page .mermaid-wrap svg {
+    display: block;
+    margin: 0 auto;
+    height: auto !important;
+}
+
+/* ---------- METRIC GRID ---------- */
+.app-dev-environment-page .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.app-dev-environment-page .metric-card {
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    transition: 0.25s;
+}
+
+.app-dev-environment-page .metric-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-google-green);
+}
+
+.app-dev-environment-page .metric-val {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--color-google-green);
+}
+
+.app-dev-environment-page .metric-label {
+    font-size: 0.72rem;
+    color: var(--color-muted-foreground);
+    font-family: var(--font-mono);
+    margin-top: 4px;
+}
+
+/* ---------- REF GRID ---------- */
+.app-dev-environment-page .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.app-dev-environment-page .ref-card {
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: 0.25s;
+}
+
+.app-dev-environment-page .ref-card:hover {
+    border-color: var(--color-tip);
+    transform: translateX(4px);
+}
+
+.app-dev-environment-page .ref-cat {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--color-tip);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.app-dev-environment-page .ref-title {
+    font-size: 0.9rem;
+    margin: 6px 0 4px;
+    color: var(--color-foreground);
+    font-weight: 500;
+}
+
+.app-dev-environment-page .ref-url {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-theme-ace-accent);
+    word-break: break-all;
+}
+
+/* ---------- ARCH LAYERS ---------- */
+.app-dev-environment-page .arch-layers {
+    margin: 22px 0;
+    border-left: 2px solid var(--color-guide-border-strong);
+    padding-left: 0;
+}
+
+.app-dev-environment-page .arch-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0 14px 20px;
+    border-left: 3px solid var(--color-google-blue);
+    margin-left: -2px;
+    position: relative;
+}
+
+.app-dev-environment-page .arch-row + .arch-row {
+    border-top: 1px dashed var(--color-border);
+}
+
+.app-dev-environment-page .arch-row .arch-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #fff;
+    background: var(--color-google-blue);
+    padding: 3px 10px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+.app-dev-environment-page .arch-row.storage {
+    border-color: var(--color-google-blue);
+}
+
+.app-dev-environment-page .arch-row.storage .arch-tag {
+    background: var(--color-google-blue);
+}
+
+.app-dev-environment-page .arch-row.iam {
+    border-color: var(--color-google-red);
+}
+
+.app-dev-environment-page .arch-row.iam .arch-tag {
+    background: var(--color-google-red);
+    color: #1a0505;
+}
+
+.app-dev-environment-page .arch-row.monitor {
+    border-color: var(--color-google-yellow);
+}
+
+.app-dev-environment-page .arch-row.monitor .arch-tag {
+    background: var(--color-google-yellow);
+    color: #1a1204;
+}
+
+.app-dev-environment-page .arch-row.func {
+    border-color: var(--color-google-green);
+}
+
+.app-dev-environment-page .arch-row.func .arch-tag {
+    background: var(--color-google-green);
+    color: #04180f;
+}
+
+.app-dev-environment-page .arch-row.pubsub {
+    border-color: var(--color-tip);
+}
+
+.app-dev-environment-page .arch-row.pubsub .arch-tag {
+    background: var(--color-tip);
+    color: #12081f;
+}
+
+.app-dev-environment-page .arch-row p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-muted-foreground);
+}
+
+/* ---------- FOOTER ---------- */
+.app-dev-environment-page footer {
+    padding: 50px 0 30px;
+    text-align: center;
+    color: var(--color-guide-meta);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+    .app-dev-environment-page .toc-grid {
+        grid-template-columns: 1fr;
+    }
+    .app-dev-environment-page .metric-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .app-dev-environment-page .ref-grid {
+        grid-template-columns: 1fr;
+    }
+    .app-dev-environment-page .gb-grid {
+        grid-template-columns: 1fr;
+    }
+    .app-dev-environment-page .hero {
+        padding: 48px 0 36px;
+    }
+    .app-dev-environment-page section {
+        padding: 52px 0;
+    }
+}

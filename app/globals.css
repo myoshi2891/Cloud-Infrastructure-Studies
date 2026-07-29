@@ -45,6 +45,37 @@
     --color-theme-ace-bg-page: #050a14;
     --color-theme-ace-accent: #00c8ff;
 
+    /* Shared dark-guide surfaces */
+    --color-guide-background: #07111e;
+    --color-guide-surface-1: #0b1729;
+    --color-guide-surface-2: #0f1e34;
+    --color-guide-deep-background: #080f1c;
+    --color-guide-node-background: #0d1b2a;
+    --color-guide-border: #1c2e4a;
+    --color-guide-border-soft: #16253d;
+    --color-guide-border-strong: #274460;
+    --color-guide-foreground: #e7edf7;
+    --color-guide-foreground-soft: #a9b8d3;
+    --color-guide-foreground-faint: #6f83a5;
+    --color-guide-accent: #7c9eff;
+    --color-guide-accent-deep: #4a6fd6;
+    --color-guide-accent-soft: #34456e;
+    --color-guide-accent-glow: rgba(124, 158, 255, 0.18);
+    --color-guide-on-accent: #051023;
+    --color-guide-positive: #56d6a8;
+    --color-guide-warning: #f2b866;
+    --color-guide-code-background: #0a1526;
+    --color-guide-code-keyword: #ffd9a0;
+    --color-guide-code-foreground: #d7e1f5;
+    --color-guide-heading: #a7bfff;
+    --color-guide-table-background: #122238;
+    --color-guide-interactive-background: rgba(124, 158, 255, 0.15);
+    --color-guide-practice: #5fd4a8;
+    --color-guide-practice-background: rgba(95, 212, 168, 0.1);
+    --color-guide-practice-border: rgba(95, 212, 168, 0.3);
+    --color-guide-meta: #5f7291;
+    --color-guide-hero-start: #ffffff;
+
     --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
     --color-theme-cdl-fg: hsl(160 70% 65%);
 
@@ -193,6 +224,11 @@ body {
 @utility icon-theme-ccna {
     background: var(--color-theme-cisco-bg);
     color: var(--color-theme-cisco-fg);
+}
+
+@utility icon-theme-hands-on {
+    background: var(--color-theme-ace-bg);
+    color: var(--color-theme-ace-fg);
 }
 
 .code-line {

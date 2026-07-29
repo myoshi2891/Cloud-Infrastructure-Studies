@@ -233,7 +233,7 @@ describe('toNavTree', () => {
             expect(ids).toContain('ccna');
         });
 
-        it('GCP グループに既存 5 試験すべてが含まれる', () => {
+        it('GCP グループに ace, agwa, cdl, genai, pcne, hands-on 試験が含まれる', () => {
             // Arrange & Act
             const result = toNavTree(EXAMS);
             const gcp = result.find((g) => g.provider === 'GCP');
@@ -242,10 +242,10 @@ describe('toNavTree', () => {
             expect(gcp).toBeDefined();
             if (!gcp) return;
             const ids = gcp.exams.map((e) => e.id).sort();
-            expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'pcne']);
+            expect(ids).toEqual(['ace', 'agwa', 'cdl', 'genai', 'hands-on', 'pcne']);
         });
 
-        it('AWS グループに準備中試験 (status: coming-soon) が含まれる', () => {
+        it('AWS グループに公開済み試験が含まれる', () => {
             // Arrange & Act
             const result = toNavTree(EXAMS);
             const aws = result.find((g) => g.provider === 'AWS');
@@ -254,7 +254,18 @@ describe('toNavTree', () => {
             expect(aws).toBeDefined();
             if (!aws) return;
             expect(aws.exams.length).toBeGreaterThan(0);
-            expect(aws.exams.some((e) => e.status === 'coming-soon')).toBe(true);
+            expect(aws.exams.some((e) => e.id === 'aws-saa' && e.status !== 'coming-soon')).toBe(true);
+        });
+
+        it('overviewLabel が指定された場合、items の先頭ラベルにその文字列が使用されること', () => {
+            // Arrange & Act
+            const result = toNavTree(EXAMS);
+            const gcp = result.find((g) => g.provider === 'GCP');
+            const handsOn = gcp?.exams.find((e) => e.id === 'hands-on');
+
+            // Assert
+            expect(handsOn).toBeDefined();
+            expect(handsOn?.items[0]?.label).toBe('IAP（Identity-Aware Proxy）TCP フォワーディング');
         });
     });
 

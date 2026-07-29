@@ -1,5 +1,7 @@
 /** ホームページで使用する試験データと統計の定数 */
 
+import { HANDS_ON_ENABLED } from '@/lib/featureFlags';
+
 export type Provider = 'GCP' | 'AWS' | 'Cisco';
 
 export interface ExamDomain {
@@ -32,9 +34,11 @@ export interface Exam {
     provider: Provider;
     /** 'coming-soon' のときホームページでは非表示、ナビには「準備中」として表示 */
     status?: 'available' | 'coming-soon';
+    /** ナビゲーションの先頭概要リンクの表示名（未指定時は '概要'） */
+    overviewLabel?: string;
 }
 
-export const EXAMS: Exam[] = [
+const ALL_EXAMS: Exam[] = [
     {
         id: 'ace',
         label: 'Associate Cloud Engineer',
@@ -95,26 +99,6 @@ export const EXAMS: Exam[] = [
                 label: 'Domain 4: アクセスとセキュリティ',
                 href: '/gcl/associate-cloud-engineer/domain4',
                 pct: '20%',
-            },
-            {
-                label: 'Cloud Load Balancing 完全入門',
-                href: '/gcl/associate-cloud-engineer/cloud-load-balancing-guide',
-                pct: '実践',
-            },
-            {
-                label: 'GCPネットワーク完全入門',
-                href: '/gcl/associate-cloud-engineer/develop-your-gcp-network',
-                pct: '実践',
-            },
-            {
-                label: '安全なGoogle Cloudネットワーク構築',
-                href: '/gcl/associate-cloud-engineer/build-a-secure-google-cloud-network',
-                pct: '実践',
-            },
-            {
-                label: 'アプリ開発環境構築ガイド',
-                href: '/gcl/associate-cloud-engineer/set-up-an-app-dev-environment-on-google-cloud',
-                pct: '実践',
             },
         ],
         badge: '実践向け',
@@ -204,6 +188,53 @@ export const EXAMS: Exam[] = [
         provider: 'GCP',
     },
     {
+        id: 'hands-on',
+        label: 'Hands-on',
+        overviewLabel: 'IAP（Identity-Aware Proxy）TCP フォワーディング',
+        abbr: 'Hands-on',
+        level: 'Practical',
+        score: 'ハンズオン解説',
+        color: 'card-ace',
+        href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
+        description:
+            'Google Cloud のハンズオン実践ガイド。IAP TCPフォワーディングやアプリ開発環境構築、ネットワーク構築など。',
+        domains: [
+            {
+                label: 'IAP TCPフォワーディング ベストプラクティス',
+                href: '/gcl/hands-on/iap-tcp-forwarding-best-practices-guide',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'Cloud Load Balancing 完全入門',
+                href: '/gcl/hands-on/cloud-load-balancing-guide',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'GCPネットワーク完全入門',
+                href: '/gcl/hands-on/develop-your-gcp-network',
+                pct: 'ハンズオン',
+            },
+            {
+                label: '安全なGoogle Cloudネットワーク構築',
+                href: '/gcl/hands-on/build-a-secure-google-cloud-network',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'アプリ開発環境構築 完全ガイド',
+                href: '/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'セキュリティ基礎 完全ガイド',
+                href: '/gcl/hands-on/gcp-security-fundamentals-guide',
+                pct: 'ハンズオン',
+            },
+        ],
+        badge: 'ハンズオン',
+        icon: '🛠️',
+        provider: 'GCP',
+    },
+    {
         id: 'aws-saa',
         label: 'AWS Certified Solutions Architect – Associate',
         abbr: 'SAA',
@@ -213,11 +244,31 @@ export const EXAMS: Exam[] = [
         href: '/aws/solutions-architect-associate',
         description:
             'AWS 上で可用性・コスト効率・耐障害性に優れたシステムを設計する能力を認定。VPC・EC2・S3・IAM・RDS など中核サービスを横断的に問う。',
-        domains: [],
-        badge: '準備中',
+        domains: [
+            {
+                label: '完全対策ガイド (SAA-C03)',
+                href: '/aws/solutions-architect-associate',
+                pct: '完全解説',
+            },
+            {
+                label: 'ドメイン1: セキュアなアーキテクチャの設計',
+                href: '/aws/solutions-architect-associate/domain1',
+                pct: '30%',
+            },
+            {
+                label: 'ドメイン2: 回復力のあるアーキテクチャの設計',
+                href: '/aws/solutions-architect-associate/domain2',
+                pct: '26%',
+            },
+            {
+                label: 'ドメイン3: 高性能なアーキテクチャの設計',
+                href: '/aws/solutions-architect-associate/domain3',
+                pct: '24%',
+            },
+        ],
+        badge: 'ソリューションアーキテクト',
         icon: '🏗',
         provider: 'AWS',
-        status: 'coming-soon',
     },
     {
         id: 'ccna',
@@ -266,6 +317,10 @@ export const EXAMS: Exam[] = [
         provider: 'Cisco',
     },
 ];
+
+export const EXAMS: Exam[] = HANDS_ON_ENABLED
+    ? ALL_EXAMS
+    : ALL_EXAMS.filter((exam) => exam.id !== 'hands-on');
 
 export interface Stat {
     value: string;

@@ -99,24 +99,37 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（6図）
         page.module.css             # ページ固有スタイル（CSS Modules、token 整合）
-       develop-your-gcp-network/
-        page.tsx                    # GCPネットワーク完全入門（Server。メタデータ定義）
-        DevelopYourGcpNetworkGuide.tsx # 本文＋インタラクション（client。チェックリスト等）
-        NavBar.tsx                  # サイドバーナビ
-        constants.ts                # Mermaid 図定義（14図）
-        page.module.css             # ページ固有スタイル
-      build-a-secure-google-cloud-network/
-        page.tsx                    # 安全なGoogle Cloudネットワーク構築（Server。メタデータ定義）
-        BuildASecureGoogleCloudNetworkGuide.tsx # 本文＋インタラクション（client。アニメーション、Mermaid等）
-        NavBar.tsx                  # サイドバーナビ
-        constants.ts                # Mermaid 図定義（11図）
-        page.module.css             # ページ固有スタイル
-      set-up-an-app-dev-environment-on-google-cloud/
-        page.tsx                    # アプリ開発環境構築ガイド（Server。メタデータ定義）
-        SetUpAnAppDevEnvironmentGuide.tsx # 本文＋インタラクション（client。Mermaid等）
-        NavBar.tsx                  # サイドバーナビ
-        constants.ts                # Mermaid 図定義（7図）
-        page.module.css             # ページ固有スタイル
+      hands-on/
+        cloud-load-balancing-guide/
+          page.tsx                    # Cloud Load Balancing 完全入門（Server。メタデータ定義）
+          CloudLoadBalancingGuide.tsx # 本文＋インタラクション
+          NavBar.tsx                  # サイドバーナビ
+          constants.ts                # Mermaid 図定義（6図）
+          page.module.css             # ページ固有スタイル
+        develop-your-gcp-network/
+          page.tsx                    # GCPネットワーク完全入門（Server。メタデータ定義）
+          DevelopYourGcpNetworkGuide.tsx # 本文＋インタラクション
+          NavBar.tsx                  # サイドバーナビ
+          constants.ts                # Mermaid 図定義（14図）
+          page.css                    # ページ固有スタイル
+        build-a-secure-google-cloud-network/
+          page.tsx                    # 安全なGoogle Cloudネットワーク構築（Server。メタデータ定義）
+          BuildASecureGoogleCloudNetworkGuide.tsx # 本文＋インタラクション
+          NavBar.tsx                  # サイドバーナビ
+          constants.ts                # Mermaid 図定義（11図）
+          page.css                    # ページ固有スタイル
+        set-up-an-app-dev-environment-on-google-cloud/
+          page.tsx                    # アプリ開発環境構築 完全ガイド（Server。メタデータ定義）
+          SetUpAnAppDevEnvironmentGuide.tsx # 本文＋インタラクション（client。Mermaid等）
+          NavBar.tsx                  # サイドバーナビ
+          constants.ts                # Mermaid 図定義（14図）
+          page.css                    # ページ固有スタイル
+        gcp-security-fundamentals-guide/
+          page.tsx                    # Google Cloud セキュリティ基礎 完全ガイド（Server。メタデータ定義）
+          GcpSecurityFundamentalsGuide.tsx # 本文＋インタラクション（client。Mermaid等）
+          NavBar.tsx                  # サイドバーナビ
+          constants.ts                # Mermaid 図定義（16図）
+          page.css                    # ページ固有スタイル
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装
@@ -219,9 +232,34 @@ app/
       ip-services-guide/
         page.tsx                    # CCNA 200-301 IP Services 完全ガイド（Server。メタデータ定義）
         CcnaIpServicesGuide.tsx     # 本文＋インタラクション（client。全12セクション、Mermaid等）
-        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
-        constants.ts                # Mermaid 図定義（12図）
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid 図定義（18図）
         page.css                    # ページ固有スタイル
+  aws/
+    solutions-architect-associate/
+      page.tsx                      # AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド (Server)
+      SaaGuide.tsx                  # 本文＋インタラクション (Client)
+      NavBar.tsx                    # サイドバーナビ
+      constants.ts                  # Mermaid 図定義（21図）
+      page.css                      # ページ固有スタイル
+      domain1/
+        page.tsx                    # ドメイン1: セキュアなアーキテクチャの設計 (Server)
+        Domain1Guide.tsx            # ドメイン1本文＋インタラクション (Client)
+        NavBar.tsx                  # ドメイン1サイドバーナビ
+        constants.ts                # Mermaid 図定義（14図）
+        page.css                    # ドメイン1ページ固有スタイル
+      domain2/
+        page.tsx                    # ドメイン2: 回復力のあるアーキテクチャの設計 (Server)
+        Domain2Guide.tsx            # ドメイン2本文＋インタラクション (Client)
+        NavBar.tsx                  # ドメイン2サイドバーナビ
+        constants.ts                # Mermaid 図定義（25図）
+        page.css                    # ドメイン2ページ固有スタイル
+      domain3/
+        page.tsx                    # ドメイン3: 高性能なアーキテクチャの設計 (Server)
+        Domain3Guide.tsx            # ドメイン3本文＋インタラクション (Client)
+        NavBar.tsx                  # ドメイン3サイドバーナビ
+        constants.ts                # Mermaid 図定義（27図）
+        page.css                    # ドメイン3ページ固有スタイル
 
 components/
   Header.tsx                        # ハンバーガー Drawer ナビ。toNavTree(EXAMS) の結果を描画するため直接編集不要。検索フィルタ・active リンク判定 (usePathname)・最近見たページ表示を内包
