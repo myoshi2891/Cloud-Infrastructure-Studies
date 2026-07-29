@@ -5,6 +5,12 @@ import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 import './page.css';
 
+/**
+ * Renders the Mermaid diagram associated with a diagram identifier.
+ *
+ * @param id - The identifier of the diagram to render
+ * @param label - The accessible label for the rendered diagram
+ */
 function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -17,6 +23,9 @@ function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
     );
 }
 
+/**
+ * Renders the Japanese study guide for AWS Certified Solutions Architect – Associate Domain 2.
+ */
 export function Domain2Guide() {
     return (
         <div className="domain2-page">

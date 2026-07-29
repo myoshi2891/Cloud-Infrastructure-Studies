@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
+/**
+ * Renders a sidebar navigation with scroll progress and active section highlighting.
+ */
 export default function NavBar() {
     const [progress, setProgress] = useState(0);
     const [activeId, setActiveId] = useState<string>('');

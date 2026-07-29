@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { NAV_ITEMS } from './constants';
 
+/**
+ * Renders a responsive sidebar navigation with scroll-aware active section highlighting.
+ */
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeId, setActiveId] = useState<string>('');

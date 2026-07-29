@@ -50,12 +50,12 @@ const PROVIDER_LABEL: Record<Provider, string> = {
 const PROVIDER_ORDER: readonly Provider[] = ['GCP', 'AWS', 'Cisco'];
 
 /**
- * Convert exam inputs into a provider-grouped navigation tree.
+ * Converts exam inputs into a navigation tree grouped by provider.
  *
- * Groups each input exam under its provider (defaults to `'GCP'` when `provider` is missing) and transforms exams into `NavExam` entries whose `items` start with a `'概要'` leaf followed by domain leaves (excluding any domain whose `href` equals the exam `href`).
+ * Exams without a provider are grouped under `GCP`. Each exam includes an overview link followed by domain links, excluding domains that use the exam's overview URL. Overview labels use `overviewLabel` when provided and `'概要'` otherwise.
  *
- * @param exams - Array of exam inputs to convert into navigation groups
- * @returns An array of `NavGroup` objects ordered by provider display order; each group includes `provider`, its display `label`, and the group's `exams`
+ * @param exams - Exam inputs to convert into navigation groups
+ * @returns Provider groups containing transformed exams in display order
  */
 export function toNavTree(exams: ReadonlyArray<NavExamInput>): NavGroup[] {
     if (exams.length === 0) return [];

@@ -86,6 +86,9 @@ const NAV_ITEMS = [
     },
 ];
 
+/**
+ * Renders a sidebar table of contents and highlights the section currently in view.
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('');
 

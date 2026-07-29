@@ -4,6 +4,13 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS, REF_CATEGORIES } from './constants';
 
+/**
+ * Renders the Mermaid diagram identified by the supplied ID.
+ *
+ * @param id - The diagram identifier used to look up the chart definition.
+ * @param label - The accessible label for the rendered diagram.
+ * @returns The diagram container, or `null` if no chart matches the identifier.
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -14,7 +21,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
-/** SAA-C03 ドメイン配点 SVGドーナツチャート */
+/**
+ * Displays the SAA-C03 exam domain score distribution as an accessible donut chart with a legend.
+ */
 function DomainPieChart() {
     const domains = [
         { label: 'D1 セキュアなアーキテクチャ', pct: 30, color: '#7c9eff', cls: 'd1' },
@@ -69,6 +78,11 @@ function DomainPieChart() {
     );
 }
 
+/**
+ * Renders the AWS Certified Solutions Architect – Associate (SAA-C03) study guide.
+ *
+ * @returns The complete SAA-C03 guide page.
+ */
 export default function SaaGuide() {
     return (
         <div className="aws-saa-page">

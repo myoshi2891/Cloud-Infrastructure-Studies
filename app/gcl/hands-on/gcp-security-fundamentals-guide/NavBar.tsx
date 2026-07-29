@@ -2,6 +2,11 @@
 
 import React from 'react';
 
+/**
+ * Renders the navigation bar for the GCP Security Fundamentals guide.
+ *
+ * @returns The guide's navigation bar with links to its chapters and references
+ */
 export function NavBar() {
     return (
         <nav className="nav">

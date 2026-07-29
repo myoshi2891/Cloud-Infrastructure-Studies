@@ -17,7 +17,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
-/** Renders the interactive SAA-C03 Domain 1 study guide. */
+/**
+ * Renders the interactive SAA-C03 Domain 1 study guide.
+ */
 export function Domain1Guide() {
     const [activeId, setActiveId] = useState<string>('overview');
     const [scrollProgress, setScrollProgress] = useState<number>(0);

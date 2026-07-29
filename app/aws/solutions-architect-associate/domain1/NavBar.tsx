@@ -6,6 +6,11 @@ interface NavBarProps {
     activeId: string;
 }
 
+/**
+ * Renders a toggleable sidebar navigation menu for the guide.
+ *
+ * @param activeId - The identifier of the currently active navigation section.
+ */
 export function NavBar({ activeId }: NavBarProps) {
     const [isOpen, setIsOpen] = useState(false);
 
