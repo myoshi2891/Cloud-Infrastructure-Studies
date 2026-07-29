@@ -1,23 +1,8 @@
 /* GCP App Dev Environment Complete Guide - Page Specific CSS */
 
 .app-dev-environment-page {
-    --bg-deep: var(--color-background, #030712);
-    --bg-panel: #0a1020;
-    --bg-panel-2: #0f172a;
-    --border: rgba(148, 163, 184, 0.14);
-    --border-bright: rgba(148, 163, 184, 0.28);
-    --text-main: var(--color-foreground, #e6edf3);
-    --text-muted: var(--color-muted-foreground, #8b98ac);
-    --text-dim: #586178;
-    --neon-green: var(--color-google-green, #00ffa3);
-    --neon-cyan: #22d3ee;
-    --neon-purple: #a78bfa;
-    --neon-amber: var(--color-google-yellow, #fbbf24);
-    --neon-red: var(--color-google-red, #f87171);
-    --neon-blue: var(--color-google-blue, #4285f4);
-
-    background: var(--bg-deep);
-    color: var(--text-main);
+    background: var(--color-background);
+    color: var(--color-foreground);
     font-family: var(--font-body);
     line-height: 1.75;
     position: relative;
@@ -26,7 +11,7 @@
 }
 
 .app-dev-environment-page a {
-    color: var(--neon-cyan);
+    color: var(--color-theme-ace-accent);
     text-decoration: none;
 }
 
@@ -56,7 +41,7 @@
     z-index: 100;
     background: rgba(3, 7, 18, 0.92);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     overflow-x: auto;
     white-space: nowrap;
     scrollbar-width: thin;
@@ -67,7 +52,7 @@
 }
 
 .app-dev-environment-page .sub-navbar::-webkit-scrollbar-thumb {
-    background: var(--neon-cyan);
+    background: var(--color-theme-ace-accent);
 }
 
 .app-dev-environment-page .nav-inner {
@@ -82,13 +67,13 @@
 .app-dev-environment-page .nav-brand {
     font-family: var(--font-mono);
     font-weight: 700;
-    color: var(--neon-green);
+    color: var(--color-google-green);
     font-size: 0.82rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     flex-shrink: 0;
     padding-right: 14px;
-    border-right: 1px solid var(--border);
+    border-right: 1px solid var(--color-border);
 }
 
 .app-dev-environment-page .nav-links {
@@ -99,7 +84,7 @@
 .app-dev-environment-page .nav-links a {
     font-family: var(--font-mono);
     font-size: 0.76rem;
-    color: var(--text-muted);
+    color: var(--color-muted-foreground);
     letter-spacing: 0.03em;
     transition: color 0.2s;
     padding: 4px 8px;
@@ -108,7 +93,7 @@
 
 .app-dev-environment-page .nav-links a:hover,
 .app-dev-environment-page .nav-links a.active {
-    color: var(--neon-cyan);
+    color: var(--color-theme-ace-accent);
     background: rgba(34, 211, 238, 0.08);
     text-decoration: none;
 }
@@ -124,7 +109,7 @@
 
 .app-dev-environment-page section {
     padding: 72px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 60px);
 }
 
@@ -141,7 +126,7 @@
 
 .app-dev-environment-page .hero-eyebrow {
     font-family: var(--font-mono);
-    color: var(--neon-green);
+    color: var(--color-google-green);
     font-size: 0.78rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -156,8 +141,8 @@
     background: linear-gradient(
         120deg,
         #fff 30%,
-        var(--neon-cyan) 65%,
-        var(--neon-green) 100%
+        var(--color-theme-ace-accent) 65%,
+        var(--color-google-green) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -166,7 +151,7 @@
 
 .app-dev-environment-page .hero-sub {
     font-size: 1.05rem;
-    color: var(--text-muted);
+    color: var(--color-muted-foreground);
     max-width: 720px;
     margin-top: 18px;
 }
@@ -180,9 +165,9 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--neon-green);
+    background: var(--color-google-green);
     margin-right: 8px;
-    box-shadow: 0 0 8px var(--neon-green);
+    box-shadow: 0 0 8px var(--color-google-green);
 }
 
 /* ---------- TOC ---------- */
@@ -194,8 +179,8 @@
 }
 
 .app-dev-environment-page .toc-item {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     padding: 16px 18px;
     transition: 0.25s;
@@ -205,20 +190,20 @@
 }
 
 .app-dev-environment-page .toc-item:hover {
-    border-color: var(--neon-cyan);
+    border-color: var(--color-theme-ace-accent);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(34, 211, 238, 0.12);
 }
 
 .app-dev-environment-page .toc-num {
     font-family: var(--font-mono);
-    color: var(--neon-cyan);
+    color: var(--color-theme-ace-accent);
     font-weight: 700;
     font-size: 0.85rem;
 }
 
 .app-dev-environment-page .toc-item a {
-    color: var(--text-main);
+    color: var(--color-foreground);
     font-size: 0.88rem;
     font-weight: 500;
 }
@@ -235,8 +220,8 @@
     font-family: var(--font-mono);
     font-weight: 700;
     font-size: 0.78rem;
-    color: var(--bg-deep);
-    background: var(--neon-green);
+    color: var(--color-background);
+    background: var(--color-google-green);
     padding: 6px 12px;
     border-radius: 6px;
     letter-spacing: 0.05em;
@@ -249,7 +234,7 @@
 }
 
 .app-dev-environment-page .chapter-desc {
-    color: var(--text-muted);
+    color: var(--color-muted-foreground);
     font-size: 0.95rem;
     margin-top: 6px;
     max-width: 760px;
@@ -257,12 +242,12 @@
 
 .app-dev-environment-page h3.subhead {
     font-size: 1.08rem;
-    color: var(--neon-cyan);
+    color: var(--color-theme-ace-accent);
     margin-top: 40px;
     font-family: var(--font-mono);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    border-left: 3px solid var(--neon-cyan);
+    border-left: 3px solid var(--color-theme-ace-accent);
     padding-left: 12px;
 }
 
@@ -270,9 +255,9 @@
 .app-dev-environment-page .table-wrap {
     overflow-x: auto;
     margin: 20px 0;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
-    background: var(--bg-panel);
+    background: var(--color-guide-surface-1);
 }
 
 .app-dev-environment-page table {
@@ -283,21 +268,21 @@
 }
 
 .app-dev-environment-page thead th {
-    background: var(--bg-panel-2);
-    color: var(--neon-green);
+    background: var(--color-guide-surface-2);
+    color: var(--color-google-green);
     font-family: var(--font-mono);
     text-align: left;
     padding: 12px 16px;
     font-size: 0.76rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    border-bottom: 1px solid var(--border-bright);
+    border-bottom: 1px solid var(--color-guide-border-strong);
 }
 
 .app-dev-environment-page tbody td {
     padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-main);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-foreground);
     vertical-align: top;
 }
 
@@ -311,7 +296,7 @@
 
 .app-dev-environment-page td code,
 .app-dev-environment-page th code {
-    color: var(--neon-cyan);
+    color: var(--color-theme-ace-accent);
     background: rgba(34, 211, 238, 0.08);
     padding: 1px 6px;
     border-radius: 4px;
@@ -321,7 +306,7 @@
 /* ---------- CODE BLOCK ---------- */
 .app-dev-environment-page .code-block {
     background: #050a14;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     padding: 20px 22px;
     margin: 20px 0;
@@ -331,7 +316,7 @@
 
 .app-dev-environment-page .code-block::before {
     content: '● ● ●';
-    color: var(--text-dim);
+    color: var(--color-guide-meta);
     font-size: 0.7rem;
     letter-spacing: 3px;
     display: block;
@@ -352,16 +337,16 @@
 }
 
 .app-dev-environment-page .code-comment {
-    color: var(--text-dim);
+    color: var(--color-guide-meta);
 }
 
 .app-dev-environment-page .code-green {
-    color: var(--neon-green);
+    color: var(--color-google-green);
 }
 
 /* ---------- CALLOUTS / ALERTS ---------- */
 .app-dev-environment-page .callout {
-    border-left: 4px solid var(--neon-cyan);
+    border-left: 4px solid var(--color-theme-ace-accent);
     background: rgba(34, 211, 238, 0.06);
     border-radius: 0 10px 10px 0;
     padding: 16px 20px;
@@ -380,39 +365,39 @@
 }
 
 .app-dev-environment-page .callout.info {
-    border-color: var(--neon-cyan);
+    border-color: var(--color-theme-ace-accent);
     background: rgba(34, 211, 238, 0.06);
 }
 
 .app-dev-environment-page .callout.info .callout-label {
-    color: var(--neon-cyan);
+    color: var(--color-theme-ace-accent);
 }
 
 .app-dev-environment-page .callout.warning {
-    border-color: var(--neon-amber);
+    border-color: var(--color-google-yellow);
     background: rgba(251, 191, 36, 0.06);
 }
 
 .app-dev-environment-page .callout.warning .callout-label {
-    color: var(--neon-amber);
+    color: var(--color-google-yellow);
 }
 
 .app-dev-environment-page .callout.danger {
-    border-color: var(--neon-red);
+    border-color: var(--color-google-red);
     background: rgba(248, 113, 113, 0.07);
 }
 
 .app-dev-environment-page .callout.danger .callout-label {
-    color: var(--neon-red);
+    color: var(--color-google-red);
 }
 
 .app-dev-environment-page .callout.tip {
-    border-color: var(--neon-green);
+    border-color: var(--color-google-green);
     background: rgba(0, 255, 163, 0.06);
 }
 
 .app-dev-environment-page .callout.tip .callout-label {
-    color: var(--neon-green);
+    color: var(--color-google-green);
 }
 
 /* ---------- GOOD / BAD ---------- */
@@ -426,7 +411,7 @@
 .app-dev-environment-page .gb-card {
     border-radius: 10px;
     padding: 18px 20px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 }
 
 .app-dev-environment-page .gb-card.good {
@@ -448,17 +433,17 @@
 }
 
 .app-dev-environment-page .gb-card.good .gb-title {
-    color: var(--neon-green);
+    color: var(--color-google-green);
 }
 
 .app-dev-environment-page .gb-card.bad .gb-title {
-    color: var(--neon-red);
+    color: var(--color-google-red);
 }
 
 /* ---------- MERMAID WRAP ---------- */
 .app-dev-environment-page .diagram-wrap {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 24px;
     margin: 24px 0;
@@ -469,7 +454,7 @@
 .app-dev-environment-page .diagram-caption {
     font-family: var(--font-mono);
     font-size: 0.76rem;
-    color: var(--text-dim);
+    color: var(--color-guide-meta);
     text-align: center;
     margin-top: 14px;
     letter-spacing: 0.05em;
@@ -506,8 +491,8 @@
 }
 
 .app-dev-environment-page .metric-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     padding: 18px;
     text-align: center;
@@ -516,18 +501,18 @@
 
 .app-dev-environment-page .metric-card:hover {
     transform: translateY(-3px);
-    border-color: var(--neon-green);
+    border-color: var(--color-google-green);
 }
 
 .app-dev-environment-page .metric-val {
     font-family: var(--font-display);
     font-size: 1.6rem;
-    color: var(--neon-green);
+    color: var(--color-google-green);
 }
 
 .app-dev-environment-page .metric-label {
     font-size: 0.72rem;
-    color: var(--text-muted);
+    color: var(--color-muted-foreground);
     font-family: var(--font-mono);
     margin-top: 4px;
 }
@@ -541,22 +526,22 @@
 }
 
 .app-dev-environment-page .ref-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
+    background: var(--color-guide-surface-1);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     padding: 16px 18px;
     transition: 0.25s;
 }
 
 .app-dev-environment-page .ref-card:hover {
-    border-color: var(--neon-purple);
+    border-color: var(--color-tip);
     transform: translateX(4px);
 }
 
 .app-dev-environment-page .ref-cat {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    color: var(--neon-purple);
+    color: var(--color-tip);
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -564,21 +549,21 @@
 .app-dev-environment-page .ref-title {
     font-size: 0.9rem;
     margin: 6px 0 4px;
-    color: var(--text-main);
+    color: var(--color-foreground);
     font-weight: 500;
 }
 
 .app-dev-environment-page .ref-url {
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    color: var(--neon-cyan);
+    color: var(--color-theme-ace-accent);
     word-break: break-all;
 }
 
 /* ---------- ARCH LAYERS ---------- */
 .app-dev-environment-page .arch-layers {
     margin: 22px 0;
-    border-left: 2px solid var(--border-bright);
+    border-left: 2px solid var(--color-guide-border-strong);
     padding-left: 0;
 }
 
@@ -587,20 +572,20 @@
     gap: 16px;
     align-items: flex-start;
     padding: 14px 0 14px 20px;
-    border-left: 3px solid var(--neon-blue);
+    border-left: 3px solid var(--color-google-blue);
     margin-left: -2px;
     position: relative;
 }
 
 .app-dev-environment-page .arch-row + .arch-row {
-    border-top: 1px dashed var(--border);
+    border-top: 1px dashed var(--color-border);
 }
 
 .app-dev-environment-page .arch-row .arch-tag {
     font-family: var(--font-mono);
     font-size: 0.7rem;
     color: #fff;
-    background: var(--neon-blue);
+    background: var(--color-google-blue);
     padding: 3px 10px;
     border-radius: 5px;
     flex-shrink: 0;
@@ -609,60 +594,60 @@
 }
 
 .app-dev-environment-page .arch-row.storage {
-    border-color: var(--neon-blue);
+    border-color: var(--color-google-blue);
 }
 
 .app-dev-environment-page .arch-row.storage .arch-tag {
-    background: var(--neon-blue);
+    background: var(--color-google-blue);
 }
 
 .app-dev-environment-page .arch-row.iam {
-    border-color: var(--neon-red);
+    border-color: var(--color-google-red);
 }
 
 .app-dev-environment-page .arch-row.iam .arch-tag {
-    background: var(--neon-red);
+    background: var(--color-google-red);
     color: #1a0505;
 }
 
 .app-dev-environment-page .arch-row.monitor {
-    border-color: var(--neon-amber);
+    border-color: var(--color-google-yellow);
 }
 
 .app-dev-environment-page .arch-row.monitor .arch-tag {
-    background: var(--neon-amber);
+    background: var(--color-google-yellow);
     color: #1a1204;
 }
 
 .app-dev-environment-page .arch-row.func {
-    border-color: var(--neon-green);
+    border-color: var(--color-google-green);
 }
 
 .app-dev-environment-page .arch-row.func .arch-tag {
-    background: var(--neon-green);
+    background: var(--color-google-green);
     color: #04180f;
 }
 
 .app-dev-environment-page .arch-row.pubsub {
-    border-color: var(--neon-purple);
+    border-color: var(--color-tip);
 }
 
 .app-dev-environment-page .arch-row.pubsub .arch-tag {
-    background: var(--neon-purple);
+    background: var(--color-tip);
     color: #12081f;
 }
 
 .app-dev-environment-page .arch-row p {
     margin: 0;
     font-size: 0.9rem;
-    color: var(--text-muted);
+    color: var(--color-muted-foreground);
 }
 
 /* ---------- FOOTER ---------- */
 .app-dev-environment-page footer {
     padding: 50px 0 30px;
     text-align: center;
-    color: var(--text-dim);
+    color: var(--color-guide-meta);
     font-family: var(--font-mono);
     font-size: 0.76rem;
 }

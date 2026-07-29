@@ -53,7 +53,7 @@ function HtmlCodeBlock({ lang, html }: { lang: string; html: string }) {
                         marginLeft: '12px',
                         background: 'transparent',
                         border: 'none',
-                        color: 'var(--n-cyan, #5fd3f0)',
+                        color: 'var(--color-theme-ace-accent)',
                         cursor: 'pointer',
                         fontSize: '11px',
                         fontFamily: 'var(--font-mono, monospace)',
@@ -130,28 +130,28 @@ export default function DevelopYourGcpNetworkGuide() {
                 padding: '12px clamp(16px, 4vw, 40px)',
                 background: 'rgba(10, 15, 28, 0.82)',
                 backdropFilter: 'blur(14px)',
-                borderBottom: '1px solid var(--n-line-soft)',
+                borderBottom: '1px solid var(--color-border)',
             }}>
                 <span className="dot" style={{
                     width: '9px',
                     height: '9px',
                     borderRadius: '50%',
-                    background: 'var(--n-green, #58d39a)',
+                    background: 'var(--color-google-green)',
                     boxShadow: '0 0 0 4px rgba(88, 211, 154, 0.15)',
                 }} aria-hidden="true"></span>
                 <span className="brand" style={{
                     fontFamily: 'var(--font-mono, monospace)',
                     fontSize: '13px',
                     letterSpacing: '0.02em',
-                    color: 'var(--n-muted, #8a99bd)',
+                    color: 'var(--color-muted-foreground)',
                 }}>
-                    <b>gcp-network</b>:~/learn$ <span style={{ color: 'var(--n-cyan, #5fd3f0)' }}>traceroute</span> infra
+                    <b>gcp-network</b>:~/learn$ <span style={{ color: 'var(--color-theme-ace-accent)' }}>traceroute</span> infra
                 </span>
                 <span className="spacer" style={{ flex: 1 }}></span>
                 <span className="status" style={{
                     fontFamily: 'var(--font-mono, monospace)',
                     fontSize: '11.5px',
-                    color: 'var(--n-faint, #5f6f93)',
+                    color: 'var(--color-guide-meta)',
                 }}>
                     6 hops · 初学者向け · 最終更新 2026-06
                 </span>
@@ -164,16 +164,16 @@ export default function DevelopYourGcpNetworkGuide() {
                     <h1 className="title">クラウドの足回りを、<br /><span className="accent">一筆書き</span>で理解する。</h1>
                     <p className="lede">
                         BigQuery のクエリから Cloud SQL への移行、VPC 設計、監視、Kubernetes のデプロイ戦略まで。
-                        Google Cloud の network とインフラを <b style={{ color: 'var(--n-text)' }}>6 つの hop</b> に分け、
+                        Google Cloud の network とインフラを <b style={{ color: 'var(--color-foreground)' }}>6 つの hop</b> に分け、
                         初学者が手を動かしながら最短ルートで通過できるように再構成した実践ガイドです。
                     </p>
 
                     <div className="hero-meta">
-                        <span className="chip"><i style={{ background: 'var(--n-cyan)' }}></i>SQL / BigQuery</span>
-                        <span className="chip"><i style={{ background: 'var(--n-blue)' }}></i>Cloud SQL</span>
-                        <span className="chip"><i style={{ background: 'var(--n-green)' }}></i>VPC ネットワーク</span>
-                        <span className="chip"><i style={{ background: 'var(--n-amber)' }}></i>Cloud Monitoring</span>
-                        <span className="chip"><i style={{ background: 'var(--n-violet)' }}></i>GKE / Kubernetes</span>
+                        <span className="chip"><i style={{ background: 'var(--color-theme-ace-accent)' }}></i>SQL / BigQuery</span>
+                        <span className="chip"><i style={{ background: 'var(--color-google-blue)' }}></i>Cloud SQL</span>
+                        <span className="chip"><i style={{ background: 'var(--color-google-green)' }}></i>VPC ネットワーク</span>
+                        <span className="chip"><i style={{ background: 'var(--color-google-yellow)' }}></i>Cloud Monitoring</span>
+                        <span className="chip"><i style={{ background: 'var(--color-tip)' }}></i>GKE / Kubernetes</span>
                     </div>
 
                     <div className="stat-strip">
@@ -1435,7 +1435,7 @@ resource.labels.instance_id = <span class="s">"INSTANCE_ID"</span>  <span class=
             <footer className="page-footer">
                 <div className="shell">
                     <p className="mono">{"// gcp-network:~/learn$ traceroute complete — 6 hops reached."}</p>
-                    <p>本ドキュメントは <b style={{ color: 'var(--n-muted)' }}>Develop-Your-Google-Cloud-Network.md</b> を初学者向けに再構成した学習用教材です。各種設定値・コマンドは学習環境を前提としています。本番環境では上記の各「★ Best Practice」および公式ドキュメントを必ずご確認ください。</p>
+                    <p>本ドキュメントは <b style={{ color: 'var(--color-muted-foreground)' }}>Develop-Your-Google-Cloud-Network.md</b> を初学者向けに再構成した学習用教材です。各種設定値・コマンドは学習環境を前提としています。本番環境では上記の各「★ Best Practice」および公式ドキュメントを必ずご確認ください。</p>
                 </div>
             </footer>
         </div>

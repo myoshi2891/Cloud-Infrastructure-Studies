@@ -109,10 +109,10 @@
     }
 }
 
-/* ---------- Hero (Full Width Expansion) ---------- */
+/* ---------- Hero (full-width background, centered content) ---------- */
 .gcp-security-page .hero {
     width: 100%;
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 64px clamp(16px, 4vw, 40px) 40px;
 }
@@ -187,10 +187,10 @@
     color: var(--text);
 }
 
-/* ---------- Layout (Full Width Expansion) ---------- */
+/* ---------- Layout (centered readable content) ---------- */
 .gcp-security-page .wrap {
     width: 100%;
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 clamp(16px, 4vw, 40px) 60px;
 }

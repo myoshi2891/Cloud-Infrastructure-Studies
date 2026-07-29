@@ -51,7 +51,7 @@
     z-index: 100;
     overflow-y: auto;
     padding: 32px 18px 32px 28px;
-    border-right: 1px solid rgba(66, 133, 244, 0.2);
+    border-right: 1px solid var(--color-border);
     background: var(--color-theme-ace-bg-page);
 }
 
@@ -89,20 +89,20 @@
 .container :global(.nav-item .num) {
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    color: #274460;
+    color: var(--color-guide-border-strong);
     margin-right: 8px;
 }
 
 .container :global(.nav-item:hover) {
     color: var(--color-foreground);
     text-decoration: none;
-    background: rgba(61, 142, 245, 0.06);
+    background: var(--color-accent-hover);
 }
 
 .container :global(.nav-item.active) {
     color: var(--color-foreground);
     border-left-color: var(--color-theme-ace-accent);
-    background: rgba(0, 200, 255, 0.07);
+    background: var(--color-accent-active);
 }
 
 .container :global(.nav-item.active .num) {
@@ -119,7 +119,7 @@
 /* ── ヒーロー ── */
 .container :global(.hero) {
     padding: 72px 0 56px;
-    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: 56px;
 }
 
@@ -288,7 +288,7 @@
     gap: 14px;
     margin-bottom: 10px;
     padding-bottom: 14px;
-    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .container :global(.sec-num) {
@@ -355,7 +355,7 @@
 .container :global(.table-wrap) {
     overflow-x: auto;
     margin: 18px 0;
-    border: 1px solid rgba(66, 133, 244, 0.2);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
 }
 
@@ -366,19 +366,19 @@
 }
 
 .container :global(thead th) {
-    background: #112030;
+    background: var(--color-card-secondary);
     color: var(--color-foreground);
     font-family: var(--font-display);
     font-weight: 600;
     text-align: left;
     padding: 12px 16px;
-    border-bottom: 1px solid #274460;
+    border-bottom: 1px solid var(--color-guide-border-strong);
     white-space: nowrap;
 }
 
 .container :global(tbody td) {
     padding: 11px 16px;
-    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+    border-bottom: 1px solid var(--color-border);
     vertical-align: top;
 }
 
@@ -387,7 +387,7 @@
 }
 
 .container :global(tbody tr:nth-child(even)) {
-    background: rgba(17, 32, 48, 0.4);
+    background: color-mix(in srgb, var(--color-card-secondary) 40%, transparent);
 }
 
 .container :global(td code),
@@ -395,7 +395,7 @@
 .container :global(li code) {
     font-family: var(--font-mono);
     font-size: 0.85em;
-    background: #112030;
+    background: var(--color-card-secondary);
     color: var(--color-theme-ace-accent);
     padding: 1px 6px;
     border-radius: 4px;
@@ -409,8 +409,8 @@
 /* ── コードカード ── */
 .container :global(.code-card) {
     position: relative;
-    background: #080f1c;
-    border: 1px solid rgba(66, 133, 244, 0.2);
+    background: var(--color-guide-deep-background);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     margin: 16px 0;
     overflow: hidden;
@@ -421,8 +421,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 8px 14px;
-    background: #112030;
-    border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+    background: var(--color-card-secondary);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .container :global(.code-lang) {
@@ -438,7 +438,7 @@
     font-size: 0.72rem;
     color: var(--color-muted-foreground);
     background: transparent;
-    border: 1px solid #274460;
+    border: 1px solid var(--color-guide-border-strong);
     border-radius: 5px;
     padding: 4px 10px;
     cursor: pointer;
@@ -490,7 +490,7 @@
     padding: 16px 18px 16px 20px;
     margin: 18px 0;
     border-left: 3px solid var(--color-google-blue);
-    background: rgba(61, 142, 245, 0.06);
+    background: var(--color-accent-hover);
 }
 
 .container :global(.callout .c-title) {
@@ -511,22 +511,22 @@
 
 .container :global(.callout.tip) {
     border-left-color: var(--color-theme-ace-accent);
-    background: rgba(0, 200, 255, 0.06);
+    background: var(--color-accent-hover);
 }
 
 .container :global(.callout.warn) {
     border-left-color: var(--color-google-yellow);
-    background: rgba(251, 188, 4, 0.07);
+    background: color-mix(in srgb, var(--color-google-yellow) 7%, transparent);
 }
 
 .container :global(.callout.danger) {
     border-left-color: var(--color-google-red);
-    background: rgba(234, 67, 53, 0.07);
+    background: color-mix(in srgb, var(--color-google-red) 7%, transparent);
 }
 
 .container :global(.callout.sec) {
     border-left-color: var(--color-google-green);
-    background: rgba(52, 168, 83, 0.07);
+    background: color-mix(in srgb, var(--color-google-green) 7%, transparent);
 }
 
 .container :global(.src) {
@@ -545,8 +545,8 @@
 .container :global(.diagram) {
     margin: 22px 0;
     padding: 18px;
-    background: #080f1c;
-    border: 1px solid rgba(66, 133, 244, 0.2);
+    background: var(--color-guide-deep-background);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
 }
 
@@ -575,7 +575,7 @@
 }
 
 .container :global(footer) {
-    border-top: 1px solid rgba(66, 133, 244, 0.2);
+    border-top: 1px solid var(--color-border);
     padding: 32px 0 0;
     margin-top: 24px;
     font-size: 0.84rem;
@@ -605,7 +605,7 @@
     display: inline-block;
     width: 18px;
     height: 18px;
-    border: 2px solid #274460;
+    border: 2px solid var(--color-guide-border-strong);
     border-radius: 4px;
     margin-right: 12px;
     position: relative;
@@ -683,7 +683,7 @@
         position: static;
         height: auto;
         border-right: none;
-        border-bottom: 1px solid rgba(66, 133, 244, 0.2);
+        border-bottom: 1px solid var(--color-border);
         padding: 18px 20px;
         width: 100%;
     }
@@ -691,8 +691,8 @@
         display: block;
         width: 100%;
         text-align: left;
-        background: #112030;
-        border: 1px solid rgba(66, 133, 244, 0.2);
+        background: var(--color-card-secondary);
+        border: 1px solid var(--color-border);
         color: var(--color-foreground);
         font-family: var(--font-display);
         font-weight: 600;
