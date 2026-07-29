@@ -621,8 +621,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                         <div className="code-line">  --entry-point=helloPubSub \</div>
                         <div className="code-line">  --trigger-topic cf-demo \</div>
                         <div className="code-line">  --stage-bucket PROJECT_ID-bucket \</div>
-                        <div className="code-line">  --service-account cloudfunctionsa@PROJECT_ID.iam.gserviceaccount.com \</div>
-                        <div className="code-line">  --allow-unauthenticated</div>
+                        <div className="code-line">  --service-account cloudfunctionsa@PROJECT_ID.iam.gserviceaccount.com</div>
                         <div className="code-line"></div>
                         <div className="code-line"><span className="code-comment"># デプロイ状態の確認</span></div>
                         <div className="code-line">gcloud functions describe nodejs-pubsub-function --region=REGION</div>
@@ -908,9 +907,13 @@ export default function SetUpAnAppDevEnvironmentGuide() {
 
                     <h3 className="subhead">必要な IAM ロールの整理</h3>
                     <p>
-                        Cloud Run function サービスアカウントに
+                        <code>gcloud eventarc triggers create --service-account</code>
+                        で指定する Eventarc トリガー用サービスアカウントに
                         <code>roles/run.invoker</code>（呼び出し許可）と
-                        <code>roles/eventarc.eventReceiver</code>（イベント受信許可）を付与し、Cloud
+                        <code>roles/eventarc.eventReceiver</code>（イベント受信許可）、
+                        <code>roles/iam.serviceAccountUser</code>（サービスアカウント利用許可）を付与します。
+                        関数コードが使用する Cloud Run function 実行時サービスアカウントとは分けて管理し、実行時 SA
+                        にはコードが必要とする権限だけを付与します。Cloud
                         Storage のサービスアカウントには
                         <code>roles/pubsub.publisher</code>
                         を付与して、オブジェクトがアップロードされた際にイベントを発行できるようにする必要があります。
@@ -927,14 +930,19 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Cloud Run function 用 SA</td>
+                                    <td>Eventarc トリガー用 SA</td>
                                     <td><code>roles/eventarc.eventReceiver</code></td>
                                     <td>Eventarc からイベントを受信</td>
                                 </tr>
                                 <tr>
-                                    <td>Cloud Run function 用 SA</td>
+                                    <td>Eventarc トリガー用 SA</td>
                                     <td><code>roles/run.invoker</code></td>
                                     <td>関数（サービス）を呼び出し可能にする</td>
+                                </tr>
+                                <tr>
+                                    <td>Eventarc トリガー用 SA</td>
+                                    <td><code>roles/iam.serviceAccountUser</code></td>
+                                    <td>トリガーが指定されたサービスアカウントを使用</td>
                                 </tr>
                                 <tr>
                                     <td>Cloud Storage サービスエージェント</td>
@@ -942,7 +950,7 @@ export default function SetUpAnAppDevEnvironmentGuide() {
                                     <td>オブジェクトイベントをEventarcに転送</td>
                                 </tr>
                                 <tr>
-                                    <td>Cloud Run function 用 SA</td>
+                                    <td>Cloud Run function 実行時 SA</td>
                                     <td><code>roles/pubsub.publisher</code>（トピック単位）</td>
                                     <td>処理完了メッセージを発行</td>
                                 </tr>

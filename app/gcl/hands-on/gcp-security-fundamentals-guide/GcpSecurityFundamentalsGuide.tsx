@@ -443,9 +443,10 @@ export function GcpSecurityFundamentalsGuide() {
                     <h3 className="section-h">実例: BigQueryにアクセスするサービスアカウント</h3>
                     <ol className="step-list">
                         <li><code>bigquery-qwiklab</code> という名前でサービスアカウントを作成</li>
-                        <li><code>BigQuery Data Viewer</code> と <code>BigQuery User</code> のロールを付与</li>
-                        <li>Compute Engineインスタンス作成時、このサービスアカウントを Access Scope として明示的に紐付ける</li>
-                        <li>VM内のPythonコードは <code>compute_engine.Credentials(service_account_email=...)</code> で認証情報を取得し、ユーザー介在なしにBigQueryへクエリを実行する</li>
+                        <li>このサービスアカウントに、必要な <code>BigQuery Data Viewer</code> と <code>BigQuery User</code> の IAM ロールを付与</li>
+                        <li>Compute Engine インスタンスの ID として、この専用サービスアカウントをアタッチ</li>
+                        <li>VM の OAuth アクセススコープは、サービスアカウントとは別に <code>cloud-platform</code> を設定（実際の許可範囲は IAM ロールで制限）</li>
+                        <li>VM内のPythonコードは Application Default Credentials で認証情報を取得し、ユーザー介在なしにBigQueryへクエリを実行する</li>
                     </ol>
 
                     <Diagram id="diag-6" label="Fig.6 — サービスアカウント経由のBigQueryアクセス" />
@@ -642,16 +643,24 @@ export function GcpSecurityFundamentalsGuide() {
                     <div className="code-block">
                         <span className="lang">python</span>
                         <pre>
+                            <div className="code-line">from google.auth.transport.requests import Request</div>
+                            <div className="code-line">from google.oauth2 import id_token</div>
+                            <div className="code-line"></div>
+                            <div className="code-line">IAP_PUBLIC_KEY_URL = &apos;https://www.gstatic.com/iap/verify/public_key&apos;</div>
+                            <div className="code-line">IAP_ISSUER = &apos;https://cloud.google.com/iap&apos;</div>
+                            <div className="code-line"></div>
                             <div className="code-line">def user():</div>
                             <div className="code-line">    assertion = request.headers.get(&apos;X-Goog-IAP-JWT-Assertion&apos;)</div>
                             <div className="code-line">    if assertion is None:</div>
                             <div className="code-line">        return None, None</div>
-                            <div className="code-line">    info = jwt.decode(</div>
+                            <div className="code-line">    info = id_token.verify_token(</div>
                             <div className="code-line">        assertion,</div>
-                            <div className="code-line">        keys(),               # Googleの公開鍵セット</div>
-                            <div className="code-line">        algorithms=[&apos;ES256&apos;],</div>
-                            <div className="code-line">        audience=audience()   # 保護対象アプリを表すオーディエンス</div>
+                            <div className="code-line">        Request(),</div>
+                            <div className="code-line">        audience=expected_audience,</div>
+                            <div className="code-line">        certs_url=IAP_PUBLIC_KEY_URL,</div>
                             <div className="code-line">    )</div>
+                            <div className="code-line">    if info.get(&apos;iss&apos;) != IAP_ISSUER:</div>
+                            <div className="code-line">        raise ValueError(&apos;Invalid IAP JWT issuer&apos;)</div>
                             <div className="code-line">    return info[&apos;email&apos;], info[&apos;sub&apos;]</div>
                         </pre>
                     </div>
@@ -805,7 +814,7 @@ export function GcpSecurityFundamentalsGuide() {
 
                     <h3 className="section-h">鍵のライフサイクルと監査</h3>
                     <ul style={{ color: 'var(--text)', paddingLeft: '20px' }}>
-                        <li>CryptoKeyとKeyRingは<b>削除不可</b>(命名の衝突を防ぐため)。実質的な無効化は「キーバージョンの破棄(destroy)」で行います。</li>
+                        <li>KeyRing は<b>削除不可</b>です。CryptoKey は配下の全キーバージョンを削除した後に、キーバージョンは <code>DESTROYED</code>、<code>IMPORT_FAILED</code>、<code>GENERATION_FAILED</code> のいずれかの状態で、必要な権限を持つ場合に削除できます。通常の無効化は「キーバージョンの破棄(destroy)」で行います。</li>
                         <li>鍵のローテーションは<b>既存の暗号化データを自動で再暗号化しません</b>。鍵の漏洩が疑われる場合は、データの再暗号化・IAMアクセスの取り消し・キーバージョンの破棄をセットで行う必要があります。</li>
                         <li>Cloud Audit Logs(Admin Activity / Data Access)で「誰が・いつ・どの鍵に対して何をしたか」を追跡できます。</li>
                     </ul>

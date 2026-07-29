@@ -1093,14 +1093,20 @@ resource.labels.instance_id = <span class="s">"INSTANCE_ID"</span>  <span class=
                             html={`<span class="c"># マルチ NIC Bastion Host を作成（dev / prod 両 VPC に接続）</span>
 <span class="o">gcloud</span> compute instances create griffin-bastion \\
     <span class="f">--zone</span>=us-east1-b <span class="f">--machine-type</span>=e2-medium \\
+    <span class="f">--tags</span>=iap-ssh \\
     <span class="f">--network-interface</span>=network=griffin-dev-vpc,subnet=griffin-dev-mgmt \\
     <span class="f">--network-interface</span>=network=griffin-prod-vpc,subnet=griffin-prod-mgmt
 
-<span class="c"># SSH 許可の FW ルールを作成</span>
+<span class="c"># 外部 IP は付与せず、IAP TCP forwarding の送信元だけに SSH を許可</span>
 <span class="o">gcloud</span> compute firewall-rules create griffin-dev-allow-ssh \\
-    <span class="f">--network</span>=griffin-dev-vpc <span class="f">--allow</span>=tcp:22 <span class="f">--source-ranges</span>=0.0.0.0/0
+    <span class="f">--network</span>=griffin-dev-vpc <span class="f">--allow</span>=tcp:22 \\
+    <span class="f">--source-ranges</span>=35.235.240.0/20 <span class="f">--target-tags</span>=iap-ssh
 <span class="o">gcloud</span> compute firewall-rules create griffin-prod-allow-ssh \\
-    <span class="f">--network</span>=griffin-prod-vpc <span class="f">--allow</span>=tcp:22 <span class="f">--source-ranges</span>=0.0.0.0/0`}
+    <span class="f">--network</span>=griffin-prod-vpc <span class="f">--allow</span>=tcp:22 \\
+    <span class="f">--source-ranges</span>=35.235.240.0/20 <span class="f">--target-tags</span>=iap-ssh
+
+<span class="c"># インターネットから直接 SSH せず、IAP トンネルを使用</span>
+<span class="o">gcloud</span> compute ssh griffin-bastion <span class="f">--zone</span>=us-east1-b <span class="f">--tunnel-through-iap</span>`}
                         />
 
                         <h4>Task 4 — Cloud SQL と WordPress DB</h4>
@@ -1115,10 +1121,10 @@ resource.labels.instance_id = <span class="s">"INSTANCE_ID"</span>  <span class=
                         />
                         <HtmlCodeBlock
                             lang="sql"
-                            html={`<span class="c">-- MySQL プロンプト内で実行</span>
+                            html={`<span class="c">-- MySQL プロンプト内で実行（値は固定せず、接続元も許可ホストに限定）</span>
 <span class="k">CREATE DATABASE</span> wordpress;
-<span class="k">CREATE USER</span> <span class="s">"wp_user"</span>@<span class="s">"%"</span> <span class="k">IDENTIFIED BY</span> <span class="s">"stormwind_rules"</span>;
-<span class="k">GRANT ALL PRIVILEGES ON</span> wordpress.* <span class="k">TO</span> <span class="s">"wp_user"</span>@<span class="s">"%"</span>;
+<span class="k">CREATE USER</span> <span class="s">"wp_user"</span>@<span class="s">"&lt;AUTHORIZED_DB_HOST&gt;"</span> <span class="k">IDENTIFIED BY</span> <span class="s">"&lt;SECRET_MANAGER_VALUE&gt;"</span>;
+<span class="k">GRANT ALL PRIVILEGES ON</span> wordpress.* <span class="k">TO</span> <span class="s">"wp_user"</span>@<span class="s">"&lt;AUTHORIZED_DB_HOST&gt;"</span>;
 <span class="k">FLUSH PRIVILEGES</span>;`}
                         />
 
@@ -1128,18 +1134,37 @@ resource.labels.instance_id = <span class="s">"INSTANCE_ID"</span>  <span class=
                             html={`<span class="c"># GKE クラスターの作成</span>
 <span class="o">gcloud</span> container clusters create griffin-dev \\
     <span class="f">--zone</span>=us-east1-b <span class="f">--machine-type</span>=e2-standard-4 <span class="f">--num-nodes</span>=2 \\
-    <span class="f">--network</span>=griffin-dev-vpc <span class="f">--subnetwork</span>=griffin-dev-wp
+    <span class="f">--network</span>=griffin-dev-vpc <span class="f">--subnetwork</span>=griffin-dev-wp \\
+    <span class="f">--workload-pool</span>=$GOOGLE_CLOUD_PROJECT.svc.id.goog <span class="f">--enable-secret-manager</span>
 
-<span class="c"># WordPress 用シークレットとボリュームの設定</span>
+<span class="c"># DB パスワードは Secret Manager に登録（実値は安全な入力元から渡す）</span>
+<span class="o">gcloud</span> secrets create wordpress-db-password <span class="f">--replication-policy</span>=automatic
+<span class="o">gcloud</span> secrets versions add wordpress-db-password <span class="f">--data-file</span>=&lt;PASSWORD_FILE&gt;
+
+<span class="c"># WordPress 用マニフェストを取得</span>
 <span class="o">gsutil</span> cp <span class="f">-r</span> gs://spls/gsp321/wp-k8s .
 <span class="o">cd</span> wp-k8s
-<span class="c"># wp-env.yaml を編集して username: wp_user / password: stormwind_rules を設定</span>
-<span class="o">kubectl</span> create <span class="f">-f</span> wp-env.yaml
 
-<span class="c"># Cloud SQL Proxy 用のサービスアカウントキーを作成</span>
-<span class="o">gcloud</span> iam service-accounts keys create key.json \\
-    <span class="f">--iam-account</span>=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
-<span class="o">kubectl</span> create secret generic cloudsql-instance-credentials <span class="f">--from-file</span> key.json`}
+<span class="c"># Kubernetes SA と Google Cloud SA を Workload Identity で関連付け</span>
+<span class="o">kubectl</span> create namespace wordpress
+<span class="o">kubectl</span> create serviceaccount wordpress-ksa <span class="f">--namespace</span>=wordpress
+<span class="o">gcloud</span> iam service-accounts add-iam-policy-binding \\
+    cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \\
+    <span class="f">--role</span>=roles/iam.workloadIdentityUser \\
+    <span class="f">--member</span>=<span class="s">"serviceAccount:$GOOGLE_CLOUD_PROJECT.svc.id.goog[wordpress/wordpress-ksa]"</span>
+<span class="o">kubectl</span> annotate serviceaccount wordpress-ksa <span class="f">--namespace</span>=wordpress \\
+    iam.gke.io/gcp-service-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
+
+<span class="c"># Google Cloud SA には Cloud SQL 接続と対象シークレット参照だけを許可</span>
+<span class="o">gcloud</span> projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \\
+    <span class="f">--member</span>=<span class="s">"serviceAccount:cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com"</span> \\
+    <span class="f">--role</span>=roles/cloudsql.client
+<span class="o">gcloud</span> secrets add-iam-policy-binding wordpress-db-password \\
+    <span class="f">--member</span>=<span class="s">"serviceAccount:cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com"</span> \\
+    <span class="f">--role</span>=roles/secretmanager.secretAccessor
+
+<span class="c"># マニフェストでは serviceAccountName: wordpress-ksa を指定し、</span>
+<span class="c"># Secret Manager add-on と Workload Identity で認証する（SA キーファイルは作成しない）</span>`}
                         />
 
                         <h4>Task 7 — WordPress Deployment の作成</h4>
