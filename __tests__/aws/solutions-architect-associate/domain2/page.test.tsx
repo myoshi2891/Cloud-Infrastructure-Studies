@@ -16,12 +16,16 @@ describe('AWS SAA Domain 2 Guide Page', () => {
 
         const h1Elements = screen.getAllByRole('heading', { level: 1 });
         expect(h1Elements.length).toBeGreaterThan(0);
-        expect(h1Elements[0]).toHaveTextContent(/ドメイン2: 高性能なアーキテクチャの設計/i);
+        expect(h1Elements[0]).toHaveTextContent(/ドメイン2: 回復力のあるアーキテクチャの設計/i);
 
-        expect(screen.getByText(/タスク2.1: 高パフォーマンスかつスケーラブルなストレージ/i)).toBeInTheDocument();
-        expect(screen.getByText(/タスク2.2: 高パフォーマンスかつ弾力性のあるコンピューティング/i)).toBeInTheDocument();
-        expect(screen.getByText(/タスク2.3: 高パフォーマンスなデータベースソリューション/i)).toBeInTheDocument();
-        expect(screen.getByText(/タスク2.4: 高パフォーマンスなネットワークアーキテクチャ/i)).toBeInTheDocument();
+        expect(screen.getByRole('heading', {
+            level: 2,
+            name: /タスク2.1: スケーラブルで疎結合なアーキテクチャの設計/i,
+        })).toBeInTheDocument();
+        expect(screen.getByRole('heading', {
+            level: 2,
+            name: /タスク2.2: 高可用性・フォールトトレラントなアーキテクチャの設計/i,
+        })).toBeInTheDocument();
     });
 
     it('has custom theme initialization directive for pie chart m1', () => {
@@ -33,9 +37,8 @@ describe('AWS SAA Domain 2 Guide Page', () => {
         expect(DIAGRAMS.m16).not.toContain('〜');
     });
 
-    it('renders syntax highlighted elements in code blocks', () => {
-        const { container } = render(<Domain2Guide />);
-        const codeLines = container.querySelectorAll('.code-line');
-        expect(codeLines.length).toBeGreaterThan(0);
+    it('renders all Mermaid diagrams', () => {
+        render(<Domain2Guide />);
+        expect(screen.getAllByTestId('mermaid')).toHaveLength(25);
     });
 });
