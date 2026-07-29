@@ -58,11 +58,15 @@
     --color-guide-foreground-soft: #a9b8d3;
     --color-guide-foreground-faint: #6f83a5;
     --color-guide-accent: #7c9eff;
+    --color-guide-accent-deep: #4a6fd6;
     --color-guide-accent-soft: #34456e;
     --color-guide-accent-glow: rgba(124, 158, 255, 0.18);
+    --color-guide-on-accent: #051023;
     --color-guide-positive: #56d6a8;
     --color-guide-warning: #f2b866;
     --color-guide-code-background: #0a1526;
+    --color-guide-code-keyword: #ffd9a0;
+    --color-guide-code-foreground: #d7e1f5;
     --color-guide-heading: #a7bfff;
     --color-guide-table-background: #122238;
     --color-guide-interactive-background: rgba(124, 158, 255, 0.15);

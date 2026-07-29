@@ -63,13 +63,13 @@
     width: 34px;
     height: 34px;
     border-radius: 9px;
-    background: linear-gradient(135deg, var(--color-guide-accent), #4a6fd6);
+    background: linear-gradient(135deg, var(--color-guide-accent), var(--color-guide-accent-deep));
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 15px;
     font-weight: 700;
-    color: #051023;
+    color: var(--color-guide-on-accent);
     flex-shrink: 0;
 }
 
@@ -273,7 +273,7 @@
 
 .iap-guide-page code {
     background: var(--color-guide-code-background);
-    color: #ffd9a0;
+    color: var(--color-guide-code-keyword);
     padding: 2px 6px;
     border-radius: 5px;
     font-size: 0.88em;
@@ -287,7 +287,7 @@
     padding: 18px 20px;
     overflow-x: auto;
     margin: 20px 0;
-    color: #d7e1f5;
+    color: var(--color-guide-code-foreground);
     font-size: 13.5px;
     line-height: 1.7;
     font-family: var(--font-mono, monospace);
