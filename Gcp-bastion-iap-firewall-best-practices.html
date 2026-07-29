@@ -1,0 +1,1424 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Google Cloud セキュアネットワーク構築ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0c1a2e;
+                --color-background-tertiary: #122542;
+                --color-background-info: #14304d;
+                --color-background-danger: #3a1620;
+                --color-background-success: #123024;
+                --color-background-warning: #3a2c12;
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #c5d0e3;
+                --color-text-tertiary: #b6c7e3;
+                --color-text-info: #86b6ff;
+                --color-text-danger: #ff9a9a;
+                --color-text-success: #7fe0ab;
+                --color-text-warning: #f0c674;
+                --color-border-primary: #2a4269;
+                --color-border-secondary: #1a2c47;
+                --color-border-tertiary: #12213a;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                    'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+                --font-serif: Georgia, 'Noto Serif JP', serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 264px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 28px 16px;
+            }
+
+            .sidebar-title {
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-bottom: 14px;
+                padding: 0 12px;
+            }
+
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 400;
+                margin-bottom: 2px;
+                border-left: 2px solid transparent;
+            }
+
+            .sidebar a i {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                width: 18px;
+                text-align: center;
+            }
+            .sidebar a:hover {
+                background: var(--color-background-tertiary);
+            }
+            .sidebar a.active {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                border-left: 2px solid var(--accent);
+            }
+            .sidebar a.active i {
+                color: var(--accent);
+            }
+
+            .content {
+                margin-left: 264px;
+                padding: 56px 64px 96px;
+            }
+
+            .hero {
+                border-bottom: 1px solid var(--color-border-tertiary);
+                padding-bottom: 32px;
+                margin-bottom: 48px;
+            }
+
+            .hero-badges {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+
+            .hero h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 10px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .hero h1 i {
+                color: var(--accent);
+                font-size: 24px;
+            }
+            .hero .subtitle {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                margin: 0 0 24px;
+                max-width: 720px;
+            }
+
+            .stat-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 36px;
+            }
+            .stat-num {
+                font-size: 22px;
+                font-weight: 500;
+                color: var(--accent);
+                line-height: 1.3;
+            }
+            .stat-label {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                margin-top: 2px;
+            }
+
+            .chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                font-weight: 500;
+                padding: 4px 12px;
+                border-radius: var(--border-radius-xl);
+                background: var(--color-background-tertiary);
+                color: var(--color-text-secondary);
+                border: 1px solid var(--color-border-secondary);
+                white-space: nowrap;
+            }
+            .chip i {
+                font-size: 13px;
+            }
+            .chip.info {
+                background: var(--color-background-info);
+                color: var(--color-text-info);
+                border-color: var(--color-border-primary);
+            }
+            .chip.success {
+                background: var(--color-background-success);
+                color: var(--color-text-success);
+                border-color: var(--color-border-secondary);
+            }
+            .chip.warning {
+                background: var(--color-background-warning);
+                color: var(--color-text-warning);
+                border-color: var(--color-border-secondary);
+            }
+            .chip.danger {
+                background: var(--color-background-danger);
+                color: var(--color-text-danger);
+                border-color: var(--color-border-secondary);
+            }
+
+            section {
+                margin-bottom: 60px;
+                scroll-margin-top: 24px;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0 0 18px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding-bottom: 14px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+            h2 i {
+                font-size: 18px;
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 32px 0 12px;
+            }
+            p {
+                color: var(--color-text-secondary);
+                margin: 0 0 16px;
+            }
+            ul,
+            ol {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+                margin: 0 0 16px;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+            strong {
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 16px 0 24px;
+                font-size: 14px;
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                overflow: hidden;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 11px 14px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                vertical-align: top;
+            }
+            th {
+                color: var(--color-text-tertiary);
+                font-weight: 500;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                background: var(--color-background-secondary);
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+            td {
+                color: var(--color-text-secondary);
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:nth-child(even) td {
+                background: var(--color-background-secondary);
+            }
+            tbody tr:hover td {
+                background: var(--color-background-tertiary);
+            }
+
+            .callout {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                border-left: 3px solid var(--accent);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 20px;
+                margin: 16px 0 20px;
+                font-size: 14px;
+                color: var(--color-text-secondary);
+            }
+            .callout i {
+                flex: none;
+                font-size: 17px;
+                color: var(--color-text-info);
+                margin-top: 2px;
+            }
+
+            .source-note {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                margin: -8px 0 24px;
+            }
+            .source-note i {
+                color: var(--color-text-tertiary);
+            }
+            .source-note a {
+                color: var(--color-text-info);
+                text-decoration: none;
+            }
+            .source-note a:hover {
+                text-decoration: underline;
+            }
+
+            .code-block {
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                overflow: hidden;
+                margin: 12px 0 20px;
+            }
+            .code-head {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 16px;
+                background: var(--color-background-tertiary);
+                border-bottom: 1px solid var(--color-border-tertiary);
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .code-head i {
+                font-size: 14px;
+            }
+            .code-block pre {
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                background: var(--color-background-secondary);
+                padding: 16px 18px;
+                overflow-x: auto;
+            }
+            pre code,
+            pre code.hljs {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                background: transparent !important;
+                padding: 0 !important;
+            }
+            code {
+                font-family: var(--font-mono);
+                font-size: 13px;
+            }
+            p code,
+            li code,
+            td code {
+                background: var(--color-background-tertiary);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--color-text-info);
+            }
+
+            .mermaid-scroll {
+                overflow-x: auto;
+                margin: 20px 0;
+            }
+            .mermaid {
+                display: flex;
+                justify-content: center;
+            }
+            .mermaid svg {
+                height: auto;
+                flex-shrink: 0;
+                display: block;
+            }
+
+            .diagram-caption {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                text-align: center;
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                margin: -6px 0 24px;
+            }
+
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 14px;
+                margin: 16px 0 4px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+                padding: 16px 18px;
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                background: var(--color-background-secondary);
+                text-decoration: none;
+            }
+            .ref-card:hover {
+                background: var(--color-background-tertiary);
+                border-color: var(--color-border-primary);
+            }
+            .ref-card i {
+                flex: none;
+                font-size: 20px;
+                color: var(--color-text-info);
+                margin-top: 2px;
+            }
+            .ref-card .ref-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 4px;
+            }
+            .ref-card .ref-url {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                word-break: break-all;
+            }
+
+            .footer {
+                border-top: 1px solid var(--color-border-tertiary);
+                padding-top: 24px;
+                margin-top: 64px;
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+            }
+
+            @media (max-width: 860px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border-tertiary);
+                }
+                .content {
+                    margin-left: 0;
+                    padding: 32px 20px 64px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar">
+                <div class="sidebar-title">目次</div>
+                <a href="#overview" data-nav><i class="ti ti-info-circle"></i><span>概要</span></a>
+                <a href="#before" data-nav
+                    ><i class="ti ti-alert-triangle"></i><span>対応前の課題</span></a
+                >
+                <a href="#principles" data-nav
+                    ><i class="ti ti-shield-check"></i><span>設計方針</span></a
+                >
+                <a href="#after" data-nav
+                    ><i class="ti ti-target-arrow"></i><span>目標構成</span></a
+                >
+                <a href="#steps" data-nav
+                    ><i class="ti ti-list-numbers"></i><span>ステップバイステップ</span></a
+                >
+                <a href="#verification" data-nav
+                    ><i class="ti ti-checklist"></i><span>検証とトラブルシューティング</span></a
+                >
+                <a href="#final-rules" data-nav
+                    ><i class="ti ti-table"></i><span>完成後のルール一覧</span></a
+                >
+                <a href="#pitfalls" data-nav
+                    ><i class="ti ti-bug"></i><span>よくある落とし穴</span></a
+                >
+                <a href="#references" data-nav><i class="ti ti-link"></i><span>参考情報源</span></a>
+            </nav>
+
+            <main class="content">
+                <header class="hero">
+                    <div class="hero-badges">
+                        <span class="chip info"
+                            ><i class="ti ti-shield-lock"></i>Build a Secure Google Cloud
+                            Network</span
+                        >
+                        <span class="chip"
+                            ><i class="ti ti-stack-2"></i>IAP・VPC Firewall・Network Tags</span
+                        >
+                    </div>
+                    <h1>
+                        <i class="ti ti-cloud-lock"></i>Google Cloud セキュアネットワーク構築ガイド
+                    </h1>
+                    <p class="subtitle">
+                        bastion host + Identity-Aware Proxy (IAP) + juice-shop
+                        ファイアウォール設計を、初学者でも再現できるようにステップ化した解説です。
+                    </p>
+                    <div class="stat-row">
+                        <div class="stat">
+                            <div class="stat-num">3</div>
+                            <div class="stat-label">ファイアウォールルール</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-num">6</div>
+                            <div class="stat-label">実装ステップ</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-num">9</div>
+                            <div class="stat-label">参考情報源</div>
+                        </div>
+                    </div>
+                </header>
+
+                <section id="overview">
+                    <h2>
+                        <i class="ti ti-info-circle" style="color: var(--accent)"></i>1.
+                        このガイドで扱うこと
+                    </h2>
+                    <p>この challenge lab のゴールは次の4点です。</p>
+                    <ul>
+                        <li>bastion host には外部IPアドレスを持たせない</li>
+                        <li>
+                            bastion への SSH は
+                            <strong>IAP (Identity-Aware Proxy) 経由のみ</strong> 許可する
+                        </li>
+                        <li>juice-shop への SSH は <strong>bastion 経由のみ</strong> 許可する</li>
+                        <li>juice-shop への HTTP(80) のみ、全世界に公開する</li>
+                    </ul>
+                    <p>
+                        上記を実現するための VPC firewall rules（ファイアウォールルール）と network
+                        tags（ネットワークタグ）の設計を、順を追って解説します。
+                    </p>
+                </section>
+
+                <section id="before">
+                    <h2>
+                        <i class="ti ti-alert-triangle" style="color: var(--color-text-danger)"></i
+                        >2. 対応前（Before）の課題
+                    </h2>
+                    <p>
+                        neighbour's son
+                        が構築した初期構成には、典型的な「動けばよい」設定になりがちな問題が潜んでいます。
+                    </p>
+
+                    <div class="mermaid-scroll">
+                        <div id="mermaid-before" class="mermaid"></div>
+                    </div>
+                    <p class="diagram-caption">
+                        <i class="ti ti-photo"></i>対応前: SSHが全世界に開放され、bastionと
+                        juice-shop の境界が曖昧な状態
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>課題</th>
+                                <th>なぜ問題か</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SSH(22) が <code>0.0.0.0/0</code> に開放されている</td>
+                                <td>
+                                    総当たり攻撃・脆弱性スキャンの標的になる。Google公式も最小権限の原則を徹底し、必要なプロトコル・ポートのみ許可すべきと明記している
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>bastion に外部IPがある</td>
+                                <td>
+                                    攻撃対象領域（attack surface）が不要に拡大する。IAP TCP
+                                    forwarding を使えば外部IPなしでも管理アクセス可能
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>タグ設計が曖昧</td>
+                                <td>
+                                    どのルールがどのVMに効いているか判別できず、意図せず juice-shop
+                                    にまでSSHが開いてしまう恐れがある
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ルールが「全インスタンス対象」になりがち</td>
+                                <td>
+                                    ターゲットを絞らない設定は変更の影響範囲が読めず、監査もしづらい
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/firewall/docs/firewalls"
+                            target="_blank"
+                            rel="noopener"
+                            >VPC firewall rules の概要とベストプラクティス</a
+                        >（least-privilege原則、プロトコル/ポートを絞る、の記載箇所）
+                    </p>
+                </section>
+
+                <section id="principles">
+                    <h2>
+                        <i class="ti ti-shield-check" style="color: var(--color-text-success)"></i
+                        >3. 設計方針（ベストプラクティス）
+                    </h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>原則</th>
+                                <th>本タスクでの適用</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Least privilege（最小権限）</td>
+                                <td>
+                                    ルールごとに「送信元」「宛先ポート」「対象VM」を必要最小限に絞る
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Deny by default</td>
+                                <td>
+                                    既存の過剰に緩いルールは削除し、必要な通信だけを明示的に許可する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Network tags でターゲットを明示</td>
+                                <td>
+                                    bastion / juice-shop
+                                    それぞれに専用タグを付与し、ルールの適用範囲を一目で分かるようにする
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>管理アクセスは IAP 経由に統一</td>
+                                <td>
+                                    外部IPなしのVMに対し、Googleが管理する固定レンジ 35.235.240.0/20
+                                    からのSSHのみ許可する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>多段（bastion経由）アクセス</td>
+                                <td>
+                                    juice-shop
+                                    へのSSHは、内部ネットワーク（acme-mgmt-subnet）からのみに限定する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/architecture/best-practices-vpc-design"
+                            target="_blank"
+                            rel="noopener"
+                            >VPC設計のベストプラクティスと参照アーキテクチャ</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/iap/docs/using-tcp-forwarding"
+                            target="_blank"
+                            rel="noopener"
+                            >Identity-Aware Proxy を使った TCP forwarding</a
+                        >
+                    </p>
+                </section>
+
+                <section id="after">
+                    <h2>
+                        <i class="ti ti-target-arrow" style="color: var(--color-text-info)"></i>4.
+                        対応後（After）の目標構成
+                    </h2>
+                    <div class="mermaid-scroll"><div id="mermaid-after" class="mermaid"></div></div>
+                    <p class="diagram-caption">
+                        <i class="ti ti-photo"></i>対応後:
+                        管理アクセスはIAP限定、juice-shopへのSSHはbastion経由のみ、HTTPだけが世界に公開される
+                    </p>
+                </section>
+
+                <section id="steps">
+                    <h2>
+                        <i class="ti ti-list-numbers" style="color: var(--color-text-info)"></i>5.
+                        ステップバイステップ手順
+                    </h2>
+                    <p>作業順序の全体像です。</p>
+                    <div class="mermaid-scroll">
+                        <div id="mermaid-taskorder" class="mermaid"></div>
+                    </div>
+                    <p class="diagram-caption">
+                        <i class="ti ti-photo"></i
+                        >作業は必ずこの順序で進める（過剰なルールを消してから、必要なルールだけを足していく）
+                    </p>
+
+                    <h3>Step 1: 既存の過剰に緩いファイアウォールルールを確認・削除する</h3>
+                    <p>まず現状のルールを棚卸しします。</p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute firewall-rules list \
+  --format="table(name,direction,sourceRanges.list(),allowed[].map().firewall_rule().list(),targetTags.list())"</code></pre>
+                    </div>
+                    <p>
+                        <code>0.0.0.0/0</code> から <code>tcp:22</code> を許可しているルール（例:
+                        <code>default-allow-ssh</code> など）が見つかったら削除します。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute firewall-rules delete default-allow-ssh --quiet</code></pre>
+                    </div>
+                    <div class="callout">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <strong>なぜここから始めるか:</strong>
+                            新しいルールを追加する前に「全世界からSSH可能」という抜け穴を塞がないと、後続のIAP限定ルールを作っても実質的に無意味になるためです。
+                        </div>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/firewall/docs/firewalls"
+                            target="_blank"
+                            rel="noopener"
+                            >VPC firewall rules（ベストプラクティス: block all traffic by
+                            default）</a
+                        >
+                    </p>
+
+                    <h3>Step 2: bastion host インスタンスを起動する</h3>
+                    <p>
+                        Compute Engine の VM インスタンス一覧で bastion
+                        が停止していることを確認し、起動します。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute instances start bastion --zone=&lt;ZONE&gt;</code></pre>
+                    </div>
+                    <p>
+                        bastion
+                        は要件どおり<strong>外部IPアドレスを持たない</strong>構成のままにしておきます（IAP
+                        TCP forwarding は外部IPがなくても機能します）。
+                    </p>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/iap/docs/using-tcp-forwarding"
+                            target="_blank"
+                            rel="noopener"
+                            >IAP for TCP forwarding
+                            は外部IPを持たないVMへの管理アクセスを可能にする</a
+                        >
+                    </p>
+
+                    <h3>
+                        Step 3:
+                        IAP経由のSSHのみを許可するファイアウォールルールを作成し、bastionにタグを付与する
+                    </h3>
+                    <p>
+                        IAPは常に固定のIP範囲
+                        <code>35.235.240.0/20</code>
+                        からトラフィックを送信します。この範囲以外からのSSHは許可しません。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute firewall-rules create allow-ssh-iap \
+  --network=&lt;NETWORK&gt; \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=tcp:22 \
+  --source-ranges=35.235.240.0/20 \
+  --target-tags=ssh-iap</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute instances add-tags bastion \
+  --zone=&lt;ZONE&gt; \
+  --tags=ssh-iap</code></pre>
+                    </div>
+                    <div class="callout">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <strong>ポイント:</strong> <code>source-ranges</code> を
+                            <code>35.235.240.0/20</code>
+                            に固定することで、IAPを経由した認証済みの接続以外のSSHを一切受け付けなくなります。IAM側でも
+                            <code>roles/iap.tunnelResourceAccessor</code>
+                            ロールを対象ユーザーに付与しておく必要があります（IAM &gt; IAP
+                            でVM単位に付与可能）。
+                        </div>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/iap/docs/using-tcp-forwarding"
+                            target="_blank"
+                            rel="noopener"
+                            >Use IAP for TCP forwarding — 35.235.240.0/20 の説明</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/compute/docs/connect/ssh-using-iap"
+                            target="_blank"
+                            rel="noopener"
+                            >Connect to Linux VMs using Identity-Aware Proxy</a
+                        >
+                    </p>
+
+                    <h3>
+                        Step 4: juice-shop
+                        へのHTTPのみを全世界に公開するファイアウォールルールを作成し、タグを付与する
+                    </h3>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute firewall-rules create allow-http-world \
+  --network=&lt;NETWORK&gt; \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=tcp:80 \
+  --source-ranges=0.0.0.0/0 \
+  --target-tags=http-server</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute instances add-tags juice-shop \
+  --zone=&lt;ZONE&gt; \
+  --tags=http-server</code></pre>
+                    </div>
+                    <div class="callout">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <strong>なぜHTTPだけ全世界許可でよいか:</strong>
+                            juice-shopはWebサイトとして公開されることが目的であり、HTTP(80)以外（特にSSH）は全世界に開ける理由がないためです。ポートとプロトコルを必要最小限に絞るのが
+                            least-privilege の実践です。
+                        </div>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/firewall/docs/using-firewalls"
+                            target="_blank"
+                            rel="noopener"
+                            >Use VPC firewall rules — target tags によるルール適用範囲の限定</a
+                        >
+                    </p>
+
+                    <h3>
+                        Step 5:
+                        bastion経由でのみjuice-shopへSSHできるファイアウォールルールを作成し、タグを付与する
+                    </h3>
+                    <p>
+                        acme-mgmt-subnet
+                        のCIDRを確認します（環境ごとに値が異なるため、必ず実際の値を調べてください）。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute networks subnets describe acme-mgmt-subnet \
+  --region=&lt;REGION&gt; \
+  --format="value(ipCidrRange)"</code></pre>
+                    </div>
+                    <p>取得したCIDRを使ってルールを作成します。</p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute firewall-rules create allow-ssh-internal \
+  --network=&lt;NETWORK&gt; \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=tcp:22 \
+  --source-ranges=&lt;ACME_MGMT_SUBNET_CIDR&gt; \
+  --target-tags=ssh-internal</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute instances add-tags juice-shop \
+  --zone=&lt;ZONE&gt; \
+  --tags=http-server,ssh-internal</code></pre>
+                    </div>
+                    <div class="callout">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <strong>ポイント:</strong> source-rangesを acme-mgmt-subnet
+                            のCIDRに限定することで、bastionが属するサブネットからの通信だけがjuice-shopへのSSHを許可されます。<code
+                                >0.0.0.0/0</code
+                            >
+                            のような広すぎるレンジは、たとえ意図がbastion経由であっても採点上・実運用上どちらでも「過剰な許可」とみなされます。
+                        </div>
+                    </div>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/vpc/docs/add-remove-network-tags"
+                            target="_blank"
+                            rel="noopener"
+                            >Add network tags — target tagsによるVM単位のルール適用</a
+                        >
+                    </p>
+
+                    <h3>Step 6: IAP経由でbastionにSSHし、bastionからjuice-shopへSSHする</h3>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute ssh bastion \
+  --zone=&lt;ZONE&gt; \
+  --tunnel-through-iap</code></pre>
+                    </div>
+                    <p>bastionにログインできたら、そこから内部IPでjuice-shopへ接続します。</p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">ssh &lt;juice-shop-internal-ip&gt;</code></pre>
+                    </div>
+                    <p>接続フローをシーケンス図で整理すると次のとおりです。</p>
+                    <div class="mermaid-scroll">
+                        <div id="mermaid-sequence" class="mermaid"></div>
+                    </div>
+                    <p class="diagram-caption">
+                        <i class="ti ti-photo"></i
+                        >IAPトンネル経由でbastionへ、bastionから内部IPでjuice-shopへ多段接続する
+                    </p>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh"
+                            target="_blank"
+                            rel="noopener"
+                            >gcloud compute ssh リファレンス（--tunnel-through-iap）</a
+                        >
+                    </p>
+                </section>
+
+                <section id="verification">
+                    <h2>
+                        <i class="ti ti-checklist" style="color: var(--color-text-success)"></i>6.
+                        検証とトラブルシューティング
+                    </h2>
+                    <p>
+                        接続がうまくいかない場合は
+                        <code>--troubleshoot</code>
+                        フラグを使うと、VMの状態・ネットワーク疎通・権限・VPC設定を自動でチェックしてくれます。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute ssh bastion \
+  --zone=&lt;ZONE&gt; \
+  --tunnel-through-iap \
+  --troubleshoot</code></pre>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>症状</th>
+                                <th>よくある原因</th>
+                                <th>確認箇所</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>failed to connect to backend</td>
+                                <td>IAP用ファイアウォールルールが未作成、またはタグ不一致</td>
+                                <td>Step 3 のルールとbastionのタグ</td>
+                            </tr>
+                            <tr>
+                                <td>Permission denied</td>
+                                <td>IAMロール roles/iap.tunnelResourceAccessor が未付与</td>
+                                <td>IAM設定</td>
+                            </tr>
+                            <tr>
+                                <td>bastionからjuice-shopへSSHできない</td>
+                                <td>acme-mgmt-subnetのCIDRが誤っている、juice-shopのタグ未付与</td>
+                                <td>Step 5 のsource-rangesとタグ</td>
+                            </tr>
+                            <tr>
+                                <td>HTTPで juice-shop にアクセスできない</td>
+                                <td>HTTPルールのタグとjuice-shopのタグが不一致</td>
+                                <td>Step 4 のtarget-tagsとインスタンスタグ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-ssh-errors"
+                            target="_blank"
+                            rel="noopener"
+                            >Troubleshooting SSH errors</a
+                        >
+                    </p>
+                </section>
+
+                <section id="final-rules">
+                    <h2>
+                        <i class="ti ti-table" style="color: var(--color-text-info)"></i>7.
+                        完成後のファイアウォールルール一覧
+                    </h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ルール名</th>
+                                <th>方向</th>
+                                <th>送信元</th>
+                                <th>プロトコル/ポート</th>
+                                <th>ターゲットタグ</th>
+                                <th>適用VM</th>
+                                <th>目的</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>allow-ssh-iap</code></td>
+                                <td>Ingress</td>
+                                <td><code>35.235.240.0/20</code></td>
+                                <td>
+                                    <span class="chip info"
+                                        ><i class="ti ti-plug-connected"></i>tcp:22</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="chip info"><i class="ti ti-tag"></i>ssh-iap</span>
+                                </td>
+                                <td>bastion</td>
+                                <td>IAP経由の管理SSHのみ許可</td>
+                            </tr>
+                            <tr>
+                                <td><code>allow-http-world</code></td>
+                                <td>Ingress</td>
+                                <td><code>0.0.0.0/0</code></td>
+                                <td>
+                                    <span class="chip success"
+                                        ><i class="ti ti-plug-connected"></i>tcp:80</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="chip success"
+                                        ><i class="ti ti-tag"></i>http-server</span
+                                    >
+                                </td>
+                                <td>juice-shop</td>
+                                <td>Webサイトの公開</td>
+                            </tr>
+                            <tr>
+                                <td><code>allow-ssh-internal</code></td>
+                                <td>Ingress</td>
+                                <td>acme-mgmt-subnetのCIDR</td>
+                                <td>
+                                    <span class="chip warning"
+                                        ><i class="ti ti-plug-connected"></i>tcp:22</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="chip warning"
+                                        ><i class="ti ti-tag"></i>ssh-internal</span
+                                    >
+                                </td>
+                                <td>juice-shop</td>
+                                <td>bastion経由のSSHのみ許可</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>このほかに残す/削除するルールがないか、最後に一覧を再確認してください。</p>
+                    <div class="code-block">
+                        <div class="code-head"><i class="ti ti-terminal-2"></i>bash</div>
+                        <pre><code class="language-bash">gcloud compute firewall-rules list</code></pre>
+                    </div>
+                </section>
+
+                <section id="pitfalls">
+                    <h2>
+                        <i class="ti ti-bug" style="color: var(--color-text-warning)"></i>8.
+                        よくある落とし穴
+                    </h2>
+                    <ul>
+                        <li>
+                            <strong>タグの綴りミス:</strong> ファイアウォールルールの target-tags
+                            とVMに付与した tags
+                            の文字列が完全一致していないと、ルールが適用されません。
+                        </li>
+                        <li>
+                            <strong>source-rangesの広げすぎ:</strong> 「とりあえず動かしたい」ために
+                            0.0.0.0/0 を使ってしまうと、採点・監査どちらでも減点対象になります。
+                        </li>
+                        <li>
+                            <strong>タグ反映の遅延:</strong> source
+                            tagsを使うルールは、タグの追加・削除後に反映まで数秒〜数分のラグが出ることがあります。すぐに繋がらない場合は少し待ってから再試行してください。
+                        </li>
+                        <li>
+                            <strong>IAMロールの付与漏れ:</strong>
+                            ファイアウォールルールが正しくても、ユーザーに
+                            roles/iap.tunnelResourceAccessor がないとIAPトンネルは確立できません。
+                        </li>
+                    </ul>
+                    <p class="source-note">
+                        <i class="ti ti-link"></i>出典:
+                        <a
+                            href="https://cloud.google.com/vpc/docs/add-remove-network-tags"
+                            target="_blank"
+                            rel="noopener"
+                            >Add network tags — source tagsの反映遅延について</a
+                        >
+                    </p>
+                </section>
+
+                <section id="references">
+                    <h2>
+                        <i class="ti ti-link" style="color: var(--color-text-info)"></i>9.
+                        参考情報源（Sources）
+                    </h2>
+                    <p>各対応の根拠は、以下のGoogle Cloud公式ドキュメントに基づいています。</p>
+                    <div class="ref-grid">
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/firewall/docs/firewalls"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">
+                                    VPC firewall rules の概要とベストプラクティス
+                                </div>
+                                <div class="ref-url">cloud.google.com/firewall/docs/firewalls</div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/firewall/docs/using-firewalls"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">VPC firewall rules の作成・操作方法</div>
+                                <div class="ref-url">
+                                    cloud.google.com/firewall/docs/using-firewalls
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/vpc/docs/add-remove-network-tags"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-tag"></i>
+                            <div>
+                                <div class="ref-title">ネットワークタグの追加・削除</div>
+                                <div class="ref-url">
+                                    cloud.google.com/vpc/docs/add-remove-network-tags
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/iap/docs/using-tcp-forwarding"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-shield-lock"></i>
+                            <div>
+                                <div class="ref-title">
+                                    Identity-Aware Proxy を使ったTCP forwarding
+                                </div>
+                                <div class="ref-url">
+                                    cloud.google.com/iap/docs/using-tcp-forwarding
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/compute/docs/connect/ssh-using-iap"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-key"></i>
+                            <div>
+                                <div class="ref-title">IAPを使ったLinux VMへの接続</div>
+                                <div class="ref-url">
+                                    cloud.google.com/compute/docs/connect/ssh-using-iap
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/sdk/gcloud/reference/compute/ssh"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-terminal-2"></i>
+                            <div>
+                                <div class="ref-title">gcloud compute ssh コマンドリファレンス</div>
+                                <div class="ref-url">
+                                    cloud.google.com/sdk/gcloud/reference/compute/ssh
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-ssh-errors"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-bug"></i>
+                            <div>
+                                <div class="ref-title">SSH接続エラーのトラブルシューティング</div>
+                                <div class="ref-url">
+                                    cloud.google.com/compute/docs/troubleshooting/troubleshooting-ssh-errors
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/solutions/connecting-securely"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-server-2"></i>
+                            <div>
+                                <div class="ref-title">
+                                    VMインスタンスへの安全な接続（bastion hostの概念）
+                                </div>
+                                <div class="ref-url">
+                                    cloud.google.com/solutions/connecting-securely
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/architecture/best-practices-vpc-design"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <i class="ti ti-topology-star-3"></i>
+                            <div>
+                                <div class="ref-title">
+                                    VPC設計のベストプラクティスと参照アーキテクチャ
+                                </div>
+                                <div class="ref-url">
+                                    cloud.google.com/architecture/best-practices-vpc-design
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    Build a Secure Google Cloud Network — Challenge Lab 解説ガイド
+                </footer>
+            </main>
+        </div>
+
+        <script type="text/plain" class="mermaid-src" data-target="mermaid-before">
+            flowchart TD
+                Internet["Internet 0.0.0.0/0"]
+                FWssh["既存ルール: SSH tcp:22 from 0.0.0.0/0 全世界に開放"]
+                FWhttp["既存ルール: HTTP tcp:80 from 0.0.0.0/0"]
+                Bastion["bastion VM 外部IPあり"]
+                JuiceShop["juice-shop VM 外部IPあり"]
+
+                Internet --> FWssh
+                FWssh --> Bastion
+                FWssh -.->|"タグ次第では直接到達も"| JuiceShop
+                Internet --> FWhttp
+                FWhttp --> JuiceShop
+        </script>
+
+        <script type="text/plain" class="mermaid-src" data-target="mermaid-after">
+            flowchart TD
+                subgraph INTERNET["インターネット"]
+                    Admin["管理者 gcloud / Cloud Console"]
+                    PublicUser["一般ユーザー"]
+                end
+
+                subgraph GOOGLEIAP["Google管理のIAP送信元 35.235.240.0/20"]
+                    IAP["Identity-Aware Proxy"]
+                end
+
+                subgraph VPCNET["acme-vpc ネットワーク"]
+                    Bastion["bastion タグ: ssh-iap 外部IPなし"]
+                    JuiceShop["juice-shop タグ: http-server, ssh-internal"]
+                end
+
+                Admin -->|"HTTPS 暗号化トンネル"| IAP
+                IAP -->|"許可 tcp:22 from 35.235.240.0/20"| Bastion
+                Bastion -->|"許可 tcp:22 from acme-mgmt-subnet"| JuiceShop
+                PublicUser -->|"許可 tcp:80 from 0.0.0.0/0"| JuiceShop
+        </script>
+
+        <script type="text/plain" class="mermaid-src" data-target="mermaid-taskorder">
+            flowchart LR
+                A["1. 過剰なルールの削除"] --> B["2. bastion起動"]
+                B --> C["3. IAP用SSHルール作成 + タグ付与"]
+                C --> D["4. HTTP用ルール作成 + タグ付与"]
+                D --> E["5. 内部SSH用ルール作成 + タグ付与"]
+                E --> F["6. IAP経由で接続確認"]
+        </script>
+
+        <script type="text/plain" class="mermaid-src" data-target="mermaid-sequence">
+            sequenceDiagram
+                participant Admin as "管理者"
+                participant IAP as "Identity-Aware Proxy"
+                participant Bastion as "bastion VM"
+                participant Juice as "juice-shop VM"
+
+                Admin->>IAP: "gcloud compute ssh bastion --tunnel-through-iap"
+                IAP->>Bastion: "暗号化トンネル経由でtcp:22"
+                Bastion-->>Admin: "シェル取得"
+                Admin->>Juice: "bastion上からssh 内部IP"
+                Juice-->>Admin: "シェル取得"
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                var lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n\s*$/, '')
+                    .split('\n');
+                var indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return l.match(/^\s*/)[0].length;
+                    });
+                var min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(min);
+                    })
+                    .join('\n');
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                if (window.hljs) {
+                    hljs.highlightAll();
+                }
+
+                document.querySelectorAll('script.mermaid-src').forEach(function (scriptEl) {
+                    var target = document.getElementById(scriptEl.getAttribute('data-target'));
+                    if (target) {
+                        target.textContent = dedent(scriptEl.textContent);
+                    }
+                });
+
+                var navLinks = document.querySelectorAll('.sidebar a[data-nav]');
+                var sections = document.querySelectorAll('main.content section[id]');
+
+                var renderDiagrams = function () {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        securityLevel: 'loose',
+                        fontFamily:
+                            '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans JP, sans-serif',
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            nodeSpacing: 45,
+                            rankSpacing: 45,
+                        },
+                        sequence: { useMaxWidth: false },
+                        themeVariables: {
+                            background: '#07111e',
+                            primaryColor: '#122542',
+                            primaryTextColor: '#e8edf5',
+                            primaryBorderColor: '#2a4269',
+                            lineColor: '#4a6790',
+                            secondaryColor: '#14304d',
+                            tertiaryColor: '#0c1a2e',
+                            fontSize: '16px',
+                        },
+                    });
+
+                    mermaid.run({ querySelector: '.mermaid' }).then(function () {
+                        document.querySelectorAll('.mermaid svg').forEach(function (svg) {
+                            var role = svg.getAttribute('aria-roledescription') || '';
+                            var vb = svg.getAttribute('viewBox');
+                            if (vb) {
+                                var parts = vb.split(' ').map(Number);
+                                var extra = /sequence|state/.test(role) ? 110 : 15;
+                                parts[3] = parts[3] + extra;
+                                svg.setAttribute('viewBox', parts.join(' '));
+                            }
+                            svg.style.overflow = 'visible';
+                        });
+                    });
+                };
+
+                if (document.fonts && document.fonts.ready) {
+                    document.fonts.ready.then(renderDiagrams);
+                } else {
+                    renderDiagrams();
+                }
+
+                var observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (l) {
+                                    l.classList.remove('active');
+                                });
+                                var active = document.querySelector(
+                                    '.sidebar a[href="#' + entry.target.id + '"]',
+                                );
+                                if (active) {
+                                    active.classList.add('active');
+                                }
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach(function (s) {
+                    observer.observe(s);
+                });
+            });
+        </script>
+    </body>
+</html>

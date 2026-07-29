@@ -114,11 +114,11 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 目的
 
-`Gcp-security-fundamentals-guide.html`（静的HTML・2368行・16個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client GcpSecurityFundamentalsGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide` ルートへ完全移行する。文章・表・16個のMermaid図・コードブロック・注意書きの一切の省略・要約なしで移植。
+`Gcp-security-fundamentals-guide.html`（静的HTML・2368行・16個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client GcpSecurityFundamentalsGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/hands-on/gcp-security-fundamentals-guide` ルートへ完全移行する。文章・表・16個のMermaid図・コードブロック・注意書きの一切の省略・要約なしで移植。
 
 ### 完了済みステップ
 
-- [x] **Step 1 (Red)**: `test(ace): add failing tests for gcp security fundamentals guide page` (`__tests__/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.test.tsx` 失敗テストの作成)
+- [x] **Step 1 (Red)**: `test(ace): add failing tests for gcp security fundamentals guide page` (`__tests__/gcl/hands-on/gcp-security-fundamentals-guide/page.test.tsx` 失敗テストの作成)
 - [x] **Step 2 (Green)**: `feat(ace): implement gcp security fundamentals guide page skeleton to pass tests` (`page.tsx`, `GcpSecurityFundamentalsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 最小構成実装とテスト通過)
 - [x] **Step 3 (Refactor / Content Migration & CSS Mapping)**: `feat(ace): migrate all content, css mapping, and mermaid diagrams for gcp security fundamentals guide` (全8章・演習・表・Mermaid 16図の完全移植、コードブロック `.code-line` 構造化、scoped CSS 整合)
 - [x] **Step 4 (Refactor / Integration & Nav)**: `refactor(ace): integrate gcp security fundamentals guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`CLAUDE.md` / `GEMINI.md` 更新)
@@ -127,12 +127,12 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 関連ファイル
 
-- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.tsx](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.tsx)
-- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx)
-- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/NavBar.tsx](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/NavBar.tsx)
-- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/constants.ts](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/constants.ts)
-- [app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.css](app/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.css)
-- [__tests__/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.test.tsx](__tests__/gcl/associate-cloud-engineer/hands-on/gcp-security-fundamentals-guide/page.test.tsx)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/page.tsx](app/gcl/hands-on/gcp-security-fundamentals-guide/page.tsx)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx](app/gcl/hands-on/gcp-security-fundamentals-guide/GcpSecurityFundamentalsGuide.tsx)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/NavBar.tsx](app/gcl/hands-on/gcp-security-fundamentals-guide/NavBar.tsx)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/constants.ts](app/gcl/hands-on/gcp-security-fundamentals-guide/constants.ts)
+- [app/gcl/hands-on/gcp-security-fundamentals-guide/page.css](app/gcl/hands-on/gcp-security-fundamentals-guide/page.css)
+- [__tests__/gcl/hands-on/gcp-security-fundamentals-guide/page.test.tsx](__tests__/gcl/hands-on/gcp-security-fundamentals-guide/page.test.tsx)
 - [archive/Gcl_Archive/Hands-on/html/Gcp-security-fundamentals-guide.html](archive/Gcl_Archive/Hands-on/html/Gcp-security-fundamentals-guide.html)
 - [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
@@ -142,11 +142,11 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 目的
 
-`Gcp-app-dev-environment-complete-guide.html`（静的HTML・2246行）を、正準の設計パターン（NavBar + page.tsx + SetUpAnAppDevEnvironmentGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud` ルートへ完全移行する。文章・表・14個のMermaid図・コードブロック・注意書きの一切の省略・要約なしで移植。
+`Gcp-app-dev-environment-complete-guide.html`（静的HTML・2246行）を、正準の設計パターン（NavBar + page.tsx + SetUpAnAppDevEnvironmentGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud` ルートへ完全移行する。文章・表・14個のMermaid図・コードブロック・注意書きの一切の省略・要約なしで移植。
 
 ### 完了済みステップ
 
-- [x] **Step 1 (Red)**: `test: add failing tests for GCP app dev environment complete guide` (`__tests__/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx` テスト更新)
+- [x] **Step 1 (Red)**: `test: add failing tests for GCP app dev environment complete guide` (`__tests__/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx` テスト更新)
 - [x] **Step 2 (Green)**: `feat: implement GCP app dev environment complete guide component` (`page.tsx`, `SetUpAnAppDevEnvironmentGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装、全10章・表・Mermaid 14図の完全移行)
 - [x] **Step 3 (Refactor / Integration)**: `refactor: integrate GCP app dev environment guide into routing and update docs` (`app/constants.ts` EXAMSラベル調整、`CLAUDE.md` / `GEMINI.md` ドキュメント更新)
 - [x] **Step 4 (Fix & Move)**: `fix: resolve className console error and move page to hands-on route` (`class=` を `className=` に精査・修正、`hands-on` ルートへ配置変更)
@@ -160,12 +160,12 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 関連ファイル
 
-- [app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.tsx](app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.tsx)
-- [app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/SetUpAnAppDevEnvironmentGuide.tsx](app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/SetUpAnAppDevEnvironmentGuide.tsx)
-- [app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/NavBar.tsx](app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/NavBar.tsx)
-- [app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/constants.ts](app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/constants.ts)
-- [app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.css](app/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.css)
-- [__tests__/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx](__tests__/gcl/associate-cloud-engineer/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.tsx](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.tsx)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/SetUpAnAppDevEnvironmentGuide.tsx](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/SetUpAnAppDevEnvironmentGuide.tsx)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/NavBar.tsx](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/NavBar.tsx)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/constants.ts](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/constants.ts)
+- [app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.css](app/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.css)
+- [__tests__/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx](__tests__/gcl/hands-on/set-up-an-app-dev-environment-on-google-cloud/page.test.tsx)
 - [archive/Gcl_Archive/Associate-Cloud-Engineer/html/Gcp-app-dev-environment-complete-guide.html](archive/Gcl_Archive/Associate-Cloud-Engineer/html/Gcp-app-dev-environment-complete-guide.html)
 - [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
