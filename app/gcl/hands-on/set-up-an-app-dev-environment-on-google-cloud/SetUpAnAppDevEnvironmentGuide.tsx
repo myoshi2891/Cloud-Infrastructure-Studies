@@ -2,6 +2,13 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import NavBar from './NavBar';
 
+/**
+ * Renders a Mermaid diagram for a registered diagram identifier.
+ *
+ * @param id - The identifier of the diagram to render
+ * @param label - The accessible label for the diagram
+ * @returns The rendered diagram, or `null` when the identifier is not registered
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -12,6 +19,9 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/**
+ * Renders the complete Google Cloud application development environment guide.
+ */
 export default function SetUpAnAppDevEnvironmentGuide() {
     return (
         <div className="app-dev-environment-page">

@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { NAV_ITEMS } from './constants';
 
+/**
+ * Renders a section navigation bar with links that indicate the currently visible section.
+ */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('overview');
 

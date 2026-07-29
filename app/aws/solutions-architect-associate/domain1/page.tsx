@@ -8,6 +8,11 @@ export const metadata: Metadata = {
         'AWS SAA-C03試験のドメイン1（セキュアなアーキテクチャの設計）を徹底解説。IAM, VPC, WAF/Shield, KMS, S3暗号化, SCPなどの試験出題ポイントと14個のMermaid図解を完全網羅。',
 };
 
+/**
+ * Renders the Domain 1 security architecture guide.
+ *
+ * @returns The Domain 1 guide component.
+ */
 export default function Domain1Page() {
     return <Domain1Guide />;
 }

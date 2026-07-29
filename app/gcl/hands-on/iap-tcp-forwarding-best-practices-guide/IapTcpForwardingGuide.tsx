@@ -5,6 +5,11 @@ import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 import './page.css';
 
+/**
+ * Renders a guide to securely accessing VMs without external IP addresses through IAP TCP forwarding.
+ *
+ * @returns The rendered IAP TCP forwarding best-practices guide.
+ */
 export default function IapTcpForwardingGuide() {
     return (
         <div className="iap-guide-page">

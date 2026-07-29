@@ -5,6 +5,13 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
+/**
+ * Renders a Mermaid diagram and its caption when the specified diagram exists.
+ *
+ * @param id - The diagram identifier used to select the chart.
+ * @param label - The accessible label and caption displayed for the diagram.
+ * @returns The rendered diagram with its caption, or `null` when no chart exists for `id`.
+ */
 function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -18,6 +25,9 @@ function Diagram({ id, label }: { id: keyof typeof DIAGRAMS; label: string }) {
     );
 }
 
+/**
+ * Renders a comprehensive Google Cloud security fundamentals guide covering IAM, networking, encryption, and private GKE design.
+ */
 export function GcpSecurityFundamentalsGuide() {
     return (
         <div className="gcp-security-page">

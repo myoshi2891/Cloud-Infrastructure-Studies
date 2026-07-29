@@ -3,6 +3,9 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
+/**
+ * Renders a Japanese study guide for Domain 3 of the AWS Certified Solutions Architect – Associate exam.
+ */
 export function Domain3Guide() {
     return (
         <div className="domain3-page">

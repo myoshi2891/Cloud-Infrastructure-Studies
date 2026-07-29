@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
+/**
+ * Renders the sidebar navigation and highlights the section currently in view.
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('sec-0');
 
