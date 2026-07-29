@@ -1,0 +1,2117 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Team Griffin インフラ構築チャレンジラボ 完全解説ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0c1a2b;
+                --color-background-tertiary: #142238;
+                --color-background-info: rgba(124, 158, 255, 0.12);
+                --color-background-success: rgba(93, 214, 157, 0.12);
+                --color-background-warning: rgba(240, 180, 90, 0.12);
+                --color-background-danger: rgba(240, 113, 110, 0.12);
+                --color-text-primary: #eaf0f9;
+                --color-text-secondary: #a9b8cc;
+                --color-text-tertiary: #6d7f96;
+                --color-text-info: #7c9eff;
+                --color-text-success: #5dd69d;
+                --color-text-warning: #f0b45a;
+                --color-text-danger: #f0716e;
+                --color-border-primary: #24354c;
+                --color-border-secondary: #1a293d;
+                --color-border-tertiary: #142131;
+                --font-sans:
+                    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Segoe UI',
+                    sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --syntax-keyword: #7c9eff;
+                --syntax-string: #8bd5a0;
+                --syntax-comment: #5c7089;
+                --syntax-number: #f0b45a;
+                --syntax-attr: #d99bd9;
+                --syntax-builtin: #6fd6c9;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .layout {
+                display: block;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 272px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 28px 14px;
+            }
+
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 0 10px 20px 10px;
+                margin-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+
+            .sidebar-brand i {
+                font-size: 20px;
+                color: var(--color-text-info);
+            }
+
+            .sidebar-brand span {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--color-text-secondary);
+            }
+
+            .sidebar-group-label {
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+                padding: 16px 10px 6px 10px;
+                letter-spacing: 0.04em;
+            }
+
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 10px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                line-height: 1.4;
+            }
+
+            .sidebar nav a i {
+                font-size: 16px;
+                min-width: 16px;
+                color: var(--color-text-tertiary);
+            }
+
+            .sidebar nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .sidebar nav a.active {
+                background: var(--color-background-info);
+                color: var(--color-text-info);
+            }
+
+            .sidebar nav a.active i {
+                color: var(--color-text-info);
+            }
+
+            .main {
+                margin-left: 272px;
+                padding: 56px 64px 96px 64px;
+            }
+
+            .hero {
+                padding-bottom: 40px;
+                margin-bottom: 40px;
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+
+            .hero-eyebrow {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                color: var(--color-text-info);
+                font-weight: 500;
+                margin-bottom: 14px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+                font-weight: 500;
+                line-height: 1.4;
+                margin: 0 0 12px 0;
+            }
+
+            .hero p {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                max-width: 760px;
+                margin: 0 0 20px 0;
+            }
+
+            .tag-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .tag {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: var(--color-text-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-xl);
+                padding: 5px 12px;
+            }
+
+            .tag i {
+                font-size: 14px;
+                color: var(--color-text-tertiary);
+            }
+
+            .section {
+                margin-bottom: 56px;
+                scroll-margin-top: 24px;
+            }
+
+            .section-eyebrow {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                margin-bottom: 8px;
+            }
+
+            h2 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 18px 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            h2 i {
+                color: var(--color-text-info);
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 28px 0 12px 0;
+            }
+
+            h4 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 20px 0 10px 0;
+                color: var(--color-text-primary);
+            }
+
+            p {
+                margin: 0 0 14px 0;
+                color: var(--color-text-secondary);
+            }
+
+            strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            a {
+                color: var(--color-text-info);
+            }
+
+            ul,
+            ol {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+                margin: 0 0 14px 0;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+
+            .task-card {
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 28px 32px;
+                margin-bottom: 24px;
+                background: var(--color-background-secondary);
+            }
+
+            .task-number {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-text-info);
+                background: var(--color-background-info);
+                border-radius: var(--border-radius-xl);
+                padding: 4px 12px;
+                margin-bottom: 14px;
+            }
+
+            .table-wrap {
+                overflow-x: auto;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-md);
+                margin: 18px 0;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 11px 16px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                text-align: left;
+                color: var(--color-text-secondary);
+            }
+
+            th {
+                font-weight: 500;
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            td a {
+                font-size: 13px;
+            }
+
+            .code-block {
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-md);
+                overflow: hidden;
+                margin: 18px 0;
+            }
+
+            .code-label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                padding: 9px 16px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                background: var(--color-background-tertiary);
+            }
+
+            .code-label i {
+                font-size: 14px;
+            }
+
+            pre {
+                margin: 0;
+                padding: 18px 20px;
+                overflow-x: auto;
+                background: var(--color-background-tertiary);
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                line-height: 1.7;
+                color: var(--color-text-primary);
+            }
+
+            .hljs-keyword,
+            .hljs-literal,
+            .hljs-built_in,
+            .hljs-selector-tag {
+                color: var(--syntax-keyword);
+            }
+            .hljs-string,
+            .hljs-meta-string {
+                color: var(--syntax-string);
+            }
+            .hljs-comment,
+            .hljs-quote {
+                color: var(--syntax-comment);
+                font-style: italic;
+            }
+            .hljs-number {
+                color: var(--syntax-number);
+            }
+            .hljs-attr,
+            .hljs-attribute,
+            .hljs-variable,
+            .hljs-template-variable {
+                color: var(--syntax-attr);
+            }
+            .hljs-title,
+            .hljs-section,
+            .hljs-name,
+            .hljs-symbol {
+                color: var(--syntax-builtin);
+            }
+
+            .callout {
+                border: 1px solid var(--color-border-primary);
+                border-left: 3px solid var(--color-text-info);
+                border-radius: var(--border-radius-md);
+                padding: 16px 20px;
+                margin: 18px 0;
+                background: var(--color-background-info);
+            }
+
+            .callout.warning {
+                border-left-color: var(--color-text-warning);
+                background: var(--color-background-warning);
+            }
+
+            .callout.tip {
+                border-left-color: var(--color-text-success);
+                background: var(--color-background-success);
+            }
+
+            .callout-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+                font-size: 14px;
+                color: var(--color-text-primary);
+                margin-bottom: 8px;
+            }
+
+            .callout-title i {
+                font-size: 16px;
+            }
+            .callout p:last-child,
+            .callout ul:last-child {
+                margin-bottom: 0;
+            }
+
+            .source-list {
+                list-style: none;
+                padding-left: 0;
+                margin: 10px 0 0 0;
+            }
+
+            .source-list li {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            .source-list i {
+                color: var(--color-text-tertiary);
+                font-size: 14px;
+                margin-top: 2px;
+            }
+
+            .mermaid-wrap {
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                background: var(--color-background-secondary);
+                padding: 24px;
+                margin: 20px 0;
+                overflow-x: auto;
+            }
+
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                background: transparent;
+                padding: 0;
+                margin: 0;
+            }
+
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+
+            .footer {
+                border-top: 1px solid var(--color-border-secondary);
+                padding-top: 24px;
+                margin-top: 40px;
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 40px 24px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <i class="ti ti-cloud"></i>
+                    <span>Team Griffin ガイド</span>
+                </div>
+                <nav>
+                    <a href="#overview"><i class="ti ti-book"></i>このガイドについて</a>
+                    <a href="#architecture"><i class="ti ti-sitemap"></i>全体アーキテクチャ</a>
+                    <a href="#task-flow"><i class="ti ti-git-branch"></i>タスクの全体フロー</a>
+                    <a href="#standards"><i class="ti ti-list-check"></i>事前準備・標準</a>
+                    <div class="sidebar-group-label">タスク別解説</div>
+                    <a href="#task-1"><i class="ti ti-network"></i>Task1 開発VPC</a>
+                    <a href="#task-2"><i class="ti ti-network"></i>Task2 本番VPC</a>
+                    <a href="#task-3"><i class="ti ti-server-2"></i>Task3 踏み台ホスト</a>
+                    <a href="#task-4"><i class="ti ti-database"></i>Task4 Cloud SQL</a>
+                    <a href="#task-5"><i class="ti ti-brand-kubernetes"></i>Task5 GKEクラスタ</a>
+                    <a href="#task-6"><i class="ti ti-lock"></i>Task6 クラスタ準備</a>
+                    <a href="#task-7"><i class="ti ti-brand-wordpress"></i>Task7 WordPress</a>
+                    <a href="#task-8"><i class="ti ti-activity"></i>Task8 モニタリング</a>
+                    <a href="#task-9"><i class="ti ti-users"></i>Task9 IAM権限付与</a>
+                    <div class="sidebar-group-label">まとめ</div>
+                    <a href="#summary"><i class="ti ti-table"></i>まとめ表</a>
+                    <a href="#references"><i class="ti ti-link"></i>参考文献一覧</a>
+                    <a href="#conclusion"><i class="ti ti-flag-3"></i>総括</a>
+                </nav>
+            </aside>
+
+            <main class="main">
+                <div class="hero">
+                    <div class="hero-eyebrow">
+                        <i class="ti ti-google"></i>GOOGLE CLOUD チャレンジラボ解説
+                    </div>
+                    <h1>Team Griffin インフラ構築チャレンジラボ 完全解説ガイド</h1>
+                    <p>
+                        VPC / 踏み台ホスト / Cloud SQL / GKE / WordPress / モニタリング / IAM
+                        を、初学者向けにステップバイステップでベストプラクティスとともに読み解きます。
+                    </p>
+                    <div class="tag-row">
+                        <span class="tag"><i class="ti ti-network"></i>VPC設計</span>
+                        <span class="tag"><i class="ti ti-server-2"></i>踏み台ホスト</span>
+                        <span class="tag"><i class="ti ti-database"></i>Cloud SQL</span>
+                        <span class="tag"><i class="ti ti-brand-kubernetes"></i>GKE</span>
+                        <span class="tag"><i class="ti ti-brand-wordpress"></i>WordPress</span>
+                        <span class="tag"><i class="ti ti-activity"></i>モニタリング</span>
+                        <span class="tag"><i class="ti ti-users"></i>IAM</span>
+                    </div>
+                </div>
+
+                <section id="overview" class="section">
+                    <h2><i class="ti ti-book"></i>0. このガイドについて</h2>
+                    <p>
+                        このガイドは、Google Cloud の「Develop your Google Cloud
+                        Network」スキルバッジ相当のチャレンジラボ（Jooli Inc. の Team Griffin
+                        シナリオ）を題材に、各タスクを<strong>なぜそうするのか（Why）</strong>まで含めて解説するものです。チャレンジラボは手順書がなく自力で進める形式のため、各タスクの背景にあるベストプラクティスを理解しておくことが、ラボ攻略だけでなく実務でも役立ちます。
+                    </p>
+                    <p>
+                        対象読者はネットワーク・Kubernetes・Cloud SQL
+                        の基礎用語をある程度知っている初学者を想定しています。各タスクには次の情報を必ず添えています。
+                    </p>
+                    <ul>
+                        <li>目的（なぜこの作業が必要か）</li>
+                        <li>実際のコマンド・手順</li>
+                        <li>ベストプラクティスとその根拠（公式ドキュメントのURL付き）</li>
+                        <li>初学者がつまずきやすいポイント</li>
+                    </ul>
+                    <div class="callout">
+                        <div class="callout-title">
+                            <i class="ti ti-info-circle"></i>置き換えが必要な値
+                        </div>
+                        <p>
+                            本ガイド中の <code>REGION</code> と
+                            <code>ZONE</code>
+                            は、ラボが指定するリージョン・ゾーンに置き換えてください。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="architecture" class="section">
+                    <h2><i class="ti ti-sitemap"></i>1. 全体アーキテクチャ</h2>
+                    <p>
+                        Team Griffin
+                        の環境は「開発用VPC」と「本番用VPC」を分離し、両方に踏み台ホストからアクセスできる構成です。WordPress
+                        は開発用VPCの中に構築したGKEクラスタ上で動作し、データはCloud
+                        SQLに保存します。
+                    </p>
+
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid" id="mermaid-architecture"></pre>
+                    </div>
+                    <script type="text/plain" data-mermaid-target="mermaid-architecture">
+                        flowchart TB
+                            USER["利用者のブラウザ"]
+
+                            subgraph PROD["griffin-prod-vpc / 本番用VPC"]
+                                PRODMGMT["griffin-prod-mgmt<br/>192.168.64.0/20"]
+                                PRODWP["griffin-prod-wp<br/>192.168.48.0/20"]
+                            end
+
+                            subgraph DEV["griffin-dev-vpc / 開発用VPC"]
+                                DEVMGMT["griffin-dev-mgmt<br/>192.168.32.0/20"]
+                                DEVWP["griffin-dev-wp<br/>192.168.16.0/20"]
+                                GKE["GKEクラスタ griffin-dev<br/>e2-standard-4 x 2ノード"]
+                                SQL[("Cloud SQL<br/>griffin-dev-db / MySQL")]
+                            end
+
+                            BASTION["踏み台ホスト griffin-bastion<br/>NIC 2枚 / 外部IPなし推奨"]
+                            LB(["外部ロードバランサ<br/>Service type LoadBalancer"])
+
+                            BASTION --- DEVMGMT
+                            BASTION --- PRODMGMT
+                            DEVWP --- GKE
+                            GKE -- "Cloud SQL Auth Proxy サイドカー" --- SQL
+                            USER --> LB --> GKE
+                    </script>
+
+                    <p>ポイントは次の3つです。</p>
+                    <ol>
+                        <li>
+                            開発VPCと本番VPCは<strong>完全に分離</strong>されており、直接ピアリングはしません。両者をまたぐ唯一の経路が踏み台ホストです。
+                        </li>
+                        <li>
+                            GKEクラスタは
+                            <code>griffin-dev-wp</code>
+                            サブネットに配置し、データベースへのアクセスはPod内のCloud SQL Auth
+                            Proxyサイドカー経由にすることで、Cloud
+                            SQL側のファイアウォール管理を簡略化します。
+                        </li>
+                        <li>
+                            外部公開はWordPressの <code>Service</code>（type:
+                            LoadBalancer）が生成するGoogle Cloudの外部ロードバランサのみです。
+                        </li>
+                    </ol>
+                </section>
+
+                <section id="task-flow" class="section">
+                    <h2><i class="ti ti-git-branch"></i>2. タスクの全体フロー</h2>
+                    <div class="mermaid-wrap">
+                        <pre class="mermaid" id="mermaid-taskflow"></pre>
+                    </div>
+                    <script type="text/plain" data-mermaid-target="mermaid-taskflow">
+                        flowchart LR
+                            T1["Task1<br/>開発VPC作成"] --> T2["Task2<br/>本番VPC作成"]
+                            T2 --> T3["Task3<br/>踏み台ホスト作成"]
+                            T3 --> T4["Task4<br/>Cloud SQL作成"]
+                            T4 --> T5["Task5<br/>GKEクラスタ作成"]
+                            T5 --> T6["Task6<br/>クラスタ準備<br/>Secret / Volume"]
+                            T6 --> T7["Task7<br/>WordPressデプロイ"]
+                            T7 --> T8["Task8<br/>死活監視設定"]
+                            T8 --> T9["Task9<br/>追加エンジニア権限付与"]
+                    </script>
+                    <p>
+                        依存関係として重要なのは、Task6（Secret作成）がTask4（DBユーザー作成）とTask5（クラスタ作成）の両方が完了していないと進められない点、Task7がTask4で確認する「インスタンス接続名」に依存する点です。順番を守らずに進めるとエラーの原因究明に時間を取られるため、上図の順序を推奨します。
+                    </p>
+                </section>
+
+                <section id="standards" class="section">
+                    <h2>
+                        <i class="ti ti-list-check"></i>3. 事前準備：Jooli Inc. の標準を理解する
+                    </h2>
+                    <p>作業に入る前に、ラボが提示する社内標準を一覧化しておきます。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>標準</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>リージョン・ゾーン</td>
+                                    <td>
+                                        指定がない限り <code>REGION</code> /
+                                        <code>ZONE</code> を使用
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>使用するVPC</td>
+                                    <td>
+                                        プロジェクト内に作成する専用VPC（デフォルトVPCは使わない）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>命名規則</td>
+                                    <td>
+                                        <code>チーム名-リソース名</code>（例:
+                                        <code>griffin-webserver1</code>）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>インスタンスサイズ</td>
+                                    <td>
+                                        特別な指定がない限り
+                                        <code>e2-medium</code>（コスト効率重視）
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        この「コスト効率重視」という制約は、実務でも非常に重要な観点です。過剰なリソース確保はコスト超過やプロジェクト停止のリスクになるため、要件が明示されていない箇所は最小構成から始めるのが定石です。
+                    </p>
+                </section>
+
+                <section id="task-1" class="section">
+                    <h2><i class="ti ti-network"></i>4. Task 1：開発用VPCを手動作成する</h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            <code>griffin-dev-vpc</code> を作成し、サブネット
+                            <code>griffin-dev-wp</code>（192.168.16.0/20）と
+                            <code>griffin-dev-mgmt</code>（192.168.32.0/20）のみを持たせます。
+                        </p>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task1"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task1">
+                            # custom モードでVPCを作成（自動モードは使わない）
+                            gcloud compute networks create griffin-dev-vpc \
+                              --subnet-mode=custom
+
+                            # WordPressワークロード用サブネット
+                            gcloud compute networks subnets create griffin-dev-wp \
+                              --network=griffin-dev-vpc \
+                              --region=REGION \
+                              --range=192.168.16.0/20
+
+                            # 管理（踏み台）用サブネット
+                            gcloud compute networks subnets create griffin-dev-mgmt \
+                              --network=griffin-dev-vpc \
+                              --region=REGION \
+                              --range=192.168.32.0/20
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    <strong><code>--subnet-mode=custom</code> を必ず指定する</strong
+                                    >：自動モードVPCは各リージョンに
+                                    <code>10.128.0.0/9</code>
+                                    範囲のサブネットを自動生成してしまい、要件で指定されたCIDR（192.168.16.0/20
+                                    等）と競合します。本番運用に適しているのもカスタムモードであると公式ドキュメントで明言されています。
+                                </li>
+                                <li>
+                                    カスタムモードVPCは作成直後サブネットが0個の状態から始まるため、「指定されたサブネットのみを持たせる」という要件を満たしやすい構造になっています。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    新規プロジェクトにはデフォルトで
+                                    <code>default</code>
+                                    という自動モードVPCが存在します。今回のタスクで使うのは新しく作る
+                                    <code>griffin-dev-vpc</code> であり、<code>default</code>
+                                    を編集しないよう注意してください。
+                                </li>
+                                <li>
+                                    サブネットはリージョンリソースです。<code>--region</code>
+                                    の指定ミスはあとでGKEクラスタ作成時のサブネット選択で気づくことが多いので、この段階で
+                                    <code>REGION</code> を統一しておきましょう。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/vpc/docs/vpc"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >VPC networks（自動モード/カスタムモードの違い） - Google
+                                    Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/vpc/docs/subnets"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Subnets（サブネットの概念） - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/vpc/docs/create-modify-vpc-networks"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Quickstart: Create and manage VPC networks - Google Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-2" class="section">
+                    <h2><i class="ti ti-network"></i>5. Task 2：本番用VPCを手動作成する</h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            <code>griffin-prod-vpc</code>
+                            を作成し、<code>griffin-prod-wp</code>（192.168.48.0/20）と
+                            <code>griffin-prod-mgmt</code>（192.168.64.0/20）のみを持たせます。
+                        </p>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task2"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task2">
+                            gcloud compute networks create griffin-prod-vpc \
+                              --subnet-mode=custom
+
+                            gcloud compute networks subnets create griffin-prod-wp \
+                              --network=griffin-prod-vpc \
+                              --region=REGION \
+                              --range=192.168.48.0/20
+
+                            gcloud compute networks subnets create griffin-prod-mgmt \
+                              --network=griffin-prod-vpc \
+                              --region=REGION \
+                              --range=192.168.64.0/20
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <p>
+                                Task
+                                1と同じ理由でカスタムモードを使用します。加えて、開発と本番でVPCそのものを分離しているのは、環境ごとに障害影響範囲やアクセス制御を独立させるという定番のネットワーク設計パターンです。IPアドレス帯を重複させていない（16.0/20,
+                                32.0/20, 48.0/20, 64.0/20
+                                と連続かつ非重複で採番されている）点も、将来的にVPCピアリングやハイブリッド接続を行う際にCIDR重複エラーを避けるための設計として理解しておくとよいでしょう。
+                            </p>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <p>
+                                Task
+                                1との違いは名前とCIDRだけです。コピー&ペーストでの入力ミス（<code
+                                    >dev</code
+                                >
+                                と
+                                <code>prod</code>
+                                の書き間違い）が最も多い失敗パターンなので、作成後は
+                                <code>gcloud compute networks subnets list</code>
+                                で必ず確認してください。
+                            </p>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/vpc/docs/vpc"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >VPC networks - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/vpc/docs/subnets"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Subnets - Google Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-3" class="section">
+                    <h2>
+                        <i class="ti ti-server-2"></i>6. Task 3：踏み台（bastion）ホストを作成する
+                    </h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            <code>griffin-dev-mgmt</code> と
+                            <code>griffin-prod-mgmt</code>
+                            の両方に接続されたNICを2枚持つ踏み台ホストを作成し、SSH接続できる状態にします。
+                        </p>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task3"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task3">
+                            # 2枚のNIC（外部IPなし）を持つVMを作成
+                            gcloud compute instances create griffin-bastion \
+                              --zone=ZONE \
+                              --machine-type=e2-medium \
+                              --network-interface=subnet=griffin-dev-mgmt,no-address \
+                              --network-interface=subnet=griffin-prod-mgmt,no-address
+
+                            # IAP経由のSSHを許可するファイアウォールルール（各VPCに1本ずつ）
+                            gcloud compute firewall-rules create allow-iap-ssh-dev \
+                              --network=griffin-dev-vpc \
+                              --direction=INGRESS \
+                              --action=ALLOW \
+                              --rules=tcp:22 \
+                              --source-ranges=35.235.240.0/20
+
+                            gcloud compute firewall-rules create allow-iap-ssh-prod \
+                              --network=griffin-prod-vpc \
+                              --direction=INGRESS \
+                              --action=ALLOW \
+                              --rules=tcp:22 \
+                              --source-ranges=35.235.240.0/20
+
+                            # IAP TCPフォワーディング経由でSSH接続
+                            gcloud compute ssh griffin-bastion --zone=ZONE --tunnel-through-iap
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    <strong
+                                        >外部IPを持たせず、Identity-Aware
+                                        Proxy（IAP）のTCPフォワーディングでSSHする</strong
+                                    >のがGoogle
+                                    Cloud公式が推奨する構成です。IAPは認証・認可・監査ログを一元化しつつ、VMを外部IPなしで安全に運用できる仕組みとして案内されています。踏み台ホスト自体が持つセキュリティリスク（インターネットに公開されたSSHポート）を、IAPを使うことで大きく減らせます。
+                                </li>
+                                <li>
+                                    IAPのTCPフォワーディングを使う際は、送信元をIAP専用のIP範囲
+                                    <code>35.235.240.0/20</code>
+                                    に限定したファイアウォールルールが必須です。これがないとIAPからVMへ到達できません。
+                                </li>
+                                <li>
+                                    2枚のNICを異なるVPCのサブネットに接続することで、1台のVMが両方のネットワークの「橋渡し役」になります。これはVPCピアリングを使わずに管理トラフィックだけを中継したい場合の典型的な構成です。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    「SSHできること」を確認する際、外部IPを付けて
+                                    <code>gcloud compute ssh</code>
+                                    するだけで満足してしまいがちですが、ベストプラクティスとしては
+                                    <code>--tunnel-through-iap</code>
+                                    フラグを使う構成を優先してください。
+                                </li>
+                                <li>
+                                    ファイアウォールルールを1つのVPCにしか作らないと、もう片方のVPC側からのSSHがタイムアウトします。両方のVPCに同様のルールが必要です。
+                                </li>
+                                <li>
+                                    NICの並び順（<code>nic0</code> / <code>nic1</code>）はVM作成時の
+                                    <code>--network-interface</code>
+                                    フラグの指定順で決まります。あとから調べるときは
+                                    <code>gcloud compute instances describe</code>
+                                    で確認しましょう。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/compute/docs/connect/ssh-best-practices/network-access"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Best practices for controlling SSH network access - Google
+                                    Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/iap/docs/tcp-forwarding-overview"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >TCP forwarding overview - Identity-Aware Proxy - Google
+                                    Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/iap/docs/using-tcp-forwarding"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Use IAP for TCP forwarding - Google Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-4" class="section">
+                    <h2>
+                        <i class="ti ti-database"></i>7. Task 4：Cloud SQL
+                        インスタンスの作成とWordPress用DBの準備
+                    </h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            MySQLのCloud SQLインスタンス
+                            <code>griffin-dev-db</code>
+                            を作成し、WordPress用のデータベースとユーザーを用意します。
+                        </p>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task4a"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task4a">
+                            # コスト効率の良い最小構成でMySQLインスタンスを作成
+                            gcloud sql instances create griffin-dev-db \
+                              --database-version=MYSQL_8_0 \
+                              --tier=db-g1-small \
+                              --region=REGION \
+                              --root-password=<ROOT_PASSWORD>
+
+                            # インスタンスに接続
+                            gcloud sql connect griffin-dev-db --user=root
+                        </script>
+
+                        <p>接続後、以下のSQLを実行します。</p>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>sql</div>
+                            <pre><code class="language-sql" id="code-task4b"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task4b">
+                            CREATE DATABASE wordpress;
+                            CREATE USER 'wp_user'@'%' IDENTIFIED BY 'stormwind_rules';
+                            GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'%';
+                            FLUSH PRIVILEGES;
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    Cloud
+                                    SQLインスタンス作成では、ワークロードに見合った最小サイズを選ぶことがコスト管理の基本です。公式ドキュメントでも用途に応じたマシンタイプ・エディションの選択が案内されています。開発環境では
+                                    <code>db-g1-small</code> のような軽量ティアで十分です。
+                                </li>
+                                <li>
+                                    ユーザー名・パスワードは後続のTask 6でKubernetes
+                                    Secretとして利用するため、ここで作成した認証情報（<code
+                                        >wp_user</code
+                                    >
+                                    /
+                                    <code>stormwind_rules</code
+                                    >）を正確にメモしておく必要があります。
+                                </li>
+                                <li>
+                                    GKEからの接続方式として、この後のタスクでは<strong
+                                        >Cloud SQL Auth Proxy</strong
+                                    >を使う設計になっています。Auth
+                                    Proxyを使う場合、IAM認可と暗号化されたトンネルで接続できるため、Cloud
+                                    SQL側で個々のクライアントIPを許可リストに追加する必要がありません。これは「承認済みネットワーク」方式より安全で運用の手間も少ない、公式に推奨されるパターンです。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    <code>gcloud sql connect</code> はCloud
+                                    Shellから接続する際にCloud SQL Admin
+                                    APIを経由して一時的にクライアントIPを許可するため、実行環境によっては数十秒待たされることがあります。
+                                </li>
+                                <li>
+                                    SQL文中の二重引用符はMySQLの設定によっては識別子として解釈されないことがあります。エラーが出た場合はバッククォートに置き換えて実行してください。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/sql/docs/mysql/create-instance"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Create instances - Cloud SQL for MySQL - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Connect to Cloud SQL from Google Kubernetes Engine - Google
+                                    Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-5" class="section">
+                    <h2>
+                        <i class="ti ti-brand-kubernetes"></i>8. Task 5：Kubernetesクラスタの作成
+                    </h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            <code>griffin-dev-wp</code> サブネット内、<code>ZONE</code> に、<code
+                                >e2-standard-4</code
+                            >
+                            ノード2台からなるゾーンクラスタ <code>griffin-dev</code> を作成します。
+                        </p>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task5"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task5">
+                            gcloud container clusters create griffin-dev \
+                              --zone=ZONE \
+                              --num-nodes=2 \
+                              --machine-type=e2-standard-4 \
+                              --network=griffin-dev-vpc \
+                              --subnetwork=griffin-dev-wp
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    <strong>ゾーンクラスタ（Zonal cluster）</strong
+                                    >を選ぶのは、要件で単一ゾーンへの配置が指定されており、かつ開発環境では単一障害点を許容してコストを抑える方が合理的だからです。公式ドキュメントでも、ゾーンクラスタはコントロールプレーンが単一ゾーンに存在し、可用性より低コストを優先するユースケース向けとされています（本番相当の高可用性が必要な場合はリージョンクラスタが推奨されます）。
+                                </li>
+                                <li>
+                                    <code>--network</code> と
+                                    <code>--subnetwork</code>
+                                    を明示的に指定するのは、デフォルトVPCではなく
+                                    <code>griffin-dev-vpc</code> の
+                                    <code>griffin-dev-wp</code>
+                                    サブネットにノードを配置するためです。指定を省略するとデフォルトVPCにクラスタが作成されてしまい、要件を満たせません。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    クラスタ作成には数分かかります。タイムアウトのように見えても、コンソールやgcloudでステータスを確認しながら気長に待ちましょう。
+                                </li>
+                                <li>
+                                    ノードプールのマシンタイプはクラスタ作成後に直接変更できません。サイズを変える場合は新しいノードプールを追加する必要があります。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-zonal-cluster"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Creating a zonal cluster - GKE - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/configuration-overview"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >About cluster configuration choices - GKE - Google Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-6" class="section">
+                    <h2>
+                        <i class="ti ti-lock"></i>9. Task
+                        6：Kubernetesクラスタの準備（Secret・Volumeの構成）
+                    </h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            WordPressコンテナがCloud SQLに安全に接続できるよう、認証情報をKubernetes
+                            Secretとして登録し、永続化のためのVolumeを用意します。
+                        </p>
+
+                        <h4>アーキテクチャ（Pod内部の構成）</h4>
+                        <div class="mermaid-wrap">
+                            <pre class="mermaid" id="mermaid-task6"></pre>
+                        </div>
+                        <script type="text/plain" data-mermaid-target="mermaid-task6">
+                            flowchart TB
+                                subgraph POD["Pod (Deployment: wordpress)"]
+                                    WP["wordpressコンテナ"]
+                                    PROXY["cloud-sql-proxyコンテナ（サイドカー）"]
+                                    VOL[("Persistent Volume<br/>wp-pv-claim")]
+                                end
+
+                                SEC1[["Secret: cloudsql<br/>username / password"]]
+                                SEC2[["Secret: cloudsql-instance-credentials<br/>key.json"]]
+                                SQL[("Cloud SQL<br/>griffin-dev-db")]
+
+                                SEC1 -. 環境変数として注入 .-> WP
+                                SEC2 -. マウント .-> PROXY
+                                WP -- "localhost:3306" --> PROXY
+                                PROXY -- 暗号化コネクション --> SQL
+                                WP --- VOL
+                        </script>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task6"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task6">
+                            # 1. Cloud Shellにサンプルマニフェストをコピー
+                            gcloud storage cp -r gs://spls/gsp321/wp-k8s .
+                            cd wp-k8s
+
+                            # 2. wp-env.yaml を編集し、username を wp_user、
+                            #    password を stormwind_rules に設定してから適用
+                            kubectl apply -f wp-env.yaml
+
+                            # 3. Cloud SQL Proxy用サービスアカウントの鍵を発行し、
+                            #    Secretとして登録
+                            gcloud iam service-accounts keys create key.json \
+                              --iam-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
+
+                            kubectl create secret generic cloudsql-instance-credentials \
+                              --from-file key.json
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    <strong>認証情報をSecretとして分離する</strong
+                                    >のはKubernetesの基本原則です。パスワードやサービスアカウント鍵をマニフェストやコンテナイメージに直接埋め込まず、Secretリソースとして管理することで、権限管理・ローテーション・監査がしやすくなります。
+                                </li>
+                                <li>
+                                    <strong
+                                        >Cloud SQL Auth
+                                        Proxyをサイドカーコンテナとして同じPodに配置する</strong
+                                    >構成は、Google
+                                    Cloud公式が推奨するパターンです。アプリケーションコンテナは
+                                    <code>localhost</code>
+                                    経由でProxyコンテナに接続するだけでよく、通信の暗号化とIAM認可はProxyが担うため、アプリ側でTLS証明書やネットワーク許可リストを管理する必要がありません。
+                                </li>
+                                <li>
+                                    <strong
+                                        >WordPressの作業ファイルをPersistent
+                                        Volumeに保存する</strong
+                                    >のは、Pod自体はスケジューリングによって再作成・移動されうる一時的な存在であり、コンテナのローカルファイルシステムに保存したデータはPodの再作成時に失われてしまうためです。GKEはデフォルトで永続ディスク（Compute
+                                    Engine persistent
+                                    disk）を裏付けとするStorageClassを自動生成しており、PersistentVolumeClaimを作るだけで動的に永続ディスクをプロビジョニングできます。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout tip">
+                            <div class="callout-title">
+                                <i class="ti ti-rocket"></i
+                                >発展的なベストプラクティス（このラボの手順との違い）
+                            </div>
+                            <p>
+                                このタスクではサービスアカウントの<strong>JSONキーファイルを発行してSecretにマウントする</strong>方式を使います。これは動作しますが、Google
+                                Cloudの公式ベストプラクティスでは、キーファイルは漏えいリスクのある長期的な認証情報であるため<strong>できる限り避けるべき</strong>とされています。GKEでは代替として「GKE向けWorkload
+                                Identity Federation」を有効化し、Kubernetes Service AccountとGoogle
+                                Cloud Service
+                                Accountを紐付けることで、キーファイルなしで短期的な認証情報を自動的に払い出す方式が推奨されています。本番環境を構築する際はこちらへの移行を検討してください。
+                            </p>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    <code>wp-env.yaml</code>
+                                    を編集せずに適用すると、プレースホルダーの認証情報のままDBに接続できずWordPressのインストーラーがエラーになります。適用前に必ず値を書き換えてください。
+                                </li>
+                                <li>
+                                    <code>cloud-sql-proxy</code>
+                                    という名前のサービスアカウントは事前に用意されている前提です。存在しない場合は事前準備の手順（IAMページでの作成）を見直してください。
+                                </li>
+                                <li>
+                                    <code>key.json</code> はローカル（Cloud
+                                    Shell）に一時的に作成されるファイルです。Secret登録後は不要なので、ラボ終了時や本番運用では削除・ローテーションを忘れないようにしましょう。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://kubernetes.io/docs/concepts/configuration/secret/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Secrets - Kubernetes 公式ドキュメント</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Connect to Cloud SQL from GKE - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >GKE persistent volumes & provisioning - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/workload-identity"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >About Workload Identity Federation for GKE - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/iam/docs/best-practices-service-accounts"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Best practices for using service accounts securely - Google
+                                    Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-7" class="section">
+                    <h2>
+                        <i class="ti ti-brand-wordpress"></i>10. Task
+                        7：WordPressデプロイメントの作成
+                    </h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            準備したSecretとVolumeを使ってWordPressのDeploymentを作成し、外部からアクセスできるServiceを公開します。
+                        </p>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task7"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task7">
+                            # 1. wp-deployment.yaml の YOUR_SQL_INSTANCE を
+                            #    griffin-dev-db の「インスタンス接続名」に置き換える
+                            #    （例: PROJECT_ID:REGION:griffin-dev-db）
+                            kubectl apply -f wp-deployment.yaml
+
+                            # 2. Serviceを作成して外部公開する
+                            kubectl apply -f wp-service.yaml
+
+                            # 3. 外部IPが割り当てられるまで待機
+                            kubectl get service wordpress --watch
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    <strong
+                                        >インスタンス接続名（<code>PROJECT_ID:REGION:INSTANCE_NAME</code>）を使う</strong
+                                    >のは、Cloud SQL Auth
+                                    Proxyがこの一意な識別子をもとにインスタンスを特定し、IAMベースで安全に接続を確立する仕組みになっているためです。IPアドレスを直接指定する方式より、インスタンスのIP変更に強い構成です。
+                                </li>
+                                <li>
+                                    <strong
+                                        ><code>Service</code> の
+                                        <code>type: LoadBalancer</code> を使う</strong
+                                    >ことで、GKEはGoogle
+                                    Cloudの外部ネットワークロードバランサを自動的にプロビジョニングします。手動でロードバランサやファイアウォールルールを個別に組み立てるより設定ミスが起きにくく、Kubernetesのマニフェストだけで完結する点が推奨される理由です。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    外部IPが割り当てられるまで数分かかることがあります。<code
+                                        >EXTERNAL-IP</code
+                                    >
+                                    が
+                                    <code>&lt;pending&gt;</code>
+                                    のままでも異常ではないので、焦らず待ちましょう。
+                                </li>
+                                <li>
+                                    <code>YOUR_SQL_INSTANCE</code>
+                                    の置き換えを忘れると、Podは起動してもCloud SQL
+                                    Proxyコンテナがクラッシュループします。<code
+                                        >kubectl logs &lt;pod&gt; -c cloudsql-proxy</code
+                                    >
+                                    でログを確認すると原因の切り分けに役立ちます。
+                                </li>
+                                <li>
+                                    サイトにアクセスしてWordPressインストーラーが表示された時点でこのタスクは完了です。実際のインストール作業（管理者アカウント作成など）は開発チームの担当であり、このラボのスコープ外です。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Connect to Cloud SQL from GKE - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >GKE persistent volumes & provisioning - Google Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-8" class="section">
+                    <h2>
+                        <i class="ti ti-activity"></i>11. Task
+                        8：モニタリング（稼働時間チェック）の有効化
+                    </h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            開発環境のWordPressサイトに対する稼働時間チェック（Uptime
+                            Check）を作成します。
+                        </p>
+
+                        <h4>手順</h4>
+                        <ol>
+                            <li>
+                                Google Cloudコンソールで
+                                <strong>Monitoring &gt; Uptime checks</strong> に移動します。
+                            </li>
+                            <li><strong>Create Uptime Check</strong> をクリックします。</li>
+                            <li>
+                                プロトコルに
+                                <code>HTTP</code
+                                >、対象のホスト名にWordPressの外部IP（またはドメイン）を指定します。
+                            </li>
+                            <li>チェック間隔・チェッカーのリージョンを設定し、作成します。</li>
+                        </ol>
+                        <p>
+                            gcloudから作成する場合はAPI経由で以下のような呼び出しになります（詳細な項目はコンソールでの確認を推奨します）。
+                        </p>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task8"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task8">
+                            gcloud monitoring uptime create wordpress-uptime-check \
+                              --resource-type=uptime-url \
+                              --resource-labels=host=<WORDPRESSの外部IP> \
+                              --protocol=http \
+                              --port=80
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    Cloud
+                                    Monitoringの稼働時間チェックは、世界各地のチェッカーから対象URLに定期的にリクエストを送り、応答の有無・レスポンスコードを記録する仕組みです。これにより、外形監視（ユーザー視点での可用性監視）が実現できます。公式ドキュメントでも、パブリックに公開されたURLやGoogle
+                                    Cloudリソースの死活監視に用いる標準的な方法として案内されています。
+                                </li>
+                                <li>
+                                    GKE自体についても、クラスタ作成時にデフォルトでCloud
+                                    MonitoringとCloud
+                                    Loggingが統合されています。稼働時間チェックのような「外側からの疎通確認」と、GKEのオブザーバビリティ機能による「内側のワークロードの健全性監視」を組み合わせることで、より網羅的な監視体制になります。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    稼働時間チェックの対象にIPアドレスを指定した場合、WordPress側のロードバランサIPが変わると監視が壊れます。可能であれば安定したドメイン名を割り当てて監視対象にするのが望ましいです。
+                                </li>
+                                <li>
+                                    チェックが失敗し続ける場合、対象のファイアウォールルールが
+                                    <code>0.0.0.0/0</code> からのHTTPアクセスを許可しているか（<code
+                                        >Service</code
+                                    >
+                                    type LoadBalancerは基本的に許可される）を確認してください。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/monitoring/uptime-checks"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Create public uptime checks - Cloud Monitoring - Google
+                                    Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/monitoring/uptime-checks/manage"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Manage uptime checks - Cloud Monitoring - Google Cloud</a
+                                >
+                            </li>
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/kubernetes-engine/docs/concepts/observability"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Observability for GKE - Google Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="task-9" class="section">
+                    <h2>
+                        <i class="ti ti-users"></i>12. Task 9：追加エンジニアへのアクセス権限付与
+                    </h2>
+                    <div class="task-card">
+                        <div class="task-number"><i class="ti ti-target-arrow"></i>目的</div>
+                        <p>
+                            新しく参加するエンジニア（ラボの2つ目のユーザーアカウント）に、プロジェクトへのEditorロールを付与します。
+                        </p>
+
+                        <h4>手順</h4>
+                        <div class="code-block">
+                            <div class="code-label"><i class="ti ti-terminal-2"></i>bash</div>
+                            <pre><code class="language-bash" id="code-task9"></code></pre>
+                        </div>
+                        <script type="text/plain" data-code-target="code-task9">
+                            gcloud projects add-iam-policy-binding <PROJECT_ID> \
+                              --member="user:<追加エンジニアのメールアドレス>" \
+                              --role="roles/editor"
+                        </script>
+
+                        <div class="callout">
+                            <div class="callout-title">
+                                <i class="ti ti-bulb"></i>ベストプラクティスの根拠
+                            </div>
+                            <ul>
+                                <li>
+                                    IAMには「基本ロール（Owner / Editor /
+                                    Viewer）」「事前定義ロール」「カスタムロール」の3種類があります。基本ロールはIAM導入以前から存在するレガシーなロールで、プロジェクト内の全サービスに対して広範な権限を一括付与するため、最小権限の原則には沿わないと公式ドキュメントでも位置づけられています。
+                                </li>
+                                <li>
+                                    今回のタスクはラボの要件として明示的にEditorロールの付与を求めているため、それに従います。ただし実務では、対象エンジニアが実際に必要とする作業範囲（例:
+                                    GKE運用のみなら
+                                    <code>roles/container.admin</code>、ネットワーク運用のみなら
+                                    <code>roles/compute.networkAdmin</code>
+                                    など）に応じた事前定義ロールやカスタムロールを組み合わせ、Editor
+                                    /
+                                    Ownerのような広範なロールの使用は最小限にとどめるのが望ましいとされています。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout warning">
+                            <div class="callout-title">
+                                <i class="ti ti-alert-triangle"></i>初学者がつまずきやすいポイント
+                            </div>
+                            <ul>
+                                <li>
+                                    <code>--member</code> の書式は
+                                    <code>user:</code>、<code>serviceAccount:</code>、<code
+                                        >group:</code
+                                    >
+                                    などプレフィックスを間違えるとエラーになります。個人ユーザーアカウントの場合は
+                                    <code>user:</code> を忘れないようにしてください。
+                                </li>
+                                <li>
+                                    ロールの付与はほぼ即座に反映されますが、コンソール上の表示が更新されるまで数十秒のタイムラグがある場合があります。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <ul class="source-list">
+                            <li>
+                                <i class="ti ti-external-link"></i
+                                ><a
+                                    href="https://cloud.google.com/iam/docs/roles-overview"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Roles and permissions - IAM - Google Cloud</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="summary" class="section">
+                    <h2>
+                        <i class="ti ti-table"></i>13.
+                        まとめ表：タスク一覧とベストプラクティス早見表
+                    </h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>作成する主なリソース</th>
+                                    <th>押さえるべきベストプラクティス</th>
+                                    <th>参考ソース</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><code>griffin-dev-vpc</code> + 2サブネット</td>
+                                    <td>カスタムモードVPCを使い、要件通りのCIDRのみ持たせる</td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/vpc/docs/vpc"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >VPC networks</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td><code>griffin-prod-vpc</code> + 2サブネット</td>
+                                    <td>開発／本番でVPCを分離し、CIDR重複を避ける</td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/vpc/docs/subnets"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Subnets</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td><code>griffin-bastion</code>（NIC2枚）</td>
+                                    <td>外部IPなし + IAP TCPフォワーディングでSSH</td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/compute/docs/connect/ssh-best-practices/network-access"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >SSH best practices</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td><code>griffin-dev-db</code>（Cloud SQL）</td>
+                                    <td>用途に見合った最小ティア、Auth Proxy前提の設計</td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/sql/docs/mysql/create-instance"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Create instances</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td><code>griffin-dev</code>（GKEクラスタ）</td>
+                                    <td>
+                                        要件のVPC/サブネットを明示指定、ゾーンクラスタでコスト最適化
+                                    </td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-zonal-cluster"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Creating a zonal cluster</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>Secret / PersistentVolume</td>
+                                    <td>認証情報はSecretで分離、DB接続はサイドカーProxy経由</td>
+                                    <td>
+                                        <a
+                                            href="https://kubernetes.io/docs/concepts/configuration/secret/"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Secrets（Kubernetes）</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>WordPress Deployment / Service</td>
+                                    <td>インスタンス接続名を使用、type LoadBalancerで公開</td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Connect from GKE</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>Uptime Check</td>
+                                    <td>外形監視でユーザー視点の可用性を継続確認</td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/monitoring/uptime-checks"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Create uptime checks</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>IAMポリシーバインディング</td>
+                                    <td>要件に従いつつ、実務では最小権限ロールを優先検討</td>
+                                    <td>
+                                        <a
+                                            href="https://cloud.google.com/iam/docs/roles-overview"
+                                            target="_blank"
+                                            rel="noopener"
+                                            >Roles and permissions</a
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="references" class="section">
+                    <h2><i class="ti ti-link"></i>14. 参考文献一覧（全ソース）</h2>
+
+                    <h3>ネットワーク（VPC / サブネット）</h3>
+                    <ul class="source-list">
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/vpc/docs/vpc"
+                                target="_blank"
+                                rel="noopener"
+                                >VPC networks - Virtual Private Cloud - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/vpc/docs/subnets"
+                                target="_blank"
+                                rel="noopener"
+                                >Subnets - Virtual Private Cloud - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/vpc/docs/create-modify-vpc-networks"
+                                target="_blank"
+                                rel="noopener"
+                                >Quickstart: Create and manage VPC networks - Google Cloud</a
+                            >
+                        </li>
+                    </ul>
+
+                    <h3>踏み台ホスト / IAP</h3>
+                    <ul class="source-list">
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/compute/docs/connect/ssh-best-practices/network-access"
+                                target="_blank"
+                                rel="noopener"
+                                >Best practices for controlling SSH network access - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/iap/docs/tcp-forwarding-overview"
+                                target="_blank"
+                                rel="noopener"
+                                >TCP forwarding overview - Identity-Aware Proxy - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/iap/docs/using-tcp-forwarding"
+                                target="_blank"
+                                rel="noopener"
+                                >Use IAP for TCP forwarding - Identity-Aware Proxy - Google Cloud</a
+                            >
+                        </li>
+                    </ul>
+
+                    <h3>Cloud SQL</h3>
+                    <ul class="source-list">
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/sql/docs/mysql/create-instance"
+                                target="_blank"
+                                rel="noopener"
+                                >Create instances - Cloud SQL for MySQL - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine"
+                                target="_blank"
+                                rel="noopener"
+                                >Connect to Cloud SQL from Google Kubernetes Engine - Google
+                                Cloud</a
+                            >
+                        </li>
+                    </ul>
+
+                    <h3>GKE / Kubernetes</h3>
+                    <ul class="source-list">
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-zonal-cluster"
+                                target="_blank"
+                                rel="noopener"
+                                >Creating a zonal cluster - GKE - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/kubernetes-engine/docs/concepts/configuration-overview"
+                                target="_blank"
+                                rel="noopener"
+                                >About cluster configuration choices - GKE - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://kubernetes.io/docs/concepts/configuration/secret/"
+                                target="_blank"
+                                rel="noopener"
+                                >Secrets - Kubernetes 公式ドキュメント</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes"
+                                target="_blank"
+                                rel="noopener"
+                                >GKE persistent volumes & provisioning - GKE - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/kubernetes-engine/docs/concepts/workload-identity"
+                                target="_blank"
+                                rel="noopener"
+                                >About Workload Identity Federation for GKE - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/iam/docs/best-practices-service-accounts"
+                                target="_blank"
+                                rel="noopener"
+                                >Best practices for using service accounts securely - IAM - Google
+                                Cloud</a
+                            >
+                        </li>
+                    </ul>
+
+                    <h3>モニタリング</h3>
+                    <ul class="source-list">
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/monitoring/uptime-checks"
+                                target="_blank"
+                                rel="noopener"
+                                >Create public uptime checks - Cloud Monitoring - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/monitoring/uptime-checks/manage"
+                                target="_blank"
+                                rel="noopener"
+                                >Manage uptime checks - Cloud Monitoring - Google Cloud</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/kubernetes-engine/docs/concepts/observability"
+                                target="_blank"
+                                rel="noopener"
+                                >Observability for GKE - GKE - Google Cloud</a
+                            >
+                        </li>
+                    </ul>
+
+                    <h3>IAM</h3>
+                    <ul class="source-list">
+                        <li>
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://cloud.google.com/iam/docs/roles-overview"
+                                target="_blank"
+                                rel="noopener"
+                                >Roles and permissions - IAM - Google Cloud</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="conclusion" class="section">
+                    <h2><i class="ti ti-flag-3"></i>15. 総括</h2>
+                    <p>
+                        このチャレンジラボは、単なる「手順の暗記」ではなく、Google
+                        Cloudの基本原則（最小権限、外部公開面の最小化、認証情報の分離、コスト効率）を1つの実践的なシナリオの中で横断的に問う構成になっています。特に次の3点は実務でもそのまま応用できる考え方です。
+                    </p>
+                    <ol>
+                        <li>
+                            <strong
+                                >ネットワークは環境ごとに分離し、必要な経路だけを明示的に開ける</strong
+                            >（踏み台ホスト + IAP）。
+                        </li>
+                        <li>
+                            <strong
+                                >アプリケーションとデータベースの接続はサイドカー構成で抽象化し、認証情報はSecretで管理する</strong
+                            >。
+                        </li>
+                        <li>
+                            <strong
+                                >監視は「外側からの死活監視」と「内側のオブザーバビリティ」を両輪で整備する</strong
+                            >。
+                        </li>
+                    </ol>
+                    <p>
+                        ラボの
+                        <code>Check my progress</code>
+                        で緑のチェックが付かない場合は、まず本ガイドの該当タスクの「初学者がつまずきやすいポイント」を確認し、それでも解決しない場合は各リソースの実際の設定値（サブネットのCIDR、Secretの中身、インスタンス接続名など）を1つずつ見直すことをおすすめします。
+                    </p>
+                </section>
+
+                <div class="footer">Team Griffin インフラ構築チャレンジラボ 完全解説ガイド</div>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                var lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n[ \t]*$/, '')
+                    .split('\n');
+                var indents = [];
+                for (var i = 0; i < lines.length; i++) {
+                    if (lines[i].trim().length > 0) {
+                        var m = lines[i].match(/^[ \t]*/);
+                        indents.push(m[0].length);
+                    }
+                }
+                var minIndent = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(minIndent);
+                    })
+                    .join('\n');
+            }
+
+            document
+                .querySelectorAll('script[type="text/plain"][data-code-target]')
+                .forEach(function (src) {
+                    try {
+                        var target = document.getElementById(src.dataset.codeTarget);
+                        if (target) {
+                            target.textContent = dedent(src.textContent);
+                            if (typeof hljs !== 'undefined') {
+                                hljs.highlightElement(target);
+                            }
+                        }
+                    } catch (e) {
+                        console.error('code block init failed', e);
+                    }
+                });
+
+            document
+                .querySelectorAll('script[type="text/plain"][data-mermaid-target]')
+                .forEach(function (src) {
+                    try {
+                        var target = document.getElementById(src.dataset.mermaidTarget);
+                        if (target) {
+                            target.textContent = dedent(src.textContent);
+                        }
+                    } catch (e) {
+                        console.error('mermaid source init failed', e);
+                    }
+                });
+
+            (async function () {
+                if (typeof mermaid === 'undefined') {
+                    console.error('mermaid failed to load');
+                    return;
+                }
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    useMaxWidth: false,
+                    fontFamily: '"Hiragino Sans", "Noto Sans JP", sans-serif',
+                    flowchart: { nodeSpacing: 45, rankSpacing: 50 },
+                });
+                try {
+                    await mermaid.run({ querySelector: '.mermaid' });
+                } catch (e) {
+                    console.error('mermaid render failed', e);
+                }
+            })();
+
+            var sections = document.querySelectorAll('main section[id]');
+            var navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+            var observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (link) {
+                                link.classList.remove('active');
+                            });
+                            var activeLink = document.querySelector(
+                                '.sidebar nav a[href="#' + entry.target.id + '"]',
+                            );
+                            if (activeLink) {
+                                activeLink.classList.add('active');
+                            }
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+            sections.forEach(function (s) {
+                observer.observe(s);
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,1810 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Terraform で構築する Google Cloud インフラ管理 完全攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1a2c;
+                --color-background-tertiary: #122238;
+                --color-background-info: #12253d;
+                --color-background-danger: #2c151d;
+                --color-background-success: #10281d;
+                --color-background-warning: #2c2312;
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #a6b4c8;
+                --color-text-tertiary: #64768c;
+                --color-text-info: #8fb4ff;
+                --color-text-danger: #f18b8b;
+                --color-text-success: #7fdba4;
+                --color-text-warning: #f0c675;
+                --color-border-tertiary: rgba(255, 255, 255, 0.05);
+                --color-border-secondary: rgba(255, 255, 255, 0.09);
+                --color-border-primary: rgba(255, 255, 255, 0.16);
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                    'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, Menlo, 'Liberation Mono', monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 272px;
+                overflow-y: auto;
+                padding: 32px 16px 40px 24px;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-secondary);
+            }
+
+            .sidebar-eyebrow {
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin: 0 0 4px 12px;
+            }
+
+            .sidebar-title {
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 0 0 24px 12px;
+                line-height: 1.4;
+            }
+
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar nav .nav-group {
+                margin-top: 18px;
+            }
+
+            .sidebar nav .nav-group:first-child {
+                margin-top: 0;
+            }
+
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 7px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 400;
+            }
+
+            .sidebar nav a i {
+                font-size: 15px;
+                color: var(--color-text-tertiary);
+                width: 16px;
+                text-align: center;
+            }
+
+            .sidebar nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .sidebar nav a.active {
+                background: var(--color-background-tertiary);
+                color: var(--accent);
+            }
+            .sidebar nav a.active i {
+                color: var(--accent);
+            }
+
+            .main {
+                margin-left: 272px;
+                padding: 64px 72px 96px;
+            }
+
+            .hero {
+                margin-bottom: 40px;
+            }
+
+            .hero .badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-text-info);
+                background: var(--color-background-info);
+                padding: 5px 12px;
+                border-radius: 999px;
+                margin-bottom: 16px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 12px;
+                line-height: 1.4;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 56px 0 16px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            h2 i {
+                color: var(--accent);
+                font-size: 18px;
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 32px 0 12px;
+            }
+
+            p {
+                color: var(--color-text-primary);
+            }
+            .lede {
+                color: var(--color-text-secondary);
+                font-size: 16px;
+                max-width: 760px;
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            .meta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 24px;
+                margin-top: 20px;
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+            }
+            .meta-row strong {
+                color: var(--color-text-secondary);
+                font-weight: 500;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 14px;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 11px 14px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                vertical-align: top;
+            }
+            th {
+                color: var(--color-text-secondary);
+                font-weight: 500;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+            }
+            td code,
+            th code {
+                font-size: 13px;
+            }
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 0.9em;
+                background: var(--color-background-tertiary);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--color-text-info);
+            }
+
+            pre.code-block {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-md);
+                padding: 18px 22px;
+                overflow-x: auto;
+                margin: 18px 0;
+            }
+            pre.code-block code {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                line-height: 1.65;
+                background: none;
+                padding: 0;
+                color: var(--color-text-primary);
+                white-space: pre;
+            }
+            .code-label {
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+                margin: 24px 0 -6px;
+                font-family: var(--font-mono);
+            }
+
+            .mermaid-wrap {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin: 24px 0 8px;
+                overflow-x: auto;
+            }
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .callout {
+                border: 1px solid var(--color-border-secondary);
+                border-left: 3px solid var(--accent);
+                border-radius: var(--border-radius-md);
+                padding: 14px 20px;
+                background: var(--color-background-secondary);
+                font-size: 14px;
+                margin: 20px 0;
+                color: var(--color-text-secondary);
+            }
+            .callout strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            .callout.warning {
+                border-left-color: var(--color-text-warning);
+            }
+            .callout.warning strong {
+                color: var(--color-text-warning);
+            }
+            .callout.danger {
+                border-left-color: var(--color-text-danger);
+            }
+            .callout.danger strong {
+                color: var(--color-text-danger);
+            }
+            .callout .callout-head {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 6px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+            .callout .callout-head i {
+                font-size: 15px;
+            }
+
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 12px;
+                margin: 20px 0;
+            }
+            .card {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 18px;
+            }
+            .card .card-num {
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+                font-family: var(--font-mono);
+                margin-bottom: 6px;
+            }
+            .card .card-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 4px;
+            }
+            .card .card-body {
+                font-size: 13px;
+                color: var(--color-text-secondary);
+            }
+
+            .source-list {
+                list-style: none;
+                margin: 16px 0;
+                padding: 0;
+            }
+            .source-list li {
+                padding: 10px 0;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                font-size: 13px;
+                display: flex;
+                gap: 12px;
+                align-items: baseline;
+            }
+            .source-list li:last-child {
+                border-bottom: none;
+            }
+            .source-list .src-topic {
+                color: var(--color-text-secondary);
+                min-width: 260px;
+                flex-shrink: 0;
+            }
+            .source-list .src-url {
+                word-break: break-all;
+            }
+
+            .footer {
+                margin-top: 72px;
+                padding-top: 24px;
+                border-top: 1px solid var(--color-border-secondary);
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 40px 24px 72px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <p class="sidebar-eyebrow">Challenge Lab Guide</p>
+                <p class="sidebar-title">Terraform で構築する<br />Google Cloud インフラ管理</p>
+                <nav>
+                    <ul class="nav-group">
+                        <li>
+                            <a href="#overview"
+                                ><i class="ti ti-list-details"></i>このラボで学ぶこと</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#architecture"
+                                ><i class="ti ti-topology-star"></i>完成形のアーキテクチャ</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#prereq"><i class="ti ti-terminal-2"></i>事前準備</a>
+                        </li>
+                    </ul>
+                    <ul class="nav-group">
+                        <li>
+                            <a href="#task1"
+                                ><i class="ti ti-folder"></i>Task 1: ディレクトリ構成</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#task2"
+                                ><i class="ti ti-file-import"></i>Task 2: インフラのインポート</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#task3"
+                                ><i class="ti ti-cloud"></i>Task 3: リモートバックエンド</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#task4"><i class="ti ti-refresh"></i>Task 4: インフラの変更</a>
+                        </li>
+                        <li>
+                            <a href="#task5"><i class="ti ti-trash"></i>Task 5: リソースの削除</a>
+                        </li>
+                        <li>
+                            <a href="#task6"
+                                ><i class="ti ti-affiliate"></i>Task 6: Registryモジュール</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#task7"
+                                ><i class="ti ti-shield-lock"></i>Task 7: ファイアウォール</a
+                            >
+                        </li>
+                    </ul>
+                    <ul class="nav-group">
+                        <li>
+                            <a href="#best-practices"
+                                ><i class="ti ti-checklist"></i>ベストプラクティス総まとめ</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#references"><i class="ti ti-link"></i>参考文献・引用ソース</a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="main">
+                <header class="hero" id="top">
+                    <span class="badge"
+                        ><i class="ti ti-brand-terraform"></i>Build Infrastructure with Terraform on
+                        Google Cloud</span
+                    >
+                    <h1>Terraform で構築する Google Cloud インフラ管理 完全攻略ガイド</h1>
+                    <p class="lede">
+                        Challenge Lab
+                        の各タスクを、単なる手順ではなく「なぜそう設計するのか」というベストプラクティスの根拠とともにステップバイステップで解説する。初学者〜中級者向け。
+                    </p>
+                    <div class="meta-row">
+                        <span
+                            ><strong>対象読者</strong> Terraform / Google Cloud を学び始めた方</span
+                        >
+                        <span
+                            ><strong>形式</strong> ステップ解説 + Mermaid図解 +
+                            一次情報源リンク</span
+                        >
+                    </div>
+                </header>
+
+                <section id="overview">
+                    <h2><i class="ti ti-list-details"></i>1. このラボで学ぶこと</h2>
+                    <p>
+                        このChallenge
+                        Labは、手順書に沿って進めるのではなく、既存の知識を応用して自力でゴールへたどり着く形式である。以下6つのTerraformの中核スキルを、実際に手を動かしながら習得することを目的としている。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 40px">#</th>
+                                <th>テストされるトピック</th>
+                                <th>対応するTask</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>既存インフラを Terraform 設定に import する</td>
+                                <td>Task 2</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>自作の Terraform module を構築・参照する</td>
+                                <td>Task 1, 2, 3</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>remote backend を設定する</td>
+                                <td>Task 3</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Terraform Registry のモジュールを利用する</td>
+                                <td>Task 6</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>インフラの再プロビジョニング・削除・更新</td>
+                                <td>Task 4, 5</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>作成したリソース間の疎通確認</td>
+                                <td>Task 6, 7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="callout">
+                        <div class="callout-head"><i class="ti ti-bulb"></i>このガイドの読み方</div>
+                        Challenge Lab
+                        には手順書がないため、「なぜこの設計にするのか」という一段階深い理解が重要になる。各セクションの最後には、根拠となる公式ドキュメントへのリンクを添えている。
+                    </div>
+                </section>
+
+                <section id="architecture">
+                    <h2><i class="ti ti-topology-star"></i>2. 完成形のアーキテクチャ</h2>
+                    <p>すべてのTaskを終えると、以下のような構成が出来上がる。</p>
+                    <div class="mermaid-wrap">
+                        <div class="mermaid" id="diagram-architecture"></div>
+                    </div>
+                    <script
+                        type="text/plain"
+                        class="mermaid-src"
+                        data-target="diagram-architecture"
+                    >
+                        flowchart TB
+                            subgraph VPCNET["VPC Name (custom-mode, routing_mode = GLOBAL)"]
+                                direction LR
+                                subgraph SUB1["subnet-01 (10.10.10.0/24)"]
+                                    VM1["tf-instance-1<br/>machine_type = e2-standard-2"]
+                                end
+                                subgraph SUB2["subnet-02 (10.10.20.0/24)"]
+                                    VM2["tf-instance-2<br/>machine_type = e2-standard-2"]
+                                end
+                            end
+                            INTERNET["0.0.0.0/0 (any source)"] -->|"ingress TCP:80"| FW["tf-firewall"]
+                            FW --> VPCNET
+                            BUCKET["Cloud Storage Bucket<br/>force_destroy / uniform_bucket_level_access"]
+                            STATE["terraform.tfstate<br/>prefix = terraform/state"] --> BUCKET
+                            classDef teal fill:#0f2e2c,stroke:#2dd4bf,color:#d7fff6;
+                            classDef purple fill:#241b3d,stroke:#8b6cf0,color:#e6ddff;
+                            class SUB1,SUB2 teal;
+                            class BUCKET,STATE purple;
+                    </script>
+                    <p>
+                        ポイントは、<strong>VMインフラ(instances / network / firewall)</strong
+                        >と<strong>Terraform自身の状態管理基盤(storage bucket)</strong
+                        >が、役割としては明確に分離されていることである。バケットはアプリケーションのインフラではなく、Terraformの運用(state管理)のために存在する。
+                    </p>
+                </section>
+
+                <section id="prereq">
+                    <h2>
+                        <i class="ti ti-terminal-2"></i>3. 事前準備: Terraform CLI のインストール
+                    </h2>
+                    <p>
+                        Cloud Shell はデフォルトでは Terraform がプリインストールされておらず、また
+                        Cloud Shell の VM
+                        自体は非アクティブ状態が一定時間続くと破棄される一時的な環境である。そのため、素朴に
+                        <code>apt install terraform</code>
+                        を実行しただけでは、セッションが切れた瞬間にインストールが失われてしまう。
+                    </p>
+                    <div class="callout">
+                        <div class="callout-head"><i class="ti ti-bulb"></i>ベストプラクティス</div>
+                        <code>$HOME/.customize_environment</code>
+                        にインストールスクリプトを書いておく。このファイルは Cloud Shell の VM
+                        起動のたびに自動実行されるため、セッションが切れても環境が再現される。
+                    </div>
+                    <p class="code-label">bash</p>
+                    <pre class="code-block"><code id="code-install"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-install">
+                        cat <<'EOF' > ~/.customize_environment
+                        # HashiCorpリポジトリをセットアップしてTerraformをインストール
+                        wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+                        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+                        sudo apt update && sudo apt install -y terraform
+                        EOF
+                        bash ~/.customize_environment
+                    </script>
+                    <pre class="code-block"><code id="code-version"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-version">
+                        terraform --version
+                        # Terraform v1.9.0 のように、v1.5.7以降のバージョンが表示されればOK
+                    </script>
+                    <div class="callout">
+                        <div class="callout-head">
+                            <i class="ti ti-info-circle"></i>初学者向け補足
+                        </div>
+                        <code>.bashrc</code> と違い、<code>.customize_environment</code>
+                        は「シェルにログインするたび」ではなく「VMが起動するたび」に一度だけ root
+                        権限で実行されるスクリプトである。ソフトウェアのインストールなど、システム全体に影響する処理を永続化させたい場合に使う。
+                    </div>
+                    <p style="font-size: 13px; color: var(--color-text-tertiary)">
+                        出典:
+                        <a
+                            href="https://cloud.google.com/shell/docs/configuring-cloud-shell"
+                            target="_blank"
+                            rel="noopener"
+                            >Configure Cloud Shell — Google Cloud</a
+                        >
+                    </p>
+                </section>
+
+                <section id="task1">
+                    <h2>
+                        <i class="ti ti-folder"></i>4. Task 1: ディレクトリ構成とルート変数の設計
+                    </h2>
+                    <h3>4.1 なぜmoduleに分割するのか</h3>
+                    <p>
+                        Terraformの設定を1つの
+                        <code>main.tf</code>
+                        にすべて書くことも技術的には可能だが、以下の理由でモジュール化がベストプラクティスとされている。
+                    </p>
+                    <div class="card-grid">
+                        <div class="card">
+                            <div class="card-num">01</div>
+                            <div class="card-title">再利用性</div>
+                            <div class="card-body">
+                                同じ instances module を dev / staging / prod
+                                など複数環境から呼び出せる
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-num">02</div>
+                            <div class="card-title">責務の分離</div>
+                            <div class="card-body">
+                                instances(compute)と
+                                storage(state管理基盤)は関心事が異なるため見通しが良くなる
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-num">03</div>
+                            <div class="card-title">拡張性</div>
+                            <div class="card-body">
+                                モジュール単位でレビュー・バージョン管理がしやすくなる
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>4.2 ディレクトリ構成</h3>
+                    <div class="mermaid-wrap"><div class="mermaid" id="diagram-dir"></div></div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-dir">
+                        flowchart TD
+                            ROOT["プロジェクトルート"] --> MAINTF["main.tf<br/>(Terraform block / Provider / module呼び出し)"]
+                            ROOT --> ROOTVAR["variables.tf<br/>(region, zone, project_id)"]
+                            ROOT --> MODULES["modules/"]
+                            MODULES --> INST["instances/"]
+                            INST --> INSTTF["instances.tf"]
+                            INST --> INSTOUT["outputs.tf"]
+                            INST --> INSTVAR["variables.tf"]
+                            MODULES --> STOR["storage/"]
+                            STOR --> STORTF["storage.tf"]
+                            STOR --> STOROUT["outputs.tf"]
+                            STOR --> STORVAR["variables.tf"]
+                    </script>
+
+                    <p class="code-label">bash</p>
+                    <pre class="code-block"><code id="code-mkdir"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-mkdir">
+                        mkdir -p modules/instances modules/storage
+                        touch main.tf variables.tf
+                        touch modules/instances/{instances.tf,outputs.tf,variables.tf}
+                        touch modules/storage/{storage.tf,outputs.tf,variables.tf}
+                    </script>
+
+                    <h3>4.3 variables.tf の実装(ルート・各モジュール共通)</h3>
+                    <p>
+                        各 <code>variables.tf</code>(ルート、instances、storage
+                        の3ファイルすべて)に、同じ3つの変数を定義する。
+                    </p>
+                    <p class="code-label">hcl · variables.tf</p>
+                    <pre class="code-block"><code id="code-vars"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-vars">
+                        variable "project_id" {
+                          description = "The GCP project ID"
+                          type        = string
+                          default     = "<あなたのプロジェクトID>"
+                        }
+
+                        variable "region" {
+                          description = "The GCP region"
+                          type        = string
+                          default     = ""
+                        }
+
+                        variable "zone" {
+                          description = "The GCP zone"
+                          type        = string
+                          default     = "<ラボ開始時に指定されたゾーン>"
+                        }
+                    </script>
+                    <div class="callout">
+                        <div class="callout-head"><i class="ti ti-bulb"></i>ベストプラクティス</div>
+                        <code>default</code>
+                        に決め打ちの値を入れるのはアンチパターンとされることが多いが、Challenge Lab
+                        のような単一環境・単一目的の検証環境では、<code>terraform apply</code>
+                        のたびに <code>-var</code> を指定する手間を省くために default
+                        値を設定するのが合理的である。本番運用では <code>terraform.tfvars</code> や
+                        <code>TF_VAR_*</code>
+                        環境変数、CI/CDのシークレット管理と組み合わせるのがより安全である。
+                    </div>
+
+                    <h3>4.4 main.tf: Terraform block と Provider</h3>
+                    <p class="code-label">hcl · main.tf</p>
+                    <pre class="code-block"><code id="code-provider"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-provider">
+                        terraform {
+                          required_providers {
+                            google = {
+                              source  = "hashicorp/google"
+                              version = "~> 5.0"
+                            }
+                          }
+                        }
+
+                        provider "google" {
+                          project = var.project_id
+                          region  = var.region
+                          zone    = var.zone
+                        }
+                    </script>
+                    <p>
+                        provider "google" ブロックに <code>zone</code> を明示的に含めることで、以降
+                        <code>google_compute_instance</code>
+                        などのリソースでゾーンを省略した場合に、このデフォルトゾーンが自動的に使われるようになる。
+                    </p>
+
+                    <h3>4.5 初期化</h3>
+                    <pre class="code-block"><code id="code-init1"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-init1">
+                        terraform init
+                    </script>
+                    <p>
+                        <code>terraform init</code> は、(1) providerプラグインのダウンロード、(2)
+                        モジュールの解決、(3)
+                        backendの初期化、の3つを行うコマンドである。設定ファイルを変更するたび(特にmoduleやproviderを追加・変更した際)は再実行が必要になる。
+                    </p>
+                    <p style="font-size: 13px; color: var(--color-text-tertiary)">
+                        出典:
+                        <a
+                            href="https://developer.hashicorp.com/terraform/language/modules"
+                            target="_blank"
+                            rel="noopener"
+                            >Modules — Terraform</a
+                        >
+                        /
+                        <a
+                            href="https://developer.hashicorp.com/terraform/language/values/variables"
+                            target="_blank"
+                            rel="noopener"
+                            >Input Variables — Terraform</a
+                        >
+                    </p>
+                </section>
+
+                <section id="task2">
+                    <h2>
+                        <i class="ti ti-file-import"></i>5. Task 2:
+                        既存インフラのインポート(terraform import)
+                    </h2>
+                    <h3>5.1 importの位置づけを正しく理解する</h3>
+                    <p>
+                        <code>terraform import</code>
+                        は、<strong>「すでにクラウド上に存在するリソースの実体」と「Terraformの設定(resourceブロック)」を紐付け、stateファイルに記録する</strong>コマンドである。ここで重要な注意点が2つある。
+                    </p>
+                    <ul>
+                        <li>
+                            <code>terraform import</code>
+                            は<strong>stateに記録するだけ</strong>で、resourceブロック(HCLコード)そのものは自動生成しない
+                        </li>
+                        <li>
+                            <strong
+                                >importするresourceブロックは、事前に手動で書いておく必要がある</strong
+                            >。書いた内容と実際のリソースの差分は、import後の
+                            <code>terraform plan</code> で検出される
+                        </li>
+                    </ul>
+
+                    <h3>5.2 インポート手順のフロー</h3>
+                    <div class="mermaid-wrap"><div class="mermaid" id="diagram-import"></div></div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-import">
+                        flowchart LR
+                            A["① Consoleで既存VMの仕様を確認<br/>Instance ID / machine_type / boot_disk"] --> B["② main.tfにmodule instancesの参照を追加しinit"]
+                            B --> C["③ instances.tfに最小限のresourceブロックを記述"]
+                            C --> D["④ terraform importでstateに紐付け"]
+                            D --> E["⑤ terraform planで差分を確認"]
+                            E --> F["⑥ terraform applyで設定と実体を一致させる"]
+                            classDef teal fill:#0f2e2c,stroke:#2dd4bf,color:#d7fff6;
+                            class D teal;
+                    </script>
+
+                    <h3>5.3 main.tfへのmodule参照追加</h3>
+                    <p class="code-label">hcl · main.tf</p>
+                    <pre class="code-block"><code id="code-module-instances"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-module-instances">
+                        module "instances" {
+                          source     = "./modules/instances"
+                          project_id = var.project_id
+                          region     = var.region
+                          zone       = var.zone
+                        }
+                    </script>
+                    <p>
+                        moduleを追加・変更したら、必ず
+                        <code>terraform init</code> を再実行してモジュールを解決させる。
+                    </p>
+
+                    <h3>5.4 instances.tf: 最小限のresourceブロック</h3>
+                    <p>
+                        ラボの指示どおり、以下の引数だけに絞って最小構成で書く。項目を絞る理由は、「import後にstateとの差分を最小化し、意図しないリソースの再作成(recreate)を避けるため」である。特に
+                        <code>boot_disk.initialize_params.image</code>
+                        のようなイミュータブルな属性は、値が一致していないと
+                        <code>terraform apply</code> 時にリソースの作り直しが発生してしまう。
+                    </p>
+                    <p class="code-label">hcl · modules/instances/instances.tf</p>
+                    <pre class="code-block"><code id="code-instances-import"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-instances-import">
+                        resource "google_compute_instance" "tf-instance-1" {
+                          name         = "tf-instance-1"
+                          machine_type = "e2-medium"
+                          zone         = var.zone
+
+                          boot_disk {
+                            initialize_params {
+                              image = "projects/debian-cloud/global/images/family/debian-12"
+                            }
+                          }
+
+                          network_interface {
+                            network = "default"
+                            access_config {}
+                          }
+
+                          metadata_startup_script = <<-EOT
+                                #!/bin/bash
+                            EOT
+
+                          allow_stopping_for_update = true
+                        }
+
+                        resource "google_compute_instance" "tf-instance-2" {
+                          name         = "tf-instance-2"
+                          machine_type = "e2-medium"
+                          zone         = var.zone
+
+                          boot_disk {
+                            initialize_params {
+                              image = "projects/debian-cloud/global/images/family/debian-12"
+                            }
+                          }
+
+                          network_interface {
+                            network = "default"
+                            access_config {}
+                          }
+
+                          metadata_startup_script = <<-EOT
+                                #!/bin/bash
+                            EOT
+
+                          allow_stopping_for_update = true
+                        }
+                    </script>
+                    <div class="callout warning">
+                        <div class="callout-head"><i class="ti ti-alert-triangle"></i>重要</div>
+                        <code>machine_type</code> と <code>boot_disk</code> の image
+                        は、Console上で確認した実際の値に必ず置き換えること。値が実物と食い違っていると、import自体は成功しても、その後の
+                        apply でインスタンスの再作成が走ってしまう危険がある。
+                    </div>
+
+                    <h3>5.5 import コマンドの実行</h3>
+                    <p>
+                        module内のresourceをimportする場合、アドレスに
+                        <code>module.&lt;モジュール名&gt;.</code> のprefixを付ける。
+                    </p>
+                    <p class="code-label">bash</p>
+                    <pre class="code-block"><code id="code-import-cmd"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-import-cmd">
+                        terraform import module.instances.google_compute_instance.tf-instance-1 <PROJECT_ID>/<ZONE>/tf-instance-1
+                        terraform import module.instances.google_compute_instance.tf-instance-2 <PROJECT_ID>/<ZONE>/tf-instance-2
+                    </script>
+                    <p>
+                        <code>google_compute_instance</code> のimport IDは
+                        <code>{{project}}/{{zone}}/{{name}}</code>
+                        の形式を取る。IDのフォーマットはリソースの種類ごとに異なるため、必ずproviderドキュメントで確認する習慣をつけること。
+                    </p>
+
+                    <h3>5.6 plan → apply</h3>
+                    <pre class="code-block"><code id="code-plan-apply"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-plan-apply">
+                        terraform plan
+                        terraform apply
+                    </script>
+                    <p>
+                        ここで最小構成にしか記述していない属性(disk
+                        sizeやlabelsなど)については、Terraformが「設定にない値」を検出し、in-place
+                        update(作り直しではない、その場での更新)が発生することがある。ラボの範囲ではこれは想定内の挙動だが、本番環境では<strong
+                            >import前にすべての実属性を漏れなく記述し、terraform planの差分がゼロ(no
+                            changes)になる状態を確認してからapplyする</strong
+                        >のが正しい手順である。
+                    </p>
+                    <p style="font-size: 13px; color: var(--color-text-tertiary)">
+                        出典:
+                        <a
+                            href="https://developer.hashicorp.com/terraform/cli/commands/import"
+                            target="_blank"
+                            rel="noopener"
+                            >terraform import — Terraform CLI</a
+                        >
+                        /
+                        <a
+                            href="https://developer.hashicorp.com/terraform/cli/import/usage"
+                            target="_blank"
+                            rel="noopener"
+                            >Import existing resources — Terraform</a
+                        >
+                        /
+                        <a
+                            href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance"
+                            target="_blank"
+                            rel="noopener"
+                            >google_compute_instance — Terraform Registry</a
+                        >
+                    </p>
+                </section>
+
+                <section id="task3">
+                    <h2>
+                        <i class="ti ti-cloud"></i>6. Task 3: リモートバックエンドの構成(GCS
+                        Backend)
+                    </h2>
+                    <h3>6.1 なぜremote backendが必要なのか</h3>
+                    <p>
+                        デフォルトではTerraformのstate(<code>terraform.tfstate</code>)はローカルディスクに保存される。これには次のような問題がある。
+                    </p>
+                    <ul>
+                        <li>チームで作業する場合、stateの競合や上書きが発生しやすい</li>
+                        <li>ローカルファイルが破損・紛失するとインフラの管理情報が失われる</li>
+                        <li>誰かが同時にapplyすると、インフラの二重変更が起きうる(ロックがない)</li>
+                    </ul>
+                    <p>
+                        GCS backendは、<strong
+                            >stateをCloud Storageバケットに保管し、かつstate
+                            lockingをサポートする</strong
+                        >ため、チーム開発や本番運用における事実上の標準的な選択肢となっている。
+                    </p>
+
+                    <h3>6.2 バケットリソースの作成(storage module)</h3>
+                    <p class="code-label">hcl · modules/storage/storage.tf</p>
+                    <pre class="code-block"><code id="code-bucket"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-bucket">
+                        resource "google_storage_bucket" "default" {
+                          name                        = "<Bucket Name>"
+                          location                    = "US"
+                          force_destroy               = true
+                          uniform_bucket_level_access = true
+                        }
+                    </script>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>引数</th>
+                                <th>役割</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>force_destroy</code></td>
+                                <td>
+                                    バケットにオブジェクトが残っていても terraform destroy
+                                    を通す(検証環境向け設定。本番では慎重に検討)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>uniform_bucket_level_access</code></td>
+                                <td>
+                                    オブジェクト単位のACLを無効化し、IAMのみでアクセス制御する。Googleが現在推奨する設定方式
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="code-label">hcl · modules/storage/outputs.tf</p>
+                    <pre class="code-block"><code id="code-bucket-output"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-bucket-output">
+                        output "bucket_name" {
+                          value = google_storage_bucket.default.name
+                        }
+                    </script>
+                    <p class="code-label">hcl · main.tf</p>
+                    <pre class="code-block"><code id="code-module-storage"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-module-storage">
+                        module "storage" {
+                          source     = "./modules/storage"
+                          project_id = var.project_id
+                          region     = var.region
+                          zone       = var.zone
+                        }
+                    </script>
+                    <pre class="code-block"><code id="code-init-apply-storage"></code></pre>
+                    <script
+                        type="text/plain"
+                        class="code-src"
+                        data-target="code-init-apply-storage"
+                    >
+                        terraform init
+                        terraform apply
+                    </script>
+
+                    <h3>6.3 remote backendの設定と移行フロー</h3>
+                    <div class="mermaid-wrap"><div class="mermaid" id="diagram-backend"></div></div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-backend">
+                        flowchart LR
+                            A["ローカルstate<br/>terraform.tfstate"] --> B["storage moduleでGCSバケットを作成・apply"]
+                            B --> C["main.tfにbackend gcsブロックを追加"]
+                            C --> D["terraform initを再実行"]
+                            D --> E{"既存のstateを<br/>新しいbackendへコピーしますか?"}
+                            E -->|"yes と入力"| F["stateがGCSバケットへ移行完了"]
+                            classDef purple fill:#241b3d,stroke:#8b6cf0,color:#e6ddff;
+                            class F purple;
+                    </script>
+
+                    <p class="code-label">hcl · main.tf</p>
+                    <pre class="code-block"><code id="code-backend"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-backend">
+                        terraform {
+                          backend "gcs" {
+                            bucket = "<Bucket Name>"
+                            prefix = "terraform/state"
+                          }
+
+                          required_providers {
+                            google = {
+                              source  = "hashicorp/google"
+                              version = "~> 5.0"
+                            }
+                          }
+                        }
+                    </script>
+                    <div class="callout warning">
+                        <div class="callout-head"><i class="ti ti-alert-triangle"></i>注意点</div>
+                        <code>backend</code>
+                        ブロックには変数(<code>var.xxx</code>)を使うことができない。backend設定はプロバイダーやモジュール、変数の評価より前の段階で読み込まれるためである。バケット名は直接文字列で書く必要がある。
+                    </div>
+                    <pre class="code-block"><code id="code-init-backend"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-init-backend">
+                        terraform init
+                    </script>
+                    <p>
+                        <code>backend</code> ブロックを追加して init
+                        を実行すると、Terraformは既存のローカルstateを検出し、次のように尋ねてくる。
+                    </p>
+                    <pre class="code-block"><code id="code-migrate-prompt"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-migrate-prompt">
+                        Do you want to copy existing state to the new backend?
+                          Enter "yes" to copy and "no" to start with an empty state.
+                    </script>
+                    <p>
+                        ここで<strong>「yes」</strong>と入力することで、既存の管理対象(import済みのインスタンスなど)の記録を失わずに移行できる。「no」を選ぶと空のstateから始まってしまい、既存リソースの管理情報を失うため注意が必要である。
+                    </p>
+                    <p style="font-size: 13px; color: var(--color-text-tertiary)">
+                        出典:
+                        <a
+                            href="https://developer.hashicorp.com/terraform/language/backend/gcs"
+                            target="_blank"
+                            rel="noopener"
+                            >Backend Type: gcs — Terraform</a
+                        >
+                        /
+                        <a
+                            href="https://developer.hashicorp.com/terraform/language/state"
+                            target="_blank"
+                            rel="noopener"
+                            >State — Terraform</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/storage/docs/uniform-bucket-level-access"
+                            target="_blank"
+                            rel="noopener"
+                            >Uniform bucket-level access — Google Cloud</a
+                        >
+                    </p>
+                </section>
+
+                <section id="task4">
+                    <h2><i class="ti ti-refresh"></i>7. Task 4: インフラの変更(Update in-place)</h2>
+                    <h3>7.1 machine_typeの変更</h3>
+                    <p class="code-label">hcl · modules/instances/instances.tf</p>
+                    <pre class="code-block"><code id="code-machinetype"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-machinetype">
+                        resource "google_compute_instance" "tf-instance-1" {
+                          name         = "tf-instance-1"
+                          machine_type = "e2-standard-2"  # e2-medium から変更
+                          # ...(以下は変更なし)
+                        }
+                    </script>
+                    <p>
+                        <code>tf-instance-2</code> も同様に
+                        <code>e2-standard-2</code> へ変更する。<code
+                            >allow_stopping_for_update = true</code
+                        >
+                        を設定済みであるため、Terraformはインスタンスを削除せず、<strong
+                            >停止 → 属性変更 → 起動</strong
+                        >という形でin-place
+                        updateを行う。この引数を設定していない場合、machine_typeのようなプロパティ変更はエラーになるか、リソースの完全な再作成(destroy
+                        &amp; create)を招く。
+                    </p>
+
+                    <h3>7.2 3台目のインスタンス追加</h3>
+                    <p class="code-label">hcl · modules/instances/instances.tf</p>
+                    <pre class="code-block"><code id="code-third-instance"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-third-instance">
+                        resource "google_compute_instance" "instance-name" {
+                          name         = "<Instance Name>"
+                          machine_type = "e2-standard-2"
+                          zone         = var.zone
+
+                          boot_disk {
+                            initialize_params {
+                              image = "projects/debian-cloud/global/images/family/debian-12"
+                            }
+                          }
+
+                          network_interface {
+                            network = "default"
+                            access_config {}
+                          }
+
+                          metadata_startup_script = <<-EOT
+                                #!/bin/bash
+                            EOT
+
+                          allow_stopping_for_update = true
+                        }
+                    </script>
+                    <pre class="code-block"><code id="code-init-apply-t4"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-init-apply-t4">
+                        terraform init
+                        terraform apply
+                    </script>
+
+                    <h3>7.3 変更・追加のワークフロー</h3>
+                    <div class="mermaid-wrap"><div class="mermaid" id="diagram-update"></div></div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-update">
+                        flowchart LR
+                            A["tf-instance-1 / tf-instance-2のmachine_typeをe2-standard-2に変更"] --> B["3台目のresourceブロックを新規追加"]
+                            B --> C["terraform init"]
+                            C --> D["terraform apply"]
+                    </script>
+
+                    <div class="callout">
+                        <div class="callout-head"><i class="ti ti-bulb"></i>ベストプラクティス</div>
+                        複数リソースにまたがる同種の変更(全インスタンスのmachine_type変更など)は、本来であれば
+                        <code>for_each</code> や <code>count</code> を使ってDRY(Don't Repeat
+                        Yourself)に書くのが望ましい。本ラボでは学習目的上、明示的に3つのresourceブロックとして書くが、実務では以下のような書き方も検討する価値がある。
+                    </div>
+                    <p class="code-label">hcl · for_eachによるリファクタ例</p>
+                    <pre class="code-block"><code id="code-foreach"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-foreach">
+                        variable "instances" {
+                          type    = map(string)
+                          default = {
+                            "tf-instance-1" = "e2-standard-2"
+                            "tf-instance-2" = "e2-standard-2"
+                          }
+                        }
+
+                        resource "google_compute_instance" "this" {
+                          for_each     = var.instances
+                          name         = each.key
+                          machine_type = each.value
+                          # ...
+                        }
+                    </script>
+                </section>
+
+                <section id="task5">
+                    <h2><i class="ti ti-trash"></i>8. Task 5: リソースの削除(Destroy)</h2>
+                    <h3>8.1 Terraformにおける「削除」の正しい考え方</h3>
+                    <p>
+                        Terraformでは、クラウドコンソールから直接インスタンスを消すのではなく、<strong>「設定ファイルからresourceブロックを削除し、applyする」</strong>ことでリソースを削除するのがベストプラクティスである。理由は明確で、コンソールから直接削除すると、Terraformの管理下にある設定(state)と実際のインフラとの間に不整合(drift)が生まれてしまうためである。
+                    </p>
+
+                    <div class="mermaid-wrap"><div class="mermaid" id="diagram-destroy"></div></div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-destroy">
+                        flowchart LR
+                            A["instances.tfから3台目のresourceブロックを削除"] --> B["terraform init"]
+                            B --> C["terraform plan<br/>destroy対象として表示されることを確認"]
+                            C --> D["terraform apply"]
+                            D --> E["実インフラからもインスタンスが削除される"]
+                            classDef danger fill:#2c151d,stroke:#e0716f,color:#ffd9d7;
+                            class E danger;
+                    </script>
+
+                    <p class="code-label">bash</p>
+                    <pre class="code-block"><code id="code-destroy"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-destroy">
+                        # instances.tf から google_compute_instance.instance-name ブロックを削除した後
+                        terraform init
+                        terraform apply
+                    </script>
+                    <p>
+                        <code>terraform plan</code> の出力で、対象リソースが
+                        <code>-</code>(destroy)としてマークされていることを確認してから apply
+                        するのが望ましい流れである。設定ファイルからブロックを削除するだけでresourceが自動的にstateからも消えるため、<code
+                            >terraform state rm</code
+                        >
+                        や
+                        <code>terraform destroy -target</code>
+                        のような個別コマンドを使う必要はない(それらは「stateからは消すが実体は残す」「特定リソースだけを明示的に指定して壊す」といった、より高度なユースケース向けのコマンドである)。
+                    </p>
+                    <p style="font-size: 13px; color: var(--color-text-tertiary)">
+                        出典:
+                        <a
+                            href="https://developer.hashicorp.com/terraform/language/resources/destroy"
+                            target="_blank"
+                            rel="noopener"
+                            >Destroy a resource — Terraform</a
+                        >
+                        /
+                        <a
+                            href="https://developer.hashicorp.com/terraform/cli/commands/destroy"
+                            target="_blank"
+                            rel="noopener"
+                            >terraform destroy — Terraform CLI</a
+                        >
+                    </p>
+                </section>
+
+                <section id="task6">
+                    <h2>
+                        <i class="ti ti-affiliate"></i>9. Task 6: Terraform Registry
+                        モジュールの活用(VPC)
+                    </h2>
+                    <h3>9.1 なぜ自作せずRegistryモジュールを使うのか</h3>
+                    <p>
+                        VPCとサブネットの構成は、Google
+                        Cloudでは非常に定型的なパターンであり、Terraform Registry上に
+                        <code>terraform-google-modules/network/google</code>
+                        という、Googleとコミュニティが共同メンテナンスしている実績豊富なモジュールが公開されている。車輪の再発明を避け、実績のあるモジュールを再利用することは、Terraformにおける明確なベストプラクティスの一つである。
+                    </p>
+
+                    <h3>9.2 モジュールの参照関係</h3>
+                    <div class="mermaid-wrap"><div class="mermaid" id="diagram-module"></div></div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-module">
+                        flowchart TD
+                            MAINTF["main.tf: module network"] -->|"source"| REGISTRY["terraform-google-modules/network/google<br/>(Terraform Registry)"]
+                            REGISTRY --> VPC["google_compute_network<br/>VPC Name"]
+                            REGISTRY --> SUB1["google_compute_subnetwork<br/>subnet-01 (10.10.10.0/24)"]
+                            REGISTRY --> SUB2["google_compute_subnetwork<br/>subnet-02 (10.10.20.0/24)"]
+                            classDef teal fill:#0f2e2c,stroke:#2dd4bf,color:#d7fff6;
+                            class SUB1,SUB2 teal;
+                    </script>
+
+                    <h3>9.3 main.tfへのモジュール追加</h3>
+                    <p class="code-label">hcl · main.tf</p>
+                    <pre class="code-block"><code id="code-vpc-module"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-vpc-module">
+                        module "vpc" {
+                          source  = "terraform-google-modules/network/google"
+                          version = "10.0.0"
+
+                          project_id   = var.project_id
+                          network_name = "<VPC Name>"
+                          routing_mode = "GLOBAL"
+
+                          subnets = [
+                            {
+                              subnet_name   = "subnet-01"
+                              subnet_ip     = "10.10.10.0/24"
+                              subnet_region = var.region
+                            },
+                            {
+                              subnet_name   = "subnet-02"
+                              subnet_ip     = "10.10.20.0/24"
+                              subnet_region = var.region
+                            },
+                          ]
+                        }
+                    </script>
+                    <div class="callout warning">
+                        <div class="callout-head">
+                            <i class="ti ti-alert-triangle"></i>バージョン固定の重要性
+                        </div>
+                        <code>version</code>
+                        は必ず明示的に固定する。Registryモジュールはメジャーバージョンが上がると破壊的変更(引数名の変更など)を伴うことが多く、固定しないと、ある日突然
+                        <code>terraform init -upgrade</code>
+                        で最新版が引き込まれてapplyが失敗する事故につながる。本ラボでは互換性の観点から
+                        <code>10.0.0</code>
+                        を指定するよう案内されているが、実務で新規に使う場合はRegistryで最新の安定版を確認し、<code
+                            >~&gt; 10.0</code
+                        >
+                        のような柔軟なバージョン制約を検討するとよい。
+                    </div>
+                    <pre class="code-block"><code id="code-init-apply-vpc"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-init-apply-vpc">
+                        terraform init
+                        terraform apply
+                    </script>
+
+                    <h3>9.4 インスタンスをサブネットに接続する</h3>
+                    <p>
+                        <code>instances.tf</code> の
+                        <code>network_interface</code>
+                        を、デフォルトネットワークから作成したVPC/サブネットへ切り替える。
+                    </p>
+                    <p class="code-label">hcl · modules/instances/instances.tf</p>
+                    <pre class="code-block"><code id="code-connect-subnet"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-connect-subnet">
+                        resource "google_compute_instance" "tf-instance-1" {
+                          # ...(略)
+                          network_interface {
+                            network    = module.vpc.network_name
+                            subnetwork = "subnet-01"
+                            access_config {}
+                          }
+                        }
+
+                        resource "google_compute_instance" "tf-instance-2" {
+                          # ...(略)
+                          network_interface {
+                            network    = module.vpc.network_name
+                            subnetwork = "subnet-02"
+                            access_config {}
+                          }
+                        }
+                    </script>
+                    <p>
+                        <code>module.vpc.network_name</code> のように、モジュールの output
+                        を他のリソースから参照できるのがmodule設計の大きな利点である。モジュール間の暗黙的な依存関係も、Terraformが自動的にDAG(有向非巡回グラフ)として解決してくれる。
+                    </p>
+                    <pre class="code-block"><code id="code-init-apply-connect"></code></pre>
+                    <script
+                        type="text/plain"
+                        class="code-src"
+                        data-target="code-init-apply-connect"
+                    >
+                        terraform init
+                        terraform apply
+                    </script>
+                    <p style="font-size: 13px; color: var(--color-text-tertiary)">
+                        出典:
+                        <a
+                            href="https://registry.terraform.io/modules/terraform-google-modules/network/google/latest"
+                            target="_blank"
+                            rel="noopener"
+                            >terraform-google-modules/network/google — Terraform Registry</a
+                        >
+                    </p>
+                </section>
+
+                <section id="task7">
+                    <h2>
+                        <i class="ti ti-shield-lock"></i>10. Task 7: ファイアウォールルールの設定
+                    </h2>
+                    <h3>10.1 GCPのファイアウォールの基本方針</h3>
+                    <p>
+                        Google
+                        CloudのVPCは、デフォルトではingress(内向き)通信を暗黙的にすべて拒否する設計になっている。そのため、VM間やインターネットからの通信を許可するには、明示的にfirewallルールを作成する必要がある。「最小権限の原則」に基づき、本来は必要なポート・必要なソースIP範囲だけに絞るのがベストプラクティスだが、本ラボでは疎通確認を目的として
+                        <code>0.0.0.0/0</code> からの <code>tcp:80</code> を許可する。
+                    </p>
+
+                    <div class="mermaid-wrap">
+                        <div class="mermaid" id="diagram-firewall"></div>
+                    </div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-firewall">
+                        flowchart LR
+                            INTERNET["0.0.0.0/0<br/>(any source)"] -->|"ingress allow tcp:80"| FW["tf-firewall"]
+                            FW --> VPCNET["VPC Name ネットワーク"]
+                            VPCNET --> VM1["tf-instance-1"]
+                            VPCNET --> VM2["tf-instance-2"]
+                            classDef purple fill:#241b3d,stroke:#8b6cf0,color:#e6ddff;
+                            class FW purple;
+                    </script>
+
+                    <h3>10.2 firewallリソースの実装</h3>
+                    <p class="code-label">hcl · main.tf</p>
+                    <pre class="code-block"><code id="code-firewall"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-firewall">
+                        resource "google_compute_firewall" "tf-firewall" {
+                          name    = "tf-firewall"
+                          network = module.vpc.network_self_link
+
+                          allow {
+                            protocol = "tcp"
+                            ports    = ["80"]
+                          }
+
+                          source_ranges = ["0.0.0.0/0"]
+                        }
+                    </script>
+                    <div class="callout">
+                        <div class="callout-head"><i class="ti ti-bulb"></i>networkについて</div>
+                        <code>network</code> 引数には
+                        <code>projects/&lt;PROJECT_ID&gt;/global/networks/&lt;VPC Name&gt;</code>
+                        という形式のURL(self_link)を渡す必要がある。<code
+                            >terraform-google-modules/network/google</code
+                        >
+                        モジュールは
+                        <code>network_self_link</code>
+                        というoutputを提供しているため、素直にそれを参照すればよい。もしoutputの名前がわからない場合は、<code
+                            >terraform state show module.vpc</code
+                        >
+                        や
+                        <code>terraform state list</code>
+                        でstate内のリソース属性を確認する習慣をつけると良い。
+                    </div>
+                    <pre class="code-block"><code id="code-init-apply-fw"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-init-apply-fw">
+                        terraform init
+                        terraform apply
+                    </script>
+
+                    <h3>10.3 疎通確認</h3>
+                    <p>
+                        apply後は、いずれかのインスタンスからもう一方のインスタンスの外部IP(または内部IP)に対して、ポート80でアクセスできることを確認する。
+                    </p>
+                    <p class="code-label">bash</p>
+                    <pre class="code-block"><code id="code-curl"></code></pre>
+                    <script type="text/plain" class="code-src" data-target="code-curl">
+                        # tf-instance-1 に SSH接続後
+                        curl -m 5 http://<tf-instance-2の外部IP>:80
+                    </script>
+                    <p>
+                        Webサーバー自体は起動していないため、素の curl
+                        ではタイムアウトではなく接続拒否(connection
+                        refused)が返るのが正常である。ここで重要なのは「タイムアウトしない=ファイアウォールでブロックされていない」ことの確認であり、アプリケーション層の応答自体はこのラボの検証対象ではない。
+                    </p>
+                    <p style="font-size: 13px; color: var(--color-text-tertiary)">
+                        出典:
+                        <a
+                            href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall"
+                            target="_blank"
+                            rel="noopener"
+                            >google_compute_firewall — Terraform Registry</a
+                        >
+                        /
+                        <a
+                            href="https://cloud.google.com/firewall/docs/firewalls"
+                            target="_blank"
+                            rel="noopener"
+                            >VPC firewall rules overview — Google Cloud</a
+                        >
+                    </p>
+                </section>
+
+                <section id="best-practices">
+                    <h2><i class="ti ti-checklist"></i>11. ベストプラクティス総まとめ</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>観点</th>
+                                <th>ベストプラクティス</th>
+                                <th>該当箇所</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>モジュール化</td>
+                                <td>関心事ごとにmoduleを分割する(compute / storageなど)</td>
+                                <td>Task 1</td>
+                            </tr>
+                            <tr>
+                                <td>変数管理</td>
+                                <td>ハードコードせずvariables.tfに集約し、defaultを活用する</td>
+                                <td>Task 1</td>
+                            </tr>
+                            <tr>
+                                <td>import前の準備</td>
+                                <td>
+                                    importするresourceの実属性を事前にConsoleで確認し、極力一致させる
+                                </td>
+                                <td>Task 2</td>
+                            </tr>
+                            <tr>
+                                <td>import後の検証</td>
+                                <td>
+                                    terraform planの差分がゼロになることを確認してから運用に入る
+                                </td>
+                                <td>Task 2</td>
+                            </tr>
+                            <tr>
+                                <td>state管理</td>
+                                <td>ローカルstateではなくremote backend(GCS等)+ lockingを使う</td>
+                                <td>Task 3</td>
+                            </tr>
+                            <tr>
+                                <td>backendの制約</td>
+                                <td>backendブロックには変数を使えないことを理解しておく</td>
+                                <td>Task 3</td>
+                            </tr>
+                            <tr>
+                                <td>in-place update</td>
+                                <td>allow_stopping_for_update = trueで不要な再作成を避ける</td>
+                                <td>Task 4</td>
+                            </tr>
+                            <tr>
+                                <td>リソース削除</td>
+                                <td>
+                                    コンソールから直接消さず、設定ファイルの変更→applyで削除する
+                                </td>
+                                <td>Task 5</td>
+                            </tr>
+                            <tr>
+                                <td>既存モジュール活用</td>
+                                <td>車輪の再発明を避け、Registryの実績あるモジュールを使う</td>
+                                <td>Task 6</td>
+                            </tr>
+                            <tr>
+                                <td>バージョン固定</td>
+                                <td>モジュール・providerのバージョンを明示的に固定する</td>
+                                <td>Task 6</td>
+                            </tr>
+                            <tr>
+                                <td>最小権限</td>
+                                <td>
+                                    firewallは必要なport・source_rangeだけに絞る(本ラボは検証用に緩和)
+                                </td>
+                                <td>Task 7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="references">
+                    <h2><i class="ti ti-link"></i>12. 参考文献・引用ソース一覧</h2>
+                    <p>
+                        以下は、本ガイド内の各ベストプラクティスの根拠となる一次情報源(HashiCorp公式ドキュメント、Terraform
+                        Registry、Google Cloud公式ドキュメント)である。
+                    </p>
+                    <ul class="source-list">
+                        <li>
+                            <span class="src-topic">Cloud Shellの環境永続化</span
+                            ><a
+                                class="src-url"
+                                href="https://cloud.google.com/shell/docs/configuring-cloud-shell"
+                                target="_blank"
+                                rel="noopener"
+                                >https://cloud.google.com/shell/docs/configuring-cloud-shell</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">Terraform Modules の基本</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/language/modules"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/language/modules</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">Input Variables の定義方法</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/language/values/variables"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/language/values/variables</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">google_compute_instance リファレンス</span
+                            ><a
+                                class="src-url"
+                                href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance"
+                                target="_blank"
+                                rel="noopener"
+                                >https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">terraform import コマンド</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/cli/commands/import"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/cli/commands/import</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">Import の使い方ガイド</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/cli/import/usage"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/cli/import/usage</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">google_storage_bucket リファレンス</span
+                            ><a
+                                class="src-url"
+                                href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket"
+                                target="_blank"
+                                rel="noopener"
+                                >https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">Uniform bucket-level access</span
+                            ><a
+                                class="src-url"
+                                href="https://cloud.google.com/storage/docs/uniform-bucket-level-access"
+                                target="_blank"
+                                rel="noopener"
+                                >https://cloud.google.com/storage/docs/uniform-bucket-level-access</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">GCS Backend 設定リファレンス</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/language/backend/gcs"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/language/backend/gcs</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">Terraform State の概念</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/language/state"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/language/state</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">terraform-google-modules/network/google</span
+                            ><a
+                                class="src-url"
+                                href="https://registry.terraform.io/modules/terraform-google-modules/network/google/latest"
+                                target="_blank"
+                                rel="noopener"
+                                >https://registry.terraform.io/modules/terraform-google-modules/network/google/latest</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">google_compute_firewall リファレンス</span
+                            ><a
+                                class="src-url"
+                                href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall"
+                                target="_blank"
+                                rel="noopener"
+                                >https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">VPCファイアウォールルールの概要</span
+                            ><a
+                                class="src-url"
+                                href="https://cloud.google.com/firewall/docs/firewalls"
+                                target="_blank"
+                                rel="noopener"
+                                >https://cloud.google.com/firewall/docs/firewalls</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">リソースの削除(Destroy)</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/language/resources/destroy"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/language/resources/destroy</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">terraform destroy コマンド</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/cli/commands/destroy"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/cli/commands/destroy</a
+                            >
+                        </li>
+                        <li>
+                            <span class="src-topic">Terraform Style Guide</span
+                            ><a
+                                class="src-url"
+                                href="https://developer.hashicorp.com/terraform/language/style"
+                                target="_blank"
+                                rel="noopener"
+                                >https://developer.hashicorp.com/terraform/language/style</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+
+                <footer class="footer">
+                    <p>
+                        各Taskの最後には必ず
+                        <code>terraform plan</code>
+                        で差分を確認し、意図しない変更(特にリソースの再作成)が含まれていないかをチェックしてから
+                        apply する習慣を徹底してほしい。
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script>
+            function dedent(str) {
+                var lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n[ \t]*$/, '')
+                    .split('\n');
+                var indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return l.match(/^[ \t]*/)[0].length;
+                    });
+                var min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(min);
+                    })
+                    .join('\n');
+            }
+
+            document.querySelectorAll('script.code-src').forEach(function (el) {
+                var target = document.getElementById(el.dataset.target);
+                if (target) target.textContent = dedent(el.textContent);
+            });
+
+            document.querySelectorAll('script.mermaid-src').forEach(function (el) {
+                var target = document.getElementById(el.dataset.target);
+                if (target) target.textContent = dedent(el.textContent);
+            });
+
+            (async function initMermaid() {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (e) {}
+                }
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif',
+                    flowchart: {
+                        useMaxWidth: false,
+                        htmlLabels: true,
+                        nodeSpacing: 45,
+                        rankSpacing: 50,
+                    },
+                });
+                await mermaid.run({ querySelector: '.mermaid' });
+                document.querySelectorAll('.mermaid svg').forEach(function (svg) {
+                    svg.removeAttribute('width');
+                    svg.style.maxWidth = '100%';
+                    svg.style.height = 'auto';
+                    svg.style.overflow = 'visible';
+                });
+            })();
+
+            var sections = document.querySelectorAll('main section[id]');
+            var navLinks = document.querySelectorAll('.sidebar nav a');
+            var observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (a) {
+                                a.classList.remove('active');
+                            });
+                            var link = document.querySelector(
+                                '.sidebar nav a[href="#' + entry.target.id + '"]',
+                            );
+                            if (link) link.classList.add('active');
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+            sections.forEach(function (s) {
+                observer.observe(s);
+            });
+        </script>
+    </body>
+</html>
