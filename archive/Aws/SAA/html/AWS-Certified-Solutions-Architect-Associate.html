@@ -3461,7 +3461,7 @@
                     progressFrame = requestAnimationFrame(function () {
                         const total = article.scrollHeight - window.innerHeight;
                         const scrolled = Math.min(
-                            Math.max(window.scrollY - article.offsetTop + 200, 0),
+                            Math.max(window.scrollY - article.offsetTop, 0),
                             total,
                         );
                         const pct = total > 0 ? (scrolled / total) * 100 : 0;
