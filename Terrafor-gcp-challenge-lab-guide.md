@@ -378,7 +378,7 @@ terraform init
 
 `backend` ブロックを追加して `init` を実行すると、Terraformは既存のローカルstateを検出し、次のように尋ねてくる。
 
-```
+```text
 Do you want to copy existing state to the new backend?
   Enter "yes" to copy and "no" to start with an empty state.
 ```
