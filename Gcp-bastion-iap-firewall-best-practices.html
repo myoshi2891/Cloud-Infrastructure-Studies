@@ -375,7 +375,12 @@
 
             .mermaid-scroll {
                 overflow-x: auto;
-                margin: 20px 0;
+                margin: 20px 0 12px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 24px 16px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
             }
             .mermaid {
                 display: flex;
@@ -385,6 +390,59 @@
                 height: auto;
                 flex-shrink: 0;
                 display: block;
+            }
+            .mermaid svg text,
+            .mermaid svg .label {
+                font-family: var(--font-sans) !important;
+                font-size: 14px !important;
+                fill: #ffffff !important;
+                font-weight: 500 !important;
+            }
+            .mermaid svg .edgeLabel,
+            .mermaid svg .edgeLabel span,
+            .mermaid svg .edgeLabel rect {
+                background-color: var(--color-background-tertiary) !important;
+                color: #a5c7ff !important;
+                fill: var(--color-background-tertiary) !important;
+                padding: 4px 8px !important;
+                border-radius: 6px !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+            }
+            .mermaid svg .cluster rect {
+                fill: rgba(18, 37, 66, 0.6) !important;
+                stroke: #3b629b !important;
+                stroke-width: 1.5px !important;
+                rx: 8px !important;
+            }
+            .mermaid svg .cluster text,
+            .mermaid svg .cluster span,
+            .mermaid svg .cluster tspan {
+                fill: #9bc2ff !important;
+                color: #9bc2ff !important;
+                font-weight: 700 !important;
+                font-size: 14px !important;
+            }
+            .mermaid svg .actor {
+                fill: #142a4a !important;
+                stroke: #5c8bd6 !important;
+                stroke-width: 2px !important;
+            }
+            .mermaid svg .actor text,
+            .mermaid svg .actor tspan {
+                fill: #ffffff !important;
+                font-weight: 600 !important;
+            }
+            .mermaid svg .messageText {
+                fill: #d0e1ff !important;
+                font-size: 13px !important;
+                font-weight: 500 !important;
+            }
+            .mermaid svg .node rect,
+            .mermaid svg .node circle,
+            .mermaid svg .node polygon,
+            .mermaid svg .node path {
+                stroke-width: 2px !important;
             }
 
             .diagram-caption {
@@ -1252,62 +1310,76 @@
 
         <script type="text/plain" class="mermaid-src" data-target="mermaid-before">
             flowchart TD
-                Internet["Internet 0.0.0.0/0"]
-                FWssh["既存ルール: SSH tcp:22 from 0.0.0.0/0 全世界に開放"]
-                FWhttp["既存ルール: HTTP tcp:80 from 0.0.0.0/0"]
-                Bastion["bastion VM 外部IPあり"]
-                JuiceShop["juice-shop VM 外部IPあり"]
+                classDef danger fill:#3a1620,stroke:#ff6b6b,stroke-width:2px,color:#ffffff;
+                classDef warning fill:#3a2c12,stroke:#f0c674,stroke-width:2px,color:#ffffff;
+                classDef net fill:#142a4a,stroke:#5c8bd6,stroke-width:1.5px,color:#ffffff;
+
+                Internet["Internet (0.0.0.0/0)"]:::net
+                FWssh["既存ルール: SSH tcp:22 from 0.0.0.0/0<br/>(全世界に開放)"]:::danger
+                FWhttp["既存ルール: HTTP tcp:80 from 0.0.0.0/0"]:::warning
+                Bastion["bastion VM (外部IPあり)"]:::warning
+                JuiceShop["juice-shop VM (外部IPあり)"]:::danger
 
                 Internet --> FWssh
                 FWssh --> Bastion
-                FWssh -.->|"タグ次第では直接到達も"| JuiceShop
+                FWssh -.->|"危険: タグ次第で直接到達可能"| JuiceShop
                 Internet --> FWhttp
                 FWhttp --> JuiceShop
         </script>
 
         <script type="text/plain" class="mermaid-src" data-target="mermaid-after">
             flowchart TD
-                subgraph INTERNET["インターネット"]
-                    Admin["管理者 gcloud / Cloud Console"]
-                    PublicUser["一般ユーザー"]
+                classDef user fill:#14304d,stroke:#5c8bd6,stroke-width:2px,color:#ffffff;
+                classDef iap fill:#2d1b4e,stroke:#c084fc,stroke-width:2px,color:#ffffff;
+                classDef bastion fill:#0f382c,stroke:#4ade80,stroke-width:2px,color:#ffffff;
+                classDef juice fill:#0f2d4a,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+
+                subgraph INTERNET["インターネット環境"]
+                    Admin["管理者 (gcloud / Console)"]:::user
+                    PublicUser["一般ユーザー"]:::user
                 end
 
-                subgraph GOOGLEIAP["Google管理のIAP送信元 35.235.240.0/20"]
-                    IAP["Identity-Aware Proxy"]
+                subgraph GOOGLEIAP["Google IAP ゾーン (35.235.240.0/20)"]
+                    IAP["Identity-Aware Proxy"]:::iap
                 end
 
-                subgraph VPCNET["acme-vpc ネットワーク"]
-                    Bastion["bastion タグ: ssh-iap 外部IPなし"]
-                    JuiceShop["juice-shop タグ: http-server, ssh-internal"]
+                subgraph VPCNET["VPC ネットワーク (acme-vpc)"]
+                    Bastion["bastion VM<br/>タグ: ssh-iap<br/>(外部IPなし)"]:::bastion
+                    JuiceShop["juice-shop VM<br/>タグ: http-server, ssh-internal"]:::juice
                 end
 
-                Admin -->|"HTTPS 暗号化トンネル"| IAP
-                IAP -->|"許可 tcp:22 from 35.235.240.0/20"| Bastion
-                Bastion -->|"許可 tcp:22 from acme-mgmt-subnet"| JuiceShop
-                PublicUser -->|"許可 tcp:80 from 0.0.0.0/0"| JuiceShop
+                Admin -->|"1. HTTPSトンネル"| IAP
+                IAP -->|"2. 許可 tcp:22 (IAP固定レンジ)"| Bastion
+                Bastion -->|"3. 許可 tcp:22 (acme-mgmt-subnet)"| JuiceShop
+                PublicUser -->|"許可 tcp:80 (0.0.0.0/0)"| JuiceShop
         </script>
 
         <script type="text/plain" class="mermaid-src" data-target="mermaid-taskorder">
             flowchart LR
-                A["1. 過剰なルールの削除"] --> B["2. bastion起動"]
-                B --> C["3. IAP用SSHルール作成 + タグ付与"]
-                C --> D["4. HTTP用ルール作成 + タグ付与"]
-                D --> E["5. 内部SSH用ルール作成 + タグ付与"]
-                E --> F["6. IAP経由で接続確認"]
+                classDef step fill:#142a4a,stroke:#5c8bd6,stroke-width:2px,color:#ffffff;
+                classDef dangerStep fill:#3a1620,stroke:#ff6b6b,stroke-width:2px,color:#ffffff;
+                classDef finishStep fill:#0f382c,stroke:#4ade80,stroke-width:2px,color:#ffffff;
+
+                A["1. 過剰ルールの削除"]:::dangerStep --> B["2. bastion起動"]:::step
+                B --> C["3. IAP用SSHルール作成 + タグ付与"]:::step
+                C --> D["4. HTTP用ルール作成 + タグ付与"]:::step
+                D --> E["5. 内部SSH用ルール作成 + タグ付与"]:::step
+                E --> F["6. IAP経由で接続確認"]:::finishStep
         </script>
 
         <script type="text/plain" class="mermaid-src" data-target="mermaid-sequence">
             sequenceDiagram
-                participant Admin as "管理者"
-                participant IAP as "Identity-Aware Proxy"
-                participant Bastion as "bastion VM"
-                participant Juice as "juice-shop VM"
+                autonumber
+                actor Admin as 管理者
+                participant IAP as Identity-Aware Proxy
+                participant Bastion as bastion VM
+                participant Juice as juice-shop VM
 
-                Admin->>IAP: "gcloud compute ssh bastion --tunnel-through-iap"
-                IAP->>Bastion: "暗号化トンネル経由でtcp:22"
-                Bastion-->>Admin: "シェル取得"
-                Admin->>Juice: "bastion上からssh 内部IP"
-                Juice-->>Admin: "シェル取得"
+                Admin->>IAP: gcloud compute ssh bastion --tunnel-through-iap
+                IAP->>Bastion: 暗号化トンネル経由で SSH (tcp:22)
+                Bastion-->>Admin: bastion シェルセッション確立
+                Admin->>Juice: ssh <juice-shop内部IP>
+                Juice-->>Admin: juice-shop シェルセッション確立
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -1364,14 +1436,35 @@
                         },
                         sequence: { useMaxWidth: false },
                         themeVariables: {
-                            background: '#07111e',
-                            primaryColor: '#122542',
-                            primaryTextColor: '#e8edf5',
-                            primaryBorderColor: '#2a4269',
-                            lineColor: '#4a6790',
-                            secondaryColor: '#14304d',
-                            tertiaryColor: '#0c1a2e',
-                            fontSize: '16px',
+                            darkMode: true,
+                            background: 'transparent',
+                            primaryColor: '#142a4a',
+                            primaryTextColor: '#ffffff',
+                            primaryBorderColor: '#5c8bd6',
+                            lineColor: '#7aa5e5',
+                            secondaryColor: '#1f3a5f',
+                            tertiaryColor: '#0e1f36',
+                            tertiaryTextColor: '#ffffff',
+                            fontSize: '14px',
+                            subgraphBkg: 'rgba(18, 37, 66, 0.6)',
+                            subgraphBorderColor: '#3b629b',
+                            subgraphTextColor: '#9bc2ff',
+                            nodeBorder: '#5c8bd6',
+                            nodeTextColor: '#ffffff',
+                            edgeLabelBackground: '#122542',
+                            actorBkg: '#142a4a',
+                            actorBorder: '#5c8bd6',
+                            actorTextColor: '#ffffff',
+                            actorLineColor: '#7aa5e5',
+                            signalColor: '#7aa5e5',
+                            signalTextColor: '#ffffff',
+                            labelBoxBkgColor: '#142a4a',
+                            labelBoxBorderColor: '#5c8bd6',
+                            labelTextColor: '#ffffff',
+                            loopTextColor: '#ffffff',
+                            noteBkgColor: '#142a4a',
+                            noteBorderColor: '#5c8bd6',
+                            noteTextColor: '#ffffff',
                         },
                     });
 
