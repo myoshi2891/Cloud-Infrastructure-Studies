@@ -1696,10 +1696,54 @@
 
                     <h3>9.4 インスタンスをサブネットに接続する</h3>
                     <p>
-                        <code>instances.tf</code> の
-                        <code>network_interface</code>
-                        を、デフォルトネットワークから作成したVPC/サブネットへ切り替える。
+                        親モジュール（<code>main.tf</code>）から作成したVPCネットワークおよびサブネットの情報を <code>module "instances"</code> に渡し、<code>modules/instances/instances.tf</code> 内では対応する入力変数（<code>var.*</code>）を参照してネットワークを切り替える。
                     </p>
+
+                    <div class="code-wrap">
+                        <div class="code-head">
+                            <span class="code-lang">HCL</span><span class="code-file">main.tf</span>
+                        </div>
+                        <pre
+                            class="code-block"
+                        ><code id="code-main-instances-vpc" class="language-hcl" data-lang="hcl"></code></pre>
+                    </div>
+                    <script type="text/plain" class="code-src" data-target="code-main-instances-vpc">
+                        module "instances" {
+                          source       = "./modules/instances"
+                          project_id   = var.project_id
+                          region       = var.region
+                          zone         = var.zone
+                          network_name = module.vpc.network_name
+                          subnetwork_1 = "subnet-01"
+                          subnetwork_2 = "subnet-02"
+                        }
+                    </script>
+
+                    <div class="code-wrap">
+                        <div class="code-head">
+                            <span class="code-lang">HCL</span><span class="code-file">modules/instances/variables.tf</span>
+                        </div>
+                        <pre
+                            class="code-block"
+                        ><code id="code-instances-vars-vpc" class="language-hcl" data-lang="hcl"></code></pre>
+                    </div>
+                    <script type="text/plain" class="code-src" data-target="code-instances-vars-vpc">
+                        variable "network_name" {
+                          type        = string
+                          description = "The name of the VPC network"
+                        }
+
+                        variable "subnetwork_1" {
+                          type        = string
+                          description = "The name of the first subnetwork"
+                        }
+
+                        variable "subnetwork_2" {
+                          type        = string
+                          description = "The name of the second subnetwork"
+                        }
+                    </script>
+
                     <div class="code-wrap">
                         <div class="code-head">
                             <span class="code-lang">HCL</span
@@ -1713,8 +1757,8 @@
                         resource "google_compute_instance" "tf-instance-1" {
                           # ...(略)
                           network_interface {
-                            network    = module.vpc.network_name
-                            subnetwork = "subnet-01"
+                            network    = var.network_name
+                            subnetwork = var.subnetwork_1
                             access_config {}
                           }
                         }
@@ -1722,15 +1766,14 @@
                         resource "google_compute_instance" "tf-instance-2" {
                           # ...(略)
                           network_interface {
-                            network    = module.vpc.network_name
-                            subnetwork = "subnet-02"
+                            network    = var.network_name
+                            subnetwork = var.subnetwork_2
                             access_config {}
                           }
                         }
                     </script>
                     <p>
-                        <code>module.vpc.network_name</code> のように、モジュールの output
-                        を他のリソースから参照できるのがmodule設計の大きな利点である。モジュール間の暗黙的な依存関係も、Terraformが自動的にDAG(有向非巡回グラフ)として解決してくれる。
+                        <code>main.tf</code> で <code>network_name = module.vpc.network_name</code> を渡し、<code>instances.tf</code> 内で <code>var.network_name</code> として参照する。子モジュールから親のリソース（<code>module.vpc.network_name</code>）を直接参照することはできないため、必ず variable 経由で受け取るのがモジュール設計の基本原則である。また、モジュール間の依存関係はTerraformが自動的にDAG(有向非巡回グラフ)として解決し、VPCの作成後にインスタンスが接続される。
                     </p>
                     <div class="code-wrap">
                         <div class="code-head">
