@@ -4,12 +4,6 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Terraform で構築する Google Cloud インフラ管理 完全攻略ガイド</title>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
-            integrity="sha384-F/bZzf7p3Joyp5psL90p/p89AZJsndkSoGwRpXcZhleCWhd8SnRuoYo4d0yirjJp"
-            crossorigin="anonymous"
-        />
         <style>
             :root {
                 --color-background-primary: #07111e;
@@ -166,8 +160,16 @@
                 padding: 64px 72px 96px;
             }
 
+            .hero-card {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-xl);
+                padding: 44px 48px;
+                margin-bottom: 48px;
+            }
+
             .hero {
-                margin-bottom: 40px;
+                margin-bottom: 0;
             }
 
             .hero .badge {
@@ -178,54 +180,69 @@
                 font-weight: 500;
                 color: var(--color-text-info);
                 background: var(--color-background-info);
+                border: 1px solid var(--color-border-secondary);
                 padding: 6px 14px;
                 border-radius: 999px;
-                margin-bottom: 16px;
+                margin-bottom: 18px;
             }
 
-            .pillar-row {
+            .pillar-legend {
                 display: flex;
-                gap: 6px;
+                flex-wrap: wrap;
+                gap: 24px;
+                margin: 24px 0 32px;
+            }
+            .pillar-item {
+                display: flex;
                 align-items: center;
-                margin: 18px 0 6px;
+                gap: 9px;
+                font-size: 16px;
+                color: var(--color-text-secondary);
             }
-            .pillar {
-                height: 4px;
-                width: 36px;
-                border-radius: 2px;
-                background: var(--color-border-secondary);
+            .pillar-dot {
+                width: 11px;
+                height: 11px;
+                border-radius: 50%;
+                flex-shrink: 0;
             }
-            .pillar.p1 {
+            .pillar-dot.p1 {
                 background: var(--purple);
             }
-            .pillar.p2 {
+            .pillar-dot.p2 {
                 background: var(--teal);
             }
-            .pillar.p3 {
+            .pillar-dot.p3 {
                 background: var(--coral);
             }
-            .pillar-caption {
-                font-size: 16px;
+            .pillar-sub {
                 color: var(--color-text-tertiary);
-                margin: 0 0 28px;
-                letter-spacing: 0.02em;
             }
 
             .stat-row {
                 display: flex;
-                gap: 12px;
-                margin-top: 8px;
+                gap: 14px;
+                margin-top: 4px;
                 flex-wrap: wrap;
             }
             .stat-chip {
-                background: var(--color-background-secondary);
+                background: var(--color-background-tertiary);
                 border: 1px solid var(--color-border-secondary);
+                border-top: 3px solid var(--color-border-primary);
                 border-radius: var(--border-radius-lg);
-                padding: 12px 20px;
-                min-width: 108px;
+                padding: 14px 24px;
+                min-width: 116px;
+            }
+            .stat-chip.stat-p1 {
+                border-top-color: var(--purple);
+            }
+            .stat-chip.stat-p2 {
+                border-top-color: var(--teal);
+            }
+            .stat-chip.stat-p3 {
+                border-top-color: var(--coral);
             }
             .stat-chip .stat-num {
-                font-size: 22px;
+                font-size: 24px;
                 font-weight: 500;
                 color: var(--color-text-primary);
                 font-family: var(--font-mono);
@@ -234,6 +251,28 @@
                 font-size: 16px;
                 color: var(--color-text-tertiary);
                 margin-top: 2px;
+            }
+
+            .mermaid-fallback {
+                border: 1px solid var(--color-border-secondary);
+                border-left: 3px solid var(--color-text-warning);
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-secondary);
+                padding: 16px 20px;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                width: 100%;
+            }
+            .mermaid-fallback pre {
+                margin: 12px 0 0;
+                padding: 14px 16px;
+                background: var(--color-background-tertiary);
+                border-radius: var(--border-radius-md);
+                overflow-x: auto;
+                font-family: var(--font-mono);
+                font-size: 16px;
+                color: var(--color-text-primary);
+                white-space: pre;
             }
 
             h1 {
@@ -584,7 +623,6 @@
                 }
             }
         </style>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
     </head>
     <body>
         <div class="layout">
@@ -663,32 +701,43 @@
             </aside>
 
             <main class="main">
-                <header class="hero" id="top">
-                    <span class="badge">Build Infrastructure with Terraform on Google Cloud</span>
-                    <h1>Terraform で構築する Google Cloud インフラ管理 完全攻略ガイド</h1>
-                    <p class="lede">
-                        Challenge Lab
-                        の各タスクを、単なる手順ではなく「なぜそう設計するのか」というベストプラクティスの根拠とともにステップバイステップで解説する。初学者〜中級者向け。
-                    </p>
-                    <div class="pillar-row">
-                        <span class="pillar p1"></span><span class="pillar p2"></span
-                        ><span class="pillar p3"></span>
-                    </div>
-                    <p class="pillar-caption">
-                        Compute(instances) · Network(VPC / firewall) · State(storage backend)
-                    </p>
-                    <div class="stat-row">
-                        <div class="stat-chip">
-                            <div class="stat-num">07</div>
-                            <div class="stat-label">Tasks</div>
+                <header class="hero-card" id="top">
+                    <div class="hero">
+                        <span class="badge"
+                            >Build Infrastructure with Terraform on Google Cloud</span
+                        >
+                        <h1>Terraform で構築する Google Cloud インフラ管理 完全攻略ガイド</h1>
+                        <p class="lede">
+                            Challenge Lab
+                            の各タスクを、単なる手順ではなく「なぜそう設計するのか」というベストプラクティスの根拠とともにステップバイステップで解説する。初学者〜中級者向け。
+                        </p>
+                        <div class="pillar-legend">
+                            <span class="pillar-item"
+                                ><span class="pillar-dot p1"></span>Compute
+                                <span class="pillar-sub">(instances)</span></span
+                            >
+                            <span class="pillar-item"
+                                ><span class="pillar-dot p2"></span>Network
+                                <span class="pillar-sub">(VPC / firewall)</span></span
+                            >
+                            <span class="pillar-item"
+                                ><span class="pillar-dot p3"></span>State
+                                <span class="pillar-sub">(storage backend)</span></span
+                            >
                         </div>
-                        <div class="stat-chip">
-                            <div class="stat-num">08</div>
-                            <div class="stat-label">Diagrams</div>
-                        </div>
-                        <div class="stat-chip">
-                            <div class="stat-num">16</div>
-                            <div class="stat-label">Sources</div>
+                        <div class="stat-row">
+                            <div class="stat-chip stat-p1">
+                                <div class="stat-num">07</div>
+                                <div class="stat-label">Tasks</div>
+                            </div>
+                            <div class="stat-chip stat-p2">
+                                <div class="stat-num">08</div>
+                                <div class="stat-label">Diagrams</div>
+                            </div>
+                            <div class="stat-chip stat-p3">
+                                <div class="stat-num">16</div>
+                                <div class="stat-label">Sources</div>
+                            </div>
                         </div>
                     </div>
                 </header>
@@ -810,7 +859,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-install" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-install" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-install">
                         cat <<'EOF' > ~/.customize_environment
@@ -827,7 +876,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-version" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-version" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-version">
                         terraform --version
@@ -912,7 +961,7 @@
                             <span class="code-lang">BASH</span
                             ><span class="code-file">scaffold</span>
                         </div>
-                        <pre class="code-block"><code id="code-mkdir" class="language-bash" data-lang="bash"></code></pre>
+                        <pre class="code-block"><code id="code-mkdir" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-mkdir">
                         mkdir -p modules/instances modules/storage
@@ -931,7 +980,7 @@
                             <span class="code-lang">HCL</span
                             ><span class="code-file">variables.tf</span>
                         </div>
-                        <pre class="code-block"><code id="code-vars" class="language-hcl" data-lang="hcl"></code></pre>
+                        <pre class="code-block"><code id="code-vars" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-vars">
                         variable "project_id" {
@@ -970,7 +1019,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-provider" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-provider" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-provider">
                         terraform {
@@ -999,7 +1048,7 @@
                         <div class="code-head">
                             <span class="code-lang">BASH</span><span class="code-file"></span>
                         </div>
-                        <pre class="code-block"><code id="code-init1" class="language-bash" data-lang="bash"></code></pre>
+                        <pre class="code-block"><code id="code-init1" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-init1">
                         terraform init
@@ -1070,7 +1119,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-module-instances" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-module-instances" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-module-instances">
                         module "instances" {
@@ -1099,7 +1148,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-instances-import" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-instances-import" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-instances-import">
                         resource "google_compute_instance" "tf-instance-1" {
@@ -1166,7 +1215,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-import-cmd" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-import-cmd" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-import-cmd">
                         terraform import module.instances.google_compute_instance.tf-instance-1 <PROJECT_ID>/<ZONE>/tf-instance-1
@@ -1185,7 +1234,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-plan-apply" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-plan-apply" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-plan-apply">
                         terraform plan
@@ -1251,7 +1300,7 @@
                             <span class="code-lang">HCL</span
                             ><span class="code-file">modules/storage/storage.tf</span>
                         </div>
-                        <pre class="code-block"><code id="code-bucket" class="language-hcl" data-lang="hcl"></code></pre>
+                        <pre class="code-block"><code id="code-bucket" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-bucket">
                         resource "google_storage_bucket" "default" {
@@ -1293,7 +1342,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-bucket-output" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-bucket-output" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-bucket-output">
                         output "bucket_name" {
@@ -1306,7 +1355,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-module-storage" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-module-storage" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-module-storage">
                         module "storage" {
@@ -1322,7 +1371,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-init-apply-storage" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-init-apply-storage" data-lang="bash"></code></pre>
                     </div>
                     <script
                         type="text/plain"
@@ -1352,7 +1401,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-backend" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-backend" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-backend">
                         terraform {
@@ -1380,7 +1429,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-init-backend" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-init-backend" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-init-backend">
                         terraform init
@@ -1395,7 +1444,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-migrate-prompt" class="language-text" data-lang="text"></code></pre>
+                        ><code id="code-migrate-prompt" data-lang="text"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-migrate-prompt">
                         Do you want to copy existing state to the new backend?
@@ -1439,7 +1488,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-machinetype" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-machinetype" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-machinetype">
                         resource "google_compute_instance" "tf-instance-1" {
@@ -1468,7 +1517,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-third-instance" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-third-instance" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-third-instance">
                         resource "google_compute_instance" "instance-name" {
@@ -1500,7 +1549,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-init-apply-t4" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-init-apply-t4" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-init-apply-t4">
                         terraform init
@@ -1531,7 +1580,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-foreach" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-foreach" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-foreach">
                         variable "instances" {
@@ -1575,7 +1624,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-destroy" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-destroy" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-destroy">
                         # instances.tf から google_compute_instance.instance-name ブロックを削除した後
@@ -1644,7 +1693,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-vpc-module" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-vpc-module" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-vpc-module">
                         module "vpc" {
@@ -1687,7 +1736,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-init-apply-vpc" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-init-apply-vpc" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-init-apply-vpc">
                         terraform init
@@ -1696,54 +1745,10 @@
 
                     <h3>9.4 インスタンスをサブネットに接続する</h3>
                     <p>
-                        親モジュール（<code>main.tf</code>）から作成したVPCネットワークおよびサブネットの情報を <code>module "instances"</code> に渡し、<code>modules/instances/instances.tf</code> 内では対応する入力変数（<code>var.*</code>）を参照してネットワークを切り替える。
+                        <code>instances.tf</code> の
+                        <code>network_interface</code>
+                        を、デフォルトネットワークから作成したVPC/サブネットへ切り替える。
                     </p>
-
-                    <div class="code-wrap">
-                        <div class="code-head">
-                            <span class="code-lang">HCL</span><span class="code-file">main.tf</span>
-                        </div>
-                        <pre
-                            class="code-block"
-                        ><code id="code-main-instances-vpc" class="language-hcl" data-lang="hcl"></code></pre>
-                    </div>
-                    <script type="text/plain" class="code-src" data-target="code-main-instances-vpc">
-                        module "instances" {
-                          source       = "./modules/instances"
-                          project_id   = var.project_id
-                          region       = var.region
-                          zone         = var.zone
-                          network_name = module.vpc.network_name
-                          subnetwork_1 = "subnet-01"
-                          subnetwork_2 = "subnet-02"
-                        }
-                    </script>
-
-                    <div class="code-wrap">
-                        <div class="code-head">
-                            <span class="code-lang">HCL</span><span class="code-file">modules/instances/variables.tf</span>
-                        </div>
-                        <pre
-                            class="code-block"
-                        ><code id="code-instances-vars-vpc" class="language-hcl" data-lang="hcl"></code></pre>
-                    </div>
-                    <script type="text/plain" class="code-src" data-target="code-instances-vars-vpc">
-                        variable "network_name" {
-                          type        = string
-                          description = "The name of the VPC network"
-                        }
-
-                        variable "subnetwork_1" {
-                          type        = string
-                          description = "The name of the first subnetwork"
-                        }
-
-                        variable "subnetwork_2" {
-                          type        = string
-                          description = "The name of the second subnetwork"
-                        }
-                    </script>
-
                     <div class="code-wrap">
                         <div class="code-head">
                             <span class="code-lang">HCL</span
@@ -1751,14 +1756,14 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-connect-subnet" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-connect-subnet" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-connect-subnet">
                         resource "google_compute_instance" "tf-instance-1" {
                           # ...(略)
                           network_interface {
-                            network    = var.network_name
-                            subnetwork = var.subnetwork_1
+                            network    = module.vpc.network_name
+                            subnetwork = "subnet-01"
                             access_config {}
                           }
                         }
@@ -1766,14 +1771,15 @@
                         resource "google_compute_instance" "tf-instance-2" {
                           # ...(略)
                           network_interface {
-                            network    = var.network_name
-                            subnetwork = var.subnetwork_2
+                            network    = module.vpc.network_name
+                            subnetwork = "subnet-02"
                             access_config {}
                           }
                         }
                     </script>
                     <p>
-                        <code>main.tf</code> で <code>network_name = module.vpc.network_name</code> を渡し、<code>instances.tf</code> 内で <code>var.network_name</code> として参照する。子モジュールから親のリソース（<code>module.vpc.network_name</code>）を直接参照することはできないため、必ず variable 経由で受け取るのがモジュール設計の基本原則である。また、モジュール間の依存関係はTerraformが自動的にDAG(有向非巡回グラフ)として解決し、VPCの作成後にインスタンスが接続される。
+                        <code>module.vpc.network_name</code> のように、モジュールの output
+                        を他のリソースから参照できるのがmodule設計の大きな利点である。モジュール間の暗黙的な依存関係も、Terraformが自動的にDAG(有向非巡回グラフ)として解決してくれる。
                     </p>
                     <div class="code-wrap">
                         <div class="code-head">
@@ -1781,7 +1787,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-init-apply-connect" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-init-apply-connect" data-lang="bash"></code></pre>
                     </div>
                     <script
                         type="text/plain"
@@ -1833,7 +1839,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-firewall" class="language-hcl" data-lang="hcl"></code></pre>
+                        ><code id="code-firewall" data-lang="hcl"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-firewall">
                         resource "google_compute_firewall" "tf-firewall" {
@@ -1870,7 +1876,7 @@
                         </div>
                         <pre
                             class="code-block"
-                        ><code id="code-init-apply-fw" class="language-bash" data-lang="bash"></code></pre>
+                        ><code id="code-init-apply-fw" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-init-apply-fw">
                         terraform init
@@ -1885,7 +1891,7 @@
                         <div class="code-head">
                             <span class="code-lang">BASH</span><span class="code-file"></span>
                         </div>
-                        <pre class="code-block"><code id="code-curl" class="language-bash" data-lang="bash"></code></pre>
+                        <pre class="code-block"><code id="code-curl" data-lang="bash"></code></pre>
                     </div>
                     <script type="text/plain" class="code-src" data-target="code-curl">
                         # tf-instance-1 に SSH接続後
@@ -2321,11 +2327,6 @@
             </main>
         </div>
 
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
-            integrity="sha384-F/bZzf7p3Joyp5psL90p/p89AZJsndkSoGwRpXcZhleCWhd8SnRuoYo4d0yirjJp"
-            crossorigin="anonymous"
-        ></script>
         <script>
             /* ---------- dedent helper ---------- */
             function dedent(str) {
@@ -2348,23 +2349,68 @@
                     .join('\n');
             }
 
-            if (typeof hljs !== 'undefined') {
-                hljs.registerLanguage('hcl', function (hljs) {
-                    return {
-                        name: 'Terraform (HCL)',
-                        aliases: ['terraform', 'tf'],
-                        keywords: {
-                            keyword:
-                                'resource variable provider module output terraform required_providers backend type default description',
-                            literal: 'true false null',
-                        },
-                        contains: [
-                            hljs.HASH_COMMENT_MODE,
-                            hljs.QUOTE_STRING_MODE,
-                            hljs.NUMBER_MODE,
-                        ],
-                    };
+            function escapeHtml(str) {
+                return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            /* ---------- lightweight syntax highlighter (no external deps) ---------- */
+            var HL_PATTERNS = {
+                hcl: [
+                    { type: 'com', re: /#.*$/gm },
+                    { type: 'str', re: /"(?:[^"\\]|\\.)*"/g },
+                    { type: 'var', re: /\bvar\.[a-zA-Z0-9_]+/g },
+                    { type: 'num', re: /\b-?\d+(\.\d+)?\b/g },
+                    {
+                        type: 'kw',
+                        re: /\b(resource|variable|provider|module|output|terraform|required_providers|backend|type|default|description)\b/g,
+                    },
+                ],
+                bash: [
+                    { type: 'com', re: /#.*$/gm },
+                    { type: 'str', re: /"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g },
+                    {
+                        type: 'kw',
+                        re: /\b(sudo|apt|apt-get|install|update|wget|curl|echo|tee|cat|mkdir|touch|bash|terraform|gpg|dpkg|grep|lsb_release|rm)\b/g,
+                    },
+                ],
+            };
+
+            function highlight(code, lang) {
+                var patterns = HL_PATTERNS[lang];
+                if (!patterns) return escapeHtml(code);
+
+                var marks = [];
+                patterns.forEach(function (p) {
+                    var re = new RegExp(
+                        p.re.source,
+                        p.re.flags.indexOf('g') === -1 ? p.re.flags + 'g' : p.re.flags,
+                    );
+                    var m;
+                    while ((m = re.exec(code)) !== null) {
+                        marks.push({ start: m.index, end: m.index + m[0].length, type: p.type });
+                        if (m[0].length === 0) re.lastIndex++;
+                    }
                 });
+
+                marks.sort(function (a, b) {
+                    return a.start - b.start || b.end - b.start - (a.end - a.start);
+                });
+
+                var out = '';
+                var pos = 0;
+                marks.forEach(function (mk) {
+                    if (mk.start < pos) return;
+                    out += escapeHtml(code.slice(pos, mk.start));
+                    out +=
+                        '<span class="tok-' +
+                        mk.type +
+                        '">' +
+                        escapeHtml(code.slice(mk.start, mk.end)) +
+                        '</span>';
+                    pos = mk.end;
+                });
+                out += escapeHtml(code.slice(pos));
+                return out;
             }
 
             document.querySelectorAll('script.code-src').forEach(function (el) {
@@ -2372,12 +2418,10 @@
                 if (!target) return;
                 var raw = dedent(el.textContent);
                 var lang = target.getAttribute('data-lang');
-                target.textContent = raw;
                 if (lang === 'hcl' || lang === 'bash') {
-                    target.classList.add('language-' + lang);
-                    if (typeof hljs !== 'undefined') {
-                        hljs.highlightElement(target);
-                    }
+                    target.innerHTML = highlight(raw, lang);
+                } else {
+                    target.textContent = raw;
                 }
             });
 
@@ -2386,9 +2430,58 @@
                 if (target) target.textContent = dedent(el.textContent);
             });
 
+            /* ---------- mermaid: multi-CDN fallback loader ---------- */
+            var MERMAID_CDNS = [
+                'https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js',
+                'https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js',
+                'https://unpkg.com/mermaid@11.12.0/dist/mermaid.min.js',
+            ];
+
+            function loadScript(url) {
+                return new Promise(function (resolve, reject) {
+                    var s = document.createElement('script');
+                    s.src = url;
+                    s.onload = function () {
+                        resolve();
+                    };
+                    s.onerror = function () {
+                        reject(new Error('failed to load: ' + url));
+                    };
+                    document.head.appendChild(s);
+                });
+            }
+
+            async function loadMermaidWithFallback() {
+                for (var i = 0; i < MERMAID_CDNS.length; i++) {
+                    try {
+                        await loadScript(MERMAID_CDNS[i]);
+                        if (typeof mermaid !== 'undefined') return true;
+                    } catch (e) {
+                        /* try next CDN */
+                    }
+                }
+                return false;
+            }
+
+            function showMermaidFallback() {
+                document.querySelectorAll('.mermaid-wrap').forEach(function (wrap) {
+                    var src = wrap.querySelector('.mermaid');
+                    var raw = src ? src.textContent : '';
+                    var box = document.createElement('div');
+                    box.className = 'mermaid-fallback';
+                    box.innerHTML =
+                        '図解エンジン(Mermaid)をネットワークから読み込めませんでした(社内ネットワークや拡張機能によるブロックの可能性があります)。以下は図解のソースコードです。<pre></pre>';
+                    box.querySelector('pre').textContent = raw;
+                    wrap.innerHTML = '';
+                    wrap.appendChild(box);
+                });
+            }
+
             /* ---------- mermaid init ---------- */
             (async function initMermaid() {
-                if (typeof mermaid === 'undefined') {
+                var loaded = await loadMermaidWithFallback();
+                if (!loaded) {
+                    showMermaidFallback();
                     return;
                 }
                 if (document.fonts && document.fonts.ready) {
@@ -2396,26 +2489,30 @@
                         await document.fonts.ready;
                     } catch (e) {}
                 }
-                mermaid.initialize({
-                    startOnLoad: false,
-                    theme: 'dark',
-                    securityLevel: 'loose',
-                    fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif',
-                    flowchart: {
-                        useMaxWidth: false,
-                        htmlLabels: true,
-                        nodeSpacing: 45,
-                        rankSpacing: 50,
-                    },
-                });
-                await mermaid.run({ querySelector: '.mermaid' });
-                document.querySelectorAll('.mermaid svg').forEach(function (svg) {
-                    svg.removeAttribute('width');
-                    svg.style.maxWidth = '100%';
-                    svg.style.height = 'auto';
-                    svg.style.overflow = 'visible';
-                });
+                try {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        securityLevel: 'loose',
+                        fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif',
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            nodeSpacing: 45,
+                            rankSpacing: 50,
+                        },
+                    });
+                    await mermaid.run({ querySelector: '.mermaid' });
+                    document.querySelectorAll('.mermaid svg').forEach(function (svg) {
+                        svg.removeAttribute('width');
+                        svg.style.maxWidth = '100%';
+                        svg.style.height = 'auto';
+                        svg.style.overflow = 'visible';
+                    });
+                } catch (e) {
+                    showMermaidFallback();
+                }
             })();
 
             /* ---------- sidebar active-section + progress ---------- */
