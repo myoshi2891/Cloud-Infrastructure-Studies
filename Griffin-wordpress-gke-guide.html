@@ -479,8 +479,14 @@
                     transition: transform 0.2s ease;
                     z-index: 1000;
                 }
+                .sidebar[aria-hidden='true'] {
+                    visibility: hidden;
+                    pointer-events: none;
+                }
                 .sidebar.is-open {
                     transform: translateX(0);
+                    visibility: visible;
+                    pointer-events: auto;
                 }
                 .toc-toggle {
                     position: fixed;
@@ -2136,10 +2142,22 @@
             var navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
             var sidebar = document.querySelector('.sidebar');
             var tocToggle = document.querySelector('.toc-toggle');
+            var mobileTocMedia = window.matchMedia('(max-width: 900px)');
 
             function setTocOpen(isOpen) {
-                sidebar.classList.toggle('is-open', isOpen);
-                tocToggle.setAttribute('aria-expanded', String(isOpen));
+                var isMobileOpen = mobileTocMedia.matches && isOpen;
+                var isHidden = mobileTocMedia.matches && !isMobileOpen;
+                sidebar.classList.toggle('is-open', isMobileOpen);
+                sidebar.setAttribute('aria-hidden', String(isHidden));
+                sidebar.inert = isHidden;
+                tocToggle.setAttribute('aria-expanded', String(isMobileOpen));
+            }
+
+            function closeTocAndRestoreFocus() {
+                if (mobileTocMedia.matches && tocToggle.getAttribute('aria-expanded') === 'true') {
+                    tocToggle.focus();
+                    setTocOpen(false);
+                }
             }
 
             tocToggle.addEventListener('click', function () {
@@ -2147,32 +2165,53 @@
             });
             navLinks.forEach(function (link) {
                 link.addEventListener('click', function () {
-                    setTocOpen(false);
+                    closeTocAndRestoreFocus();
                 });
             });
             document.addEventListener('keydown', function (event) {
                 if (event.key === 'Escape') {
-                    setTocOpen(false);
+                    closeTocAndRestoreFocus();
                 }
             });
+            mobileTocMedia.addEventListener('change', function () {
+                setTocOpen(false);
+            });
+            setTocOpen(false);
 
+            var intersectingSections = new Set();
             var observer = new IntersectionObserver(
                 function (entries) {
                     entries.forEach(function (entry) {
                         if (entry.isIntersecting) {
-                            navLinks.forEach(function (link) {
-                                link.classList.remove('active');
-                                link.removeAttribute('aria-current');
-                            });
-                            var activeLink = document.querySelector(
-                                '.sidebar nav a[href="#' + entry.target.id + '"]',
-                            );
-                            if (activeLink) {
-                                activeLink.classList.add('active');
-                                activeLink.setAttribute('aria-current', 'location');
-                            }
+                            intersectingSections.add(entry.target);
+                        } else {
+                            intersectingSections.delete(entry.target);
                         }
                     });
+
+                    var observerTop =
+                        entries[0] && entries[0].rootBounds
+                            ? entries[0].rootBounds.top
+                            : window.innerHeight * 0.2;
+                    var activeSection = Array.from(intersectingSections).sort(function (a, b) {
+                        var distanceA = Math.abs(a.getBoundingClientRect().top - observerTop);
+                        var distanceB = Math.abs(b.getBoundingClientRect().top - observerTop);
+                        return distanceA - distanceB || a.offsetTop - b.offsetTop;
+                    })[0];
+                    var activeLink = activeSection
+                        ? document.querySelector(
+                              '.sidebar nav a[href="#' + activeSection.id + '"]',
+                          )
+                        : null;
+
+                    navLinks.forEach(function (link) {
+                        link.classList.remove('active');
+                        link.removeAttribute('aria-current');
+                    });
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                        activeLink.setAttribute('aria-current', 'location');
+                    }
                 },
                 { rootMargin: '-20% 0px -70% 0px' },
             );
