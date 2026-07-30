@@ -6,6 +6,10 @@
         <title>Terraform で構築する Google Cloud インフラ管理 完全攻略ガイド</title>
         <link
             rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <link
+            rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css"
         />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
@@ -589,7 +593,7 @@
                         起動のたびに自動実行されるため、セッションが切れても環境が再現される。
                     </div>
                     <p class="code-label">bash</p>
-                    <pre class="code-block"><code id="code-install"></code></pre>
+                    <pre class="code-block"><code id="code-install" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-install">
                         cat <<'EOF' > ~/.customize_environment
                         # HashiCorpリポジトリをセットアップしてTerraformをインストール
@@ -599,7 +603,7 @@
                         EOF
                         bash ~/.customize_environment
                     </script>
-                    <pre class="code-block"><code id="code-version"></code></pre>
+                    <pre class="code-block"><code id="code-version" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-version">
                         terraform --version
                         # Terraform v1.9.0 のように、v1.5.7以降のバージョンが表示されればOK
@@ -677,7 +681,7 @@
                     </script>
 
                     <p class="code-label">bash</p>
-                    <pre class="code-block"><code id="code-mkdir"></code></pre>
+                    <pre class="code-block"><code id="code-mkdir" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-mkdir">
                         mkdir -p modules/instances modules/storage
                         touch main.tf variables.tf
@@ -691,7 +695,7 @@
                         の3ファイルすべて)に、同じ3つの変数を定義する。
                     </p>
                     <p class="code-label">hcl · variables.tf</p>
-                    <pre class="code-block"><code id="code-vars"></code></pre>
+                    <pre class="code-block"><code id="code-vars" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-vars">
                         variable "project_id" {
                           description = "The GCP project ID"
@@ -724,7 +728,7 @@
 
                     <h3>4.4 main.tf: Terraform block と Provider</h3>
                     <p class="code-label">hcl · main.tf</p>
-                    <pre class="code-block"><code id="code-provider"></code></pre>
+                    <pre class="code-block"><code id="code-provider" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-provider">
                         terraform {
                           required_providers {
@@ -748,7 +752,7 @@
                     </p>
 
                     <h3>4.5 初期化</h3>
-                    <pre class="code-block"><code id="code-init1"></code></pre>
+                    <pre class="code-block"><code id="code-init1" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-init1">
                         terraform init
                     </script>
@@ -813,7 +817,7 @@
 
                     <h3>5.3 main.tfへのmodule参照追加</h3>
                     <p class="code-label">hcl · main.tf</p>
-                    <pre class="code-block"><code id="code-module-instances"></code></pre>
+                    <pre class="code-block"><code id="code-module-instances" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-module-instances">
                         module "instances" {
                           source     = "./modules/instances"
@@ -835,7 +839,7 @@
                         <code>terraform apply</code> 時にリソースの作り直しが発生してしまう。
                     </p>
                     <p class="code-label">hcl · modules/instances/instances.tf</p>
-                    <pre class="code-block"><code id="code-instances-import"></code></pre>
+                    <pre class="code-block"><code id="code-instances-import" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-instances-import">
                         resource "google_compute_instance" "tf-instance-1" {
                           name         = "tf-instance-1"
@@ -896,7 +900,7 @@
                         <code>module.&lt;モジュール名&gt;.</code> のprefixを付ける。
                     </p>
                     <p class="code-label">bash</p>
-                    <pre class="code-block"><code id="code-import-cmd"></code></pre>
+                    <pre class="code-block"><code id="code-import-cmd" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-import-cmd">
                         terraform import module.instances.google_compute_instance.tf-instance-1 <PROJECT_ID>/<ZONE>/tf-instance-1
                         terraform import module.instances.google_compute_instance.tf-instance-2 <PROJECT_ID>/<ZONE>/tf-instance-2
@@ -908,7 +912,7 @@
                     </p>
 
                     <h3>5.6 plan → apply</h3>
-                    <pre class="code-block"><code id="code-plan-apply"></code></pre>
+                    <pre class="code-block"><code id="code-plan-apply" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-plan-apply">
                         terraform plan
                         terraform apply
@@ -969,7 +973,7 @@
 
                     <h3>6.2 バケットリソースの作成(storage module)</h3>
                     <p class="code-label">hcl · modules/storage/storage.tf</p>
-                    <pre class="code-block"><code id="code-bucket"></code></pre>
+                    <pre class="code-block"><code id="code-bucket" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-bucket">
                         resource "google_storage_bucket" "default" {
                           name                        = "<Bucket Name>"
@@ -1002,14 +1006,14 @@
                         </tbody>
                     </table>
                     <p class="code-label">hcl · modules/storage/outputs.tf</p>
-                    <pre class="code-block"><code id="code-bucket-output"></code></pre>
+                    <pre class="code-block"><code id="code-bucket-output" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-bucket-output">
                         output "bucket_name" {
                           value = google_storage_bucket.default.name
                         }
                     </script>
                     <p class="code-label">hcl · main.tf</p>
-                    <pre class="code-block"><code id="code-module-storage"></code></pre>
+                    <pre class="code-block"><code id="code-module-storage" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-module-storage">
                         module "storage" {
                           source     = "./modules/storage"
@@ -1018,7 +1022,7 @@
                           zone       = var.zone
                         }
                     </script>
-                    <pre class="code-block"><code id="code-init-apply-storage"></code></pre>
+                    <pre class="code-block"><code id="code-init-apply-storage" class="language-bash" data-lang="bash"></code></pre>
                     <script
                         type="text/plain"
                         class="code-src"
@@ -1042,7 +1046,7 @@
                     </script>
 
                     <p class="code-label">hcl · main.tf</p>
-                    <pre class="code-block"><code id="code-backend"></code></pre>
+                    <pre class="code-block"><code id="code-backend" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-backend">
                         terraform {
                           backend "gcs" {
@@ -1063,7 +1067,7 @@
                         <code>backend</code>
                         ブロックには変数(<code>var.xxx</code>)を使うことができない。backend設定はプロバイダーやモジュール、変数の評価より前の段階で読み込まれるためである。バケット名は直接文字列で書く必要がある。
                     </div>
-                    <pre class="code-block"><code id="code-init-backend"></code></pre>
+                    <pre class="code-block"><code id="code-init-backend" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-init-backend">
                         terraform init
                     </script>
@@ -1071,7 +1075,7 @@
                         <code>backend</code> ブロックを追加して init
                         を実行すると、Terraformは既存のローカルstateを検出し、次のように尋ねてくる。
                     </p>
-                    <pre class="code-block"><code id="code-migrate-prompt"></code></pre>
+                    <pre class="code-block"><code id="code-migrate-prompt" class="language-text" data-lang="text"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-migrate-prompt">
                         Do you want to copy existing state to the new backend?
                           Enter "yes" to copy and "no" to start with an empty state.
@@ -1108,7 +1112,7 @@
                     <h2><i class="ti ti-refresh"></i>7. Task 4: インフラの変更(Update in-place)</h2>
                     <h3>7.1 machine_typeの変更</h3>
                     <p class="code-label">hcl · modules/instances/instances.tf</p>
-                    <pre class="code-block"><code id="code-machinetype"></code></pre>
+                    <pre class="code-block"><code id="code-machinetype" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-machinetype">
                         resource "google_compute_instance" "tf-instance-1" {
                           name         = "tf-instance-1"
@@ -1130,7 +1134,7 @@
 
                     <h3>7.2 3台目のインスタンス追加</h3>
                     <p class="code-label">hcl · modules/instances/instances.tf</p>
-                    <pre class="code-block"><code id="code-third-instance"></code></pre>
+                    <pre class="code-block"><code id="code-third-instance" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-third-instance">
                         resource "google_compute_instance" "instance-name" {
                           name         = "<Instance Name>"
@@ -1155,7 +1159,7 @@
                           allow_stopping_for_update = true
                         }
                     </script>
-                    <pre class="code-block"><code id="code-init-apply-t4"></code></pre>
+                    <pre class="code-block"><code id="code-init-apply-t4" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-init-apply-t4">
                         terraform init
                         terraform apply
@@ -1177,7 +1181,7 @@
                         Yourself)に書くのが望ましい。本ラボでは学習目的上、明示的に3つのresourceブロックとして書くが、実務では以下のような書き方も検討する価値がある。
                     </div>
                     <p class="code-label">hcl · for_eachによるリファクタ例</p>
-                    <pre class="code-block"><code id="code-foreach"></code></pre>
+                    <pre class="code-block"><code id="code-foreach" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-foreach">
                         variable "instances" {
                           type    = map(string)
@@ -1215,7 +1219,7 @@
                     </script>
 
                     <p class="code-label">bash</p>
-                    <pre class="code-block"><code id="code-destroy"></code></pre>
+                    <pre class="code-block"><code id="code-destroy" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-destroy">
                         # instances.tf から google_compute_instance.instance-name ブロックを削除した後
                         terraform init
@@ -1276,7 +1280,7 @@
 
                     <h3>9.3 main.tfへのモジュール追加</h3>
                     <p class="code-label">hcl · main.tf</p>
-                    <pre class="code-block"><code id="code-vpc-module"></code></pre>
+                    <pre class="code-block"><code id="code-vpc-module" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-vpc-module">
                         module "vpc" {
                           source  = "terraform-google-modules/network/google"
@@ -1314,7 +1318,7 @@
                         >
                         のような柔軟なバージョン制約を検討するとよい。
                     </div>
-                    <pre class="code-block"><code id="code-init-apply-vpc"></code></pre>
+                    <pre class="code-block"><code id="code-init-apply-vpc" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-init-apply-vpc">
                         terraform init
                         terraform apply
@@ -1327,7 +1331,7 @@
                         を、デフォルトネットワークから作成したVPC/サブネットへ切り替える。
                     </p>
                     <p class="code-label">hcl · modules/instances/instances.tf</p>
-                    <pre class="code-block"><code id="code-connect-subnet"></code></pre>
+                    <pre class="code-block"><code id="code-connect-subnet" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-connect-subnet">
                         resource "google_compute_instance" "tf-instance-1" {
                           # ...(略)
@@ -1351,7 +1355,7 @@
                         <code>module.vpc.network_name</code> のように、モジュールの output
                         を他のリソースから参照できるのがmodule設計の大きな利点である。モジュール間の暗黙的な依存関係も、Terraformが自動的にDAG(有向非巡回グラフ)として解決してくれる。
                     </p>
-                    <pre class="code-block"><code id="code-init-apply-connect"></code></pre>
+                    <pre class="code-block"><code id="code-init-apply-connect" class="language-bash" data-lang="bash"></code></pre>
                     <script
                         type="text/plain"
                         class="code-src"
@@ -1397,7 +1401,7 @@
 
                     <h3>10.2 firewallリソースの実装</h3>
                     <p class="code-label">hcl · main.tf</p>
-                    <pre class="code-block"><code id="code-firewall"></code></pre>
+                    <pre class="code-block"><code id="code-firewall" class="language-hcl" data-lang="hcl"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-firewall">
                         resource "google_compute_firewall" "tf-firewall" {
                           name    = "tf-firewall"
@@ -1427,7 +1431,7 @@
                         <code>terraform state list</code>
                         でstate内のリソース属性を確認する習慣をつけると良い。
                     </div>
-                    <pre class="code-block"><code id="code-init-apply-fw"></code></pre>
+                    <pre class="code-block"><code id="code-init-apply-fw" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-init-apply-fw">
                         terraform init
                         terraform apply
@@ -1438,7 +1442,7 @@
                         apply後は、いずれかのインスタンスからもう一方のインスタンスの外部IP(または内部IP)に対して、ポート80でアクセスできることを確認する。
                     </p>
                     <p class="code-label">bash</p>
-                    <pre class="code-block"><code id="code-curl"></code></pre>
+                    <pre class="code-block"><code id="code-curl" class="language-bash" data-lang="bash"></code></pre>
                     <script type="text/plain" class="code-src" data-target="code-curl">
                         # tf-instance-1 に SSH接続後
                         curl -m 5 http://<tf-instance-2の外部IP>:80
@@ -1725,6 +1729,7 @@
             </main>
         </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script>
             function dedent(str) {
                 var lines = str
@@ -1746,9 +1751,37 @@
                     .join('\n');
             }
 
+            if (typeof hljs !== 'undefined') {
+                hljs.registerLanguage('hcl', function (hljs) {
+                    return {
+                        name: 'Terraform (HCL)',
+                        aliases: ['terraform', 'tf'],
+                        keywords: {
+                            keyword:
+                                'resource variable provider module output terraform required_providers backend type default description',
+                            literal: 'true false null',
+                        },
+                        contains: [
+                            hljs.HASH_COMMENT_MODE,
+                            hljs.QUOTE_STRING_MODE,
+                            hljs.NUMBER_MODE,
+                        ],
+                    };
+                });
+            }
+
             document.querySelectorAll('script.code-src').forEach(function (el) {
                 var target = document.getElementById(el.dataset.target);
-                if (target) target.textContent = dedent(el.textContent);
+                if (!target) return;
+                var raw = dedent(el.textContent);
+                var lang = target.getAttribute('data-lang');
+                target.textContent = raw;
+                if (lang === 'hcl' || lang === 'bash') {
+                    target.classList.add('language-' + lang);
+                    if (typeof hljs !== 'undefined') {
+                        hljs.highlightElement(target);
+                    }
+                }
             });
 
             document.querySelectorAll('script.mermaid-src').forEach(function (el) {
