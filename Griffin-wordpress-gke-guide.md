@@ -118,7 +118,7 @@ gcloud compute networks subnets create griffin-dev-mgmt \
 
 ### ベストプラクティスの根拠
 
-- **`--subnet-mode=custom` を必ず指定する**：自動モードVPCは各リージョンに `10.128.0.0/9` 範囲のサブネットを自動生成してしまい、要件で指定された CIDR（192.168.16.0/20 等）と競合します。本番運用に適しているのもカスタムモードであると公式ドキュメントで明言されています。
+- **`--subnet-mode=custom` を必ず指定する**：自動モードVPCによる各リージョンへのサブネット自動生成を避け、要件で指定された CIDR（192.168.16.0/20 等）だけを明示的に作成・管理するためです。
 - カスタムモードVPCは作成直後サブネットが0個の状態から始まるため、「指定されたサブネットのみを持たせる」という要件を満たしやすい構造になっています。
 
 ### 初学者がつまずきやすいポイント
@@ -207,11 +207,88 @@ gcloud compute firewall-rules create allow-iap-ssh-prod \
 gcloud compute ssh griffin-bastion --zone=ZONE --tunnel-through-iap
 ```
 
+### VPC間のトラフィックも中継する場合（管理接続とは別の構成）
+
+上記の踏み台手順はSSH管理用であり、NICを2枚接続しただけではVPC間のパケットは転送されません。VMをVPC間ルーターとして使う場合は、IP転送を許可した専用VMを作成し、ゲストOS、VPCルート、ファイアウォールも設定します。
+
+```bash
+# canIpForward を有効にした2 NICの中継VMを作成
+gcloud compute instances create griffin-router \
+  --zone=ZONE \
+  --machine-type=e2-medium \
+  --can-ip-forward \
+  --tags=griffin-router \
+  --network-interface=subnet=griffin-dev-mgmt,no-address \
+  --network-interface=subnet=griffin-prod-mgmt,no-address
+
+# IAPで中継VMへ接続し、ゲストOSのIPv4転送を永続的に有効化
+gcloud compute ssh griffin-router --zone=ZONE --tunnel-through-iap
+sudo sysctl -w net.ipv4.ip_forward=1
+echo 'net.ipv4.ip_forward=1' | sudo tee /etc/sysctl.d/99-griffin-router.conf
+exit
+
+# 開発VPCから本番VPCの各サブネットへ
+gcloud compute routes create dev-to-prod-wp \
+  --network=griffin-dev-vpc \
+  --destination-range=192.168.48.0/20 \
+  --next-hop-instance=griffin-router \
+  --next-hop-instance-zone=ZONE
+gcloud compute routes create dev-to-prod-mgmt \
+  --network=griffin-dev-vpc \
+  --destination-range=192.168.64.0/20 \
+  --next-hop-instance=griffin-router \
+  --next-hop-instance-zone=ZONE
+
+# 本番VPCから開発VPCの各サブネットへ（戻り経路を含む）
+gcloud compute routes create prod-to-dev-wp \
+  --network=griffin-prod-vpc \
+  --destination-range=192.168.16.0/20 \
+  --next-hop-instance=griffin-router \
+  --next-hop-instance-zone=ZONE
+gcloud compute routes create prod-to-dev-mgmt \
+  --network=griffin-prod-vpc \
+  --destination-range=192.168.32.0/20 \
+  --next-hop-instance=griffin-router \
+  --next-hop-instance-zone=ZONE
+
+# 中継VMが両VPCから転送対象トラフィックを受信できるよう許可
+gcloud compute firewall-rules create allow-transit-from-dev \
+  --network=griffin-dev-vpc \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=all \
+  --source-ranges=192.168.16.0/20,192.168.32.0/20 \
+  --target-tags=griffin-router
+gcloud compute firewall-rules create allow-transit-from-prod \
+  --network=griffin-prod-vpc \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=all \
+  --source-ranges=192.168.48.0/20,192.168.64.0/20 \
+  --target-tags=griffin-router
+
+# 転送先VM側でも、相手VPCのCIDRから必要な通信を許可
+gcloud compute firewall-rules create allow-from-prod-via-router \
+  --network=griffin-dev-vpc \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=all \
+  --source-ranges=192.168.48.0/20,192.168.64.0/20
+gcloud compute firewall-rules create allow-from-dev-via-router \
+  --network=griffin-prod-vpc \
+  --direction=INGRESS \
+  --action=ALLOW \
+  --rules=all \
+  --source-ranges=192.168.16.0/20,192.168.32.0/20
+```
+
+`--rules=all` は疎通確認を簡潔にするラボ向け設定です。本番では、転送先のタグまたはサービスアカウントを指定し、必要なプロトコルとポートだけに絞ってください。送信元IPはNATせず保持されるため、中継VMだけでなく転送先VMのIngress許可も必要です。
+
 ### ベストプラクティスの根拠
 
 - **外部IPを持たせず、Identity-Aware Proxy (IAP) のTCPフォワーディングでSSHする** のが Google Cloud 公式が推奨する構成です。IAPは認証・認可・監査ログを一元化しつつ、VMを外部IPなしで安全に運用できる仕組みとして案内されています。踏み台ホスト自体が持つセキュリティリスク（インターネットに公開されたSSHポート）を、IAPを使うことで大きく減らせます。
 - IAPのTCPフォワーディングを使う際は、送信元を IAP専用のIP範囲 `35.235.240.0/20` に限定したファイアウォールルールが必須です。これがないとIAPからVMへ到達できません。
-- 2枚のNICを異なるVPCのサブネットに接続することで、1台のVMが両方のネットワークの「橋渡し役」になります。これはVPCピアリングを使わずに管理トラフィックだけを中継したい場合の典型的な構成です。
+- 管理用踏み台は両VPCへ管理接続するための構成です。VPC間のデータトラフィックを中継する場合は、`canIpForward`、ゲストOSのIP転送、双方向のカスタムルート、必要最小限のファイアウォール許可をすべて設定する必要があります。
 
 ### 初学者がつまずきやすいポイント
 
@@ -288,7 +365,8 @@ gcloud container clusters create griffin-dev \
   --num-nodes=2 \
   --machine-type=e2-standard-4 \
   --network=griffin-dev-vpc \
-  --subnetwork=griffin-dev-wp
+  --subnetwork=griffin-dev-wp \
+  --workload-pool=$GOOGLE_CLOUD_PROJECT.svc.id.goog
 ```
 
 ### ベストプラクティスの根拠
@@ -325,11 +403,13 @@ flowchart TB
     end
 
     SEC1[["Secret: cloudsql<br/>username / password"]]
-    SEC2[["Secret: cloudsql-instance-credentials<br/>key.json"]]
+    KSA[["Kubernetes ServiceAccount<br/>cloud-sql-proxy"]]
+    GSA[["Google Service Account<br/>cloud-sql-proxy"]]
     SQL[("Cloud SQL<br/>griffin-dev-db")]
 
     SEC1 -. 環境変数として注入 .-> WP
-    SEC2 -. マウント .-> PROXY
+    KSA -. Workload Identity Federation .-> GSA
+    GSA -. 短期認証情報 .-> PROXY
     WP -- "localhost:3306" --> PROXY
     PROXY -- 暗号化コネクション --> SQL
     WP --- VOL
@@ -345,29 +425,47 @@ cd wp-k8s
 # 2. wp-env.yaml を編集し、username を wp_user、password を stormwind_rules に設定してから適用
 kubectl apply -f wp-env.yaml
 
-# 3. Cloud SQL Proxy用サービスアカウントの鍵を発行し、Secretとして登録
-gcloud iam service-accounts keys create key.json \
-  --iam-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
+# 3. Cloud SQL Proxy用Googleサービスアカウントに接続権限を付与
+gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
+  --member=serviceAccount:cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
+  --role=roles/cloudsql.client
 
-kubectl create secret generic cloudsql-instance-credentials \
-  --from-file key.json
+# 4. Kubernetes ServiceAccountを作成してGoogleサービスアカウントへ関連付け
+kubectl create serviceaccount cloud-sql-proxy
+gcloud iam service-accounts add-iam-policy-binding \
+  cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com \
+  --role=roles/iam.workloadIdentityUser \
+  --member="serviceAccount:$GOOGLE_CLOUD_PROJECT.svc.id.goog[default/cloud-sql-proxy]"
+kubectl annotate serviceaccount cloud-sql-proxy \
+  iam.gke.io/gcp-service-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
 ```
+
+`wp-deployment.yaml` のPod specに `serviceAccountName: cloud-sql-proxy` を設定します。Cloud SQL Auth Proxyからは、`cloudsql-instance-credentials` のSecretボリューム、`key.json` のマウント、および `--credentials-file` 引数を削除し、WIFが払い出す短期認証情報を使用してください。
 
 ### ベストプラクティスの根拠
 
-- **認証情報をSecretとして分離する**のはKubernetesの基本原則です。パスワードやサービスアカウント鍵をマニフェストやコンテナイメージに直接埋め込まず、Secretリソースとして管理することで、権限管理・ローテーション・監査がしやすくなります。
+- **データベースのユーザー名・パスワードをSecretとして分離する**のはKubernetesの基本原則です。認証情報をマニフェストやコンテナイメージに直接埋め込まないことで、権限管理・ローテーション・監査がしやすくなります。
+- **Cloud SQLへのIAM認証にはWIFを使う**ことで、漏えい・ローテーションのリスクがある長期JSONキーをPodへ配布せず、Kubernetes ServiceAccountに応じた短期認証情報を利用できます。
 - **Cloud SQL Auth Proxy をサイドカーコンテナとして同じPodに配置する**構成は、Google Cloud公式が推奨するパターンです。アプリケーションコンテナは `localhost` 経由でProxyコンテナに接続するだけでよく、通信の暗号化とIAM認可はProxyが担うため、アプリ側でTLS証明書やネットワーク許可リストを管理する必要がありません。
 - **WordPressの作業ファイルをPersistent Volumeに保存する**のは、Pod自体はスケジューリングによって再作成・移動されうる一時的な存在であり、コンテナのローカルファイルシステムに保存したデータはPodの再作成時に失われてしまうためです。GKEはデフォルトで永続ディスク（Compute Engine persistent disk）を裏付けとする StorageClass を自動生成しており、PersistentVolumeClaimを作るだけで動的に永続ディスクをプロビジョニングできます。
 
-### 発展的なベストプラクティス（このラボの手順との違い）
+### ラボ提供マニフェストを変更できない場合のみ（代替手順）
 
-このタスクではサービスアカウントの **JSONキーファイルを発行してSecretにマウントする** 方式を使います。これは動作しますが、Google Cloudの公式ベストプラクティスでは、キーファイルは漏えいリスクのある長期的な認証情報であるため **できる限り避けるべき** とされています。GKEでは代替として「GKE向け Workload Identity Federation」を有効化し、Kubernetes Service AccountとGoogle Cloud Service Accountを紐付けることで、キーファイルなしで短期的な認証情報を自動的に払い出す方式が推奨されています。本番環境を構築する際はこちらへの移行を検討してください。
+採点対象の古いマニフェストが `cloudsql-instance-credentials` と `key.json` を必須とし、編集できない場合に限り、ラボ専用の互換手順としてJSONキーをSecretへ登録します。この方式は主手順や本番環境では使用しません。
+
+```bash
+gcloud iam service-accounts keys create key.json \
+  --iam-account=cloud-sql-proxy@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com
+kubectl create secret generic cloudsql-instance-credentials --from-file key.json
+```
+
+ラボ終了後はSecretとローカルの `key.json` を削除し、発行したサービスアカウントキーも無効化・削除してください。
 
 ### 初学者がつまずきやすいポイント
 
 - `wp-env.yaml` を編集せずに適用すると、プレースホルダーの認証情報のままDBに接続できずWordPressのインストーラーがエラーになります。適用前に必ず値を書き換えてください。
 - `cloud-sql-proxy` という名前のサービスアカウントは事前に用意されている前提です。存在しない場合は事前準備の手順（IAMページでの作成）を見直してください。
-- `key.json` はローカル（Cloud Shell）に一時的に作成されるファイルです。Secret登録後は不要なので、ラボ終了時や本番運用では削除・ローテーションを忘れないようにしましょう。
+- WIFを設定しても、Pod specの `serviceAccountName` が未指定だとKubernetesの `default` ServiceAccountが使われ、Cloud SQLへのIAM認証に失敗します。
 
 ### 参考ソース
 
@@ -436,7 +534,7 @@ gcloudから作成する場合はAPI経由で以下のような呼び出しに�
 ```bash
 gcloud monitoring uptime create wordpress-uptime-check \
   --resource-type=uptime-url \
-  --resource-labels=host=<WORDPRESSの外部IP> \
+  --resource-labels=host=<WORDPRESSの外部IP>,project_id=$GOOGLE_CLOUD_PROJECT \
   --protocol=http \
   --port=80
 ```
