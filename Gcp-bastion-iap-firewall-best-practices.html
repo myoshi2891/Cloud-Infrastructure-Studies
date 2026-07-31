@@ -1378,8 +1378,8 @@
                 Admin->>IAP: gcloud compute ssh bastion --tunnel-through-iap
                 IAP->>Bastion: 暗号化トンネル経由で SSH (tcp:22)
                 Bastion-->>Admin: bastion シェルセッション確立
-                Admin->>Juice: ssh <juice-shop内部IP>
-                Juice-->>Admin: juice-shop シェルセッション確立
+                Bastion->>Juice: ssh <juice-shop内部IP>
+                Juice-->>Bastion: juice-shop シェルセッション確立
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
