@@ -227,29 +227,25 @@ sudo sysctl -w net.ipv4.ip_forward=1
 echo 'net.ipv4.ip_forward=1' | sudo tee /etc/sysctl.d/99-griffin-router.conf
 exit
 
-# 開発VPCから本番VPCの各サブネットへ
+# 開発VPCから本番VPCの各サブネットへ（開発側NICの内部IPを指定）
 gcloud compute routes create dev-to-prod-wp \
   --network=griffin-dev-vpc \
   --destination-range=192.168.48.0/20 \
-  --next-hop-instance=griffin-router \
-  --next-hop-instance-zone=ZONE
+  --next-hop-address=ROUTER_DEV_IP
 gcloud compute routes create dev-to-prod-mgmt \
   --network=griffin-dev-vpc \
   --destination-range=192.168.64.0/20 \
-  --next-hop-instance=griffin-router \
-  --next-hop-instance-zone=ZONE
+  --next-hop-address=ROUTER_DEV_IP
 
-# 本番VPCから開発VPCの各サブネットへ（戻り経路を含む）
+# 本番VPCから開発VPCの各サブネットへ（戻り経路を含む。本番側NICの内部IPを指定）
 gcloud compute routes create prod-to-dev-wp \
   --network=griffin-prod-vpc \
   --destination-range=192.168.16.0/20 \
-  --next-hop-instance=griffin-router \
-  --next-hop-instance-zone=ZONE
+  --next-hop-address=ROUTER_PROD_IP
 gcloud compute routes create prod-to-dev-mgmt \
   --network=griffin-prod-vpc \
   --destination-range=192.168.32.0/20 \
-  --next-hop-instance=griffin-router \
-  --next-hop-instance-zone=ZONE
+  --next-hop-address=ROUTER_PROD_IP
 
 # 中継VMが両VPCから転送対象トラフィックを受信できるよう許可
 gcloud compute firewall-rules create allow-transit-from-dev \
@@ -328,7 +324,7 @@ gcloud sql connect griffin-dev-db --user=root
 
 ```sql
 CREATE DATABASE wordpress;
-CREATE USER 'wp_user'@'%' IDENTIFIED BY 'stormwind_rules';
+CREATE USER 'wp_user'@'%' IDENTIFIED BY '<DB_PASSWORD>';
 GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'%';
 FLUSH PRIVILEGES;
 ```
@@ -336,7 +332,7 @@ FLUSH PRIVILEGES;
 ### ベストプラクティスの根拠
 
 - Cloud SQL インスタンス作成では、ワークロードに見合った最小サイズを選ぶことがコスト管理の基本です。公式ドキュメントでも用途に応じたマシンタイプ・エディションの選択が案内されています。開発環境では `db-g1-small` のような軽量ティアで十分です。
-- ユーザー名・パスワードは後続の Task 6 で Kubernetes Secret として利用するため、ここで作成した認証情報（`wp_user` / `stormwind_rules`）を正確にメモしておく必要があります。
+- ユーザー名・パスワードは後続の Task 6 で Kubernetes Secret として利用するため、ここで作成した認証情報（`wp_user` / `<DB_PASSWORD>`。※ Qwiklabs GSP321 ラボ規定の場合は `stormwind_rules`）を正確にメモしておく必要があります。
 - GKEからの接続方式として、この後のタスクでは **Cloud SQL Auth Proxy** を使う設計になっています。Auth Proxyを使う場合、IAM認可と暗号化されたトンネルで接続できるため、Cloud SQL側で個々のクライアントIPを許可リストに追加する必要がありません。これは「承認済みネットワーク」方式より安全で運用の手間も少ない、公式に推奨されるパターンです。
 
 ### 初学者がつまずきやすいポイント
@@ -422,7 +418,7 @@ flowchart TB
 gcloud storage cp -r gs://spls/gsp321/wp-k8s .
 cd wp-k8s
 
-# 2. wp-env.yaml を編集し、username を wp_user、password を stormwind_rules に設定してから適用
+# 2. wp-env.yaml を編集し、username を wp_user、password を <DB_PASSWORD>（ラボ指定の場合は stormwind_rules）に設定してから適用
 kubectl apply -f wp-env.yaml
 
 # 3. Cloud SQL Proxy用Googleサービスアカウントに接続権限を付与
@@ -534,7 +530,7 @@ gcloudから作成する場合はAPI経由で以下のような呼び出しに�
 ```bash
 gcloud monitoring uptime create wordpress-uptime-check \
   --resource-type=uptime-url \
-  --resource-labels=host=<WORDPRESSの外部IP>,project_id=$GOOGLE_CLOUD_PROJECT \
+  --resource-labels=host="$WORDPRESS_EXTERNAL_IP",project_id=$GOOGLE_CLOUD_PROJECT \
   --protocol=http \
   --port=80
 ```
