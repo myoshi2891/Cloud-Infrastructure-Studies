@@ -229,6 +229,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/gcl/hands-on/gcp-security-fundamentals-guide',
                 pct: 'ハンズオン',
             },
+            {
+                label: 'GKE プライベートクラスタ セキュリティ実装ガイド',
+                href: '/gcl/hands-on/gke-private-cluster-security-guide',
+                pct: 'ハンズオン',
+            },
         ],
         badge: 'ハンズオン',
         icon: '🛠️',
