@@ -27,7 +27,7 @@ export function TerraformGcpChallengeLabGuide() {
                     <h2><span className="num">2</span>2. 事前準備 &amp; バックエンド初期化</h2>
                     <p>すべての Task を終えると、以下のような完成形アーキテクチャが出来上がる。</p>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.ARCHITECTURE} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.ARCHITECTURE} ariaLabel="完成形のアーキテクチャ構成図" preserveNaturalScale={true} />
                     </div>
                     <p>
                         ポイントは、<strong>VM インフラ（instances / network / firewall）</strong>と<strong>Terraform の状態管理基盤（storage bucket）</strong>が、役割としては明確に分離されていることである。バケットはアプリケーションのインフラではなく、Terraform 自身の運用基盤（state 管理）のために存在する。
@@ -66,7 +66,7 @@ sudo apt-get update && sudo apt-get install -y terraform`}</code></pre>
 
                     <h3>ディレクトリ構成</h3>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.DIRECTORY_STRUCTURE} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.DIRECTORY_STRUCTURE} ariaLabel="プロジェクトのディレクトリ構成図" preserveNaturalScale={true} />
                     </div>
                     <pre><code>{`mkdir -p modules/instances modules/storage
 touch main.tf variables.tf
@@ -124,7 +124,7 @@ provider "google" {
 
                     <h3>インポート手順のフロー</h3>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.IMPORT_FLOW} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.IMPORT_FLOW} ariaLabel="リソースインポートの手順フロー図" preserveNaturalScale={true} />
                     </div>
 
                     <h3>main.tf への module 参照追加</h3>
@@ -198,7 +198,7 @@ terraform apply`}</code></pre>
 
                     <h3>remote backend の設定と移行フロー</h3>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.REMOTE_BACKEND_FLOW} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.REMOTE_BACKEND_FLOW} ariaLabel="リモートバックエンド（GCS）への移行フロー図" preserveNaturalScale={true} />
                     </div>
                     <div className="code-label">main.tf</div>
                     <pre><code>{`terraform {
@@ -249,7 +249,7 @@ terraform apply`}</code></pre>
 
                     <h3>変更・追加のワークフロー</h3>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.UPDATE_WORKFLOW} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.UPDATE_WORKFLOW} ariaLabel="インフラの変更および追加のワークフロー図" preserveNaturalScale={true} />
                     </div>
                     <pre><code>{`terraform init
 terraform apply`}</code></pre>
@@ -262,7 +262,7 @@ terraform apply`}</code></pre>
                         Terraform では、クラウドコンソールから直接インスタンスを消すのではなく、<strong>「設定ファイルから resource ブロックを削除し、apply する」</strong>ことでリソースを削除するのがベストプラクティスである。
                     </p>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.DESTROY_WORKFLOW} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.DESTROY_WORKFLOW} ariaLabel="リソースの削除（Destroy）のワークフロー図" preserveNaturalScale={true} />
                     </div>
                     <pre><code>{`terraform init
 terraform apply`}</code></pre>
@@ -293,7 +293,7 @@ terraform apply`}</code></pre>
                     <h2>Task 6: Registry モジュールの活用</h2>
                     <h3>モジュールの参照関係</h3>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.MODULE_RELATION} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.MODULE_RELATION} ariaLabel="Terraform Registry モジュールの参照関係図" preserveNaturalScale={true} />
                     </div>
 
                     <h3>main.tf へのモジュール追加</h3>
@@ -343,7 +343,7 @@ resource "google_compute_instance" "tf-instance-2" {
                     <h2>Task 7: ファイアウォールルールの設定</h2>
                     <h3>firewall リソースの実装</h3>
                     <div className="mermaid-wrap">
-                        <MermaidDiagram chart={DIAGRAMS.FIREWALL_FLOW} preserveNaturalScale={true} />
+                        <MermaidDiagram chart={DIAGRAMS.FIREWALL_FLOW} ariaLabel="ファイアウォールルールによる通信許可フロー図" preserveNaturalScale={true} />
                     </div>
                     <pre><code>{`resource "google_compute_firewall" "tf-firewall" {
   name    = "tf-firewall"
