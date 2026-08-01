@@ -11,6 +11,7 @@
 
 .gke-security-guide-page .layout {
     display: block;
+    width: 100%;
 }
 
 .gke-security-guide-page .sidebar {
@@ -84,10 +85,12 @@
     color: #7c9eff;
 }
 
+/* メインコンテンツ: 画面横幅いっぱいに拡張 */
 .gke-security-guide-page .main {
     margin-left: 272px;
-    padding: 56px 64px 120px;
-    max-width: 1100px;
+    padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 48px 120px;
+    max-width: 100%;
+    width: auto;
 }
 
 .gke-security-guide-page .hero {
@@ -109,8 +112,8 @@
 }
 
 .gke-security-guide-page h1 {
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 28px;
+    font-weight: 700;
     line-height: 1.4;
     margin: 0 0 12px;
     font-family: var(--font-display, var(--font-sans));
@@ -120,7 +123,7 @@
 .gke-security-guide-page .hero p {
     color: var(--color-muted-foreground, #a8b6c9);
     font-size: 16px;
-    max-width: 760px;
+    max-width: 900px;
     margin: 0;
 }
 
@@ -128,7 +131,7 @@
     padding-top: 40px;
     margin-top: 8px;
     border-top: 1px solid #162438;
-    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
 }
 
 .gke-security-guide-page section:first-of-type {
@@ -137,7 +140,7 @@
 }
 
 .gke-security-guide-page h2 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
     margin: 0 0 18px;
     display: flex;
@@ -149,11 +152,11 @@
 
 .gke-security-guide-page h2 i {
     color: #7c9eff;
-    font-size: 22px;
+    font-size: 24px;
 }
 
 .gke-security-guide-page h3 {
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 600;
     margin: 28px 0 12px;
     color: var(--color-foreground, #e8edf5);
@@ -249,18 +252,19 @@
 
 .gke-security-guide-page code {
     font-family: var(--font-mono, monospace);
-    font-size: 13px;
+    font-size: 13.5px;
     background: #142438;
     color: #7cc0ff;
     padding: 2px 6px;
     border-radius: 4px;
 }
 
+/* コードブロック構文ハイライト定義 */
 .gke-security-guide-page pre {
-    background: #0a1626;
-    border: 1px solid #1c2d42;
+    background: #081322;
+    border: 1px solid #1c304a;
     border-radius: var(--radius-lg, 12px);
-    padding: 18px 20px;
+    padding: 20px 24px;
     overflow-x: auto;
     margin: 16px 0 24px;
 }
@@ -268,25 +272,47 @@
 .gke-security-guide-page pre code {
     background: none;
     padding: 0;
-    font-size: 13.5px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.65;
     color: var(--color-foreground, #e8edf5);
-}
-
-.gke-security-guide-page .code-label {
-    font-size: 12px;
-    color: var(--color-muted-foreground, #6b7c93);
-    margin: -8px 0 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-family: var(--font-mono, monospace);
 }
 
 .gke-security-guide-page .code-line {
     white-space: pre;
 }
 
+.gke-security-guide-page .code-cmd {
+    color: #75aaff;
+    font-weight: 600;
+}
+
+.gke-security-guide-page .code-param {
+    color: #65d5ff;
+}
+
+.gke-security-guide-page .code-val {
+    color: #7fe0ab;
+}
+
+.gke-security-guide-page .code-str {
+    color: #f2c675;
+}
+
+.gke-security-guide-page .code-comment {
+    color: #6b7c93;
+    font-style: italic;
+}
+
+.gke-security-guide-page .code-var {
+    color: #ff9b9b;
+    font-weight: 500;
+}
+
+/* Mermaid 図解: 1rem (16px) 文字サイズ保護 ＆ レスポンシブスクロール */
 .gke-security-guide-page .mermaid-block {
-    margin: 20px 0 28px;
+    margin: 24px 0 32px;
+    width: 100%;
 }
 
 .gke-security-guide-page .mermaid-wrap {
@@ -296,8 +322,14 @@
     background: var(--color-card, #0d1b2e);
     border: 1px solid #1c2d42;
     border-radius: var(--radius-lg, 12px);
-    padding: 24px 12px;
-    overflow: visible;
+    padding: 28px 16px;
+    overflow-x: auto;
+}
+
+.gke-security-guide-page .mermaid-wrap :global(svg) {
+    max-width: 100% !important;
+    height: auto !important;
+    min-width: 600px; /* 文字サイズ 1rem (16px) を維持し極小潰れを防止 */
 }
 
 .gke-security-guide-page ol,
@@ -408,7 +440,7 @@
     }
     .gke-security-guide-page .main {
         margin-left: 0;
-        padding: 32px 20px 80px;
+        padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px) 20px 80px;
     }
     .gke-security-guide-page .summary-grid {
         grid-template-columns: 1fr;

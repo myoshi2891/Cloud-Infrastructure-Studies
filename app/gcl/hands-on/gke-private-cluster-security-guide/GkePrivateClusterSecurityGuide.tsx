@@ -192,12 +192,24 @@ export function GkePrivateClusterSecurityGuide() {
                         <h3>手順（gcloud CLI）</h3>
                         <pre>
                             <code>
-                                <div className="code-line">gcloud iam roles create orca_custom_security_role \</div>
-                                <div className="code-line">  --project=&lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --title=&quot;Custom Security Role&quot; \</div>
-                                <div className="code-line">  --description=&quot;Orca dev team storage object read/write permissions&quot; \</div>
-                                <div className="code-line">  --permissions=storage.buckets.get,storage.objects.get,storage.objects.list,storage.objects.update,storage.objects.create \</div>
-                                <div className="code-line">  --stage=GA</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">iam roles create</span> <span className="code-val">orca_custom_security_role</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --project</span>=<span className="code-str">&lt;PROJECT_ID&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --title</span>=<span className="code-str">&quot;Custom Security Role&quot;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --description</span>=<span className="code-str">&quot;Orca dev team storage object read/write permissions&quot;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --permissions</span>=<span className="code-val">storage.buckets.get,storage.objects.get,storage.objects.list,storage.objects.update,storage.objects.create</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --stage</span>=<span className="code-val">GA</span>
+                                </div>
                             </code>
                         </pre>
 
@@ -252,9 +264,15 @@ export function GkePrivateClusterSecurityGuide() {
                         <h3>手順（gcloud CLI）</h3>
                         <pre>
                             <code>
-                                <div className="code-line">gcloud iam service-accounts create orca-service-account \</div>
-                                <div className="code-line">  --project=&lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --display-name=&quot;Service Account&quot;</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">iam service-accounts create</span> <span className="code-val">orca-service-account</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --project</span>=<span className="code-str">&lt;PROJECT_ID&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --display-name</span>=<span className="code-str">&quot;Service Account&quot;</span>
+                                </div>
                             </code>
                         </pre>
 
@@ -367,23 +385,49 @@ export function GkePrivateClusterSecurityGuide() {
                         <h3>手順（gcloud CLI）</h3>
                         <pre>
                             <code>
-                                <div className="code-line">SA_EMAIL=&quot;orca-service-account@&lt;PROJECT_ID&gt;.iam.gserviceaccount.com&quot;</div>
+                                <div className="code-line">
+                                    <span className="code-var">SA_EMAIL</span>=<span className="code-str">&quot;orca-service-account@&lt;PROJECT_ID&gt;.iam.gserviceaccount.com&quot;</span>
+                                </div>
                                 <div className="code-line"></div>
-                                <div className="code-line">gcloud projects add-iam-policy-binding &lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --member=&quot;serviceAccount:${'{SA_EMAIL}'}&quot; \</div>
-                                <div className="code-line">  --role=&quot;roles/monitoring.viewer&quot;</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">projects add-iam-policy-binding</span> <span className="code-str">&lt;PROJECT_ID&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --member</span>=<span className="code-str">&quot;serviceAccount:${'{SA_EMAIL}'}&quot;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --role</span>=<span className="code-str">&quot;roles/monitoring.viewer&quot;</span>
+                                </div>
                                 <div className="code-line"></div>
-                                <div className="code-line">gcloud projects add-iam-policy-binding &lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --member=&quot;serviceAccount:${'{SA_EMAIL}'}&quot; \</div>
-                                <div className="code-line">  --role=&quot;roles/monitoring.metricWriter&quot;</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">projects add-iam-policy-binding</span> <span className="code-str">&lt;PROJECT_ID&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --member</span>=<span className="code-str">&quot;serviceAccount:${'{SA_EMAIL}'}&quot;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --role</span>=<span className="code-str">&quot;roles/monitoring.metricWriter&quot;</span>
+                                </div>
                                 <div className="code-line"></div>
-                                <div className="code-line">gcloud projects add-iam-policy-binding &lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --member=&quot;serviceAccount:${'{SA_EMAIL}'}&quot; \</div>
-                                <div className="code-line">  --role=&quot;roles/logging.logWriter&quot;</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">projects add-iam-policy-binding</span> <span className="code-str">&lt;PROJECT_ID&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --member</span>=<span className="code-str">&quot;serviceAccount:${'{SA_EMAIL}'}&quot;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --role</span>=<span className="code-str">&quot;roles/logging.logWriter&quot;</span>
+                                </div>
                                 <div className="code-line"></div>
-                                <div className="code-line">gcloud projects add-iam-policy-binding &lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --member=&quot;serviceAccount:${'{SA_EMAIL}'}&quot; \</div>
-                                <div className="code-line">  --role=&quot;projects/&lt;PROJECT_ID&gt;/roles/orca_custom_security_role&quot;</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">projects add-iam-policy-binding</span> <span className="code-str">&lt;PROJECT_ID&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --member</span>=<span className="code-str">&quot;serviceAccount:${'{SA_EMAIL}'}&quot;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --role</span>=<span className="code-str">&quot;projects/&lt;PROJECT_ID&gt;/roles/orca_custom_security_role&quot;</span>
+                                </div>
                             </code>
                         </pre>
 
@@ -481,18 +525,42 @@ export function GkePrivateClusterSecurityGuide() {
                         <h3>手順①：クラスタの作成</h3>
                         <pre>
                             <code>
-                                <div className="code-line">gcloud container clusters create orca-cluster-name \</div>
-                                <div className="code-line">  --project=&lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --region=&lt;REGION&gt; \</div>
-                                <div className="code-line">  --zone=&lt;ZONE&gt; \</div>
-                                <div className="code-line">  --network=orca-build-vpc \</div>
-                                <div className="code-line">  --subnetwork=orca-build-subnet \</div>
-                                <div className="code-line">  --service-account=&quot;orca-service-account@&lt;PROJECT_ID&gt;.iam.gserviceaccount.com&quot; \</div>
-                                <div className="code-line">  --enable-private-nodes \</div>
-                                <div className="code-line">  --enable-private-endpoint \</div>
-                                <div className="code-line">  --enable-ip-alias \</div>
-                                <div className="code-line">  --enable-master-authorized-networks \</div>
-                                <div className="code-line">  --master-authorized-networks=&lt;TEMPORARY_CIDR_OR_OWN_IP&gt;/32</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">container clusters create</span> <span className="code-val">orca-cluster-name</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --project</span>=<span className="code-str">&lt;PROJECT_ID&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --region</span>=<span className="code-str">&lt;REGION&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --zone</span>=<span className="code-str">&lt;ZONE&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --network</span>=<span className="code-val">orca-build-vpc</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --subnetwork</span>=<span className="code-val">orca-build-subnet</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --service-account</span>=<span className="code-str">&quot;orca-service-account@&lt;PROJECT_ID&gt;.iam.gserviceaccount.com&quot;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --enable-private-nodes</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --enable-private-endpoint</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --enable-ip-alias</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --enable-master-authorized-networks</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --master-authorized-networks</span>=<span className="code-val">&lt;TEMPORARY_CIDR_OR_OWN_IP&gt;/32</span>
+                                </div>
                             </code>
                         </pre>
 
@@ -518,14 +586,28 @@ export function GkePrivateClusterSecurityGuide() {
                         <h3>手順②：jumphostの内部IPを承認済みネットワークに追加</h3>
                         <pre>
                             <code>
-                                <div className="code-line">JUMP_IP=$(gcloud compute instances describe orca-jumphost \</div>
-                                <div className="code-line">  --zone=&lt;ZONE&gt; \</div>
-                                <div className="code-line">  --format=&apos;get(networkInterfaces[0].networkIP)&apos;)</div>
+                                <div className="code-line">
+                                    <span className="code-var">JUMP_IP</span>=$(<span className="code-cmd">gcloud</span> <span className="code-param">compute instances describe</span> <span className="code-val">orca-jumphost</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --zone</span>=<span className="code-str">&lt;ZONE&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --format</span>=<span className="code-str">&apos;get(networkInterfaces[0].networkIP)&apos;</span>)
+                                </div>
                                 <div className="code-line"></div>
-                                <div className="code-line">gcloud container clusters update orca-cluster-name \</div>
-                                <div className="code-line">  --region=&lt;REGION&gt; \</div>
-                                <div className="code-line">  --enable-master-authorized-networks \</div>
-                                <div className="code-line">  --master-authorized-networks=&quot;${'{JUMP_IP}'}/32&quot;</div>
+                                <div className="code-line">
+                                    <span className="code-cmd">gcloud</span> <span className="code-param">container clusters update</span> <span className="code-val">orca-cluster-name</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --region</span>=<span className="code-str">&lt;REGION&gt;</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --enable-master-authorized-networks</span> \
+                                </div>
+                                <div className="code-line">
+                                    <span className="code-param">  --master-authorized-networks</span>=<span className="code-str">&quot;${'{JUMP_IP}'}/32&quot;</span>
+                                </div>
                             </code>
                         </pre>
 
@@ -568,25 +650,25 @@ export function GkePrivateClusterSecurityGuide() {
                         <h3>手順（orca-jumphost 上で実行）</h3>
                         <pre>
                             <code>
-                                <div className="code-line"># 1. 認証プラグインをインストール</div>
-                                <div className="code-line">sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin</div>
+                                <div className="code-line"><span className="code-comment"># 1. 認証プラグインをインストール</span></div>
+                                <div className="code-line"><span className="code-cmd">sudo apt-get install</span> <span className="code-val">google-cloud-sdk-gke-gcloud-auth-plugin</span></div>
                                 <div className="code-line"></div>
-                                <div className="code-line"># 2. 環境変数を永続化</div>
-                                <div className="code-line">echo &quot;export USE_GKE_GCLOUD_AUTH_PLUGIN=True&quot; &gt;&gt; ~/.bashrc</div>
-                                <div className="code-line">source ~/.bashrc</div>
+                                <div className="code-line"><span className="code-comment"># 2. 環境変数を永続化</span></div>
+                                <div className="code-line"><span className="code-cmd">echo</span> <span className="code-str">&quot;export USE_GKE_GCLOUD_AUTH_PLUGIN=True&quot;</span> &gt;&gt; ~/.bashrc</div>
+                                <div className="code-line"><span className="code-cmd">source</span> ~/.bashrc</div>
                                 <div className="code-line"></div>
-                                <div className="code-line"># 3. 内部IP経由でクレデンシャルを取得（--internal-ipが必須）</div>
-                                <div className="code-line">gcloud container clusters get-credentials orca-cluster-name \</div>
-                                <div className="code-line">  --internal-ip \</div>
-                                <div className="code-line">  --project=&lt;PROJECT_ID&gt; \</div>
-                                <div className="code-line">  --zone=&lt;ZONE&gt;</div>
+                                <div className="code-line"><span className="code-comment"># 3. 内部IP経由でクレデンシャルを取得（--internal-ipが必須）</span></div>
+                                <div className="code-line"><span className="code-cmd">gcloud</span> <span className="code-param">container clusters get-credentials</span> <span className="code-val">orca-cluster-name</span> \</div>
+                                <div className="code-line">  <span className="code-param">--internal-ip</span> \</div>
+                                <div className="code-line">  <span className="code-param">--project</span>=<span className="code-str">&lt;PROJECT_ID&gt;</span> \</div>
+                                <div className="code-line">  <span className="code-param">--zone</span>=<span className="code-str">&lt;ZONE&gt;</span></div>
                                 <div className="code-line"></div>
-                                <div className="code-line"># 4. 動作確認用の簡易アプリをデプロイ</div>
-                                <div className="code-line">kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0</div>
+                                <div className="code-line"><span className="code-comment"># 4. 動作確認用の簡易アプリをデプロイ</span></div>
+                                <div className="code-line"><span className="code-cmd">kubectl</span> <span className="code-param">create deployment</span> <span className="code-val">hello-server</span> <span className="code-param">--image</span>=<span className="code-str">gcr.io/google-samples/hello-app:1.0</span></div>
                                 <div className="code-line"></div>
-                                <div className="code-line"># 5. デプロイの状態を確認</div>
-                                <div className="code-line">kubectl get deployments</div>
-                                <div className="code-line">kubectl get pods</div>
+                                <div className="code-line"><span className="code-comment"># 5. デプロイの状態を確認</span></div>
+                                <div className="code-line"><span className="code-cmd">kubectl</span> <span className="code-param">get deployments</span></div>
+                                <div className="code-line"><span className="code-cmd">kubectl</span> <span className="code-param">get pods</span></div>
                             </code>
                         </pre>
 
