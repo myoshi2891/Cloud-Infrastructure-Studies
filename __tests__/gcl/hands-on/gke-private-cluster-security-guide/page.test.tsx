@@ -104,8 +104,17 @@ describe('GKE プライベートクラスタ セキュリティ実装ガイド �
         }
     });
 
-    it('Mermaid 図のラッパーコンテナが正しく配置されていること', () => {
-        const diagramWraps = container.querySelectorAll('.mermaid-block');
+    it('全幅メインコンテナおよび 1rem 倍率用図解ラッパーが正しく配置されていること', () => {
+        const main = container.querySelector('.main');
+        expect(main).toBeTruthy();
+        const diagramWraps = container.querySelectorAll('.mermaid-wrap');
         expect(diagramWraps.length).toBe(4);
+    });
+
+    it('コードブロックに構文ハイライト用の要素（code-cmd, code-param 等）が含まれること', () => {
+        const codeCmds = container.querySelectorAll('.code-cmd');
+        expect(codeCmds.length).toBeGreaterThan(0);
+        const codeParams = container.querySelectorAll('.code-param');
+        expect(codeParams.length).toBeGreaterThan(0);
     });
 });
