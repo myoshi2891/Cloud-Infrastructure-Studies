@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
-import { DIAGRAMS } from './constants';
+import { DIAGRAMS, type DiagramId } from './constants';
 import { NavBar } from './NavBar';
 
-function Diagram({ id, label }: { id: string; label: string }) {
+function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
-    if (!chart) return null;
     return (
         <div className="mermaid-block">
             <div className="mermaid-wrap">
@@ -74,9 +73,9 @@ export function GkePrivateClusterSecurityGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>基準</th>
-                                    <th>内容</th>
-                                    <th>目的</th>
+                                    <th scope="col">基準</th>
+                                    <th scope="col">内容</th>
+                                    <th scope="col">目的</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,8 +160,8 @@ export function GkePrivateClusterSecurityGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>権限</th>
-                                    <th>用途</th>
+                                    <th scope="col">権限</th>
+                                    <th scope="col">用途</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -328,8 +327,8 @@ export function GkePrivateClusterSecurityGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>組み込みロール</th>
-                                    <th>役割</th>
+                                    <th scope="col">組み込みロール</th>
+                                    <th scope="col">役割</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -468,9 +467,9 @@ export function GkePrivateClusterSecurityGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>フラグ</th>
-                                    <th>意味</th>
-                                    <th>このラボでの要件</th>
+                                    <th scope="col">フラグ</th>
+                                    <th scope="col">意味</th>
+                                    <th scope="col">このラボでの要件</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -719,9 +718,9 @@ export function GkePrivateClusterSecurityGuide() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>症状</th>
-                                    <th>原因</th>
-                                    <th>対処</th>
+                                    <th scope="col">症状</th>
+                                    <th scope="col">原因</th>
+                                    <th scope="col">対処</th>
                                 </tr>
                             </thead>
                             <tbody>

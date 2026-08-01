@@ -31,6 +31,7 @@ export const NavBar: React.FC<NavBarProps> = ({ activeId }) => {
                             <a
                                 href={`#${item.id}`}
                                 className={isActive ? 'active' : ''}
+                                aria-current={isActive ? 'true' : undefined}
                             >
                                 <i className={`ti ${item.icon}`} />
                                 {item.label}

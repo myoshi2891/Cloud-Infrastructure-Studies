@@ -3,7 +3,9 @@
  * Mermaid 図解定数（正本）
  */
 
-export const DIAGRAMS: Record<string, string> = {
+export type DiagramId = 'mermaid-1' | 'mermaid-2' | 'mermaid-3' | 'mermaid-4';
+
+export const DIAGRAMS = {
     'mermaid-1': `flowchart TB
     subgraph INTERNET["公開インターネット"]
         PUB["外部クライアント"]
@@ -67,4 +69,4 @@ export const DIAGRAMS: Record<string, string> = {
     S2 --> S3["get-credentialsを--internal-ipで実行"]
     S3 --> S4["kubectlでDeploymentを作成"]
     S4 --> S5["kubectl get pods/deploymentsで確認"]`,
-};
+} as const satisfies Record<DiagramId, string>;
