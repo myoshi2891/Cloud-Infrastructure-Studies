@@ -21,6 +21,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **Step 2 (Green)**: `feat(gcl-hands-on): implement GKE private cluster security guide page to pass tests` (`page.tsx`, `GkePrivateClusterSecurityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
 - [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(gcl-hands-on): integrate GKE private cluster security guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`GEMINI.md` 更新)
 - [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive GKE private cluster security guide html and md files` (`MIGRATION_PROGRESS.md` の更新、元HTML `Gke-private-cluster-security-guide.html` を `archive/Gcl_Archive/Hands-on/html/` へ、MD を `archive/Gcl_Archive/Hands-on/md/` へアーカイブ移動)
+- [x] **Step 5 (Full-width Layout, Syntax Highlighting & 1rem Diagram Scaling)**: `feat(gcl-hands-on): expand main layout width, add syntax highlighting, and protect 1rem diagram text size` (`main` メインコンテンツ横幅全幅化、コードブロックへの `code-cmd` / `code-param` 等の構文カラーハイライト適用、図解文字サイズ 1rem 保護とレスポンシブ表示の適用)
 
 ### 関連ファイル
 
