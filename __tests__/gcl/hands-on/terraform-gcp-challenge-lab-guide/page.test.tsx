@@ -8,14 +8,17 @@ import { DIAGRAMS } from '@/app/gcl/hands-on/terraform-gcp-challenge-lab-guide/c
 vi.mock('@/components/MermaidDiagram', () => ({
     MermaidDiagram: function DummyMermaidDiagram({
         chart,
+        ariaLabel,
         preserveNaturalScale,
     }: {
         chart: string;
+        ariaLabel?: string;
         preserveNaturalScale?: boolean;
     }) {
         return (
             <pre
                 data-testid="mermaid"
+                aria-label={ariaLabel}
                 data-preserve-natural-scale={preserveNaturalScale ? 'true' : 'false'}
             >
                 {chart}
@@ -47,42 +50,62 @@ describe('Terraform GCP Challenge Lab 完全攻略ガイド ページ', () => {
     it('主要なセクションの見出しがすべてレンダリングされること', () => {
         expect(
             screen.getByRole('heading', {
-                name: /1\. このラボで達成すること/i,
+                name: /1このラボで学ぶこと/i,
             }),
         ).toBeInTheDocument();
         expect(
             screen.getByRole('heading', {
-                name: /2\. 事前準備 & バックエンド初期化/i,
+                name: /2完成形のアーキテクチャ/i,
             }),
         ).toBeInTheDocument();
         expect(
             screen.getByRole('heading', {
-                name: /3\. Task 1: インフラ構成要素のモジュール化/i,
+                name: /3事前準備: Terraform CLI のインストール/i,
             }),
         ).toBeInTheDocument();
         expect(
             screen.getByRole('heading', {
-                name: /4\. Task 2: リソースのインポートと構成/i,
+                name: /4Task 1: ディレクトリ構成とルート変数の設計/i,
             }),
         ).toBeInTheDocument();
         expect(
             screen.getByRole('heading', {
-                name: /5\. Task 3: リモートバックエンド（Cloud Storage）への切り替え/i,
+                name: /5Task 2: リソースのインポートと構成/i,
             }),
         ).toBeInTheDocument();
         expect(
             screen.getByRole('heading', {
-                name: /6\. Task 4: モジュールの修正とインフラ更新/i,
+                name: /6Task 3: リモートバックエンド（Cloud Storage）への切り替え/i,
             }),
         ).toBeInTheDocument();
         expect(
             screen.getByRole('heading', {
-                name: /7\. トラブルシューティング & 実践的ノウハウ/i,
+                name: /7Task 4: インフラの変更（Update in-place）/i,
             }),
         ).toBeInTheDocument();
         expect(
             screen.getByRole('heading', {
-                name: /8\. まとめ/i,
+                name: /8Task 5: リソースの削除（Destroy）/i,
+            }),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', {
+                name: /9Task 6: Registry モジュールの活用（VPC & Subnet）/i,
+            }),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', {
+                name: /10Task 7: ファイアウォールルールの設定/i,
+            }),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', {
+                name: /11ベストプラクティス総まとめ/i,
+            }),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', {
+                name: /12参考文献・引用ソース一覧/i,
             }),
         ).toBeInTheDocument();
     });
@@ -91,11 +114,12 @@ describe('Terraform GCP Challenge Lab 完全攻略ガイド ページ', () => {
         expect(Object.keys(DIAGRAMS).length).toBe(8);
     });
 
-    it('すべての MermaidDiagram に preserveNaturalScale が設定されていること', () => {
+    it('すべての MermaidDiagram に preserveNaturalScale と ariaLabel が設定されていること', () => {
         const mermaids = screen.getAllByTestId('mermaid');
-        expect(mermaids.length).toBeGreaterThan(0);
+        expect(mermaids.length).toBe(8);
         mermaids.forEach((mermaid) => {
             expect(mermaid.getAttribute('data-preserve-natural-scale')).toBe('true');
+            expect(mermaid.getAttribute('aria-label')).toBeTruthy();
         });
     });
 });
