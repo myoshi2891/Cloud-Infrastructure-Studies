@@ -1,4 +1,7 @@
 /* GKE プライベートクラスタ セキュリティ実装ガイド 専用 CSS */
+/* TODO: globals.css に GKE ガイド専用のダークテーマトークンを追加する。
+ * 現在の表示維持に必要な主な色: #142438, #7c9eff, #7cc0ff, #24374d, #1c2d42
+ */
 
 .gke-security-guide-page {
     background: var(--color-background, #07111e);
@@ -326,7 +329,7 @@
     overflow-x: auto;
 }
 
-.gke-security-guide-page .mermaid-wrap :global(svg) {
+.gke-security-guide-page .mermaid-wrap svg {
     max-width: 100% !important;
     height: auto !important;
     min-width: 600px; /* 文字サイズ 1rem (16px) を維持し極小潰れを防止 */
