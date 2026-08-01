@@ -187,16 +187,22 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;region&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-attr">description</span> = <span className="tok-string">&quot;The GCP region&quot;</span></div>
                                 <div className="code-line">  <span className="tok-attr">type</span>        = string</div>
-                                <div className="code-line">  <span className="tok-attr">default</span>     = <span className="tok-string">&quot;us-east1&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">default</span>     = <span className="tok-string">&quot;&quot;</span></div>
                                 <div className="code-line">&#125;</div>
                                 <div className="code-line"></div>
                                 <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;zone&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-attr">description</span> = <span className="tok-string">&quot;The GCP zone&quot;</span></div>
                                 <div className="code-line">  <span className="tok-attr">type</span>        = string</div>
-                                <div className="code-line">  <span className="tok-attr">default</span>     = <span className="tok-string">&quot;us-east1-b&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">default</span>     = <span className="tok-string">&quot;&lt;ラボ開始時に指定されたゾーン&gt;&quot;</span></div>
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <div className="callout">
+                            <div className="callout-title"><i className="ti ti-checks" />ベストプラクティス</div>
+                            <p>
+                                <code>default</code> に決め打ちの値を入れるのはアンチパターンとされることが多いが、Challenge Lab のような単一環境・単一目的の検証環境では、<code>terraform apply</code> のたびに <code>-var</code> を指定する手間を省くために default 値を設定するのが合理的である。本番運用では <code>terraform.tfvars</code> や <code>TF_VAR_*</code> 環境変数、あるいは CI/CD のシークレット管理と組み合わせるのがより安全である。
+                            </p>
+                        </div>
 
                         <h3><i className="ti ti-cloud" />main.tf: Terraform block と Provider</h3>
                         <pre>
@@ -217,6 +223,9 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <p>
+                            <code>provider &quot;google&quot;</code> ブロックに <code>zone</code> を明示的に含めることで、以降 <code>google_compute_instance</code> などのリソースでゾーンを省略した場合に、このデフォルトゾーンが自動的に使われるようになる。
+                        </p>
 
                         <h3><i className="ti ti-refresh" />初期化</h3>
                         <pre>
@@ -224,6 +233,9 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-command">terraform</span> init</div>
                             </code>
                         </pre>
+                        <p>
+                            <code>terraform init</code> は、(1) provider プラグインのダウンロード、(2) モジュールの解決、(3) backend の初期化、の3つを行うコマンドである。設定ファイルを変更するたび（特に module や provider を追加・変更した際）は再実行が必要になる。
+                        </p>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/modules" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/modules</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/values/variables" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/values/variables</a>
                         </p>
@@ -260,49 +272,78 @@ export function TerraformGcpChallengeLabGuide() {
                         <p>module を追加・変更したら、必ず <code>terraform init</code> を再実行してモジュールを解決させる。</p>
 
                         <h3><i className="ti ti-server" />instances.tf: 最小限の resource ブロック</h3>
+                        <p>
+                            ラボの指示どおり、以下の引数だけに絞って最小構成で書く。項目を絞る理由は、「import 後に state との差分を最小化し、意図しないリソースの再作成（recreate）を避けるため」である。特に <code>boot_disk.initialize_params.image</code> のようなイミュータブルな属性は、値が一致していないと <code>terraform apply</code> 時にリソースの作り直しが発生してしまう。
+                        </p>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-1&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-attr">name</span>         = <span className="tok-string">&quot;tf-instance-1&quot;</span></div>
-                                <div className="code-line">  <span className="tok-attr">machine_type</span> = <span className="tok-string">&quot;e2-micro&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span> = <span className="tok-string">&quot;e2-medium&quot;</span></div>
                                 <div className="code-line">  <span className="tok-attr">zone</span>         = <span className="tok-variable">var.zone</span></div>
                                 <div className="code-line"></div>
                                 <div className="code-line">  <span className="tok-keyword">boot_disk</span> &#123;</div>
                                 <div className="code-line">    <span className="tok-keyword">initialize_params</span> &#123;</div>
-                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;debian-cloud/debian-11&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;projects/debian-cloud/global/images/family/debian-12&quot;</span></div>
                                 <div className="code-line">    &#125;</div>
                                 <div className="code-line">  &#125;</div>
                                 <div className="code-line"></div>
                                 <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
                                 <div className="code-line">    <span className="tok-attr">network</span> = <span className="tok-string">&quot;default&quot;</span></div>
+                                <div className="code-line">    <span className="tok-keyword">access_config</span> &#123;&#125;</div>
                                 <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">metadata_startup_script</span> = &lt;&lt;-EOT</div>
+                                <div className="code-line">        #!/bin/bash</div>
+                                <div className="code-line">    EOT</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span></div>
                                 <div className="code-line">&#125;</div>
                                 <div className="code-line"></div>
                                 <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-2&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-attr">name</span>         = <span className="tok-string">&quot;tf-instance-2&quot;</span></div>
-                                <div className="code-line">  <span className="tok-attr">machine_type</span> = <span className="tok-string">&quot;e2-micro&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span> = <span className="tok-string">&quot;e2-medium&quot;</span></div>
                                 <div className="code-line">  <span className="tok-attr">zone</span>         = <span className="tok-variable">var.zone</span></div>
                                 <div className="code-line"></div>
                                 <div className="code-line">  <span className="tok-keyword">boot_disk</span> &#123;</div>
                                 <div className="code-line">    <span className="tok-keyword">initialize_params</span> &#123;</div>
-                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;debian-cloud/debian-11&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;projects/debian-cloud/global/images/family/debian-12&quot;</span></div>
                                 <div className="code-line">    &#125;</div>
                                 <div className="code-line">  &#125;</div>
                                 <div className="code-line"></div>
                                 <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
                                 <div className="code-line">    <span className="tok-attr">network</span> = <span className="tok-string">&quot;default&quot;</span></div>
+                                <div className="code-line">    <span className="tok-keyword">access_config</span> &#123;&#125;</div>
                                 <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">metadata_startup_script</span> = &lt;&lt;-EOT</div>
+                                <div className="code-line">        #!/bin/bash</div>
+                                <div className="code-line">    EOT</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span></div>
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <div className="callout danger">
+                            <div className="callout-title"><i className="ti ti-alert-triangle" />重要</div>
+                            <p>
+                                <code>machine_type</code> と <code>boot_disk</code> の image は、Console 上で確認した実際の値に必ず置き換えること。値が実物と食い違っていると、import 自体は成功しても、その後の <code>apply</code> でインスタンスの再作成が走ってしまう危険がある。
+                            </p>
+                        </div>
 
                         <h3><i className="ti ti-terminal" />import コマンドの実行</h3>
+                        <p>
+                            module 内の resource を import する場合、アドレスに <code>module.&lt;モジュール名&gt;.</code> の prefix を付ける。
+                        </p>
                         <pre>
                             <code>
-                                <div className="code-line"><span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-1 projects/&lt;PROJECT_ID&gt;/zones/&lt;ZONE&gt;/instances/tf-instance-1</div>
-                                <div className="code-line"><span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-2 projects/&lt;PROJECT_ID&gt;/zones/&lt;ZONE&gt;/instances/tf-instance-2</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-1 &lt;PROJECT_ID&gt;/&lt;ZONE&gt;/tf-instance-1</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-2 &lt;PROJECT_ID&gt;/&lt;ZONE&gt;/tf-instance-2</div>
                             </code>
                         </pre>
+                        <p>
+                            <code>google_compute_instance</code> の import ID は <code>&#123;&#123;project&#125;&#125;/&#123;&#123;zone&#125;&#125;/&#123;&#123;name&#125;&#125;</code> の形式を取る。ID のフォーマットはリソースの種類ごとに異なるため、必ず provider ドキュメントで確認する習慣をつけること。
+                        </p>
 
                         <h3><i className="ti ti-git-compare" />plan → apply</h3>
                         <pre>
@@ -311,6 +352,9 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-command">terraform</span> apply</div>
                             </code>
                         </pre>
+                        <p>
+                            ここで最小構成にしか記述していない属性（disk size や labels など）については、Terraform が「設定にない値」を検出し、in-place update（作り直しではない、その場での更新）が発生することがある。ラボの範囲ではこれは想定内の挙動だが、本番環境では<strong>import 前にすべての実属性を漏れなく記述し、<code>terraform plan</code> の差分がゼロ（no changes）になる状態を確認してから apply する</strong>のが正しい手順である。
+                        </p>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/commands/import" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/commands/import</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/import/usage" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/import/usage</a>
                         </p>
@@ -335,11 +379,19 @@ export function TerraformGcpChallengeLabGuide() {
                         <div className="code-label">modules/storage/storage.tf</div>
                         <pre>
                             <code>
-                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_storage_bucket&quot;</span> <span className="tok-string">&quot;storage_bucket&quot;</span> &#123;</div>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_storage_bucket&quot;</span> <span className="tok-string">&quot;default&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-attr">name</span>                        = <span className="tok-string">&quot;&lt;Bucket Name&gt;&quot;</span></div>
-                                <div className="code-line">  <span className="tok-attr">location</span>                    = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">  <span className="tok-attr">location</span>                    = <span className="tok-string">&quot;US&quot;</span></div>
                                 <div className="code-line">  <span className="tok-attr">force_destroy</span>               = <span className="tok-boolean">true</span></div>
                                 <div className="code-line">  <span className="tok-attr">uniform_bucket_level_access</span> = <span className="tok-boolean">true</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
+                        <div className="code-label">modules/storage/outputs.tf</div>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">output</span> <span className="tok-string">&quot;bucket_name&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">value</span> = google_storage_bucket.default.name</div>
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
@@ -386,7 +438,7 @@ export function TerraformGcpChallengeLabGuide() {
                         <div className="callout warning">
                             <div className="callout-title"><i className="ti ti-alert-triangle" />注意点</div>
                             <p>
-                                <code>backend</code> ブロック内では <code>var.bucket_name</code> などの変数は使用できない。Hardcoded string または <code>-backend-config</code> を使用する。
+                                <code>backend</code> ブロックには変数（<code>var.xxx</code>）を使うことができない。これは Terraform の設計上の制約で、backend 設定はプロバイダーやモジュールより前、変数の評価より前の段階で読み込まれるためである。バケット名は直接文字列で書く必要がある。
                             </p>
                         </div>
                         <pre>
@@ -394,6 +446,18 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-command">terraform</span> init</div>
                             </code>
                         </pre>
+                        <p>
+                            <code>backend</code> ブロックを追加して <code>init</code> を実行すると、Terraform は既存のローカル state を検出し、次のように尋ねてくる。
+                        </p>
+                        <pre>
+                            <code>
+                                <div className="code-line">Do you want to copy existing state to the new backend?</div>
+                                <div className="code-line">  Enter &quot;yes&quot; to copy and &quot;no&quot; to start with an empty state.</div>
+                            </code>
+                        </pre>
+                        <p>
+                            ここで<strong><code>yes</code></strong>と入力することで、既存の管理対象（import 済みのインスタンスなど）の記録を失わずに移行できる。<code>no</code> を選ぶと空の state から始まってしまい、既存リソースの管理情報を失うため注意が必要である。
+                        </p>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/backend/gcs" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/backend/gcs</a> ／ <a className="ext-link" href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" target="_blank" rel="noreferrer">cloud.google.com/storage/docs/uniform-bucket-level-access</a>
                         </p>
@@ -417,25 +481,34 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <p>
+                            <code>tf-instance-2</code> も同様に <code>e2-standard-2</code> へ変更する。<code>allow_stopping_for_update = true</code> を設定済みであるため、Terraform はインスタンスを削除せず、<strong>停止 → 属性変更 → 起動</strong>という形で in-place update を行う。この引数を設定していない場合、<code>machine_type</code> のようなプロパティ変更はエラーになるか、リソースの完全な再作成（destroy &amp; create）を招く。
+                        </p>
 
                         <h3><i className="ti ti-server-2" />3台目のインスタンス追加</h3>
                         <pre>
                             <code>
-                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-3&quot;</span> &#123;</div>
-                                <div className="code-line">  <span className="tok-attr">name</span>                      = <span className="tok-string">&quot;tf-instance-3&quot;</span></div>
-                                <div className="code-line">  <span className="tok-attr">machine_type</span>              = <span className="tok-string">&quot;e2-standard-2&quot;</span></div>
-                                <div className="code-line">  <span className="tok-attr">zone</span>                      = <span className="tok-variable">var.zone</span></div>
-                                <div className="code-line">  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span></div>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;instance-name&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">name</span>         = <span className="tok-string">&quot;&lt;Instance Name&gt;&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span> = <span className="tok-string">&quot;e2-standard-2&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>         = <span className="tok-variable">var.zone</span></div>
                                 <div className="code-line"></div>
                                 <div className="code-line">  <span className="tok-keyword">boot_disk</span> &#123;</div>
                                 <div className="code-line">    <span className="tok-keyword">initialize_params</span> &#123;</div>
-                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;debian-cloud/debian-11&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;projects/debian-cloud/global/images/family/debian-12&quot;</span></div>
                                 <div className="code-line">    &#125;</div>
                                 <div className="code-line">  &#125;</div>
                                 <div className="code-line"></div>
                                 <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
                                 <div className="code-line">    <span className="tok-attr">network</span> = <span className="tok-string">&quot;default&quot;</span></div>
+                                <div className="code-line">    <span className="tok-keyword">access_config</span> &#123;&#125;</div>
                                 <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">metadata_startup_script</span> = &lt;&lt;-EOT</div>
+                                <div className="code-line">        #!/bin/bash</div>
+                                <div className="code-line">    EOT</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span></div>
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
@@ -448,6 +521,30 @@ export function TerraformGcpChallengeLabGuide() {
                             <code>
                                 <div className="code-line"><span className="tok-command">terraform</span> init</div>
                                 <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
+                        <div className="callout">
+                            <div className="callout-title"><i className="ti ti-checks" />ベストプラクティス</div>
+                            <p>
+                                複数リソースにまたがる同種の変更（全インスタンスの machine_type 変更など）は、本来であれば <code>for_each</code> や <code>count</code> を使って DRY（Don&apos;t Repeat Yourself）に書くのが望ましい。本ラボでは学習目的上、明示的に3つの resource ブロックとして書くが、実務では以下のような書き方も検討する価値がある。
+                            </p>
+                        </div>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;instances&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">type</span>    = map(string)</div>
+                                <div className="code-line">  <span className="tok-attr">default</span> = &#123;</div>
+                                <div className="code-line">    <span className="tok-string">&quot;tf-instance-1&quot;</span> = <span className="tok-string">&quot;e2-standard-2&quot;</span></div>
+                                <div className="code-line">    <span className="tok-string">&quot;tf-instance-2&quot;</span> = <span className="tok-string">&quot;e2-standard-2&quot;</span></div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;this&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">for_each</span>     = <span className="tok-variable">var.instances</span></div>
+                                <div className="code-line">  <span className="tok-attr">name</span>         = each.key</div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span> = each.value</div>
+                                <div className="code-line">  <span className="tok-comment"># ...</span></div>
+                                <div className="code-line">&#125;</div>
                             </code>
                         </pre>
                         <p style={{ fontSize: '13px' }}>
@@ -514,6 +611,12 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <div className="callout">
+                            <div className="callout-title"><i className="ti ti-pin" />バージョン固定の重要性</div>
+                            <p>
+                                <code>version</code> は必ず明示的に固定する。Registry モジュールはメジャーバージョンが上がると破壊的変更（引数名の変更など）を伴うことが多く、固定しないと、ある日突然 <code>terraform init -upgrade</code> で最新版が引き込まれて apply が失敗する、という事故につながる。本ラボでは互換性の観点から <code>10.0.0</code> を指定するよう案内されているが、実務で新規に使う場合は Registry で最新の安定版を確認し、<code>~&gt; 10.0</code> のような柔軟なバージョン制約を検討するとよい。
+                            </p>
+                        </div>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-command">terraform</span> init</div>
@@ -581,6 +684,12 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <div className="callout">
+                            <div className="callout-title"><i className="ti ti-info-circle" /><code>network</code> 引数について</div>
+                            <p>
+                                ラボの指示にもあるとおり、<code>network</code> 引数には <code>projects/&lt;PROJECT_ID&gt;/global/networks/&lt;VPC Name&gt;</code> という形式の URL（self_link）を渡す必要がある。<code>terraform-google-modules/network/google</code> モジュールは <code>network_self_link</code> という output を提供しているため、素直にそれを参照すればよい。もし output の名前がわからない場合は、<code>terraform state show module.vpc</code> や <code>terraform state list</code> で state 内のリソース属性を確認する習慣をつけると良い。
+                            </p>
+                        </div>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-command">terraform</span> init</div>
@@ -594,6 +703,9 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-command">curl</span> <span className="tok-flag">-m 5</span> http://&lt;tf-instance-2の外部IP&gt;:80</div>
                             </code>
                         </pre>
+                        <p>
+                            Web サーバー自体は起動していないため、素の <code>curl</code> ではタイムアウトではなく接続拒否（connection refused）が返るのが正常である。ここで重要なのは「タイムアウトしない = ファイアウォールでブロックされていない」ことの確認であり、アプリケーション層の応答自体はこのラボの検証対象ではない。
+                        </p>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall" target="_blank" rel="noreferrer">registry.terraform.io/.../compute_firewall</a> ／ <a className="ext-link" href="https://cloud.google.com/firewall/docs/firewalls" target="_blank" rel="noreferrer">cloud.google.com/firewall/docs/firewalls</a>
                         </p>
