@@ -261,6 +261,12 @@
     line-height: 1.6;
 }
 
+.terraform-lab-guide-page .code-line {
+    display: block;
+    white-space: pre;
+    min-height: 1.5em;
+}
+
 /* Syntax Highlighting */
 .terraform-lab-guide-page .tok-keyword {
     color: var(--color-text-purple);

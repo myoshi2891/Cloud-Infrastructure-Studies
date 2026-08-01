@@ -129,12 +129,16 @@ export function TerraformGcpChallengeLabGuide() {
                             <i className="ti ti-file-code" />
                             ~/.customize_environment
                         </div>
-                        <pre><code><span className="tok-comment">#!/bin/sh</span>{'\n'}
-<span className="tok-comment"># HashiCorp GPG キーの追加とリポジトリの登録</span>{'\n'}
-<span className="tok-command">sudo</span> apt-get update &amp;&amp; <span className="tok-command">sudo</span> apt-get install -y gnupg software-properties-common{'\n'}
-<span className="tok-command">wget</span> <span className="tok-flag">-O-</span> https://apt.releases.hashicorp.com/gpg | <span className="tok-command">gpg</span> <span className="tok-flag">--dearmor</span> | <span className="tok-command">sudo</span> tee /usr/share/keyrings/hashicorp-archive-keyring.gpg &gt; /dev/null{'\n'}
-<span className="tok-command">echo</span> <span className="tok-string">"deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main"</span> | <span className="tok-command">sudo</span> tee /etc/apt/sources.list.d/hashicorp.list{'\n'}
-<span className="tok-command">sudo</span> apt-get update &amp;&amp; <span className="tok-command">sudo</span> apt-get install -y terraform</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-comment">#!/bin/sh</span></div>
+                                <div className="code-line"><span className="tok-comment"># HashiCorp GPG キーの追加とリポジトリの登録</span></div>
+                                <div className="code-line"><span className="tok-command">sudo</span> apt-get update &amp;&amp; <span className="tok-command">sudo</span> apt-get install -y gnupg software-properties-common</div>
+                                <div className="code-line"><span className="tok-command">wget</span> <span className="tok-flag">-O-</span> https://apt.releases.hashicorp.com/gpg | <span className="tok-command">gpg</span> <span className="tok-flag">--dearmor</span> | <span className="tok-command">sudo</span> tee /usr/share/keyrings/hashicorp-archive-keyring.gpg &gt; /dev/null</div>
+                                <div className="code-line"><span className="tok-command">echo</span> <span className="tok-string">&quot;deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main&quot;</span> | <span className="tok-command">sudo</span> tee /etc/apt/sources.list.d/hashicorp.list</div>
+                                <div className="code-line"><span className="tok-command">sudo</span> apt-get update &amp;&amp; <span className="tok-command">sudo</span> apt-get install -y terraform</div>
+                            </code>
+                        </pre>
                         <p>
                             このファイルに実行権限を付与（<code>chmod +x ~/.customize_environment</code>）しておくと、Cloud Shell VM の再作成時にも Terraform CLI が自動的に再インストールされる。
                         </p>
@@ -159,51 +163,67 @@ export function TerraformGcpChallengeLabGuide() {
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.DIRECTORY_STRUCTURE} ariaLabel="プロジェクトのディレクトリ構成図" preserveNaturalScale />
                         </div>
-                        <pre><code><span className="tok-command">mkdir</span> <span className="tok-flag">-p</span> modules/instances modules/storage{'\n'}
-<span className="tok-command">touch</span> main.tf variables.tf{'\n'}
-<span className="tok-command">touch</span> modules/instances/&#123;instances.tf,outputs.tf,variables.tf&#125;{'\n'}
-<span className="tok-command">touch</span> modules/storage/&#123;storage.tf,outputs.tf,variables.tf&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">mkdir</span> <span className="tok-flag">-p</span> modules/instances modules/storage</div>
+                                <div className="code-line"><span className="tok-command">touch</span> main.tf variables.tf</div>
+                                <div className="code-line"><span className="tok-command">touch</span> modules/instances/&#123;instances.tf,outputs.tf,variables.tf&#125;</div>
+                                <div className="code-line"><span className="tok-command">touch</span> modules/storage/&#123;storage.tf,outputs.tf,variables.tf&#125;</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-variable" />variables.tf の実装（ルート・各モジュール共通）</h3>
                         <p>
                             各 <code>variables.tf</code>（ルート、instances、storage の3ファイルすべて）に、同じ3つの変数を定義する。
                         </p>
-                        <pre><code><span className="tok-keyword">variable</span> <span className="tok-string">"project_id"</span> &#123;{'\n'}
-  <span className="tok-attr">description</span> = <span className="tok-string">"The GCP project ID"</span>{'\n'}
-  <span className="tok-attr">type</span>        = string{'\n'}
-  <span className="tok-attr">default</span>     = <span className="tok-string">"&lt;あなたのプロジェクト ID&gt;"</span>{'\n'}
-&#125;{'\n'}
-{'\n'}
-<span className="tok-keyword">variable</span> <span className="tok-string">"region"</span> &#123;{'\n'}
-  <span className="tok-attr">description</span> = <span className="tok-string">"The GCP region"</span>{'\n'}
-  <span className="tok-attr">type</span>        = string{'\n'}
-  <span className="tok-attr">default</span>     = <span className="tok-string">"us-east1"</span>{'\n'}
-&#125;{'\n'}
-{'\n'}
-<span className="tok-keyword">variable</span> <span className="tok-string">"zone"</span> &#123;{'\n'}
-  <span className="tok-attr">description</span> = <span className="tok-string">"The GCP zone"</span>{'\n'}
-  <span className="tok-attr">type</span>        = string{'\n'}
-  <span className="tok-attr">default</span>     = <span className="tok-string">"us-east1-b"</span>{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;project_id&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">description</span> = <span className="tok-string">&quot;The GCP project ID&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">type</span>        = string</div>
+                                <div className="code-line">  <span className="tok-attr">default</span>     = <span className="tok-string">&quot;&lt;あなたのプロジェクト ID&gt;&quot;</span></div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;region&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">description</span> = <span className="tok-string">&quot;The GCP region&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">type</span>        = string</div>
+                                <div className="code-line">  <span className="tok-attr">default</span>     = <span className="tok-string">&quot;us-east1&quot;</span></div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;zone&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">description</span> = <span className="tok-string">&quot;The GCP zone&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">type</span>        = string</div>
+                                <div className="code-line">  <span className="tok-attr">default</span>     = <span className="tok-string">&quot;us-east1-b&quot;</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-cloud" />main.tf: Terraform block と Provider</h3>
-                        <pre><code><span className="tok-keyword">terraform</span> &#123;{'\n'}
-  <span className="tok-keyword">required_providers</span> &#123;{'\n'}
-    <span className="tok-attr">google</span> = &#123;{'\n'}
-      <span className="tok-attr">source</span>  = <span className="tok-string">"hashicorp/google"</span>{'\n'}
-      <span className="tok-attr">version</span> = <span className="tok-string">"~&gt; 5.0"</span>{'\n'}
-    &#125;{'\n'}
-  &#125;{'\n'}
-&#125;{'\n'}
-{'\n'}
-<span className="tok-keyword">provider</span> <span className="tok-string">"google"</span> &#123;{'\n'}
-  <span className="tok-attr">project</span> = <span className="tok-variable">var.project_id</span>{'\n'}
-  <span className="tok-attr">region</span>  = <span className="tok-variable">var.region</span>{'\n'}
-  <span className="tok-attr">zone</span>    = <span className="tok-variable">var.zone</span>{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">terraform</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-keyword">required_providers</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">google</span> = &#123;</div>
+                                <div className="code-line">      <span className="tok-attr">source</span>  = <span className="tok-string">&quot;hashicorp/google&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">version</span> = <span className="tok-string">&quot;~&gt; 5.0&quot;</span></div>
+                                <div className="code-line">    &#125;</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">provider</span> <span className="tok-string">&quot;google&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">project</span> = <span className="tok-variable">var.project_id</span></div>
+                                <div className="code-line">  <span className="tok-attr">region</span>  = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>    = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-refresh" />初期化</h3>
-                        <pre><code><span className="tok-command">terraform</span> init</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                            </code>
+                        </pre>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/modules" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/modules</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/values/variables" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/values/variables</a>
                         </p>
@@ -227,54 +247,70 @@ export function TerraformGcpChallengeLabGuide() {
                         </div>
 
                         <h3><i className="ti ti-file-code" />main.tf への module 参照追加</h3>
-                        <pre><code><span className="tok-keyword">module</span> <span className="tok-string">"instances"</span> &#123;{'\n'}
-  <span className="tok-attr">source</span>     = <span className="tok-string">"./modules/instances"</span>{'\n'}
-  <span className="tok-attr">project_id</span> = <span className="tok-variable">var.project_id</span>{'\n'}
-  <span className="tok-attr">region</span>     = <span className="tok-variable">var.region</span>{'\n'}
-  <span className="tok-attr">zone</span>       = <span className="tok-variable">var.zone</span>{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">module</span> <span className="tok-string">&quot;instances&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">source</span>     = <span className="tok-string">&quot;./modules/instances&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">project_id</span> = <span className="tok-variable">var.project_id</span></div>
+                                <div className="code-line">  <span className="tok-attr">region</span>     = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>       = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
                         <p>module を追加・変更したら、必ず <code>terraform init</code> を再実行してモジュールを解決させる。</p>
 
                         <h3><i className="ti ti-server" />instances.tf: 最小限の resource ブロック</h3>
-                        <pre><code><span className="tok-keyword">resource</span> <span className="tok-string">"google_compute_instance"</span> <span className="tok-string">"tf-instance-1"</span> &#123;{'\n'}
-  <span className="tok-attr">name</span>         = <span className="tok-string">"tf-instance-1"</span>{'\n'}
-  <span className="tok-attr">machine_type</span> = <span className="tok-string">"e2-micro"</span>{'\n'}
-  <span className="tok-attr">zone</span>         = <span className="tok-variable">var.zone</span>{'\n'}
-{'\n'}
-  <span className="tok-keyword">boot_disk</span> &#123;{'\n'}
-    <span className="tok-keyword">initialize_params</span> &#123;{'\n'}
-      <span className="tok-attr">image</span> = <span className="tok-string">"debian-cloud/debian-11"</span>{'\n'}
-    &#125;{'\n'}
-  &#125;{'\n'}
-{'\n'}
-  <span className="tok-keyword">network_interface</span> &#123;{'\n'}
-    <span className="tok-attr">network</span> = <span className="tok-string">"default"</span>{'\n'}
-  &#125;{'\n'}
-&#125;{'\n'}
-{'\n'}
-<span className="tok-keyword">resource</span> <span className="tok-string">"google_compute_instance"</span> <span className="tok-string">"tf-instance-2"</span> &#123;{'\n'}
-  <span className="tok-attr">name</span>         = <span className="tok-string">"tf-instance-2"</span>{'\n'}
-  <span className="tok-attr">machine_type</span> = <span className="tok-string">"e2-micro"</span>{'\n'}
-  <span className="tok-attr">zone</span>         = <span className="tok-variable">var.zone</span>{'\n'}
-{'\n'}
-  <span className="tok-keyword">boot_disk</span> &#123;{'\n'}
-    <span className="tok-keyword">initialize_params</span> &#123;{'\n'}
-      <span className="tok-attr">image</span> = <span className="tok-string">"debian-cloud/debian-11"</span>{'\n'}
-    &#125;{'\n'}
-  &#125;{'\n'}
-{'\n'}
-  <span className="tok-keyword">network_interface</span> &#123;{'\n'}
-    <span className="tok-attr">network</span> = <span className="tok-string">"default"</span>{'\n'}
-  &#125;{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-1&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">name</span>         = <span className="tok-string">&quot;tf-instance-1&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span> = <span className="tok-string">&quot;e2-micro&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>         = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">boot_disk</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-keyword">initialize_params</span> &#123;</div>
+                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;debian-cloud/debian-11&quot;</span></div>
+                                <div className="code-line">    &#125;</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">network</span> = <span className="tok-string">&quot;default&quot;</span></div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-2&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">name</span>         = <span className="tok-string">&quot;tf-instance-2&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span> = <span className="tok-string">&quot;e2-micro&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>         = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">boot_disk</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-keyword">initialize_params</span> &#123;</div>
+                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;debian-cloud/debian-11&quot;</span></div>
+                                <div className="code-line">    &#125;</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">network</span> = <span className="tok-string">&quot;default&quot;</span></div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-terminal" />import コマンドの実行</h3>
-                        <pre><code><span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-1 projects/&lt;PROJECT_ID&gt;/zones/&lt;ZONE&gt;/instances/tf-instance-1{'\n'}
-<span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-2 projects/&lt;PROJECT_ID&gt;/zones/&lt;ZONE&gt;/instances/tf-instance-2</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-1 projects/&lt;PROJECT_ID&gt;/zones/&lt;ZONE&gt;/instances/tf-instance-1</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> import module.instances.google_compute_instance.tf-instance-2 projects/&lt;PROJECT_ID&gt;/zones/&lt;ZONE&gt;/instances/tf-instance-2</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-git-compare" />plan → apply</h3>
-                        <pre><code><span className="tok-command">terraform</span> plan{'\n'}
-<span className="tok-command">terraform</span> apply</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> plan</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/commands/import" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/commands/import</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/import/usage" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/import/usage</a>
                         </p>
@@ -297,47 +333,67 @@ export function TerraformGcpChallengeLabGuide() {
 
                         <h3><i className="ti ti-bucket" />バケットリソースの作成（storage module）</h3>
                         <div className="code-label">modules/storage/storage.tf</div>
-                        <pre><code><span className="tok-keyword">resource</span> <span className="tok-string">"google_storage_bucket"</span> <span className="tok-string">"storage_bucket"</span> &#123;{'\n'}
-  <span className="tok-attr">name</span>                        = <span className="tok-string">"&lt;Bucket Name&gt;"</span>{'\n'}
-  <span className="tok-attr">location</span>                    = <span className="tok-variable">var.region</span>{'\n'}
-  <span className="tok-attr">force_destroy</span>               = <span className="tok-boolean">true</span>{'\n'}
-  <span className="tok-attr">uniform_bucket_level_access</span> = <span className="tok-boolean">true</span>{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_storage_bucket&quot;</span> <span className="tok-string">&quot;storage_bucket&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">name</span>                        = <span className="tok-string">&quot;&lt;Bucket Name&gt;&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">location</span>                    = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">  <span className="tok-attr">force_destroy</span>               = <span className="tok-boolean">true</span></div>
+                                <div className="code-line">  <span className="tok-attr">uniform_bucket_level_access</span> = <span className="tok-boolean">true</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
                         <div className="code-label">main.tf</div>
-                        <pre><code><span className="tok-keyword">module</span> <span className="tok-string">"storage"</span> &#123;{'\n'}
-  <span className="tok-attr">source</span>     = <span className="tok-string">"./modules/storage"</span>{'\n'}
-  <span className="tok-attr">project_id</span> = <span className="tok-variable">var.project_id</span>{'\n'}
-  <span className="tok-attr">region</span>     = <span className="tok-variable">var.region</span>{'\n'}
-  <span className="tok-attr">zone</span>       = <span className="tok-variable">var.zone</span>{'\n'}
-&#125;</code></pre>
-                        <pre><code><span className="tok-command">terraform</span> init{'\n'}
-<span className="tok-command">terraform</span> apply</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">module</span> <span className="tok-string">&quot;storage&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">source</span>     = <span className="tok-string">&quot;./modules/storage&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">project_id</span> = <span className="tok-variable">var.project_id</span></div>
+                                <div className="code-line">  <span className="tok-attr">region</span>     = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>       = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-arrows-transfer-up" />remote backend の設定と移行フロー</h3>
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.REMOTE_BACKEND_FLOW} ariaLabel="リモートバックエンド（GCS）への移行フロー図" preserveNaturalScale />
                         </div>
                         <div className="code-label">main.tf</div>
-                        <pre><code><span className="tok-keyword">terraform</span> &#123;{'\n'}
-  <span className="tok-keyword">backend</span> <span className="tok-string">"gcs"</span> &#123;{'\n'}
-    <span className="tok-attr">bucket</span> = <span className="tok-string">"&lt;Bucket Name&gt;"</span>{'\n'}
-    <span className="tok-attr">prefix</span> = <span className="tok-string">"terraform/state"</span>{'\n'}
-  &#125;{'\n'}
-{'\n'}
-  <span className="tok-keyword">required_providers</span> &#123;{'\n'}
-    <span className="tok-attr">google</span> = &#123;{'\n'}
-      <span className="tok-attr">source</span>  = <span className="tok-string">"hashicorp/google"</span>{'\n'}
-      <span className="tok-attr">version</span> = <span className="tok-string">"~&gt; 5.0"</span>{'\n'}
-    &#125;{'\n'}
-  &#125;{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">terraform</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-keyword">backend</span> <span className="tok-string">&quot;gcs&quot;</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">bucket</span> = <span className="tok-string">&quot;&lt;Bucket Name&gt;&quot;</span></div>
+                                <div className="code-line">    <span className="tok-attr">prefix</span> = <span className="tok-string">&quot;terraform/state&quot;</span></div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">required_providers</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">google</span> = &#123;</div>
+                                <div className="code-line">      <span className="tok-attr">source</span>  = <span className="tok-string">&quot;hashicorp/google&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">version</span> = <span className="tok-string">&quot;~&gt; 5.0&quot;</span></div>
+                                <div className="code-line">    &#125;</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
                         <div className="callout warning">
                             <div className="callout-title"><i className="ti ti-alert-triangle" />注意点</div>
                             <p>
                                 <code>backend</code> ブロック内では <code>var.bucket_name</code> などの変数は使用できない。Hardcoded string または <code>-backend-config</code> を使用する。
                             </p>
                         </div>
-                        <pre><code><span className="tok-command">terraform</span> init</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                            </code>
+                        </pre>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/backend/gcs" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/backend/gcs</a> ／ <a className="ext-link" href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" target="_blank" rel="noreferrer">cloud.google.com/storage/docs/uniform-bucket-level-access</a>
                         </p>
@@ -350,38 +406,50 @@ export function TerraformGcpChallengeLabGuide() {
                             既存の <code>tf-instance-1</code> と <code>tf-instance-2</code> の <code>machine_type</code> を <code>e2-standard-2</code> へ変更する。
                         </p>
                         <div className="code-label">modules/instances/instances.tf</div>
-                        <pre><code><span className="tok-keyword">resource</span> <span className="tok-string">"google_compute_instance"</span> <span className="tok-string">"tf-instance-1"</span> &#123;{'\n'}
-  <span className="tok-attr">name</span>                      = <span className="tok-string">"tf-instance-1"</span>{'\n'}
-  <span className="tok-attr">machine_type</span>              = <span className="tok-string">"e2-standard-2"</span>{'\n'}
-  <span className="tok-attr">zone</span>                      = <span className="tok-variable">var.zone</span>{'\n'}
-  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span>{'\n'}
-  <span className="tok-comment"># ...</span>{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-1&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">name</span>                      = <span className="tok-string">&quot;tf-instance-1&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span>              = <span className="tok-string">&quot;e2-standard-2&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>                      = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line">  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span></div>
+                                <div className="code-line">  <span className="tok-comment"># ...</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-server-2" />3台目のインスタンス追加</h3>
-                        <pre><code><span className="tok-keyword">resource</span> <span className="tok-string">"google_compute_instance"</span> <span className="tok-string">"tf-instance-3"</span> &#123;{'\n'}
-  <span className="tok-attr">name</span>                      = <span className="tok-string">"tf-instance-3"</span>{'\n'}
-  <span className="tok-attr">machine_type</span>              = <span className="tok-string">"e2-standard-2"</span>{'\n'}
-  <span className="tok-attr">zone</span>                      = <span className="tok-variable">var.zone</span>{'\n'}
-  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span>{'\n'}
-{'\n'}
-  <span className="tok-keyword">boot_disk</span> &#123;{'\n'}
-    <span className="tok-keyword">initialize_params</span> &#123;{'\n'}
-      <span className="tok-attr">image</span> = <span className="tok-string">"debian-cloud/debian-11"</span>{'\n'}
-    &#125;{'\n'}
-  &#125;{'\n'}
-{'\n'}
-  <span className="tok-keyword">network_interface</span> &#123;{'\n'}
-    <span className="tok-attr">network</span> = <span className="tok-string">"default"</span>{'\n'}
-  &#125;{'\n'}
-&#125;</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-3&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">name</span>                      = <span className="tok-string">&quot;tf-instance-3&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">machine_type</span>              = <span className="tok-string">&quot;e2-standard-2&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>                      = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line">  <span className="tok-attr">allow_stopping_for_update</span> = <span className="tok-boolean">true</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">boot_disk</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-keyword">initialize_params</span> &#123;</div>
+                                <div className="code-line">      <span className="tok-attr">image</span> = <span className="tok-string">&quot;debian-cloud/debian-11&quot;</span></div>
+                                <div className="code-line">    &#125;</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">network</span> = <span className="tok-string">&quot;default&quot;</span></div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-arrows-shuffle" />変更・追加のワークフロー</h3>
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.UPDATE_WORKFLOW} ariaLabel="インフラの変更および追加のワークフロー図" preserveNaturalScale />
                         </div>
-                        <pre><code><span className="tok-command">terraform</span> init{'\n'}
-<span className="tok-command">terraform</span> apply</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance" target="_blank" rel="noreferrer">registry.terraform.io/.../compute_instance</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/style" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/style</a>
                         </p>
@@ -396,9 +464,13 @@ export function TerraformGcpChallengeLabGuide() {
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.DESTROY_WORKFLOW} ariaLabel="リソースの削除（Destroy）のワークフロー図" preserveNaturalScale />
                         </div>
-                        <pre><code><span className="tok-comment"># instances.tf から google_compute_instance.tf-instance-3 ブロックを削除した後</span>{'\n'}
-<span className="tok-command">terraform</span> init{'\n'}
-<span className="tok-command">terraform</span> apply</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-comment"># instances.tf から google_compute_instance.tf-instance-3 ブロックを削除した後</span></div>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/resources/destroy" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/resources/destroy</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/commands/destroy" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/commands/destroy</a>
                         </p>
@@ -417,51 +489,67 @@ export function TerraformGcpChallengeLabGuide() {
                         </div>
 
                         <h3><i className="ti ti-file-code" />main.tf へのモジュール追加</h3>
-                        <pre><code><span className="tok-keyword">module</span> <span className="tok-string">"vpc"</span> &#123;{'\n'}
-  <span className="tok-attr">source</span>  = <span className="tok-string">"terraform-google-modules/network/google"</span>{'\n'}
-  <span className="tok-attr">version</span> = <span className="tok-string">"10.0.0"</span>{'\n'}
-{'\n'}
-  <span className="tok-attr">project_id</span>   = <span className="tok-variable">var.project_id</span>{'\n'}
-  <span className="tok-attr">network_name</span> = <span className="tok-string">"&lt;VPC Name&gt;"</span>{'\n'}
-  <span className="tok-attr">routing_mode</span> = <span className="tok-string">"GLOBAL"</span>{'\n'}
-{'\n'}
-  <span className="tok-attr">subnets</span> = [{'\n'}
-    &#123;{'\n'}
-      <span className="tok-attr">subnet_name</span>   = <span className="tok-string">"subnet-01"</span>{'\n'}
-      <span className="tok-attr">subnet_ip</span>     = <span className="tok-string">"10.10.10.0/24"</span>{'\n'}
-      <span className="tok-attr">subnet_region</span> = <span className="tok-variable">var.region</span>{'\n'}
-    &#125;,{'\n'}
-    &#123;{'\n'}
-      <span className="tok-attr">subnet_name</span>   = <span className="tok-string">"subnet-02"</span>{'\n'}
-      <span className="tok-attr">subnet_ip</span>     = <span className="tok-string">"10.10.20.0/24"</span>{'\n'}
-      <span className="tok-attr">subnet_region</span> = <span className="tok-variable">var.region</span>{'\n'}
-    &#125;,{'\n'}
-  ]{'\n'}
-&#125;</code></pre>
-                        <pre><code><span className="tok-command">terraform</span> init{'\n'}
-<span className="tok-command">terraform</span> apply</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">module</span> <span className="tok-string">&quot;vpc&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">source</span>  = <span className="tok-string">&quot;terraform-google-modules/network/google&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">version</span> = <span className="tok-string">&quot;10.0.0&quot;</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">project_id</span>   = <span className="tok-variable">var.project_id</span></div>
+                                <div className="code-line">  <span className="tok-attr">network_name</span> = <span className="tok-string">&quot;&lt;VPC Name&gt;&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">routing_mode</span> = <span className="tok-string">&quot;GLOBAL&quot;</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">subnets</span> = [</div>
+                                <div className="code-line">    &#123;</div>
+                                <div className="code-line">      <span className="tok-attr">subnet_name</span>   = <span className="tok-string">&quot;subnet-01&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">subnet_ip</span>     = <span className="tok-string">&quot;10.10.10.0/24&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">subnet_region</span> = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">    &#125;,</div>
+                                <div className="code-line">    &#123;</div>
+                                <div className="code-line">      <span className="tok-attr">subnet_name</span>   = <span className="tok-string">&quot;subnet-02&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">subnet_ip</span>     = <span className="tok-string">&quot;10.10.20.0/24&quot;</span></div>
+                                <div className="code-line">      <span className="tok-attr">subnet_region</span> = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">    &#125;,</div>
+                                <div className="code-line">  ]</div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-plug-connected" />インスタンスをサブネットに接続する</h3>
                         <div className="code-label">modules/instances/instances.tf</div>
-                        <pre><code><span className="tok-keyword">resource</span> <span className="tok-string">"google_compute_instance"</span> <span className="tok-string">"tf-instance-1"</span> &#123;{'\n'}
-  <span className="tok-comment"># ...</span>{'\n'}
-  <span className="tok-keyword">network_interface</span> &#123;{'\n'}
-    <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_name</span>{'\n'}
-    <span className="tok-attr">subnetwork</span> = <span className="tok-string">"subnet-01"</span>{'\n'}
-    <span className="tok-keyword">access_config</span> &#123;&#125;{'\n'}
-  &#125;{'\n'}
-&#125;{'\n'}
-{'\n'}
-<span className="tok-keyword">resource</span> <span className="tok-string">"google_compute_instance"</span> <span className="tok-string">"tf-instance-2"</span> &#123;{'\n'}
-  <span className="tok-comment"># ...</span>{'\n'}
-  <span className="tok-keyword">network_interface</span> &#123;{'\n'}
-    <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_name</span>{'\n'}
-    <span className="tok-attr">subnetwork</span> = <span className="tok-string">"subnet-02"</span>{'\n'}
-    <span className="tok-keyword">access_config</span> &#123;&#125;{'\n'}
-  &#125;{'\n'}
-&#125;</code></pre>
-                        <pre><code><span className="tok-command">terraform</span> init{'\n'}
-<span className="tok-command">terraform</span> apply</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-1&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-comment"># ...</span></div>
+                                <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_name</span></div>
+                                <div className="code-line">    <span className="tok-attr">subnetwork</span> = <span className="tok-string">&quot;subnet-01&quot;</span></div>
+                                <div className="code-line">    <span className="tok-keyword">access_config</span> &#123;&#125;</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-2&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-comment"># ...</span></div>
+                                <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_name</span></div>
+                                <div className="code-line">    <span className="tok-attr">subnetwork</span> = <span className="tok-string">&quot;subnet-02&quot;</span></div>
+                                <div className="code-line">    <span className="tok-keyword">access_config</span> &#123;&#125;</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://registry.terraform.io/modules/terraform-google-modules/network/google/latest" target="_blank" rel="noreferrer">registry.terraform.io/modules/terraform-google-modules/network/google/latest</a>
                         </p>
@@ -478,22 +566,34 @@ export function TerraformGcpChallengeLabGuide() {
                         </div>
 
                         <h3><i className="ti ti-firewall" />firewall リソースの実装</h3>
-                        <pre><code><span className="tok-keyword">resource</span> <span className="tok-string">"google_compute_firewall"</span> <span className="tok-string">"tf-firewall"</span> &#123;{'\n'}
-  <span className="tok-attr">name</span>    = <span className="tok-string">"tf-firewall"</span>{'\n'}
-  <span className="tok-attr">network</span> = <span className="tok-variable">module.vpc.network_self_link</span>{'\n'}
-{'\n'}
-  <span className="tok-keyword">allow</span> &#123;{'\n'}
-    <span className="tok-attr">protocol</span> = <span className="tok-string">"tcp"</span>{'\n'}
-    <span className="tok-attr">ports</span>    = [<span className="tok-string">"80"</span>]{'\n'}
-  &#125;{'\n'}
-{'\n'}
-  <span className="tok-attr">source_ranges</span> = [<span className="tok-string">"0.0.0.0/0"</span>]{'\n'}
-&#125;</code></pre>
-                        <pre><code><span className="tok-command">terraform</span> init{'\n'}
-<span className="tok-command">terraform</span> apply</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_firewall&quot;</span> <span className="tok-string">&quot;tf-firewall&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">name</span>    = <span className="tok-string">&quot;tf-firewall&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">network</span> = <span className="tok-variable">module.vpc.network_self_link</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">allow</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">protocol</span> = <span className="tok-string">&quot;tcp&quot;</span></div>
+                                <div className="code-line">    <span className="tok-attr">ports</span>    = [<span className="tok-string">&quot;80&quot;</span>]</div>
+                                <div className="code-line">  &#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-attr">source_ranges</span> = [<span className="tok-string">&quot;0.0.0.0/0&quot;</span>]</div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">terraform</span> init</div>
+                                <div className="code-line"><span className="tok-command">terraform</span> apply</div>
+                            </code>
+                        </pre>
 
                         <h3><i className="ti ti-plug" />疎通確認</h3>
-                        <pre><code><span className="tok-command">curl</span> <span className="tok-flag">-m 5</span> http://&lt;tf-instance-2の外部IP&gt;:80</code></pre>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-command">curl</span> <span className="tok-flag">-m 5</span> http://&lt;tf-instance-2の外部IP&gt;:80</div>
+                            </code>
+                        </pre>
                         <p style={{ fontSize: '13px' }}>
                             <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall" target="_blank" rel="noreferrer">registry.terraform.io/.../compute_firewall</a> ／ <a className="ext-link" href="https://cloud.google.com/firewall/docs/firewalls" target="_blank" rel="noreferrer">cloud.google.com/firewall/docs/firewalls</a>
                         </p>
