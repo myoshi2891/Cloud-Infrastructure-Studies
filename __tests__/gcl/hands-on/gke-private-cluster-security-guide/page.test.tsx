@@ -8,14 +8,17 @@ import { DIAGRAMS } from '@/app/gcl/hands-on/gke-private-cluster-security-guide/
 vi.mock('@/components/MermaidDiagram', () => ({
     MermaidDiagram: function DummyMermaidDiagram({
         chart,
+        ariaLabel,
         preserveNaturalScale,
     }: {
         chart: string;
+        ariaLabel?: string;
         preserveNaturalScale?: boolean;
     }) {
         return (
             <pre
                 data-testid="mermaid"
+                aria-label={ariaLabel}
                 data-preserve-natural-scale={preserveNaturalScale ? 'true' : 'false'}
             >
                 {chart}
@@ -96,11 +99,13 @@ describe('GKE プライベートクラスタ セキュリティ実装ガイド �
         expect(Object.keys(DIAGRAMS).length).toBe(4);
     });
 
-    it('すべての MermaidDiagram に preserveNaturalScale が設定されていること', () => {
+    it('すべての MermaidDiagram に chart、preserveNaturalScale、ariaLabel が設定されていること', () => {
         const mermaids = screen.getAllByTestId('mermaid');
         expect(mermaids.length).toBe(4);
-        for (const el of mermaids) {
-            expect(el.getAttribute('data-preserve-natural-scale')).toBe('true');
+        for (const [index, mermaid] of mermaids.entries()) {
+            expect(mermaid.textContent).toBe(Object.values(DIAGRAMS)[index]);
+            expect(mermaid.getAttribute('data-preserve-natural-scale')).toBe('true');
+            expect(mermaid.getAttribute('aria-label')).toBeTruthy();
         }
     });
 

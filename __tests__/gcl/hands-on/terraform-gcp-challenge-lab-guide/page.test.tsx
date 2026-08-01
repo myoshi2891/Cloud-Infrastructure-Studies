@@ -122,4 +122,15 @@ describe('Terraform GCP Challenge Lab 完全攻略ガイド ページ', () => {
             expect(mermaid.getAttribute('aria-label')).toBeTruthy();
         });
     });
+
+    it('目次リンクに対応する本文セクションが存在すること', () => {
+        const links = container.querySelectorAll<HTMLAnchorElement>('.sidebar-nav a[href^="#"]');
+        expect(links.length).toBeGreaterThan(0);
+
+        links.forEach((link) => {
+            const sectionId = link.getAttribute('href')?.slice(1);
+            expect(sectionId).toBeTruthy();
+            expect(container.querySelector(`section#${sectionId}`)).toBeInTheDocument();
+        });
+    });
 });
