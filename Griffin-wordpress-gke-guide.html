@@ -1540,7 +1540,7 @@
                         <script type="text/plain" data-code-target="code-task8">
                             gcloud monitoring uptime create wordpress-uptime-check \
                               --resource-type=uptime-url \
-                              --resource-labels=host=<WORDPRESSの外部IP> \
+                              --resource-labels=host="$WORDPRESS_EXTERNAL_IP" \
                               --protocol=http \
                               --port=80
                         </script>
