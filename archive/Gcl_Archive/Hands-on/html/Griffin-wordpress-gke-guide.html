@@ -1538,9 +1538,12 @@
                             <pre><code class="language-bash" id="code-task8"></code></pre>
                         </div>
                         <script type="text/plain" data-code-target="code-task8">
+                            # 対象の Cloud プロジェクト ID を現在の gcloud 設定から取得
+                            PROJECT_ID="$(gcloud config get-value project)"
+
                             gcloud monitoring uptime create wordpress-uptime-check \
                               --resource-type=uptime-url \
-                              --resource-labels=host="$WORDPRESS_EXTERNAL_IP" \
+                              --resource-labels=host="$WORDPRESS_EXTERNAL_IP",project_id="$PROJECT_ID" \
                               --protocol=http \
                               --port=80
                         </script>
