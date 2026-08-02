@@ -1,4 +1,5 @@
 # GKE チャレンジラボ攻略ガイド
+
 ## Kubernetes デプロイ管理のベストプラクティス（初学者向けステップバイステップ解説）
 
 対象ラボ: [Challenge Lab: Manage Kubernetes in Google Cloud](https://www.skills.google/course_templates/783/labs/612117)
@@ -20,7 +21,7 @@ flowchart TD
     T3 --> T4["Task4<br/>ログベース指標 + アラートポリシー作成"]
     T4 --> T5["Task5<br/>マニフェストを修正して再デプロイ"]
     T5 --> T6["Task6<br/>コードをコンテナ化 →<br/>Artifact Registryへpush →<br/>サービス公開"]
-    T6 --> Done["完了<br/>外部IPでHello, world!を確認"]
+    T6 --> Done["完了<br/>外部IPでVersion: 2.0.0を確認"]
 
     classDef task fill:#eef2ff,stroke:#4f46e5,color:#1e1b4b;
     classDef done fill:#ecfdf5,stroke:#059669,color:#064e3b;
@@ -70,6 +71,7 @@ gcloud container clusters create CLUSTER_NAME \
 ```
 
 ### 1.4 参考文献
+
 - クラスタオートスケーラーの設定方法: https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-autoscaler
 - リリースチャンネルの概念: https://cloud.google.com/kubernetes-engine/docs/concepts/release-channels
 
@@ -115,6 +117,7 @@ kubectl create namespace NAMESPACE_NAME
 Managed Prometheus は「何もしなくても全部のPodからメトリクスを取る」わけではなく、`PodMonitoring` カスタムリソースで対象の Pod セレクタ・ポート名・収集間隔（`interval`）を明示的に定義します。今回のラボでは `metadata.name`・`labels.app.kubernetes.io/name`・`matchLabels.app` をそれぞれ `prometheus-test` に揃えることで、サンプルアプリの Deployment とラベルが一致し、正しく収集対象として認識されます。ラベルの不一致は「メトリクスが収集されない」という典型的なハマりどころなので、Deployment 側のラベルと PodMonitoring 側のセレクタは必ず突き合わせて確認してください。
 
 ### 2.3 参考文献
+
 - Managed Service for Prometheus のセットアップ手順: https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed
 - Namespace によるリソース整理のベストプラクティス（Google Cloud Blog）: https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-organizing-with-namespaces
 
@@ -150,6 +153,7 @@ Pod が起動しない場合、最初に見るべきは `kubectl describe pod <p
 Google Cloud コンソールの Workloads 詳細画面はエラーのサマリを視覚的に見せてくれますが、根本原因の文字列（`couldn't parse image reference` 等）は `kubectl describe` や Logs Explorer のほうが正確に追えます。両方を併用するのがベストプラクティスです。
 
 ### 3.3 参考文献
+
 - GKE でのイメージプル障害のトラブルシューティング: https://cloud.google.com/kubernetes-engine/docs/troubleshooting/image-pulls
 - GKE クラスタへのアプリデプロイ Quickstart: https://cloud.google.com/kubernetes-engine/docs/deploy-app-cluster
 
@@ -211,6 +215,7 @@ gcloud logging metrics create pod-image-errors \
 今回は `Use notification channel: Disable` としていますが、これはあくまでラボの検証目的で通知を省略しているだけで、実運用では必ずメール・Slack・PagerDuty等の通知チャネルを設定するのが標準的な運用です。
 
 ### 4.4 参考文献
+
 - ログベース指標（カウンタ）の作成方法: https://cloud.google.com/logging/docs/logs-based-metrics/counter-metrics
 - ログベース指標の概要: https://cloud.google.com/logging/docs/logs-based-metrics
 - メトリックしきい値アラートポリシーの作成（コンソール）: https://cloud.google.com/monitoring/alerts/using-alerting-ui
@@ -250,6 +255,7 @@ kubectl rollout status deployment/helloweb -n NAMESPACE_NAME
 CLI 上で `Running` と出ていても、コンテナが起動直後にクラッシュを繰り返しているケースもあるため、Google Cloud コンソールの Workloads 詳細画面でエラー表示が消えていることを確認するのがベストプラクティスです。
 
 ### 5.3 参考文献
+
 - Kubernetes のローリングアップデート: https://kubernetes.io/docs/tasks/run-application/update-deployment-rolling/
 - kubectl set image リファレンス: https://kubernetes.io/docs/reference/kubectl/generated/kubectl_set/kubectl_set_image/
 
@@ -265,7 +271,7 @@ flowchart LR
     B --> C["docker push<br/>Artifact Registryへ"]
     C --> D["kubectl set image<br/>deployment/helloweb"]
     D --> E["kubectl expose<br/>--type=LoadBalancer"]
-    E --> F["外部IPへアクセスして<br/>Hello, world! を確認"]
+    E --> F["外部IPへアクセスして<br/>Version: 2.0.0 を確認"]
 
     classDef n fill:#eff6ff,stroke:#2563eb,color:#1e3a8a;
     class A,B,C,D,E,F n;
@@ -317,6 +323,7 @@ kubectl expose deployment helloweb \
 `type: LoadBalancer` を指定すると、クラウドプロバイダー側でロードバランサーがプロビジョニングされ、外部IPが割り当てられるまでに数分の遅延があります。`kubectl get service SERVICE_NAME` を繰り返し実行し、`EXTERNAL-IP` が `<pending>` から実際のIPに変わるのを待つのが正しい確認手順です。
 
 ### 6.4 参考文献
+
 - Artifact Registry のリポジトリ/イメージ命名規則: https://cloud.google.com/artifact-registry/docs/docker/names
 - Artifact Registry へのイメージのプッシュ/プル: https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling
 - Artifact Registry Docker クイックスタート: https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images
