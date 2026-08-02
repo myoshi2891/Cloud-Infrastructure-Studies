@@ -1,0 +1,1832 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Cymbal Direct チャレンジラボ攻略ガイド | Agent Platform プロンプト設計ベストプラクティス
+        </title>
+
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css"
+        />
+
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0c1a2b;
+                --color-background-tertiary: #122438;
+                --color-background-info: #17304a;
+                --color-background-danger: #351621;
+                --color-background-success: #0f2e24;
+                --color-background-warning: #332711;
+
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #a9b7cc;
+                --color-text-tertiary: #6d7f99;
+                --color-text-info: #8fadff;
+                --color-text-danger: #f19aab;
+                --color-text-success: #7fe3bd;
+                --color-text-warning: #f2c977;
+
+                --color-border-tertiary: #12233a;
+                --color-border-secondary: #1e3654;
+                --color-border-primary: #2c4666;
+
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+                    'Yu Gothic', 'Noto Sans JP', 'Segoe UI', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+
+                --accent: #7c9eff;
+                --accent-teal: #2dd4bf;
+                --accent-coral: #ff8b6b;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 1.7;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4 {
+                font-weight: 500;
+                line-height: 1.4;
+                color: var(--color-text-primary);
+            }
+            h1 {
+                font-size: 22px;
+                margin: 0 0 8px;
+            }
+            h2 {
+                font-size: 18px;
+                margin: 0 0 16px;
+                padding-top: 4px;
+            }
+            h3 {
+                font-size: 16px;
+                margin: 28px 0 12px;
+                color: var(--color-text-info);
+            }
+            h4 {
+                font-size: 15px;
+                margin: 20px 0 8px;
+                color: var(--color-text-secondary);
+            }
+            p {
+                margin: 0 0 14px;
+                color: var(--color-text-secondary);
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            code {
+                font-family: var(--font-mono);
+                font-size: 13.5px;
+            }
+            ul,
+            ol {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+                margin: 0 0 14px;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 264px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 24px 16px 40px;
+            }
+
+            .sidebar .brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 4px 8px 20px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                margin-bottom: 16px;
+            }
+            .sidebar .brand i {
+                font-size: 20px;
+                color: var(--accent);
+            }
+            .sidebar .brand span {
+                font-size: 13px;
+                color: var(--color-text-tertiary);
+                letter-spacing: 0.02em;
+            }
+
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 10px;
+                border-radius: var(--border-radius-md);
+                font-size: 13.5px;
+                color: var(--color-text-secondary);
+                margin-bottom: 2px;
+            }
+            .sidebar nav a i {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                width: 18px;
+                text-align: center;
+            }
+            .sidebar nav a:hover {
+                background: var(--color-background-tertiary);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                background: var(--color-background-info);
+                color: var(--color-text-primary);
+            }
+            .sidebar nav a.active i {
+                color: var(--accent);
+            }
+
+            .main {
+                margin-left: 264px;
+                padding: 48px 56px 96px;
+            }
+
+            /* ---------- hero ---------- */
+            .hero {
+                padding-bottom: 28px;
+                margin-bottom: 40px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+            .hero .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12.5px;
+                color: var(--color-text-info);
+                background: var(--color-background-info);
+                border: 1px solid var(--color-border-secondary);
+                padding: 4px 10px;
+                border-radius: var(--border-radius-xl);
+                margin-bottom: 14px;
+            }
+            .hero h1 {
+                font-size: 26px;
+                margin-bottom: 10px;
+            }
+            .hero .lead {
+                color: var(--color-text-secondary);
+                font-size: 15px;
+                max-width: 860px;
+            }
+            .hero .source-link {
+                margin-top: 14px;
+                font-family: var(--font-mono);
+                font-size: 12.5px;
+                color: var(--color-text-tertiary);
+                word-break: break-all;
+            }
+
+            /* ---------- sections ---------- */
+            .section {
+                margin-bottom: 56px;
+                scroll-margin-top: 24px;
+            }
+            .section-num {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 26px;
+                height: 26px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                font-size: 13px;
+                color: var(--color-text-info);
+                margin-right: 10px;
+            }
+            .section-head {
+                display: flex;
+                align-items: center;
+                margin-bottom: 18px;
+            }
+
+            /* ---------- callouts ---------- */
+            .callout {
+                display: flex;
+                gap: 12px;
+                padding: 16px 18px;
+                border-radius: var(--border-radius-lg);
+                border: 1px solid var(--color-border-secondary);
+                background: var(--color-background-tertiary);
+                margin: 18px 0;
+            }
+            .callout i {
+                font-size: 18px;
+                margin-top: 2px;
+                flex-shrink: 0;
+            }
+            .callout.info {
+                border-color: var(--color-border-secondary);
+            }
+            .callout.info i {
+                color: var(--color-text-info);
+            }
+            .callout.warning {
+                background: var(--color-background-warning);
+                border-color: #4a3a19;
+            }
+            .callout.warning i {
+                color: var(--color-text-warning);
+            }
+            .callout p {
+                margin: 0;
+                color: var(--color-text-secondary);
+                font-size: 14.5px;
+            }
+            .callout p strong {
+                display: block;
+                margin-bottom: 4px;
+                color: var(--color-text-primary);
+                font-size: 14.5px;
+            }
+
+            /* ---------- tables ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 18px 0;
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14px;
+            }
+            thead th {
+                text-align: left;
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover td {
+                background: var(--color-background-secondary);
+            }
+
+            /* ---------- code ---------- */
+            .code-block {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                margin: 16px 0;
+                overflow: hidden;
+            }
+            .code-block .code-label {
+                padding: 8px 16px;
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                border-bottom: 1px solid var(--color-border-tertiary);
+                font-family: var(--font-mono);
+            }
+            .code-block pre {
+                margin: 0;
+                padding: 16px;
+                overflow-x: auto;
+            }
+            .code-block code {
+                background: transparent !important;
+            }
+
+            /* ---------- mermaid ---------- */
+            .mermaid-wrap {
+                margin: 20px 0;
+                padding: 20px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+            }
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                background: transparent;
+                border: none;
+                margin: 0;
+                overflow-x: auto;
+            }
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+            .diagram-caption {
+                text-align: center;
+                font-size: 12.5px;
+                color: var(--color-text-tertiary);
+                margin-top: 10px;
+            }
+
+            /* ---------- checklist ---------- */
+            .checklist {
+                list-style: none;
+                padding: 0;
+                margin: 18px 0;
+            }
+            .checklist li {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 9px 4px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                font-size: 14.5px;
+                color: var(--color-text-secondary);
+            }
+            .checklist li:last-child {
+                border-bottom: none;
+            }
+            .checklist input[type='checkbox'] {
+                margin-top: 3px;
+                width: 15px;
+                height: 15px;
+                accent-color: var(--accent);
+                flex-shrink: 0;
+            }
+
+            /* ---------- source tags ---------- */
+            .src-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin: 14px 0 6px;
+            }
+            .src-tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-tertiary);
+                padding: 5px 10px;
+                border-radius: var(--border-radius-xl);
+            }
+            .src-tag i {
+                font-size: 13px;
+                color: var(--color-text-info);
+            }
+
+            /* ---------- reference list ---------- */
+            .ref-group {
+                margin-bottom: 28px;
+            }
+            .ref-group h4 {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--color-text-primary);
+                font-size: 14px;
+                text-transform: none;
+                margin-bottom: 12px;
+            }
+            .ref-group h4 i {
+                color: var(--accent);
+                font-size: 16px;
+            }
+            .ref-card {
+                display: flex;
+                gap: 14px;
+                padding: 14px 16px;
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                background: var(--color-background-tertiary);
+                margin-bottom: 10px;
+            }
+            .ref-card i {
+                font-size: 18px;
+                color: var(--color-text-info);
+                margin-top: 2px;
+                flex-shrink: 0;
+            }
+            .ref-card .ref-title {
+                font-size: 14.5px;
+                color: var(--color-text-primary);
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            .ref-card .ref-desc {
+                font-size: 13.5px;
+                color: var(--color-text-secondary);
+                margin-bottom: 6px;
+            }
+            .ref-card a {
+                font-family: var(--font-mono);
+                font-size: 12.5px;
+                word-break: break-all;
+            }
+
+            /* ---------- misc ---------- */
+            .task-flow-table td:first-child {
+                white-space: nowrap;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+            .footer {
+                margin-top: 64px;
+                padding-top: 24px;
+                border-top: 1px solid var(--color-border-tertiary);
+                font-size: 12.5px;
+                color: var(--color-text-tertiary);
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 32px 20px 64px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="brand">
+                    <i class="ti ti-brand-google"></i>
+                    <span>AGENT PLATFORM GUIDE</span>
+                </div>
+                <nav>
+                    <a href="#sec-0"><i class="ti ti-info-circle"></i>このガイドについて</a>
+                    <a href="#sec-1"><i class="ti ti-map"></i>ラボの全体像</a>
+                    <a href="#sec-2"
+                        ><i class="ti ti-shield-check"></i>開始前のベストプラクティス</a
+                    >
+                    <a href="#sec-3"><i class="ti ti-photo"></i>Task 1: 画像分析ツール</a>
+                    <a href="#sec-4"><i class="ti ti-message-2"></i>Task 2: タグライン生成</a>
+                    <a href="#sec-5"><i class="ti ti-code"></i>Task 3: 画像分析コード</a>
+                    <a href="#sec-6"><i class="ti ti-code-dots"></i>Task 4: タグライン生成コード</a>
+                    <a href="#sec-7"><i class="ti ti-bug"></i>トラブルシューティング</a>
+                    <a href="#sec-8"><i class="ti ti-checklist"></i>最終チェックリスト</a>
+                    <a href="#sec-9"><i class="ti ti-books"></i>参考文献</a>
+                </nav>
+            </aside>
+
+            <main class="main">
+                <header class="hero">
+                    <span class="eyebrow"
+                        ><i class="ti ti-sparkles"></i>Challenge Lab 攻略ガイド</span
+                    >
+                    <h1>Cymbal Direct チャレンジラボ攻略ガイド</h1>
+                    <p class="lead">
+                        Agent Platform（旧 Vertex AI）における Gemini
+                        プロンプト設計のベストプラクティスを、
+                        初学者でも背景から理解しながら進められるようステップ・バイ・ステップで解説します。
+                        各対応方法には根拠となる Google Cloud 公式ドキュメントの URL
+                        を併記しています。
+                    </p>
+                    <div class="source-link">
+                        対象ラボ:
+                        https://www.skills.google/paths/118/course_templates/976/labs/594527
+                    </div>
+                </header>
+
+                <!-- 0. このガイドについて -->
+                <section class="section" id="sec-0">
+                    <div class="section-head">
+                        <span class="section-num">0</span>
+                        <h2>このガイドについて</h2>
+                    </div>
+                    <p>
+                        このラボは
+                        <strong>Challenge Lab</strong>
+                        です。手順を逐一なぞるのではなく、これまで学んだ知識を使って
+                        「なぜその設定が正しいのか」を理解しながら自力でタスクを完了することが求められます。本ガイドは、
+                        各タスクの背後にある
+                        <strong>プロンプトエンジニアリングのベストプラクティス</strong>
+                        と、それぞれの根拠となる Google Cloud 公式ドキュメントを整理したものです。
+                    </p>
+
+                    <div class="callout info">
+                        <i class="ti ti-info-circle"></i>
+                        <p>
+                            <strong>製品名の移行について</strong> Google Cloud は現在
+                            <strong>Vertex AI</strong> を
+                            <strong>Gemini Enterprise Agent Platform</strong>（本ラボでの表記は
+                            "Agent Platform"）へと統合・移行中です。UI 上の表記や URL
+                            に一貫性がない場合がありますが、Agent Studio・ Workbench・Gemini
+                            モデルの基本的な使い方や API の考え方は Vertex AI
+                            時代のドキュメントと共通です。
+                            本ガイドでも両方の名称が混在する場合があります。
+                        </p>
+                    </div>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <p>
+                            <strong>ラボ固有の値について</strong> ラボ本文中の
+                            <code>model_name</code>（使用する Gemini モデル名）、<code
+                                >image file path</code
+                            >（GCS 上の画像パス）、 <code>Region</code>（保存先リージョン）、<code
+                                >Workbench instance name</code
+                            >（インスタンス名）は、セッションごとに
+                            ランダムに割り当てられる値です。各自の Lab の Task パネルおよび Google
+                            Cloud コンソール上に表示される 実際の値に読み替えてください。
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 1. ラボの全体像 -->
+                <section class="section" id="sec-1">
+                    <div class="section-head">
+                        <span class="section-num">1</span>
+                        <h2>ラボの全体像</h2>
+                    </div>
+                    <p>
+                        このラボは大きく分けて「Agent Studio
+                        でのノーコード・プロンプト設計」と「Workbench（Jupyter Notebook）での
+                        コードレベルの実験」の2フェーズ、計4タスクで構成されています。
+                    </p>
+
+                    <div class="mermaid-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TD
+                                A["ラボ開始 - シークレットウィンドウ + 学生アカウントでログイン"]:::purple --> B["Task 1 - Gemini 画像分析ツール構築 (Agent Studio)"]
+                                B --> C["Task 2 - Gemini タグライン生成ツール構築 (Agent Studio)"]
+                                C --> D["Task 3 - 画像分析コードの実験 (Workbench / Jupyter Notebook)"]
+                                D --> E["Task 4 - タグライン生成コードの実験 (Workbench / Jupyter Notebook)"]
+                                E --> F["Check my progress で採点"]:::teal
+
+                                classDef purple fill:#241b4d,stroke:#8f7ff5,color:#ece7fd,stroke-width:1px;
+                                classDef teal fill:#0d3d38,stroke:#2dd4bf,color:#dbf7f2,stroke-width:1px;
+                        </script>
+                        <div class="diagram-caption">図1. ラボ全体のタスクフロー</div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="task-flow-table">
+                            <thead>
+                                <tr>
+                                    <th>タスク</th>
+                                    <th>使用ツール</th>
+                                    <th>目的</th>
+                                    <th>成果物</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Task 1</td>
+                                    <td>Agent Studio</td>
+                                    <td>
+                                        商品画像から複数スタイルの説明文を生成するプロンプトを作る
+                                    </td>
+                                    <td>
+                                        <code>Cymbal Product Analysis</code>（保存済みプロンプト）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Task 2</td>
+                                    <td>Agent Studio</td>
+                                    <td>
+                                        属性・ターゲット・感情でカスタマイズ可能なタグライン生成プロンプトを作る
+                                    </td>
+                                    <td>
+                                        <code>Cymbal Tagline Generator Template</code
+                                        >（保存済みプロンプト）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Task 3</td>
+                                    <td>Workbench<br /><code>image-analysis.ipynb</code></td>
+                                    <td>Task 1 のプロンプトを Python コードとして検証・改良する</td>
+                                    <td>10語未満・高創造性の画像説明文</td>
+                                </tr>
+                                <tr>
+                                    <td>Task 4</td>
+                                    <td>Workbench<br /><code>tagline-generator.ipynb</code></td>
+                                    <td>Task 2 のプロンプトを Python コードとして検証・改良する</td>
+                                    <td>キーワード "nature" を含むタグライン</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 2. 開始前のベストプラクティス -->
+                <section class="section" id="sec-2">
+                    <div class="section-head">
+                        <span class="section-num">2</span>
+                        <h2>開始前のベストプラクティス</h2>
+                    </div>
+                    <p>
+                        Challenge Lab は自分の Google
+                        アカウントとの混在を避けるため、以下を必ず守ってください。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>ベストプラクティス</th>
+                                    <th>理由</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ブラウザ</td>
+                                    <td>シークレット（プライベート）ウィンドウを使用</td>
+                                    <td>個人アカウントとの認証競合・意図しない課金を防ぐ</td>
+                                </tr>
+                                <tr>
+                                    <td>ログインアカウント</td>
+                                    <td>ラボが発行する学生（Student）アカウントのみ使用</td>
+                                    <td>個人の Google Cloud プロジェクトへの誤課金を防ぐ</td>
+                                </tr>
+                                <tr>
+                                    <td>タイマー</td>
+                                    <td>
+                                        ラボは一時停止できないため、着手前にまとまった時間を確保する
+                                    </td>
+                                    <td>Start Lab を押した瞬間からリソース提供時間が減っていく</td>
+                                </tr>
+                                <tr>
+                                    <td>進捗確認</td>
+                                    <td>
+                                        各タスク完了後は少し待ってから「Check my progress」を押す
+                                    </td>
+                                    <td>採点システムへの反映にタイムラグがあることがある</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 3. Task 1 -->
+                <section class="section" id="sec-3">
+                    <div class="section-head">
+                        <span class="section-num">3</span>
+                        <h2>Task 1: Gemini 画像分析ツールの構築</h2>
+                    </div>
+
+                    <h3>3.1 タスクの要件</h3>
+                    <p>
+                        Agent Studio で新しいプロンプトを作成し、GCS
+                        上の商品画像を入力として、以下3種類のテキストを生成できるようにします。
+                    </p>
+                    <ul>
+                        <li>画像から着想を得た短い説明文</li>
+                        <li>広告向けのキャッチーなフレーズ</li>
+                        <li>自然志向キャンペーン向けの詩的な描写</li>
+                    </ul>
+                    <p>
+                        プロンプト名は <code>Cymbal Product Analysis</code> とし、指定された
+                        <code>model_name</code> モデルを使い、 指定された
+                        <code>Region</code> で保存します。
+                    </p>
+
+                    <h3>3.2 マルチモーダルプロンプト設計のベストプラクティス</h3>
+                    <p>
+                        Gemini
+                        のようなマルチモーダルモデルに画像を渡す際は、テキストのみのプロンプトとは異なる注意点があります。
+                        公式ドキュメントが推奨する原則は以下の通りです。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>原則</th>
+                                    <th>具体的なやり方</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>入力の順序を意識する</td>
+                                    <td>
+                                        マルチモーダルプロンプトでは、指示文より
+                                        <strong>先に画像ファイルを配置</strong>
+                                        すると精度が上がる場合がある
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>具体的に指示する</td>
+                                    <td>
+                                        「この画像を説明して」ではなく、「色・質感・そこから感じる雰囲気に焦点を当てて説明して」のように出力の観点を明示する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>出力形式を明示する</td>
+                                    <td>
+                                        「3つの見出し（短い説明／広告向けフレーズ／詩的な描写）に分けて出力して」のように構造を指定する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>複雑なタスクは分解する</td>
+                                    <td>
+                                        視覚理解と創造的言い換えを同時に求める場合は、ステップ・バイ・ステップで考えるよう指示するか、タスクを分割する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>テキスト・画像・音声・動画を同格に扱う</td>
+                                    <td>
+                                        どのモダリティも「等しく重要な入力」として扱うよう意識して指示文を組み立てる
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3.3 出力スタイル別プロンプト例</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>出力スタイル</th>
+                                    <th>プロンプトの書き方（例）</th>
+                                    <th>ねらい</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>短い説明文</td>
+                                    <td>
+                                        「この画像を見て、色・素材・質感に焦点を当てた1文の説明を作成してください」
+                                    </td>
+                                    <td>具体的な観察事実に基づく客観的な描写</td>
+                                </tr>
+                                <tr>
+                                    <td>広告向けキャッチフレーズ</td>
+                                    <td>
+                                        「この画像から、広告に使える短いキャッチコピーを3案、体言止めで生成してください」
+                                    </td>
+                                    <td>簡潔さと訴求力を優先</td>
+                                </tr>
+                                <tr>
+                                    <td>詩的な描写</td>
+                                    <td>
+                                        「この画像が呼び起こす自然の中にいる感覚を、比喩を用いた詩的な一文で表現してください」
+                                    </td>
+                                    <td>感情・雰囲気を重視した表現</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>3.4 プロンプトの反復改善フロー</h3>
+                    <p>
+                        Google
+                        のドキュメントでも「プロンプト設計は数回の反復を前提としたテスト駆動プロセス」であると明記されています。Agent
+                        Studio 上での改善サイクルは次の通りです。
+                    </p>
+
+                    <div class="mermaid-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart LR
+                                A["プロンプト草案を作成"]:::purple --> B["Submit して出力を確認"]
+                                B --> C{"出力は目的に合っているか?"}:::coral
+                                C -->|"No: 修正が必要"| D["文言 / パラメータを調整"]
+                                D --> A
+                                C -->|"Yes: 要件を満たす"| E["プロンプト名を Cymbal Product Analysis に設定"]
+                                E --> F["Save をクリックし 指定された Region を選択して保存"]:::teal
+
+                                classDef purple fill:#241b4d,stroke:#8f7ff5,color:#ece7fd,stroke-width:1px;
+                                classDef coral fill:#4a2416,stroke:#ff8b6b,color:#ffe4d9,stroke-width:1px;
+                                classDef teal fill:#0d3d38,stroke:#2dd4bf,color:#dbf7f2,stroke-width:1px;
+                        </script>
+                        <div class="diagram-caption">
+                            図2. Agent Studio におけるプロンプト反復改善サイクル
+                        </div>
+                    </div>
+
+                    <div class="src-tags">
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Design multimodal prompts</span
+                        >
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Overview of prompting strategies</span
+                        >
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Prompt iteration strategies</span
+                        >
+                    </div>
+                </section>
+
+                <!-- 4. Task 2 -->
+                <section class="section" id="sec-4">
+                    <div class="section-head">
+                        <span class="section-num">4</span>
+                        <h2>Task 2: Gemini タグライン生成ツールの構築</h2>
+                    </div>
+
+                    <h3>4.1 タスクの要件</h3>
+                    <p>
+                        新しいプロンプトを作成し、System instructions
+                        に指定文を入力したうえで、Few-shot 例を2件含め、
+                        商品属性・ターゲット層・感情的な訴求をパラメータとして差し替え可能なタグライン生成プロンプトを作成します。
+                        プロンプト名は <code>Cymbal Tagline Generator Template</code> です。
+                    </p>
+
+                    <h3>4.2 System instructions のベストプラクティス</h3>
+                    <p>
+                        System instructions
+                        は、モデルがプロンプト本体を処理する<strong>前</strong>に読み込む「行動規範」です。
+                        役割（ペルソナ）・目的・トーンを事前に固定するために使います。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>原則</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>役割を明確にする</td>
+                                    <td>
+                                        「あなたは〜のパートナーとして〜を手伝うアシスタントです」のように立場を明示する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>目的を明確にする</td>
+                                    <td>
+                                        何のためにこのプロンプトが存在するか（今回は「タグライン作成の支援」）を書く
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>一貫性を保つ</td>
+                                    <td>
+                                        1つの System instruction
+                                        には1つのペルソナ・役割のみを持たせる（複数の役割を混在させない）
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        本タスクで指定されている System instructions
+                        は、まさにこの型に沿っています。「Cymbal Direct が屋外ギアの
+                        新ラインを展開しており、若者に自然への一歩を促すタグライン作成を手伝ってほしい」という文脈と目的を明示しています。
+                    </p>
+
+                    <h3>4.3 Few-shot 例の設計</h3>
+                    <p>
+                        Few-shot（少数例学習）は、モデルに「望ましい出力とはどのようなものか」を実例で示す手法です。
+                        ゼロショット（例なし）よりも
+                        <strong>出力の形式・言い回し・トーン</strong>
+                        を安定させやすいという利点があります。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>原則</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>具体的で多様な例を使う</td>
+                                    <td>
+                                        似たパターンの例を並べるより、狙いたい表現の幅をカバーする例を選ぶ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>明確な指示と組み合わせる</td>
+                                    <td>
+                                        例だけに頼らず、必ず指示文（何をしてほしいか）も併記する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Input → Output の対応を明示する</td>
+                                    <td>
+                                        表形式などで「入力」と「期待する出力」の対応関係を崩さない
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        ラボで指定されている Example 1 は以下の通りです。Example 2 は、同じ
+                        Input/Output のテンプレートに沿って、異なる商品属性・トーンで自作します。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Input（例）</th>
+                                    <th>Output（例）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Example 1</td>
+                                    <td>
+                                        準備ができている感覚を与える、ハイカー向けの耐久性あるバックパックのタグラインを書いてください。ミニマリストなスタイルを意識。
+                                    </td>
+                                    <td>（ラボ指定の出力文）</td>
+                                </tr>
+                                <tr>
+                                    <td>Example 2（自作）</td>
+                                    <td>
+                                        家族連れの週末キャンパー向けに、軽量で組み立てやすいテントのタグラインを書いてください。あたたかく安心感のあるスタイルを意識。
+                                    </td>
+                                    <td>（自分で作成する出力文）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout info">
+                        <i class="ti ti-bulb"></i>
+                        <p>
+                            Example 2 を作る際は、Example 1 と <strong>同じ形式</strong>（依頼文 +
+                            スタイル指定）を保ちつつ、商品カテゴリ・ターゲット・トーンを変えることで、モデルに「パターンの幅」を学習させます。
+                        </p>
+                    </div>
+
+                    <h3>4.4 パラメータ設計（属性・ターゲット・感情）</h3>
+                    <p>
+                        このタスクの核心は、以下3種類のパラメータを差し替え可能なテンプレートとして設計することです。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>パラメータ種別</th>
+                                    <th>例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>商品属性（Product attributes）</td>
+                                    <td>durable（耐久性）、lightweight（軽量）</td>
+                                </tr>
+                                <tr>
+                                    <td>ターゲット層（Target audience）</td>
+                                    <td>young adventurers（若い冒険者）、families（家族連れ）</td>
+                                </tr>
+                                <tr>
+                                    <td>感情的な訴求（Emotional resonance）</td>
+                                    <td>
+                                        empowered（力を与えられた感覚）、connected（自然とのつながり）
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        プロンプト本体には、これら3つの変数を埋め込める形（例:
+                        <code>{product_attribute}</code> <code>{target_audience}</code>
+                        <code>{emotion}</code>）で入力欄を用意し、実際に1つの組み合わせを入力して
+                        Submit することで動作を確認します。
+                    </p>
+
+                    <h3>4.5 プロンプト構造の可視化</h3>
+                    <div class="mermaid-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            flowchart TB
+                                S["System instructions - Cymbal Direct の文脈 + タグライン作成という目的を定義"]:::purple --> P["プロンプト本体 - 属性・ターゲット・感情のプレースホルダを含む"]
+                                P --> E1["Example 1 - 入力 → 出力"]
+                                P --> E2["Example 2 - 入力 → 出力(自作)"]
+                                P --> N["New Input - 実際の属性 / ターゲット / 感情を指定"]
+                                E1 --> M["Gemini モデル"]:::teal
+                                E2 --> M
+                                N --> M
+                                M --> O["生成されたタグライン"]:::teal
+
+                                classDef purple fill:#241b4d,stroke:#8f7ff5,color:#ece7fd,stroke-width:1px;
+                                classDef teal fill:#0d3d38,stroke:#2dd4bf,color:#dbf7f2,stroke-width:1px;
+                        </script>
+                        <div class="diagram-caption">
+                            図3. Few-shot タグライン生成プロンプトの構造
+                        </div>
+                    </div>
+
+                    <h3>4.6 保存時の注意</h3>
+                    <p>
+                        Agent Studio には Autosave 機能がありますが、要件を満たすには<strong
+                            >プロンプト名が正しく
+                            <code>Cymbal Tagline Generator Template</code> になっているか</strong
+                        >を必ず確認してから Save を押してください。
+                    </p>
+
+                    <div class="src-tags">
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Use system instructions</span
+                        >
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Live API best practices</span
+                        >
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Include few-shot examples</span
+                        >
+                    </div>
+                </section>
+
+                <!-- 5. Task 3 -->
+                <section class="section" id="sec-5">
+                    <div class="section-head">
+                        <span class="section-num">5</span>
+                        <h2>Task 3: 画像分析コードの実験</h2>
+                    </div>
+
+                    <h3>5.1 Workbench（Jupyter Notebook）とは</h3>
+                    <p>
+                        Agent Platform Workbench は、JupyterLab
+                        をベースにしたノートブック開発環境です。TensorFlow / PyTorch などの
+                        ライブラリがプリインストールされており、Google Cloud
+                        への認証も設定済みの状態で提供されます。
+                    </p>
+
+                    <h3>5.2 全体の流れ</h3>
+                    <p>
+                        Agent Studio で作ったプロンプトを Python
+                        コードとしてエクスポートし、Notebook
+                        上で実行・改良する流れは以下の通りです。
+                    </p>
+
+                    <div class="mermaid-wrap">
+                        <script type="text/plain" class="mermaid-source">
+                            sequenceDiagram
+                                participant U as 開発者
+                                participant AS as Agent Studio
+                                participant NB as Jupyter Notebook (Workbench)
+                                participant SDK as google-genai SDK
+                                participant API as Vertex AI API (Gemini モデル)
+
+                                U->>AS: 保存済みプロンプト Cymbal Product Analysis を開く
+                                AS->>U: Code パネルで Python (2番目のコードセル) を表示
+                                U->>NB: image-analysis.ipynb の指定セルにコードを貼り付け
+                                U->>NB: 認証ブロックを API キー方式から PROJECT_ID/LOCATION 方式へ置換
+                                U->>NB: 重複した tools=tools 引数があれば削除
+                                U->>NB: プロンプト文言と temperature を編集
+                                NB->>SDK: generate_content() を呼び出し
+                                SDK->>API: リクエスト送信
+                                API-->>SDK: 生成結果を返却
+                                SDK-->>NB: レスポンスを表示
+                                NB->>U: 出力を検証 (10語未満か / 独創的か)
+                        </script>
+                        <div class="diagram-caption">
+                            図4. Agent Studio → Workbench 間のコード実験フロー
+                        </div>
+                    </div>
+
+                    <h3>5.3 認証ブロックの置き換え</h3>
+                    <p>
+                        Agent Studio からエクスポートされるコードは、デフォルトで API
+                        キー認証を使う形になっていることがあります。 Notebook 上では Application
+                        Default Credentials（ADC）を利用した
+                        <strong>PROJECT_ID / LOCATION 方式</strong> に
+                        置き換えるのがベストプラクティスです。Workbench インスタンスは Google Cloud
+                        への認証があらかじめ設定されているため、 API
+                        キーを埋め込む必要がありません。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-label">変更前 — API キー方式（本番運用には非推奨）</div>
+                        <pre><code class="language-python">from google import genai
+client = genai.Client(api_key="YOUR_API_KEY")</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">変更後 — Workbench に適した ADC 方式</div>
+                        <pre><code class="language-python">from google import genai
+client = genai.Client(
+    vertexai=True,
+    project="PROJECT_ID",
+    location="LOCATION",
+)</code></pre>
+                    </div>
+
+                    <div class="callout info">
+                        <i class="ti ti-info-circle"></i>
+                        <p>
+                            API
+                            キー方式は素早い動作確認には便利ですが、エンタープライズ用途では推奨されません。Workbench
+                            環境では プロジェクトの認証情報がすでに設定されているため、<code
+                                >project</code
+                            >
+                            と <code>location</code> を指定する方式が 安全かつ一貫性があります。
+                        </p>
+                    </div>
+
+                    <h3>5.4 <code>tools = tools</code> 重複バグへの対処</h3>
+                    <p>
+                        Agent Studio が生成するコードには、<code>generate_content_config</code> 内に
+                        <code>tools = tools</code> が
+                        誤って2回含まれてしまうことがあります（本ラボ手順内の既知の注意事項）。これは
+                        Python の構文エラー
+                        （キーワード引数の重複）を引き起こすため、該当箇所を1つだけ残して削除してから再実行してください。
+                        コードを保存・実行する前に、常に生成されたコードを目視でレビューする習慣が、こうした自動生成コード特有の
+                        バグの早期発見につながります。
+                    </p>
+
+                    <h3>5.5 プロンプトを「10語未満」「より独創的」に改修する</h3>
+                    <p>
+                        このステップは、プロンプトの<strong>文言変更</strong>と、モデルの<strong>パラメータ変更</strong>を組み合わせて達成します。
+                    </p>
+
+                    <h4>(1) 出力を10語未満にする</h4>
+                    <p>
+                        <code>maxOutputTokens</code> はトークン数の上限であり、単語数（word
+                        count）とは正確には一致しません （目安として100トークン ≈
+                        60〜80語）。そのため、「10語未満」という厳密な条件を満たすには、パラメータだけに
+                        頼らず<strong>プロンプト文中に明示的に指示する</strong>のが確実な方法です。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-label">変更前</div>
+                        <pre><code class="language-python">"""Describe this image with a focus on colors, textures, and the feeling it evokes."""</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">変更後 — 10語未満を明示</div>
+                        <pre><code class="language-python">"""In fewer than 10 words, describe this image's colors, textures, and feeling."""</code></pre>
+                    </div>
+
+                    <h4>(2) より創造的・意外性のある描写にする</h4>
+                    <p>
+                        これは「Hint:
+                        パラメータの調整が必要」と明記されている通り、プロンプト文言だけでなく
+                        <strong
+                            ><code>temperature</code>（および必要に応じて
+                            <code>top_p</code>）を引き上げる</strong
+                        >ことで実現します。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>役割</th>
+                                    <th>低い値の挙動</th>
+                                    <th>高い値の挙動</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>temperature</code></td>
+                                    <td>トークン選択のランダム性を制御</td>
+                                    <td>決定論的で予測可能な出力（要約・事実回答向け）</td>
+                                    <td>
+                                        多様で創造的、意外性のある出力（ブレインストーミング向け）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>top_p</code></td>
+                                    <td>累積確率が閾値に達するまでトークン候補を絞り込む</td>
+                                    <td>候補が少なく、無難な出力になりやすい</td>
+                                    <td>候補が広がり、より多様な語彙が選ばれやすい</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        Gemini モデルの <code>temperature</code> は 0.0〜2.0
+                        の範囲をとり、デフォルトの推奨開始値は 1.0 です。
+                        「最も創造的で意外性のある描写」を狙う場合は、<strong
+                            >デフォルトより高い値（例: 1.2〜2.0 に近い側）</strong
+                        >に 調整するのが定石です。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-label">temperature / top_p を引き上げて創造性を優先</div>
+                        <pre><code class="language-python">from google.genai.types import GenerateContentConfig
+
+config = GenerateContentConfig(
+    temperature=1.4,   # デフォルト(1.0)より高く設定し、創造性を優先
+    top_p=0.95,
+)</code></pre>
+                    </div>
+
+                    <h3>5.6 検証</h3>
+                    <p>コード変更後は必ずセルを再実行し、以下を確認してください。</p>
+                    <ul>
+                        <li>出力の単語数が明らかに短くなっているか（目視で10語未満か）</li>
+                        <li>以前の出力より意外性・独自性のある表現になっているか</li>
+                        <li>
+                            Notebook ファイルを<strong>保存</strong>してから Progress Check
+                            を実行しているか（保存を忘れると採点に反映されません）
+                        </li>
+                    </ul>
+
+                    <div class="src-tags">
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Introduction to Agent Platform
+                            Workbench</span
+                        >
+                        <span class="src-tag"><i class="ti ti-link"></i>Google Gen AI SDK</span>
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Content generation parameters</span
+                        >
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Adjust parameter values</span
+                        >
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Beyond temperature (top-k / top-p)</span
+                        >
+                    </div>
+                </section>
+
+                <!-- 6. Task 4 -->
+                <section class="section" id="sec-6">
+                    <div class="section-head">
+                        <span class="section-num">6</span>
+                        <h2>Task 4: タグライン生成コードの実験</h2>
+                    </div>
+
+                    <h3>6.1 タスクの要件</h3>
+                    <p>
+                        Task 2 で作成したプロンプトの Python コードを
+                        <code>tagline-generator.ipynb</code> にコピーし、 認証ブロックの置き換えと
+                        <code>tools=tools</code> 重複の確認を同様に行った上で、<strong
+                            >最後の入力（Input）に キーワード "nature"
+                            を明示的に含めるよう指示を追加</strong
+                        >します。
+                    </p>
+
+                    <h3>6.2 プロンプトの特異性（Specificity）を高めるベストプラクティス</h3>
+                    <p>
+                        Google
+                        のプロンプト設計チェックリストでは、あいまいさをなくし、モデルに何を期待しているかを具体的に伝えることが
+                        繰り返し強調されています。今回のタスクはその典型例です。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-label">変更前 — キーワードの指定なし</div>
+                        <pre><code class="language-python">last_input = """Write a tagline for a lightweight, packable rain jacket for young hikers, feeling adventurous."""</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-label">
+                            変更後 — "nature" というキーワードを明示的に要求
+                        </div>
+                        <pre><code class="language-python">last_input = """Write a tagline for a lightweight, packable rain jacket for young hikers,
+feeling adventurous. The tagline must include the word "nature"."""</code></pre>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>原則</th>
+                                    <th>適用例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>出力に含めるべき要素を明示する</td>
+                                    <td>
+                                        「タグラインには "nature"
+                                        という単語を含めてください」と直接指示する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>例と矛盾しないようにする</td>
+                                    <td>
+                                        Few-shot の Example 1・2
+                                        のスタイル（体言止め、短さ）は維持したまま条件だけを追加する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>検証可能な条件にする</td>
+                                    <td>
+                                        「〜という言葉を含める」は出力を見れば正誤を判定しやすい、良いプロンプト条件の一例
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>6.3 検証</h3>
+                    <ul>
+                        <li>
+                            再実行後の出力に、単語 "nature" がそのまま含まれているか目視で確認する
+                        </li>
+                        <li>
+                            含まれていない場合は、キーワード指定の位置（文末か文頭か）や、System
+                            instructions との整合性を見直す
+                        </li>
+                        <li>Notebook を保存してから Progress Check を実行する</li>
+                    </ul>
+
+                    <div class="src-tags">
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Overview of prompting strategies</span
+                        >
+                        <span class="src-tag"
+                            ><i class="ti ti-link"></i>Include few-shot examples</span
+                        >
+                    </div>
+                </section>
+
+                <!-- 7. トラブルシューティング -->
+                <section class="section" id="sec-7">
+                    <div class="section-head">
+                        <span class="section-num">7</span>
+                        <h2>トラブルシューティング共通ベストプラクティス</h2>
+                    </div>
+                    <p>
+                        Google
+                        の公式チェックリストは、プロンプトが期待通りに動かない場合の主な原因を挙げています。
+                        Task 1〜4
+                        のいずれでつまずいた場合も、まずこの観点で見直すと解決が早くなります。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>想定される原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>出力が抽象的すぎる／一般的すぎる</td>
+                                    <td>指示が曖昧、出力形式が未指定</td>
+                                    <td>出力に含めるべき観点・形式を明示的に指示する</td>
+                                </tr>
+                                <tr>
+                                    <td>出力のトーンや形式がばらつく</td>
+                                    <td>Few-shot 例が不足、または例と指示が矛盾している</td>
+                                    <td>具体的で多様な Input/Output 例を追加する</td>
+                                </tr>
+                                <tr>
+                                    <td>モデルが役割を認識していない</td>
+                                    <td>System instructions で役割が定義されていない</td>
+                                    <td>System instructions に役割・目的を明記する</td>
+                                </tr>
+                                <tr>
+                                    <td>句読点や記号でモデルが誤読する</td>
+                                    <td>カンマ・引用符などの区切り文字が不適切</td>
+                                    <td>区切り文字の使い方を見直す</td>
+                                </tr>
+                                <tr>
+                                    <td>専門用語が正しく解釈されない</td>
+                                    <td>未定義の業界用語・略語をそのまま使用</td>
+                                    <td>用語を定義するか、平易な言葉に置き換える</td>
+                                </tr>
+                                <tr>
+                                    <td>Python 実行時に構文エラーになる</td>
+                                    <td>
+                                        <code>generate_content_config</code> 内の引数重複（例:
+                                        <code>tools=tools</code>）
+                                    </td>
+                                    <td>重複しているキーワード引数を1つに整理する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 8. 最終チェックリスト -->
+                <section class="section" id="sec-8">
+                    <div class="section-head">
+                        <span class="section-num">8</span>
+                        <h2>完了前の最終チェックリスト</h2>
+                    </div>
+                    <ul class="checklist">
+                        <li>
+                            <input type="checkbox" disabled />Task 1: プロンプト名が
+                            <code>Cymbal Product Analysis</code> になっている
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 1: 指定された
+                            <code>model_name</code> モデルを使用している
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 1: 指定された
+                            <code>Region</code> で保存している
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 2: System instructions
+                            に指定文を入力している
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 2: Few-shot 例が2件（指定の
+                            Example 1 + 自作の Example 2）含まれている
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 2: プロンプト名が
+                            <code>Cymbal Tagline Generator Template</code> になっている
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 3: 認証ブロックが
+                            PROJECT_ID/LOCATION 方式に置き換わっている
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 3:
+                            <code>tools=tools</code> の重複が解消されている
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 3:
+                            出力が10語未満かつ以前より創造的になっている
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 3: Notebook
+                            ファイルを保存している
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 4: 最後の Input にキーワード
+                            "nature" を含めるよう指示を追加している
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 4: 出力に実際に "nature"
+                            が含まれている
+                        </li>
+                        <li>
+                            <input type="checkbox" disabled />Task 4: Notebook
+                            ファイルを保存している
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- 9. 参考文献 -->
+                <section class="section" id="sec-9">
+                    <div class="section-head">
+                        <span class="section-num">9</span>
+                        <h2>参考文献</h2>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-bulb"></i>プロンプト設計の基礎</h4>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Introduction to prompting</div>
+                                <div class="ref-desc">
+                                    プロンプトの基本概念（few-shot、指示、文脈）を解説。
+                                </div>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/introduction-prompt-design"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/introduction-prompt-design</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Overview of prompting strategies</div>
+                                <div class="ref-desc">
+                                    プロンプトが機能しない場合のチェックリスト（句読点・専門用語・出力形式など）。
+                                </div>
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/prompt-design-strategies"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/prompt-design-strategies</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Prompt iteration strategies</div>
+                                <div class="ref-desc">
+                                    プロンプト設計を反復改善プロセスとして扱うベストプラクティス。Vertex
+                                    AI → Agent Platform への移行に関する注記も含む。
+                                </div>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/prompt-iteration"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/prompt-iteration</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-user-cog"></i>System instructions と Few-shot</h4>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Use system instructions</div>
+                                <div class="ref-desc">System instructions の目的と書き方。</div>
+                                <a
+                                    href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/prompts/system-instructions"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/prompts/system-instructions</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Live API best practices</div>
+                                <div class="ref-desc">
+                                    1つの System instruction に1つのペルソナを割り当てる原則。
+                                </div>
+                                <a
+                                    href="https://ai.google.dev/gemini-api/docs/live-api/best-practices"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://ai.google.dev/gemini-api/docs/live-api/best-practices</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Include few-shot examples</div>
+                                <div class="ref-desc">
+                                    Few-shot 例の設計原則（具体性・多様性・明示的指示との併用）。
+                                </div>
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/few-shot-examples"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/few-shot-examples</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-photo"></i>マルチモーダル（画像）プロンプト</h4>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Design multimodal prompts</div>
+                                <div class="ref-desc">
+                                    画像を含むプロンプトの設計ベストプラクティス。
+                                </div>
+                                <a
+                                    href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/design-multimodal-prompts"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/design-multimodal-prompts</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4>
+                            <i class="ti ti-adjustments"></i>モデルパラメータ（Temperature / Top-P）
+                        </h4>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Adjust parameter values</div>
+                                <div class="ref-desc">
+                                    <code>temperature</code> / <code>top_p</code> /
+                                    <code>top_k</code> の定義と推奨値。
+                                </div>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/adjust-parameter-values"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/adjust-parameter-values</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Content generation parameters</div>
+                                <div class="ref-desc">
+                                    <code>maxOutputTokens</code> とトークン数・単語数の目安。
+                                </div>
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/content-generation-parameters"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/content-generation-parameters</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">
+                                    Beyond temperature: Tuning LLM output with top-k and top-p
+                                </div>
+                                <div class="ref-desc">
+                                    temperature と top-p を組み合わせた実務的な調整手順の解説記事。
+                                </div>
+                                <a
+                                    href="https://medium.com/google-cloud/beyond-temperature-tuning-llm-output-with-top-k-and-top-p-24c2de5c3b16"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://medium.com/google-cloud/beyond-temperature-tuning-llm-output-with-top-k-and-top-p-24c2de5c3b16</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ref-group">
+                        <h4><i class="ti ti-brand-python"></i>Workbench / SDK</h4>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">
+                                    Introduction to Agent Platform Workbench
+                                </div>
+                                <div class="ref-desc">
+                                    Workbench（Jupyter Notebook 環境）の概要。
+                                </div>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/docs/workbench/introduction"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/vertex-ai/docs/workbench/introduction</a
+                                >
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-file-text"></i>
+                            <div>
+                                <div class="ref-title">Google Gen AI SDK</div>
+                                <div class="ref-desc">
+                                    <code>google-genai</code> SDK のクライアント初期化方法（API
+                                    キー方式 と PROJECT_ID/LOCATION 方式の違い）。
+                                </div>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/sdks/overview"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >https://docs.cloud.google.com/vertex-ai/generative-ai/docs/sdks/overview</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    Cymbal Direct チャレンジラボ攻略ガイド — Agent Platform（旧 Vertex
+                    AI）プロンプト設計ベストプラクティス
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                var lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n[ \t]*$/, '')
+                    .split('\n');
+                var indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return l.match(/^[ \t]*/)[0].length;
+                    });
+                var min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(min);
+                    })
+                    .join('\n');
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                if (window.hljs) {
+                    hljs.highlightAll();
+                }
+
+                var ready =
+                    document.fonts && document.fonts.ready
+                        ? document.fonts.ready
+                        : Promise.resolve();
+                ready.then(function () {
+                    if (!window.mermaid) {
+                        return;
+                    }
+
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        securityLevel: 'loose',
+                        fontFamily:
+                            '-apple-system, BlinkMacSystemFont, Hiragino Kaku Gothic ProN, Noto Sans JP, sans-serif',
+                        themeVariables: {
+                            background: '#07111e',
+                            primaryColor: '#122438',
+                            primaryTextColor: '#e8edf5',
+                            primaryBorderColor: '#3a5578',
+                            lineColor: '#5b7699',
+                            secondaryColor: '#17304a',
+                            tertiaryColor: '#0c1a2b',
+                            actorBkg: '#122438',
+                            actorBorder: '#3a5578',
+                            actorTextColor: '#e8edf5',
+                            signalColor: '#5b7699',
+                            signalTextColor: '#c9d6e8',
+                            labelBoxBkgColor: '#17304a',
+                            labelBoxBorderColor: '#3a5578',
+                            labelTextColor: '#e8edf5',
+                            noteBkgColor: '#241b4d',
+                            noteBorderColor: '#8f7ff5',
+                            noteTextColor: '#ece7fd',
+                        },
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            curve: 'basis',
+                            nodeSpacing: 45,
+                            rankSpacing: 45,
+                        },
+                        sequence: { useMaxWidth: false, actorMargin: 60, messageMargin: 40 },
+                    });
+
+                    document.querySelectorAll('script.mermaid-source').forEach(function (src) {
+                        var pre = document.createElement('pre');
+                        pre.className = 'mermaid';
+                        pre.textContent = dedent(src.textContent);
+                        src.replaceWith(pre);
+                    });
+
+                    mermaid.run({ querySelector: '.mermaid' });
+                });
+
+                var sections = Array.prototype.slice.call(
+                    document.querySelectorAll('.section[id]'),
+                );
+                var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar nav a'));
+
+                var observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                var id = entry.target.getAttribute('id');
+                                links.forEach(function (l) {
+                                    l.classList.remove('active');
+                                });
+                                var active = document.querySelector(
+                                    '.sidebar nav a[href="#' + id + '"]',
+                                );
+                                if (active) {
+                                    active.classList.add('active');
+                                }
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach(function (s) {
+                    observer.observe(s);
+                });
+            });
+        </script>
+    </body>
+</html>
