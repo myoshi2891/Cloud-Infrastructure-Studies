@@ -128,6 +128,32 @@
                 padding: 56px 64px 100px;
             }
 
+            .mobile-toc {
+                display: none;
+                margin: 0 0 32px;
+                padding: 14px 16px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-primary);
+                border-radius: var(--radius-md);
+            }
+
+            .mobile-toc summary {
+                color: var(--text-primary);
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            .mobile-toc nav {
+                display: grid;
+                gap: 8px;
+                margin-top: 14px;
+            }
+
+            .mobile-toc nav a {
+                color: var(--text-secondary);
+                text-decoration: none;
+            }
+
             .hero {
                 margin-bottom: 48px;
                 padding-bottom: 32px;
@@ -432,6 +458,9 @@
                     margin-left: 0;
                     padding: 32px 24px 80px;
                 }
+                .mobile-toc {
+                    display: block;
+                }
             }
         </style>
     </head>
@@ -440,7 +469,7 @@
             <nav class="sidebar">
                 <div class="brand">Google Cloud Skills Boost</div>
                 <div class="brand-title">GKE チャレンジラボ<br />攻略ガイド</div>
-                <nav id="toc">
+                <nav id="toc" aria-label="ページ内目次">
                     <a href="#overview">概要</a>
                     <a href="#big-picture">全体像</a>
                     <a href="#task1">Task 1: クラスタ作成</a>
@@ -455,6 +484,22 @@
             </nav>
 
             <main class="content">
+                <details class="mobile-toc">
+                    <summary>ページ内目次</summary>
+                    <nav aria-label="モバイルページ内目次">
+                        <a href="#overview">概要</a>
+                        <a href="#big-picture">全体像</a>
+                        <a href="#task1">Task 1: クラスタ作成</a>
+                        <a href="#task2">Task 2: Managed Prometheus</a>
+                        <a href="#task3">Task 3: デプロイとデバッグ</a>
+                        <a href="#task4">Task 4: 指標とアラート</a>
+                        <a href="#task5">Task 5: 修正と再デプロイ</a>
+                        <a href="#task6">Task 6: コンテナ化と公開</a>
+                        <a href="#checklist">完了チェックリスト</a>
+                        <a href="#references">参考文献一覧</a>
+                    </nav>
+                </details>
+
                 <header class="hero">
                     <div class="eyebrow">Best Practices Guide</div>
                     <h1>
@@ -833,7 +878,7 @@
 
                     <pre><code class="language-bash">gcloud logging metrics create pod-image-errors \
   --description="Pod image reference errors" \
-  --log-filter='resource.type="k8s_container" AND severity>=ERROR'</code></pre>
+  --log-filter='resource.type="k8s_container" AND severity&gt;=ERROR'</code></pre>
 
                     <div class="callout">
                         上記はコンソールでの操作を CLI
@@ -1539,10 +1584,26 @@ kubectl expose deployment helloweb \
                 class A,B,C,D,E,F n;
         </script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+            integrity="sha512-EBLzUL8XLl+va/zAsmXwS7Z2B1F9HUHkZwyS/VKwh3S7T/U0nF4BaU29EP/ZSf6zgiIxYAnKLu6bJ8dqpmX5uw=="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"
+            integrity="sha512-nQ9BQEzuov+Ry6EIH8ve7VKKdOG91Ix3SAQcFmOiBR5qG8sJONrph1InWTJOGjfP5QkSTSy4VnkEsPMoFYRsUQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"
+            integrity="sha512-Y8GzCpg2u9P2M//u+lBP4ogNs3YtllnXlOlintElAyphfK8vOHAju9MlnDakr64cMa9ARpO1IUs51FjwY33g2Q=="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"
+            integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww=="
+            crossorigin="anonymous"
+        ></script>
         <script>
             function dedent(str) {
                 var lines = str
@@ -1572,28 +1633,47 @@ kubectl expose deployment helloweb \
                 }
             });
 
+            function renderMermaidFallback() {
+                document.querySelectorAll('script.mermaid-src').forEach(function (src) {
+                    var target = document.getElementById(src.getAttribute('data-target'));
+                    if (target) {
+                        var pre = document.createElement('pre');
+                        pre.textContent = dedent(src.textContent);
+                        target.replaceChildren(pre);
+                    }
+                });
+            }
+
             if (window.hljs) {
                 hljs.highlightAll();
             }
 
             if (window.mermaid) {
-                mermaid.initialize({
-                    startOnLoad: false,
-                    theme: 'dark',
-                    securityLevel: 'loose',
-                    fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
-                    flowchart: {
-                        useMaxWidth: false,
-                        htmlLabels: true,
-                        nodeSpacing: 45,
-                        rankSpacing: 45,
-                    },
-                });
+                try {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        securityLevel: 'loose',
+                        fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            nodeSpacing: 45,
+                            rankSpacing: 45,
+                        },
+                    });
 
-                (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
-                    mermaid.run({ querySelector: '.mermaid' });
-                });
+                    (document.fonts ? document.fonts.ready : Promise.resolve())
+                        .then(function () {
+                            return mermaid.run({ querySelector: '.mermaid' });
+                        })
+                        .catch(renderMermaidFallback);
+                } catch (error) {
+                    renderMermaidFallback();
+                }
+            } else {
+                renderMermaidFallback();
             }
 
             var navLinks = document.querySelectorAll('#toc a');
