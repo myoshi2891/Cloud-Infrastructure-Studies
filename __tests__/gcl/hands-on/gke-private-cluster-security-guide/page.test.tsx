@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import Page from '@/app/gcl/hands-on/gke-private-cluster-security-guide/page';
 import { DIAGRAMS } from '@/app/gcl/hands-on/gke-private-cluster-security-guide/constants';
 
@@ -101,12 +101,23 @@ describe('GKE プライベートクラスタ セキュリティ実装ガイド �
 
     it('すべての MermaidDiagram に chart、preserveNaturalScale、ariaLabel が設定されていること', () => {
         const mermaids = screen.getAllByTestId('mermaid');
+        const diagramKeys = ['mermaid-1', 'mermaid-2', 'mermaid-3', 'mermaid-4'] as const;
         expect(mermaids.length).toBe(4);
-        for (const [index, mermaid] of mermaids.entries()) {
-            expect(mermaid.textContent).toBe(Object.values(DIAGRAMS)[index]);
+        for (const [index, key] of diagramKeys.entries()) {
+            const mermaid = mermaids[index];
+            expect(mermaid.textContent).toBe(DIAGRAMS[key]);
             expect(mermaid.getAttribute('data-preserve-natural-scale')).toBe('true');
             expect(mermaid.getAttribute('aria-label')).toBeTruthy();
         }
+    });
+
+    it('ページ内目次がアクセシブルな現在位置を持つこと', () => {
+        const nav = screen.getByRole('navigation', { name: 'ページ内目次' });
+        expect(within(nav).getAllByRole('link')).toHaveLength(9);
+        expect(within(nav).getByRole('link', { current: true })).toHaveAttribute(
+            'href',
+            '#overview',
+        );
     });
 
     it('全幅メインコンテナおよび 1rem 倍率用図解ラッパーが正しく配置されていること', () => {

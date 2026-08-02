@@ -15,6 +15,8 @@
 .gke-security-guide-page .layout {
     display: block;
     width: 100%;
+    padding-left: 272px;
+    box-sizing: border-box;
 }
 
 .gke-security-guide-page .sidebar {
@@ -88,12 +90,16 @@
     color: #7c9eff;
 }
 
-/* メインコンテンツ: 画面横幅いっぱいに拡張 */
+/* メインコンテンツ: サイドバーを除いた領域で読みやすい幅に配置 */
 .gke-security-guide-page .main {
-    margin-left: 272px;
+    margin: 0 auto;
     padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 48px 120px;
-    max-width: 100%;
-    width: auto;
+    max-width: 1120px;
+    box-sizing: border-box;
+}
+
+.gke-security-guide-page .source-note {
+    font-size: 13.5px;
 }
 
 .gke-security-guide-page .hero {
@@ -438,11 +444,13 @@
 }
 
 @media (max-width: 900px) {
+    .gke-security-guide-page .layout {
+        padding-left: 0;
+    }
     .gke-security-guide-page .sidebar {
         display: none;
     }
     .gke-security-guide-page .main {
-        margin-left: 0;
         padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px) 20px 80px;
     }
     .gke-security-guide-page .summary-grid {

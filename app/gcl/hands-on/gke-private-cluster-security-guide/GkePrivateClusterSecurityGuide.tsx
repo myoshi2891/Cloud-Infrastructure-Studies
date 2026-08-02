@@ -229,7 +229,7 @@ export function GkePrivateClusterSecurityGuide() {
                                 に設定します（採点システムがタイトルを確認するため）。
                             </div>
                         </div>
-                        <p style={{ fontSize: '13.5px' }}>
+                        <p className="source-note">
                             根拠:{' '}
                             <a
                                 href="https://cloud.google.com/sdk/gcloud/reference/iam/roles/create"
@@ -291,7 +291,7 @@ export function GkePrivateClusterSecurityGuide() {
                                 ・「orca-」プレフィックスは課題の指示（すべての新規オブジェクトに付与）に従ったものです。
                             </div>
                         </div>
-                        <p style={{ fontSize: '13.5px' }}>
+                        <p className="source-note">
                             根拠:{' '}
                             <a
                                 href="https://cloud.google.com/iam/docs/service-accounts-create"
@@ -346,7 +346,7 @@ export function GkePrivateClusterSecurityGuide() {
                                 </tr>
                             </tbody>
                         </table>
-                        <p style={{ fontSize: '13.5px' }}>
+                        <p className="source-note">
                             根拠:{' '}
                             <a
                                 href="https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa"
@@ -443,10 +443,15 @@ export function GkePrivateClusterSecurityGuide() {
                                 ）。
                                 <br />
                                 ・IAMの反映には数十秒〜数分のタイムラグがあることがあります。次のタスクに進む前に
-                                <code>gcloud projects get-iam-policy</code> で確認すると安心です。
+                                <code>
+                                    gcloud projects get-iam-policy &lt;PROJECT_ID&gt;
+                                    --flatten=&quot;bindings[].members&quot;
+                                    --filter=&quot;bindings.members:${'{SA_EMAIL}'}&quot;
+                                </code>{' '}
+                                で確認すると安心です。
                             </div>
                         </div>
-                        <p style={{ fontSize: '13.5px' }}>
+                        <p className="source-note">
                             根拠:{' '}
                             <a
                                 href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam"
@@ -502,7 +507,7 @@ export function GkePrivateClusterSecurityGuide() {
                             を指定すると、同一VPC内（またはピアリング/VPN経由）からしか管理エンドポイントに到達できなくなります。これが今回
                             <code>orca-jumphost</code> という踏み台が必要な理由です。
                         </p>
-                        <p style={{ fontSize: '13.5px' }}>
+                        <p className="source-note">
                             根拠:{' '}
                             <a
                                 href="https://cloud.google.com/kubernetes-engine/docs/how-to/legacy/network-isolation"
@@ -573,12 +578,15 @@ export function GkePrivateClusterSecurityGuide() {
                                 <code>orca-jumphost</code> の内部IPに更新します。
                                 <br />
                                 ・クラスタ名は課題要件どおり
-                                <code>orca-</code> プレフィックスを付けて命名します。
+                                <code>orca-</code> プレフィックスを付けて命名します（例:
+                                <code>orca-cluster-name</code>
+                                は実際のラボでは指定されたクラスタ名に置き換えてください）。
                                 <br />
                                 ・<code>--region</code> と <code>--zone</code> は課題ページで指定された
-                                Region / Zone をそのまま使用します。ゾーナルクラスタなら
-                                <code>--zone</code>、リージョナルなら
-                                <code>--region</code> のみを使うのが基本です。
+                                Region / Zone をそのまま使用します（ゾーナルクラスタにする場合は
+                                <code>--zone</code> のみ、リージョナルにする場合は
+                                <code>--region</code>
+                                のみを使うのが一般的です。両方指定できるコマンドもありますが、混乱を避けるため、ラボの要件に合わせてどちらか一方を使ってください）。
                             </div>
                         </div>
 
@@ -633,7 +641,7 @@ export function GkePrivateClusterSecurityGuide() {
                             Build VPC 内（またはVPCピアリング経由でその内部IPに到達できる）の
                             <code>orca-jumphost</code> から接続する必要があります。
                         </p>
-                        <p style={{ fontSize: '13.5px' }}>
+                        <p className="source-note">
                             根拠:{' '}
                             <a
                                 href="https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl"
@@ -686,11 +694,13 @@ export function GkePrivateClusterSecurityGuide() {
                                 フラグを付け忘れると、コマンドはパブリックエンドポイントのIPでkubeconfigを生成しようとしますが、今回のクラスタにはパブリックエンドポイントが存在しないため接続に失敗します。
                                 <br />
                                 ・動作確認だけであれば
-                                <code>kubectl get pods</code>
-                                でPodがRunning状態になっていることを確認すれば十分です。
+                                <code>kubectl get deployments</code> / <code>kubectl get pods</code>
+                                でPodがRunning状態になっていることを確認すれば十分です（課題は「management
+                                access が機能していること」の検証が目的のため、LoadBalancer
+                                Serviceの公開は必須ではありません）。
                             </div>
                         </div>
-                        <p style={{ fontSize: '13.5px' }}>
+                        <p className="source-note">
                             根拠:{' '}
                             <a
                                 href="https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl"
@@ -753,7 +763,7 @@ export function GkePrivateClusterSecurityGuide() {
                                     </td>
                                     <td>
                                         Task
-                                        3のIAMバインドがまだ反映されていない、またはバインド先を間違えた
+                                        3のIAMバインドがまだ反映されていない、またはロールのバインド先を間違えた（プロジェクトではなくSA自体に対してroleを付与してしまった等）
                                     </td>
                                     <td>
                                         <code>add-iam-policy-binding</code>
@@ -776,7 +786,8 @@ export function GkePrivateClusterSecurityGuide() {
                                 <tr>
                                     <td>orca-jumphost からクラスタに到達できない</td>
                                     <td>
-                                        jumphostのIPが承認済みネットワークに未登録、またはCIDRの誤り
+                                        jumphostのIPが承認済みネットワークに未登録、またはCIDRの誤り（
+                                        <code>/32</code>以外を指定）
                                     </td>
                                     <td>
                                         <code>gcloud container clusters describe</code> の
