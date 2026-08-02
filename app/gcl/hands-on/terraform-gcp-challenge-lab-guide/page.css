@@ -364,6 +364,14 @@
     text-decoration: underline;
 }
 
+.terraform-lab-guide-page .source-note {
+    font-size: 13px;
+}
+
+.terraform-lab-guide-page .source-note i {
+    color: var(--color-guide-foreground-faint);
+}
+
 .terraform-lab-guide-page .source-groups {
     display: grid;
     gap: 20px;

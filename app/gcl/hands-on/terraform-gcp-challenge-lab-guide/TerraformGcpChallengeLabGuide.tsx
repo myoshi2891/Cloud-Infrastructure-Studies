@@ -39,7 +39,7 @@ export function TerraformGcpChallengeLabGuide() {
                 <main className="main">
                     <div className="hero">
                         <div className="hero-eyebrow">
-                            <i className="ti ti-brand-terraform" />
+                            <i className="ti ti-brand-terraform" aria-hidden="true" />
                             CHALLENGE LAB GUIDE
                         </div>
                         <h1>Terraform で構築する Google Cloud インフラ管理 完全攻略ガイド</h1>
@@ -48,15 +48,15 @@ export function TerraformGcpChallengeLabGuide() {
                         </p>
                         <div className="hero-meta">
                             <span>
-                                <i className="ti ti-users" />
+                                <i className="ti ti-users" aria-hidden="true" />
                                 対象読者: Terraform / Google Cloud 初学者〜中級者
                             </span>
                             <span>
-                                <i className="ti ti-list-numbers" />
+                                <i className="ti ti-list-numbers" aria-hidden="true" />
                                 全7 Task + 事前準備
                             </span>
                             <span>
-                                <i className="ti ti-link" />
+                                <i className="ti ti-link" aria-hidden="true" />
                                 各項目に公式ソースを明記
                             </span>
                         </div>
@@ -126,7 +126,7 @@ export function TerraformGcpChallengeLabGuide() {
                             永続的なカスタマイズを行うには、ホームディレクトリ（<code>$HOME</code>）配下に環境構築スクリプトを配置し、Cloud Shell 起動時に自動実行される仕組みを使う。
                         </p>
                         <div className="code-label">
-                            <i className="ti ti-file-code" />
+                            <i className="ti ti-file-code" aria-hidden="true" />
                             ~/.customize_environment
                         </div>
                         <pre>
@@ -142,14 +142,14 @@ export function TerraformGcpChallengeLabGuide() {
                         <p>
                             このファイルに実行権限を付与（<code>chmod +x ~/.customize_environment</code>）しておくと、Cloud Shell VM の再作成時にも Terraform CLI が自動的に再インストールされる。
                         </p>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://cloud.google.com/shell/docs/configuring-cloud-shell" target="_blank" rel="noreferrer">cloud.google.com/shell/docs/configuring-cloud-shell</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://cloud.google.com/shell/docs/configuring-cloud-shell" target="_blank" rel="noreferrer">cloud.google.com/shell/docs/configuring-cloud-shell</a>
                         </p>
                     </section>
 
                     <section id="sec4">
                         <h2><span className="num">4</span>Task 1: ディレクトリ構成とルート変数の設計</h2>
-                        <h3><i className="ti ti-puzzle" />なぜ module に分割するのか</h3>
+                        <h3><i className="ti ti-puzzle" aria-hidden="true" />なぜ module に分割するのか</h3>
                         <p>
                             Terraform でインフラをコード化する際、すべてのリソース（VM、Storage、VPC、Firewall）を単一の <code>main.tf</code> に詰め込むと、コードの見通しが悪くなり、変更時の影響範囲の特定が困難になる。モジュール化によって以下のメリットが得られる。
                         </p>
@@ -159,7 +159,7 @@ export function TerraformGcpChallengeLabGuide() {
                             <li><strong>チーム開発への拡張性</strong>: モジュール単位でレビュー・バージョン管理がしやすくなる</li>
                         </ul>
 
-                        <h3><i className="ti ti-sitemap" />ディレクトリ構成</h3>
+                        <h3><i className="ti ti-sitemap" aria-hidden="true" />ディレクトリ構成</h3>
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.DIRECTORY_STRUCTURE} ariaLabel="プロジェクトのディレクトリ構成図" preserveNaturalScale />
                         </div>
@@ -172,7 +172,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
 
-                        <h3><i className="ti ti-variable" />variables.tf の実装（ルート・各モジュール共通）</h3>
+                        <h3><i className="ti ti-variable" aria-hidden="true" />variables.tf の実装（ルート・各モジュール共通）</h3>
                         <p>
                             各 <code>variables.tf</code>（ルート、instances、storage の3ファイルすべて）に、同じ3つの変数を定義する。
                         </p>
@@ -198,13 +198,13 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
                         <div className="callout">
-                            <div className="callout-title"><i className="ti ti-checks" />ベストプラクティス</div>
+                            <div className="callout-title"><i className="ti ti-checks" aria-hidden="true" />ベストプラクティス</div>
                             <p>
                                 <code>default</code> に決め打ちの値を入れるのはアンチパターンとされることが多いが、Challenge Lab のような単一環境・単一目的の検証環境では、<code>terraform apply</code> のたびに <code>-var</code> を指定する手間を省くために default 値を設定するのが合理的である。本番運用では <code>terraform.tfvars</code> や <code>TF_VAR_*</code> 環境変数、あるいは CI/CD のシークレット管理と組み合わせるのがより安全である。
                             </p>
                         </div>
 
-                        <h3><i className="ti ti-cloud" />main.tf: Terraform block と Provider</h3>
+                        <h3><i className="ti ti-cloud" aria-hidden="true" />main.tf: Terraform block と Provider</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-keyword">terraform</span> &#123;</div>
@@ -227,7 +227,7 @@ export function TerraformGcpChallengeLabGuide() {
                             <code>provider &quot;google&quot;</code> ブロックに <code>zone</code> を明示的に含めることで、以降 <code>google_compute_instance</code> などのリソースでゾーンを省略した場合に、このデフォルトゾーンが自動的に使われるようになる。
                         </p>
 
-                        <h3><i className="ti ti-refresh" />初期化</h3>
+                        <h3><i className="ti ti-refresh" aria-hidden="true" />初期化</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-command">terraform</span> init</div>
@@ -236,14 +236,14 @@ export function TerraformGcpChallengeLabGuide() {
                         <p>
                             <code>terraform init</code> は、(1) provider プラグインのダウンロード、(2) モジュールの解決、(3) backend の初期化、の3つを行うコマンドである。設定ファイルを変更するたび（特に module や provider を追加・変更した際）は再実行が必要になる。
                         </p>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/modules" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/modules</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/values/variables" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/values/variables</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/modules" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/modules</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/values/variables" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/values/variables</a>
                         </p>
                     </section>
 
                     <section id="sec5">
                         <h2><span className="num">5</span>Task 2: リソースのインポートと構成</h2>
-                        <h3><i className="ti ti-info-circle" />import の位置づけを正しく理解する</h3>
+                        <h3><i className="ti ti-info-circle" aria-hidden="true" />import の位置づけを正しく理解する</h3>
                         <p>
                             <code>terraform import</code> は、<strong>「すでに GCP 上に存在する手動作成リソースを、Terraform の管理下（state ファイル）に取り込む」</strong>ためのコマンドである。
                         </p>
@@ -253,12 +253,12 @@ export function TerraformGcpChallengeLabGuide() {
                             <li>そのため、先に <code>instances.tf</code> に受け皿となる <code>resource</code> ブロックを記述しておく必要がある</li>
                         </ul>
 
-                        <h3><i className="ti ti-route" />インポート手順のフロー</h3>
+                        <h3><i className="ti ti-route" aria-hidden="true" />インポート手順のフロー</h3>
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.IMPORT_FLOW} ariaLabel="リソースインポートの手順フロー図" preserveNaturalScale />
                         </div>
 
-                        <h3><i className="ti ti-file-code" />main.tf への module 参照追加</h3>
+                        <h3><i className="ti ti-file-code" aria-hidden="true" />main.tf への module 参照追加</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-keyword">module</span> <span className="tok-string">&quot;instances&quot;</span> &#123;</div>
@@ -271,7 +271,7 @@ export function TerraformGcpChallengeLabGuide() {
                         </pre>
                         <p>module を追加・変更したら、必ず <code>terraform init</code> を再実行してモジュールを解決させる。</p>
 
-                        <h3><i className="ti ti-server" />instances.tf: 最小限の resource ブロック</h3>
+                        <h3><i className="ti ti-server" aria-hidden="true" />instances.tf: 最小限の resource ブロック</h3>
                         <p>
                             ラボの指示どおり、以下の引数だけに絞って最小構成で書く。項目を絞る理由は、「import 後に state との差分を最小化し、意図しないリソースの再作成（recreate）を避けるため」である。特に <code>boot_disk.initialize_params.image</code> のようなイミュータブルな属性は、値が一致していないと <code>terraform apply</code> 時にリソースの作り直しが発生してしまう。
                         </p>
@@ -325,13 +325,13 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
                         <div className="callout danger">
-                            <div className="callout-title"><i className="ti ti-alert-triangle" />重要</div>
+                            <div className="callout-title"><i className="ti ti-alert-triangle" aria-hidden="true" />重要</div>
                             <p>
                                 <code>machine_type</code> と <code>boot_disk</code> の image は、Console 上で確認した実際の値に必ず置き換えること。値が実物と食い違っていると、import 自体は成功しても、その後の <code>apply</code> でインスタンスの再作成が走ってしまう危険がある。
                             </p>
                         </div>
 
-                        <h3><i className="ti ti-terminal" />import コマンドの実行</h3>
+                        <h3><i className="ti ti-terminal" aria-hidden="true" />import コマンドの実行</h3>
                         <p>
                             module 内の resource を import する場合、アドレスに <code>module.&lt;モジュール名&gt;.</code> の prefix を付ける。
                         </p>
@@ -345,7 +345,7 @@ export function TerraformGcpChallengeLabGuide() {
                             <code>google_compute_instance</code> の import ID は <code>&#123;&#123;project&#125;&#125;/&#123;&#123;zone&#125;&#125;/&#123;&#123;name&#125;&#125;</code> の形式を取る。ID のフォーマットはリソースの種類ごとに異なるため、必ず provider ドキュメントで確認する習慣をつけること。
                         </p>
 
-                        <h3><i className="ti ti-git-compare" />plan → apply</h3>
+                        <h3><i className="ti ti-git-compare" aria-hidden="true" />plan → apply</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-command">terraform</span> plan</div>
@@ -355,14 +355,14 @@ export function TerraformGcpChallengeLabGuide() {
                         <p>
                             ここで最小構成にしか記述していない属性（disk size や labels など）については、Terraform が「設定にない値」を検出し、in-place update（作り直しではない、その場での更新）が発生することがある。ラボの範囲ではこれは想定内の挙動だが、本番環境では<strong>import 前にすべての実属性を漏れなく記述し、<code>terraform plan</code> の差分がゼロ（no changes）になる状態を確認してから apply する</strong>のが正しい手順である。
                         </p>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/commands/import" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/commands/import</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/import/usage" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/import/usage</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/commands/import" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/commands/import</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/import/usage" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/import/usage</a>
                         </p>
                     </section>
 
                     <section id="sec6">
                         <h2><span className="num">6</span>Task 3: リモートバックエンド（Cloud Storage）への切り替え</h2>
-                        <h3><i className="ti ti-help-circle" />なぜ remote backend が必要なのか</h3>
+                        <h3><i className="ti ti-help-circle" aria-hidden="true" />なぜ remote backend が必要なのか</h3>
                         <p>
                             デフォルトでは、Terraform の状態（state）はローカルの <code>terraform.tfstate</code> に保存される。しかしローカル管理には以下の危険がある。
                         </p>
@@ -375,7 +375,7 @@ export function TerraformGcpChallengeLabGuide() {
                             これらを解決するため、遠隔のオブジェクトストレージ（GCS / S3）へ状態を保存し、同時にロック機構（State Locking）を有効にする。
                         </p>
 
-                        <h3><i className="ti ti-bucket" />バケットリソースの作成（storage module）</h3>
+                        <h3><i className="ti ti-bucket" aria-hidden="true" />バケットリソースの作成（storage module）</h3>
                         <div className="code-label">modules/storage/storage.tf</div>
                         <pre>
                             <code>
@@ -413,7 +413,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
 
-                        <h3><i className="ti ti-arrows-transfer-up" />remote backend の設定と移行フロー</h3>
+                        <h3><i className="ti ti-arrows-transfer-up" aria-hidden="true" />remote backend の設定と移行フロー</h3>
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.REMOTE_BACKEND_FLOW} ariaLabel="リモートバックエンド（GCS）への移行フロー図" preserveNaturalScale />
                         </div>
@@ -436,7 +436,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
                         <div className="callout warning">
-                            <div className="callout-title"><i className="ti ti-alert-triangle" />注意点</div>
+                            <div className="callout-title"><i className="ti ti-alert-triangle" aria-hidden="true" />注意点</div>
                             <p>
                                 <code>backend</code> ブロックには変数（<code>var.xxx</code>）を使うことができない。これは Terraform の設計上の制約で、backend 設定はプロバイダーやモジュールより前、変数の評価より前の段階で読み込まれるためである。バケット名は直接文字列で書く必要がある。
                             </p>
@@ -458,14 +458,14 @@ export function TerraformGcpChallengeLabGuide() {
                         <p>
                             ここで<strong><code>yes</code></strong>と入力することで、既存の管理対象（import 済みのインスタンスなど）の記録を失わずに移行できる。<code>no</code> を選ぶと空の state から始まってしまい、既存リソースの管理情報を失うため注意が必要である。
                         </p>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/backend/gcs" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/backend/gcs</a> ／ <a className="ext-link" href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" target="_blank" rel="noreferrer">cloud.google.com/storage/docs/uniform-bucket-level-access</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/backend/gcs" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/backend/gcs</a> ／ <a className="ext-link" href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" target="_blank" rel="noreferrer">cloud.google.com/storage/docs/uniform-bucket-level-access</a>
                         </p>
                     </section>
 
                     <section id="sec7">
                         <h2><span className="num">7</span>Task 4: インフラの変更（Update in-place）</h2>
-                        <h3><i className="ti ti-cpu" />machine_type の変更</h3>
+                        <h3><i className="ti ti-cpu" aria-hidden="true" />machine_type の変更</h3>
                         <p>
                             既存の <code>tf-instance-1</code> と <code>tf-instance-2</code> の <code>machine_type</code> を <code>e2-standard-2</code> へ変更する。
                         </p>
@@ -485,7 +485,7 @@ export function TerraformGcpChallengeLabGuide() {
                             <code>tf-instance-2</code> も同様に <code>e2-standard-2</code> へ変更する。<code>allow_stopping_for_update = true</code> を設定済みであるため、Terraform はインスタンスを削除せず、<strong>停止 → 属性変更 → 起動</strong>という形で in-place update を行う。この引数を設定していない場合、<code>machine_type</code> のようなプロパティ変更はエラーになるか、リソースの完全な再作成（destroy &amp; create）を招く。
                         </p>
 
-                        <h3><i className="ti ti-server-2" />3台目のインスタンス追加</h3>
+                        <h3><i className="ti ti-server-2" aria-hidden="true" />3台目のインスタンス追加</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;instance-name&quot;</span> &#123;</div>
@@ -513,7 +513,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
 
-                        <h3><i className="ti ti-arrows-shuffle" />変更・追加のワークフロー</h3>
+                        <h3><i className="ti ti-arrows-shuffle" aria-hidden="true" />変更・追加のワークフロー</h3>
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.UPDATE_WORKFLOW} ariaLabel="インフラの変更および追加のワークフロー図" preserveNaturalScale />
                         </div>
@@ -524,7 +524,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
                         <div className="callout">
-                            <div className="callout-title"><i className="ti ti-checks" />ベストプラクティス</div>
+                            <div className="callout-title"><i className="ti ti-checks" aria-hidden="true" />ベストプラクティス</div>
                             <p>
                                 複数リソースにまたがる同種の変更（全インスタンスの machine_type 変更など）は、本来であれば <code>for_each</code> や <code>count</code> を使って DRY（Don&apos;t Repeat Yourself）に書くのが望ましい。本ラボでは学習目的上、明示的に3つの resource ブロックとして書くが、実務では以下のような書き方も検討する価値がある。
                             </p>
@@ -547,14 +547,14 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance" target="_blank" rel="noreferrer">registry.terraform.io/.../compute_instance</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/style" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/style</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance" target="_blank" rel="noreferrer">registry.terraform.io/.../compute_instance</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/style" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/style</a>
                         </p>
                     </section>
 
                     <section id="sec8">
                         <h2><span className="num">8</span>Task 5: リソースの削除（Destroy）</h2>
-                        <h3><i className="ti ti-bulb" />Terraform における「削除」の正しい考え方</h3>
+                        <h3><i className="ti ti-bulb" aria-hidden="true" />Terraform における「削除」の正しい考え方</h3>
                         <p>
                             Terraform では、クラウドコンソールから直接インスタンスを消すのではなく、<strong>「設定ファイルから resource ブロックを削除し、apply する」</strong>ことでリソースを削除するのがベストプラクティスである。
                         </p>
@@ -568,24 +568,24 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-command">terraform</span> apply</div>
                             </code>
                         </pre>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/resources/destroy" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/resources/destroy</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/commands/destroy" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/commands/destroy</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://developer.hashicorp.com/terraform/language/resources/destroy" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/language/resources/destroy</a> ／ <a className="ext-link" href="https://developer.hashicorp.com/terraform/cli/commands/destroy" target="_blank" rel="noreferrer">developer.hashicorp.com/terraform/cli/commands/destroy</a>
                         </p>
                     </section>
 
                     <section id="sec9">
                         <h2><span className="num">9</span>Task 6: Registry モジュールの活用（VPC &amp; Subnet）</h2>
-                        <h3><i className="ti ti-recycle" />なぜ自作せず Registry モジュールを使うのか</h3>
+                        <h3><i className="ti ti-recycle" aria-hidden="true" />なぜ自作せず Registry モジュールを使うのか</h3>
                         <p>
                             ネットワーク（VPC / サブネット / ルートテーブル / NAT 等）は考慮すべきパラメータが多く、自作すると記述量が増えてテスト保守コストが跳ね上がる。Google Cloud 公式の Terraform Registry モジュールを使うことで、ベストプラクティスに則った高品質な VPC を簡潔に定義できる。
                         </p>
 
-                        <h3><i className="ti ti-git-branch" />モジュールの参照関係</h3>
+                        <h3><i className="ti ti-git-branch" aria-hidden="true" />モジュールの参照関係</h3>
                         <div className="mermaid-wrap">
                             <MermaidDiagram chart={DIAGRAMS.MODULE_RELATION} ariaLabel="Terraform Registry モジュールの参照関係図" preserveNaturalScale />
                         </div>
 
-                        <h3><i className="ti ti-file-code" />main.tf へのモジュール追加</h3>
+                        <h3><i className="ti ti-file-code" aria-hidden="true" />main.tf へのモジュール追加</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-keyword">module</span> <span className="tok-string">&quot;vpc&quot;</span> &#123;</div>
@@ -612,7 +612,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
                         <div className="callout">
-                            <div className="callout-title"><i className="ti ti-pin" />バージョン固定の重要性</div>
+                            <div className="callout-title"><i className="ti ti-pin" aria-hidden="true" />バージョン固定の重要性</div>
                             <p>
                                 <code>version</code> は必ず明示的に固定する。Registry モジュールはメジャーバージョンが上がると破壊的変更（引数名の変更など）を伴うことが多く、固定しないと、ある日突然 <code>terraform init -upgrade</code> で最新版が引き込まれて apply が失敗する、という事故につながる。本ラボでは互換性の観点から <code>10.0.0</code> を指定するよう案内されているが、実務で新規に使う場合は Registry で最新の安定版を確認し、<code>~&gt; 10.0</code> のような柔軟なバージョン制約を検討するとよい。
                             </p>
@@ -624,7 +624,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
 
-                        <h3><i className="ti ti-plug-connected" />インスタンスをサブネットに接続する</h3>
+                        <h3><i className="ti ti-plug-connected" aria-hidden="true" />インスタンスをサブネットに接続する</h3>
                         <div className="code-label">modules/instances/instances.tf</div>
                         <pre>
                             <code>
@@ -653,14 +653,14 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-command">terraform</span> apply</div>
                             </code>
                         </pre>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://registry.terraform.io/modules/terraform-google-modules/network/google/latest" target="_blank" rel="noreferrer">registry.terraform.io/modules/terraform-google-modules/network/google/latest</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://registry.terraform.io/modules/terraform-google-modules/network/google/latest" target="_blank" rel="noreferrer">registry.terraform.io/modules/terraform-google-modules/network/google/latest</a>
                         </p>
                     </section>
 
                     <section id="sec10">
                         <h2><span className="num">10</span>Task 7: ファイアウォールルールの設定</h2>
-                        <h3><i className="ti ti-shield-half" />GCP のファイアウォールの基本方針</h3>
+                        <h3><i className="ti ti-shield-half" aria-hidden="true" />GCP のファイアウォールの基本方針</h3>
                         <p>
                             Google Cloud の VPC は、デフォルトでは ingress（内向き）通信を暗黙的にすべて拒否する設計になっている。そのため、VM 間やインターネットからの通信を許可するには、明示的に firewall ルールを作成する必要がある。
                         </p>
@@ -668,7 +668,7 @@ export function TerraformGcpChallengeLabGuide() {
                             <MermaidDiagram chart={DIAGRAMS.FIREWALL_FLOW} ariaLabel="ファイアウォールルールによる通信許可フロー図" preserveNaturalScale />
                         </div>
 
-                        <h3><i className="ti ti-firewall" />firewall リソースの実装</h3>
+                        <h3><i className="ti ti-firewall" aria-hidden="true" />firewall リソースの実装</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_firewall&quot;</span> <span className="tok-string">&quot;tf-firewall&quot;</span> &#123;</div>
@@ -685,7 +685,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
                         <div className="callout">
-                            <div className="callout-title"><i className="ti ti-info-circle" /><code>network</code> 引数について</div>
+                            <div className="callout-title"><i className="ti ti-info-circle" aria-hidden="true" /><code>network</code> 引数について</div>
                             <p>
                                 ラボの指示にもあるとおり、<code>network</code> 引数には <code>projects/&lt;PROJECT_ID&gt;/global/networks/&lt;VPC Name&gt;</code> という形式の URL（self_link）を渡す必要がある。<code>terraform-google-modules/network/google</code> モジュールは <code>network_self_link</code> という output を提供しているため、素直にそれを参照すればよい。もし output の名前がわからない場合は、<code>terraform state show module.vpc</code> や <code>terraform state list</code> で state 内のリソース属性を確認する習慣をつけると良い。
                             </p>
@@ -697,7 +697,7 @@ export function TerraformGcpChallengeLabGuide() {
                             </code>
                         </pre>
 
-                        <h3><i className="ti ti-plug" />疎通確認</h3>
+                        <h3><i className="ti ti-plug" aria-hidden="true" />疎通確認</h3>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-command">curl</span> <span className="tok-flag">-m 5</span> http://&lt;tf-instance-2の外部IP&gt;:80</div>
@@ -706,8 +706,8 @@ export function TerraformGcpChallengeLabGuide() {
                         <p>
                             Web サーバー自体は起動していないため、素の <code>curl</code> ではタイムアウトではなく接続拒否（connection refused）が返るのが正常である。ここで重要なのは「タイムアウトしない = ファイアウォールでブロックされていない」ことの確認であり、アプリケーション層の応答自体はこのラボの検証対象ではない。
                         </p>
-                        <p style={{ fontSize: '13px' }}>
-                            <i className="ti ti-link" style={{ color: 'var(--color-text-tertiary)' }} /> 根拠: <a className="ext-link" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall" target="_blank" rel="noreferrer">registry.terraform.io/.../compute_firewall</a> ／ <a className="ext-link" href="https://cloud.google.com/firewall/docs/firewalls" target="_blank" rel="noreferrer">cloud.google.com/firewall/docs/firewalls</a>
+                        <p className="source-note">
+                            <i className="ti ti-link" aria-hidden="true" /> 根拠: <a className="ext-link" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall" target="_blank" rel="noreferrer">registry.terraform.io/.../compute_firewall</a> ／ <a className="ext-link" href="https://cloud.google.com/firewall/docs/firewalls" target="_blank" rel="noreferrer">cloud.google.com/firewall/docs/firewalls</a>
                         </p>
                     </section>
 
@@ -781,7 +781,7 @@ export function TerraformGcpChallengeLabGuide() {
                         </table>
                         <div className="callout success">
                             <div className="callout-title">
-                                <i className="ti ti-flag-check" />各 Task 完了時の習慣
+                                <i className="ti ti-flag-check" aria-hidden="true" />各 Task 完了時の習慣
                             </div>
                             <p>
                                 各 Task の最後には必ず <code>terraform plan</code> で差分を確認し、意図しない変更（特にリソースの再作成）が含まれていないかをチェックしてから <code>apply</code> する習慣を徹底してほしい。
@@ -798,190 +798,190 @@ export function TerraformGcpChallengeLabGuide() {
                         <div className="source-groups">
                             <div className="source-group">
                                 <div className="source-group-title gcp">
-                                    <i className="ti ti-brand-google" />
+                                    <i className="ti ti-brand-google" aria-hidden="true" />
                                     Google Cloud 公式ドキュメント
                                     <span className="count">3</span>
                                 </div>
                                 <div className="source-list">
                                     <a className="source-row" href="https://cloud.google.com/shell/docs/configuring-cloud-shell" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon gcp">
-                                            <i className="ti ti-terminal-2" />
+                                            <i className="ti ti-terminal-2" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">Cloud Shell の環境永続化（.customize_environment）</span>
                                             <span className="source-row-url">cloud.google.com/shell/docs/configuring-cloud-shell</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon gcp">
-                                            <i className="ti ti-shield-lock" />
+                                            <i className="ti ti-shield-lock" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">Uniform bucket-level access について</span>
                                             <span className="source-row-url">cloud.google.com/storage/docs/uniform-bucket-level-access</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://cloud.google.com/firewall/docs/firewalls" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon gcp">
-                                            <i className="ti ti-firewall" />
+                                            <i className="ti ti-firewall" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">VPC ファイアウォールルールの概要</span>
                                             <span className="source-row-url">cloud.google.com/firewall/docs/firewalls</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                 </div>
                             </div>
 
                             <div className="source-group">
                                 <div className="source-group-title registry">
-                                    <i className="ti ti-package" />
+                                    <i className="ti ti-package" aria-hidden="true" />
                                     Terraform Registry（プロバイダー / モジュール）
                                     <span className="count">4</span>
                                 </div>
                                 <div className="source-list">
                                     <a className="source-row" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon registry">
-                                            <i className="ti ti-server" />
+                                            <i className="ti ti-server" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">google_compute_instance リソースリファレンス</span>
                                             <span className="source-row-url">registry.terraform.io/providers/hashicorp/google/.../compute_instance</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon registry">
-                                            <i className="ti ti-bucket" />
+                                            <i className="ti ti-bucket" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">google_storage_bucket リソースリファレンス</span>
                                             <span className="source-row-url">registry.terraform.io/providers/hashicorp/google/.../storage_bucket</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://registry.terraform.io/modules/terraform-google-modules/network/google/latest" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon registry">
-                                            <i className="ti ti-network" />
+                                            <i className="ti ti-network" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">terraform-google-modules/network/google モジュール</span>
                                             <span className="source-row-url">registry.terraform.io/modules/terraform-google-modules/network/google</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon registry">
-                                            <i className="ti ti-shield" />
+                                            <i className="ti ti-shield" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">google_compute_firewall リソースリファレンス</span>
                                             <span className="source-row-url">registry.terraform.io/providers/hashicorp/google/.../compute_firewall</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                 </div>
                             </div>
 
                             <div className="source-group">
                                 <div className="source-group-title hashicorp">
-                                    <i className="ti ti-book-2" />
+                                    <i className="ti ti-book-2" aria-hidden="true" />
                                     HashiCorp Terraform 言語・CLI ドキュメント
                                     <span className="count">9</span>
                                 </div>
                                 <div className="source-list">
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/language/modules" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-puzzle" />
+                                            <i className="ti ti-puzzle" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">Terraform Modules の基本</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/language/modules</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/language/values/variables" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-variable" />
+                                            <i className="ti ti-variable" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">Input Variables の定義方法</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/language/values/variables</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/cli/commands/import" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-download" />
+                                            <i className="ti ti-download" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">terraform import コマンドリファレンス</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/cli/commands/import</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/cli/import/usage" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-file-description" />
+                                            <i className="ti ti-file-description" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">Import の使い方ガイド</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/cli/import/usage</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/language/backend/gcs" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-cloud-lock" />
+                                            <i className="ti ti-cloud-lock" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">GCS Backend（remote backend）設定リファレンス</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/language/backend/gcs</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/language/state" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-database" />
+                                            <i className="ti ti-database" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">Terraform State の概念</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/language/state</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/language/resources/destroy" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-trash" />
+                                            <i className="ti ti-trash" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">リソースの削除（Destroy）に関する言語ドキュメント</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/language/resources/destroy</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/cli/commands/destroy" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-terminal" />
+                                            <i className="ti ti-terminal" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">terraform destroy コマンドリファレンス</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/cli/commands/destroy</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                     <a className="source-row" href="https://developer.hashicorp.com/terraform/language/style" target="_blank" rel="noreferrer">
                                         <span className="source-row-icon hashicorp">
-                                            <i className="ti ti-ruler-2" />
+                                            <i className="ti ti-ruler-2" aria-hidden="true" />
                                         </span>
                                         <span className="source-row-text">
                                             <span className="source-row-title">Terraform Style Guide（命名規則・構成のベストプラクティス）</span>
                                             <span className="source-row-url">developer.hashicorp.com/terraform/language/style</span>
                                         </span>
-                                        <i className="ti ti-chevron-right source-row-chevron" />
+                                        <i className="ti ti-chevron-right source-row-chevron" aria-hidden="true" />
                                     </a>
                                 </div>
                             </div>
@@ -991,7 +991,7 @@ export function TerraformGcpChallengeLabGuide() {
             </div>
 
             <footer className="footer">
-                <i className="ti ti-brand-terraform" />
+                <i className="ti ti-brand-terraform" aria-hidden="true" />
                 <span>Build Infrastructure with Terraform on Google Cloud — Challenge Lab 完全攻略ガイド</span>
             </footer>
         </div>

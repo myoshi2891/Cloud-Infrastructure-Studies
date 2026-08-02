@@ -102,7 +102,23 @@ export const DIAGRAMS = {
     class VM1,VM2 vm`,
 };
 
-export const NAVIGATION_ITEMS = [
+type NavigationEntry = {
+    id: string;
+    icon: string;
+    label: string;
+    isDivider?: false;
+};
+
+type NavigationDivider = {
+    id: string;
+    icon?: never;
+    label?: never;
+    isDivider: true;
+};
+
+export type NavigationItem = NavigationEntry | NavigationDivider;
+
+export const NAVIGATION_ITEMS: NavigationItem[] = [
     { id: 'sec1', icon: 'ti-target-arrow', label: '1. このラボで学ぶこと' },
     { id: 'sec2', icon: 'ti-topology-star-3', label: '2. 完成形のアーキテクチャ' },
     { id: 'sec3', icon: 'ti-terminal-2', label: '3. Terraform CLI の準備' },
