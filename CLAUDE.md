@@ -130,6 +130,12 @@ app/
           NavBar.tsx                  # サイドバーナビ
           constants.ts                # Mermaid 図定義（16図）
           page.css                    # ページ固有スタイル
+        griffin-wordpress-gke-guide/
+          page.tsx                    # Team Griffin チャレンジラボ 完全解説ガイド（Server。メタデータ定義）
+          GriffinWordPressGkeGuide.tsx # 本文＋インタラクション（client。Mermaid等）
+          NavBar.tsx                  # サイドバーナビ
+          constants.ts                # Mermaid 図定義（3図）
+          page.css                    # ページ固有スタイル
       domain1/page.tsx              # Domain 1: 環境設定
       domain2/
         page.tsx                    # Domain 2: 計画と実装

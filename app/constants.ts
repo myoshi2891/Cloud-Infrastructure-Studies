@@ -239,6 +239,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/gcl/hands-on/terraform-gcp-challenge-lab-guide',
                 pct: 'ハンズオン',
             },
+            {
+                label: 'Team Griffin インフラ構築チャレンジラボ 完全解説ガイド',
+                href: '/gcl/hands-on/griffin-wordpress-gke-guide',
+                pct: 'ハンズオン',
+            },
         ],
         badge: 'ハンズオン',
         icon: '🛠️',
