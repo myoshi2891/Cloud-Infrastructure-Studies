@@ -1,0 +1,1526 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gemini API 実践チャレンジラボ 攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1b2e;
+                --color-background-tertiary: #132540;
+                --color-background-info: #0f2748;
+                --color-background-danger: #33161d;
+                --color-background-success: #0f2c22;
+                --color-background-warning: #332712;
+                --color-text-primary: #e7edf6;
+                --color-text-secondary: #aab7c9;
+                --color-text-tertiary: #75859c;
+                --color-text-info: #8fb3ff;
+                --color-text-danger: #ff9b9b;
+                --color-text-success: #84dcae;
+                --color-text-warning: #f0c674;
+                --color-border-primary: #33455e;
+                --color-border-secondary: #22324a;
+                --color-border-tertiary: #1a273a;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+                --font-serif: Georgia, serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+            a {
+                color: var(--color-text-info);
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 272px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 28px 20px;
+            }
+            .sidebar .brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 24px;
+            }
+            .sidebar .brand i {
+                font-size: 20px;
+                color: var(--accent);
+            }
+            .sidebar .brand span {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-secondary);
+            }
+            .sidebar .brand-sub {
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+                margin: 2px 0 24px;
+                padding-left: 30px;
+            }
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .sidebar nav li {
+                margin-bottom: 2px;
+            }
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 10px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 400;
+            }
+            .sidebar nav a i {
+                font-size: 15px;
+                color: var(--color-text-tertiary);
+                width: 16px;
+                text-align: center;
+            }
+            .sidebar nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+            .sidebar nav a.active {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                border: 1px solid var(--color-border-secondary);
+            }
+            .sidebar nav a.active i {
+                color: var(--accent);
+            }
+            .layout {
+                display: block;
+                margin-left: 272px;
+                padding: 48px 56px 96px;
+            }
+            .hero {
+                margin-bottom: 40px;
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+            .hero .kicker {
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-text-info);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-bottom: 10px;
+            }
+            .hero h1 {
+                font-size: 28px;
+                font-weight: 500;
+                margin: 0 0 8px;
+                line-height: 1.35;
+            }
+            .hero .sub {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                margin: 0 0 20px;
+            }
+            .meta-card {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 20px;
+                font-size: 13px;
+                color: var(--color-text-secondary);
+            }
+            .meta-card strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            section.chapter {
+                margin-bottom: 56px;
+                scroll-margin-top: 24px;
+            }
+            section.chapter h2 {
+                font-size: 18px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 0 0 16px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+            section.chapter h2 i {
+                color: var(--accent);
+                font-size: 18px;
+            }
+            section.chapter h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 12px;
+            }
+            section.chapter p {
+                color: var(--color-text-secondary);
+                margin: 0 0 14px;
+            }
+            section.chapter .lead {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                background: var(--color-background-secondary);
+                border-left: 2px solid var(--accent);
+                padding: 10px 14px;
+                border-radius: var(--border-radius-md);
+                margin-bottom: 18px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 16px 0 24px;
+                font-size: 13px;
+            }
+            thead th {
+                text-align: left;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                padding: 8px 12px;
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+            tbody td {
+                padding: 10px 12px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody td:first-child {
+                color: var(--color-text-primary);
+                font-weight: 500;
+                white-space: nowrap;
+            }
+            pre {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 18px;
+                overflow-x: auto;
+                margin: 16px 0 20px;
+            }
+            pre code.hljs {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                line-height: 1.6;
+                background: none;
+                padding: 0;
+            }
+            code.inline {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                background: var(--color-background-tertiary);
+                padding: 2px 6px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-info);
+            }
+            .mermaid-frame {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 20px;
+                margin: 16px 0 20px;
+            }
+            .mermaid {
+                display: flex;
+                justify-content: center;
+            }
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+            .diagram-caption {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                margin-top: 10px;
+            }
+            .node-list {
+                margin: 0 0 20px;
+                padding-left: 0;
+                list-style: none;
+            }
+            .node-list li {
+                display: flex;
+                gap: 10px;
+                padding: 6px 0;
+                font-size: 13px;
+                color: var(--color-text-secondary);
+            }
+            .node-list li strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            .callout {
+                display: flex;
+                gap: 12px;
+                padding: 14px 16px;
+                border-radius: var(--border-radius-lg);
+                border: 1px solid var(--color-border-secondary);
+                margin: 16px 0 20px;
+                font-size: 13px;
+            }
+            .callout i {
+                font-size: 16px;
+                margin-top: 1px;
+            }
+            .callout.info {
+                background: var(--color-background-info);
+            }
+            .callout.info i {
+                color: var(--color-text-info);
+            }
+            .callout.warning {
+                background: var(--color-background-warning);
+            }
+            .callout.warning i {
+                color: var(--color-text-warning);
+            }
+            .callout div p {
+                margin: 0;
+                color: var(--color-text-secondary);
+            }
+            .callout strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+            .glossary {
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 14px 18px;
+                margin: 8px 0 24px;
+                background: var(--color-background-secondary);
+            }
+            .glossary .gt {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                margin-bottom: 10px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+            .glossary .gt i {
+                color: var(--color-text-tertiary);
+            }
+            .glossary dl {
+                margin: 0;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: 6px 14px;
+            }
+            .glossary dt {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                white-space: nowrap;
+            }
+            .glossary dd {
+                font-size: 13px;
+                color: var(--color-text-secondary);
+                margin: 0;
+            }
+            .source-box {
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 14px 18px;
+                margin: 20px 0 8px;
+                background: var(--color-background-tertiary);
+            }
+            .source-box .st {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                margin-bottom: 10px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+            .source-box .st i {
+                color: var(--accent);
+            }
+            .source-box ul {
+                margin: 0;
+                padding-left: 0;
+                list-style: none;
+            }
+            .source-box li {
+                padding: 4px 0;
+                font-size: 13px;
+            }
+            .source-box a {
+                text-decoration: none;
+                word-break: break-all;
+            }
+            .source-box a:hover {
+                text-decoration: underline;
+            }
+            .checklist {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist li {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                font-size: 14px;
+                color: var(--color-text-secondary);
+            }
+            .checklist li:last-child {
+                border-bottom: none;
+            }
+            .checklist li i {
+                color: var(--color-text-success);
+                font-size: 16px;
+                margin-top: 2px;
+            }
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 16px;
+                margin-top: 16px;
+            }
+            .ref-card {
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 16px 18px;
+                background: var(--color-background-secondary);
+            }
+            .ref-card .rc-head {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 10px;
+            }
+            .ref-card .rc-head i {
+                color: var(--accent);
+            }
+            .ref-card ul {
+                margin: 0;
+                padding-left: 0;
+                list-style: none;
+            }
+            .ref-card li {
+                padding: 5px 0;
+                font-size: 12px;
+                border-top: 1px solid var(--color-border-tertiary);
+            }
+            .ref-card li:first-child {
+                border-top: none;
+            }
+            .ref-card a {
+                text-decoration: none;
+                display: block;
+            }
+            .ref-card a:hover {
+                text-decoration: underline;
+            }
+            .footer {
+                margin-top: 60px;
+                padding-top: 20px;
+                border-top: 1px solid var(--color-border-tertiary);
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+            }
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .layout {
+                    margin-left: 0;
+                    padding: 32px 20px 80px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="sidebar">
+            <div class="brand">
+                <i class="ti ti-brand-google"></i><span>Gemini API 攻略ガイド</span>
+            </div>
+            <div class="brand-sub">Challenge Lab Best Practices</div>
+            <ul>
+                <li>
+                    <a href="#overview" data-nav><i class="ti ti-list-details"></i>概要</a>
+                </li>
+                <li>
+                    <a href="#big-picture" data-nav><i class="ti ti-route"></i>全体像</a>
+                </li>
+                <li>
+                    <a href="#prerequisites" data-nav
+                        ><i class="ti ti-clipboard-check"></i>事前準備</a
+                    >
+                </li>
+                <li>
+                    <a href="#task1" data-nav
+                        ><i class="ti ti-terminal-2"></i>Task 1 テキスト生成</a
+                    >
+                </li>
+                <li>
+                    <a href="#task2" data-nav><i class="ti ti-notebook"></i>Task 2 Workbench</a>
+                </li>
+                <li>
+                    <a href="#task3" data-nav
+                        ><i class="ti ti-git-merge"></i>Task 3 Function Calling</a
+                    >
+                </li>
+                <li>
+                    <a href="#task4" data-nav><i class="ti ti-video"></i>Task 4 動画解析</a>
+                </li>
+                <li>
+                    <a href="#common" data-nav
+                        ><i class="ti ti-shield-lock"></i>共通ベストプラクティス</a
+                    >
+                </li>
+                <li>
+                    <a href="#troubleshooting" data-nav
+                        ><i class="ti ti-bug"></i>トラブルシューティング</a
+                    >
+                </li>
+                <li>
+                    <a href="#checklist" data-nav
+                        ><i class="ti ti-checkbox"></i>完了チェックリスト</a
+                    >
+                </li>
+                <li>
+                    <a href="#references" data-nav><i class="ti ti-books"></i>参考文献</a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="layout">
+            <div class="hero">
+                <div class="kicker">Vertex AI / Gemini API</div>
+                <h1>Gemini API 実践チャレンジラボ 完全攻略ガイド</h1>
+                <p class="sub">初学者のためのステップバイステップ・ベストプラクティス解説</p>
+                <div class="meta-card">
+                    <div>
+                        <strong>対象ラボ</strong> Explore Generative AI with the Gemini API in Agent
+                        Platform: Challenge Lab
+                    </div>
+                    <div>
+                        <strong>ラボURL</strong>
+                        <a href="https://www.skills.google/course_templates/959/labs/592560"
+                            >https://www.skills.google/course_templates/959/labs/592560</a
+                        >
+                    </div>
+                    <div>
+                        <strong>想定読者</strong> Vertex AI / Gemini API
+                        に初めて触れるエンジニア・QAエンジニア
+                    </div>
+                </div>
+            </div>
+
+            <section class="chapter" id="overview">
+                <h2><i class="ti ti-list-details"></i>この記事について</h2>
+                <p class="lead">
+                    この章では、チャレンジラボ全体のシナリオと4つのタスクの位置づけを説明します。先にここを読んでおくと、以降の各Taskの解説がつながって理解できます。
+                </p>
+                <p>
+                    このチャレンジラボは、AI駆動の動画コンテンツ解析プラットフォームを開発するスタートアップの開発者という設定のもと、Gemini
+                    の3つの中核機能を実装する内容です。
+                </p>
+                <ul class="node-list">
+                    <li><strong>Task 1</strong>curl による Gemini へのテキスト生成リクエスト</li>
+                    <li><strong>Task 2</strong>Agent Platform Workbench で Notebook を開く</li>
+                    <li><strong>Task 3</strong>Function Calling（関数呼び出し）の実装</li>
+                    <li><strong>Task 4</strong>動画コンテンツの解析（Video Understanding）</li>
+                </ul>
+                <p>
+                    チャレンジラボは手順書がない代わりに、公式ドキュメントを読み解いて自力で完成させる形式です。本ガイドは各タスクを「なぜそう実装するのか」という観点から解説し、実務でも通用するベストプラクティスとして整理したものです。すべての推奨事項には、根拠となる一次情報源へのリンクを付けています。
+                </p>
+            </section>
+
+            <section class="chapter" id="big-picture">
+                <h2><i class="ti ti-route"></i>全体像を掴む</h2>
+                <p class="lead">
+                    この章では、4つのタスクがどのようにつながっているかを俯瞰します。各Taskの後に「Check
+                    my progress」でスコアリングされる点がポイントです。
+                </p>
+                <p>
+                    下の図は、ラボ開始から完了までの処理の流れを表しています。上から下へ読み進めてください。
+                </p>
+                <div class="mermaid-frame">
+                    <script type="text/plain" class="mermaid-src">
+                        flowchart TD
+                            Start["ラボ開始"] --> T1["Task1 curlでテキスト生成"]
+                            T1 --> C1["Check my progress 1"]
+                            C1 --> T2["Task2 Workbenchでnotebookを開く"]
+                            T2 --> T3["Task3 Function Callingを実装"]
+                            T3 --> C2["Check my progress 2"]
+                            C2 --> T4["Task4 動画コンテンツを解析"]
+                            T4 --> C3["Check my progress 3"]
+                            C3 --> Done["ラボ完了"]
+                    </script>
+                    <p class="diagram-caption">
+                        上から下へ、Task1からTask4まで順番に進み、各Taskの直後にCheck my
+                        progressで採点される
+                    </p>
+                </div>
+                <ul class="node-list">
+                    <li>
+                        <strong>Task1</strong>Cloud Shellから生のREST
+                        APIを叩き、リクエスト構造を体で覚える段階
+                    </li>
+                    <li><strong>Task2</strong>以降の作業環境となるWorkbenchのNotebookを開く段階</li>
+                    <li>
+                        <strong>Task3/Task4</strong
+                        >同じNotebook内で、SDKを使ったより高度な機能を実装する段階
+                    </li>
+                </ul>
+                <div class="glossary">
+                    <div class="gt"><i class="ti ti-book-2"></i>用語ミニ解説</div>
+                    <dl>
+                        <dt>Vertex AI</dt>
+                        <dd>
+                            Google
+                            Cloud上で機械学習・生成AIモデルを開発・提供するマネージドプラットフォーム
+                        </dd>
+                        <dt>Agent Platform Workbench</dt>
+                        <dd>JupyterLabベースのマネージドノートブック環境</dd>
+                    </dl>
+                </div>
+            </section>
+
+            <section class="chapter" id="prerequisites">
+                <h2><i class="ti ti-clipboard-check"></i>事前準備のベストプラクティス</h2>
+                <p class="lead">この章では、ラボ開始前に確認しておくべき3点を説明します。</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>項目</th>
+                            <th>ベストプラクティス</th>
+                            <th>理由</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ブラウザ</td>
+                            <td>シークレット（Incognito）ウィンドウを使う</td>
+                            <td>
+                                個人アカウントとラボ用の一時アカウントの競合による誤課金を防ぐため
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>アカウント</td>
+                            <td>ラボが発行する一時的な学生アカウントのみを使う</td>
+                            <td>個人のGoogle Cloudアカウントに課金が発生するリスクを避けるため</td>
+                        </tr>
+                        <tr>
+                            <td>タイマー</td>
+                            <td>ラボは一時停止できないことを理解した上で開始する</td>
+                            <td>
+                                作業時間を無駄にしないよう、事前に流れを把握してから着手するため
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="chapter" id="task1">
+                <h2>
+                    <i class="ti ti-terminal-2"></i>Task 1: curl で Gemini
+                    にテキスト生成をリクエストする
+                </h2>
+                <p class="lead">
+                    この章では、REST APIの生の呼び出しを通じて、Gemini
+                    APIのリクエスト構造とベストプラクティスを説明します。
+                </p>
+
+                <h3>環境変数設計のベストプラクティス</h3>
+                <p>
+                    プロジェクトIDやリージョンをコマンドにハードコーディングせず、環境変数として外出しします。こうしておくと、モデルやリージョンを変更するときにコマンド本体を書き換える必要がなくなります。
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>変数名</th>
+                            <th>役割</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PROJECT_ID</td>
+                            <td>リクエスト先のGoogle Cloudプロジェクト</td>
+                        </tr>
+                        <tr>
+                            <td>LOCATION</td>
+                            <td>モデルを処理するリージョン（例: us-central1）</td>
+                        </tr>
+                        <tr>
+                            <td>API_ENDPOINT</td>
+                            <td>
+                                <code class="inline">${LOCATION}-aiplatform.googleapis.com</code
+                                >の形で組み立てるホスト名
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>MODEL_ID</td>
+                            <td>呼び出すGeminiモデルの識別子</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Vertex AI API の有効化</h3>
+                <p>
+                    Cloud Consoleの「Agent Platform」セクションからAPIを有効化します。これはGoogle
+                    Cloudの一般的な作法で、未有効化のAPIを呼び出すとエラーになります。API有効化はコンソールの「APIs
+                    &amp; Services &gt; Library」からでも、有効化フローURLからでも行えます。
+                </p>
+
+                <h3>リクエストの組み立て方</h3>
+                <p>Gemini API in Vertex AIのエンドポイントは、次の形式に統一されています。</p>
+                <pre><code class="language-plaintext">https://{LOCATION}-aiplatform.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/publishers/google/models/{MODEL_ID}:generateContent</code></pre>
+                <p>
+                    <code class="inline">generateContent</code>（一括応答）と<code class="inline"
+                        >streamGenerateContent</code
+                    >（ストリーミング応答）の2つのメソッドがあり、用途によって使い分けるのがベストプラクティスです。
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>メソッド</th>
+                            <th>特徴</th>
+                            <th>向いている用途</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>generateContent</td>
+                            <td>生成が完了してからまとめて応答が返る</td>
+                            <td>ドキュメント生成や要約など、完成形だけが必要な処理</td>
+                        </tr>
+                        <tr>
+                            <td>streamGenerateContent</td>
+                            <td>生成中のチャンクが逐次返ってくる</td>
+                            <td>チャットボットなど、応答性が重視される対話型アプリ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="callout warning">
+                    <i class="ti ti-alert-triangle"></i>
+                    <div>
+                        <p>
+                            <strong>認証のベストプラクティス</strong> 認証には
+                            <code class="inline">gcloud auth print-access-token</code>
+                            で取得した一時トークンを Authorization: Bearer
+                            ヘッダーに載せます。APIキーや認証情報をコマンド履歴やスクリプトに直書きしないことが重要です。
+                        </p>
+                    </div>
+                </div>
+                <pre><code class="language-bash">curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://${API_ENDPOINT}/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${MODEL_ID}:generateContent" \
+  -d '{
+    "contents": {
+      "role": "user",
+      "parts": {
+        "text": "Why is the sky blue?"
+      }
+    },
+    "generationConfig": {
+      "temperature": 0.2,
+      "maxOutputTokens": 1024
+    }
+  }'</code></pre>
+                <p>
+                    このリクエストの流れを図にすると次のようになります。上から下へ読み進めてください。
+                </p>
+                <div class="mermaid-frame">
+                    <script type="text/plain" class="mermaid-src">
+                        sequenceDiagram
+                            participant Dev as Cloud Shell上の開発者
+                            participant API as Vertex AI Gemini API
+                            Dev->>API: POSTリクエスト generateContent プロンプトを送信
+                            API-->>Dev: JSONレスポンス 生成テキストを含むcandidatesを返却
+                            Dev->>Dev: レスポンス本文からtextを抽出して確認
+                    </script>
+                    <p class="diagram-caption">
+                        開発者からAPIへのリクエストと、返却されるレスポンスの往復を表す
+                    </p>
+                </div>
+
+                <h3>generationConfig のベストプラクティス</h3>
+                <p>
+                    <code class="inline">temperature</code>
+                    は出力のランダム性を制御するパラメータです。値が低いほど再現性の高い決定論的な出力になり、値が高いほど多様で創造的な出力になります。検証やQA目的で再現性を重視する場合は低め（0〜0.3程度）に設定するのが定石です。
+                </p>
+
+                <div class="glossary">
+                    <div class="gt"><i class="ti ti-book-2"></i>用語ミニ解説</div>
+                    <dl>
+                        <dt>temperature</dt>
+                        <dd>
+                            トークン選択のランダム性を調整するパラメータ。低いほど毎回似た出力になりやすい
+                        </dd>
+                        <dt>アクセストークン</dt>
+                        <dd>認証済みユーザーやサービスアカウントの権限を証明する一時的な文字列</dd>
+                    </dl>
+                </div>
+
+                <div class="source-box">
+                    <div class="st"><i class="ti ti-link"></i>根拠となる情報源</div>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/overview"
+                                >Generate content with the Gemini API in Vertex AI —
+                                cloud.google.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start/quickstart"
+                                >Get started with the Gemini API in Vertex AI（quickstart）—
+                                docs.cloud.google.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/getting-started/intro_gemini_curl.ipynb"
+                                >Intro to Gemini API via curl（公式サンプルNotebook）— github.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/content-generation-parameters"
+                                >Content generation parameters — docs.cloud.google.com</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="chapter" id="task2">
+                <h2>
+                    <i class="ti ti-notebook"></i>Task 2: Agent Platform Workbench で Notebook
+                    を開く
+                </h2>
+                <p class="lead">
+                    この章では、Workbench上のNotebookを開くまでのコンソール操作と、そこで押さえておきたい運用のベストプラクティスを説明します。
+                </p>
+                <p>
+                    下の図は、コンソールのナビゲーションメニューからJupyterLabを開くまでの経路を表しています。左から右へ読み進めてください。
+                </p>
+                <div class="mermaid-frame">
+                    <script type="text/plain" class="mermaid-src">
+                        flowchart LR
+                            Nav["Navigation menu"] --> AP["Agent Platform"]
+                            AP --> NB["Notebooks"]
+                            NB --> WB["Workbench"]
+                            WB --> Open["Open JupyterLab ボタン"]
+                    </script>
+                    <p class="diagram-caption">
+                        Navigation menuからWorkbenchインスタンスのOpen JupyterLabまでの経路
+                    </p>
+                </div>
+                <ul class="node-list">
+                    <li>
+                        <strong>カーネル選択</strong>Select
+                        Kernelダイアログでは、SDKやライブラリがローカルにインストールされている「Python
+                        3
+                        (Local)」を選ぶ。誤ったカーネルを選ぶと後続セルでimportエラーが起きる原因になる
+                    </li>
+                    <li>
+                        <strong>アイドルシャットダウン</strong
+                        >本番運用や自分の検証環境を構築する際は、Workbenchインスタンスのアイドルシャットダウンを有効にしておくと、使っていない時間の課金を抑えられる
+                    </li>
+                    <li>
+                        <strong>不要時の停止</strong
+                        >作業が終わったインスタンスはStopしておく。チャレンジラボでは環境が期限付きで自動破棄されるが、実務環境ではこの習慣がコスト管理に直結する
+                    </li>
+                </ul>
+                <div class="glossary">
+                    <div class="gt"><i class="ti ti-book-2"></i>用語ミニ解説</div>
+                    <dl>
+                        <dt>JupyterLab</dt>
+                        <dd>ブラウザ上でノートブック形式のコードを実行できる開発環境</dd>
+                        <dt>アイドルシャットダウン</dt>
+                        <dd>一定時間操作がない場合にインスタンスを自動停止する設定</dd>
+                    </dl>
+                </div>
+                <div class="source-box">
+                    <div class="st"><i class="ti ti-link"></i>根拠となる情報源</div>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vertex-ai/docs/workbench/instances/create-console-quickstart"
+                                >Quickstart: Create a Vertex AI Workbench instance —
+                                docs.cloud.google.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vertex-ai/docs/workbench/introduction"
+                                >Introduction to Agent Platform Workbench — docs.cloud.google.com</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="chapter" id="task3">
+                <h2><i class="ti ti-git-merge"></i>Task 3: Function Calling を実装する</h2>
+                <p class="lead">
+                    この章では、Function
+                    Callingの概念と設計原則、429エラーへの対処までを説明します。
+                </p>
+
+                <h3>Function Calling とは</h3>
+                <p>
+                    Function
+                    Calling（関数呼び出し）とは、Geminiモデル自身が外部システムを直接操作するのではなく、「この関数をこの引数で呼んでほしい」という構造化データを生成する仕組みです。例えるなら、モデルは電話交換手のような役割で、「天気予報の担当部署に、この都市名で問い合わせてください」という取り次ぎメモを渡してくれるだけで、実際に電話をかけて情報を取ってくるのはアプリケーション側の仕事、というイメージです。
+                </p>
+
+                <h3>FunctionDeclaration 設計のベストプラクティス</h3>
+                <ul class="node-list">
+                    <li>
+                        <strong>name と description は明確に</strong
+                        >モデルはこの説明文だけを頼りに「今この関数を呼ぶべきか」を判断するため、あいまいな説明は誤判定を招く
+                    </li>
+                    <li>
+                        <strong>parameters はJSON Schema形式で厳密に</strong
+                        >型（type）や必須項目（required）を明示することで、モデルが生成する引数の形が安定する
+                    </li>
+                    <li>
+                        <strong>1つの関数は1つの責務に絞る</strong
+                        >複数の処理を1つの関数に詰め込むと、モデルがパラメータを正しく埋められなくなりやすい
+                    </li>
+                </ul>
+
+                <h3>マルチターンの処理フロー</h3>
+                <p>
+                    Function
+                    Callingは1回のAPI呼び出しでは完結せず、次のような往復（マルチターン）になります。上から下へ読み進めてください。
+                </p>
+                <div class="mermaid-frame">
+                    <script type="text/plain" class="mermaid-src">
+                        flowchart TD
+                            U["ユーザーのプロンプト 例 天気を教えて"] --> M["Geminiモデルがtool定義とともにプロンプトを受信"]
+                            M --> D["外部ツールの実行が必要かを判断"]
+                            D -->|Yes| FC["モデルがfunctionCallを返す 関数名と引数"]
+                            FC --> App["アプリケーション側が実際の関数やAPIを実行"]
+                            App --> FR["実行結果をfunctionResponseとしてモデルに送り返す"]
+                            FR --> M2["Geminiが最終的な自然文回答を生成"]
+                            D -->|No| M3["Geminiがそのままテキストで回答"]
+                            M2 --> Out["ユーザーへ回答を提示"]
+                            M3 --> Out
+                    </script>
+                    <p class="diagram-caption">
+                        ツール呼び出しが必要な場合はfunctionCallとfunctionResponseの往復を経て最終回答に至る
+                    </p>
+                </div>
+                <p>
+                    Notebookの「天気情報が表示されていることを確認する」という指示は、まさにこの<code
+                        class="inline"
+                        >functionResponse</code
+                    >が正しくモデルに渡り、最終応答に反映されているかを確認する工程です。
+                </p>
+
+                <h3>429 エラー・レート制限への対処のベストプラクティス</h3>
+                <p>
+                    ラボの注意書きにもあるとおり、Notebookのセル実行で429（RESOURCE_EXHAUSTED）が出ることがあります。これはVertex
+                    AIが共有リソースプールの空き待ちをしている状態を示すもので、即座の再試行は悪化を招きやすいため、以下の指数バックオフ（Exponential
+                    Backoff）が推奨されます。
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>避けるべきこと</th>
+                            <th>推奨される対応</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>バックオフなしで即座に再試行する</td>
+                            <td>待機時間を指数的に増やしながら再試行する（Exponential Backoff）</td>
+                        </tr>
+                        <tr>
+                            <td>4xx系エラー全般を無条件に再試行する</td>
+                            <td>429・408など再試行が意味のあるエラーのみ再試行対象にする</td>
+                        </tr>
+                        <tr>
+                            <td>上限なく再試行し続ける</td>
+                            <td>最大試行回数を必ず設定する</td>
+                        </tr>
+                        <tr>
+                            <td>リアルタイム対話でも延々と待たせる</td>
+                            <td>チャットのような即応性が必要な処理は早めに諦めて別の導線に流す</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="callout info">
+                    <i class="ti ti-info-circle"></i>
+                    <div>
+                        <p>
+                            Notebook側で「1分待ってから再実行する」という指示自体が、このバックオフ戦略の簡易版です。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glossary">
+                    <div class="gt"><i class="ti ti-book-2"></i>用語ミニ解説</div>
+                    <dl>
+                        <dt>FunctionDeclaration</dt>
+                        <dd>モデルに渡す関数の名前・説明・引数スキーマの定義</dd>
+                        <dt>RESOURCE_EXHAUSTED（429）</dt>
+                        <dd>リクエスト量が割り当て容量を超えたときに返るエラー</dd>
+                        <dt>Exponential Backoff</dt>
+                        <dd>再試行のたびに待機時間を指数的に伸ばす手法</dd>
+                    </dl>
+                </div>
+
+                <div class="source-box">
+                    <div class="st"><i class="ti ti-link"></i>根拠となる情報源</div>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/function-calling"
+                                >Introduction to function calling — cloud.google.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/function-calling/intro_function_calling.ipynb"
+                                >Intro to Function Calling with the Gemini
+                                API（公式サンプルNotebook）— github.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/retry-strategy"
+                                >Retry strategy — docs.cloud.google.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput/error-code-429"
+                                >Error code 429 — cloud.google.com</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/blog/products/ai-machine-learning/reduce-429-errors-on-vertex-ai"
+                                >Reduce 429 errors on Vertex AI（Google Cloud Blog）—
+                                cloud.google.com</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="chapter" id="task4">
+                <h2>
+                    <i class="ti ti-video"></i>Task 4: 動画コンテンツを解析する（Video
+                    Understanding）
+                </h2>
+                <p class="lead">
+                    この章では、マルチモーダル入力の基本と、動画解析のベストプラクティスを説明します。
+                </p>
+
+                <h3>マルチモーダル入力の基本</h3>
+                <p>
+                    Geminiはテキストだけでなく、画像・音声・動画を同じプロンプトの中で組み合わせて扱えるマルチモーダルモデルです。動画はCloud
+                    Storage上のファイルをURIで参照し、<code class="inline">Part.from_uri</code
+                    >のような形でテキストプロンプトと一緒に<code class="inline">contents</code
+                    >に含めて送信します。
+                </p>
+                <pre><code class="language-python">from vertexai.generative_models import GenerativeModel, Part
+
+model = GenerativeModel("MODEL_ID")
+
+video_part = Part.from_uri(
+    file_uri="gs://YOUR_BUCKET/sample_video.mp4",
+    mime_type="video/mp4",
+)
+
+prompt = (
+    "Describe the key events in this video, including the setting, "
+    "the main subjects, and any notable actions."
+)
+
+response = model.generate_content([video_part, prompt])
+print(response.text)</code></pre>
+
+                <h3>動画解析のベストプラクティス</h3>
+                <ul class="node-list">
+                    <li>
+                        <strong>サンプリングレートを意識する</strong
+                        >モデルは視覚情報を既定で1秒あたり1フレーム（1
+                        FPS）でサンプリングする。動きの速いシーンや場面転換が多い動画では、この既定値だと重要な瞬間を取りこぼす可能性があるため、必要に応じてカスタムのフレームレート設定を検討する
+                    </li>
+                    <li>
+                        <strong>ファイルサイズと再利用性で入力方法を選ぶ</strong
+                        >リクエスト全体（動画＋プロンプト＋システム指示など）が大きくなる場合や、同じ動画を複数のプロンプトで使い回す場合は、都度アップロードするよりFiles
+                        API経由の参照が適している
+                    </li>
+                    <li>
+                        <strong>プロンプトは具体的に</strong
+                        >「何が映っているか」だけでなく、「設定・登場人物・主要なアクション・重要な瞬間のタイムスタンプ」など、欲しい情報の観点を明示すると、より構造化された説明が返ってくる
+                    </li>
+                </ul>
+                <p>処理の流れを図にすると以下のとおりです。上から下へ読み進めてください。</p>
+                <div class="mermaid-frame">
+                    <script type="text/plain" class="mermaid-src">
+                        flowchart TD
+                            V["動画ファイル 例 sample.mp4"] --> GCS["Cloud Storageバケットへアップロード"]
+                            GCS --> Part["Part from_uriでgs URIとmime typeを指定して参照"]
+                            Part --> Prompt["解析してほしい観点を書いたテキストプロンプトと結合"]
+                            Prompt --> Model["Gemini generateContentへ送信"]
+                            Model --> Sample["モデルが約1FPSで映像をサンプリングし音声も解析"]
+                            Sample --> Result["構造化された説明や要約が返却される"]
+                    </script>
+                    <p class="diagram-caption">
+                        動画のアップロードから構造化された説明が返るまでの一連の流れ
+                    </p>
+                </div>
+
+                <div class="glossary">
+                    <div class="gt"><i class="ti ti-book-2"></i>用語ミニ解説</div>
+                    <dl>
+                        <dt>マルチモーダル</dt>
+                        <dd>テキスト・画像・音声・動画など複数種類の入力を同時に扱えること</dd>
+                        <dt>FPS（Frames Per Second）</dt>
+                        <dd>1秒あたりに解析されるフレームの数</dd>
+                        <dt>Files API</dt>
+                        <dd>
+                            大きなファイルや複数回利用するファイルをアップロードして参照するための仕組み
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="source-box">
+                    <div class="st"><i class="ti ti-link"></i>根拠となる情報源</div>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/video-understanding"
+                                >Video understanding（Vertex AI、Part.from_uriとgs://の実装例）—
+                                docs.cloud.google.com</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://ai.google.dev/gemini-api/docs/video-understanding"
+                                >Video understanding（Gemini API、既定1FPSサンプリングの説明）—
+                                ai.google.dev</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="chapter" id="common">
+                <h2><i class="ti ti-shield-lock"></i>全タスク共通のベストプラクティス</h2>
+                <p class="lead">
+                    この章では、セキュリティ・コスト・信頼性・プロンプト設計といった、4つのタスク全体に共通する観点を整理します。
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>観点</th>
+                            <th>ベストプラクティス</th>
+                            <th>根拠</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>認証</td>
+                            <td>
+                                APIキーやサービスアカウントの鍵をコードに埋め込まず、gcloud auth
+                                print-access-tokenやApplication Default Credentialsを利用する
+                            </td>
+                            <td>Vertex AI公式ドキュメントの認証手順</td>
+                        </tr>
+                        <tr>
+                            <td>権限</td>
+                            <td>
+                                プロジェクト全体の編集者権限ではなく、roles/aiplatform.user（Vertex
+                                AI User）のような必要最小限のIAMロールを付与する
+                            </td>
+                            <td>Vertex AI IAM roles and permissions</td>
+                        </tr>
+                        <tr>
+                            <td>コスト</td>
+                            <td>
+                                Workbenchインスタンスは使わないときに停止し、アイドルシャットダウンを設定する
+                            </td>
+                            <td>Workbench公式ドキュメント</td>
+                        </tr>
+                        <tr>
+                            <td>信頼性</td>
+                            <td>
+                                429エラーは指数バックオフで再試行し、リトライ回数の上限を必ず設ける
+                            </td>
+                            <td>Retry strategy公式ドキュメント</td>
+                        </tr>
+                        <tr>
+                            <td>プロンプト設計</td>
+                            <td>曖昧な指示ではなく、期待する出力形式・観点を具体的に書く</td>
+                            <td>Vertex AIのgenerationConfig/プロンプト設計指針</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="source-box">
+                    <div class="st"><i class="ti ti-link"></i>根拠となる情報源</div>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/iam/docs/roles-permissions/aiplatform"
+                                >Vertex AI roles and permissions — docs.cloud.google.com</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="chapter" id="troubleshooting">
+                <h2><i class="ti ti-bug"></i>トラブルシューティング表</h2>
+                <p class="lead">
+                    この章では、各Taskで詰まりやすい症状と、その原因・対処法をまとめます。
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>症状</th>
+                            <th>想定される原因</th>
+                            <th>対処</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>curlが401/403を返す</td>
+                            <td>アクセストークンの期限切れ、または未認証</td>
+                            <td>gcloud auth print-access-tokenを再実行してトークンを更新する</td>
+                        </tr>
+                        <tr>
+                            <td>429 RESOURCE_EXHAUSTED</td>
+                            <td>共有リソースプールが一時的に逼迫している</td>
+                            <td>
+                                指数バックオフで再試行、Notebookでは案内どおり1分待って再実行する
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Notebookのカーネルが選べない/importエラー</td>
+                            <td>カーネルにPython 3 (Local)が選ばれていない</td>
+                            <td>Select Kernelダイアログでカーネルを選び直す</td>
+                        </tr>
+                        <tr>
+                            <td>Function Callingで天気情報が出てこない</td>
+                            <td>
+                                functionResponseがモデルに送り返されていない、またはINSERT部分が未実装
+                            </td>
+                            <td>
+                                マルチターンの往復（モデル→関数呼び出し→アプリ実行→応答→モデル）を確認する
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>動画解析結果が大味・情報が漏れる</td>
+                            <td>
+                                既定の1FPSサンプリングで速い動きを取りこぼしている、プロンプトが曖昧
+                            </td>
+                            <td>
+                                プロンプトを具体化する、必要ならカスタムフレームレートを検討する
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="chapter" id="checklist">
+                <h2><i class="ti ti-checkbox"></i>完了チェックリスト</h2>
+                <ul class="checklist">
+                    <li>
+                        <i class="ti ti-circle-check"></i>環境変数（PROJECT_ID / LOCATION /
+                        API_ENDPOINT / MODEL_ID）を設定した
+                    </li>
+                    <li><i class="ti ti-circle-check"></i>Vertex AI APIを有効化した</li>
+                    <li>
+                        <i class="ti ti-circle-check"></i
+                        >curlでgenerateContentを呼び出し、テキスト生成を確認した（Check my progress
+                        1）
+                    </li>
+                    <li>
+                        <i class="ti ti-circle-check"></i>WorkbenchでNotebookをPython 3
+                        (Local)カーネルで開いた
+                    </li>
+                    <li>
+                        <i class="ti ti-circle-check"></i>Function
+                        CallingのINSERT箇所を実装し、天気情報が応答に含まれることを確認した（Check
+                        my progress 2）
+                    </li>
+                    <li>
+                        <i class="ti ti-circle-check"></i
+                        >Task4のセルを実装し、動画コンテンツの説明が生成されることを確認した（Check
+                        my progress 3）
+                    </li>
+                </ul>
+            </section>
+
+            <section class="chapter" id="references">
+                <h2><i class="ti ti-books"></i>参考文献</h2>
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <div class="rc-head"><i class="ti ti-message-2"></i>テキスト生成</div>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/overview"
+                                    >Generate content with the Gemini API in Vertex AI</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start/quickstart"
+                                    >Get started with the Gemini API in Vertex AI</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/getting-started/intro_gemini_curl.ipynb"
+                                    >Intro to Gemini API via curl（公式サンプルNotebook）</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/content-generation-parameters"
+                                    >Content generation parameters</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <div class="rc-head"><i class="ti ti-notebook"></i>Workbench</div>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/docs/workbench/instances/create-console-quickstart"
+                                    >Quickstart: Create a Vertex AI Workbench instance</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/docs/workbench/introduction"
+                                    >Introduction to Agent Platform Workbench</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <div class="rc-head"><i class="ti ti-git-merge"></i>Function Calling</div>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/function-calling"
+                                    >Introduction to function calling</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/function-calling/intro_function_calling.ipynb"
+                                    >Intro to Function Calling with the Gemini
+                                    API（公式サンプルNotebook）</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <div class="rc-head">
+                            <i class="ti ti-refresh-alert"></i>信頼性・レート制限
+                        </div>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/retry-strategy"
+                                    >Retry strategy</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput/error-code-429"
+                                    >Error code 429</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/blog/products/ai-machine-learning/reduce-429-errors-on-vertex-ai"
+                                    >Reduce 429 errors on Vertex AI（Google Cloud Blog）</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <div class="rc-head">
+                            <i class="ti ti-video"></i>動画解析（Video Understanding）
+                        </div>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/video-understanding"
+                                    >Video understanding（Vertex AI）</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://ai.google.dev/gemini-api/docs/video-understanding"
+                                    >Video understanding（Gemini API）</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <div class="rc-head"><i class="ti ti-lock"></i>IAM・セキュリティ</div>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/iam/docs/roles-permissions/aiplatform"
+                                    >Vertex AI roles and permissions</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <div class="rc-head"><i class="ti ti-external-link"></i>元ラボ</div>
+                        <ul>
+                            <li>
+                                <a href="https://www.skills.google/course_templates/959/labs/592560"
+                                    >Explore Generative AI with the Gemini API in Agent Platform:
+                                    Challenge Lab</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <div class="footer">Gemini API 実践チャレンジラボ 完全攻略ガイド</div>
+        </main>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                var trimmed = str.replace(/^\n/, '').replace(/\s+$/, '');
+                var lines = trimmed.split('\n');
+                var indents = [];
+                for (var i = 0; i < lines.length; i++) {
+                    if (lines[i].trim().length > 0) {
+                        var m = lines[i].match(/^\s*/);
+                        indents.push(m[0].length);
+                    }
+                }
+                var min = indents.length ? Math.min.apply(null, indents) : 0;
+                var out = [];
+                for (var j = 0; j < lines.length; j++) {
+                    out.push(lines[j].slice(min));
+                }
+                return out.join('\n');
+            }
+
+            document.querySelectorAll('script.mermaid-src').forEach(function (scriptEl) {
+                var div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = dedent(scriptEl.textContent);
+                scriptEl.parentNode.insertBefore(div, scriptEl.nextSibling);
+            });
+
+            document.fonts.ready.then(function () {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily: 'inherit',
+                    flowchart: {
+                        useMaxWidth: false,
+                        htmlLabels: true,
+                        nodeSpacing: 45,
+                        rankSpacing: 45,
+                    },
+                    sequence: { useMaxWidth: false },
+                });
+                mermaid.run({ querySelector: '.mermaid' });
+            });
+
+            hljs.highlightAll();
+
+            var navLinks = document.querySelectorAll('nav a[data-nav]');
+            var sections = document.querySelectorAll('section.chapter');
+            var observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        var id = entry.target.getAttribute('id');
+                        var link = document.querySelector('nav a[href="#' + id + '"]');
+                        if (!link) return;
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (l) {
+                                l.classList.remove('active');
+                            });
+                            link.classList.add('active');
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+            sections.forEach(function (s) {
+                observer.observe(s);
+            });
+        </script>
+    </body>
+</html>
