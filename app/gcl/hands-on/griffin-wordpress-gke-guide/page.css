@@ -1,5 +1,11 @@
 @import 'https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css';
 
+/* TODO: 3層トークンへの移行。globals.css の @theme に Griffin ガイド用のダークテーマ
+ * トークンを追加し、以下のページスコープ変数を --color-background / --color-foreground /
+ * --color-card / --color-border / --radius-* へ寄せる。
+ * 現在の表示維持に必要な主な色: #07111e, #0c1a2b, #142238, #eaf0f9, #a9b8cc, #24354c
+ * （gke-private-cluster-security-guide/page.css と同じ暫定方針）
+ */
 .griffin-wordpress-gke-guide-page {
     --color-background-primary: #07111e;
     --color-background-secondary: #0c1a2b;
@@ -19,7 +25,9 @@
     --color-border-secondary: #1a293d;
     --color-border-tertiary: #142131;
     --font-sans: var(--font-body, 'Noto Sans JP', sans-serif);
-    --font-mono: var(--font-mono, 'JetBrains Mono', monospace);
+    /* --font-mono は globals.css の @theme 定義をそのまま継承する。
+     * ここで --font-mono: var(--font-mono, ...) と自己参照すると CSS 変数の循環参照となり、
+     * 計算値時点で無効化されて等幅フォントが一切当たらなくなるため再定義しない。 */
     --border-radius-md: 8px;
     --border-radius-lg: 12px;
     --border-radius-xl: 16px;

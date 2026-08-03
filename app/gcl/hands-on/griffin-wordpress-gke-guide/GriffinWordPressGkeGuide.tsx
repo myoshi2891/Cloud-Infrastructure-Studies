@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
@@ -21,6 +21,24 @@ function Diagram({ id, label }: { id: string; label: string }) {
 export function GriffinWordPressGkeGuide() {
     const [activeSection, setActiveSection] = useState<string>('overview');
     const [isTocOpen, setIsTocOpen] = useState<boolean>(false);
+    const tocToggleRef = useRef<HTMLButtonElement>(null);
+    // 安定した closeToc から最新の開閉状態を読むためのミラー
+    const isTocOpenRef = useRef(isTocOpen);
+
+    useEffect(() => {
+        isTocOpenRef.current = isTocOpen;
+    }, [isTocOpen]);
+
+    /**
+     * 目次を閉じる。モバイル幅では閉じた目次が inert になりフォーカスが宙に浮くため、
+     * 開閉トグルへフォーカスを戻してキーボード操作の文脈を維持する。
+     * 既に閉じている場合（デスクトップ幅の常時表示を含む）はフォーカスを奪わない。
+     */
+    const closeToc = useCallback(() => {
+        if (!isTocOpenRef.current) return;
+        setIsTocOpen(false);
+        tocToggleRef.current?.focus();
+    }, []);
 
     useEffect(() => {
         const sections = document.querySelectorAll<HTMLElement>('main section[id]');
@@ -57,7 +75,7 @@ export function GriffinWordPressGkeGuide() {
 
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
-                setIsTocOpen(false);
+                closeToc();
             }
         };
 
@@ -67,11 +85,12 @@ export function GriffinWordPressGkeGuide() {
             observer.disconnect();
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
+    }, [closeToc]);
 
     return (
         <div className="griffin-wordpress-gke-guide-page">
             <button
+                ref={tocToggleRef}
                 className="toc-toggle"
                 type="button"
                 aria-controls="table-of-contents"
@@ -86,7 +105,7 @@ export function GriffinWordPressGkeGuide() {
                 <NavBar
                     activeSection={activeSection}
                     isOpen={isTocOpen}
-                    onClose={() => setIsTocOpen(false)}
+                    onClose={closeToc}
                 />
 
                 <main className="main">
@@ -981,7 +1000,7 @@ export function GriffinWordPressGkeGuide() {
                                     <code>
                                         <div className="code-line">gcloud monitoring uptime create wordpress-uptime-check \</div>
                                         <div className="code-line">  --resource-type=uptime-url \</div>
-                                        <div className="code-line">  --resource-labels=host=&quot;$WORDPRESS_EXTERNAL_IP&quot; \</div>
+                                        <div className="code-line">  --resource-labels=host=&quot;$WORDPRESS_EXTERNAL_IP&quot;,project_id=&quot;$(gcloud config get-value project)&quot; \</div>
                                         <div className="code-line">  --protocol=http \</div>
                                         <div className="code-line">  --port=80</div>
                                     </code>

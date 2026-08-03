@@ -539,9 +539,6 @@ export function GkePrivateClusterSecurityGuide() {
                                     <span className="code-param">  --region</span>=<span className="code-str">&lt;REGION&gt;</span> \
                                 </div>
                                 <div className="code-line">
-                                    <span className="code-param">  --zone</span>=<span className="code-str">&lt;ZONE&gt;</span> \
-                                </div>
-                                <div className="code-line">
                                     <span className="code-param">  --network</span>=<span className="code-val">orca-build-vpc</span> \
                                 </div>
                                 <div className="code-line">
@@ -582,11 +579,14 @@ export function GkePrivateClusterSecurityGuide() {
                                 <code>orca-cluster-name</code>
                                 は実際のラボでは指定されたクラスタ名に置き換えてください）。
                                 <br />
-                                ・<code>--region</code> と <code>--zone</code> は課題ページで指定された
-                                Region / Zone をそのまま使用します（ゾーナルクラスタにする場合は
-                                <code>--zone</code> のみ、リージョナルにする場合は
-                                <code>--region</code>
-                                のみを使うのが一般的です。両方指定できるコマンドもありますが、混乱を避けるため、ラボの要件に合わせてどちらか一方を使ってください）。
+                                ・<code>--region</code> と <code>--zone</code> は
+                                <strong>相互排他</strong>
+                                です（両方指定すると gcloud がエラーになります）。リージョナルクラスタなら
+                                <code>--region</code>、ゾーナルクラスタなら <code>--zone</code>{' '}
+                                のどちらか一方だけを、課題ページで指定された値で使用します。本ガイドはリージョナルクラスタ前提で
+                                <code>--region</code> に統一しているため、ゾーナルで作成した場合は
+                                <code>update</code> / <code>get-credentials</code> も
+                                <code>--zone</code> に読み替えてください。
                             </div>
                         </div>
 
@@ -668,7 +668,7 @@ export function GkePrivateClusterSecurityGuide() {
                                 <div className="code-line"><span className="code-cmd">gcloud</span> <span className="code-param">container clusters get-credentials</span> <span className="code-val">orca-cluster-name</span> \</div>
                                 <div className="code-line">  <span className="code-param">--internal-ip</span> \</div>
                                 <div className="code-line">  <span className="code-param">--project</span>=<span className="code-str">&lt;PROJECT_ID&gt;</span> \</div>
-                                <div className="code-line">  <span className="code-param">--zone</span>=<span className="code-str">&lt;ZONE&gt;</span></div>
+                                <div className="code-line">  <span className="code-param">--region</span>=<span className="code-str">&lt;REGION&gt;</span></div>
                                 <div className="code-line"></div>
                                 <div className="code-line"><span className="code-comment"># 4. 動作確認用の簡易アプリをデプロイ</span></div>
                                 <div className="code-line"><span className="code-cmd">kubectl</span> <span className="code-param">create deployment</span> <span className="code-val">hello-server</span> <span className="code-param">--image</span>=<span className="code-str">gcr.io/google-samples/hello-app:1.0</span></div>

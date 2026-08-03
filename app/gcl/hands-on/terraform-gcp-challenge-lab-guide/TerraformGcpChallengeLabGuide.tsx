@@ -6,6 +6,13 @@ import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 import './page.css';
 
+/**
+ * Terraform GCP チャレンジラボ解説ページの本文コンポーネント。
+ *
+ * IntersectionObserver で `main section[id]` を監視して現在表示中のセクションを追跡し、
+ * その id を `activeId` として保持する。`activeId` は NavBar に渡され、
+ * サイドバー目次のハイライト（scroll spy）を更新する。
+ */
 export function TerraformGcpChallengeLabGuide() {
     const [activeId, setActiveId] = useState<string>('sec1');
 
@@ -382,11 +389,24 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_storage_bucket&quot;</span> <span className="tok-string">&quot;default&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-attr">name</span>                        = <span className="tok-string">&quot;&lt;Bucket Name&gt;&quot;</span></div>
                                 <div className="code-line">  <span className="tok-attr">location</span>                    = <span className="tok-string">&quot;US&quot;</span></div>
-                                <div className="code-line">  <span className="tok-attr">force_destroy</span>               = <span className="tok-boolean">true</span></div>
+                                <div className="code-line">  <span className="tok-attr">force_destroy</span>               = <span className="tok-boolean">true</span>  <span className="tok-comment"># ラボ後片付け用。本番の state バケットでは false</span></div>
                                 <div className="code-line">  <span className="tok-attr">uniform_bucket_level_access</span> = <span className="tok-boolean">true</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-keyword">versioning</span> &#123;</div>
+                                <div className="code-line">    <span className="tok-attr">enabled</span> = <span className="tok-boolean">true</span></div>
+                                <div className="code-line">  &#125;</div>
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <div className="callout">
+                            <div className="callout-title"><i className="ti ti-shield-lock" aria-hidden="true" />state バケットの保護設定</div>
+                            <p>
+                                <code>versioning</code> を有効にすると、<code>terraform.tfstate</code> が上書きされるたびに旧世代が保持される。apply の中断やオペミスで state が壊れた場合に、直前の世代へ巻き戻して復旧できるため、リモート state バケットでは<strong>事実上必須</strong>の設定である。
+                            </p>
+                            <p>
+                                一方 <code>force_destroy = true</code> は「中にオブジェクトが残っていてもバケットごと削除する」という意味であり、state を丸ごと消し飛ばしかねない。<strong>ここではラボ環境の後片付けを容易にするために <code>true</code> にしているだけ</strong>で、実運用の state バケットでは <code>false</code>（さらに <code>lifecycle &#123; prevent_destroy = true &#125;</code> の併用）が推奨される。
+                            </p>
+                        </div>
                         <div className="code-label">modules/storage/outputs.tf</div>
                         <pre>
                             <code>
@@ -625,14 +645,52 @@ export function TerraformGcpChallengeLabGuide() {
                         </pre>
 
                         <h3><i className="ti ti-plug-connected" aria-hidden="true" />インスタンスをサブネットに接続する</h3>
+                        <div className="callout">
+                            <div className="callout-title"><i className="ti ti-alert-triangle" aria-hidden="true" />子モジュールから <code>module.vpc</code> は参照できない</div>
+                            <p>
+                                <code>module.&lt;NAME&gt;.&lt;OUTPUT&gt;</code> という参照は、その module ブロックを<strong>宣言しているモジュール（ここではルートの <code>main.tf</code>）の中でのみ</strong>有効である。<code>modules/instances</code> の中に <code>module.vpc.network_self_link</code> と書いても、兄弟モジュールは名前解決できず <code>Reference to undeclared module</code> エラーになる。ルートで VPC の output を受け取り、<code>variable</code> 経由で子モジュールへ<strong>受け渡す</strong>のが唯一の経路である。
+                            </p>
+                        </div>
+                        <div className="code-label">main.tf（ルートモジュール: VPC の output を instances へ渡す）</div>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">module</span> <span className="tok-string">&quot;instances&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">source</span>     = <span className="tok-string">&quot;./modules/instances&quot;</span></div>
+                                <div className="code-line">  <span className="tok-attr">project_id</span> = <span className="tok-variable">var.project_id</span></div>
+                                <div className="code-line">  <span className="tok-attr">region</span>     = <span className="tok-variable">var.region</span></div>
+                                <div className="code-line">  <span className="tok-attr">zone</span>       = <span className="tok-variable">var.zone</span></div>
+                                <div className="code-line"></div>
+                                <div className="code-line">  <span className="tok-comment"># terraform-google-modules/network/google v10.0.0 の output を渡す</span></div>
+                                <div className="code-line">  <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_self_link</span></div>
+                                <div className="code-line">  <span className="tok-attr">subnet_01</span>  = <span className="tok-variable">module.vpc.subnets_names</span>[<span className="tok-number">0</span>]</div>
+                                <div className="code-line">  <span className="tok-attr">subnet_02</span>  = <span className="tok-variable">module.vpc.subnets_names</span>[<span className="tok-number">1</span>]</div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
+                        <div className="code-label">modules/instances/variables.tf</div>
+                        <pre>
+                            <code>
+                                <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;network&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">type</span> = <span className="tok-keyword">string</span></div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;subnet_01&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">type</span> = <span className="tok-keyword">string</span></div>
+                                <div className="code-line">&#125;</div>
+                                <div className="code-line"></div>
+                                <div className="code-line"><span className="tok-keyword">variable</span> <span className="tok-string">&quot;subnet_02&quot;</span> &#123;</div>
+                                <div className="code-line">  <span className="tok-attr">type</span> = <span className="tok-keyword">string</span></div>
+                                <div className="code-line">&#125;</div>
+                            </code>
+                        </pre>
                         <div className="code-label">modules/instances/instances.tf</div>
                         <pre>
                             <code>
                                 <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-1&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-comment"># ...</span></div>
                                 <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
-                                <div className="code-line">    <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_name</span></div>
-                                <div className="code-line">    <span className="tok-attr">subnetwork</span> = <span className="tok-string">&quot;subnet-01&quot;</span></div>
+                                <div className="code-line">    <span className="tok-attr">network</span>    = <span className="tok-variable">var.network</span></div>
+                                <div className="code-line">    <span className="tok-attr">subnetwork</span> = <span className="tok-variable">var.subnet_01</span></div>
                                 <div className="code-line">    <span className="tok-keyword">access_config</span> &#123;&#125;</div>
                                 <div className="code-line">  &#125;</div>
                                 <div className="code-line">&#125;</div>
@@ -640,8 +698,8 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line"><span className="tok-keyword">resource</span> <span className="tok-string">&quot;google_compute_instance&quot;</span> <span className="tok-string">&quot;tf-instance-2&quot;</span> &#123;</div>
                                 <div className="code-line">  <span className="tok-comment"># ...</span></div>
                                 <div className="code-line">  <span className="tok-keyword">network_interface</span> &#123;</div>
-                                <div className="code-line">    <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_name</span></div>
-                                <div className="code-line">    <span className="tok-attr">subnetwork</span> = <span className="tok-string">&quot;subnet-02&quot;</span></div>
+                                <div className="code-line">    <span className="tok-attr">network</span>    = <span className="tok-variable">var.network</span></div>
+                                <div className="code-line">    <span className="tok-attr">subnetwork</span> = <span className="tok-variable">var.subnet_02</span></div>
                                 <div className="code-line">    <span className="tok-keyword">access_config</span> &#123;&#125;</div>
                                 <div className="code-line">  &#125;</div>
                                 <div className="code-line">&#125;</div>
@@ -684,6 +742,15 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
+                        <div className="callout">
+                            <div className="callout-title"><i className="ti ti-alert-triangle" aria-hidden="true" /><code>source_ranges = [&quot;0.0.0.0/0&quot;]</code> はラボ要件の例外</div>
+                            <p>
+                                このルールは <code>target_tags</code> / <code>target_service_accounts</code> を指定していないため、<strong>VPC 内の全 VM の TCP:80 がインターネット全体に開放される</strong>。チャレンジラボの採点条件が「ネットワーク全体に対する HTTP 許可」であるためそのまま記述しているが、実運用でこの形をコピーしてはいけない。
+                            </p>
+                            <p>
+                                本番では ① 対象 VM に <code>tags = [&quot;http-server&quot;]</code> を付与し、ファイアウォール側で <code>target_tags = [&quot;http-server&quot;]</code> を指定して<strong>適用対象を限定</strong>する、② <code>source_ranges</code> を Load Balancer のヘルスチェック range（<code>35.191.0.0/16</code>, <code>130.211.0.0/22</code>）や社内 CIDR に絞る、のいずれか（できれば両方）を行う。
+                            </p>
+                        </div>
                         <div className="callout">
                             <div className="callout-title"><i className="ti ti-info-circle" aria-hidden="true" /><code>network</code> 引数について</div>
                             <p>
