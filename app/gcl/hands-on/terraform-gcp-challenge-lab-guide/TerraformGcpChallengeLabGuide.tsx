@@ -661,9 +661,10 @@ export function TerraformGcpChallengeLabGuide() {
                                 <div className="code-line">  <span className="tok-attr">zone</span>       = <span className="tok-variable">var.zone</span></div>
                                 <div className="code-line"></div>
                                 <div className="code-line">  <span className="tok-comment"># terraform-google-modules/network/google v10.0.0 の output を渡す</span></div>
+                                <div className="code-line">  <span className="tok-comment"># subnets は &quot;&lt;region&gt;/&lt;name&gt;&quot; をキーとする map。順序に依存しないよう明示的に引く</span></div>
                                 <div className="code-line">  <span className="tok-attr">network</span>    = <span className="tok-variable">module.vpc.network_self_link</span></div>
-                                <div className="code-line">  <span className="tok-attr">subnet_01</span>  = <span className="tok-variable">module.vpc.subnets_names</span>[<span className="tok-number">0</span>]</div>
-                                <div className="code-line">  <span className="tok-attr">subnet_02</span>  = <span className="tok-variable">module.vpc.subnets_names</span>[<span className="tok-number">1</span>]</div>
+                                <div className="code-line">  <span className="tok-attr">subnet_01</span>  = <span className="tok-variable">module.vpc.subnets</span>[<span className="tok-string">&quot;$&#123;var.region&#125;/subnet-01&quot;</span>].<span className="tok-variable">self_link</span></div>
+                                <div className="code-line">  <span className="tok-attr">subnet_02</span>  = <span className="tok-variable">module.vpc.subnets</span>[<span className="tok-string">&quot;$&#123;var.region&#125;/subnet-02&quot;</span>].<span className="tok-variable">self_link</span></div>
                                 <div className="code-line">&#125;</div>
                             </code>
                         </pre>
