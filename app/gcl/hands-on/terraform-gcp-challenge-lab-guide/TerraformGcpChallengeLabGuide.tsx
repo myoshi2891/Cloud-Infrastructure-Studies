@@ -7,11 +7,9 @@ import { NavBar } from './NavBar';
 import './page.css';
 
 /**
- * Terraform GCP チャレンジラボ解説ページの本文コンポーネント。
+ * Renders the Terraform Google Cloud Challenge Lab guide page and tracks the visible section for navigation highlighting.
  *
- * IntersectionObserver で `main section[id]` を監視して現在表示中のセクションを追跡し、
- * その id を `activeId` として保持する。`activeId` は NavBar に渡され、
- * サイドバー目次のハイライト（scroll spy）を更新する。
+ * Uses `IntersectionObserver` to update the active navigation section as the user scrolls.
  */
 export function TerraformGcpChallengeLabGuide() {
     const [activeId, setActiveId] = useState<string>('sec1');

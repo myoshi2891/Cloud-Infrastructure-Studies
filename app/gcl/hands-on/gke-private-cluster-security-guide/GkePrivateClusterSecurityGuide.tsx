@@ -5,6 +5,13 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS, type DiagramId } from './constants';
 import { NavBar } from './NavBar';
 
+/**
+ * Renders a Mermaid diagram with an accessible label.
+ *
+ * @param id - Identifier of the diagram to render
+ * @param label - Accessibility label for the diagram
+ * @returns The rendered diagram container
+ */
 function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     return (
@@ -16,6 +23,11 @@ function Diagram({ id, label }: { id: DiagramId; label: string }) {
     );
 }
 
+/**
+ * Presents a walkthrough for securing and validating a GKE private cluster.
+ *
+ * Tracks the section currently visible in the page navigation.
+ */
 export function GkePrivateClusterSecurityGuide() {
     const [activeId, setActiveId] = useState<string>('overview');
 

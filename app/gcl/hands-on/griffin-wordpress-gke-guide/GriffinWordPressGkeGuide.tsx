@@ -5,6 +5,12 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/**
+ * Renders a diagram identified by its registry ID with an accessibility label.
+ *
+ * @param id - The diagram identifier used to select the diagram definition
+ * @param label - The accessible label for the rendered diagram
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
