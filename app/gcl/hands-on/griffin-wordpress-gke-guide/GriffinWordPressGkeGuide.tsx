@@ -6,10 +6,11 @@ import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
 
 /**
- * Renders a diagram identified by its registry ID with an accessibility label.
+ * Renders the diagram associated with an identifier and provides an accessibility label.
  *
  * @param id - The diagram identifier used to select the diagram definition
  * @param label - The accessible label for the rendered diagram
+ * @returns The rendered diagram, or `null` when the identifier is unknown
  */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
@@ -22,7 +23,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Main client component for rendering the Griffin WordPress GKE Guide page.
+ * Renders the Team Griffin Google Cloud infrastructure challenge-lab guide, including navigation and task instructions for configuring VPCs, Cloud SQL, GKE, WordPress, monitoring, and IAM.
  */
 export function GriffinWordPressGkeGuide() {
     const [activeSection, setActiveSection] = useState<string>('overview');
