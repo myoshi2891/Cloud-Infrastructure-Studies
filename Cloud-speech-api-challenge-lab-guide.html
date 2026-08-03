@@ -1,0 +1,1708 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cloud Speech API チャレンジラボ 完全攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+        />
+        <style>
+            :root {
+                --bg-primary: #07111e;
+                --bg-secondary: #0d1826;
+                --bg-tertiary: #142236;
+                --bg-code: #0a1420;
+                --text-primary: #e8edf5;
+                --text-secondary: #a8b8cc;
+                --text-tertiary: #6b7d94;
+                --accent: #7c9eff;
+                --accent-soft: rgba(124, 158, 255, 0.12);
+                --border: #1f2f45;
+                --border-strong: #2a3d57;
+                --success: #4ade80;
+                --warning: #fbbf24;
+                --danger: #f87171;
+                --c-purple: #a78bfa;
+                --c-teal: #2dd4bf;
+                --c-coral: #fb7185;
+                --c-pink: #f472b6;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --radius-md: 8px;
+                --radius-lg: 12px;
+                --radius-xl: 16px;
+                --sidebar-w: 280px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 1.7;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            a:focus-visible,
+            button:focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: 2px;
+            }
+
+            /* ---------- sidebar ---------- */
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-w);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-secondary);
+                border-right: 1px solid var(--border);
+                padding: 28px 20px 40px;
+                z-index: 50;
+                transition: transform 0.25s ease;
+            }
+
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 0 4px 20px;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 16px;
+            }
+
+            .sidebar-brand i {
+                font-size: 20px;
+                color: var(--accent);
+            }
+
+            .sidebar-brand-text {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--text-secondary);
+                line-height: 1.4;
+            }
+
+            .sidebar-brand-text strong {
+                display: block;
+                font-size: 14px;
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+
+            .nav-group-label {
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                padding: 14px 10px 6px;
+            }
+
+            .nav-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 10px;
+                border-radius: var(--radius-md);
+                color: var(--text-secondary);
+                font-size: 13px;
+                font-weight: 400;
+                margin: 2px 0;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease;
+            }
+
+            .nav-link i {
+                font-size: 15px;
+                width: 16px;
+                color: var(--text-tertiary);
+                flex-shrink: 0;
+            }
+
+            .nav-link:hover {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                text-decoration: none;
+            }
+
+            .nav-link.active {
+                background: var(--accent-soft);
+                color: var(--accent);
+            }
+            .nav-link.active i {
+                color: var(--accent);
+            }
+
+            /* ---------- layout ---------- */
+
+            .layout {
+                display: block;
+                margin-left: var(--sidebar-w);
+            }
+
+            .main {
+                padding: 56px 64px 100px;
+            }
+
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--accent);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                background: var(--accent-soft);
+                padding: 6px 12px;
+                border-radius: var(--radius-xl);
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 1.4;
+                margin: 0 0 14px;
+                color: var(--text-primary);
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 56px 0 18px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                scroll-margin-top: 24px;
+            }
+
+            h2 i {
+                color: var(--accent);
+                font-size: 18px;
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 32px 0 12px;
+                color: var(--text-primary);
+                scroll-margin-top: 24px;
+            }
+
+            p {
+                color: var(--text-secondary);
+                margin: 0 0 14px;
+            }
+
+            .lead {
+                font-size: 15px;
+                color: var(--text-secondary);
+                max-width: 760px;
+            }
+
+            .lead a {
+                color: var(--accent);
+            }
+
+            ul,
+            ol {
+                color: var(--text-secondary);
+                padding-left: 22px;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+
+            strong {
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                background: var(--bg-tertiary);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--c-teal);
+            }
+
+            /* ---------- callouts ---------- */
+
+            .callout {
+                border-left: 3px solid var(--accent);
+                background: var(--bg-secondary);
+                border-radius: var(--radius-md);
+                padding: 16px 20px;
+                margin: 20px 0;
+            }
+
+            .callout.warn {
+                border-left-color: var(--warning);
+            }
+            .callout.danger {
+                border-left-color: var(--danger);
+            }
+            .callout.tip {
+                border-left-color: var(--c-teal);
+            }
+
+            .callout-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+                color: var(--text-primary);
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            .callout-title i {
+                font-size: 15px;
+            }
+            .callout.warn .callout-title i {
+                color: var(--warning);
+            }
+            .callout.danger .callout-title i {
+                color: var(--danger);
+            }
+            .callout.tip .callout-title i {
+                color: var(--c-teal);
+            }
+            .callout p:last-child {
+                margin-bottom: 0;
+            }
+            .callout p {
+                font-size: 14px;
+            }
+
+            /* ---------- tables ---------- */
+
+            .table-wrap {
+                overflow-x: auto;
+                margin: 20px 0;
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13.5px;
+            }
+
+            th {
+                text-align: left;
+                background: var(--bg-secondary);
+                color: var(--text-primary);
+                font-weight: 500;
+                padding: 10px 16px;
+                border-bottom: 1px solid var(--border-strong);
+                white-space: nowrap;
+            }
+
+            td {
+                padding: 10px 16px;
+                border-bottom: 1px solid var(--border);
+                color: var(--text-secondary);
+                vertical-align: top;
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+            tr:hover td {
+                background: var(--bg-tertiary);
+            }
+
+            /* ---------- code blocks ---------- */
+
+            .code-block {
+                margin: 18px 0;
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                border: 1px solid var(--border);
+            }
+
+            .code-label {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: var(--bg-secondary);
+                color: var(--text-tertiary);
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                padding: 8px 16px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .code-block pre {
+                margin: 0;
+                padding: 16px;
+                overflow-x: auto;
+                background: var(--bg-code) !important;
+            }
+
+            .code-block code {
+                background: none;
+                padding: 0;
+                font-size: 13px;
+                line-height: 1.6;
+                color: inherit;
+            }
+
+            /* ---------- mermaid ---------- */
+
+            .diagram-block {
+                margin: 24px 0;
+                padding: 24px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+            }
+
+            .diagram-caption {
+                font-size: 12px;
+                color: var(--text-tertiary);
+                margin-top: 12px;
+                text-align: center;
+            }
+
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                background: transparent;
+                margin: 0;
+            }
+
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* ---------- checklist / cards ---------- */
+
+            .task-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 12px;
+                margin: 20px 0;
+            }
+
+            .task-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+                padding: 16px 18px;
+            }
+
+            .task-card .task-num {
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--accent);
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                margin-bottom: 6px;
+            }
+
+            .task-card .task-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--text-primary);
+                margin-bottom: 4px;
+            }
+            .task-card .task-desc {
+                font-size: 12.5px;
+                color: var(--text-tertiary);
+            }
+
+            /* ---------- references ---------- */
+
+            .ref-list {
+                list-style: none;
+                margin: 20px 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .ref-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border);
+                border-radius: var(--radius-lg);
+                padding: 14px 18px;
+                transition: border-color 0.15s ease;
+            }
+
+            .ref-item:hover {
+                border-color: var(--border-strong);
+            }
+
+            .ref-num {
+                flex-shrink: 0;
+                width: 26px;
+                height: 26px;
+                border-radius: 50%;
+                background: var(--accent-soft);
+                color: var(--accent);
+                font-size: 12px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .ref-body {
+                flex: 1;
+                min-width: 0;
+            }
+            .ref-title {
+                font-size: 13.5px;
+                color: var(--text-primary);
+                font-weight: 500;
+                margin-bottom: 2px;
+            }
+            .ref-url {
+                font-size: 12.5px;
+                word-break: break-all;
+            }
+
+            /* ---------- footer note ---------- */
+
+            .footnote {
+                margin-top: 40px;
+                padding: 18px 20px;
+                border: 1px dashed var(--border-strong);
+                border-radius: var(--radius-lg);
+                font-size: 13px;
+                color: var(--text-tertiary);
+            }
+
+            /* ---------- mobile toggle ---------- */
+
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 60;
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius-md);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-strong);
+                color: var(--text-primary);
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                cursor: pointer;
+            }
+
+            @media (max-width: 900px) {
+                .menu-toggle {
+                    display: flex;
+                }
+                .sidebar {
+                    transform: translateX(-100%);
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                body.sidebar-open .sidebar {
+                    transform: translateX(0);
+                }
+                .layout {
+                    margin-left: 0;
+                }
+                .main {
+                    padding: 90px 20px 80px;
+                }
+                h1 {
+                    font-size: 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="menu-toggle" id="menuToggle" aria-label="メニューを開閉">
+            <i class="ti ti-menu-2"></i>
+        </button>
+
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="ti ti-cloud"></i>
+                <div class="sidebar-brand-text">
+                    <strong>Cloud Speech API</strong>
+                    チャレンジラボ攻略ガイド
+                </div>
+            </div>
+
+            <div class="nav-group-label">はじめに</div>
+            <ul class="nav-list">
+                <li>
+                    <a class="nav-link" href="#overview"><i class="ti ti-map"></i>全体像</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="#prep"><i class="ti ti-terminal-2"></i>事前準備</a>
+                </li>
+            </ul>
+
+            <div class="nav-group-label">タスク別解説</div>
+            <ul class="nav-list">
+                <li>
+                    <a class="nav-link" href="#task1"><i class="ti ti-key"></i>Task 1: API key</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="#task2"
+                        ><i class="ti ti-volume"></i>Task 2: Text-to-Speech</a
+                    >
+                </li>
+                <li>
+                    <a class="nav-link" href="#task3"
+                        ><i class="ti ti-microphone"></i>Task 3: Speech-to-Text</a
+                    >
+                </li>
+                <li>
+                    <a class="nav-link" href="#task4"><i class="ti ti-language"></i>Task 4: 翻訳</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="#task5"
+                        ><i class="ti ti-language-hiragana"></i>Task 5: 言語検出</a
+                    >
+                </li>
+            </ul>
+
+            <div class="nav-group-label">まとめ</div>
+            <ul class="nav-list">
+                <li>
+                    <a class="nav-link" href="#sequence"
+                        ><i class="ti ti-timeline"></i>シーケンス図</a
+                    >
+                </li>
+                <li>
+                    <a class="nav-link" href="#checklist"
+                        ><i class="ti ti-checklist"></i>成果物チェックリスト</a
+                    >
+                </li>
+                <li>
+                    <a class="nav-link" href="#best-practices"
+                        ><i class="ti ti-shield-check"></i>ベストプラクティス</a
+                    >
+                </li>
+                <li>
+                    <a class="nav-link" href="#references"><i class="ti ti-books"></i>参考文献</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="layout">
+            <div class="main">
+                <span class="hero-eyebrow"
+                    ><i class="ti ti-sparkles"></i>Google Cloud Skills Boost</span
+                >
+                <h1>
+                    Cloud Speech API チャレンジラボ 完全攻略ガイド<br />Text-to-Speech /
+                    Speech-to-Text / Cloud Translation API をステップバイステップで解説
+                </h1>
+                <p class="lead">
+                    対象ラボ:
+                    <em
+                        >Implement Speech and Language Solutions with Pre-trained APIs: Challenge
+                        Lab</em
+                    >（旧称 <em>Cloud Speech API 3 Ways: Challenge Lab</em>）<br />
+                    参照URL:
+                    <a
+                        href="https://www.skills.google/course_templates/700/labs/625113"
+                        target="_blank"
+                        rel="noopener"
+                        >https://www.skills.google/course_templates/700/labs/625113</a
+                    >
+                </p>
+                <p class="lead">
+                    世界トップクラスのインフラエンジニア／Googleスペシャリストの視点から、チャレンジラボの各タスクを「なぜそうするのか」というベストプラクティスの根拠込みで解説します。チャレンジラボは手順を教えてくれないため、公式ドキュメントの裏付けとともに実装方法を提示します。
+                </p>
+
+                <h2 id="overview"><i class="ti ti-map"></i>1. このチャレンジラボの全体像</h2>
+                <p>
+                    このラボでは、あなたは「ジュニアクラウドアーキテクト」として、事前構成済みの VM
+                    インスタンスに SSH 接続し、5つの音声・言語系 API を順番に呼び出していきます。
+                </p>
+
+                <div class="task-grid">
+                    <div class="task-card">
+                        <div class="task-num">Task 1</div>
+                        <div class="task-title">API key の作成</div>
+                        <div class="task-desc">API Keys API</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-num">Task 2</div>
+                        <div class="task-title">テキストから音声合成</div>
+                        <div class="task-desc">Cloud Text-to-Speech API</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-num">Task 3</div>
+                        <div class="task-title">音声を文字起こし（フランス語）</div>
+                        <div class="task-desc">Cloud Speech-to-Text API</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-num">Task 4</div>
+                        <div class="task-title">テキストの翻訳</div>
+                        <div class="task-desc">Cloud Translation API</div>
+                    </div>
+                    <div class="task-card">
+                        <div class="task-num">Task 5</div>
+                        <div class="task-title">言語の自動検出</div>
+                        <div class="task-desc">Cloud Translation API</div>
+                    </div>
+                </div>
+
+                <p>
+                    全タスクは「API key を作る → そのキーを使って各 API を curl
+                    で呼ぶ」という一本の線でつながっています。まず全体の流れを図で押さえておきましょう。
+                </p>
+
+                <div class="diagram-block">
+                    <div class="mermaid-block">
+                        <script type="text/plain">
+                            flowchart TB
+                                subgraph prep["事前準備"]
+                                    A["VM instance に SSH 接続"]
+                                    B["source venv/bin/activate"]
+                                end
+
+                                subgraph t1["Task 1"]
+                                    C["APIs and Services > Credentials"]
+                                    D["API key を作成し環境変数に保存"]
+                                end
+
+                                subgraph t2["Task 2: Text-to-Speech"]
+                                    E["synthesize-text.json を作成"]
+                                    F["text:synthesize を呼び出し"]
+                                    G["Base64 音声データを decode"]
+                                    H["MP3 をダウンロードして再生確認"]
+                                end
+
+                                subgraph t3["Task 3: Speech-to-Text"]
+                                    I["request.json を作成 (仏語 corbeau_renard.flac)"]
+                                    J["speech:recognize を呼び出し"]
+                                    K["文字起こし結果を保存"]
+                                end
+
+                                subgraph t4["Task 4: Translation (translate)"]
+                                    L["文字起こしテキストを抽出"]
+                                    M["language/translate/v2 を呼び出し"]
+                                    N["翻訳結果を保存"]
+                                end
+
+                                subgraph t5["Task 5: Translation (detect)"]
+                                    O["language/translate/v2/detect を呼び出し"]
+                                    P["検出結果を保存"]
+                                end
+
+                                A --> B --> C --> D
+                                D --> E --> F --> G --> H
+                                D --> I --> J --> K
+                                K --> L --> M --> N
+                                K --> O --> P
+
+                                classDef stepStyle fill:#142236,stroke:#7c9eff,color:#e8edf5,stroke-width:1px
+                                class A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P stepStyle
+                        </script>
+                    </div>
+                    <p class="diagram-caption">図1: チャレンジラボ全体のワークフロー</p>
+                </div>
+
+                <p>
+                    以降、各タスクを「手順」「ベストプラクティス」「根拠となるソース」の3点セットで解説します。
+                </p>
+
+                <h2 id="prep"><i class="ti ti-terminal-2"></i>2. 事前準備</h2>
+                <ol>
+                    <li>
+                        Google Cloud コンソールの Navigation menu から VM インスタンスの SSH
+                        ボタンをクリックして接続します。
+                    </li>
+                    <li>ラボ用に用意された Python 仮想環境を有効化します。</li>
+                </ol>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        source venv/bin/activate
+                    </script>
+                </div>
+
+                <div class="callout tip">
+                    <div class="callout-title"><i class="ti ti-bulb"></i>ベストプラクティス</div>
+                    <p>
+                        仮想環境を使うことで、ラボ用に事前インストールされた Python
+                        パッケージ（<code>google-cloud-*</code> クライアントなど）とシステム全体の
+                        Python 環境を分離できます。<code>pip install</code>
+                        を打つ前に必ずこのコマンドを実行する癖をつけましょう。
+                    </p>
+                </div>
+
+                <h2 id="task1"><i class="ti ti-key"></i>3. Task 1: API key の作成</h2>
+                <h3>3.1 手順</h3>
+                <ol>
+                    <li>
+                        Navigation menu → <strong>APIs & Services</strong> →
+                        <strong>Credentials</strong> を開きます。
+                    </li>
+                    <li>
+                        <strong>+ CREATE CREDENTIALS</strong> →
+                        <strong>API key</strong> を選択します。
+                    </li>
+                    <li>生成されたキーをコピーし、Cloud Shell / VM 上で環境変数に保存します。</li>
+                </ol>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        export API_KEY=&lt;生成されたAPIキー&gt;
+                    </script>
+                </div>
+
+                <p>以降のタスクではこの <code>${API_KEY}</code> を毎回使い回します。</p>
+
+                <h3>3.2 ベストプラクティス（重要）</h3>
+                <p>
+                    チャレンジラボの採点自体は「キーが作成されているか」だけを見ますが、実運用を想定するなら以下を必ず押さえてください。
+                </p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>対策</th>
+                                <th>内容</th>
+                                <th>目的</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>API 制限（API restrictions）</td>
+                                <td>
+                                    このキーで呼び出せる API を Speech-to-Text / Text-to-Speech /
+                                    Cloud Translation のみに限定する
+                                </td>
+                                <td>キー漏洩時の被害範囲を最小化</td>
+                            </tr>
+                            <tr>
+                                <td>アプリケーション制限</td>
+                                <td>IP アドレスやリファラーなど呼び出し元を制限する</td>
+                                <td>なりすまし利用の防止</td>
+                            </tr>
+                            <tr>
+                                <td>ヘッダーでの送信</td>
+                                <td>
+                                    <code>key=</code> をクエリパラメータで付けず
+                                    <code>X-goog-api-key</code> ヘッダーで渡す
+                                </td>
+                                <td>URL 経由でのキー漏洩を防ぐ</td>
+                            </tr>
+                            <tr>
+                                <td>コードに埋め込まない</td>
+                                <td>環境変数やシークレットマネージャに保持する</td>
+                                <td>ソースリポジトリへの誤コミットを防ぐ</td>
+                            </tr>
+                            <tr>
+                                <td>不要なキーの削除・ローテーション</td>
+                                <td>使わなくなったキーは削除し、定期的にローテーションする</td>
+                                <td>攻撃対象領域の縮小</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    Google 公式のベストプラクティスガイドでは、API
+                    キーへの制限追加によって侵害された場合の影響を抑えられるとされ、クエリパラメータでのキー送信は
+                    URL スキャンによる盗用リスクがあるため HTTP
+                    ヘッダーやクライアントライブラリの利用が推奨されています。また、<code
+                        >gcloud</code
+                    >
+                    CLI や REST API
+                    経由で作成したキーはデフォルトで無制限になる点にも注意が必要です。Google Cloud
+                    コンソール経由での作成時には API 制限の追加が必須ですが、gcloud CLI や REST API
+                    で作成する場合は制限を明示しない限りキーは無制限になります。
+                </p>
+
+                <div class="callout warn">
+                    <div class="callout-title"><i class="ti ti-alert-triangle"></i>注意</div>
+                    <p>
+                        本ガイドの Task 2〜5 のサンプルコードでは学習用に
+                        <code>?key=${API_KEY}</code>
+                        というクエリパラメータ形式（公式チュートリアルの標準的な提示方法）を使用しますが、本番運用では上記のヘッダー方式に置き換えることを強く推奨します。
+                    </p>
+                </div>
+
+                <h2 id="task2">
+                    <i class="ti ti-volume"></i>4. Task 2: Text-to-Speech API
+                    でテキストから音声を合成する
+                </h2>
+                <h3>4.1 リクエストファイルを作成する</h3>
+                <p>まず <code>synthesize-text.json</code> を作成します。</p>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        nano synthesize-text.json
+                    </script>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-label">synthesize-text.json</div>
+                    <pre><code class="language-json" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="json">
+                        {
+                            "input": {
+                                "text": "Cloud Text-to-Speech API allows developers to include natural-sounding, synthetic human speech as playable audio in their applications. The Text-to-Speech API converts text or Speech Synthesis Markup Language (SSML) input into audio data like MP3 or LINEAR16 (the encoding used in WAV files)."
+                            },
+                            "voice": {
+                                "languageCode": "en-gb",
+                                "name": "en-GB-Standard-A",
+                                "ssmlGender": "FEMALE"
+                            },
+                            "audioConfig": {
+                                "audioEncoding": "MP3"
+                            }
+                        }
+                    </script>
+                </div>
+
+                <div class="callout warn">
+                    <div class="callout-title">
+                        <i class="ti ti-alert-triangle"></i>よくあるつまずき（1）JSON の引用符
+                    </div>
+                    <p>
+                        ラボの課題文をそのままコピーすると、キーと値がシングルクォート（<code>'</code>）で書かれています。Google
+                        の一部チュートリアルでは curl の
+                        <code>--data</code>
+                        にインラインでシングルクォートを使う例が見られますが、これは「シェルの二重引用符で囲んだ文字列の中でエスケープを避けるための便宜的な書き方」であり、JSON
+                        の仕様（RFC
+                        8259）としては文字列はダブルクォート（<code>"</code>）で囲むのが正しい形式です。ファイルとして保存する場合はシェルのエスケープを気にする必要がないため、上記のように<strong>ダブルクォートで統一</strong>するのが安全で、<code
+                            >jq</code
+                        >
+                        など他のツールとも互換性が保てます。
+                    </p>
+                </div>
+
+                <div class="callout warn">
+                    <div class="callout-title">
+                        <i class="ti ti-alert-triangle"></i>よくあるつまずき（2）改行
+                    </div>
+                    <p>
+                        課題文の
+                        <code>text</code> の値は見やすさのために複数行に折り返されていますが、JSON
+                        の文字列リテラルの中に生の改行を含めることはできません（構文エラーになります）。<code
+                            >nano</code
+                        >
+                        に貼り付ける際は、<strong>1行の連続した文字列</strong>にしてから保存してください。
+                    </p>
+                </div>
+
+                <h3>4.2 Text-to-Speech API を呼び出す</h3>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        curl -X POST \
+                          -H "Content-Type: application/json; charset=utf-8" \
+                          -d @synthesize-text.json \
+                          "https://texttospeech.googleapis.com/v1/text:synthesize?key=${API_KEY}" \
+                          > synthesize-text.txt
+                    </script>
+                </div>
+
+                <p>
+                    レスポンスは Base64 エンコードされた音声データが
+                    <code>audioContent</code> フィールドに入った JSON です。音声合成のプロセスは
+                    synthesis と呼ばれ、生成される音声データは Base64
+                    エンコードされた文字列として出力されます。
+                </p>
+
+                <h3>4.3 デコード用スクリプトを作成する</h3>
+
+                <div class="code-block">
+                    <div class="code-label">tts_decode.py</div>
+                    <pre><code class="language-python" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="python">
+                        import argparse
+                        from base64 import decodebytes
+                        import json
+
+                        """
+                        Usage:
+                                python tts_decode.py --input "synthesize-text.txt" \
+                                --output "synthesize-text-audio.mp3"
+                        """
+
+                        def decode_tts_output(input_file, output_file):
+                            """Decode output from Cloud Text-to-Speech."""
+                            with open(input_file) as input:
+                                response = json.load(input)
+                                audio_data = response['audioContent']
+                                with open(output_file, "wb") as new_file:
+                                    new_file.write(decodebytes(audio_data.encode('utf-8')))
+
+                        if __name__ == '__main__':
+                            parser = argparse.ArgumentParser(
+                                description="Decode output from Cloud Text-to-Speech",
+                                formatter_class=argparse.RawDescriptionHelpFormatter)
+                            parser.add_argument('--input', required=True,
+                                                 help='The response from the Text-to-Speech API.')
+                            parser.add_argument('--output', required=True,
+                                                 help='The name of the audio file to create')
+                            args = parser.parse_args()
+                            decode_tts_output(args.input, args.output)
+                    </script>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        python tts_decode.py --input "synthesize-text.txt" --output "synthesize-text-audio.mp3"
+                    </script>
+                </div>
+
+                <h3>4.4 ダウンロードして確認する</h3>
+                <p>
+                    VM の SSH セッションウィンドウ右上の歯車アイコンから
+                    <strong>Download file</strong> を選び、<code>synthesize-text-audio.mp3</code>
+                    のパスを指定してローカルにダウンロード・再生確認します。
+                </p>
+
+                <div class="diagram-block">
+                    <div class="mermaid-block">
+                        <script type="text/plain">
+                            flowchart LR
+                                A["synthesize-text.json<br/>input / voice / audioConfig"] --> B["POST /v1/text:synthesize"]
+                                B --> C["synthesize-text.txt<br/>Base64 audioContent"]
+                                C --> D["tts_decode.py"]
+                                D --> E["synthesize-text-audio.mp3"]
+                                E --> F["SSH の Download file でローカルへ"]
+
+                                classDef flowStyle fill:#142236,stroke:#2dd4bf,color:#e8edf5,stroke-width:1px
+                                class A,B,C,D,E,F flowStyle
+                        </script>
+                    </div>
+                    <p class="diagram-caption">図2: 音声合成から再生確認までのデータフロー</p>
+                </div>
+
+                <h2 id="task3">
+                    <i class="ti ti-microphone"></i>5. Task 3: Speech-to-Text API
+                    でフランス語音声を文字起こしする
+                </h2>
+                <h3>5.1 リクエストファイルを作成する</h3>
+                <p>
+                    ラボが指定する音声ファイルは Cloud Storage 上の公開サンプル
+                    <code>gs://cloud-samples-data/speech/corbeau_renard.flac</code
+                    >（フランスの寓話「カラスとキツネ」の朗読）です。
+                </p>
+
+                <div class="code-block">
+                    <div class="code-label">request.json</div>
+                    <pre><code class="language-json" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="json">
+                        {
+                            "config": {
+                                "encoding": "FLAC",
+                                "languageCode": "fr"
+                            },
+                            "audio": {
+                                "uri": "gs://cloud-samples-data/speech/corbeau_renard.flac"
+                            }
+                        }
+                    </script>
+                </div>
+
+                <div class="callout tip">
+                    <div class="callout-title">
+                        <i class="ti ti-bulb"></i>ベストプラクティス（エンコーディングと言語コード）
+                    </div>
+                    <p>
+                        <strong>encoding</strong>: 最良の認識結果を得るには、FLAC や LINEAR16
+                        のようなロスレスなエンコーディングで音声をキャプチャ・伝送することが推奨されます。MP3
+                        や OGG_OPUS
+                        などのロッシー圧縮はノイズがある場合に精度が落ちる可能性があります。なお
+                        FLAC / WAV ファイルはヘッダーに符号化情報を含むため、<code>encoding</code>
+                        を省略しても API 側で自動判定されます。
+                    </p>
+                    <p>
+                        <strong>languageCode</strong>: BCP-47 形式のタグを指定します（例:
+                        <code>fr-FR</code>）。ラボの課題では単に
+                        <code>fr</code> でも動作しますが、地域まで明示した
+                        <code>fr-FR</code> のほうが将来的な言語モデルの変化に対して安定します。
+                    </p>
+                    <p>
+                        ファイル名は課題文では空欄になっており、チャレンジラボは採点ロジック上ファイル名の自由度が高い設計です。ここでは分かりやすさのため
+                        <code>request.json</code> /
+                        <code>result_fr.json</code> としていますが、<code>speech_request.json</code>
+                        のような用途が分かる名前にしても問題ありません。
+                    </p>
+                </div>
+
+                <h3>5.2 Speech-to-Text API を呼び出す</h3>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        curl -s -X POST \
+                          -H "Content-Type: application/json" \
+                          --data-binary @request.json \
+                          "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" \
+                          > result_fr.json
+                    </script>
+                </div>
+
+                <p>レスポンス例:</p>
+
+                <div class="code-block">
+                    <div class="code-label">result_fr.json</div>
+                    <pre><code class="language-json" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="json">
+                        {
+                          "results": [
+                            {
+                              "alternatives": [
+                                {
+                                  "transcript": "maitre corbeau sur un arbre perche tenait dans son bec un fromage maitre renard par l'odeur alleche lui tint a peu pres ce langage et bonjour monsieur du corbeau",
+                                  "confidence": 0.93855613
+                                }
+                              ],
+                              "resultEndTime": "12.630s",
+                              "languageCode": "fr-fr"
+                            }
+                          ],
+                          "totalBilledTime": "15s"
+                        }
+                    </script>
+                </div>
+
+                <h2 id="task4">
+                    <i class="ti ti-language"></i>6. Task 4: Cloud Translation API
+                    でテキストを翻訳する
+                </h2>
+                <p>
+                    課題文の「空欄の文章を英語に翻訳する」は、Task 3
+                    で得られたフランス語の文字起こし結果（あるいはその一部の文）を指します。まず
+                    <code>jq</code> などで transcript
+                    を取り出し、それを翻訳リクエストに渡すのが最も一貫した実装です。
+                </p>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        # jq が無ければインストール
+                        sudo apt-get update && sudo apt-get install -y jq
+
+                        TEXT=$(jq -r '.results[0].alternatives[0].transcript' result_fr.json)
+                    </script>
+                </div>
+
+                <p>Cloud Translation API v2（Basic）を API key で呼び出します。</p>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        curl -X POST \
+                          "https://translation.googleapis.com/language/translate/v2?key=${API_KEY}" \
+                          --data-urlencode "q=${TEXT}" \
+                          --data-urlencode "target=en" \
+                          --data-urlencode "format=text" \
+                          > translation.json
+                    </script>
+                </div>
+
+                <p>レスポンス例:</p>
+
+                <div class="code-block">
+                    <div class="code-label">translation.json</div>
+                    <pre><code class="language-json" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="json">
+                        {
+                          "data": {
+                            "translations": [
+                              {
+                                "translatedText": "Master crow perched on a tree held a cheese in his beak...",
+                                "detectedSourceLanguage": "fr"
+                              }
+                            ]
+                          }
+                        }
+                    </script>
+                </div>
+
+                <div class="callout tip">
+                    <div class="callout-title"><i class="ti ti-bulb"></i>ベストプラクティス</div>
+                    <p>
+                        <code>format=text</code> を明示しておくと、入力に HTML
+                        タグが含まれていた場合の意図しないエスケープ処理を防げます。デフォルトは
+                        <code>html</code> 扱いです。
+                    </p>
+                    <p>
+                        長文や特殊文字（アクセント記号付きのフランス語など）を渡す際は、シェル変数展開による
+                        URL エンコード崩れを避けるため
+                        <code>--data-urlencode</code> を使うことを推奨します（<code
+                            >-d "q=${TEXT}"</code
+                        >
+                        だと <code>&</code> やスペースが正しく渡らないことがあります）。
+                    </p>
+                    <p>
+                        大量翻訳や用語集（Glossary）、HTML
+                        フォーマットの高度な制御が必要な場合は、v2（Basic）ではなく Cloud
+                        Translation
+                        Advanced（v3、<code>projects.locations.translateText</code>）の利用が推奨されます。
+                    </p>
+                </div>
+
+                <h2 id="task5">
+                    <i class="ti ti-language-hiragana"></i>7. Task 5: Cloud Translation API
+                    で言語を検出する
+                </h2>
+                <p>
+                    同じ文（Task 4 で使った <code>${TEXT}</code>、あるいは検証用の別文）を
+                    <code>detect</code> エンドポイントに渡します。
+                </p>
+
+                <div class="code-block">
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="bash">
+                        curl -X POST \
+                          "https://translation.googleapis.com/language/translate/v2/detect?key=${API_KEY}" \
+                          --data-urlencode "q=${TEXT}" \
+                          > detection.json
+                    </script>
+                </div>
+
+                <p>レスポンス例:</p>
+
+                <div class="code-block">
+                    <div class="code-label">detection.json</div>
+                    <pre><code class="language-json" data-src></code></pre>
+                    <script type="text/plain" class="code-source" data-lang="json">
+                        {
+                          "data": {
+                            "detections": [
+                              [
+                                {
+                                  "language": "fr",
+                                  "isReliable": false,
+                                  "confidence": 1
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                    </script>
+                </div>
+
+                <div class="callout tip">
+                    <div class="callout-title"><i class="ti ti-bulb"></i>ベストプラクティス</div>
+                    <p>
+                        言語検出は fr-CR や pt-BR
+                        のような一部の地域変種の言語コードには対応していないという制約があります。複数の候補が返る場合は
+                        <code>confidence</code> を見て最も高いものを採用し、<code>isReliable</code>
+                        が
+                        <code>false</code>
+                        の場合は結果を鵜呑みにせず、必要なら文字数を増やして再検出することを検討してください（短い文ほど誤検出が起きやすい）。
+                    </p>
+                </div>
+
+                <h2 id="sequence">
+                    <i class="ti ti-timeline"></i>8. API 呼び出し全体のシーケンス図
+                </h2>
+                <p>
+                    Task 2〜5 を通して、VM（Cloud Shell）と各 Google Cloud API・Cloud Storage
+                    の間でどのようにリクエスト／レスポンスが流れるかを整理します。
+                </p>
+
+                <div class="diagram-block">
+                    <div class="mermaid-block">
+                        <script type="text/plain">
+                            sequenceDiagram
+                                participant VM as VM instance (SSH)
+                                participant TTS as Text-to-Speech API
+                                participant STT as Speech-to-Text API
+                                participant GCS as Cloud Storage
+                                participant TR as Translation API
+
+                                VM->>TTS: POST /v1/text:synthesize (synthesize-text.json, key)
+                                TTS-->>VM: audioContent (Base64)
+                                VM->>VM: tts_decode.py で MP3 化
+
+                                VM->>STT: POST /v1/speech:recognize (request.json, key)
+                                STT->>GCS: gs://.../corbeau_renard.flac を読み込み
+                                GCS-->>STT: FLAC 音声データ
+                                STT-->>VM: transcript (フランス語)
+
+                                VM->>TR: POST /language/translate/v2 (q=transcript, target=en, key)
+                                TR-->>VM: translatedText
+
+                                VM->>TR: POST /language/translate/v2/detect (q=transcript, key)
+                                TR-->>VM: detected language + confidence
+                        </script>
+                    </div>
+                    <p class="diagram-caption">
+                        図3: VM から各 API・Cloud Storage への呼び出し順序
+                    </p>
+                </div>
+
+                <h2 id="checklist"><i class="ti ti-checklist"></i>9. 成果物チェックリスト</h2>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>作成するファイル（例）</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>―（コンソール上でキーを作成）</td>
+                                <td><code>API_KEY</code> 環境変数</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <code>synthesize-text.json</code>,
+                                    <code>synthesize-text.txt</code>,
+                                    <code>synthesize-text-audio.mp3</code>
+                                </td>
+                                <td>音声合成リクエスト／Base64レスポンス／再生可能なMP3</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><code>request.json</code>, <code>result_fr.json</code></td>
+                                <td>フランス語文字起こしリクエスト／結果</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><code>translation.json</code></td>
+                                <td>英訳結果</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><code>detection.json</code></td>
+                                <td>言語検出結果</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    各タスクの最後に
+                    <strong>Check my progress</strong>
+                    をクリックし、緑色のチェックが付くことを確認してから次のタスクへ進んでください。ラボは一時停止できないため、タイマーを意識しながら進めるのがポイントです。
+                </p>
+
+                <h2 id="best-practices">
+                    <i class="ti ti-shield-check"></i>10.
+                    セキュリティ・運用面のベストプラクティスまとめ
+                </h2>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>観点</th>
+                                <th>ラボでの実装</th>
+                                <th>本番運用での推奨</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>認証方式</td>
+                                <td>API key をクエリパラメータ <code>?key=</code> で付与</td>
+                                <td>
+                                    <code>X-goog-api-key</code> ヘッダー、もしくは OAuth /
+                                    サービスアカウントのアクセストークン
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>キーの権限</td>
+                                <td>無制限（学習用途）</td>
+                                <td>API制限＋アプリケーション制限を必ず設定</td>
+                            </tr>
+                            <tr>
+                                <td>秘匿情報の保管</td>
+                                <td>シェル環境変数 <code>${API_KEY}</code></td>
+                                <td>Secret Manager 等のシークレット管理サービス</td>
+                            </tr>
+                            <tr>
+                                <td>音声エンコーディング</td>
+                                <td>FLAC（ロスレス）</td>
+                                <td>可能な限り FLAC / LINEAR16 を使用し、ロッシー圧縮は避ける</td>
+                            </tr>
+                            <tr>
+                                <td>翻訳APIの選定</td>
+                                <td>v2 (Basic)</td>
+                                <td>
+                                    用語集・大量処理・ドキュメント翻訳が必要なら v3 (Advanced)
+                                    を検討
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="references"><i class="ti ti-books"></i>11. 参考文献・ソース</h2>
+
+                <ul class="ref-list">
+                    <li class="ref-item">
+                        <span class="ref-num">1</span>
+                        <div class="ref-body">
+                            <div class="ref-title">Manage API keys</div>
+                            <a
+                                class="ref-url"
+                                href="https://docs.cloud.google.com/docs/authentication/api-keys"
+                                target="_blank"
+                                rel="noopener"
+                                >https://docs.cloud.google.com/docs/authentication/api-keys</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">2</span>
+                        <div class="ref-body">
+                            <div class="ref-title">Best practices for managing API keys</div>
+                            <a
+                                class="ref-url"
+                                href="https://docs.cloud.google.com/docs/authentication/api-keys-best-practices"
+                                target="_blank"
+                                rel="noopener"
+                                >https://docs.cloud.google.com/docs/authentication/api-keys-best-practices</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">3</span>
+                        <div class="ref-body">
+                            <div class="ref-title">Adding restrictions to API keys</div>
+                            <a
+                                class="ref-url"
+                                href="https://docs.cloud.google.com/api-keys/docs/add-restrictions-api-keys"
+                                target="_blank"
+                                rel="noopener"
+                                >https://docs.cloud.google.com/api-keys/docs/add-restrictions-api-keys</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">4</span>
+                        <div class="ref-body">
+                            <div class="ref-title">Cloud Text-to-Speech basics</div>
+                            <a
+                                class="ref-url"
+                                href="https://docs.cloud.google.com/text-to-speech/docs/basics"
+                                target="_blank"
+                                rel="noopener"
+                                >https://docs.cloud.google.com/text-to-speech/docs/basics</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">5</span>
+                        <div class="ref-body">
+                            <div class="ref-title">
+                                Quickstart: Create audio from text by using the command line
+                            </div>
+                            <a
+                                class="ref-url"
+                                href="https://cloud.google.com/text-to-speech/docs/create-audio-text-command-line"
+                                target="_blank"
+                                rel="noopener"
+                                >https://cloud.google.com/text-to-speech/docs/create-audio-text-command-line</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">6</span>
+                        <div class="ref-body">
+                            <div class="ref-title">
+                                Cloud Speech-to-Text: Speech-to-Text requests
+                            </div>
+                            <a
+                                class="ref-url"
+                                href="https://docs.cloud.google.com/speech-to-text/docs/v1/speech-to-text-requests"
+                                target="_blank"
+                                rel="noopener"
+                                >https://docs.cloud.google.com/speech-to-text/docs/v1/speech-to-text-requests</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">7</span>
+                        <div class="ref-body">
+                            <div class="ref-title">
+                                RecognitionConfig / AudioEncoding リファレンス
+                            </div>
+                            <a
+                                class="ref-url"
+                                href="https://docs.cloud.google.com/speech-to-text/docs/reference/rpc/google.cloud.speech.v1p1beta1"
+                                target="_blank"
+                                rel="noopener"
+                                >https://docs.cloud.google.com/speech-to-text/docs/reference/rpc/google.cloud.speech.v1p1beta1</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">8</span>
+                        <div class="ref-body">
+                            <div class="ref-title">Translate text with Cloud Translation</div>
+                            <a
+                                class="ref-url"
+                                href="https://docs.cloud.google.com/translate/docs/translate-text"
+                                target="_blank"
+                                rel="noopener"
+                                >https://docs.cloud.google.com/translate/docs/translate-text</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">9</span>
+                        <div class="ref-body">
+                            <div class="ref-title">Detecting languages (Basic)</div>
+                            <a
+                                class="ref-url"
+                                href="https://cloud.google.com/translate/v2/detecting-language-with-rest"
+                                target="_blank"
+                                rel="noopener"
+                                >https://cloud.google.com/translate/v2/detecting-language-with-rest</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">10</span>
+                        <div class="ref-body">
+                            <div class="ref-title">
+                                Speech to Text Transcription with the Cloud Speech API（Google Cloud
+                                Skills Boost）
+                            </div>
+                            <a
+                                class="ref-url"
+                                href="https://www.cloudskillsboost.google/focuses/2187"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cloudskillsboost.google/focuses/2187</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">11</span>
+                        <div class="ref-body">
+                            <div class="ref-title">
+                                Translate Text with the Cloud Translation API（Google Cloud Skills
+                                Boost）
+                            </div>
+                            <a
+                                class="ref-url"
+                                href="https://www.cloudskillsboost.google/focuses/697"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cloudskillsboost.google/focuses/697</a
+                            >
+                        </div>
+                    </li>
+                    <li class="ref-item">
+                        <span class="ref-num">12</span>
+                        <div class="ref-body">
+                            <div class="ref-title">元チャレンジラボページ（要ログイン）</div>
+                            <a
+                                class="ref-url"
+                                href="https://www.skills.google/course_templates/700/labs/625113"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.skills.google/course_templates/700/labs/625113</a
+                            >
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="footnote">
+                    注記:
+                    上記12番のラボ本体ページはログインが必要なため、本ガイドの手順・ベストプラクティスは公式ドキュメント（1〜9）および同一シリーズの公開ラボページ（10,
+                    11）の内容をもとに構成しています。Task 3〜5
+                    の一部ファイル名は課題文中で空欄になっており厳密な指定がないため、分かりやすさを優先した命名例を提示しています。実際の採点は
+                    Check my progress のロジックに従うため、ファイル名よりも「正しい API
+                    を正しいパラメータで呼び出し、結果を保存できているか」を優先してください。
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                const lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n[ \t]*$/, '')
+                    .split('\n');
+                const indents = lines
+                    .filter((l) => l.trim().length > 0)
+                    .map((l) => (l.match(/^[ \t]*/) || [''])[0].length);
+                const min = indents.length ? Math.min(...indents) : 0;
+                return lines.map((l) => l.slice(min)).join('\n');
+            }
+
+            function renderCodeBlocks() {
+                document.querySelectorAll('.code-block').forEach((block) => {
+                    const src = block.querySelector('script.code-source');
+                    const codeEl = block.querySelector('code[data-src]');
+                    if (!src || !codeEl) return;
+                    codeEl.textContent = dedent(src.textContent);
+                    hljs.highlightElement(codeEl);
+                });
+            }
+
+            function renderMermaidBlocks() {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    useMaxWidth: false,
+                    fontFamily: 'inherit',
+                    themeVariables: {
+                        background: '#0d1826',
+                        primaryColor: '#142236',
+                        primaryTextColor: '#e8edf5',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#3a4d68',
+                        secondaryColor: '#1a2b40',
+                        tertiaryColor: '#0d1826',
+                        textColor: '#e8edf5',
+                        mainBkg: '#142236',
+                        nodeBorder: '#7c9eff',
+                        clusterBkg: '#0a1420',
+                        clusterBorder: '#2a3d57',
+                        actorBkg: '#142236',
+                        actorBorder: '#7c9eff',
+                        actorTextColor: '#e8edf5',
+                        signalColor: '#a8b8cc',
+                        signalTextColor: '#e8edf5',
+                        labelBoxBkgColor: '#142236',
+                        labelBoxBorderColor: '#7c9eff',
+                        labelTextColor: '#e8edf5',
+                        noteBkgColor: '#1a2b40',
+                        noteTextColor: '#e8edf5',
+                        noteBorderColor: '#2a3d57',
+                    },
+                });
+
+                document.querySelectorAll('.mermaid-block').forEach((block) => {
+                    const src = block.querySelector('script[type="text/plain"]');
+                    if (!src) return;
+                    const pre = document.createElement('pre');
+                    pre.className = 'mermaid';
+                    pre.textContent = dedent(src.textContent);
+                    block.appendChild(pre);
+                });
+
+                mermaid.run({ querySelector: '.mermaid' });
+            }
+
+            function setupSidebarToggle() {
+                const btn = document.getElementById('menuToggle');
+                btn.addEventListener('click', () => {
+                    document.body.classList.toggle('sidebar-open');
+                });
+                document.querySelectorAll('.nav-link').forEach((link) => {
+                    link.addEventListener('click', () =>
+                        document.body.classList.remove('sidebar-open'),
+                    );
+                });
+            }
+
+            function setupActiveNavObserver() {
+                const links = Array.from(document.querySelectorAll('.nav-link'));
+                const sections = links
+                    .map((l) => document.querySelector(l.getAttribute('href')))
+                    .filter(Boolean);
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            const id = '#' + entry.target.id;
+                            const link = links.find((l) => l.getAttribute('href') === id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach((l) => l.classList.remove('active'));
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach((s) => observer.observe(s));
+            }
+
+            (async function init() {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+                renderCodeBlocks();
+                renderMermaidBlocks();
+                setupSidebarToggle();
+                setupActiveNavObserver();
+            })();
+        </script>
+    </body>
+</html>
