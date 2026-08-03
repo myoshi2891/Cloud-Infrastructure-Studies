@@ -27,7 +27,7 @@
 ## プロジェクト構造
 
 - `/app`: Next.js App Router のページコンポーネント。
-  - /app/gcl/associate-cloud-engineer: ACE 試験対策ページ（domain1〜4、section1〜4、architecture-guide、complete-advanced-guide、hands-on/ 配下に cloud-load-balancing-guide, develop-your-gcp-network, build-a-secure-google-cloud-network, set-up-an-app-dev-environment-on-google-cloud, gcp-security-fundamentals-guide を含む）。
+  - `/app/gcl/hands-on`: GCP ハンズオン実践ガイド群（`cloud-load-balancing-guide`, `develop-your-gcp-network`, `build-a-secure-google-cloud-network`, `set-up-an-app-dev-environment-on-google-cloud`, `gcp-security-fundamentals-guide`, `gke-private-cluster-security-guide`, `iap-tcp-forwarding-best-practices-guide`, `terraform-gcp-challenge-lab-guide`, `griffin-wordpress-gke-guide`）。
   - `/app/gcl/genai-leader`: Generative AI Leader 試験対策ページ（Section 1〜4、section1/2 はコンポーネント分割済み）。
   - `/app/gcl/cloud-digital-leader`: Cloud Digital Leader 試験対策ページ（Section 1〜6、各セクションはコンポーネント分割済み）。
   - `/app/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。

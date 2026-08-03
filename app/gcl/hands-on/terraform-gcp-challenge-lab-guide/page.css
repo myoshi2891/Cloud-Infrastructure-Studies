@@ -1,0 +1,500 @@
+@import 'https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css';
+
+.terraform-lab-guide-page {
+    /* TODO: globals.css に固有ダーク面・構文色（#0d1a2b, #13253c, #12233d,
+     * #2a1416, #10281f, #2a2110, #c792ea, #5ee6c8, #ff9d7a, #ff8ac8）を追加する。
+     */
+    background: var(--color-guide-background);
+    color: var(--color-guide-foreground);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+}
+
+.terraform-lab-guide-page .layout {
+    display: flex;
+    min-height: 100vh;
+    padding-left: 280px;
+}
+
+.terraform-lab-guide-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-height, 0px) + var(--disclaimer-height, 0px));
+    left: 0;
+    width: 280px;
+    height: calc(100vh - var(--header-height, 0px) - var(--disclaimer-height, 0px));
+    overflow-y: auto;
+    background: #0d1a2b;
+    border-right: 1px solid var(--color-guide-border-soft);
+    padding: 28px 16px;
+    z-index: 10;
+}
+
+.terraform-lab-guide-page .sidebar-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-guide-foreground-faint);
+    letter-spacing: 0.04em;
+    padding: 0 12px 16px 12px;
+}
+
+.terraform-lab-guide-page .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.terraform-lab-guide-page .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-md);
+    color: var(--color-guide-foreground-soft);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 2px;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+}
+
+.terraform-lab-guide-page .sidebar-nav a i {
+    font-size: 16px;
+    color: var(--color-guide-foreground-faint);
+    flex-shrink: 0;
+}
+
+.terraform-lab-guide-page .sidebar-nav a:hover {
+    background: #13253c;
+    color: var(--color-guide-foreground);
+}
+
+.terraform-lab-guide-page .sidebar-nav a.active {
+    background: #12233d;
+    color: var(--color-guide-accent);
+    border-left: 2px solid var(--color-guide-accent);
+}
+
+.terraform-lab-guide-page .sidebar-nav a.active i {
+    color: var(--color-guide-accent);
+}
+
+.terraform-lab-guide-page .sidebar-divider {
+    height: 1px;
+    background: var(--color-guide-border-soft);
+    margin: 14px 8px;
+}
+
+.terraform-lab-guide-page .main {
+    width: 100%;
+    margin: 0 auto;
+    padding: 48px 64px 120px 64px;
+    max-width: 1200px;
+}
+
+.terraform-lab-guide-page .hero {
+    border-bottom: 1px solid var(--color-guide-border-soft);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+}
+
+.terraform-lab-guide-page .hero-eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-guide-accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.terraform-lab-guide-page .hero h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 14px 0;
+    line-height: 1.4;
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: var(--color-guide-foreground);
+}
+
+.terraform-lab-guide-page .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.terraform-lab-guide-page .hero-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-guide-foreground-soft);
+    background: #13253c;
+    border: 1px solid var(--color-guide-border-soft);
+    border-radius: var(--radius-md);
+    padding: 6px 12px;
+}
+
+.terraform-lab-guide-page .hero-meta i {
+    color: var(--color-guide-foreground-faint);
+    font-size: 14px;
+}
+
+.terraform-lab-guide-page section {
+    margin-bottom: 56px;
+    scroll-margin-top: 80px;
+}
+
+.terraform-lab-guide-page h2 {
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-guide-border-soft);
+    margin: 0 0 20px 0;
+}
+
+.terraform-lab-guide-page h2 .num {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-guide-accent);
+    background: #12233d;
+    border-radius: var(--radius-md);
+    padding: 3px 9px;
+    border: none;
+    width: auto;
+    height: auto;
+}
+
+.terraform-lab-guide-page h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 28px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-guide-foreground);
+}
+
+.terraform-lab-guide-page h3 i {
+    color: var(--color-guide-accent);
+    font-size: 15px;
+}
+
+.terraform-lab-guide-page p {
+    color: var(--color-guide-foreground-soft);
+    margin: 0 0 14px 0;
+    line-height: 1.7;
+}
+
+.terraform-lab-guide-page ul,
+.terraform-lab-guide-page ol {
+    color: var(--color-guide-foreground-soft);
+    padding-left: 22px;
+    margin: 0 0 16px 0;
+}
+
+.terraform-lab-guide-page li {
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.terraform-lab-guide-page strong {
+    color: var(--color-guide-foreground);
+    font-weight: 500;
+}
+
+.terraform-lab-guide-page code {
+    font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 13px;
+    background: #13253c;
+    border: 1px solid var(--color-guide-border-soft);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--color-guide-accent);
+}
+
+.terraform-lab-guide-page pre {
+    background: #0d1a2b;
+    border: 1px solid var(--color-guide-border-soft);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 0 0 18px 0;
+}
+
+.terraform-lab-guide-page pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--color-guide-foreground);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.terraform-lab-guide-page .code-line {
+    display: block;
+    white-space: pre;
+    min-height: 1.5em;
+}
+
+/* Syntax Highlighting */
+.terraform-lab-guide-page .tok-keyword {
+    color: #c792ea;
+}
+.terraform-lab-guide-page .tok-string {
+    color: #5ee6c8;
+}
+.terraform-lab-guide-page .tok-comment {
+    color: var(--color-guide-foreground-faint);
+    font-style: italic;
+}
+.terraform-lab-guide-page .tok-attr {
+    color: var(--color-guide-accent);
+}
+.terraform-lab-guide-page .tok-variable {
+    color: #ff8ac8;
+}
+.terraform-lab-guide-page .tok-number,
+.terraform-lab-guide-page .tok-boolean {
+    color: #ff9d7a;
+}
+.terraform-lab-guide-page .tok-command {
+    color: #c792ea;
+    font-weight: 500;
+}
+.terraform-lab-guide-page .tok-flag {
+    color: var(--color-guide-accent);
+}
+
+.terraform-lab-guide-page .code-label {
+    font-size: 12px;
+    color: var(--color-guide-foreground-faint);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.terraform-lab-guide-page .mermaid-wrap {
+    background: #0d1a2b;
+    border: 1px solid var(--color-guide-border-soft);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 0 0 20px 0;
+    overflow-x: auto;
+}
+
+.terraform-lab-guide-page .callout {
+    background: #12233d;
+    border: 1px solid var(--color-guide-border);
+    border-left: 3px solid var(--color-guide-accent);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin: 0 0 20px 0;
+}
+
+.terraform-lab-guide-page .callout.warning {
+    background: #2a2110;
+    border-color: #4a3b1a;
+    border-left-color: var(--color-guide-warning);
+}
+
+.terraform-lab-guide-page .callout.success {
+    background: #10281f;
+    border-color: #1a4a35;
+    border-left-color: var(--color-guide-positive);
+}
+
+.terraform-lab-guide-page .callout.danger {
+    background: #2a1416;
+    border-color: #4a1f22;
+    border-left-color: var(--color-destructive);
+}
+
+.terraform-lab-guide-page .callout-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-guide-foreground);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terraform-lab-guide-page .callout p {
+    font-size: 14px;
+    margin: 0;
+}
+
+.terraform-lab-guide-page table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 20px 0;
+    font-size: 14px;
+}
+
+.terraform-lab-guide-page th,
+.terraform-lab-guide-page td {
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid var(--color-guide-border-soft);
+}
+
+.terraform-lab-guide-page th {
+    background: #0d1a2b;
+    color: var(--color-guide-foreground);
+    font-weight: 500;
+}
+
+.terraform-lab-guide-page td {
+    color: var(--color-guide-foreground-soft);
+    background: var(--color-guide-background);
+}
+
+.terraform-lab-guide-page .ext-link {
+    color: var(--color-guide-accent);
+    text-decoration: none;
+}
+
+.terraform-lab-guide-page .ext-link:hover {
+    text-decoration: underline;
+}
+
+.terraform-lab-guide-page .source-note {
+    font-size: 13px;
+}
+
+.terraform-lab-guide-page .source-note i {
+    color: var(--color-guide-foreground-faint);
+}
+
+.terraform-lab-guide-page .source-groups {
+    display: grid;
+    gap: 20px;
+}
+
+.terraform-lab-guide-page .source-group {
+    background: #0d1a2b;
+    border: 1px solid var(--color-guide-border-soft);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+}
+
+.terraform-lab-guide-page .source-group-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-guide-foreground);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terraform-lab-guide-page .source-group-title.gcp i {
+    color: var(--color-google-blue);
+}
+.terraform-lab-guide-page .source-group-title.registry i {
+    color: #c792ea;
+}
+.terraform-lab-guide-page .source-group-title.hashicorp i {
+    color: #5ee6c8;
+}
+
+.terraform-lab-guide-page .source-group-title .count {
+    font-size: 12px;
+    color: var(--color-guide-foreground-faint);
+    background: #13253c;
+    border-radius: 10px;
+    padding: 1px 8px;
+    margin-left: auto;
+}
+
+.terraform-lab-guide-page .source-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.terraform-lab-guide-page .source-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #13253c;
+    border: 1px solid var(--color-guide-border-soft);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+}
+
+.terraform-lab-guide-page .source-row:hover {
+    border-color: var(--color-guide-border);
+}
+
+.terraform-lab-guide-page .source-row-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.terraform-lab-guide-page .source-row-icon.gcp {
+    color: var(--color-google-blue);
+}
+.terraform-lab-guide-page .source-row-icon.registry {
+    color: #c792ea;
+}
+.terraform-lab-guide-page .source-row-icon.hashicorp {
+    color: #5ee6c8;
+}
+
+.terraform-lab-guide-page .source-row-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.terraform-lab-guide-page .source-row-title {
+    font-size: 14px;
+    color: var(--color-guide-foreground);
+    font-weight: 500;
+}
+
+.terraform-lab-guide-page .source-row-url {
+    font-size: 12px;
+    color: var(--color-guide-foreground-faint);
+}
+
+.terraform-lab-guide-page .source-row-chevron {
+    color: var(--color-guide-foreground-faint);
+    font-size: 16px;
+}
+
+.terraform-lab-guide-page .footer {
+    border-top: 1px solid var(--color-guide-border-soft);
+    padding-top: 28px;
+    margin-top: 60px;
+    font-size: 13px;
+    color: var(--color-guide-foreground-faint);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 992px) {
+    .terraform-lab-guide-page .layout {
+        padding-left: 0;
+    }
+
+    .terraform-lab-guide-page .sidebar {
+        display: none;
+    }
+
+    .terraform-lab-guide-page .main {
+        padding: 24px 20px 80px 20px;
+        max-width: 100%;
+    }
+}

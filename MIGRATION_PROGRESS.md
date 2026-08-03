@@ -7,7 +7,56 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-07-28T15:44:00.000Z
+- **最終更新日時(UTC):** 2026-08-02T15:10:00.000Z
+
+## 2026-08-02: GCP「Team Griffin インフラ構築チャレンジラボ 完全解説ガイド」移行 (完了)
+
+### 目的
+
+`Griffin-wordpress-gke-guide.html`（静的HTML・2224行・3個のMermaid図・9個のコードブロック）を、正準の設計パターン（NavBar + Server page.tsx + Client GriffinWordPressGkeGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/hands-on/griffin-wordpress-gke-guide` ルートへ完全移行する。文章・表・3個のMermaid図・9個のコードブロック・補足説明・チェックリストの一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(gcl-hands-on): add failing tests for griffin wordpress gke guide page` (`__tests__/gcl/hands-on/griffin-wordpress-gke-guide/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(gcl-hands-on): implement griffin wordpress gke guide page to pass tests` (`page.tsx`, `GriffinWordPressGkeGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(gcl-hands-on): integrate griffin wordpress gke guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`GEMINI.md` / `CLAUDE.md` 更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive griffin wordpress gke guide files` (`MIGRATION_PROGRESS.md` の更新、元HTML `Griffin-wordpress-gke-guide.html` を `archive/Gcl_Archive/Hands-on/html/` へ、MD `Griffin-wordpress-gke-guide.md` を `archive/Gcl_Archive/Hands-on/md/` へアーカイブ移動)
+
+### 関連ファイル
+
+- [app/gcl/hands-on/griffin-wordpress-gke-guide/page.tsx](app/gcl/hands-on/griffin-wordpress-gke-guide/page.tsx)
+- [app/gcl/hands-on/griffin-wordpress-gke-guide/GriffinWordPressGkeGuide.tsx](app/gcl/hands-on/griffin-wordpress-gke-guide/GriffinWordPressGkeGuide.tsx)
+- [app/gcl/hands-on/griffin-wordpress-gke-guide/NavBar.tsx](app/gcl/hands-on/griffin-wordpress-gke-guide/NavBar.tsx)
+- [app/gcl/hands-on/griffin-wordpress-gke-guide/constants.ts](app/gcl/hands-on/griffin-wordpress-gke-guide/constants.ts)
+- [app/gcl/hands-on/griffin-wordpress-gke-guide/page.css](app/gcl/hands-on/griffin-wordpress-gke-guide/page.css)
+- [__tests__/gcl/hands-on/griffin-wordpress-gke-guide/page.test.tsx](__tests__/gcl/hands-on/griffin-wordpress-gke-guide/page.test.tsx)
+- [archive/Gcl_Archive/Hands-on/html/Griffin-wordpress-gke-guide.html](archive/Gcl_Archive/Hands-on/html/Griffin-wordpress-gke-guide.html)
+- [archive/Gcl_Archive/Hands-on/md/Griffin-wordpress-gke-guide.md](archive/Gcl_Archive/Hands-on/md/Griffin-wordpress-gke-guide.md)
+
+## 2026-08-01: GCP「GKE プライベートクラスタ セキュリティ実装ガイド」移行 (完了)
+
+### 目的
+
+`Gke-private-cluster-security-guide.html`（静的HTML・1420行・4個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client GkePrivateClusterSecurityGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/gcl/hands-on/gke-private-cluster-security-guide` ルートへ完全移行する。文章・表・4個のMermaid図・補足説明・チェックリストの一切の省略・要約なしで移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(gcl-hands-on): add failing tests for GKE private cluster security guide page` (`__tests__/gcl/hands-on/gke-private-cluster-security-guide/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(gcl-hands-on): implement GKE private cluster security guide page to pass tests` (`page.tsx`, `GkePrivateClusterSecurityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(gcl-hands-on): integrate GKE private cluster security guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`GEMINI.md` 更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive GKE private cluster security guide html and md files` (`MIGRATION_PROGRESS.md` の更新、元HTML `Gke-private-cluster-security-guide.html` を `archive/Gcl_Archive/Hands-on/html/` へ、MD を `archive/Gcl_Archive/Hands-on/md/` へアーカイブ移動)
+- [x] **Step 5 (Full-width Layout, Syntax Highlighting & 1rem Diagram Scaling)**: `feat(gcl-hands-on): expand main layout width, add syntax highlighting, and protect 1rem diagram text size` (`main` メインコンテンツ横幅全幅化、コードブロックへの `code-cmd` / `code-param` 等の構文カラーハイライト適用、図解文字サイズ 1rem 保護とレスポンシブ表示の適用)
+
+### 関連ファイル
+
+- [app/gcl/hands-on/gke-private-cluster-security-guide/page.tsx](app/gcl/hands-on/gke-private-cluster-security-guide/page.tsx)
+- [app/gcl/hands-on/gke-private-cluster-security-guide/GkePrivateClusterSecurityGuide.tsx](app/gcl/hands-on/gke-private-cluster-security-guide/GkePrivateClusterSecurityGuide.tsx)
+- [app/gcl/hands-on/gke-private-cluster-security-guide/NavBar.tsx](app/gcl/hands-on/gke-private-cluster-security-guide/NavBar.tsx)
+- [app/gcl/hands-on/gke-private-cluster-security-guide/constants.ts](app/gcl/hands-on/gke-private-cluster-security-guide/constants.ts)
+- [app/gcl/hands-on/gke-private-cluster-security-guide/page.css](app/gcl/hands-on/gke-private-cluster-security-guide/page.css)
+- [__tests__/gcl/hands-on/gke-private-cluster-security-guide/page.test.tsx](__tests__/gcl/hands-on/gke-private-cluster-security-guide/page.test.tsx)
+- [archive/Gcl_Archive/Hands-on/html/Gke-private-cluster-security-guide.html](archive/Gcl_Archive/Hands-on/html/Gke-private-cluster-security-guide.html)
+- [archive/Gcl_Archive/Hands-on/md/Gke-private-cluster-security-guide.md](archive/Gcl_Archive/Hands-on/md/Gke-private-cluster-security-guide.md)
 
 ## 2026-07-28: AWS「AWS SAA-C03 ドメイン3: 高性能なアーキテクチャの設計」移行 (完了)
 

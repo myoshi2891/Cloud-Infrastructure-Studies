@@ -229,6 +229,21 @@ const ALL_EXAMS: Exam[] = [
                 href: '/gcl/hands-on/gcp-security-fundamentals-guide',
                 pct: 'ハンズオン',
             },
+            {
+                label: 'GKE プライベートクラスタ セキュリティ実装ガイド',
+                href: '/gcl/hands-on/gke-private-cluster-security-guide',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'Terraform GCP Challenge Lab 完全攻略ガイド',
+                href: '/gcl/hands-on/terraform-gcp-challenge-lab-guide',
+                pct: 'ハンズオン',
+            },
+            {
+                label: 'Team Griffin インフラ構築チャレンジラボ 完全解説ガイド',
+                href: '/gcl/hands-on/griffin-wordpress-gke-guide',
+                pct: 'ハンズオン',
+            },
         ],
         badge: 'ハンズオン',
         icon: '🛠️',

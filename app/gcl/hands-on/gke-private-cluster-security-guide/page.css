@@ -1,0 +1,459 @@
+/* GKE プライベートクラスタ セキュリティ実装ガイド 専用 CSS */
+/* TODO: globals.css に GKE ガイド専用のダークテーマトークンを追加する。
+ * 現在の表示維持に必要な主な色: #142438, #7c9eff, #7cc0ff, #24374d, #1c2d42
+ */
+
+.gke-security-guide-page {
+    background: var(--color-background, #07111e);
+    color: var(--color-foreground, #e8edf5);
+    font-family: var(--font-body, var(--font-sans));
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+}
+
+.gke-security-guide-page .layout {
+    display: block;
+    width: 100%;
+    padding-left: 272px;
+    box-sizing: border-box;
+}
+
+.gke-security-guide-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    width: 272px;
+    height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
+    overflow-y: auto;
+    background: var(--color-card, #0d1b2e);
+    border-right: 1px solid var(--color-border, #1c2d42);
+    padding: 28px 20px 40px;
+    z-index: 40;
+}
+
+.gke-security-guide-page .sidebar-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-muted-foreground, #6b7c93);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 4px;
+}
+
+.gke-security-guide-page .sidebar-subtitle {
+    font-size: 14px;
+    color: var(--color-muted-foreground, #a8b6c9);
+    margin: 0 0 24px;
+}
+
+.gke-security-guide-page .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.gke-security-guide-page .nav-list li {
+    margin: 2px 0;
+}
+
+.gke-security-guide-page .nav-list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-md, 8px);
+    color: var(--color-muted-foreground, #a8b6c9);
+    text-decoration: none;
+    font-size: 14px;
+    border-left: 2px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.gke-security-guide-page .nav-list a i {
+    font-size: 16px;
+    color: var(--color-muted-foreground, #6b7c93);
+}
+
+.gke-security-guide-page .nav-list a:hover {
+    background: #142438;
+    color: var(--color-foreground, #e8edf5);
+}
+
+.gke-security-guide-page .nav-list a.active {
+    background: #142438;
+    color: #7c9eff;
+    border-left: 2px solid #7c9eff;
+}
+
+.gke-security-guide-page .nav-list a.active i {
+    color: #7c9eff;
+}
+
+/* メインコンテンツ: サイドバーを除いた領域で読みやすい幅に配置 */
+.gke-security-guide-page .main {
+    margin: 0 auto;
+    padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 48px 120px;
+    max-width: 1120px;
+    box-sizing: border-box;
+}
+
+.gke-security-guide-page .source-note {
+    font-size: 13.5px;
+}
+
+.gke-security-guide-page .hero {
+    margin-bottom: 48px;
+}
+
+.gke-security-guide-page .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #7cc0ff;
+    background: #0f2438;
+    border: 1px solid #24374d;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+}
+
+.gke-security-guide-page h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 12px;
+    font-family: var(--font-display, var(--font-sans));
+    color: var(--color-foreground, #e8edf5);
+}
+
+.gke-security-guide-page .hero p {
+    color: var(--color-muted-foreground, #a8b6c9);
+    font-size: 16px;
+    max-width: 900px;
+    margin: 0;
+}
+
+.gke-security-guide-page section {
+    padding-top: 40px;
+    margin-top: 8px;
+    border-top: 1px solid #162438;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.gke-security-guide-page section:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.gke-security-guide-page h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display, var(--font-sans));
+    color: var(--color-foreground, #e8edf5);
+}
+
+.gke-security-guide-page h2 i {
+    color: #7c9eff;
+    font-size: 24px;
+}
+
+.gke-security-guide-page h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 28px 0 12px;
+    color: var(--color-foreground, #e8edf5);
+    font-family: var(--font-display, var(--font-sans));
+}
+
+.gke-security-guide-page p {
+    margin: 0 0 14px;
+    color: var(--color-muted-foreground, #a8b6c9);
+}
+
+.gke-security-guide-page p strong,
+.gke-security-guide-page li strong {
+    color: var(--color-foreground, #e8edf5);
+    font-weight: 500;
+}
+
+.gke-security-guide-page a {
+    color: #7c9eff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.gke-security-guide-page a:hover {
+    color: #a3bfff;
+}
+
+.gke-security-guide-page .callout {
+    display: flex;
+    gap: 12px;
+    padding: 16px 18px;
+    border-radius: var(--radius-lg, 12px);
+    border: 1px solid #24374d;
+    background: #142438;
+    margin: 18px 0;
+}
+
+.gke-security-guide-page .callout i {
+    font-size: 20px;
+    color: #7cc0ff;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.gke-security-guide-page .callout.tip i {
+    color: #7fe0ab;
+}
+
+.gke-security-guide-page .callout.warn i {
+    color: #f2c675;
+}
+
+.gke-security-guide-page .callout .body {
+    font-size: 14.5px;
+    color: var(--color-muted-foreground, #a8b6c9);
+    line-height: 1.6;
+}
+
+.gke-security-guide-page .callout .body strong {
+    color: var(--color-foreground, #e8edf5);
+}
+
+.gke-security-guide-page table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 24px;
+    font-size: 14.5px;
+    background: var(--color-card, #0d1b2e);
+    border: 1px solid #1c2d42;
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+}
+
+.gke-security-guide-page thead th {
+    text-align: left;
+    background: #142438;
+    color: var(--color-foreground, #e8edf5);
+    font-weight: 600;
+    padding: 12px 16px;
+    border-bottom: 1px solid #24374d;
+}
+
+.gke-security-guide-page tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #162438;
+    color: var(--color-muted-foreground, #a8b6c9);
+    vertical-align: top;
+}
+
+.gke-security-guide-page tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.gke-security-guide-page code {
+    font-family: var(--font-mono, monospace);
+    font-size: 13.5px;
+    background: #142438;
+    color: #7cc0ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* コードブロック構文ハイライト定義 */
+.gke-security-guide-page pre {
+    background: #081322;
+    border: 1px solid #1c304a;
+    border-radius: var(--radius-lg, 12px);
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+}
+
+.gke-security-guide-page pre code {
+    background: none;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--color-foreground, #e8edf5);
+    font-family: var(--font-mono, monospace);
+}
+
+.gke-security-guide-page .code-line {
+    white-space: pre;
+}
+
+.gke-security-guide-page .code-cmd {
+    color: #75aaff;
+    font-weight: 600;
+}
+
+.gke-security-guide-page .code-param {
+    color: #65d5ff;
+}
+
+.gke-security-guide-page .code-val {
+    color: #7fe0ab;
+}
+
+.gke-security-guide-page .code-str {
+    color: #f2c675;
+}
+
+.gke-security-guide-page .code-comment {
+    color: #6b7c93;
+    font-style: italic;
+}
+
+.gke-security-guide-page .code-var {
+    color: #ff9b9b;
+    font-weight: 500;
+}
+
+/* Mermaid 図解: 1rem (16px) 文字サイズ保護 ＆ レスポンシブスクロール */
+.gke-security-guide-page .mermaid-block {
+    margin: 24px 0 32px;
+    width: 100%;
+}
+
+.gke-security-guide-page .mermaid-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: var(--color-card, #0d1b2e);
+    border: 1px solid #1c2d42;
+    border-radius: var(--radius-lg, 12px);
+    padding: 28px 16px;
+    overflow-x: auto;
+}
+
+.gke-security-guide-page .mermaid-wrap svg {
+    max-width: 100% !important;
+    height: auto !important;
+    min-width: 600px; /* 文字サイズ 1rem (16px) を維持し極小潰れを防止 */
+}
+
+.gke-security-guide-page ol,
+.gke-security-guide-page ul {
+    color: var(--color-muted-foreground, #a8b6c9);
+    padding-left: 22px;
+}
+
+.gke-security-guide-page li {
+    margin-bottom: 8px;
+}
+
+.gke-security-guide-page .source-list {
+    list-style: none;
+    margin: 18px 0 8px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gke-security-guide-page .source-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--color-card, #0d1b2e);
+    border: 1px solid #1c2d42;
+    border-radius: var(--radius-lg, 12px);
+}
+
+.gke-security-guide-page .source-num {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: #142438;
+    color: #7cc0ff;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gke-security-guide-page .source-body .source-title {
+    color: var(--color-foreground, #e8edf5);
+    font-size: 14.5px;
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.gke-security-guide-page .source-body a {
+    font-size: 13px;
+    color: var(--color-muted-foreground, #6b7c93);
+    word-break: break-all;
+}
+
+.gke-security-guide-page .source-body a:hover {
+    color: #7c9eff;
+}
+
+.gke-security-guide-page .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0 8px;
+}
+
+.gke-security-guide-page .summary-card {
+    background: var(--color-card, #0d1b2e);
+    border: 1px solid #1c2d42;
+    border-radius: var(--radius-lg, 12px);
+    padding: 18px 20px;
+}
+
+.gke-security-guide-page .summary-card i {
+    font-size: 22px;
+    color: #7c9eff;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.gke-security-guide-page .summary-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-foreground, #e8edf5);
+    margin: 0 0 6px;
+}
+
+.gke-security-guide-page .summary-card p {
+    font-size: 13.5px;
+    margin: 0;
+    color: var(--color-muted-foreground, #a8b6c9);
+}
+
+.gke-security-guide-page footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #162438;
+    font-size: 13px;
+    color: var(--color-muted-foreground, #6b7c93);
+}
+
+@media (max-width: 900px) {
+    .gke-security-guide-page .layout {
+        padding-left: 0;
+    }
+    .gke-security-guide-page .sidebar {
+        display: none;
+    }
+    .gke-security-guide-page .main {
+        padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px) 20px 80px;
+    }
+    .gke-security-guide-page .summary-grid {
+        grid-template-columns: 1fr;
+    }
+}

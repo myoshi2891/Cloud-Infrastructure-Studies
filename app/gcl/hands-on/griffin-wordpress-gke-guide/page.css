@@ -1,0 +1,481 @@
+@import 'https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css';
+
+/* TODO: 3層トークンへの移行。globals.css の @theme に Griffin ガイド用のダークテーマ
+ * トークンを追加し、以下のページスコープ変数を --color-background / --color-foreground /
+ * --color-card / --color-border / --radius-* へ寄せる。
+ * 現在の表示維持に必要な主な色: #07111e, #0c1a2b, #142238, #eaf0f9, #a9b8cc, #24354c
+ * （gke-private-cluster-security-guide/page.css と同じ暫定方針）
+ */
+.griffin-wordpress-gke-guide-page {
+    --color-background-primary: #07111e;
+    --color-background-secondary: #0c1a2b;
+    --color-background-tertiary: #142238;
+    --color-background-info: rgba(124, 158, 255, 0.12);
+    --color-background-success: rgba(93, 214, 157, 0.12);
+    --color-background-warning: rgba(240, 180, 90, 0.12);
+    --color-background-danger: rgba(240, 113, 110, 0.12);
+    --color-text-primary: #eaf0f9;
+    --color-text-secondary: #a9b8cc;
+    --color-text-tertiary: #6d7f96;
+    --color-text-info: #7c9eff;
+    --color-text-success: #5dd69d;
+    --color-text-warning: #f0b45a;
+    --color-text-danger: #f0716e;
+    --color-border-primary: #24354c;
+    --color-border-secondary: #1a293d;
+    --color-border-tertiary: #142131;
+    --font-sans: var(--font-body, 'Noto Sans JP', sans-serif);
+    /* --font-mono は globals.css の @theme 定義をそのまま継承する。
+     * ここで --font-mono: var(--font-mono, ...) と自己参照すると CSS 変数の循環参照となり、
+     * 計算値時点で無効化されて等幅フォントが一切当たらなくなるため再定義しない。 */
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+    --syntax-keyword: #7c9eff;
+    --syntax-string: #8bd5a0;
+    --syntax-comment: #5c7089;
+    --syntax-number: #f0b45a;
+    --syntax-attr: #d99bd9;
+    --syntax-builtin: #6fd6c9;
+
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+}
+
+.griffin-wordpress-gke-guide-page * {
+    box-sizing: border-box;
+}
+
+.griffin-wordpress-gke-guide-page .layout {
+    display: block;
+    min-height: 100vh;
+}
+
+.griffin-wordpress-gke-guide-page .toc-toggle {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 50;
+    background: var(--color-text-info);
+    color: #07111e;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    align-items: center;
+    gap: 8px;
+}
+
+.griffin-wordpress-gke-guide-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    width: 272px;
+    height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
+    overflow-y: auto;
+    background: var(--color-background-secondary);
+    border-right: 1px solid var(--color-border-primary);
+    padding: 28px 14px;
+    z-index: 40;
+    transition: transform 0.3s ease;
+}
+
+.griffin-wordpress-gke-guide-page .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px 20px 10px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.griffin-wordpress-gke-guide-page .sidebar-brand i {
+    font-size: 20px;
+    color: var(--color-text-info);
+}
+
+.griffin-wordpress-gke-guide-page .sidebar-brand span {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+.griffin-wordpress-gke-guide-page .sidebar-group-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    padding: 16px 10px 6px 10px;
+    letter-spacing: 0.04em;
+}
+
+.griffin-wordpress-gke-guide-page .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--border-radius-md);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.griffin-wordpress-gke-guide-page .sidebar nav a i {
+    font-size: 16px;
+    min-width: 16px;
+    color: var(--color-text-tertiary);
+}
+
+.griffin-wordpress-gke-guide-page .sidebar nav a:hover {
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+}
+
+.griffin-wordpress-gke-guide-page .sidebar nav a.active {
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+}
+
+.griffin-wordpress-gke-guide-page .sidebar nav a.active i {
+    color: var(--color-text-info);
+}
+
+.griffin-wordpress-gke-guide-page .main {
+    margin-left: 272px;
+    padding: 56px 64px 96px 64px;
+}
+
+.griffin-wordpress-gke-guide-page .hero {
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.griffin-wordpress-gke-guide-page .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--color-text-info);
+    font-weight: 500;
+    margin-bottom: 14px;
+}
+
+.griffin-wordpress-gke-guide-page .hero h1 {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 0 0 12px 0;
+}
+
+.griffin-wordpress-gke-guide-page .hero p {
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    max-width: 760px;
+    margin: 0 0 20px 0;
+}
+
+.griffin-wordpress-gke-guide-page .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.griffin-wordpress-gke-guide-page .tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--border-radius-xl);
+    padding: 5px 12px;
+}
+
+.griffin-wordpress-gke-guide-page .tag i {
+    font-size: 14px;
+    color: var(--color-text-tertiary);
+}
+
+.griffin-wordpress-gke-guide-page .section {
+    margin-bottom: 56px;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.griffin-wordpress-gke-guide-page .section-eyebrow {
+    font-size: 12px;
+    color: var(--color-text-info);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+}
+
+.griffin-wordpress-gke-guide-page .section h2 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.griffin-wordpress-gke-guide-page .section h2 i {
+    color: var(--color-text-info);
+}
+
+.griffin-wordpress-gke-guide-page .section h3 {
+    font-size: 17px;
+    font-weight: 500;
+    margin: 28px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.griffin-wordpress-gke-guide-page .section h3 i {
+    color: var(--color-text-info);
+    font-size: 18px;
+}
+
+.griffin-wordpress-gke-guide-page .section h4 {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 20px 0 8px 0;
+    color: var(--color-text-primary);
+}
+
+.griffin-wordpress-gke-guide-page p {
+    margin: 0 0 14px 0;
+    color: var(--color-text-secondary);
+}
+
+.griffin-wordpress-gke-guide-page ul,
+.griffin-wordpress-gke-guide-page ol {
+    margin: 0 0 16px 0;
+    padding-left: 22px;
+    color: var(--color-text-secondary);
+}
+
+.griffin-wordpress-gke-guide-page li {
+    margin-bottom: 6px;
+}
+
+.griffin-wordpress-gke-guide-page code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--color-background-tertiary);
+    color: var(--color-text-info);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--color-border-secondary);
+}
+
+.griffin-wordpress-gke-guide-page pre {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--border-radius-lg);
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 12px 0 20px 0;
+    color: var(--color-text-primary);
+}
+
+.griffin-wordpress-gke-guide-page pre code {
+    background: transparent;
+    padding: 0;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+}
+
+.griffin-wordpress-gke-guide-page .task-card {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--border-radius-xl);
+    padding: 28px;
+    margin-bottom: 28px;
+}
+
+.griffin-wordpress-gke-guide-page .task-number {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-info);
+    background: var(--color-background-info);
+    border: 1px solid rgba(124, 158, 255, 0.25);
+    border-radius: var(--border-radius-xl);
+    padding: 4px 10px;
+    margin-bottom: 12px;
+}
+
+.griffin-wordpress-gke-guide-page .callout {
+    background: var(--color-background-tertiary);
+    border-left: 3px solid var(--color-text-info);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+}
+
+.griffin-wordpress-gke-guide-page .callout-warning {
+    border-left-color: var(--color-text-warning);
+    background: var(--color-background-warning);
+}
+
+.griffin-wordpress-gke-guide-page .callout-danger {
+    border-left-color: var(--color-text-danger);
+    background: var(--color-background-danger);
+}
+
+.griffin-wordpress-gke-guide-page .callout-success {
+    border-left-color: var(--color-text-success);
+    background: var(--color-background-success);
+}
+
+.griffin-wordpress-gke-guide-page .callout-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+}
+
+.griffin-wordpress-gke-guide-page .callout-title i {
+    font-size: 16px;
+    color: var(--color-text-info);
+}
+
+.griffin-wordpress-gke-guide-page .callout-warning .callout-title i {
+    color: var(--color-text-warning);
+}
+
+.griffin-wordpress-gke-guide-page .callout-danger .callout-title i {
+    color: var(--color-text-danger);
+}
+
+.griffin-wordpress-gke-guide-page .callout-success .callout-title i {
+    color: var(--color-text-success);
+}
+
+.griffin-wordpress-gke-guide-page .callout p:last-child {
+    margin-bottom: 0;
+}
+
+.griffin-wordpress-gke-guide-page table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0 24px 0;
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.griffin-wordpress-gke-guide-page th,
+.griffin-wordpress-gke-guide-page td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.griffin-wordpress-gke-guide-page th {
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.griffin-wordpress-gke-guide-page tr:last-child td {
+    border-bottom: none;
+}
+
+.griffin-wordpress-gke-guide-page td i {
+    font-size: 16px;
+    vertical-align: text-bottom;
+    margin-right: 4px;
+}
+
+.griffin-wordpress-gke-guide-page .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.griffin-wordpress-gke-guide-page .badge-info {
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+}
+
+.griffin-wordpress-gke-guide-page .badge-success {
+    background: var(--color-background-success);
+    color: var(--color-text-success);
+}
+
+.griffin-wordpress-gke-guide-page .badge-warning {
+    background: var(--color-background-warning);
+    color: var(--color-text-warning);
+}
+
+.griffin-wordpress-gke-guide-page .mermaid-wrap {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    margin: 16px 0 24px 0;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+}
+
+.griffin-wordpress-gke-guide-page .footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border-secondary);
+    color: var(--color-text-tertiary);
+    font-size: 13px;
+    text-align: center;
+}
+
+.griffin-wordpress-gke-guide-page .code-line {
+    white-space: pre;
+    min-height: 1.5em;
+}
+
+@media (max-width: 900px) {
+    .griffin-wordpress-gke-guide-page .toc-toggle {
+        display: flex;
+    }
+
+    .griffin-wordpress-gke-guide-page .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .griffin-wordpress-gke-guide-page .sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    .griffin-wordpress-gke-guide-page .main {
+        margin-left: 0;
+        padding: 28px 20px 80px 20px;
+    }
+}
