@@ -878,14 +878,19 @@
 
                     <pre><code class="language-bash">gcloud logging metrics create pod-image-errors \
   --description="Pod image reference errors" \
-  --log-filter='resource.type="k8s_container" AND severity&gt;=ERROR'</code></pre>
+  --log-filter='log_id("events") AND resource.type="k8s_pod" AND jsonPayload.reason="Failed"'</code></pre>
 
                     <div class="callout">
-                        上記はコンソールでの操作を CLI
-                        で再現したイメージです。実際のフィルタはラボで確認できるログの内容（<code
-                            >InvalidImageName</code
+                        <code>InvalidImageName</code> /
+                        <code>couldn't parse image reference</code>
+                        はコンテナのアプリログではなく <strong>Pod の Kubernetes イベント</strong>
+                        として記録されるため、<code>log_id("events")</code> +
+                        <code>resource.type="k8s_pod"</code> を対象にし、イベントの
+                        <code>reason</code> が <code>Failed</code>
+                        （イメージの取得・参照に失敗）のものを数えます。<code
+                            >resource.type="k8s_container" AND severity&gt;=ERROR</code
                         >
-                        / <code>couldn't parse image reference</code>）に合わせて調整してください。
+                        ではアプリケーション由来のエラーログまで拾ってしまい、イメージ参照エラーを取りこぼします。実際のフィルタはラボで確認できるログの内容に合わせて調整してください。
                     </div>
 
                     <h3>アラートポリシーを作る</h3>
