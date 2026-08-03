@@ -397,6 +397,13 @@
             .checklist li:last-child {
                 border-bottom: none;
             }
+            .checklist li > label {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                width: 100%;
+                cursor: default;
+            }
             .checklist input[type='checkbox'] {
                 margin-top: 3px;
                 width: 15px;
@@ -1438,56 +1445,82 @@ feeling adventurous. The tagline must include the word "nature"."""</code></pre>
                     </div>
                     <ul class="checklist">
                         <li>
-                            <input type="checkbox" disabled />Task 1: プロンプト名が
-                            <code>Cymbal Product Analysis</code> になっている
+                            <label>
+                                <input type="checkbox" disabled />Task 1: プロンプト名が
+                                <code>Cymbal Product Analysis</code> になっている
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 1: 指定された
-                            <code>model_name</code> モデルを使用している
+                            <label>
+                                <input type="checkbox" disabled />Task 1: 指定された
+                                <code>model_name</code> モデルを使用している
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 1: 指定された
-                            <code>Region</code> で保存している
+                            <label>
+                                <input type="checkbox" disabled />Task 1: 指定された
+                                <code>Region</code> で保存している
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 2: System instructions
-                            に指定文を入力している
+                            <label>
+                                <input type="checkbox" disabled />Task 2: System instructions
+                                に指定文を入力している
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 2: Few-shot 例が2件（指定の
-                            Example 1 + 自作の Example 2）含まれている
+                            <label>
+                                <input type="checkbox" disabled />Task 2: Few-shot 例が2件（指定の
+                                Example 1 + 自作の Example 2）含まれている
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 2: プロンプト名が
-                            <code>Cymbal Tagline Generator Template</code> になっている
+                            <label>
+                                <input type="checkbox" disabled />Task 2: プロンプト名が
+                                <code>Cymbal Tagline Generator Template</code> になっている
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 3: 認証ブロックが
-                            PROJECT_ID/LOCATION 方式に置き換わっている
+                            <label>
+                                <input type="checkbox" disabled />Task 3: 認証ブロックが
+                                PROJECT_ID/LOCATION 方式に置き換わっている
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 3:
-                            <code>tools=tools</code> の重複が解消されている
+                            <label>
+                                <input type="checkbox" disabled />Task 3:
+                                <code>tools=tools</code> の重複が解消されている
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 3:
-                            出力が10語未満かつ以前より創造的になっている
+                            <label>
+                                <input type="checkbox" disabled />Task 3:
+                                出力が10語未満かつ以前より創造的になっている
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 3: Notebook
-                            ファイルを保存している
+                            <label>
+                                <input type="checkbox" disabled />Task 3: Notebook
+                                ファイルを保存している
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 4: 最後の Input にキーワード
-                            "nature" を含めるよう指示を追加している
+                            <label>
+                                <input type="checkbox" disabled />Task 4: 最後の Input にキーワード
+                                "nature" を含めるよう指示を追加している
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 4: 出力に実際に "nature"
-                            が含まれている
+                            <label>
+                                <input type="checkbox" disabled />Task 4: 出力に実際に "nature"
+                                が含まれている
+                            </label>
                         </li>
                         <li>
-                            <input type="checkbox" disabled />Task 4: Notebook
-                            ファイルを保存している
+                            <label>
+                                <input type="checkbox" disabled />Task 4: Notebook
+                                ファイルを保存している
+                            </label>
                         </li>
                     </ul>
                 </section>
