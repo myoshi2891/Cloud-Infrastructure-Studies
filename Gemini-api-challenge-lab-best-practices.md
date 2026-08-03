@@ -1,6 +1,6 @@
 # Gemini API 実践チャレンジラボ 完全攻略ガイド
 
-### 〜初学者のためのステップバイステップ・ベストプラクティス〜
+**〜初学者のためのステップバイステップ・ベストプラクティス〜**
 
 > **対象ラボ**: Explore Generative AI with the Gemini API in Agent Platform: Challenge Lab
 > **ラボURL**: https://www.skills.google/course_templates/959/labs/592560
@@ -82,7 +82,7 @@ Cloud Console の「Agent Platform」セクションから API を有効化し�
 
 Gemini API in Vertex AI のエンドポイントは、次の形式に統一されています。
 
-```
+```text
 https://{LOCATION}-aiplatform.googleapis.com/v1/projects/{PROJECT_ID}/locations/{LOCATION}/publishers/google/models/{MODEL_ID}:generateContent
 ```
 

@@ -1,5 +1,6 @@
 # Cymbal Direct チャレンジラボ攻略ガイド
-### Agent Platform（旧 Vertex AI）でのプロンプト設計ベストプラクティス
+
+**Agent Platform（旧 Vertex AI）でのプロンプト設計ベストプラクティス**
 
 対象ラボ: *Prompt Design in Agent Platform* コースの Challenge Lab
 （`https://www.skills.google/paths/118/course_templates/976/labs/594527`）
@@ -27,7 +28,7 @@
 
 > **重要な注意（製品名の移行について）**
 > Google Cloud は現在 **Vertex AI** を **Gemini Enterprise Agent Platform**（本ラボでの表記は "Agent Platform"）へと統合・移行中です。UI 上の表記や URL に一貫性がない場合がありますが、Agent Studio・Workbench・Gemini モデルの基本的な使い方や API の考え方は Vertex AI 時代のドキュメントと共通です。本ガイドでも両方の名称が混在する場合があります。[^1]
-
+>
 > **ラボ固有の値について**
 > ラボ本文中の `model_name`（使用する Gemini モデル名）、`image file path`（GCS 上の画像パス）、`Region`（保存先リージョン）、`Workbench instance name`（インスタンス名）は、セッションごとにランダムに割り当てられる値です。これらは各自の Lab の Task パネルおよび Google Cloud コンソール上に実際の値が表示されるので、本ガイドの手順を実行する際はそこに書かれている実際の値に読み替えてください。
 
