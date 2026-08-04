@@ -1,0 +1,1328 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cloud Natural Language API チャレンジラボ 完全解説ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1b2e;
+                --color-background-tertiary: #13233a;
+                --color-background-info: rgba(124, 158, 255, 0.12);
+                --color-background-danger: rgba(248, 113, 113, 0.12);
+                --color-background-success: rgba(74, 222, 128, 0.12);
+                --color-background-warning: rgba(251, 191, 36, 0.12);
+
+                --color-text-primary: #e7edf5;
+                --color-text-secondary: #ccd6e4;
+                --color-text-tertiary: #b4c6df;
+                --color-text-info: #7c9eff;
+                --color-text-danger: #f87171;
+                --color-text-success: #4ade80;
+                --color-text-warning: #fbbf24;
+
+                --color-border-primary: #1f3350;
+                --color-border-secondary: #16283f;
+                --color-border-tertiary: #101f33;
+
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                    'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+
+                --sidebar-width: 268px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-secondary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 24px 0 24px 0;
+                z-index: 20;
+                transition: transform 0.2s ease;
+            }
+
+            .sidebar-header {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 0 24px 20px 24px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                margin-bottom: 12px;
+            }
+
+            .sidebar-header i {
+                font-size: 20px;
+                color: var(--color-text-info);
+            }
+
+            .sidebar-header span {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                letter-spacing: 0.02em;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                padding: 0 12px;
+            }
+
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-tertiary);
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 400;
+                border-left: 2px solid transparent;
+            }
+
+            .sidebar nav a i {
+                font-size: 16px;
+                width: 18px;
+                text-align: center;
+            }
+
+            .sidebar nav a:hover {
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+            }
+
+            .sidebar nav a.active {
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+                border-left: 2px solid var(--color-text-info);
+                font-weight: 500;
+            }
+
+            .sidebar-footer {
+                margin-top: 20px;
+                padding: 14px 24px 0 24px;
+                border-top: 1px solid var(--color-border-tertiary);
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+            }
+
+            /* mobile toggle */
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 30;
+                width: 40px;
+                height: 40px;
+                align-items: center;
+                justify-content: center;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-primary);
+                cursor: pointer;
+            }
+
+            /* main content */
+            .main {
+                margin-left: var(--sidebar-width);
+                padding: 56px 64px 96px 64px;
+            }
+
+            .eyebrow {
+                font-size: 12px;
+                font-weight: 500;
+                color: var(--color-text-info);
+                letter-spacing: 0.06em;
+                margin-bottom: 10px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 0 0 14px 0;
+                line-height: 1.4;
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 56px 0 18px 0;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--color-border-primary);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            h2 i {
+                font-size: 16px;
+                color: var(--color-text-info);
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 32px 0 12px 0;
+            }
+
+            h4 {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 24px 0 10px 0;
+            }
+
+            p {
+                margin: 0 0 16px 0;
+            }
+
+            section {
+                margin-bottom: 8px;
+            }
+
+            a {
+                color: var(--color-text-info);
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                padding: 2px 6px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-primary);
+            }
+
+            pre {
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 0 0 20px 0;
+            }
+
+            pre code {
+                background: none;
+                border: none;
+                padding: 0;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 0 0 24px 0;
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                text-align: left;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+
+            th {
+                color: var(--color-text-primary);
+                font-weight: 500;
+                background: var(--color-background-secondary);
+            }
+
+            td {
+                color: var(--color-text-secondary);
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            .table-wrap {
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                overflow: hidden;
+                margin-bottom: 24px;
+            }
+
+            .table-wrap table {
+                margin-bottom: 0;
+            }
+
+            ul,
+            ol {
+                padding-left: 22px;
+                margin: 0 0 16px 0;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+
+            .callout {
+                display: flex;
+                gap: 12px;
+                padding: 16px 18px;
+                border-radius: var(--border-radius-lg);
+                margin: 0 0 24px 0;
+                border: 1px solid var(--color-border-secondary);
+            }
+
+            .callout i {
+                font-size: 18px;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            .callout.info {
+                background: var(--color-background-info);
+            }
+            .callout.info i {
+                color: var(--color-text-info);
+            }
+
+            .callout.warning {
+                background: var(--color-background-warning);
+            }
+            .callout.warning i {
+                color: var(--color-text-warning);
+            }
+
+            .callout.success {
+                background: var(--color-background-success);
+            }
+            .callout.success i {
+                color: var(--color-text-success);
+            }
+
+            .callout p {
+                margin: 0;
+                color: var(--color-text-secondary);
+                font-size: 14px;
+            }
+            .callout strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            .mermaid-block {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                overflow-x: auto;
+                margin: 8px 0 28px 0;
+                padding: 16px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+            }
+
+            .mermaid {
+                display: flex;
+                justify-content: center;
+            }
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+
+            .task-header {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 18px 20px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                margin-bottom: 24px;
+            }
+
+            .task-badge {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-info);
+                color: var(--color-text-info);
+                font-size: 14px;
+                font-weight: 500;
+                flex-shrink: 0;
+            }
+
+            .task-header p {
+                margin: 0;
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+            }
+            .task-header strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+                font-size: 15px;
+                display: block;
+                margin-bottom: 2px;
+            }
+
+            .ref-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 24px;
+            }
+
+            .ref-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 14px 18px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-lg);
+                text-decoration: none;
+                transition: border-color 0.15s ease;
+            }
+
+            .ref-item:hover {
+                border-color: var(--color-text-info);
+            }
+
+            .ref-index {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 26px;
+                height: 26px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                color: var(--color-text-info);
+                font-size: 12px;
+                font-weight: 500;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            .ref-body strong {
+                display: block;
+                color: var(--color-text-primary);
+                font-weight: 500;
+                font-size: 14px;
+                margin-bottom: 2px;
+            }
+
+            .ref-body span {
+                color: var(--color-text-tertiary);
+                font-size: 12px;
+            }
+
+            .closing-note {
+                margin-top: 40px;
+                padding: 18px 20px;
+                border-top: 1px solid var(--color-border-primary);
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+            }
+
+            @media (max-width: 860px) {
+                .menu-toggle {
+                    display: flex;
+                }
+                .sidebar {
+                    transform: translateX(-100%);
+                }
+                body.sidebar-open .sidebar {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 72px 20px 64px 20px;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+                * {
+                    transition: none !important;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く">
+            <i class="ti ti-menu-2"></i>
+        </button>
+
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <i class="ti ti-brand-google"></i>
+                    <span>NL API チャレンジラボ</span>
+                </div>
+                <nav>
+                    <a href="#overview"><i class="ti ti-route"></i>全体像</a>
+                    <a href="#task1"><i class="ti ti-key"></i>Task1: APIキー作成</a>
+                    <a href="#task2"><i class="ti ti-file-text"></i>Task2: Docs連携</a>
+                    <a href="#task3"><i class="ti ti-terminal-2"></i>Task3: 構文解析</a>
+                    <a href="#task4"><i class="ti ti-language"></i>Task4: 多言語処理</a>
+                    <a href="#summary"><i class="ti ti-checklist"></i>ベストプラクティス</a>
+                    <a href="#references"><i class="ti ti-books"></i>参考文献</a>
+                </nav>
+                <div class="sidebar-footer">Cloud Natural Language API<br />チャレンジラボ解説</div>
+            </aside>
+
+            <main class="main">
+                <section id="overview">
+                    <div class="eyebrow">GOOGLE CLOUD SKILLS BOOST</div>
+                    <h1>Cloud Natural Language API チャレンジラボ 完全解説ガイド</h1>
+                    <p>
+                        対象ラボは、Google Docsとの連携・構文解析・多言語処理を含む「Cloud Natural
+                        Language
+                        API」チャレンジラボ。本ガイドでは各タスクを初学者でも理解できるように、手順の意味・背景にあるベストプラクティス・公式根拠を併せて解説する。
+                    </p>
+
+                    <h2><i class="ti ti-route"></i>ラボの全体像</h2>
+                    <p>
+                        チャレンジラボは4つのタスクで構成されており、すべて「1つのAPIキーを使い回す」という点でつながっている。まず全体の流れを俯瞰する。
+                    </p>
+
+                    <div class="mermaid-block">
+                        <div class="mermaid" id="diagram-overview"></div>
+                    </div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-overview">
+                        flowchart TD
+                            A["Task1: APIキーを作成"] --> B["Task2: Google Docsに\nApps Scriptを設定"]
+                            A --> C["Task3: VMにSSH接続し\n構文解析を実行"]
+                            A --> D["Task4: 多言語\nフランス語で解析"]
+                            B --> E["感情分析結果を\nテキストに色付け"]
+                            C --> F["analyze-response.txt\nに保存"]
+                            D --> G["multi-response.txt\nに保存"]
+                    </script>
+
+                    <div class="callout info">
+                        <i class="ti ti-info-circle"></i>
+                        <p>
+                            <strong>ポイント：</strong
+                            >Task1で発行したAPIキーが以降すべてのタスクの認証手段になる。つまりTask1でのキー管理（保存場所・権限制限）の質が、ラボ全体のセキュリティレベルを決めることになる。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="task1">
+                    <div class="task-header">
+                        <div class="task-badge">01</div>
+                        <div>
+                            <strong>APIキーの作成</strong>
+                            <p>すべてのタスクで使い回す認証情報を発行する</p>
+                        </div>
+                    </div>
+
+                    <h3>手順の要点</h3>
+                    <ol>
+                        <li>
+                            Google Cloud
+                            Consoleで「APIとサービス」→「認証情報」からAPIキーを作成する。
+                        </li>
+                        <li>作成したキーは、他のタスクで使い回すため必ずコピー・保存しておく。</li>
+                        <li>
+                            Cloud Natural Language
+                            APIが有効化されていることを確認する（未有効の場合はキーがあっても呼び出しは失敗する）。
+                        </li>
+                    </ol>
+
+                    <h3>ベストプラクティス：なぜ「制限」をかけるべきか</h3>
+                    <p>
+                        学習用ラボでは制限をかけなくても動作するが、実務では以下の制限が強く推奨されている。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>制限の種類</th>
+                                    <th>内容</th>
+                                    <th>目的</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>APIターゲット制限</td>
+                                    <td>
+                                        このキーで呼び出せるAPIをCloud Natural Language
+                                        APIのみに限定する
+                                    </td>
+                                    <td>キー漏洩時の被害範囲を最小化する</td>
+                                </tr>
+                                <tr>
+                                    <td>アプリケーション制限</td>
+                                    <td>呼び出し元のIPアドレスやHTTPリファラーを限定する</td>
+                                    <td>第三者による不正利用を防ぐ</td>
+                                </tr>
+                                <tr>
+                                    <td>有効期限・棚卸し</td>
+                                    <td>使っていないキーは削除し、定期的に再発行する</td>
+                                    <td>攻撃対象領域（アタックサーフェス）を小さく保つ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        Google
+                        Cloudの公式ドキュメントでは、APIキーに制限を追加することで万が一キーが漏洩した場合の影響を抑えられると説明されている。またAPIキーはあくまで「開発初期段階での動作確認を素早く行うための手段」であり、本番運用では推奨されていない点にも注意したい。
+                    </p>
+
+                    <h3>環境変数に保存する理由</h3>
+                    <p>
+                        Task3・4ではSSH接続したVM上でAPIキーをそのままコマンドに書くのではなく、環境変数に格納してから使う（例：<code
+                            >export API_KEY=&lt;your_api_key&gt;</code
+                        >）。
+                    </p>
+                    <p>
+                        理由は主に2つ。コマンド履歴やスクリプトファイルにキーの文字列がそのまま残らないため画面共有時や履歴の使い回し時に漏洩しにくいこと、そして複数回リクエストを送る際に毎回キーを打ち直す必要がなくなることである。
+                    </p>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <p>
+                            公式ドキュメントでも、APIキーをクエリパラメータとしてURLに直接含める方法はURLスキャンによる漏洩リスクがあるため、可能な限り
+                            <code>x-goog-api-key</code>
+                            ヘッダーを使うことが推奨されている。学習用のcurlコマンドではクエリパラメータ形式（<code>?key=API_KEY</code>）がよく使われるが、これは簡便さのためであり、本番システムではヘッダー形式への置き換えを検討すべきである。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="task2">
+                    <div class="task-header">
+                        <div class="task-badge">02</div>
+                        <div>
+                            <strong>Google Docsとの連携（Apps Script）</strong>
+                            <p>選択したテキストの感情分析結果を色分け表示する</p>
+                        </div>
+                    </div>
+
+                    <h3>何が起きているのか</h3>
+                    <p>
+                        このタスクでは、Google Docs上で選択したテキストをApps Script経由でNatural
+                        Language
+                        APIに送り、感情スコア（-1.0〜1.0）を取得し、その値に応じてテキストの背景色を変える、という一連の流れを実装する。
+                    </p>
+
+                    <div class="mermaid-block">
+                        <div class="mermaid" id="diagram-task2"></div>
+                    </div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-task2">
+                        sequenceDiagram
+                            participant User as "ユーザー"
+                            participant Doc as "Google Docs"
+                            participant Script as "Apps Script"
+                            participant NLAPI as "Natural Language API"
+
+                            User->>Doc: "テキストを選択しメニューから実行"
+                            Doc->>Script: "markSentiment()を呼び出し"
+                            Script->>Script: "getSelectedText()で選択範囲を文字列化"
+                            Script->>NLAPI: "analyzeSentimentへPOSTリクエスト"
+                            NLAPI-->>Script: "documentSentiment.scoreを返却"
+                            Script->>Doc: "スコアに応じて背景色を設定"
+                            Doc-->>User: "テキストが色分けされる"
+                    </script>
+
+                    <h3>コード内の重要ポイントの解説</h3>
+
+                    <h4><code>@OnlyCurrentDoc</code> の意味</h4>
+                    <p>
+                        コード冒頭にある <code>@OnlyCurrentDoc</code> は、Apps
+                        Scriptの権限スコープを「現在開いているドキュメントのみ」に限定するJSDocアノテーションである。これを付けない場合、スクリプトはユーザーが持つすべてのGoogle
+                        Docsファイルへのアクセス権限を要求してしまう。
+                    </p>
+                    <p>
+                        これはGoogleが公式に推奨しているセキュリティ上のベストプラクティスであり、アドオンやスクリプトを配布する際は「必要最小限の権限だけを要求する」という最小権限の原則を体現している。ただし
+                        <code>@OnlyCurrentDoc</code> は高度なサービス（Advanced Services）や
+                        <code>openById()</code>
+                        によるファイル間アクセスには効果がなく、あくまで現在のドキュメントに束縛されたスクリプトで完結する処理にのみ適用される点に注意したい。
+                    </p>
+
+                    <h4><code>UrlFetchApp</code> に必要な権限</h4>
+                    <p>
+                        <code>retrieveSentiment()</code> 関数内で使われている
+                        <code>UrlFetchApp.fetch()</code> は、外部のWeb APIを呼び出すためのApps
+                        Script標準サービスである。これを利用するには
+                        <code>https://www.googleapis.com/auth/script.external_request</code>
+                        というスコープが必要になり、通常はApps
+                        Scriptが自動的にコードをスキャンして検出・要求する。
+                    </p>
+
+                    <h4>感情スコアと色分けのしきい値</h4>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>条件</th>
+                                    <th>スコア範囲</th>
+                                    <th>表示色</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ネガティブ</td>
+                                    <td><code>score &lt;= -0.2</code></td>
+                                    <td>赤（#ff0000）</td>
+                                </tr>
+                                <tr>
+                                    <td>ニュートラル</td>
+                                    <td><code>-0.2 &lt; score &lt; 0.2</code></td>
+                                    <td>黄（#ffff00）</td>
+                                </tr>
+                                <tr>
+                                    <td>ポジティブ</td>
+                                    <td><code>score &gt;= 0.2</code></td>
+                                    <td>緑（#00ff00）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        このしきい値（±0.2）はサンプルコード内で決め打ちされている値であり、Natural
+                        Language
+                        API自体が定義しているものではない。実運用では、対象テキストの性質（レビュー、SNS投稿、ニュース記事など）に応じてこのしきい値をチューニングすることがベストプラクティスとされる。
+                    </p>
+
+                    <h3>実装上のベストプラクティス</h3>
+                    <ul>
+                        <li>
+                            <strong>APIキーをコードに直書きしない：</strong
+                            >サンプルコードでは学習のために<code>var apiKey = "your key here";</code
+                            >と直接埋め込んでいるが、本番運用ではPropertiesServiceなどのプロパティストアにキーを保存し、コード中から参照する形にするべきである。コード内へのハードコーディングは公式ドキュメントでも避けるべき方法として明記されている。
+                        </li>
+                        <li>
+                            <strong
+                                ><code>data.documentSentiment.score</code> の存在チェック：</strong
+                            >レスポンスの構造が想定と異なる場合（APIエラー時など）にスクリプトが例外で落ちないよう、サンプルコードのようにnullチェックを行う。
+                        </li>
+                        <li>
+                            <strong>選択範囲が空の場合の考慮：</strong
+                            ><code>selection</code
+                            >が取得できない場合に何もしない分岐を入れておくことは、UIの堅牢性として重要。
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="task3">
+                    <div class="task-header">
+                        <div class="task-badge">03</div>
+                        <div>
+                            <strong>構文解析とParts of Speech（品詞）解析</strong>
+                            <p>VMにSSH接続し、curlまたはgcloudでAPIを呼び出す</p>
+                        </div>
+                    </div>
+
+                    <h3>全体の流れ</h3>
+                    <div class="mermaid-block">
+                        <div class="mermaid" id="diagram-task3"></div>
+                    </div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-task3">
+                        flowchart LR
+                            A["SSHでVMに接続"] --> B["analyze-request.json\nを作成"]
+                            B --> C{"curlかgcloudか"}
+                            C -->|"curl"| D["POST /v1/documents:analyzeSyntax\n?key=API_KEY"]
+                            C -->|"gcloud"| E["gcloud ml language\nanalyze-syntax --content=..."]
+                            D --> F["analyze-response.txt\nに保存"]
+                            E --> F
+                    </script>
+
+                    <h3>リクエストJSONの構造の意味</h3>
+                    <pre><code class="language-json">{
+  "document": {
+    "type": "PLAIN_TEXT",
+    "content": "Google, headquartered in Mountain View, ..."
+  },
+  "encodingType": "UTF8"
+}</code></pre>
+                    <ul>
+                        <li>
+                            <code>document.type</code
+                            >：入力テキストの形式。プレーンテキストかHTMLかを指定する。今回は<code>PLAIN_TEXT</code>。
+                        </li>
+                        <li><code>document.content</code>：解析対象の文字列そのもの。</li>
+                        <li>
+                            <code>encodingType</code
+                            >：レスポンス内のオフセット（トークンの位置情報）を計算する際の文字エンコーディング。日本語や絵文字を含む場合、<code>UTF8</code>・<code>UTF16</code>・<code>UTF32</code>のどれを選ぶかで文字位置の数え方が変わるため、扱う言語圏に応じて明示的に指定することが推奨される。
+                        </li>
+                    </ul>
+
+                    <h3>curlコマンドでの呼び出し方（ベストプラクティス込み）</h3>
+                    <pre><code class="language-bash">export API_KEY=&lt;Task1で取得したキー&gt;
+
+curl "https://language.googleapis.com/v1/documents:analyzeSyntax?key=${API_KEY}" \
+  -s -X POST -H "Content-Type: application/json; charset=utf-8" \
+  --data-binary @analyze-request.json > analyze-response.txt</code></pre>
+                    <p>
+                        <code>--data-binary @ファイル名</code
+                        >を使うことで、JSONファイルの中身をそのままリクエストボディとして送信できる。クエリパラメータで<code>key=</code>を渡す方式は学習用として手軽だが、前述の通りURLにキーが残る方式であるため、恒久的なシステムでは<code>x-goog-api-key</code>ヘッダー方式への切り替えを検討する。
+                    </p>
+
+                    <h3>gcloudコマンドという代替手段</h3>
+                    <p>同じ処理は<code>gcloud</code> CLIでも実行できる。</p>
+                    <pre><code class="language-bash">gcloud ml language analyze-syntax --content="Google, headquartered in Mountain View, ..." > analyze-response.txt</code></pre>
+                    <p>
+                        <code>gcloud</code
+                        >を使う利点は、APIキーの管理をgcloud自身の認証（Application Default
+                        CredentialsやCloud
+                        Shellの組み込み認証）に委ねられるため、コマンドラインにキー文字列を書く必要がなくなる点にある。ローカルファイルを直接渡したい場合は<code>--content-file=ファイルパス</code>を、Cloud
+                        Storage上のファイルを渡したい場合は<code>--content-file=gs://バケット名/ファイル名</code>を使う。
+                    </p>
+
+                    <h3>レスポンスの読み方</h3>
+                    <p>
+                        <code>analyzeSyntax</code
+                        >のレスポンスには、文（sentences）とトークン（tokens）の配列が含まれる。各トークンには以下のような情報が付与される。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>フィールド</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <code>text.content</code> / <code>text.beginOffset</code>
+                                    </td>
+                                    <td>トークンの文字列と、文中での開始位置</td>
+                                </tr>
+                                <tr>
+                                    <td><code>partOfSpeech.tag</code></td>
+                                    <td>
+                                        品詞タグ（<code>NOUN</code>、<code>VERB</code>、<code>PUNCT</code>など）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>dependencyEdge</code></td>
+                                    <td>係り受け関係（どの単語にかかっているか）</td>
+                                </tr>
+                                <tr>
+                                    <td><code>lemma</code></td>
+                                    <td>単語の原形（レンマ）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        構文解析結果は文単位・トークン単位の情報が階層構造になっているため、<code>analyze-response.txt</code>を読む際は「まず<code>sentences</code>で文の境界を確認し、次に<code>tokens</code>で各単語の品詞・係り受けを追う」という順番で見ると理解しやすい。
+                    </p>
+                </section>
+
+                <section id="task4">
+                    <div class="task-header">
+                        <div class="task-badge">04</div>
+                        <div>
+                            <strong>多言語自然言語処理（フランス語）</strong>
+                            <p>言語コードの指定と自動検出の違いを理解する</p>
+                        </div>
+                    </div>
+
+                    <h3>リクエストの違い</h3>
+                    <p>
+                        Task3とTask4のJSONを比較すると、Task4では<code>encodingType</code>が省略されている点と、<code>content</code>がフランス語である点が異なる。
+                    </p>
+
+                    <div class="mermaid-block">
+                        <div class="mermaid" id="diagram-task4"></div>
+                    </div>
+                    <script type="text/plain" class="mermaid-src" data-target="diagram-task4">
+                        flowchart TB
+                            subgraph T3["Task3: 英語"]
+                                A1["content: 英語テキスト"]
+                                A2["encodingType: UTF8 明示"]
+                            end
+                            subgraph T4["Task4: フランス語"]
+                                B1["content: フランス語テキスト"]
+                                B2["language未指定 自動検出"]
+                            end
+                            T3 --> C["language.googleapis.com\n/v1/documents:analyzeSyntax"]
+                            T4 --> C
+                    </script>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <p>
+                            <code>language</code>パラメータを省略した場合、Natural Language
+                            APIはテキストの内容から言語を自動検出する。今回のフランス語の例文のように単一言語のテキストであれば自動検出で十分だが、複数言語が混在する文章や短すぎる文章では誤検出のリスクがあるため、実運用では<code>language</code>パラメータ（例：<code>fr</code>や<code>fr-FR</code>）を明示的に指定することがベストプラクティスとされている。
+                        </p>
+                    </div>
+
+                    <h3>対応言語の確認</h3>
+                    <p>
+                        構文解析（Syntactic Analysis）機能でサポートされている主な言語は以下の通り。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>言語</th>
+                                    <th>ISO-639-1コード</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>英語</td>
+                                    <td>en</td>
+                                </tr>
+                                <tr>
+                                    <td>フランス語</td>
+                                    <td>fr</td>
+                                </tr>
+                                <tr>
+                                    <td>ドイツ語</td>
+                                    <td>de</td>
+                                </tr>
+                                <tr>
+                                    <td>イタリア語</td>
+                                    <td>it</td>
+                                </tr>
+                                <tr>
+                                    <td>日本語</td>
+                                    <td>ja</td>
+                                </tr>
+                                <tr>
+                                    <td>韓国語</td>
+                                    <td>ko</td>
+                                </tr>
+                                <tr>
+                                    <td>ポルトガル語</td>
+                                    <td>pt</td>
+                                </tr>
+                                <tr>
+                                    <td>ロシア語</td>
+                                    <td>ru</td>
+                                </tr>
+                                <tr>
+                                    <td>スペイン語</td>
+                                    <td>es</td>
+                                </tr>
+                                <tr>
+                                    <td>中国語（簡体字）</td>
+                                    <td>zh</td>
+                                </tr>
+                                <tr>
+                                    <td>中国語（繁体字）</td>
+                                    <td>zh-Hant</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        対応言語は機能（構文解析／感情分析／エンティティ分析／分類）ごとに異なるため、多言語対応のプロダクトを設計する際は、必ず使う機能ごとの対応言語表を公式ドキュメントで確認する必要がある。
+                    </p>
+                </section>
+
+                <section id="summary">
+                    <h2><i class="ti ti-checklist"></i>ラボ全体を通したベストプラクティスまとめ</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>観点</th>
+                                    <th>ラボでの実装</th>
+                                    <th>実務でのベストプラクティス</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>APIキーの権限</td>
+                                    <td>制限なしで作成</td>
+                                    <td>Cloud Natural Language APIのみに制限をかける</td>
+                                </tr>
+                                <tr>
+                                    <td>キーの保管場所</td>
+                                    <td>コード直書き／環境変数</td>
+                                    <td>
+                                        Secret
+                                        Managerやプロパティストアなど、コードから分離した場所に保管
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>キーの送信方法</td>
+                                    <td>クエリパラメータ</td>
+                                    <td>
+                                        可能であれば<code>x-goog-api-key</code>ヘッダーに切り替える
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Apps Scriptの権限範囲</td>
+                                    <td><code>@OnlyCurrentDoc</code>で限定</td>
+                                    <td>追加のGoogleサービスを使う場合もスコープを都度見直す</td>
+                                </tr>
+                                <tr>
+                                    <td>言語指定</td>
+                                    <td>一部で省略（自動検出）</td>
+                                    <td>本番運用では明示的に言語コードを指定して誤検出を防ぐ</td>
+                                </tr>
+                                <tr>
+                                    <td>エンコーディング指定</td>
+                                    <td>UTF8を明示</td>
+                                    <td>
+                                        扱う文字種（絵文字・多言語）に応じて適切なエンコーディングを選定
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>APIの有効化</td>
+                                    <td>事前に有効化が必須</td>
+                                    <td>
+                                        IaC（Terraformなど）で有効化状態をコード管理し、ヒューマンエラーを防ぐ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="references">
+                    <h2><i class="ti ti-books"></i>参考文献・根拠ソース</h2>
+                    <div class="ref-list">
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/docs/authentication/api-keys"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">1</div>
+                            <div class="ref-body">
+                                <strong>Manage API keys（APIキーの作成・制限）</strong
+                                ><span>docs.cloud.google.com/docs/authentication/api-keys</span>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/docs/authentication/api-keys-best-practices"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">2</div>
+                            <div class="ref-body">
+                                <strong>Best practices for managing API keys</strong
+                                ><span
+                                    >docs.cloud.google.com/docs/authentication/api-keys-best-practices</span
+                                >
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/api-keys/docs/add-restrictions-api-keys"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">3</div>
+                            <div class="ref-body">
+                                <strong>Adding restrictions to API keys</strong
+                                ><span
+                                    >docs.cloud.google.com/api-keys/docs/add-restrictions-api-keys</span
+                                >
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/docs/authentication/api-keys-use"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">4</div>
+                            <div class="ref-body">
+                                <strong
+                                    >Use API keys to access APIs（ヘッダー vs
+                                    クエリパラメータ）</strong
+                                ><span>docs.cloud.google.com/docs/authentication/api-keys-use</span>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/natural-language/docs/setup"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">5</div>
+                            <div class="ref-body">
+                                <strong>Quickstart: Setup the Natural Language API</strong
+                                ><span>docs.cloud.google.com/natural-language/docs/setup</span>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/natural-language/docs"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">6</div>
+                            <div class="ref-body">
+                                <strong>Cloud Natural Language documentation（概要）</strong
+                                ><span>docs.cloud.google.com/natural-language/docs</span>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/natural-language/docs/analyzing-syntax"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">7</div>
+                            <div class="ref-body">
+                                <strong>Analyzing Syntax（構文解析・gcloudコマンド）</strong
+                                ><span
+                                    >docs.cloud.google.com/natural-language/docs/analyzing-syntax</span
+                                >
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/sdk/gcloud/reference/ml/language/analyze-syntax"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">8</div>
+                            <div class="ref-body">
+                                <strong
+                                    >gcloud ml language
+                                    analyze-syntax（コマンドリファレンス）</strong
+                                ><span
+                                    >docs.cloud.google.com/sdk/gcloud/reference/ml/language/analyze-syntax</span
+                                >
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://docs.cloud.google.com/natural-language/docs/languages"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">9</div>
+                            <div class="ref-body">
+                                <strong>Language Support（対応言語一覧）</strong
+                                ><span>docs.cloud.google.com/natural-language/docs/languages</span>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://developers.google.com/apps-script/guides/services/authorization"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">10</div>
+                            <div class="ref-body">
+                                <strong
+                                    >Authorization for Google
+                                    Services（@OnlyCurrentDocの説明）</strong
+                                ><span
+                                    >developers.google.com/apps-script/guides/services/authorization</span
+                                >
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://developers.google.com/workspace/add-ons/concepts/editor-scopes"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">11</div>
+                            <div class="ref-body">
+                                <strong>Authorization scopes for Editor add-ons</strong
+                                ><span
+                                    >developers.google.com/workspace/add-ons/concepts/editor-scopes</span
+                                >
+                            </div>
+                        </a>
+                        <a
+                            class="ref-item"
+                            href="https://developers.google.com/apps-script/reference/url-fetch"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-index">12</div>
+                            <div class="ref-body">
+                                <strong>URL Fetch Service（UrlFetchAppのスコープ）</strong
+                                ><span>developers.google.com/apps-script/reference/url-fetch</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="closing-note">
+                        ラボ環境では学習効率のためにセキュリティ上の簡略化（キーの直書き、制限なしキーなど）がされている箇所が複数ある。実務に応用する際は「ベストプラクティスまとめ」の右列を必ず適用すること。
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script>
+            function dedent(str) {
+                const lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n\s*$/, '')
+                    .split('\n');
+                const nonEmpty = lines.filter((l) => l.trim().length > 0);
+                const indents = nonEmpty.map((l) => (l.match(/^ */) || [''])[0].length);
+                const min = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines.map((l) => l.slice(min)).join('\n');
+            }
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                fontFamily:
+                    '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Hiragino Kaku Gothic ProN, Noto Sans JP, sans-serif',
+                flowchart: { useMaxWidth: false, htmlLabels: true },
+                sequence: { useMaxWidth: false },
+                themeVariables: {
+                    background: '#07111e',
+                    primaryColor: '#13233a',
+                    primaryTextColor: '#e7edf5',
+                    primaryBorderColor: '#7c9eff',
+                    lineColor: '#4a6fa5',
+                    secondaryColor: '#0d1b2e',
+                    secondaryTextColor: '#e7edf5',
+                    secondaryBorderColor: '#1f3350',
+                    tertiaryColor: '#101f33',
+                    tertiaryTextColor: '#e7edf5',
+                    tertiaryBorderColor: '#1f3350',
+                    textColor: '#e7edf5',
+                    nodeTextColor: '#e7edf5',
+                    mainBkg: '#13233a',
+                    actorBkg: '#13233a',
+                    actorTextColor: '#e7edf5',
+                    actorBorder: '#7c9eff',
+                    signalColor: '#a8b6c8',
+                    signalTextColor: '#e7edf5',
+                    labelBoxBkgColor: '#0d1b2e',
+                    labelTextColor: '#e7edf5',
+                    loopTextColor: '#e7edf5',
+                    noteBkgColor: '#16283f',
+                    noteTextColor: '#e7edf5',
+                    noteBorderColor: '#1f3350',
+                    fontFamily:
+                        '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Hiragino Kaku Gothic ProN, Noto Sans JP, sans-serif',
+                    fontSize: '16px',
+                },
+            });
+            /* mermaid.initialize must run synchronously before any await in init():
+     mermaid's UMD bundle listens for the window load event and will auto-run
+     its default (non-dark, startOnLoad-enabled) init pass on any .mermaid
+     element it can already see. If our own init() yields to the event loop
+     (e.g. via "await document.fonts.ready") before calling initialize/run,
+     that auto pass can win the race, mark the still-empty elements
+     data-processed="true", and permanently block our real render. Keeping
+     this call unawaited and at top level closes that race. */
+
+            async function init() {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (e) {}
+                }
+
+                const sources = document.querySelectorAll('script.mermaid-src');
+                sources.forEach((src) => {
+                    const target = document.getElementById(src.dataset.target);
+                    if (target) {
+                        target.textContent = dedent(src.textContent);
+                    }
+                });
+
+                try {
+                    await mermaid.run({ querySelector: '.mermaid' });
+                } catch (e) {
+                    console.error('Mermaid render error:', e);
+                }
+
+                if (window.hljs) {
+                    document
+                        .querySelectorAll('pre code')
+                        .forEach((block) => hljs.highlightElement(block));
+                }
+
+                const sections = document.querySelectorAll('main section[id]');
+                const navLinks = document.querySelectorAll('.sidebar nav a');
+                const linkMap = new Map();
+                navLinks.forEach((a) => linkMap.set(a.getAttribute('href').slice(1), a));
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            const link = linkMap.get(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach((a) => a.classList.remove('active'));
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach((s) => observer.observe(s));
+
+                const menuToggle = document.getElementById('menu-toggle');
+                if (menuToggle) {
+                    menuToggle.addEventListener('click', () => {
+                        document.body.classList.toggle('sidebar-open');
+                    });
+                }
+            }
+
+            window.addEventListener('DOMContentLoaded', init);
+        </script>
+    </body>
+</html>
