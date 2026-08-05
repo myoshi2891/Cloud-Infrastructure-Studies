@@ -59,7 +59,6 @@ export default function CcieEnterpriseGuide() {
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
                             <MermaidDiagram
-                                id="diag-hierarchy"
                                 chart={DIAGRAMS.hierarchy}
                                 ariaLabel="Cisco認定レベル階層におけるCCIE EIの位置づけ"
                             />
@@ -87,7 +86,6 @@ export default function CcieEnterpriseGuide() {
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
                             <MermaidDiagram
-                                id="diag-roadmap"
                                 chart={DIAGRAMS.roadmap}
                                 ariaLabel="認定取得までの2ステップフロー"
                             />
@@ -322,7 +320,6 @@ export default function CcieEnterpriseGuide() {
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
                             <MermaidDiagram
-                                id="diag-lab-modules"
                                 chart={DIAGRAMS.labModules}
                                 ariaLabel="ラボ試験のモジュール構成"
                             />
@@ -506,7 +503,6 @@ export default function CcieEnterpriseGuide() {
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
                             <MermaidDiagram
-                                id="diag-study-roadmap"
                                 chart={DIAGRAMS.studyRoadmap}
                                 ariaLabel="初学者向け学習ロードマップ"
                             />

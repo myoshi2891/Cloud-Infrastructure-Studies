@@ -4,8 +4,8 @@ import CcieEnterpriseGuide from '@/app/cisco/ccie/enterprise-infrastructure/Ccie
 
 // Mermaid Diagram モック
 vi.mock('@/components/MermaidDiagram', () => ({
-    MermaidDiagram: ({ chart, id }: { chart: string; id: string }) => (
-        <div data-testid={`mermaid-${id}`}>{chart}</div>
+    MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel: string }) => (
+        <div data-testid="mermaid-diagram" aria-label={ariaLabel}>{chart}</div>
     ),
 }));
 
@@ -115,10 +115,10 @@ describe('CCIE Enterprise Infrastructure Complete Guide Component', () => {
 
     it('renders all 4 Mermaid diagrams', () => {
         render(<CcieEnterpriseGuide />);
-        expect(screen.getByTestId('mermaid-diag-hierarchy')).toBeInText();
-        expect(screen.getByTestId('mermaid-diag-roadmap')).toBeInText();
-        expect(screen.getByTestId('mermaid-diag-lab-modules')).toBeInText();
-        expect(screen.getByTestId('mermaid-diag-study-roadmap')).toBeInText();
+        expect(screen.getByLabelText('Cisco認定レベル階層におけるCCIE EIの位置づけ')).toBeInText();
+        expect(screen.getByLabelText('認定取得までの2ステップフロー')).toBeInText();
+        expect(screen.getByLabelText('ラボ試験のモジュール構成')).toBeInText();
+        expect(screen.getByLabelText('初学者向け学習ロードマップ')).toBeInText();
     });
 
     it('renders all 10 reference source links', () => {
