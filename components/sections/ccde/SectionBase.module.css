@@ -43,6 +43,10 @@
     color: var(--ink);
 }
 
+.sheetBody {
+    line-height: 1.9;
+}
+
 .sheetBody h3 {
     font-size: 18px;
     color: var(--line-cyan);
@@ -82,7 +86,8 @@
 }
 
 .data td.num,
-.data th.num {
+.data th.num,
+.num {
     font-family: var(--font-mono);
 }
 
