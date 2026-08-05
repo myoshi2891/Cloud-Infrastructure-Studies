@@ -1,5 +1,3 @@
-'use client';
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
@@ -71,9 +69,9 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ツール/機能</th>
-                                <th>主な役割</th>
-                                <th>初級者向けポイント</th>
+                                <th scope="col">ツール/機能</th>
+                                <th scope="col">主な役割</th>
+                                <th scope="col">初級者向けポイント</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -193,10 +191,10 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ストレージタイプ</th>
-                                <th>代表サービス</th>
-                                <th>特徴</th>
-                                <th>主なコスト最適化ポイント</th>
+                                <th scope="col">ストレージタイプ</th>
+                                <th scope="col">代表サービス</th>
+                                <th scope="col">特徴</th>
+                                <th scope="col">主なコスト最適化ポイント</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -250,10 +248,10 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ストレージクラス</th>
-                                <th>想定用途</th>
-                                <th>取り出し時間</th>
-                                <th>コスト特性</th>
+                                <th scope="col">ストレージクラス</th>
+                                <th scope="col">想定用途</th>
+                                <th scope="col">取り出し時間</th>
+                                <th scope="col">コスト特性</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -346,10 +344,10 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ボリュームタイプ</th>
-                                <th>種別</th>
-                                <th>主な用途</th>
-                                <th>コスト最適化のポイント</th>
+                                <th scope="col">ボリュームタイプ</th>
+                                <th scope="col">種別</th>
+                                <th scope="col">主な用途</th>
+                                <th scope="col">コスト最適化のポイント</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -400,9 +398,9 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>状況</th>
-                                <th>推奨サービス</th>
-                                <th>理由</th>
+                                <th scope="col">状況</th>
+                                <th scope="col">推奨サービス</th>
+                                <th scope="col">理由</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -486,8 +484,8 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -523,10 +521,10 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>購入オプション</th>
-                                <th>割引率の目安</th>
-                                <th>コミットメント</th>
-                                <th>適した用途</th>
+                                <th scope="col">購入オプション</th>
+                                <th scope="col">割引率の目安</th>
+                                <th scope="col">コミットメント</th>
+                                <th scope="col">適した用途</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -590,9 +588,9 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>サービス</th>
-                                <th>課金単位</th>
-                                <th>コスト最適化ポイント</th>
+                                <th scope="col">サービス</th>
+                                <th scope="col">課金単位</th>
+                                <th scope="col">コスト最適化ポイント</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -674,10 +672,10 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>ロードバランサー</th>
-                                <th>レイヤー</th>
-                                <th>主な用途</th>
-                                <th>コスト最適化の観点</th>
+                                <th scope="col">ロードバランサー</th>
+                                <th scope="col">レイヤー</th>
+                                <th scope="col">主な用途</th>
+                                <th scope="col">コスト最適化の観点</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -752,8 +750,8 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -788,9 +786,9 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>観点</th>
-                                <th>リレーショナル(RDS/Aurora)</th>
-                                <th>非リレーショナル(DynamoDB)</th>
+                                <th scope="col">観点</th>
+                                <th scope="col">リレーショナル(RDS/Aurora)</th>
+                                <th scope="col">非リレーショナル(DynamoDB)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -972,8 +970,8 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1013,10 +1011,10 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>方式</th>
-                                <th>コスト</th>
-                                <th>可用性</th>
-                                <th>運用負荷</th>
+                                <th scope="col">方式</th>
+                                <th scope="col">コスト</th>
+                                <th scope="col">可用性</th>
+                                <th scope="col">運用負荷</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1034,7 +1032,7 @@ export function Domain4Guide() {
                             </tr>
                             <tr className="odd">
                                 <td>NATインスタンス</td>
-                                <td>インスタンス時間料金のみ(小さいインスタンスで代替可)</td>
+                                <td>EC2時間料金 + EBS/パブリックIPv4/データ転送料が発生</td>
                                 <td>自分でAuto Scaling/冗長化を設計する必要あり</td>
                                 <td>高(パッチ適用・スケーリングを自前管理)</td>
                             </tr>
@@ -1055,10 +1053,10 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>接続方式</th>
-                                <th>初期コスト</th>
-                                <th>帯域の安定性</th>
-                                <th>データ転送コスト</th>
+                                <th scope="col">接続方式</th>
+                                <th scope="col">初期コスト</th>
+                                <th scope="col">帯域の安定性</th>
+                                <th scope="col">データ転送コスト</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1148,9 +1146,9 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>通信経路</th>
-                                <th>コスト傾向</th>
-                                <th>最適化手法</th>
+                                <th scope="col">通信経路</th>
+                                <th scope="col">コスト傾向</th>
+                                <th scope="col">最適化手法</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1232,8 +1230,8 @@ export function Domain4Guide() {
                     <table>
                         <thead>
                             <tr className="header">
-                                <th>項目</th>
-                                <th>ベストプラクティス</th>
+                                <th scope="col">項目</th>
+                                <th scope="col">ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1379,7 +1377,7 @@ export function Domain4Guide() {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html" target="_blank" rel="noreferrer">
+                                    <a href="https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock.html" target="_blank" rel="noreferrer">
                                         S3 Glacier Vault Lock
                                     </a>
                                 </li>

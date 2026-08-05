@@ -209,7 +209,7 @@ export const DIAGRAMS: Record<string, string> = {
     Design["NAT配置設計"]
     Design -->|コスト最優先<br/>可用性の一部妥協可| Single["シングル共有NAT Gateway<br/>1つのAZに配置<br/>他AZからはAZ間データ転送料が発生"]
     Design -->|可用性最優先<br/>本番ワークロード| PerAZ["AZごとにNAT Gateway<br/>AZ障害の影響を局所化<br/>AZ間転送料は発生しない"]
-    Design -->|開発/テスト環境で<br/>コスト最小化| NATInstance["NATインスタンス(EC2)<br/>時間課金なしだが<br/>自己管理・スケーリングの手間"]`,
+    Design -->|開発/テスト環境で<br/>コスト最小化| NATInstance["NATインスタンス(EC2)<br/>EC2時間料金+EBS/IPv4/転送料が発生<br/>自己管理・スケーリングが必要"]`,
 
     'mermaid-src-23': `flowchart TD
     Q["オンプレミス〜AWS間の<br/>接続要件は?"]

@@ -14,6 +14,7 @@ const NAV_ITEMS = [
 
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('intro');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (typeof IntersectionObserver === 'undefined') return;
@@ -38,35 +39,54 @@ export function NavBar() {
     }, []);
 
     return (
-        <aside className="sidebar" id="sidebar">
-            <div className="sidebar-brand">
-                <div className="eyebrow">AWS CERTIFIED SOLUTIONS ARCHITECT - ASSOCIATE</div>
-                <h2>
-                    ドメイン4
+        <>
+            <button
+                className="sidebar-toggle"
+                aria-expanded={isOpen}
+                aria-controls="sidebar"
+                aria-label={isOpen ? 'ナビゲーションを閉じる' : 'ナビゲーションを開く'}
+                onClick={() => setIsOpen((prev) => !prev)}
+            >
+                ☰
+            </button>
+            {isOpen && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={() => setIsOpen(false)}
+                    aria-hidden="true"
+                />
+            )}
+            <aside className={`sidebar ${isOpen ? 'open' : ''}`} id="sidebar">
+                <div className="sidebar-brand">
+                    <div className="eyebrow">AWS CERTIFIED SOLUTIONS ARCHITECT - ASSOCIATE</div>
+                    <h2>
+                        ドメイン4
+                        <br />
+                        コスト最適化アーキテクチャの設計
+                    </h2>
+                    <span className="weight-badge">出題比率 20%</span>
+                </div>
+                <nav>
+                    <ul>
+                        {NAV_ITEMS.map((item) => (
+                            <li key={item.id}>
+                                <a
+                                    href={`#${item.id}`}
+                                    className={`nav-link ${activeId === item.id ? 'active' : ''}`}
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    {item.title}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                <div className="sidebar-footer">
+                    SAA-C03 試験ガイド準拠
                     <br />
-                    コスト最適化アーキテクチャの設計
-                </h2>
-                <span className="weight-badge">出題比率 20%</span>
-            </div>
-            <nav>
-                <ul>
-                    {NAV_ITEMS.map((item) => (
-                        <li key={item.id}>
-                            <a
-                                href={`#${item.id}`}
-                                className={`nav-link ${activeId === item.id ? 'active' : ''}`}
-                            >
-                                {item.title}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-            <div className="sidebar-footer">
-                SAA-C03 試験ガイド準拠
-                <br />
-                全4タスク / Mermaid図29点
-            </div>
-        </aside>
+                    全4タスク / Mermaid図29点
+                </div>
+            </aside>
+        </>
     );
 }

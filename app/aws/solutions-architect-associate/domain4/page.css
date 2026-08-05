@@ -1,21 +1,6 @@
 .domain4-page {
-    --bg: #07111e;
-    --bg-elevated: #0d1a2e;
-    --bg-sidebar: #0a1626;
-    --bg-card: #0f1d33;
-    --accent: #7c9eff;
-    --accent-dim: #4f6bb0;
-    --accent-soft: rgba(124, 158, 255, 0.12);
-    --text: #e7ecf6;
-    --text-dim: #a8b3c7;
-    --text-faint: #6d7994;
-    --border: rgba(124, 158, 255, 0.16);
-    --border-soft: rgba(255, 255, 255, 0.07);
-    --code-bg: rgba(124, 158, 255, 0.1);
-    --sidebar-width: 300px;
-
-    background: var(--bg);
-    color: var(--text);
+    background: var(--color-guide-background, #07111e);
+    color: var(--color-foreground, #e7ecf6);
     font-family: var(--font-body), 'Noto Sans JP', sans-serif;
     line-height: 1.85;
     font-size: 16px;
@@ -138,7 +123,8 @@
 }
 
 .domain4-page .content {
-    margin-left: var(--sidebar-width);
+    margin-left: 300px;
+    max-width: 1000px;
     padding: 48px 56px 120px;
     min-height: 100vh;
 }
@@ -356,16 +342,16 @@
 }
 
 /* Pie Chart 配色オーバーライド（鮮やかなカラーの維持） */
-.domain4-page .mermaid-wrap :global(.pieCircle) {
+.domain4-page .mermaid-wrap .pieCircle {
     stroke: #07111e !important;
     stroke-width: 2px !important;
 }
 
-.domain4-page .mermaid-wrap :global(.pieTitleText) {
+.domain4-page .mermaid-wrap .pieTitleText {
     fill: #e7ecf6 !important;
 }
 
-.domain4-page .mermaid-wrap :global(.legend text) {
+.domain4-page .mermaid-wrap .legend text {
     fill: #c7d0e4 !important;
 }
 
