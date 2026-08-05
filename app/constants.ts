@@ -280,6 +280,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/aws/solutions-architect-associate/domain3',
                 pct: '24%',
             },
+            {
+                label: 'ドメイン4: コスト最適化アーキテクチャの設計',
+                href: '/aws/solutions-architect-associate/domain4',
+                pct: '20%',
+            },
         ],
         badge: 'ソリューションアーキテクト',
         icon: '🏗',
