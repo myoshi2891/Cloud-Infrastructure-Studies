@@ -4,7 +4,7 @@ import CcieEnterpriseGuide from '@/app/cisco/ccie/enterprise-infrastructure/Ccie
 
 // Mermaid Diagram モック
 vi.mock('@/components/MermaidDiagram', () => ({
-    default: ({ chart, id }: { chart: string; id: string }) => (
+    MermaidDiagram: ({ chart, id }: { chart: string; id: string }) => (
         <div data-testid={`mermaid-${id}`}>{chart}</div>
     ),
 }));

@@ -1,5 +1,5 @@
 import React from 'react';
-import MermaidDiagram from '@/components/MermaidDiagram';
+import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 import styles from './page.module.css';
