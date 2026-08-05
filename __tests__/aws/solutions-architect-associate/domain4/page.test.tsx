@@ -36,14 +36,14 @@ describe('AWS SAA Domain 4 Guide Page', () => {
         const h2Headings = container.querySelectorAll('h2');
         const h3Headings = container.querySelectorAll('h3');
 
-        expect(h2Headings.length).toBeGreaterThanOrEqual(6);
-        expect(h3Headings.length).toBeGreaterThanOrEqual(15);
+        expect(h2Headings.length).toBe(6);
+        expect(h3Headings.length).toBe(15);
     });
 
     it('renders tables correctly with expected headers and row cells', () => {
         const { container } = render(<Domain4Guide />);
         const tables = container.querySelectorAll('table');
-        expect(tables.length).toBeGreaterThanOrEqual(10);
+        expect(tables.length).toBe(10);
 
         expect(screen.getByText('AWS Organizations 連結請求(マルチアカウント請求)')).toBeInTheDocument();
         expect(screen.getByText('S3 Standard')).toBeInTheDocument();
@@ -51,10 +51,23 @@ describe('AWS SAA Domain 4 Guide Page', () => {
         expect(screen.getAllByText(/Savings Plans/i).length).toBeGreaterThan(0);
     });
 
-    it('renders source and reference links with correct href attributes', () => {
+    it('renders all 29 figure IDs and supplementary-skill text correctly', () => {
+        render(<Domain4Guide />);
+        const diagramIds = Object.keys(DIAGRAMS);
+        expect(diagramIds.length).toBe(29);
+        diagramIds.forEach((id) => {
+            expect(DIAGRAMS[id]).toBeDefined();
+            expect(typeof DIAGRAMS[id]).toBe('string');
+        });
+
+        expect(screen.getByText(/スキル: 適切なスケーリング方式の判断\(水平 vs 垂直\)/i)).toBeInTheDocument();
+        expect(screen.getByText(/スキル: コスト効率の良いデータベースタイプの判断\(時系列・列指向\)/i)).toBeInTheDocument();
+    });
+
+    it('renders source and reference links with exact count and correct href attributes', () => {
         const { container } = render(<Domain4Guide />);
         const links = container.querySelectorAll('a[target="_blank"]');
-        expect(links.length).toBeGreaterThanOrEqual(10);
+        expect(links.length).toBe(10);
 
         const hrefs = Array.from(links).map((a) => a.getAttribute('href'));
         expect(hrefs.some((h) => h?.includes('wellarchitected/latest/cost-optimization-pillar'))).toBe(true);

@@ -125,6 +125,8 @@ describe('Header ドロワー内 NavTree 描画', () => {
         const awsScope = within(awsSection as HTMLElement);
         expect(awsScope.getByRole('link', { name: /概要/ })).toHaveAttribute('href', '/aws/solutions-architect-associate');
         expect(awsScope.getByRole('link', { name: /ドメイン1: セキュアなアーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain1');
+        expect(awsScope.getByRole('link', { name: /ドメイン2: 回復力のあるアーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain2');
+        expect(awsScope.getByRole('link', { name: /ドメイン3: 高性能なアーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain3');
         expect(awsScope.getByRole('link', { name: /ドメイン4: コスト最適化アーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain4');
     });
 

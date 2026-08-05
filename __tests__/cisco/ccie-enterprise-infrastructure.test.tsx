@@ -122,14 +122,14 @@ describe('CCIE Enterprise Infrastructure Complete Guide Component', () => {
         expect(screen.getByLabelText('初学者向け学習ロードマップ')).toBeInTheDocument();
     });
 
-    it('renders all 10 reference source links', () => {
+    it('renders all 9 reference source links', () => {
         render(<CcieEnterpriseGuide />);
         const links = screen.getAllByRole('link');
         const ciscoLinks = links.filter((link) =>
             link.getAttribute('href')?.includes('cisco.com') ||
             link.getAttribute('href')?.includes('learningnetwork.cisco.com')
         );
-        expect(ciscoLinks.length).toBeGreaterThanOrEqual(8);
+        expect(ciscoLinks.length).toBe(9);
     });
 
     it('renders FAQ details elements', () => {
