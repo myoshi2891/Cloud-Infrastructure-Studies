@@ -16,12 +16,18 @@ describe('AWS SAA Domain 4 Guide Page', () => {
 
         const h1Elements = screen.getAllByRole('heading', { level: 1 });
         expect(h1Elements.length).toBeGreaterThan(0);
-        expect(h1Elements[0]).toHaveTextContent(/ドメイン4/i);
+        expect(h1Elements[0]).toHaveTextContent(/ドメイン4: コスト最適化アーキテクチャの設計 完全ガイド/i);
+
+        expect(screen.getAllByText(/AWS CERTIFIED SOLUTIONS ARCHITECT - ASSOCIATE/i).length).toBeGreaterThan(0);
+        expect(screen.getByText(/出題比率 20%/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/AWS Certified Solutions Architect - Associate \(SAA-C03\) 試験対応/i).length).toBeGreaterThan(0);
+        expect(screen.getByText(/SAA-C03 試験ガイド準拠/i)).toBeInTheDocument();
 
         expect(screen.getByRole('heading', { name: /Task 4.1: コスト最適化ストレージソリューションの設計/i })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /Task 4.2: コスト最適化コンピューティングソリューションの設計/i })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /Task 4.3: コスト最適化データベースソリューションの設計/i })).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /Task 4.4: コスト最適化ネットワークアーキテクチャの設計/i })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /参考文献/i })).toBeInTheDocument();
     });
 
     it('contains valid mermaid diagrams in constants', () => {

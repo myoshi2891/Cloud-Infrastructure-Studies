@@ -20,15 +20,19 @@ export function Domain4Guide() {
         <div className="domain4-page">
             <div className="layout">
                 <NavBar />
-                <main className="main">
+                <main className="content">
                     <h1 id="ドメイン4-コスト最適化アーキテクチャの設計-完全ガイド">
                         ドメイン4: コスト最適化アーキテクチャの設計 完全ガイド
                     </h1>
+                    <p>
+                        <strong>AWS Certified Solutions Architect - Associate (SAA-C03) 試験対応</strong>
+                    </p>
 
                     <h2 id="intro">はじめに</h2>
                     <p>
-                        AWS Certified Solutions Architect - Associate (SAA-C03) 試験における「ドメイン4: コスト最適化アーキテクチャの設計」は、試験全体の <strong>20%</strong> を占める重要な出題分野です。
+                        このガイドは、AWS Certified Solutions Architect - Associate (SAA-C03) 試験のドメイン4「<strong>コスト最適化アーキテクチャの設計 (Design Cost-Optimized Architectures)</strong>」を、初学者の方でも一つずつ理解できるようにステップバイステップで解説するものです。
                     </p>
+                    <p>ドメイン4は試験全体の<strong>20%</strong>を占め、4つのタスクで構成されています。</p>
                     <p><strong>SAA-C03 試験ドメイン別出題比率(ドメイン4を中心に)</strong></p>
                     <Diagram id="mermaid-src-00" label="試験ドメイン出題比率" />
                     <p>
@@ -66,44 +70,44 @@ export function Domain4Guide() {
                     <h3 id="02-各ツール機能の役割">0.2 各ツール・機能の役割</h3>
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>ツール / 機能</th>
                                 <th>主な用途と特徴</th>
                                 <th>試験での問われ方(キーフレーズ)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>Consolidated Billing (連結請求)</td>
                                 <td>AWS Organizations で複数アカウントの請求を1つに統合。一括割引(ボリュームディスカウント)が全アカウントに適用される。</td>
                                 <td>「複数アカウントの請求を一本化」「ボリュームディスカウントを組織全体で活用」</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>コスト配分タグ (Cost Allocation Tags)</td>
                                 <td>リソースに「Environment: Prod」「Department: Sales」等のタグを付与し、コストを部署・環境ごとに分類・分析する。</td>
                                 <td>「部署ごと・プロジェクトごとにコストを詳細追跡」「タグベースのコスト可視化」</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>AWS Cost Explorer</td>
                                 <td>過去の使用量とコストを可視化・分析・予測。将来のコスト傾向をグラフで確認できる。</td>
                                 <td>「過去の利用実績グラフ化」「今後のコスト予測」「リザーブド/Savings Plans の推奨事項」</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>AWS Budgets</td>
                                 <td>予算上限を設定し、予測または実際のコスト/使用量が閾値を超えた際に Eメール や SNS・Chatbot・CLI アクションで通知する。</td>
                                 <td>「予算超過のアラート通知」「特定の閾値到達時の自動アクション設定」</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>Cost and Usage Report (CUR)</td>
                                 <td>最も詳細なコストと使用量のデータを S3 に CSV/Parquet 形式で出力。Athena と連携して SQL 分析が可能。</td>
                                 <td>「最も詳細な時間単位・リソース単位の明細」「S3 への自動出力」「Athena での分析」</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>AWS Compute Optimizer</td>
                                 <td>機械学習を用いて EC2、EBS、Lambda、Auto Scaling などの過剰プロビジョニング(oversized)を検知し、適切なサイズを推奨。</td>
                                 <td>「過剰スペックなインスタンスの特定」「機械学習による最適なサイズ推奨」</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>AWS Trusted Advisor</td>
                                 <td>コスト最適化・パフォーマンス・セキュリティ・耐障害性・サービス制限の5分野でアカウントをスキャン。未使用のリソース(未アタッチのEBS、空きEIP等)を検出。</td>
                                 <td>「アイドル状態のリソース検出」「未アタッチの EBS ボリューム発見」</td>
@@ -128,7 +132,7 @@ export function Domain4Guide() {
 
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>ストレージタイプ</th>
                                 <th>代表サービス</th>
                                 <th>特徴</th>
@@ -136,19 +140,19 @@ export function Domain4Guide() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>オブジェクト</td>
                                 <td>Amazon S3</td>
                                 <td>事実上無制限の容量、HTTP経由でアクセス、静的Webサイトやデータレイクに最適</td>
                                 <td>ストレージクラスの階層化、ライフサイクルルール</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>ファイル</td>
                                 <td>Amazon EFS, Amazon FSx</td>
                                 <td>複数のEC2から同時マウント可能な共有ファイルシステム</td>
                                 <td>EFSの「インフリークエントアクセス」階層、FSxのバックアップ保持設定</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>ブロック</td>
                                 <td>Amazon EBS, インスタンスストア</td>
                                 <td>単一EC2インスタンスにアタッチする低レイテンシーディスク</td>
@@ -165,7 +169,7 @@ export function Domain4Guide() {
 
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>ストレージクラス</th>
                                 <th>想定用途</th>
                                 <th>取り出し時間</th>
@@ -173,37 +177,37 @@ export function Domain4Guide() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>S3 Standard</td>
                                 <td>頻繁にアクセスするデータ</td>
                                 <td>即時</td>
                                 <td>保存コスト高め、取り出し無料</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>S3 Intelligent-Tiering</td>
                                 <td>アクセスパターンが読めないデータ</td>
                                 <td>即時(一部階層を除く)</td>
                                 <td>監視・自動階層化の小額手数料はかかるが取り出し料金なし</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>S3 Standard-IA / One Zone-IA</td>
                                 <td>月1回程度アクセスするバックアップなど</td>
                                 <td>即時</td>
                                 <td>保存コストは低いが取り出し料金が発生</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>S3 Glacier Instant Retrieval</td>
                                 <td>四半期に1回程度アクセスするアーカイブ</td>
                                 <td>ミリ秒</td>
                                 <td>低コストかつ即時アクセスが必要な場合に最適</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>S3 Glacier Flexible Retrieval</td>
                                 <td>年1〜2回程度のアクセス</td>
                                 <td>数分〜数時間</td>
                                 <td>さらに低コスト</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>S3 Glacier Deep Archive</td>
                                 <td>法規制で長期保管が必要なデータ</td>
                                 <td>最大12時間</td>
@@ -233,7 +237,7 @@ export function Domain4Guide() {
 
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>ボリュームタイプ</th>
                                 <th>種別</th>
                                 <th>主な用途</th>
@@ -241,25 +245,25 @@ export function Domain4Guide() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>gp3</td>
                                 <td>SSD(汎用)</td>
                                 <td>Webサーバー、開発・テスト環境、ほとんどの汎用ワークロード</td>
                                 <td>gp2より約20%安価。IOPSとスループットを個別にプロビジョニングできるため、必要な分だけ課金される</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>io2 / io2 Block Express</td>
                                 <td>SSD(プロビジョンドIOPS)</td>
                                 <td>大規模データベース(SAP HANA、Oracleなど)</td>
                                 <td>過剰スペックにならないよう、実測IOPSに基づいてサイジングする</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>st1</td>
                                 <td>HDD(スループット最適化)</td>
                                 <td>ビッグデータ、ログ処理、データウェアハウス</td>
                                 <td>gp3よりも大幅に安いが、ブート用途には使えない点に注意</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>sc1</td>
                                 <td>HDD(コールドHDD)</td>
                                 <td>アクセス頻度が非常に低いデータ</td>
@@ -280,29 +284,29 @@ export function Domain4Guide() {
                     <h3 id="417-task-41-ベストプラクティスまとめ">4.1.7 Task 4.1 ベストプラクティスまとめ</h3>
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>項目</th>
                                 <th>ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>ストレージ選択</td>
                                 <td>ワークロードのアクセスパターン(頻度・並行性・レイテンシー要件)に応じてオブジェクト/ファイル/ブロックを選ぶ</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>S3階層化</td>
                                 <td>アクセスパターンが不明ならIntelligent-Tiering、既知ならライフサイクルルールで明示的に階層移行</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>EBS</td>
                                 <td>gp2は原則gp3へ移行。IOPS要件を正確に見積り過剰プロビジョニングを避ける</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>データ移行</td>
                                 <td>帯域幅・データ量・継続性の3軸で DataSync / Transfer Family / Storage Gateway / Snow Family を選定</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>バックアップ</td>
                                 <td>RPO/RTOに基づく頻度・保持期間設計、長期保管はアーカイブ層へライフサイクル移行</td>
                             </tr>
@@ -320,7 +324,7 @@ export function Domain4Guide() {
 
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>購入オプション</th>
                                 <th>割引率の目安</th>
                                 <th>コミットメント</th>
@@ -328,25 +332,25 @@ export function Domain4Guide() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>On-Demand</td>
                                 <td>割引なし(基準)</td>
                                 <td>なし</td>
                                 <td>短期テスト、予測不能なワークロード</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>Reserved Instances</td>
                                 <td>最大72%</td>
                                 <td>1年 or 3年</td>
                                 <td>定常稼働する既知のワークロード(DBサーバー等)</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>Savings Plans(Compute/EC2 Instance)</td>
                                 <td>最大72%</td>
                                 <td>1年 or 3年の<strong>支払い額</strong>をコミット</td>
                                 <td>インスタンスファミリーやリージョンが変わる可能性がある場合</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>Spot Instances</td>
                                 <td>最大90%</td>
                                 <td>なし(いつでも中断される可能性)</td>
@@ -370,29 +374,29 @@ export function Domain4Guide() {
                     <h3 id="426-task-42-ベストプラクティスまとめ">4.2.6 Task 4.2 ベストプラクティスまとめ</h3>
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>項目</th>
                                 <th>ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>購入オプション</td>
                                 <td>定常負荷はReserved/Savings Plans、変動・中断可能な負荷はSpot、短期はOn-Demand</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>コンピューティング選択</td>
                                 <td>常時稼働ならEC2、イベント駆動ならLambda、コンテナ運用の手間を減らすならFargate</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>スケーリング</td>
                                 <td>水平スケーリングを基本とし、需要予測・スケジュールベースのAuto Scalingを併用</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>ロードバランサー</td>
                                 <td>用途に応じALB/NLB/GWLBを使い分け、不要な重複導入を避ける</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>インスタンスサイズ</td>
                                 <td>Compute Optimizerを使い実測値に基づいてファミリー・サイズを適正化</td>
                             </tr>
@@ -426,33 +430,33 @@ export function Domain4Guide() {
                     <h3 id="438-task-43-ベストプラクティスまとめ">4.3.8 Task 4.3 ベストプラクティスまとめ</h3>
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>項目</th>
                                 <th>ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>DB種別選択</td>
                                 <td>トランザクション整合性が必要ならRDS/Aurora、超大規模・低レイテンシーならDynamoDB</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>キャパシティ</td>
                                 <td>安定負荷はプロビジョンド+Auto Scaling、不明な負荷はオンデマンドから開始</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>接続管理</td>
                                 <td>サーバーレスからの接続はRDS Proxyでプーリングしインスタンスサイズを抑制</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>スケーリング</td>
                                 <td>読み取りはレプリカ・キャッシュで水平分散し、プライマリの垂直スケールを避ける</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>ライセンス</td>
                                 <td>商用DBからオープンソース互換DBへの移行でライセンスコストを削減</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>バックアップ</td>
                                 <td>手動スナップショットの棚卸しを定期実施</td>
                             </tr>
@@ -484,37 +488,37 @@ export function Domain4Guide() {
                     <h3 id="447-task-44-ベストプラクティスまとめ">4.4.7 Task 4.4 ベストプラクティスまとめ</h3>
                     <table>
                         <thead>
-                            <tr>
+                            <tr className="header">
                                 <th>項目</th>
                                 <th>ベストプラクティス</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="odd">
                                 <td>NAT配置</td>
                                 <td>本番はAZごとに配置して可用性確保、開発環境などコスト優先時は共有NATやNATインスタンスも検討</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>接続方式</td>
                                 <td>継続的・大容量通信はDirect Connect、一時的・小規模はVPNから開始</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>ルーティング</td>
                                 <td>VPC数が多い場合はTransit Gatewayで集約、少数ならピアリングで十分な場合も</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>VPCエンドポイント</td>
                                 <td>S3/DynamoDBはGatewayエンドポイントで無料化、他サービスはInterfaceエンドポイントとNAT経由コストを比較</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>データ転送</td>
                                 <td>AZ間・リージョン間・インターネットの順にコストが上がることを意識した設計</td>
                             </tr>
-                            <tr>
+                            <tr className="even">
                                 <td>CDN活用</td>
                                 <td>CloudFrontでオリジンアクセスを削減し、転送量そのものを圧縮</td>
                             </tr>
-                            <tr>
+                            <tr className="odd">
                                 <td>スロットリング</td>
                                 <td>使用量プランで想定外の高額請求を未然に防止</td>
                             </tr>
@@ -523,88 +527,133 @@ export function Domain4Guide() {
 
                     <hr />
 
-                    <h2 id="matrix">概念比較マトリクス</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>カテゴリ</th>
-                                <th>サービス / オプション A</th>
-                                <th>サービス / オプション B</th>
-                                <th>コストトレードオフの決定軸</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>EC2購入</td>
-                                <td>Reserved Instances / Savings Plans</td>
-                                <td>Spot Instances</td>
-                                <td>中断許容度 (中断不可ならRI/SP、中断OKならSpot)</td>
-                            </tr>
-                            <tr>
-                                <td>コンピューティング</td>
-                                <td>EC2 (On-Demand / RI)</td>
-                                <td>AWS Lambda</td>
-                                <td>稼働パターンの連続性 (常時稼働ならEC2、スパイク/断続ならLambda)</td>
-                            </tr>
-                            <tr>
-                                <td>ストレージ</td>
-                                <td>S3 Standard-IA</td>
-                                <td>S3 Intelligent-Tiering</td>
-                                <td>アクセスパターンの予測性 (既知ならStandard-IA、未知ならIntelligent-Tiering)</td>
-                            </tr>
-                            <tr>
-                                <td>ブロックストレージ</td>
-                                <td>gp3 (SSD)</td>
-                                <td>st1 (HDD)</td>
-                                <td>アクセス種別 (ランダムI/Oならgp3、大容量シーケンシャルならst1)</td>
-                            </tr>
-                            <tr>
-                                <td>ネットワーク</td>
-                                <td>VPC Peering</td>
-                                <td>AWS Transit Gateway</td>
-                                <td>VPC数と運用管理コスト (数個ならPeering、多数ならTGW)</td>
-                            </tr>
-                            <tr>
-                                <td>S3アクセス</td>
-                                <td>NAT Gateway 経由アクセス</td>
-                                <td>Gateway VPC Endpoint 経由アクセス</td>
-                                <td>転送処理料金 (Gateway Endpointなら処理料無料)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <hr />
-
-                    <h2 id="scenarios">認定試験対策 シナリオ集</h2>
-                    <div className="card-grid">
-                        <div className="card">
-                            <h3>シナリオ 1: バッチ処理コスト削減</h3>
-                            <p><strong>要件:</strong> 毎夜間3時間稼働する大量のデータ変換バッチ。中断されても自動再試行可能。</p>
-                            <p><strong>最適解:</strong> Auto Scaling グループで Spot インスタンスを活用し、AWS Batch または ECS / EKS 上で実行。</p>
+                    <h2 id="references">参考文献</h2>
+                    <div className="ref-grid">
+                        <div className="ref-card">
+                            <h3 id="コスト管理ツール機能">コスト管理ツール・機能</h3>
+                            <ul>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html" target="_blank" rel="noreferrer">
+                                        AWS Cost Explorer とは
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html" target="_blank" rel="noreferrer">
+                                        AWS Budgets を使用したコスト管理
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html" target="_blank" rel="noreferrer">
+                                        AWS Cost and Usage Report とは
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html" target="_blank" rel="noreferrer">
+                                        コスト配分タグの使用
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_consolidated-billing.html" target="_blank" rel="noreferrer">
+                                        AWS Organizations の連結請求
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/awssupport/latest/user/trusted-advisor.html" target="_blank" rel="noreferrer">
+                                        AWS Trusted Advisor
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is.html" target="_blank" rel="noreferrer">
+                                        AWS Compute Optimizer とは
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html" target="_blank" rel="noreferrer">
+                                        AWS Well-Architected Framework - コスト最適化の柱
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <div className="card">
-                            <h3>シナリオ 2: S3転送コストのユーザー負担</h3>
-                            <p><strong>要件:</strong> 研究機関がテラバイト級のデータを大勢の研究者に配布。転送料金の負担を回避したい。</p>
-                            <p><strong>最適解:</strong> S3 バケットで Requester Pays を有効化する。</p>
+                        <div className="ref-card">
+                            <h3 id="ストレージtask-41">ストレージ(Task 4.1)</h3>
+                            <ul>
+                                <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html" target="_blank" rel="noreferrer">Amazon S3 とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html" target="_blank" rel="noreferrer">Amazon S3 ストレージクラス</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html" target="_blank" rel="noreferrer">S3 オブジェクトライフサイクル管理</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/RequesterPaysBuckets.html" target="_blank" rel="noreferrer">Requester Pays バケットの使用</a></li>
+                                <li><a href="https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html" target="_blank" rel="noreferrer">Amazon EBS ボリュームタイプ</a></li>
+                                <li><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html" target="_blank" rel="noreferrer">Amazon EFS とは</a></li>
+                                <li><a href="https://aws.amazon.com/fsx/" target="_blank" rel="noreferrer">Amazon FSx</a></li>
+                                <li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html" target="_blank" rel="noreferrer">AWS DataSync とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html" target="_blank" rel="noreferrer">AWS Transfer Family とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/WhatIsStorageGateway.html" target="_blank" rel="noreferrer">AWS Storage Gateway とは</a></li>
+                                <li><a href="https://aws.amazon.com/snow/" target="_blank" rel="noreferrer">AWS Snow Family</a></li>
+                                <li><a href="https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html" target="_blank" rel="noreferrer">AWS Backup とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock.html" target="_blank" rel="noreferrer">S3 Glacier Vault Lock</a></li>
+                            </ul>
                         </div>
-                        <div className="card">
-                            <h3>シナリオ 3: 予期せぬS3アクセスによるコスト増加回避</h3>
-                            <p><strong>要件:</strong> アクセス頻度が変動するデータログの保管。クラス手動変更の手間をかけずに最小コスト化したい。</p>
-                            <p><strong>最適解:</strong> S3 Intelligent-Tiering を適用する。</p>
+                        <div className="ref-card">
+                            <h3 id="コンピューティングtask-42">コンピューティング(Task 4.2)</h3>
+                            <ul>
+                                <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html" target="_blank" rel="noreferrer">Amazon EC2 インスタンス購入オプション</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html" target="_blank" rel="noreferrer">Spotインスタンスの使用</a></li>
+                                <li><a href="https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html" target="_blank" rel="noreferrer">Savings Plans とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html" target="_blank" rel="noreferrer">リザーブドインスタンス</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html" target="_blank" rel="noreferrer">Amazon EC2 インスタンスタイプ</a></li>
+                                <li><a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html" target="_blank" rel="noreferrer">Amazon EC2 Auto Scaling とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Hibernate.html" target="_blank" rel="noreferrer">EC2 インスタンスの休止(Hibernate)</a></li>
+                                <li><a href="https://docs.aws.amazon.com/lambda/latest/dg/welcome.html" target="_blank" rel="noreferrer">AWS Lambda とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonECS/latest/userguide/what-is-fargate.html" target="_blank" rel="noreferrer">AWS Fargate とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html" target="_blank" rel="noreferrer">AWS Batch とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/elastic-load-balancing.html" target="_blank" rel="noreferrer">Elastic Load Balancing とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html" target="_blank" rel="noreferrer">Application Load Balancer</a></li>
+                                <li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html" target="_blank" rel="noreferrer">Network Load Balancer</a></li>
+                                <li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/gateway/introduction.html" target="_blank" rel="noreferrer">Gateway Load Balancer</a></li>
+                                <li><a href="https://docs.aws.amazon.com/outposts/latest/userguide/what-is-outposts.html" target="_blank" rel="noreferrer">AWS Outposts とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/local-zones/latest/ug/what-is-aws-local-zones.html" target="_blank" rel="noreferrer">AWS Local Zones とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/wavelength/latest/developerguide/what-is-wavelength.html" target="_blank" rel="noreferrer">AWS Wavelength とは</a></li>
+                            </ul>
+                        </div>
+                        <div className="ref-card">
+                            <h3 id="データベースtask-43">データベース(Task 4.3)</h3>
+                            <ul>
+                                <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html" target="_blank" rel="noreferrer">Amazon RDS とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html" target="_blank" rel="noreferrer">Amazon Aurora の概要</a></li>
+                                <li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html" target="_blank" rel="noreferrer">Amazon DynamoDB とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html" target="_blank" rel="noreferrer">DynamoDB の読み込み/書き込みキャパシティモード</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html" target="_blank" rel="noreferrer">Amazon RDS Proxy</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" target="_blank" rel="noreferrer">Amazon RDS の読み取りレプリカの使用</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/WhatIs.html" target="_blank" rel="noreferrer">Amazon ElastiCache とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html" target="_blank" rel="noreferrer">DynamoDB Accelerator (DAX)</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html" target="_blank" rel="noreferrer">Amazon RDS の自動バックアップの使用</a></li>
+                                <li><a href="https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html" target="_blank" rel="noreferrer">AWS Database Migration Service とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html" target="_blank" rel="noreferrer">AWS Schema Conversion Tool</a></li>
+                            </ul>
+                        </div>
+                        <div className="ref-card">
+                            <h3 id="ネットワークtask-44">ネットワーク(Task 4.4)</h3>
+                            <ul>
+                                <li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html" target="_blank" rel="noreferrer">NATゲートウェイ</a></li>
+                                <li><a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html" target="_blank" rel="noreferrer">AWS Direct Connect とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html" target="_blank" rel="noreferrer">AWS Site-to-Site VPN</a></li>
+                                <li><a href="https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html" target="_blank" rel="noreferrer">AWS Transit Gateway とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html" target="_blank" rel="noreferrer">VPCピアリングとは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html" target="_blank" rel="noreferrer">VPCエンドポイント</a></li>
+                                <li><a href="https://aws.amazon.com/ec2/pricing/on-demand/" target="_blank" rel="noreferrer">Amazon EC2 オンデマンド料金(データ転送)</a></li>
+                                <li><a href="https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/data-transfer.html" target="_blank" rel="noreferrer">AWSの料金の仕組み: データ転送</a></li>
+                                <li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html" target="_blank" rel="noreferrer">Amazon CloudFront とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html" target="_blank" rel="noreferrer">AWS Global Accelerator とは</a></li>
+                                <li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html" target="_blank" rel="noreferrer">Amazon API Gateway でのリクエストスロットリング</a></li>
+                            </ul>
+                        </div>
+                        <div className="ref-card">
+                            <h3 id="試験ガイド本体">試験ガイド本体</h3>
+                            <ul>
+                                <li><a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html" target="_blank" rel="noreferrer">AWS Certified Solutions Architect - Associate (SAA-C03) Exam Guide</a></li>
+                                <li><a href="https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain4.html" target="_blank" rel="noreferrer">Content Domain 4: Design Cost-Optimized Architectures</a></li>
+                            </ul>
                         </div>
                     </div>
-
-                    <hr />
-
-                    <h2 id="checklist">自己診断チェックリスト</h2>
-                    <ul>
-                        <li>[ ] Consolidated Billing と Cost Allocation Tags の目的と違いを説明できる</li>
-                        <li>[ ] S3 各ストレージクラスのコスト特性とライフサイクル移行条件を覚えている</li>
-                        <li>[ ] gp2 から gp3 への移行理由とコストメリットを理解している</li>
-                        <li>[ ] RI / Savings Plans / Spot の使い分けシナリオを即答できる</li>
-                        <li>[ ] Lambda / Fargate / EC2 の課金モデルと適したワークロードを把握している</li>
-                        <li>[ ] S3 Gateway VPC エンドポイントが通信料削減に役立つ仕組みを理解している</li>
-                    </ul>
                 </main>
             </div>
         </div>
