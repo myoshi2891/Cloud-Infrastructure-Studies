@@ -12,6 +12,10 @@ const NAV_ITEMS = [
     { id: 'references', title: '参考文献' },
 ];
 
+/**
+ * AWS SAA ドメイン4 のサイドバーナビゲーションコンポーネント。
+ * 各セクションへのスクロール移動、IntersectionObserver によるアクティブ項目の追跡責務を持ちます。
+ */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('intro');
     const [isOpen, setIsOpen] = useState<boolean>(false);

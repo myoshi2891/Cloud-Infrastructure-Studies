@@ -1,12 +1,12 @@
 .container {
-    background-color: #0a2e4d;
+    background-color: var(--color-guide-background);
     background-image:
-        linear-gradient(#3e6e8c 1px, transparent 1px),
-        linear-gradient(90deg, #3e6e8c 1px, transparent 1px);
+        linear-gradient(var(--color-guide-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-guide-border) 1px, transparent 1px);
     background-size: 42px 42px;
     background-position: -1px -1px;
     background-attachment: fixed;
-    color: #eaf2f8;
+    color: var(--color-guide-foreground);
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 16px;
     line-height: 1.85;
@@ -369,4 +369,102 @@
     .container {
         padding: 0 16px 60px;
     }
+}
+
+/* ===== NavBar Styles ===== */
+.topbar {
+    position: sticky;
+    top: var(--header-height, 0px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 20px;
+    background: var(--color-guide-surface-1);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-guide-border);
+}
+
+.topbarTitle {
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--color-guide-foreground-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topbarDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent-amber);
+    box-shadow: 0 0 8px var(--color-accent-amber);
+    flex: none;
+}
+
+.topbarButton {
+    background: transparent;
+    border: 1px solid var(--color-guide-border);
+    color: var(--color-guide-foreground);
+    font-family: var(--font-mono, monospace);
+    font-size: 13px;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.tocNav {
+    position: sticky;
+    top: calc(var(--header-height, 0px) + 48px);
+    z-index: 95;
+    max-height: calc(80vh - 60px);
+    overflow-y: auto;
+    padding: 16px 20px;
+    background: var(--color-guide-surface-2);
+    border-bottom: 2px solid var(--color-accent-amber);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.tocList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tocLink {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 10px;
+    color: var(--color-guide-foreground-soft);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 400;
+    border-radius: 4px;
+    background: transparent;
+}
+
+.tocLinkActive {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 10px;
+    color: var(--color-accent-amber);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: 4px;
+    background: rgba(255, 178, 56, 0.12);
+}
+
+.tocIdx {
+    font-family: monospace;
+    font-size: 12px;
+    opacity: 0.8;
 }

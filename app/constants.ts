@@ -365,6 +365,7 @@ const ALL_EXAMS: Exam[] = [
         score: '筆記 120分 / 実技 8時間',
         color: 'card-ccna',
         href: '/cisco/ccie/enterprise-infrastructure',
+        overviewLabel: '完全解説ガイド',
         description:
             'Cisco最高峰のエキスパート資格。エンタープライズインフラの設計・導入・運用・最適化・自動化を網羅した8時間実技ラボ対策ガイド。',
         domains: [
