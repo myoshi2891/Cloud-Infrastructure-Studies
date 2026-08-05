@@ -4,6 +4,15 @@ import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 import styles from './page.module.css';
 
+const Corners = () => (
+    <>
+        <span className={`${styles.corner} ${styles.tl}`} />
+        <span className={`${styles.corner} ${styles.tr}`} />
+        <span className={`${styles.corner} ${styles.bl}`} />
+        <span className={`${styles.corner} ${styles.br}`} />
+    </>
+);
+
 export default function CcieEnterpriseGuide() {
     return (
         <div className={styles.container}>
@@ -20,6 +29,7 @@ export default function CcieEnterpriseGuide() {
                     </p>
 
                     <div className={styles.techFrame}>
+                        <Corners />
                         <div className={styles.titleBlockHead}>
                             <span>Document Title Block</span>
                             <span>Info as of 2026-07</span>
@@ -58,6 +68,7 @@ export default function CcieEnterpriseGuide() {
 
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
+                            <Corners />
                             <MermaidDiagram
                                 chart={DIAGRAMS.hierarchy}
                                 ariaLabel="Cisco認定レベル階層におけるCCIE EIの位置づけ"
@@ -85,6 +96,7 @@ export default function CcieEnterpriseGuide() {
 
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
+                            <Corners />
                             <MermaidDiagram
                                 chart={DIAGRAMS.roadmap}
                                 ariaLabel="認定取得までの2ステップフロー"
@@ -319,6 +331,7 @@ export default function CcieEnterpriseGuide() {
 
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
+                            <Corners />
                             <MermaidDiagram
                                 chart={DIAGRAMS.labModules}
                                 ariaLabel="ラボ試験のモジュール構成"
@@ -502,6 +515,7 @@ export default function CcieEnterpriseGuide() {
 
                     <div className={styles.diagramWrap}>
                         <div className={styles.techFrame}>
+                            <Corners />
                             <MermaidDiagram
                                 chart={DIAGRAMS.studyRoadmap}
                                 ariaLabel="初学者向け学習ロードマップ"
