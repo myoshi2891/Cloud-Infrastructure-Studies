@@ -1,12 +1,14 @@
 .hero {
-    margin: 0 0 40px;
+    max-width: 1000px;
+    margin-inline: auto;
+    margin-block-end: 40px;
     background: var(--paper-card);
     padding: 28px 32px;
     border-radius: 8px;
     border: 1px solid var(--navy-mid);
 }
 
-.hero h1 {
+.heroTitle {
     font-family: var(--font-display);
     font-weight: 900;
     font-size: clamp(24px, 4.5vw, 36px);

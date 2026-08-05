@@ -68,4 +68,12 @@
     .titleblockGrid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .tbField:nth-child(2n) {
+        border-right: none;
+    }
+
+    .tbField:nth-child(-n+2) {
+        border-top: none;
+    }
 }

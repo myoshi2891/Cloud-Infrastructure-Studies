@@ -119,7 +119,7 @@ export default function SourcesSection() {
                         </a>
                         <span className={styles.srcDesc}>
                             Exam, Testing, and Certification
-                            Policies（再受験の待機期間・18か月ルールなど）
+                            Policies（再受験の待機期間など）
                         </span>
                     </li>
                     <li>

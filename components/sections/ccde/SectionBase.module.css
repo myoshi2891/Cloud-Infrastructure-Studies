@@ -1,4 +1,6 @@
 .sheet {
+    max-width: 1000px;
+    margin-inline: auto;
     background: var(--paper-card);
     border: 1px solid var(--navy-mid);
     border-radius: 8px;

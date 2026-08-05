@@ -93,6 +93,15 @@
     --color-theme-cisco-bg: hsl(215 70% 50% / 0.20);
     --color-theme-cisco-fg: hsl(215 95% 70%);
 
+    --navy: #0a2e4d;
+    --navy-mid: #123a57;
+    --amber: #e8a33d;
+    --line-cyan: #52b4d6;
+    --line-cyan-soft: rgba(82, 180, 214, 0.25);
+    --paper-card: #08233b;
+    --ink: #eaf2f8;
+    --ink-soft: #b0cee3;
+
     /* Google Brand Colors (central tokens) */
     --color-google-blue: #4285f4;
     --color-google-green: #34a853;
@@ -223,6 +232,16 @@ body {
 }
 
 @utility icon-theme-ccna {
+    background: var(--color-theme-cisco-bg);
+    color: var(--color-theme-cisco-fg);
+}
+
+@utility icon-theme-ccde {
+    background: var(--color-theme-cisco-bg);
+    color: var(--color-theme-cisco-fg);
+}
+
+@utility icon-theme-ccie-enterprise-infrastructure {
     background: var(--color-theme-cisco-bg);
     color: var(--color-theme-cisco-fg);
 }

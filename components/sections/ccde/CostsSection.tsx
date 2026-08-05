@@ -30,15 +30,15 @@ export default function CostsSection() {
                         <tbody>
                             <tr>
                                 <th scope="row">筆記試験（400-007）</th>
-                                <td className={baseStyles.num}>US$450</td>
+                                <td className={baseStyles.num}>US$450（税別・受験料のみ）</td>
                             </tr>
                             <tr>
                                 <th scope="row">実技試験</th>
-                                <td className={baseStyles.num}>US$1,600</td>
+                                <td className={baseStyles.num}>US$1,600（税別・受験料のみ）</td>
                             </tr>
                             <tr>
                                 <th scope="row">合計目安</th>
-                                <td className={baseStyles.num}>約 US$2,050</td>
+                                <td className={baseStyles.num}>約 US$2,050（税別・受験料のみ）</td>
                             </tr>
                         </tbody>
                     </table>

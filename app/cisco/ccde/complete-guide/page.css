@@ -1,19 +1,8 @@
-:root {
-    --navy: #0a2e4d;
-    --navy-mid: #123a57;
-    --amber: #e8a33d;
-    --line-cyan: #52b4d6;
-    --line-cyan-soft: rgba(82, 180, 214, 0.25);
-    --paper-card: #08233b;
-    --ink: #eaf2f8;
-    --ink-soft: #b0cee3;
-}
-
 .ccde-guide-page {
     max-width: 1000px;
     margin: 0 auto;
     padding: 40px 24px 80px;
-    color: var(--ink, #e6f1f8);
+    color: var(--color-ink, var(--color-foreground));
     font-family: var(--font-body, 'Noto Sans JP', sans-serif);
     line-height: 1.9;
 }
