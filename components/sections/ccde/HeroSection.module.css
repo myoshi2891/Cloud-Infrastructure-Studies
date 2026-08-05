@@ -1,0 +1,20 @@
+.hero {
+    margin: 0 0 40px;
+    background: var(--paper-card);
+    padding: 28px 32px;
+    border-radius: 8px;
+    border: 1px solid var(--navy-mid);
+}
+
+.hero h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(24px, 4.5vw, 36px);
+    line-height: 1.5;
+    margin-top: 0;
+}
+
+.accent {
+    color: var(--amber);
+    border-bottom: 2px dashed var(--amber);
+}

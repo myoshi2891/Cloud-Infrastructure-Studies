@@ -1,0 +1,26 @@
+.faqItem {
+    background: var(--navy);
+    border: 1px solid var(--navy-mid);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.faqQ {
+    font-weight: 700;
+    color: var(--line-cyan);
+    margin: 0 0 10px;
+    display: flex;
+    gap: 8px;
+}
+
+.qMark {
+    color: var(--amber);
+    font-family: var(--font-mono);
+}
+
+.faqA {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+}
