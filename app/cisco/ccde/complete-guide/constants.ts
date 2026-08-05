@@ -75,3 +75,18 @@ export const DIAGRAMS: Record<string, string> = {
     classDef step fill:#123A57,stroke:#7FB3D5,color:#F5F9FB,stroke-width:1.5px;
     class A,B,C,D,E,F,G step;`,
 };
+
+export const SECTION_DEFINITIONS = [
+    { id: 'what-is-ccde', shortLabel: '1. CCDEとは', tocLabel: '1. CCDEとは何か' },
+    { id: 'overall-flow', shortLabel: '2. 全体フロー', tocLabel: '2. 認定までの全体フロー' },
+    { id: 'prerequisites', shortLabel: '3. 受験資格', tocLabel: '3. 受験資格・推奨される経験' },
+    { id: 'step1-written', shortLabel: '4. STEP1：筆記', tocLabel: '4. 筆記試験（400-007 CCDE v3.1）' },
+    { id: 'step2-practical', shortLabel: '5. STEP2：実技', tocLabel: '5. 実技試験（CCDE v3.1 Practical）' },
+    { id: 'certifications-earned', shortLabel: '6. 得られる認定', tocLabel: '6. 合格後に得られる認定' },
+    { id: 'costs', shortLabel: '7. 費用まとめ', tocLabel: '7. 費用まとめ' },
+    { id: 'recertification', shortLabel: '8. 再認定', tocLabel: '8. 再認定（有効期間は3年）' },
+    { id: 'roadmap', shortLabel: '9. ロードマップ', tocLabel: '9. 初学者向け学習ロードマップ（提案）' },
+    { id: 'glossary', shortLabel: '10. 用語辞典', tocLabel: '10. 初学者のための用語辞典' },
+    { id: 'faq', shortLabel: '11. FAQ', tocLabel: '11. よくある質問' },
+    { id: 'sources', shortLabel: '12. 参考情報', tocLabel: '12. 参考情報源' },
+];

@@ -1,22 +1,10 @@
-'use client';
-
 import { useEffect, useState } from 'react';
+import { SECTION_DEFINITIONS } from './constants';
 
-const NAV_ITEMS = [
-    { id: 'what-is-ccde', label: '1. CCDEとは' },
-    { id: 'overall-flow', label: '2. 全体フロー' },
-    { id: 'prerequisites', label: '3. 受験資格' },
-    { id: 'step1-written', label: '4. STEP1：筆記' },
-    { id: 'step2-practical', label: '5. STEP2：実技' },
-    { id: 'certifications-earned', label: '6. 得られる認定' },
-    { id: 'costs', label: '7. 費用まとめ' },
-    { id: 'recertification', label: '8. 再認定' },
-    { id: 'roadmap', label: '9. ロードマップ' },
-    { id: 'glossary', label: '10. 用語辞典' },
-    { id: 'faq', label: '11. FAQ' },
-    { id: 'sources', label: '12. 参考情報' },
-];
-
+/**
+ * NavBar - CCDE ガイドの各セクション要素の交差状況を IntersectionObserver で監視し、
+ * アクティブなセクション ID を管理・ハイライト表示するレスポンシブ目次ナビゲーションコンポーネント。
+ */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('what-is-ccde');
 
@@ -34,7 +22,7 @@ export default function NavBar() {
             { rootMargin: '-20% 0px -60% 0px', threshold: 0.1 }
         );
 
-        NAV_ITEMS.forEach((item) => {
+        SECTION_DEFINITIONS.forEach((item) => {
             const el = document.getElementById(item.id);
             if (el) observer.observe(el);
         });
@@ -67,7 +55,7 @@ export default function NavBar() {
                     fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
                 }}
             >
-                {NAV_ITEMS.map((item) => (
+                {SECTION_DEFINITIONS.map((item) => (
                     <a
                         key={item.id}
                         href={`#${item.id}`}
@@ -80,7 +68,7 @@ export default function NavBar() {
                             transition: 'color 0.2s ease',
                         }}
                     >
-                        {item.label}
+                        {item.shortLabel}
                     </a>
                 ))}
             </div>

@@ -1,9 +1,11 @@
-'use client';
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/**
+ * Diagram - 図表を ID で解決して MermaidDiagram を描画するコンポーネント。
+ * DIAGRAMS 定数から指定された ID のチャート文字列を取得し、存在しない場合は非表示 (null) にする責務を担う。
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -14,6 +16,10 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/**
+ * CcdeGuide - Cisco CCDE（Cisco Certified Design Expert）認定 完全ガイドのルートコンポーネント。
+ * NavBar とガイド全体の各セクション（試験範囲、費用、ロードマップ、用語集、FAQ等）を組み立てる Server Component。
+ */
 export default function CcdeGuide() {
     return (
         <>

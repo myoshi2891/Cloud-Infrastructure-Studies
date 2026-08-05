@@ -1,26 +1,9 @@
 .ccde-guide-page {
-    --navy-deep: #082238;
-    --navy: #0a2e4d;
-    --navy-mid: #123a57;
-    --navy-light: #1b4a70;
-    --paper: #0b1724;
-    --paper-card: #102336;
-    --ink: #e6f1f8;
-    --ink-soft: #94b2c7;
-    --line-cyan: #7fb3d5;
-    --line-cyan-soft: rgba(127, 179, 213, 0.18);
-    --amber: #e8a33d;
-    --teal: #3f8e76;
-    --rose: #a85468;
-    --font-display: var(--font-display, 'Noto Serif JP', serif);
-    --font-body: var(--font-body, 'Noto Sans JP', sans-serif);
-    --font-mono: var(--font-mono, 'JetBrains Mono', monospace);
-
     max-width: 1000px;
     margin: 0 auto;
     padding: 40px 24px 80px;
-    color: var(--ink);
-    font-family: var(--font-body);
+    color: var(--color-foreground, #e6f1f8);
+    font-family: var(--font-body, 'Noto Sans JP', sans-serif);
     line-height: 1.9;
 }
 
