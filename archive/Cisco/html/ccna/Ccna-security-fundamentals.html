@@ -203,6 +203,8 @@
                 line-height: 1.7;
                 margin: 1.2rem 0 1.6rem;
             }
+            section[id] { transition: opacity 0.4s ease; }
+            section[id].visible { opacity: 1; }
             /* ---- Tables ---- */
             .table-wrap {
                 overflow-x: auto;
@@ -618,16 +620,16 @@
                     <h3>設定コマンド例</h3>
                     <pre><code>! コンソールポートへのパスワード設定
 Router(config)# line console 0
-Router(config-line)# password Cisco123!
+Router(config-line)# password &lt;CONSOLE_PASSWORD&gt;
 Router(config-line)# login
 
 ! VTY（Telnet/SSHでのリモートアクセス）へのパスワード設定
 Router(config)# line vty 0 4
-Router(config-line)# password Cisco123!
+Router(config-line)# password &lt;VTY_PASSWORD&gt;
 Router(config-line)# login
 
 ! 特権EXECモードへのパスワード設定（enable secretは暗号化される）
-Router(config)# enable secret MyStrongSecret!
+Router(config)# enable secret &lt;ENABLE_SECRET_PASSWORD&gt;
 
 ! 平文で保存されるパスワードを暗号化して表示させる
 Router(config)# service password-encryption</code></pre>
@@ -1488,7 +1490,7 @@ Router(config)# aaa authentication login default group radius local
                         flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
                         sequence: { useMaxWidth: false },
                     });
-                    mermaid.init(undefined, document.querySelectorAll('pre.mermaid'));
+                    mermaid.run({ querySelector: 'pre.mermaid' });
                 }
 
                 // 3) Syntax highlighting for code blocks

@@ -1525,7 +1525,8 @@
                 var pos = window.scrollY + 120;
                 var current = sections[0];
                 sections.forEach(function (sec) {
-                    if (sec.offsetTop <= pos) current = sec;
+                    var top = sec.getBoundingClientRect().top + window.scrollY;
+                    if (top <= pos) current = sec;
                 });
                 tocLinks.forEach(function (a) {
                     a.classList.toggle(

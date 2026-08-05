@@ -909,7 +909,7 @@ Router# show ntp associations
                                 A -->|"② GET Response：値を返す"| M
                                 M -->|"③ SET：設定値を変更したい"| A
                                 A -->|"④ SET Response / 完了"| M
-                                A -.-|"独立通知：TRAP（自発的な異常通知）"|-> M
+                                A -. "独立通知：TRAP（自発的な異常通知）" .-> M
                         </script>
                     </div>
 
@@ -1320,8 +1320,8 @@ R1(config)# ip domain-name example.local
 R1(config)# crypto key generate rsa
 ! （鍵長を聞かれたら 2048 などを入力）
 
-! ③ ローカル認証用のユーザーを作成（※<PASSWORD>は各自の環境に応じた強固なパスワードに置換してください）
-R1(config)# username admin privilege 15 secret <PASSWORD>
+! ③ ローカル認証用のユーザーを作成（※&lt;PASSWORD&gt;は各自の環境に応じた強固なパスワードに置換してください）
+R1(config)# username admin privilege 15 secret &lt;PASSWORD&gt;
 
 ! ④ VTYラインでSSHのみを許可し、ローカル認証を使う
 R1(config)# line vty 0 15

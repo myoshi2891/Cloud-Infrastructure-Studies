@@ -821,7 +821,7 @@ R1(config)# ipv6 route 2001:db8:20::/64 2001:db8:1::2</pre>
                     <script type="text/plain" class="mermaid-source">
                         stateDiagram-v2
                             [*] --> Down
-                            Down --> Init : Hello受信前
+                            Down --> Init : Helloパケットを受信
                             Init --> TwoWay : 自分のRouter IDが<br>相手のHelloに含まれるのを確認
                             TwoWay --> ExStart : マスター/スレーブを決定
                             ExStart --> Exchange : DBD（データベース記述）<br>パケットを交換
@@ -1118,7 +1118,7 @@ R1(config-router)# network 10.10.20.0 0.0.0.255 area 0</pre
             });
 
             mermaid.initialize({
-                startOnLoad: true,
+                startOnLoad: false,
                 theme: 'dark',
                 themeVariables: {
                     background: '#07111e',
@@ -1134,6 +1134,7 @@ R1(config-router)# network 10.10.20.0 0.0.0.255 area 0</pre
                 state: { useMaxWidth: false },
                 pie: { useMaxWidth: false },
             });
+            mermaid.run({ querySelector: 'pre.mermaid' });
 
             // ---- Scroll-spy: two observers ----
             const navLinks = Array.from(document.querySelectorAll('.nav-link'));
@@ -1147,13 +1148,7 @@ R1(config-router)# network 10.10.20.0 0.0.0.255 area 0</pre
                 });
             }
 
-            // Reveal-style observer (generous margin) — kept for potential future animation hooks
-            const revealObserver = new IntersectionObserver(() => {}, {
-                root: null,
-                rootMargin: '0px 0px -40% 0px',
-                threshold: 0,
-            });
-            sections.forEach((sec) => revealObserver.observe(sec));
+
 
             // Thin band near top of viewport, dedicated to nav-link highlighting
             const navObserver = new IntersectionObserver(
