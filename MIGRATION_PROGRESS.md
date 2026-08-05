@@ -29,8 +29,8 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/ccie/enterprise-infrastructure/constants.ts](app/cisco/ccie/enterprise-infrastructure/constants.ts)
 - [app/cisco/ccie/enterprise-infrastructure/page.module.css](app/cisco/ccie/enterprise-infrastructure/page.module.css)
 - [__tests__/cisco/ccie-enterprise-infrastructure.test.tsx](__tests__/cisco/ccie-enterprise-infrastructure.test.tsx)
-- [archive/Cisco/html/Ccie-enterprise-infrastructure.html](archive/Cisco/html/Ccie-enterprise-infrastructure.html)
-- [archive/Cisco/md/Ccie-enterprise-infrastructure.md](archive/Cisco/md/Ccie-enterprise-infrastructure.md)
+- [archive/Cisco/html/ccie/Ccie-enterprise-infrastructure.html](archive/Cisco/html/ccie/Ccie-enterprise-infrastructure.html)
+- [archive/Cisco/md/ccie/Ccie-enterprise-infrastructure.md](archive/Cisco/md/ccie/Ccie-enterprise-infrastructure.md)
 
 
 ## 2026-08-05: Cisco「Cisco Certified Design Expert (CCDE) 完全ガイド」移行 (完了)
