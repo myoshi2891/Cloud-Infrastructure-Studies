@@ -1,5 +1,6 @@
 # Cloud Speech API チャレンジラボ 完全攻略ガイド
-### ― Text-to-Speech / Speech-to-Text / Cloud Translation API を初学者向けにステップバイステップ解説
+
+*― Text-to-Speech / Speech-to-Text / Cloud Translation API を初学者向けにステップバイステップ解説 ―*
 
 > 対象ラボ: *Implement Speech and Language Solutions with Pre-trained APIs: Challenge Lab*（旧称 *Cloud Speech API 3 Ways: Challenge Lab*）
 > 参照URL: https://www.skills.google/course_templates/700/labs/625113
@@ -108,7 +109,7 @@ export API_KEY=<生成されたAPIキー>
 | コードに埋め込まない | 環境変数やシークレットマネージャに保持する | ソースリポジトリへの誤コミットを防ぐ |
 | 不要なキーの削除・ローテーション | 使わなくなったキーは削除し、定期的にローテーションする | 攻撃対象領域（attack surface）を縮小 |
 
-Google 公式のベストプラクティスガイドでは、<cite index="32-1">APIキーへの制限追加によって侵害された場合の影響を抑えられるとされ、クエリパラメータでのキー送信はURLスキャンによる盗用リスクがあるためHTTPヘッダーやクライアントライブラリの利用が推奨されています</cite>。また、`gcloud` CLI や REST API 経由で作成したキーはデフォルトで無制限になる点にも注意が必要です。<cite index="31-1">Google Cloud コンソール経由での作成時にはAPI制限の追加が必須ですが、gcloud CLIやREST APIで作成する場合は制限を明示しない限りキーは無制限になります</cite>。
+Google 公式のベストプラクティスガイドでは、APIキーへの制限追加によって侵害された場合の影響を抑えられるとされ、クエリパラメータでのキー送信はURLスキャンによる盗用リスクがあるためHTTPヘッダーやクライアントライブラリの利用が推奨されています。また、`gcloud` CLI や REST API 経由で作成したキーはデフォルトで無制限になる点にも注意が必要です。Google Cloud コンソール経由での作成時にはAPI制限の追加が必須ですが、gcloud CLIやREST APIで作成する場合は制限を明示しない限りキーは無制限になります。
 
 > 本ラボの Task 2〜5 のサンプルコードでは学習用に `?key=${API_KEY}` というクエリパラメータ形式（公式チュートリアルの標準的な提示方法）を使用しますが、本番運用では上記のヘッダー方式に置き換えることを強く推奨します。
 
@@ -161,7 +162,7 @@ curl -X POST \
   > synthesize-text.txt
 ```
 
-レスポンスは Base64 エンコードされた音声データが `audioContent` フィールドに入った JSON です。<cite index="4-1">音声合成のプロセスは synthesis と呼ばれ、生成される音声データはBase64エンコードされた文字列として出力されます</cite>。
+レスポンスは Base64 エンコードされた音声データが `audioContent` フィールドに入った JSON です。音声合成のプロセスは synthesis と呼ばれ、生成される音声データはBase64エンコードされた文字列として出力されます。
 
 ### 4.3 デコード用スクリプトを作成する
 
@@ -248,7 +249,7 @@ nano request.json
 ```
 
 > **ベストプラクティス（エンコーディングと言語コード）**
-> - `encoding`: <cite index="52-1">最良の認識結果を得るには、FLACやLINEAR16のようなロスレスなエンコーディングで音声をキャプチャ・伝送することが推奨されます</cite>。MP3 や OGG_OPUS などのロッシー圧縮はノイズがある場合に精度が落ちる可能性があります。なお FLAC / WAV ファイルはヘッダーに符号化情報を含むため、`encoding` を省略しても API 側で自動判定されます。
+> - `encoding`: 最良の認識結果を得るには、FLACやLINEAR16のようなロスレスなエンコーディングで音声をキャプチャ・伝送することが推奨されます。MP3 や OGG_OPUS などのロッシー圧縮はノイズがある場合に精度が落ちる可能性があります。なお FLAC / WAV ファイルはヘッダーに符号化情報を含むため、`encoding` を省略しても API 側で自動判定されます。
 > - `languageCode`: BCP-47 形式のタグを指定します（例: `fr-FR`）。ラボの課題では単に `fr` でも動作しますが、地域まで明示した `fr-FR` のほうが将来的な言語モデルの変化に対して安定します。
 > - ファイル名は課題文では空欄（`____`）になっており、チャレンジラボは採点ロジック上ファイル名の自由度が高い設計です。ここでは分かりやすさのため `request.json` / `result_fr.json` としていますが、`speech_request.json` のような用途が分かる名前にしても問題ありません。
 
@@ -367,7 +368,7 @@ curl -X POST \
 ```
 
 > **ベストプラクティス**
-> 言語検出は<cite index="27-1">fr-CRやpt-BRのような一部の地域変種の言語コードには対応していない</cite>という制約があります。複数の候補が返る場合は `confidence` を見て最も高いものを採用し、`isReliable` が `false` の場合は結果を鵜呑みにせず、必要なら文字数を増やして再検出することを検討してください（短い文ほど誤検出が起きやすい）。
+> 言語検出はfr-CRやpt-BRのような一部の地域変種の言語コードには対応していないという制約があります。複数の候補が返る場合は `confidence` を見て最も高いものを採用し、`isReliable` が `false` の場合は結果を鵜呑みにせず、必要なら文字数を増やして再検出することを検討してください（短い文ほど誤検出が起きやすい）。
 
 **根拠ソース**:
 - Detecting languages (Basic) — https://cloud.google.com/translate/v2/detecting-language-with-rest

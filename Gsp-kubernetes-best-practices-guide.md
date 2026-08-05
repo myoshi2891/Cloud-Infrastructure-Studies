@@ -89,7 +89,7 @@ ENTRYPOINT ["app","-single=true","-port=8080"]
 
 | 命令 | 役割 | ベストプラクティスの観点 |
 |---|---|---|
-| `FROM` | ベースイメージの指定 | Docker Hub等の公式イメージを使い、タグでバージョンを固定するとビルド結果の再現性が高まる |
+| `FROM` | ベースイメージの指定 | タグ指定（例: `golang:1.10`）でバージョンを追跡できる。ビット単位の完全再現が必要な本番環境ではタグとダイジェスト（`golang:1.10@sha256:...`）を組み合わせて固定する |
 | `WORKDIR` | 以降の命令の基準ディレクトリを設定 | `RUN cd ...`のような相対パス操作より安全で、レイヤーとしても明示的 |
 | `COPY` | ホストのファイルをイメージへ取り込む | リモートURL取得が可能な`ADD`より副作用が少なく、単純なファイルコピーには`COPY`が推奨される |
 | `RUN` | ビルド時にコマンドを実行しレイヤーを作る | 複数の`RUN`をまとめると生成レイヤー数が減り、イメージサイズとビルド速度が改善する |
@@ -221,6 +221,7 @@ gcloud container clusters get-credentials valkyrie-dev --zone ZONE
 ### 5-3. デプロイの適用
 
 ```bash
+cd valkyrie-app/k8s
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 ```

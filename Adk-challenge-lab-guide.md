@@ -276,10 +276,10 @@ flowchart TB
 ### 7.5 動作確認
 
 ```bash
-python3 geo_validator/agent.py
+cd ~/adk_project && adk run geo_validator
 ```
 
-出力が `{"capital": "Tokyo"}` のような整形されたJSONオブジェクトになっていれば成功です。「東京です」のような文章が返ってきた場合は、`output_schema` の指定漏れか、instructionの記述が曖昧でモデルがJSON以外の形式で応答してしまっている可能性があります。
+実行後、プロンプトで国名（例: `Japan`）を入力します。出力が `{"capital": "Tokyo"}` のような整形されたJSONレスポンスになっていれば成功です。「東京です」のような文章が返ってきた場合は、`output_schema` の指定漏れか、instructionの記述が曖昧でモデルがJSON以外の形式で応答してしまっている可能性があります。
 
 > 出典: [LLM Agents（input_schema / output_schema）| ADK](https://adk.dev/agents/llm-agents/)、[Structured Output and Response Schemas | google/adk-python DeepWiki](https://deepwiki.com/google/adk-python/5.8-structured-output-and-response-schemas)、[7 Google ADK Best Practices We Learned Building Production Applications](https://hatchworks.com/blog/gen-ai/google-adk-best-practices/)
 

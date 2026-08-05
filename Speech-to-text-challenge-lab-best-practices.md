@@ -1,5 +1,6 @@
 # Cloud Speech-to-Text API チャレンジラボ 完全攻略ガイド
-### ―― ステップバイステップで学ぶベストプラクティス ――
+
+*―― ステップバイステップで学ぶベストプラクティス ――*
 
 > 本ガイドは、Google Cloud Skills Boost の challenge lab「Using the Google Cloud Speech API」(ARC131) を題材に、初学者でも迷わず完走できるよう、各タスクの手順・設定値の意味・実務でのベストプラクティスを整理したものです。単なる正解手順の暗記ではなく、「なぜその設定にするのか」を理解できることを目標にしています。
 
@@ -209,18 +210,16 @@ cat result_es.json
 |---|---|---|
 | `encoding` | `LINEAR16` | `FLAC` |
 | `languageCode` | `en-US` | `es-ES` |
-| `audioChannelCount` | `2`（ステレオのため明示） | 省略（モノラルのため不要） |
+| `audioChannelCount` | `2`（ステレオのため明示） | 事前に `sox --i` 等で確認した上で設定（モノラルなら省略可） |
 | ファイル形式の特徴 | 非圧縮・ヘッダーにチャンネル情報あり | ロスレス圧縮・ヘッダーにサンプルレート/エンコード情報あり |
 
 ### 音声形式・言語コードの選び方（判断フロー）
 
 ```mermaid
 flowchart TB
-    Start["音声ファイルの拡張子は？"] --> WavCheck{".wav"}
-    Start --> FlacCheck{".flac"}
-
-    WavCheck --> L16["encoding: LINEAR16 を指定"]
-    FlacCheck --> FL["encoding: FLAC を指定"]
+    Start["音声ファイルの拡張子は？"]
+    Start -->|".wav"| L16["encoding: LINEAR16 を指定"]
+    Start -->|".flac"| FL["encoding: FLAC を指定"]
 
     L16 --> ChCheck1{"チャンネル数は？"}
     ChCheck1 -->|"モノラル"| Skip1["audioChannelCount は省略可"]
@@ -261,7 +260,7 @@ flowchart TB
 | 症状 | 想定される原因 | 対処 |
 |---|---|---|
 | レスポンスが空、または `results` フィールドがない | 実際の音声のエンコード/サンプルレート/チャンネル数と、リクエストの `config` が一致していない | `sox` などで音声ファイルの実際のヘッダー情報（サンプルレート・チャンネル数・エンコード）を確認し、`config` を合わせる |
-| `400 INVALID_ARGUMENT` エラー | FLAC/WAVファイルなのに `encoding` を明示していて、ヘッダーの値と矛盾している | FLAC/WAVの場合は `encoding` や `sampleRateHertz` を省略し、ヘッダーからの自動判定に任せる |
+| `400 INVALID_ARGUMENT` エラー | リクエスト `config` の `encoding` や `sampleRateHertz` の指定値が、実際のファイルヘッダー情報と一致していない | `sox` などで音声ファイルのヘッダー情報を確認して `config` を一致させる。または FLAC/WAV では `encoding` や `sampleRateHertz` を省略して自動判定を利用する |
 | `403` や認証エラー | APIキーが正しく環境変数にセットされていない、またはSpeech-to-Text APIが有効化されていない | `echo $API_KEY` でキーが空でないか確認し、[APIとサービス] からAPIの有効化状況を確認する |
 | `curl` の出力が真っ白 | `-s`（silent）オプションによりエラーメッセージも抑制されている | 一時的に `-s` を外して実行し、HTTPステータスやエラーメッセージを確認する |
 

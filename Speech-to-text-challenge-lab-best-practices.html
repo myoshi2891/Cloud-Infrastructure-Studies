@@ -6,7 +6,7 @@
         <title>Cloud Speech-to-Text API チャレンジラボ 完全攻略ガイド</title>
         <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/dist/tabler-icons.min.css"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css"
         />
         <link
             rel="stylesheet"
@@ -402,9 +402,9 @@
         </style>
     </head>
     <body>
-        <nav class="sidebar">
+        <aside class="sidebar">
             <div class="brand"><i class="ti ti-brand-google"></i>ARC131 攻略ガイド</div>
-            <nav>
+            <nav aria-label="ページ内目次">
                 <a href="#overview"><i class="ti ti-layout-grid"></i>全体像</a>
                 <a href="#prep"><i class="ti ti-list-check"></i>事前準備</a>
                 <a href="#task1"><i class="ti ti-key"></i>タスク1: APIキー</a>
@@ -416,7 +416,7 @@
                 <a href="#checklist"><i class="ti ti-checklist"></i>まとめ</a>
                 <a href="#references"><i class="ti ti-books"></i>参考文献</a>
             </nav>
-        </nav>
+        </aside>
 
         <div class="layout">
             <main class="content">
@@ -646,7 +646,7 @@ gcloud services api-keys get-key-string &lt;KEY_ID&gt; --location=global</code><
                         <li>
                             リクエスト用のJSONファイルを作成します。ファイル名は
                             <code>request.json</code> とします。
-                            <pre><code class="language-bash">cat > request.json << EOF
+                            <pre><code class="language-bash">cat &gt; request.json &lt;&lt; EOF
 {
   "config": {
     "encoding": "LINEAR16",
@@ -666,7 +666,7 @@ EOF</code></pre>
   -H "Content-Type: application/json; charset=utf-8" \
   --data-binary @request.json \
   "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" \
-  > result.json</code></pre>
+  &gt; result.json</code></pre>
                         </li>
                         <li>
                             内容を確認します。
@@ -805,7 +805,7 @@ EOF</code></pre>
                         <li>
                             リクエスト用のJSONファイルを新しい名前で作成します。ここでは
                             <code>request_es.json</code> とします。
-                            <pre><code class="language-bash">cat > request_es.json << EOF
+                            <pre><code class="language-bash">cat &gt; request_es.json &lt;&lt; EOF
 {
   "config": {
     "encoding": "FLAC",
@@ -823,7 +823,7 @@ EOF</code></pre>
   -H "Content-Type: application/json; charset=utf-8" \
   --data-binary @request_es.json \
   "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" \
-  > result_es.json</code></pre>
+  &gt; result_es.json</code></pre>
                         </li>
                         <li>
                             内容を確認します。
@@ -1296,7 +1296,11 @@ EOF</code></pre>
             }
 
             async function renderDiagrams() {
-                await document.fonts.ready;
+                try {
+                    await document.fonts.ready;
+                } catch (fontErr) {
+                    console.warn('fonts.ready error:', fontErr);
+                }
                 mermaid.initialize({
                     startOnLoad: false,
                     theme: 'dark',
@@ -1313,18 +1317,22 @@ EOF</code></pre>
 
                 var blocks = document.querySelectorAll('script[data-mermaid-id]');
                 for (var i = 0; i < blocks.length; i++) {
-                    var block = blocks[i];
-                    var targetId = block.getAttribute('data-mermaid-id');
-                    var container = document.getElementById(targetId);
-                    var code = dedent(block.textContent);
-                    var renderId = 'mmd-render-' + targetId;
-                    var result = await mermaid.render(renderId, code);
-                    container.innerHTML = result.svg;
-                    var svgEl = container.querySelector('svg');
-                    if (svgEl) {
-                        svgEl.style.maxWidth = '100%';
-                        svgEl.style.height = 'auto';
-                        svgEl.style.overflow = 'visible';
+                    try {
+                        var block = blocks[i];
+                        var targetId = block.getAttribute('data-mermaid-id');
+                        var container = document.getElementById(targetId);
+                        var code = dedent(block.textContent);
+                        var renderId = 'mmd-render-' + targetId;
+                        var result = await mermaid.render(renderId, code);
+                        container.innerHTML = result.svg;
+                        var svgEl = container.querySelector('svg');
+                        if (svgEl) {
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                        }
+                    } catch (renderErr) {
+                        console.error('Mermaid render error for ' + targetId, renderErr);
                     }
                 }
             }
@@ -1356,7 +1364,7 @@ EOF</code></pre>
                 });
             }
 
-            renderDiagrams();
+            renderDiagrams().catch(console.error);
             setupSidebarObserver();
             if (window.hljs) {
                 hljs.highlightAll();

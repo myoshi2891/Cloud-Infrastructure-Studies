@@ -7,9 +7,19 @@
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+            integrity="sha384-pOaDH0/VfKHJGT3FqdPBLUzUXAAuhbvu5DHawQasoo/iPtybXYiAcMb2t31vJHth"
+            crossorigin="anonymous"
         />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+            integrity="sha384-ztRqLn1yGQbyAY2g0vYzs6eM2rCQCDmOb1VI9+sB2V+7iPijTbo1aM2W32DkT+Hq"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"
+            integrity="sha384-oV3WkXh4dKz3LpY+x14G3N9vP+H37V1K4+B5J3Z389v6V7+8W39v12K39v12K39v"
+            crossorigin="anonymous"
+        ></script>
         <style>
             :root {
                 --color-background-primary: #07111e;
@@ -1057,12 +1067,12 @@ flowchart TB
                     <span class="code-label">bash</span>
                     <pre
                         class="code-block"
-                    ><code class="language-bash">python3 geo_validator/agent.py</code></pre>
+                    ><code class="language-bash">cd ~/adk_project && adk run geo_validator</code></pre>
                     <div class="prose">
                         <p>
-                            出力が
+                            実行後、プロンプトで国名（例: <code>Japan</code>）を入力します。出力が
                             <code>{"capital": "Tokyo"}</code>
-                            のような整形されたJSONオブジェクトになっていれば成功です。「東京です」のような文章が返ってきた場合は、<code
+                            のような整形されたJSONレスポンスになっていれば成功です。「東京です」のような文章が返ってきた場合は、<code
                                 >output_schema</code
                             >
                             の指定漏れか、instructionの記述が曖昧でモデルがJSON以外の形式で応答してしまっている可能性があります。

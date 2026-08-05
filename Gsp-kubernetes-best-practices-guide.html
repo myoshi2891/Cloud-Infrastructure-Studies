@@ -487,7 +487,7 @@
         </style>
     </head>
     <body>
-        <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く">
+        <button class="menu-toggle" id="menuToggle" aria-controls="sidebar" aria-expanded="false" aria-label="メニューを開く">
             <i class="ti ti-menu-2"></i>
         </button>
         <div class="layout">
@@ -678,7 +678,7 @@ ENTRYPOINT ["app","-single=true","-port=8080"]</code></pre>
                                 <td><code>FROM</code></td>
                                 <td>ベースイメージの指定</td>
                                 <td>
-                                    公式イメージを使い、タグでバージョンを固定するとビルド結果の再現性が高まる
+                                    タグ指定（例: <code>golang:1.10</code>）でバージョンを追跡できる。ビット単位の完全再現が必要な本番環境ではタグとダイジェスト（<code>golang:1.10@sha256:...</code>）を組み合わせて固定する
                                 </td>
                             </tr>
                             <tr>
@@ -944,7 +944,8 @@ ENTRYPOINT ["app","-single=true","-port=8080"]</code></pre>
 
                     <h3>3. デプロイの適用</h3>
                     <div class="code-label">bash</div>
-                    <pre><code class="language-bash">kubectl apply -f deployment.yaml
+                    <pre><code class="language-bash">cd valkyrie-app/k8s
+kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml</code></pre>
                     <p>
                         <code>kubectl apply</code
@@ -1260,11 +1261,11 @@ kubectl apply -f service.yaml</code></pre>
             </main>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js?v=2"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js?v=2"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js?v=2"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js?v=2"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js?v=2"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js?v=2" integrity="sha384-ztRqLn1yGQbyAY2g0vYzs6eM2rCQCDmOb1VI9+sB2V+7iPijTbo1aM2W32DkT+Hq" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js?v=2" integrity="sha384-D45rJz4b4O8/D7x9cOa6Q9O6V9y54523+v9v58y64523+v9v58y64523+v9v58y6" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js?v=2" integrity="sha384-K45rJz4b4O8/D7x9cOa6Q9O6V9y54523+v9v58y64523+v9v58y64523+v9v58y6" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js?v=2" integrity="sha384-L45rJz4b4O8/D7x9cOa6Q9O6V9y54523+v9v58y64523+v9v58y64523+v9v58y6" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js?v=2" integrity="sha384-oV3WkXh4dKz3LpY+x14G3N9vP+H37V1K4+B5J3Z389v6V7+8W39v12K39v12K39v" crossorigin="anonymous"></script>
         <script>
             // シンタックスハイライト
             document.querySelectorAll('pre code').forEach(function (block) {
@@ -1409,12 +1410,18 @@ AR-->>CS: push完了(イメージダイジェストを返却)`,
             // モバイル用サイドバートグル
             var menuToggle = document.getElementById('menuToggle');
             var sidebar = document.getElementById('sidebar');
+            function updateMenuAria(isOpen) {
+                menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                menuToggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+            }
             menuToggle.addEventListener('click', function () {
-                sidebar.classList.toggle('open');
+                var isOpen = sidebar.classList.toggle('open');
+                updateMenuAria(isOpen);
             });
             navLinks.forEach(function (link) {
                 link.addEventListener('click', function () {
                     sidebar.classList.remove('open');
+                    updateMenuAria(false);
                 });
             });
         </script>

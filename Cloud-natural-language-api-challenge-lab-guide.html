@@ -6,7 +6,7 @@
         <title>Cloud Natural Language API チャレンジラボ 完全解説ガイド</title>
         <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css"
         />
         <link
             rel="stylesheet"
@@ -544,12 +544,12 @@
                     </div>
                     <script type="text/plain" class="mermaid-src" data-target="diagram-overview">
                         flowchart TD
-                            A["Task1: APIキーを作成"] --> B["Task2: Google Docsに\nApps Scriptを設定"]
-                            A --> C["Task3: VMにSSH接続し\n構文解析を実行"]
-                            A --> D["Task4: 多言語\nフランス語で解析"]
-                            B --> E["感情分析結果を\nテキストに色付け"]
-                            C --> F["analyze-response.txt\nに保存"]
-                            D --> G["multi-response.txt\nに保存"]
+                            A["Task1: APIキーを作成"] --> B["Task2: Google Docsに<br/>Apps Scriptを設定"]
+                            A --> C["Task3: VMにSSH接続し<br/>構文解析を実行"]
+                            A --> D["Task4: 多言語<br/>フランス語で解析"]
+                            B --> E["感情分析結果を<br/>テキストに色付け"]
+                            C --> F["analyze-response.txt<br/>に保存"]
+                            D --> G["multi-response.txt<br/>に保存"]
                     </script>
 
                     <div class="callout info">
@@ -808,7 +808,7 @@
 
 curl "https://language.googleapis.com/v1/documents:analyzeSyntax?key=${API_KEY}" \
   -s -X POST -H "Content-Type: application/json; charset=utf-8" \
-  --data-binary @analyze-request.json > analyze-response.txt</code></pre>
+  --data-binary @analyze-request.json &gt; analyze-response.txt</code></pre>
                     <p>
                         <code>--data-binary @ファイル名</code
                         >を使うことで、JSONファイルの中身をそのままリクエストボディとして送信できる。クエリパラメータで<code>key=</code>を渡す方式は学習用として手軽だが、前述の通りURLにキーが残る方式であるため、恒久的なシステムでは<code>x-goog-api-key</code>ヘッダー方式への切り替えを検討する。
@@ -816,7 +816,7 @@ curl "https://language.googleapis.com/v1/documents:analyzeSyntax?key=${API_KEY}"
 
                     <h3>gcloudコマンドという代替手段</h3>
                     <p>同じ処理は<code>gcloud</code> CLIでも実行できる。</p>
-                    <pre><code class="language-bash">gcloud ml language analyze-syntax --content="Google, headquartered in Mountain View, ..." > analyze-response.txt</code></pre>
+                    <pre><code class="language-bash">gcloud ml language analyze-syntax --content="Google, headquartered in Mountain View, ..." &gt; analyze-response.txt</code></pre>
                     <p>
                         <code>gcloud</code
                         >を使う利点は、APIキーの管理をgcloud自身の認証（Application Default

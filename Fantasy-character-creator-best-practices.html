@@ -605,6 +605,7 @@
                         世界トップクラスのインフラエンジニア兼 Google
                         スペシャリスト視点による解説。対象ラボは Develop AI-Powered Prototypes in
                         Google AI Studio コース内チャレンジラボ（Fantasy Character Creator）です。
+                        「Google AI Studio / Build modeを初めて使う方」「ノーコードで“vibe coding”に挑戦する方」に最適化されています。
                     </p>
                     <div class="hero-meta">
                         <span class="chip"><i class="ti ti-list-check"></i>全6 Task構成</span>
@@ -1359,27 +1360,27 @@
                                 </tr>
                                 <tr>
                                     <td>Portrait が生成されない / スタイルが違う</td>
-                                    <td>プロンプトからスタイル指定が抜けている</td>
+                                    <td>プロンプトからスタイル指定（cartoon / video game style 等）が抜けている</td>
                                     <td>
-                                        Subject / Context / Style を明示したプロンプトで再指示する
+                                        Subject / Context / Style（例: <code>cartoon/video game style</code>）を明示したプロンプトで Portrait 生成を再指示する
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Backstory がキャラクター情報と無関係</td>
                                     <td>
-                                        「現在表示されているキャラクターの」という文脈指定が抜けている
+                                        「現在表示されているキャラクターの Name / Class / Stats」という文脈指定が抜けている
                                     </td>
-                                    <td>現在の Name/Class を参照する旨を明示して再指示する</td>
+                                    <td>現在の Name/Class/Stats を参照して整合性のある Portrait / Backstory を生成する旨を明示して再指示する</td>
                                 </tr>
                                 <tr>
                                     <td>Task 5 で以前の機能が消えた</td>
                                     <td>UI 全体再構成の指示で既存要素への言及がなかった</td>
-                                    <td>「既存の機能は維持する」と明記して再指示する</td>
+                                    <td>「既存の機能は全て維持したまま新機能を追加する」と明記して再指示する</td>
                                 </tr>
                                 <tr>
                                     <td>生成結果が毎回同じ、または偏る</td>
-                                    <td>値域や候補リストを指定していない</td>
-                                    <td>数値範囲や候補リストを具体的に列挙する</td>
+                                    <td>ステータス値域（1〜100など）やキャラクター要素の候補リスト（種族・職業・属性）を指定していない</td>
+                                    <td>ステータスの数値範囲（例: <code>STR/DEX/INT 1〜100</code>）や候補リスト（例: <code>Warrior/Mage/Rogue</code>）をプロンプト内に具体的に列挙する</td>
                                 </tr>
                             </tbody>
                         </table>
