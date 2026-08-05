@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 };
 
 /**
- * CcdeGuidePage - CCDE 認定 完全ガイドの Next.js App Router ページエントリコンポーネント。
- * SEO 用のメタデータ定義と CcdeGuide ルートコンポーネントのレンダリングを担当する Server Component。
+ * CcdeGuidePage - CCDE 認定 完全ガイドの Next.js App Router ページエントリ責務を担う Server Component。
+ * SEO 用のメタデータ (metadata) 定義および CcdeGuide コンポーネントのレンダリングを担当する。
  */
 export default function CcdeGuidePage() {
     return <CcdeGuide />;

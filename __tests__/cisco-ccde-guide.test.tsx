@@ -4,7 +4,11 @@ import { describe, expect, it, vi } from 'vitest';
 import CcdeGuidePage, { metadata } from '@/app/cisco/ccde/complete-guide/page';
 import CcdeGuide from '@/app/cisco/ccde/complete-guide/CcdeGuide';
 
-// MermaidDiagram のモック
+/**
+ * DummyMermaidDiagram - MermaidDiagram のモックコンポーネント。
+ * MermaidDiagram の模擬としてチャート定義文字列 (chart) やアクセシビリティラベル (ariaLabel) をプロップス契約として受け取り、
+ * テスト検証用に `<pre data-testid="mermaid">` 要素として描画・表示する責務を担う。
+ */
 vi.mock('@/components/MermaidDiagram', () => ({
     MermaidDiagram: function DummyMermaidDiagram({
         chart,
@@ -82,8 +86,38 @@ describe('Cisco CCDE Complete Guide Page', () => {
         expect(h3Headings).toContain('4つのエレクティブ（専門領域）');
     });
 
-    it('表形式データのデータセル・見出しが完全に含まれること', () => {
+    it('表形式データの全見出し・データセルラベル・説明セル・コールアウト・FAQ・参考情報源が完全に含まれること', () => {
         render(<CcdeGuide />);
+
+        // 表ヘッダー (Table Headers)
+        const tableHeaders = screen.getAllByRole('columnheader').map((th) => th.textContent);
+        expect(tableHeaders).toContain('項目');
+        expect(tableHeaders).toContain('内容');
+        expect(tableHeaders).toContain('No.');
+        expect(tableHeaders).toContain('ドメイン');
+        expect(tableHeaders).toContain('配点');
+        expect(tableHeaders).toContain('主な内容（例）');
+        expect(tableHeaders).toContain('エレクティブ');
+        expect(tableHeaders).toContain('概要');
+        expect(tableHeaders).toContain('合格した試験');
+        expect(tableHeaders).toContain('得られる認定');
+        expect(tableHeaders).toContain('試験');
+        expect(tableHeaders).toContain('費用目安');
+        expect(tableHeaders).toContain('方法');
+
+        // データセルラベル (Data-cell labels)
+        expect(screen.getByText('公式な前提資格')).toBeInTheDocument();
+        expect(screen.getByText('推奨される実務経験')).toBeInTheDocument();
+        expect(screen.getByText('想定される受験者像')).toBeInTheDocument();
+        expect(screen.getByText('試験コード')).toBeInTheDocument();
+        expect(screen.getAllByText('試験時間').length).toBeGreaterThanOrEqual(2);
+        expect(screen.getAllByText('出題形式').length).toBeGreaterThanOrEqual(2);
+        expect(screen.getByText('問題数')).toBeInTheDocument();
+        expect(screen.getByText('試験言語')).toBeInTheDocument();
+        expect(screen.getAllByText('受験費用の目安').length).toBeGreaterThanOrEqual(2);
+        expect(screen.getAllByText('実施会場').length).toBeGreaterThanOrEqual(2);
+        expect(screen.getByText('合格後に得られるもの')).toBeInTheDocument();
+
         // 筆記試験の出題ドメイン
         expect(screen.getByText('ビジネス戦略設計')).toBeInTheDocument();
         expect(screen.getByText('制御・データ・管理プレーンと運用設計')).toBeInTheDocument();
@@ -102,9 +136,37 @@ describe('Cisco CCDE Complete Guide Page', () => {
         expect(screen.getByText('US$1,600')).toBeInTheDocument();
         expect(screen.getByText('約 US$2,050')).toBeInTheDocument();
 
-        // コールアウト・FAQ
-        expect(screen.getAllByText(/前提資格がない＝簡単/i).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/18か月以内に実技試験/i).length).toBeGreaterThan(0);
+        // Explanatory Cells (説明セル)
+        expect(screen.getByText('なし（オープンな受験資格）')).toBeInTheDocument();
+        expect(screen.getByText(/5〜7年程度の経験/)).toBeInTheDocument();
+        expect(screen.getByText(/400-007（CCDE v3.1）/)).toBeInTheDocument();
+        expect(screen.getByText('2時間（120分）')).toBeInTheDocument();
+        expect(screen.getByText(/選択式（クローズドブック/)).toBeInTheDocument();
+        expect(screen.getByText('90〜110問')).toBeInTheDocument();
+        expect(screen.getByText('英語のみ')).toBeInTheDocument();
+        expect(screen.getByText('Pearson VUEテストセンター')).toBeInTheDocument();
+        expect(screen.getAllByText('Cisco Certified Design Expert Specialist 認定').length).toBeGreaterThanOrEqual(2);
+        expect(screen.getByText(/AI・機械学習ワークロード向けのネットワークとコンピューティング基盤/)).toBeInTheDocument();
+
+        // コールアウト (Callout)
+        expect(screen.getByText(/初学者向けメモ：/)).toBeInTheDocument();
+        expect(screen.getByText(/前提資格がない＝簡単/)).toBeInTheDocument();
+        expect(screen.getByText(/18か月以内に実技試験/)).toBeInTheDocument();
+
+        // FAQ Answer & Question
+        expect(screen.getByText(/筆記試験合格後18か月以内に実技試験の初回受験をする必要がある/)).toBeInTheDocument();
+        expect(screen.getByText(/筆記試験に不合格の場合は5暦日、実技試験に不合格の場合は30暦日/)).toBeInTheDocument();
+
+        // Reference-source description (参考情報源の説明)
+        expect(screen.getByText('CCDE認定プログラム（Cisco公式・日本語ページ）')).toBeInTheDocument();
+        expect(screen.getByText('CCDE Overview（Cisco公式・英語ページ）')).toBeInTheDocument();
+        expect(screen.getByText('CCDE Exams and Training（試験構成・費用・エレクティブの最新情報）')).toBeInTheDocument();
+        expect(screen.getByText('400-007 CCDE 試験ページ（筆記試験の詳細）')).toBeInTheDocument();
+        expect(screen.getByText('CCDE v3.1 Unified Exam Topics（公式PDF・出題ドメインと配点）')).toBeInTheDocument();
+        expect(screen.getByText('Recertification Policy（再認定ポリシー）')).toBeInTheDocument();
+        expect(screen.getByText('Cisco Continuing Education Program（CE単位による再認定）')).toBeInTheDocument();
+        expect(screen.getByText('Exam, Testing, and Certification Policies（再受験の待機期間・18か月ルールなど）')).toBeInTheDocument();
+        expect(screen.getByText(/Cisco Learning Network：CCDE v3.1 Unified Exam Topics and Study Guide/)).toBeInTheDocument();
     });
 
     it('5つの Mermaid ダイアグラムが存在すること', () => {
