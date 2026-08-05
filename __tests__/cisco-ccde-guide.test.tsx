@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import CcdeGuidePage from '@/app/cisco/ccde/complete-guide/page';
+import CcdeGuidePage, { metadata } from '@/app/cisco/ccde/complete-guide/page';
 import CcdeGuide from '@/app/cisco/ccde/complete-guide/CcdeGuide';
 
 // MermaidDiagram のモック
@@ -23,9 +23,12 @@ vi.mock('@/components/MermaidDiagram', () => ({
 
 describe('Cisco CCDE Complete Guide Page', () => {
     it('Server Component (page.tsx) が正しくレンダーされメタデータ構造を持つこと', async () => {
+        expect(metadata.title).toBe('CCDE認定 完全ガイド ― 初学者のためのステップバイステップ解説 | Cisco');
+        expect(metadata.description).toContain('Cisco CCDE（Cisco Certified Design Expert）認定試験の完全解説ガイド');
+
         const pageElement = await CcdeGuidePage();
         render(pageElement);
-        expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+        expect(screen.getAllByRole('heading', { level: 1 }).length).toBeGreaterThan(0);
     });
 
     it('タイトルブロック・製図メタデータが正しく描画されること', () => {
@@ -98,6 +101,10 @@ describe('Cisco CCDE Complete Guide Page', () => {
         expect(screen.getByText('US$450')).toBeInTheDocument();
         expect(screen.getByText('US$1,600')).toBeInTheDocument();
         expect(screen.getByText('約 US$2,050')).toBeInTheDocument();
+
+        // コールアウト・FAQ
+        expect(screen.getAllByText(/前提資格がない＝簡単/i).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/18か月以内に実技試験/i).length).toBeGreaterThan(0);
     });
 
     it('5つの Mermaid ダイアグラムが存在すること', () => {

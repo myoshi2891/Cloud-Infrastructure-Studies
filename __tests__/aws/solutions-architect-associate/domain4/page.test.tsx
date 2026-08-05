@@ -27,13 +27,36 @@ describe('AWS SAA Domain 4 Guide Page', () => {
         expect(screen.getByRole('heading', { name: /参考文献/i })).toBeInTheDocument();
     });
 
-    it('contains valid mermaid diagrams in constants', () => {
-        expect(Object.keys(DIAGRAMS).length).toBeGreaterThan(0);
+    it('contains exactly 29 valid mermaid diagrams in constants', () => {
+        expect(Object.keys(DIAGRAMS).length).toBe(29);
     });
 
-    it('renders tables correctly in the guide', () => {
+    it('renders heading structure and section counts accurately', () => {
+        const { container } = render(<Domain4Guide />);
+        const h2Headings = container.querySelectorAll('h2');
+        const h3Headings = container.querySelectorAll('h3');
+
+        expect(h2Headings.length).toBeGreaterThanOrEqual(6);
+        expect(h3Headings.length).toBeGreaterThanOrEqual(15);
+    });
+
+    it('renders tables correctly with expected headers and row cells', () => {
         const { container } = render(<Domain4Guide />);
         const tables = container.querySelectorAll('table');
-        expect(tables.length).toBeGreaterThan(0);
+        expect(tables.length).toBeGreaterThanOrEqual(10);
+
+        expect(screen.getByText('AWS Organizations 連結請求(マルチアカウント請求)')).toBeInTheDocument();
+        expect(screen.getByText('S3 Standard')).toBeInTheDocument();
+        expect(screen.getAllByText(/Intelligent-Tiering/i).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/Savings Plans/i).length).toBeGreaterThan(0);
+    });
+
+    it('renders source and reference links with correct href attributes', () => {
+        const { container } = render(<Domain4Guide />);
+        const links = container.querySelectorAll('a[target="_blank"]');
+        expect(links.length).toBeGreaterThanOrEqual(10);
+
+        const hrefs = Array.from(links).map((a) => a.getAttribute('href'));
+        expect(hrefs.some((h) => h?.includes('wellarchitected/latest/cost-optimization-pillar'))).toBe(true);
     });
 });
