@@ -281,7 +281,7 @@ flowchart LR
     A -->|"② GET Response：値を返す"| M
     M -->|"③ SET：設定値を変更したい"| A
     A -->|"④ SET Response / 完了"| M
-    A -.-|"独立通知：TRAP（自発的な異常通知）"|-> M
+    A -. "独立通知：TRAP（自発的な異常通知）" .-> M
 ```
 
 - **GET/GET-NEXT**：マネージャーがエージェントに値を「聞きに行く」（ポーリング）

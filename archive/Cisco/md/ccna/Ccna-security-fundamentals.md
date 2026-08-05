@@ -359,7 +359,7 @@ flowchart TD
 
 ### 設定コマンド例
 
-```
+```text
 ! --- ① ポートセキュリティ ---
 Switch(config)# interface FastEthernet0/1
 Switch(config-if)# switchport mode access
@@ -435,11 +435,11 @@ CCNAでは、AAAを実現する代表的なプロトコルとして **RADIUS** �
 
 ### 設定コマンド例（概念理解用）
 
-```
+```text
 Router(config)# aaa new-model
 Router(config)# radius server MyRadius
 Router(config-radius-server)# address ipv4 192.168.1.100
-Router(config-radius-server)# key MySharedSecret
+Router(config-radius-server)# key <RADIUS_SHARED_SECRET>
 
 Router(config)# aaa authentication login default group radius local
 ! ↑ まずRADIUSサーバーで認証し、応答がなければローカルアカウントにフォールバック

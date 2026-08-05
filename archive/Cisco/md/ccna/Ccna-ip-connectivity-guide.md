@@ -43,7 +43,7 @@ pie showData
 
 以下は、Cisco IOSで `show ip route` コマンドを実行したときの出力例です（学習用の簡略例）。
 
-```
+```text
 R1# show ip route
 
 Codes: L - local, C - connected, S - static, R - RIP, O - OSPF,
@@ -180,7 +180,7 @@ graph LR
 
 ### 3-3. IOS設定例
 
-```
+```text
 ! プライマリ経路（デフォルトのAD=1）
 R1(config)# ip route 10.10.20.0 255.255.255.0 192.168.1.2
 
@@ -217,7 +217,7 @@ OSPF（Open Shortest Path First）はリンクステート型のルーティン�
 ```mermaid
 stateDiagram-v2
     [*] --> Down
-    Down --> Init : Hello受信前
+    Down --> Init : Helloパケットを受信
     Init --> TwoWay : 自分のRouter IDが<br>相手のHelloに含まれるのを確認
     TwoWay --> ExStart : マスター/スレーブを決定
     ExStart --> Exchange : DBD（データベース記述）<br>パケットを交換
@@ -263,7 +263,7 @@ flowchart TD
 
 ### 4-5. 設定例
 
-```
+```text
 R1(config)# router ospf 1
 R1(config-router)# router-id 1.1.1.1
 R1(config-router)# network 192.168.1.0 0.0.0.255 area 0
