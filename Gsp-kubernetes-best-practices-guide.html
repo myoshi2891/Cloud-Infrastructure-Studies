@@ -2,15 +2,16 @@
 <html lang="ja">
     <head>
         <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Dockerイメージ作成からGKEデプロイまで ― ベストプラクティス解説ガイド</title>
         <link
             rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css?v=2"
         />
         <link
             rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css?v=2"
         />
         <style>
             :root {
@@ -22,8 +23,8 @@
                 --color-background-success: #122a20;
                 --color-background-warning: #2a2114;
                 --color-text-primary: #e8edf5;
-                --color-text-secondary: #a8b6cc;
-                --color-text-tertiary: #6b7a94;
+                --color-text-secondary: #cedaec;
+                --color-text-tertiary: #afbfda;
                 --color-text-info: #7c9eff;
                 --color-text-danger: #ff8b8b;
                 --color-text-success: #6ee7b7;
@@ -102,7 +103,7 @@
                 margin-bottom: 16px;
             }
             .sidebar-eyebrow {
-                font-size: 11px;
+                font-size: 16px;
                 font-weight: 500;
                 letter-spacing: 0.06em;
                 color: var(--color-text-tertiary);
@@ -115,7 +116,7 @@
                 color: var(--color-text-primary);
             }
             .nav-group-label {
-                font-size: 11px;
+                font-size: 16px;
                 font-weight: 500;
                 color: var(--color-text-tertiary);
                 padding: 14px 24px 6px;
@@ -129,7 +130,7 @@
                 align-items: center;
                 gap: 10px;
                 padding: 9px 24px;
-                font-size: 14px;
+                font-size: 16px;
                 color: var(--color-text-secondary);
                 border-left: 2px solid transparent;
             }
@@ -165,7 +166,7 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 8px;
-                font-size: 12px;
+                font-size: 16px;
                 font-weight: 500;
                 color: var(--color-text-info);
                 background: var(--color-background-info);
@@ -212,7 +213,7 @@
                 max-width: 720px;
             }
             .hero-link {
-                font-size: 13px;
+                font-size: 16px;
                 color: var(--color-text-tertiary);
                 margin-top: 14px;
             }
@@ -239,7 +240,7 @@
                 width: 100%;
                 border-collapse: collapse;
                 margin: 18px 0 24px;
-                font-size: 14px;
+                font-size: 16px;
                 background: var(--color-background-secondary);
                 border: 1px solid var(--color-border-primary);
                 border-radius: var(--border-radius-md);
@@ -248,7 +249,7 @@
             thead th {
                 text-align: left;
                 font-weight: 500;
-                font-size: 12px;
+                font-size: 16px;
                 color: var(--color-text-tertiary);
                 text-transform: uppercase;
                 letter-spacing: 0.03em;
@@ -275,7 +276,7 @@
 
             code {
                 font-family: var(--font-mono);
-                font-size: 13px;
+                font-size: 16px;
                 background: var(--color-background-tertiary);
                 border: 1px solid var(--color-border-secondary);
                 padding: 2px 6px;
@@ -295,11 +296,11 @@
                 border: none;
                 padding: 0;
                 color: var(--color-text-primary);
-                font-size: 13px;
+                font-size: 16px;
                 line-height: 1.65;
             }
             .code-label {
-                font-size: 11px;
+                font-size: 16px;
                 font-weight: 500;
                 color: var(--color-text-tertiary);
                 text-transform: uppercase;
@@ -307,13 +308,13 @@
                 margin-bottom: 8px;
             }
 
-            .mermaid {
+            .mermaid-target {
                 width: 100%;
                 display: flex;
                 justify-content: center;
                 margin: 20px 0 28px;
             }
-            .mermaid svg {
+            .mermaid-target svg {
                 max-width: 100%;
                 height: auto;
             }
@@ -332,7 +333,7 @@
                 border-radius: var(--border-radius-md);
                 padding: 14px 16px;
                 margin: 18px 0 24px;
-                font-size: 14px;
+                font-size: 16px;
             }
             .callout i {
                 font-size: 17px;
@@ -343,11 +344,11 @@
                 font-weight: 500;
                 color: var(--color-text-primary);
                 margin-bottom: 4px;
-                font-size: 14px;
+                font-size: 16px;
             }
             .callout p {
                 margin: 0;
-                font-size: 14px;
+                font-size: 16px;
                 color: var(--color-text-secondary);
             }
             .callout-tip {
@@ -366,20 +367,25 @@
             .flag-list {
                 list-style: none;
                 margin: 10px 0 20px;
+                padding-left: 0;
             }
             .flag-list li {
-                display: flex;
-                gap: 10px;
-                padding: 8px 0;
+                position: relative;
+                padding: 10px 0 10px 20px;
                 border-bottom: 1px solid var(--color-border-secondary);
-                font-size: 14px;
+                font-size: 16px;
+                line-height: 1.7;
                 color: var(--color-text-secondary);
+            }
+            .flag-list li::before {
+                content: '–';
+                position: absolute;
+                left: 0;
+                top: 10px;
+                color: var(--color-text-tertiary);
             }
             .flag-list li:last-child {
                 border-bottom: none;
-            }
-            .flag-list code {
-                flex-shrink: 0;
             }
 
             .task-grid {
@@ -399,13 +405,13 @@
             }
             .task-badge {
                 flex-shrink: 0;
-                width: 30px;
-                height: 30px;
+                width: 34px;
+                height: 34px;
                 border-radius: var(--border-radius-md);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 13px;
+                font-size: 16px;
                 font-weight: 500;
             }
             .task-badge-1 {
@@ -425,20 +431,20 @@
                 color: var(--c-pink-100);
             }
             .task-row-title {
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: 500;
                 color: var(--color-text-primary);
                 margin-bottom: 3px;
             }
             .task-row-desc {
-                font-size: 13px;
+                font-size: 16px;
                 color: var(--color-text-secondary);
             }
 
             .footer {
                 padding-top: 36px;
                 color: var(--color-text-tertiary);
-                font-size: 13px;
+                font-size: 16px;
             }
             .footer a {
                 color: var(--color-text-tertiary);
@@ -553,15 +559,6 @@
                         Artifact Registryへの格納 →
                         GKEへのデプロイ・公開」という一連の流れを、なぜそのコマンドを打つのかという根拠つきで解説します。
                     </p>
-                    <div class="hero-link">
-                        <i class="ti ti-external-link"></i> ラボ本体:
-                        <a
-                            href="https://www.skills.google/paths/11/course_templates/663/labs/592459"
-                            target="_blank"
-                            rel="noopener"
-                            >skills.google/paths/11/course_templates/663/labs/592459</a
-                        >
-                    </div>
                 </header>
 
                 <section id="overview" class="section">
@@ -571,18 +568,7 @@
                     </p>
 
                     <div class="diagram-card">
-                        <div class="mermaid">
-                            flowchart LR A["Cloud Shell上のソースコード"] --> B["docker
-                            build（イメージ作成）"] B --> C["docker run（ローカル動作確認）"] B -->
-                            D["docker tag（再タグ付け）"] D --> E["Artifact Registry"] E -->
-                            F["GKEクラスタ valkyrie-dev"] F --> G["Service（LoadBalancer）"] G -->
-                            H["エンドユーザー"] classDef purple
-                            fill:#382f6e,stroke:#c7c0ff,color:#f2f0ff classDef teal
-                            fill:#0d3d38,stroke:#a0eedd,color:#e8fbf7 classDef coral
-                            fill:#5e2418,stroke:#ffc2b5,color:#fff1ee classDef pink
-                            fill:#5c1a3a,stroke:#ffc2db,color:#fff0f6 class A,B purple class C teal
-                            class D,E coral class F,G,H pink
-                        </div>
+                        <div id="diagram-overview" class="mermaid-target"></div>
                     </div>
 
                     <div class="task-grid">
@@ -637,22 +623,7 @@
 
                     <p>各Taskの内部ステップも合わせて俯瞰します。</p>
                     <div class="diagram-card">
-                        <div class="mermaid">
-                            flowchart TB subgraph T1["Task1: イメージ作成"] A1["ソース取得 gsutil
-                            cp"] --> A2["Dockerfile作成"] A2 --> A3["docker build -t"] end subgraph
-                            T2["Task2: ローカルテスト"] B1["docker run -p 8080:8080 -d"] --> B2["Web
-                            Previewで確認"] end subgraph T3["Task3: レジストリへpush"]
-                            C1["リポジトリ作成"] --> C2["gcloud auth configure-docker"] C2 -->
-                            C3["docker tag"] C3 --> C4["docker push"] end subgraph T4["Task4:
-                            GKEへデプロイ"] D1["get-credentials"] --> D2["deployment.yaml編集"] D2
-                            --> D3["kubectl apply"] D3 --> D4["LoadBalancer IP確認"] end T1 --> T2
-                            --> T3 --> T4 classDef stepBox fill:#0b1626,stroke:#22344f,color:#e8edf5
-                            class A1,A2,A3,B1,B2,C1,C2,C3,C4,D1,D2,D3,D4 stepBox style T1
-                            fill:#382f6e,stroke:#c7c0ff,color:#f2f0ff style T2
-                            fill:#0d3d38,stroke:#a0eedd,color:#e8fbf7 style T3
-                            fill:#5e2418,stroke:#ffc2b5,color:#fff1ee style T4
-                            fill:#5c1a3a,stroke:#ffc2db,color:#fff0f6
-                        </div>
+                        <div id="diagram-taskflow" class="mermaid-target"></div>
                     </div>
 
                     <div class="callout callout-tip">
@@ -863,13 +834,7 @@ ENTRYPOINT ["app","-single=true","-port=8080"]</code></pre>
 
                     <p>認証からpushまでの流れをシーケンス図で整理します。</p>
                     <div class="diagram-card">
-                        <div class="mermaid">
-                            sequenceDiagram participant CS as Cloud Shell participant GC as gcloud
-                            CLI participant AR as Artifact Registry CS->>GC: gcloud auth
-                            configure-docker REGION-docker.pkg.dev GC->>CS: 認証情報を config.json
-                            に登録 CS->>CS: docker tag（レジストリ形式に変換） CS->>AR: docker push
-                            AR-->>CS: push完了（イメージダイジェストを返却）
-                        </div>
+                        <div id="diagram-authflow" class="mermaid-target"></div>
                     </div>
 
                     <h3>3. 再タグ付け（re-tag）</h3>
@@ -1126,17 +1091,6 @@ kubectl apply -f service.yaml</code></pre>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>ラボ本体（GSP318）</td>
-                                <td>
-                                    <a
-                                        href="https://www.skills.google/paths/11/course_templates/663/labs/592459"
-                                        target="_blank"
-                                        rel="noopener"
-                                        >skills.google/paths/11/course_templates/663/labs/592459</a
-                                    >
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>Dockerfileベストプラクティス（Docker公式）</td>
                                 <td>
                                     <a
@@ -1306,31 +1260,126 @@ kubectl apply -f service.yaml</code></pre>
             </main>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js?v=2"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js?v=2"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js?v=2"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js?v=2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js?v=2"></script>
         <script>
             // シンタックスハイライト
             document.querySelectorAll('pre code').forEach(function (block) {
                 hljs.highlightElement(block);
             });
 
-            // Mermaid初期化（ダークテーマ、クラス定義はリテラルHEXのみ使用）
+            // Mermaid図をJSテンプレートリテラルとして定義（HTMLパーサーやIDEの自動整形の影響を受けない）
+            const DIAGRAMS = {
+                'diagram-overview': `flowchart LR
+A["Cloud Shell上のソースコード"] --> B["docker build(イメージ作成)"]
+B --> C["docker run(ローカル動作確認)"]
+B --> D["docker tag(再タグ付け)"]
+D --> E["Artifact Registry"]
+E --> F["GKEクラスタ valkyrie-dev"]
+F --> G["Service(LoadBalancer)"]
+G --> H["エンドユーザー"]
+classDef purple fill:#382f6e,stroke:#c7c0ff,color:#f2f0ff
+classDef teal fill:#0d3d38,stroke:#a0eedd,color:#e8fbf7
+classDef coral fill:#5e2418,stroke:#ffc2b5,color:#fff1ee
+classDef pink fill:#5c1a3a,stroke:#ffc2db,color:#fff0f6
+class A,B purple
+class C teal
+class D,E coral
+class F,G,H pink`,
+                'diagram-taskflow': `flowchart TB
+subgraph T1["Task1: イメージ作成"]
+A1["ソース取得 gsutil cp"] --> A2["Dockerfile作成"]
+A2 --> A3["docker build -t"]
+end
+subgraph T2["Task2: ローカルテスト"]
+B1["docker run -p 8080:8080 -d"] --> B2["Web Previewで確認"]
+end
+subgraph T3["Task3: レジストリへpush"]
+C1["リポジトリ作成"] --> C2["gcloud auth configure-docker"]
+C2 --> C3["docker tag"]
+C3 --> C4["docker push"]
+end
+subgraph T4["Task4: GKEへデプロイ"]
+D1["get-credentials"] --> D2["deployment.yaml編集"]
+D2 --> D3["kubectl apply"]
+D3 --> D4["LoadBalancer IP確認"]
+end
+T1 --> T2 --> T3 --> T4
+classDef stepBox fill:#0b1626,stroke:#22344f,color:#e8edf5
+class A1,A2,A3,B1,B2,C1,C2,C3,C4,D1,D2,D3,D4 stepBox
+style T1 fill:#382f6e,stroke:#c7c0ff,color:#f2f0ff
+style T2 fill:#0d3d38,stroke:#a0eedd,color:#e8fbf7
+style T3 fill:#5e2418,stroke:#ffc2b5,color:#fff1ee
+style T4 fill:#5c1a3a,stroke:#ffc2db,color:#fff0f6`,
+                'diagram-authflow': `sequenceDiagram
+participant CS as Cloud Shell
+participant GC as gcloud CLI
+participant AR as Artifact Registry
+CS->>GC: gcloud auth configure-docker REGION-docker.pkg.dev
+GC->>CS: 認証情報を config.json に登録
+CS->>CS: docker tag(レジストリ形式に変換)
+CS->>AR: docker push
+AR-->>CS: push完了(イメージダイジェストを返却)`,
+            };
+
             mermaid.initialize({
                 startOnLoad: false,
                 theme: 'dark',
                 securityLevel: 'loose',
-                useMaxWidth: false,
                 fontFamily: 'Inter, "Hiragino Kaku Gothic ProN", sans-serif',
                 flowchart: { nodeSpacing: 48, rankSpacing: 48, htmlLabels: true },
-                sequence: { actorFontSize: 14, messageFontSize: 13 },
+                sequence: { actorFontSize: 16, messageFontSize: 16 },
             });
 
-            document.fonts.ready.then(function () {
-                mermaid.run({ querySelector: '.mermaid' });
-            });
+            // SVGの後処理: width/height属性を除去し、viewBox由来の自然px幅+maxWidth:100%+height:autoに統一
+            // シーケンス図/状態遷移図は下端が見切れやすいためviewBoxの高さを+110、それ以外は+15拡張する
+            function applySvgFixups(svgEl, chart) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.overflow = 'visible';
+                var viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                var parts = viewBox.split(/\s+/).map(Number);
+                if (
+                    parts.length !== 4 ||
+                    !parts.every(function (n) {
+                        return Number.isFinite(n);
+                    })
+                )
+                    return;
+                var trimmed = chart.trim();
+                var isSeqOrState =
+                    trimmed.indexOf('sequenceDiagram') === 0 ||
+                    trimmed.indexOf('stateDiagram') === 0;
+                var extra = isSeqOrState ? 110 : 15;
+                svgEl.style.width = parts[2] + 'px';
+                svgEl.style.maxWidth = '100%';
+                svgEl.setAttribute(
+                    'viewBox',
+                    parts[0] + ' ' + parts[1] + ' ' + parts[2] + ' ' + (parts[3] + extra),
+                );
+            }
+
+            async function renderAllDiagrams() {
+                await document.fonts.ready;
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        const target = document.getElementById(id);
+                        if (!target) continue;
+                        target.innerHTML = svg;
+                        const svgEl = target.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl, src);
+                    } catch (err) {
+                        console.error('mermaid render failed for', id, err);
+                    }
+                }
+            }
+            renderAllDiagrams();
 
             // サイドバーの現在地ハイライト（IntersectionObserver）
             var navLinks = document.querySelectorAll('.nav-link');
