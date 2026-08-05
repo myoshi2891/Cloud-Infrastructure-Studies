@@ -3838,6 +3838,7 @@ flowchart LR
                 if (!btn || !sidebar) return;
 
                 function updateSidebarState(isOpen) {
+                    const isMobile = window.innerWidth <= 900;
                     if (isOpen) {
                         sidebar.removeAttribute('inert');
                         sidebar.setAttribute('aria-hidden', 'false');
@@ -3846,13 +3847,27 @@ flowchart LR
                         const firstLink = sidebar.querySelector('nav a');
                         if (firstLink) firstLink.focus();
                     } else {
-                        sidebar.setAttribute('inert', '');
-                        sidebar.setAttribute('aria-hidden', 'true');
+                        if (isMobile) {
+                            sidebar.setAttribute('inert', '');
+                            sidebar.setAttribute('aria-hidden', 'true');
+                        } else {
+                            sidebar.removeAttribute('inert');
+                            sidebar.setAttribute('aria-hidden', 'false');
+                        }
                         btn.setAttribute('aria-expanded', 'false');
                         btn.setAttribute('aria-label', 'メニューを開く');
-                        btn.focus();
                     }
                 }
+
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth > 900) {
+                        sidebar.removeAttribute('inert');
+                        sidebar.setAttribute('aria-hidden', 'false');
+                    } else if (!sidebar.classList.contains('open')) {
+                        sidebar.setAttribute('inert', '');
+                        sidebar.setAttribute('aria-hidden', 'true');
+                    }
+                });
 
                 btn.addEventListener('click', function () {
                     const isOpen = sidebar.classList.toggle('open');

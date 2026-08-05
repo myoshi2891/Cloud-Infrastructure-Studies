@@ -93,7 +93,7 @@ Dedicated Interconnect は、Google のコロケーション施設内でオン�
 
 **ベストプラクティス**
 
-- VLAN Attachment 単位で **MTU を統一**する(Cloud Interconnect は 1440〜1500 バイトに加え、Cross-Site Interconnect では 9,000 バイトの Jumbo Frame にも対応)。
+- VLAN Attachment 単位で **MTU を統一**する(Cloud Interconnect で選択可能な 1440・1460・1500・8896 バイトの中から用途に合わせて選択)。
 - 単一障害点を避けるため、**同一メトロ内でも異なるエッジ可用性ドメイン(edge availability domain)に接続を分散**する。
 - 帯域増強が見込まれる場合は、後から VLAN Attachment の帯域(capacity)を変更できるため、**契約時点で物理ポートの上限に余裕を持たせる**。
 
@@ -191,6 +191,7 @@ flowchart TB
     Domain2 --> Router1
     Router1 --> VPC1["VPC(us-central1)"]
 ```
+
 *99.9% 構成:単一リージョン・単一メトロ内で、異なるエッジ可用性ドメインに2本の接続。*
 
 ```mermaid

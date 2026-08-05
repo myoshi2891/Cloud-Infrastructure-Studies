@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PCNE 学習ガイド S3:VPCネットワークの実装</title>
+        <title>PCNE 学習ガイド S2:ハイブリッド接続・ネットワーク相互接続</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -507,7 +507,7 @@
         </style>
     </head>
     <body>
-        <button id="sidebarToggle" class="sidebar-toggle" aria-label="メニュー">&#9776;</button>
+        <button id="sidebarToggle" class="sidebar-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
         <div class="layout">
             <nav class="sidebar" id="sidebar">
                 <div class="brand">Google Cloud PCNE 学習ガイド</div>
@@ -776,7 +776,7 @@
                         に対応する内容を、実装レベルで中級者〜上級者向けに詳解します。S1(Section
                         1:設計)で立てた方針を、実際にどのリソースでどう実現するかという「実装」に踏み込みます。なお、Network
                         Connectivity
-                        Center(NCC)のスポーク種別・トポロジ・PSC伝播・IP/CIDRフィルタ・トランジティビティ問題については、[[dark-navy-guide-series]]の姉妹編であるS2(Section
+                        Center(NCC)のスポーク種別・トポロジ・PSC伝播・IP/CIDRフィルタ・トランジティビティ問題については、姉妹編であるS2(Section
                         4)ガイドで詳述済みのため、本ガイドでは要点の再掲とNCC監視・トラブルシューティングの深掘りに絞ります。
                     </p>
                 </blockquote>
@@ -2542,7 +2542,7 @@ flowchart TB
                 </div>
             </main>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js" integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww==" crossorigin="anonymous"></script>
         <script>
             (function () {
                 // ---- sidebar toggle (mobile) ----
@@ -2550,7 +2550,17 @@ flowchart TB
                 var sidebar = document.getElementById('sidebar');
                 if (toggle && sidebar) {
                     toggle.addEventListener('click', function () {
-                        sidebar.classList.toggle('open');
+                        var isOpen = sidebar.classList.toggle('open');
+                        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                        if (isOpen) {
+                            sidebar.removeAttribute('inert');
+                            sidebar.setAttribute('aria-hidden', 'false');
+                        } else {
+                            if (window.innerWidth <= 900) {
+                                sidebar.setAttribute('inert', '');
+                                sidebar.setAttribute('aria-hidden', 'true');
+                            }
+                        }
                     });
                     document.querySelectorAll('.nav-link').forEach(function (a) {
                         a.addEventListener('click', function () {

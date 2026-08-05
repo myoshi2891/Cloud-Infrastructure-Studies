@@ -221,7 +221,7 @@ gcloud container clusters get-credentials valkyrie-dev --zone ZONE
 ### 5-3. デプロイの適用
 
 ```bash
-cd valkyrie-app/k8s
+cd k8s
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 ```
