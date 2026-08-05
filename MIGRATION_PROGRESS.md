@@ -9,6 +9,30 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **次の作業:** (なし)
 - **最終更新日時(UTC):** 2026-08-05T11:58:00.000Z
 
+## 2026-08-05: Cisco「CCIE Enterprise Infrastructure 認定 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccie-enterprise-infrastructure.html`（静的HTML・1555行・4個のMermaid図・6個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcieEnterpriseGuide.tsx + constants.ts + page.module.css + 共有 MermaidDiagram）で `app/cisco/ccie/enterprise-infrastructure` ルートへ完全移行する。文章・表・4個のMermaid図・FAQ・参考ソース全10件の一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for ccie enterprise infrastructure guide` (`__tests__/cisco/ccie-enterprise-infrastructure.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat: implement ccie enterprise infrastructure guide components and page` (`page.tsx`, `CcieEnterpriseGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.module.css` 実装)
+- [x] **Step 3 (Refactor / Integration & Nav & Archive)**: `refactor: integrate ccie enterprise infrastructure guide into navigation and archive html source` (`app/constants.ts` EXAMSへの統合、`MIGRATION_PROGRESS.md` 更新、元HTML `Ccie-enterprise-infrastructure.html` の `archive/Cisco/html/` へのアーカイブ移動)
+
+### 関連ファイル
+
+- [app/cisco/ccie/enterprise-infrastructure/page.tsx](app/cisco/ccie/enterprise-infrastructure/page.tsx)
+- [app/cisco/ccie/enterprise-infrastructure/CcieEnterpriseGuide.tsx](app/cisco/ccie/enterprise-infrastructure/CcieEnterpriseGuide.tsx)
+- [app/cisco/ccie/enterprise-infrastructure/NavBar.tsx](app/cisco/ccie/enterprise-infrastructure/NavBar.tsx)
+- [app/cisco/ccie/enterprise-infrastructure/constants.ts](app/cisco/ccie/enterprise-infrastructure/constants.ts)
+- [app/cisco/ccie/enterprise-infrastructure/page.module.css](app/cisco/ccie/enterprise-infrastructure/page.module.css)
+- [__tests__/cisco/ccie-enterprise-infrastructure.test.tsx](__tests__/cisco/ccie-enterprise-infrastructure.test.tsx)
+- [archive/Cisco/html/Ccie-enterprise-infrastructure.html](archive/Cisco/html/Ccie-enterprise-infrastructure.html)
+- [archive/Cisco/md/Ccie-enterprise-infrastructure.md](archive/Cisco/md/Ccie-enterprise-infrastructure.md)
+
+
 ## 2026-08-05: Cisco「Cisco Certified Design Expert (CCDE) 完全ガイド」移行 (完了)
 
 ### 目的
