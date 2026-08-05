@@ -2105,15 +2105,25 @@
                         return response.json()
 
                     if response.status_code == 429:
-                        # レート制限：Retry-Afterヘッダーの秒数だけ待って再試行
+                        # レート制限：Retry-Afterヘッダー（秒数またはHTTP-date）だけ待って再試行
                         retry_after = response.headers.get("Retry-After")
-                        try:
-                            parsed_val = int(retry_after) if retry_after is not None else -1
-                            if 0 <= parsed_val <= 3600:
-                                wait_seconds = parsed_val
-                            else:
-                                wait_seconds = 2 ** attempt
-                        except (ValueError, TypeError):
+                        wait_seconds = None
+                        if retry_after is not None:
+                            try:
+                                parsed_val = int(retry_after)
+                                if 0 <= parsed_val <= 3600:
+                                    wait_seconds = parsed_val
+                            except (ValueError, TypeError):
+                                try:
+                                    from email.utils import parsedate_to_datetime
+                                    from datetime import datetime, timezone
+                                    dt = parsedate_to_datetime(retry_after)
+                                    now = datetime.now(timezone.utc)
+                                    diff = max(0, int((dt - now).total_seconds()))
+                                    wait_seconds = min(diff, 3600)
+                                except Exception:
+                                    pass
+                        if wait_seconds is None:
                             wait_seconds = 2 ** attempt
                         print(f"レート制限中。{wait_seconds}秒待機して再試行します。")
                         time.sleep(wait_seconds)

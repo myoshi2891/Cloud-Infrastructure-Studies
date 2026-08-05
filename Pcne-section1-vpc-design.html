@@ -3860,14 +3860,10 @@ flowchart LR
                 }
 
                 window.addEventListener('resize', function () {
-                    if (window.innerWidth > 900) {
-                        sidebar.removeAttribute('inert');
-                        sidebar.setAttribute('aria-hidden', 'false');
-                    } else if (!sidebar.classList.contains('open')) {
-                        sidebar.setAttribute('inert', '');
-                        sidebar.setAttribute('aria-hidden', 'true');
-                    }
+                    updateSidebarState(sidebar.classList.contains('open'));
                 });
+
+                updateSidebarState(sidebar.classList.contains('open'));
 
                 btn.addEventListener('click', function () {
                     const isOpen = sidebar.classList.toggle('open');
