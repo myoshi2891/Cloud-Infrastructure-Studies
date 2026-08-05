@@ -1,4 +1,5 @@
 # Google Cloud Professional Cloud Network Engineer 試験対策ガイド
+
 ## Section 1: Designing and planning a Google Cloud VPC network(VPCネットワークの設計と計画)
 
 > 対象読者:中級者〜上級者(Associate Cloud Engineer相当の実務経験、または他クラウドでのネットワーク設計経験がある方)
@@ -411,8 +412,8 @@ flowchart LR
 
 | 方式 | スポーク間到達性 | 推移的ルート共有 | 適した規模 |
 |---|---|---|---|
-| NCC(VPCスポーク) | スタート/メッシュで選択可 | Private Service Connect/一部のPrivate services accessルートが推移的 | 大規模・将来の拡張を見込む環境 |
-| VPC Network Peering | ハブVPC経由で構成すればスポーク間通信が可能(帯域はVMのフル帯域) | ピアリングは非推移的だが、ハブVPCを中継点にする設計で疑似的に実現 | 中規模、シンプルな構成を好む場合 |
+| NCC(VPCスポーク) | スター/メッシュで選択可 | Private Service Connect/一部のPrivate services accessルートが推移的 | 大規模・将来の拡張を見込む環境 |
+| VPC Network Peering | スポーク間直接通信不可（非推移的）。ハブVPC内にNVA/NGFWを配置して中継する場合のみ通信可能 | ピアリング自体は完全非推移的 | 中規模、明確なセグメンテーションを行いたい環境 |
 | Cloud VPN(スポーク間HA VPN) | HA VPNトンネル経由 | VPN区間はゲートウェイ間のスループット上限あり | ルート非推移な制約を回避したいが帯域要件がそこまで高くない場合 |
 
 > **出典**: [Hub-and-spoke network architecture](https://cloud.google.com/architecture/deploy-hub-spoke-vpc-network-topology) / [VPC spokes overview](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/vpc-spokes-overview) / [VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering)
@@ -520,16 +521,16 @@ flowchart LR
     A --> C["接続先の機器・回線のMTUと\n整合させる必要がある"]
     C --> C1["VM NIC"]
     C --> C2["VLANアタッチメント(Interconnect)"]
-    C --> C3["Cloud VPNトンネル\n(既定1460バイト固定)"]
+    C --> C3["Cloud VPNトンネル\n(Gateway MTU 1460/1440バイト,\nPayload MTUは暗号方式に応じ可変)"]
 ```
 
 **設計上の重要ポイント**
 
 | 項目 | 内容 |
 |---|---|
-| VPCネットワークのMTU | 1300〜8896バイトの間で自由に設定可能(既定1460) |
+| VPCネットワークのMTU | 1300〜8896バイトの間で設定可能(既定1460) |
 | VLANアタッチメント(Cloud Interconnect) | 1440・1460・1500・8896バイトから選択。8896(ジャンボフレーム)は暗号化なしのIPv4/IPv6アタッチメントのみ対応 |
-| Cloud VPN(HA VPN/Classic VPN) | ペイロードMTUは既定で1460バイト。IPsec/ESPのオーバーヘッドがあるため、VPC側のMTUをそのまま使うとフラグメンテーションが発生し得る |
+| Cloud VPN(HA VPN/Classic VPN) | Gateway MTUは標準VPNで1460バイト、HA VPN over Interconnectで1440バイト。実際のPayload MTUはIPsec/ESPヘッダーオーバーヘッド、暗号化スイート、IPv4/IPv6により可変 |
 | 推奨設定 | 同一VPCに接続するすべてのVLANアタッチメントで同じMTU値を使う。VPCネットワーク自体のMTUもそれに合わせる |
 | TCPとの関係 | TCPはMSS(Maximum Segment Size)をハンドシェイク時に自動調整するため、多少のMTU差異は吸収されるが、非TCPプロトコル(UDPやICMPなど)はPMTUD(Path MTU Discovery)に依存するため注意が必要 |
 
@@ -993,7 +994,7 @@ flowchart TB
 |---|---|
 | ネットワークタグ | ノードプール単位でネットワークタグを付与し、ファイアウォールルールの適用範囲を制御する(例:特定のノードプールのみ外部との通信を許可する) |
 | ゾーン配置 | マルチゾーンのノードプールにすることで、単一ゾーン障害時の可用性を確保する |
-| サービスアカウント | ノードプールごとに異なるサービスアカウントを割り当て、ワークロードごとのAPIアクセス権限を最小化する(ネットワークリソースへのアクセス権限を含む) |
+| サービスアカウント | ノードプール用サービスアカウントはノード操作(ログ送信・イメージ取得)に必要な最小ロールに留め、Pod/ワークロードごとのGCP APIアクセスには Workload Identity Federation for GKE を使用してアクセス権限を最小化する |
 | Dataplane V2の有効化 | eBPFベースのデータプレーン(GKE Dataplane V2)を有効にすることで、Ciliumベースのネットワークポリシー実装やより高精度なフローログ・オブザーバビリティが利用可能になる |
 | SNAT/IP Masqueradeポリシー | Pod発信トラフィックのSNAT対象範囲を制御し、意図しないIPマスカレードによる送信元IP消失を防ぐ |
 | DNS構成 | ノードローカルDNSキャッシュ、Cloud DNSベースのクラスタスコープDNS、kube-dnsのいずれを使うかを選択し、大規模クラスタでのDNSクエリ負荷を軽減する |

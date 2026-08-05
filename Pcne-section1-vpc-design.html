@@ -561,11 +561,11 @@
         </style>
     </head>
     <body>
-        <button class="sidebar-toggle" id="sidebarToggle" aria-label="メニューを開閉">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-controls="sidebar" aria-expanded="false" aria-label="メニューを開く">
             &#9776;
         </button>
 
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar" inert aria-hidden="true">
             <div class="brand">Google Cloud PCNE</div>
             <div class="brand-sub">
                 Section 1: Designing and planning a Google Cloud VPC network
@@ -1556,11 +1556,11 @@ flowchart LR
                         </tr>
                         <tr class="even">
                             <td>VPC Network Peering</td>
-                            <td>ハブVPC経由で構成すればスポーク間通信が可能(帯域はVMのフル帯域)</td>
+                            <td>スポーク間直接通信不可（非推移的）。ハブVPC内にNVA/NGFWを配置して中継する場合のみ通信可能</td>
                             <td>
-                                ピアリングは非推移的だが、ハブVPCを中継点にする設計で疑似的に実現
+                                ピアリング自体は完全非推移的
                             </td>
-                            <td>中規模、シンプルな構成を好む場合</td>
+                            <td>中規模、明確なセグメンテーションを行いたい環境</td>
                         </tr>
                         <tr class="odd">
                             <td>Cloud VPN(スポーク間HA VPN)</td>
@@ -3123,7 +3123,7 @@ flowchart TB
                         <tr class="odd">
                             <td>サービスアカウント</td>
                             <td>
-                                ノードプールごとに異なるサービスアカウントを割り当て、ワークロードごとのAPIアクセス権限を最小化する(ネットワークリソースへのアクセス権限を含む)
+                                ノードプール用サービスアカウントはノード操作(ログ送信・イメージ取得)に必要な最小ロールに留め、Pod/ワークロードごとのGCP APIアクセスには Workload Identity Federation for GKE を使用してアクセス権限を最小化する
                             </td>
                         </tr>
                         <tr class="even">
@@ -3836,12 +3836,32 @@ flowchart LR
                 const btn = document.getElementById('sidebarToggle');
                 const sidebar = document.getElementById('sidebar');
                 if (!btn || !sidebar) return;
+
+                function updateSidebarState(isOpen) {
+                    if (isOpen) {
+                        sidebar.removeAttribute('inert');
+                        sidebar.setAttribute('aria-hidden', 'false');
+                        btn.setAttribute('aria-expanded', 'true');
+                        btn.setAttribute('aria-label', 'メニューを閉じる');
+                        const firstLink = sidebar.querySelector('nav a');
+                        if (firstLink) firstLink.focus();
+                    } else {
+                        sidebar.setAttribute('inert', '');
+                        sidebar.setAttribute('aria-hidden', 'true');
+                        btn.setAttribute('aria-expanded', 'false');
+                        btn.setAttribute('aria-label', 'メニューを開く');
+                        btn.focus();
+                    }
+                }
+
                 btn.addEventListener('click', function () {
-                    sidebar.classList.toggle('open');
+                    const isOpen = sidebar.classList.toggle('open');
+                    updateSidebarState(isOpen);
                 });
                 sidebar.querySelectorAll('a').forEach(function (a) {
                     a.addEventListener('click', function () {
                         sidebar.classList.remove('open');
+                        updateSidebarState(false);
                     });
                 });
             })();
