@@ -7,7 +7,30 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-08-05T02:35:00.000Z
+- **最終更新日時(UTC):** 2026-08-05T11:58:00.000Z
+
+## 2026-08-05: Cisco「Cisco Certified Design Expert (CCDE) 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccde-guide.html`（静的HTML・1511行・5個のMermaid図・8個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcdeGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccde/complete-guide` ルートへ完全移行する。文章・表・5個のMermaid図・用語集・FAQ・公式リンク9件の一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for Cisco CCDE complete guide migration` (`__tests__/cisco-ccde-guide.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat: implement Cisco CCDE complete guide page to pass tests` (`page.tsx`, `CcdeGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor/docs: integrate CCDE guide into routing, archive html, and update docs` (`app/constants.ts` EXAMSへの統合、`GEMINI.md` / `CLAUDE.md` / `MIGRATION_PROGRESS.md` 更新、元HTML `Ccde-guide.html` のアーカイブ移動)
+
+### 関連ファイル
+
+- [app/cisco/ccde/complete-guide/page.tsx](app/cisco/ccde/complete-guide/page.tsx)
+- [app/cisco/ccde/complete-guide/CcdeGuide.tsx](app/cisco/ccde/complete-guide/CcdeGuide.tsx)
+- [app/cisco/ccde/complete-guide/NavBar.tsx](app/cisco/ccde/complete-guide/NavBar.tsx)
+- [app/cisco/ccde/complete-guide/constants.ts](app/cisco/ccde/complete-guide/constants.ts)
+- [app/cisco/ccde/complete-guide/page.css](app/cisco/ccde/complete-guide/page.css)
+- [__tests__/cisco-ccde-guide.test.tsx](__tests__/cisco-ccde-guide.test.tsx)
+- [Gcl_Archive/cisco/Ccde-guide.html](Gcl_Archive/cisco/Ccde-guide.html)
+
 
 ## 2026-08-05: AWS「Solutions Architect Associate Domain 4: コスト最適化アーキテクチャの設計」移行 (完了)
 

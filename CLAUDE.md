@@ -216,6 +216,13 @@ app/
       page.tsx                      # PCNE ステップバイステップ実践ガイド
       components/                   # セクションコンポーネント（Section1-6）
   cisco/
+    ccde/
+      complete-guide/
+        page.tsx                    # Cisco CCDE試験 完全ガイド（Server。メタデータ定義）
+        CcdeGuide.tsx               # 本文＋インタラクション（client。全12セクション、Mermaid等）
+        NavBar.tsx                  # ヘッダー下部ナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（5図）
+        page.css                    # ページ固有スタイル
     ccna/
       beginner-guide/
         page.tsx                    # Cisco CCNA試験 完全ガイド（Server。メタデータ定義）
