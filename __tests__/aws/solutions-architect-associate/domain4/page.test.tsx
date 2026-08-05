@@ -45,19 +45,32 @@ describe('AWS SAA Domain 4 Guide Page', () => {
         const tables = container.querySelectorAll('table');
         expect(tables.length).toBe(10);
 
-        expect(screen.getByText('AWS Organizations 連結請求(マルチアカウント請求)')).toBeInTheDocument();
-        expect(screen.getByText('S3 Standard')).toBeInTheDocument();
-        expect(screen.getAllByText(/Intelligent-Tiering/i).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/Savings Plans/i).length).toBeGreaterThan(0);
+        tables.forEach((table) => {
+            const ths = table.querySelectorAll('thead th');
+            expect(ths.length).toBeGreaterThan(0);
+            const trs = table.querySelectorAll('tbody tr');
+            expect(trs.length).toBeGreaterThan(0);
+        });
+
+        expect(tables[0].textContent).toContain('AWS Organizations 連結請求(マルチアカウント請求)');
+        expect(tables[1].textContent).toContain('S3 Standard');
+        expect(tables[2].textContent).toContain('Intelligent-Tiering');
+        expect(tables[3].textContent).toContain('Savings Plans');
     });
 
     it('renders all 29 figure IDs and supplementary-skill text correctly', () => {
         render(<Domain4Guide />);
+        const diagramElements = screen.getAllByTestId('mermaid');
+        expect(diagramElements.length).toBe(29);
+
+        const renderedCharts = diagramElements.map((el) => el.textContent);
         const diagramIds = Object.keys(DIAGRAMS);
         expect(diagramIds.length).toBe(29);
+
         diagramIds.forEach((id) => {
             expect(DIAGRAMS[id]).toBeDefined();
             expect(typeof DIAGRAMS[id]).toBe('string');
+            expect(renderedCharts).toContain(DIAGRAMS[id]);
         });
 
         expect(screen.getByText(/スキル: 適切なスケーリング方式の判断\(水平 vs 垂直\)/i)).toBeInTheDocument();
