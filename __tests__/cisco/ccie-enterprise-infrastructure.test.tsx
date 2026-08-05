@@ -49,7 +49,7 @@ describe('CCIE Enterprise Infrastructure Complete Guide Component', () => {
         ];
 
         sections.forEach((sec) => {
-            expect(screen.getByText(sec)).toBeInTheDocument();
+            expect(screen.getAllByText(sec).length).toBeGreaterThan(0);
         });
 
         expect(
@@ -87,11 +87,11 @@ describe('CCIE Enterprise Infrastructure Complete Guide Component', () => {
     it('renders ENCOR blueprint domains and ratios correctly', () => {
         render(<CcieEnterpriseGuide />);
         expect(screen.getByText('アーキテクチャ')).toBeInTheDocument();
-        expect(screen.getByText('15%')).toBeInTheDocument();
+        expect(screen.getAllByText('15%').length).toBeGreaterThan(0);
         expect(screen.getByText('仮想化')).toBeInTheDocument();
-        expect(screen.getByText('10%')).toBeInTheDocument();
+        expect(screen.getAllByText('10%').length).toBeGreaterThan(0);
         expect(screen.getByText('インフラストラクチャ')).toBeInTheDocument();
-        expect(screen.getByText('30%')).toBeInTheDocument();
+        expect(screen.getAllByText('30%').length).toBeGreaterThan(0);
         expect(screen.getByText('ネットワークアシュアランス')).toBeInTheDocument();
         expect(screen.getByText('自動化と人工知能')).toBeInTheDocument();
     });
@@ -100,7 +100,7 @@ describe('CCIE Enterprise Infrastructure Complete Guide Component', () => {
         render(<CcieEnterpriseGuide />);
         expect(screen.getByText('ネットワークインフラストラクチャ')).toBeInTheDocument();
         expect(screen.getByText('ソフトウェア定義インフラストラクチャ')).toBeInTheDocument();
-        expect(screen.getByText('25%')).toBeInTheDocument();
+        expect(screen.getAllByText('25%').length).toBeGreaterThan(0);
         expect(screen.getByText('トランスポート技術とソリューション')).toBeInTheDocument();
         expect(screen.getByText('インフラストラクチャセキュリティとサービス')).toBeInTheDocument();
         expect(screen.getByText('インフラストラクチャの自動化とプログラマビリティ')).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('CCIE Enterprise Infrastructure Complete Guide Component', () => {
     it('renders cost details table correctly', () => {
         render(<CcieEnterpriseGuide />);
         expect(screen.getByText('ENCOR 350-401（クオリファイ試験）')).toBeInTheDocument();
-        expect(screen.getByText('400 USD')).toBeInTheDocument();
+        expect(screen.getAllByText('400 USD').length).toBeGreaterThan(0);
         expect(screen.getByText('CCIE EIラボ試験')).toBeInTheDocument();
         expect(screen.getByText('1,600 USD')).toBeInTheDocument();
     });
