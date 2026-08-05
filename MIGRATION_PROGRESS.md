@@ -29,7 +29,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/ccde/complete-guide/constants.ts](app/cisco/ccde/complete-guide/constants.ts)
 - [app/cisco/ccde/complete-guide/page.css](app/cisco/ccde/complete-guide/page.css)
 - [__tests__/cisco-ccde-guide.test.tsx](__tests__/cisco-ccde-guide.test.tsx)
-- [Gcl_Archive/cisco/Ccde-guide.html](Gcl_Archive/cisco/Ccde-guide.html)
+- [archive/Cisco/html/Ccde-guide.html](archive/Cisco/html/Ccde-guide.html)
 
 
 ## 2026-08-05: AWS「Solutions Architect Associate Domain 4: コスト最適化アーキテクチャの設計」移行 (完了)
