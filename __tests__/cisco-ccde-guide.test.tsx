@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import CcdeGuidePage from '@/app/cisco/ccde/complete-guide/page';
@@ -5,19 +6,6 @@ import CcdeGuide from '@/app/cisco/ccde/complete-guide/CcdeGuide';
 
 // MermaidDiagram のモック
 vi.mock('@/components/MermaidDiagram', () => ({
-    default: function DummyMermaidDiagram({
-        chart,
-        ariaLabel,
-    }: {
-        chart: string;
-        ariaLabel?: string;
-    }) {
-        return (
-            <pre data-testid="mermaid" aria-label={ariaLabel}>
-                {chart}
-            </pre>
-        );
-    },
     MermaidDiagram: function DummyMermaidDiagram({
         chart,
         ariaLabel,
