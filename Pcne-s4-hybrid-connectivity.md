@@ -93,7 +93,7 @@ Dedicated Interconnect は、Google のコロケーション施設内でオン�
 
 **ベストプラクティス**
 
-- VLAN Attachment 単位で **MTU を適切に設定**する。Cloud Interconnect で選択可能な 1440・1460・1500・8896 バイトの中から用途に合わせて選択する。ただし、ジャンボフレーム(8896 バイト)は**暗号化されていない IPv4/IPv6 Attachment のみ**で利用可能であり、**HA VPN over Cloud Interconnect による暗号化 Attachment は 1440 バイト固定**となる点に注意。また、1460・1500・8896 バイトを使用する場合は、**同一 VPC 内のすべての VLAN Attachment、VPC ネットワーク自体、オンプレミス側の VM およびルータで MTU を一致させる**ことが必須条件となる。
+- VLAN Attachment 単位で **MTU を適切に設定**する。Cloud Interconnect で選択可能な 1440・1460・1500・8896 バイトの中から用途に合わせて選択する。ただし、ジャンボフレーム(8896 バイト)は**暗号化されていない IPv4/IPv6 Attachment のみ**で利用可能であり、**HA VPN over Cloud Interconnect による暗号化 Attachment は 1440 バイト固定**となる点に注意。また、1460・1500・8896 バイトを使用する場合は、**対象の VLAN Attachment、VPC ネットワーク自体、オンプレミス側の VM およびルータで MTU を一致させる**ことが必須条件となる（同一 VPC 内のすべての VLAN Attachment の MTU 統一は必須条件ではなく、運用上の必要に応じた推奨事項として扱う）。
 - 単一障害点を避けるため、**同一メトロ内でも異なるエッジ可用性ドメイン(edge availability domain)に接続を分散**する。
 - 帯域増強が見込まれる場合は、後から VLAN Attachment の帯域(capacity)を変更できるため、**契約時点で物理ポートの上限に余裕を持たせる**。
 
