@@ -506,7 +506,20 @@
                     padding: 32px 24px 64px;
                 }
             }
-        </style>
+                /* mermaid-center (apply_render_pipeline.mjs): 図を中央寄せ */
+        .mermaid-wrap,
+        .diagram-wrap .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .mermaid-wrap svg,
+        .diagram-wrap .mermaid svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+</style>
     </head>
     <body>
         <nav class="sidebar">
@@ -723,8 +736,7 @@ flowchart LR
     B --> C["gcloud auth application-default login"]
     C --> D["ソースコードをダウンロード・展開"]
     D --> E["pip install -r requirements.txt"]
-      </pre
-                        >
+      </pre>
                     </div>
 
                     <h3>4.2 コマンドと解説</h3>
@@ -855,15 +867,14 @@ root_agent = Agent(
                         <pre class="mermaid">
 sequenceDiagram
     participant U as ユーザー
-    participant A as Travel Scout(LlmAgent)
+    participant A as Travel Scout LlmAgent
     participant G as google_search Tool
 
     U->>A: "東京の2025年の主要イベントは"
     A->>G: 検索クエリを発行
     G-->>A: 検索結果 + grounding metadata
     A-->>U: 検索結果に基づいた回答
-      </pre
-                        >
+      </pre>
                     </div>
 
                     <div class="callout callout-info">
@@ -1046,8 +1057,7 @@ flowchart TB
     classDef result fill:#14532d,stroke:#4ade80,color:#e5e7eb
     class A,B,C,D step
     class E result
-      </pre
-                        >
+      </pre>
                     </div>
 
                     <h3>
@@ -1543,6 +1553,7 @@ adk web --allow_origins "regex:https://.*\.cloudshell\.dev"</code></pre>
         </div>
 
         <script>
+            const DIAGRAMS = {};
             mermaid.initialize({
                 startOnLoad: false,
                 theme: 'dark',
@@ -1581,6 +1592,53 @@ adk web --allow_origins "regex:https://.*\.cloudshell\.dev"</code></pre>
             sections.forEach(function (s) {
                 observer.observe(s);
             });
+        
+            // --- mermaid render pipeline (apply_render_pipeline.mjs) ---
+            function applySvgFixups(svgEl, src) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.maxWidth = '100%';
+                svgEl.style.overflow = 'visible';
+                svgEl.style.marginBottom = '10px';
+                const viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                const parts = viewBox.split(/\s+/).map(Number);
+                if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
+                const trimmed = src.trim();
+                const isSequenceOrState =
+                    trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
+                const extraHeight = isSequenceOrState ? 110 : 15;
+                const [x, y, w, h] = parts;
+                // 自然幅で表示し拡大は抑制。親より広い図のみ maxWidth で縮小される。
+                svgEl.style.width = w + 'px';
+                svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + extraHeight));
+            }
+
+            (async () => {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (_e) {
+                        /* フォント待機に失敗しても描画は継続する */
+                    }
+                }
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    const el = document.getElementById(id);
+                    if (!el) continue;
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        el.innerHTML = svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl, src);
+                    } catch (err) {
+                        el.innerHTML =
+                            '<pre style="color:#ff8888;white-space:pre-wrap">' +
+                            (err && err.message ? err.message : String(err)) +
+                            '</pre>';
+                    }
+                }
+            })();
         </script>
     </body>
 </html>
