@@ -598,7 +598,7 @@ export function CcnaAutomationApiGuide() {
                         <h3 className="subsection-title">10.1 レート制限への対処（再試行フロー）</h3>
                         <Diagram id="diag-6" label="レート制限への対処" />
                         <p>
-                            Cisco Meraki Dashboard APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると<code>429</code>が返され、<code>Retry-After</code>ヘッダーで待機すべき秒数が示されます。
+                            Cisco Meraki Dashboard APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると<code>429</code>が返され、<code>Retry-After</code>ヘッダーで待機すべき秒数（またはHTTP-date形式）が示されます。
                         </p>
                     </section>
 

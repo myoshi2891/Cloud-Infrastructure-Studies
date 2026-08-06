@@ -1519,7 +1519,7 @@
                                 class="inline"
                                 >429</code
                             >が返され、<code class="inline">Retry-After</code
-                            >ヘッダーで待機すべき秒数が示されます。
+                            >ヘッダーで待機すべき秒数（またはHTTP-date形式）が示されます。
                             自動化スクリプトを書く際は、こうした制約を前提に「失敗したら少し待って再試行する」処理を組み込むことが実務でも試験でも重要です。
                         </p>
                     </section>
@@ -1997,8 +1997,10 @@
             flowchart TB
                 Req["APIリクエスト送信"] --> Check{"レスポンスは<br/>429 Too Many Requests?"}
                 Check -- いいえ --> Done["正常終了・データ取得"]
-                Check -- はい --> Wait["Retry-Afterヘッダーの秒数だけ待機"]
-                Wait --> Backoff["指数バックオフで再試行回数を管理"]
+                Check -- はい --> Valid{"有効なRetry-Afterヘッダーが存在する?"}
+                Valid -- はい --> Wait["Retry-Afterヘッダーに従い待機（秒数またはHTTP-date）"]
+                Wait --> Req
+                Valid -- いいえ --> Backoff["指数バックオフで待機・再試行回数を管理"]
                 Backoff --> Req
         </script>
 
@@ -2111,8 +2113,8 @@
                         if retry_after is not None:
                             try:
                                 parsed_val = int(retry_after)
-                                if 0 <= parsed_val <= 3600:
-                                    wait_seconds = parsed_val
+                                if parsed_val >= 0:
+                                    wait_seconds = min(parsed_val, 3600)
                             except (ValueError, TypeError):
                                 try:
                                     import math

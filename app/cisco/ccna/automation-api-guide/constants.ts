@@ -59,8 +59,10 @@ end`,
     'diag-6': `flowchart TB
 Req["APIリクエスト送信"] --> Check{"レスポンスは<br/>429 Too Many Requests?"}
 Check -- いいえ --> Done["正常終了・データ取得"]
-Check -- はい --> Wait["Retry-Afterヘッダーに従い待機（秒数またはHTTP-date）"]
-Wait --> Backoff["指数バックオフで再試行回数を管理"]
+Check -- はい --> Valid{"有効なRetry-Afterヘッダーが存在する?"}
+Valid -- はい --> Wait["Retry-Afterヘッダーに従い待機（秒数またはHTTP-date）"]
+Wait --> Req
+Valid -- いいえ --> Backoff["指数バックオフで待機・再試行回数を管理"]
 Backoff --> Req`,
 
     'diag-7': `flowchart TB

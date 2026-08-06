@@ -322,12 +322,14 @@ APIは「無制限に、好きなだけ」呼び出せるわけではありま�
 flowchart TB
     Req["APIリクエスト送信"] --> Check{"レスポンスは<br/>429 Too Many Requests?"}
     Check -- いいえ --> Done["正常終了・データ取得"]
-    Check -- はい --> Wait["Retry-Afterヘッダーに従い待機（秒数またはHTTP-date）"]
-    Wait --> Backoff["指数バックオフで再試行回数を管理"]
+    Check -- はい --> Valid{"有効なRetry-Afterヘッダーが存在する?"}
+    Valid -- はい --> Wait["Retry-Afterヘッダーに従い待機（秒数またはHTTP-date）"]
+    Wait --> Req
+    Valid -- いいえ --> Backoff["指数バックオフで待機・再試行回数を管理"]
     Backoff --> Req
 ```
 
-Cisco Meraki Dashboard APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると`429`が返され、`Retry-After`ヘッダーで待機すべき時間（秒数またはHTTP-date）が示されます。自動化スクリプトを書く際は、こうした制約を前提に「失敗したら少し待って再試行する」処理を組み込むことが実務でも試験でも重要です。
+Cisco Meraki Dashboard APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると`429`が返され、`Retry-After`ヘッダーで待機すべき時間（秒数またはHTTP-date形式）が示されます。自動化スクリプトを書く際は、こうした制約を前提に「失敗したら少し待って再試行する」処理を組み込むことが実務でも試験でも重要です。
 
 ---
 
@@ -389,7 +391,7 @@ flowchart TB
 | 401 Unauthorized | トークン期限切れ、認証ヘッダーの書式誤り | ヘッダー名・`Bearer`等のプレフィックス・キーの有効性を確認する |
 | 403 Forbidden | 認証は通っているが権限不足 | 発行したトークン/キーに必要なスコープ（権限範囲）が付与されているか確認する |
 | 404 Not Found | URLタイプミス、削除済み/存在しないID | パスパラメータの値やAPIバージョン（`v1`等）を再確認する |
-| 429 Too Many Requests | 短時間の連続リクエストによるレート制限抵触 | `Retry-After`ヘッダーの秒数を尊重し、リトライ間隔を調整する |
+| 429 Too Many Requests | 短時間の連続リクエストによるレート制限抵触 | `Retry-After`ヘッダーの秒数（またはHTTP-date）を尊重し、リトライ間隔を調整する |
 | 5xx系 | サーバー側の一時的な障害 | 自分側の問題ではないため、時間をおいて再試行し、継続する場合はサポート窓口へ |
 
 トラブルシューティングの基本姿勢は「**まずステータスコードで大分類を絞り込み、次にレスポンスのボディに含まれるエラーメッセージやヘッダーで詳細を特定し、最後にドキュメントの該当箇所と実際のリクエストを見比べる**」という順序です。
@@ -472,7 +474,7 @@ def get_with_retry(url, headers, max_retries=3):
                 try:
                     parsed_val = int(retry_after)
                     if parsed_val >= 0:
-                        wait_seconds = parsed_val
+                        wait_seconds = min(parsed_val, 3600)
                 except (ValueError, TypeError):
                     try:
                         import math
