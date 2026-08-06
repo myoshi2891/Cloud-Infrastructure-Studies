@@ -2115,11 +2115,12 @@
                                     wait_seconds = parsed_val
                             except (ValueError, TypeError):
                                 try:
+                                    import math
                                     from email.utils import parsedate_to_datetime
                                     from datetime import datetime, timezone
                                     dt = parsedate_to_datetime(retry_after)
                                     now = datetime.now(timezone.utc)
-                                    diff = max(0, int((dt - now).total_seconds()))
+                                    diff = max(0, math.ceil((dt - now).total_seconds()))
                                     wait_seconds = min(diff, 3600)
                                 except Exception:
                                     pass
