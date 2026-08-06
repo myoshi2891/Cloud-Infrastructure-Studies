@@ -774,7 +774,7 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">                <span className="keyword">try</span>:</div>
                             <div className="code-line">                    parsed_val = <span className="function">int</span>(retry_after)</div>
                             <div className="code-line">                    <span className="keyword">if</span> parsed_val &gt;= <span className="number">0</span>:</div>
-                            <div className="code-line">                        wait_seconds = parsed_val</div>
+                            <div className="code-line">                        wait_seconds = <span className="function">min</span>(parsed_val, <span className="number">3600</span>)</div>
                             <div className="code-line">                <span className="keyword">except</span> (<span className="function">ValueError</span>, <span className="function">TypeError</span>):</div>
                             <div className="code-line">                    <span className="keyword">try</span>:</div>
                             <div className="code-line">                        <span className="keyword">import</span> math</div>
