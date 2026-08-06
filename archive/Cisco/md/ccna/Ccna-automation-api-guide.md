@@ -471,7 +471,7 @@ def get_with_retry(url, headers, max_retries=3):
             if retry_after is not None:
                 try:
                     parsed_val = int(retry_after)
-                    if 0 <= parsed_val <= 3600:
+                    if parsed_val >= 0:
                         wait_seconds = parsed_val
                 except (ValueError, TypeError):
                     try:
