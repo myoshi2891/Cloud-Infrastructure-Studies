@@ -104,4 +104,22 @@ describe('CcnaAutomationApiPage', () => {
         expect(comments.length).toBeGreaterThan(0);
         expect(strings.length).toBeGreaterThan(0);
     });
+
+    it('verifies Retry-After handling logic and 3600s cap in Python snippet', () => {
+        const { container } = render(<CcnaAutomationApiPage />);
+
+        const codeText = container.textContent || '';
+
+        // Check for numeric Retry-After capped at 3600s
+        expect(codeText).toContain('min(parsed_val, 3600)');
+
+        // Check for HTTP-date parsing logic
+        expect(codeText).toContain('parsedate_to_datetime(retry_after)');
+
+        // Check for math.ceil calculation of datetime difference
+        expect(codeText).toContain('math.ceil((dt - now).total_seconds())');
+
+        // Check for fallback exponential backoff
+        expect(codeText).toContain('2 ** attempt');
+    });
 });
