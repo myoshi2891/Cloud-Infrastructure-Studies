@@ -870,10 +870,10 @@ sequenceDiagram
     participant A as Travel Scout LlmAgent
     participant G as google_search Tool
 
-    U->>A: "東京の2025年の主要イベントは"
-    A->>G: 検索クエリを発行
-    G-->>A: 検索結果 + grounding metadata
-    A-->>U: 検索結果に基づいた回答
+    U-&gt;&gt;A: "東京の2025年の主要イベントは"
+    A-&gt;&gt;G: 検索クエリを発行
+    G--&gt;&gt;A: 検索結果 + grounding metadata
+    A--&gt;&gt;U: 検索結果に基づいた回答
       </pre>
                     </div>
 
