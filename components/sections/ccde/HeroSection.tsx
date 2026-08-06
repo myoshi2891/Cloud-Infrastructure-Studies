@@ -1,7 +1,7 @@
 import styles from './HeroSection.module.css';
 
 /**
- * HeroSection - CCDE ガイドのキャッチコピー・イントロダクション表示コンポーネント。
+ * CCDE認定資格の概要と学習ガイドのコンセプトを提示するヒーロー導入部コンポーネント。
  */
 export default function HeroSection() {
     return (

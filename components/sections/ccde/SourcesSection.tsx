@@ -2,7 +2,7 @@ import baseStyles from './SectionBase.module.css';
 import styles from './SourcesSection.module.css';
 
 /**
- * SourcesSection - セクション12「参考情報源」の公式リンク一覧コンポーネント。
+ * 本ガイドの策定に使用したCisco公式ドキュメントおよび参考リンクの一覧を表示する公式情報源一覧コンポーネント。
  */
 export default function SourcesSection() {
     return (

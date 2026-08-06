@@ -1,7 +1,7 @@
 import baseStyles from './SectionBase.module.css';
 
 /**
- * CostsSection - セクション7「費用まとめ」の目安表・解説コンポーネント。
+ * CCDE認定資格の受験費用および関連コストの目安一覧を表示する費用情報コンポーネント。
  */
 export default function CostsSection() {
     return (

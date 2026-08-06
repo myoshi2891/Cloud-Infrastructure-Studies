@@ -2,7 +2,7 @@ import { SECTION_DEFINITIONS } from '../../../app/cisco/ccde/complete-guide/cons
 import styles from './TocSection.module.css';
 
 /**
- * TocSection - ページ内の主要12セクションへのアンカーリンク一覧を表示する目次コンポーネント。
+ * ガイド内の各セクションへ素早く移動するためのアンカーリンクを提供する目次ナビゲーションコンポーネント。
  */
 export default function TocSection() {
     return (
