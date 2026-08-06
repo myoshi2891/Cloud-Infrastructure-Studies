@@ -732,7 +732,7 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line"></div>
                             <div className="code-line">url = <span className="string">&quot;https://api.meraki.com/api/v1/organizations/549236/networks&quot;</span></div>
                             <div className="code-line">headers = &#123;</div>
-                            <div className="code-line">    <span className="string">&quot;X-Cisco-Meraki-API-Key&quot;</span>: <span className="string">&quot;&lt;APIキー&gt;&quot;</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;X-Cisco-Meraki-API-Key&quot;</span>: <span className="string">&quot;&lt;APIキー&gt;&quot;</span>,<span className="comment">  # 専用ヘッダー例（v1標準は Authorization: Bearer &lt;APIキー&gt;）</span></div>
                             <div className="code-line">    <span className="string">&quot;Content-Type&quot;</span>: <span className="string">&quot;application/json&quot;</span>,</div>
                             <div className="code-line">&#125;</div>
                             <div className="code-line">payload = &#123;</div>
