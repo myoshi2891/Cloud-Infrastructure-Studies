@@ -119,6 +119,9 @@ describe('CcnaAutomationApiPage', () => {
         // Check for math.ceil calculation of datetime difference
         expect(codeText).toContain('math.ceil((dt - now).total_seconds())');
 
+        // Check for skipping wait on final retry attempt
+        expect(codeText).toContain('attempt == max_retries - 1');
+
         // Check for fallback exponential backoff
         expect(codeText).toContain('2 ** attempt');
     });
