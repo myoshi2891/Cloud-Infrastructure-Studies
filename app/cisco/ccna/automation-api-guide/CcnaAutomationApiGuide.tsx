@@ -786,6 +786,8 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">                        wait_seconds = <span className="function">min</span>(diff, <span className="number">3600</span>)</div>
                             <div className="code-line">                    <span className="keyword">except</span> <span className="function">Exception</span>:</div>
                             <div className="code-line">                        <span className="keyword">pass</span></div>
+                            <div className="code-line">            <span className="keyword">if</span> attempt == max_retries - <span className="number">1</span>:</div>
+                            <div className="code-line">                <span className="keyword">break</span></div>
                             <div className="code-line">            <span className="keyword">if</span> wait_seconds <span className="keyword">is None</span>:</div>
                             <div className="code-line">                wait_seconds = <span className="number">2</span> ** attempt</div>
                             <div className="code-line">            <span className="function">print</span>(f<span className="string">&quot;レート制限中。&#123;wait_seconds&#125;秒待機して再試行します。&quot;</span>)</div>

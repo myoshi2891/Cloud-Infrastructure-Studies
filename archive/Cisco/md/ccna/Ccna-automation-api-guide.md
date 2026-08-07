@@ -486,6 +486,8 @@ def get_with_retry(url, headers, max_retries=3):
                         wait_seconds = min(diff, 3600)
                     except Exception:
                         pass
+            if attempt == max_retries - 1:
+                break
             if wait_seconds is None:
                 wait_seconds = 2 ** attempt
             print(f"レート制限中。{wait_seconds}秒待機して再試行します。")
