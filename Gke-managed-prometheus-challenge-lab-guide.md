@@ -145,12 +145,12 @@ Task 1 でフラグを付けた時点で、現行バージョンの GKE では `
 ### 手順
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/manifests/setup.yaml
+kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.17.2/manifests/setup.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/manifests/operator.yaml
+kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.17.2/manifests/operator.yaml
 ```
 
-> **バージョン一貫性のベストプラクティス**: このラボは `examples/example-app.yaml` を `v0.2.3` タグで参照するよう指定しています。`setup.yaml` / `operator.yaml` / `example-app.yaml` は同一リリースタグで揃えるのが安全です。CRD スキーマとオペレータの実装は同じリリース内で整合性が取られているため、タグを混在させると CRD 未対応フィールドなどの予期しないエラーが発生する可能性があります。実務（ラボ以外）では、`releases` ページで最新の安定版タグを確認し、常に最新タグへ揃えることを推奨します。
+> **バージョン一貫性のベストプラクティス**: このガイドでは、現行の公式手順に合わせて `setup.yaml` / `operator.yaml` / `example-app.yaml` を `v0.17.2` タグで統一しています。CRD スキーマとオペレータの実装は同じリリース内で整合性が取られているため、タグを混在させると CRD 未対応フィールドなどの予期しないエラーが発生する可能性があります。
 
 ### 検証
 
@@ -182,7 +182,7 @@ kubectl create ns ${NAMESPACE_NAME}
 ### 6.2 サンプルアプリのデプロイ
 
 ```bash
-kubectl -n ${NAMESPACE_NAME} apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/examples/example-app.yaml
+kubectl -n ${NAMESPACE_NAME} apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.17.2/examples/example-app.yaml
 ```
 
 このマニフェストは `example_requests_total`（カウンタ）や `example_random_numbers`（ヒストグラム）などのメトリクスを `metrics` という名前のポートで公開する Pod を3レプリカ起動します。
@@ -234,6 +234,13 @@ metadata:
 features:
   targetStatus:
     enabled: true
+```
+
+```bash
+kubectl apply -f operator-config-debug.yaml
+
+# 数秒待ってから target status を確認する
+kubectl -n ${NAMESPACE_NAME} describe podmonitorings/prom-example
 ```
 
 **参考ソース**

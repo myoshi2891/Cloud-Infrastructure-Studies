@@ -964,9 +964,9 @@ kubectl get nodes</code></pre>
                             <h4>setup manifest と operator manifest を適用する</h4>
                         </div>
                         <span class="code-label">bash</span>
-                        <pre><code class="language-bash">kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/manifests/setup.yaml
+                        <pre><code class="language-bash">kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.17.2/manifests/setup.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/manifests/operator.yaml</code></pre>
+kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.17.2/manifests/operator.yaml</code></pre>
                     </div>
 
                     <div class="callout warning">
@@ -974,8 +974,9 @@ kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheu
                         <div>
                             <div class="callout-title">バージョン一貫性のベストプラクティス</div>
                             <p>
-                                このラボは <code>examples/example-app.yaml</code> を
-                                <code>v0.2.3</code> タグで参照するよう 指定しています。<code
+                                このガイドでは、現行の公式手順に合わせて
+                                <code>examples/example-app.yaml</code> を含む各マニフェストを
+                                <code>v0.17.2</code> タグで統一しています。<code
                                     >setup.yaml</code
                                 >
                                 / <code>operator.yaml</code> / <code>example-app.yaml</code>
@@ -1075,7 +1076,7 @@ kubectl get pods -n gmp-public</code></pre>
                             <h4>サンプルアプリをデプロイする</h4>
                         </div>
                         <span class="code-label">bash</span>
-                        <pre><code class="language-bash">kubectl -n ${NAMESPACE_NAME} apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/examples/example-app.yaml</code></pre>
+                        <pre><code class="language-bash">kubectl -n ${NAMESPACE_NAME} apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.17.2/examples/example-app.yaml</code></pre>
                         <p style="margin-top: 10px">
                             このマニフェストは <code>example_requests_total</code>（カウンタ）や
                             <code>example_random_numbers</code>（ヒストグラム）などのメトリクスを
@@ -1158,6 +1159,11 @@ metadata:
 features:
   targetStatus:
     enabled: true</code></pre>
+                    <span class="code-label">bash</span>
+                    <pre><code class="language-bash">kubectl apply -f operator-config-debug.yaml
+
+# 数秒待ってから target status を確認する
+kubectl -n ${NAMESPACE_NAME} describe podmonitorings/prom-example</code></pre>
 
                     <div class="callout source">
                         <i class="ti ti-book"></i>
