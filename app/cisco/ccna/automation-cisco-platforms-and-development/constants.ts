@@ -2,7 +2,7 @@ export const DIAGRAMS: Record<string, string> = {
     'diag-overview': `flowchart TB
 A["CCNA Automation<br/>200-901 CCNAAUTO v1.1"] --> D1["1.0 Software Development<br/>and Design (15%)"]
 A --> D2["2.0 Understanding and<br/>Using APIs (20%)"]
-A --> D3["3.0 Cisco Platforms<br/>and Development (15%)"]
+A --> D3["<span style='color:#241a00;font-weight:bold'>3.0 Cisco Platforms<br/>and Development (15%)</span>"]
 A --> D4["4.0 Application Deployment<br/>and Security (15%)"]
 A --> D5["5.0 Infrastructure and<br/>Automation (20%)"]
 A --> D6["6.0 Network<br/>Fundamentals (15%)"]

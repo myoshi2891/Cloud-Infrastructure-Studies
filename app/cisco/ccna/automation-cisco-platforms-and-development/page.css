@@ -331,21 +331,45 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 28px 12px;
+  max-width: 100%;
 }
 
 .ccna-platforms-dev-page .mermaid-wrap {
   display: flex;
   justify-content: safe center;
   width: 100%;
+  overflow-x: auto;
 }
 
+.ccna-platforms-dev-page .mermaid-wrap :global(svg) {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Ensure yellow node text is dark and high-contrast (#241a00) */
+.ccna-platforms-dev-page :global(#D3 .nodeLabel),
+.ccna-platforms-dev-page :global(#D3 .nodeLabel *),
+.ccna-platforms-dev-page :global(#D3 span),
+.ccna-platforms-dev-page :global(#D3 div),
+.ccna-platforms-dev-page :global(#D3 p),
+.ccna-platforms-dev-page :global([id*="D3"] .nodeLabel),
+.ccna-platforms-dev-page :global([id*="D3"] .nodeLabel *),
 .ccna-platforms-dev-page :global(.node[style*="ffe08a" i] .nodeLabel),
 .ccna-platforms-dev-page :global(.node[style*="ffe08a" i] .nodeLabel *),
+.ccna-platforms-dev-page :global(.node[style*="FFE08A" i] .nodeLabel),
+.ccna-platforms-dev-page :global(.node[style*="FFE08A" i] .nodeLabel *),
+.ccna-platforms-dev-page :global(.node[style*="255, 224, 138" i] .nodeLabel),
+.ccna-platforms-dev-page :global(.node[style*="255, 224, 138" i] .nodeLabel *),
 .ccna-platforms-dev-page :global(.node:has([style*="ffe08a" i]) .nodeLabel),
 .ccna-platforms-dev-page :global(.node:has([style*="ffe08a" i]) .nodeLabel *),
 .ccna-platforms-dev-page :global(.node:has([fill*="ffe08a" i]) .nodeLabel),
-.ccna-platforms-dev-page :global(.node:has([fill*="ffe08a" i]) .nodeLabel *) {
+.ccna-platforms-dev-page :global(.node:has([fill*="ffe08a" i]) .nodeLabel *),
+.ccna-platforms-dev-page :global(.node:has([fill*="FFE08A" i]) .nodeLabel),
+.ccna-platforms-dev-page :global(.node:has([fill*="FFE08A" i]) .nodeLabel *),
+.ccna-platforms-dev-page :global(.node:has([fill*="#ffe08a" i]) .nodeLabel),
+.ccna-platforms-dev-page :global(.node:has([fill*="#ffe08a" i]) .nodeLabel *) {
   color: #241a00 !important;
+  fill: #241a00 !important;
 }
 
 /* ---------- Code Blocks ---------- */
