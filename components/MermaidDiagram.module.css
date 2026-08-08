@@ -15,6 +15,7 @@
 
 .mermaidTarget :global(svg) {
     display: block;
+    flex-shrink: 0;
     height: auto;
 }
 
@@ -40,7 +41,7 @@
 .mermaidTarget :global(text),
 .mermaidTarget :global(tspan) {
     overflow: visible;
-    font-size: 1rem !important;
+    font-size: 16px !important;
 }
 
 /*
@@ -78,4 +79,3 @@
 .mermaidTarget :global(.node:has([fill*="ffba00" i]) .nodeLabel *) {
     color: #000000 !important;
 }
-

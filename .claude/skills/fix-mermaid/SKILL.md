@@ -327,7 +327,7 @@ const DISPLAY = {
 
 **【対策】**:
 1. `MermaidDiagram` および各ガイドページの `Diagram` コンポーネントを必ず `React.memo` でラップする。
-2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` で `svgEl.style.maxWidth = 'none'` を設定し、コンテナ幅の変化に追従した自動縮小を防止する。 viewbox 幅が 600px 未満等の小さい図は `targetWidth = Math.max(w, 600)` で最低幅 600px を確保して文字の1rem表示を保証する。
+2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` で `targetWidth = viewBox幅` および `svgEl.style.maxWidth = 'none'` を設定し、コンテナ幅の変化に追従した自動縮小を防止する。小さい図でも600pxなどの最小幅へ拡大せず、`width === viewBox幅` を正準仕様とする。
 
 ```tsx
 const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
@@ -384,7 +384,7 @@ mermaid.initialize({
         lineColor: '#5f7fb8', secondaryColor: '#0f9d58', tertiaryColor: '#0d1a2e',
         background: '#060b14', mainBkg: '#0f2040', nodeBorder: '#1a73e8',
         clusterBkg: '#0d1a2e', titleColor: '#e8f0fe', edgeLabelBackground: '#0d1a2e',
-        fontFamily: "'Noto Sans JP', sans-serif", fontSize: '16px', // 標準環境の1rem
+        fontFamily: "'Noto Sans JP', sans-serif", fontSize: '16px', // SVG採寸に使う明示値
     },
     flowchart: { curve: 'basis', padding: 20 },
     sequence: { actorMargin: 60, mirrorActors: true },
@@ -426,7 +426,7 @@ const applySvgFixups = (
 
     let targetWidth = w;
     if (preserveNaturalScale && w > 0) {
-        // preserveNaturalScale=true: 1rem (16px) 文字サイズが実寸で見えるよう viewBox 由来の自然 px 幅 (1.0倍) を維持する
+        // preserveNaturalScale=true: Mermaidの採寸倍率を保つため viewBox 由来の自然 px 幅 (1.0倍) を維持する
         targetWidth = w;
     } else if (!preserveNaturalScale && w > 0 && w < 550) {
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
@@ -439,9 +439,9 @@ const applySvgFixups = (
 };
 ```
 
-### 文字サイズ 1rem (16px) の絶対担保
+### Mermaid の採寸値と CSS 文字サイズを一致させる
 
-図解内のすべての文字要素（ノードラベル、エッジラベル、テキスト等）が確実に `1rem` で表示されるよう、CSS（`MermaidDiagram.module.css`）でスタイルを強制します。
+`1rem` は固定の16pxではなくルート要素の `font-size` に依存する。Mermaid が `themeVariables.fontSize: '16px'` でラベルを採寸する本実装では、図解内の文字要素にも `16px` を明示し、採寸値と実描画値を一致させる。ルートの文字サイズを変更しても SVG ラベルだけが再スケールされないため、採寸後の文字切れを防げる。
 
 ```css
 .mermaidTarget :global(foreignObject > div),
@@ -450,7 +450,7 @@ const applySvgFixups = (
 .mermaidTarget :global(text),
 .mermaidTarget :global(tspan) {
     overflow: visible;
-    font-size: 1rem !important;
+    font-size: 16px !important;
 }
 ```
 

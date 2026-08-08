@@ -123,14 +123,12 @@ export const applySvgFixups = (
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
-    // ⚠️ SKILL.md「SVG 幅の鉄則」: viewBox 由来の自然 px 幅 + maxWidth:100%。
-    // preserveNaturalScale は文字を1rem相当の自然倍率で見せたい図に個別指定する。
-    // preserveNaturalScale=true のとき: mermaid の fontSize(16px=1rem) が実寸で見えるよう
-    // viewBox 幅が小さすぎる場合は最低 600px を確保してスケールアップする。
+    // ⚠️ SKILL.md「SVG 幅の鉄則」: viewBox 由来の自然 px 幅を基準にする。
+    // preserveNaturalScale は Mermaid が採寸した倍率を維持したい図に個別指定する。
     let targetWidth = w;
     if (preserveNaturalScale && w > 0) {
         // preserveNaturalScale=true: viewBox 由来の自然 px 幅 (1.0倍) をそのまま使い、
-        // 拡大・縮小せず文字を 1rem (16px) 実寸サイズで正確に描画する
+        // 拡大・縮小せず Mermaid が採寸した 16px の文字サイズで描画する
         targetWidth = w;
     } else if (!preserveNaturalScale && w > 0 && w < 550) {
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
