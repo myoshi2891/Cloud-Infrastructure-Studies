@@ -1,0 +1,1595 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BigQueryによるデータ共有チャレンジラボ 徹底解説ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.33.0/dist/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1b2e;
+                --color-background-tertiary: #12213b;
+                --color-background-info: #16233d;
+                --color-background-danger: #33141f;
+                --color-background-success: #103524;
+                --color-background-warning: #392c12;
+                --color-text-primary: #e8edff;
+                --color-text-secondary: #a8b6d9;
+                --color-text-tertiary: #6e7ea3;
+                --color-text-info: #7c9eff;
+                --color-text-danger: #ff8fa3;
+                --color-text-success: #6fe0a8;
+                --color-text-warning: #ffcf7c;
+                --color-border-tertiary: #1b2c4a;
+                --color-border-secondary: #24365a;
+                --color-border-primary: #34507f;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP', 'Yu Gothic', sans-serif;
+                --font-mono:
+                    ui-monospace, SFMono-Regular, Menlo, Consolas, 'Noto Sans Mono', monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 32px 20px 40px;
+            }
+
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 0 8px 24px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                margin-bottom: 20px;
+            }
+
+            .sidebar-brand i {
+                font-size: 22px;
+                color: var(--accent);
+            }
+
+            .sidebar-brand-text {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+            .sidebar-brand-sub {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin-top: 2px;
+            }
+
+            .side-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .nav-group-label {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                padding: 16px 8px 8px;
+            }
+
+            .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 8px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 16px;
+                border-left: 2px solid transparent;
+            }
+
+            .nav-link i {
+                font-size: 18px;
+                width: 20px;
+                text-align: center;
+                color: var(--color-text-tertiary);
+            }
+
+            .nav-link:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .nav-link.active {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                border-left: 2px solid var(--accent);
+            }
+
+            .nav-link.active i {
+                color: var(--accent);
+            }
+
+            .main {
+                margin-left: 280px;
+                padding: 56px 64px 120px;
+            }
+
+            .hero {
+                border-bottom: 1px solid var(--color-border-tertiary);
+                padding-bottom: 36px;
+                margin-bottom: 44px;
+            }
+
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                color: var(--color-text-info);
+                background: var(--color-background-info);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-xl);
+                padding: 6px 14px;
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 1.4;
+                margin: 0 0 16px;
+                color: var(--color-text-primary);
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 56px 0 20px;
+                padding-top: 8px;
+                color: var(--color-text-primary);
+                scroll-margin-top: 32px;
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 32px 0 14px;
+                color: var(--color-text-primary);
+            }
+
+            section:first-of-type h2:first-child {
+                margin-top: 0;
+            }
+
+            p {
+                margin: 0 0 16px;
+                color: var(--color-text-secondary);
+            }
+
+            a {
+                color: var(--color-text-info);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .lead {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                max-width: 780px;
+            }
+
+            ul,
+            ol {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+                margin: 0 0 16px;
+            }
+            li {
+                margin-bottom: 8px;
+            }
+
+            .source-note {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                margin: 12px 0 24px;
+            }
+
+            .source-note i {
+                color: var(--color-text-info);
+                margin-top: 3px;
+            }
+
+            .source-note a {
+                color: var(--color-text-info);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 0 0 24px;
+                font-size: 16px;
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                overflow: hidden;
+            }
+
+            thead th {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+                text-align: left;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .role-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 3px 10px;
+                border-radius: var(--border-radius-xl);
+                font-size: 16px;
+            }
+
+            .role-partner {
+                background: var(--color-background-info);
+                color: var(--color-text-info);
+                border: 1px solid var(--color-border-secondary);
+            }
+            .role-customer {
+                background: var(--color-background-success);
+                color: var(--color-text-success);
+                border: 1px solid var(--color-border-secondary);
+            }
+
+            pre {
+                margin: 0 0 20px;
+                padding: 18px 20px;
+                background: var(--color-background-secondary) !important;
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                overflow-x: auto;
+            }
+
+            pre code.hljs {
+                background: transparent !important;
+                padding: 0;
+                font-family: var(--font-mono);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .step-list {
+                counter-reset: step;
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .step-list > li {
+                position: relative;
+                padding: 4px 0 4px 40px;
+                margin-bottom: 14px;
+            }
+
+            .step-list > li::before {
+                counter-increment: step;
+                content: counter(step);
+                position: absolute;
+                left: 0;
+                top: 2px;
+                width: 26px;
+                height: 26px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                color: var(--color-text-info);
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .callout {
+                display: flex;
+                gap: 14px;
+                padding: 18px 20px;
+                border-radius: var(--border-radius-lg);
+                border: 1px solid var(--color-border-secondary);
+                margin: 0 0 24px;
+            }
+
+            .callout i {
+                font-size: 20px;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            .callout-body p:last-child {
+                margin-bottom: 0;
+            }
+            .callout-body ul:last-child {
+                margin-bottom: 0;
+            }
+
+            .callout-info {
+                background: var(--color-background-info);
+            }
+            .callout-info i {
+                color: var(--color-text-info);
+            }
+
+            .callout-warning {
+                background: var(--color-background-warning);
+            }
+            .callout-warning i {
+                color: var(--color-text-warning);
+            }
+
+            .callout-title {
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 6px;
+                font-size: 16px;
+            }
+
+            .diagram-card {
+                border: 1px solid var(--color-border-tertiary);
+                background: var(--color-background-secondary);
+                border-radius: var(--border-radius-lg);
+                padding: 28px;
+                margin: 0 0 28px;
+            }
+
+            .diagram-card-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin-bottom: 18px;
+            }
+
+            .diagram-card-title i {
+                color: var(--color-text-info);
+            }
+
+            .mermaid-container {
+                display: flex;
+                justify-content: center;
+            }
+
+            .mermaid-container svg {
+                overflow: visible;
+            }
+
+            .task-tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin-bottom: 8px;
+            }
+
+            .task-tag i {
+                color: var(--accent);
+            }
+
+            .ref-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .ref-card {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 16px 20px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                text-decoration: none;
+            }
+
+            .ref-card:hover {
+                border-color: var(--color-border-primary);
+                text-decoration: none;
+            }
+
+            .ref-icon {
+                width: 38px;
+                height: 38px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-tertiary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .ref-icon i {
+                color: var(--color-text-info);
+                font-size: 18px;
+            }
+
+            .ref-text-title {
+                color: var(--color-text-primary);
+                font-size: 16px;
+                margin-bottom: 2px;
+            }
+            .ref-text-url {
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+                word-break: break-all;
+            }
+
+            .ref-card:hover .ref-text-title {
+                text-decoration: underline;
+            }
+
+            .footer-note {
+                margin-top: 60px;
+                padding-top: 24px;
+                border-top: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+            }
+
+            code.inline {
+                font-family: var(--font-mono);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-tertiary);
+                padding: 1px 6px;
+                border-radius: 4px;
+                font-size: 16px;
+                color: var(--color-text-primary);
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 40px 24px 100px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <i class="ti ti-brand-google"></i>
+                    <div>
+                        <div class="sidebar-brand-text">BigQuery データ共有</div>
+                        <div class="sidebar-brand-sub">チャレンジラボ解説ガイド</div>
+                    </div>
+                </div>
+                <nav class="side-nav">
+                    <a href="#overview" class="nav-link" data-target="overview"
+                        ><i class="ti ti-layout-dashboard"></i><span>1. ラボの全体像</span></a
+                    >
+                    <a href="#prep" class="nav-link" data-target="prep"
+                        ><i class="ti ti-settings"></i><span>2. 事前準備の注意点</span></a
+                    >
+                    <a href="#task1" class="nav-link" data-target="task1"
+                        ><i class="ti ti-lock"></i><span>3. Task 1 パートナービュー</span></a
+                    >
+                    <a href="#task2" class="nav-link" data-target="task2"
+                        ><i class="ti ti-database"></i><span>4. Task 2 顧客テーブル更新</span></a
+                    >
+                    <a href="#task3" class="nav-link" data-target="task3"
+                        ><i class="ti ti-chart-bar"></i><span>5. Task 3 顧客ビュー</span></a
+                    >
+                    <a href="#task4" class="nav-link" data-target="task4"
+                        ><i class="ti ti-presentation"></i><span>6. Task 4 可視化</span></a
+                    >
+                    <a href="#errors" class="nav-link" data-target="errors"
+                        ><i class="ti ti-alert-triangle"></i><span>7. よくあるエラー</span></a
+                    >
+                    <a href="#best-practices" class="nav-link" data-target="best-practices"
+                        ><i class="ti ti-checklist"></i><span>8. ベストプラクティス</span></a
+                    >
+                    <a href="#references" class="nav-link" data-target="references"
+                        ><i class="ti ti-books"></i><span>9. 参考文献</span></a
+                    >
+                </nav>
+            </aside>
+
+            <main class="main">
+                <div class="hero">
+                    <div class="hero-eyebrow">
+                        <i class="ti ti-flask"></i><span>Google Cloud Challenge Lab 解説</span>
+                    </div>
+                    <h1>BigQueryによるデータ共有チャレンジラボ 徹底解説ガイド</h1>
+                    <p class="lead">
+                        対象ラボ: <em>Share Data Using Google Data Cloud: Challenge Lab</em> ―
+                        <a
+                            href="https://www.skills.google/course_templates/657/labs/591412"
+                            target="_blank"
+                            rel="noopener"
+                            >https://www.skills.google/course_templates/657/labs/591412</a
+                        ><br />
+                        初学者でも迷わず完了できるよう、各手順の「なぜそうするのか」という根拠に公式ドキュメントのURLを添えてステップバイステップで解説します。
+                    </p>
+                </div>
+
+                <section id="overview">
+                    <h2>1. このラボの全体像</h2>
+                    <p>このラボでは、あなたは2つの役割を1人で演じます。</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>役割</th>
+                                <th>立場</th>
+                                <th>このラボでやること</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="role-badge role-partner"
+                                        ><i class="ti ti-building-skyscraper"></i
+                                        >データ共有パートナー</span
+                                    >
+                                </td>
+                                <td>データ提供者</td>
+                                <td>
+                                    公開データセット(郵便番号ごとの地理情報)を Authorized View
+                                    として顧客に公開する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="role-badge role-customer"
+                                        ><i class="ti ti-users"></i>顧客</span
+                                    >
+                                </td>
+                                <td>データ利用者兼提供者</td>
+                                <td>
+                                    パートナーのビューを使って自社データを補完し、集計結果を再びパートナーに
+                                    Authorized View として公開する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        つまり「パートナー &rarr; 顧客」「顧客 &rarr;
+                        パートナー」の<strong>双方向データ共有</strong>を、BigQueryの Authorized
+                        View という仕組みだけで実現するのがこのラボの核心です。
+                    </p>
+
+                    <h3>1.1 全体アーキテクチャ</h3>
+                    <div class="diagram-card">
+                        <div class="diagram-card-title">
+                            <i class="ti ti-topology-star-3"></i>データフロー / アーキテクチャ図
+                        </div>
+                        <div class="mermaid-container" id="diagram-architecture"></div>
+                    </div>
+
+                    <div class="callout callout-info">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout-body">
+                            <div class="callout-title">読み方のポイント</div>
+                            <p>
+                                Authorized View
+                                は「元データそのもの」ではなく「クエリ結果への窓口」を共有する仕組みです。相手は元テーブル(<code
+                                    class="inline"
+                                    >customer_info</code
+                                >
+                                や
+                                <code class="inline">zip_codes</code
+                                >)には直接アクセスできず、あくまで公開されたビューの結果しか見えません。これが
+                                Authorized View の最大の利点です。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/authorized-views"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Authorized views | BigQuery | Google Cloud</a
+                                    ></span
+                                >
+                            </p>
+                            <p>
+                                ビューを「作成」しただけでは相手はまだ何も見られません。「ビューの承認(Authorize)」と「ユーザーへのIAMロール付与」という<strong>2段階の許可</strong>が必要です。この2段階を混同するのがこのラボで最もつまずきやすいポイントです(詳しくは3章・5章で解説します)。
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>1.2 作業フローの全体像(誰が何をするか)</h3>
+                    <div class="diagram-card">
+                        <div class="diagram-card-title">
+                            <i class="ti ti-route"></i>Task 1 から Task 4 までの流れ
+                        </div>
+                        <div class="mermaid-container" id="diagram-workflow"></div>
+                    </div>
+                </section>
+
+                <section id="prep">
+                    <h2>2. 事前準備の注意点</h2>
+                    <ul>
+                        <li>
+                            演習用アカウントは
+                            Incognito(シークレット)ウィンドウで使い、個人のGoogleアカウントと混在させないこと。これはラボの標準的な注意事項ですが、IAM設定の切り替えミスを防ぐという意味でも実務上重要です。
+                        </li>
+                        <li>
+                            Task 1・Task 4はパートナープロジェクトのコンソール、Task 2・Task
+                            3は顧客プロジェクトのコンソールで作業します。<strong>今どちらの役割としてログインしているか</strong>を常に意識してください。作業ミスの多くは「ログインしているプロジェクトの取り違え」から発生します。
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="task1">
+                    <div class="task-tag">
+                        <i class="ti ti-building-skyscraper"></i>パートナープロジェクトで作業
+                    </div>
+                    <h2>3. Task 1: パートナー承認済みビュー(Partner authorized view)の作成</h2>
+
+                    <h3>3.1 手順</h3>
+                    <ol class="step-list">
+                        <li>
+                            パートナープロジェクトのBigQueryコンソールで
+                            <code class="inline">demo_dataset</code> を開く(なければ作成する)。
+                        </li>
+                        <li>
+                            以下のクエリでビューを作成し、<code class="inline">demo_dataset</code>
+                            内に指定された名前で保存する。
+                            <pre><code class="language-sql">SELECT
+ *
+FROM
+ `bigquery-public-data.geo_us_boundaries.zip_codes`;</code></pre>
+                        </li>
+                        <li>作成したビューを<strong>承認(Authorize)</strong>する。</li>
+                        <li>
+                            顧客ユーザー(Customer username)に、そのビューへの
+                            <strong>BigQuery Data Viewer</strong> ロールを付与する。
+                        </li>
+                    </ol>
+
+                    <h3>3.2 なぜこの順序なのか</h3>
+                    <div class="callout callout-info">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout-body">
+                            <p>
+                                BigQueryの公開データセットは「データセットは共有されているがプロジェクトは共有されていない」という特殊な構造です。そのためクエリを実行するには自分のプロジェクトを課金プロジェクトとして指定する必要があります。この特性上、公開データを直接顧客に渡すのではなく、いったん自分のプロジェクトのビューとして再公開する、というこのラボの設計は理にかなっています。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/looker/docs/studio/connect-to-google-bigquery"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Connect to Google BigQuery | Looker Studio</a
+                                    >(「公開データセットはデータセットのみが共有されプロジェクトは共有されない」という仕様について記載)</span
+                                >
+                            </p>
+                            <p>
+                                ビューの「作成」と「承認」が分離されているのは、BigQueryのセキュリティモデルの根幹です。Authorized
+                                View
+                                は「ビュー自身にソースデータへのアクセス権を持たせる」ことで、閲覧者本人に元データへの権限を渡さずに結果だけを渡す仕組みです。ビューを承認するという操作は、まさに「このビューにはソースデータへのアクセスを許可する」という宣言にあたります。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/create-authorized-views"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create an authorized view | BigQuery</a
+                                    ></span
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>3.3 詰まりやすいポイント</h3>
+                    <div class="callout callout-warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout-body">
+                            <ul>
+                                <li>
+                                    同じソースデータセットに対して複数の Authorized View
+                                    を作る予定がある場合は、ビュー単位ではなく<strong
+                                        >データセット単位で承認する「Authorized Dataset」</strong
+                                    >を使うと管理が楽になります。今回のラボはビューが1つなので個別承認で十分ですが、実務でスケールする際はこちらを検討してください。
+                                    <div class="source-note">
+                                        <i class="ti ti-link"></i
+                                        ><span
+                                            >出典:
+                                            <a
+                                                href="https://cloud.google.com/bigquery/docs/authorized-datasets"
+                                                target="_blank"
+                                                rel="noopener"
+                                                >Authorized datasets | BigQuery</a
+                                            ></span
+                                        >
+                                    </div>
+                                </li>
+                                <li>
+                                    IAMロール付与は「ビューの承認」とは別操作です。承認だけして権限付与を忘れると、顧客はビューの存在自体を認識できずクエリはPermission
+                                    Deniedになります。
+                                    <div class="source-note">
+                                        <i class="ti ti-link"></i
+                                        ><span
+                                            >出典:
+                                            <a
+                                                href="https://cloud.google.com/bigquery/docs/control-access-to-resources-iam"
+                                                target="_blank"
+                                                rel="noopener"
+                                                >Control access to resources with IAM | BigQuery</a
+                                            ></span
+                                        >
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task2">
+                    <div class="task-tag"><i class="ti ti-users"></i>顧客プロジェクトで作業</div>
+                    <h2>4. Task 2: 顧客データテーブルの更新</h2>
+
+                    <h3>4.1 手順</h3>
+                    <p>顧客プロジェクトのコンソールに切り替え、次のクエリを実行します。</p>
+                    <pre><code class="language-sql">UPDATE
+ `Customer A Project ID.customer_dataset.customer_info` cust
+SET
+cust.county=vw.county
+FROM
+`Partner Project ID.demo_dataset.Partner authorized view` vw
+WHERE
+vw.zip_code=cust.postal_code;</code></pre>
+                    <p>
+                        実行後、<code class="inline"
+                            >This statement modified 14 rows in customer_info.</code
+                        >
+                        のようなメッセージが表示されれば成功です。
+                    </p>
+
+                    <h3>4.2 なぜこの書き方をするのか</h3>
+                    <div class="callout callout-info">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout-body">
+                            <p>
+                                BigQueryのDML <code class="inline">UPDATE</code> 文は
+                                <code class="inline">FROM</code>
+                                句で別テーブル(ここでは他プロジェクトのAuthorized
+                                View)と結合し、条件に合致した行だけを更新できます。1行ずつUPDATEを繰り返すのではなく、このように<strong>条件付きの一括更新</strong>にすることが公式に推奨されているベストプラクティスです。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Data manipulation language (DML) statements in GoogleSQL</a
+                                    >、<a
+                                        href="https://cloud.google.com/bigquery/docs/data-manipulation-language"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Transform data with DML | BigQuery</a
+                                    ></span
+                                >
+                            </p>
+                            <p>
+                                <code class="inline">WHERE</code> 句で結合条件(<code class="inline"
+                                    >vw.zip_code = cust.postal_code</code
+                                >)を1件のソース行に一意に絞れない場合、<code class="inline"
+                                    >UPDATE/MERGE must match at most one source row for each target
+                                    row</code
+                                >
+                                というランタイムエラーになります。ソース側(ビュー)にzip_codeの重複がないか事前に確認しておくと安全です。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Data manipulation language (DML) statements in GoogleSQL</a
+                                    ></span
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>4.3 詰まりやすいポイント</h3>
+                    <div class="callout callout-warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout-body">
+                            <ul>
+                                <li>
+                                    <code class="inline">postal_code</code> と
+                                    <code class="inline">zip_code</code>
+                                    の<strong>データ型が一致しているか</strong>を確認してください(片方がSTRING、もう片方がINT64だと結合条件が一致せず更新件数が0になります)。
+                                </li>
+                                <li>
+                                    Task
+                                    1でCustomerユーザーへの権限付与が漏れていると、このUPDATE文は他プロジェクトのビューを参照できずエラーになります。エラーが出たらまずTask
+                                    1のIAM設定に戻って確認するのが早道です。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task3">
+                    <div class="task-tag"><i class="ti ti-users"></i>顧客プロジェクトで作業</div>
+                    <h2>5. Task 3: 顧客承認済みビュー(Customer authorized view)の作成</h2>
+
+                    <h3>5.1 手順</h3>
+                    <ol class="step-list">
+                        <li>
+                            顧客プロジェクトの
+                            <code class="inline">customer_dataset</code>
+                            に、以下のクエリでビューを作成する。
+                            <pre><code class="language-sql">SELECT
+  county,
+COUNT(1) AS Count
+FROM
+ `Customer A Project ID.customer_dataset.customer_info` cust
+GROUP BY
+ county
+HAVING county is not null</code></pre>
+                        </li>
+                        <li>ビューを<strong>承認</strong>する。</li>
+                        <li>
+                            パートナーユーザー(Partner username)に
+                            <strong>BigQuery Data Viewer</strong> ロールを付与する。
+                        </li>
+                    </ol>
+
+                    <h3>5.2 なぜこの設計が良いのか</h3>
+                    <div class="callout callout-info">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout-body">
+                            <p>
+                                このビューは生の
+                                <code class="inline">customer_info</code>
+                                テーブルを丸ごと見せるのではなく、<code class="inline">county</code>
+                                ごとの件数という<strong>集計済みの粒度</strong>だけを公開しています。これはAuthorized
+                                Viewの典型的な使い方で、「相手に必要な情報の粒度だけを渡し、個々の顧客レコードのような機微な情報は渡さない」というデータ最小化の原則にも合致します。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/create-authorized-views"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create an authorized view | BigQuery</a
+                                    >(「列やフィールドを絞り込んで結果を返せる」という記載)</span
+                                >
+                            </p>
+                            <p>
+                                権限付与についても、Task
+                                1と同じく「必要な相手に、必要な粒度のデータだけを、最小権限で」というIAMの最小権限の原則(Principle
+                                of Least Privilege)に沿っています。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/iam/docs/using-iam-securely"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Use IAM securely | Google Cloud</a
+                                    ></span
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>5.3 詰まりやすいポイント</h3>
+                    <div class="callout callout-warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout-body">
+                            <ul>
+                                <li>
+                                    <code class="inline">HAVING county is not null</code>
+                                    を忘れると、<code class="inline">county</code>
+                                    が補完されなかった顧客(Task 2のUPDATEで一致しなかった行)が<code
+                                        class="inline"
+                                        >null</code
+                                    >の集計行として混入し、Task 4のグラフが歪みます。
+                                </li>
+                                <li>
+                                    <strong
+                                        >Data Viewerロールだけではクエリを実行できないケース</strong
+                                    >に注意してください。<code class="inline"
+                                        >roles/bigquery.dataViewer</code
+                                    >
+                                    にはデータを読む権限は含まれますが、ジョブを実行する権限(<code
+                                        class="inline"
+                                        >bigquery.jobs.create</code
+                                    >)は含まれていません。ラボ環境では通常プロジェクトの基本ロールで担保されていますが、実務で同じ構成を組む場合は
+                                    <code class="inline">roles/bigquery.jobUser</code>
+                                    を別途プロジェクトレベルで付与する必要があります。
+                                    <div class="source-note">
+                                        <i class="ti ti-link"></i
+                                        ><span
+                                            >出典:
+                                            <a
+                                                href="https://cloud.google.com/bigquery/docs/access-control"
+                                                target="_blank"
+                                                rel="noopener"
+                                                >BigQuery IAM roles and permissions</a
+                                            ></span
+                                        >
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task4">
+                    <div class="task-tag">
+                        <i class="ti ti-building-skyscraper"></i>パートナープロジェクトで作業
+                    </div>
+                    <h2>6. Task 4: Looker Studio(旧 Data Studio)での可視化</h2>
+
+                    <h3>6.1 用語について</h3>
+                    <p>
+                        ラボの手順書には「Data Studio」と記載されていますが、このプロダクトは
+                        <strong>Looker Studio</strong>
+                        に名称変更されています。操作画面や手順自体は同一ですので、「Data
+                        Studio」という表記が出てきたら「Looker Studio」と読み替えてください。
+                    </p>
+
+                    <h3>6.2 手順</h3>
+                    <ol class="step-list">
+                        <li>
+                            Looker Studio(<code class="inline">lookerstudio.google.com</code
+                            >)を開き、空のレポート(Blank Report)を作成する。
+                        </li>
+                        <li>BigQueryコネクタを選択し、Googleアカウントを認証する。</li>
+                        <li>
+                            「My Projects」から顧客プロジェクトへ移動し、<code class="inline"
+                                >Customer authorized view</code
+                            >
+                            を選択してレポートに追加する。
+                        </li>
+                        <li>レポート名を指定された名前に設定する。</li>
+                        <li>縦棒グラフ(Vertical Bar Chart)を挿入する。</li>
+                        <li>
+                            <code class="inline">county</code> をディメンションに、<code
+                                class="inline"
+                                >Count</code
+                            >
+                            を内訳ディメンション(Breakdown Dimension)およびメトリクスに設定する。
+                        </li>
+                    </ol>
+
+                    <h3>6.3 なぜこの手順なのか</h3>
+                    <div class="callout callout-info">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout-body">
+                            <p>
+                                Looker
+                                StudioからBigQueryに接続する際、テーブルではなく<strong>あらかじめ集計・整形されたビュー</strong>に接続するのは公式にも推奨されているパターンです。ダッシュボード側で毎回重い集計クエリを走らせるより、ビュー側で事前集計しておく方が表示速度とコストの両面で有利です。今回のCustomer
+                                authorized
+                                viewは、まさにこの「ビュー経由で接続する」パターンの実例になっています。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/looker/docs/studio/connect-to-google-bigquery"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Connect to Google BigQuery | Looker Studio</a
+                                    ></span
+                                >
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>6.4 詰まりやすいポイント</h3>
+                    <div class="callout callout-warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout-body">
+                            <ul>
+                                <li>
+                                    「My
+                                    Projects」に顧客プロジェクトが表示されない場合、認証しているGoogleアカウントにCustomer
+                                    authorized viewへのData Viewerロールが付与されているか(Task
+                                    3の最後の手順)を再確認してください。
+                                </li>
+                                <li>
+                                    縦棒グラフのフィールド設定で「ディメンション」と「内訳ディメンション」を混同しやすいので注意してください。ディメンションはX軸の分類(<code
+                                        class="inline"
+                                        >county</code
+                                    >)、内訳ディメンションは色分けの基準、メトリクスは棒の高さ(<code
+                                        class="inline"
+                                        >Count</code
+                                    >)を決めます。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="errors">
+                    <h2>7. よくあるエラーと対処法</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>症状</th>
+                                <th>主な原因</th>
+                                <th>対処方法</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ビューは作成できるが、相手がクエリすると権限エラーになる</td>
+                                <td>
+                                    「ビューの承認」と「相手ユーザーへのIAM付与」のどちらか、または両方が未実施
+                                </td>
+                                <td>
+                                    承認とIAM付与は別工程。両方が完了しているかIAMポリシーの画面で確認する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Task 2のUPDATE文の更新件数が0件になる</td>
+                                <td>
+                                    <code class="inline">zip_code</code> と
+                                    <code class="inline">postal_code</code>
+                                    の型不一致、または結合条件に一致する行が存在しない
+                                </td>
+                                <td>
+                                    両カラムの型を確認し、必要ならCASTする。件数がおかしい場合はSELECTで結合結果を先に確認する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code class="inline"
+                                        >UPDATE/MERGE must match at most one source row</code
+                                    >
+                                    というエラー
+                                </td>
+                                <td>ソース側(ビュー)の結合キーに重複がある</td>
+                                <td>
+                                    <code class="inline">GROUP BY</code> や
+                                    <code class="inline">DISTINCT</code>
+                                    でソース側の重複を排除してから結合する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Looker StudioでCustomer authorized viewが選択肢に出てこない</td>
+                                <td>
+                                    認証アカウントにData
+                                    Viewerロールが付与されていない、または別プロジェクトを見ている
+                                </td>
+                                <td>
+                                    Task 3のIAM付与を再確認し、「My
+                                    Projects」で正しいプロジェクトを選び直す
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Data Viewerロールを付与したのにクエリ実行時にエラーになる</td>
+                                <td>
+                                    Data Viewerロールにはジョブ実行権限(<code class="inline"
+                                        >bigquery.jobs.create</code
+                                    >)が含まれない
+                                </td>
+                                <td>
+                                    プロジェクトレベルで
+                                    <code class="inline">roles/bigquery.jobUser</code>
+                                    を追加で付与する
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="best-practices">
+                    <h2>8. ベストプラクティスまとめ</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>観点</th>
+                                <th>ベストプラクティス</th>
+                                <th>出典</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>データ共有の粒度</td>
+                                <td>
+                                    元テーブルを直接公開せず、必要な列・集計結果だけをビューとして公開する
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/create-authorized-views"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Create an authorized view</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>権限設計</td>
+                                <td>
+                                    常に最小権限(Data
+                                    Viewerなど必要最小限のロール)を、必要な相手にのみ付与する
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/iam/docs/using-iam-securely"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Use IAM securely</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>複数ビューの承認管理</td>
+                                <td>
+                                    同一データセットに対するビューが増えたらAuthorized
+                                    Datasetへの切り替えを検討する
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/authorized-datasets"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Authorized datasets</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>大量データの更新</td>
+                                <td>
+                                    UPDATEは1行ずつでなく条件付きの一括更新にする。頻繁に更新する場合はクラスタリングも検討する
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/data-manipulation-language"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Transform data with DML</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BIツールとの接続</td>
+                                <td>
+                                    生テーブルではなく、事前集計済みのビュー経由で接続しダッシュボードの速度とコストを最適化する
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/looker/docs/studio/connect-to-google-bigquery"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Connect to Google BigQuery | Looker Studio</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>組織を越えたスケール</td>
+                                <td>
+                                    個別のAuthorized
+                                    Viewの手動運用が煩雑になったら、カタログ化・モニタリング機能を持つ
+                                    BigQuery sharing(旧 Analytics Hub)への移行を検討する
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/analytics-hub-introduction"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Introduction to BigQuery sharing</a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>補足: このラボの先にある選択肢(BigQuery sharing / 旧Analytics Hub)</h3>
+                    <div class="callout callout-info">
+                        <i class="ti ti-arrow-up-right-circle"></i>
+                        <div class="callout-body">
+                            <p>
+                                このラボで使ったAuthorized
+                                Viewは、少数のプロジェクト間でのシンプルな共有には最適です。一方、共有先が増えたり、組織をまたいだデータ交換を継続的に運用する必要がある場合は、<strong
+                                    >BigQuery sharing(旧称 Analytics Hub)</strong
+                                >という上位の仕組みがあります。これはデータをコピーせずに「リンクされた読み取り専用データセット」として提供し、サブスクライバーの利用状況もモニタリングできる、より運用性の高い共有基盤です。今回学んだAuthorized
+                                Viewの考え方(元データへの直接アクセスを渡さず、結果だけを共有する)は、BigQuery
+                                sharingでも土台として使われています。
+                            </p>
+                            <p class="source-note">
+                                <i class="ti ti-link"></i
+                                ><span
+                                    >出典:
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/analytics-hub-introduction"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Introduction to BigQuery sharing | BigQuery</a
+                                    ></span
+                                >
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="references">
+                    <h2>9. 参考文献 / ソース一覧</h2>
+                    <div class="ref-grid">
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/authorized-views"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-file-description"></i></div>
+                            <div>
+                                <div class="ref-text-title">Authorized views(概要)</div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/authorized-views
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/create-authorized-views"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-file-description"></i></div>
+                            <div>
+                                <div class="ref-text-title">
+                                    Create an authorized view(作成手順)
+                                </div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/create-authorized-views
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/authorized-datasets"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-file-description"></i></div>
+                            <div>
+                                <div class="ref-text-title">Authorized datasets</div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/authorized-datasets
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/control-access-to-resources-iam"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-shield-lock"></i></div>
+                            <div>
+                                <div class="ref-text-title">
+                                    Control access to resources with IAM | BigQuery
+                                </div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/control-access-to-resources-iam
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/access-control"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-shield-lock"></i></div>
+                            <div>
+                                <div class="ref-text-title">BigQuery IAM roles and permissions</div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/access-control
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/iam/docs/using-iam-securely"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-shield-lock"></i></div>
+                            <div>
+                                <div class="ref-text-title">Use IAM securely | Google Cloud</div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/iam/docs/using-iam-securely
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-code"></i></div>
+                            <div>
+                                <div class="ref-text-title">
+                                    Data manipulation language (DML) statements in GoogleSQL
+                                </div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/data-manipulation-language"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-code"></i></div>
+                            <div>
+                                <div class="ref-text-title">
+                                    Transform data with data manipulation language (DML)
+                                </div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/data-manipulation-language
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/looker/docs/studio/connect-to-google-bigquery"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-chart-bar"></i></div>
+                            <div>
+                                <div class="ref-text-title">
+                                    Connect to Google BigQuery | Looker Studio
+                                </div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/looker/docs/studio/connect-to-google-bigquery
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://cloud.google.com/bigquery/docs/analytics-hub-introduction"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-share"></i></div>
+                            <div>
+                                <div class="ref-text-title">
+                                    Introduction to BigQuery sharing(旧 Analytics Hub)
+                                </div>
+                                <div class="ref-text-url">
+                                    cloud.google.com/bigquery/docs/analytics-hub-introduction
+                                </div>
+                            </div>
+                        </a>
+                        <a
+                            class="ref-card"
+                            href="https://www.skills.google/course_templates/657/labs/591412"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            <div class="ref-icon"><i class="ti ti-flask"></i></div>
+                            <div>
+                                <div class="ref-text-title">ラボ本体(Skills Boost)</div>
+                                <div class="ref-text-url">
+                                    skills.google/course_templates/657/labs/591412
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="footer-note">
+                        本ガイドは公開されているGoogle
+                        Cloud公式ドキュメントおよびラボの手順書をもとに作成した学習補助資料です。
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script>
+            hljs.highlightAll();
+
+            const DIAGRAMS = {
+                'diagram-architecture': `flowchart TB
+subgraph PARTNER["データ共有パートナー プロジェクト"]
+PUB["bigquery-public-data.geo_us_boundaries.zip_codes<br/>公開データセット(郵便番号別の地理データ)"]
+PV["Partner authorized view<br/>郵便番号 to 郡 のマッピング"]
+PUB -->|"SELECT * で参照するビューを作成"| PV
+end
+subgraph CUSTOMER["顧客プロジェクト"]
+CT["customer_dataset.customer_info<br/>顧客テーブル(postal_code列を保持)"]
+CV["Customer authorized view<br/>郡ごとの顧客数集計"]
+CT -->|"county列をUPDATEで補完"| CT
+CT -->|"GROUP BY county で集計するビューを作成"| CV
+end
+LS["Looker Studio<br/>旧称 Data Studio"]
+PV -->|"Customerユーザーに Data Viewerロールを付与"| CT
+CV -->|"Partnerユーザーに Data Viewerロールを付与"| LS
+classDef partnerNode fill:#2a2456,stroke:#b8a6ff,color:#f1edff
+classDef customerNode fill:#113c3a,stroke:#7ce0d3,color:#eafffb
+classDef outputNode fill:#3d2416,stroke:#ffb18f,color:#fff1ea
+class PUB,PV partnerNode
+class CT,CV customerNode
+class LS outputNode`,
+                'diagram-workflow': `flowchart TB
+subgraph T1["Task 1 - パートナー側で作業"]
+direction LR
+A1["公開データセットを参照する Partner authorized viewを作成"] --> A2["ビューを承認し 顧客ユーザーにData Viewerを付与"]
+end
+subgraph T2["Task 2 - 顧客側で作業"]
+direction LR
+B1["Partner authorized viewを参照する UPDATE文でcounty列を補完"]
+end
+subgraph T3["Task 3 - 顧客側で作業"]
+direction LR
+C1["郡別の顧客数を集計する Customer authorized viewを作成"] --> C2["ビューを承認し パートナーユーザーにData Viewerを付与"]
+end
+subgraph T4["Task 4 - パートナー側で作業"]
+direction LR
+D1["Looker StudioでBigQueryに接続"] --> D2["縦棒グラフを作成し可視化"]
+end
+T1 --> T2 --> T3 --> T4
+classDef partnerNode fill:#2a2456,stroke:#b8a6ff,color:#f1edff
+classDef customerNode fill:#113c3a,stroke:#7ce0d3,color:#eafffb
+class A1,A2,D1,D2 partnerNode
+class B1,C1,C2 customerNode`,
+            };
+
+            async function renderDiagrams() {
+                await document.fonts.ready;
+
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily: 'inherit',
+                    flowchart: { useMaxWidth: false, nodeSpacing: 45, rankSpacing: 45 },
+                    themeVariables: {
+                        background: '#07111e',
+                        primaryColor: '#12213b',
+                        primaryTextColor: '#e8edff',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#7c9eff',
+                        secondaryColor: '#0d1b2e',
+                        tertiaryColor: '#0d1b2e',
+                        textColor: '#e8edff',
+                        fontSize: '16px',
+                    },
+                });
+
+                for (const [containerId, src] of Object.entries(DIAGRAMS)) {
+                    const container = document.getElementById(containerId);
+                    if (!container) continue;
+
+                    const { svg } = await mermaid.render(containerId + '-svg', src);
+                    container.innerHTML = svg;
+
+                    const svgEl = container.querySelector('svg');
+                    if (svgEl) {
+                        const viewBox = svgEl.getAttribute('viewBox');
+                        svgEl.removeAttribute('width');
+                        svgEl.removeAttribute('height');
+                        svgEl.style.maxWidth = '100%';
+                        svgEl.style.height = 'auto';
+                        svgEl.style.overflow = 'visible';
+
+                        if (viewBox) {
+                            const parts = viewBox.split(' ').map(Number);
+                            const naturalWidth = parts[2];
+                            svgEl.style.width = naturalWidth + 'px';
+
+                            const trimmed = src.trim();
+                            const isSeqOrState =
+                                trimmed.startsWith('sequenceDiagram') ||
+                                trimmed.startsWith('stateDiagram');
+                            const extra = isSeqOrState ? 110 : 15;
+                            parts[3] = parts[3] + extra;
+                            svgEl.setAttribute('viewBox', parts.join(' '));
+                        }
+                    }
+                }
+            }
+
+            renderDiagrams();
+
+            const sections = document.querySelectorAll('main section[id]');
+            const navLinks = document.querySelectorAll('.side-nav .nav-link');
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach((link) => link.classList.remove('active'));
+                            const activeLink = document.querySelector(
+                                '.side-nav .nav-link[data-target="' + entry.target.id + '"]',
+                            );
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+
+            sections.forEach((s) => observer.observe(s));
+        </script>
+    </body>
+</html>

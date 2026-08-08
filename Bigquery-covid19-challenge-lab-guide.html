@@ -1,0 +1,2065 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BigQueryで学ぶCOVID-19データ分析 | Challenge Lab 完全攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css"
+        />
+        <style>
+            :root {
+                --bg-primary: #07111e;
+                --bg-secondary: #0d1b2f;
+                --bg-tertiary: #142943;
+                --border-primary: #24406b;
+                --border-secondary: #1b2f4d;
+                --border-tertiary: #142943;
+                --text-primary: #eef2fb;
+                --text-secondary: #9fb0cc;
+                --text-tertiary: #6b7fa3;
+                --accent: #7c9eff;
+                --accent-teal: #5eead4;
+                --color-success: #34d399;
+                --color-danger: #f87171;
+                --color-warning: #fbbf24;
+                --color-info: #60a5fa;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP', sans-serif;
+                --font-mono:
+                    ui-monospace, 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+                --radius-md: 8px;
+                --radius-lg: 12px;
+                --radius-xl: 16px;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                -webkit-font-smoothing: antialiased;
+            }
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 1.4;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 1.4;
+                color: var(--text-primary);
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 1.4;
+                color: var(--text-primary);
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            p {
+                color: var(--text-secondary);
+            }
+            ul,
+            ol {
+                color: var(--text-secondary);
+                padding-left: 1.4em;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+            code {
+                font-family: var(--font-mono);
+                font-size: 15px;
+            }
+
+            /* ---------- layout ---------- */
+            .layout {
+                display: block;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 280px;
+                background: var(--bg-secondary);
+                border-right: 1px solid var(--border-primary);
+                overflow-y: auto;
+                padding: 28px 20px 40px;
+                z-index: 40;
+                transition: transform 0.25s ease;
+            }
+            .sidebar__brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 6px;
+            }
+            .sidebar__brand i {
+                font-size: 20px;
+                color: var(--accent);
+            }
+            .sidebar__brand span {
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+            .sidebar__sub {
+                font-size: 13px;
+                color: var(--text-tertiary);
+                margin-bottom: 24px;
+            }
+            .nav-group {
+                margin-bottom: 20px;
+            }
+            .nav-group__label {
+                font-size: 12px;
+                letter-spacing: 0.06em;
+                color: var(--text-tertiary);
+                text-transform: uppercase;
+                margin-bottom: 8px;
+                padding: 0 10px;
+            }
+            .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 10px;
+                border-radius: var(--radius-md);
+                font-size: 14px;
+                color: var(--text-secondary);
+                border-left: 2px solid transparent;
+            }
+            .nav-link:hover {
+                background: var(--bg-tertiary);
+                text-decoration: none;
+                color: var(--text-primary);
+            }
+            .nav-link.active {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                border-left: 2px solid var(--accent);
+            }
+            .nav-link .num {
+                flex: 0 0 auto;
+                width: 20px;
+                height: 20px;
+                border-radius: 6px;
+                background: var(--border-secondary);
+                color: var(--text-tertiary);
+                font-size: 11px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--font-mono);
+            }
+            .nav-link.active .num {
+                background: var(--accent);
+                color: var(--bg-primary);
+            }
+
+            .main-content {
+                margin-left: 280px;
+                padding: 56px 64px 100px;
+            }
+
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 60;
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius-md);
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border-primary);
+                color: var(--text-primary);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(2, 7, 15, 0.6);
+                z-index: 35;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .sidebar-overlay.show {
+                    display: block;
+                }
+                .main-content {
+                    margin-left: 0;
+                    padding: 88px 24px 80px;
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .hero {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+
+            /* ---------- hero ---------- */
+            .hero {
+                display: grid;
+                grid-template-columns: 1.3fr 1fr;
+                gap: 40px;
+                padding-bottom: 48px;
+                margin-bottom: 48px;
+                border-bottom: 1px solid var(--border-secondary);
+                align-items: center;
+            }
+            .hero__eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: var(--accent-teal);
+                border: 1px solid var(--border-primary);
+                border-radius: 999px;
+                padding: 4px 12px;
+                margin-bottom: 16px;
+            }
+            .hero h1 {
+                font-size: 30px;
+                margin-bottom: 14px;
+            }
+            .hero p.lede {
+                font-size: 16px;
+                color: var(--text-secondary);
+                margin-bottom: 20px;
+                max-width: 52ch;
+            }
+            .hero__chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 20px;
+            }
+            .chip {
+                font-size: 12px;
+                color: var(--text-secondary);
+                border: 1px solid var(--border-primary);
+                border-radius: 999px;
+                padding: 4px 10px;
+                font-family: var(--font-mono);
+            }
+            .hero__link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 14px;
+            }
+
+            .stepper-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-primary);
+                border-radius: var(--radius-lg);
+                padding: 20px;
+            }
+            .stepper-card__title {
+                font-size: 13px;
+                color: var(--text-tertiary);
+                margin-bottom: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .stepper-row {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 6px 0;
+            }
+            .stepper-row .num {
+                flex: 0 0 auto;
+                width: 24px;
+                height: 24px;
+                border-radius: 7px;
+                background: var(--bg-tertiary);
+                color: var(--accent-teal);
+                font-family: var(--font-mono);
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .stepper-row .label {
+                font-size: 13px;
+                color: var(--text-secondary);
+            }
+            .stepper-line {
+                width: 2px;
+                height: 10px;
+                background: var(--border-primary);
+                margin-left: 11px;
+            }
+
+            /* ---------- sections ---------- */
+            section {
+                margin-bottom: 64px;
+                scroll-margin-top: 24px;
+            }
+            .section__kicker {
+                font-size: 13px;
+                color: var(--accent-teal);
+                font-family: var(--font-mono);
+                margin-bottom: 8px;
+            }
+            section h2 {
+                margin-bottom: 14px;
+            }
+            .section__intro {
+                color: var(--text-secondary);
+                margin-bottom: 24px;
+                max-width: 75ch;
+            }
+
+            /* ---------- callouts ---------- */
+            .callout {
+                display: flex;
+                gap: 14px;
+                padding: 16px 18px;
+                border-radius: var(--radius-md);
+                border: 1px solid var(--border-secondary);
+                border-left: 3px solid var(--border-primary);
+                background: var(--bg-secondary);
+                margin: 20px 0;
+            }
+            .callout i {
+                font-size: 18px;
+                flex: 0 0 auto;
+                margin-top: 2px;
+            }
+            .callout__body p {
+                margin: 0;
+                color: var(--text-secondary);
+            }
+            .callout__body strong {
+                color: var(--text-primary);
+            }
+            .callout--tip {
+                border-left-color: var(--color-info);
+            }
+            .callout--tip i {
+                color: var(--color-info);
+            }
+            .callout--warning {
+                border-left-color: var(--color-warning);
+            }
+            .callout--warning i {
+                color: var(--color-warning);
+            }
+            .callout--success {
+                border-left-color: var(--color-success);
+            }
+            .callout--success i {
+                color: var(--color-success);
+            }
+            .callout--glossary {
+                border-left-color: var(--accent-teal);
+            }
+            .callout--glossary i {
+                color: var(--accent-teal);
+            }
+            .callout--glossary dl {
+                display: grid;
+                grid-template-columns: max-content 1fr;
+                gap: 4px 14px;
+                margin-top: 6px;
+            }
+            .callout--glossary dt {
+                color: var(--text-primary);
+                font-family: var(--font-mono);
+                font-size: 14px;
+            }
+            .callout--glossary dd {
+                color: var(--text-secondary);
+                font-size: 14px;
+            }
+
+            /* ---------- code card ---------- */
+            .code-card {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-primary);
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                margin: 20px 0;
+            }
+            .code-card__head {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 16px;
+                border-bottom: 1px solid var(--border-secondary);
+                font-size: 12px;
+                color: var(--text-tertiary);
+                font-family: var(--font-mono);
+            }
+            .code-card__head i {
+                color: var(--accent-teal);
+                font-size: 14px;
+            }
+            .code-card pre {
+                padding: 18px 20px;
+                overflow-x: auto;
+                background: var(--bg-primary);
+            }
+            .code-card code {
+                color: var(--text-primary);
+                white-space: pre;
+            }
+            .tok-kw {
+                color: var(--accent);
+            }
+            .tok-fn {
+                color: #f0abfc;
+            }
+            .tok-str {
+                color: var(--accent-teal);
+            }
+            .tok-tbl {
+                color: var(--color-info);
+            }
+            .tok-cm {
+                color: var(--text-tertiary);
+                font-style: italic;
+            }
+            .tok-ph {
+                background: rgba(251, 191, 36, 0.16);
+                color: var(--color-warning);
+                padding: 0 3px;
+                border-radius: 4px;
+            }
+
+            /* ---------- diagram ---------- */
+            .diagram {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                min-height: 80px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-secondary);
+                border-radius: var(--radius-lg);
+                padding: 24px;
+                margin: 20px 0;
+                overflow-x: auto;
+            }
+            .diagram-loading {
+                color: var(--text-tertiary);
+                font-size: 13px;
+            }
+            .diagram-error {
+                color: var(--color-danger);
+                font-size: 13px;
+            }
+            .diagram-caption {
+                font-size: 13px;
+                color: var(--text-tertiary);
+                margin-top: -8px;
+                margin-bottom: 20px;
+            }
+
+            /* ---------- tables ---------- */
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 14px;
+            }
+            .data-table th {
+                text-align: left;
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border-primary);
+                font-weight: 500;
+            }
+            .data-table td {
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border-secondary);
+                color: var(--text-secondary);
+                vertical-align: top;
+            }
+            .data-table tr:hover td {
+                background: rgba(20, 41, 67, 0.4);
+            }
+            .data-table code {
+                font-size: 13px;
+                color: var(--accent-teal);
+            }
+            .data-table a {
+                word-break: break-all;
+            }
+
+            /* ---------- task header ---------- */
+            .task-head {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                margin-bottom: 6px;
+            }
+            .task-head .num {
+                flex: 0 0 auto;
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius-md);
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border-primary);
+                color: var(--accent-teal);
+                font-family: var(--font-mono);
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .task-summary {
+                font-size: 15px;
+                color: var(--text-primary);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-secondary);
+                border-radius: var(--radius-md);
+                padding: 12px 16px;
+                margin: 16px 0;
+            }
+            .task-summary i {
+                color: var(--color-info);
+                margin-right: 8px;
+            }
+
+            /* ---------- checklist ---------- */
+            .checklist {
+                list-style: none;
+                padding-left: 0;
+            }
+            .checklist li {
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--border-secondary);
+                color: var(--text-secondary);
+            }
+            .checklist li i {
+                color: var(--accent-teal);
+                margin-top: 3px;
+                font-size: 16px;
+            }
+
+            footer {
+                border-top: 1px solid var(--border-secondary);
+                padding-top: 24px;
+                color: var(--text-tertiary);
+                font-size: 13px;
+            }
+        </style>
+    </head>
+    <body>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="メニューを開く">
+            <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar__brand">
+                    <i class="ti ti-brand-google"></i><span>BigQuery攻略ガイド</span>
+                </div>
+                <div class="sidebar__sub">COVID-19 Open Data Challenge Lab</div>
+
+                <div class="nav-group">
+                    <div class="nav-group__label">はじめに</div>
+                    <a class="nav-link" href="#step0" data-target="step0"
+                        ><i class="ti ti-route"></i>ラボ全体の流れ</a
+                    >
+                    <a class="nav-link" href="#step1" data-target="step1"
+                        ><i class="ti ti-database"></i>データセットの構造</a
+                    >
+                    <a class="nav-link" href="#step2" data-target="step2"
+                        ><i class="ti ti-tools"></i>共通ベストプラクティス</a
+                    >
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group__label">タスク別解説</div>
+                    <a class="nav-link" href="#task1" data-target="task1"
+                        ><span class="num">1</span>世界の確定症例数</a
+                    >
+                    <a class="nav-link" href="#task2" data-target="task2"
+                        ><span class="num">2</span>被害地域の特定</a
+                    >
+                    <a class="nav-link" href="#task3" data-target="task3"
+                        ><span class="num">3</span>ホットスポット</a
+                    >
+                    <a class="nav-link" href="#task4" data-target="task4"
+                        ><span class="num">4</span>致死率の計算</a
+                    >
+                    <a class="nav-link" href="#task5" data-target="task5"
+                        ><span class="num">5</span>特定の日を探す</a
+                    >
+                    <a class="nav-link" href="#task6" data-target="task6"
+                        ><span class="num">6</span>新規ゼロ日数(修正)</a
+                    >
+                    <a class="nav-link" href="#task7" data-target="task7"
+                        ><span class="num">7</span>倍加速度</a
+                    >
+                    <a class="nav-link" href="#task8" data-target="task8"
+                        ><span class="num">8</span>回復率ランキング</a
+                    >
+                    <a class="nav-link" href="#task9" data-target="task9"
+                        ><span class="num">9</span>CDGR(修正)</a
+                    >
+                    <a class="nav-link" href="#task10" data-target="task10"
+                        ><span class="num">10</span>Looker Studio</a
+                    >
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group__label">まとめ</div>
+                    <a class="nav-link" href="#checklist" data-target="checklist"
+                        ><i class="ti ti-checklist"></i>提出前チェックリスト</a
+                    >
+                    <a class="nav-link" href="#references" data-target="references"
+                        ><i class="ti ti-books"></i>参考文献・出典</a
+                    >
+                </div>
+            </nav>
+
+            <main class="main-content">
+                <header class="hero" id="top">
+                    <div>
+                        <div class="hero__eyebrow">
+                            <i class="ti ti-sparkles"></i>初学者向けステップバイステップ解説
+                        </div>
+                        <h1>
+                            BigQueryで学ぶ<br />COVID-19データ分析<br />チャレンジラボ
+                            完全攻略ガイド
+                        </h1>
+                        <p class="lede">
+                            公開データセット
+                            <code>bigquery-public-data.covid19_open_data.covid19_open_data</code>
+                            に対する10個のSQLタスクを、集計・ウィンドウ関数・CTEの実務的な考え方から解説します。
+                        </p>
+                        <div class="hero__chips">
+                            <span class="chip">GoogleSQL</span>
+                            <span class="chip">BigQuery</span>
+                            <span class="chip">CTE / WINDOW</span>
+                            <span class="chip">Looker Studio</span>
+                        </div>
+                        <a
+                            class="hero__link"
+                            href="https://www.skills.google/course_templates/623/labs/629091"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="ti ti-external-link"></i>対象ラボ: Derive Insights from
+                            BigQuery Data</a
+                        >
+                    </div>
+                    <div class="stepper-card">
+                        <div class="stepper-card__title">10 Tasks Overview</div>
+                        <div class="stepper-row">
+                            <span class="num">01</span
+                            ><span class="label">世界の確定症例数の合計</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">02</span
+                            ><span class="label">被害が大きい地域の特定</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">03</span
+                            ><span class="label">ホットスポットの一覧化</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">04</span><span class="label">致死率の計算</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">05</span
+                            ><span class="label">しきい値を超えた日の特定</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">06</span
+                            ><span class="label">壊れたクエリの修正(CTE)</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">07</span><span class="label">倍加速度の算出</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">08</span><span class="label">回復率ランキング</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">09</span
+                            ><span class="label">壊れたクエリの修正(CDGR)</span>
+                        </div>
+                        <div class="stepper-line"></div>
+                        <div class="stepper-row">
+                            <span class="num">10</span
+                            ><span class="label">Looker Studioレポート</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="callout callout--warning">
+                    <i class="ti ti-alert-triangle"></i>
+                    <div class="callout__body">
+                        <p>
+                            <strong>このラボは値がランダム化されます。</strong>
+                            <code>Date</code>・<code>Death Count</code>・<code>Confirmed Cases</code
+                            >・<code>Month</code>・<code>Limit Value</code>
+                            は受講者ごとに異なる数値で出題されます。本ガイドのコード中の
+                            <span class="tok-ph" style="font-family: var(--font-mono)"
+                                >&lt;Date&gt;</span
+                            >
+                            のような表記は、自分のラボ画面に表示された実際の値に置き換えてください。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ===================== STEP 0 ===================== -->
+                <section id="step0">
+                    <div class="section__kicker">STEP 0</div>
+                    <h2>ラボ全体の流れをつかむ</h2>
+                    <p class="section__intro">
+                        個別のSQLに入る前に、まず全体の流れを図で押さえます。BigQueryコンソールを開いてからLooker
+                        Studioでレポートを完成させるまでの一連の流れです。
+                    </p>
+                    <div class="diagram" data-diagram="step0">
+                        <span class="diagram-loading">図を読み込み中です…</span>
+                    </div>
+                    <p class="diagram-caption">
+                        「Check my
+                        progressで採点する」は自動採点システムによる判定です。不合格の場合は該当タスクのSQLを見直して再実行します。
+                    </p>
+                </section>
+
+                <!-- ===================== STEP 1 ===================== -->
+                <section id="step1">
+                    <div class="section__kicker">STEP 1</div>
+                    <h2>データセットの構造を理解する（最重要の前提知識）</h2>
+                    <p class="section__intro">
+                        10個のタスクすべてに共通して関わる構造上の注意点です。ここを理解しないままクエリを書くと、一見正しく動くのに集計結果が水増しされる、という事故が起きやすくなります。
+                    </p>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>カラム名</th>
+                                <th>意味</th>
+                                <th>補足</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>date</code></td>
+                                <td>その行のデータの対象日</td>
+                                <td>DATE型</td>
+                            </tr>
+                            <tr>
+                                <td><code>country_code</code></td>
+                                <td>国コード（例: <code>US</code>）</td>
+                                <td>ISO準拠のコード</td>
+                            </tr>
+                            <tr>
+                                <td><code>country_name</code></td>
+                                <td>国名（例: <code>United States of America</code>）</td>
+                                <td>表記ゆれに注意</td>
+                            </tr>
+                            <tr>
+                                <td><code>subregion1_name</code></td>
+                                <td>州・省などの地域名</td>
+                                <td>国レベルの行では<code>NULL</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>cumulative_confirmed</code></td>
+                                <td>その日までの累積確定症例数</td>
+                                <td>「新規」ではなく「累積」</td>
+                            </tr>
+                            <tr>
+                                <td><code>cumulative_deceased</code></td>
+                                <td>その日までの累積死亡者数</td>
+                                <td>同上</td>
+                            </tr>
+                            <tr>
+                                <td><code>cumulative_recovered</code></td>
+                                <td>その日までの累積回復者数</td>
+                                <td>同上</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout callout--warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong
+                                    >なぜ単純に<code>SUM(cumulative_confirmed)</code>だけでは危険なのか。</strong
+                                >このテーブルは「国レベルの行」「州レベルの行」「郡レベルの行」を同じ1つのフラットなテーブルの中に混在させて格納しています。行を親子関係でネストしているのではなく、粒度の異なる行が並列に並んでいる、という点がポイントです。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="diagram" data-diagram="granularity">
+                        <span class="diagram-loading">図を読み込み中です…</span>
+                    </div>
+                    <p class="diagram-caption">
+                        矢印は「親から子」のリレーションではなく、同じ日付・同じ国に対して粒度違いの行が複数存在することを表しています。
+                    </p>
+
+                    <p>
+                        例えばアメリカの場合、<code>country_name = "United States of America"</code
+                        >という条件だけで絞り込むと、国全体の1行・50州分の行・数千の郡の行がすべて同時にヒットします。この挙動はデータセット提供元の公式リポジトリでも明記されており、<code>subregion1_code</code>が<code>NULL</code>であれば国レベル、値が入っていれば州レベルの集計であるとされています（<a
+                            href="https://github.com/GoogleCloudPlatform/covid-19-open-data"
+                            target="_blank"
+                            rel="noopener"
+                            >GoogleCloudPlatform/covid-19-open-data README
+                            <i class="ti ti-external-link"></i></a
+                        >）。
+                    </p>
+
+                    <div class="callout callout--success">
+                        <i class="ti ti-circle-check"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong>実務での回避策：</strong>地域別に集計したいときは、必ず<code
+                                    >subregion1_name IS NOT NULL</code
+                                >（州レベルだけ）や<code
+                                    >subregion1_name IS NULL AND subregion2_name IS NULL</code
+                                >（国レベルだけ）のように、対象の粒度を明示的にWHERE句で絞り込みます。ただしタスク1のように「日付だけで単純にSUMする」ことが公式の想定解になっているタスクもあり、これは採点システムの期待値がその単純な合計に合わせて作られているためです。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout callout--glossary">
+                        <i class="ti ti-book-2"></i>
+                        <div class="callout__body">
+                            <strong>このセクションで登場した用語</strong>
+                            <dl>
+                                <dt>累積値</dt>
+                                <dd>
+                                    ある時点までの合計。前日までの値に当日分を足し込んだ値で、「その日単体の新規件数」ではない
+                                </dd>
+                                <dt>集計レベル</dt>
+                                <dd>
+                                    データがどの地理的粒度（国・州・郡）で集計されているかを表す区分
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== STEP 2 ===================== -->
+                <section id="step2">
+                    <div class="section__kicker">STEP 2</div>
+                    <h2>全タスクに共通するベストプラクティス</h2>
+                    <p class="section__intro">
+                        個別タスクに入る前に、10個のタスクを通して繰り返し使うSQLパターンをまとめます。
+                    </p>
+
+                    <h3 style="margin-bottom: 8px">GoogleSQLダイアレクトを使う</h3>
+                    <p>
+                        BigQueryのクエリエディタは既定でGoogleSQL（旧称: Standard
+                        SQL）です。古い記事の<code>[project:dataset.table]</code>という角カッコ表記（Legacy
+                        SQL）ではなく、本ガイドはすべて<code>`project.dataset.table`</code>形式のGoogleSQLで統一しています（<a
+                            href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/functions-all"
+                            target="_blank"
+                            rel="noopener"
+                            >GoogleSQLの名称について <i class="ti ti-external-link"></i></a
+                        >）。
+                    </p>
+
+                    <h3 style="margin: 24px 0 8px">集計後の値で絞り込みたいときはHAVINGを使う</h3>
+                    <div class="callout callout--warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong
+                                    >なぜ単純な<code>WHERE 集計結果 &gt; 100</code
+                                    >では解けないのか。</strong
+                                ><code>WHERE</code>句はグループ化（<code>GROUP BY</code
+                                >）が行われる前の生の行に対して評価されます。<code>SUM(...)</code>のような集計結果はグループ化が終わった後に初めて存在する値なので、<code>WHERE</code>の中では参照できません。
+                            </p>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>方法</th>
+                                <th>書き方</th>
+                                <th>向いている場面</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>HAVING</code>を使う</td>
+                                <td><code>GROUP BY 列 HAVING 集計結果 &gt; 100</code></td>
+                                <td>集計とその後の絞り込みだけで完結する場合</td>
+                            </tr>
+                            <tr>
+                                <td>サブクエリ / CTEで包む</td>
+                                <td>内側で集計し外側の<code>WHERE</code>で絞り込む</td>
+                                <td>絞り込んだ後にさらに計算を続ける場合</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin: 24px 0 8px">前日比較にはウィンドウ関数（LAG）を使う</h3>
+                    <div class="callout callout--warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong>なぜ自己結合では非効率なのか。</strong
+                                >日付テーブルを自分自身とJOINして「1日前のレコード」を探す書き方もできますが、自己結合は出力行数が膨らみやすくパフォーマンスの問題を起こしやすいとBigQueryの公式ドキュメントでも指摘されています。同じ目的は<code>LAG</code>などのウィンドウ関数で書き直すことが推奨されます（<a
+                                    href="https://docs.cloud.google.com/bigquery/docs/query-plan-explanation"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >BigQueryクエリプランの解説
+                                    <i class="ti ti-external-link"></i></a
+                                >）。
+                            </p>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>関数</th>
+                                <th>やること</th>
+                                <th>使うべき場面</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>LAG(値) OVER (ORDER BY 日付)</code></td>
+                                <td>1つ前の行の値を取得する</td>
+                                <td>前日比・前月比などの差分計算（タスク6・7）</td>
+                            </tr>
+                            <tr>
+                                <td><code>LEAD(値) OVER (ORDER BY 日付)</code></td>
+                                <td>1つ後の行の値を取得する</td>
+                                <td>未来方向の値を同じ行に並べる（タスク9）</td>
+                            </tr>
+                            <tr>
+                                <td><code>ROW_NUMBER() OVER (...)</code></td>
+                                <td>重複のない連番を振る</td>
+                                <td>同率を区別して上位N件だけ取りたいとき</td>
+                            </tr>
+                            <tr>
+                                <td><code>RANK() / DENSE_RANK() OVER (...)</code></td>
+                                <td>同率に同じ順位を振る</td>
+                                <td>ランキングで同率を同じ順位に見せたいとき</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        <code>LAG</code
+                        >や<code>LEAD</code>はいずれも<code>OVER</code>句とセットでなければ使えません。書き忘れるとエラーになる点は、後述するタスク9のデバッグで重要になります（<a
+                            href="https://cloud.google.com/bigquery/docs/reference/standard-sql/navigation_functions"
+                            target="_blank"
+                            rel="noopener"
+                            >ナビゲーション関数リファレンス <i class="ti ti-external-link"></i></a
+                        >）。
+                    </p>
+
+                    <h3 style="margin: 24px 0 8px">割り算にはSAFE_DIVIDEを検討する</h3>
+                    <p>
+                        致死率・回復率・増加率のような割り算では、分母が0になるとエラーで処理全体が止まります。<code
+                            >SAFE_DIVIDE(分子, 分母)</code
+                        >は分母が0のときエラーではなく<code>NULL</code>を返してくれます（<a
+                            href="https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions"
+                            target="_blank"
+                            rel="noopener"
+                            >数学関数リファレンス <i class="ti ti-external-link"></i></a
+                        >）。本ガイドでは割り算を行うすべてのタスクでこの関数を使います。
+                    </p>
+
+                    <div class="callout callout--glossary">
+                        <i class="ti ti-book-2"></i>
+                        <div class="callout__body">
+                            <strong>このセクションで登場した用語</strong>
+                            <dl>
+                                <dt>ウィンドウ関数</dt>
+                                <dd>
+                                    行を1行に集約する集計関数とは違い、各行を保ったまま前後の値などを計算できる関数
+                                </dd>
+                                <dt>OVER句</dt>
+                                <dd>ウィンドウ関数がどの範囲・並び順で計算するかを指定する句</dd>
+                                <dt>SAFE_DIVIDE</dt>
+                                <dd>
+                                    ゼロ除算が起きてもエラーにせず<code>NULL</code>を返す安全な割り算関数
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 1 ===================== -->
+                <section id="task1">
+                    <div class="task-head">
+                        <span class="num">01</span>
+                        <h2>全世界の確定症例数の合計</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >指定した日付における、全世界の<code>cumulative_confirmed</code>を1行に集計するクエリです。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-terminal-2"></i>task1.sql</div>
+                        <pre><code><span class="tok-kw">SELECT</span>
+  <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> total_cases_worldwide
+<span class="tok-kw">FROM</span>
+  <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+<span class="tok-kw">WHERE</span>
+  date = <span class="tok-ph">"&lt;Date&gt;"</span>
+  <span class="tok-cm">-- date は "YYYY-MM-DD" 形式の文字列リテラルとして渡す</span></code></pre>
+                    </div>
+
+                    <p>
+                        <strong>処理の流れ：</strong>
+                        <code>WHERE date = "&lt;Date&gt;"</code
+                        >で対象日の行だけに絞り込み、全行の<code>cumulative_confirmed</code>を<code>SUM</code>で合計します。
+                    </p>
+
+                    <div class="callout callout--tip">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong>実務コラム：</strong>Step
+                                1で説明した通り、このWHERE句には地域粒度の絞り込みが入っていないため、国・州・郡レベルの行がすべて合算されます。ラボの採点はこの単純な合計を期待値としているため、このまま提出して問題ありません。自社のダッシュボードなど実務でこのデータセットを使う場合は、<code
+                                    >subregion1_name IS NULL AND subregion2_name IS NULL</code
+                                >を加えて国レベルの行だけに絞り込むほうが安全です。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 2 ===================== -->
+                <section id="task2">
+                    <div class="task-head">
+                        <span class="num">02</span>
+                        <h2>被害が大きい地域を特定する</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >アメリカ国内で、指定した死亡者数を超えた州がいくつあるかを数えるクエリです。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-terminal-2"></i>task2.sql</div>
+                        <pre><code><span class="tok-kw">SELECT</span>
+  <span class="tok-fn">COUNT</span>(*) <span class="tok-kw">AS</span> count_of_states
+<span class="tok-kw">FROM</span> (
+  <span class="tok-kw">SELECT</span>
+    subregion1_name <span class="tok-kw">AS</span> state,
+    <span class="tok-fn">SUM</span>(cumulative_deceased) <span class="tok-kw">AS</span> death_count
+  <span class="tok-kw">FROM</span>
+    <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+  <span class="tok-kw">WHERE</span>
+    country_name = <span class="tok-str">"United States of America"</span>
+    <span class="tok-kw">AND</span> date = <span class="tok-ph">"&lt;Date&gt;"</span>
+    <span class="tok-kw">AND</span> subregion1_name <span class="tok-kw">IS NOT NULL</span>  <span class="tok-cm">-- 国全体の1行を除外する</span>
+  <span class="tok-kw">GROUP BY</span>
+    subregion1_name
+)
+<span class="tok-kw">WHERE</span>
+  death_count &gt; <span class="tok-ph">&lt;Death Count&gt;</span></code></pre>
+                    </div>
+
+                    <p><strong>処理の流れ：</strong></p>
+                    <ol>
+                        <li>
+                            内側のサブクエリで州ごとに<code>cumulative_deceased</code>を集計し<code>death_count</code>を作る
+                        </li>
+                        <li>
+                            <code>subregion1_name IS NOT NULL</code
+                            >で国レベルの合計行を弾く。忘れると「51件目の州」として国全体の行が混ざり件数がずれる
+                        </li>
+                        <li>
+                            外側の<code>WHERE death_count &gt; &lt;Death Count&gt;</code
+                            >でしきい値を超えた州だけを残す
+                        </li>
+                        <li><code>COUNT(*)</code>で残った州の件数を数える</li>
+                    </ol>
+
+                    <div class="callout callout--tip">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <code>country_code = "US"</code>ではなく<code
+                                    >country_name = "United States of America"</code
+                                >を条件に使っています。どちらのカラムで絞り込んでいるかは常に意識しておくとよい習慣です。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 3 ===================== -->
+                <section id="task3">
+                    <div class="task-head">
+                        <span class="num">03</span>
+                        <h2>ホットスポットを特定する</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >アメリカ国内で、指定した確定症例数を超えた州を、症例数が多い順に一覧表示するクエリです。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-terminal-2"></i>task3.sql</div>
+                        <pre><code><span class="tok-kw">SELECT</span>
+  subregion1_name <span class="tok-kw">AS</span> state,
+  <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> total_confirmed_cases
+<span class="tok-kw">FROM</span>
+  <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+<span class="tok-kw">WHERE</span>
+  country_code = <span class="tok-str">"US"</span>
+  <span class="tok-kw">AND</span> date = <span class="tok-ph">"&lt;Date&gt;"</span>
+  <span class="tok-kw">AND</span> subregion1_name <span class="tok-kw">IS NOT NULL</span>
+<span class="tok-kw">GROUP BY</span>
+  subregion1_name
+<span class="tok-kw">HAVING</span>
+  total_confirmed_cases &gt; <span class="tok-ph">&lt;Confirmed Cases&gt;</span>
+<span class="tok-kw">ORDER BY</span>
+  total_confirmed_cases <span class="tok-kw">DESC</span></code></pre>
+                    </div>
+
+                    <div class="callout callout--tip">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout__body">
+                            <p>
+                                タスク2ではサブクエリ、タスク3では<code>HAVING</code>を使いました。どちらも「集計後の値で絞り込む」という同じ目的のための書き方の違いです。今回はこの後さらに計算を続けないので、<code>HAVING</code>のほうが行数の少ないシンプルな書き方になります。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 4 ===================== -->
+                <section id="task4">
+                    <div class="task-head">
+                        <span class="num">04</span>
+                        <h2>致死率（Case-Fatality Ratio）を計算する</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i>イタリアの指定した月について、（累積死亡者数 ÷
+                        累積確定症例数）× 100 を計算するクエリです。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-terminal-2"></i>task4.sql</div>
+                        <pre><code><span class="tok-kw">SELECT</span>
+  <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> total_confirmed_cases,
+  <span class="tok-fn">SUM</span>(cumulative_deceased) <span class="tok-kw">AS</span> total_deaths,
+  <span class="tok-fn">SAFE_DIVIDE</span>(<span class="tok-fn">SUM</span>(cumulative_deceased), <span class="tok-fn">SUM</span>(cumulative_confirmed)) * 100 <span class="tok-kw">AS</span> case_fatality_ratio
+<span class="tok-kw">FROM</span>
+  <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+<span class="tok-kw">WHERE</span>
+  country_name = <span class="tok-str">"Italy"</span>
+  <span class="tok-kw">AND</span> date <span class="tok-kw">BETWEEN</span> <span class="tok-ph">"&lt;Monthの初日, 例: 2020-04-01&gt;"</span> <span class="tok-kw">AND</span> <span class="tok-ph">"&lt;Monthの末日, 例: 2020-04-30&gt;"</span></code></pre>
+                    </div>
+
+                    <div class="callout callout--tip">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong>月末日を手で数える手間を減らしたい場合：</strong
+                                >閏年の2月など月末日を間違えやすいケースがあります。<code
+                                    >EXTRACT(YEAR FROM date)</code
+                                >と<code>EXTRACT(MONTH FROM date)</code
+                                >で絞り込めば、月末日を意識せずに書けます。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head">
+                            <i class="ti ti-terminal-2"></i>task4_alt.sql（EXTRACTを使う代替案）
+                        </div>
+                        <pre><code><span class="tok-kw">SELECT</span>
+  <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> total_confirmed_cases,
+  <span class="tok-fn">SUM</span>(cumulative_deceased) <span class="tok-kw">AS</span> total_deaths,
+  <span class="tok-fn">SAFE_DIVIDE</span>(<span class="tok-fn">SUM</span>(cumulative_deceased), <span class="tok-fn">SUM</span>(cumulative_confirmed)) * 100 <span class="tok-kw">AS</span> case_fatality_ratio
+<span class="tok-kw">FROM</span>
+  <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+<span class="tok-kw">WHERE</span>
+  country_name = <span class="tok-str">"Italy"</span>
+  <span class="tok-kw">AND</span> <span class="tok-fn">EXTRACT</span>(<span class="tok-kw">YEAR FROM</span> date) = <span class="tok-ph">&lt;対象年, 例: 2020&gt;</span>
+  <span class="tok-kw">AND</span> <span class="tok-fn">EXTRACT</span>(<span class="tok-kw">MONTH FROM</span> date) = <span class="tok-ph">&lt;対象月の数字, 例: 4&gt;</span></code></pre>
+                    </div>
+
+                    <div class="callout callout--glossary">
+                        <i class="ti ti-book-2"></i>
+                        <div class="callout__body">
+                            <strong>このセクションで登場した用語</strong>
+                            <dl>
+                                <dt>EXTRACT</dt>
+                                <dd>日付や時刻の値から年・月・日などの一部だけを取り出す関数</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 5 ===================== -->
+                <section id="task5">
+                    <div class="task-head">
+                        <span class="num">05</span>
+                        <h2>しきい値を超えた特定の日を探す</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >イタリアの累積死亡者数が、指定したしきい値を初めて超えた日付を1件だけ返すクエリです。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-terminal-2"></i>task5.sql</div>
+                        <pre><code><span class="tok-kw">SELECT</span>
+  date
+<span class="tok-kw">FROM</span>
+  <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+<span class="tok-kw">WHERE</span>
+  country_name = <span class="tok-str">"Italy"</span>
+  <span class="tok-kw">AND</span> cumulative_deceased &gt; <span class="tok-ph">&lt;Death Count&gt;</span>
+<span class="tok-kw">ORDER BY</span>
+  date <span class="tok-kw">ASC</span>
+<span class="tok-kw">LIMIT</span> 1</code></pre>
+                    </div>
+
+                    <div class="callout callout--warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong
+                                    >なぜ<code>LIMIT 1</code
+                                    >だけで安全に「最初の日」が取れるのか。</strong
+                                ><code>cumulative_deceased</code
+                                >は累積値なので、通常は日付が進むにつれて単調に増加（または横ばい）します。しきい値を超えた日付を昇順に並べて先頭を取れば、それが最初に超えた日になります。ただし実データでは、報告方法の見直しなどにより過去の値が下方修正され、累積値が一時的に前日を下回るケースもゼロではありません。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout callout--glossary">
+                        <i class="ti ti-book-2"></i>
+                        <div class="callout__body">
+                            <strong>このセクションで登場した用語</strong>
+                            <dl>
+                                <dt>単調増加</dt>
+                                <dd>
+                                    値が時間とともに減ることなく、増える・または変わらない、を繰り返す性質
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 6 ===================== -->
+                <section id="task6">
+                    <div class="task-head">
+                        <span class="num">06</span>
+                        <h2>新規症例数がゼロだった日を数える（壊れたクエリの修正）</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >インドで、前日から確定症例数が増えなかった日が何日あったかを数えます。ただし、お題として渡されたクエリはそのままでは実行できません。
+                    </div>
+
+                    <div class="callout callout--warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong>壊れたクエリのどこが問題か。</strong
+                                >お題のSQLは<code>india_previous_day_comparison</code>というCTEを作るところまでしか書かれておらず、そのCTEを実際に読み出す外側の<code>SELECT</code>文がありません。CTEは定義しただけでは何も返さないため、このままではクエリが完結しません。加えて<code
+                                    >date between '' and ''</code
+                                >も空文字列のままなので、実際の日付に差し替える必要があります。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head">
+                            <i class="ti ti-terminal-2"></i>task6_fixed.sql
+                        </div>
+                        <pre><code><span class="tok-kw">WITH</span> india_cases_by_date <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    date,
+    <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> cases
+  <span class="tok-kw">FROM</span>
+    <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+  <span class="tok-kw">WHERE</span>
+    country_name = <span class="tok-str">"India"</span>
+    <span class="tok-kw">AND</span> date <span class="tok-kw">BETWEEN</span> <span class="tok-ph">"&lt;Start date&gt;"</span> <span class="tok-kw">AND</span> <span class="tok-ph">"&lt;Close date&gt;"</span>
+  <span class="tok-kw">GROUP BY</span>
+    date
+  <span class="tok-kw">ORDER BY</span>
+    date <span class="tok-kw">ASC</span>
+)
+
+, india_previous_day_comparison <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    date,
+    cases,
+    <span class="tok-fn">LAG</span>(cases) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> date) <span class="tok-kw">AS</span> previous_day,
+    cases - <span class="tok-fn">LAG</span>(cases) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> date) <span class="tok-kw">AS</span> net_new_cases
+  <span class="tok-kw">FROM</span>
+    india_cases_by_date
+)
+
+<span class="tok-kw">SELECT</span>
+  <span class="tok-fn">COUNT</span>(date) <span class="tok-kw">AS</span> days_with_zero_net_new_cases
+<span class="tok-kw">FROM</span>
+  india_previous_day_comparison
+<span class="tok-kw">WHERE</span>
+  net_new_cases = 0</code></pre>
+                    </div>
+
+                    <p>
+                        このクエリは「CTEを段階的につないでいく」という、この後のタスク7・9でも繰り返し使うパターンの基本形です。下の図はそのパイプラインの流れを一般化したものです。
+                    </p>
+                    <div class="diagram" data-diagram="ctePipeline">
+                        <span class="diagram-loading">図を読み込み中です…</span>
+                    </div>
+
+                    <div class="callout callout--tip">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <code>LAG</code
+                                >は先頭の行（対象期間の一番古い日）では「1つ前の行」が存在しないため<code>NULL</code>を返します。<code
+                                    >NULL - 数値</code
+                                >の計算結果も<code>NULL</code>になるため、<code
+                                    >net_new_cases = 0</code
+                                >の判定には引っかからず、エラーにもならずに自然に除外されます。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout callout--glossary">
+                        <i class="ti ti-book-2"></i>
+                        <div class="callout__body">
+                            <strong>このセクションで登場した用語</strong>
+                            <dl>
+                                <dt>CTE（共通テーブル式）</dt>
+                                <dd>
+                                    <code>WITH 名前 AS (...)</code
+                                    >の形でクエリの中に一時的な名前付きテーブルを定義する仕組み。複雑な計算を段階に分けて書けるため可読性が上がる
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 7 ===================== -->
+                <section id="task7">
+                    <div class="task-head">
+                        <span class="num">07</span>
+                        <h2>倍加速度（Doubling Rate）を調べる</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >アメリカで、指定した期間中に前日比で一定パーセント以上増えた日を一覧にします。タスク6のCTEパイプラインに、増加率の計算を1段追加します。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-terminal-2"></i>task7.sql</div>
+                        <pre><code><span class="tok-kw">WITH</span> us_cases_by_date <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    date,
+    <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> cases
+  <span class="tok-kw">FROM</span>
+    <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+  <span class="tok-kw">WHERE</span>
+    country_name = <span class="tok-str">"United States of America"</span>
+    <span class="tok-kw">AND</span> date <span class="tok-kw">BETWEEN</span> <span class="tok-str">"2020-03-22"</span> <span class="tok-kw">AND</span> <span class="tok-str">"2020-04-20"</span>
+  <span class="tok-kw">GROUP BY</span>
+    date
+  <span class="tok-kw">ORDER BY</span>
+    date <span class="tok-kw">ASC</span>
+)
+
+, us_previous_day_comparison <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    date,
+    cases,
+    <span class="tok-fn">LAG</span>(cases) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> date) <span class="tok-kw">AS</span> previous_day,
+    <span class="tok-fn">SAFE_DIVIDE</span>(
+      cases - <span class="tok-fn">LAG</span>(cases) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> date),
+      <span class="tok-fn">LAG</span>(cases) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> date)
+    ) * 100 <span class="tok-kw">AS</span> percentage_increase
+  <span class="tok-kw">FROM</span>
+    us_cases_by_date
+)
+
+<span class="tok-kw">SELECT</span>
+  date <span class="tok-kw">AS</span> Date,
+  cases <span class="tok-kw">AS</span> Confirmed_Cases_On_Day,
+  previous_day <span class="tok-kw">AS</span> Confirmed_Cases_Previous_Day,
+  percentage_increase <span class="tok-kw">AS</span> Percentage_Increase_In_Cases
+<span class="tok-kw">FROM</span>
+  us_previous_day_comparison
+<span class="tok-kw">WHERE</span>
+  percentage_increase &gt; <span class="tok-ph">&lt;Limit Value&gt;</span></code></pre>
+                    </div>
+
+                    <p>
+                        処理の流れは前掲の「CTEパイプライン」の図とほぼ同じです。違いは2段目のCTEで、引き算だけでなく割り算してパーセントに換算する計算を加えている点です。
+                    </p>
+
+                    <div class="callout callout--warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <strong>ここで<code>SAFE_DIVIDE</code>を使う理由：</strong
+                                >パンデミック初期の日付を対象期間に含めると、前日の累積症例数が実際に0件というケースがあり得ます。通常の<code>/</code>演算子だとゼロ除算でクエリがエラーになりますが、<code>SAFE_DIVIDE</code>ならエラーにならず、その行の値が<code>NULL</code>になるだけで処理が続行されます。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 8 ===================== -->
+                <section id="task8">
+                    <div class="task-head">
+                        <span class="num">08</span>
+                        <h2>回復率（Recovery Rate）ランキングを作る</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >指定した日付時点で、確定症例数が5万件を超える国だけを対象に、回復率が高い順に上位いくつかを表示します。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-terminal-2"></i>task8.sql</div>
+                        <pre><code><span class="tok-kw">WITH</span> cases_by_country <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    country_name <span class="tok-kw">AS</span> country,
+    <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> confirmed_cases,
+    <span class="tok-fn">SUM</span>(cumulative_recovered) <span class="tok-kw">AS</span> recovered_cases
+  <span class="tok-kw">FROM</span>
+    <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+  <span class="tok-kw">WHERE</span>
+    date = <span class="tok-str">"2020-05-10"</span>
+  <span class="tok-kw">GROUP BY</span>
+    country_name
+)
+
+<span class="tok-kw">SELECT</span>
+  country,
+  recovered_cases,
+  confirmed_cases,
+  <span class="tok-fn">SAFE_DIVIDE</span>(recovered_cases, confirmed_cases) * 100 <span class="tok-kw">AS</span> recovery_rate
+<span class="tok-kw">FROM</span>
+  cases_by_country
+<span class="tok-kw">WHERE</span>
+  confirmed_cases &gt; 50000
+<span class="tok-kw">ORDER BY</span>
+  recovery_rate <span class="tok-kw">DESC</span>
+<span class="tok-kw">LIMIT</span> <span class="tok-ph">&lt;Limit Value&gt;</span></code></pre>
+                    </div>
+
+                    <div class="callout callout--tip">
+                        <i class="ti ti-info-circle"></i>
+                        <div class="callout__body">
+                            <p>
+                                <code>ORDER BY</code>の前に<code
+                                    >WHERE confirmed_cases &gt; 50000</code
+                                >を適用することで、症例数が少ないのに回復率だけ100%に近いような小規模な国がランキング上位に紛れ込むのを防いでいます。この順序（先に絞り込み、後で並べ替え）は、集計を伴うランキングクエリで繰り返し使えるパターンです。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 9 ===================== -->
+                <section id="task9">
+                    <div class="task-head">
+                        <span class="num">09</span>
+                        <h2>CDGR（累積日次成長率）を計算する（壊れたクエリの修正）</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i
+                        >フランスで最初の症例が報告された日から指定した日までの、1日あたりの複利的な増加率（CDGR）を計算します。お題のクエリには3か所の不具合があります。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head"><i class="ti ti-function"></i>CDGRの定義</div>
+                        <pre><code>CDGR = (最終日の症例数 / 初日の症例数) ^ (1 / 経過日数) - 1</code></pre>
+                    </div>
+
+                    <p>
+                        下の図は、お題のクエリに含まれる3つの不具合と、その修正内容を順番に示したものです。
+                    </p>
+                    <div class="diagram" data-diagram="debugFlow">
+                        <span class="diagram-loading">図を読み込み中です…</span>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>不具合</th>
+                                <th>内容</th>
+                                <th>修正</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1. 構文エラー</td>
+                                <td><code>LEAD(total_cases)</code>に<code>OVER</code>句がない</td>
+                                <td><code>LEAD(total_cases) OVER (ORDER BY date)</code>に修正</td>
+                            </tr>
+                            <tr>
+                                <td>2. 未入力の値</td>
+                                <td><code>date IN ('2020-01-24', '')</code>の2番目が空文字</td>
+                                <td>最終日の日付リテラルを補完</td>
+                            </tr>
+                            <tr>
+                                <td>3. 関数の選び間違い</td>
+                                <td><code>SQRT</code>は引数を1つしか取らない</td>
+                                <td>べき乗計算には2引数の<code>POWER(底, 指数)</code>を使う</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        不具合1は、Step
+                        2で説明した「ウィンドウ関数は必ずOVER句とセットで書く」というルール違反です（<a
+                            href="https://cloud.google.com/bigquery/docs/reference/standard-sql/navigation_functions"
+                            target="_blank"
+                            rel="noopener"
+                            >ナビゲーション関数リファレンス <i class="ti ti-external-link"></i></a
+                        >）。不具合3は、平方根と累乗という別の演算を混同したものです（<a
+                            href="https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions"
+                            target="_blank"
+                            rel="noopener"
+                            >数学関数リファレンス <i class="ti ti-external-link"></i></a
+                        >）。
+                    </p>
+
+                    <div class="code-card">
+                        <div class="code-card__head">
+                            <i class="ti ti-terminal-2"></i>task9_fixed.sql
+                        </div>
+                        <pre><code><span class="tok-kw">WITH</span> france_cases <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    date,
+    <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> total_cases
+  <span class="tok-kw">FROM</span>
+    <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+  <span class="tok-kw">WHERE</span>
+    country_name = <span class="tok-str">"France"</span>
+    <span class="tok-kw">AND</span> date <span class="tok-kw">IN</span> (<span class="tok-str">"2020-01-24"</span>, <span class="tok-ph">"&lt;最終日, 例: 2020-05-10&gt;"</span>)
+  <span class="tok-kw">GROUP BY</span>
+    date
+  <span class="tok-kw">ORDER BY</span>
+    date
+)
+
+, summary <span class="tok-kw">AS</span> (
+  <span class="tok-kw">SELECT</span>
+    total_cases <span class="tok-kw">AS</span> first_day_cases,
+    <span class="tok-fn">LEAD</span>(total_cases) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> date) <span class="tok-kw">AS</span> last_day_cases,
+    <span class="tok-fn">DATE_DIFF</span>(<span class="tok-fn">LEAD</span>(date) <span class="tok-kw">OVER</span> (<span class="tok-kw">ORDER BY</span> date), date, <span class="tok-kw">DAY</span>) <span class="tok-kw">AS</span> days_diff
+  <span class="tok-kw">FROM</span>
+    france_cases
+  <span class="tok-kw">LIMIT</span> 1
+)
+
+<span class="tok-kw">SELECT</span>
+  first_day_cases,
+  last_day_cases,
+  days_diff,
+  <span class="tok-fn">POWER</span>(<span class="tok-fn">SAFE_DIVIDE</span>(last_day_cases, first_day_cases), <span class="tok-fn">SAFE_DIVIDE</span>(1, days_diff)) - 1 <span class="tok-kw">AS</span> cdgr
+<span class="tok-kw">FROM</span>
+  summary</code></pre>
+                    </div>
+
+                    <p><strong>処理の流れ：</strong></p>
+                    <ol>
+                        <li><code>france_cases</code>CTEで、初日と最終日、2行だけを取り出す</li>
+                        <li>
+                            <code>summary</code
+                            >CTEで、<code>LEAD</code>を使って「1行目に初日、2行目に最終日」という2行を1行にまとめ、<code>DATE_DIFF</code>で経過日数も同じ行に並べる
+                        </li>
+                        <li><code>LIMIT 1</code>で、まとめ終わった1行だけを残す</li>
+                        <li>最後の<code>SELECT</code>で<code>POWER</code>を使ってCDGRを計算する</li>
+                    </ol>
+
+                    <div class="callout callout--glossary">
+                        <i class="ti ti-book-2"></i>
+                        <div class="callout__body">
+                            <strong>このセクションで登場した用語</strong>
+                            <dl>
+                                <dt>DATE_DIFF</dt>
+                                <dd>
+                                    2つの日付の間の日数を返す関数（<a
+                                        href="https://cloud.google.com/bigquery/docs/reference/standard-sql/date_functions"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >日付関数リファレンス</a
+                                    >）
+                                </dd>
+                                <dt>POWER(底, 指数)</dt>
+                                <dd>底を指数乗した値を返す関数</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== TASK 10 ===================== -->
+                <section id="task10">
+                    <div class="task-head">
+                        <span class="num">10</span>
+                        <h2>Looker Studioでレポートを作成する</h2>
+                    </div>
+                    <div class="task-summary">
+                        <i class="ti ti-bulb"></i>BigQueryのカスタムクエリをLooker Studio（旧Data
+                        Studio）に接続し、アメリカの確定症例数と死亡者数の時系列グラフを作ります。
+                    </div>
+
+                    <div class="code-card">
+                        <div class="code-card__head">
+                            <i class="ti ti-terminal-2"></i>task10.sql
+                        </div>
+                        <pre><code><span class="tok-kw">SELECT</span>
+  date,
+  <span class="tok-fn">SUM</span>(cumulative_confirmed) <span class="tok-kw">AS</span> country_cases,
+  <span class="tok-fn">SUM</span>(cumulative_deceased) <span class="tok-kw">AS</span> country_deaths
+<span class="tok-kw">FROM</span>
+  <span class="tok-tbl">`bigquery-public-data.covid19_open_data.covid19_open_data`</span>
+<span class="tok-kw">WHERE</span>
+  country_name = <span class="tok-str">"United States of America"</span>
+  <span class="tok-kw">AND</span> date <span class="tok-kw">BETWEEN</span> <span class="tok-ph">"&lt;Date Rangeの開始日&gt;"</span> <span class="tok-kw">AND</span> <span class="tok-ph">"&lt;Date Rangeの終了日&gt;"</span>
+<span class="tok-kw">GROUP BY</span>
+  date
+<span class="tok-kw">ORDER BY</span>
+  date</code></pre>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>手順</th>
+                                <th>操作内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    BigQueryのクエリエディタで上記クエリを実行し、正しく結果が返ることを確認する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    結果画面から「Explore Data」→「Explore with Looker
+                                    Studio」（手順書では「Explore with Data Studio」）を選ぶ
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Looker StudioにBigQueryへのアクセスを許可（承認）する</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    初回ログイン時に失敗する場合は「空のレポート」を作成して利用規約に同意したうえで、BigQuery側から改めて接続し直す
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    レポート編集画面で「グラフを追加」から「時系列グラフ」を選ぶ
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>
+                                    指標（Metric）に<code>country_cases</code>と<code>country_deaths</code>の両方を追加する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>「保存」をクリックして変更を確定する</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="callout callout--warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div class="callout__body">
+                            <p>
+                                ラボの指示では「BigQueryのExplore with Data
+                                Studioオプションは使わないこと」となっている場合があります。必ず自分のラボの手順書の指示を優先してください（<a
+                                    href="https://cloud.google.com/looker/docs/studio/connect-to-google-bigquery"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Looker StudioとBigQueryの接続 公式ドキュメント
+                                    <i class="ti ti-external-link"></i></a
+                                >）。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== CHECKLIST ===================== -->
+                <section id="checklist">
+                    <div class="section__kicker">SUMMARY</div>
+                    <h2>提出前チェックリスト</h2>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-square-check"></i
+                            >クエリ中のすべての<code>&lt;プレースホルダー&gt;</code>を、自分のラボ画面に表示された実際の値に置き換えたか
+                        </li>
+                        <li>
+                            <i class="ti ti-square-check"></i
+                            ><code>country_name</code
+                            >と<code>country_code</code>のどちらで絞り込むべきタスクか、混同していないか
+                        </li>
+                        <li>
+                            <i class="ti ti-square-check"></i>州・郡レベルの集計をするタスクで<code
+                                >subregion1_name IS NOT NULL</code
+                            >の絞り込みを入れたか
+                        </li>
+                        <li>
+                            <i class="ti ti-square-check"></i
+                            >集計後の値を条件にするときは<code>WHERE</code>ではなく<code>HAVING</code>かサブクエリ／CTEを使っているか
+                        </li>
+                        <li>
+                            <i class="ti ti-square-check"></i><code>LAG</code> /
+                            <code>LEAD</code>に<code>OVER (ORDER BY ...)</code>を付け忘れていないか
+                        </li>
+                        <li>
+                            <i class="ti ti-square-check"></i
+                            >割り算を含むタスクで、ゼロ除算対策（<code>SAFE_DIVIDE</code>）を検討したか
+                        </li>
+                        <li>
+                            <i class="ti ti-square-check"></i
+                            >タスク10では、手順書の指示とこのガイドの説明のどちらを優先すべきか確認したか
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- ===================== REFERENCES ===================== -->
+                <section id="references">
+                    <div class="section__kicker">SOURCES</div>
+                    <h2>参考文献・出典</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>用途</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ラボ本体（Google Cloud Skills Boost）</td>
+                                <td>このガイドが解説する課題ラボ本体</td>
+                                <td>
+                                    <a
+                                        href="https://www.skills.google/course_templates/623/labs/629091"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >skills.google/course_templates/623/labs/629091</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>covid-19-open-data 公式リポジトリ</td>
+                                <td>集計レベル・subregionカラムの意味に関する一次情報</td>
+                                <td>
+                                    <a
+                                        href="https://github.com/GoogleCloudPlatform/covid-19-open-data"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >github.com/GoogleCloudPlatform/covid-19-open-data</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQuery標準SQL: 関数一覧</td>
+                                <td>GoogleSQLの名称に関する一次情報</td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/functions-all"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/.../functions-all</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQuery標準SQL: ウィンドウ関数の呼び出し方</td>
+                                <td>OVER句・ウィンドウ関数全般の構文リファレンス</td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/reference/standard-sql/analytic-function-concepts"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >cloud.google.com/.../analytic-function-concepts</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQuery標準SQL: ナビゲーション関数</td>
+                                <td>LAG / LEAD関数の引数・挙動</td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/reference/standard-sql/navigation_functions"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >cloud.google.com/.../navigation_functions</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQuery標準SQL: 日付関数</td>
+                                <td>DATE_DIFFの構文と算出ロジック</td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/reference/standard-sql/date_functions"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >cloud.google.com/.../date_functions</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQuery標準SQL: 数学関数</td>
+                                <td>POWER / SAFE_DIVIDEなどの一次情報</td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >cloud.google.com/.../mathematical_functions</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQueryクエリプランと実行タイムライン</td>
+                                <td>自己結合よりウィンドウ関数を推奨する根拠</td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/bigquery/docs/query-plan-explanation"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/.../query-plan-explanation</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQuery関数のベストプラクティス</td>
+                                <td>エラー処理関数の利用指針</td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/bigquery/docs/best-practices-performance-functions"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/.../best-practices-performance-functions</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Looker StudioとBigQueryの接続</td>
+                                <td>カスタムクエリでの接続手順（公式）</td>
+                                <td>
+                                    <a
+                                        href="https://cloud.google.com/looker/docs/studio/connect-to-google-bigquery"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >cloud.google.com/looker/docs/studio/connect-to-google-bigquery</a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <footer>
+                    <p>
+                        本ガイドはGoogle Cloud Skills Boostの公開ラボ「Derive Insights from BigQuery
+                        Data」の学習補助として作成された非公式解説です。ラボ本体の手順・採点基準は予告なく変更される場合があるため、最新の指示は必ずラボ画面を優先してください。
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            const DIAGRAMS = {
+                step0: `flowchart TD
+A["BigQueryコンソールを開く"] --> B["covid19_open_data パブリックデータセットを追加する"]
+B --> C["タスク1から9のSQLクエリを順番に実行する"]
+C --> D{"Check my progressで採点する"}
+D -- "不合格" --> C
+D -- "合格" --> E["Looker StudioでBigQueryコネクタからカスタムクエリを接続する"]
+E --> F["確定症例数と死亡者数の時系列グラフを作成する"]
+F --> G["ラボ完了"]`,
+                granularity: `flowchart TD
+A["国レベルの行 country_nameのみで特定でき subregion1_nameはNULL"] --> B["州レベルの行 subregion1_nameに値が入り subregion2_nameはNULL"]
+B --> C["郡レベルの行 subregion1_nameと subregion2_nameの両方に値が入る"]`,
+                ctePipeline: `flowchart LR
+A["CTE1 SUMで日付ごとの合計値を集計する"] --> B["CTE2 LAG関数で1行前の日付の値を同じ行に並べる"]
+B --> C["同じ行の中で当日値と前日値を計算する"]
+C --> D["外側のSELECTでWHERE句により条件を満たす行だけを抽出する"]`,
+                debugFlow: `flowchart TD
+A["元のクエリを実行する"] --> B{"不具合1 LEADにOVER句がない"}
+B --> C["LEAD構文にOVER ORDER BY dateを追加する"]
+C --> D{"不具合2 date INの2番目が空文字"}
+D --> E["最終日の日付リテラルを補完する"]
+E --> F{"不具合3 SQRTは引数を1つしか取らない"}
+F --> G["べき乗計算にはPOWER関数を使うよう修正する"]
+G --> H["修正後のクエリでCDGRを計算する"]`,
+            };
+
+            function initSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const toggle = document.getElementById('sidebarToggle');
+                const overlay = document.getElementById('sidebarOverlay');
+                function close() {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('show');
+                }
+                toggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                    overlay.classList.toggle('show');
+                });
+                overlay.addEventListener('click', close);
+                document
+                    .querySelectorAll('.nav-link')
+                    .forEach((a) => a.addEventListener('click', close));
+            }
+
+            function initActiveNav() {
+                const links = document.querySelectorAll('.nav-link[data-target]');
+                const map = {};
+                links.forEach((a) => {
+                    map[a.getAttribute('data-target')] = a;
+                });
+                const sections = document.querySelectorAll('section[id]');
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            const link = map[entry.target.id];
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                links.forEach((a) => a.classList.remove('active'));
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+                sections.forEach((s) => observer.observe(s));
+            }
+
+            async function renderDiagrams() {
+                if (!window.mermaid) return;
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontSize: 16,
+                    flowchart: {
+                        useMaxWidth: false,
+                        htmlLabels: true,
+                        nodeSpacing: 45,
+                        rankSpacing: 45,
+                    },
+                    themeVariables: {
+                        background: '#0d1b2f',
+                        primaryColor: '#142943',
+                        primaryTextColor: '#eef2fb',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#7c9eff',
+                        secondaryColor: '#1b2f4d',
+                        tertiaryColor: '#0d1b2f',
+                        fontFamily: 'inherit',
+                        fontSize: '16px',
+                    },
+                });
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+                const targets = document.querySelectorAll('[data-diagram]');
+                for (const el of targets) {
+                    const key = el.getAttribute('data-diagram');
+                    const src = DIAGRAMS[key];
+                    if (!src) continue;
+                    try {
+                        const id = 'mmd-' + key + '-' + Math.random().toString(36).slice(2, 8);
+                        const result = await mermaid.render(id, src);
+                        el.innerHTML = result.svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) {
+                            // natural pixel width must be captured BEFORE the width attribute is removed,
+                            // otherwise the SVG has no intrinsic size left and stretches to fill the
+                            // flex container (which is what inflated the diagram text far past 1rem)
+                            let naturalWidth = parseFloat(svgEl.getAttribute('width'));
+                            const vb = svgEl.getAttribute('viewBox');
+                            if (!naturalWidth && vb) {
+                                const vbParts = vb.split(' ').map(Number);
+                                if (vbParts.length === 4) naturalWidth = vbParts[2];
+                            }
+                            svgEl.removeAttribute('width');
+                            svgEl.removeAttribute('height');
+                            if (vb) {
+                                const parts = vb.split(' ').map(Number);
+                                if (parts.length === 4) {
+                                    parts[3] = parts[3] + 15;
+                                    svgEl.setAttribute('viewBox', parts.join(' '));
+                                }
+                            }
+                            // shrink-only: render at natural size, never scaled up to fill the card
+                            svgEl.style.width = naturalWidth ? naturalWidth + 'px' : '100%';
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                        }
+                    } catch (e) {
+                        el.innerHTML =
+                            '<span class="diagram-error">図の描画に失敗しました。</span>';
+                        console.error('mermaid render error for', key, e);
+                    }
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                initSidebar();
+                initActiveNav();
+                renderDiagrams();
+            });
+        </script>
+    </body>
+</html>
