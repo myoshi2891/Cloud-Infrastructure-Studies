@@ -1,5 +1,6 @@
 # BigQuery × Apps Script × Connected Sheets 実践ガイド
-### 〜 Google Cloud Skills Boost チャレンジラボ攻略のためのベストプラクティス解説 〜
+
+**〜 Google Cloud Skills Boost チャレンジラボ攻略のためのベストプラクティス解説 〜**
 
 > 対象ラボ: [Google Cloud Skills Boost（元ラボページ）](https://www.skills.google/course_templates/737/labs/607137) [1]
 > 対象読者: BigQuery・Apps Script・Google Sheetsの連携を初めて行うインフラ／アプリケーションエンジニア
@@ -267,9 +268,20 @@ Google Sheets上でグラフを作成した後は、元データが更新され�
 
 ### 手順の流れ
 
-1. Google Sheetsを開き、新しい空白のスプレッドシートを作成する
-2. 左上のセルA1（1行目・A列）をクリックする
-3. `76 9th Ave, New York` という住所文字列を入力する
+1. Apps Scriptで新しいプロジェクトを開く
+2. エディタに次のコードを貼り付け、`createAddressSheet` を実行して権限を承認する
+3. 実行ログに出力されたURLを開き、新規ワークシートのセルA1に住所が入力されていることを確認する
+
+```javascript
+function createAddressSheet() {
+  const spreadsheet = SpreadsheetApp.create('Address Sheet');
+  const sheet = spreadsheet.getSheets()[0];
+
+  sheet.setName('Address');
+  sheet.getRange('A1').setValue('76 9th Ave, New York');
+  console.log(spreadsheet.getUrl());
+}
+```
 
 ### なぜここでApps Scriptの組み込みサービスが登場するのか
 

@@ -520,7 +520,7 @@
                     <div class="diagram-card">
                         <div id="diagram-overview" class="mermaid-target"></div>
                         <p class="diagram-caption">
-                            4タスクの全体アーキテクチャ（クリックで拡大されません。スクロールしてご覧ください）
+                            4タスクの全体アーキテクチャ
                         </p>
                     </div>
 
@@ -1013,10 +1013,22 @@ while (!queryResults.jobComplete) {
 
                     <h3>手順の流れ</h3>
                     <ol>
-                        <li>Google Sheetsを開き、新しい空白のスプレッドシートを作成する</li>
-                        <li>左上のセルA1（1行目・A列）をクリックする</li>
-                        <li><code>76 9th Ave, New York</code> という住所文字列を入力する</li>
+                        <li>Apps Scriptで新しいプロジェクトを開く</li>
+                        <li>
+                            エディタに次のコードを貼り付け、<code>createAddressSheet</code>
+                            を実行して権限を承認する
+                        </li>
+                        <li>実行ログに出力されたURLを開き、新規ワークシートのセルA1に住所が入力されていることを確認する</li>
                     </ol>
+
+                    <pre><code class="language-javascript">function createAddressSheet() {
+  const spreadsheet = SpreadsheetApp.create('Address Sheet');
+  const sheet = spreadsheet.getSheets()[0];
+
+  sheet.setName('Address');
+  sheet.getRange('A1').setValue('76 9th Ave, New York');
+  console.log(spreadsheet.getUrl());
+}</code></pre>
 
                     <h3>なぜここでApps Scriptの組み込みサービスが登場するのか</h3>
                     <p>

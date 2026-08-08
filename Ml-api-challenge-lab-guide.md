@@ -1,5 +1,6 @@
 # Machine Learning APIs チャレンジラボ 攻略ガイド
-### 〜 Vision API × Translation API × BigQuery によるサイン画像テキスト抽出パイプライン 〜
+
+**〜 Vision API × Translation API × BigQuery によるサイン画像テキスト抽出パイプライン 〜**
 
 対象ラボ: [Integrate with Machine Learning APIs: Challenge Lab](https://www.skills.google/course_templates/630/labs/612231)
 
