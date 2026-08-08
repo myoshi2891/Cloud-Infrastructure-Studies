@@ -4,15 +4,13 @@
     border-radius: 12px;
     padding: 1.5rem;
     margin: 1.5rem 0;
-    /* スクロールコンテナは外側の .diagram-wrap が担う。
-       ここで overflow:auto にすると二重スクロールになりSVGが縮小される。 */
-    overflow: visible;
+    overflow-x: auto;
 }
 
 .mermaidTarget {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
 }
 
 .mermaidTarget :global(svg) {

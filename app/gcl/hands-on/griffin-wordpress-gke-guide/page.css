@@ -443,7 +443,7 @@
     padding: 20px;
     margin: 16px 0 24px 0;
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     overflow-x: auto;
 }
 
