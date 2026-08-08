@@ -4,6 +4,7 @@ import { memo } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
+import styles from './page.module.css';
 
 const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
@@ -19,7 +20,7 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
 
 export function CcnaCiscoPlatformsDevelopmentGuide() {
     return (
-        <div className="ccna-platforms-dev-page">
+        <div className={styles.ccnaPlatformsDevPage}>
             <div className="layout">
                 <NavBar />
 
@@ -41,6 +42,8 @@ export function CcnaCiscoPlatformsDevelopmentGuide() {
                             <strong>本ガイドについて：</strong> 2026年2月3日より、本試験は旧称「DevNet Associate（DEVASC）」から「CCNA Automation」へ名称変更されましたが、試験内容そのものは変更されていません。本ガイドは公式ブループリントに準拠した最新の製品名称（Secure Endpoint、XDRなど）を使用しつつ、旧名称（AMP、ThreatGridなど）にも適宜言及します。
                         </div>
                     </header>
+
+                    <div className="article-body">
 
                     {/* ============ はじめに ============ */}
                     <section className="section" id="intro">
@@ -833,6 +836,7 @@ export function CcnaCiscoPlatformsDevelopmentGuide() {
                             © CCNA Automation 学習ガイドシリーズ／本ページは学習目的の非公式解説であり、Cisco Systems, Inc. の公式資料ではありません。
                         </p>
                     </footer>
+                    </div>
                 </main>
             </div>
         </div>

@@ -77,6 +77,17 @@
     --color-guide-meta: #5f7291;
     --color-guide-hero-start: #ffffff;
 
+    /* CCNA Platforms and Development guide (source-design fidelity) */
+    --color-ccna-platforms-surface-1: #0d1b2c;
+    --color-ccna-platforms-surface-2: #101f34;
+    --color-ccna-platforms-code-background: #0a1424;
+    --color-ccna-platforms-border-soft: rgba(124, 158, 255, 0.1);
+    --color-ccna-platforms-accent-secondary: #ffd479;
+    --color-ccna-platforms-accent-secondary-soft: rgba(255, 212, 121, 0.14);
+    --color-ccna-platforms-foreground: #e8edf7;
+    --color-ccna-platforms-foreground-muted: #9aa8c4;
+    --color-ccna-platforms-foreground-faint: #6b7a99;
+
     --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
     --color-theme-cdl-fg: hsl(160 70% 65%);
 
@@ -146,6 +157,8 @@
     --font-display: 'DM Sans', sans-serif;
     --font-body: 'Noto Sans JP', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    --font-ccna-platforms-sans: 'Noto Sans JP', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-ccna-platforms-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 
     /* サイトヘッダーの高さ */
     --header-h: 48px;
@@ -160,6 +173,8 @@
     --radius-md: 10px;
     --radius-lg: 16px;
     --radius-xl: 24px;
+    --radius-ccna-platforms: 14px;
+    --spacing-ccna-platforms-sidebar: 300px;
 
 }
 

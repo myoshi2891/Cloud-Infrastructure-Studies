@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { CcnaCiscoPlatformsDevelopmentGuide } from './CcnaCiscoPlatformsDevelopmentGuide';
-import './page.css';
 
 export const metadata: Metadata = {
     title: 'Cisco Platforms and Development 徹底解説ガイド | CCNA Automation',
