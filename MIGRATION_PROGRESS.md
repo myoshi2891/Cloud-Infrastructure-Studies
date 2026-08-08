@@ -7,7 +7,30 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-08-08T22:49:00.000Z
+- **最終更新日時(UTC):** 2026-08-08T15:10:00.000Z
+
+## 2026-08-08: Cisco「CCNA Automation ドメイン3.0 Cisco Platforms and Development 徹底解説ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-automation-cisco-platforms-and-development.html` (および `.md`)（静的HTML・1864行・10個のMermaid図・6個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcnaCiscoPlatformsDevelopmentGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-cisco-platforms-and-development` ルートへ完全移行する。文章・表・10個のMermaid図・7個のコードブロック・16個の参考文献の一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(cisco): add failing tests for CCNA automation cisco platforms and development guide migration` (`__tests__/cisco/ccna/automation-cisco-platforms-and-development/page.test.tsx` 失敗テストの作成、原本ファイルの `archive/Cisco/` への `git mv` 移動)
+- [x] **Step 2 (Green)**: `feat(cisco): implement CCNA automation cisco platforms and development guide to pass tests` (`page.tsx`, `CcnaCiscoPlatformsDevelopmentGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装)
+- [x] **Step 3 (Refactor / Integration & Nav & Archive)**: `refactor(cisco): integrate CCNA automation cisco platforms and development guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、ドキュメント更新)
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-cisco-platforms-and-development/page.tsx](app/cisco/ccna/automation-cisco-platforms-and-development/page.tsx)
+- [app/cisco/ccna/automation-cisco-platforms-and-development/CcnaCiscoPlatformsDevelopmentGuide.tsx](app/cisco/ccna/automation-cisco-platforms-and-development/CcnaCiscoPlatformsDevelopmentGuide.tsx)
+- [app/cisco/ccna/automation-cisco-platforms-and-development/NavBar.tsx](app/cisco/ccna/automation-cisco-platforms-and-development/NavBar.tsx)
+- [app/cisco/ccna/automation-cisco-platforms-and-development/constants.ts](app/cisco/ccna/automation-cisco-platforms-and-development/constants.ts)
+- [app/cisco/ccna/automation-cisco-platforms-and-development/page.css](app/cisco/ccna/automation-cisco-platforms-and-development/page.css)
+- [__tests__/cisco/ccna/automation-cisco-platforms-and-development/page.test.tsx](__tests__/cisco/ccna/automation-cisco-platforms-and-development/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-automation-cisco-platforms-and-development.html](archive/Cisco/html/ccna/Ccna-automation-cisco-platforms-and-development.html)
+- [archive/Cisco/md/ccna/Ccna-automation-cisco-platforms-and-development.md](archive/Cisco/md/ccna/Ccna-automation-cisco-platforms-and-development.md)
 
 ## 2026-08-08: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」移行 (完了)
 
