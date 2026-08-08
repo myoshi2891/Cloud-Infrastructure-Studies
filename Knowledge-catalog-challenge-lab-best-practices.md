@@ -1,4 +1,5 @@
 # Knowledge Catalog チャレンジラボ攻略ガイド
+
 ## Lake / Zone / Asset / Aspect Type 実装のベストプラクティス
 
 対象ラボ: [Create and Add Aspects to Knowledge Catalog Assets](https://www.skills.google/course_templates/726/labs/629895)（Challenge Lab）
@@ -131,7 +132,7 @@ Knowledge Catalog のリソースを作成する前に、Dataplex API（コン�
 **ベストプラクティス**
 
 - 1つの Zone に複数のアセットを同時に追加でき、追加処理中もその Zone を継続して利用できます。
-- Cloud Storage バケットをアセットとして追加すると、Knowledge Catalog はバケット内のテーブルに対応する BigQuery 外部テーブルを自動的に公開します。ディスカバリー設定（Discovery settings）を Zone レベルから継承するか個別設定するかも、この画面で決められます。
+- ディスカバリー設定（Discovery settings）を有効にし、バケット内に検出可能なデータ構造が存在する場合に限り、Knowledge Catalog は対応する BigQuery 外部テーブルを自動的に公開します。設定を Zone レベルから継承するか個別設定するかも、この画面で決められます。
 
 ---
 

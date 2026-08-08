@@ -385,7 +385,7 @@
     </head>
     <body>
         <div class="layout">
-            <nav class="sidebar">
+            <aside class="sidebar">
                 <div class="brand">Knowledge Catalog</div>
                 <div class="brand-sub">チャレンジラボ攻略ガイド</div>
                 <nav>
@@ -406,7 +406,7 @@
                     <a href="#cli"><i class="ti ti-terminal-2"></i>8. CLI 実装例 (任意)</a>
                     <a href="#references"><i class="ti ti-books"></i>9. 参考文献・出典</a>
                 </nav>
-            </nav>
+            </aside>
 
             <main class="main">
                 <header class="hero">
@@ -721,10 +721,9 @@
                                 を継続して利用できる。
                             </li>
                             <li>
-                                Cloud Storage バケットをアセットとして追加すると、Knowledge Catalog
-                                はバケット内のテーブルに対応する BigQuery
-                                外部テーブルを自動的に公開する。ディスカバリー設定（Discovery
-                                settings）を Zone
+                                ディスカバリー設定（Discovery settings）を有効にし、バケット内に検出可能なデータ構造が存在する場合に限り、Knowledge
+                                Catalog は対応する BigQuery
+                                外部テーブルを自動的に公開する。設定を Zone
                                 レベルから継承するか個別設定するかも、この画面で決められる。
                             </li>
                         </ul>
@@ -1069,7 +1068,7 @@
                         gcloud dataplex entries search \
                           --query="name:Raw Event Data" \
                           --project=<PROJECT_ID> \
-                          --location=<REGION>
+                          --scope=<PROJECT_ID>
 
                         # 取得した Entry に対して Aspect を付与する (aspects.json を別途用意)
                         gcloud dataplex entries update-aspects <ZONE_ENTRY_ID> \
@@ -1365,7 +1364,7 @@
 
         <link
             rel="stylesheet"
-            href="https://unpkg.com/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+            href="https://unpkg.com/@tabler/icons-webfont@3.33.0/dist/tabler-icons.min.css"
         />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
@@ -1419,7 +1418,7 @@
                 mermaid.initialize({
                     startOnLoad: false,
                     theme: 'dark',
-                    securityLevel: 'loose',
+                    securityLevel: 'strict',
                     fontFamily: 'inherit',
                     flowchart: { useMaxWidth: false },
                     themeVariables: {
