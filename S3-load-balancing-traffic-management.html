@@ -1,0 +1,2053 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>S3: ロードバランシングとトラフィック管理 | PCNE試験対策ガイド</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elev: #0d1a2c;
+                --bg-elev2: #122238;
+                --border: #1c3350;
+                --border-soft: #16283f;
+                --text: #dce6f4;
+                --text-dim: #8fa3bd;
+                --text-dimmer: #5f7691;
+                --accent: #7c9eff;
+                --accent-soft: #7c9eff22;
+                --accent-strong: #a8c0ff;
+                --green: #5fd6a8;
+                --amber: #f2c14e;
+                --red: #f2765e;
+                --purple: #c39bf2;
+                --sidebar-w: 300px;
+                --font-jp:
+                    'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic',
+                    sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                overflow-x: hidden;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                font-size: 16px;
+                line-height: 1.85;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- レイアウト ---------- */
+            .layout {
+                display: block;
+            }
+            .side-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: var(--bg-elev);
+                border-right: 1px solid var(--border);
+                overflow-y: auto;
+                padding: 28px 0 40px;
+                z-index: 50;
+            }
+            .side-nav-brand {
+                padding: 0 24px 20px;
+                margin-bottom: 12px;
+                border-bottom: 1px solid var(--border-soft);
+                font-weight: 900;
+                font-size: 1.6rem;
+                color: var(--accent-strong);
+                letter-spacing: 0.02em;
+            }
+            .side-nav-brand span {
+                display: block;
+                font-weight: 500;
+                font-size: 0.78rem;
+                color: var(--text-dim);
+                margin-top: 6px;
+                letter-spacing: 0;
+            }
+            .nav-list {
+                list-style: none;
+                margin: 0;
+                padding: 0 12px;
+            }
+            .nav-list li {
+                margin: 0;
+            }
+            .nav-list a {
+                display: block;
+                padding: 8px 12px;
+                border-radius: 8px;
+                color: var(--text-dim);
+                font-size: 0.88rem;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .nav-list li.nav-h3 a {
+                padding-left: 26px;
+                font-size: 0.82rem;
+                color: var(--text-dimmer);
+            }
+            .nav-list a:hover {
+                background: var(--bg-elev2);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .nav-list a.active {
+                background: var(--accent-soft);
+                color: var(--accent-strong);
+                font-weight: 700;
+            }
+
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 0 56px 100px;
+                min-height: 100vh;
+            }
+
+            .hero {
+                padding: 64px 0 40px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 40px;
+            }
+            .hero-eyebrow {
+                display: inline-block;
+                font-size: 0.8rem;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                background: var(--accent-soft);
+                padding: 4px 12px;
+                border-radius: 20px;
+                margin-bottom: 18px;
+            }
+            .hero h1 {
+                font-size: 2.6rem;
+                font-weight: 900;
+                line-height: 1.3;
+                margin: 0 0 18px;
+                background: linear-gradient(
+                    120deg,
+                    var(--accent-strong),
+                    var(--accent) 60%,
+                    var(--purple)
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .hero .subtitle {
+                font-size: 1.05rem;
+                color: var(--text-dim);
+                max-width: 900px;
+                font-weight: 500;
+                line-height: 1.9;
+            }
+            .hero .subtitle strong {
+                color: var(--text);
+            }
+
+            /* ---------- 本文タイポグラフィ ---------- */
+            .main h2 {
+                font-size: 1.7rem;
+                font-weight: 900;
+                color: var(--accent-strong);
+                margin: 64px 0 24px;
+                padding-top: 8px;
+                scroll-margin-top: 24px;
+                border-top: 1px solid var(--border-soft);
+                padding-top: 32px;
+            }
+            .main h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+                margin-top: 0;
+            }
+            .main h3 {
+                font-size: 1.28rem;
+                font-weight: 700;
+                color: var(--text);
+                margin: 40px 0 18px;
+                scroll-margin-top: 24px;
+                padding-left: 14px;
+                border-left: 4px solid var(--accent);
+            }
+            .main p {
+                color: var(--text);
+                margin: 0 0 20px;
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 20px;
+                padding-left: 1.4em;
+            }
+            .main li {
+                margin: 0 0 8px;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 40px 0;
+            }
+            .main strong {
+                color: var(--accent-strong);
+                font-weight: 700;
+            }
+            code:not(pre code) {
+                background: var(--bg-elev2);
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 2px 6px;
+                font-size: 0.88em;
+                color: var(--green);
+                font-family: 'SFMono-Regular', Consolas, monospace;
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* ---------- blockquoteカード ---------- */
+            blockquote {
+                margin: 24px 0;
+                padding: 18px 22px;
+                border-radius: 10px;
+                border-left: 4px solid var(--text-dimmer);
+                background: var(--bg-elev);
+                position: relative;
+            }
+            blockquote p {
+                margin: 0 0 8px;
+                color: var(--text-dim);
+            }
+            blockquote p:last-child {
+                margin-bottom: 0;
+            }
+            blockquote ul {
+                margin: 8px 0 0;
+                padding-left: 1.2em;
+            }
+            blockquote.quote-card {
+                border-left-color: var(--text-dimmer);
+            }
+            blockquote.cite-card {
+                border-left-color: var(--accent);
+                background: var(--accent-soft);
+            }
+            blockquote.cite-card a {
+                color: var(--accent-strong);
+                font-weight: 600;
+                word-break: break-all;
+            }
+            blockquote.practice-card {
+                border-left-color: var(--green);
+                background: #5fd6a814;
+            }
+            blockquote.practice-card p {
+                color: var(--text);
+            }
+            blockquote.warning-card {
+                border-left-color: var(--red);
+                background: #f2765e14;
+            }
+            blockquote.warning-card p {
+                color: var(--text);
+            }
+            blockquote.usecase-card {
+                border-left-color: var(--purple);
+                background: #c39bf214;
+            }
+            blockquote.usecase-card p {
+                color: var(--text);
+            }
+
+            /* ラベル語(出典/ベストプラクティス/注意/ユースケース)自体をピルバッジ化。
+   ::beforeによる複製は行わず、Markdown由来の<strong>そのものを装飾する */
+            blockquote.cite-card p:first-child > strong:first-child,
+            blockquote.practice-card p:first-child > strong:first-child,
+            blockquote.warning-card p:first-child > strong:first-child,
+            blockquote.usecase-card p:first-child > strong:first-child {
+                display: inline-block;
+                font-size: 0.72rem;
+                font-weight: 900;
+                letter-spacing: 0.06em;
+                padding: 3px 11px;
+                border-radius: 12px;
+                margin-bottom: 6px;
+            }
+            blockquote.cite-card p:first-child > strong:first-child {
+                color: var(--accent-strong);
+                background: #7c9eff33;
+            }
+            blockquote.practice-card p:first-child > strong:first-child {
+                color: var(--green);
+                background: #5fd6a82a;
+            }
+            blockquote.warning-card p:first-child > strong:first-child {
+                color: var(--red);
+                background: #f2765e2a;
+            }
+            blockquote.usecase-card p:first-child > strong:first-child {
+                color: var(--purple);
+                background: #c39bf22a;
+            }
+
+            /* ---------- テーブル ---------- */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 24px 0;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                min-width: 600px;
+                font-size: 0.92rem;
+            }
+            thead th {
+                background: var(--bg-elev2);
+                color: var(--accent-strong);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 700;
+                border-bottom: 2px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                overflow-wrap: break-word;
+                word-break: break-word;
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: var(--bg-elev);
+            }
+            tbody td:first-child {
+                color: var(--text);
+                font-weight: 600;
+            }
+
+            /* ---------- mermaid ---------- */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: safe center;
+                overflow-x: auto;
+                margin: 32px 0;
+                background: var(--bg-elev);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 24px;
+            }
+
+            /* ---------- チェックリストカード ---------- */
+            .checklist-card {
+                background: var(--bg-elev);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                margin: 24px 0;
+            }
+            .checklist-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 16px 22px;
+                background: var(--bg-elev2);
+                border-bottom: 1px solid var(--border);
+            }
+            .checklist-title {
+                font-weight: 700;
+                color: var(--text);
+            }
+            .checklist-counter {
+                font-weight: 700;
+                color: var(--accent-strong);
+                background: var(--accent-soft);
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.85rem;
+            }
+            .checklist-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 10px 10px 14px;
+            }
+            .checklist-card li {
+                margin: 0;
+                border-radius: 8px;
+                transition: background 0.15s;
+            }
+            .checklist-card li:hover {
+                background: var(--bg-elev2);
+            }
+            .checklist-card label {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 14px;
+                cursor: pointer;
+                color: var(--text);
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                flex: 0 0 20px;
+                margin-top: 2px;
+                border: 2px solid var(--border);
+                border-radius: 6px;
+                background: var(--bg);
+                position: relative;
+                cursor: pointer;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 6px;
+                height: 11px;
+                border: solid var(--bg);
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+            .checklist-card li:has(input:checked) label {
+                color: var(--text-dimmer);
+                text-decoration: line-through;
+            }
+
+            /* ---------- 参考文献カード ---------- */
+            .ref-card {
+                background: var(--bg-elev);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 8px;
+                margin: 24px 0;
+            }
+            ul.ref-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 2px;
+            }
+            li.ref-item {
+                margin: 0;
+                min-width: 0;
+            }
+            li.ref-item a {
+                display: flex;
+                gap: 10px;
+                align-items: flex-start;
+                padding: 13px 16px;
+                border-radius: 8px;
+                color: var(--text-dim);
+                font-size: 0.88rem;
+                line-height: 1.6;
+                overflow-wrap: break-word;
+                word-break: break-word;
+                min-width: 0;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            li.ref-item a:hover {
+                background: var(--bg-elev2);
+                color: var(--accent-strong);
+                text-decoration: none;
+            }
+            li.ref-item strong {
+                display: block;
+                color: var(--text);
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+            li.ref-item a:hover strong {
+                color: var(--accent-strong);
+            }
+            .ref-icon {
+                color: var(--accent);
+                flex: 0 0 auto;
+                font-weight: 700;
+            }
+
+            /* ---------- モバイル ---------- */
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 100;
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+                background: var(--bg-elev2);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 1.3rem;
+                align-items: center;
+                justify-content: center;
+            }
+            @media (max-width: 900px) {
+                .side-nav {
+                    left: -100%;
+                    transition: left 0.25s ease;
+                    width: 82vw;
+                    max-width: 320px;
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .side-nav.open {
+                    left: 0;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 20px 80px;
+                }
+                .menu-toggle {
+                    display: flex;
+                }
+                .hero {
+                    padding: 20px 0 28px;
+                }
+                .hero h1 {
+                    font-size: 1.7rem;
+                }
+                ul.ref-list {
+                    grid-template-columns: 1fr;
+                }
+                .main h2 {
+                    font-size: 1.35rem;
+                    margin: 44px 0 18px;
+                    padding-top: 24px;
+                }
+            }
+            .nav-backdrop {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+            }
+            .nav-backdrop.open {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <button class="menu-toggle" id="menuToggle" aria-label="目次を開く">☰</button>
+        <div class="nav-backdrop" id="navBackdrop"></div>
+
+        <div class="layout">
+            <nav class="side-nav" aria-label="目次">
+                <div class="side-nav-brand">
+                    S3<span>ロードバランシングと<br />トラフィック管理</span>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-h2">
+                        <a
+                            href="#はじめにこのタスクの位置づけと出題範囲"
+                            data-target="はじめにこのタスクの位置づけと出題範囲"
+                            >はじめに：このタスクの位置づけと出題範囲</a
+                        >
+                    </li>
+                    <li class="nav-h2">
+                        <a
+                            href="#ロードバランサーの全体アーキテクチャと選択基準"
+                            data-target="ロードバランサーの全体アーキテクチャと選択基準"
+                            >ロードバランサーの全体アーキテクチャと選択基準</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#google-cloudロードバランサーの分類軸"
+                            data-target="google-cloudロードバランサーの分類軸"
+                            >Google Cloudロードバランサーの分類軸</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a href="#選択フローチャート" data-target="選択フローチャート"
+                            >選択フローチャート</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#主要ロードバランサー比較表"
+                            data-target="主要ロードバランサー比較表"
+                            >主要ロードバランサー比較表</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#ネットワークサービスティアとの関係"
+                            data-target="ネットワークサービスティアとの関係"
+                            >ネットワークサービスティアとの関係</a
+                        >
+                    </li>
+                    <li class="nav-h2">
+                        <a
+                            href="#バックエンドサービスとオートスケーリングの設定"
+                            data-target="バックエンドサービスとオートスケーリングの設定"
+                            >バックエンドサービスとオートスケーリングの設定</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#バックエンドの種類mig-vs-neg"
+                            data-target="バックエンドの種類mig-vs-neg"
+                            >バックエンドの種類：MIG vs NEG</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a href="#negの6分類" data-target="negの6分類">NEGの6分類</a>
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#オートスケーリングとの連携"
+                            data-target="オートスケーリングとの連携"
+                            >オートスケーリングとの連携</a
+                        >
+                    </li>
+                    <li class="nav-h2">
+                        <a
+                            href="#ロードバランサーとバックエンドの詳細設定"
+                            data-target="ロードバランサーとバックエンドの詳細設定"
+                            >ロードバランサーとバックエンドの詳細設定</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#バランシングモードとキャパシティスケーラー"
+                            data-target="バランシングモードとキャパシティスケーラー"
+                            >バランシングモードとキャパシティスケーラー</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a href="#セッションアフィニティ" data-target="セッションアフィニティ"
+                            >セッションアフィニティ</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a href="#urlマップの構造" data-target="urlマップの構造">URLマップの構造</a>
+                    </li>
+                    <li class="nav-h3">
+                        <a href="#ヘルスチェック" data-target="ヘルスチェック">ヘルスチェック</a>
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#グローバルアクセス内部ロードバランサー"
+                            data-target="グローバルアクセス内部ロードバランサー"
+                            >グローバルアクセス（内部ロードバランサー）</a
+                        >
+                    </li>
+                    <li class="nav-h2">
+                        <a
+                            href="#gkeにおけるロードバランシング"
+                            data-target="gkeにおけるロードバランシング"
+                            >GKEにおけるロードバランシング</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#gke-ingress-controllerレガシー"
+                            data-target="gke-ingress-controllerレガシー"
+                            >GKE Ingress controller（レガシー）</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#gke-gateway-controllergateway-api"
+                            data-target="gke-gateway-controllergateway-api"
+                            >GKE Gateway controller（Gateway API）</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#negとcontainer-native-load-balancing"
+                            data-target="negとcontainer-native-load-balancing"
+                            >NEGとContainer-Native Load Balancing</a
+                        >
+                    </li>
+                    <li class="nav-h2">
+                        <a
+                            href="#application-load-balancerでのトラフィック管理"
+                            data-target="application-load-balancerでのトラフィック管理"
+                            >Application Load Balancerでのトラフィック管理</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#トラフィックスプリッティングカナリアリリース"
+                            data-target="トラフィックスプリッティングカナリアリリース"
+                            >トラフィックスプリッティング（カナリアリリース）</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a href="#トラフィックミラーリング" data-target="トラフィックミラーリング"
+                            >トラフィックミラーリング</a
+                        >
+                    </li>
+                    <li class="nav-h3">
+                        <a
+                            href="#url書き換えrewriteとリダイレクト"
+                            data-target="url書き換えrewriteとリダイレクト"
+                            >URL書き換え（Rewrite）とリダイレクト</a
+                        >
+                    </li>
+                    <li class="nav-h2">
+                        <a
+                            href="#設計実装ベストプラクティスまとめ"
+                            data-target="設計実装ベストプラクティスまとめ"
+                            >設計・実装ベストプラクティスまとめ</a
+                        >
+                    </li>
+                    <li class="nav-h2"><a href="#参考文献" data-target="参考文献">参考文献</a></li>
+                </ul>
+            </nav>
+
+            <main class="main">
+                <div class="hero">
+                    <span class="hero-eyebrow">PCNE ・ Section 3, Task 3.1</span>
+                    <h1>S3: ロードバランシングとトラフィック管理</h1>
+                    <div class="subtitle">
+                        <strong
+                            >Professional Cloud Network Engineer 試験対応ガイド — Section
+                            3「Configuring managed network services」Task 3.1「Configuring load
+                            balancing」</strong
+                        >
+                    </div>
+                </div>
+
+                <blockquote class="quote-card">
+                    <p>
+                        本ガイドは、Google Cloud Professional Cloud Network
+                        Engineer（PCNE）認定試験の公式Exam Guideに定義されたTask 3.1「Configuring
+                        load
+                        balancing」の出題範囲を、中級者から上級者のネットワークエンジニア向けに実装レベルまで掘り下げて解説するものです。Section
+                        3全体の出題比率は約16%で、3.1（ロードバランシング）・3.2（Cloud
+                        CDN）・3.3（Cloud
+                        DNS）の3タスクから構成されますが、本ガイドは3.1のみを対象とします。
+                    </p>
+                </blockquote>
+
+                <hr />
+                <h2 id="はじめにこのタスクの位置づけと出題範囲">
+                    はじめに：このタスクの位置づけと出題範囲
+                </h2>
+                <p>
+                    公式Exam Guideは、Task 3.1「Configuring load
+                    balancing」を次の5つの観点で定義しています。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>観点</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>① LBソリューションの決定</td>
+                                <td>
+                                    internal/external、regional/global、application/proxy/passthroughの区別
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>② バックエンドサービスの設定</td>
+                                <td>NEG・MIGを含むオートスケーリング構成</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>③ バックエンドの詳細設定</td>
+                                <td>
+                                    バランシング方式・セッションアフィニティ・サービング容量・URLマップ・ヘルスチェック・グローバルアクセス
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>④ GKEにおけるLB理解</td>
+                                <td>GKE Gateway controller・GKE Ingress controller・NEG</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>⑤ トラフィック管理</td>
+                                <td>
+                                    トラフィックスプリッティング・トラフィックミラーリング・URL書き換え
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Section
+                    1（設計）で問われる「どのLBを選ぶべきか」という<strong>アーキテクチャ設計の視点</strong>に対し、Section
+                    3（本タスク）では<strong>実装・設定の視点</strong>、すなわち「選んだLBをどのパラメータでどう構成するか」が主眼になります。試験では、シナリオ形式で「この要件を満たすバランシングモードはどれか」「このトラフィック分割を実現するにはどのURLマップ構成が必要か」といった設定レベルの判断が問われる点に注意してください。
+                </p>
+                <hr />
+                <h2 id="ロードバランサーの全体アーキテクチャと選択基準">
+                    ロードバランサーの全体アーキテクチャと選択基準
+                </h2>
+                <h3 id="google-cloudロードバランサーの分類軸">
+                    Google Cloudロードバランサーの分類軸
+                </h3>
+                <p>
+                    Google
+                    Cloudのロードバランサーは、次の3つの独立した軸の組み合わせで整理すると理解しやすくなります。
+                </p>
+                <ul>
+                    <li>
+                        <strong>プロキシ方式</strong>：Application Load
+                        Balancer（L7、HTTP/HTTPS/HTTP2/gRPC）／ Proxy Network Load
+                        Balancer（L4プロキシ、TCP/SSL）／ Passthrough Network Load
+                        Balancer（L4パススルー、クライアント送信元IPを保持）
+                    </li>
+                    <li>
+                        <strong>公開範囲</strong>：External（インターネット向け）／
+                        Internal（VPC内部向け）
+                    </li>
+                    <li>
+                        <strong>スコープ</strong>：Global（複数リージョンにまたがる）／
+                        Regional（単一リージョン）／
+                        Cross-region（内部LBのみ、グローバルバックエンドを持つリージョナルVIP）
+                    </li>
+                </ul>
+                <p>公式ドキュメントは選択の出発点を次のように整理しています。</p>
+                <blockquote class="quote-card">
+                    <p>
+                        フレキシブルな機能セットが必要なHTTP(S)トラフィックにはApplication Load
+                        Balancerを、複数リージョンのバックエンドへのTCPプロキシロードバランシングにはProxy
+                        Network Load
+                        Balancerを、クライアント送信元IPの保持やUDP・ESP・ICMPなどの追加プロトコルサポートが必要な場合はPassthrough
+                        Network Load Balancerを選択します。
+                    </p>
+                </blockquote>
+                <h3 id="選択フローチャート">選択フローチャート</h3>
+                <pre class="mermaid">
+flowchart TD
+    A{トラフィックの種類は?} --&gt;|HTTP/HTTPS/HTTP2/gRPC| B[Application Load Balancer]
+    A --&gt;|複数リージョンへのTCP/SSLプロキシ| C[Proxy Network Load Balancer]
+    A --&gt;|送信元IP保持・UDP/ESP/ICMP等| D[Passthrough Network Load Balancer]
+    B --&gt; E{公開範囲は?}
+    E --&gt;|外部公開 external| F{バックエンドの分散は?}
+    E --&gt;|VPC内部のみ internal| G{バックエンドの分散は?}
+    F --&gt;|グローバル・マルチリージョン| H[グローバル外部&lt;br/&gt;Application Load Balancer]
+    F --&gt;|単一リージョンで十分| I[リージョン外部&lt;br/&gt;Application Load Balancer]
+    G --&gt;|複数リージョンのバックエンド| J[クロスリージョン内部&lt;br/&gt;Application Load Balancer]
+    G --&gt;|単一リージョンのバックエンド| K[リージョン内部&lt;br/&gt;Application Load Balancer]</pre
+                >
+                <blockquote class="cite-card" data-icon="§">
+                    <p>
+                        <strong>出典</strong>:
+                        <a
+                            href="https://docs.cloud.google.com/load-balancing/docs/choosing-load-balancer"
+                            >https://docs.cloud.google.com/load-balancing/docs/choosing-load-balancer</a
+                        >
+                    </p>
+                </blockquote>
+                <h3 id="主要ロードバランサー比較表">主要ロードバランサー比較表</h3>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ロードバランサー</th>
+                                <th>スコープ</th>
+                                <th>公開範囲</th>
+                                <th>実装方式</th>
+                                <th>主なユースケース</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>グローバル外部 Application LB</td>
+                                <td>グローバル</td>
+                                <td>External</td>
+                                <td>GFE（管理型）</td>
+                                <td>世界中のユーザー向けWebアプリ、マルチリージョン公開API</td>
+                            </tr>
+                            <tr class="even">
+                                <td>リージョン外部 Application LB</td>
+                                <td>リージョン</td>
+                                <td>External</td>
+                                <td>Envoy（管理型）</td>
+                                <td>特定リージョンに閉じたコンプライアンス要件のあるWeb公開</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>リージョン内部 Application LB</td>
+                                <td>リージョン</td>
+                                <td>Internal</td>
+                                <td>Envoy（管理型）</td>
+                                <td>マイクロサービス間のL7ロードバランシング</td>
+                            </tr>
+                            <tr class="even">
+                                <td>クロスリージョン内部 Application LB</td>
+                                <td>クロスリージョン</td>
+                                <td>Internal</td>
+                                <td>Envoy（管理型）</td>
+                                <td>複数リージョンに分散した内部サービスへの高可用アクセス</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Proxy Network LB（TCP Proxy）</td>
+                                <td>グローバル/リージョン</td>
+                                <td>External/Internal</td>
+                                <td>GFE/Envoy</td>
+                                <td>複数リージョンのTCPバックエンドへの単一エニーキャストIP</td>
+                            </tr>
+                            <tr class="even">
+                                <td>外部パススルー Network LB</td>
+                                <td>リージョン</td>
+                                <td>External</td>
+                                <td>パススルー（非プロキシ）</td>
+                                <td>送信元IP保持が必要なUDP/TCPワークロード</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>内部パススルー Network LB</td>
+                                <td>リージョン</td>
+                                <td>Internal</td>
+                                <td>パススルー（非プロキシ）</td>
+                                <td>内部L4ロードバランシング、NVAの次ホップ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a href="https://docs.cloud.google.com/load-balancing/docs/features"
+                                >https://docs.cloud.google.com/load-balancing/docs/features</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/application-load-balancer"
+                                >https://docs.cloud.google.com/load-balancing/docs/application-load-balancer</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="ネットワークサービスティアとの関係">ネットワークサービスティアとの関係</h3>
+                <p>
+                    ロードバランサーの種類ごとに利用可能なネットワークサービスティア（Premium/Standard）は異なります。この設計判断はSection
+                    1（1.1）で扱う領域と重複するため、本ガイドでは詳細を割愛しますが、実装時には「Standard
+                    Tierではグローバル外部Application Load
+                    Balancerを利用できない」といった制約がある点だけ押さえておいてください。
+                </p>
+                <hr />
+                <h2 id="バックエンドサービスとオートスケーリングの設定">
+                    バックエンドサービスとオートスケーリングの設定
+                </h2>
+                <h3 id="バックエンドの種類mig-vs-neg">バックエンドの種類：MIG vs NEG</h3>
+                <p>バックエンドサービスにアタッチできるバックエンドは、大きく分けて2種類です。</p>
+                <ul>
+                    <li>
+                        <strong>マネージドインスタンスグループ（MIG）</strong>：Compute Engine
+                        VMの集合。オートスケーラーと直接連携し、UTILIZATION（CPU使用率ベース）を含む全バランシングモードを利用可能。
+                    </li>
+                    <li>
+                        <strong>ネットワークエンドポイントグループ（NEG）</strong
+                        >：VMやコンテナ、サーバーレスリソースなど、より粒度の細かいエンドポイントの集合。UTILIZATIONバランシングモードはサポートされません。
+                    </li>
+                </ul>
+                <h3 id="negの6分類">NEGの6分類</h3>
+                <pre class="mermaid">
+flowchart TD
+    NEG[Network Endpoint Group] --&gt; Z["ゾーンNEG&lt;br/&gt;GCE_VM_IP / GCE_VM_IP_PORT"]
+    NEG --&gt; S["サーバーレスNEG&lt;br/&gt;Cloud Run / App Engine / Cloud Run functions"]
+    NEG --&gt; I["インターネットNEG&lt;br/&gt;グローバル / リージョナル"]
+    NEG --&gt; H["ハイブリッド接続NEG&lt;br/&gt;オンプレミス・他クラウド"]
+    NEG --&gt; P["PSC NEG&lt;br/&gt;Private Service Connect"]
+    NEG --&gt; PM["ポートマッピングNEG&lt;br/&gt;同一IPで複数コンテナポート"]</pre
+                >
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>NEGタイプ</th>
+                                <th>エンドポイント形式</th>
+                                <th>主な用途</th>
+                                <th>制約</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ゾーンNEG（GCE_VM_IP_PORT）</td>
+                                <td>IPアドレス＋ポート</td>
+                                <td>プロキシ型LBの標準バックエンド、GKEのコンテナネイティブLB</td>
+                                <td>UTILIZATIONバランシング非対応。RATE/CONNECTIONのみ</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ゾーンNEG（GCE_VM_IP）</td>
+                                <td>IPアドレスのみ（ポート指定不可）</td>
+                                <td>
+                                    内部パススルーNetwork LB、外部パススルーNetwork LB（リージョン）
+                                </td>
+                                <td>ポート指定不可、デュアルスタックエンドポイント不可</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>サーバーレスNEG</td>
+                                <td>Cloud Run / App Engine / Cloud Run functions</td>
+                                <td>サーバーレスサービスをLB配下に統合</td>
+                                <td>Proxy/Passthrough Network LBからは利用不可</td>
+                            </tr>
+                            <tr class="even">
+                                <td>インターネットNEG</td>
+                                <td>FQDN:Port または IP:Port（RFC 1918外）</td>
+                                <td>GCP外部（オンプレミス・他社クラウド）のバックエンドを統合</td>
+                                <td>
+                                    グローバルは単一エンドポイント・ヘルスチェック非対応、リージョナルは最大256エンドポイント
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>ハイブリッド接続NEG</td>
+                                <td>ハイブリッド接続経由のオンプレミスエンドポイント</td>
+                                <td>Cloud Interconnect/VPN経由でのオンプレミスバックエンド統合</td>
+                                <td>ハイブリッド接続の構成が前提</td>
+                            </tr>
+                            <tr class="even">
+                                <td>PSC NEG</td>
+                                <td>Private Service Connectで公開されたサービス</td>
+                                <td>別プロジェクト・別VPCのサービスへの越境接続</td>
+                                <td>PSCエンドポイント経由でのみ解決</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a href="https://docs.cloud.google.com/load-balancing/docs/negs"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/negs/zonal-neg-concepts"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs/zonal-neg-concepts</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/negs/internet-neg-concepts"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs/internet-neg-concepts</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="オートスケーリングとの連携">オートスケーリングとの連携</h3>
+                <p>
+                    MIGバックエンドにオートスケーラーをアタッチすると、オートスケーラーは「ロードバランシングのサービング容量の一定割合」を維持するようにインスタンス数を増減します。たとえばMIGのサービング容量が1インスタンスあたり100RPSと定義されており、オートスケーラーの目標使用率を80%に設定した場合、オートスケーラーは各インスタンスが80RPSを維持するようにインスタンスを追加・削除します。
+                </p>
+                <blockquote class="practice-card" data-icon="✓">
+                    <p>
+                        <strong>ベストプラクティス</strong
+                        >：NEGバックエンド（特にGKEのコンテナネイティブLB）を使う場合はUTILIZATIONが使えないため、RATEまたはCONNECTIONベースでキャパシティ計画を行い、Pod単位のHorizontal
+                        Pod Autoscalerと組み合わせて容量を制御します。
+                    </p>
+                </blockquote>
+                <blockquote class="cite-card" data-icon="§">
+                    <p>
+                        <strong>出典</strong>:
+                        <a
+                            href="https://docs.cloud.google.com/compute/docs/autoscaler/scaling-load-balancing"
+                            >https://docs.cloud.google.com/compute/docs/autoscaler/scaling-load-balancing</a
+                        >
+                    </p>
+                </blockquote>
+                <hr />
+                <h2 id="ロードバランサーとバックエンドの詳細設定">
+                    ロードバランサーとバックエンドの詳細設定
+                </h2>
+                <h3 id="バランシングモードとキャパシティスケーラー">
+                    バランシングモードとキャパシティスケーラー
+                </h3>
+                <p>
+                    バックエンドサービスは、バックエンドごとに「バランシングモード」と「ターゲット容量」を持ち、これに「キャパシティスケーラー」を乗算した値が実効容量になります。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>バランシングモード</th>
+                                <th>容量の測定基準</th>
+                                <th>対応バックエンド</th>
+                                <th>備考</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>UTILIZATION</td>
+                                <td>インスタンスグループのCPU使用率（近似値）</td>
+                                <td>MIGのみ（NEG非対応）</td>
+                                <td>セッションアフィニティはNONEと併用すること</td>
+                            </tr>
+                            <tr class="even">
+                                <td>RATE</td>
+                                <td>新規HTTPリクエストのレート（RPS）</td>
+                                <td>MIG・NEG両方</td>
+                                <td>グループ全体またはエンドポイント単位で指定可能</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>CONNECTION</td>
+                                <td>新規TCPコネクション数</td>
+                                <td>MIG・NEG両方</td>
+                                <td>L4系ロードバランサーで使用</td>
+                            </tr>
+                            <tr class="even">
+                                <td>IN-FLIGHT</td>
+                                <td>処理中（未完了）のHTTPリクエスト数</td>
+                                <td>MIG・NEG両方</td>
+                                <td>リクエスト処理に1秒以上かかる場合、RATEの代わりに使用</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    キャパシティスケーラーは0.0または0.1〜1.0の範囲で設定でき、次のような運用パターンに使えます。
+                </p>
+                <ul>
+                    <li>
+                        <strong>段階的なドレイン</strong
+                        >：キャパシティスケーラーを0.5にすると、そのバックエンドの実効容量が半分になり、新規トラフィックの流入が抑制されます。
+                    </li>
+                    <li>
+                        <strong>完全ドレイン</strong
+                        >：0に設定すると新規トラフィックは一切送られなくなります（バックエンドサービスに他のバックエンドが存在する場合のみ設定可能）。
+                    </li>
+                </ul>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/backend-service"
+                                >https://docs.cloud.google.com/load-balancing/docs/backend-service</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/python/docs/reference/compute/0.4.2/google.cloud.compute_v1.types.Backend"
+                                >https://cloud.google.com/python/docs/reference/compute/0.4.2/google.cloud.compute_v1.types.Backend</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="セッションアフィニティ">セッションアフィニティ</h3>
+                <p>
+                    セッションアフィニティは、同一クライアントからの後続リクエストを可能な限り同じバックエンドに送るための仕組みです。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>アフィニティ種別</th>
+                                <th>ハッシュ対象</th>
+                                <th>適したケース</th>
+                                <th>注意点</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>NONE</td>
+                                <td>なし（デフォルト）</td>
+                                <td>ステートレスなアプリケーション</td>
+                                <td>最も均等な分散が得られる</td>
+                            </tr>
+                            <tr class="even">
+                                <td>CLIENT_IP</td>
+                                <td>送信元・宛先IPの2-tuple</td>
+                                <td>NAT配下にクライアントが少ないL4/L7ワークロード</td>
+                                <td>
+                                    多数のクライアントが同一送信元IP（NAT）を共有すると偏りが生じる
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>GENERATED_COOKIE</td>
+                                <td>LBが発行するCookie</td>
+                                <td>HTTP(S)ワークロードでの一般的な選択肢</td>
+                                <td>NATやIPアドレス変化の影響を受けない</td>
+                            </tr>
+                            <tr class="even">
+                                <td>HTTP_COOKIE</td>
+                                <td>アプリケーション側が発行する既存Cookie</td>
+                                <td>アプリケーションが既にセッションCookieを持つ場合</td>
+                                <td>Cookie名の指定が必要</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>HEADER_FIELD</td>
+                                <td>指定したHTTPヘッダーの値</td>
+                                <td>ユーザーIDなどをヘッダーで伝搬するAPIクライアント</td>
+                                <td>
+                                    ロードバランシングロケーションポリシーがRING_HASHまたはMAGLEVである必要がある
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="quote-card">
+                    <p>
+                        セッションアフィニティは認証やセキュリティの目的では使用しないでください。バックエンドの健全性やスケール状況によって、ベストエフォートでしか維持されません。
+                    </p>
+                </blockquote>
+                <blockquote class="practice-card" data-icon="✓">
+                    <p>
+                        <strong>ベストプラクティス</strong
+                        >：UTILIZATIONバランシングモードと組み合わせて使用しないこと。ウェイト付きトラフィックスプリッティングを設定した場合、セッションアフィニティの設定より分割設定が優先されるため、両者を同時に有効化しないことが推奨されています。
+                    </p>
+                </blockquote>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a href="https://docs.cloud.google.com/load-balancing/docs/l7-internal"
+                                >https://docs.cloud.google.com/load-balancing/docs/l7-internal</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/request-distribution"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/request-distribution</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="urlマップの構造">URLマップの構造</h3>
+                <pre class="mermaid">
+flowchart TD
+    UM[URLマップ] --&gt; HR["ホストルール&lt;br/&gt;例: example.com"]
+    HR --&gt; PM2[パスマッチャー]
+    PM2 --&gt; PR1["パスルール /video/*"]
+    PM2 --&gt; PR2["パスルール /images/*"]
+    PM2 --&gt; DEF[デフォルトサービス]
+    PR1 --&gt; BS1["バックエンドサービス: video"]
+    PR2 --&gt; BS2["バックエンドサービス: images"]
+    DEF --&gt; BS3["バックエンドサービス: web-default"]</pre
+                >
+                <p>
+                    URLマップはホストルール（どのドメインに適用するか）→パスマッチャー（パスパターンの集合）→パスルール（個々のパスと転送先）という階層構造を持ちます。パスルールの代わりにルートルール（routeRules）を使うことも可能ですが、両者は同一のパスマッチャー内で併用できません。ルートルールは順序評価される点がパスルールと異なります。
+                </p>
+                <blockquote class="cite-card" data-icon="§">
+                    <p>
+                        <strong>出典</strong>:
+                        <a
+                            href="https://docs.cloud.google.com/load-balancing/docs/https/traffic-management"
+                            >https://docs.cloud.google.com/load-balancing/docs/https/traffic-management</a
+                        >
+                    </p>
+                </blockquote>
+                <h3 id="ヘルスチェック">ヘルスチェック</h3>
+                <pre class="mermaid">
+flowchart TD
+    P["ヘルスチェックプローブ&lt;br/&gt;送信元: 130.211.0.0/22, 35.191.0.0/16"] --&gt; FW{ファイアウォールルール&lt;br/&gt;ingress allow}
+    FW --&gt;|許可| VM["バックエンドVM / Pod"]
+    FW --&gt;|未許可| Fail[全バックエンドがUNHEALTHYに]
+    VM --&gt; Resp{応答}
+    Resp --&gt;|200 OK| Healthy[HEALTHY]
+    Resp --&gt;|それ以外・タイムアウト・リダイレクト| Unhealthy[UNHEALTHY]</pre
+                >
+                <p>
+                    多くのGoogle
+                    Cloudロードバランサーのヘルスチェックプローブは、<code>130.211.0.0/22</code>と<code>35.191.0.0/16</code>のアドレス範囲から送信されます。外部パススルーNetwork
+                    Load
+                    Balancerでは、これに加えて<code>209.85.152.0/22</code>と<code>209.85.204.0/22</code>も使用されます。VPCファイアウォールがデフォルト拒否である以上、これらの範囲からのIngressを明示的に許可するファイアウォールルールがなければ、アプリケーションが正常に動作していても全バックエンドがUNHEALTHYと判定されます。これは試験でも実務でも最頻出のトラブルシューティングシナリオです。
+                </p>
+                <p>
+                    判定基準は「チェック間隔」「タイムアウト」「healthy閾値（連続成功回数）」「unhealthy閾値（連続失敗回数）」の4パラメータで構成され、プロトコルはHTTP/HTTPS/HTTP2/TCP/SSL/gRPCから選択できます。ヘルスチェックはHTTPリダイレクト（3xx）を失敗として扱うため、HTTPをHTTPSへ強制リダイレクトしているアプリケーションでヘルスチェックパスまでリダイレクトしてしまうと誤検知の原因になります。
+                </p>
+                <blockquote class="practice-card" data-icon="✓">
+                    <p>
+                        <strong>ベストプラクティス</strong
+                        >：ヘルスチェックには本番トラフィックのエンドポイントとは別の軽量な専用パス（例：<code>/healthz</code>）を用意し、200固定を返すようにします。GKEのNEGバックエンドでは、ヘルスチェックはノードIPではなくPod
+                        IPに対して直接行われるため、NetworkPolicyやPodのファイアウォール設定も併せて確認する必要があります。
+                    </p>
+                </blockquote>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs"
+                                >https://docs.cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/internal/setting-up-failover"
+                                >https://docs.cloud.google.com/load-balancing/docs/internal/setting-up-failover</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="グローバルアクセス内部ロードバランサー">
+                    グローバルアクセス（内部ロードバランサー）
+                </h3>
+                <pre class="mermaid">
+flowchart TD
+    C1["クライアント（asia-east1）"] --&gt;|グローバルアクセス有効| ILB["内部LB VIP&lt;br/&gt;us-central1"]
+    C2["クライアント（europe-west1）"] --&gt;|グローバルアクセス有効| ILB
+    C3["クライアント（us-central1・同一リージョン）"] --&gt;|常にアクセス可能| ILB
+    ILB --&gt; BE["バックエンド（us-central1）"]</pre
+                >
+                <p>
+                    リージョン内部Application Load
+                    Balancerは、デフォルトでは同一リージョンのクライアントからのみアクセス可能です。フォワーディングルールで「グローバルアクセス」を有効化すると、VPC内の任意のリージョンからクライアントがアクセスできるようになります。一方、クロスリージョン内部Application
+                    Load
+                    Balancerはグローバルアクセスが常に有効であり、さらにバックエンド自体を複数リージョンに配置できる点がリージョン内部LBとの決定的な違いです。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>比較項目</th>
+                                <th>リージョン内部 Application LB</th>
+                                <th>クロスリージョン内部 Application LB</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>VIPの割り当て</td>
+                                <td>特定リージョンのサブネットから割り当て</td>
+                                <td>
+                                    特定リージョンのサブネットから割り当て（複数リージョンのVIPが同一バックエンドサービスを共有可）
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>クライアントアクセス</td>
+                                <td>デフォルトは同一リージョンのみ、グローバルアクセスで拡張可</td>
+                                <td>常にグローバルアクセス可能</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>バックエンドの分散</td>
+                                <td>単一リージョンのみ</td>
+                                <td>複数リージョンに分散可能</td>
+                            </tr>
+                            <tr class="even">
+                                <td>フェイルオーバー</td>
+                                <td>リージョン内のみ</td>
+                                <td>リージョンをまたいだ自動フェイルオーバー</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a href="https://docs.cloud.google.com/load-balancing/docs/l7-internal"
+                                >https://docs.cloud.google.com/load-balancing/docs/l7-internal</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/blog/products/networking/enhancing-cloud-load-balancing/"
+                                >https://cloud.google.com/blog/products/networking/enhancing-cloud-load-balancing/</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <hr />
+                <h2 id="gkeにおけるロードバランシング">GKEにおけるロードバランシング</h2>
+                <p>
+                    GKEのロードバランシングは、レガシーな<strong>GKE Ingress controller</strong
+                    >と、Kubernetes公式仕様に準拠した<strong>GKE Gateway controller</strong
+                    >の2系統が併存しています。両者の違いを理解しておくことは、GKEネットワーキング設計（Section
+                    1.4）と実装（本タスク）の橋渡しとして重要です。
+                </p>
+                <h3 id="gke-ingress-controllerレガシー">GKE Ingress controller（レガシー）</h3>
+                <pre class="mermaid">
+flowchart TD
+    Ing[Ingressリソース] --&gt; IC[GKE Ingress controller]
+    IC --&gt; CLB["Classic Application Load Balancer&lt;br/&gt;固定"]
+    CLB --&gt; NEG1["GCE_VM_IP_PORT ゾーンNEG&lt;br/&gt;（インスタンスグループも可）"]</pre
+                >
+                <p>
+                    GKE Ingress controllerが作成する外部Ingressは常にClassic Application Load
+                    Balancerとして実装されます。GKE
+                    ServiceのNEGアノテーションを使えばGCE_VM_IP_PORTゾーンNEGを優先的にバックエンドとして利用しますが、インスタンスグループバックエンドもサポートされます。
+                </p>
+                <h3 id="gke-gateway-controllergateway-api">
+                    GKE Gateway controller（Gateway API）
+                </h3>
+                <pre class="mermaid">
+flowchart TD
+    GC[GatewayClass] --&gt; GW[Gatewayリソース]
+    GW --&gt; HR2[HTTPRouteリソース]
+    HR2 --&gt; BS4[バックエンドサービス1]
+    HR2 --&gt; BS5[バックエンドサービス2]</pre
+                >
+                <p>
+                    GKE Gateway controllerはKubernetes Gateway
+                    APIの実装であり、責務が3つのリソースに分離されている点がIngressとの本質的な違いです。
+                </p>
+                <ul>
+                    <li>
+                        <strong>GatewayClass</strong
+                        >：使用するロードバランサーの実装を決定するクラスタスコープのテンプレート（GKEが提供）
+                    </li>
+                    <li>
+                        <strong>Gateway</strong
+                        >：実際のロードバランサーインスタンスを表すリソース（フロントエンド設定）
+                    </li>
+                    <li>
+                        <strong>HTTPRoute</strong
+                        >：ルーティングルールを定義するリソース（アプリケーションチームが管理）
+                    </li>
+                </ul>
+                <p>
+                    この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE
+                    Gateway
+                    controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用し、Ingressと異なりヘルスチェックパラメータを自動推測しないため、明示的なHealthCheckPolicyの設定が必要です。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>比較項目</th>
+                                <th>GKE Ingress controller</th>
+                                <th>GKE Gateway controller</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>準拠仕様</td>
+                                <td>GKE独自のIngress拡張（アノテーションベース）</td>
+                                <td>Kubernetes Gateway API（標準仕様）</td>
+                            </tr>
+                            <tr class="even">
+                                <td>実装されるLB</td>
+                                <td>常にClassic Application Load Balancer</td>
+                                <td>GatewayClasseに応じて外部/内部・global/regionalを選択可能</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>リソース構成</td>
+                                <td>Ingressリソース1つに集約</td>
+                                <td>GatewayClass／Gateway／HTTPRouteに分離</td>
+                            </tr>
+                            <tr class="even">
+                                <td>トラフィック分割</td>
+                                <td>非対応（1ルートにつき1バックエンドのみ）</td>
+                                <td>HTTPRouteでネイティブにトラフィックスプリッティング対応</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>マルチテナンシー</td>
+                                <td>Ingressリソースの所有者が全ルールを管理</td>
+                                <td>名前空間をまたいだルーティング委譲が可能</td>
+                            </tr>
+                            <tr class="even">
+                                <td>ヘルスチェック</td>
+                                <td>パラメータを自動推測</td>
+                                <td>HealthCheckPolicyによる明示設定が必要</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/gateway-api"
+                                >https://docs.cloud.google.com/kubernetes-engine/docs/concepts/gateway-api</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways"
+                                >https://docs.cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://docs.cloud.google.com/load-balancing/docs/https"
+                                >https://docs.cloud.google.com/load-balancing/docs/https</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="negとcontainer-native-load-balancing">
+                    NEGとContainer-Native Load Balancing
+                </h3>
+                <p>
+                    GKEでNEGアノテーションを使うと、ロードバランサーはノードIPではなくPod
+                    IPに対して直接ヘルスチェック・トラフィック送信を行います（Container-Native Load
+                    Balancing）。これにより、ノードを経由するiptables/kube-proxyのホップが省略され、レイテンシが改善するとともに、ロードバランサーがPodの正確な健全性を把握できるようになります。
+                </p>
+                <blockquote class="practice-card" data-icon="✓">
+                    <p>
+                        <strong>ベストプラクティス</strong
+                        >：新規のGKEワークロードでは、レガシーのIngress +
+                        アノテーションではなく、GKE Gateway
+                        controllerとHTTPRouteの組み合わせを第一候補として設計します。標準仕様に準拠しているため、将来的な移植性が高く、トラフィックスプリッティングやヘッダーベースルーティングもアノテーション無しでネイティブに扱えます。
+                    </p>
+                </blockquote>
+                <hr />
+                <h2 id="application-load-balancerでのトラフィック管理">
+                    Application Load Balancerでのトラフィック管理
+                </h2>
+                <p>
+                    Application Load
+                    Balancer（グローバル外部・リージョン外部・内部いずれも共通の枠組み）は、URLマップのルートアクションとして、単一バックエンドへの転送に加えて次の高度なトラフィック管理機能を提供します。
+                </p>
+                <h3 id="トラフィックスプリッティングカナリアリリース">
+                    トラフィックスプリッティング（カナリアリリース）
+                </h3>
+                <pre class="mermaid">
+flowchart LR
+    C[クライアント] --&gt; LB[ロードバランサー]
+    LB --&gt;|重み 950/1000 = 95%| SvcA["バックエンドサービスA&lt;br/&gt;安定版"]
+    LB --&gt;|重み 50/1000 = 5%| SvcB["バックエンドサービスB&lt;br/&gt;カナリア版"]</pre
+                >
+                <p>
+                    <code>weightedBackendServices</code
+                    >を使うと、0〜1000の重みで複数のバックエンドサービスにトラフィックを配分できます。カナリアリリースやブルー/グリーンデプロイの段階的なロールアウトに使われる代表的な手法です。
+                </p>
+                <blockquote class="warning-card" data-icon="!">
+                    <p>
+                        <strong>注意</strong
+                        >：ウェイト付きトラフィックスプリッティングとセッションアフィニティは同時に設定しないでください。両方が設定された場合、トラフィックスプリッティングの重みが優先されます。
+                    </p>
+                </blockquote>
+                <h3 id="トラフィックミラーリング">トラフィックミラーリング</h3>
+                <pre class="mermaid">
+sequenceDiagram
+    participant Client as クライアント
+    participant LB as ロードバランサー
+    participant Primary as プライマリbackend
+    participant Mirror as ミラーbackend
+    Client-&gt;&gt;LB: リクエスト送信
+    LB-&gt;&gt;Primary: リクエスト転送
+    LB--)Mirror: リクエストを複製送信（fire-and-forget）
+    Primary--&gt;&gt;LB: レスポンス
+    LB--&gt;&gt;Client: レスポンス返却
+    Note over Mirror: レスポンスは待たず破棄。&lt;br/&gt;ログ・メトリクスも記録されない</pre
+                >
+                <p>
+                    <code>requestMirrorPolicy</code
+                    >は、選択されたバックエンドサービスへ本来のリクエストを転送すると同時に、同一内容のリクエストを別のミラー用バックエンドサービスへ「投げっぱなし（fire-and-forget）」で複製送信します。ロードバランサーはミラー先からの応答を待ちません。デフォルトではトラフィックスプリッティングの分割設定に関わらずミラーバックエンドは全リクエストを受信しますが、<code>mirrorPercent</code>（0〜100.0）を指定することでミラー対象の割合を制御できます。ミラーされたリクエストはCloud
+                    Logging／Cloud Monitoringにログやメトリクスを一切生成しません。
+                </p>
+                <blockquote class="usecase-card" data-icon="▸">
+                    <p>
+                        <strong>ユースケース</strong
+                        >：新バージョンのバックエンドに本番トラフィックの複製を流し込んで性能検証する、あるいは本番で発生したエラーをデバッグ版バックエンドで再現・調査する、といった用途に使われます。
+                    </p>
+                </blockquote>
+                <h3 id="url書き換えrewriteとリダイレクト">URL書き換え（Rewrite）とリダイレクト</h3>
+                <pre class="mermaid">
+flowchart TD
+    Req["受信リクエスト /love-to-fetch/dog.jpg"] --&gt; Match{パスルールにマッチ?}
+    Match --&gt;|Yes| RW["URL書き換え&lt;br/&gt;パスプレフィックスを /love-to-fetch/ → / に変換"]
+    RW --&gt; FwdReq["バックエンドへの実送信 /dog.jpg"]
+    Match --&gt;|No| Default[デフォルトサービスへ]</pre
+                >
+                <p>
+                    <code>urlRewrite</code
+                    >アクションは、バックエンドサービスへリクエストを送信する前に、ホスト名やパスの一部を書き換える機能です。書き換え・リダイレクトはURLマップの3つの階層（パスルール／パスマッチャー／URLマップ自体）のいずれでも設定でき、それぞれ「パスがマッチしたとき」「パスマッチャー内でどのパスにもマッチしなかったとき」「どのホストルールにもマッチしなかったとき」に適用されます。
+                </p>
+                <p>
+                    これらのルートアクションは互いに組み合わせ可能で、トラフィックスプリッティング・ミラーリング・URL書き換え・リトライポリシー・タイムアウト・フォルトインジェクション・ヘッダー操作を1つのルートルールに同時設定できます。
+                </p>
+                <blockquote class="cite-card" data-icon="§">
+                    <p><strong>出典</strong></p>
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/traffic-management-global"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/traffic-management-global</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/setting-up-url-rewrite"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/setting-up-url-rewrite</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <hr />
+                <h2 id="設計実装ベストプラクティスまとめ">設計・実装ベストプラクティスまとめ</h2>
+                <div class="checklist-card">
+                    <div class="checklist-header">
+                        <span class="checklist-title">チェックリスト</span
+                        ><span class="checklist-counter" data-total="10">0 / 10 完了</span>
+                    </div>
+                    <ul class="task-list">
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />トラフィックの種類（HTTP系かTCP/UDP系か、送信元IP保持が必要か）を最初に確定し、Application/Proxy/Passthroughの3系統から絞り込む</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />GKEワークロードのバックエンドはNEG（GCE_VM_IP_PORT）を優先し、UTILIZATIONバランシングモードが使えない前提でRATE/CONNECTIONベースの容量設計を行う</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />UTILIZATIONバランシングモードとセッションアフィニティは併用しない</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />ウェイト付きトラフィックスプリッティングを使う場合はセッションアフィニティを設定しない（設定しても分割設定が優先される）</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />ヘルスチェックプローブ範囲（130.211.0.0/22、35.191.0.0/16、外部パススルーLBでは追加で209.85.152.0/22・209.85.204.0/22）を許可するファイアウォールルールを必ず作成する</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />ヘルスチェック専用の軽量エンドポイントを用意し、リダイレクトを発生させない</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />内部LBで複数リージョンにまたがるアクセスが必要な場合、リージョン内部LB＋グローバルアクセスではなく、クロスリージョン内部LBによるマルチリージョンバックエンド構成を優先的に検討する</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input type="checkbox" />新規GKE Ingress実装はレガシーのIngress
+                                controllerではなく、Gateway API（GKE Gateway
+                                controller）を第一候補とする</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />トラフィックミラーリング先のバックエンドはログ・メトリクスが記録されないため、検証用の独立した監視手段を別途用意する</label
+                            >
+                        </li>
+                        <li>
+                            <label
+                                ><input
+                                    type="checkbox"
+                                />カナリアリリースではトラフィックスプリッティングの重みを段階的に引き上げつつ、Cloud
+                                Monitoringでエラー率・レイテンシを比較しながらロールアウトする</label
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <hr />
+                <h2 id="参考文献">参考文献</h2>
+                <div class="ref-card">
+                    <ul class="ref-list">
+                        <li class="ref-item">
+                            <strong>Choose a load balancer</strong> — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/choosing-load-balancer"
+                                >https://docs.cloud.google.com/load-balancing/docs/choosing-load-balancer</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Application Load Balancer overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/application-load-balancer"
+                                >https://docs.cloud.google.com/load-balancing/docs/application-load-balancer</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>External Application Load Balancer overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a href="https://docs.cloud.google.com/load-balancing/docs/https"
+                                >https://docs.cloud.google.com/load-balancing/docs/https</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Internal Application Load Balancer overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a href="https://docs.cloud.google.com/load-balancing/docs/l7-internal"
+                                >https://docs.cloud.google.com/load-balancing/docs/l7-internal</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Load balancer feature comparison</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a href="https://docs.cloud.google.com/load-balancing/docs/features"
+                                >https://docs.cloud.google.com/load-balancing/docs/features</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Backend services overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/backend-service"
+                                >https://docs.cloud.google.com/load-balancing/docs/backend-service</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Scaling based on load balancing serving capacity</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/compute/docs/autoscaler/scaling-load-balancing"
+                                >https://docs.cloud.google.com/compute/docs/autoscaler/scaling-load-balancing</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Advanced load balancing optimizations</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/service-lb-policy"
+                                >https://docs.cloud.google.com/load-balancing/docs/service-lb-policy</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Network endpoint groups overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a href="https://docs.cloud.google.com/load-balancing/docs/negs"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Zonal network endpoint groups overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/negs/zonal-neg-concepts"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs/zonal-neg-concepts</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Serverless network endpoint groups overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Internet network endpoint groups overview</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/negs/internet-neg-concepts"
+                                >https://docs.cloud.google.com/load-balancing/docs/negs/internet-neg-concepts</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Request distribution for external Application Load
+                                Balancers</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/request-distribution"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/request-distribution</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Traffic management overview for global external Application Load
+                                Balancers</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/traffic-management-global"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/traffic-management-global</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Traffic management overview for internal Application Load
+                                Balancers</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://cloud.google.com/load-balancing/docs/l7-internal/traffic-management"
+                                >https://cloud.google.com/load-balancing/docs/l7-internal/traffic-management</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Traffic management overview for a classic Application Load
+                                Balancer</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/traffic-management"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/traffic-management</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Set up URL rewrite for a classic Application Load Balancer</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/setting-up-url-rewrite"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/setting-up-url-rewrite</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Set up an application-based health check and autohealing</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs"
+                                >https://docs.cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Configure failover for internal passthrough Network Load
+                                Balancers</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/internal/setting-up-failover"
+                                >https://docs.cloud.google.com/load-balancing/docs/internal/setting-up-failover</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Enhancing Cloud Load
+                                Balancing（クロスリージョン内部LB発表ブログ）</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://cloud.google.com/blog/products/networking/enhancing-cloud-load-balancing/"
+                                >https://cloud.google.com/blog/products/networking/enhancing-cloud-load-balancing/</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>About Gateway API（GKE networking）</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/kubernetes-engine/docs/concepts/gateway-api"
+                                >https://docs.cloud.google.com/kubernetes-engine/docs/concepts/gateway-api</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong>Deploying Gateways（GKE networking）</strong> —
+                            <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways"
+                                >https://docs.cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >External Application Load Balancer performance best
+                                practices</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/http-load-balancing-best-practices"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/http-load-balancing-best-practices</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Professional Cloud Network Engineer Certification exam
+                                guide</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf"
+                                >https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf</a
+                            >
+                        </li>
+                        <li class="ref-item">
+                            <strong
+                                >Google Cloud Professional Cloud Network Engineer 認定ページ</strong
+                            >
+                            — <span class="ref-icon">↗</span
+                            ><a
+                                href="https://cloud.google.com/learn/certification/cloud-network-engineer"
+                                >https://cloud.google.com/learn/certification/cloud-network-engineer</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script>
+            // ============ Mermaid初期化 (他のJSと分離・ガード付き) ============
+            (function initMermaid() {
+                if (typeof mermaid === 'undefined') return;
+                try {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'base',
+                        securityLevel: 'loose',
+                        flowchart: {
+                            useMaxWidth: false,
+                            htmlLabels: true,
+                            subGraphTitleMargin: { top: 12, bottom: 18 },
+                        },
+                        sequence: { useMaxWidth: false },
+                        themeVariables: {
+                            fontFamily: "'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif",
+                            fontSize: '16px',
+                            background: '#0d1a2c',
+                            primaryColor: '#16283f',
+                            primaryTextColor: '#dce6f4',
+                            primaryBorderColor: '#7c9eff',
+                            lineColor: '#7c9eff',
+                            secondaryColor: '#122238',
+                            tertiaryColor: '#0d1a2c',
+                            noteBkgColor: '#122238',
+                            noteTextColor: '#dce6f4',
+                            noteBorderColor: '#7c9eff',
+                            actorBkg: '#16283f',
+                            actorTextColor: '#dce6f4',
+                            actorBorder: '#7c9eff',
+                            signalColor: '#8fa3bd',
+                            signalTextColor: '#dce6f4',
+                            edgeLabelBackground: '#0d1a2c',
+                            clusterBkg: '#122238',
+                            clusterBorder: '#7c9eff',
+                        },
+                    });
+                    var render = function () {
+                        mermaid.run({ querySelector: '.mermaid' });
+                    };
+                    if (document.fonts && document.fonts.ready) {
+                        document.fonts.ready.then(render);
+                    } else {
+                        render();
+                    }
+                } catch (e) {
+                    console.error('mermaid init failed', e);
+                }
+            })();
+
+            // ============ サイドバー開閉 (モバイル) ============
+            (function initSidebarToggle() {
+                var btn = document.getElementById('menuToggle');
+                var nav = document.querySelector('.side-nav');
+                var backdrop = document.getElementById('navBackdrop');
+                if (!btn || !nav || !backdrop) return;
+                function close() {
+                    nav.classList.remove('open');
+                    backdrop.classList.remove('open');
+                }
+                btn.addEventListener('click', function () {
+                    nav.classList.toggle('open');
+                    backdrop.classList.toggle('open');
+                });
+                backdrop.addEventListener('click', close);
+                nav.querySelectorAll('a').forEach(function (a) {
+                    a.addEventListener('click', close);
+                });
+            })();
+
+            // ============ スクロールスパイ (2段IntersectionObserver) ============
+            (function initScrollSpy() {
+                var navLinks = document.querySelectorAll('.nav-list a[data-target]');
+                if (!navLinks.length) return;
+                var linkMap = new Map();
+                navLinks.forEach(function (a) {
+                    linkMap.set(a.getAttribute('data-target'), a);
+                });
+                var targets = Array.from(linkMap.keys())
+                    .map(function (id) {
+                        return document.getElementById(id);
+                    })
+                    .filter(Boolean);
+
+                function setActive(id) {
+                    navLinks.forEach(function (a) {
+                        a.classList.remove('active');
+                    });
+                    var link = linkMap.get(id);
+                    if (link) link.classList.add('active');
+                }
+
+                var spy = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                setActive(entry.target.id);
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                targets.forEach(function (t) {
+                    spy.observe(t);
+                });
+            })();
+
+            // ============ チェックリスト進捗カウンター ============
+            (function initChecklistCounters() {
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    var counter = card.querySelector('.checklist-counter');
+                    if (!boxes.length || !counter) return;
+                    function update() {
+                        var done = 0;
+                        boxes.forEach(function (b) {
+                            if (b.checked) done++;
+                        });
+                        counter.textContent = done + ' / ' + boxes.length + ' 完了';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>

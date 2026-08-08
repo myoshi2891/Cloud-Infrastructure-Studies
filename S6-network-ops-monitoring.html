@@ -1,0 +1,3234 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PCNE試験対策ガイド S6: ネットワーク操作と監視</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"
+            integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elev: #0d1a2c;
+                --bg-elev-2: #122238;
+                --border: #1e3350;
+                --border-soft: #16273e;
+                --text: #e6edf7;
+                --text-dim: #96a7c2;
+                --text-faint: #5f7396;
+                --accent: #7c9eff;
+                --accent-soft: rgba(124, 158, 255, 0.12);
+                --accent-2: #5ee6c8;
+                --warn: #ffb454;
+                --warn-soft: rgba(255, 180, 84, 0.1);
+                --good: #5ee6a8;
+                --good-soft: rgba(94, 230, 168, 0.1);
+                --source: #8fa8ff;
+                --source-soft: rgba(143, 168, 255, 0.08);
+                --sidebar-w: 300px;
+                --font-jp: 'Noto Sans JP', 'Inter', system-ui, -apple-system, sans-serif;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--font-jp);
+                overflow-x: hidden;
+                scroll-behavior: smooth;
+            }
+            body {
+                font-size: 16px;
+                line-height: 1.85;
+                font-weight: 400;
+            }
+            ::selection {
+                background: var(--accent-soft);
+                color: var(--accent);
+            }
+
+            /* ---------- Layout ---------- */
+            .layout {
+                display: block;
+                position: relative;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-w);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elev);
+                border-right: 1px solid var(--border-soft);
+                padding: 24px 0 40px 0;
+                z-index: 100;
+                transition: transform 0.25s ease;
+            }
+            .sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 3px;
+            }
+
+            .sidebar-brand {
+                padding: 0 24px 20px 24px;
+                border-bottom: 1px solid var(--border-soft);
+                margin-bottom: 16px;
+            }
+            .sidebar-brand .tag {
+                display: inline-block;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                background: var(--accent-soft);
+                border: 1px solid rgba(124, 158, 255, 0.3);
+                border-radius: 4px;
+                padding: 3px 8px;
+                margin-bottom: 10px;
+            }
+            .sidebar-brand .title {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text);
+                line-height: 1.5;
+            }
+
+            .nav-list,
+            .nav-sublist {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .nav-list > li {
+                margin: 0;
+            }
+            .nav-list a.nav-h2 {
+                display: block;
+                padding: 9px 24px;
+                font-size: 13.5px;
+                font-weight: 600;
+                color: var(--text-dim);
+                text-decoration: none;
+                border-left: 2px solid transparent;
+                transition: all 0.15s ease;
+            }
+            .nav-list a.nav-h2:hover {
+                color: var(--text);
+                background: var(--bg-elev-2);
+            }
+            .nav-list a.nav-h2.active {
+                color: var(--accent);
+                border-left-color: var(--accent);
+                background: var(--accent-soft);
+            }
+            .nav-sublist {
+                padding-left: 0;
+            }
+            .nav-sublist a.nav-h3 {
+                display: block;
+                padding: 6px 24px 6px 38px;
+                font-size: 12.5px;
+                color: var(--text-faint);
+                text-decoration: none;
+                border-left: 2px solid transparent;
+                transition: all 0.15s ease;
+            }
+            .nav-sublist a.nav-h3:hover {
+                color: var(--text-dim);
+            }
+            .nav-sublist a.nav-h3.active {
+                color: var(--accent-2);
+                border-left-color: var(--accent-2);
+            }
+
+            .sidebar-toggle {
+                display: none;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 200;
+                width: 44px;
+                height: 44px;
+                background: var(--bg-elev-2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                color: var(--text);
+                font-size: 20px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+            .sidebar-backdrop {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+            }
+
+            .main {
+                margin-left: var(--sidebar-w);
+                padding: 56px 64px 100px 64px;
+            }
+
+            /* ---------- Hero ---------- */
+            .hero {
+                margin-bottom: 48px;
+            }
+            .hero .badges {
+                margin-bottom: 18px;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .hero .badge {
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                padding: 5px 12px;
+                border-radius: 20px;
+                border: 1px solid rgba(124, 158, 255, 0.35);
+                color: var(--accent);
+                background: var(--accent-soft);
+            }
+            .hero .badge.alt {
+                border-color: rgba(94, 230, 200, 0.35);
+                color: var(--accent-2);
+                background: rgba(94, 230, 200, 0.08);
+            }
+            .hero h1 {
+                font-size: clamp(28px, 4vw, 44px);
+                font-weight: 900;
+                line-height: 1.3;
+                margin: 0 0 18px 0;
+                background: linear-gradient(
+                    120deg,
+                    #ffffff 10%,
+                    var(--accent) 55%,
+                    var(--accent-2) 100%
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .hero .subtitle {
+                font-size: 17px;
+                color: var(--text-dim);
+                line-height: 1.8;
+                max-width: 900px;
+            }
+            .hero hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 32px 0 0 0;
+            }
+
+            /* ---------- Prose ---------- */
+            .main h2 {
+                font-size: 26px;
+                font-weight: 700;
+                margin: 56px 0 20px 0;
+                padding-top: 8px;
+                color: var(--text);
+                scroll-margin-top: 24px;
+                border-top: 1px solid var(--border-soft);
+                padding-top: 40px;
+            }
+            .main h2:first-of-type {
+                border-top: none;
+                padding-top: 0;
+            }
+            .main h3 {
+                font-size: 20px;
+                font-weight: 700;
+                margin: 40px 0 16px 0;
+                color: var(--text);
+                scroll-margin-top: 24px;
+            }
+            .main h4 {
+                font-size: 16.5px;
+                font-weight: 700;
+                margin: 28px 0 12px 0;
+                color: var(--accent);
+                scroll-margin-top: 24px;
+            }
+            .main p {
+                margin: 0 0 18px 0;
+                color: var(--text);
+            }
+            .main ul,
+            .main ol {
+                margin: 0 0 18px 0;
+                padding-left: 1.4em;
+                color: var(--text);
+            }
+            .main li {
+                margin: 0 0 8px 0;
+            }
+            .main li:last-child {
+                margin-bottom: 0;
+            }
+            .main a {
+                color: var(--accent);
+                text-decoration: none;
+                border-bottom: 1px solid rgba(124, 158, 255, 0.35);
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
+            .main a:hover {
+                color: var(--accent-2);
+                border-bottom-color: var(--accent-2);
+            }
+            .main strong {
+                color: #fff;
+                font-weight: 700;
+            }
+            .main hr {
+                border: none;
+                border-top: 1px solid var(--border-soft);
+                margin: 48px 0;
+            }
+            code:not(pre code) {
+                background: var(--bg-elev-2);
+                border: 1px solid var(--border-soft);
+                border-radius: 4px;
+                padding: 1px 6px;
+                font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+                font-size: 0.88em;
+                color: var(--accent-2);
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            /* ---------- Tables ---------- */
+            .table-scroll {
+                overflow-x: auto;
+                margin: 0 0 24px 0;
+                border-radius: 10px;
+                border: 1px solid var(--border-soft);
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                min-width: 600px;
+                font-size: 14.5px;
+            }
+            thead th {
+                background: var(--bg-elev-2);
+                color: var(--text);
+                font-weight: 700;
+                text-align: left;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-soft);
+                color: var(--text-dim);
+                overflow-wrap: break-word;
+                word-break: break-word;
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: var(--bg-elev);
+            }
+            tbody tr:nth-child(odd) {
+                background: rgba(255, 255, 255, 0.015);
+            }
+
+            /* ---------- Mermaid ---------- */
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                overflow-x: auto;
+                margin: 28px 0;
+                padding: 20px 8px;
+                background: var(--bg-elev);
+                border: 1px solid var(--border-soft);
+                border-radius: 12px;
+            }
+            pre.mermaid svg {
+                height: auto;
+            }
+
+            /* ---------- Callouts ---------- */
+            blockquote.callout {
+                margin: 0 0 22px 0;
+                padding: 16px 20px 18px 20px;
+                border-radius: 10px;
+                border: 1px solid var(--border-soft);
+                border-left: 3px solid var(--text-faint);
+            }
+            blockquote.callout p {
+                margin: 0 0 8px 0;
+                color: var(--text-dim);
+            }
+            blockquote.callout p:last-child {
+                margin-bottom: 0;
+            }
+            blockquote.callout ul {
+                margin: 0;
+                padding-left: 1.2em;
+            }
+            blockquote.callout li {
+                margin-bottom: 6px;
+                color: var(--text-dim);
+            }
+            .callout-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+            .callout-icon {
+                font-size: 15px;
+                line-height: 1;
+            }
+            .callout-label {
+                font-size: 12.5px;
+                font-weight: 700;
+                letter-spacing: 0.03em;
+            }
+
+            blockquote.callout-source {
+                background: var(--source-soft);
+                border-left-color: var(--source);
+            }
+            blockquote.callout-source .callout-label {
+                color: var(--source);
+            }
+            blockquote.callout-best {
+                background: var(--good-soft);
+                border-left-color: var(--good);
+            }
+            blockquote.callout-best .callout-label {
+                color: var(--good);
+            }
+            blockquote.callout-warning {
+                background: var(--warn-soft);
+                border-left-color: var(--warn);
+            }
+            blockquote.callout-warning .callout-label {
+                color: var(--warn);
+            }
+
+            /* ---------- Checklist ---------- */
+            .checklist-card {
+                list-style: none;
+                margin: 0 0 22px 0;
+                padding: 8px;
+                background: var(--bg-elev);
+                border: 1px solid var(--border-soft);
+                border-radius: 12px;
+            }
+            .checklist-card li {
+                margin: 0;
+                border-radius: 8px;
+                transition: background 0.15s ease;
+            }
+            .checklist-card li:hover {
+                background: var(--bg-elev-2);
+            }
+            .checklist-card li label {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 11px 12px;
+                cursor: pointer;
+                color: var(--text-dim);
+                font-size: 15px;
+                line-height: 1.6;
+            }
+            .checklist-card input[type='checkbox'] {
+                appearance: none;
+                -webkit-appearance: none;
+                flex: 0 0 auto;
+                width: 19px;
+                height: 19px;
+                margin-top: 2px;
+                border: 1.5px solid var(--border);
+                border-radius: 5px;
+                background: var(--bg);
+                position: relative;
+                cursor: pointer;
+            }
+            .checklist-card input[type='checkbox']:checked {
+                background: var(--accent);
+                border-color: var(--accent);
+            }
+            .checklist-card input[type='checkbox']:checked::after {
+                content: '';
+                position: absolute;
+                left: 5px;
+                top: 1px;
+                width: 5px;
+                height: 10px;
+                border: solid var(--bg);
+                border-width: 0 2px 2px 0;
+                transform: rotate(40deg);
+            }
+            .checklist-card li:has(input:checked) label {
+                color: var(--text-faint);
+                text-decoration: line-through;
+            }
+            .checklist-progress {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 14px;
+                margin-bottom: 6px;
+                font-size: 12.5px;
+                font-weight: 700;
+                color: var(--accent);
+            }
+            .checklist-progress .bar {
+                flex: 1;
+                height: 5px;
+                margin-left: 14px;
+                background: var(--border-soft);
+                border-radius: 3px;
+                overflow: hidden;
+            }
+            .checklist-progress .bar-fill {
+                height: 100%;
+                width: 0%;
+                background: linear-gradient(90deg, var(--accent), var(--accent-2));
+                transition: width 0.2s ease;
+            }
+
+            /* ---------- Reference grid ---------- */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+                margin: 24px 0 0 0;
+            }
+            .ref-card {
+                background: var(--bg-elev);
+                border: 1px solid var(--border-soft);
+                border-radius: 12px;
+                padding: 18px 20px;
+                min-width: 0;
+            }
+            .ref-card h3 {
+                margin: 0 0 12px 0;
+                font-size: 14.5px;
+                font-weight: 700;
+                color: var(--accent-2);
+            }
+            .ref-card ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .ref-card li {
+                margin: 0 0 9px 0;
+            }
+            .ref-card li:last-child {
+                margin-bottom: 0;
+            }
+            .ref-card a {
+                display: block;
+                font-size: 12.5px;
+                color: var(--text-dim);
+                border-bottom: none;
+                overflow-wrap: break-word;
+                word-break: break-word;
+                min-width: 0;
+                padding-left: 16px;
+                position: relative;
+            }
+            .ref-card a::before {
+                content: '\2197';
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: var(--text-faint);
+            }
+            .ref-card a:hover {
+                color: var(--accent);
+            }
+            .ref-card a:hover::before {
+                color: var(--accent);
+            }
+
+            @media (max-width: 720px) {
+                .ref-grid {
+                    grid-template-columns: minmax(0, 1fr);
+                }
+            }
+
+            /* ---------- Mobile ---------- */
+            @media (max-width: 960px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+                }
+                .sidebar-toggle {
+                    display: flex;
+                }
+                .sidebar-backdrop.open {
+                    display: block;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 88px 20px 80px 20px;
+                }
+                .hero h1 {
+                    font-size: 26px;
+                }
+                .sidebar {
+                    padding-top: 76px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="メニュー">&#9776;</button>
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-brand">
+                    <span class="tag">PCNE 試験対策</span>
+                    <div class="title">S6: ネットワーク操作と監視</div>
+                </div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="#この記事についてスコープ対応表" class="nav-h2"
+                            >この記事について(スコープ対応表)</a
+                        >
+                    </li>
+                    <li><a href="#全体像" class="nav-h2">全体像</a></li>
+                    <li>
+                        <a
+                            href="#part-1-google-cloud-observabilityによるロギングとモニタリングtask-51"
+                            class="nav-h2"
+                            >Part 1: Google Cloud Observabilityによるロギングとモニタリング(Task
+                            5.1)</a
+                        >
+                        <ul class="nav-sublist">
+                            <li>
+                                <a href="#11-google-cloud-observabilityの基本構造" class="nav-h3"
+                                    >1.1 Google Cloud Observabilityの基本構造</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#12-ネットワークコンポーネント別ロギング" class="nav-h3"
+                                    >1.2 ネットワークコンポーネント別ロギング</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#13-ネットワークメトリクスのモニタリング" class="nav-h3"
+                                    >1.3 ネットワークメトリクスのモニタリング</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#14-task-51-設計運用チェックリスト" class="nav-h3"
+                                    >1.4 Task 5.1 設計・運用チェックリスト</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#part-2-接続性の維持とトラブルシューティングtask-52" class="nav-h2"
+                            >Part 2: 接続性の維持とトラブルシューティング(Task 5.2)</a
+                        >
+                        <ul class="nav-sublist">
+                            <li>
+                                <a
+                                    href="#21-application-load-balancerでのトラフィックドレインリダイレクト"
+                                    class="nav-h3"
+                                    >2.1 Application Load
+                                    Balancerでのトラフィックドレイン・リダイレクト</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#22-cloud-vpnの管理とトラブルシューティング" class="nav-h3"
+                                    >2.2 Cloud VPNの管理とトラブルシューティング</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#23-cloud-interconnectの管理とトラブルシューティング"
+                                    class="nav-h3"
+                                    >2.3 Cloud Interconnectの管理とトラブルシューティング</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#24-cloud-routerのbgpピアリングのトラブルシューティング"
+                                    class="nav-h3"
+                                    >2.4 Cloud RouterのBGPピアリングのトラブルシューティング</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#25-vpc-flow-logsファイアウォールログpacket-mirroringを使ったトラブルシューティング"
+                                    class="nav-h3"
+                                    >2.5 VPC Flow Logs・ファイアウォールログ・Packet
+                                    Mirroringを使ったトラブルシューティング</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#26-task-52-トラブルシューティングチェックリスト"
+                                    class="nav-h3"
+                                    >2.6 Task 5.2 トラブルシューティングチェックリスト</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a
+                            href="#part-3-network-intelligence-centerによる監視とトラブルシューティングtask-53"
+                            class="nav-h2"
+                            >Part 3: Network Intelligence
+                            Centerによる監視とトラブルシューティング(Task 5.3)</a
+                        >
+                        <ul class="nav-sublist">
+                            <li>
+                                <a href="#31-network-intelligence-centerの全体像" class="nav-h3"
+                                    >3.1 Network Intelligence Centerの全体像</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#32-network-topology" class="nav-h3"
+                                    >3.2 Network Topology</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#33-connectivity-tests" class="nav-h3"
+                                    >3.3 Connectivity Tests</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#34-performance-dashboard" class="nav-h3"
+                                    >3.4 Performance Dashboard</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#35-firewall-insights" class="nav-h3"
+                                    >3.5 Firewall Insights</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#36-network-analyzer" class="nav-h3"
+                                    >3.6 Network Analyzer</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#37-flow-analyzer" class="nav-h3">3.7 Flow Analyzer</a>
+                            </li>
+                            <li>
+                                <a href="#38-task-53-活用チェックリスト" class="nav-h3"
+                                    >3.8 Task 5.3 活用チェックリスト</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#総合トラブルシューティングワークフロー" class="nav-h2"
+                            >総合トラブルシューティングワークフロー</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#参考文献" class="nav-h2">参考文献</a>
+                        <ul class="nav-sublist">
+                            <li>
+                                <a href="#公式認定試験ガイド" class="nav-h3"
+                                    >公式認定・試験ガイド</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#cloud-logging--cloud-monitoring基盤コンポーネント別ロギング"
+                                    class="nav-h3"
+                                    >Cloud Logging / Cloud
+                                    Monitoring基盤・コンポーネント別ロギング</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#ハイブリッド接続cloud-vpn--cloud-interconnect--cloud-routerのモニタリングとトラブルシューティング"
+                                    class="nav-h3"
+                                    >ハイブリッド接続(Cloud VPN / Cloud Interconnect / Cloud
+                                    Router)のモニタリングとトラブルシューティング</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#ロードバランシングトラフィック管理" class="nav-h3"
+                                    >ロードバランシング・トラフィック管理</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#vpc-flow-logspacket-mirroringによるトラブルシューティング"
+                                    class="nav-h3"
+                                    >VPC Flow Logs・Packet Mirroringによるトラブルシューティング</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#network-intelligence-center" class="nav-h3"
+                                    >Network Intelligence Center</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <main class="main">
+                <div class="hero">
+                    <div class="badges">
+                        <span class="badge">Section 5</span>
+                        <span class="badge alt">出題比率 約14%</span>
+                    </div>
+                    <h1>PCNE試験対策ガイド S6: ネットワーク操作と監視</h1>
+                    <p class="subtitle">
+                        Google Cloud Professional Cloud Network Engineer(PCNE)認定試験 — Section 5:
+                        Managing, monitoring, and troubleshooting network operations（出題比率
+                        約14%）
+                    </p>
+                    <hr />
+                </div>
+
+                <h2 id="この記事についてスコープ対応表">この記事について(スコープ対応表)</h2>
+                <p>
+                    本ガイドは、本シリーズで先行して公開したS1(Section 1 設計・計画)、S2(Section 4
+                    ハイブリッド接続)、S3(Section 2 VPC実装 / Section 3 Task 3.1
+                    ロードバランシング)、S4(Section 3 Task 3.2-3.3 CDN・DNS・IPAM)、S5(Section 6
+                    ネットワークセキュリティ)の続編として、公式Exam Guide(PDF)の<strong
+                        >Section 5「Managing, monitoring, and troubleshooting network
+                        operations</strong
+                    >」(出題比率約14%)に厳密に対応する範囲を扱います。ユーザー呼称の「S6」は公式セクション番号とは一致しませんが、これまでのシリーズと同じ命名慣行を踏襲しています。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>本ガイドの構成</th>
+                                <th>公式Exam GuideのTask</th>
+                                <th>主な内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Part 1</td>
+                                <td>
+                                    Task 5.1 Logging and monitoring with Google Cloud Observability
+                                </td>
+                                <td>
+                                    ネットワークコンポーネント別のCloud Loggingログ、Cloud
+                                    Monitoringメトリクス
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Part 2</td>
+                                <td>
+                                    Task 5.2 Maintaining and troubleshooting connectivity issues
+                                </td>
+                                <td>
+                                    ALBのトラフィックドレイン、VPN/Interconnect/Cloud Router
+                                    BGPのトラブルシューティング、Flow Logs・Firewall Logs・Packet
+                                    Mirroringの活用
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Part 3</td>
+                                <td>
+                                    Task 5.3 Using Network Intelligence Center to monitor and
+                                    troubleshoot common networking issues
+                                </td>
+                                <td>
+                                    Network Topology、Connectivity Tests、Performance
+                                    Dashboard、Firewall Insights、Network Analyzer、Flow Analyzer
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/learn/certification/cloud-network-engineer"
+                                >https://cloud.google.com/learn/certification/cloud-network-engineer</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf"
+                                >https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <hr />
+                <h2 id="全体像">全体像</h2>
+                <p>
+                    Section 5は「作る」フェーズ(Section
+                    1〜4)を終えたネットワークを、日々どう<strong>観測し</strong>、<strong>維持し</strong>、<strong>壊れたときに直す</strong>かを問う領域です。試験ガイドは3つのTaskに分かれていますが、実務的には次の1本の流れとして理解すると整理しやすくなります。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    A["ネットワークコンポーネント&lt;br/&gt;VPC/Router/VPN/Interconnect/NAT/DNS/LB/Armor/NCC"] --&gt; B["Task 5.1&lt;br/&gt;Cloud Observabilityで収集する"]
+    B --&gt; C{"異常や問い合わせが&lt;br/&gt;発生した"}
+    C --&gt;|"Yes"| D["Task 5.2&lt;br/&gt;コンポーネント別に&lt;br/&gt;トラブルシューティングする"]
+    C --&gt;|"No(平常時)"| E["Task 5.3&lt;br/&gt;Network Intelligence Centerで&lt;br/&gt;可視化・予防診断する"]
+    D --&gt; F["Flow Logs / Firewall Logs /&lt;br/&gt;Packet Mirroringで&lt;br/&gt;根本原因を特定する"]
+    E --&gt; G["Connectivity Tests / Network Analyzer /&lt;br/&gt;Firewall Insightsで&lt;br/&gt;構成起因の問題を先回りで検知する"]
+    F --&gt; H["是正・再発防止"]
+    G --&gt; H
+    H --&gt; B</pre
+                >
+                <p>
+                    この循環の中で、<strong>Task 5.1(収集)</strong> が土台であり、Flow
+                    Logs・Firewall Rules Logging・各種メトリクスが有効化されていなければ、Task
+                    5.2の切り分けもTask 5.3のNetwork Analyzer/Firewall
+                    Insightsのログベースインサイトも機能しません。試験でも「まずロギングとモニタリングが有効化されているか」を問う設問が土台になっている点を意識してください。
+                </p>
+                <hr />
+                <h2 id="part-1-google-cloud-observabilityによるロギングとモニタリングtask-51">
+                    Part 1: Google Cloud Observabilityによるロギングとモニタリング(Task 5.1)
+                </h2>
+                <h3 id="11-google-cloud-observabilityの基本構造">
+                    1.1 Google Cloud Observabilityの基本構造
+                </h3>
+                <p>
+                    Google Cloud Observability(旧Stackdriver)は、<strong>Cloud Logging</strong
+                    >(ログ)と<strong>Cloud Monitoring</strong
+                    >(メトリクス)を中核としたスイートです。ネットワークコンポーネントの大半は、追加のエージェント導入なしにログとメトリクスを自動的に送信します。
+                </p>
+                <pre class="mermaid">
+flowchart LR
+    subgraph Sources["ネットワークコンポーネント"]
+        direction TB
+        S1["Cloud VPN"]
+        S2["Cloud Router"]
+        S3["VPC Service Controls"]
+        S4["Cloud NGFW / VPC Firewall"]
+        S5["VPC Flow Logs"]
+        S6["Cloud DNS"]
+        S7["Cloud NAT"]
+        S8["Network Connectivity Center"]
+    end
+
+    Sources --&gt; L["Cloud Logging&lt;br/&gt;(Logs Explorer)"]
+    Sources --&gt; M["Cloud Monitoring&lt;br/&gt;(Metrics Explorer)"]
+
+    L --&gt; LS1["ログシンク経由でエクスポート&lt;br/&gt;BigQuery / Cloud Storage / Pub/Sub"]
+    L --&gt; LS2["ログベースメトリクス /&lt;br/&gt;ログベースアラート"]
+    M --&gt; MS1["事前定義ダッシュボード"]
+    M --&gt; MS2["カスタムダッシュボード /&lt;br/&gt;アラートポリシー"]
+    LS1 --&gt; SIEM["Flow Analyzer / BigQuery分析 /&lt;br/&gt;外部SIEM"]</pre
+                >
+                <p>
+                    試験ガイドが明示的に列挙しているロギング対象コンポーネントは、<strong
+                        >Cloud VPN、Cloud Router、VPC Service Controls、Cloud NGFW、Firewall
+                        Insights、VPC Flow Logs、Cloud DNS、Cloud NAT、Network Connectivity
+                        Center</strong
+                    >の8つです。これらはすべてCloud
+                    Loggingに自動で書き込まれ、追加課金なしで有効化できるものがほとんどですが、VPC
+                    Flow LogsとFirewall Rules Loggingは明示的な設定が必要です。
+                </p>
+                <blockquote class="callout callout-warning">
+                    <div class="callout-header">
+                        <span class="callout-icon">⚠</span><span class="callout-label">注意</span>
+                    </div>
+                    <p>
+                        Cloud LoggingとCloud
+                        Monitoringは無料枠を超えると、取り込み量(ログ)やサンプル数(メトリクス)に応じた課金が発生します。特にVPC
+                        Flow
+                        Logsはトラフィック量に比例して急増しやすいため、サンプリングレートやメタデータ注釈の絞り込みが設計上の重要な検討事項になります。
+                    </p>
+                </blockquote>
+                <h3 id="12-ネットワークコンポーネント別ロギング">
+                    1.2 ネットワークコンポーネント別ロギング
+                </h3>
+                <h4 id="121-vpc-flow-logs">1.2.1 VPC Flow Logs</h4>
+                <p>
+                    VPC Flow
+                    Logsは、VPCネットワーク内を流れるパケットをサンプリングし、5-tuple(送信元/宛先IP、ポート、プロトコル)単位で集約したフローログを生成します。対象となるトラフィックは次のとおりです。
+                </p>
+                <ul>
+                    <li>VMインスタンス(GKEノードを含む)が送受信するパケット</li>
+                    <li>Direct VPC Egressを構成したCloud Runリソースが送受信するパケット</li>
+                    <li>
+                        Cloud InterconnectのVLANアタッチメントやCloud VPNトンネルを通過するパケット
+                    </li>
+                </ul>
+                <pre class="mermaid">
+flowchart LR
+    A["VPCネットワーク内の&lt;br/&gt;パケット"] --&gt; B["サンプリング&lt;br/&gt;(primary sampling rate)"]
+    B --&gt; C["5-tuple単位で集約&lt;br/&gt;(aggregation interval)"]
+    C --&gt; D["メタデータ注釈付与&lt;br/&gt;(送信元/宛先の名前解決、地理情報など)"]
+    D --&gt; E["フィルタリング&lt;br/&gt;(任意)"]
+    E --&gt; F["Cloud Logging&lt;br/&gt;(vpc_flows)"]
+    F --&gt; G["Logs Explorer /&lt;br/&gt;ログシンクでエクスポート"]
+    F --&gt; H["Flow Analyzer&lt;br/&gt;(Log Analytics有効化時)"]</pre
+                >
+                <p>
+                    VPC Flow
+                    Logsは組織レベル・プロジェクトレベル・サブネット/VLANアタッチメント/VPNトンネル単位で個別に構成でき、組織レベルの構成を持つ場合はShared
+                    VPC・VPC Network Peering・Network Connectivity
+                    Center経由のフローに「クロスプロジェクト注釈」が付与されます。GKEのPodからインターネット向けの通信は、IP
+                    masqueradeによって送信元IPがノードIPに変換されるため、既定ではPodの注釈が付きません(Podの注釈を取得したい場合はCloud
+                    NATと組み合わせる必要があります)。
+                </p>
+                <p>
+                    用途としては、ネットワークフォレンジック(侵害されたIPの特定)、キャパシティプランニング、コスト最適化(トップトーカーの特定)が代表的です。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a href="https://cloud.google.com/vpc/docs/flow-logs"
+                                >https://cloud.google.com/vpc/docs/flow-logs</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://cloud.google.com/vpc/docs/using-flow-logs"
+                                >https://cloud.google.com/vpc/docs/using-flow-logs</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://cloud.google.com/vpc/docs/about-flow-logs-records"
+                                >https://cloud.google.com/vpc/docs/about-flow-logs-records</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://cloud.google.com/vpc/docs/access-flow-logs"
+                                >https://cloud.google.com/vpc/docs/access-flow-logs</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h4
+                    id="122-ファイアウォールルールロギングvpc-firewall-rules--階層型ポリシー--cloud-ngfw"
+                >
+                    1.2.2 ファイアウォールルールロギング(VPC Firewall Rules / 階層型ポリシー / Cloud
+                    NGFW)
+                </h4>
+                <p>
+                    VPC Firewall Rules LoggingはCompute Engine
+                    VM(GKEノードを含む)への/からのトラフィックを対象とし、ルールが許可または拒否した通信のたびに「接続レコード」というログエントリを生成します。<strong>Allow系ルール</strong>と<strong>Deny系ルール</strong>でログの挙動が大きく異なる点は頻出ポイントです。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>項目</th>
+                                <th>Allow + ロギング</th>
+                                <th>Deny + ロギング</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ログの発生単位</td>
+                                <td>接続(コネクション)ごとに1回</td>
+                                <td>一意な5-tupleごとに、パケットが観測されるたびに再発生</td>
+                            </tr>
+                            <tr class="even">
+                                <td>継続時間中の追加ログ</td>
+                                <td>
+                                    生成されない(ステートフルなため応答トラフィックは記録されない)
+                                </td>
+                                <td>パケットが観測される限り約5秒ごとに繰り返し記録される</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>既存アクティブ接続へのロギング有効化</td>
+                                <td>
+                                    新規ログは即時生成されない。アイドル10分後、新しいパケットが来た時点で記録される
+                                </td>
+                                <td>該当なし(そもそも許可されていない接続)</td>
+                            </tr>
+                            <tr class="even">
+                                <td>長時間接続の可視性</td>
+                                <td>低い(1エントリのみ)</td>
+                                <td>高い(継続的に記録される)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="callout callout-best">
+                    <div class="callout-header">
+                        <span class="callout-icon">✅</span
+                        ><span class="callout-label">ベストプラクティス</span>
+                    </div>
+                    <p>
+                        アイドル期間のない長時間ストリームを継続的に可視化したい場合はVPC Firewall
+                        Rules LoggingではなくVPC Flow
+                        Logsを使用してください。ファイアウォールログは「許可/拒否の判断根拠」を追うのに適し、Flow
+                        Logsは「トラフィックの実体」を追うのに適しています。両者は補完関係にあり、片方だけでは不十分なケースが多くあります。
+                    </p>
+                </blockquote>
+                <p>
+                    階層型ファイアウォールポリシーおよびグローバル/リージョナルのネットワークファイアウォールポリシー(Cloud
+                    NGFW)でも同様にロギングを有効化でき、ログはCloud
+                    Loggingの同じ基盤に書き込まれます。Firewall
+                    Insightsが生成するインサイトは、このロギングデータを土台にしています(詳細は<a
+                        href="#35-firewall-insights"
+                        >3.5節</a
+                    >)。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+                    <p>
+                        <a
+                            href="https://docs.cloud.google.com/firewall/docs/vpc-firewall-rules-logging-overview"
+                            >https://docs.cloud.google.com/firewall/docs/vpc-firewall-rules-logging-overview</a
+                        >
+                    </p>
+                </blockquote>
+                <h4 id="123-cloud-routerのログ">1.2.3 Cloud Routerのログ</h4>
+                <p>
+                    Cloud RouterはBGPセッションの状態変化を3種類のイベントとしてCloud
+                    Loggingに記録します。
+                </p>
+                <pre class="mermaid">
+sequenceDiagram
+    participant CR as Cloud Router
+    participant Log as Cloud Logging
+    participant Peer as オンプレミス/ピアルータ
+
+    CR-&gt;&gt;Log: Router event&lt;br/&gt;(Router task activated/de-activated)
+    CR-&gt;&gt;Peer: BGPセッション確立を試行
+    Peer--&gt;&gt;CR: OPEN / KEEPALIVE
+    CR-&gt;&gt;Log: BGP event&lt;br/&gt;(peering came up X seconds ago)
+    CR-&gt;&gt;Log: Route event&lt;br/&gt;(Advertising prefix / prefix received)
+    Note over CR,Peer: 障害発生
+    Peer--xCR: セッション断
+    CR-&gt;&gt;Log: BGP event&lt;br/&gt;(peering went down, reason: HOLD_TIMER_EXPIRED等)
+    CR-&gt;&gt;Log: Route event&lt;br/&gt;(Withdrawing prefix)</pre
+                >
+                <p>
+                    ログには「Router event」(タスクの起動/非活性化)、「BGP
+                    event」(ピアリングの確立・切断とその理由)、「Route
+                    event」(経路の広告・撤回、学習した経路のネクストホップ)の3系統があり、それぞれ<code
+                        >[Event Type]: [Log Text]</code
+                    >という定型フォーマットで出力されます。障害調査では、まず「BGP
+                    event」でセッション断の理由(<code>HOLD_TIMER_EXPIRED</code>、<code>LINK_DOWN</code>など)を確認し、次に「Route
+                    event」で経路の広告状況を突き合わせるのが定石です。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-connectivity/docs/router/how-to/viewing-logs-metrics"
+                                >https://cloud.google.com/network-connectivity/docs/router/how-to/viewing-logs-metrics</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-log-messages"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-log-messages</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h4 id="124-cloud-vpnのログ">1.2.4 Cloud VPNのログ</h4>
+                <p>
+                    Cloud
+                    VPNのログは自動的に有効化されており、追加設定は不要です。IKEネゴシエーション、鍵の再交換(rekeying)、SA(セキュリティアソシエーション)の削除といったイベントが記録されます。トンネルが確立後すぐに切断を繰り返す場合、<code
+                        >Received SA_DELETE</code
+                    >ログの直後に再接続している形跡があれば、オンプレミス側のゲートウェイがrekeyingではなく既存SAの削除後に新規SAをネゴシエートする実装になっている可能性を疑います。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+                    <p>
+                        <a
+                            href="https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/viewing-logs-metrics"
+                            >https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/viewing-logs-metrics</a
+                        >
+                    </p>
+                </blockquote>
+                <h4 id="125-cloud-natのログ">1.2.5 Cloud NATのログ</h4>
+                <p>
+                    Cloud
+                    NATのログエントリには、重大度・プロジェクトIDなど一般的なフィールドに加え、NAT固有の情報(変換前後のIPアドレス・ポート、NAT64の場合は宛先IPv4埋め込みIPv6アドレスなど)が含まれます。ログベースメトリクスへのエクスポートも構成可能です。加えて、Cloud
+                    NATは<code>compute.googleapis.com</code>を対象とした監査ログ(Admin Activity /
+                    Data Access)も生成します。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a href="https://cloud.google.com/nat/docs/monitoring"
+                                >https://cloud.google.com/nat/docs/monitoring</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://cloud.google.com/nat/docs/audit-logging"
+                                >https://cloud.google.com/nat/docs/audit-logging</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h4 id="126-cloud-dnsのログ">1.2.6 Cloud DNSのログ</h4>
+                <p>
+                    Cloud
+                    DNSロギングは、VPCネットワーク内のVM、GKEコンテナ、ピアリング先のゾーン、オンプレミスからのインバウンドフォワーディングなど、さまざまな経路からのDNSクエリを記録します。パブリックゾーンに対する外部からの直接クエリも対象です。既定では無効で、ゾーン単位・ポリシー単位で有効化します。ログには重複するフィールドがあり、一部はモニタリングメトリクスとも共有されています。目安として1万クエリあたり約5MBのログが生成されます。
+                </p>
+                <blockquote class="callout callout-warning">
+                    <div class="callout-header">
+                        <span class="callout-icon">⚠</span><span class="callout-label">注意</span>
+                    </div>
+                    <p>
+                        <code>SERVFAIL</code
+                        >を含むログで<code>destinationIP</code>・<code>egressIP</code>・<code>egressError</code>などのフィールドが欠落している場合は、Cloud
+                        DNSのトラブルシューティングドキュメントの該当セクションを参照してください。
+                    </p>
+                </blockquote>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+                    <p>
+                        <a href="https://docs.cloud.google.com/dns/docs/monitoring"
+                            >https://docs.cloud.google.com/dns/docs/monitoring</a
+                        >
+                    </p>
+                </blockquote>
+                <h4 id="127-vpc-service-controlsの監査ログ">
+                    1.2.7 VPC Service Controlsの監査ログ
+                </h4>
+                <p>
+                    VPC Service
+                    Controlsは、セキュリティポリシー違反によって拒否されたすべてのアクセスを既定でCloud
+                    Loggingに記録します。監査ログは「Audited
+                    Resource」というログストリームに書き込まれ、<code>protoPayload.metadata.@type</code>が<code>type.googleapis.com/google.cloud.audit.VpcServiceControlAuditMetadata</code>のログとして特定できます。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    A["サービスへのAPIリクエスト"] --&gt; B{"サービス境界を&lt;br/&gt;越えるか"}
+    B --&gt;|"No"| C["通常どおり処理"]
+    B --&gt;|"Yes"| D{"アクセスレベル/&lt;br/&gt;Ingress-Egressルールで&lt;br/&gt;許可されているか"}
+    D --&gt;|"Yes"| C
+    D --&gt;|"No"| E["アクセス拒否&lt;br/&gt;(トラブルシューティングトークンを生成)"]
+    E --&gt; F["Cloud Audit Logsに記録&lt;br/&gt;(VpcServiceControlAuditMetadata)"]
+    F --&gt; G["Violation Dashboardで集約&lt;br/&gt;(組織レベルのログシンクが必要)"]
+    F --&gt; H["Violation Analyzerで&lt;br/&gt;トラブルシューティングトークンから原因を診断"]</pre
+                >
+                <p>
+                    組織全体の違反を俯瞰するには<strong>Violation Dashboard</strong
+                    >の設定(組織レベルのログシンクとログバケットの構成)が必要で、設定前に発生した違反はバックフィルされません。個別の拒否イベントは、エラーメッセージ中の一意なID(トラブルシューティングトークン)を使い、<strong
+                        >Violation Analyzer</strong
+                    >または<code>gcloud logging read</code>での直接検索によって原因を特定できます。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vpc-service-controls/docs/audit-logging"
+                                >https://docs.cloud.google.com/vpc-service-controls/docs/audit-logging</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vpc-service-controls/docs/violation-dashboard"
+                                >https://docs.cloud.google.com/vpc-service-controls/docs/violation-dashboard</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vpc-service-controls/docs/retrieve-troubleshoot-errors"
+                                >https://docs.cloud.google.com/vpc-service-controls/docs/retrieve-troubleshoot-errors</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/vpc-service-controls/docs/violation-analyzer"
+                                >https://cloud.google.com/vpc-service-controls/docs/violation-analyzer</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h4 id="128-network-connectivity-centerのログ">
+                    1.2.8 Network Connectivity Centerのログ
+                </h4>
+                <p>
+                    NCC(ハブ・スポーク・NCC Gatewayスポーク)およびRouter
+                    applianceに関するログも、Cloud
+                    Loggingに一般的なフィールド(重大度・プロジェクトID・タイムスタンプ)とログ種別ごとの詳細情報を伴って記録されます。なお、Router
+                    applianceの<strong>ログ</strong>自体はCloud
+                    Routerのロギング機構に委譲されており、NCC固有のログとCloud
+                    Routerのログを併読する必要がある点に注意してください。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+                    <p>
+                        <a
+                            href="https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/how-to/viewing-logs-metrics"
+                            >https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/how-to/viewing-logs-metrics</a
+                        >
+                    </p>
+                </blockquote>
+                <h3 id="13-ネットワークメトリクスのモニタリング">
+                    1.3 ネットワークメトリクスのモニタリング
+                </h3>
+                <p>
+                    試験ガイドが明示するモニタリング対象は、<strong
+                        >Cloud VPN、Cloud InterconnectとVLANアタッチメント、Cloud
+                        Router、ロードバランサ、Google Cloud Armor、Cloud NAT</strong
+                    >の6分野です。いずれも自動的にCloud
+                    Monitoringへメトリクスが送信されるため、エージェントのインストールは不要です。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    subgraph Metrics["自動収集されるメトリクス"]
+        M1["Cloud VPN&lt;br/&gt;トンネル単位のbytes/packets"]
+        M2["Cloud Interconnect&lt;br/&gt;物理接続 + VLANアタッチメント"]
+        M3["Cloud Router&lt;br/&gt;ルータ単位 + BGPセッション単位"]
+        M4["ロードバランサ&lt;br/&gt;request_count / latencies / response_code"]
+        M5["Cloud Armor&lt;br/&gt;ポリシー単位のリクエスト・ブロック数"]
+        M6["Cloud NAT&lt;br/&gt;ゲートウェイ単位の使用率・ドロップ数"]
+    end
+    Metrics --&gt; CM["Cloud Monitoring"]
+    CM --&gt; D1["事前定義ダッシュボード&lt;br/&gt;(各コンソール画面のMonitoringタブ)"]
+    CM --&gt; D2["Metrics Explorer /&lt;br/&gt;カスタムダッシュボード"]
+    CM --&gt; D3["アラートポリシー&lt;br/&gt;(通知チャネル経由)"]</pre
+                >
+                <h4 id="131-cloud-vpnのメトリクス">1.3.1 Cloud VPNのメトリクス</h4>
+                <p>
+                    各トンネルの詳細ページの「Monitoring」タブで、bytes/packetsなどの主要メトリクスをリージョン・ゲートウェイ・トンネル単位でフィルタして確認できます。パケットがドロップされた場合、ゲートウェイはドロップ理由を提供します。
+                </p>
+                <h4 id="132-cloud-interconnectとvlanアタッチメントのメトリクス">
+                    1.3.2 Cloud InterconnectとVLANアタッチメントのメトリクス
+                </h4>
+                <p>
+                    Google側でポートを割り当てた時点(接続がまだ使用可能になる前)からメトリクス収集が始まるため、開通前の物理接続の監視やテストにも活用できます。VLANアタッチメント・ワイヤグループについては作成直後からメトリクス収集が始まり、パケット数・バイト数が1分間隔でMonitoringに送信され、6週間保持されます。
+                </p>
+                <p>監視の実務では、次の3層を意識すると原因の切り分けがしやすくなります。</p>
+                <pre class="mermaid">
+flowchart LR
+    A["物理層&lt;br/&gt;(Interconnect接続の稼働状態・光レベル)"] --&gt; D["障害/劣化の切り分け"]
+    B["論理層&lt;br/&gt;(VLANアタッチメントの帯域・パケット数)"] --&gt; D
+    C["ルーティング層&lt;br/&gt;(BGPセッションの状態・経路数)"] --&gt; D
+    D --&gt; E["対応: キャリア/コロケーション連携、&lt;br/&gt;帯域増強、BGP設定修正など"]</pre
+                >
+                <blockquote class="callout callout-warning">
+                    <div class="callout-header">
+                        <span class="callout-icon">⚠</span><span class="callout-label">注意</span>
+                    </div>
+                    <p>
+                        VLANアタッチメントのメトリクスは60秒間隔でサンプリングされるため、瞬間的なトラフィックバーストが<code>BANDWIDTH_THROTTLE</code>によるドロップの原因であっても、Ingress/Egressの使用率グラフ上にはスパイクとして現れないことがあります。帯域超過が疑われる場合は、アタッチメントの利用率を下げる、容量を増やす、追加のVLANアタッチメントを使用するといった対応を検討してください。
+                    </p>
+                </blockquote>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-connectivity/docs/interconnect/how-to/monitoring"
+                                >https://cloud.google.com/network-connectivity/docs/interconnect/how-to/monitoring</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/interconnect/support/troubleshooting"
+                                >https://docs.cloud.google.com/network-connectivity/docs/interconnect/support/troubleshooting</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h4 id="133-cloud-routerのメトリクス">1.3.3 Cloud Routerのメトリクス</h4>
+                <p>
+                    Cloud
+                    Routerのメトリクスは、ルータ単位のもの(<code>router-name</code>)とBGPセッション単位のもの(<code>router-name(bgp-name)</code>)の2種類に分かれます。受信経路数・学習経路数を示すメトリクスは動的に学習された経路に関するものであり、Custom
+                    learned routes機能とは無関係である点に注意してください。
+                </p>
+                <h4 id="134-ロードバランサのメトリクス">1.3.4 ロードバランサのメトリクス</h4>
+                <p>
+                    代表的なメトリクスは<code>loadbalancing.googleapis.com/https/request_count</code>、<code>.../total_latencies</code>、<code>.../backend_latencies</code>、<code>.../response_code_count</code>などです。<strong
+                        >Total latency</strong
+                    >はクライアント〜ロードバランサ〜バックエンドを含む全体のレイテンシ、<strong
+                        >Backend latency</strong
+                    >はバックエンドの応答時間のみを表すため、両者を切り分けて監視することでアプリケーション側の問題かネットワーク側の問題かを判断できます。SLOを設計する場合、<code>DistributionCut</code>を使ったリクエストベースのSLI(例:「1時間のローリングウィンドウで99%のリクエストが100ms以内」)として表現するのが一般的です。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/https/https-logging-monitoring"
+                                >https://docs.cloud.google.com/load-balancing/docs/https/https-logging-monitoring</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/lb-metrics"
+                                >https://docs.cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/lb-metrics</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h4 id="135-google-cloud-armorのメトリクスと運用監視">
+                    1.3.5 Google Cloud Armorのメトリクスと運用監視
+                </h4>
+                <p>
+                    Cloud
+                    Armorのセキュリティポリシーのメトリクスは、ロードバランサのバックエンドサービスに紐づく形でCloud
+                    Monitoringに送信され、ポリシー単位でリクエスト数・ブロック数・レート制限のヒット数などを確認できます。詳細なポリシー種別・WAFルール・DDoS防御・レート制限・bot管理の設計論点は、既刊のS5(Section
+                    6ネットワークセキュリティ)ガイドで扱っているため、本ガイドでは監視・運用の観点に絞って要点のみ再掲します。
+                </p>
+                <h4 id="136-cloud-natのメトリクス">1.3.6 Cloud NATのメトリクス</h4>
+                <p>
+                    Cloud NATはゲートウェイのフリート全体の使用状況をCloud
+                    Monitoringに自動送信します。コンソール上のNATゲートウェイ詳細ページの「Monitoring」タブから事前定義ダッシュボードを確認できるほか、<code
+                        >Cloud NAT gateway</code
+                    >や<code>VM Instance</code>をフィルタしてアラートポリシーを作成できます。Shared
+                    VPCでVMとNATゲートウェイが異なるプロジェクトにある場合、VMレベルのメトリクスへのアクセスにはVMが属するプロジェクトの<code>roles/monitoring.viewer</code>、ゲートウェイリソースのメトリクスへのアクセスにはゲートウェイが属するプロジェクトの<code>roles/monitoring.viewer</code>が、それぞれ個別に必要です。
+                </p>
+                <blockquote class="callout callout-best">
+                    <div class="callout-header">
+                        <span class="callout-icon">✅</span
+                        ><span class="callout-label">ベストプラクティス</span>
+                    </div>
+                    <p>
+                        Cloud
+                        NATでは「割り当てポートの枯渇」がサイレント障害になりやすい落とし穴です。動的ポート割り当てを使用している場合でも、<code>nat_allocation_failed</code>系のメトリクスやログをアラート対象に含め、ポート使用率が閾値を超えたら通知されるようにしておくことを推奨します。
+                    </p>
+                </blockquote>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+                    <p>
+                        <a href="https://docs.cloud.google.com/nat/docs/monitoring"
+                            >https://docs.cloud.google.com/nat/docs/monitoring</a
+                        >
+                    </p>
+                </blockquote>
+                <h3 id="14-task-51-設計運用チェックリスト">
+                    1.4 Task 5.1 設計・運用チェックリスト
+                </h3>
+                <ul class="task-list checklist-card">
+                    <li>
+                        <label
+                            ><input type="checkbox" />VPC Flow
+                            Logsを、少なくとも本番トラフィックが通過するサブネット・VLANアタッチメント・VPNトンネルで有効化しているか(組織レベル/プロジェクトレベルの設定範囲を意図通りに設計しているか)</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />VPC Firewall Rules
+                            Loggingを、Allow/Denyそれぞれの目的(可視性 vs.
+                            セキュリティ監査)に応じて必要なルールにのみ有効化しているか(全ルールでの一律有効化はログ量爆発のリスクがある)</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Cloud Router・Cloud VPN・Cloud
+                            Interconnectのログとメトリクスを組み合わせ、BGPセッション断・トンネル断・帯域劣化を横断的に追跡できるダッシュボードを用意しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Cloud
+                            DNSロギングを、少なくとも障害調査が必要になり得るゾーン・ポリシーで有効化しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />VPC Service
+                            Controlsを利用している場合、組織レベルのViolation
+                            Dashboardを事前に設定し、拒否イベントの発生時に遡って調査できる状態にしているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />ロードバランサのTotal latency/Backend
+                            latencyを分離して監視し、SLOのアラート閾値を設定しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Cloud
+                            NATのポート割り当て失敗・使用率メトリクスにアラートを設定しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />ログの保持期間・エクスポート先(BigQuery/Cloud
+                            Storage/Pub/Sub)をコンプライアンス要件・コスト要件に照らして設計しているか</label
+                        >
+                    </li>
+                </ul>
+                <hr />
+                <h2 id="part-2-接続性の維持とトラブルシューティングtask-52">
+                    Part 2: 接続性の維持とトラブルシューティング(Task 5.2)
+                </h2>
+                <h3 id="21-application-load-balancerでのトラフィックドレインリダイレクト">
+                    2.1 Application Load Balancerでのトラフィックドレイン・リダイレクト
+                </h3>
+                <p>
+                    バックエンドVMやNEGエンドポイントをローリングアップデート・スケールイン・メンテナンスのために安全に取り除くには、<strong>コネクションドレイニング</strong>(connection
+                    draining)を使用します。ドレイニングタイムアウトを設定した状態でインスタンスグループからVMを削除、またはゾーンスコープのNEGからエンドポイントを削除すると、ロードバランサは新規接続を即座に停止しつつ、既存のリクエスト/接続には完了までの猶予を与えます。
+                </p>
+                <pre class="mermaid">
+stateDiagram-v2
+    [*] --&gt; ACTIVE
+    ACTIVE --&gt; DRAINING: バックエンドグループから&lt;br/&gt;VM/エンドポイントを削除
+    DRAINING --&gt; DRAINING: 既存リクエストは&lt;br/&gt;タイムアウトまで継続処理&lt;br/&gt;(新規接続は送られない)
+    DRAINING --&gt; REMOVED: drainingTimeoutSecの経過、&lt;br/&gt;または全接続の完了
+    REMOVED --&gt; [*]</pre
+                >
+                <p>ロードバランサの種類によって挙動に差異があります。</p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>ロードバランサ種別</th>
+                                <th>ドレイニング中の挙動</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Application Load Balancer(L7)</td>
+                                <td>
+                                    指定したタイムアウトの間、既存リクエストの完了を待つ。新規リクエストは送られない
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Proxy Network Load Balancer</td>
+                                <td>既存のTCPコネクションはタイムアウト期間中も動作を継続する</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>内部パススルーNetwork Load Balancer(フェイルオーバー時)</td>
+                                <td>
+                                    <code>disableConnectionDrainOnFailover</code
+                                    >と<code>dropTrafficIfUnhealthy</code>で挙動を制御。既定のドレイニングタイムアウトは固定10分
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    トラフィックの計画的な移動には、バックエンドサービスの<strong
+                        >capacity scaler</strong
+                    >も併用します。<code>0</code>(完全ドレイン、単一バックエンドの場合は設定不可)から<code>1.0</code>(100%)まで手動で目標キャパシティを調整でき、メンテナンス前にトラフィックを段階的に他のバックエンドへ寄せる、といった運用が可能です。GKE環境では、Podの<code>preStop</code>フックの実行時間を「Backend
+                    Service Drain Timeout +
+                    ドレインレイテンシ(目安1分)」以上に設定し、<code>terminationGracePeriodSeconds</code>を十分に長く取ることで、NEGからのエンドポイント除去とPodの終了を同期させます。
+                </p>
+                <blockquote class="callout callout-best">
+                    <div class="callout-header">
+                        <span class="callout-icon">✅</span
+                        ><span class="callout-label">ベストプラクティス</span>
+                    </div>
+                    <p>
+                        リージョナル外部パススルーNetwork Load
+                        Balancerでは、フォワーディングルールの<strong>トラフィックステアリング</strong>を使い、特定の送信元IPレンジだけを別のバックエンドサービス(異なるヘルスチェックやドレイニング設定を持つ)へ振り向けることができます。これはカナリアリリースやトラブルシューティング目的のトラフィック分離に有効です。
+                    </p>
+                </blockquote>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/enabling-connection-draining"
+                                >https://docs.cloud.google.com/load-balancing/docs/enabling-connection-draining</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/kubernetes-engine/docs/troubleshooting/load-balancing"
+                                >https://docs.cloud.google.com/kubernetes-engine/docs/troubleshooting/load-balancing</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://cloud.google.com/load-balancing/docs/backend-service"
+                                >https://cloud.google.com/load-balancing/docs/backend-service</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/network/networklb-backend-service"
+                                >https://docs.cloud.google.com/load-balancing/docs/network/networklb-backend-service</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/load-balancing/docs/internal/failover-overview"
+                                >https://docs.cloud.google.com/load-balancing/docs/internal/failover-overview</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="22-cloud-vpnの管理とトラブルシューティング">
+                    2.2 Cloud VPNの管理とトラブルシューティング
+                </h3>
+                <p>
+                    Cloud
+                    VPNのトラブルシューティングは、コンソールの「VPN」ページでトンネルステータスとBGPセッションステータスの両方を確認するところから始めます。HA
+                    VPNではさらに、99.99%
+                    SLAを満たすための<strong>高可用性ステータス</strong>(両インターフェースのトンネルが正しくオンプレミス側の冗長構成と対になっているか)も確認が必要です。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    A["VPNトンネルが&lt;br/&gt;ESTABLISHEDにならない/&lt;br/&gt;不安定"] --&gt; B{"トンネルステータスの&lt;br/&gt;アイコンにエラーメッセージは&lt;br/&gt;表示されているか"}
+    B --&gt;|"Yes"| C["エラーメッセージから&lt;br/&gt;原因を特定&lt;br/&gt;(IKE/PSK/ピアIP不正など)"]
+    B --&gt;|"No/不明"| D["Cloud VPNログを確認&lt;br/&gt;(自動収集済み)"]
+    D --&gt; E{"SA_DELETE直後に&lt;br/&gt;再接続している形跡は&lt;br/&gt;あるか"}
+    E --&gt;|"Yes"| F["オンプレミス側がrekeyingではなく&lt;br/&gt;SA削除後の再ネゴシエートに&lt;br/&gt;なっていないか確認"]
+    E --&gt;|"No"| G["IKE暗号スイート/PSK/&lt;br/&gt;ピアIPアドレスの整合性を確認&lt;br/&gt;(RFC5735/5737の予約IPでないかも確認)"]
+    C --&gt; H{"BGPセッションは&lt;br/&gt;ESTABLISHEDか"}
+    F --&gt; H
+    G --&gt; H
+    H --&gt;|"No"| I["Cloud Router側の&lt;br/&gt;BGPトラブルシューティングへ&lt;br/&gt;(2.4節)"]
+    H --&gt;|"Yes"| J["トンネル層は正常&lt;br/&gt;アプリケーション層/&lt;br/&gt;ルーティング層を調査"]</pre
+                >
+                <p>
+                    代表的な作成失敗パターンとして、ピアIPアドレスがRFC
+                    5735/5737の予約アドレス範囲に該当しているケースが挙げられます。この場合、構成時のIPレンジを見直す必要があります。また、Cloud
+                    VPNは既定でSAの有効期限が切れる前に自動的に再ネゴシエート(rekeying)しますが、オンプレミス側のゲートウェイがこれに対応しておらず、既存SAの削除後にのみ新規SAをネゴシエートする実装だと、接続が周期的に瞬断します。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/vpn/support/troubleshooting"
+                                >https://docs.cloud.google.com/network-connectivity/docs/vpn/support/troubleshooting</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/checking-vpn-status"
+                                >https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/checking-vpn-status</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/viewing-logs-metrics"
+                                >https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/viewing-logs-metrics</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="23-cloud-interconnectの管理とトラブルシューティング">
+                    2.3 Cloud Interconnectの管理とトラブルシューティング
+                </h3>
+                <p>
+                    Cloud Interconnectのトラブルシューティングは、<a
+                        href="#132-cloud-interconnectとvlanアタッチメントのメトリクス"
+                        >1.3.2節</a
+                    >で紹介した「物理層・論理層・ルーティング層」の3層モデルに沿って切り分けるのが基本です。
+                </p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>症状</th>
+                                <th>疑うべき層</th>
+                                <th>確認方法</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>接続自体が確立しない/光レベル異常</td>
+                                <td>物理層</td>
+                                <td>
+                                    <code>gcloud compute interconnects get-diagnostics</code
+                                    >でTx/Rx光レベルと稼働状態を確認
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>特定のVLANアタッチメントだけ帯域が頭打ち</td>
+                                <td>論理層</td>
+                                <td>
+                                    VLANアタッチメントのMonitoringタブでingress/egress利用率、<code>BANDWIDTH_THROTTLE</code>ドロップの有無を確認(60秒サンプリングのためバーストは見えにくい点に注意)
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>経路が広告されない/学習されない</td>
+                                <td>ルーティング層</td>
+                                <td>
+                                    Cloud
+                                    RouterのBGPセッション状態、<code>advertisedRoutes</code>フィールドを確認
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>暗号化VLANアタッチメントの削除に失敗する</td>
+                                <td>論理層(MACsec)</td>
+                                <td>
+                                    MACsec構成済みのDedicated/Partner
+                                    Interconnectでは、削除前にMACsec設定の解除が必要な場合がある
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    HA VPN over Cloud Interconnectのような複合構成では、「Cloud
+                    Interconnect層(VLANアタッチメント間のBGP)」と「HA
+                    VPN層(オンプレミスとVPCの間のBGP)」という2階層のBGPが存在するため、どちらの層で問題が起きているかを切り分けることが重要です。具体的には、まずCloud
+                    Interconnect層のCloud Routerで<code>gcloud compute routers get-status</code
+                    >を実行し、<code>advertisedRoutes</code>にHA
+                    VPNゲートウェイのアドレスが含まれているかを確認し、次にHA
+                    VPN層のBGPセッションを確認するという順序になります。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+                    <p>
+                        <a
+                            href="https://docs.cloud.google.com/network-connectivity/docs/interconnect/support/troubleshooting"
+                            >https://docs.cloud.google.com/network-connectivity/docs/interconnect/support/troubleshooting</a
+                        >
+                    </p>
+                </blockquote>
+                <h3 id="24-cloud-routerのbgpピアリングのトラブルシューティング">
+                    2.4 Cloud RouterのBGPピアリングのトラブルシューティング
+                </h3>
+                <p>
+                    BGPセッションは、確立までに複数の状態を遷移します。試験では状態遷移の理解に加え、「どのログ/メトリクスでどの状態を確認するか」が問われます。
+                </p>
+                <pre class="mermaid">
+stateDiagram-v2
+    [*] --&gt; Idle
+    Idle --&gt; Connect: セッション開始
+    Connect --&gt; Active: TCP接続失敗
+    Connect --&gt; OpenSent: TCP接続成功、OPEN送信
+    Active --&gt; Connect: 再試行
+    OpenSent --&gt; OpenConfirm: 相手からOPEN受信
+    OpenSent --&gt; Idle: エラー/NOTIFICATION受信
+    OpenConfirm --&gt; Established: KEEPALIVE受信
+    OpenConfirm --&gt; Idle: エラー/NOTIFICATION受信
+    Established --&gt; Idle: HOLD_TIMER_EXPIRED/&lt;br/&gt;LINK_DOWN/手動無効化など
+    Established --&gt; [*]: 正常運用継続</pre
+                >
+                <p>代表的な障害パターンと対処の要点は次のとおりです。</p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>障害パターン</th>
+                                <th>原因</th>
+                                <th>対処</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>ローカルASNとピアASNの重複</td>
+                                <td>
+                                    同一リージョン・同一ネットワーク内で同じASNを持つオンプレミスデバイスとセッションを試みている
+                                </td>
+                                <td>Cloud RouterまたはオンプレミスルータのASN設計を見直す</td>
+                            </tr>
+                            <tr class="even">
+                                <td>MD5認証エラー(<code>MD5_AUTH_INTERNAL_PROBLEM</code>)</td>
+                                <td>Cloud Router内部でMD5認証設定に失敗(内部エラー)</td>
+                                <td>通常は自動復旧を待つ(1時間以上続く場合はサポートに連絡)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>MD5認証エラー(鍵不一致)</td>
+                                <td>Cloud Routerとピアの事前共有鍵(認証キー)が一致していない</td>
+                                <td>認証キーを更新して再同期</td>
+                            </tr>
+                            <tr class="even">
+                                <td>最大経路数超過によるセッション遮断</td>
+                                <td>オンプレミスルータが5,000プレフィックスを超えて広告</td>
+                                <td>
+                                    <code>CEASE/MAX_PREFIXES_REACHED</code
+                                    >ログを確認し、広告プレフィックス数を削減するか、手動でBGPピアリングをリセット
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>BGPフラップ(定期的な切断)</td>
+                                <td>Cloud Routerのソフトウェアメンテナンスイベント</td>
+                                <td>
+                                    オンプレミスルータでGraceful
+                                    Restartに対応し、ホールドタイマーを60秒以上に設定していれば通常は問題ない
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>BFDの検知タイムアウト</td>
+                                <td>制御パケットが検知タイマー(既定5,000ms)以内に届かない</td>
+                                <td>BFDのMinRx/MinTx間隔・マルチプライヤの双方一致を確認</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>BFDを併用している場合は、BGPとは独立した状態機械としてBFDの状態を確認します。</p>
+                <pre class="mermaid">
+stateDiagram-v2
+    [*] --&gt; AdminDown: BFD無効
+    [*] --&gt; Down: BFD有効化直後
+    Down --&gt; Init: ローカルが相手を検知
+    Init --&gt; Up: 相手からの確認を受信
+    Up --&gt; Down: 検知タイマーの&lt;br/&gt;タイムアウト
+    AdminDown --&gt; Down: BFD再有効化</pre
+                >
+                <p>
+                    BFDの診断コード(<code>NO_DIAGNOSTIC</code>、<code>CONTROL_DETECTION_TIME_EXPIRED</code>、<code>NEIGHBOR_SIGNALED_SESSION_DOWN</code>、<code>ADMINISTRATIVELY_DOWN</code>など)は、<code
+                        >gcloud compute routers get-status</code
+                    >の<code>bfdStatus</code>フィールドで確認できます。BFDとBGP Graceful
+                    Restartを併用している場合、Cloud
+                    Routerの再起動時にはBFDへ<code>AdminDown</code>を送信して意図的に停止し、その間BGPセッション自体はオンプレミス側でGraceful
+                    Restartモードとして維持される、という設計になっている点も理解しておく必要があります。
+                </p>
+                <blockquote class="callout callout-warning">
+                    <div class="callout-header">
+                        <span class="callout-icon">⚠</span><span class="callout-label">注意</span>
+                    </div>
+                    <p>
+                        ICMPv6 pingはCloud
+                        RouterのBGPアドレスに対してサポートされていません。レイヤー3疎通確認にはICMPv4
+                        pingを使用してください。
+                    </p>
+                </blockquote>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-sessions"
+                                >https://cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-sessions</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-peering"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-peering</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bgp-states"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bgp-states</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-log-messages"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-log-messages</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd-states"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd-states</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-routes"
+                                >https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-routes</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3
+                    id="25-vpc-flow-logsファイアウォールログpacket-mirroringを使ったトラブルシューティング"
+                >
+                    2.5 VPC Flow Logs・ファイアウォールログ・Packet
+                    Mirroringを使ったトラブルシューティング
+                </h3>
+                <p>
+                    3つのツールはそれぞれ異なる「見え方」を提供するため、組み合わせて使うことで根本原因への到達が早まります。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    A["通信の疎通/性能に&lt;br/&gt;関する問い合わせ"] --&gt; B{"通信自体が&lt;br/&gt;届いているか&lt;br/&gt;(Flow Logs)"}
+    B --&gt;|"届いていない"| C{"ファイアウォールで&lt;br/&gt;拒否されているか&lt;br/&gt;(Firewall Logs)"}
+    C --&gt;|"Deny hit あり"| D["該当ルールを特定し&lt;br/&gt;意図した挙動か確認&lt;br/&gt;(Firewall Insightsも活用)"]
+    C --&gt;|"Deny hit なし"| E["ルーティング/&lt;br/&gt;Connectivity Testsで&lt;br/&gt;経路を確認"]
+    B --&gt;|"届いているが&lt;br/&gt;アプリ層で問題"| F["Packet Mirroringで&lt;br/&gt;パケット内容を収集し&lt;br/&gt;アプリ/プロトコルを詳細分析"]
+    D --&gt; G["是正"]
+    E --&gt; G
+    F --&gt; G</pre
+                >
+                <p>
+                    VPC Flow
+                    Logsは「通信があったかどうか、どれだけの量か」を5-tuple単位で示しますが、パケットのペイロード自体は含みません。ペイロードレベルでの分析(アプリケーションプロトコルの異常、侵入検知システムとの連携など)が必要な場合は<strong
+                        >Packet Mirroring</strong
+                    >を使用します。
+                </p>
+                <pre class="mermaid">
+flowchart LR
+    A["ミラーリング対象&lt;br/&gt;(VMインスタンスのNIC)"] --&gt;|"ポリシーで指定&lt;br/&gt;(タグ/サブネット単位)"| B["Packet Mirroringポリシー"]
+    B --&gt; C["コレクタ宛先&lt;br/&gt;(内部パススルーNLBの&lt;br/&gt;フォワーディングルール)"]
+    C --&gt; D["コレクタインスタンス群&lt;br/&gt;(推奨: マネージドインスタンスグループ)"]
+    D --&gt; E["収集・解析&lt;br/&gt;(IDS/IPS、パケットキャプチャ分析ツールなど)"]</pre
+                >
+                <p>Packet Mirroringの主な制約・特性は次のとおりです。</p>
+                <ul>
+                    <li>
+                        ミラー対象とコレクタ宛先は同一プロジェクト・同一リージョンである必要がある(コレクタは同一VPCまたはVPC
+                        Network Peeringで接続されたVPCに配置可能)
+                    </li>
+                    <li>
+                        1つのミラーリングポリシーが参照できるコレクタ宛先は1つだが、1つのコレクタ宛先を複数のポリシーから参照することは可能
+                    </li>
+                    <li>
+                        ミラーリングとコレクションを同一VMの同一NICで行うと、ミラーリングループが発生するため不可
+                    </li>
+                    <li>
+                        GKEの同一ノード上のPod間通信をミラーリングするには、クラスタでIntranode
+                        visibilityを有効化する必要がある
+                    </li>
+                    <li>
+                        VPC Flow
+                        Logsはミラーされたパケット自体をログしない。ただしコレクタインスタンスが属するサブネットでFlow
+                        Logsが有効な場合、コレクタ宛の直接トラフィック(元の宛先IPがコレクタのIPと一致する場合)は通常どおり記録される
+                    </li>
+                    <li>
+                        ミラーリングは元パケットとミラーパケットの両方を処理するため、処理レート(スループット)が低下する。低下幅はマシンタイプ・CPU使用率・パケットサイズに依存する
+                    </li>
+                </ul>
+                <p>
+                    Packet
+                    Mirroringのモニタリングでは、ミラー対象VM側で「ミラーされたネットワークバイト数/パケット数」(成功・ドロップ両方)を確認できますが、コレクタ側のドロップパケット数は個別には提供されません(コレクタ側の監視は内部パススルーNLBのロギング・モニタリングに準じます)。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a href="https://cloud.google.com/vpc/docs/packet-mirroring"
+                                >https://cloud.google.com/vpc/docs/packet-mirroring</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://cloud.google.com/vpc/docs/using-packet-mirroring"
+                                >https://cloud.google.com/vpc/docs/using-packet-mirroring</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://cloud.google.com/vpc/docs/monitoring-packet-mirroring"
+                                >https://cloud.google.com/vpc/docs/monitoring-packet-mirroring</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="26-task-52-トラブルシューティングチェックリスト">
+                    2.6 Task 5.2 トラブルシューティングチェックリスト
+                </h3>
+                <ul class="task-list checklist-card">
+                    <li>
+                        <label
+                            ><input
+                                type="checkbox"
+                            />ロードバランサのバックエンド入れ替え手順に、コネクションドレイニングのタイムアウトとGKEの<code>preStop</code>/<code>terminationGracePeriodSeconds</code>の整合を組み込んでいるか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Cloud
+                            VPNトラブル時に、まずトンネルステータス→BGPセッションステータス→高可用性ステータスの順で確認する手順が周知されているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Cloud
+                            Interconnect障害時に、物理層・論理層・ルーティング層のどこで問題が起きているかを<code>get-diagnostics</code>やVLANアタッチメントのメトリクスで切り分けられるか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />HA VPN over Cloud
+                            Interconnectのような複合構成で、どちらの層のBGPセッションが問題かを区別する手順があるか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input
+                                type="checkbox"
+                            />BGPフラップの許容範囲(ホールドタイマー、Graceful
+                            Restart対応)をオンプレミス側と合意しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />BFDのMinRx/MinTx/マルチプライヤの設定値がCloud
+                            Router側とオンプレミス側で一致しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />「疎通しない」問い合わせに対し、Flow
+                            Logs→Firewall Logs→Connectivity Tests→Packet
+                            Mirroringの順で切り分ける標準手順があるか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Packet
+                            Mirroringのコレクタにマネージドインスタンスグループ(オートスケーリング/オートヒーリング)を使用しているか</label
+                        >
+                    </li>
+                </ul>
+                <hr />
+                <h2
+                    id="part-3-network-intelligence-centerによる監視とトラブルシューティングtask-53"
+                >
+                    Part 3: Network Intelligence Centerによる監視とトラブルシューティング(Task 5.3)
+                </h2>
+                <h3 id="31-network-intelligence-centerの全体像">
+                    3.1 Network Intelligence Centerの全体像
+                </h3>
+                <p>
+                    Network Intelligence Center(NIC)は、Google
+                    Cloudネットワークの可視化・監視・トラブルシューティングを1つのコンソールに統合したプラットフォームです。2019年の提供開始時点ではConnectivity
+                    TestsとNetwork Topologyがベータ、Performance DashboardとFirewall Metrics &amp;
+                    Insightsがアルファでしたが、現在は6つのモジュールが揃っています。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    NIC["Network Intelligence Center"] --&gt; M1["Network Topology&lt;br/&gt;トポロジ可視化"]
+    NIC --&gt; M2["Connectivity Tests&lt;br/&gt;疎通診断"]
+    NIC --&gt; M3["Performance Dashboard&lt;br/&gt;パケットロス・レイテンシ"]
+    NIC --&gt; M4["Firewall Insights&lt;br/&gt;ファイアウォールルール最適化"]
+    NIC --&gt; M5["Network Analyzer&lt;br/&gt;構成の自動監視・誤設定検知"]
+    NIC --&gt; M6["Flow Analyzer&lt;br/&gt;Flow Logsの高速分析"]
+
+    M1 -.-&gt;|"問題箇所の当たりをつける"| M2
+    M2 -.-&gt;|"設定起因の不通を特定"| M5
+    M5 -.-&gt;|"検知したインサイトを深掘り"| M6
+    M3 -.-&gt;|"性能劣化の切り分け"| M2
+    M4 -.-&gt;|"ルール最適化"| M5</pre
+                >
+                <p>各モジュールの役割を一言でまとめると次のようになります。</p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>モジュール</th>
+                                <th>主な問い</th>
+                                <th>分析の性質</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Network Topology</td>
+                                <td>「今、どこにどれだけのトラフィックが流れているか」</td>
+                                <td>リアルタイムのテレメトリ + 構成情報の可視化</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Connectivity Tests</td>
+                                <td>「AからBへ到達できるか、できないなら何が阻んでいるか」</td>
+                                <td>構成分析(+一部でデータプレーン検証)</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Performance Dashboard</td>
+                                <td>
+                                    「ゾーン/リージョン間のパケットロス・レイテンシはどの程度か」
+                                </td>
+                                <td>実トラフィックに基づく能動的プロービング</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Firewall Insights</td>
+                                <td>「このファイアウォールルールは安全に削除・厳格化できるか」</td>
+                                <td>ロギングデータ + 機械学習予測</td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Network Analyzer</td>
+                                <td>「構成に誤りや非効率はないか」</td>
+                                <td>構成の自動巡回監視(プッシュ型)</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Flow Analyzer</td>
+                                <td>「Flow Logsから見える実際の通信パターンは何か」</td>
+                                <td>SQLレスなFlow Logs分析(BigQuery基盤)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/blog/products/networking/announcing-network-intelligence-center"
+                                >https://cloud.google.com/blog/products/networking/announcing-network-intelligence-center</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/overview"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/overview</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://docs.cloud.google.com/network-intelligence-center/docs"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="32-network-topology">3.2 Network Topology</h3>
+                <p>
+                    Network
+                    Topologyは、構成情報とリアルタイムの運用データを1つのグラフに統合して可視化するツールです。<strong
+                        >Infrastructure view</strong
+                    >ではVPCネットワーク、オンプレミスとのハイブリッド接続、Google管理サービスへの接続とそれらのメトリクスを表示し、<strong
+                        >GKE Enterprise view</strong
+                    >ではクラスタ・ネームスペース・ワークロード・Podとそのメトリクスを表示します。
+                </p>
+                <p>
+                    活用の典型例は、特定のCloud
+                    VPNトンネルやVLANアタッチメントを流れるトラフィック量をエンティティ単位で確認し、Shared
+                    VPCの他プロジェクトやリージョン間トラフィックへの影響を把握することです。エンティティをクリックすると、そのエンティティを通過するすべてのトラフィックパスがハイライトされます。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+                    <p>
+                        <a
+                            href="https://cloud.google.com/network-intelligence-center/docs/network-topology/reference/metrics-reference"
+                            >https://cloud.google.com/network-intelligence-center/docs/network-topology/reference/metrics-reference</a
+                        >
+                    </p>
+                </blockquote>
+                <h3 id="33-connectivity-tests">3.3 Connectivity Tests</h3>
+                <p>
+                    Connectivity
+                    Testsは、送信元と宛先(VM、GKEクラスタ、ロードバランサのフォワーディングルール、インターネット上のIPアドレスなど)を指定し、その間のパケットが実際にどう転送されるかを<strong>シミュレーション</strong>するツールです。分析は2種類に分かれます。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    A["Connectivity Testの作成&lt;br/&gt;(送信元・宛先・プロトコル・ポート)"] --&gt; B["構成分析&lt;br/&gt;(configuration analysis)"]
+    B --&gt; C{"複数の経路&lt;br/&gt;(トレース)が&lt;br/&gt;存在するか"}
+    C --&gt;|"1本のみ"| D["トレースの最終状態が&lt;br/&gt;そのまま総合結果になる"]
+    C --&gt;|"複数本&lt;br/&gt;(例: LBの背後に&lt;br/&gt;複数バックエンド)"| E["各トレースの最終状態の&lt;br/&gt;分布から総合結果を算出"]
+    D --&gt; F["総合到達性(overall reachability result)"]
+    E --&gt; F
+    F --&gt; G{"対応シナリオでは&lt;br/&gt;データプレーン検証も&lt;br/&gt;実行可能"}
+    G --&gt;|"Yes"| H["実際にプローブパケットを送信し、&lt;br/&gt;レイテンシ・パケットロスの&lt;br/&gt;ベースラインを取得"]
+    G --&gt;|"No"| I["構成分析結果のみで判断"]</pre
+                >
+                <p>総合到達性の結果は4値のいずれかです。</p>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>結果</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td>Reachable</td>
+                                <td>現在の構成でトラフィックが送信元から宛先へ到達できる</td>
+                            </tr>
+                            <tr class="even">
+                                <td>Unreachable</td>
+                                <td>
+                                    経路上のどこかでトラフィックが遮断されている(トレースにドロップ箇所が示される)
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td>Ambiguous</td>
+                                <td>
+                                    複数トレースの最終状態が混在している(例:
+                                    一部バックエンドは到達可能、一部は不可)
+                                </td>
+                            </tr>
+                            <tr class="even">
+                                <td>Undetermined</td>
+                                <td>エラー、非対応の入力、権限不足などにより判定不能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <blockquote class="callout callout-warning">
+                    <div class="callout-header">
+                        <span class="callout-icon">⚠</span><span class="callout-label">注意</span>
+                    </div>
+                    <p>
+                        Ambiguousの典型的な原因の1つは、閲覧権限のない階層型ファイアウォールポリシーをトレースが参照している場合です。ポリシー自体の閲覧権限がなくても、自分のVPCネットワークに適用される実効ルールは「Effective
+                        firewall
+                        rules」で確認できます。また、構成分析でReachableと判定されても、実際にはデータプレーンで100%パケットロスが発生している場合があります。これは構成分析とデータプレーン分析が別物であるためで、対応シナリオではデータプレーン検証も併用して裏取りすることが推奨されます。
+                    </p>
+                </blockquote>
+                <p>
+                    Google管理サービス(Cloud
+                    SQL、GKEなど)を宛先とするテストも作成できますが、Google所有プロジェクト内のリソースについては閲覧権限がないため、トレースの詳細(具体的にどのルール・ルートが適用されたか)は表示されず、総合到達性の結果のみが返されます。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/state-tables"
+                                >https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/state-tables</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/reachability"
+                                >https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/reachability</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/support/troubleshooting"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/support/troubleshooting</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/test-google-managed-services"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/test-google-managed-services</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="34-performance-dashboard">3.4 Performance Dashboard</h3>
+                <p>
+                    Performance Dashboardは、Google
+                    Cloudネットワーク全体、および自分のプロジェクトのリソースに関するパケットロスとレイテンシ(RTT)を可視化します。セットアップは不要で、十分な数のVMがあればパケットロスメトリクスが、十分なトラフィック量があればレイテンシメトリクスが自動的に得られます。
+                </p>
+                <pre class="mermaid">
+flowchart LR
+    A["Performance Dashboard"] --&gt; B["プロジェクトパフォーマンスビュー"]
+    A --&gt; C["Google Cloud全体パフォーマンスビュー"]
+    B --&gt; B1["自分のVM間の&lt;br/&gt;パケットロス(能動プロービング)"]
+    B --&gt; B2["実トラフィックに基づく&lt;br/&gt;レイテンシ(TCP SEQ/ACK計測)"]
+    C --&gt; C1["全ゾーンペア間の&lt;br/&gt;パケットロス"]
+    C --&gt; C2["リージョン⇔インターネット拠点間の&lt;br/&gt;レイテンシ中央値"]
+    B1 --&gt; D["ヒートマップ/&lt;br/&gt;サマリチャートで表示&lt;br/&gt;(最大6週間の履歴)"]
+    B2 --&gt; D
+    C1 --&gt; D
+    C2 --&gt; D</pre
+                >
+                <p>
+                    代表的な活用パターンは、アプリケーションで性能問題が疑われたときに「まずPerformance
+                    Dashboardでネットワーク側に異常がないかを確認し、異常がなければアプリケーション側を疑う」という切り分けです。自分のプロジェクトの値と、Google
+                    Cloud全体の同一ゾーン/リージョンペアの平均値を並べて比較することで、自分の環境固有の問題か、Google
+                    Cloud全体で起きている事象かを判断できます。パケットロスメトリクスは常に利用可能ですが、1分あたり400プローブ未満の場合はアスタリスク(*)が付き、データの信頼性が低いことを示します。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/overview"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/overview</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/metrics-views"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/metrics-views</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-project"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-project</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-google-cloud"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-google-cloud</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/how-to/viewing-perf-dash-metrics"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/how-to/viewing-perf-dash-metrics</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="35-firewall-insights">3.5 Firewall Insights</h3>
+                <p>
+                    Firewall Insightsは、ファイアウォールルール(VPC firewall
+                    rules、ファイアウォールポリシーに属するルールの両方)の構成と使用実態を分析し、最適化のためのインサイトを提供します。インサイトは大きく3種類です。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    FI["Firewall Insights"] --&gt; T1["シャドウルール&lt;br/&gt;(shadowed rule)"]
+    FI --&gt; T2["過度に寛容なルール&lt;br/&gt;(overly permissive rule)"]
+    FI --&gt; T3["拒否ルールのヒット&lt;br/&gt;(deny rule insight)"]
+
+    T1 --&gt; T1a["構成情報のみから判定可能&lt;br/&gt;(ロギング不要)"]
+    T2 --&gt; T2a["ヒットなしのAllowルール"]
+    T2 --&gt; T2b["未使用の属性を持つルール"]
+    T2 --&gt; T2c["過度に広いIP/ポートレンジ"]
+    T2 --&gt; T2d["適応的分析による&lt;br/&gt;陳腐化予測(機械学習)"]
+    T3 --&gt; T3a["観測期間中にヒットした&lt;br/&gt;Denyルールの詳細"]
+
+    T2a -.-&gt;|"Firewall Rules Logging&lt;br/&gt;のデータが必要"| Log["ロギング有効化"]
+    T2b -.-&gt; Log
+    T2c -.-&gt; Log
+    T3a -.-&gt; Log</pre
+                >
+                <p>
+                    <strong>シャドウルール</strong
+                    >は、自分より優先度が高い(または同等の)ルールと属性(IPレンジなど)が重複しており、実質的に一度もマッチし得ないルールです。構成情報だけから機械的に判定できるため、Firewall
+                    Rules
+                    Loggingを有効化していなくても検知されます。一方、<strong>過度に寛容なルール</strong>と<strong>拒否ルールインサイト</strong>はログベースであり、Firewall
+                    Rules
+                    Loggingを有効化した状態でのトラフィック実績が必要です。シャドウルール・過度に寛容なルールのインサイトは、Firewall
+                    Insightsのページで機能を有効化してから最大48時間で生成され始め、機械学習による陳腐化予測は新規/更新されたルールに対して最大10日ほどかかります。
+                </p>
+                <blockquote class="callout callout-warning">
+                    <div class="callout-header">
+                        <span class="callout-icon">⚠</span><span class="callout-label">注意</span>
+                    </div>
+                    <p>
+                        ロードバランサのヘルスチェック用IPレンジ(<code>35.191.0.0/16</code>など)を許可するルールは、ヒット数が少なくても「過度に寛容」や「未使用」と誤判定されて削除対象に挙げられることがあります。これらはGoogle
+                        Cloudの機能上必要なルールであるため、インサイトを鵜呑みにせず、削除前に用途を確認してください。
+                    </p>
+                </blockquote>
+                <p>
+                    Firewall Insightsが検出したインサイトは、Recommenderが提供する<strong
+                        >Active Assist</strong
+                    >ダッシュボードからも確認できます(カード名がFirewall
+                    Insights側とは異なる点に注意)。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/overview"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/overview</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-understand-insights"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-understand-insights</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/insights-categories-states"
+                                >https://cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/insights-categories-states</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/enable-api-features"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/enable-api-features</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-insights-recommendation-hub"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-insights-recommendation-hub</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="36-network-analyzer">3.6 Network Analyzer</h3>
+                <p>
+                    Network
+                    Analyzerは、VPCネットワークの構成を自動的に巡回監視し、誤設定や非効率な構成を検出するプッシュ型のツールです。設定変更後は約10分でその変更に関連する分析が実行され、それとは別に少なくとも1日1回の定期分析も行われます。インサイトは5つのグループに分類されます。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    NA["Network Analyzer&lt;br/&gt;インサイトグループ"] --&gt; G1["VPCネットワーク&lt;br/&gt;IPアドレス/ルート/ファイアウォール/&lt;br/&gt;VPC Peering/Shared VPC"]
+    NA --&gt; G2["ネットワークサービス&lt;br/&gt;ロードバランサ/Cloud NAT"]
+    NA --&gt; G3["ハイブリッド接続&lt;br/&gt;Cloud VPN/Interconnect/&lt;br/&gt;Cloud Router/BGP/NCC"]
+    NA --&gt; G4["GKE&lt;br/&gt;ノード⇔コントロールプレーン疎通/&lt;br/&gt;Pod IP使用率/ベストプラクティス"]
+    NA --&gt; G5["マネージドサービス&lt;br/&gt;Cloud SQLなどへの接続性"]</pre
+                >
+                <p>
+                    たとえばVPCネットワークグループでは「無効なネクストホップを持つルート」、ネットワークサービスグループでは「ヘルスチェックをブロックしているファイアウォールルール」「トラフィックとヘルスチェックで異なるポートを使っているバックエンドサービス」、GKEグループでは「ノードからコントロールプレーンへの双方向疎通の設定起因の問題」「PodのIPアドレス使用率」といった具体的なインサイトが提供されます。
+                </p>
+                <p>
+                    Shared
+                    VPCでは、ホストプロジェクト側でIPアドレス使用率などVPCネットワーク全体に関わるインサイトが提供され(サービスプロジェクトの情報も自動集約)、サービスプロジェクト側ではロードバランサやGKEなどそのプロジェクト固有のサービスに関するインサイトが提供されます。複数プロジェクトを横断して監視したい場合は、Cloud
+                    Monitoringの<strong>メトリクススコープ</strong>を構成し、対象プロジェクトを監視対象として追加します。
+                </p>
+                <p>
+                    Network Analyzerが公開したインサイトはCloud
+                    Loggingにも格納され、ログ名は<code>projects/{project-id}/logs/networkanalyzer.googleapis.com/analyzer_reports</code>の形式です。Network
+                    Analyzer自体はCloud
+                    Monitoringへメトリクスを送信しないため、リアルタイムアラートが必要な場合はこのログに対してログベースアラートを設定します。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insight-groups-types"
+                                >https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insight-groups-types</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/network-analyzer/overview"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/network-analyzer/overview</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.doit.com/blog/proactively-detect-network-misconfigurations-in-google-cloud-with-network-analyzer"
+                                >https://www.doit.com/blog/proactively-detect-network-misconfigurations-in-google-cloud-with-network-analyzer</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insights/kubernetes-engine/gke-node-to-control-plane"
+                                >https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insights/kubernetes-engine/gke-node-to-control-plane</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="37-flow-analyzer">3.7 Flow Analyzer</h3>
+                <p>
+                    Flow Analyzerは、VPC Flow
+                    Logsに対して複雑なSQLクエリを書かずにトラフィックパターンを分析できるツールです。Observability
+                    Analytics(旧Log Analytics)が有効化されたログバケットに格納されたFlow
+                    Logsのレコードを対象とし、BigQueryを基盤に5-tuple粒度でのオピニオンベース分析(意見の分かれない、定型化された分析軸)を提供します。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    A["VPC Flow Logsを&lt;br/&gt;ログバケットに格納"] --&gt; B["ログバケットを&lt;br/&gt;Observability Analytics用に&lt;br/&gt;アップグレード"]
+    B --&gt; C["Flow Analyzerで&lt;br/&gt;集計方法・時間範囲を選択"]
+    C --&gt; D["Organize Flows by&lt;br/&gt;(例: VPCサブネットワーク/IP/ポート)で&lt;br/&gt;グルーピング"]
+    D --&gt; E["Highest data flowsチャート /&lt;br/&gt;All data flowsテーブルで&lt;br/&gt;結果を確認"]
+    E --&gt; F["特定のフローを&lt;br/&gt;ドリルダウン&lt;br/&gt;(送信元/宛先/トラフィック量の詳細)"]
+    F --&gt; G["さらに他のフィールドで&lt;br/&gt;分割してドリルダウン"]</pre
+                >
+                <p>
+                    活用例として、「誰が接続を開始したか」を知りたい場合は送信元ペインで「VPCサブネットワーク」「IP」「ポート」を選択してグルーピングします。Cross-Cloud
+                    Network環境では、VLANアタッチメントやVPNトンネルに対してもVPC Flow
+                    Logsを有効化でき、<code>reporter</code>(トラフィックの方向)や<code>gateway</code>オブジェクト(ゲートウェイの名前・タイプ・プロジェクトID・ロケーション)といった新しい注釈がFlow
+                    Analyzerに統合されており、オンプレミス⇔クラウド間の「エレファントフロー」(高帯域フロー)の特定やShared
+                    VPC環境でのサービスプロジェクト別のハイブリッド帯域使用量の監査に活用できます。
+                </p>
+                <blockquote class="callout callout-source">
+                    <div class="callout-header">
+                        <span class="callout-icon">🔗</span><span class="callout-label">出典</span>
+                    </div>
+
+                    <ul>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/overview"
+                                >https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/overview</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/network-intelligence-center/docs/flow-analyzer/monitor-traffic-flows"
+                                >https://docs.cloud.google.com/network-intelligence-center/docs/flow-analyzer/monitor-traffic-flows</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/enable-log-analytics"
+                                >https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/enable-log-analytics</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/blog/products/networking/vpc-flow-logs-for-cross-cloud-network"
+                                >https://cloud.google.com/blog/products/networking/vpc-flow-logs-for-cross-cloud-network</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://cloud.google.com/blog/products/networking/using-vpc-flow-logs-to-de-risk-network-migration"
+                                >https://cloud.google.com/blog/products/networking/using-vpc-flow-logs-to-de-risk-network-migration</a
+                            >
+                        </li>
+                    </ul>
+                </blockquote>
+                <h3 id="38-task-53-活用チェックリスト">3.8 Task 5.3 活用チェックリスト</h3>
+                <ul class="task-list checklist-card">
+                    <li>
+                        <label
+                            ><input type="checkbox" />障害調査の初手として、Network
+                            Topologyでトラフィックの全体像を把握する運用が定着しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input
+                                type="checkbox"
+                            />「AからBへ到達できるか」という問い合わせに対し、Connectivity
+                            Testsを標準ツールとして使っているか(構成分析とデータプレーン検証の違いを理解した上で)</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input
+                                type="checkbox"
+                            />アプリケーション性能問題の切り分けにPerformance
+                            Dashboardを使い、ネットワーク起因かアプリケーション起因かを最初に判断しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Firewall
+                            Insightsのシャドウルール・過度に寛容なルールを定期的にレビューし、ヘルスチェック用ルールなど誤判定されやすいものを除外するプロセスがあるか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Network
+                            Analyzerの5つのインサイトグループ(VPCネットワーク/ネットワークサービス/ハイブリッド接続/GKE/マネージドサービス)を横断して定期確認しているか、複数プロジェクトの場合はメトリクススコープを構成しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Flow AnalyzerでVPC Flow
+                            Logsを分析するために、対象ログバケットのObservability
+                            Analyticsを有効化しているか</label
+                        >
+                    </li>
+                    <li>
+                        <label
+                            ><input type="checkbox" />Cross-Cloud
+                            Network構成の場合、VLANアタッチメント・VPNトンネルでもVPC Flow
+                            Logsを有効化し、Flow Analyzerでハイブリッド帯域を可視化しているか</label
+                        >
+                    </li>
+                </ul>
+                <hr />
+                <h2 id="総合トラブルシューティングワークフロー">
+                    総合トラブルシューティングワークフロー
+                </h2>
+                <p>
+                    最後に、Task
+                    5.1〜5.3で紹介したツールを、実際のインシデント対応の流れに沿って統合したワークフローを示します。試験では個々のツールの仕様だけでなく、「この状況ではどのツールをどの順序で使うべきか」という統合的な判断力も問われます。
+                </p>
+                <pre class="mermaid">
+flowchart TB
+    Start(["ネットワーク障害・性能劣化の&lt;br/&gt;アラートまたは問い合わせ"]) --&gt; Q1{"影響範囲は&lt;br/&gt;特定エンドポイント間か、&lt;br/&gt;広範囲か"}
+
+    Q1 --&gt;|"特定のA-B間"| CT["Connectivity Testsで&lt;br/&gt;構成分析を実行(3.3)"]
+    Q1 --&gt;|"広範囲/不明"| NT["Network Topologyで&lt;br/&gt;トラフィック全体を俯瞰(3.2)"]
+
+    NT --&gt; Q2{"特定のコンポーネントに&lt;br/&gt;異常が見えるか"}
+    Q2 --&gt;|"Yes"| Route["該当コンポーネントの&lt;br/&gt;ログ・メトリクスへ(Part 1)"]
+    Q2 --&gt;|"No"| PD["Performance Dashboardで&lt;br/&gt;パケットロス/レイテンシを確認(3.4)"]
+
+    CT --&gt; Q3{"結果は&lt;br/&gt;Unreachable/Ambiguousか"}
+    Q3 --&gt;|"Yes"| FL["VPC Flow Logs /&lt;br/&gt;Firewall Logsで実トラフィックを確認(2.5)"]
+    Q3 --&gt;|"No(Reachable)"| PD
+
+    PD --&gt; Q4{"パケットロス/レイテンシが&lt;br/&gt;Google Cloud平均から&lt;br/&gt;逸脱しているか"}
+    Q4 --&gt;|"Yes"| Route
+    Q4 --&gt;|"No"| App["アプリケーション側の&lt;br/&gt;問題を疑う"]
+
+    FL --&gt; Q5{"ファイアウォールの&lt;br/&gt;Denyヒットが原因か"}
+    Q5 --&gt;|"Yes"| FI["Firewall Insightsで&lt;br/&gt;ルールの妥当性を検証(3.5)"]
+    Q5 --&gt;|"No"| PM["Packet Mirroringで&lt;br/&gt;ペイロードレベルの分析(2.5)"]
+
+    Route --&gt; Q6{"VPN/Interconnect/&lt;br/&gt;Cloud RouterのBGPが&lt;br/&gt;関係するか"}
+    Q6 --&gt;|"Yes"| BGP["2.2〜2.4節の手順で&lt;br/&gt;トンネル/物理層/BGPを切り分け"]
+    Q6 --&gt;|"No"| Other["該当コンポーネントの&lt;br/&gt;ログ・メトリクスで直接調査"]
+
+    FI --&gt; Fix["是正・ルール修正"]
+    PM --&gt; Fix
+    BGP --&gt; Fix
+    Other --&gt; Fix
+    App --&gt; Fix
+
+    Fix --&gt; NA["Network Analyzerで&lt;br/&gt;再発防止の構成チェックを&lt;br/&gt;定期実行(3.6)"]
+    NA --&gt; End(["恒久対応・&lt;br/&gt;ランブック更新"])</pre
+                >
+                <blockquote class="callout callout-best">
+                    <div class="callout-header">
+                        <span class="callout-icon">✅</span
+                        ><span class="callout-label">ベストプラクティス</span>
+                    </div>
+                    <p>
+                        このワークフローが機能する前提は、Part
+                        1で解説したロギング・モニタリングが<strong>平時から有効化されていること</strong>です。障害発生後にVPC
+                        Flow LogsやFirewall Rules
+                        Loggingを有効化しても、発生時点までのデータは遡って取得できません。試験対策としても実務としても、「まず何を有効化しておくべきか」という設計判断(Task
+                        5.1)が、トラブルシューティング(Task 5.2)とNetwork Intelligence
+                        Centerの活用(Task
+                        5.3)の土台になっている、という関係を押さえておいてください。
+                    </p>
+                </blockquote>
+                <hr />
+                <h2 id="参考文献">参考文献</h2>
+                <div class="ref-grid">
+                    <div class="ref-card">
+                        <h3 id="公式認定試験ガイド">公式認定・試験ガイド</h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/learn/certification/cloud-network-engineer"
+                                    >https://cloud.google.com/learn/certification/cloud-network-engineer</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf"
+                                    >https://services.google.com/fh/files/misc/professional_cloud_network_engineer_exam_guide_english.pdf</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3 id="cloud-logging--cloud-monitoring基盤コンポーネント別ロギング">
+                            Cloud Logging / Cloud Monitoring基盤・コンポーネント別ロギング
+                        </h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/firewall/docs/vpc-firewall-rules-logging-overview"
+                                    >https://docs.cloud.google.com/firewall/docs/vpc-firewall-rules-logging-overview</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://cloud.google.com/vpc/docs/flow-logs"
+                                    >https://cloud.google.com/vpc/docs/flow-logs</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://cloud.google.com/vpc/docs/using-flow-logs"
+                                    >https://cloud.google.com/vpc/docs/using-flow-logs</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://cloud.google.com/vpc/docs/about-flow-logs-records"
+                                    >https://cloud.google.com/vpc/docs/about-flow-logs-records</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://cloud.google.com/vpc/docs/access-flow-logs"
+                                    >https://cloud.google.com/vpc/docs/access-flow-logs</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://cloud.google.com/nat/docs/monitoring"
+                                    >https://cloud.google.com/nat/docs/monitoring</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://cloud.google.com/nat/docs/audit-logging"
+                                    >https://cloud.google.com/nat/docs/audit-logging</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://docs.cloud.google.com/dns/docs/monitoring"
+                                    >https://docs.cloud.google.com/dns/docs/monitoring</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vpc-service-controls/docs/audit-logging"
+                                    >https://docs.cloud.google.com/vpc-service-controls/docs/audit-logging</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vpc-service-controls/docs/violation-dashboard"
+                                    >https://docs.cloud.google.com/vpc-service-controls/docs/violation-dashboard</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/vpc-service-controls/docs/retrieve-troubleshoot-errors"
+                                    >https://docs.cloud.google.com/vpc-service-controls/docs/retrieve-troubleshoot-errors</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/vpc-service-controls/docs/violation-analyzer"
+                                    >https://cloud.google.com/vpc-service-controls/docs/violation-analyzer</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/how-to/viewing-logs-metrics"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/network-connectivity-center/how-to/viewing-logs-metrics</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3
+                            id="ハイブリッド接続cloud-vpn--cloud-interconnect--cloud-routerのモニタリングとトラブルシューティング"
+                        >
+                            ハイブリッド接続(Cloud VPN / Cloud Interconnect / Cloud
+                            Router)のモニタリングとトラブルシューティング
+                        </h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/vpn/support/troubleshooting"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/vpn/support/troubleshooting</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/checking-vpn-status"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/checking-vpn-status</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/viewing-logs-metrics"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/vpn/how-to/viewing-logs-metrics</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-connectivity/docs/interconnect/how-to/monitoring"
+                                    >https://cloud.google.com/network-connectivity/docs/interconnect/how-to/monitoring</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/interconnect/support/troubleshooting"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/interconnect/support/troubleshooting</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-connectivity/docs/router/how-to/viewing-logs-metrics"
+                                    >https://cloud.google.com/network-connectivity/docs/router/how-to/viewing-logs-metrics</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-sessions"
+                                    >https://cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-sessions</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-peering"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-peering</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-routes"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-bgp-routes</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-log-messages"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/router/support/troubleshoot-log-messages</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bgp-states"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bgp-states</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd-states"
+                                    >https://docs.cloud.google.com/network-connectivity/docs/router/concepts/bfd-states</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3 id="ロードバランシングトラフィック管理">
+                            ロードバランシング・トラフィック管理
+                        </h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/load-balancing/docs/enabling-connection-draining"
+                                    >https://docs.cloud.google.com/load-balancing/docs/enabling-connection-draining</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/kubernetes-engine/docs/troubleshooting/load-balancing"
+                                    >https://docs.cloud.google.com/kubernetes-engine/docs/troubleshooting/load-balancing</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/load-balancing/docs/backend-service"
+                                    >https://cloud.google.com/load-balancing/docs/backend-service</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/load-balancing/docs/network/networklb-backend-service"
+                                    >https://docs.cloud.google.com/load-balancing/docs/network/networklb-backend-service</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/load-balancing/docs/internal/failover-overview"
+                                    >https://docs.cloud.google.com/load-balancing/docs/internal/failover-overview</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/load-balancing/docs/https/https-logging-monitoring"
+                                    >https://docs.cloud.google.com/load-balancing/docs/https/https-logging-monitoring</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/lb-metrics"
+                                    >https://docs.cloud.google.com/stackdriver/docs/solutions/slo-monitoring/sli-metrics/lb-metrics</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3 id="vpc-flow-logspacket-mirroringによるトラブルシューティング">
+                            VPC Flow Logs・Packet Mirroringによるトラブルシューティング
+                        </h3>
+                        <ul>
+                            <li>
+                                <a href="https://cloud.google.com/vpc/docs/packet-mirroring"
+                                    >https://cloud.google.com/vpc/docs/packet-mirroring</a
+                                >
+                            </li>
+                            <li>
+                                <a href="https://cloud.google.com/vpc/docs/using-packet-mirroring"
+                                    >https://cloud.google.com/vpc/docs/using-packet-mirroring</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/vpc/docs/monitoring-packet-mirroring"
+                                    >https://cloud.google.com/vpc/docs/monitoring-packet-mirroring</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ref-card">
+                        <h3 id="network-intelligence-center">Network Intelligence Center</h3>
+                        <ul>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/blog/products/networking/announcing-network-intelligence-center"
+                                    >https://cloud.google.com/blog/products/networking/announcing-network-intelligence-center</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/overview"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/overview</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/network-topology/reference/metrics-reference"
+                                    >https://cloud.google.com/network-intelligence-center/docs/network-topology/reference/metrics-reference</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/state-tables"
+                                    >https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/state-tables</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/reachability"
+                                    >https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/reachability</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/support/troubleshooting"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/support/troubleshooting</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/test-google-managed-services"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/test-google-managed-services</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/overview"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/overview</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/metrics-views"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/metrics-views</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-project"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-project</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-google-cloud"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/concepts/use-cases-google-cloud</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/how-to/viewing-perf-dash-metrics"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/performance-dashboard/how-to/viewing-perf-dash-metrics</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/overview"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/overview</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-understand-insights"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-understand-insights</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/insights-categories-states"
+                                    >https://cloud.google.com/network-intelligence-center/docs/firewall-insights/concepts/insights-categories-states</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/enable-api-features"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/enable-api-features</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-insights-recommendation-hub"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/firewall-insights/how-to/view-insights-recommendation-hub</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insight-groups-types"
+                                    >https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insight-groups-types</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/network-analyzer/overview"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/network-analyzer/overview</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insights/kubernetes-engine/gke-node-to-control-plane"
+                                    >https://cloud.google.com/network-intelligence-center/docs/network-analyzer/insights/kubernetes-engine/gke-node-to-control-plane</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://www.doit.com/blog/proactively-detect-network-misconfigurations-in-google-cloud-with-network-analyzer"
+                                    >https://www.doit.com/blog/proactively-detect-network-misconfigurations-in-google-cloud-with-network-analyzer</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/overview"
+                                    >https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/overview</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.cloud.google.com/network-intelligence-center/docs/flow-analyzer/monitor-traffic-flows"
+                                    >https://docs.cloud.google.com/network-intelligence-center/docs/flow-analyzer/monitor-traffic-flows</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/enable-log-analytics"
+                                    >https://cloud.google.com/network-intelligence-center/docs/flow-analyzer/enable-log-analytics</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/blog/products/networking/vpc-flow-logs-for-cross-cloud-network"
+                                    >https://cloud.google.com/blog/products/networking/vpc-flow-logs-for-cross-cloud-network</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="https://cloud.google.com/blog/products/networking/using-vpc-flow-logs-to-de-risk-network-migration"
+                                    >https://cloud.google.com/blog/products/networking/using-vpc-flow-logs-to-de-risk-network-migration</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            // ---------- Mermaid rendering (isolated, guarded) ----------
+            (function () {
+                function initMermaid() {
+                    if (typeof mermaid === 'undefined') return;
+                    try {
+                        mermaid.initialize({
+                            startOnLoad: false,
+                            theme: 'base',
+                            securityLevel: 'loose',
+                            fontFamily: '"Noto Sans JP","Inter",sans-serif',
+                            themeVariables: {
+                                background: '#07111e',
+                                primaryColor: '#122238',
+                                primaryTextColor: '#e6edf7',
+                                primaryBorderColor: '#2a4468',
+                                lineColor: '#5f7396',
+                                secondaryColor: '#0d1a2c',
+                                tertiaryColor: '#0d1a2c',
+                                fontSize: '16px',
+                                nodeTextColor: '#e6edf7',
+                                mainBkg: '#122238',
+                                nodeBorder: '#3a5a8a',
+                                clusterBkg: '#0d1a2c',
+                                clusterBorder: '#2a4468',
+                                edgeLabelBackground: '#07111e',
+                                textColor: '#e6edf7',
+                                labelTextColor: '#e6edf7',
+                            },
+                            flowchart: {
+                                useMaxWidth: false,
+                                htmlLabels: true,
+                                curve: 'basis',
+                                subGraphTitleMargin: { top: 12, bottom: 18 },
+                            },
+                            sequence: { useMaxWidth: false },
+                            stateDiagram: { useMaxWidth: false },
+                        });
+                        var run = function () {
+                            try {
+                                mermaid.run({ querySelector: 'pre.mermaid' });
+                            } catch (e) {
+                                console.error('mermaid run error', e);
+                            }
+                        };
+                        if (document.fonts && document.fonts.ready) {
+                            document.fonts.ready.then(run).catch(run);
+                        } else {
+                            run();
+                        }
+                    } catch (e) {
+                        console.error('mermaid init error', e);
+                    }
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initMermaid);
+                } else {
+                    initMermaid();
+                }
+            })();
+
+            // ---------- Sidebar toggle (mobile) ----------
+            (function () {
+                var toggle = document.getElementById('sidebarToggle');
+                var sidebar = document.getElementById('sidebar');
+                var backdrop = document.getElementById('sidebarBackdrop');
+                if (!toggle || !sidebar || !backdrop) return;
+                function openSidebar() {
+                    sidebar.classList.add('open');
+                    backdrop.classList.add('open');
+                }
+                function closeSidebar() {
+                    sidebar.classList.remove('open');
+                    backdrop.classList.remove('open');
+                }
+                toggle.addEventListener('click', function () {
+                    if (sidebar.classList.contains('open')) closeSidebar();
+                    else openSidebar();
+                });
+                backdrop.addEventListener('click', closeSidebar);
+                sidebar.addEventListener('click', function (e) {
+                    if (e.target.tagName === 'A') closeSidebar();
+                });
+            })();
+
+            // ---------- Scroll-spy (two observers) ----------
+            (function () {
+                var navLinks = document.querySelectorAll('.sidebar a[href^="#"]');
+                if (!navLinks.length) return;
+                var map = new Map();
+                navLinks.forEach(function (a) {
+                    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+                    var heading = document.getElementById(id);
+                    if (heading) map.set(heading, a);
+                });
+                var targets = Array.from(map.keys());
+                if (!targets.length) return;
+
+                function setActive(link) {
+                    navLinks.forEach(function (a) {
+                        a.classList.remove('active');
+                    });
+                    if (link) link.classList.add('active');
+                }
+
+                var bandObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                var link = map.get(entry.target);
+                                if (link) setActive(link);
+                            }
+                        });
+                    },
+                    { root: null, rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+
+                targets.forEach(function (t) {
+                    bandObserver.observe(t);
+                });
+            })();
+
+            // ---------- Checklist progress counters ----------
+            (function () {
+                document.querySelectorAll('.checklist-card').forEach(function (card) {
+                    var boxes = card.querySelectorAll('input[type="checkbox"]');
+                    if (!boxes.length) return;
+                    var bar = document.createElement('div');
+                    bar.className = 'checklist-progress';
+                    var label = document.createElement('span');
+                    var barWrap = document.createElement('div');
+                    barWrap.className = 'bar';
+                    var barFill = document.createElement('div');
+                    barFill.className = 'bar-fill';
+                    barWrap.appendChild(barFill);
+                    bar.appendChild(label);
+                    bar.appendChild(barWrap);
+                    card.parentNode.insertBefore(bar, card);
+                    function update() {
+                        var total = boxes.length;
+                        var done = 0;
+                        boxes.forEach(function (b) {
+                            if (b.checked) done++;
+                        });
+                        label.textContent = done + ' / ' + total + ' 完了';
+                        barFill.style.width = (total ? (done / total) * 100 : 0) + '%';
+                    }
+                    boxes.forEach(function (b) {
+                        b.addEventListener('change', update);
+                    });
+                    update();
+                });
+            })();
+        </script>
+    </body>
+</html>
