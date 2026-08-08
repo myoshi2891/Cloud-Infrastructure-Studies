@@ -7,7 +7,31 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-08-05T11:58:00.000Z
+- **最終更新日時(UTC):** 2026-08-08T22:49:00.000Z
+
+## 2026-08-08: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccna-automation-application-deployment-security.html` (および `.md`)（静的HTML・1857行・10個のMermaid図・17個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcnaAppDeploymentSecurityGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-application-deployment-security` ルートへ完全移行する。文章・表・10個のMermaid図・コードブロック・参考ソースの一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for CCNA automation app deployment and security guide migration` (`__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat: implement CCNA automation app deployment and security guide page components to pass tests` (`page.tsx`, `CcnaAppDeploymentSecurityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装)
+- [x] **Step 3 (Refactor / Integration & Nav & Archive)**: `refactor/docs: integrate CCNA automation app deployment security guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`archive/Cisco/html/` および `archive/Cisco/md/` へのアーカイブコピー、`GEMINI.md` 更新)
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-application-deployment-security/page.tsx](app/cisco/ccna/automation-application-deployment-security/page.tsx)
+- [app/cisco/ccna/automation-application-deployment-security/CcnaAppDeploymentSecurityGuide.tsx](app/cisco/ccna/automation-application-deployment-security/CcnaAppDeploymentSecurityGuide.tsx)
+- [app/cisco/ccna/automation-application-deployment-security/NavBar.tsx](app/cisco/ccna/automation-application-deployment-security/NavBar.tsx)
+- [app/cisco/ccna/automation-application-deployment-security/constants.ts](app/cisco/ccna/automation-application-deployment-security/constants.ts)
+- [app/cisco/ccna/automation-application-deployment-security/page.css](app/cisco/ccna/automation-application-deployment-security/page.css)
+- [__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx](__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx)
+- [archive/Cisco/html/Ccna-automation-application-deployment-security.html](archive/Cisco/html/Ccna-automation-application-deployment-security.html)
+- [archive/Cisco/md/Ccna-automation-application-deployment-security.md](archive/Cisco/md/Ccna-automation-application-deployment-security.md)
+
 
 ## 2026-08-05: Cisco「CCIE Enterprise Infrastructure 認定 完全ガイド」移行 (完了)
 

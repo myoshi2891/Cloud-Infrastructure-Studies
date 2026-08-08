@@ -331,6 +331,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/cisco/ccna/security-fundamentals',
                 pct: '15%',
             },
+            {
+                label: '4.0 Application Deployment and Security',
+                href: '/cisco/ccna/automation-application-deployment-security',
+                pct: '15%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',
