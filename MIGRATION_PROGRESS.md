@@ -29,8 +29,8 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/ccna/automation-application-deployment-security/constants.ts](app/cisco/ccna/automation-application-deployment-security/constants.ts)
 - [app/cisco/ccna/automation-application-deployment-security/page.css](app/cisco/ccna/automation-application-deployment-security/page.css)
 - [__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx](__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx)
-- [archive/Cisco/html/Ccna-automation-application-deployment-security.html](archive/Cisco/html/Ccna-automation-application-deployment-security.html)
-- [archive/Cisco/md/Ccna-automation-application-deployment-security.md](archive/Cisco/md/Ccna-automation-application-deployment-security.md)
+- [archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html](archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html)
+- [archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md](archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md)
 
 
 ## 2026-08-05: Cisco「CCIE Enterprise Infrastructure 認定 完全ガイド」移行 (完了)
