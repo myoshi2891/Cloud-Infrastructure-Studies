@@ -1,7 +1,9 @@
 import styles from './ClosingFooter.module.css';
 
 /**
- * ClosingFooter - CCDE ガイド最下部の図面メタデータフッター表示コンポーネント。
+ * Displays drawing number, revision, and sheet count metadata for the CCDE guide.
+ *
+ * @returns The rendered metadata footer.
  */
 export default function ClosingFooter() {
     return (

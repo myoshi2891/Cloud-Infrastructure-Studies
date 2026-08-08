@@ -2,7 +2,9 @@ import Diagram from './Diagram';
 import baseStyles from './SectionBase.module.css';
 
 /**
- * Step2PracticalSection - セクション5「STEP2：実技試験（CCDE v3.1 Practical）」の概要・エレクティブ（専門領域）表コンポーネント。
+ * Presents the CCDE v3.1 Practical exam structure, requirements, and elective specialist areas.
+ *
+ * @returns The rendered practical exam overview section.
  */
 export default function Step2PracticalSection() {
     return (

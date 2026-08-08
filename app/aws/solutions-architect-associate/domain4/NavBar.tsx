@@ -13,8 +13,7 @@ const NAV_ITEMS = [
 ];
 
 /**
- * AWS SAA ドメイン4 のサイドバーナビゲーションコンポーネント。
- * 各セクションへのスクロール移動、IntersectionObserver によるアクティブ項目の追跡責務を持ちます。
+ * Provides sidebar navigation for AWS SAA Domain 4 sections and tracks the active section as the user scrolls.
  */
 export function NavBar() {
     const [activeId, setActiveId] = useState<string>('intro');

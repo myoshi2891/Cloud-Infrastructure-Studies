@@ -1,7 +1,7 @@
 import baseStyles from './SectionBase.module.css';
 
 /**
- * WhatIsCcdeSection - セクション1「CCDEとは何か」の解説コンポーネント。
+ * Presents an overview of the CCDE certification, including its focus, relevant roles, and distinction from CCIE.
  */
 export default function WhatIsCcdeSection() {
     return (

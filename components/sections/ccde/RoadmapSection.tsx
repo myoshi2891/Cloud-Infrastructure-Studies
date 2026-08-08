@@ -2,7 +2,7 @@ import Diagram from './Diagram';
 import baseStyles from './SectionBase.module.css';
 
 /**
- * RoadmapSection - セクション9「初学者向け学習ロードマップ（提案）」のダイアグラムコンポーネント。
+ * Renders section 9, presenting a proposed study roadmap for CCDE beginners.
  */
 export default function RoadmapSection() {
     return (

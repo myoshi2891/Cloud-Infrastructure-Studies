@@ -1,7 +1,7 @@
 import baseStyles from './SectionBase.module.css';
 
 /**
- * CCDE認定資格の受験費用および関連コストの目安一覧を表示する費用情報コンポーネント。
+ * Displays estimated CCDE examination fees and related costs.
  */
 export default function CostsSection() {
     return (

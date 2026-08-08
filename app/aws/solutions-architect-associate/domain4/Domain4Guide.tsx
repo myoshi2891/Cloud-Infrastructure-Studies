@@ -3,6 +3,12 @@ import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
 import './page.css';
 
+/**
+ * Renders a labeled Mermaid diagram when a matching diagram definition exists.
+ *
+ * @param id - The diagram identifier used to find the definition
+ * @param label - The accessibility label for the diagram
+ */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -14,8 +20,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * AWS SAA ドメイン4: コスト最適化アーキテクチャの設計の完全ガイドコンポーネント。
- * タスク4.1〜4.4および参考文献の解説・ダイアグラムの表示領域を提供します。
+ * Renders a Japanese study guide for AWS SAA-C03 Domain 4, covering cost-optimized architecture design tasks, diagrams, best practices, and reference materials.
  */
 export function Domain4Guide() {
     return (

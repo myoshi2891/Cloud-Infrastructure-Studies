@@ -1,7 +1,9 @@
 import styles from './TitleBlockSection.module.css';
 
 /**
- * TitleBlockSection - CCDE ガイドの最上部に表示されるタイトル・資格メタ情報ブロックコンポーネント。
+ * Renders the CCDE guide's title, introduction, and certification metadata.
+ *
+ * @returns The title and certification metadata block.
  */
 export default function TitleBlockSection() {
     return (

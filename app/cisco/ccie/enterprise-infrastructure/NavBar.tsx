@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import { NAV_ITEMS } from './constants';
 
+/**
+ * Renders a collapsible table of contents for the CCIE EI Blueprint Guide.
+ */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('overview');
     const [isOpen, setIsOpen] = useState<boolean>(false);

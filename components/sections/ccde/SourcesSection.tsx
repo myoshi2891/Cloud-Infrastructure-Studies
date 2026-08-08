@@ -2,7 +2,9 @@ import baseStyles from './SectionBase.module.css';
 import styles from './SourcesSection.module.css';
 
 /**
- * 本ガイドの策定に使用したCisco公式ドキュメントおよび参考リンクの一覧を表示する公式情報源一覧コンポーネント。
+ * Renders the official Cisco documentation and reference links used to create the guide.
+ *
+ * @returns The sources section containing nine Cisco documentation and reference links.
  */
 export default function SourcesSection() {
     return (

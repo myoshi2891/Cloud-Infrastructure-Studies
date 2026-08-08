@@ -1,7 +1,7 @@
 import styles from './HeroSection.module.css';
 
 /**
- * CCDE認定資格の概要と学習ガイドのコンセプトを提示するヒーロー導入部コンポーネント。
+ * Introduces the CCDE certification and the guide's approach to explaining its exam structure.
  */
 export default function HeroSection() {
     return (

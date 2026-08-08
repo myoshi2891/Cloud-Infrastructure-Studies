@@ -17,8 +17,9 @@ import SourcesSection from '@/components/sections/ccde/SourcesSection';
 import ClosingFooter from '@/components/sections/ccde/ClosingFooter';
 
 /**
- * CcdeGuide - Cisco CCDE（Cisco Certified Design Expert）認定 完全ガイド全体を構成する責務を担うルートコンポーネント。
- * NavBar と各セクションコンポーネント（タイトルブロック、ヒーロー、目次、12のガイドセクション、フッター等）を組み立てる。
+ * Renders the complete Cisco CCDE certification guide page.
+ *
+ * @returns The CCDE guide page with navigation and all guide sections
  */
 export default function CcdeGuide() {
     return (

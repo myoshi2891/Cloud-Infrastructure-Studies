@@ -2,7 +2,9 @@ import baseStyles from './SectionBase.module.css';
 import styles from './FaqSection.module.css';
 
 /**
- * FaqSection - セクション11「よくある質問」の専用FAQコンポーネント。
+ * Renders section 11 with frequently asked questions about the Cisco CCDE exams.
+ *
+ * @returns The FAQ section content
  */
 export default function FaqSection() {
     return (

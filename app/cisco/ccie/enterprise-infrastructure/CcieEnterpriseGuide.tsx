@@ -13,6 +13,9 @@ const Corners = () => (
     </>
 );
 
+/**
+ * Presents a Japanese-language guide to the CCIE Enterprise Infrastructure certification.
+ */
 export default function CcieEnterpriseGuide() {
     return (
         <div className={styles.container}>

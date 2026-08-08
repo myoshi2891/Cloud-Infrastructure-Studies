@@ -2,7 +2,9 @@ import Diagram from './Diagram';
 import baseStyles from './SectionBase.module.css';
 
 /**
- * OverallFlowSection - セクション2「認定までの全体フロー」の解説およびダイアグラム表示コンポーネント。
+ * Presents the overall flow for earning CCDE certification.
+ *
+ * @returns The section containing the certification flow diagram and key exam details.
  */
 export default function OverallFlowSection() {
     return (

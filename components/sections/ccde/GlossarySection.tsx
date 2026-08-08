@@ -2,7 +2,7 @@ import baseStyles from './SectionBase.module.css';
 import styles from './GlossarySection.module.css';
 
 /**
- * GlossarySection - セクション10「初学者のための用語辞典」コンポーネント。
+ * Renders section 10, a glossary of beginner-friendly terms from the exam scope.
  */
 export default function GlossarySection() {
     return (

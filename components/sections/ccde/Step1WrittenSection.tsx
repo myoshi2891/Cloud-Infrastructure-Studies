@@ -2,7 +2,7 @@ import Diagram from './Diagram';
 import baseStyles from './SectionBase.module.css';
 
 /**
- * Step1WrittenSection - セクション4「STEP1：筆記試験（400-007 CCDE v3.1）」の概要・出題ドメイン表・ダイアグラムコンポーネント。
+ * Displays an overview of the CCDE v3.1 written exam, including exam details, domain weightings, and a diagram.
  */
 export default function Step1WrittenSection() {
     return (

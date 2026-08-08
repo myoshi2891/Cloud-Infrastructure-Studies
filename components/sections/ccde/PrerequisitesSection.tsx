@@ -1,7 +1,7 @@
 import baseStyles from './SectionBase.module.css';
 
 /**
- * PrerequisitesSection - セクション3「受験資格・推奨される経験」の表および解説コンポーネント。
+ * Renders the CCDE eligibility requirements and recommended professional experience.
  */
 export default function PrerequisitesSection() {
     return (

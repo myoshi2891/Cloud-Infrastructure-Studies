@@ -1,7 +1,9 @@
 import baseStyles from './SectionBase.module.css';
 
 /**
- * CertificationsEarnedSection - セクション6「合格後に得られる認定」の表および解説コンポーネント。
+ * Displays the certifications earned after passing each CCDE examination stage.
+ *
+ * @returns The certifications-earned section with explanatory text, an exam-to-certification table, and a source link.
  */
 export default function CertificationsEarnedSection() {
     return (

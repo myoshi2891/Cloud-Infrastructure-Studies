@@ -2,7 +2,7 @@ import Diagram from './Diagram';
 import baseStyles from './SectionBase.module.css';
 
 /**
- * RecertificationSection - セクション8「再認定（有効期間は3年）」の再認定方法表およびダイアグラムコンポーネント。
+ * Explains CCDE recertification requirements and available recertification methods.
  */
 export default function RecertificationSection() {
     return (

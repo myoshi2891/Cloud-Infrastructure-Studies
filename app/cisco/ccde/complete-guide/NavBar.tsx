@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { SECTION_DEFINITIONS } from './constants';
 
 /**
- * NavBar - CCDE ガイド内の各セクション要素 (DOM) の画面表示・交差状況を IntersectionObserver で監視対象とし、
- * アクティブなセクション ID を追跡して状態更新 (setActiveId) およびナビゲーションのハイライト表示を行う責務を担うコンポーネント。
+ * Renders a sticky table of contents for the CCDE guide and highlights the section currently in view.
+ *
+ * @returns The page navigation element containing links to each defined section
  */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('what-is-ccde');
