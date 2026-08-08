@@ -293,6 +293,12 @@
                 max-width: none;
                 height: auto;
             }
+            .mermaid-fallback {
+                margin: 0;
+                padding: 0 1.25rem;
+                color: var(--text-dim);
+                text-align: center;
+            }
 
             /* ---------- Callouts ---------- */
             .callout {
@@ -560,6 +566,8 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: CCNAAUTO試験ドメインとドメイン4.0
+                                accDescr: 200-901 CCNAAUTOの6ドメインと、強調されたApplication Deployment and Securityドメインの関係
                                 EXAM["200-901 CCNAAUTO 試験(120分)"]
                                 D1["1.0 Software Development and Design (15%)"]
                                 D2["2.0 Understanding and Using APIs (20%)"]
@@ -576,6 +584,7 @@
                                 D1 ~~~ D2 ~~~ D3 ~~~ D4 ~~~ D5 ~~~ D6
                                 style D4 fill:#ffe08a,stroke:#d99a00,stroke-width:2px,color:#241a00
                         </script>
+                        <noscript><p class="mermaid-fallback">CCNAAUTO試験の6ドメインと、ドメイン4.0の位置づけを示す図です。</p></noscript>
                     </div>
 
                     <div class="callout">
@@ -680,6 +689,8 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: エッジとクラウド展開モデルの関係
+                                accDescr: IoTデバイスからエッジサーバー、パブリッククラウド、プライベートクラウド、ハイブリッドクラウドへデータが流れる構成
                                 IoT["IoTデバイス / 店舗POS / センサー"]
                                 EdgeNode["エッジサーバー(現地で低遅延処理)"]
                                 Pub["パブリッククラウド"]
@@ -693,6 +704,7 @@
                                 Priv --- Hyb
                                 Pub --- Hyb
                         </script>
+                        <noscript><p class="mermaid-fallback">IoTデバイス、エッジ、パブリック・プライベート・ハイブリッドクラウドの関係図です。</p></noscript>
                     </div>
 
                     <div class="callout">
@@ -719,6 +731,8 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: ベアメタル・仮想マシン・コンテナの構造比較
+                                accDescr: 3つの実行環境でアプリケーションから物理ハードウェアまでを構成する層の違い
                                 subgraph BareMetal["ベアメタル"]
                                     direction TB
                                     BM_App["アプリケーション"]
@@ -747,6 +761,7 @@
 
                                 BareMetal ~~~ VM ~~~ Container
                         </script>
+                        <noscript><p class="mermaid-fallback">ベアメタル、仮想マシン、コンテナのソフトウェア層を比較する図です。</p></noscript>
                     </div>
 
                     <h3>属性比較表</h3>
@@ -859,6 +874,8 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: CI/CDパイプライン全体の流れ
+                                accDescr: コードのコミットからビルド、テスト、パッケージ、ステージング、本番展開、監視、開発者へのフィードバックまでの流れ
                                 Dev["開発者がコードをコミット"] --> VCS["バージョン管理システム(Git)"]
                                 VCS --> Build["ビルドステージ(依存関係解決・コンパイル)"]
                                 Build --> Test["自動テストステージ(ユニット・統合テスト)"]
@@ -872,6 +889,7 @@
                                 DeployProd --> Monitor["監視・フィードバック収集"]
                                 Monitor -.->|"改善点を反映"| Dev
                         </script>
+                        <noscript><p class="mermaid-fallback">コミットから本番展開、監視、フィードバックまでのCI/CDパイプライン図です。</p></noscript>
                     </div>
 
                     <div class="callout">
@@ -893,18 +911,42 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: Arrange-Act-Assertテストフロー
+                                accDescr: テスト対象を用意し、前提条件を準備して実行し、期待値との一致または不一致を検証する流れ
                                 Start["テスト対象の関数を用意"] --> Arrange["Arrange: テストデータ・前提条件を準備"]
                                 Arrange --> Act["Act: テスト対象の関数を実行"]
                                 Act --> Assert["Assert: 期待した結果と実際の結果を比較"]
                                 Assert -->|"一致"| Pass["テスト成功(PASS)"]
                                 Assert -->|"不一致"| Fail["テスト失敗(FAIL) 原因を調査"]
                         </script>
+                        <noscript><p class="mermaid-fallback">Arrange、Act、Assertによるユニットテストの基本フローです。</p></noscript>
                     </div>
 
                     <h3>コード例</h3>
                     <div class="code-block">
                         <div class="code-label">Python — unittest の基本形</div>
-                        <pre><code class="language-python" id="code-unittest-example"></code></pre>
+                        <pre><code class="language-python" id="code-unittest-example">import unittest
+
+def add(a, b):
+    """2つの数値を加算する簡単な関数"""
+    return a + b
+
+class TestAddFunction(unittest.TestCase):
+
+    def test_add_positive_numbers(self):
+        # Arrange
+        a, b = 2, 3
+        # Act
+        result = add(a, b)
+        # Assert
+        self.assertEqual(result, 5)
+
+    def test_add_negative_numbers(self):
+        result = add(-1, -1)
+        self.assertEqual(result, -2)
+
+if __name__ == "__main__":
+    unittest.main()</code></pre>
                         <script
                             type="text/plain"
                             class="code-source"
@@ -937,7 +979,7 @@
 
                     <p>
                         <code>assertEqual</code
-                        >のほかにも、<code>assertTrue</code>（真偽値の検証）、<code>assertRaises</code>（例外発生の検証）などがよく使われます。ユニットテストは第1章の「テスト駆動開発（TDD）」の考え方や、第4章のCI/CDパイプラインの「テストステージ」と直結しています。
+                        >のほかにも、<code>assertTrue</code>（真偽値の検証）、<code>assertRaises</code>（例外発生の検証）などがよく使われます。ユニットテストは「テスト駆動開発（TDD）」の考え方や、第4章のCI/CDパイプラインの「テストステージ」と直結しています。
                     </p>
 
                     <div class="callout">
@@ -1015,7 +1057,24 @@
                     <h3>サンプルDockerfile</h3>
                     <div class="code-block">
                         <div class="code-label">Dockerfile</div>
-                        <pre><code class="language-dockerfile" id="code-dockerfile-example"></code></pre>
+                        <pre><code class="language-dockerfile" id="code-dockerfile-example"># ベースイメージを指定
+FROM python:3.12-slim
+
+# 作業ディレクトリを作成・移動
+WORKDIR /app
+
+# 依存関係定義ファイルを先にコピーしてキャッシュを効かせる
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# アプリ本体をコピー
+COPY . .
+
+# コンテナが待ち受けるポートを明示
+EXPOSE 8080
+
+# コンテナ起動時に実行するコマンド
+CMD ["python", "app.py"]</code></pre>
                         <script
                             type="text/plain"
                             class="code-source"
@@ -1080,11 +1139,11 @@
                                 <td>稼働中のコンテナ内でシェルを起動する</td>
                             </tr>
                             <tr>
-                                <td><code>docker stop</code> / <code>docker rm</code></td>
+                                <td><code>docker stop コンテナ名またはID</code> / <code>docker rm コンテナ名またはID</code></td>
                                 <td>コンテナを停止・削除する</td>
                             </tr>
                             <tr>
-                                <td><code>docker push</code> / <code>docker pull</code></td>
+                                <td><code>docker push イメージ名</code> / <code>docker pull イメージ名</code></td>
                                 <td>イメージをレジストリへ送信／取得する</td>
                             </tr>
                         </tbody>
@@ -1094,6 +1153,8 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: Dockerイメージとコンテナのライフサイクル
+                                accDescr: Dockerfileの作成からイメージのビルド、コンテナ起動と停止、レジストリへのpushとpullまでの流れ
                                 Dockerfile["Dockerfileを作成"] --> Build["docker buildでイメージを生成"]
                                 Build --> LocalImage["ローカルイメージ(docker imagesで確認)"]
                                 LocalImage --> Run["docker runでコンテナ起動"]
@@ -1102,6 +1163,7 @@
                                 LocalImage -->|"docker push"| Registry["イメージレジストリ(Docker Hub等)"]
                                 Registry -->|"docker pull"| LocalImage
                         </script>
+                        <noscript><p class="mermaid-fallback">Dockerfileからイメージを作成し、コンテナとレジストリを操作するライフサイクル図です。</p></noscript>
                     </div>
 
                     <div class="callout">
@@ -1171,12 +1233,15 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: セキュアなアプリケーションデータフロー
+                                accDescr: クライアントからロードバランサーとアプリケーションを経由し、シークレット管理と暗号化データベースを利用する流れ
                                 Client["クライアント(ブラウザ / アプリ)"] -->|"HTTPS(TLSで暗号化)"| LB["ロードバランサー"]
                                 LB -->|"内部ネットワーク"| App["アプリケーションサーバー"]
                                 App -->|"シークレットを取得(コードに直書きしない)"| Vault["シークレット管理(Vault等)"]
                                 App -->|"暗号化して書き込み"| DB["データベース(保存時暗号化)"]
                                 DB -->|"復号して返却"| App
                         </script>
+                        <noscript><p class="mermaid-fallback">TLS、シークレット管理、保存時暗号化を組み合わせたデータフロー図です。</p></noscript>
                     </div>
 
                     <div class="callout">
@@ -1236,20 +1301,23 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
-                                User["ユーザー"] --> DNS["DNSで名前解決(ドメイン→IPアドレス)"]
-                                DNS --> FW["ファイアウォール(不要な通信を遮断)"]
+                                accTitle: 名前解決とHTTPリクエスト経路
+                                accDescr: DNSによる名前解決を前提として、ユーザーのHTTPリクエストがファイアウォール、ロードバランサー、リバースプロキシ、アプリケーションサーバーへ進む構成例
+                                DNS["DNSで名前解決(ドメイン→IPアドレス)"]
+                                DNS -.-> User
+                                User["ユーザー"] --> FW["ファイアウォール(不要な通信を遮断)"]
                                 FW --> LB["ロードバランサー(複数サーバーへ振り分け)"]
                                 LB --> RP["リバースプロキシ(TLS終端・キャッシュ・経路制御)"]
                                 RP --> Srv1["アプリケーションサーバー1"]
                                 RP --> Srv2["アプリケーションサーバー2"]
                         </script>
+                        <noscript><p class="mermaid-fallback">DNSで名前解決した後、HTTPリクエストがFW、LB、リバースプロキシ、アプリへ進む構成例です。</p></noscript>
                     </div>
 
                     <div class="callout">
                         <div class="callout-title">この章のポイント</div>
                         <p>
-                            「名前解決 → アクセス制御 → 負荷分散 → プロキシによる終端・制御 →
-                            アプリ本体」という順序でリクエストが処理される、という全体像を押さえる。ロードバランサーとリバースプロキシは役割が重なることも多いが、試験では「負荷分散」と「TLS終端・経路制御」という観点の違いで整理すると覚えやすい。
+                            DNSの名前解決はHTTPリクエスト経路の前提処理であり、その後にユーザーからアプリ本体への通信が始まる。ファイアウォール、ロードバランサー、リバースプロキシの順序は代表的な構成例であり、実環境では要件に応じて配置や機能統合が変わる。試験では「アクセス制御」「負荷分散」「TLS終端・経路制御」という役割の違いで整理すると覚えやすい。
                         </p>
                     </div>
                 </section>
@@ -1314,6 +1382,8 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: OWASP代表脅威の検証フロー
+                                accDescr: ユーザー入力の検証不足によるSQLインジェクションとXSS、およびセッションのCSRF検証不足によるリスクを分けて示す流れ
                                 Input["ユーザー入力(フォーム・URLパラメータ等)"] --> Validate{"入力を検証・サニタイズしているか？"}
                                 Validate -->|"していない"| Risk1["SQLインジェクションのリスク(意図しないSQL文が実行される)"]
                                 Validate -->|"していない"| Risk2["XSSのリスク(悪意あるスクリプトが実行される)"]
@@ -1322,6 +1392,7 @@
                                 CSRFCheck -->|"していない"| Risk3["CSRFのリスク(意図しないリクエストが実行される)"]
                                 CSRFCheck -->|"している"| Safe
                         </script>
+                        <noscript><p class="mermaid-fallback">入力検証とCSRFトークン検証から、SQLi、XSS、CSRFのリスクを判定する図です。</p></noscript>
                     </div>
 
                     <h3>最新の公式リストとの関係</h3>
@@ -1400,9 +1471,7 @@
                     <div class="callout">
                         <div class="callout-title">この章のポイント</div>
                         <p>
-                            XSS・SQLインジェクション・CSRFはいずれも「入力・リクエストを検証せず信頼する」ことが根本原因。OWASP
-                            Top
-                            10は定期的に改訂されるため、学習時は「攻撃の仕組みと対策の考え方」を理解することを優先し、順位や名称は最新の一次情報で確認する。
+                            XSSは信頼できないデータをHTMLへ安全でない形で出力することで発生するため、文脈に応じた出力エンコーディングを行う。SQLインジェクションは入力をSQL構文へ連結することで発生するため、パラメータ化クエリを使う。CSRFは認証済みブラウザに意図しない状態変更を実行させる攻撃であり、CSRFトークンまたはSameSite Cookieで防ぐ。OWASP Top 10は定期的に改訂されるため、順位や名称は最新の一次情報で確認する。
                         </p>
                     </div>
                 </section>
@@ -1570,6 +1639,8 @@
                     <div class="mermaid-wrapper">
                         <script type="text/plain" class="mermaid-source">
                             flowchart TB
+                                accTitle: DevOpsの継続的フィードバックループ
+                                accDescr: 計画、コーディング、ビルド、テスト、リリース、展開、運用、監視を循環し、監視結果を計画へ戻す流れ
                                 Plan["Plan: 計画"] --> Code["Code: コーディング"]
                                 Code --> Build["Build: ビルド"]
                                 Build --> Test["Test: テスト"]
@@ -1579,6 +1650,7 @@
                                 Operate --> Monitor["Monitor: 監視"]
                                 Monitor -.->|"フィードバック"| Plan
                         </script>
+                        <noscript><p class="mermaid-fallback">PlanからMonitorまでを循環し、監視結果を次の計画へ戻すDevOpsループです。</p></noscript>
                     </div>
 
                     <div class="callout">
@@ -1784,7 +1856,7 @@
                 return lines.map((l) => l.slice(minIndent)).join('\n');
             }
 
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', async function () {
                 // ---- コードブロックの復元とハイライト ----
                 document.querySelectorAll('script.code-source').forEach(function (script) {
                     const targetId = script.getAttribute('data-target');
@@ -1810,6 +1882,7 @@
                     mermaid.initialize({
                         startOnLoad: false,
                         theme: 'dark',
+                        htmlLabels: true,
                         themeVariables: {
                             fontSize: '16px',
                             primaryColor: '#101f36',
@@ -1821,11 +1894,18 @@
                         },
                         flowchart: {
                             useMaxWidth: false,
-                            htmlLabels: true,
                             subGraphTitleMargin: { top: 10, bottom: 28 },
                         },
                     });
-                    mermaid.run({ querySelector: '.mermaid' });
+                    try {
+                        await mermaid.run({ querySelector: '.mermaid' });
+                    } catch (error) {
+                        document.querySelectorAll('pre.mermaid').forEach(function (diagram) {
+                            diagram.textContent =
+                                '図の描画に失敗しました。図の内容はページ内の説明文とフォールバックをご確認ください。';
+                        });
+                        console.error('Mermaid rendering failed:', error);
+                    }
                 }
 
                 // ---- サイドバー：スクロール連動ハイライト ----
@@ -1835,7 +1915,13 @@
                 const navLinks = document.querySelectorAll('.sidebar a');
                 const setActive = function (id) {
                     navLinks.forEach(function (link) {
-                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                        const isActive = link.getAttribute('href') === '#' + id;
+                        link.classList.toggle('active', isActive);
+                        if (isActive) {
+                            link.setAttribute('aria-current', 'location');
+                        } else {
+                            link.removeAttribute('aria-current');
+                        }
                     });
                 };
                 const observer = new IntersectionObserver(

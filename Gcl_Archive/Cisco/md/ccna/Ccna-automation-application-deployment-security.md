@@ -1,5 +1,4 @@
-# CCNA Automation（200-901 CCNAAUTO）
-# 「Application Deployment and Security」ドメイン 完全解説ガイド
+# CCNA Automation（200-901 CCNAAUTO）「Application Deployment and Security」ドメイン 完全解説ガイド
 
 > 本ガイドは、Cisco公式サイトおよび公式試験ガイド（出典は末尾に記載）をもとに、CCNA Automation認定の試験「Automating Networks Using Cisco Platforms v1.1（200-901 CCNAAUTO）」の6つの出題ドメインのうち、**ドメイン4.0「Application Deployment and Security（アプリケーションの展開とセキュリティ）」**（配点15%）を、初学者でも理解できるようにステップバイステップで解説したものです。
 
@@ -33,6 +32,7 @@
 ---
 
 <a id="chapter1"></a>
+
 ## 第1章 出題範囲の全体像
 
 CCNA Automation認定を取得するには、120分の試験「200-901 CCNAAUTO」に合格する必要があります。この試験は6つのドメインで構成されており、それぞれに配点比率が設定されています。
@@ -91,6 +91,7 @@ flowchart TB
 ---
 
 <a id="chapter2"></a>
+
 ## 第2章 エッジコンピューティングとアプリケーション展開モデル（4.1・4.2）
 
 ### 4.1 エッジコンピューティングの利点
@@ -142,6 +143,7 @@ flowchart TB
 ---
 
 <a id="chapter3"></a>
+
 ## 第3章 アプリケーション実行環境の比較：VM・ベアメタル・コンテナ（4.3）
 
 展開モデル（どこで動かすか）が決まったら、次は「どの単位でアプリケーションをパッケージ化して動かすか」を選びます。試験ガイドでは以下の3タイプが挙げられています。
@@ -200,6 +202,7 @@ flowchart TB
 ---
 
 <a id="chapter4"></a>
+
 ## 第4章 CI/CDパイプラインの基礎（4.4）
 
 CI/CD（Continuous Integration / Continuous Delivery（or Deployment）＝継続的インテグレーション／継続的デリバリー（デプロイ））は、コードの変更を自動的にビルド・テスト・展開するための仕組みです。
@@ -242,6 +245,7 @@ flowchart TB
 ---
 
 <a id="chapter5"></a>
+
 ## 第5章 Pythonユニットテストの構築（4.5）
 
 ユニットテストとは、プログラムの中の「最小単位（関数やメソッド）」が期待どおりに動くかを自動で検証するテストです。Pythonでは標準ライブラリの`unittest`モジュールがよく使われます。
@@ -293,6 +297,7 @@ if __name__ == "__main__":
 ---
 
 <a id="chapter6"></a>
+
 ## 第6章 Dockerfileの読み方とDockerイメージの活用（4.6・4.7）
 
 ### 4.6 Dockerfileの内容を解釈する
@@ -368,6 +373,7 @@ flowchart TB
 ---
 
 <a id="chapter7"></a>
+
 ## 第7章 アプリケーションセキュリティの基礎：シークレット保護・暗号化・データ取り扱い（4.8）
 
 ### シークレット保護
@@ -407,6 +413,7 @@ flowchart TB
 ---
 
 <a id="chapter8"></a>
+
 ## 第8章 ネットワーク境界のセキュリティ要素：ファイアウォール・DNS・ロードバランサー・リバースプロキシ（4.9）
 
 アプリケーションを展開する際、ユーザーからのリクエストは複数のネットワーク要素を経由します。それぞれの役割を理解することが重要です。
@@ -437,6 +444,7 @@ flowchart TB
 ---
 
 <a id="chapter9"></a>
+
 ## 第9章 OWASPトップの脅威（4.10）
 
 OWASP（Open Worldwide Application Security Project）は、Webアプリケーションセキュリティに関する非営利のコミュニティで、代表的な脅威をまとめた「OWASP Top 10」を定期的に公開しています。
@@ -490,6 +498,7 @@ OWASP Top 10は数年ごとに改訂されており、2025年版（2021年版の
 ---
 
 <a id="chapter10"></a>
+
 ## 第10章 Bashコマンドの活用（4.11）
 
 Linux環境での自動化スクリプトや運用作業では、Bashコマンドの基本操作が欠かせません。
@@ -532,6 +541,7 @@ Linux環境での自動化スクリプトや運用作業では、Bashコマン�
 ---
 
 <a id="chapter11"></a>
+
 ## 第11章 DevOpsの原則（4.12）
 
 DevOpsとは、開発（Development）と運用（Operations）の壁をなくし、ソフトウェアを継続的に、かつ安全・迅速にリリースし続けるための文化・プラクティスです。
@@ -566,6 +576,7 @@ flowchart TB
 ---
 
 <a id="chapter12"></a>
+
 ## 第12章 まとめ：ドメイン4.0 早見表
 
 試験直前の見直し用に、サブトピックごとの要点を1行にまとめました。
@@ -588,6 +599,7 @@ flowchart TB
 ---
 
 <a id="references"></a>
+
 ## 参考文献・出典
 
 本ガイドの内容は、以下の一次情報（Cisco公式・OWASP公式・各技術の公式ドキュメント）を根拠としています。最新情報は必ず一次情報でご確認ください。

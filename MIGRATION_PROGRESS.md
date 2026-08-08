@@ -13,13 +13,14 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 目的
 
-`Ccna-automation-cisco-platforms-and-development.html` (および `.md`)（静的HTML・1864行・10個のMermaid図・6個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcnaCiscoPlatformsDevelopmentGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-cisco-platforms-and-development` ルートへ完全移行する。文章・表・10個のMermaid図・7個のコードブロック・16個の参考文献の一切の省略・要約なしで完全移植。
+`Ccna-automation-cisco-platforms-and-development.html` (および `.md`)（静的HTML・1864行・10個のMermaid図・6個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcnaCiscoPlatformsDevelopmentGuide.tsx + constants.ts + page.module.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-cisco-platforms-and-development` ルートへ完全移行する。文章・表・10個のMermaid図・7個のコードブロック・16個の参考文献の一切の省略・要約なしで完全移植。
 
 ### 完了済みステップ
 
-- [x] **Step 1 (Red)**: `test(cisco): add failing tests for CCNA automation cisco platforms and development guide migration` (`__tests__/cisco/ccna/automation-cisco-platforms-and-development/page.test.tsx` 失敗テストの作成、原本ファイルの `archive/Cisco/` への `git mv` 移動)
-- [x] **Step 2 (Green)**: `feat(cisco): implement CCNA automation cisco platforms and development guide to pass tests` (`page.tsx`, `CcnaCiscoPlatformsDevelopmentGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装)
-- [x] **Step 3 (Refactor / Integration & Nav & Archive)**: `refactor(cisco): integrate CCNA automation cisco platforms and development guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、ドキュメント更新)
+- [x] **Step 1 (Red)**: `test(cisco): add failing tests for CCNA automation cisco platforms and development guide migration` (`__tests__/cisco/ccna/automation-cisco-platforms-and-development/page.test.tsx` 失敗テストの作成後にコミット)
+- [x] **Step 2 (Green)**: `feat(cisco): implement CCNA automation cisco platforms and development guide to pass tests` (`page.tsx`, `CcnaCiscoPlatformsDevelopmentGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.module.css` 実装後にコミット)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(cisco): integrate CCNA automation cisco platforms and development guide into routing and update docs` (`app/constants.ts` EXAMSへの統合とドキュメント更新後にコミット)
+- [x] **Step 4 (Archive)**: Step 3 のコミット完了後、移行元HTML/Markdownを削除せず履歴を保つ `git mv` で `Gcl_Archive/Cisco/html/ccna/` と `Gcl_Archive/Cisco/md/ccna/` へ移動してコミット
 
 ### 関連ファイル
 
@@ -27,10 +28,10 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/ccna/automation-cisco-platforms-and-development/CcnaCiscoPlatformsDevelopmentGuide.tsx](app/cisco/ccna/automation-cisco-platforms-and-development/CcnaCiscoPlatformsDevelopmentGuide.tsx)
 - [app/cisco/ccna/automation-cisco-platforms-and-development/NavBar.tsx](app/cisco/ccna/automation-cisco-platforms-and-development/NavBar.tsx)
 - [app/cisco/ccna/automation-cisco-platforms-and-development/constants.ts](app/cisco/ccna/automation-cisco-platforms-and-development/constants.ts)
-- [app/cisco/ccna/automation-cisco-platforms-and-development/page.css](app/cisco/ccna/automation-cisco-platforms-and-development/page.css)
+- [app/cisco/ccna/automation-cisco-platforms-and-development/page.module.css](app/cisco/ccna/automation-cisco-platforms-and-development/page.module.css)
 - [__tests__/cisco/ccna/automation-cisco-platforms-and-development/page.test.tsx](__tests__/cisco/ccna/automation-cisco-platforms-and-development/page.test.tsx)
-- [archive/Cisco/html/ccna/Ccna-automation-cisco-platforms-and-development.html](archive/Cisco/html/ccna/Ccna-automation-cisco-platforms-and-development.html)
-- [archive/Cisco/md/ccna/Ccna-automation-cisco-platforms-and-development.md](archive/Cisco/md/ccna/Ccna-automation-cisco-platforms-and-development.md)
+- [Gcl_Archive/Cisco/html/ccna/Ccna-automation-cisco-platforms-and-development.html](Gcl_Archive/Cisco/html/ccna/Ccna-automation-cisco-platforms-and-development.html)
+- [Gcl_Archive/Cisco/md/ccna/Ccna-automation-cisco-platforms-and-development.md](Gcl_Archive/Cisco/md/ccna/Ccna-automation-cisco-platforms-and-development.md)
 
 ## 2026-08-08: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」移行 (完了)
 
@@ -40,9 +41,10 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 完了済みステップ
 
-- [x] **Step 1 (Red)**: `test: add failing tests for CCNA automation app deployment and security guide migration` (`__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx` 失敗テストの作成)
-- [x] **Step 2 (Green)**: `feat: implement CCNA automation app deployment and security guide page components to pass tests` (`page.tsx`, `CcnaAppDeploymentSecurityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装)
-- [x] **Step 3 (Refactor / Integration & Nav & Archive)**: `refactor/docs: integrate CCNA automation app deployment security guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`archive/Cisco/html/` および `archive/Cisco/md/` へのアーカイブコピー、`GEMINI.md` 更新)
+- [x] **Step 1 (Red)**: `test: add failing tests for CCNA automation app deployment and security guide migration` (`__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx` 失敗テストの作成後にコミット)
+- [x] **Step 2 (Green)**: `feat: implement CCNA automation app deployment and security guide page components to pass tests` (`page.tsx`, `CcnaAppDeploymentSecurityGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装後にコミット)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor/docs: integrate CCNA automation app deployment security guide into routing and update docs` (`app/constants.ts` EXAMSへの統合と `GEMINI.md` 更新後にコミット)
+- [x] **Step 4 (Archive)**: Step 3 のコミット完了後、移行元HTML/Markdownを削除せず履歴を保つ `git mv` で `Gcl_Archive/Cisco/html/ccna/` と `Gcl_Archive/Cisco/md/ccna/` へ移動してコミット
 
 ### 関連ファイル
 
@@ -52,8 +54,8 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/ccna/automation-application-deployment-security/constants.ts](app/cisco/ccna/automation-application-deployment-security/constants.ts)
 - [app/cisco/ccna/automation-application-deployment-security/page.css](app/cisco/ccna/automation-application-deployment-security/page.css)
 - [__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx](__tests__/cisco/ccna/automation-application-deployment-security/page.test.tsx)
-- [archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html](archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html)
-- [archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md](archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md)
+- [Gcl_Archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html](Gcl_Archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html)
+- [Gcl_Archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md](Gcl_Archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md)
 
 
 ## 2026-08-05: Cisco「CCIE Enterprise Infrastructure 認定 完全ガイド」移行 (完了)
