@@ -146,7 +146,6 @@
             }
 
             .hero {
-                max-width: 900px;
                 margin-bottom: 56px;
                 padding-bottom: 40px;
                 border-bottom: 1px solid var(--color-border-tertiary);
@@ -197,7 +196,6 @@
             }
 
             .section {
-                max-width: 900px;
                 margin-bottom: 64px;
                 scroll-margin-top: 32px;
             }
@@ -434,7 +432,6 @@
             }
 
             footer.page-footer {
-                max-width: 900px;
                 padding-top: 32px;
                 margin-top: 32px;
                 border-top: 1px solid var(--color-border-tertiary);
@@ -520,7 +517,7 @@
                     <div class="diagram-card">
                         <div id="diagram-overview" class="mermaid-target"></div>
                         <p class="diagram-caption">
-                            4タスクの全体アーキテクチャ
+                            4タスクの全体アーキテクチャ（クリックで拡大されません。スクロールしてご覧ください）
                         </p>
                     </div>
 
@@ -1013,22 +1010,10 @@ while (!queryResults.jobComplete) {
 
                     <h3>手順の流れ</h3>
                     <ol>
-                        <li>Apps Scriptで新しいプロジェクトを開く</li>
-                        <li>
-                            エディタに次のコードを貼り付け、<code>createAddressSheet</code>
-                            を実行して権限を承認する
-                        </li>
-                        <li>実行ログに出力されたURLを開き、新規ワークシートのセルA1に住所が入力されていることを確認する</li>
+                        <li>Google Sheetsを開き、新しい空白のスプレッドシートを作成する</li>
+                        <li>左上のセルA1（1行目・A列）をクリックする</li>
+                        <li><code>76 9th Ave, New York</code> という住所文字列を入力する</li>
                     </ol>
-
-                    <pre><code class="language-javascript">function createAddressSheet() {
-  const spreadsheet = SpreadsheetApp.create('Address Sheet');
-  const sheet = spreadsheet.getSheets()[0];
-
-  sheet.setName('Address');
-  sheet.getRange('A1').setValue('76 9th Ave, New York');
-  console.log(spreadsheet.getUrl());
-}</code></pre>
 
                     <h3>なぜここでApps Scriptの組み込みサービスが登場するのか</h3>
                     <p>
