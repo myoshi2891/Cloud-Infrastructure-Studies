@@ -257,7 +257,7 @@ Cloud CDNは、コンテンツへのアクセスを制御する3つの手段を�
 | 署名付きCookie（Signed Cookie） | 特定のURLプレフィックス（例: `https://media.example.com/videos/`）配下のすべてのリクエストを、1つのCookieで一定期間認可する。HLS/DASHのようにマニフェスト内の多数のURLを個別に署名するのが非現実的な場合に有効 |
 | プライベートオリジン認証 | Amazon S3や互換オブジェクトストアなど、Cloud CDN外の第三者オリジンへの直接アクセスを防ぎ、Cloud CDN経由の接続のみを許可する |
 
-署名付きURL・署名付きCookieはURLマップでは直接設定できず、バックエンドサービスまたはバックエンドバケット単位で設定します。署名の検証はCloud CDN自体では行われないため、オリジン側のWebサーバーが署名を検証し、不正なリクエストにはHTTP 403を返す実装が必須です。署名済みリクエストと未署名リクエストは別々にキャッシュされるため、キャッシュ可能なステータスコードを不正なリクエストに返すと、以降の正当なリクエストが誤って拒否される可能性がある点に注意します。
+署名付きURL・署名付きCookieはURLマップでは直接設定できず、バックエンドサービスまたはバックエンドバケット単位で設定します。署名付きリクエストを構成したバックエンドでは、Cloud CDNが署名を検証し、期限切れや不正な署名を持つリクエストをHTTP 403で拒否してオリジンへ転送しません。一方、署名パラメータや署名Cookieを持たないリクエストはCloud CDNでは拒否されないため、未署名リクエストを許可するか検証して拒否するかはオリジン側のWebサーバーで実装する必要があります。署名済みリクエストと未署名リクエストは別々にキャッシュされるため、オリジンが不正なリクエストにキャッシュ可能なステータスコードを返すと、以降の正当なリクエストが誤って拒否される可能性がある点にも注意します。
 
 > **出典**: [Content access control](https://docs.cloud.google.com/cdn/docs/authenticate-content)
 
@@ -527,13 +527,11 @@ GKEクラスタでCloud DNSを使う場合でも、クラスタ外部からServi
 
 ```mermaid
 flowchart TD
-    Pod[Pod] --> MD["ノードのメタデータサーバー<br/>169.254.169.254"]
-    MD --> NLD{NodeLocal DNSCache<br/>有効か}
-    NLD -->|Yes: ローカルキャッシュ| Cache[ノードローカル<br/>DNSキャッシュ]
-    NLD -->|No| Provider
-    Cache -->|キャッシュミス時| Provider{DNSプロバイダ}
-    Provider -->|kube-dns| KD["kube-dnsポッド<br/>(cluster.local)"]
-    Provider -->|Cloud DNS for GKE| CD[Cloud DNS<br/>コントローラ管理ゾーン]
+    Pod["Pod<br/>nameserver 169.254.20.10"] -->|DNSクエリ| Cache["NodeLocal DNSCache<br/>169.254.20.10"]
+    Cache -->|キャッシュヒット| Answer[キャッシュ済み応答]
+    Cache -->|kube-dns構成のキャッシュミス| KD["kube-dnsポッド<br/>(cluster.local)"]
+    Cache -->|Cloud DNS for GKE構成のキャッシュミス| MD["ノードのメタデータサーバー<br/>169.254.169.254"]
+    MD --> CD[Cloud DNS<br/>プロバイダ]
     Ext[external-dns<br/>コントローラ] -.Ingress/Service監視.-> CD
 ```
 
