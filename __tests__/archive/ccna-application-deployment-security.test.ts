@@ -3,12 +3,9 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const workspacePath = (...segments: string[]): string => join(process.cwd(), ...segments);
-const finalArchiveRoot = workspacePath('Gcl_Archive', 'Cisco');
-const currentArchiveRoot = workspacePath('archive', 'Cisco');
+const archiveRoot = workspacePath('archive', 'Cisco');
 const readArchiveFile = (kind: 'html' | 'md', name: string): string => {
-    const finalPath = join(finalArchiveRoot, kind, 'ccna', name);
-    const currentPath = join(currentArchiveRoot, kind, 'ccna', name);
-    return readFileSync(existsSync(finalPath) ? finalPath : currentPath, 'utf8');
+    return readFileSync(join(archiveRoot, kind, 'ccna', name), 'utf8');
 };
 
 describe('CCNA application deployment and security archives', () => {
@@ -17,13 +14,14 @@ describe('CCNA application deployment and security archives', () => {
     const html = readArchiveFile('html', htmlName);
     const markdown = readArchiveFile('md', markdownName);
 
-    it('Cisco archives use the canonical Gcl_Archive hierarchy', () => {
-        expect(existsSync(join(finalArchiveRoot, 'html', 'ccna', htmlName))).toBe(true);
-        expect(existsSync(join(finalArchiveRoot, 'md', 'ccna', markdownName))).toBe(true);
+    it('Cisco archives use only the canonical archive/Cisco hierarchy', () => {
+        expect(existsSync(workspacePath('Gcl_Archive', 'Cisco'))).toBe(false);
+        expect(existsSync(join(archiveRoot, 'html', 'ccna', htmlName))).toBe(true);
+        expect(existsSync(join(archiveRoot, 'md', 'ccna', markdownName))).toBe(true);
         expect(
             existsSync(
                 join(
-                    finalArchiveRoot,
+                    archiveRoot,
                     'html',
                     'ccna',
                     'Ccna-automation-cisco-platforms-and-development.html',

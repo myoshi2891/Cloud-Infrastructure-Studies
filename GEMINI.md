@@ -48,7 +48,7 @@
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。
-- `/Gcl_Archive`: 旧式の HTML ベースの学習ガイド資料（移行完了後アーカイブ済み）。
+- `/archive`: 移行済みの旧式 HTML / Markdown 学習ガイド資料。Cisco 資料の正規保存先は `/archive/Cisco/html` および `/archive/Cisco/md` とし、`/Gcl_Archive/Cisco` は使用禁止。
 - `/Aws`: AWS 関連の古い資料（アーカイブ済み）。
 
 ## 開発コンベンション
@@ -79,7 +79,7 @@
 - ページコンポーネント（`page.tsx`）が巨大化するのを防ぐため、各セクションは必ず `components/sections/` に分割し、スタイリングには CSS Modules (`*.module.css`) を使用してください。セクション間で共通のスタイル（例: `SectionBase.module.css`）を利用する場合は、CSS 内での `@import` を避け、各 TSX ファイルから直接 `import baseStyles from './SectionBase.module.css'` のようにインポートして適用してください。
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。
-- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.claude/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元の HTML ファイルは絶対に削除せず、移行完了後に `Gcl_Archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください**。
+- **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.claude/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元ファイルは絶対に削除せず、移行完了後に `archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください。Cisco 資料は `archive/Cisco/html/` と `archive/Cisco/md/` を使用し、`Gcl_Archive/Cisco` は作成・使用しないでください**。
 - **移行の忠実性とコンテンツの網羅性 (絶対遵守・手抜き厳禁)**: 移行元の HTML/Markdown に含まれる情報は、**一切の省略・要約・抜粋・文言短縮を厳禁**とします。特に「詳細手順」「CSV フォーマット例」「複雑な表」「注釈」「解説文章」「JSDoc」「補足スキル項目」「全出典リンク」などは学習資料として極めて重要であるため、必ず全て TSX コンポーネントへ100%完全移植してください。
   - **事前コンテンツ目録の作成**: 移行開始前に元ファイルの「見出し数・表の行数/セル文言・Mermaid図数・出典リンク数」を抽出・把握すること。
   - **TDDでの網羅性テスト作成**: Step 1 (Red) の時点で大枠見出しだけでなく、表内の文言や補足スキルの記述が存在することを検証する厳密なテストを作成すること。

@@ -21,3 +21,9 @@
 - `Step 1 (Red)`: 要件・見出し・表セル・Mermaid図の `ariaLabel`・参考リンクを100%網羅するテストを先に作成し、失敗を確認してコミット。
 - `Step 2 (Green)`: テストを通過させる最小限の実装を行いコミット。
 - `Step 3 (Refactor)`: ルーティング統合 (`app/constants.ts`) およびドキュメント (`MIGRATION_PROGRESS.md`, `GEMINI.md`, `CLAUDE.md`) の更新を行いコミット。
+
+## 4. Cisco 移行元ファイルのアーカイブ規約（厳守）
+
+- Cisco の移行元 HTML / Markdown は、原本を保持したまま `archive/Cisco/html/` および `archive/Cisco/md/` の適切な下位ディレクトリへ保存すること。
+- `Gcl_Archive/Cisco` は作成・使用してはならない。既存の Cisco アーカイブやドキュメント参照を発見した場合は `archive/Cisco` へ統合すること。
+- アーカイブ移動と同じコミットで `MIGRATION_PROGRESS.md` 等の参照先を同期し、`Gcl_Archive/Cisco` が残っていないことをテストまたは検索で確認すること。
