@@ -108,13 +108,27 @@ describe('MermaidDiagram', () => {
             expect(svg.getAttribute('viewBox')).toBe('0 0 250 615');
         });
 
-        it('個別指定された図は自然倍率を維持して文字を拡大縮小しないこと', () => {
+        it('個別指定された図は自然倍率を維持し、viewBox幅が小さい場合は最低600pxに拡大すること', () => {
             const svg = makeSvg('0 0 250 600');
 
             applySvgFixups(svg, 'flowchart TD\nA-->B', true);
 
-            expect(svg.style.width).toBe('250px');
-            expect(svg.style.maxWidth).toBe('100%');
+            // viewBox 幅 250 < 600 のため、最低幅 600px に拡大される（文字が1rem=16px相当で見えるよう）
+            expect(svg.style.width).toBe('600px');
+            // preserveNaturalScale=true: コンテナ幅で縮小させないよう max-width:none を設定
+            expect(svg.style.maxWidth).toBe('none');
+            expect(svg.style.maxHeight).toBe('none');
+        });
+
+        it('個別指定された図でviewBox幅が十分大きい場合はそのままの幅を使用すること', () => {
+            const svg = makeSvg('0 0 800 600');
+
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            // viewBox 幅 800 > 600 のため、そのまま 800px
+            expect(svg.style.width).toBe('800px');
+            // preserveNaturalScale=true: max-width:none でスクロール時縮小を防止
+            expect(svg.style.maxWidth).toBe('none');
             expect(svg.style.maxHeight).toBe('none');
         });
 
