@@ -1068,7 +1068,7 @@
                         gcloud dataplex entries search \
                           --query="name:Raw Event Data" \
                           --project=<PROJECT_ID> \
-                          --scope=<PROJECT_ID>
+                          --scope=projects/<PROJECT_ID>
 
                         # 取得した Entry に対して Aspect を付与する (aspects.json を別途用意)
                         gcloud dataplex entries update-aspects <ZONE_ENTRY_ID> \
