@@ -105,13 +105,22 @@ describe('CcnaAutomationApiPage', () => {
         expect(strings.length).toBeGreaterThan(0);
     });
 
-    it('verifies Retry-After handling logic and 3600s cap in Python snippet', () => {
+    it('verifies Retry-After handling logic and uncapped parsed_val in Python snippet', () => {
         const { container } = render(<CcnaAutomationApiPage />);
 
         const codeText = container.textContent || '';
 
-        // Check for numeric Retry-After capped at 3600s
-        expect(codeText).toContain('min(parsed_val, 3600)');
+        // Check for numeric Retry-After directly set without 3600s cap
+        expect(codeText).toContain('wait_seconds = parsed_val');
+        expect(codeText).not.toContain('min(parsed_val, 3600)');
+
+        // Check for RequestException handler order: break check before print
+        const reqExceptIdx = codeText.indexOf('except requests.exceptions.RequestException');
+        const printIdx = codeText.indexOf('通信エラー発生');
+        const breakCheckIdx = codeText.indexOf('if attempt == max_retries - 1:', reqExceptIdx);
+        expect(reqExceptIdx).toBeGreaterThan(-1);
+        expect(breakCheckIdx).toBeGreaterThan(reqExceptIdx);
+        expect(breakCheckIdx).toBeLessThan(printIdx);
 
         // Check for HTTP-date parsing logic
         expect(codeText).toContain('parsedate_to_datetime(retry_after)');
