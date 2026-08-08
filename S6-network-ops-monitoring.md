@@ -1,12 +1,12 @@
 # PCNE試験対策ガイド S6: ネットワーク操作と監視
 
-**Google Cloud Professional Cloud Network Engineer(PCNE)認定試験 — Section 5: Managing, monitoring, and troubleshooting network operations（出題比率 約14**%）
+**Google Cloud Professional Cloud Network Engineer(PCNE)認定試験 — Section 5: Managing, monitoring, and troubleshooting network operations（出題比率 約14%）**
 
 ---
 
 ## この記事について(スコープ対応表)
 
-本ガイドは、本シリーズで先行して公開したS1(Section 1 設計・計画)、S2(Section 4 ハイブリッド接続)、S3(Section 2 VPC実装 / Section 3 Task 3.1 ロードバランシング)、S4(Section 3 Task 3.2-3.3 CDN・DNS・IPAM)、S5(Section 6 ネットワークセキュリティ)の続編として、公式Exam Guide(PDF)の**Section 5「Managing, monitoring, and troubleshooting network operations**」(出題比率約14%)に厳密に対応する範囲を扱います。ユーザー呼称の「S6」は公式セクション番号とは一致しませんが、これまでのシリーズと同じ命名慣行を踏襲しています。
+本ガイドは、本シリーズで先行して公開したS1(Section 1 設計・計画)、S2(Section 4 ハイブリッド接続)、S3(Section 2 VPC実装 / Section 3 Task 3.1 ロードバランシング)、S4(Section 3 Task 3.2-3.3 CDN・DNS・IPAM)、S5(Section 6 ネットワークセキュリティ)の続編として、公式Exam Guide(PDF)の**Section 5「Managing, monitoring, and troubleshooting network operations」**(出題比率約14%)に厳密に対応する範囲を扱います。ユーザー呼称の「S6」は公式セクション番号とは一致しませんが、これまでのシリーズと同じ命名慣行を踏襲しています。
 
 | 本ガイドの構成 | 公式Exam GuideのTask | 主な内容 |
 |---|---|---|
@@ -100,7 +100,7 @@ flowchart LR
     LS1 --> SIEM["Flow Analyzer / BigQuery分析 /<br/>外部SIEM"]
 ```
 
-試験ガイドが明示的に列挙しているロギング対象コンポーネントは、**Cloud VPN、Cloud Router、VPC Service Controls、Cloud NGFW、Firewall Insights、VPC Flow Logs、Cloud DNS、Cloud NAT、Network Connectivity Center**の8つです。これらはすべてCloud Loggingに自動で書き込まれ、追加課金なしで有効化できるものがほとんどですが、VPC Flow LogsとFirewall Rules Loggingは明示的な設定が必要です。
+試験ガイドが明示的に列挙しているロギング対象コンポーネントは、**Cloud VPN、Cloud Router、VPC Service Controls、Cloud NGFW、Firewall Insights、VPC Flow Logs、Cloud DNS、Cloud NAT、Network Connectivity Center**の9つです。Cloud DNSは自動的にCloud Loggingへ書き込まれる対象ではなく、プライベートゾーンのクエリロギングはDNSポリシー単位、パブリックゾーンは管理対象ゾーン単位で有効化する必要があります。また、VPC Flow LogsとFirewall Rules Loggingにも明示的な設定が必要です。
 
 > **注意**
 > Cloud LoggingとCloud Monitoringは無料枠を超えると、取り込み量(ログ)やサンプル数(メトリクス)に応じた課金が発生します。特にVPC Flow Logsはトラフィック量に比例して急増しやすいため、サンプリングレートやメタデータ注釈の絞り込みが設計上の重要な検討事項になります。
