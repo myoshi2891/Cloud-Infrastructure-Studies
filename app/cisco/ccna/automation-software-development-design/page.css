@@ -170,8 +170,8 @@
 
 .ccna-software-dev-design-page .hero > *,
 .ccna-software-dev-design-page .section > * {
-    max-width: 1000px;
-    margin-inline: auto;
+    width: 100%;
+    max-width: 100%;
 }
 
 .ccna-software-dev-design-page .section {
@@ -367,14 +367,16 @@
 .ccna-software-dev-design-page .diagram-frame {
     margin: 24px auto 16px;
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
+    overflow-x: auto;
 }
 
 .ccna-software-dev-design-page .mermaid-wrap {
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     width: 100%;
     margin: 0 auto;
+    overflow-x: auto;
 }
 
 .ccna-software-dev-design-page .mermaid-wrap > div {
