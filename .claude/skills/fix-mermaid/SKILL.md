@@ -225,11 +225,12 @@ mermaid.initialize({
 ```css
 .mermaid-wrap {
     display: flex;
-    justify-content: center;
+    justify-content: safe center; /* 親幅を超える場合は flex-start（左詰め）として扱い左見切れを防ぐ */
+    overflow-x: auto;
 }
 .mermaid {
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     width: 100%;
 }
 .mermaid svg {
