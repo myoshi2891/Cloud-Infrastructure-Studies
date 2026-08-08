@@ -129,10 +129,10 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         render(<CcnaAppDeploymentSecurityPage />);
 
         expect(screen.getByRole('columnheader', { name: '配点比率' })).toBeInTheDocument();
-        expect(screen.getByText(/ハイブリッドクラウド/i)).toBeInTheDocument();
-        expect(screen.getByText(/ベアメタル/i)).toBeInTheDocument();
-        expect(screen.getByText(/Arrange-Act-Assert/i)).toBeInTheDocument();
-        expect(screen.getByText(/OWASP Top 10/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/ハイブリッドクラウド/i).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/ベアメタル/i).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/Arrange-Act-Assert/i).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/OWASP Top 10/i).length).toBeGreaterThan(0);
     });
 
     it('ドメイン4.0の4.1〜4.12サブトピック対応表を省略せず描画する', () => {
