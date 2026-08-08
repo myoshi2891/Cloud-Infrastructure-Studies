@@ -2,9 +2,6 @@
 
 **Agent Platform（旧 Vertex AI）でのプロンプト設計ベストプラクティス**
 
-対象ラボ: *Prompt Design in Agent Platform* コースの Challenge Lab
-（`https://www.skills.google/paths/118/course_templates/976/labs/594527`）
-
 ---
 
 ## 目次
