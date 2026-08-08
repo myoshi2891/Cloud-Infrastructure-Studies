@@ -459,9 +459,9 @@ def get_with_retry(url, headers, max_retries=3):
         try:
             response = requests.get(url, headers=headers, timeout=10)
         except requests.exceptions.RequestException as e:
-            print(f"通信エラー発生 ({e})。再試行します。")
             if attempt == max_retries - 1:
                 break
+            print(f"通信エラー発生 ({e})。再試行します。")
             time.sleep(2 ** attempt)
             continue
 
@@ -476,7 +476,7 @@ def get_with_retry(url, headers, max_retries=3):
                 try:
                     parsed_val = int(retry_after)
                     if parsed_val >= 0:
-                        wait_seconds = min(parsed_val, 3600)
+                        wait_seconds = parsed_val
                 except (ValueError, TypeError):
                     try:
                         import math
