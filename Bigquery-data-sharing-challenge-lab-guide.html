@@ -799,9 +799,14 @@ FROM
 SET
 cust.county=vw.county
 FROM
-`Partner Project ID.demo_dataset.Partner authorized view` vw
+`&lt;PARTNER_PROJECT_ID&gt;.demo_dataset.&lt;PARTNER_AUTHORIZED_VIEW&gt;` vw
 WHERE
 vw.zip_code=cust.postal_code;</code></pre>
+                    <p>
+                        <code class="inline">&lt;PARTNER_PROJECT_ID&gt;</code> と
+                        <code class="inline">&lt;PARTNER_AUTHORIZED_VIEW&gt;</code>
+                        はプレースホルダーです。ラボで指定された実際のパートナープロジェクトIDとビュー名に置き換えてください。
+                    </p>
                     <p>
                         実行後、<code class="inline"
                             >This statement modified 14 rows in customer_info.</code
@@ -1464,7 +1469,7 @@ HAVING county is not null</code></pre>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.min.js"></script>
         <script>
             hljs.highlightAll();
 
@@ -1482,7 +1487,7 @@ CT -->|"county列をUPDATEで補完"| CT
 CT -->|"GROUP BY county で集計するビューを作成"| CV
 end
 LS["Looker Studio<br/>旧称 Data Studio"]
-PV -->|"Customerユーザーに Data Viewerロールを付与"| CT
+CT -->|"Partner authorized viewを参照 CustomerユーザーにData Viewerロールを付与"| PV
 CV -->|"Partnerユーザーに Data Viewerロールを付与"| LS
 classDef partnerNode fill:#2a2456,stroke:#b8a6ff,color:#f1edff
 classDef customerNode fill:#113c3a,stroke:#7ce0d3,color:#eafffb
@@ -1515,7 +1520,13 @@ class B1,C1,C2 customerNode`,
             };
 
             async function renderDiagrams() {
-                await document.fonts.ready;
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (error) {
+                        console.warn('Webフォントの読み込み完了を待機できませんでした。', error);
+                    }
+                }
 
                 mermaid.initialize({
                     startOnLoad: false,
@@ -1540,36 +1551,43 @@ class B1,C1,C2 customerNode`,
                     const container = document.getElementById(containerId);
                     if (!container) continue;
 
-                    const { svg } = await mermaid.render(containerId + '-svg', src);
-                    container.innerHTML = svg;
+                    try {
+                        const { svg } = await mermaid.render(containerId + '-svg', src);
+                        container.innerHTML = svg;
 
-                    const svgEl = container.querySelector('svg');
-                    if (svgEl) {
-                        const viewBox = svgEl.getAttribute('viewBox');
-                        svgEl.removeAttribute('width');
-                        svgEl.removeAttribute('height');
-                        svgEl.style.maxWidth = '100%';
-                        svgEl.style.height = 'auto';
-                        svgEl.style.overflow = 'visible';
+                        const svgEl = container.querySelector('svg');
+                        if (svgEl) {
+                            const viewBox = svgEl.getAttribute('viewBox');
+                            svgEl.removeAttribute('width');
+                            svgEl.removeAttribute('height');
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
 
-                        if (viewBox) {
-                            const parts = viewBox.split(' ').map(Number);
-                            const naturalWidth = parts[2];
-                            svgEl.style.width = naturalWidth + 'px';
+                            if (viewBox) {
+                                const parts = viewBox.split(' ').map(Number);
+                                const naturalWidth = parts[2];
+                                svgEl.style.width = naturalWidth + 'px';
 
-                            const trimmed = src.trim();
-                            const isSeqOrState =
-                                trimmed.startsWith('sequenceDiagram') ||
-                                trimmed.startsWith('stateDiagram');
-                            const extra = isSeqOrState ? 110 : 15;
-                            parts[3] = parts[3] + extra;
-                            svgEl.setAttribute('viewBox', parts.join(' '));
+                                const trimmed = src.trim();
+                                const isSeqOrState =
+                                    trimmed.startsWith('sequenceDiagram') ||
+                                    trimmed.startsWith('stateDiagram');
+                                const extra = isSeqOrState ? 110 : 15;
+                                parts[3] = parts[3] + extra;
+                                svgEl.setAttribute('viewBox', parts.join(' '));
+                            }
                         }
+                    } catch (error) {
+                        const reason = error instanceof Error ? error.message : String(error);
+                        container.textContent = `図の描画に失敗しました: ${reason}`;
                     }
                 }
             }
 
-            renderDiagrams();
+            renderDiagrams().catch((error) => {
+                console.error('図の描画処理に失敗しました。', error);
+            });
 
             const sections = document.querySelectorAll('main section[id]');
             const navLinks = document.querySelectorAll('.side-nav .nav-link');

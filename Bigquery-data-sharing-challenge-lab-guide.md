@@ -41,7 +41,7 @@ flowchart TB
 
     LS["Looker Studio<br/>旧称 Data Studio"]
 
-    PV -->|"Customerユーザーに<br/>BigQuery Data Viewerロールを付与"| CT
+    CT -->|"Partner authorized viewを参照<br/>CustomerユーザーにBigQuery Data Viewerロールを付与"| PV
     CV -->|"Partnerユーザーに<br/>BigQuery Data Viewerロールを付与"| LS
 ```
 
@@ -49,7 +49,7 @@ flowchart TB
 
 - Authorized View は「元データそのもの」ではなく「クエリ結果への窓口」を共有する仕組みです。相手は元テーブル(`customer_info` や `zip_codes`)には直接アクセスできず、あくまで公開されたビューの結果しか見えません。これが Authorized View の最大の利点です。
   出典: [Authorized views | BigQuery | Google Cloud](https://cloud.google.com/bigquery/docs/authorized-views)
-- ビューを「作成」しただけでは相手はまだ何も見られません。「ビューの承認(Authorize)」と「ユーザーへのIAMロール付与」という**2段階の許可**が必要です。この2段階を混同するのがこのラボで最もつまずきやすいポイントです(詳しくは4章・6章で解説します)。
+- ビューを「作成」しただけでは相手はまだ何も見られません。「ビューの承認(Authorize)」と「ユーザーへのIAMロール付与」という**2段階の許可**が必要です。この2段階を混同するのがこのラボで最もつまずきやすいポイントです(詳しくは3章・5章で解説します)。
 
 ### 1.2 作業フローの全体像(誰が何をするか)
 
@@ -130,10 +130,12 @@ UPDATE
 SET
 cust.county=vw.county
 FROM
-`Partner Project ID.demo_dataset.Partner authorized view` vw
+`<PARTNER_PROJECT_ID>.demo_dataset.<PARTNER_AUTHORIZED_VIEW>` vw
 WHERE
 vw.zip_code=cust.postal_code;
 ```
+
+`<PARTNER_PROJECT_ID>` と `<PARTNER_AUTHORIZED_VIEW>` はプレースホルダーです。ラボで指定された実際のパートナープロジェクトIDとビュー名に置き換えてください。
 
 実行後、`14行が更新されました(This statement modified 14 rows)` のようなメッセージが表示されれば成功です。
 
