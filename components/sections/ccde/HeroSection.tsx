@@ -1,7 +1,7 @@
 import styles from './HeroSection.module.css';
 
 /**
- * Introduces the CCDE certification and the guide's approach to explaining its exam structure.
+ * Introduces the CCDE certification and explains the guide's sequential approach to the exam structure.
  */
 export default function HeroSection() {
     return (
