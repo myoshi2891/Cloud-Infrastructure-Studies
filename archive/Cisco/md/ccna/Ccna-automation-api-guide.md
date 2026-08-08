@@ -460,6 +460,8 @@ def get_with_retry(url, headers, max_retries=3):
             response = requests.get(url, headers=headers, timeout=10)
         except requests.exceptions.RequestException as e:
             print(f"通信エラー発生 ({e})。再試行します。")
+            if attempt == max_retries - 1:
+                break
             time.sleep(2 ** attempt)
             continue
 
@@ -496,6 +498,8 @@ def get_with_retry(url, headers, max_retries=3):
 
         if response.status_code >= 500:
             # サーバー側エラー：指数バックオフで再試行
+            if attempt == max_retries - 1:
+                break
             time.sleep(2 ** attempt)
             continue
 
