@@ -1,6 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import CcnaCiscoPlatformsDevelopmentPage from '@/app/cisco/ccna/automation-cisco-platforms-and-development/page';
+
+const routeDirectory = join(
+    process.cwd(),
+    'app/cisco/ccna/automation-cisco-platforms-and-development',
+);
+const pageSource = readFileSync(join(routeDirectory, 'page.tsx'), 'utf8');
+const guideSource = readFileSync(
+    join(routeDirectory, 'CcnaCiscoPlatformsDevelopmentGuide.tsx'),
+    'utf8',
+);
 
 // Mock MermaidDiagram to avoid dynamic import / browser execution issues in Vitest
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -126,5 +138,24 @@ describe('CcnaCiscoPlatformsDevelopmentPage', () => {
 
         const refLinks = screen.getAllByRole('link', { name: /^https:\/\//i });
         expect(refLinks.length).toBeGreaterThanOrEqual(16);
+    });
+
+    it('ページスタイルをCSS ModuleとしてClient Componentから適用する', () => {
+        const modulePath = join(routeDirectory, 'page.module.css');
+
+        expect(existsSync(modulePath)).toBe(true);
+        expect(pageSource).not.toContain("import './page.css'");
+        expect(guideSource).toContain("import styles from './page.module.css'");
+        expect(guideSource).toMatch(/className=\{styles\.ccnaPlatformsDevPage\}/);
+    });
+
+    it('ローカルCSS変数を再定義せず、中央寄せの本文ラッパーを持つ', () => {
+        const modulePath = join(routeDirectory, 'page.module.css');
+        const moduleStyles = existsSync(modulePath) ? readFileSync(modulePath, 'utf8') : '';
+        const { container } = render(<CcnaCiscoPlatformsDevelopmentPage />);
+
+        expect(moduleStyles).not.toMatch(/^\s*--(?:bg|border|accent|text|radius|sidebar-width|font-sans|font-mono)\s*:/m);
+        expect(moduleStyles).toContain('margin-inline: auto');
+        expect(container.querySelector('.article-body')).toBeInTheDocument();
     });
 });
