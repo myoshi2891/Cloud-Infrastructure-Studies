@@ -426,8 +426,8 @@ const applySvgFixups = (
 
     let targetWidth = w;
     if (preserveNaturalScale && w > 0) {
-        // preserveNaturalScale=true: 1rem(16px)文字が実寸で見えるよう、小さい図は最低600pxに拡大
-        targetWidth = Math.max(w, 600);
+        // preserveNaturalScale=true: 1rem (16px) 文字サイズが実寸で見えるよう viewBox 由来の自然 px 幅 (1.0倍) を維持する
+        targetWidth = w;
     } else if (!preserveNaturalScale && w > 0 && w < 550) {
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
@@ -437,6 +437,21 @@ const applySvgFixups = (
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
+```
+
+### 文字サイズ 1rem (16px) の絶対担保
+
+図解内のすべての文字要素（ノードラベル、エッジラベル、テキスト等）が確実に `1rem` で表示されるよう、CSS（`MermaidDiagram.module.css`）でスタイルを強制します。
+
+```css
+.mermaidTarget :global(foreignObject > div),
+.mermaidTarget :global(.nodeLabel),
+.mermaidTarget :global(.edgeLabel),
+.mermaidTarget :global(text),
+.mermaidTarget :global(tspan) {
+    overflow: visible;
+    font-size: 1rem !important;
+}
 ```
 
 ### 文字色は「ノードラベル限定」で当てる（明背景×明文字の再発防止）
