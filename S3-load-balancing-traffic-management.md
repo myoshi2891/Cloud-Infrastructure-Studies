@@ -279,7 +279,7 @@ GKE Gateway controllerはKubernetes Gateway APIの実装であり、責務が3�
 - **Gateway**：実際のロードバランサーインスタンスを表すリソース（フロントエンド設定）
 - **HTTPRoute**：ルーティングルールを定義するリソース（アプリケーションチームが管理）
 
-この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE Gateway controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用し、Ingressと異なりヘルスチェックパラメータを自動推測しないため、明示的なHealthCheckPolicyの設定が必要です。
+この分離により、プラットフォームチームがGatewayのインフラ設定を管理し、アプリケーションチームがクラスタ全体の権限を持たずに自分たちのHTTPRouteだけを管理する、という役割分担が可能になります。GKE Gateway controllerは常にGCE_VM_IP_PORTゾーンNEGバックエンドを使用します。IngressのようにPodのreadiness probeからパラメータを推測はしませんが、標準パス `/` と既定値を使うヘルスチェックは自動作成されるため、HealthCheckPolicyは必須ではありません。アプリケーションが `/` にHTTP 200を返さない場合や、追加のパス、ヘッダー、タイムアウトなどの既定値を変更する場合にのみHealthCheckPolicyを設定します。
 
 | 比較項目 | GKE Ingress controller | GKE Gateway controller |
 |---|---|---|
@@ -288,7 +288,7 @@ GKE Gateway controllerはKubernetes Gateway APIの実装であり、責務が3�
 | リソース構成 | Ingressリソース1つに集約 | GatewayClass／Gateway／HTTPRouteに分離 |
 | トラフィック分割 | 非対応（1ルートにつき1バックエンドのみ） | HTTPRouteでネイティブにトラフィックスプリッティング対応 |
 | マルチテナンシー | Ingressリソースの所有者が全ルールを管理 | 名前空間をまたいだルーティング委譲が可能 |
-| ヘルスチェック | パラメータを自動推測 | HealthCheckPolicyによる明示設定が必要 |
+| ヘルスチェック | パラメータを自動推測 | 標準の `/` と既定ポリシーを自動作成。追加パス・ヘッダー・タイムアウトなどを変更する場合のみHealthCheckPolicyを使用 |
 
 > **出典**
 >
