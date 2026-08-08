@@ -129,7 +129,9 @@ export const applySvgFixups = (
     // viewBox 幅が小さすぎる場合は最低 600px を確保してスケールアップする。
     let targetWidth = w;
     if (preserveNaturalScale && w > 0) {
-        targetWidth = Math.max(w, 600);
+        // preserveNaturalScale=true: viewBox 由来の自然 px 幅 (1.0倍) をそのまま使い、
+        // 拡大・縮小せず文字を 1rem (16px) 実寸サイズで正確に描画する
+        targetWidth = w;
     } else if (!preserveNaturalScale && w > 0 && w < 550) {
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }

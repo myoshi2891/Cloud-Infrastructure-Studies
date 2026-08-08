@@ -36,8 +36,11 @@
  */
 .mermaidTarget :global(foreignObject > div),
 .mermaidTarget :global(.nodeLabel),
-.mermaidTarget :global(.edgeLabel) {
+.mermaidTarget :global(.edgeLabel),
+.mermaidTarget :global(text),
+.mermaidTarget :global(tspan) {
     overflow: visible;
+    font-size: 1rem !important;
 }
 
 /*

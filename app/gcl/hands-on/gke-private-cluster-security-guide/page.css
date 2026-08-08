@@ -90,11 +90,12 @@
     color: #7c9eff;
 }
 
-/* メインコンテンツ: サイドバーを除いた領域で読みやすい幅に配置 */
+/* メインコンテンツ: 横幅いっぱいに配置 */
 .gke-security-guide-page .main {
-    margin: 0 auto;
-    padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 48px 120px;
-    max-width: 1120px;
+    margin: 0;
+    padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 32px 120px;
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
 }
 
@@ -327,7 +328,7 @@
 .gke-security-guide-page .mermaid-wrap {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     background: var(--color-card, #0d1b2e);
     border: 1px solid #1c2d42;
     border-radius: var(--radius-lg, 12px);
@@ -336,9 +337,7 @@
 }
 
 .gke-security-guide-page .mermaid-wrap svg {
-    max-width: 100% !important;
     height: auto !important;
-    min-width: 600px; /* 文字サイズ 1rem (16px) を維持し極小潰れを防止 */
 }
 
 .gke-security-guide-page ol,

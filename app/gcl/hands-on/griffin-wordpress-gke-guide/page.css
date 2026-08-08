@@ -150,7 +150,9 @@
 
 .griffin-wordpress-gke-guide-page .main {
     margin-left: 272px;
-    padding: 56px 64px 96px 64px;
+    padding: 56px 32px 96px 32px;
+    width: calc(100% - 272px);
+    max-width: 100%;
 }
 
 .griffin-wordpress-gke-guide-page .hero {
