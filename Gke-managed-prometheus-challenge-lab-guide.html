@@ -1,0 +1,1867 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GKE + Cloud Managed Service for Prometheus チャレンジラボ完全攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/dist/tabler-icons.min.css"
+        />
+        <style>
+            :root {
+                --bg-primary: #07111e;
+                --bg-secondary: #0d1c30;
+                --bg-tertiary: #132840;
+                --bg-info: rgba(124, 158, 255, 0.1);
+                --bg-danger: rgba(255, 110, 110, 0.1);
+                --bg-success: rgba(110, 231, 183, 0.1);
+                --bg-warning: rgba(251, 191, 122, 0.1);
+                --text-primary: #e8edf5;
+                --text-secondary: #a9b8cc;
+                --text-tertiary: #6f8098;
+                --text-info: #8fb3ff;
+                --text-danger: #ff9494;
+                --text-success: #7be8bc;
+                --text-warning: #fbc98a;
+                --border-tertiary: rgba(232, 237, 245, 0.07);
+                --border-secondary: rgba(232, 237, 245, 0.12);
+                --border-primary: rgba(232, 237, 245, 0.2);
+                --accent: #7c9eff;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+                    sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --radius-md: 8px;
+                --radius-lg: 12px;
+                --radius-xl: 16px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                font-size: 16px;
+            }
+            body {
+                margin: 0;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 272px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-secondary);
+                border-right: 1px solid var(--border-tertiary);
+                padding: 28px 20px 40px;
+            }
+            .sidebar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: var(--text-primary);
+                font-weight: 500;
+                font-size: 16px;
+                margin-bottom: 6px;
+            }
+            .sidebar-brand i {
+                color: var(--accent);
+                font-size: 20px;
+            }
+            .sidebar-sub {
+                color: var(--text-tertiary);
+                font-size: 16px;
+                margin: 0 0 24px;
+            }
+            .sidebar-group-label {
+                color: var(--text-tertiary);
+                font-size: 16px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                margin: 20px 0 8px;
+                font-weight: 500;
+            }
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 12px;
+                border-radius: var(--radius-md);
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 16px;
+                border-left: 2px solid transparent;
+                margin-bottom: 2px;
+            }
+            .sidebar nav a i {
+                font-size: 17px;
+                color: var(--text-tertiary);
+                width: 18px;
+                text-align: center;
+            }
+            .sidebar nav a:hover {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+            }
+            .sidebar nav a.active {
+                background: var(--bg-info);
+                color: var(--text-info);
+                border-left: 2px solid var(--accent);
+            }
+            .sidebar nav a.active i {
+                color: var(--accent);
+            }
+
+            .main {
+                margin-left: 272px;
+                padding: 0 56px 80px;
+            }
+
+            .hero {
+                padding: 64px 0 40px;
+                border-bottom: 1px solid var(--border-tertiary);
+                margin-bottom: 40px;
+            }
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--text-info);
+                background: var(--bg-info);
+                border: 1px solid var(--border-secondary);
+                padding: 6px 12px;
+                border-radius: var(--radius-xl);
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 20px;
+            }
+            .hero h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 16px;
+                line-height: 1.5;
+                max-width: 44ch;
+            }
+            .hero p.lead {
+                color: var(--text-secondary);
+                font-size: 16px;
+                max-width: 70ch;
+                margin: 0 0 24px;
+            }
+            .hero-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .hero-meta-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-md);
+                padding: 10px 14px;
+                font-size: 16px;
+                color: var(--text-secondary);
+            }
+            .hero-meta-item i {
+                color: var(--accent);
+            }
+            .hero-meta-item a {
+                color: var(--text-secondary);
+            }
+
+            section.section {
+                margin-bottom: 56px;
+                scroll-margin-top: 24px;
+            }
+            .section-head {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+            .section-head i {
+                font-size: 20px;
+                color: var(--accent);
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0;
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 10px;
+                color: var(--text-primary);
+            }
+            p {
+                color: var(--text-secondary);
+                font-size: 16px;
+            }
+            a {
+                color: var(--accent);
+            }
+            strong {
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+
+            .table-wrap {
+                overflow-x: auto;
+                margin: 16px 0;
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-lg);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 16px;
+            }
+            thead th {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                text-align: left;
+                padding: 12px 16px;
+                font-weight: 500;
+                border-bottom: 1px solid var(--border-secondary);
+            }
+            tbody td {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border-tertiary);
+                color: var(--text-secondary);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody td code,
+            thead th code {
+                font-size: 16px;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                background: var(--bg-tertiary);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--text-info);
+            }
+            pre {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-lg);
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 14px 0;
+            }
+            pre code {
+                background: none;
+                padding: 0;
+                color: var(--text-primary);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+            .code-label {
+                color: var(--text-tertiary);
+                font-size: 16px;
+                margin: 14px 0 -4px;
+                display: block;
+            }
+
+            .callout {
+                display: flex;
+                gap: 14px;
+                padding: 16px 18px;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border-secondary);
+                margin: 18px 0;
+            }
+            .callout i {
+                font-size: 19px;
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            .callout .callout-title {
+                font-weight: 500;
+                color: var(--text-primary);
+                font-size: 16px;
+                margin-bottom: 4px;
+            }
+            .callout p {
+                margin: 0;
+                font-size: 16px;
+                color: var(--text-secondary);
+            }
+            .callout.info {
+                background: var(--bg-info);
+                border-color: rgba(124, 158, 255, 0.28);
+            }
+            .callout.info i {
+                color: var(--text-info);
+            }
+            .callout.warning {
+                background: var(--bg-warning);
+                border-color: rgba(251, 191, 122, 0.28);
+            }
+            .callout.warning i {
+                color: var(--text-warning);
+            }
+            .callout.danger {
+                background: var(--bg-danger);
+                border-color: rgba(255, 148, 148, 0.3);
+            }
+            .callout.danger i {
+                color: var(--text-danger);
+            }
+            .callout.success {
+                background: var(--bg-success);
+                border-color: rgba(123, 232, 188, 0.28);
+            }
+            .callout.success i {
+                color: var(--text-success);
+            }
+            .callout.source {
+                background: var(--bg-tertiary);
+                border-color: var(--border-tertiary);
+            }
+            .callout.source i {
+                color: var(--text-tertiary);
+            }
+            .callout.source ul {
+                margin: 2px 0 0;
+                padding-left: 18px;
+            }
+            .callout.source li {
+                font-size: 16px;
+                color: var(--text-secondary);
+                margin-bottom: 4px;
+            }
+
+            .step {
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-lg);
+                padding: 22px 24px 24px;
+                margin: 18px 0;
+                background: var(--bg-secondary);
+            }
+            .step-head {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
+            }
+            .step-num {
+                width: 26px;
+                height: 26px;
+                border-radius: 50%;
+                background: var(--accent);
+                color: #07111e;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                font-weight: 500;
+                flex-shrink: 0;
+            }
+            .step h4 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 0;
+                color: var(--text-primary);
+            }
+
+            .mermaid-container {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin: 20px 0;
+                overflow-x: auto;
+            }
+
+            .checklist {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .checklist li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border-tertiary);
+                font-size: 16px;
+                color: var(--text-secondary);
+            }
+            .checklist li:last-child {
+                border-bottom: none;
+            }
+            .checklist i {
+                color: var(--text-success);
+                font-size: 18px;
+                margin-top: 1px;
+                flex-shrink: 0;
+            }
+
+            .refs-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .refs-list li {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 14px 16px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-lg);
+            }
+            .refs-list i.ref-icon {
+                color: var(--accent);
+                font-size: 18px;
+                flex-shrink: 0;
+            }
+            .refs-list .ref-body {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                min-width: 0;
+            }
+            .refs-list .ref-title {
+                color: var(--text-primary);
+                font-size: 16px;
+                font-weight: 500;
+            }
+            .refs-list .ref-url {
+                color: var(--text-tertiary);
+                font-size: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .refs-list a {
+                text-decoration: none;
+            }
+            .refs-list a:hover .ref-title {
+                color: var(--accent);
+            }
+
+            .arch-table td:first-child,
+            .arch-table th:first-child {
+                white-space: nowrap;
+            }
+
+            .footer {
+                margin-top: 60px;
+                padding-top: 24px;
+                border-top: 1px solid var(--border-tertiary);
+                color: var(--text-tertiary);
+                font-size: 16px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 0 24px 60px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-brand"><i class="ti ti-brand-google"></i>GMP Challenge Lab</div>
+                <p class="sidebar-sub">完全攻略ガイド</p>
+                <nav>
+                    <p class="sidebar-group-label">はじめに</p>
+                    <ul>
+                        <li>
+                            <a href="#overview"><i class="ti ti-flag"></i>ラボ概要</a>
+                        </li>
+                        <li>
+                            <a href="#architecture"
+                                ><i class="ti ti-topology-star-3"></i>アーキテクチャ</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#prep"><i class="ti ti-settings"></i>事前準備</a>
+                        </li>
+                    </ul>
+                    <p class="sidebar-group-label">タスク</p>
+                    <ul>
+                        <li>
+                            <a href="#task1"
+                                ><i class="ti ti-brand-kubernetes"></i>Task 1: GKEクラスタ</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#task2"
+                                ><i class="ti ti-server-2"></i>Task 2: Managed Collection</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#task3"
+                                ><i class="ti ti-app-window"></i>Task 3: サンプルアプリ</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#task4"
+                                ><i class="ti ti-filter"></i>Task 4: メトリクスフィルタ</a
+                            >
+                        </li>
+                    </ul>
+                    <p class="sidebar-group-label">仕上げ</p>
+                    <ul>
+                        <li>
+                            <a href="#troubleshooting"
+                                ><i class="ti ti-alert-triangle"></i>トラブルシューティング</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#checklist"
+                                ><i class="ti ti-checklist"></i>ベストプラクティス</a
+                            >
+                        </li>
+                        <li>
+                            <a href="#references"><i class="ti ti-books"></i>参考文献一覧</a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main class="main">
+                <header class="hero">
+                    <div class="hero-eyebrow">
+                        <i class="ti ti-cloud"></i>Google Cloud Skills Boost / Challenge Lab
+                    </div>
+                    <h1>
+                        GKE + Cloud Managed Service for Prometheus<br />チャレンジラボ完全攻略ガイド
+                    </h1>
+                    <p class="lead">
+                        「Monitor Environments with Google Cloud managed Service for
+                        Prometheus」コースの Challenge Lab を、
+                        手順の丸暗記ではなく「なぜそのコマンドを実行するのか」を公式ドキュメントの根拠とともに理解しながら
+                        完了できるように整理したステップバイステップガイドです。
+                    </p>
+                    <div class="hero-meta">
+                        <div class="hero-meta-item">
+                            <i class="ti ti-external-link"></i
+                            ><a
+                                href="https://www.skills.google/course_templates/761/labs/609037"
+                                target="_blank"
+                                rel="noopener"
+                                >対象ラボページを開く</a
+                            >
+                        </div>
+                        <div class="hero-meta-item">
+                            <i class="ti ti-users"></i>初学者〜中級者向け
+                        </div>
+                        <div class="hero-meta-item">
+                            <i class="ti ti-list-check"></i>Task 1〜4 / 全4工程
+                        </div>
+                    </div>
+                </header>
+
+                <section id="overview" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-flag"></i>
+                        <h2>1. Challenge Lab とは何か</h2>
+                    </div>
+                    <p>
+                        Challenge Lab
+                        は通常のハンズオンラボと異なり、詳細な「手順書」が存在しません。コース内で学んだ知識を
+                        もとに、シナリオとタスクの説明だけを頼りに自力で構築し、自動採点システムが結果を判定します。
+                        新しい概念を教わる場ではなく、これまで学んだスキルを応用し、エラーメッセージを読んで自分で修正する
+                        力が試されます。
+                    </p>
+
+                    <h3>Lab Objectives</h3>
+                    <p>本ラボで到達すべき目標は次の3点です。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>目標</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Managed Service for Prometheus のデプロイ</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        メトリクスをスクレイピングするための自己管理型（self
+                                        managed）データ収集設定の作成
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        メトリクスを問い合わせるためのアプリケーションのデプロイ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>タスクの全体像</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Task 1</td>
+                                    <td>
+                                        指定された <code>ZONE</code> に GKE クラスタをデプロイする
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Task 2</td>
+                                    <td>Managed Collection をデプロイする</td>
+                                </tr>
+                                <tr>
+                                    <td>Task 3</td>
+                                    <td>
+                                        サンプルアプリケーションをデプロイし、Prometheus
+                                        の稼働を確認する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Task 4</td>
+                                    <td>エクスポートするメトリクスをフィルタリングする</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mermaid-container" id="diagram-overview"></div>
+
+                    <div class="callout info">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">読み進め方のヒント</div>
+                            <p>
+                                各セクションには「なぜそのコマンド・設定が必要か」を説明する補足と、公式ドキュメントへのリンクを
+                                添えています。採点に通すだけでなく、GMP
+                                の設計思想を理解しながら進めることを意識してください。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="architecture" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-topology-star-3"></i>
+                        <h2>2. アーキテクチャ全体像</h2>
+                    </div>
+                    <p>
+                        作業に入る前に、Managed Service for Prometheus（以下
+                        GMP）がどのように動くかを理解しておくと、 各タスクの意味が腹落ちします。GMP
+                        の Managed Collection は、Prometheus 互換の collector を DaemonSet
+                        としてクラスタ内で動かし、各ノード上の Pod だけをスクレイピング（<code
+                            >/metrics</code
+                        >
+                        エンドポイントからメトリクスを収集）します。収集したデータは Google
+                        側から取りに来るのではなく、 collector 側から Cloud Monitoring
+                        のバックエンドである Monarch へ <strong>push</strong> する設計です。
+                        これにより、Google がクラスタに直接アクセスすることはありません。
+                    </p>
+
+                    <div class="mermaid-container" id="diagram-architecture"></div>
+
+                    <h3>コンポーネントの役割</h3>
+                    <div class="table-wrap">
+                        <table class="arch-table">
+                            <thead>
+                                <tr>
+                                    <th>コンポーネント</th>
+                                    <th>種別</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>gmp-operator</code></td>
+                                    <td>Deployment</td>
+                                    <td>
+                                        GMP 用 Kubernetes
+                                        operator。CRD（PodMonitoring等）を監視し設定を配布する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>collector</code></td>
+                                    <td>DaemonSet</td>
+                                    <td>
+                                        同一ノード上の Pod だけをスクレイピングして水平スケールする
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>rule-evaluator</code></td>
+                                    <td>Deployment</td>
+                                    <td>アラート・記録ルールの評価を行う</td>
+                                </tr>
+                                <tr>
+                                    <td><code>alertmanager</code></td>
+                                    <td>StatefulSet</td>
+                                    <td>発火したアラートを通知チャネルへ送信する</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>PodMonitoring</code> /
+                                        <code>ClusterPodMonitoring</code>
+                                    </td>
+                                    <td>CRD</td>
+                                    <td>
+                                        どの Pod
+                                        をどの間隔でスクレイピングするか定義する、いわば「自己管理型データ収集」の本体
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>OperatorConfig</code></td>
+                                    <td>CRD</td>
+                                    <td>認証情報・メトリクスフィルタなど operator 全体の設定</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout info">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">初学者向け補足</div>
+                            <p>
+                                「Managed（マネージド）」なのは collector や operator の<strong
+                                    >実行・スケーリング・アップグレード</strong
+                                >
+                                であって、「どの Pod をスクレイピングするか」はユーザーが
+                                <code>PodMonitoring</code> リソースで 自分で定義します。これが Lab
+                                Objectives にある「self managed data collection」の正体です。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="callout source">
+                        <i class="ti ti-book"></i>
+                        <div>
+                            <div class="callout-title">参考ソース</div>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Get started with managed collection</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Managed Service for Prometheus Overview</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="prep" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-settings"></i>
+                        <h2>3. 事前準備（環境変数の整理）</h2>
+                    </div>
+                    <p>
+                        Cloud Shell
+                        を開き、以下の変数をラボの指示に沿って設定しておくと、以降のコマンドをコピー&ペースト
+                        しやすくなります。
+                    </p>
+                    <span class="code-label">bash</span>
+                    <pre><code class="language-bash">export PROJECT_ID=$(gcloud config get-value project)
+export ZONE=&lt;ラボが指定するZONE&gt;          # 例: asia-northeast1-a
+export CLUSTER_NAME=gmp-cluster
+export NAMESPACE_NAME=gmp-test</code></pre>
+                    <div class="callout info">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">
+                                なぜ gcloud config get-value project を使うのか
+                            </div>
+                            <p>
+                                現在アクティブなプロジェクトを自動取得することで、プロジェクトIDを手入力してタイプミスする
+                                リスクを避けられます。Challenge Lab
+                                は自動採点のため、こうした入力ミスの排除が特に重要です。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="callout source">
+                        <i class="ti ti-book"></i>
+                        <div>
+                            <div class="callout-title">参考ソース</div>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/sdk/gcloud/reference/config"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >gcloud config リファレンス</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task1" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-brand-kubernetes"></i>
+                        <h2>4. Task 1: GKE クラスタのデプロイ</h2>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">1</span>
+                            <h4>クラスタを作成する</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">gcloud container clusters create ${CLUSTER_NAME} \
+  --zone ${ZONE} \
+  --enable-managed-prometheus \
+  --num-nodes=2</code></pre>
+                    </div>
+
+                    <div class="callout info">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">
+                                なぜ --enable-managed-prometheus が必要か
+                            </div>
+                            <p>
+                                <code>--enable-managed-prometheus</code> は GKE クラスタ作成時に
+                                Managed Service for Prometheus の
+                                マネージドコレクションを有効化する専用フラグです。公式リファレンスにも、クラスタ内で
+                                Managed Collection
+                                を有効にするためのフラグであると明記されています。
+                            </p>
+                            <p style="margin-top: 10px">
+                                なお GKE Autopilot（v1.25以降）や GKE Standard（v1.27以降）では
+                                Managed Collection がデフォルトで
+                                有効になっていますが、明示的にフラグを付けることで意図を明確にし、バージョン差異による
+                                有効化漏れを防げるため、Challenge Lab
+                                のように採点される環境では明示指定が推奨されます。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">2</span>
+                            <h4>クラスタの認証情報を取得し、検証する</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE}
+kubectl get nodes</code></pre>
+                        <p style="margin-top: 10px">
+                            <code>kubectl get nodes</code> でノードが
+                            <code>Ready</code> になっていれば、クラスタ自体は正常です（GMP
+                            コンポーネントの確認は Task 2/3 で行います）。
+                        </p>
+                    </div>
+
+                    <div class="callout source">
+                        <i class="ti ti-book"></i>
+                        <div>
+                            <div class="callout-title">参考ソース</div>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/sdk/gcloud/reference/container/clusters/create"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >gcloud container clusters create
+                                        リファレンス（--enable-managed-prometheus）</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Get started with managed collection（GKE 有効化手順）</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task2" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-server-2"></i>
+                        <h2>5. Task 2: Managed Collection のデプロイ</h2>
+                    </div>
+                    <p>
+                        Task 1 でフラグを付けた時点で、現行バージョンの GKE では
+                        <code>gmp-system</code> / <code>gmp-public</code>
+                        の各 Namespace と operator
+                        関連リソースは自動的に作成されます。しかし本ラボの指示は、明示的に
+                        <strong>setup manifest と operator manifest</strong> を
+                        <a
+                            href="https://github.com/GoogleCloudPlatform/prometheus-engine"
+                            target="_blank"
+                            rel="noopener"
+                            >GoogleCloudPlatform/prometheus-engine</a
+                        >
+                        リポジトリから適用することを求めています。これは元々「GKE 以外の Kubernetes
+                        クラスタ」向けの手順として
+                        公式ドキュメントに記載されている方法ですが、Challenge Lab
+                        の採点ロジックがこれらのマニフェスト適用を
+                        明示的なタスク達成条件としているため、GKE 上でも同じ手順を踏みます。
+                    </p>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">1</span>
+                            <h4>setup manifest と operator manifest を適用する</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/manifests/setup.yaml
+
+kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/manifests/operator.yaml</code></pre>
+                    </div>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <div class="callout-title">バージョン一貫性のベストプラクティス</div>
+                            <p>
+                                このラボは <code>examples/example-app.yaml</code> を
+                                <code>v0.2.3</code> タグで参照するよう 指定しています。<code
+                                    >setup.yaml</code
+                                >
+                                / <code>operator.yaml</code> / <code>example-app.yaml</code>
+                                は同一リリースタグで揃えるのが安全です。CRD
+                                スキーマとオペレータの実装は同じリリース内で整合性が
+                                取られているため、タグを混在させると CRD
+                                未対応フィールドなどの予期しないエラーが発生する
+                                可能性があります。実務（ラボ以外）では、
+                                <a
+                                    href="https://github.com/GoogleCloudPlatform/prometheus-engine/releases"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >releases ページ</a
+                                >
+                                で最新の安定版タグを確認し、常に最新タグへ揃えることを推奨します。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">2</span>
+                            <h4>デプロイを検証する</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">kubectl get ns | grep gmp
+kubectl get pods -n gmp-system
+kubectl get pods -n gmp-public</code></pre>
+                        <p style="margin-top: 10px">
+                            <code>gmp-system</code> に
+                            <code>collector</code>（DaemonSet）、<code>gmp-operator</code>、<code
+                                >rule-evaluator</code
+                            >
+                            が <code>Running</code> になっていることを確認します。
+                        </p>
+                    </div>
+
+                    <div class="callout source">
+                        <i class="ti ti-book"></i>
+                        <div>
+                            <div class="callout-title">参考ソース</div>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed#kubectl-cli"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Get started with managed collection（kubectl CLI での
+                                        setup/operator manifest 適用手順）</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/GoogleCloudPlatform/prometheus-engine"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >GoogleCloudPlatform/prometheus-engine リポジトリ</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/GoogleCloudPlatform/prometheus-engine/releases"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >prometheus-engine Releases（最新タグ確認用）</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task3" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-app-window"></i>
+                        <h2>6. Task 3: サンプルアプリのデプロイと動作確認</h2>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">1</span>
+                            <h4>専用 Namespace を作成する</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">kubectl create ns ${NAMESPACE_NAME}</code></pre>
+                        <p style="margin-top: 10px">
+                            公式ドキュメントは、サンプル構成用に専用の Namespace（推奨名
+                            <code>gmp-test</code>）を 作成することを推奨しています。Namespace
+                            を分離しておくことで後片付け（テアダウン）が容易になり、
+                            既存アプリへの影響も避けられます。
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">2</span>
+                            <h4>サンプルアプリをデプロイする</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">kubectl -n ${NAMESPACE_NAME} apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/prometheus-engine/v0.2.3/examples/example-app.yaml</code></pre>
+                        <p style="margin-top: 10px">
+                            このマニフェストは <code>example_requests_total</code>（カウンタ）や
+                            <code>example_random_numbers</code>（ヒストグラム）などのメトリクスを
+                            <code>metrics</code>
+                            という名前のポートで公開する Pod を3レプリカ起動します。
+                        </p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">3</span>
+                            <h4>PodMonitoring を作成する（＝自己管理型データ収集の本体）</h4>
+                        </div>
+                        <p>
+                            Managed Collection はメトリクスエンドポイントを自動発見しません。<code
+                                >PodMonitoring</code
+                            >
+                            カスタムリソースで「どのラベルを持つ Pod
+                            を、どのポートで、どの間隔でスクレイピングするか」を
+                            明示的に定義する必要があります。これが Lab Objectives の「self managed
+                            data collection」に 対応する作業です。
+                        </p>
+                        <span class="code-label">pod-monitoring.yaml</span>
+                        <pre><code class="language-yaml">apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: prom-example
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prom-example
+  endpoints:
+  - port: metrics
+    interval: 30s</code></pre>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">kubectl -n ${NAMESPACE_NAME} apply -f pod-monitoring.yaml</code></pre>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">4</span>
+                            <h4>Prometheus が正しくデプロイされているか確認する</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash"># operator / collector / rule-evaluator の稼働確認
+kubectl get pods -n gmp-system
+
+# PodMonitoring が意図した Namespace に存在するか
+kubectl get podmonitoring -A
+
+# PodMonitoring が GMP に認識されているか
+kubectl -n ${NAMESPACE_NAME} describe podmonitoring prom-example</code></pre>
+                    </div>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <div class="callout-title">
+                                より詳細なターゲット疎通確認をしたい場合
+                            </div>
+                            <p>
+                                <code>OperatorConfig</code> で
+                                <code>features.targetStatus.enabled: true</code> を設定すると、
+                                <code>describe podmonitoring</code> の出力に
+                                <code>Active Targets</code> や <code>Health: up</code>
+                                といったステータスが表示されるようになります。ただし公式ドキュメントは、この機能は大規模クラスタで
+                                operator
+                                のメモリ枯渇を招く可能性があるため、常時有効化ではなく一時的なデバッグ用途に
+                                限定することを推奨しています。
+                            </p>
+                        </div>
+                    </div>
+
+                    <span class="code-label">operator-config-debug.yaml（一時的なデバッグ用）</span>
+                    <pre><code class="language-yaml">apiVersion: monitoring.googleapis.com/v1
+kind: OperatorConfig
+metadata:
+  namespace: gmp-public
+  name: config
+features:
+  targetStatus:
+    enabled: true</code></pre>
+
+                    <div class="callout source">
+                        <i class="ti ti-book"></i>
+                        <div>
+                            <div class="callout-title">参考ソース</div>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Get started with managed collection（Namespace作成 /
+                                        example-app デプロイ / PodMonitoring / target status）</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/GoogleCloudPlatform/prometheus-engine/blob/main/doc/api.md#podmonitoring"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >PodMonitoring API リファレンス</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task4" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-filter"></i>
+                        <h2>7. Task 4: エクスポートするメトリクスのフィルタリング</h2>
+                    </div>
+
+                    <h3>なぜフィルタリングするのか</h3>
+                    <p>
+                        大量のメトリクスを収集し続けると Cloud Monitoring
+                        への書き込みコストが増加します。
+                        <code>OperatorConfig</code> の <code>collection.filter</code> に
+                        <code>matchOneOf</code>（許可リスト） を設定することで、指定した Prometheus
+                        時系列マッチャに一致するメトリクスだけを Cloud Monitoring へ
+                        エクスポートできます。これは Prometheus の federation エンドポイントの
+                        <code>match[]</code>
+                        パラメータと同等の仕組みです。
+                    </p>
+                    <span class="code-label">yaml（追記するフィルタ設定）</span>
+                    <pre><code class="language-yaml">collection:
+  filter:
+    matchOneOf:
+    - '{job="prom-example"}'
+    - '{__name__=~"job:.+"}'</code></pre>
+
+                    <h3>手順（既存設定を壊さないベストプラクティス）</h3>
+                    <p>
+                        ラボの指示は「config.yaml を作成し、operatorconfig
+                        の内容をコピーする」というものですが、
+                        <strong
+                            >ゼロから書くのではなく、必ずクラスタ上の現在の設定をエクスポートしてから編集する</strong
+                        >のが 安全です。手動で新規作成すると、既存の
+                        <code>collection.credentials</code> などの設定を誤って
+                        消してしまうリスクがあります。
+                    </p>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">1</span>
+                            <h4>現在の OperatorConfig をエクスポートする</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">kubectl -n gmp-public get operatorconfig config -o yaml > op-config.yaml</code></pre>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">2</span>
+                            <h4>filter ブロックを追記する</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">vi op-config.yaml</code></pre>
+                        <p style="margin-top: 10px">追記後のイメージ：</p>
+                        <pre><code class="language-yaml">apiVersion: monitoring.googleapis.com/v1
+kind: OperatorConfig
+metadata:
+  namespace: gmp-public
+  name: config
+collection:
+  filter:
+    matchOneOf:
+    - '{job="prom-example"}'
+    - '{__name__=~"job:.+"}'</code></pre>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-head">
+                            <span class="step-num">3</span>
+                            <h4>クラスタへ反映する（重要）</h4>
+                        </div>
+                        <span class="code-label">bash</span>
+                        <pre><code class="language-bash">kubectl -n gmp-public apply -f op-config.yaml</code></pre>
+                    </div>
+
+                    <div class="callout warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <div class="callout-title">見落としがちな落とし穴</div>
+                            <p>
+                                ラボの手順文だけを読むと「ファイルを作って GCS
+                                にアップロードするだけ」に見えますが、
+                                実際にメトリクスフィルタを機能させるには
+                                <code>kubectl apply</code> でクラスタに反映する工程が
+                                不可欠です。ここを忘れると、ローカルの YAML
+                                を編集しただけでクラスタの挙動は変わりません。 GCS
+                                へのアップロードはあくまで自動採点システムがあなたの設定内容を検証するための手段であり、
+                                クラスタの実際の動作を変えるものではありません。
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>採点用ファイルのアップロード</h3>
+                    <p>
+                        ラボの自動採点システムが設定内容を検証できるように、作成した
+                        <code>op-config.yaml</code> を Cloud Storage バケットへアップロードします。
+                    </p>
+                    <span class="code-label">bash</span>
+                    <pre><code class="language-bash">export PROJECT=$(gcloud config get-value project)
+gsutil mb -p ${PROJECT} gs://${PROJECT}
+gsutil cp op-config.yaml gs://${PROJECT}
+gsutil -m acl set -R -a public-read gs://${PROJECT}</code></pre>
+
+                    <div class="callout danger">
+                        <i class="ti ti-shield-exclamation"></i>
+                        <div>
+                            <div class="callout-title">
+                                セキュリティ上の重要な注意（本番運用では絶対に真似しないこと）
+                            </div>
+                            <p>
+                                <code>acl set ... public-read</code> はバケットの中身を<strong
+                                    >インターネット上の誰でも 読み取り可能</strong
+                                >にする設定です。これはこの Challenge Lab
+                                の自動採点システムがファイルを
+                                検証するために必要な手順であり、ラボという使い捨て環境だからこそ許容されます。実際の業務環境で
+                                これを行うと、設定ファイルや認証情報の漏えいにつながる重大なセキュリティインシデントになり得ます。
+                            </p>
+                            <p style="margin-top: 10px">
+                                実運用では以下のような代替手段を検討してください。
+                            </p>
+                            <ul
+                                style="
+                                    margin: 8px 0 0;
+                                    padding-left: 18px;
+                                    color: var(--text-secondary);
+                                    font-size: 16px;
+                                "
+                            >
+                                <li>
+                                    Uniform bucket-level access + IAM
+                                    で読み取り権限を必要な担当者・サービスアカウントのみに限定する
+                                </li>
+                                <li>一時的な共有が必要な場合は署名付きURL（Signed URL）を使う</li>
+                                <li>
+                                    ラボ終了後は
+                                    <code>gsutil rm -r gs://${PROJECT}</code>
+                                    でバケットを削除し、公開状態を残さない
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>検証</h3>
+                    <span class="code-label">bash</span>
+                    <pre><code class="language-bash"># クラスタ側で設定が反映されているか
+kubectl -n gmp-public get operatorconfig config -o yaml
+
+# GCSに正しくアップロードされているか
+gsutil ls gs://${PROJECT}</code></pre>
+                    <p>
+                        Cloud Monitoring の
+                        <strong>Metrics Management</strong>
+                        ページでは、フィルタ適用後にどのメトリクスが
+                        実際に取り込まれているか、取り込み量の推移とあわせて確認できます。
+                    </p>
+
+                    <div class="callout source">
+                        <i class="ti ti-book"></i>
+                        <div>
+                            <div class="callout-title">参考ソース</div>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed#gmp-filter-metrics"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Filter exported metrics（collection.filter の設定方法）</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/GoogleCloudPlatform/prometheus-engine/blob/main/doc/api.md"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >OperatorConfig / ExportFilters API リファレンス</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://cloud.google.com/storage/docs/gsutil/commands/acl"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >gsutil acl コマンドリファレンス</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://cloud.google.com/storage/docs/uniform-bucket-level-access"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Uniform bucket-level access</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="troubleshooting" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-alert-triangle"></i>
+                        <h2>8. トラブルシューティング</h2>
+                    </div>
+                    <p>メトリクスが Cloud Monitoring に見えない場合は、以下の順で切り分けます。</p>
+
+                    <div class="mermaid-container" id="diagram-troubleshoot"></div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>想定原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <code>kubectl get pods -n gmp-system</code> で Pod
+                                        が見つからない
+                                    </td>
+                                    <td>
+                                        クラスタ作成時に
+                                        <code>--enable-managed-prometheus</code>
+                                        を付け忘れた、または setup/operator manifest が未適用
+                                    </td>
+                                    <td>
+                                        <code
+                                            >gcloud container clusters update ${CLUSTER_NAME}
+                                            --enable-managed-prometheus --zone ${ZONE}</code
+                                        >
+                                        を実行、または Task 2 の manifest を再適用
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>PodMonitoring</code> を作成してもメトリクスが Cloud
+                                        Monitoring に出ない
+                                    </td>
+                                    <td>
+                                        <code>selector.matchLabels</code> が Pod
+                                        の実際のラベルと一致していない
+                                    </td>
+                                    <td>
+                                        <code
+                                            >kubectl get pods -n ${NAMESPACE_NAME}
+                                            --show-labels</code
+                                        >
+                                        でラベルを確認し修正
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>gsutil mb</code> が
+                                        <code>Bucket already exists</code> で失敗する
+                                    </td>
+                                    <td>
+                                        プロジェクトID由来のバケット名がグローバルに既に使用されている
+                                    </td>
+                                    <td>一意なサフィックスを付けたバケット名を利用する</td>
+                                </tr>
+                                <tr>
+                                    <td>OperatorConfig を編集したのにフィルタが効かない</td>
+                                    <td>
+                                        <code>kubectl apply</code>
+                                        でクラスタへ反映していない（ローカルファイルの編集のみ）
+                                    </td>
+                                    <td>Task 4 の手順3を実施し、クラスタへ反映する</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Autopilot クラスタでフラグが効かない／自動有効化されない
+                                    </td>
+                                    <td>GKE バージョンに起因する既知の挙動</td>
+                                    <td>
+                                        <code
+                                            >gcloud container clusters update &lt;CLUSTER_NAME&gt;
+                                            --enable-managed-prometheus</code
+                                        >
+                                        で明示的に有効化
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout source">
+                        <i class="ti ti-book"></i>
+                        <div>
+                            <div class="callout-title">参考ソース</div>
+                            <ul>
+                                <li>
+                                    <a
+                                        href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/troubleshooting"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >Managed Service for Prometheus トラブルシューティング</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/GoogleCloudPlatform/prometheus-engine/discussions/418"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >prometheus-engine GitHub Discussions（Autopilot
+                                        有効化に関する既知の挙動）</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="checklist" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-checklist"></i>
+                        <h2>9. ベストプラクティスまとめチェックリスト</h2>
+                    </div>
+                    <ul class="checklist">
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i>GKE クラスタ作成コマンドに
+                            <code>--enable-managed-prometheus</code> を明示的に付与した
+                        </li>
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i><code>setup.yaml</code> /
+                            <code>operator.yaml</code> /
+                            <code>example-app.yaml</code> のリリースタグを揃えた
+                        </li>
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i>サンプルアプリ専用の
+                            Namespace（<code>gmp-test</code>）を分離した
+                        </li>
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i><code>PodMonitoring</code> の
+                            <code>selector.matchLabels</code> を Pod のラベルと突き合わせて確認した
+                        </li>
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i
+                            ><code>OperatorConfig</code>
+                            はゼロから書かず、既存設定をエクスポートしてから編集した
+                        </li>
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i
+                            ><code>OperatorConfig</code> 編集後、必ず
+                            <code>kubectl apply</code> でクラスタへ反映したことを確認した
+                        </li>
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i>GCS バケットを
+                            <code>public-read</code>
+                            にしたのはラボの採点用途のみであり、実運用では行わないことを理解している
+                        </li>
+                        <li>
+                            <i class="ti ti-square-rounded-check"></i
+                            >ラボ終了後、不要なリソース（GKE クラスタ、GCS
+                            バケット）の削除を検討した
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="references" class="section">
+                    <div class="section-head">
+                        <i class="ti ti-books"></i>
+                        <h2>10. 参考文献一覧</h2>
+                    </div>
+                    <ul class="refs-list">
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://www.skills.google/course_templates/761/labs/609037"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >本 Challenge Lab ページ（Google Cloud Skills Boost）</span
+                                    >
+                                    <span class="ref-url"
+                                        >skills.google/course_templates/761/labs/609037</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >Get started with managed collection</span
+                                    >
+                                    <span class="ref-url"
+                                        >docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >Managed Service for Prometheus Overview</span
+                                    >
+                                    <span class="ref-url"
+                                        >docs.cloud.google.com/stackdriver/docs/managed-prometheus</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://docs.cloud.google.com/sdk/gcloud/reference/container/clusters/create"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >gcloud container clusters create リファレンス</span
+                                    >
+                                    <span class="ref-url"
+                                        >docs.cloud.google.com/sdk/gcloud/reference/container/clusters/create</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/prometheus-engine"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >GoogleCloudPlatform/prometheus-engine（リポジトリ本体）</span
+                                    >
+                                    <span class="ref-url"
+                                        >github.com/GoogleCloudPlatform/prometheus-engine</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/prometheus-engine/releases"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title">prometheus-engine Releases</span>
+                                    <span class="ref-url"
+                                        >github.com/GoogleCloudPlatform/prometheus-engine/releases</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/prometheus-engine/blob/main/doc/api.md"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >prometheus-engine API リファレンス（PodMonitoring /
+                                        OperatorConfig / ExportFilters）</span
+                                    >
+                                    <span class="ref-url"
+                                        >github.com/GoogleCloudPlatform/prometheus-engine/blob/main/doc/api.md</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/troubleshooting"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >Managed Service for Prometheus トラブルシューティング</span
+                                    >
+                                    <span class="ref-url"
+                                        >docs.cloud.google.com/stackdriver/docs/managed-prometheus/troubleshooting</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://cloud.google.com/storage/docs/gsutil/commands/acl"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title">gsutil acl コマンドリファレンス</span>
+                                    <span class="ref-url"
+                                        >cloud.google.com/storage/docs/gsutil/commands/acl</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://cloud.google.com/storage/docs/uniform-bucket-level-access"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title">Uniform bucket-level access</span>
+                                    <span class="ref-url"
+                                        >cloud.google.com/storage/docs/uniform-bucket-level-access</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="ti ti-external-link ref-icon"></i>
+                            <a
+                                href="https://github.com/GoogleCloudPlatform/prometheus-engine/discussions/418"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <div class="ref-body">
+                                    <span class="ref-title"
+                                        >prometheus-engine Discussions #418（Autopilot
+                                        での既知の挙動）</span
+                                    >
+                                    <span class="ref-url"
+                                        >github.com/GoogleCloudPlatform/prometheus-engine/discussions/418</span
+                                    >
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <footer class="footer">
+                    <p>
+                        本ガイドは学習・検証目的の参考資料です。実際のラボ採点結果やコマンド出力は、実行時のプロジェクト設定・GKE/GMPのバージョンにより異なる場合があります。
+                    </p>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js"></script>
+        <script>
+            hljs.highlightAll();
+
+            const DIAGRAMS = {
+                overview: `flowchart LR
+  T1["Task 1: GKEクラスタ作成"] --> T2["Task 2: Managed Collectionデプロイ"] --> T3["Task 3: サンプルアプリ検証"] --> T4["Task 4: メトリクスフィルタ"]
+
+  classDef stepNode fill:#0f2a3d,stroke:#2dd4bf,color:#e8edf5
+  class T1,T2,T3,T4 stepNode
+`,
+                architecture: `flowchart LR
+  subgraph GKE["GKEクラスタ (enable-managed-prometheus)"]
+    APP["prom-exampleアプリ 3レプリカ"]
+    PM["PodMonitoring CR"]
+    OP["gmp-operator"]
+    COL["collector DaemonSet"]
+    RE["rule-evaluator"]
+    AM["alertmanager"]
+  end
+  GCM["Cloud Monitoring / Monarch"]
+  NOTIFY["通知先チャネル"]
+
+  PM -->|"スクレイピング設定"| OP
+  OP -->|"設定を配布"| COL
+  APP -->|"metricsを公開"| COL
+  COL -->|"push"| GCM
+  RE -->|"評価結果をpush"| GCM
+  AM -->|"通知"| NOTIFY
+
+  classDef appNode fill:#0f2a3d,stroke:#2dd4bf,color:#e8edf5
+  classDef opNode fill:#241a3d,stroke:#a78bfa,color:#e8edf5
+  classDef extNode fill:#3d1f1a,stroke:#fb923c,color:#e8edf5
+  class APP,PM appNode
+  class OP,COL,RE,AM opNode
+  class GCM,NOTIFY extNode
+`,
+                troubleshoot: `flowchart TD
+  START["メトリクスが見えない"] --> Q1{"gmp-systemのPodは全てRunningか"}
+  Q1 -->|"No"| FIX1["setup/operator manifestを再適用"]
+  Q1 -->|"Yes"| Q2{"PodMonitoringは存在するか"}
+  Q2 -->|"No"| FIX2["pod-monitoring.yamlをapply"]
+  Q2 -->|"Yes"| Q3{"selector.matchLabelsは一致するか"}
+  Q3 -->|"No"| FIX3["labelを修正して再apply"]
+  Q3 -->|"Yes"| Q4{"filterで意図せず除外していないか"}
+  Q4 -->|"Yes"| FIX4["matchOneOfを見直す"]
+  Q4 -->|"No"| CHECK["targetStatusを一時的に有効化"]
+
+  classDef qNode fill:#241a3d,stroke:#a78bfa,color:#e8edf5
+  classDef fixNode fill:#0f2a3d,stroke:#2dd4bf,color:#e8edf5
+  classDef startNode fill:#3d1f1a,stroke:#fb923c,color:#e8edf5
+  class START startNode
+  class Q1,Q2,Q3,Q4 qNode
+  class FIX1,FIX2,FIX3,FIX4,CHECK fixNode
+`,
+            };
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                fontFamily:
+                    '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif',
+                flowchart: { useMaxWidth: false, htmlLabels: true },
+            });
+
+            async function renderDiagram(containerId, diagramKey) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                const src = DIAGRAMS[diagramKey];
+                const { svg } = await mermaid.render(containerId + '-svg', src);
+                container.innerHTML = svg;
+                const svgEl = container.querySelector('svg');
+                if (svgEl) {
+                    const viewBox = svgEl.getAttribute('viewBox');
+                    svgEl.removeAttribute('width');
+                    svgEl.removeAttribute('height');
+                    if (viewBox) {
+                        const parts = viewBox.split(' ').map(Number);
+                        const naturalWidth = parts[2];
+                        parts[3] = parts[3] + 15;
+                        svgEl.setAttribute('viewBox', parts.join(' '));
+                        svgEl.style.width = naturalWidth + 'px';
+                    }
+                    svgEl.style.maxWidth = '100%';
+                    svgEl.style.height = 'auto';
+                    svgEl.style.overflow = 'visible';
+                }
+            }
+
+            async function renderAllDiagrams() {
+                await document.fonts.ready;
+                await renderDiagram('diagram-overview', 'overview');
+                await renderDiagram('diagram-architecture', 'architecture');
+                await renderDiagram('diagram-troubleshoot', 'troubleshoot');
+            }
+            renderAllDiagrams();
+
+            const navLinks = document.querySelectorAll('.sidebar nav a[href^="#"]');
+            const sections = document.querySelectorAll('section.section');
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach((link) => link.classList.remove('active'));
+                            const activeLink = document.querySelector(
+                                '.sidebar nav a[href="#' + entry.target.id + '"]',
+                            );
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+            sections.forEach((sec) => observer.observe(sec));
+        </script>
+    </body>
+</html>
