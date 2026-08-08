@@ -67,7 +67,7 @@ flowchart TD
 
 この挙動は、データセット提供元の公式リポジトリでも明記されています。`subregion1_code` が `NULL` であれば国レベルの集計、値が入っていれば州レベルの集計であるとされ、集計レベルの判定には `aggregation_level` を使う方法もあると案内されています（[GoogleCloudPlatform/covid-19-open-data README](https://github.com/GoogleCloudPlatform/covid-19-open-data)）。
 
-✅ 実務での回避策：地域別に集計したいときは、必ず `subregion1_name IS NOT NULL`（州レベルだけを見る）や `subregion1_name IS NULL AND subregion2_name IS NULL`（国レベルだけを見る）のように、対象の粒度を明示的にWHERE句で絞り込みます。
+✅ 実務での回避策：地域別に集計したいときは、必ず `subregion1_name IS NOT NULL AND subregion2_name IS NULL`（州レベルだけを見る）や `subregion1_name IS NULL AND subregion2_name IS NULL`（国レベルだけを見る）のように、対象の粒度を明示的にWHERE句で絞り込みます。
 
 ⚠️ ただし1点注意：本ラボのタスク1（世界全体の確定症例数）のように「日付だけで単純に `SUM` する」ことが公式の想定解になっているタスクもあります。これは採点システムの期待値がその単純な合計に合わせて作られているためです。本ガイドでは、ラボへの提出クエリはラボの想定解パターンに沿えつつ、実務で同じデータセットを使う際に注意すべき点は都度コラムとして補足します。
 
@@ -167,7 +167,8 @@ FROM (
   WHERE
     country_name = "United States of America"
     AND date = "<Date>"
-    AND subregion1_name IS NOT NULL  -- 国全体の1行（州レベルではない行）を除外する
+    AND subregion1_name IS NOT NULL  -- 国レベルの行を除外する
+    AND subregion2_name IS NULL      -- 郡レベルの行を除外する
   GROUP BY
     subregion1_name
 )
@@ -177,7 +178,7 @@ WHERE
 
 処理の流れ：
 1. 内側のサブクエリで、州ごとに `cumulative_deceased` を集計し `death_count` を作る
-2. `subregion1_name IS NOT NULL` によって、国レベルの合計行（州の情報を持たない1行）を弾く。これを忘れると「51件目の州」として国全体の行が混ざり、件数がずれる
+2. `subregion1_name IS NOT NULL` によって国レベルの行を除外する。ただし、この条件だけでは `subregion1_name` と `subregion2_name` の両方を持つ郡レベルの行も残り、州の値との `SUM(cumulative_deceased)` で二重計上される。州だけを集計するには `subregion2_name IS NULL` も必要になる
 3. 外側の `WHERE death_count > <Death Count>` で、しきい値を超えた州だけを残す
 4. `COUNT(*)` で、残った州の件数を数える
 
@@ -204,6 +205,7 @@ WHERE
   country_code = "US"
   AND date = "<Date>"
   AND subregion1_name IS NOT NULL
+  AND subregion2_name IS NULL
 GROUP BY
   subregion1_name
 HAVING
@@ -213,7 +215,7 @@ ORDER BY
 ```
 
 処理の流れ：
-1. `WHERE` で対象日・対象国・州レベルの行だけに絞り込む
+1. `WHERE` で対象日・対象国に絞り、`subregion1_name IS NOT NULL` で国レベルの行を除外する。この条件だけでは郡レベルの行も残って州の値と二重計上されるため、`subregion2_name IS NULL` を併用して州レベルだけに絞り込む
 2. `GROUP BY subregion1_name` で州ごとに集計する
 3. `HAVING total_confirmed_cases > <Confirmed Cases>` で、Step 2-2のパターンどおり「集計後の値」をしきい値で絞り込む
 4. `ORDER BY total_confirmed_cases DESC` で症例数が多い順に並べ替える
@@ -242,8 +244,8 @@ WHERE
 ```
 
 処理の流れ：
-- `date BETWEEN 初日 AND 末日` で対象月の行だけに絞り込む
-- `SUM` でその月の（＝月末時点の）累積確定症例数・累積死亡者数をそのまま取得する
+- `date BETWEEN 初日 AND 末日` で、対象月の初日から末日までの各日の行をすべて選択する
+- `SUM` で各日の日次累積値を合計する。このため `total_confirmed_cases` と `total_deaths` は「日次累積値の月間合計」であり、月末時点の値ではない
 - `SAFE_DIVIDE` で割り算し、100倍してパーセント表記にする
 
 ⚠️ 月末日を手で数える手間を減らしたい場合：閏年の2月など、月末日を間違えやすいケースがあります。次のように `EXTRACT` を使うと、月末日を意識せずに書けます。
@@ -369,7 +371,7 @@ WITH us_cases_by_date AS (
     `bigquery-public-data.covid19_open_data.covid19_open_data`
   WHERE
     country_name = "United States of America"
-    AND date BETWEEN "2020-03-22" AND "2020-04-20"
+    AND date BETWEEN "<Start date>" AND "<Close date>"
   GROUP BY
     date
   ORDER BY
@@ -411,7 +413,7 @@ WHERE
 
 ## Task 8. 回復率（Recovery Rate）ランキングを作る
 
-💡 一言で言うと：「指定した日付時点で、確定症例数が5万件を超える国だけを対象に、回復率が高い順に上位いくつかを表示するクエリ」です。
+💡 一言で言うと：「指定した日付時点で、指定された確定症例数を超える国だけを対象に、回復率が高い順に上位いくつかを表示するクエリ」です。
 
 ```sql
 WITH cases_by_country AS (
@@ -422,7 +424,7 @@ WITH cases_by_country AS (
   FROM
     `bigquery-public-data.covid19_open_data.covid19_open_data`
   WHERE
-    date = "2020-05-10"
+    date = "<Date>"
   GROUP BY
     country_name
 )
@@ -435,7 +437,7 @@ SELECT
 FROM
   cases_by_country
 WHERE
-  confirmed_cases > 50000
+  confirmed_cases > <Confirmed Cases>
 ORDER BY
   recovery_rate DESC
 LIMIT <Limit Value>
@@ -443,10 +445,10 @@ LIMIT <Limit Value>
 
 処理の流れ：
 1. CTEで国ごとに確定症例数・回復者数を集計する
-2. 外側の `WHERE confirmed_cases > 50000` で、感染規模がある程度大きい国だけに絞り込む（Step 2-2と同じ「集計後の値で絞り込む」パターン）
+2. 外側の `WHERE confirmed_cases > <Confirmed Cases>` で、指定された感染規模を超える国だけに絞り込む（Step 2-2と同じ「集計後の値で絞り込む」パターン）
 3. `recovery_rate` を計算し、降順に並べ替えて `LIMIT` で件数を絞る
 
-💡 補足：`ORDER BY` と `LIMIT` を組み合わせる際は、`WHERE confirmed_cases > 50000` を先に適用してから並べ替えることで、「症例数が少ないのに回復率だけ100%に近い」ような小規模な国がランキング上位に紛れ込むのを防いでいます。この順序（先に絞り込み、後で並べ替え）は、集計を伴うランキングクエリで繰り返し使えるパターンです。
+💡 補足：`ORDER BY` と `LIMIT` を組み合わせる際は、`WHERE confirmed_cases > <Confirmed Cases>` を先に適用してから並べ替えることで、「症例数が少ないのに回復率だけ100%に近い」ような小規模な国がランキング上位に紛れ込むのを防いでいます。この順序（先に絞り込み、後で並べ替え）は、集計を伴うランキングクエリで繰り返し使えるパターンです。
 
 📖 このセクションで登場した用語
 - （新出用語なし）
@@ -481,7 +483,7 @@ flowchart TD
 各不具合の解説：
 
 - **不具合1（構文エラー）**：`LEAD(total_cases)` はウィンドウ関数ですが、`OVER` 句が付いていません。Step 2-3で説明した通り、ウィンドウ関数は必ず `OVER` 句とセットで書く必要があるため、このままではエラーになります（[ナビゲーション関数リファレンス](https://cloud.google.com/bigquery/docs/reference/standard-sql/navigation_functions)）。`LEAD(total_cases) OVER (ORDER BY date)` のように修正します。
-- **不具合2（未入力の値）**：`date IN ('2020-01-24', '')` の2番目が空文字列のままです。CDGRを計算したい最終日（例では2020年5月10日）の日付リテラルに置き換えます。
+- **不具合2（未入力の値）**：`date IN ('<First date>', '')` の2番目が空文字列のままです。ラボで指定された初日と、CDGRを計算したい最終日の各日付リテラルに置き換えます。
 - **不具合3（関数の選び間違い）**：最後の `SELECT` で `SQRT((last_day_cases/first_day_cases),(1/days_diff))-1` という書き方をしていますが、`SQRT`（平方根）は引数を1つしか取らない関数です。ここで本当にやりたいのは「累乗（べき乗）」の計算なので、2つの引数（底と指数）を取る `POWER(底, 指数)` 関数に置き換える必要があります（[数学関数リファレンス](https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions)）。
 
 修正後のクエリ：
@@ -495,7 +497,7 @@ WITH france_cases AS (
     `bigquery-public-data.covid19_open_data.covid19_open_data`
   WHERE
     country_name = "France"
-    AND date IN ("2020-01-24", "<最終日, 例: 2020-05-10>")
+    AND date IN ("<First date>", "<Last date>")
   GROUP BY
     date
   ORDER BY
@@ -509,7 +511,8 @@ WITH france_cases AS (
     DATE_DIFF(LEAD(date) OVER (ORDER BY date), date, DAY) AS days_diff
   FROM
     france_cases
-  LIMIT 1
+  QUALIFY
+    last_day_cases IS NOT NULL
 )
 
 SELECT
@@ -524,7 +527,7 @@ FROM
 処理の流れ：
 1. `france_cases` CTEで、初日と最終日、2行だけを取り出す
 2. `summary` CTEで、`LEAD` を使って「1行目に初日、2行目に最終日」という2行を1行にまとめ、`DATE_DIFF` で経過日数も同じ行に並べる
-3. `LIMIT 1` で、まとめ終わった1行だけを残す
+3. `QUALIFY last_day_cases IS NOT NULL` で、最終日の値を取得できた初日の行だけを残す
 4. 最後の `SELECT` で `POWER` を使ってCDGRを計算する
 
 📖 このセクションで登場した用語
@@ -578,7 +581,7 @@ ORDER BY
 
 - [ ] クエリ中のすべての `<プレースホルダー>` を、自分のラボ画面に表示された実際の値に置き換えたか
 - [ ] `country_name` と `country_code` のどちらで絞り込むべきタスクか、混同していないか
-- [ ] 州・郡レベルの集計をするタスクで `subregion1_name IS NOT NULL` の絞り込みを入れたか
+- [ ] 州レベルの集計をするタスクで `subregion1_name IS NOT NULL AND subregion2_name IS NULL` の絞り込みを入れたか
 - [ ] 集計後の値（`SUM` や `COUNT` の結果）を条件にするときは `WHERE` ではなく `HAVING` かサブクエリ／CTEを使っているか
 - [ ] `LAG` / `LEAD` に `OVER (ORDER BY ...)` を付け忘れていないか
 - [ ] 割り算を含むタスクで、ゼロ除算対策（`SAFE_DIVIDE`）を検討したか
