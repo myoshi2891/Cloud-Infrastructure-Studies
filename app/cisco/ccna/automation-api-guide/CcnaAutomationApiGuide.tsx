@@ -760,6 +760,8 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">            response = requests.<span className="function">get</span>(url, headers=headers, timeout=<span className="number">10</span>)</div>
                             <div className="code-line">        <span className="keyword">except</span> requests.exceptions.RequestException <span className="keyword">as</span> e:</div>
                             <div className="code-line">            <span className="function">print</span>(f<span className="string">&quot;通信エラー発生 (&#123;e&#125;)。再試行します。&quot;</span>)</div>
+                            <div className="code-line">            <span className="keyword">if</span> attempt == max_retries - <span className="number">1</span>:</div>
+                            <div className="code-line">                <span className="keyword">break</span></div>
                             <div className="code-line">            time.<span className="function">sleep</span>(<span className="number">2</span> ** attempt)</div>
                             <div className="code-line">            <span className="keyword">continue</span></div>
                             <div className="code-line"></div>
@@ -796,6 +798,8 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line"></div>
                             <div className="code-line">        <span className="keyword">if</span> response.status_code &gt;= <span className="number">500</span>:</div>
                             <div className="code-line">            <span className="comment"># サーバー側エラー：指数バックオフで再試行</span></div>
+                            <div className="code-line">            <span className="keyword">if</span> attempt == max_retries - <span className="number">1</span>:</div>
+                            <div className="code-line">                <span className="keyword">break</span></div>
                             <div className="code-line">            time.<span className="function">sleep</span>(<span className="number">2</span> ** attempt)</div>
                             <div className="code-line">            <span className="keyword">continue</span></div>
                             <div className="code-line"></div>
