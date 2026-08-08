@@ -44,6 +44,7 @@ export function NavBar() {
                                     e.preventDefault();
                                     const target = document.getElementById(item.id);
                                     if (target) {
+                                        window.history.pushState(null, '', `#${item.id}`);
                                         target.scrollIntoView({ behavior: 'smooth' });
                                         setActiveId(item.id);
                                     }

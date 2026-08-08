@@ -1,5 +1,3 @@
-'use client';
-
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
@@ -39,6 +37,7 @@ export function CcnaAppDeploymentSecurityGuide() {
                 <NavBar />
 
                 <main className="main">
+                    <div className="content-inner">
                     <header className="hero">
                         <div className="hero-eyebrow">CCNA AUTOMATION · 200-901 CCNAAUTO</div>
                         <h1>Application Deployment and Security 完全解説ガイド</h1>
@@ -101,6 +100,69 @@ export function CcnaAppDeploymentSecurityGuide() {
                         <p>
                             本ガイドが扱うドメイン4.0は、<strong>「作ったアプリケーションをどこに・どうやって・安全に動かすか」</strong>という、開発から運用への橋渡しにあたる領域です。具体的には以下の12個のサブトピックで構成されます。
                         </p>
+
+                        <div className="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">サブトピック</th>
+                                        <th scope="col">内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>4.1</td>
+                                        <td>エッジコンピューティングの利点を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.2</td>
+                                        <td>異なるアプリケーション展開モデル（プライベートクラウド、パブリッククラウド、ハイブリッドクラウド、エッジ）の属性を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.3</td>
+                                        <td>展開タイプ（仮想マシン／ベアメタル／コンテナ）の属性を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.4</td>
+                                        <td>アプリケーション展開におけるCI/CDパイプラインの構成要素を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.5</td>
+                                        <td>Pythonのユニットテストを構築する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.6</td>
+                                        <td>Dockerfileの内容を解釈する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.7</td>
+                                        <td>ローカル開発環境でDockerイメージを利用する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.8</td>
+                                        <td>シークレット保護、暗号化（保存時・転送時）、データ取り扱いに関するアプリケーションセキュリティの課題を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.9</td>
+                                        <td>ファイアウォール、DNS、ロードバランサー、リバースプロキシのアプリケーション展開における役割を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.10</td>
+                                        <td>OWASPのトップ脅威（XSS、SQLインジェクション、CSRFなど）を説明する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.11</td>
+                                        <td>Bashコマンド（ファイル管理、ディレクトリ操作、環境変数）を利用する</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4.12</td>
+                                        <td>DevOpsプラクティスの原則を説明する</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p>このドメイン全体の位置づけを図にすると次のとおりです。</p>
 
                         <Diagram id="diag-0" label="CCNAAUTO 試験ドメイン比率とドメイン4.0の範囲" />
                     </section>
@@ -427,7 +489,7 @@ export function CcnaAppDeploymentSecurityGuide() {
                                     <tr>
                                         <td><code>CMD</code></td>
                                         <td>コンテナ起動時に実行するデフォルトコマンド</td>
-                                        <td>1つのDockerfileにつき最期の<code>CMD</code>のみ有効</td>
+                                        <td>1つのDockerfileにつき最後の<code>CMD</code>のみ有効</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -445,7 +507,7 @@ export function CcnaAppDeploymentSecurityGuide() {
                             <div className="code-line"><span className="code-keyword">RUN</span> pip install --no-cache-dir -r requirements.txt</div>
                             <div className="code-line"><span className="code-keyword">COPY</span> . .</div>
                             <div className="code-line"><span className="code-keyword">EXPOSE</span> 8000</div>
-                            <div className="code-line"><span className="code-keyword">CMD</span> ["python", "main.py"]</div>
+                            <div className="code-line"><span className="code-keyword">CMD</span> [&quot;python&quot;, &quot;main.py&quot;]</div>
                         </div>
 
                         <h3>4.7 ローカル開発環境でのDockerイメージの利用</h3>
@@ -671,7 +733,7 @@ export function CcnaAppDeploymentSecurityGuide() {
                                     <tr>
                                         <td><code>grep</code></td>
                                         <td>テキスト内のパターン検索</td>
-                                        <td><code>grep -i "error" app.log</code></td>
+                                        <td><code>grep -i &quot;error&quot; app.log</code></td>
                                     </tr>
                                     <tr>
                                         <td><code>chmod</code> / <code>chown</code></td>
@@ -886,6 +948,7 @@ export function CcnaAppDeploymentSecurityGuide() {
                             </li>
                         </ul>
                     </section>
+                    </div>
                 </main>
             </div>
         </div>
