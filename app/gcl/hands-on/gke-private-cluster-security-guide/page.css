@@ -90,13 +90,19 @@
     color: #7c9eff;
 }
 
-/* メインコンテンツ: 横幅いっぱいに配置 */
+/* メインキャンバスは全幅、本文は内側で中央寄せ */
 .gke-security-guide-page .main {
     margin: 0;
     padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 32px 120px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+}
+
+.gke-security-guide-page .content-inner {
+    width: 100%;
+    max-width: 1100px;
+    margin-inline: auto;
 }
 
 .gke-security-guide-page .source-note {

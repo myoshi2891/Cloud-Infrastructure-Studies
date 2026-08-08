@@ -59,6 +59,7 @@ export function GkePrivateClusterSecurityGuide() {
                 <NavBar activeId={activeId} />
 
                 <main className="main">
+                    <div className="content-inner">
                     <div className="hero">
                         <span className="eyebrow">
                             <i className="ti ti-cloud-lock" />
@@ -1059,6 +1060,7 @@ export function GkePrivateClusterSecurityGuide() {
                     <footer>
                         GKE Private Cluster Security Guide — Orca team challenge lab walkthrough
                     </footer>
+                    </div>
                 </main>
             </div>
         </div>

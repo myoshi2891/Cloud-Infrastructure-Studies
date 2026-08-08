@@ -116,6 +116,7 @@ export function GriffinWordPressGkeGuide() {
                 />
 
                 <main className="main">
+                    <div className="content-inner">
                     <div className="hero">
                         <div className="hero-eyebrow">
                             <i className="ti ti-google" aria-hidden="true" />
@@ -1410,6 +1411,7 @@ export function GriffinWordPressGkeGuide() {
                     </section>
 
                     <div className="footer">Team Griffin インフラ構築チャレンジラボ 完全解説ガイド</div>
+                    </div>
                 </main>
             </div>
         </div>
