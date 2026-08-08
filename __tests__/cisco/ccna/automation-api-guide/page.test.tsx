@@ -104,4 +104,34 @@ describe('CcnaAutomationApiPage', () => {
         expect(comments.length).toBeGreaterThan(0);
         expect(strings.length).toBeGreaterThan(0);
     });
+
+    it('verifies Retry-After handling logic and uncapped parsed_val in Python snippet', () => {
+        const { container } = render(<CcnaAutomationApiPage />);
+
+        const codeText = container.textContent || '';
+
+        // Check for numeric Retry-After directly set without 3600s cap
+        expect(codeText).toContain('wait_seconds = parsed_val');
+        expect(codeText).not.toContain('min(parsed_val, 3600)');
+
+        // Check for RequestException handler order: break check before print
+        const reqExceptIdx = codeText.indexOf('except requests.exceptions.RequestException');
+        const printIdx = codeText.indexOf('通信エラー発生');
+        const breakCheckIdx = codeText.indexOf('if attempt == max_retries - 1:', reqExceptIdx);
+        expect(reqExceptIdx).toBeGreaterThan(-1);
+        expect(breakCheckIdx).toBeGreaterThan(reqExceptIdx);
+        expect(breakCheckIdx).toBeLessThan(printIdx);
+
+        // Check for HTTP-date parsing logic
+        expect(codeText).toContain('parsedate_to_datetime(retry_after)');
+
+        // Check for math.ceil calculation of datetime difference
+        expect(codeText).toContain('math.ceil((dt - now).total_seconds())');
+
+        // Check for skipping wait on final retry attempt
+        expect(codeText).toContain('attempt == max_retries - 1');
+
+        // Check for fallback exponential backoff
+        expect(codeText).toContain('2 ** attempt');
+    });
 });

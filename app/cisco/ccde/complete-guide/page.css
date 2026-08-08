@@ -1,0 +1,8 @@
+.ccde-guide-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    color: var(--color-ink, var(--color-foreground));
+    font-family: var(--font-body, 'Noto Sans JP', sans-serif);
+    line-height: 1.9;
+}

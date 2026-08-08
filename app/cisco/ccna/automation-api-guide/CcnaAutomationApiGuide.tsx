@@ -37,7 +37,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Renders a CCNA Automation guide covering API concepts, usage patterns, and implementation.
+ * Renders a Japanese study guide for the CCNA Automation API domain, covering API concepts, request construction, authentication, constraints, webhooks, troubleshooting, and Python implementation.
  */
 export function CcnaAutomationApiGuide() {
     return (
@@ -598,7 +598,7 @@ export function CcnaAutomationApiGuide() {
                         <h3 className="subsection-title">10.1 レート制限への対処（再試行フロー）</h3>
                         <Diagram id="diag-6" label="レート制限への対処" />
                         <p>
-                            Cisco Meraki Dashboard APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると<code>429</code>が返され、<code>Retry-After</code>ヘッダーで待機すべき秒数が示されます。
+                            Cisco Meraki Dashboard APIの場合、組織単位で1秒あたりのリクエスト数に上限が設けられており、これを超えると<code>429</code>が返され、<code>Retry-After</code>ヘッダーで待機すべき秒数（またはHTTP-date形式）が示されます。
                         </p>
                     </section>
 
@@ -732,7 +732,7 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line"></div>
                             <div className="code-line">url = <span className="string">&quot;https://api.meraki.com/api/v1/organizations/549236/networks&quot;</span></div>
                             <div className="code-line">headers = &#123;</div>
-                            <div className="code-line">    <span className="string">&quot;X-Cisco-Meraki-API-Key&quot;</span>: <span className="string">&quot;&lt;APIキー&gt;&quot;</span>,</div>
+                            <div className="code-line">    <span className="string">&quot;X-Cisco-Meraki-API-Key&quot;</span>: <span className="string">&quot;&lt;APIキー&gt;&quot;</span>,<span className="comment">  # 専用ヘッダー例（v1標準は Authorization: Bearer &lt;APIキー&gt;）</span></div>
                             <div className="code-line">    <span className="string">&quot;Content-Type&quot;</span>: <span className="string">&quot;application/json&quot;</span>,</div>
                             <div className="code-line">&#125;</div>
                             <div className="code-line">payload = &#123;</div>
@@ -759,6 +759,8 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">        <span className="keyword">try</span>:</div>
                             <div className="code-line">            response = requests.<span className="function">get</span>(url, headers=headers, timeout=<span className="number">10</span>)</div>
                             <div className="code-line">        <span className="keyword">except</span> requests.exceptions.RequestException <span className="keyword">as</span> e:</div>
+                            <div className="code-line">            <span className="keyword">if</span> attempt == max_retries - <span className="number">1</span>:</div>
+                            <div className="code-line">                <span className="keyword">break</span></div>
                             <div className="code-line">            <span className="function">print</span>(f<span className="string">&quot;通信エラー発生 (&#123;e&#125;)。再試行します。&quot;</span>)</div>
                             <div className="code-line">            time.<span className="function">sleep</span>(<span className="number">2</span> ** attempt)</div>
                             <div className="code-line">            <span className="keyword">continue</span></div>
@@ -767,15 +769,28 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line">            <span className="keyword">return</span> response.<span className="function">json</span>()</div>
                             <div className="code-line"></div>
                             <div className="code-line">        <span className="keyword">if</span> response.status_code == <span className="number">429</span>:</div>
-                            <div className="code-line">            <span className="comment"># レート制限：Retry-Afterヘッダーの秒数だけ待って再試行</span></div>
+                            <div className="code-line">            <span className="comment"># レート制限：Retry-Afterヘッダー（秒数またはHTTP-date）だけ待って再試行</span></div>
                             <div className="code-line">            retry_after = response.headers.<span className="function">get</span>(<span className="string">&quot;Retry-After&quot;</span>)</div>
-                            <div className="code-line">            <span className="keyword">try</span>:</div>
-                            <div className="code-line">                parsed_val = <span className="function">int</span>(retry_after) <span className="keyword">if</span> retry_after <span className="keyword">is not</span> <span className="keyword">None</span> <span className="keyword">else</span> -<span className="number">1</span></div>
-                            <div className="code-line">                <span className="keyword">if</span> <span className="number">0</span> &lt;= parsed_val &lt;= <span className="number">3600</span>:</div>
-                            <div className="code-line">                    wait_seconds = parsed_val</div>
-                            <div className="code-line">                <span className="keyword">else</span>:</div>
-                            <div className="code-line">                    wait_seconds = <span className="number">2</span> ** attempt</div>
-                            <div className="code-line">            <span className="keyword">except</span> (<span className="function">ValueError</span>, <span className="function">TypeError</span>):</div>
+                            <div className="code-line">            wait_seconds = <span className="keyword">None</span></div>
+                            <div className="code-line">            <span className="keyword">if</span> retry_after <span className="keyword">is not</span> <span className="keyword">None</span>:</div>
+                            <div className="code-line">                <span className="keyword">try</span>:</div>
+                            <div className="code-line">                    parsed_val = <span className="function">int</span>(retry_after)</div>
+                            <div className="code-line">                    <span className="keyword">if</span> parsed_val &gt;= <span className="number">0</span>:</div>
+                            <div className="code-line">                        wait_seconds = parsed_val</div>
+                            <div className="code-line">                <span className="keyword">except</span> (<span className="function">ValueError</span>, <span className="function">TypeError</span>):</div>
+                            <div className="code-line">                    <span className="keyword">try</span>:</div>
+                            <div className="code-line">                        <span className="keyword">import</span> math</div>
+                            <div className="code-line">                        <span className="keyword">from</span> email.utils <span className="keyword">import</span> parsedate_to_datetime</div>
+                            <div className="code-line">                        <span className="keyword">from</span> datetime <span className="keyword">import</span> datetime, timezone</div>
+                            <div className="code-line">                        dt = <span className="function">parsedate_to_datetime</span>(retry_after)</div>
+                            <div className="code-line">                        now = datetime.<span className="function">now</span>(timezone.utc)</div>
+                            <div className="code-line">                        diff = <span className="function">max</span>(<span className="number">0</span>, math.<span className="function">ceil</span>((dt - now).<span className="function">total_seconds</span>()))</div>
+                            <div className="code-line">                        wait_seconds = <span className="function">min</span>(diff, <span className="number">3600</span>)</div>
+                            <div className="code-line">                    <span className="keyword">except</span> <span className="function">Exception</span>:</div>
+                            <div className="code-line">                        <span className="keyword">pass</span></div>
+                            <div className="code-line">            <span className="keyword">if</span> attempt == max_retries - <span className="number">1</span>:</div>
+                            <div className="code-line">                <span className="keyword">break</span></div>
+                            <div className="code-line">            <span className="keyword">if</span> wait_seconds <span className="keyword">is None</span>:</div>
                             <div className="code-line">                wait_seconds = <span className="number">2</span> ** attempt</div>
                             <div className="code-line">            <span className="function">print</span>(f<span className="string">&quot;レート制限中。&#123;wait_seconds&#125;秒待機して再試行します。&quot;</span>)</div>
                             <div className="code-line">            time.<span className="function">sleep</span>(wait_seconds)</div>
@@ -783,6 +798,8 @@ export function CcnaAutomationApiGuide() {
                             <div className="code-line"></div>
                             <div className="code-line">        <span className="keyword">if</span> response.status_code &gt;= <span className="number">500</span>:</div>
                             <div className="code-line">            <span className="comment"># サーバー側エラー：指数バックオフで再試行</span></div>
+                            <div className="code-line">            <span className="keyword">if</span> attempt == max_retries - <span className="number">1</span>:</div>
+                            <div className="code-line">                <span className="keyword">break</span></div>
                             <div className="code-line">            time.<span className="function">sleep</span>(<span className="number">2</span> ** attempt)</div>
                             <div className="code-line">            <span className="keyword">continue</span></div>
                             <div className="code-line"></div>

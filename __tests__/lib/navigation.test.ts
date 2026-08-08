@@ -262,10 +262,14 @@ describe('toNavTree', () => {
             const result = toNavTree(EXAMS);
             const gcp = result.find((g) => g.provider === 'GCP');
             const handsOn = gcp?.exams.find((e) => e.id === 'hands-on');
+            const cisco = result.find((g) => g.provider === 'Cisco');
+            const ccie = cisco?.exams.find((e) => e.id === 'ccie-enterprise-infrastructure');
 
             // Assert
             expect(handsOn).toBeDefined();
             expect(handsOn?.items[0]?.label).toBe('IAP（Identity-Aware Proxy）TCP フォワーディング');
+            expect(ccie).toBeDefined();
+            expect(ccie?.items[0]?.label).toBe('完全解説ガイド');
         });
     });
 

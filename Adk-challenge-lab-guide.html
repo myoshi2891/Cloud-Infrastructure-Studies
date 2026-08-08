@@ -1,0 +1,1644 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ADKチャレンジラボ攻略ガイド | Cymbal Travel</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+            integrity="sha384-pOaDH0/VfKHJGT3FqdPBLUzUXAAuhbvu5DHawQasoo/iPtybXYiAcMb2t31vJHth"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+            integrity="sha384-ztRqLn1yGQbyAY2g0vYzs6eM2rCQCDmOb1VI9+sB2V+7iPijTbo1aM2W32DkT+Hq"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"
+            integrity="sha512-5TKaYvhenABhlGIKSxAWLFJBZCSQw7HTV7aL1dJcBokM/+3PNtfgJFlv8E6Us/B1VMlQ4u8sPzjudL9TEQ06ww=="
+            crossorigin="anonymous"
+        ></script>
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1826;
+                --color-background-tertiary: #111f30;
+                --color-background-info: #0f2942;
+                --color-background-danger: #2a1015;
+                --color-background-success: #0f2a1a;
+                --color-background-warning: #2a2210;
+
+                --color-text-primary: #e5e7eb;
+                --color-text-secondary: #a8b3c5;
+                --color-text-tertiary: #6b7a8f;
+                --color-text-info: #7cc4ff;
+                --color-text-danger: #ff8f8f;
+                --color-text-success: #7ee2a8;
+                --color-text-warning: #f0c674;
+
+                --color-border-primary: #24354d;
+                --color-border-secondary: #1a2740;
+                --color-border-tertiary: #14203a;
+
+                --font-sans:
+                    'Hiragino Kaku Gothic ProN', 'Noto Sans JP', -apple-system, BlinkMacSystemFont,
+                    'Segoe UI', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+                --accent: #7c9eff;
+
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            /* ---------- サイドバー ---------- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 268px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 28px 18px;
+            }
+
+            .sidebar-header {
+                margin-bottom: 24px;
+                padding: 0 8px;
+            }
+
+            .sidebar-title {
+                display: block;
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            .sidebar-subtitle {
+                display: block;
+                margin-top: 4px;
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+            }
+
+            .sidebar-nav {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar-nav li {
+                margin: 0;
+            }
+
+            .sidebar-nav a {
+                display: block;
+                padding: 8px 10px;
+                margin: 2px 0;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 13px;
+                border-left: 2px solid transparent;
+            }
+
+            .sidebar-nav a:hover {
+                color: var(--color-text-primary);
+                background: var(--color-background-tertiary);
+            }
+
+            .sidebar-nav a.active {
+                color: var(--accent);
+                background: var(--color-background-tertiary);
+                border-left: 2px solid var(--accent);
+            }
+
+            .sidebar-nav .nav-group-label {
+                display: block;
+                margin: 16px 10px 6px;
+                font-size: 11px;
+                letter-spacing: 0.04em;
+                color: var(--color-text-tertiary);
+            }
+
+            /* ---------- レイアウト ---------- */
+            .layout {
+                display: block;
+                margin-left: 268px;
+            }
+
+            .main-content {
+                padding: 56px 64px 96px;
+            }
+
+            .hero {
+                margin-bottom: 48px;
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+
+            .hero-eyebrow {
+                display: inline-block;
+                font-size: 12px;
+                color: var(--color-text-info);
+                background: var(--color-background-info);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-md);
+                padding: 4px 10px;
+                margin-bottom: 16px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 12px;
+                color: var(--color-text-primary);
+            }
+
+            .hero-lead {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                margin: 0 0 20px;
+                max-width: 760px;
+            }
+
+            .hero-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .hero-meta-item {
+                font-size: 13px;
+                color: var(--color-text-secondary);
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: var(--border-radius-md);
+                padding: 6px 12px;
+            }
+
+            .hero-meta-item strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            .section {
+                margin-bottom: 56px;
+                scroll-margin-top: 28px;
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0 0 18px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 32px 0 12px;
+                color: var(--color-text-primary);
+            }
+
+            .prose p {
+                color: var(--color-text-secondary);
+                margin: 0 0 16px;
+            }
+
+            .prose strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            .prose code {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                border-radius: 4px;
+                padding: 1px 5px;
+                color: var(--color-text-info);
+            }
+
+            /* ---------- テーブル ---------- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 20px 0;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 14px;
+            }
+
+            thead th {
+                text-align: left;
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--color-border-primary);
+                white-space: nowrap;
+            }
+
+            tbody td {
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            tbody td:first-child {
+                color: var(--color-text-primary);
+            }
+
+            /* ---------- コードブロック ---------- */
+            pre.code-block {
+                margin: 16px 0;
+                padding: 16px 18px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                overflow-x: auto;
+            }
+
+            pre.code-block code {
+                font-family: var(--font-mono);
+                font-size: 13px;
+                line-height: 1.6;
+                background: transparent;
+            }
+
+            .code-label {
+                display: inline-block;
+                font-size: 11px;
+                color: var(--color-text-tertiary);
+                margin-bottom: 6px;
+                font-family: var(--font-mono);
+            }
+
+            /* ---------- Mermaid ---------- */
+            .diagram-wrap {
+                margin: 24px 0;
+            }
+
+            pre.mermaid,
+            .mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                overflow: visible;
+                background: transparent;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .mermaid svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* ---------- コールアウト ---------- */
+            .callout {
+                display: flex;
+                gap: 10px;
+                padding: 14px 16px;
+                border-radius: var(--border-radius-lg);
+                border: 1px solid var(--color-border-secondary);
+                margin: 20px 0;
+                font-size: 14px;
+            }
+
+            .callout-label {
+                flex-shrink: 0;
+                font-size: 11px;
+                font-weight: 500;
+                padding: 2px 8px;
+                border-radius: 4px;
+                height: fit-content;
+            }
+
+            .callout-body {
+                color: var(--color-text-secondary);
+            }
+
+            .callout-body strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            .callout-info {
+                background: var(--color-background-info);
+            }
+            .callout-info .callout-label {
+                background: rgba(124, 196, 255, 0.15);
+                color: var(--color-text-info);
+            }
+
+            .callout-warning {
+                background: var(--color-background-warning);
+            }
+            .callout-warning .callout-label {
+                background: rgba(240, 198, 116, 0.15);
+                color: var(--color-text-warning);
+            }
+
+            .callout-success {
+                background: var(--color-background-success);
+            }
+            .callout-success .callout-label {
+                background: rgba(126, 226, 168, 0.15);
+                color: var(--color-text-success);
+            }
+
+            /* ---------- 出典 ---------- */
+            .source-note {
+                margin-top: 20px;
+                padding: 12px 16px;
+                background: var(--color-background-tertiary);
+                border-left: 2px solid var(--color-border-primary);
+                border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+                font-size: 13px;
+            }
+
+            .source-note-label {
+                display: block;
+                color: var(--color-text-tertiary);
+                margin-bottom: 6px;
+                font-size: 11px;
+            }
+
+            .source-note a {
+                color: var(--color-text-info);
+                text-decoration: none;
+                margin-right: 4px;
+            }
+
+            .source-note a:hover {
+                text-decoration: underline;
+            }
+
+            /* ---------- 参考文献リスト ---------- */
+            .source-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .source-item {
+                display: flex;
+                align-items: baseline;
+                gap: 12px;
+                padding: 14px 18px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+            }
+
+            .source-index {
+                flex-shrink: 0;
+                font-family: var(--font-mono);
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+                width: 24px;
+            }
+
+            .source-main {
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .source-main a {
+                color: var(--color-text-primary);
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .source-main a:hover {
+                color: var(--accent);
+            }
+
+            .source-domain {
+                font-size: 12px;
+                color: var(--color-text-tertiary);
+            }
+
+            /* ---------- 比較カード（アーキテクチャ表） ---------- */
+            .agent-badge {
+                display: inline-block;
+                font-size: 11px;
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-family: var(--font-mono);
+            }
+
+            .badge-purple {
+                background: rgba(167, 139, 250, 0.15);
+                color: #c4b5fd;
+            }
+            .badge-teal {
+                background: rgba(45, 212, 191, 0.15);
+                color: #5eead4;
+            }
+            .badge-coral {
+                background: rgba(251, 146, 110, 0.15);
+                color: #fdba8c;
+            }
+
+            .footer {
+                margin-top: 64px;
+                padding-top: 24px;
+                border-top: 1px solid var(--color-border-primary);
+                color: var(--color-text-tertiary);
+                font-size: 12px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border-primary);
+                }
+                .layout {
+                    margin-left: 0;
+                }
+                .main-content {
+                    padding: 32px 24px 64px;
+                }
+            }
+                /* mermaid-center (apply_render_pipeline.mjs): 図を中央寄せ */
+        .mermaid-wrap,
+        .diagram-wrap .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .mermaid-wrap svg,
+        .diagram-wrap .mermaid svg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+        }
+</style>
+    </head>
+    <body>
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-title">ADK Challenge Lab Guide</span>
+                <span class="sidebar-subtitle">Cymbal Travel シナリオ</span>
+            </div>
+            <ul class="sidebar-nav">
+                <li><a href="#overview" data-nav>1. このガイドについて</a></li>
+                <li><a href="#architecture" data-nav>2. 全体アーキテクチャ</a></li>
+                <li><a href="#prerequisites" data-nav>3. 事前準備</a></li>
+                <li class="nav-group-label">Task 1–3: Travel Scout</li>
+                <li><a href="#task1" data-nav>4. Task 1: 環境構築</a></li>
+                <li><a href="#task2" data-nav>5. Task 2: Google Search連携</a></li>
+                <li><a href="#task3" data-nav>6. Task 3: CLI検証</a></li>
+                <li class="nav-group-label">Task 4: Destination Verifier</li>
+                <li><a href="#task4" data-nav>7. Task 4: 構造化出力</a></li>
+                <li class="nav-group-label">Task 5: Brochure Auditor</li>
+                <li><a href="#task5" data-nav>8. Task 5: パイプライン復旧</a></li>
+                <li class="nav-group-label">まとめ</li>
+                <li><a href="#troubleshooting" data-nav>9. トラブルシューティング</a></li>
+                <li><a href="#comparison" data-nav>10. エージェント比較</a></li>
+                <li><a href="#references" data-nav>11. 参考文献</a></li>
+            </ul>
+        </nav>
+
+        <div class="layout">
+            <main class="main-content">
+                <div class="hero">
+                    <span class="hero-eyebrow">Google Cloud Challenge Lab 解説</span>
+                    <h1>Agent Development Kit (ADK) で3つのエージェントを復旧する</h1>
+                    <p class="hero-lead">
+                        旅行代理店 Cymbal Travel の壊れたプロトタイプエージェント「Travel
+                        Scout」「Destination Verifier」「Brochure Auditor」を、 Google Cloud
+                        のスペシャリスト視点でステップ・バイ・ステップで修復し、Agent Platform
+                        上で動かせる状態にするガイドです。
+                    </p>
+                    <div class="hero-meta">
+                        <span class="hero-meta-item"
+                            >対象読者: <strong>ADK初学者〜実務入門者</strong></span
+                        >
+                        <span class="hero-meta-item"
+                            >コース: <strong>Agent Development Kit (ADK)</strong></span
+                        >
+                        <span class="hero-meta-item">構成: <strong>Task 1〜5 の5段階</strong></span>
+                    </div>
+                </div>
+
+                <section id="overview" class="section">
+                    <h2>1. このガイドについて</h2>
+                    <div class="prose">
+                        <p>
+                            このチャレンジラボでは、旅行代理店 Cymbal Travel
+                            が保有する3つのプロトタイプAIエージェントを修復し、 Agent
+                            Platform（Vertex AI基盤上の Gemini Enterprise Agent
+                            Platform）にデプロイ可能な状態にします。
+                        </p>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>エージェント</th>
+                                    <th>ディレクトリ</th>
+                                    <th>症状</th>
+                                    <th>対応Task</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Travel Scout</td>
+                                    <td><code>my_google_search_agent</code></td>
+                                    <td>
+                                        Google Search
+                                        ツールが未設定で、リアルタイム情報を検索できない
+                                    </td>
+                                    <td>Task 2, 3</td>
+                                </tr>
+                                <tr>
+                                    <td>Destination Verifier</td>
+                                    <td><code>geo_validator</code></td>
+                                    <td>
+                                        出力が自由記述のテキストで、下流システムがパースできない
+                                    </td>
+                                    <td>Task 4</td>
+                                </tr>
+                                <tr>
+                                    <td>Brochure Auditor</td>
+                                    <td><code>llm_auditor</code></td>
+                                    <td>
+                                        Reviser Agent
+                                        がコメントアウトされ、事実確認だけで処理が止まる
+                                    </td>
+                                    <td>Task 5</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="prose">
+                        <p>
+                            ステップ・バイ・ステップで手順を追いながら、<strong>なぜその設定が必要なのか</strong>という背景も合わせて解説します。各セクションの末尾には根拠となる公式ドキュメントのURLを付記しています。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="architecture" class="section">
+                    <h2>2. 全体アーキテクチャ</h2>
+                    <div class="prose">
+                        <p>
+                            3つのエージェントは、それぞれ役割が異なる独立したADKエージェントです。共通しているのは、いずれも
+                            <code>.env</code> ファイルを通じて Agent
+                            Platform（<code>GOOGLE_GENAI_USE_ENTERPRISE=true</code>）に接続する点です。
+                        </p>
+                    </div>
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+flowchart TB
+    subgraph CT["Cymbal Travel の AIエージェント基盤"]
+        TS["Travel Scout<br/>my_google_search_agent"]
+        DV["Destination Verifier<br/>geo_validator"]
+        BA["Brochure Auditor<br/>llm_auditor"]
+    end
+
+    WEB["Google Search<br/>(リアルタイムWeb情報)"]
+    BOOK["予約エンジン<br/>(構造化データを受信)"]
+    MKT["マーケティング用<br/>ブローシャー原稿"]
+
+    TS -- "google_search tool で grounding" --> WEB
+    DV -- "厳格な JSON Schema" --> BOOK
+    BA -- "事実確認と自動修正" --> MKT
+
+    classDef agent fill:#1f2937,stroke:#7c9eff,color:#e5e7eb
+    class TS,DV,BA agent
+      </pre>
+                    </div>
+                    <div class="prose">
+                        <p>
+                            <strong>Travel Scout</strong>: Google Search
+                            を使い、実世界の最新情報でLLMの回答を裏付ける（grounding）役割
+                        </p>
+                        <p>
+                            <strong>Destination Verifier</strong>:
+                            出力を厳密なJSONスキーマに固定し、後続システムとの連携を安定させる役割
+                        </p>
+                        <p>
+                            <strong>Brochure Auditor</strong>: 「批評（Critic）→
+                            修正（Reviser）」の2段階パイプラインで文章の正確性を担保する役割
+                        </p>
+                    </div>
+                    <div class="source-note">
+                        <span class="source-note-label">出典</span>
+                        <a
+                            href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/adk"
+                            target="_blank"
+                            rel="noopener"
+                            >Agent Development Kit | Gemini Enterprise Agent Platform</a
+                        >
+                    </div>
+                </section>
+
+                <section id="prerequisites" class="section">
+                    <h2>3. 事前準備</h2>
+                    <div class="prose">
+                        <p>作業を始める前に、以下の前提を確認しておくとつまずきにくくなります。</p>
+                        <p>
+                            ラボ専用の一時的な学生アカウントを使用し、自分個人のGoogle
+                            Cloudアカウントの認証情報は使わないこと。ブラウザはシークレットモード（プライベートウィンドウ）で開くことが推奨されています（個人アカウントとの競合防止）。
+                        </p>
+                    </div>
+                    <div class="callout callout-warning">
+                        <span class="callout-label">重要</span>
+                        <div class="callout-body">
+                            <strong>APIキーは一切作成しない</strong>でください。このラボでは Agent
+                            Platform（Vertex AI ベース）による認証を使う設計になっており、Gemini API
+                            キー方式は使いません。
+                        </div>
+                    </div>
+                    <div class="prose">
+                        <p>
+                            この最後のポイントが、ADKの2つの認証方式のうちどちらを使うべきかを決める重要な分岐点になります。
+                        </p>
+                    </div>
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    A["ADKエージェントの認証方式"] --> B["Gemini APIキー方式<br/>GOOGLE_API_KEY"]
+    A --> C["Agent Platform方式<br/>GOOGLE_GENAI_USE_ENTERPRISE=true"]
+    C --> D["このラボで使用する方式"]
+
+    classDef chosen fill:#14532d,stroke:#4ade80,color:#e5e7eb
+    classDef unused fill:#374151,stroke:#6b7280,color:#9ca3af
+    class D,C chosen
+    class B unused
+      </pre>
+                    </div>
+                    <div class="source-note">
+                        <span class="source-note-label">出典</span>
+                        <a
+                            href="https://adk.dev/get-started/google-cloud/"
+                            target="_blank"
+                            rel="noopener"
+                            >Google Cloud - Agent Development Kit (ADK) | adk.dev</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task1" class="section">
+                    <h2>4. Task 1: ADKのインストールと環境構築</h2>
+                    <h3>4.1 手順の流れ</h3>
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+flowchart LR
+    A["PATH環境変数を設定"] --> B["pip install google-adk"]
+    B --> C["gcloud auth application-default login"]
+    C --> D["ソースコードをダウンロード・展開"]
+    D --> E["pip install -r requirements.txt"]
+      </pre>
+                    </div>
+
+                    <h3>4.2 コマンドと解説</h3>
+                    <div class="prose">
+                        <p>Cloud Shellターミナルを開き、PATHを通してADKをインストールします。</p>
+                    </div>
+                    <span class="code-label">bash</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-bash">export PATH=$PATH:"/home/${USER}/.local/bin"
+python3 -m pip install google-adk</code></pre>
+                    <div class="prose">
+                        <p>
+                            <code>pip install --user</code> でインストールされる実行ファイル（<code
+                                >adk</code
+                            >
+                            コマンド本体）は
+                            <code>~/.local/bin</code>
+                            に配置されるため、PATHに追加しておかないと後続の <code>adk web</code> /
+                            <code>adk run</code> コマンドが「command not
+                            found」になります。これはPythonのユーザーインストール全般に共通する挙動で、ADK固有の問題ではありません。
+                        </p>
+                        <p>次に、Application Default Credentials（ADC）を設定します。</p>
+                    </div>
+                    <span class="code-label">bash</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-bash">gcloud auth application-default login</code></pre>
+                    <div class="prose">
+                        <p>
+                            このコマンドは、ローカル開発環境（今回はCloud
+                            Shell）でユーザー認証情報をWebフローで取得し、既定の場所に保存します。ADKのPythonクライアントライブラリはこのADCを自動的に読み込んで、Vertex
+                            AI / Agent
+                            Platformへの呼び出しを認証します。<strong>APIキーをコードや<code>.env</code>に埋め込む必要がなくなる</strong>ため、鍵の漏えいリスクを避けられるのが利点です。
+                        </p>
+                    </div>
+                    <div class="source-note">
+                        <span class="source-note-label">出典</span>
+                        <a
+                            href="https://docs.cloud.google.com/sdk/gcloud/reference/auth/application-default/login"
+                            target="_blank"
+                            rel="noopener"
+                            >gcloud auth application-default login | Google Cloud SDK</a
+                        >
+                        <a
+                            href="https://docs.cloud.google.com/docs/authentication/provide-credentials-adc"
+                            target="_blank"
+                            rel="noopener"
+                            >Application Default Credentials の設定</a
+                        >
+                    </div>
+                    <div class="prose"><p>最後に、ソースコードを取得します。</p></div>
+                    <span class="code-label">bash</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-bash">gcloud storage cp gs://&lt;lab-bucket&gt;/adk_project.zip .
+unzip adk_project.zip
+cd adk_project
+pip install -r requirements.txt</code></pre>
+                    <div class="prose">
+                        <p>
+                            <code>&lt;lab-bucket&gt;</code> の部分は、ラボの Lab setup and access
+                            panel
+                            に表示される実際のバケット名（あるいはコピー用ボタンのコマンド）に置き換えてください。
+                        </p>
+                    </div>
+                </section>
+
+                <section id="task2" class="section">
+                    <h2>5. Task 2: Travel Scout（<code>my_google_search_agent</code>）の初期化</h2>
+                    <h3>5.1 何が壊れているか</h3>
+                    <div class="prose">
+                        <p>
+                            このエージェントは「Google検索で最新のイベント情報を調べる」ことが目的ですが、<code
+                                >agent.py</code
+                            >
+                            の <code>Agent</code> 定義に
+                            <code>tools</code>
+                            が渡されていないため、LLMは自分の学習データの範囲でしか回答できません。
+                        </p>
+                    </div>
+
+                    <h3>5.2 <code>.env</code> の設定</h3>
+                    <span class="code-label">.env</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-ini">GOOGLE_GENAI_USE_ENTERPRISE=true
+GOOGLE_CLOUD_PROJECT=&lt;あなたのプロジェクトID&gt;
+GOOGLE_CLOUD_LOCATION=global
+MODEL=&lt;指定されたモデル名&gt;</code></pre>
+                    <div class="callout callout-warning">
+                        <span class="callout-label">要注意</span>
+                        <div class="callout-body">
+                            <code>GOOGLE_CLOUD_LOCATION</code>
+                            を<strong>「global」</strong>にする点が重要です。リージョンを指定するとGoogle
+                            Search groundingが利用できずエラーになるケースがあるため、ラボの指示通り
+                            <code>global</code> を厳守してください。
+                        </div>
+                    </div>
+
+                    <h3>5.3 <code>agent.py</code> の修正</h3>
+                    <span class="code-label">python</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-python">from google.adk.agents import Agent
+from google.adk.tools import google_search
+
+root_agent = Agent(
+    name="my_google_search_agent",
+    model="gemini-flash-latest",  # .envのMODEL値に合わせる
+    description="旅行関連の最新イベントを調査するTravel Scoutエージェント",
+    instruction=(
+        "あなたはTravel Scoutです。ユーザーから旅行先のイベントについて質問されたら、"
+        "google_searchツールを必ず使用して最新情報を検索し、"
+        "検索結果の裏付け(grounding)に基づいて回答してください。"
+    ),
+    tools=[google_search],
+)</code></pre>
+                    <div class="prose">
+                        <p>
+                            <code>tools=[google_search]</code>
+                            を渡すだけで、エージェントは検索が必要だと判断したタイミングでGoogle
+                            Searchを呼び出し、その結果を根拠（grounding）として回答を生成するようになります。
+                        </p>
+                    </div>
+
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+sequenceDiagram
+    participant U as ユーザー
+    participant A as Travel Scout LlmAgent
+    participant G as google_search Tool
+
+    U-&gt;&gt;A: "東京の2025年の主要イベントは"
+    A-&gt;&gt;G: 検索クエリを発行
+    G--&gt;&gt;A: 検索結果 + grounding metadata
+    A--&gt;&gt;U: 検索結果に基づいた回答
+      </pre>
+                    </div>
+
+                    <div class="callout callout-info">
+                        <span class="callout-label">ベストプラクティス</span>
+                        <div class="callout-body">
+                            <code>google_search</code>
+                            ツールは単独でしか使えず、同じエージェントに別のツールを混在させることはできません（ADKの制約）。複数の能力を組み合わせたい場合は、検索専用のサブエージェントを作り、それを
+                            <code>AgentTool</code> として親エージェントから呼び出す設計にします。
+                        </div>
+                    </div>
+
+                    <h3>5.4 動作確認（Dev UI）</h3>
+                    <span class="code-label">bash</span>
+                    <pre class="code-block"><code class="language-bash">cd ~/adk_project
+adk web --allow_origins "regex:https://.*\.cloudshell\.dev"</code></pre>
+                    <div class="prose">
+                        <p>
+                            Cloud Shell環境でWeb UIをプロキシ経由で公開する場合、<code
+                                >--allow_origins</code
+                            >
+                            フラグでCloud
+                            ShellのオリジンをCORS許可リストに追加する必要があります。これを省略すると、ブラウザ側でWebSocket接続がブロックされ、チャットが正常に動作しません。
+                        </p>
+                        <p>
+                            <code>http://127.0.0.1:8000</code> を開き、<code
+                                >my_google_search_agent</code
+                            >
+                            を選択して質問すると、レスポンスにGoogle Search
+                            groundingの根拠（引用元リンクなど）が含まれていることを確認できます。うまく応答が返らない場合は、右上の<strong
+                                >「+ New Session」</strong
+                            >でセッションを作り直してから再試行してください。
+                        </p>
+                    </div>
+                    <div class="source-note">
+                        <span class="source-note-label">出典</span>
+                        <a
+                            href="https://adk-labs.github.io/adk-docs/ja/tools/built-in-tools/"
+                            target="_blank"
+                            rel="noopener"
+                            >組み込みツール（google_search）| ADKドキュメント</a
+                        >
+                        <a
+                            href="https://adk.dev/integrations/google-search/"
+                            target="_blank"
+                            rel="noopener"
+                            >Gemini API Google Search tool for ADK</a
+                        >
+                        <a
+                            href="https://codelabs.developers.google.com/devsite/codelabs/build-agents-with-adk-foundation"
+                            target="_blank"
+                            rel="noopener"
+                            >Building AI Agents with ADK | Google Codelabs</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task3" class="section">
+                    <h2>6. Task 3: CLIによる動作検証</h2>
+                    <div class="prose">
+                        <p>
+                            Dev UI以外にも、ADKにはターミナルから直接チャットできる
+                            <code>adk run</code> コマンドが用意されています。
+                        </p>
+                    </div>
+                    <span class="code-label">bash</span>
+                    <pre class="code-block"><code class="language-bash">cd ~/adk_project
+adk run my_google_search_agent</code></pre>
+                    <div class="prose">
+                        <p>
+                            起動後、プロンプトに対して直接質問を入力できます（例:「日本の現在の為替レートは？」）。<code
+                                >adk run</code
+                            >
+                            は
+                            <code>adk web</code>
+                            と異なりブラウザを起動しないため、<strong>ヘッドレス環境での素早い動作確認や、CI・自動テストへの組み込み</strong>に向いています。終了する場合は
+                            <code>CTRL+C</code> でCLIセッションを閉じます。
+                        </p>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>実行方法</th>
+                                    <th>コマンド</th>
+                                    <th>主な用途</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Web UI</td>
+                                    <td><code>adk web</code></td>
+                                    <td>ブラウザでのチャット確認、トレース・イベントの可視化</td>
+                                </tr>
+                                <tr>
+                                    <td>CLI</td>
+                                    <td><code>adk run &lt;agent_dir&gt;</code></td>
+                                    <td>ターミナルでの素早い対話確認、スクリプトからの呼び出し</td>
+                                </tr>
+                                <tr>
+                                    <td>プログラム的実行</td>
+                                    <td><code>Runner</code> クラスをPythonコードから利用</td>
+                                    <td>他のアプリケーションへの組み込み、自動テスト</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="source-note">
+                        <span class="source-note-label">出典</span>
+                        <a
+                            href="https://pypi.org/project/google-adk/"
+                            target="_blank"
+                            rel="noopener"
+                            >google-adk | PyPI</a
+                        >
+                        <a href="https://adk.dev/runtime/" target="_blank" rel="noopener"
+                            >Agent Runtime | ADK</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task4" class="section">
+                    <h2>
+                        7. Task 4: Destination
+                        Verifier（<code>geo_validator</code>）の構造化出力対応
+                    </h2>
+                    <h3>7.1 なぜ自由記述テキストが問題なのか</h3>
+                    <div class="prose">
+                        <p>
+                            予約エンジンなどの下流システムは、LLMの回答を機械的にパースして次の処理に渡す必要があります。「日本の首都は東京です」のような自然文だと、システム側で正規表現やLLMによる二次解析が必要になり、壊れやすく非効率です。ADKでは
+                            <code>output_schema</code>
+                            にPydanticモデルを渡すことで、<strong>モデルの応答そのものをスキーマに準拠したJSON文字列に強制</strong>できます。
+                        </p>
+                    </div>
+
+                    <h3>7.2 <code>.env</code> の設定</h3>
+                    <span class="code-label">.env</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-ini">GOOGLE_GENAI_USE_ENTERPRISE=true
+GOOGLE_CLOUD_PROJECT=&lt;あなたのプロジェクトID&gt;
+GOOGLE_CLOUD_LOCATION=global
+MODEL=&lt;指定されたモデル名&gt;</code></pre>
+
+                    <h3>7.3 <code>agent.py</code> の修正</h3>
+                    <span class="code-label">python</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-python">from google.adk.agents import Agent
+from pydantic import BaseModel, Field
+
+
+class CountryCapital(BaseModel):
+    capital: str = Field(description="指定された国の首都名")
+
+
+root_agent = Agent(
+    name="geo_validator",
+    model="gemini-flash-latest",  # 最新のFlashモデルを指定
+    description="国名から首都を特定し、JSON形式で返すDestination Verifier",
+    instruction=(
+        "ユーザーから国名を受け取ったら、その国の首都を"
+        "CountryCapitalスキーマに準拠したJSONのみで返してください。"
+        "説明文や前置きは一切含めないでください。"
+    ),
+    output_schema=CountryCapital,
+    disallow_transfer_to_parent=True,
+    disallow_transfer_to_peers=True,
+)</code></pre>
+
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+flowchart TB
+    A["Pydantic: class CountryCapital(BaseModel)"] --> B["output_schema=CountryCapital"]
+    B --> C["disallow_transfer_to_parent=True"]
+    B --> D["disallow_transfer_to_peers=True"]
+    C --> E["応答は常に検証済みJSONのみ"]
+    D --> E
+
+    classDef step fill:#1f2937,stroke:#7c9eff,color:#e5e7eb
+    classDef result fill:#14532d,stroke:#4ade80,color:#e5e7eb
+    class A,B,C,D step
+    class E result
+      </pre>
+                    </div>
+
+                    <h3>
+                        7.4 <code>disallow_transfer_to_parent</code> /
+                        <code>disallow_transfer_to_peers</code> が必須の理由
+                    </h3>
+                    <div class="prose">
+                        <p>
+                            <code>output_schema</code>
+                            を設定すると、そのエージェントは<strong>ツール呼び出しや他エージェントへの制御移譲ができなくなる</strong>という制約がADKにあります。もし2つのフラグを
+                            <code>True</code>
+                            にしないままマルチエージェント構成の中に置くと、エージェントが親や兄弟エージェントへ処理を委譲しようとしてスキーマ強制が意図せずバイパスされる可能性があります。この2つのフラグは「このエージェントは必ず自分自身でJSONを生成して直接返す」ことを保証するためのセーフガードです。
+                        </p>
+                    </div>
+
+                    <h3>7.5 動作確認</h3>
+                    <span class="code-label">bash</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-bash">cd ~/adk_project && adk run geo_validator</code></pre>
+                    <div class="prose">
+                        <p>
+                            実行後、プロンプトで国名（例: <code>Japan</code>）を入力します。出力が
+                            <code>{"capital": "Tokyo"}</code>
+                            のような整形されたJSONレスポンスになっていれば成功です。「東京です」のような文章が返ってきた場合は、<code
+                                >output_schema</code
+                            >
+                            の指定漏れか、instructionの記述が曖昧でモデルがJSON以外の形式で応答してしまっている可能性があります。
+                        </p>
+                    </div>
+                    <div class="source-note">
+                        <span class="source-note-label">出典</span>
+                        <a href="https://adk.dev/agents/llm-agents/" target="_blank" rel="noopener"
+                            >LLM Agents (input_schema / output_schema) | ADK</a
+                        >
+                        <a
+                            href="https://deepwiki.com/google/adk-python/5.8-structured-output-and-response-schemas"
+                            target="_blank"
+                            rel="noopener"
+                            >Structured Output and Response Schemas | google/adk-python DeepWiki</a
+                        >
+                        <a
+                            href="https://hatchworks.com/blog/gen-ai/google-adk-best-practices/"
+                            target="_blank"
+                            rel="noopener"
+                            >7 Google ADK Best Practices We Learned Building Production
+                            Applications</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task5" class="section">
+                    <h2>
+                        8. Task 5: Brochure Auditor（<code>llm_auditor</code>）パイプラインの復旧
+                    </h2>
+                    <h3>8.1 設計思想: Critic → Reviser の2段階構成</h3>
+                    <div class="prose">
+                        <p>
+                            <code>llm_auditor</code>
+                            は、単一のLLM呼び出しでは実現しにくい「検証してから修正する」というワークフローを、2つの専門エージェントに役割分担させることで実現します。
+                        </p>
+                        <p>
+                            <strong>Critic Agent</strong>:
+                            マーケティング上の主張をWeb検索でファクトチェックし、問題点を指摘する
+                        </p>
+                        <p>
+                            <strong>Reviser Agent</strong>:
+                            Criticの指摘内容を踏まえて、文章そのものを正確な内容に書き換える
+                        </p>
+                        <p>
+                            この2段階を<strong>必ずこの順番で、LLMの気まぐれな判断に頼らず確実に実行する</strong>ために、ADKの
+                            <code>SequentialAgent</code> を使います。<code>SequentialAgent</code>
+                            はLLMによる動的なルーティングではなく、あらかじめ定義した順序でサブエージェントを決定論的に実行するワークフローエージェントです。
+                        </p>
+                    </div>
+
+                    <h3>8.2 修正前後の比較</h3>
+                    <div class="diagram-wrap">
+                        <pre class="mermaid">
+flowchart TB
+    subgraph BEFORE["修正前 - Criticのみで処理が停止"]
+        direction LR
+        B1["Critic Agent<br/>主張をWeb検索で検証"] --> B2["未実装<br/>reviser_agentのimportがコメントアウト"]
+    end
+
+    subgraph AFTER["修正後 - Sequential Agentパイプライン"]
+        direction LR
+        A1["Critic Agent<br/>主張を検証し指摘事項を生成"] --> A2["Reviser Agent<br/>指摘事項を基に文章を修正"]
+    end
+
+    classDef broken fill:#450a0a,stroke:#f87171,color:#fca5a5
+    classDef fixed fill:#14532d,stroke:#4ade80,color:#bbf7d0
+    class B1,B2 broken
+    class A1,A2 fixed
+      </pre>
+                    </div>
+
+                    <h3>8.3 <code>agent.py</code> の修正</h3>
+                    <span class="code-label">python</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-python">from google.adk.agents import SequentialAgent
+
+from .sub_agents.critic.agent import critic_agent
+from .sub_agents.reviser.agent import reviser_agent  # コメントアウトを解除してimport
+
+root_agent = SequentialAgent(
+    name="llm_auditor",
+    description="主張のファクトチェックと自動修正を行うBrochure Auditorパイプライン",
+    sub_agents=[critic_agent, reviser_agent],  # reviser_agentをリストに追加
+)</code></pre>
+                    <div class="prose">
+                        <p>
+                            <code>SequentialAgent(sub_agents=[...])</code>
+                            に渡したリストの<strong>順序どおりに</strong>サブエージェントが実行され、各サブエージェントの出力は
+                            <code>output_key</code> を介してセッションの
+                            <code>state</code>
+                            に書き込まれ、次のサブエージェントの入力として自動的に参照可能になります。
+                        </p>
+                    </div>
+
+                    <h3>8.4 <code>.env</code> の設定</h3>
+                    <span class="code-label">.env</span>
+                    <pre
+                        class="code-block"
+                    ><code class="language-ini">GOOGLE_GENAI_USE_ENTERPRISE=true
+GOOGLE_CLOUD_PROJECT=&lt;あなたのプロジェクトID&gt;
+GOOGLE_CLOUD_LOCATION=global
+MODEL=&lt;指定されたモデル名&gt;</code></pre>
+
+                    <h3>8.5 動作確認</h3>
+                    <span class="code-label">bash</span>
+                    <pre class="code-block"><code class="language-bash">cd ~/adk_project
+adk web --allow_origins "regex:https://.*\.cloudshell\.dev"</code></pre>
+                    <div class="prose">
+                        <p><code>llm_auditor</code> を選択し、次のような誤った主張を入力します。</p>
+                    </div>
+                    <div class="callout callout-info">
+                        <span class="callout-label">入力例</span>
+                        <div class="callout-body">
+                            Double check this: You can take a direct train from Hawaii to Japan.
+                        </div>
+                    </div>
+                    <div class="prose">
+                        <p>
+                            正しく復旧できていれば、まずCritic
+                            Agentがこの主張を検索して誤りを指摘し（ハワイと日本の間は海で隔てられており直通鉄道は存在しない、という趣旨の指摘）、続けてReviser
+                            Agentがその指摘を反映した修正版の文章を生成する、という2段階の応答が確認できます。片方しか実行されない場合は、<code
+                                >sub_agents</code
+                            >
+                            リストへの追加漏れか、importのコメントアウトの解除漏れを疑ってください。
+                        </p>
+                    </div>
+                    <div class="source-note">
+                        <span class="source-note-label">出典</span>
+                        <a
+                            href="https://google.github.io/adk-docs/agents/workflow-agents/sequential-agents/"
+                            target="_blank"
+                            rel="noopener"
+                            >Sequential workflow | ADK</a
+                        >
+                        <a
+                            href="https://google.github.io/adk-docs/agents/custom-agents/"
+                            target="_blank"
+                            rel="noopener"
+                            >Custom template workflows (Critic/Reviserパターン) | ADK</a
+                        >
+                        <a
+                            href="https://github.com/google/adk-samples/tree/main/python/agents/llm-auditor"
+                            target="_blank"
+                            rel="noopener"
+                            >adk-samples: llm-auditor</a
+                        >
+                    </div>
+                </section>
+
+                <section id="troubleshooting" class="section">
+                    <h2>9. つまずきやすいポイントとベストプラクティス</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>主な原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>adk</code> コマンドが見つからない</td>
+                                    <td><code>~/.local/bin</code> がPATHに含まれていない</td>
+                                    <td>
+                                        <code>export PATH=$PATH:"/home/${USER}/.local/bin"</code>
+                                        を再実行
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>adk web</code> のチャットがCloud Shellで固まる</td>
+                                    <td>プロキシ経由のオリジンがCORSで拒否されている</td>
+                                    <td>
+                                        <code
+                                            >--allow_origins
+                                            "regex:https://.*\.cloudshell\.dev"</code
+                                        >
+                                        を付与
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Google Search groundingが効かない</td>
+                                    <td>
+                                        <code>GOOGLE_CLOUD_LOCATION</code>
+                                        がリージョン名になっている
+                                    </td>
+                                    <td><code>global</code> に修正</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>output_schema</code> を設定したのにツールも使いたい
+                                    </td>
+                                    <td>ADKの仕様上、両立不可</td>
+                                    <td>
+                                        検索用サブエージェントとJSON整形用エージェントに役割分担する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Sequential Agentの後段が実行されない</td>
+                                    <td>
+                                        importのコメントアウト残り、または
+                                        <code>sub_agents</code> 未追加
+                                    </td>
+                                    <td>
+                                        importの解除と
+                                        <code>sub_agents=[...]</code> への追加を両方確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>認証エラーで呼び出しが失敗する</td>
+                                    <td>ADCが未設定、APIキー方式との設定混在</td>
+                                    <td>
+                                        <code>gcloud auth application-default login</code>
+                                        を再実行し、<code>.env</code> に
+                                        <code>GOOGLE_API_KEY</code> を残さない
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="comparison" class="section">
+                    <h2>10. 3エージェントの技術要素まとめ</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>
+                                        <span class="agent-badge badge-purple">Travel Scout</span>
+                                    </th>
+                                    <th>
+                                        <span class="agent-badge badge-teal"
+                                            >Destination Verifier</span
+                                        >
+                                    </th>
+                                    <th>
+                                        <span class="agent-badge badge-coral"
+                                            >Brochure Auditor</span
+                                        >
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>エージェント種別</td>
+                                    <td><code>Agent</code>（LlmAgent）</td>
+                                    <td><code>Agent</code>（LlmAgent）</td>
+                                    <td>
+                                        <code>SequentialAgent</code>（ワークフローエージェント）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>主要な技術要素</td>
+                                    <td><code>tools=[google_search]</code></td>
+                                    <td>
+                                        <code>output_schema</code> + Pydantic <code>BaseModel</code>
+                                    </td>
+                                    <td><code>sub_agents=[critic, reviser]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>追加の安全策</td>
+                                    <td>他ツールとの併用不可（単独利用）</td>
+                                    <td>
+                                        <code>disallow_transfer_to_parent</code><br /><code
+                                            >disallow_transfer_to_peers</code
+                                        >
+                                    </td>
+                                    <td>実行順序はLLMではなくフレームワークが決定論的に制御</td>
+                                </tr>
+                                <tr>
+                                    <td>出力形式</td>
+                                    <td>自然文 + grounding根拠</td>
+                                    <td>検証済みJSON</td>
+                                    <td>検証コメント + 修正済みテキスト</td>
+                                </tr>
+                                <tr>
+                                    <td>検証コマンド</td>
+                                    <td><code>adk web</code> / <code>adk run</code></td>
+                                    <td><code>python3 geo_validator/agent.py</code></td>
+                                    <td><code>adk web</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="references" class="section">
+                    <h2>11. 参考文献</h2>
+                    <ul class="source-list">
+                        <li class="source-item">
+                            <span class="source-index">01</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/adk"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Agent Development Kit | Gemini Enterprise Agent Platform</a
+                                ><span class="source-domain">docs.cloud.google.com</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">02</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://adk-labs.github.io/adk-docs/ja/tools/built-in-tools/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >組み込みツール（Google Search）| ADKドキュメント（日本語）</a
+                                ><span class="source-domain">adk-labs.github.io</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">03</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://adk.dev/integrations/google-search/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Gemini API Google Search tool for ADK</a
+                                ><span class="source-domain">adk.dev</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">04</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://adk.dev/agents/llm-agents/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >LLM Agents（input_schema / output_schema）| ADK</a
+                                ><span class="source-domain">adk.dev</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">05</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://deepwiki.com/google/adk-python/5.8-structured-output-and-response-schemas"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Structured Output and Response Schemas | google/adk-python
+                                    DeepWiki</a
+                                ><span class="source-domain">deepwiki.com</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">06</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://hatchworks.com/blog/gen-ai/google-adk-best-practices/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >7 Google ADK Best Practices We Learned Building Production
+                                    Applications</a
+                                ><span class="source-domain">hatchworks.com</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">07</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://google.github.io/adk-docs/agents/workflow-agents/sequential-agents/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Sequential workflow | ADK</a
+                                ><span class="source-domain">google.github.io</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">08</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://google.github.io/adk-docs/agents/custom-agents/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Custom template workflows（Critic/Reviserパターン）| ADK</a
+                                ><span class="source-domain">google.github.io</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">09</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://github.com/google/adk-samples/tree/main/python/agents/llm-auditor"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >adk-samples: llm-auditor（Google公式サンプル）</a
+                                ><span class="source-domain">github.com</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">10</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://docs.cloud.google.com/sdk/gcloud/reference/auth/application-default/login"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >gcloud auth application-default login リファレンス</a
+                                ><span class="source-domain">docs.cloud.google.com</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">11</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://docs.cloud.google.com/docs/authentication/provide-credentials-adc"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Application Default Credentials の設定</a
+                                ><span class="source-domain">docs.cloud.google.com</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">12</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://adk.dev/get-started/google-cloud/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Google Cloud - Agent Development Kit (ADK) | adk.dev</a
+                                ><span class="source-domain">adk.dev</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">13</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://pypi.org/project/google-adk/"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >google-adk | PyPI（adk run / adk web コマンド）</a
+                                ><span class="source-domain">pypi.org</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">14</span>
+                            <div class="source-main">
+                                <a href="https://adk.dev/runtime/" target="_blank" rel="noopener"
+                                    >Agent Runtime | ADK</a
+                                ><span class="source-domain">adk.dev</span>
+                            </div>
+                        </li>
+                        <li class="source-item">
+                            <span class="source-index">15</span>
+                            <div class="source-main">
+                                <a
+                                    href="https://codelabs.developers.google.com/devsite/codelabs/build-agents-with-adk-foundation"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >Building AI Agents with ADK: The Foundation | Google
+                                    Codelabs</a
+                                ><span class="source-domain">codelabs.developers.google.com</span>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <div class="footer">
+                    このガイドはGoogle
+                    Cloud公式ドキュメントおよびADK公式サンプルリポジトリの情報をもとに作成しています。ラボの仕様（モデル名・バケット名など）は環境ごとに異なるため、実際のLab
+                    setup and access panelの表示値を優先してください。
+                </div>
+            </main>
+        </div>
+
+        <script>
+            const DIAGRAMS = {};
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                fontFamily: 'inherit',
+                flowchart: { useMaxWidth: false, htmlLabels: true },
+                sequence: { useMaxWidth: false },
+            });
+
+            document.fonts.ready.then(function () {
+                mermaid.run({ querySelector: '.mermaid' });
+            });
+
+            hljs.highlightAll();
+
+            var sections = document.querySelectorAll('.section[id]');
+            var navLinks = document.querySelectorAll('.sidebar-nav a[data-nav]');
+
+            var observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (l) {
+                                l.classList.remove('active');
+                            });
+                            var active = document.querySelector(
+                                '.sidebar-nav a[href="#' + entry.target.id + '"]',
+                            );
+                            if (active) active.classList.add('active');
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+
+            sections.forEach(function (s) {
+                observer.observe(s);
+            });
+        
+            // --- mermaid render pipeline (apply_render_pipeline.mjs) ---
+            function applySvgFixups(svgEl, src) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.maxWidth = '100%';
+                svgEl.style.overflow = 'visible';
+                svgEl.style.marginBottom = '10px';
+                const viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                const parts = viewBox.split(/\s+/).map(Number);
+                if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
+                const trimmed = src.trim();
+                const isSequenceOrState =
+                    trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
+                const extraHeight = isSequenceOrState ? 110 : 15;
+                const [x, y, w, h] = parts;
+                // 自然幅で表示し拡大は抑制。親より広い図のみ maxWidth で縮小される。
+                svgEl.style.width = w + 'px';
+                svgEl.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + (h + extraHeight));
+            }
+
+            (async () => {
+                if (document.fonts && document.fonts.ready) {
+                    try {
+                        await document.fonts.ready;
+                    } catch (_e) {
+                        /* フォント待機に失敗しても描画は継続する */
+                    }
+                }
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    const el = document.getElementById(id);
+                    if (!el) continue;
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        el.innerHTML = svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl, src);
+                    } catch (err) {
+                        el.innerHTML =
+                            '<pre style="color:#ff8888;white-space:pre-wrap">' +
+                            (err && err.message ? err.message : String(err)) +
+                            '</pre>';
+                    }
+                }
+            })();
+        </script>
+    </body>
+</html>

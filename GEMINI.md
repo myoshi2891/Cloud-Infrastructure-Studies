@@ -33,6 +33,7 @@
   - `/app/gcl/agwa`: Associate Google Workspace Administrator 試験対策ページ（Section 1）。
   - `/app/gcl/professional-cloud-network-engineer`: PCNE 試験対策ページ（概要・ドメイン別解説）。
   - `/app/gcl/professional-cloud-network-engineer-step-by-step`: PCNE ステップバイステップ実践ガイド。
+  - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
   - `/app/cisco/ccna/beginner-guide`: Cisco CCNA試験 完全ガイド。
   - `/app/cisco/ccna/automation-software-development-design`: CCNA Automation ソフトウェア開発と設計 完全ガイド。
   - `/app/cisco/ccna/ip-connectivity-guide`: CCNA 200-301 IP Connectivity 完全ガイド。
@@ -40,7 +41,7 @@
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
-- AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド）
+- AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
 - Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`automation-software-development-design/page.tsx`、`ip-connectivity-guide/page.tsx`、`ip-services-guide/page.tsx` 含む）
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
 - `/__tests__`: Vitest によるユニットテスト。
@@ -77,7 +78,10 @@
 - ASCIIダイアグラムの使用を避け、専用の SVG コンポーネント (`DiagramSVG.tsx` 等) に置き換えてください。型の制約（Discriminated Union）により、アクセシビリティを担保するための `ariaLabel="説明文"` または `decorative={true}` の指定が必須となります。
 - アクセシビリティ（`aria-label` 等の付与）を徹底し、コンポーネントやユーティリティ関数には Docstrings (JSDoc) を追加してください。
 - **移行作業の同期とHTMLファイルアーカイブルール**: HTMLの移行作業時には必ず `.claude/rules/migration-progress-sync.md` に従い進捗を同期してください。また、**移行元の HTML ファイルは絶対に削除せず、移行完了後に `Gcl_Archive/` 配下の適切なディレクトリへ移動（アーカイブ）してください**。
-- **移行の忠実性とコンテンツの網羅性**: 移行元の HTML/Markdown に含まれる情報は、**一切の省略・要約を禁止**します。特に「詳細手順」「CSV フォーマット例」「複雑な表」「注釈」などは学習資料として極めて重要であるため、必ず全て TSX コンポーネントへ移植してください。また、SVG についてもオリジナルの詳細（チップ表示やステータス等）を維持したリッチな版を移行し、簡略化したプレースホルダーへの置き換えは避けてください。
+- **移行の忠実性とコンテンツの網羅性 (絶対遵守・手抜き厳禁)**: 移行元の HTML/Markdown に含まれる情報は、**一切の省略・要約・抜粋・文言短縮を厳禁**とします。特に「詳細手順」「CSV フォーマット例」「複雑な表」「注釈」「解説文章」「JSDoc」「補足スキル項目」「全出典リンク」などは学習資料として極めて重要であるため、必ず全て TSX コンポーネントへ100%完全移植してください。
+  - **事前コンテンツ目録の作成**: 移行開始前に元ファイルの「見出し数・表の行数/セル文言・Mermaid図数・出典リンク数」を抽出・把握すること。
+  - **TDDでの網羅性テスト作成**: Step 1 (Red) の時点で大枠見出しだけでなく、表内の文言や補足スキルの記述が存在することを検証する厳密なテストを作成すること。
+  - **全量照合セルフレビュー**: Step 2 (Green) 完了時、元ファイルと作成した TSX をセルフレビューし、文字数や行数の大幅な乖離・省略がないことを照合してからコミットすること。
 - **異常なトークン消費の防止とステップごとのコミット義務**: 無駄なループを防ぐため、複数のステップにまたがる複雑な実装を行う際は、必ず計画を立て、1つのステップ（またはコンポーネント）ごとに実装とテストを完了させ、**そのステップの完了と同時に必ず `git status`, `git add`, `git commit` を実行して作業を確定させてから**次のステップに進んでください。
 - **システムツールのパラメータ必須要件の厳守と自己レビュー義務 (`update_topic` 等)**: `update_topic` や `write_file` などのシステムツールを呼び出す際は、スキーマで要求されている**必須パラメーター（例: `strategic_intent` や `file_path` など）が全て含まれていることを実行前に必ず確認**してください。エラーとリトライの無限ループを防止するため、ツール呼び出し前の `<thought>` ブロック内で「これから使うツールの必須パラメータは何か？」「それらの値はセットされているか？」を明示的に自己レビューしてから実行してください。
 

@@ -1,0 +1,13 @@
+.sources ol {
+    padding-left: 20px;
+}
+
+.sources li {
+    margin-bottom: 12px;
+}
+
+.srcDesc {
+    display: block;
+    font-size: 13px;
+    color: var(--ink-soft);
+}

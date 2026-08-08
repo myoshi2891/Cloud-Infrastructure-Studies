@@ -117,15 +117,17 @@ describe('Header ドロワー内 NavTree 描画', () => {
         expect(link).toHaveAttribute('href', '/gcl/genai-leader/section1');
     });
 
-    it('AWS SAA は「準備中」ラベル付きで、外部リンクを描画しないこと', async () => {
+    it('AWS SAA アコーディオン内に概要およびドメイン1〜4のリンクが存在すること', async () => {
         const { dialog } = await openDrawer();
         const awsHeading = within(dialog).getByRole('heading', { name: 'Amazon Web Services' });
         const awsSection = awsHeading.closest('section');
         expect(awsSection).not.toBeNull();
         const awsScope = within(awsSection as HTMLElement);
-        expect(awsScope.getByText(/準備中/)).toBeInTheDocument();
-        expect(awsScope.queryByRole('link', { name: /概要/ })).not.toBeInTheDocument();
-        expect(awsScope.queryByRole('link', { name: /Solutions Architect/ })).not.toBeInTheDocument();
+        expect(awsScope.getByRole('link', { name: /概要/ })).toHaveAttribute('href', '/aws/solutions-architect-associate');
+        expect(awsScope.getByRole('link', { name: /ドメイン1: セキュアなアーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain1');
+        expect(awsScope.getByRole('link', { name: /ドメイン2: 回復力のあるアーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain2');
+        expect(awsScope.getByRole('link', { name: /ドメイン3: 高性能なアーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain3');
+        expect(awsScope.getByRole('link', { name: /ドメイン4: コスト最適化アーキテクチャの設計/ })).toHaveAttribute('href', '/aws/solutions-architect-associate/domain4');
     });
 
     it('Escape キーで Drawer が閉じること', async () => {

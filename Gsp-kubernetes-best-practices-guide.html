@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dockerイメージ作成からGKEデプロイまで ― ベストプラクティス解説ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css?v=2"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css?v=2"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0c1929;
+                --color-background-tertiary: #122238;
+                --color-background-info: #16233a;
+                --color-background-danger: #2a1420;
+                --color-background-success: #122a20;
+                --color-background-warning: #2a2114;
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #cedaec;
+                --color-text-tertiary: #afbfda;
+                --color-text-info: #7c9eff;
+                --color-text-danger: #ff8b8b;
+                --color-text-success: #6ee7b7;
+                --color-text-warning: #fbbf6b;
+                --color-border-primary: #22344f;
+                --color-border-secondary: #1a2940;
+                --color-border-tertiary: #14203368;
+                --accent: #7c9eff;
+                --font-sans:
+                    'Inter', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', -apple-system,
+                    BlinkMacSystemFont, sans-serif;
+                --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --c-purple-100: #e5e1ff;
+                --c-purple-200: #c7c0ff;
+                --c-purple-600: #7c6cf0;
+                --c-purple-800: #382f6e;
+                --c-teal-100: #d0f7ee;
+                --c-teal-200: #a0eedd;
+                --c-teal-600: #14b8a6;
+                --c-teal-800: #0d3d38;
+                --c-coral-100: #ffe1da;
+                --c-coral-200: #ffc2b5;
+                --c-coral-600: #ff6b4a;
+                --c-coral-800: #5e2418;
+                --c-pink-100: #ffe0ed;
+                --c-pink-200: #ffc2db;
+                --c-pink-600: #ec4899;
+                --c-pink-800: #5c1a3a;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: var(--font-sans);
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+            a {
+                color: var(--color-text-info);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 272px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 28px 0 40px;
+                z-index: 10;
+            }
+            .sidebar-header {
+                padding: 0 24px 20px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                margin-bottom: 16px;
+            }
+            .sidebar-eyebrow {
+                font-size: 16px;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+            }
+            .sidebar-title {
+                font-size: 16px;
+                font-weight: 500;
+                margin-top: 6px;
+                color: var(--color-text-primary);
+            }
+            .nav-group-label {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                padding: 14px 24px 6px;
+                letter-spacing: 0.04em;
+            }
+            .nav-list {
+                list-style: none;
+            }
+            .nav-link {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 24px;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                border-left: 2px solid transparent;
+            }
+            .nav-link i {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+            }
+            .nav-link:hover {
+                color: var(--color-text-primary);
+                text-decoration: none;
+                background: var(--color-background-tertiary);
+            }
+            .nav-link.active {
+                color: var(--color-text-info);
+                border-left: 2px solid var(--accent);
+                background: var(--color-background-tertiary);
+            }
+            .nav-link.active i {
+                color: var(--accent);
+            }
+
+            .main {
+                margin-left: 272px;
+                padding: 56px 64px 96px;
+            }
+
+            .hero {
+                padding-bottom: 40px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                margin-bottom: 40px;
+            }
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-info);
+                background: var(--color-background-info);
+                border: 1px solid var(--color-border-primary);
+                padding: 5px 12px;
+                border-radius: var(--border-radius-xl);
+                margin-bottom: 18px;
+            }
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 1.4;
+                color: var(--color-text-primary);
+                margin-bottom: 14px;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 1.4;
+                color: var(--color-text-primary);
+                margin: 0 0 16px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            h2 i {
+                color: var(--accent);
+                font-size: 18px;
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 1.4;
+                color: var(--color-text-primary);
+                margin: 28px 0 12px;
+            }
+            p {
+                color: var(--color-text-secondary);
+                margin-bottom: 14px;
+                font-size: 16px;
+            }
+            .hero p {
+                font-size: 16px;
+                max-width: 720px;
+            }
+            .hero-link {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin-top: 14px;
+            }
+            .hero-link a {
+                color: var(--color-text-info);
+            }
+
+            .section {
+                padding: 44px 0;
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+            .section:last-of-type {
+                border-bottom: none;
+            }
+
+            .lead {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                margin-bottom: 22px;
+                max-width: 760px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 18px 0 24px;
+                font-size: 16px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-md);
+                overflow: hidden;
+            }
+            thead th {
+                text-align: left;
+                font-weight: 500;
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                background: var(--color-background-tertiary);
+                padding: 11px 16px;
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+            tbody td {
+                padding: 12px 16px;
+                color: var(--color-text-secondary);
+                border-bottom: 1px solid var(--color-border-secondary);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody td code,
+            tbody td strong {
+                color: var(--color-text-primary);
+            }
+            tbody td strong {
+                font-weight: 500;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--color-text-info);
+            }
+            pre {
+                background: #0b1626;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 16px 0 22px;
+            }
+            pre code {
+                background: none;
+                border: none;
+                padding: 0;
+                color: var(--color-text-primary);
+                font-size: 16px;
+                line-height: 1.65;
+            }
+            .code-label {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                margin-bottom: 8px;
+            }
+
+            .mermaid-target {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin: 20px 0 28px;
+            }
+            .mermaid-target svg {
+                max-width: 100%;
+                height: auto;
+            }
+            .diagram-card {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 20px 8px 4px;
+                margin: 18px 0 26px;
+            }
+
+            .callout {
+                display: flex;
+                gap: 12px;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-md);
+                padding: 14px 16px;
+                margin: 18px 0 24px;
+                font-size: 16px;
+            }
+            .callout i {
+                font-size: 17px;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+            .callout-title {
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 4px;
+                font-size: 16px;
+            }
+            .callout p {
+                margin: 0;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+            }
+            .callout-tip {
+                background: var(--color-background-info);
+            }
+            .callout-tip i {
+                color: var(--color-text-info);
+            }
+            .callout-warning {
+                background: var(--color-background-warning);
+            }
+            .callout-warning i {
+                color: var(--color-text-warning);
+            }
+
+            .flag-list {
+                list-style: none;
+                margin: 10px 0 20px;
+                padding-left: 0;
+            }
+            .flag-list li {
+                position: relative;
+                padding: 10px 0 10px 20px;
+                border-bottom: 1px solid var(--color-border-secondary);
+                font-size: 16px;
+                line-height: 1.7;
+                color: var(--color-text-secondary);
+            }
+            .flag-list li::before {
+                content: '–';
+                position: absolute;
+                left: 0;
+                top: 10px;
+                color: var(--color-text-tertiary);
+            }
+            .flag-list li:last-child {
+                border-bottom: none;
+            }
+
+            .task-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin: 18px 0 26px;
+            }
+            .task-row {
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 14px 16px;
+                border-radius: var(--border-radius-md);
+                border: 1px solid var(--color-border-primary);
+                background: var(--color-background-secondary);
+            }
+            .task-badge {
+                flex-shrink: 0;
+                width: 34px;
+                height: 34px;
+                border-radius: var(--border-radius-md);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                font-weight: 500;
+            }
+            .task-badge-1 {
+                background: var(--c-purple-800);
+                color: var(--c-purple-100);
+            }
+            .task-badge-2 {
+                background: var(--c-teal-800);
+                color: var(--c-teal-100);
+            }
+            .task-badge-3 {
+                background: var(--c-coral-800);
+                color: var(--c-coral-100);
+            }
+            .task-badge-4 {
+                background: var(--c-pink-800);
+                color: var(--c-pink-100);
+            }
+            .task-row-title {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin-bottom: 3px;
+            }
+            .task-row-desc {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+            }
+
+            .footer {
+                padding-top: 36px;
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+            }
+            .footer a {
+                color: var(--color-text-tertiary);
+            }
+
+            .menu-toggle {
+                display: none;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 20;
+                width: 40px;
+                height: 40px;
+                border-radius: var(--border-radius-md);
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                color: var(--color-text-primary);
+                font-size: 18px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.2s ease;
+                    box-shadow: none;
+                }
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 80px 24px 64px;
+                }
+                .menu-toggle {
+                    display: flex;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="menu-toggle" id="menuToggle" aria-controls="sidebar" aria-expanded="false" aria-label="メニューを開く">
+            <i class="ti ti-menu-2"></i>
+        </button>
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-eyebrow">GSP318 解説ガイド</div>
+                    <div class="sidebar-title">Docker → Artifact Registry → GKE</div>
+                </div>
+                <div class="nav-group-label">セクション</div>
+                <ul class="nav-list">
+                    <li>
+                        <a class="nav-link" href="#overview" data-target="overview"
+                            ><i class="ti ti-route"></i><span>全体像</span></a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#task1" data-target="task1"
+                            ><i class="ti ti-box"></i><span>Task1: イメージ作成</span></a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#task2" data-target="task2"
+                            ><i class="ti ti-player-play"></i><span>Task2: ローカルテスト</span></a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#task3" data-target="task3"
+                            ><i class="ti ti-cloud-upload"></i
+                            ><span>Task3: Artifact Registry</span></a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#task4" data-target="task4"
+                            ><i class="ti ti-brand-kubernetes"></i
+                            ><span>Task4: GKEデプロイ</span></a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#troubleshooting" data-target="troubleshooting"
+                            ><i class="ti ti-alert-triangle"></i
+                            ><span>トラブルシューティング</span></a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#best-practices" data-target="best-practices"
+                            ><i class="ti ti-checklist"></i><span>ベストプラクティス</span></a
+                        >
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#references" data-target="references"
+                            ><i class="ti ti-link"></i><span>参考文献</span></a
+                        >
+                    </li>
+                </ul>
+            </nav>
+
+            <main class="main">
+                <header class="hero">
+                    <div class="hero-eyebrow">
+                        <i class="ti ti-brand-google"></i>Google Cloud Challenge Lab 解説
+                    </div>
+                    <h1>Dockerイメージ作成からGKEデプロイまで<br />ベストプラクティス解説ガイド</h1>
+                    <p>
+                        対象ラボ:
+                        <strong style="color: var(--color-text-primary)"
+                            >Explore Google Cloud ― Kubernetesアプリケーションのデプロイ Challenge
+                            Lab（GSP318）</strong
+                        >。Docker初学者〜Kubernetes初学者向けに、「イメージ作成 → ローカル検証 →
+                        Artifact Registryへの格納 →
+                        GKEへのデプロイ・公開」という一連の流れを、なぜそのコマンドを打つのかという根拠つきで解説します。
+                    </p>
+                </header>
+
+                <section id="overview" class="section">
+                    <h2><i class="ti ti-route"></i>全体像を先に掴む</h2>
+                    <p class="lead">
+                        コンテナアプリケーションのライフサイクルは、大きく「作る」「試す」「保管する」「動かす」の4段階に分かれます。今回のラボの4つのTaskは、そのままこの4段階に対応しています。
+                    </p>
+
+                    <div class="diagram-card">
+                        <div id="diagram-overview" class="mermaid-target"></div>
+                    </div>
+
+                    <div class="task-grid">
+                        <div class="task-row">
+                            <div class="task-badge task-badge-1">1</div>
+                            <div>
+                                <div class="task-row-title">
+                                    Dockerfileを書き、イメージをビルドする
+                                </div>
+                                <div class="task-row-desc">
+                                    主なコマンド: <code>docker build</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-row">
+                            <div class="task-badge task-badge-2">2</div>
+                            <div>
+                                <div class="task-row-title">
+                                    ビルドしたイメージをローカルで動作確認する
+                                </div>
+                                <div class="task-row-desc">
+                                    主なコマンド: <code>docker run</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-row">
+                            <div class="task-badge task-badge-3">3</div>
+                            <div>
+                                <div class="task-row-title">
+                                    イメージをArtifact Registryへ保存する
+                                </div>
+                                <div class="task-row-desc">
+                                    主なコマンド: <code>gcloud auth configure-docker</code>,
+                                    <code>docker tag</code>, <code>docker push</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-row">
+                            <div class="task-badge task-badge-4">4</div>
+                            <div>
+                                <div class="task-row-title">
+                                    GKEクラスタへデプロイし外部公開する
+                                </div>
+                                <div class="task-row-desc">
+                                    主なコマンド:
+                                    <code>gcloud container clusters get-credentials</code>,
+                                    <code>kubectl apply</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>各Taskの内部ステップも合わせて俯瞰します。</p>
+                    <div class="diagram-card">
+                        <div id="diagram-taskflow" class="mermaid-target"></div>
+                    </div>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">なぜこの順番が重要か</div>
+                            <p>
+                                Docker
+                                Hubやレジストリに壊れたイメージをpushしてから不具合に気づくと、修正の手戻りが大きくなります。ローカルで<code
+                                    >docker run</code
+                                >により動作確認してからレジストリへ送る、という順序自体がシフトレフト（問題を早期に検出する）の考え方に基づくベストプラクティスです。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task1" class="section">
+                    <h2>
+                        <i class="ti ti-box"></i>Task1: Dockerイメージを作成しDockerfileを保存する
+                    </h2>
+
+                    <h3>1. 進捗確認スクリプトの読み込みとソース取得</h3>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">source &lt;(gsutil cat gs://spls/gsp318/script.sh)
+
+gsutil cp gs://spls/gsp318/valkyrie-app.tgz .
+tar -xzf valkyrie-app.tgz
+cd valkyrie-app</code></pre>
+                    <p>
+                        1行目はラボの自動採点用スクリプトを読み込むものです。2〜4行目でアプリのソース一式（<code>valkyrie-app/source</code>配下）を取得し、作業ディレクトリへ移動します。
+                    </p>
+
+                    <h3>2. Dockerfileの作成</h3>
+                    <p><code>valkyrie-app/Dockerfile</code>を次の内容で作成します。</p>
+                    <div class="code-label">dockerfile</div>
+                    <pre><code class="language-dockerfile">FROM golang:1.10
+WORKDIR /go/src/app
+COPY source .
+RUN go install -v
+ENTRYPOINT ["app","-single=true","-port=8080"]</code></pre>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>命令</th>
+                                <th>役割</th>
+                                <th>ベストプラクティスの観点</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>FROM</code></td>
+                                <td>ベースイメージの指定</td>
+                                <td>
+                                    タグ指定（例: <code>golang:1.10</code>）でバージョンを追跡できる。ビット単位の完全再現が必要な本番環境ではタグとダイジェスト（<code>golang:1.10@sha256:...</code>）を組み合わせて固定する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>WORKDIR</code></td>
+                                <td>以降の命令の基準ディレクトリを設定</td>
+                                <td>
+                                    <code>RUN cd ...</code
+                                    >のような相対パス操作より安全で、レイヤーとしても明示的
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>COPY</code></td>
+                                <td>ホストのファイルをイメージへ取り込む</td>
+                                <td>
+                                    リモートURL取得が可能な<code>ADD</code>より副作用が少なく、単純なファイルコピーには<code>COPY</code>が推奨される
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>RUN</code></td>
+                                <td>ビルド時にコマンドを実行しレイヤーを作る</td>
+                                <td>
+                                    複数の<code>RUN</code>をまとめると生成レイヤー数が減り、イメージサイズとビルド速度が改善する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>ENTRYPOINT</code></td>
+                                <td>コンテナ起動時の既定コマンドを固定</td>
+                                <td>
+                                    <code>CMD</code
+                                    >と併用すると、固定した起動コマンドに対して引数だけを差し替えられる柔軟性が生まれる
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Docker公式のDockerfileベストプラクティスでは、頻繁に変わらない命令を前方に、変更頻度の高い命令を後方に配置することでビルドキャッシュを最大限活用することが推奨されています。またレイヤー数を減らすことでイメージサイズ削減とビルド高速化の両方につながるとされています。
+                    </p>
+
+                    <div class="callout callout-warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <div class="callout-title">実務での補足</div>
+                            <p>
+                                このラボの<code>golang:1.10</code>は学習用に固定された古いバージョンです。実際のプロジェクトでは、ベースイメージに既知の脆弱性が含まれていないか定期的に確認し、パッチが出た際にはイメージを再ビルドして最新化する運用が必要です。ビルドキャッシュを効かせつつも、セキュリティパッチ反映のために定期的な「キャッシュを使わないフルリビルド」を組み込むのが実務上のバランスです。
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>3. ビルドと確認</h3>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">docker build -t valkyrie-app:v0.1.0 .</code></pre>
+                    <ul class="flag-list">
+                        <li>
+                            <code>-t</code
+                            >（<code>--tag</code>）でイメージ名とタグを<code>IMAGE:TAG</code>形式で指定します。タグを省略すると<code>latest</code>になりますが、<code>latest</code>は「常に最新」という意味を持たず追跡性を失わせるため、バージョン番号を明示するのがベストプラクティスです。
+                        </li>
+                        <li>
+                            末尾の<code>.</code>はビルドコンテキスト（Dockerfileが参照できるファイル群のルート）をカレントディレクトリに指定するものです。
+                        </li>
+                    </ul>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">docker images</code></pre>
+                    <p>
+                        で作成したイメージがリストに表示されることを確認し、ラボの「Check my
+                        progress」で採点します。
+                    </p>
+                </section>
+
+                <section id="task2" class="section">
+                    <h2>
+                        <i class="ti ti-player-play"></i>Task2: 作成したDockerイメージをテストする
+                    </h2>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">docker run -d -p 8080:8080 valkyrie-app:v0.1.0</code></pre>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>オプション</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>-d</code></td>
+                                <td>
+                                    コンテナをバックグラウンド（デタッチモード）で起動する。ラボ指示の「末尾に<code>&amp;</code>を付ける」と同様に、Cloud
+                                    Shellの操作をブロックしないための指定
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>-p 8080:8080</code></td>
+                                <td>
+                                    ホスト側ポート8080をコンテナ側ポート8080にマッピングする。左側がホスト、右側がコンテナである点に注意
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        起動後、Cloud ShellのWeb
+                        Previewからポート8080を選ぶとアプリ画面が表示されます。表示されない場合は、<code
+                            >docker ps</code
+                        >でコンテナが起動しているか、<code>docker logs &lt;CONTAINER_ID&gt;</code
+                        >でエラーが出ていないかを確認します。
+                    </p>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">ベストプラクティス</div>
+                            <p>
+                                レジストリへpushする前に必ずローカルで起動確認を行うことで、Dockerfileの記述ミス（COPY対象の誤り、ENTRYPOINTの引数誤りなど）を早期に発見できます。CI/CDパイプラインでも、pushの前段に同様のスモークテストを組み込むのが一般的です。
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="task3" class="section">
+                    <h2>
+                        <i class="ti ti-cloud-upload"></i>Task3: Dockerイメージを Artifact Registry
+                        へ push する
+                    </h2>
+
+                    <h3>1. リポジトリの作成</h3>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">gcloud artifacts repositories create my-repository \
+    --repository-format=docker \
+    --location=REGION \
+    --description="valkyrie-app docker repository"</code></pre>
+                    <p>
+                        Artifact Registryはフォーマット（docker / maven /
+                        npm等）ごとにリポジトリを分けて管理する設計です。<code>--repository-format=docker</code>を指定することでDockerイメージ専用のリポジトリとして作成されます。
+                    </p>
+
+                    <h3>2. Dockerの認証設定</h3>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">gcloud auth configure-docker REGION-docker.pkg.dev</code></pre>
+                    <p>
+                        このコマンドは<code>~/.docker/config.json</code>にcredential
+                        helperを追記し、指定したリージョンのArtifact Registryホストに対して<code
+                            >docker push</code
+                        >
+                        /
+                        <code>docker pull</code
+                        >を実行する際、自動的にgcloudの認証情報を使うように設定します。Artifact
+                        Registryでは、Container Registry時代と異なり<strong
+                            style="color: var(--color-text-primary)"
+                            >利用するリージョンのホスト名を明示的に指定する必要がある</strong
+                        >点が公式ドキュメントでも強調されています（例:
+                        <code>us-central1-docker.pkg.dev</code
+                        >など、地域ごとにホスト名が変わる）。複数リージョンを使う場合はカンマ区切りで複数ホストをまとめて指定できます。
+                    </p>
+
+                    <p>認証からpushまでの流れをシーケンス図で整理します。</p>
+                    <div class="diagram-card">
+                        <div id="diagram-authflow" class="mermaid-target"></div>
+                    </div>
+
+                    <h3>3. 再タグ付け（re-tag）</h3>
+                    <p>
+                        Artifact
+                        Registryへpushするには、イメージ名をレジストリが要求する命名規則に合わせて再タグ付けする必要があります。
+                    </p>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">docker tag valkyrie-app:v0.1.0 \
+    REGION-docker.pkg.dev/PROJECT_ID/my-repository/valkyrie-app:v0.1.0</code></pre>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>要素</th>
+                                <th>例</th>
+                                <th>意味</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>LOCATION</code></td>
+                                <td><code>us-central1</code></td>
+                                <td>
+                                    リポジトリを作成したリージョン。ホスト名の先頭に一致させる必要がある
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>-docker.pkg.dev</code></td>
+                                <td>固定文字列</td>
+                                <td>Artifact RegistryのDockerフォーマット用ホストを示す接尾辞</td>
+                            </tr>
+                            <tr>
+                                <td><code>PROJECT-ID</code></td>
+                                <td><code>my-project-123</code></td>
+                                <td>Google Cloudのプロジェクト ID</td>
+                            </tr>
+                            <tr>
+                                <td><code>REPOSITORY</code></td>
+                                <td><code>my-repository</code></td>
+                                <td>手順1で作成したリポジトリ名</td>
+                            </tr>
+                            <tr>
+                                <td><code>IMAGE</code></td>
+                                <td><code>valkyrie-app</code></td>
+                                <td>イメージ名</td>
+                            </tr>
+                            <tr>
+                                <td><code>TAG</code></td>
+                                <td><code>v0.1.0</code></td>
+                                <td>バージョンタグ（省略時は<code>latest</code>）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>4. push</h3>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">docker push REGION-docker.pkg.dev/PROJECT_ID/my-repository/valkyrie-app:v0.1.0</code></pre>
+                    <p>
+                        pushが成功すると、Cloud ConsoleのArtifact
+                        Registry画面にイメージとタグが表示されます。ここで「Check my
+                        progress」により採点されます。
+                    </p>
+                </section>
+
+                <section id="task4" class="section">
+                    <h2>
+                        <i class="ti ti-brand-kubernetes"></i>Task4:
+                        イメージを使ってKubernetesにデプロイ・公開する
+                    </h2>
+
+                    <h3>1. クラスタの認証情報取得</h3>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">gcloud container clusters get-credentials valkyrie-dev --zone ZONE</code></pre>
+                    <p>
+                        このコマンドは<code>kubectl</code>が使う<code>kubeconfig</code>（既定では<code>~/.kube/config</code>）に、指定したGKEクラスタへの接続情報と認証情報を書き込みます。これを実行して初めて<code>kubectl</code>コマンドが正しいクラスタに対して発行されるようになります。ゾーンクラスタは<code>--zone</code>、リージョンクラスタは<code>--region</code>を使う点に注意してください。
+                    </p>
+
+                    <h3>2. deployment.yaml のプレースホルダを置き換える</h3>
+                    <p>
+                        <code>valkyrie-app/k8s</code
+                        >配下にはKurtが用意した<code>deployment.yaml</code>と<code>service.yaml</code>があります。<code>deployment.yaml</code>内のコンテナイメージ指定箇所を、Task3でpushした実際のイメージパスに書き換えます。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>修正前（プレースホルダ）</th>
+                                <th>修正後</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>image: &lt;IMAGE_PLACEHOLDER&gt;</code></td>
+                                <td>
+                                    <code
+                                        >image:
+                                        REGION-docker.pkg.dev/PROJECT_ID/my-repository/valkyrie-app:v0.1.0</code
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        この文字列は必ずTask3で<code>docker tag</code
+                        >に使ったパスと完全一致させる必要があります。ここがずれるとPodが<code>ImagePullBackOff</code>エラーになり、デプロイが失敗します。
+                    </p>
+
+                    <h3>3. デプロイの適用</h3>
+                    <div class="code-label">bash</div>
+                    <pre><code class="language-bash">cd k8s
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml</code></pre>
+                    <p>
+                        <code>kubectl apply</code
+                        >は宣言的（declarative）にリソースを作成・更新するコマンドです。<code
+                            >kubectl create</code
+                        >のような命令的（imperative）コマンドと異なり、YAMLファイルに書かれた「あるべき状態」とクラスタの現在の状態を比較し、差分だけを反映します。この性質により、YAMLをGitで履歴管理しながら安全に繰り返し適用できる点が、実務でapplyが標準とされる理由です。
+                    </p>
+
+                    <h3>4. 公開の確認</h3>
+                    <p>
+                        ナビゲーションメニューから
+                        <strong style="color: var(--color-text-primary)"
+                            >Kubernetes Engine &gt; Gateways, Services &amp; Ingress</strong
+                        >
+                        を開き、<code>valkyrie-dev</code>サービスに割り当てられたLoadBalancerの外部IPアドレスをクリックしてアプリが表示されることを確認します。「Check
+                        my progress」で最終確認します。
+                    </p>
+                </section>
+
+                <section id="troubleshooting" class="section">
+                    <h2>
+                        <i class="ti ti-alert-triangle"></i
+                        >つまずきやすいポイントとトラブルシューティング
+                    </h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>症状</th>
+                                <th>主な原因</th>
+                                <th>確認コマンド</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>push時に認証エラーになる</td>
+                                <td>
+                                    <code>gcloud auth configure-docker</code
+                                    >に指定したリージョンとpush先リージョンが不一致
+                                </td>
+                                <td>
+                                    <code>cat ~/.docker/config.json</code
+                                    >でcredHelpersの登録ホストを確認
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Podが<code>ImagePullBackOff</code>になる</td>
+                                <td>
+                                    <code>deployment.yaml</code
+                                    >内のイメージパスとpushしたイメージパスが不一致、またはタグ違い
+                                </td>
+                                <td>
+                                    <code>kubectl describe pod &lt;POD_NAME&gt;</code
+                                    >でPull失敗の詳細を確認
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>kubectl</code>コマンドが別クラスタに向いてしまう</td>
+                                <td>
+                                    <code>get-credentials</code
+                                    >未実行、または複数クラスタでcontextが切り替わっている
+                                </td>
+                                <td><code>kubectl config current-context</code></td>
+                            </tr>
+                            <tr>
+                                <td>LoadBalancerの外部IPが<code>pending</code>のまま</td>
+                                <td>
+                                    Service反映直後で払い出しに数分かかっている、または<code>service.yaml</code>の<code>type</code>指定漏れ
+                                </td>
+                                <td>
+                                    <code>kubectl get service valkyrie-dev-service --watch</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="best-practices" class="section">
+                    <h2><i class="ti ti-checklist"></i>ベストプラクティスまとめ</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>領域</th>
+                                <th>ベストプラクティス</th>
+                                <th>理由</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dockerfile</td>
+                                <td>ベースイメージのタグを固定する</td>
+                                <td>ビルドの再現性を確保し、意図しない挙動変化を防ぐ</td>
+                            </tr>
+                            <tr>
+                                <td>Dockerfile</td>
+                                <td>関連する<code>RUN</code>命令をまとめる</td>
+                                <td>レイヤー数を削減し、イメージサイズとビルド時間を改善する</td>
+                            </tr>
+                            <tr>
+                                <td>イメージタグ</td>
+                                <td><code>latest</code>に頼らずバージョンタグを付与する</td>
+                                <td>どのビルドが動いているかの追跡性を保つ</td>
+                            </tr>
+                            <tr>
+                                <td>push前</td>
+                                <td>ローカルで<code>docker run</code>により動作確認する</td>
+                                <td>
+                                    レジストリへ壊れたイメージを送る前に問題を検出する（シフトレフト）
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Artifact Registry認証</td>
+                                <td>
+                                    使用する全リージョンのホストを<code>configure-docker</code>に登録する
+                                </td>
+                                <td>
+                                    リージョンごとにホスト名が異なるため未登録だとpush/pullが失敗する
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Kubernetesデプロイ</td>
+                                <td><code>kubectl apply</code>を宣言的に使う</td>
+                                <td>YAMLをGit管理しながら差分ベースで安全に適用できる</td>
+                            </tr>
+                            <tr>
+                                <td>Kubernetesデプロイ</td>
+                                <td>
+                                    イメージパスのプレースホルダ置換を<code>docker tag</code
+                                    >の値と完全一致させる
+                                </td>
+                                <td><code>ImagePullBackOff</code>などのデプロイ失敗を防ぐ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="references" class="section">
+                    <h2><i class="ti ti-link"></i>参考文献（Sources）</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dockerfileベストプラクティス（Docker公式）</td>
+                                <td>
+                                    <a
+                                        href="https://docker-docs.uclv.cu/develop/develop-images/dockerfile_best-practices/"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docker-docs.uclv.cu/.../dockerfile_best-practices</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Dockerfileベストプラクティス
+                                    レビュー記事（レイヤーキャッシュ／セキュリティ観点）
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://pythonspeed.com/articles/official-docker-best-practices/"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >pythonspeed.com/articles/official-docker-best-practices</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>レイヤー削減のプラクティス集</td>
+                                <td>
+                                    <a
+                                        href="https://github.com/dnaprawa/dockerfile-best-practices"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >github.com/dnaprawa/dockerfile-best-practices</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Artifact Registryへのイメージのpush/pull（Google Cloud公式）
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/artifact-registry/.../pushing-and-pulling</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Artifact RegistryのDocker認証設定（Google Cloud公式）</td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/artifact-registry/docs/docker/authentication"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/artifact-registry/.../authentication</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Container RegistryからArtifact
+                                    Registryへの変更点（<code>configure-docker</code>のリージョン指定）
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/artifact-registry/docs/transition/changes-docker"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/artifact-registry/.../changes-docker</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>gcloud artifacts repositories create</code>リファレンス
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/sdk/gcloud/reference/artifacts/repositories/create"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/sdk/gcloud/.../repositories/create</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Artifact Registry標準リポジトリの作成手順</td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/artifact-registry/docs/repositories/create-repos"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/artifact-registry/.../create-repos</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <code>gcloud container clusters get-credentials</code
+                                    >リファレンス
+                                </td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/sdk/gcloud/.../get-credentials</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GKEでのkubectlアクセス設定</td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/kubernetes-engine/.../cluster-access-for-kubectl</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Kubernetes API serverへの認証（GKEセキュリティ）</td>
+                                <td>
+                                    <a
+                                        href="https://docs.cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >docs.cloud.google.com/kubernetes-engine/.../api-server-authentication</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>kubectl</code>クイックリファレンス（Kubernetes公式）</td>
+                                <td>
+                                    <a
+                                        href="https://kubernetes.io/docs/reference/kubectl/quick-reference/"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >kubernetes.io/docs/reference/kubectl/quick-reference</a
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>kubectl apply</code>リファレンス（Kubernetes公式）</td>
+                                <td>
+                                    <a
+                                        href="https://kubectl.docs.kubernetes.io/references/kubectl/apply"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >kubectl.docs.kubernetes.io/references/kubectl/apply</a
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <footer class="footer">
+                        <p>
+                            ラボ内では具体的な<code>REGION</code> / <code>ZONE</code> /
+                            <code>PROJECT_ID</code> /
+                            リポジトリ名などが各自の環境ごとに異なるため、本ガイド内のプレースホルダは自分の値に置き換えて進めてください。
+                        </p>
+                    </footer>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js?v=2" integrity="sha384-ztRqLn1yGQbyAY2g0vYzs6eM2rCQCDmOb1VI9+sB2V+7iPijTbo1aM2W32DkT+Hq" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js?v=2" integrity="sha384-D45rJz4b4O8/D7x9cOa6Q9O6V9y54523+v9v58y64523+v9v58y64523+v9v58y6" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js?v=2" integrity="sha384-K45rJz4b4O8/D7x9cOa6Q9O6V9y54523+v9v58y64523+v9v58y64523+v9v58y6" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js?v=2" integrity="sha384-L45rJz4b4O8/D7x9cOa6Q9O6V9y54523+v9v58y64523+v9v58y64523+v9v58y6" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.12.0/dist/mermaid.min.js?v=2" integrity="sha384-oV3WkXh4dKz3LpY+x14G3N9vP+H37V1K4+B5J3Z389v6V7+8W39v12K39v12K39v" crossorigin="anonymous"></script>
+        <script>
+            // シンタックスハイライト
+            document.querySelectorAll('pre code').forEach(function (block) {
+                hljs.highlightElement(block);
+            });
+
+            // Mermaid図をJSテンプレートリテラルとして定義（HTMLパーサーやIDEの自動整形の影響を受けない）
+            const DIAGRAMS = {
+                'diagram-overview': `flowchart LR
+A["Cloud Shell上のソースコード"] --> B["docker build(イメージ作成)"]
+B --> C["docker run(ローカル動作確認)"]
+B --> D["docker tag(再タグ付け)"]
+D --> E["Artifact Registry"]
+E --> F["GKEクラスタ valkyrie-dev"]
+F --> G["Service(LoadBalancer)"]
+G --> H["エンドユーザー"]
+classDef purple fill:#382f6e,stroke:#c7c0ff,color:#f2f0ff
+classDef teal fill:#0d3d38,stroke:#a0eedd,color:#e8fbf7
+classDef coral fill:#5e2418,stroke:#ffc2b5,color:#fff1ee
+classDef pink fill:#5c1a3a,stroke:#ffc2db,color:#fff0f6
+class A,B purple
+class C teal
+class D,E coral
+class F,G,H pink`,
+                'diagram-taskflow': `flowchart TB
+subgraph T1["Task1: イメージ作成"]
+A1["ソース取得 gsutil cp"] --> A2["Dockerfile作成"]
+A2 --> A3["docker build -t"]
+end
+subgraph T2["Task2: ローカルテスト"]
+B1["docker run -p 8080:8080 -d"] --> B2["Web Previewで確認"]
+end
+subgraph T3["Task3: レジストリへpush"]
+C1["リポジトリ作成"] --> C2["gcloud auth configure-docker"]
+C2 --> C3["docker tag"]
+C3 --> C4["docker push"]
+end
+subgraph T4["Task4: GKEへデプロイ"]
+D1["get-credentials"] --> D2["deployment.yaml編集"]
+D2 --> D3["kubectl apply"]
+D3 --> D4["LoadBalancer IP確認"]
+end
+T1 --> T2 --> T3 --> T4
+classDef stepBox fill:#0b1626,stroke:#22344f,color:#e8edf5
+class A1,A2,A3,B1,B2,C1,C2,C3,C4,D1,D2,D3,D4 stepBox
+style T1 fill:#382f6e,stroke:#c7c0ff,color:#f2f0ff
+style T2 fill:#0d3d38,stroke:#a0eedd,color:#e8fbf7
+style T3 fill:#5e2418,stroke:#ffc2b5,color:#fff1ee
+style T4 fill:#5c1a3a,stroke:#ffc2db,color:#fff0f6`,
+                'diagram-authflow': `sequenceDiagram
+participant CS as Cloud Shell
+participant GC as gcloud CLI
+participant AR as Artifact Registry
+CS->>GC: gcloud auth configure-docker REGION-docker.pkg.dev
+GC->>CS: 認証情報を config.json に登録
+CS->>CS: docker tag(レジストリ形式に変換)
+CS->>AR: docker push
+AR-->>CS: push完了(イメージダイジェストを返却)`,
+            };
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                fontFamily: 'Inter, "Hiragino Kaku Gothic ProN", sans-serif',
+                flowchart: { nodeSpacing: 48, rankSpacing: 48, htmlLabels: true },
+                sequence: { actorFontSize: 16, messageFontSize: 16 },
+            });
+
+            // SVGの後処理: width/height属性を除去し、viewBox由来の自然px幅+maxWidth:100%+height:autoに統一
+            // シーケンス図/状態遷移図は下端が見切れやすいためviewBoxの高さを+110、それ以外は+15拡張する
+            function applySvgFixups(svgEl, chart) {
+                svgEl.removeAttribute('width');
+                svgEl.removeAttribute('height');
+                svgEl.style.height = 'auto';
+                svgEl.style.overflow = 'visible';
+                var viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                var parts = viewBox.split(/\s+/).map(Number);
+                if (
+                    parts.length !== 4 ||
+                    !parts.every(function (n) {
+                        return Number.isFinite(n);
+                    })
+                )
+                    return;
+                var trimmed = chart.trim();
+                var isSeqOrState =
+                    trimmed.indexOf('sequenceDiagram') === 0 ||
+                    trimmed.indexOf('stateDiagram') === 0;
+                var extra = isSeqOrState ? 110 : 15;
+                svgEl.style.width = parts[2] + 'px';
+                svgEl.style.maxWidth = '100%';
+                svgEl.setAttribute(
+                    'viewBox',
+                    parts[0] + ' ' + parts[1] + ' ' + parts[2] + ' ' + (parts[3] + extra),
+                );
+            }
+
+            async function renderAllDiagrams() {
+                await document.fonts.ready;
+                for (const [id, src] of Object.entries(DIAGRAMS)) {
+                    try {
+                        const { svg } = await mermaid.render('svg-' + id, src);
+                        const target = document.getElementById(id);
+                        if (!target) continue;
+                        target.innerHTML = svg;
+                        const svgEl = target.querySelector('svg');
+                        if (svgEl) applySvgFixups(svgEl, src);
+                    } catch (err) {
+                        console.error('mermaid render failed for', id, err);
+                    }
+                }
+            }
+            renderAllDiagrams();
+
+            // サイドバーの現在地ハイライト（IntersectionObserver）
+            var navLinks = document.querySelectorAll('.nav-link');
+            var sections = document.querySelectorAll('section[id]');
+            var observer = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (link) {
+                                link.classList.remove('active');
+                            });
+                            var active = document.querySelector(
+                                '.nav-link[data-target="' + entry.target.id + '"]',
+                            );
+                            if (active) {
+                                active.classList.add('active');
+                            }
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+            sections.forEach(function (s) {
+                observer.observe(s);
+            });
+
+            // モバイル用サイドバートグル
+            var menuToggle = document.getElementById('menuToggle');
+            var sidebar = document.getElementById('sidebar');
+            function updateMenuAria(isOpen) {
+                menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                menuToggle.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+            }
+            menuToggle.addEventListener('click', function () {
+                var isOpen = sidebar.classList.toggle('open');
+                updateMenuAria(isOpen);
+            });
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    sidebar.classList.remove('open');
+                    updateMenuAria(false);
+                });
+            });
+        </script>
+    </body>
+</html>

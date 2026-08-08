@@ -1,0 +1,40 @@
+.toc {
+    max-width: 1000px;
+    margin-inline: auto;
+    background: var(--paper-card);
+    border: 1px solid var(--navy-mid);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+}
+
+.tocTitle {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: var(--line-cyan);
+    margin-top: 0;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line-cyan-soft);
+    padding-bottom: 8px;
+}
+
+.toc ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px 24px;
+    margin: 0;
+    padding-left: 20px;
+}
+
+.toc a {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.toc a:hover {
+    color: var(--amber);
+    text-decoration: underline;
+}

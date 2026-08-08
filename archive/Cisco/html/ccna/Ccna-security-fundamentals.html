@@ -1,0 +1,1543 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CCNA試験対策：セキュリティの基礎（Security Fundamentals）徹底解説</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --bg: #07111e;
+                --bg-elevated: #0b1830;
+                --card: #0f1f3d;
+                --card-soft: #0c1a33;
+                --accent: #7c9eff;
+                --accent-soft: #3d5aa8;
+                --border: rgba(124, 158, 255, 0.22);
+                --text: #e7ecfb;
+                --muted: #93a3c9;
+                --danger: #ff8080;
+                --danger-bg: #5a1f1f;
+                --good: #7ee2b8;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: 'IBM Plex Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+                line-height: 1.85;
+                font-size: 16px;
+            }
+            .layout {
+                display: block;
+            }
+            /* ---- Sidebar ---- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 290px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-elevated);
+                border-right: 1px solid var(--border);
+                padding: 1.75rem 1.25rem;
+                z-index: 10;
+            }
+            .sidebar-brand {
+                font-size: 1rem;
+                letter-spacing: 0.08em;
+                color: var(--accent);
+                text-transform: uppercase;
+                margin-bottom: 0.35rem;
+            }
+            .sidebar-title {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: var(--text);
+                margin: 0 0 1.5rem 0;
+                line-height: 1.5;
+            }
+            .sidebar nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .sidebar nav li {
+                margin: 0;
+            }
+            .sidebar nav a {
+                display: block;
+                padding: 0.5rem 0.7rem;
+                margin: 0.15rem 0;
+                border-radius: 8px;
+                color: var(--muted);
+                text-decoration: none;
+                font-size: 1rem;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+            .sidebar nav a:hover {
+                background: rgba(124, 158, 255, 0.08);
+                color: var(--text);
+            }
+            .sidebar nav a.active {
+                background: rgba(124, 158, 255, 0.14);
+                color: var(--accent);
+                border-left: 2px solid var(--accent);
+                font-weight: 500;
+            }
+            .sidebar nav .group-label {
+                font-size: 1rem;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin: 1.1rem 0.7rem 0.35rem;
+            }
+            /* ---- Main content ---- */
+            main {
+                margin-left: 290px;
+                padding: 3rem 3.5rem 6rem;
+            }
+            header.hero {
+                margin-bottom: 3rem;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 2rem;
+            }
+            .badges {
+                display: flex;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+                margin-bottom: 1.2rem;
+            }
+            .badge {
+                display: inline-block;
+                padding: 0.3rem 0.75rem;
+                border-radius: 999px;
+                background: var(--card);
+                border: 1px solid var(--border);
+                color: var(--accent);
+                font-size: 1rem;
+                font-weight: 500;
+                letter-spacing: 0.02em;
+            }
+            h1 {
+                font-size: 2rem;
+                line-height: 1.4;
+                margin: 0 0 0.75rem;
+                color: #ffffff;
+            }
+            .lede {
+                color: var(--muted);
+                font-size: 1.02rem;
+                max-width: 70ch;
+            }
+            section {
+                margin-bottom: 3.5rem;
+                scroll-margin-top: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+                color: #ffffff;
+                border-left: 4px solid var(--accent);
+                padding-left: 0.8rem;
+                margin: 0 0 1.4rem;
+            }
+            h3 {
+                font-size: 1.15rem;
+                color: var(--accent);
+                margin: 2rem 0 0.9rem;
+            }
+            p {
+                margin: 0 0 1.1rem;
+            }
+            ul,
+            ol {
+                margin: 0 0 1.2rem;
+                padding-left: 1.4rem;
+            }
+            li {
+                margin-bottom: 0.45rem;
+            }
+            strong {
+                color: #ffffff;
+            }
+            code {
+                font-family: 'IBM Plex Mono', monospace;
+                font-size: 1em;
+                background: rgba(124, 158, 255, 0.12);
+                padding: 0.12em 0.4em;
+                border-radius: 4px;
+                color: #d7e0ff;
+            }
+            pre code {
+                background: none;
+                padding: 0;
+                color: inherit;
+            }
+            pre:not(.mermaid) {
+                background: #0a1428 !important;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 1.2rem 1.4rem;
+                overflow-x: auto;
+                font-size: 1rem;
+                line-height: 1.7;
+                margin: 1.2rem 0 1.6rem;
+            }
+            section[id] { transition: opacity 0.4s ease; }
+            section[id].visible { opacity: 1; }
+            /* ---- Tables ---- */
+            .table-wrap {
+                overflow-x: auto;
+                margin: 1.2rem 0 1.8rem;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                min-width: 560px;
+                background: var(--card-soft);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+            thead th {
+                background: var(--card);
+                color: var(--accent);
+                text-align: left;
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+            tbody td {
+                padding: 0.75rem 1rem;
+                border-bottom: 1px solid rgba(124, 158, 255, 0.1);
+                font-size: 1rem;
+                color: var(--text);
+                vertical-align: top;
+            }
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:hover {
+                background: rgba(124, 158, 255, 0.05);
+            }
+            /* ---- Mermaid ---- */
+            .diagram-caption {
+                font-size: 1rem;
+                color: var(--muted);
+                text-align: center;
+                margin-top: -0.8rem;
+                margin-bottom: 1.8rem;
+            }
+            pre.mermaid {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                overflow-x: auto;
+                background: transparent;
+                margin: 1.6rem 0 0.6rem;
+                padding: 0.5rem 0;
+            }
+            /* ---- Callouts ---- */
+            .callout {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-left: 4px solid var(--accent);
+                border-radius: 10px;
+                padding: 1rem 1.3rem;
+                margin: 1.4rem 0;
+                font-size: 1rem;
+            }
+            .callout.warn {
+                border-left-color: var(--danger);
+            }
+            .callout strong {
+                color: var(--accent);
+            }
+            .callout.warn strong {
+                color: var(--danger);
+            }
+            /* ---- References ---- */
+            .ref-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .ref-list li {
+                background: var(--card-soft);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 0.9rem 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+            .ref-list a {
+                color: var(--accent);
+                word-break: break-all;
+            }
+            .footnote {
+                color: var(--muted);
+                font-size: 1rem;
+                margin-top: 1.5rem;
+            }
+            hr {
+                border: none;
+                border-top: 1px solid var(--border);
+                margin: 0;
+            }
+            /* ---- Mobile ---- */
+            @media (max-width: 900px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    max-height: none;
+                    border-right: none;
+                    border-bottom: 1px solid var(--border);
+                }
+                main {
+                    margin-left: 0;
+                    padding: 2rem 1.25rem 4rem;
+                }
+                table {
+                    min-width: 480px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-brand">CCNA 200-301 / v1.1</div>
+                <p class="sidebar-title">5.0 Security Fundamentals<br />セキュリティの基礎</p>
+                <nav>
+                    <ul>
+                        <li><a href="#overview" data-nav>0. 位置づけ</a></li>
+                        <li class="group-label">サブトピック</li>
+                        <li><a href="#s5-1" data-nav>5.1 基本概念</a></li>
+                        <li><a href="#s5-2" data-nav>5.2 プログラム要素</a></li>
+                        <li><a href="#s5-3" data-nav>5.3 ローカルパスワード</a></li>
+                        <li><a href="#s5-4" data-nav>5.4 パスワードポリシー</a></li>
+                        <li><a href="#s5-5" data-nav>5.5 IPsec VPN</a></li>
+                        <li><a href="#s5-6" data-nav>5.6 ACL</a></li>
+                        <li><a href="#s5-7" data-nav>5.7 レイヤー2セキュリティ</a></li>
+                        <li><a href="#s5-8" data-nav>5.8 AAA</a></li>
+                        <li><a href="#s5-9" data-nav>5.9 無線セキュリティ</a></li>
+                        <li><a href="#s5-10" data-nav>5.10 WLAN GUI設定</a></li>
+                        <li class="group-label">まとめ</li>
+                        <li><a href="#summary" data-nav>学習優先順位</a></li>
+                        <li><a href="#references" data-nav>参考ソース</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <main>
+                <header class="hero">
+                    <div class="badges">
+                        <span class="badge">CCNA 200-301 (v1.1 ブループリント)</span>
+                        <span class="badge">Domain 5.0</span>
+                        <span class="badge">出題比率 15%</span>
+                    </div>
+                    <h1>CCNA試験対策：セキュリティの基礎（Security Fundamentals）徹底解説</h1>
+                    <p class="lede">
+                        初学者でも迷わず理解できるよう、Cisco公式ブループリントの5.1〜5.10を、図解（Mermaid）と表を使ってステップバイステップで解説します。
+                    </p>
+                </header>
+
+                <section id="overview">
+                    <h2>0. この記事の位置づけ</h2>
+                    <p>CCNA 200-301（v1.1）試験は、以下の6つのドメインで構成されています。</p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ドメイン番号</th>
+                                    <th>ドメイン名</th>
+                                    <th>出題比率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.0</td>
+                                    <td>Network Fundamentals（ネットワークの基礎）</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>2.0</td>
+                                    <td>Network Access（ネットワークアクセス）</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>3.0</td>
+                                    <td>IP Connectivity（IP接続）</td>
+                                    <td>25%（最大）</td>
+                                </tr>
+                                <tr>
+                                    <td>4.0</td>
+                                    <td>IP Services（IPサービス）</td>
+                                    <td>10%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5.0</strong></td>
+                                    <td>
+                                        <strong>Security Fundamentals（セキュリティの基礎）</strong>
+                                    </td>
+                                    <td><strong>15%</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>6.0</td>
+                                    <td>
+                                        Automation and Programmability（自動化とプログラマビリティ）
+                                    </td>
+                                    <td>10%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        本記事は、この中の
+                        <strong>ドメイン5.0「セキュリティの基礎」</strong>
+                        を初学者向けに解説します。Cisco公式のv1.1試験ブループリントでは、このドメインは以下の10個のサブトピック（5.1〜5.10）で構成されています。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TD
+                            D5["5.0 Security Fundamentals<br/>（出題比率 15%）"]
+                            D5 --> S1["5.1 セキュリティの基本概念<br/>（脅威・脆弱性・エクスプロイト・緩和策）"]
+                            D5 --> S2["5.2 セキュリティプログラムの要素<br/>（教育・トレーニング・物理アクセス制御）"]
+                            D5 --> S3["5.3 ローカルパスワードによる<br/>デバイスアクセス制御"]
+                            D5 --> S4["5.4 パスワードポリシーの要素<br/>（複雑性・MFA・証明書・生体認証）"]
+                            D5 --> S5["5.5 IPsecリモートアクセス／<br/>サイト間VPN"]
+                            D5 --> S6["5.6 アクセスコントロールリスト<br/>（ACL）"]
+                            D5 --> S7["5.7 レイヤー2セキュリティ機能<br/>（DHCPスヌーピング・DAI・ポートセキュリティ）"]
+                            D5 --> S8["5.8 AAA<br/>（認証・認可・アカウンティング）"]
+                            D5 --> S9["5.9 無線セキュリティプロトコル<br/>（WPA/WPA2/WPA3）"]
+                            D5 --> S10["5.10 GUIによるWPA2 PSKの<br/>WLAN設定"]
+                            style D5 fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">
+                        図: Security Fundamentals（5.0）のサブトピック全体像
+                    </p>
+
+                    <p>それでは、1つずつステップバイステップで見ていきましょう。</p>
+                </section>
+
+                <hr />
+
+                <section id="s5-1">
+                    <h2>5.1 セキュリティの基本概念（脅威・脆弱性・エクスプロイト・緩和策）</h2>
+                    <h3>概要</h3>
+                    <p>
+                        セキュリティを学ぶ最初の一歩は、<strong>4つの基本用語の違い</strong>を正確に理解することです。この4つは混同されがちですが、CCNA試験でも「用語の定義」を問う問題が頻出します。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>用語（英語）</th>
+                                    <th>用語（日本語）</th>
+                                    <th>意味</th>
+                                    <th>具体例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Vulnerability</td>
+                                    <td>脆弱性</td>
+                                    <td>システムやプロセスに存在する「弱点・欠陥」</td>
+                                    <td>
+                                        パッチ未適用のOS、初期パスワードのまま運用しているルーター
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Threat</td>
+                                    <td>脅威</td>
+                                    <td>脆弱性を突いて損害を与える可能性のある存在・事象</td>
+                                    <td>攻撃者、マルウェア、内部不正、自然災害</td>
+                                </tr>
+                                <tr>
+                                    <td>Exploit</td>
+                                    <td>エクスプロイト</td>
+                                    <td>脆弱性を実際に悪用するための具体的な手段・コード</td>
+                                    <td>バッファオーバーフロー攻撃コード、フィッシングメール</td>
+                                </tr>
+                                <tr>
+                                    <td>Mitigation</td>
+                                    <td>緩和策</td>
+                                    <td>脅威やエクスプロイトの影響を減らすための対策</td>
+                                    <td>パッチ適用、ファイアウォール、多要素認証、教育</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>4つの関係性を図で理解する</h3>
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart LR
+                            V["脆弱性 (Vulnerability)<br/>例: 未パッチのソフトウェア"] -->|悪用される| E["エクスプロイト (Exploit)<br/>例: 攻撃コード・手法"]
+                            T["脅威 (Threat)<br/>例: 攻撃者・マルウェア"] -->|実行する| E
+                            E -->|引き起こす| I["インパクト (Impact)<br/>例: 情報漏えい・サービス停止"]
+                            M["緩和策 (Mitigation)<br/>例: パッチ適用・ファイアウォール・教育"] -.->|低減| V
+                            M -.->|低減| T
+                            M -.->|低減| I
+                            style M fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                            style I fill:#5a1f1f,stroke:#ff8080,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: 脆弱性・脅威・エクスプロイト・緩和策の関係</p>
+
+                    <h3>覚え方のポイント</h3>
+                    <ul>
+                        <li>
+                            <strong>脆弱性は「弱点」そのもの</strong
+                            >（受け身の存在）。攻撃者がいなくても脆弱性は存在し得る。
+                        </li>
+                        <li>
+                            <strong>脅威は「弱点を突こうとする主体・事象」</strong
+                            >。人（攻撃者）だけでなく、自然災害やハードウェア故障も脅威になり得る。
+                        </li>
+                        <li>
+                            <strong>エクスプロイトは「実際に悪用する手段」</strong
+                            >。脆弱性があっても、エクスプロイトが存在しなければ実害には直結しない。
+                        </li>
+                        <li>
+                            <strong>緩和策は「対策」</strong
+                            >。脆弱性を塞ぐ（パッチ）、脅威を検知する（IDS/IPS）、教育で人的リスクを下げる、など多層的に行う。
+                        </li>
+                    </ul>
+                    <p>
+                        代表的な脅威の分類には、マルウェア（ウイルス・ワーム・ランサムウェア）、ソーシャルエンジニアリング（フィッシング）、DoS/DDoS攻撃、スプーフィング（なりすまし）などがあります。CCNA試験では、これらの<strong>名称と特徴の組み合わせ</strong>を問う設問が出やすいため、代表例を一通り押さえておきましょう。
+                    </p>
+                </section>
+
+                <hr />
+
+                <section id="s5-2">
+                    <h2>
+                        5.2
+                        セキュリティプログラムの要素（ユーザー教育・トレーニング・物理アクセス制御）
+                    </h2>
+                    <h3>概要</h3>
+                    <p>
+                        技術的対策（ファイアウォールやACLなど）だけでは組織のセキュリティは守れません。CCNAブループリントでは、<strong>組織的なセキュリティプログラムの3要素</strong>が明示されています。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TB
+                            SP["セキュリティプログラムの3要素"]
+                            SP --> A["ユーザー意識向上<br/>(User Awareness)"]
+                            SP --> B["トレーニング<br/>(Training)"]
+                            SP --> C["物理アクセス制御<br/>(Physical Access Control)"]
+                            A --> A1["フィッシングメールの見分け方の周知<br/>セキュリティポリシーの周知徹底"]
+                            B --> B1["役割に応じた実践的な教育<br/>（例: 管理者向けのインシデント対応訓練）"]
+                            C --> C1["サーバールームの入退室管理<br/>バッジ認証・監視カメラ・施錠キャビネット"]
+                            style SP fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: セキュリティプログラムの3要素</p>
+
+                    <h3>それぞれの役割</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>目的</th>
+                                    <th>具体的な施策例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ユーザー意識向上（Awareness）</td>
+                                    <td>
+                                        全従業員に「セキュリティは自分ごと」という認識を持たせる
+                                    </td>
+                                    <td>社内ポスター、定期メール、フィッシング訓練メール</td>
+                                </tr>
+                                <tr>
+                                    <td>トレーニング（Training）</td>
+                                    <td>役割ごとに必要な実務スキルを身につけさせる</td>
+                                    <td>
+                                        新人研修、管理者向けの技術研修、模擬インシデント対応演習
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>物理アクセス制御（Physical Access Control）</td>
+                                    <td>建物・部屋・機器への物理的な不正アクセスを防ぐ</td>
+                                    <td>ICカード錠、生体認証ゲート、監視カメラ、来訪者管理簿</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>ポイント：</strong
+                        >情報セキュリティの多くのインシデントは、技術的な脆弱性よりも「人」に起因する部分が大きいと言われています。そのため、CCNAでは技術知識だけでなく、こうした組織運営面の基礎も出題範囲に含まれています。
+                    </div>
+                </section>
+
+                <hr />
+
+                <section id="s5-3">
+                    <h2>5.3 ローカルパスワードによるデバイスアクセス制御</h2>
+                    <h3>概要</h3>
+                    <p>
+                        Ciscoルーター・スイッチへの不正アクセスを防ぐ、最も基本的な方法が<strong>ローカルパスワードの設定</strong>です。主なアクセス経路は次の3つです。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart LR
+                            U["管理者"] --> C1["コンソールポート<br/>(Console)"]
+                            U --> C2["仮想端末<br/>(VTY: Telnet/SSH)"]
+                            U --> C3["特権モード<br/>(Enable)"]
+                            C1 --> DEV["Ciscoデバイス"]
+                            C2 --> DEV
+                            C3 --> DEV
+                            style DEV fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: デバイスへの主なアクセス経路</p>
+
+                    <h3>設定コマンド例</h3>
+                    <pre><code>! コンソールポートへのパスワード設定
+Router(config)# line console 0
+Router(config-line)# password &lt;CONSOLE_PASSWORD&gt;
+Router(config-line)# login
+
+! VTY（Telnet/SSHでのリモートアクセス）へのパスワード設定
+Router(config)# line vty 0 4
+Router(config-line)# password &lt;VTY_PASSWORD&gt;
+Router(config-line)# login
+
+! 特権EXECモードへのパスワード設定（enable secretは暗号化される）
+Router(config)# enable secret &lt;ENABLE_SECRET_PASSWORD&gt;
+
+! 平文で保存されるパスワードを暗号化して表示させる
+Router(config)# service password-encryption</code></pre>
+
+                    <h3>覚えておきたいポイント</h3>
+                    <ul>
+                        <li>
+                            <code>enable password</code> は非推奨（平文に近い弱い暗号化）。<strong
+                                >必ず <code>enable secret</code> を使う</strong
+                            >のがベストプラクティス。
+                        </li>
+                        <li>
+                            <code>login</code>
+                            コマンドを入れ忘れると、パスワードを設定してもログイン時に要求されないため注意。
+                        </li>
+                        <li>
+                            ローカルアカウントを使う場合は
+                            <code>username &lt;name&gt; secret &lt;password&gt;</code> と
+                            <code>login local</code>
+                            の組み合わせを使う（後述のAAAの基礎にもつながる）。
+                        </li>
+                    </ul>
+                    <pre><code>Router(config)# username admin secret StrongPass123!
+Router(config)# line vty 0 4
+Router(config-line)# login local
+Router(config-line)# transport input ssh</code></pre>
+                </section>
+
+                <hr />
+
+                <section id="s5-4">
+                    <h2>5.4 パスワードポリシーの要素（管理・複雑性・パスワード代替手段）</h2>
+                    <h3>概要</h3>
+                    <p>
+                        強固なパスワード運用のためには、単に「複雑なパスワードを設定する」だけでなく、<strong>組織的なポリシー</strong>として管理する必要があります。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TB
+                            PP["パスワードポリシーの要素"]
+                            PP --> M["管理 (Management)"]
+                            PP --> C["複雑性 (Complexity)"]
+                            PP --> ALT["パスワードの代替手段 (Alternatives)"]
+                            M --> M1["定期的な変更・使い回し禁止<br/>権限最小化・失効管理"]
+                            C --> C1["最低文字数・英数字記号混在<br/>辞書に載る単語の禁止"]
+                            ALT --> ALT1["多要素認証 (MFA)"]
+                            ALT --> ALT2["証明書 (Certificates)"]
+                            ALT --> ALT3["生体認証 (Biometrics)"]
+                            style PP fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: パスワードポリシーの要素</p>
+
+                    <h3>各要素の詳細</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>管理（Management）</td>
+                                    <td>
+                                        パスワードの発行・変更・失効のライフサイクル管理。使い回し防止、定期変更ポリシーなど
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>複雑性（Complexity）</td>
+                                    <td>
+                                        文字数・文字種（大小英字・数字・記号）の組み合わせ要件。辞書攻撃・総当たり攻撃への耐性を高める
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>多要素認証（MFA）</td>
+                                    <td>
+                                        「知識情報（パスワード）」＋「所持情報（スマホ・トークン）」など複数要素を組み合わせる認証
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>証明書（Certificates）</td>
+                                    <td>
+                                        デジタル証明書（公開鍵基盤 /
+                                        PKI）を用いた認証。パスワードそのものへの依存を減らす
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>生体認証（Biometrics）</td>
+                                    <td>指紋・顔認証・虹彩認証など、身体的特徴による認証</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>なぜパスワードだけに頼らないのか：</strong
+                        >パスワードは「知識情報」であるため、フィッシングや使い回しにより漏洩しやすいという弱点があります。MFAや証明書、生体認証を組み合わせることで、<strong>パスワードが漏れても不正ログインを防ぎやすくなる</strong>（多層防御
+                        / Defense in Depth の考え方）のがポイントです。
+                    </div>
+                </section>
+
+                <hr />
+
+                <section id="s5-5">
+                    <h2>5.5 IPsecリモートアクセス／サイト間VPN</h2>
+                    <h3>概要</h3>
+                    <p>
+                        VPN（Virtual Private
+                        Network）は、インターネットのような信頼できないネットワーク上に、暗号化された仮想的な専用線を作る技術です。CCNAでは<strong>IPsecを使った2つのVPN構成パターン</strong>の違いを理解することが求められます。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TB
+                            subgraph SiteToSite["サイト間VPN Site-to-Site VPN"]
+                                direction LR
+                                R1["拠点A ルーター"] <-->|"IPsecトンネル<br/>(暗号化)"| R2["拠点B ルーター"]
+                                LAN1["拠点A 社内LAN"] --- R1
+                                LAN2["拠点B 社内LAN"] --- R2
+                            end
+                            subgraph RemoteAccess["リモートアクセスVPN Remote Access VPN"]
+                                direction LR
+                                PC["在宅勤務者のPC<br/>(VPNクライアント)"] <-->|"IPsecトンネル<br/>(暗号化)"| GW["VPNゲートウェイ<br/>(本社ルーター/FW)"]
+                                GW --- LAN3["本社 社内LAN"]
+                            end
+                            style SiteToSite fill:#0f1f3d,stroke:#7c9eff,color:#ffffff
+                            style RemoteAccess fill:#0f1f3d,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: サイト間VPNとリモートアクセスVPNの構成比較</p>
+
+                    <h3>2つのVPN方式の違い</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>サイト間VPN (Site-to-Site)</th>
+                                    <th>リモートアクセスVPN (Remote Access)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>主な用途</td>
+                                    <td>拠点間（本社⇔支社など）を常時接続</td>
+                                    <td>個人端末から社内ネットワークへ一時的に接続</td>
+                                </tr>
+                                <tr>
+                                    <td>接続元</td>
+                                    <td>ルーターやファイアウォール同士</td>
+                                    <td>PC・スマートフォンなどのクライアント端末</td>
+                                </tr>
+                                <tr>
+                                    <td>典型的な利用者</td>
+                                    <td>ネットワーク管理者が拠点全体を接続</td>
+                                    <td>在宅勤務者・出張者など個人ユーザー</td>
+                                </tr>
+                                <tr>
+                                    <td>常時接続か</td>
+                                    <td>常時接続が一般的</td>
+                                    <td>必要な時だけ接続（オンデマンド）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>IPsecの基本要素（概要レベル）</h3>
+                    <p>
+                        IPsecは単一のプロトコルではなく、複数の要素を組み合わせた「フレームワーク」です。CCNAレベルでは、以下の役割を大まかに理解しておけば十分です。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>役割</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>IKE (Internet Key Exchange)</td>
+                                    <td>通信相手との間で暗号鍵を安全に交換・管理する</td>
+                                </tr>
+                                <tr>
+                                    <td>ESP (Encapsulating Security Payload)</td>
+                                    <td>データそのものを暗号化し、機密性を確保する</td>
+                                </tr>
+                                <tr>
+                                    <td>AH (Authentication Header)</td>
+                                    <td>
+                                        データの改ざん検知（完全性・送信元認証）を行う（暗号化はしない）
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>CCNAレベルの理解：</strong
+                        >細かいコマンド設定よりも「サイト間VPNとリモートアクセスVPNの違い」「VPNが提供する機密性・完全性・認証という3つの価値」を理解しておくことが重要です。
+                    </div>
+                </section>
+
+                <hr />
+
+                <section id="s5-6">
+                    <h2>5.6 アクセスコントロールリスト（ACL）</h2>
+                    <h3>概要</h3>
+                    <p>
+                        ACL（Access Control
+                        List）は、ルーターやスイッチを通過するパケットを、送信元/宛先IPアドレスやポート番号などの条件で<strong>許可（permit）／拒否（deny）</strong>するためのルールの集合です。CCNA試験では、<strong>設定と検証（コンフィグレーション問題）が頻出する重要トピック</strong>です。
+                    </p>
+
+                    <h3>ACLの種類</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>種類</th>
+                                    <th>番号範囲（Numbered）</th>
+                                    <th>判定基準</th>
+                                    <th>特徴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>標準ACL（Standard）</td>
+                                    <td>1〜99, 1300〜1999</td>
+                                    <td>送信元IPアドレスのみ</td>
+                                    <td>シンプルだが細かい制御はできない</td>
+                                </tr>
+                                <tr>
+                                    <td>拡張ACL（Extended）</td>
+                                    <td>100〜199, 2000〜2699</td>
+                                    <td>送信元/宛先IP、プロトコル、ポート番号など</td>
+                                    <td>柔軟な制御が可能。実務でも主流</td>
+                                </tr>
+                                <tr>
+                                    <td>名前付きACL（Named）</td>
+                                    <td>番号ではなく名前を使用</td>
+                                    <td>標準・拡張どちらも作成可能</td>
+                                    <td>可読性が高く、行の追加・削除が容易</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>パケットがACLで処理される流れ</h3>
+                    <p>
+                        ACLの動作を理解する上で最も重要なポイントは、「<strong>上から順に照合し、最初にマッチしたルールで即座に確定する</strong>」という点と、「<strong
+                            >リストの最後には暗黙のdeny allが存在する</strong
+                        >」という点です。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TD
+                            Start(["パケット到着"]) --> ACE1{"ACE 1 と一致？"}
+                            ACE1 -->|Yes| Action1["ACE 1のアクション実行<br/>(permit または deny)"]
+                            ACE1 -->|No| ACE2{"ACE 2 と一致？"}
+                            ACE2 -->|Yes| Action2["ACE 2のアクション実行"]
+                            ACE2 -->|No| ACE3{"ACE 3 と一致？"}
+                            ACE3 -->|Yes| Action3["ACE 3のアクション実行"]
+                            ACE3 -->|No| More["... 以降のACEも同様に照合"]
+                            More --> Implicit["どのACEにも一致しない場合<br/>暗黙のdeny all が適用される"]
+                            Action1 --> End(["処理完了"])
+                            Action2 --> End
+                            Action3 --> End
+                            Implicit --> End
+                            style Implicit fill:#5a1f1f,stroke:#ff8080,color:#ffffff
+                            style Start fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: ACLによるパケット照合フロー</p>
+
+                    <h3>設定コマンド例</h3>
+                    <pre><code>! 標準ACL：192.168.10.0/24からのアクセスのみ許可
+Router(config)# access-list 10 permit 192.168.10.0 0.0.0.255
+Router(config)# access-list 10 deny any
+
+! 拡張ACL：192.168.10.0/24からWebサーバー(HTTPS)へのアクセスのみ許可
+Router(config)# access-list 110 permit tcp 192.168.10.0 0.0.0.255 host 203.0.113.10 eq 443
+Router(config)# access-list 110 deny ip any any
+
+! 名前付き拡張ACLの例
+Router(config)# ip access-list extended BLOCK-TELNET
+Router(config-ext-nacl)# deny tcp any any eq 23
+Router(config-ext-nacl)# permit ip any any
+
+! インターフェースへの適用（inbound方向）
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# ip access-group 110 in</code></pre>
+
+                    <h3>設定・検証時のよくあるミス（試験で狙われやすいポイント）</h3>
+                    <ul>
+                        <li>
+                            <strong>ワイルドカードマスクとサブネットマスクを混同する</strong
+                            >（ワイルドカードは「0=一致必須, 1=無視」で通常のマスクと考え方が逆）。
+                        </li>
+                        <li>ACLの<strong>適用方向（in/out）を間違える</strong>。</li>
+                        <li>
+                            ルールの<strong>順序を誤り</strong>、意図しないパケットが早い段階でマッチしてしまう。
+                        </li>
+                        <li>
+                            最後の<strong>暗黙のdeny allを忘れ</strong
+                            >、想定より多くの通信がブロックされてしまう。
+                        </li>
+                        <li>
+                            <code>show ip access-lists</code> や
+                            <code>show access-lists</code>
+                            で、<strong>マッチ件数（matches）を確認して意図通り動作しているか検証する</strong>習慣をつける。
+                        </li>
+                    </ul>
+                </section>
+
+                <hr />
+
+                <section id="s5-7">
+                    <h2>
+                        5.7
+                        レイヤー2セキュリティ機能（DHCPスヌーピング・動的ARPインスペクション・ポートセキュリティ）
+                    </h2>
+                    <h3>概要</h3>
+                    <p>
+                        レイヤー3（ACLなど）だけでなく、<strong>レイヤー2（スイッチ）レベルでの防御</strong>もCCNAの重要トピックです。この3つの機能は、それぞれ役割が異なりますが、互いに連携して動作する「セット」として理解すると学習効率が上がります。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TD
+                            Client["クライアントPC"] -->|"接続"| SwPort["スイッチポート"]
+                            SwPort --> PS["ポートセキュリティ<br/>(Port Security)"]
+                            PS --> PSDesc["ポートに接続できる<br/>MACアドレスの数・種類を制限"]
+                            SwPort --> DS["DHCPスヌーピング<br/>(DHCP Snooping)"]
+                            DS --> DSDesc["信頼できないポートからの<br/>不正なDHCPサーバー応答を遮断"]
+                            DS --> Binding["DHCPバインディングテーブルを生成<br/>(IP - MAC - ポート の対応表)"]
+                            Binding --> DAI["動的ARPインスペクション<br/>(Dynamic ARP Inspection)"]
+                            DAI --> DAIDesc["バインディングテーブルと照合し、<br/>ARPスプーフィング（なりすまし）を検知・遮断"]
+                            style PS fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                            style DS fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                            style DAI fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                            style Binding fill:#0f1f3d,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: レイヤー2セキュリティ機能の連携</p>
+
+                    <div class="callout">
+                        <strong>学習のコツ：</strong
+                        >この3つは「ポートセキュリティで“誰が繋げるか”を制限 →
+                        DHCPスヌーピングで“正しいDHCPサーバーの情報だけ”を信頼 →
+                        その情報（バインディングテーブル）を使ってDAIが“ARPの嘘”を見抜く」という順番でストーリーとして覚えると整理しやすくなります。
+                    </div>
+
+                    <h3>各機能の比較表</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>機能</th>
+                                    <th>目的</th>
+                                    <th>監視対象</th>
+                                    <th>主なコマンド例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ポートセキュリティ</td>
+                                    <td>ポートに接続できるMACアドレス数・種類を制限</td>
+                                    <td>スイッチポートのMACアドレス</td>
+                                    <td><code>switchport port-security</code></td>
+                                </tr>
+                                <tr>
+                                    <td>DHCPスヌーピング</td>
+                                    <td>不正なDHCPサーバーからの応答を遮断</td>
+                                    <td>DHCPメッセージ（Offer/Ackなど）</td>
+                                    <td><code>ip dhcp snooping</code></td>
+                                </tr>
+                                <tr>
+                                    <td>動的ARPインスペクション（DAI）</td>
+                                    <td>ARPスプーフィング（なりすまし）を防止</td>
+                                    <td>ARPリクエスト/リプライ</td>
+                                    <td><code>ip arp inspection</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>設定コマンド例</h3>
+                    <pre><code>! --- ポートセキュリティ ---
+Switch(config)# interface FastEthernet0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport port-security
+Switch(config-if)# switchport port-security maximum 2
+Switch(config-if)# switchport port-security violation restrict
+Switch(config-if)# switchport port-security mac-address sticky
+
+! --- DHCPスヌーピング ---
+Switch(config)# ip dhcp snooping
+Switch(config)# ip dhcp snooping vlan 10
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# ip dhcp snooping trust
+! 正規のDHCPサーバーに接続するアップリンクポートのみ「信頼」に設定する
+
+! --- 動的ARPインスペクション (DAI) ---
+Switch(config)# ip arp inspection vlan 10
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# ip arp inspection trust
+! DHCPスヌーピングと同じアップリンクポートを信頼設定にする</code></pre>
+
+                    <h3>ポートセキュリティの違反モード（Violation Mode）</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>モード</th>
+                                    <th>動作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>protect</td>
+                                    <td>超過したフレームを破棄。ログや通知は出さない</td>
+                                </tr>
+                                <tr>
+                                    <td>restrict</td>
+                                    <td>超過したフレームを破棄し、ログ・SNMPトラップを送信</td>
+                                </tr>
+                                <tr>
+                                    <td>shutdown（デフォルト）</td>
+                                    <td>ポート自体をerr-disable状態にしてシャットダウンする</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <hr />
+
+                <section id="s5-8">
+                    <h2>5.8 AAA（認証・認可・アカウンティング）の概念比較</h2>
+                    <h3>概要</h3>
+                    <p>
+                        AAAとは、ネットワーク機器へのアクセス管理を体系化する考え方で、<strong
+                            >Authentication（認証）・Authorization（認可）・Accounting（アカウンティング）</strong
+                        >
+                        の頭文字です。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        sequenceDiagram
+                            participant U as ユーザー
+                            participant NAS as ネットワークデバイス(NAS)
+                            participant AAA as AAAサーバー(RADIUS/TACACS+)
+                            U->>NAS: ログイン試行（ID・パスワード送信）
+                            NAS->>AAA: 認証(Authentication)要求
+                            AAA-->>NAS: 認証結果（OK/NG）を返却
+                            NAS->>AAA: 認可(Authorization)要求 「このユーザーは何ができるか」
+                            AAA-->>NAS: 許可されたコマンド・権限レベルを返却
+                            NAS-->>U: アクセス許可・権限に応じた操作が可能に
+                            NAS->>AAA: アカウンティング(Accounting)情報送信 「いつ・誰が・何をしたか」のログ
+                    </script>
+                    <p class="diagram-caption">図: AAAの処理シーケンス</p>
+
+                    <h3>3つの要素の役割</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>要素</th>
+                                    <th>意味</th>
+                                    <th>具体例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Authentication（認証）</td>
+                                    <td>「あなたは誰か」を確認する</td>
+                                    <td>ユーザー名とパスワードでログイン、証明書認証</td>
+                                </tr>
+                                <tr>
+                                    <td>Authorization（認可）</td>
+                                    <td>「あなたに何が許可されているか」を決定する</td>
+                                    <td>一般ユーザーはshowコマンドのみ、管理者はconfigも可能</td>
+                                </tr>
+                                <tr>
+                                    <td>Accounting（アカウンティング）</td>
+                                    <td>「いつ・誰が・何をしたか」を記録する</td>
+                                    <td>ログイン日時、実行したコマンドの履歴を記録</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>RADIUSとTACACS+の比較</h3>
+                    <p>
+                        CCNAでは、AAAを実現する代表的なプロトコルとして <strong>RADIUS</strong> と
+                        <strong>TACACS+</strong> の違いも問われます。
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>RADIUS</th>
+                                    <th>TACACS+</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>開発元</td>
+                                    <td>業界標準（オープン）</td>
+                                    <td>Cisco独自プロトコル</td>
+                                </tr>
+                                <tr>
+                                    <td>トランスポート層</td>
+                                    <td>UDP</td>
+                                    <td>TCP</td>
+                                </tr>
+                                <tr>
+                                    <td>暗号化範囲</td>
+                                    <td>パスワード部分のみ暗号化</td>
+                                    <td>パケット全体を暗号化</td>
+                                </tr>
+                                <tr>
+                                    <td>認証と認可</td>
+                                    <td>認証と認可を一体で処理</td>
+                                    <td>認証・認可・アカウンティングを分離して処理可能</td>
+                                </tr>
+                                <tr>
+                                    <td>主な用途</td>
+                                    <td>ネットワークアクセス認証（Wi-Fi、VPNなど）で広く利用</td>
+                                    <td>Cisco機器の管理アクセス（デバイスログイン）で多用</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>設定コマンド例（概念理解用）</h3>
+                    <pre><code>Router(config)# aaa new-model
+Router(config)# radius server MyRadius
+Router(config-radius-server)# address ipv4 192.168.1.100
+Router(config-radius-server)# key MySharedSecret
+
+Router(config)# aaa authentication login default group radius local
+! まずRADIUSサーバーで認証し、応答がなければローカルアカウントにフォールバック</code></pre>
+                </section>
+
+                <hr />
+
+                <section id="s5-9">
+                    <h2>5.9 無線セキュリティプロトコル（WPA・WPA2・WPA3）</h2>
+                    <h3>概要</h3>
+                    <p>
+                        無線LAN（Wi-Fi）は電波を使うため、有線LANよりも盗聴・不正接続のリスクが高くなります。そのため、暗号化・認証の規格が段階的に強化されてきました。
+                    </p>
+
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart LR
+                            WEP["WEP<br/>(非推奨・脆弱)"] --> WPA["WPA<br/>(TKIP暗号化)"]
+                            WPA --> WPA2["WPA2<br/>(AES-CCMP暗号化)"]
+                            WPA2 --> WPA3["WPA3<br/>(AES-GCMP / SAE)"]
+                            style WEP fill:#5a1f1f,stroke:#ff8080,color:#ffffff
+                            style WPA3 fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: 無線セキュリティ規格の進化</p>
+
+                    <h3>WPA / WPA2 / WPA3 の比較</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>WPA</th>
+                                    <th>WPA2</th>
+                                    <th>WPA3</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>暗号化方式</td>
+                                    <td>TKIP（RC4ベース、脆弱性あり）</td>
+                                    <td>AES-CCMP</td>
+                                    <td>AES-GCMP（強度が高い）</td>
+                                </tr>
+                                <tr>
+                                    <td>個人向け認証</td>
+                                    <td>PSK（事前共有鍵）</td>
+                                    <td>PSK</td>
+                                    <td>SAE（より安全な鍵交換）</td>
+                                </tr>
+                                <tr>
+                                    <td>オフライン辞書攻撃への耐性</td>
+                                    <td>低い</td>
+                                    <td>中程度</td>
+                                    <td>高い（SAEにより大幅強化）</td>
+                                </tr>
+                                <tr>
+                                    <td>企業向け認証</td>
+                                    <td>802.1X/EAP対応</td>
+                                    <td>802.1X/EAP対応</td>
+                                    <td>802.1X/EAP対応（暗号強度が向上）</td>
+                                </tr>
+                                <tr>
+                                    <td>現状の位置づけ</td>
+                                    <td>事実上非推奨</td>
+                                    <td>長らく業界標準として普及</td>
+                                    <td>最新の推奨規格</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>覚えておきたいポイント</h3>
+                    <ul>
+                        <li>
+                            <strong
+                                >WPA2のPSKモードは「事前共有鍵（パスフレーズ）」を全端末で共有する方式</strong
+                            >で、家庭やSOHO環境で一般的。
+                        </li>
+                        <li>
+                            <strong>WPA3のSAEは、通信を盗聴されても事前共有鍵を推測しにくい</strong
+                            >よう設計されており、WPA2
+                            PSKの弱点（オフライン辞書攻撃）を大きく改善している。
+                        </li>
+                        <li>
+                            企業環境では、個人ごとに異なる認証情報を使う
+                            <strong>802.1X（AAAと連携したエンタープライズモード）</strong>
+                            がより安全とされる。
+                        </li>
+                    </ul>
+                </section>
+
+                <hr />
+
+                <section id="s5-10">
+                    <h2>5.10 GUIによるWLAN（WPA2 PSK）設定の考え方</h2>
+                    <h3>概要</h3>
+                    <p>
+                        CCNAブループリントの5.10では、CLIコマンドではなく、<strong
+                            >WLC（Wireless LAN Controller）のGUI上でWLANを作成し、WPA2
+                            PSKを設定する一連の流れを理解すること</strong
+                        >が求められます。実際の試験ではGUIのスクリーンショットを使った出題（シミュレーション形式）がある点が特徴です。
+                    </p>
+
+                    <h3>GUI設定の一般的な流れ</h3>
+                    <script type="text/plain" class="mermaid-source">
+                        flowchart TD
+                            A["WLANの新規作成<br/>(WLAN ID・SSID名を指定)"] --> B["一般設定<br/>(WLANの有効化、インターフェース割当)"]
+                            B --> C["セキュリティ設定<br/>(Layer2タブでWPA2/PSKを選択)"]
+                            C --> D["事前共有鍵(PSK)の入力<br/>(パスフレーズを設定)"]
+                            D --> E["QoSプロファイルの設定<br/>(Bronze/Silver/Gold/Platinumなど)"]
+                            E --> F["詳細設定<br/>(セッションタイムアウト、帯域制限など)"]
+                            F --> G["設定を適用してWLANを有効化"]
+                            style A fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                            style G fill:#1b3a6b,stroke:#7c9eff,color:#ffffff
+                    </script>
+                    <p class="diagram-caption">図: WLC GUIでのWLAN設定フロー</p>
+
+                    <h3>各ステップのポイント</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ステップ</th>
+                                    <th>画面（タブ）</th>
+                                    <th>設定内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>① WLAN作成</td>
+                                    <td>WLANs &gt; Create New</td>
+                                    <td>WLAN ID、Profile Name、SSID名を設定</td>
+                                </tr>
+                                <tr>
+                                    <td>② 一般設定</td>
+                                    <td>General</td>
+                                    <td>
+                                        WLANの有効/無効、割り当てるインターフェース（VLAN）を選択
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>③ セキュリティ設定</td>
+                                    <td>Security &gt; Layer2</td>
+                                    <td>
+                                        Layer 2 Securityで「WPA2」を選択し、認証方式で「PSK」を選択
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>④ 事前共有鍵入力</td>
+                                    <td>Security &gt; Layer2</td>
+                                    <td>
+                                        PSK Formatを選択し、実際のパスフレーズ（8〜63文字）を入力
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>⑤ QoS設定</td>
+                                    <td>QoS</td>
+                                    <td>
+                                        トラフィックの優先度（音声・動画を優先するプロファイルなど）を設定
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>⑥ 詳細設定</td>
+                                    <td>Advanced</td>
+                                    <td>
+                                        セッションタイムアウトやP2Pブロッキングなどのオプション設定
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>試験対策のヒント：</strong
+                        >CLIの丸暗記よりも、「どのタブでどんな設定をするのか、大まかな位置関係と流れ」を理解しておくことが得点につながります。特に「セキュリティ設定はLayer2タブで行う」という点は狙われやすいポイントです。
+                    </div>
+                </section>
+
+                <hr />
+
+                <section id="summary">
+                    <h2>まとめ：ドメイン5.0の学習優先順位</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>優先度</th>
+                                    <th>サブトピック</th>
+                                    <th>理由</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>★★★</td>
+                                    <td>5.6 ACL、5.7 レイヤー2セキュリティ</td>
+                                    <td>
+                                        設定・検証（シミュレーション）問題が出やすく配点も大きい
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>★★★</td>
+                                    <td>5.8 AAA</td>
+                                    <td>概念問題・RADIUS/TACACS+比較が頻出</td>
+                                </tr>
+                                <tr>
+                                    <td>★★☆</td>
+                                    <td>5.9 無線セキュリティ、5.5 IPsec VPN</td>
+                                    <td>概念理解中心。用語の比較が問われやすい</td>
+                                </tr>
+                                <tr>
+                                    <td>★★☆</td>
+                                    <td>5.1〜5.4 基本概念・パスワードポリシー</td>
+                                    <td>用語定義の暗記が中心。得点しやすい基礎パート</td>
+                                </tr>
+                                <tr>
+                                    <td>★☆☆</td>
+                                    <td>5.10 GUIでのWLAN設定</td>
+                                    <td>
+                                        出題頻度は比較的低いが、流れを押さえておけば失点を防げる
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        セキュリティの基礎（5.0）は出題比率こそ15%ですが、<strong
+                            >ACLやAAA、レイヤー2セキュリティは他ドメイン（IP Connectivity、Network
+                            Access）とも関連が深く</strong
+                        >、実務でもよく使う内容です。単なる暗記ではなく、「なぜその機能が必要なのか」というストーリーで理解することをおすすめします。
+                    </p>
+                </section>
+
+                <hr />
+
+                <section id="references">
+                    <h2>参考ソース</h2>
+                    <p>本記事の内容は、以下のCisco公式情報を根拠として作成しています。</p>
+                    <ul class="ref-list">
+                        <li>
+                            Cisco CCNA認定資格 公式ページ（日本語）<br />
+                            <a
+                                href="https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.cisco.com/c/ja_jp/training-events/training-certifications/certifications/associate/ccna.html</a
+                            >
+                        </li>
+                        <li>
+                            CCNA 200-301 Exam Topics v1.1（公式試験ブループリントPDF、英語）<br />
+                            <a
+                                href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf</a
+                            >
+                        </li>
+                        <li>
+                            Cisco Learning Network（200-301 CCNA Exam Topics 一覧ページ）<br />
+                            <a
+                                href="https://learningnetwork.cisco.com/s/article/200-301-ccna-exam-topics"
+                                target="_blank"
+                                rel="noopener"
+                                >https://learningnetwork.cisco.com/s/article/200-301-ccna-exam-topics</a
+                            >
+                        </li>
+                    </ul>
+                    <p class="footnote">
+                        ※ブループリントは予告なく更新される場合があるため、受験前に必ず上記Cisco公式ページで最新情報をご確認ください。v1.1は2024年8月20日に発効し、2027年2月2日まで有効とされています（v2.0への切り替えは2027年2月3日予定）。
+                    </p>
+                </section>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+        <script>
+            (function () {
+                'use strict';
+
+                function dedent(str) {
+                    var lines = str.replace(/^\n/, '').replace(/\s+$/, '').split('\n');
+                    var indents = lines
+                        .filter(function (l) {
+                            return l.trim().length > 0;
+                        })
+                        .map(function (l) {
+                            return l.match(/^\s*/)[0].length;
+                        });
+                    var minIndent = indents.length ? Math.min.apply(null, indents) : 0;
+                    return lines
+                        .map(function (l) {
+                            return l.slice(minIndent);
+                        })
+                        .join('\n');
+                }
+
+                // 1) Convert <script class="mermaid-source"> blocks into <pre class="mermaid">
+                document.querySelectorAll('script.mermaid-source').forEach(function (scriptEl) {
+                    var pre = document.createElement('pre');
+                    pre.className = 'mermaid';
+                    pre.textContent = dedent(scriptEl.textContent);
+                    scriptEl.parentNode.replaceChild(pre, scriptEl);
+                });
+
+                // 2) Initialize Mermaid with fixed font size and no shrink-to-fit
+                if (window.mermaid) {
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'dark',
+                        securityLevel: 'loose',
+                        themeVariables: {
+                            fontSize: '16px',
+                            background: '#07111e',
+                            primaryColor: '#1b3a6b',
+                            primaryTextColor: '#ffffff',
+                            primaryBorderColor: '#7c9eff',
+                            lineColor: '#7c9eff',
+                            secondaryColor: '#0f1f3d',
+                            tertiaryColor: '#0f1f3d',
+                            edgeLabelBackground: '#0b1830',
+                        },
+                        flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+                        sequence: { useMaxWidth: false },
+                    });
+                    mermaid.run({ querySelector: 'pre.mermaid' });
+                }
+
+                // 3) Syntax highlighting for code blocks
+                if (window.hljs) {
+                    document.querySelectorAll('pre:not(.mermaid) code').forEach(function (block) {
+                        hljs.highlightElement(block);
+                    });
+                }
+
+                // 4) Sidebar navigation: reveal-on-scroll + scroll-spy highlighting
+                var sections = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+                var navLinks = Array.prototype.slice.call(
+                    document.querySelectorAll('.sidebar nav a[data-nav]'),
+                );
+
+                var revealObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) entry.target.classList.add('visible');
+                        });
+                    },
+                    { rootMargin: '0px 0px -10% 0px', threshold: 0.01 },
+                );
+                sections.forEach(function (s) {
+                    revealObserver.observe(s);
+                });
+
+                var spyObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            var id = entry.target.getAttribute('id');
+                            var link = document.querySelector('.sidebar nav a[href="#' + id + '"]');
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(function (l) {
+                                    l.classList.remove('active');
+                                });
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-15% 0px -75% 0px', threshold: 0 },
+                );
+                sections.forEach(function (s) {
+                    spyObserver.observe(s);
+                });
+            })();
+        </script>
+    </body>
+</html>

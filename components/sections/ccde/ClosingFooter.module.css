@@ -1,0 +1,10 @@
+.closing {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--line-cyan);
+    border-top: 1px solid var(--navy-mid);
+    padding-top: 20px;
+    margin-top: 40px;
+}

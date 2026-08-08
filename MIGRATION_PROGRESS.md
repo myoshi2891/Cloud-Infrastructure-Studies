@@ -7,7 +7,78 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
 - **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-08-02T15:10:00.000Z
+- **最終更新日時(UTC):** 2026-08-05T11:58:00.000Z
+
+## 2026-08-05: Cisco「CCIE Enterprise Infrastructure 認定 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccie-enterprise-infrastructure.html`（静的HTML・1555行・4個のMermaid図・6個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcieEnterpriseGuide.tsx + constants.ts + page.module.css + 共有 MermaidDiagram）で `app/cisco/ccie/enterprise-infrastructure` ルートへ完全移行する。文章・表・4個のMermaid図・FAQ・参考ソース全10件の一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for ccie enterprise infrastructure guide` (`__tests__/cisco/ccie-enterprise-infrastructure.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat: implement ccie enterprise infrastructure guide components and page` (`page.tsx`, `CcieEnterpriseGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.module.css` 実装)
+- [x] **Step 3 (Refactor / Integration & Nav & Archive)**: `refactor: integrate ccie enterprise infrastructure guide into navigation and archive html source` (`app/constants.ts` EXAMSへの統合、`MIGRATION_PROGRESS.md` 更新、元HTML `Ccie-enterprise-infrastructure.html` の `archive/Cisco/html/` へのアーカイブ移動)
+
+### 関連ファイル
+
+- [app/cisco/ccie/enterprise-infrastructure/page.tsx](app/cisco/ccie/enterprise-infrastructure/page.tsx)
+- [app/cisco/ccie/enterprise-infrastructure/CcieEnterpriseGuide.tsx](app/cisco/ccie/enterprise-infrastructure/CcieEnterpriseGuide.tsx)
+- [app/cisco/ccie/enterprise-infrastructure/NavBar.tsx](app/cisco/ccie/enterprise-infrastructure/NavBar.tsx)
+- [app/cisco/ccie/enterprise-infrastructure/constants.ts](app/cisco/ccie/enterprise-infrastructure/constants.ts)
+- [app/cisco/ccie/enterprise-infrastructure/page.module.css](app/cisco/ccie/enterprise-infrastructure/page.module.css)
+- [__tests__/cisco/ccie-enterprise-infrastructure.test.tsx](__tests__/cisco/ccie-enterprise-infrastructure.test.tsx)
+- [archive/Cisco/html/ccie/Ccie-enterprise-infrastructure.html](archive/Cisco/html/ccie/Ccie-enterprise-infrastructure.html)
+- [archive/Cisco/md/ccie/Ccie-enterprise-infrastructure.md](archive/Cisco/md/ccie/Ccie-enterprise-infrastructure.md)
+
+
+## 2026-08-05: Cisco「Cisco Certified Design Expert (CCDE) 完全ガイド」移行 (完了)
+
+### 目的
+
+`Ccde-guide.html`（静的HTML・1511行・5個のMermaid図・8個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcdeGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccde/complete-guide` ルートへ完全移行する。文章・表・5個のMermaid図・用語集・FAQ・公式リンク9件の一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test: add failing tests for Cisco CCDE complete guide migration` (`__tests__/cisco-ccde-guide.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat: implement Cisco CCDE complete guide page to pass tests` (`page.tsx`, `CcdeGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor/docs: integrate CCDE guide into routing, archive html, and update docs` (`app/constants.ts` EXAMSへの統合、`GEMINI.md` / `CLAUDE.md` / `MIGRATION_PROGRESS.md` 更新、元HTML `Ccde-guide.html` のアーカイブ移動)
+
+### 関連ファイル
+
+- [app/cisco/ccde/complete-guide/page.tsx](app/cisco/ccde/complete-guide/page.tsx)
+- [app/cisco/ccde/complete-guide/CcdeGuide.tsx](app/cisco/ccde/complete-guide/CcdeGuide.tsx)
+- [app/cisco/ccde/complete-guide/NavBar.tsx](app/cisco/ccde/complete-guide/NavBar.tsx)
+- [app/cisco/ccde/complete-guide/constants.ts](app/cisco/ccde/complete-guide/constants.ts)
+- [app/cisco/ccde/complete-guide/page.css](app/cisco/ccde/complete-guide/page.css)
+- [__tests__/cisco-ccde-guide.test.tsx](__tests__/cisco-ccde-guide.test.tsx)
+- [Gcl_Archive/Cisco/html/Ccde-guide.html](Gcl_Archive/Cisco/html/Ccde-guide.html)
+
+
+## 2026-08-05: AWS「Solutions Architect Associate Domain 4: コスト最適化アーキテクチャの設計」移行 (完了)
+
+### 目的
+
+`AWS-Certified-Solutions-Architect-Associate-Domain4.html`（静的HTML・2797行・29個のMermaid図）を、正準の設計パターン（NavBar + Server page.tsx + Client Domain4Guide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/aws/solutions-architect-associate/domain4` ルートへ完全移行する。文章・表・29個のMermaid図・補足説明・チェックリストの一切の省略・要約なしで完全移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(aws-saa): add failing tests for Domain 4 guide` (`__tests__/aws/solutions-architect-associate/domain4/page.test.tsx` 失敗テストの作成)
+- [x] **Step 2 (Green)**: `feat(aws-saa): implement Domain 4 guide components to pass tests` (`page.tsx`, `Domain4Guide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css` 実装とテスト通過)
+- [x] **Step 3 (Refactor / Integration & Nav)**: `refactor(aws-saa): integrate Domain 4 guide into routing and update docs` (`app/constants.ts` EXAMSへの統合、`GEMINI.md` / `CLAUDE.md` 更新)
+- [x] **Step 4 (Docs Sync & Archive)**: `chore(docs): update MIGRATION_PROGRESS.md and archive Domain 4 HTML` (`MIGRATION_PROGRESS.md` の更新、元HTML `AWS-Certified-Solutions-Architect-Associate-Domain4.html` を `archive/Aws/SAA/html/` へ、MD `AWS-Certified-Solutions-Architect-Associate-Domain4.md` を `archive/Aws/SAA/md/` へアーカイブ移動)
+
+### 関連ファイル
+
+- [app/aws/solutions-architect-associate/domain4/page.tsx](app/aws/solutions-architect-associate/domain4/page.tsx)
+- [app/aws/solutions-architect-associate/domain4/Domain4Guide.tsx](app/aws/solutions-architect-associate/domain4/Domain4Guide.tsx)
+- [app/aws/solutions-architect-associate/domain4/NavBar.tsx](app/aws/solutions-architect-associate/domain4/NavBar.tsx)
+- [app/aws/solutions-architect-associate/domain4/constants.ts](app/aws/solutions-architect-associate/domain4/constants.ts)
+- [app/aws/solutions-architect-associate/domain4/page.css](app/aws/solutions-architect-associate/domain4/page.css)
+- [__tests__/aws/solutions-architect-associate/domain4/page.test.tsx](__tests__/aws/solutions-architect-associate/domain4/page.test.tsx)
+- [archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain4.html](archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain4.html)
+- [archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain4.md](archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain4.md)
 
 ## 2026-08-02: GCP「Team Griffin インフラ構築チャレンジラボ 完全解説ガイド」移行 (完了)
 
