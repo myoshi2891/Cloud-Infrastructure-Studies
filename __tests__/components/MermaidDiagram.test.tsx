@@ -1,6 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { MermaidDiagram, applySvgFixups } from '@/components/MermaidDiagram';
+
+const mermaidStyles = readFileSync(
+    join(process.cwd(), 'components/MermaidDiagram.module.css'),
+    'utf8',
+);
 
 /** viewBox 付き SVG 要素を生成するヘルパー */
 const makeSvg = (viewBox?: string): SVGSVGElement => {
@@ -11,6 +18,11 @@ const makeSvg = (viewBox?: string): SVGSVGElement => {
 
 describe('MermaidDiagram', () => {
     const sampleChart = 'flowchart LR\n  A[Start] --> B[End]';
+
+    it('自然幅のSVGをflexで縮小せず、Mermaidの採寸値16pxと同じ文字サイズを使うこと', () => {
+        expect(mermaidStyles).toMatch(/\.mermaidTarget\s+:global\(svg\)[^{]*\{[^}]*flex-shrink:\s*0;/s);
+        expect(mermaidStyles).toMatch(/:global\(tspan\)[^{]*\{[^}]*font-size:\s*16px\s*!important;/s);
+    });
 
     it('role="img" の wrapper を ariaLabel 付きで描画すること', () => {
         render(<MermaidDiagram chart={sampleChart} ariaLabel="サンプルフロー図" />);
