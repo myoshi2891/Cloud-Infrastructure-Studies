@@ -37,7 +37,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
 }
 
 /**
- * Renders a CCNA Automation guide covering API concepts, usage patterns, and implementation.
+ * Renders a Japanese study guide for the CCNA Automation API domain, covering API concepts, request construction, authentication, constraints, webhooks, troubleshooting, and Python implementation.
  */
 export function CcnaAutomationApiGuide() {
     return (
