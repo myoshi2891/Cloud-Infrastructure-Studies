@@ -87,8 +87,8 @@ describe('CcnaCiscoPlatformsDevelopmentPage', () => {
         expect(screen.getByText('Understanding and Using APIs')).toBeInTheDocument();
 
         // Platform overview table
-        expect(screen.getByText(/3.2 ネットワーク管理/i)).toBeInTheDocument();
-        expect(screen.getByText(/Meraki, Cisco DNA Center, ACI, Cisco SD-WAN, NSO/i)).toBeInTheDocument();
+        expect(screen.getAllByText(/3.2 ネットワーク管理/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Meraki, Cisco DNA Center, ACI, Cisco SD-WAN, NSO/i)[0]).toBeInTheDocument();
 
         // Security table
         expect(screen.getByText('Secure Endpoint')).toBeInTheDocument();
