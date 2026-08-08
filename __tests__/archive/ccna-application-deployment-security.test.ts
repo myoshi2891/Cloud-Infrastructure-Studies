@@ -33,7 +33,8 @@ describe('CCNA application deployment and security archives', () => {
     });
 
     it('Markdown has one H1 and blank lines around anchored headings', () => {
-        expect(markdown.match(/^# /gm)).toHaveLength(1);
+        const markdownWithoutCodeFences = markdown.replace(/```[\s\S]*?```/g, '');
+        expect(markdownWithoutCodeFences.match(/^# /gm)).toHaveLength(1);
         expect(markdown).not.toMatch(/<a id="[^"]+"><\/a>\n##/);
         expect(markdown).toMatch(/^# CCNA Automation（200-901 CCNAAUTO）「Application Deployment and Security」ドメイン 完全解説ガイド\n\n/);
     });
