@@ -473,13 +473,29 @@ const applySvgFixups = (
 .mermaidTarget :global(.node .nodeLabel),
 .mermaidTarget :global(.node .nodeLabel *) { color: #ffffff !important; }
 
-/* 黄色ノード(#fbbc04)のみラベルを黒に戻す（白×黄の同化回避） */
+/* 黄色系ノード(#fbbc04, #ffe08a, #ffd479, #ffba00)は白×黄で同化するため、ラベルのみ黒に戻す */
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel),
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="ffe08a" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="ffe08a" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="ffd479" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="ffd479" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="ffba00" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="ffba00" i] .nodeLabel *),
 .mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel),
 .mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel *),
-.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel),
-.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel *) { color: #000000 !important; }
+.mermaidTarget :global(.node:has([style*="ffe08a" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="ffe08a" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="ffd479" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="ffd479" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="fbbc04" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="fbbc04" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="ffe08a" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="ffe08a" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="ffd479" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="ffd479" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="ffba00" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="ffba00" i]) .nodeLabel *) { color: #000000 !important; }
 ```
 
 > `.edgeLabel *` に `fill:#fff` を当てない。エッジラベルの背景 `rect` が白く塗り潰される。色を当てるのは**ラベルテキストのみ・`color` のみ**に留める。
