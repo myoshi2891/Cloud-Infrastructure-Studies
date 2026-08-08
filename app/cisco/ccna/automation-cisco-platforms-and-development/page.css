@@ -335,8 +335,17 @@
 
 .ccna-platforms-dev-page .mermaid-wrap {
   display: flex;
-  justify-content: center;
+  justify-content: safe center;
   width: 100%;
+}
+
+.ccna-platforms-dev-page :global(.node[style*="ffe08a" i] .nodeLabel),
+.ccna-platforms-dev-page :global(.node[style*="ffe08a" i] .nodeLabel *),
+.ccna-platforms-dev-page :global(.node:has([style*="ffe08a" i]) .nodeLabel),
+.ccna-platforms-dev-page :global(.node:has([style*="ffe08a" i]) .nodeLabel *),
+.ccna-platforms-dev-page :global(.node:has([fill*="ffe08a" i]) .nodeLabel),
+.ccna-platforms-dev-page :global(.node:has([fill*="ffe08a" i]) .nodeLabel *) {
+  color: #241a00 !important;
 }
 
 /* ---------- Code Blocks ---------- */
