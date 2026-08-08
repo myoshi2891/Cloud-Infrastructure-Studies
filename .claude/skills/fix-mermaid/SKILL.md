@@ -317,7 +317,28 @@ const DISPLAY = {
 </div>
 ```
 
-自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` を検証する。既定動作のテストも残し、他ページへの波及を防ぐ。
+自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` を検証する。既定動作のテストも残し、他ページへの波及を防ぐ。
+
+#### ⚠️ スクロール時の図解縮小・チカチカバグの防止（React.memo メモ化）
+
+`IntersectionObserver` 等によるスクロール位置の監視（`setActiveSection` 等）により、親コンポーネントがスクロールするたびに高頻度で再レンダリングされる。
+ダイアグラムラッパー（`Diagram` コンポーネント等）および `MermaidDiagram` がメモ化されていない場合、親の再レンダリングのたびに `dangerouslySetInnerHTML` や `useEffect` がトリガーされ、DOM に適用された `style.width` などのインラインスタイルがリセットされて「上下スクロール時に図が豆粒に縮小される」不具合が発生する。
+
+**【対策】**:
+1. `MermaidDiagram` および各ガイドページの `Diagram` コンポーネントを必ず `React.memo` でラップする。
+2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` で `svgEl.style.maxWidth = 'none'` を設定し、コンテナ幅の変化に追従した自動縮小を防止する。 viewbox 幅が 600px 未満等の小さい図は `targetWidth = Math.max(w, 600)` で最低幅 600px を確保して文字の1rem表示を保証する。
+
+```tsx
+const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
+    const chart = DIAGRAMS[id];
+    if (!chart) return null;
+    return (
+        <div className="mermaid-wrap">
+            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale={true} />
+        </div>
+    );
+});
+```
 
 
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
@@ -378,7 +399,11 @@ mermaid.initialize({
 **`innerHTML` 注入後の実 DOM 要素を直接操作**する（`apply_render_pipeline.mjs` も同方式）。React では `ref` + `svgStr` 依存の `useEffect` で、注入済み `<svg>` に対して後処理を適用する。
 
 ```ts
-const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
+const applySvgFixups = (
+    svgEl: SVGSVGElement,
+    chart: string,
+    preserveNaturalScale = false
+): void => {
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
     svgEl.style.height = 'auto';
@@ -386,7 +411,10 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     svgEl.style.marginBottom = '10px';
 
     const viewBox = svgEl.getAttribute('viewBox');
-    if (!viewBox) return;
+    if (!viewBox) {
+        svgEl.style.maxWidth = '100%';
+        return;
+    }
     const parts = viewBox.split(/\s+/).map(Number);
     if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
     const trimmed = chart.trim();
@@ -394,12 +422,18 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
-    // ⚠️ SVG 幅の鉄則: viewBox 由来の自然 px 幅 + maxWidth:100% を使う。
-    //    width:'100%' は viewBox のみで intrinsic サイズを持たない SVG をコンテナ全幅へ
-    //    伸ばし、小さい flowchart LR 図を異常拡大させるため使わない。
-    //    width:${w}px + maxWidth:100% なら「親より広い図のみ縮小、小さい図は自然サイズ」となる。
-    svgEl.style.width = `${w}px`;
-    svgEl.style.maxWidth = '100%';
+
+    let targetWidth = w;
+    if (preserveNaturalScale && w > 0) {
+        // preserveNaturalScale=true: 1rem(16px)文字が実寸で見えるよう、小さい図は最低600pxに拡大
+        targetWidth = Math.max(w, 600);
+    } else if (!preserveNaturalScale && w > 0 && w < 550) {
+        targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
+    }
+    svgEl.style.width = `${targetWidth}px`;
+    // preserveNaturalScale=true のときは max-width:none でスクロール時・コンテナ幅変更時の縮小を防止
+    svgEl.style.maxWidth = preserveNaturalScale ? 'none' : '100%';
+    svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
 ```
