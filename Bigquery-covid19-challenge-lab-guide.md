@@ -240,6 +240,8 @@ FROM
   `bigquery-public-data.covid19_open_data.covid19_open_data`
 WHERE
   country_name = "Italy"
+  AND subregion1_name IS NULL
+  AND subregion2_name IS NULL
   AND date BETWEEN "<Month の初日, 例: 2020-04-01>" AND "<Month の末日, 例: 2020-04-30>"
 ```
 
@@ -259,6 +261,8 @@ FROM
   `bigquery-public-data.covid19_open_data.covid19_open_data`
 WHERE
   country_name = "Italy"
+  AND subregion1_name IS NULL
+  AND subregion2_name IS NULL
   AND EXTRACT(YEAR FROM date) = <対象年, 例: 2020>
   AND EXTRACT(MONTH FROM date) = <対象月の数字, 例: 4>
 ```
@@ -371,6 +375,8 @@ WITH us_cases_by_date AS (
     `bigquery-public-data.covid19_open_data.covid19_open_data`
   WHERE
     country_name = "United States of America"
+    AND subregion1_name IS NULL
+    AND subregion2_name IS NULL
     AND date BETWEEN "<Start date>" AND "<Close date>"
   GROUP BY
     date
@@ -425,6 +431,8 @@ WITH cases_by_country AS (
     `bigquery-public-data.covid19_open_data.covid19_open_data`
   WHERE
     date = "<Date>"
+    AND subregion1_name IS NULL
+    AND subregion2_name IS NULL
   GROUP BY
     country_name
 )
@@ -497,6 +505,8 @@ WITH france_cases AS (
     `bigquery-public-data.covid19_open_data.covid19_open_data`
   WHERE
     country_name = "France"
+    AND subregion1_name IS NULL
+    AND subregion2_name IS NULL
     AND date IN ("<First date>", "<Last date>")
   GROUP BY
     date
