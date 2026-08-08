@@ -44,7 +44,7 @@
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
-- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`automation-software-development-design/page.tsx`、`ip-connectivity-guide/page.tsx`、`ip-services-guide/page.tsx` 含む）
+- Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`ccna/automation-software-development-design/page.tsx`、`ccna/automation-application-deployment-security/page.tsx`、`ccna/automation-cisco-platforms-and-development/page.tsx`、`ccna/ip-connectivity-guide/page.tsx`、`ccna/ip-services-guide/page.tsx` 含む）
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
 - `/__tests__`: Vitest によるユニットテスト。
 - `/e2e`: Playwright による E2E テスト。
