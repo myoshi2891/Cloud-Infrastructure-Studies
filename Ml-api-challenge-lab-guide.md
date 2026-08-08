@@ -104,6 +104,8 @@ gcloud iam service-accounts keys create ~/key.json \
 
 または Cloud Console の「サービスアカウント」詳細画面 → 「キー」タブ → 「鍵を追加」→「新しい鍵を作成」→ JSON形式、でも取得できます。
 
+> **キーファイルの取り扱い**: JSONキーをGitリポジトリやCloud Storageバケットへ置かないでください。ラボ終了後は作成したキーを削除します。実務では長期キーを発行せず、Workload Identity連携または接続されたGoogle Cloudサービスが提供するADCを使用してください。
+
 ### 3-2. 環境変数 `GOOGLE_APPLICATION_CREDENTIALS` の設定
 
 Pythonクライアントライブラリは、明示的に認証情報を渡さない限り**Application Default Credentials（ADC）**という仕組みで認証情報を探します。ADCが最初に確認するのがこの環境変数です。
@@ -112,7 +114,7 @@ Pythonクライアントライブラリは、明示的に認証情報を渡さ�
 export GOOGLE_APPLICATION_CREDENTIALS="$HOME/key.json"
 ```
 
-> 参考: ADCとGOOGLE_APPLICATION_CREDENTIALS環境変数の役割 — [Dense document text detection tutorial | Cloud Vision API](https://docs.cloud.google.com/vision/docs/fulltext-annotations)
+> 参考: ADCとGOOGLE_APPLICATION_CREDENTIALS環境変数の役割 — [How Application Default Credentials works | Authentication](https://docs.cloud.google.com/docs/authentication/application-default-credentials)
 
 **よくある落とし穴**: Cloud Shellのセッションが切れると環境変数もリセットされます。スクリプトが急に `DefaultCredentialsError` を出すようになったら、まずこの環境変数が現在のシェルに残っているか `echo $GOOGLE_APPLICATION_CREDENTIALS` で確認してください。
 
@@ -197,7 +199,10 @@ TARGET_LANGUAGE = "en"  # スクリプトの基準言語（配布されたコー
 
 def translate_text(text, source_locale):
     """基準言語と異なる場合のみ翻訳する"""
-    if source_locale == TARGET_LANGUAGE or source_locale == "und":
+    source_language = source_locale.split("-", 1)[0].lower()
+    target_language = TARGET_LANGUAGE.split("-", 1)[0].lower()
+
+    if source_locale == "und" or source_language == target_language:
         return text  # 翻訳不要、または言語判定不能な場合はそのまま返す
 
     translate_client = translate.Client()
@@ -302,6 +307,7 @@ ORDER BY lcount DESC
 - [Roles and permissions | Identity and Access Management (IAM)](https://docs.cloud.google.com/iam/docs/roles-overview)
 - [IAM roles for Cloud Storage](https://docs.cloud.google.com/storage/docs/access-control/iam-roles)
 - [BigQuery IAM roles and permissions](https://docs.cloud.google.com/bigquery/docs/access-control)
+- [How Application Default Credentials works | Authentication](https://docs.cloud.google.com/docs/authentication/application-default-credentials)
 - [Detect and extract text from images | Cloud Vision API](https://docs.cloud.google.com/vision/docs/ocr)
 - [Dense document text detection tutorial | Cloud Vision API](https://docs.cloud.google.com/vision/docs/fulltext-annotations)
 - [Package google.cloud.vision.v1 | Cloud Vision API](https://docs.cloud.google.com/vision/docs/reference/rpc/google.cloud.vision.v1)
