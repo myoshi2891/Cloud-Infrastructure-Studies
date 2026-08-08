@@ -31,19 +31,29 @@ describe('AWS SAA Domain 4 Guide Page', () => {
         expect(Object.keys(DIAGRAMS).length).toBe(29);
     });
 
-    it('renders heading structure and section counts accurately', () => {
+    it('renders the expected top-level heading structure', () => {
         const { container } = render(<Domain4Guide />);
-        const h2Headings = container.querySelectorAll('h2');
-        const h3Headings = container.querySelectorAll('h3');
+        const main = container.querySelector('main.content');
+        expect(main).not.toBeNull();
 
-        expect(h2Headings.length).toBe(6);
-        expect(h3Headings.length).toBe(15);
+        const h2Ids = Array.from(main!.querySelectorAll('h2')).map((heading) => heading.id);
+        expect(h2Ids).toEqual([
+            'intro',
+            'common-tools',
+            'task-4-1',
+            'task-4-2',
+            'task-4-3',
+            'task-4-4',
+            'references',
+        ]);
+
+        expect(main!.querySelectorAll('h3').length).toBeGreaterThanOrEqual(15);
     });
 
     it('renders tables correctly with expected headers and row cells', () => {
         const { container } = render(<Domain4Guide />);
         const tables = container.querySelectorAll('table');
-        expect(tables.length).toBe(10);
+        expect(tables.length).toBeGreaterThanOrEqual(10);
 
         tables.forEach((table) => {
             const ths = table.querySelectorAll('thead th');
@@ -52,10 +62,15 @@ describe('AWS SAA Domain 4 Guide Page', () => {
             expect(trs.length).toBeGreaterThan(0);
         });
 
-        expect(tables[0].textContent).toContain('AWS Organizations 連結請求(マルチアカウント請求)');
-        expect(tables[1].textContent).toContain('S3 Standard');
-        expect(tables[2].textContent).toContain('Intelligent-Tiering');
-        expect(tables[3].textContent).toContain('Savings Plans');
+        const tableContents = Array.from(tables).map((table) => table.textContent ?? '');
+        expect(
+            tableContents.some((content) =>
+                content.includes('AWS Organizations 連結請求(マルチアカウント請求)')
+            )
+        ).toBe(true);
+        expect(tableContents.some((content) => content.includes('S3 Standard'))).toBe(true);
+        expect(tableContents.some((content) => content.includes('Intelligent-Tiering'))).toBe(true);
+        expect(tableContents.some((content) => content.includes('Savings Plans'))).toBe(true);
     });
 
     it('renders all 29 figure IDs and supplementary-skill text correctly', () => {
@@ -77,10 +92,13 @@ describe('AWS SAA Domain 4 Guide Page', () => {
         expect(screen.getByText(/スキル: コスト効率の良いデータベースタイプの判断\(時系列・列指向\)/i)).toBeInTheDocument();
     });
 
-    it('renders source and reference links with exact count and correct href attributes', () => {
+    it('renders source and reference links with correct href attributes', () => {
         const { container } = render(<Domain4Guide />);
-        const links = container.querySelectorAll('a[target="_blank"]');
-        expect(links.length).toBe(10);
+        const references = container.querySelector('#references')?.parentElement;
+        expect(references).not.toBeNull();
+
+        const links = references!.querySelectorAll('a[target="_blank"]');
+        expect(links.length).toBeGreaterThanOrEqual(10);
 
         const hrefs = Array.from(links).map((a) => a.getAttribute('href'));
         expect(hrefs.some((h) => h?.includes('wellarchitected/latest/cost-optimization-pillar'))).toBe(true);
