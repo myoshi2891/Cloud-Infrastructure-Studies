@@ -1,6 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import CcnaAppDeploymentSecurityPage from '@/app/cisco/ccna/automation-application-deployment-security/page';
+
+const guideSource = readFileSync(
+    join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/CcnaAppDeploymentSecurityGuide.tsx'),
+    'utf8',
+);
 
 // Mock MermaidDiagram to avoid dynamic import / browser execution issues in Vitest
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -121,11 +128,48 @@ describe('CcnaAppDeploymentSecurityPage', () => {
     it('renders key tables and detailed content', () => {
         render(<CcnaAppDeploymentSecurityPage />);
 
-        expect(screen.getByText(/出題比率/i)).toBeInTheDocument();
+        expect(screen.getByRole('columnheader', { name: '配点比率' })).toBeInTheDocument();
         expect(screen.getByText(/ハイブリッドクラウド/i)).toBeInTheDocument();
         expect(screen.getByText(/ベアメタル/i)).toBeInTheDocument();
         expect(screen.getByText(/Arrange-Act-Assert/i)).toBeInTheDocument();
         expect(screen.getByText(/OWASP Top 10/i)).toBeInTheDocument();
+    });
+
+    it('ドメイン4.0の4.1〜4.12サブトピック対応表を省略せず描画する', () => {
+        render(<CcnaAppDeploymentSecurityPage />);
+
+        for (let topic = 1; topic <= 12; topic += 1) {
+            expect(screen.getAllByRole('cell', { name: `4.${topic}` }).length).toBeGreaterThan(0);
+        }
+        expect(screen.getByText('DevOpsプラクティスの原則を説明する')).toBeInTheDocument();
+    });
+
+    it('ガイド本体はServer Componentで、main直下に中央寄せ用ラッパーを持つ', () => {
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
+
+        expect(guideSource).not.toMatch(/^['"]use client['"];?/);
+        expect(container.querySelector('.main > .content-inner')).toBeInTheDocument();
+    });
+
+    it('目次クリック時にURLフラグメントとアクティブ項目を更新する', () => {
+        const scrollIntoView = vi.fn();
+        Element.prototype.scrollIntoView = scrollIntoView;
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
+        const link = container.querySelector<HTMLAnchorElement>('a[href="#chapter4"]');
+
+        expect(link).not.toBeNull();
+        fireEvent.click(link!);
+
+        expect(window.location.hash).toBe('#chapter4');
+        expect(link).toHaveClass('active');
+        expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+    });
+
+    it('Docker CMDの説明で「最後」を正しく表示する', () => {
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
+
+        expect(container).toHaveTextContent('1つのDockerfileにつき最後のCMDのみ有効');
+        expect(screen.queryByText(/最期の/)).not.toBeInTheDocument();
     });
 
     it('renders external reference links', () => {
