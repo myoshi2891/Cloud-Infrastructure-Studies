@@ -223,7 +223,7 @@ kubectl get podmonitoring -A
 kubectl -n ${NAMESPACE_NAME} describe podmonitoring prom-example
 ```
 
-より詳細なターゲットの疎通確認をしたい場合は、`OperatorConfig` で `features.targetStatus.enabled: true` を設定すると、`describe podmonitoring` の出力に `Active Targets` や `Health: up` といったステータスが表示されるようになります。ただし公式ドキュメントは、この機能は大規模クラスタで operator のメモリ枯渇を招く可能性があるため、常時有効化ではなく一時的なデバッグ用途に限定することを推奨しています。
+より詳細なターゲットの疎通確認をしたい場合は、`OperatorConfig` で `features.targetStatus.enabled: true` を設定すると、`describe podmonitoring` の出力に `Active Targets` や `Health: up` といったステータスが表示されるようになります。ただし公式ドキュメントは、この機能は大規模クラスタで operator のメモリ枯渇を招く可能性があるため、一時的なデバッグ用途に限定し、確認後は必ず元の設定へ戻して有効なまま残さないことを推奨しています。
 
 ```yaml
 apiVersion: monitoring.googleapis.com/v1
@@ -237,11 +237,19 @@ features:
 ```
 
 ```bash
+# デバッグ前の OperatorConfig を保存する
+kubectl -n gmp-public get operatorconfig config -o yaml > operator-config-original.yaml
+
 kubectl apply -f operator-config-debug.yaml
 
 # 数秒待ってから target status を確認する
 kubectl -n ${NAMESPACE_NAME} describe podmonitorings/prom-example
+
+# 確認後、保存した元の OperatorConfig を再適用する
+kubectl apply -f operator-config-original.yaml
 ```
+
+`operator-config-debug.yaml` は一時的な確認専用です。target status を有効にした設定をクラスタへ残さないでください。
 
 **参考ソース**
 - Get started with managed collection（Namespace作成 / example-appデプロイ / PodMonitoring / target status） — https://docs.cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed

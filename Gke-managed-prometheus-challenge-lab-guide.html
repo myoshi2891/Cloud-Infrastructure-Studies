@@ -1144,8 +1144,7 @@ kubectl -n ${NAMESPACE_NAME} describe podmonitoring prom-example</code></pre>
                                 <code>Active Targets</code> や <code>Health: up</code>
                                 といったステータスが表示されるようになります。ただし公式ドキュメントは、この機能は大規模クラスタで
                                 operator
-                                のメモリ枯渇を招く可能性があるため、常時有効化ではなく一時的なデバッグ用途に
-                                限定することを推奨しています。
+                                のメモリ枯渇を招く可能性があるため、一時的なデバッグ用途に限定し、確認後は必ず元の設定へ戻して有効なまま残さないことを推奨しています。
                             </p>
                         </div>
                     </div>
@@ -1160,10 +1159,20 @@ features:
   targetStatus:
     enabled: true</code></pre>
                     <span class="code-label">bash</span>
-                    <pre><code class="language-bash">kubectl apply -f operator-config-debug.yaml
+                    <pre><code class="language-bash"># デバッグ前の OperatorConfig を保存する
+kubectl -n gmp-public get operatorconfig config -o yaml > operator-config-original.yaml
+
+kubectl apply -f operator-config-debug.yaml
 
 # 数秒待ってから target status を確認する
-kubectl -n ${NAMESPACE_NAME} describe podmonitorings/prom-example</code></pre>
+kubectl -n ${NAMESPACE_NAME} describe podmonitorings/prom-example
+
+# 確認後、保存した元の OperatorConfig を再適用する
+kubectl apply -f operator-config-original.yaml</code></pre>
+                    <p>
+                        <code>operator-config-debug.yaml</code> は一時的な確認専用です。target status
+                        を有効にした設定をクラスタへ残さないでください。
+                    </p>
 
                     <div class="callout source">
                         <i class="ti ti-book"></i>
