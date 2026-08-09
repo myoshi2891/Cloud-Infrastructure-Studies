@@ -1,4 +1,5 @@
 # Associate Google Workspace Administrator 試験対策ガイド
+
 ## Section 1: ユーザーアカウント・ドメイン・ディレクトリの管理
 
 > 本ガイドは Google 公式の [Associate Google Workspace Administrator 認定ページ](https://cloud.google.com/learn/certification/associate-google-workspace-administrator?hl=en) および [公式 Exam Guide (PDF)](https://services.google.com/fh/files/misc/associate_google_workspace_administrator_exam_guide_english.pdf) の **Section 1: Managing user accounts, domains, and Directory(出題比率 約20%)** に完全準拠して構成しています。中級〜上級管理者を対象に、Admin console の操作手順だけでなく「なぜそう設計するのか」という設計判断の根拠までを解説します。

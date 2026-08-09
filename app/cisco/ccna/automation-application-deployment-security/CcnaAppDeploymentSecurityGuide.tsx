@@ -705,6 +705,9 @@ export function CcnaAppDeploymentSecurityGuide() {
                         </div>
 
                         <h3>最新の公式リストとの関係</h3>
+                        <p>
+                            2025年版では、InjectionはA05:2025に分類されるため、SQLインジェクションやXSSを含む入力処理の安全性をこの分類に沿って確認します。
+                        </p>
                         <Diagram id="diag-8" label="入力検証とセッションチェックによるOWASP脅威回避フロー" />
                     </section>
 
@@ -939,11 +942,11 @@ export function CcnaAppDeploymentSecurityGuide() {
                             </li>
                             <li>
                                 <a
-                                    href="https://owasp.org/Top10/"
+                                    href="https://owasp.org/Top10/2025/A05_2025-Injection/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    OWASP Top 10:2021
+                                    OWASP Top 10:2025 — A05:2025 Injection
                                 </a>
                             </li>
                         </ul>

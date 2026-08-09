@@ -126,6 +126,7 @@ export const DIAGRAMS: Record<string, string> = {
     RP --> Srv2["アプリケーションサーバー2"]`,
 
     'diag-8': `flowchart TB
+    Top["OWASP Top 10:2025<br/>A05:2025 Injection"] --> Input
     Input["ユーザー入力 (フォーム・URLパラメータ等)"] --> Validate{"入力を検証・サニタイズしているか？"}
     Validate -->|"していない"| Risk1["SQLインジェクションのリスク (意図しないSQL文が実行される)"]
     Validate -->|"していない"| Risk2["XSSのリスク (悪意あるスクリプトが実行される)"]

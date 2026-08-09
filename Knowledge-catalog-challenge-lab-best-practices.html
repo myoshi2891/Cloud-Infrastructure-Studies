@@ -1065,8 +1065,7 @@
                           --metadata-template-file-name=protected-raw-data-aspect.json
 
                         # Zone の Entry を検索して Entry ID / Entry Group を確認する
-                        gcloud dataplex entries search \
-                          --query="name:Raw Event Data" \
+                        gcloud dataplex entries search "name:Raw Event Data" \
                           --project=<PROJECT_ID> \
                           --scope=projects/<PROJECT_ID>
 

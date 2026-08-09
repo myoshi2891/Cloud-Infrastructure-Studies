@@ -1,4 +1,5 @@
 # AppSheet と Apps Script で作る Google Chat アプリ
+
 ## チャレンジラボ ベストプラクティス解説ガイド（初学者向け）
 
 対象ラボ：[Create Chat Apps with AppSheet and App Scripts](https://www.skills.google/course_templates/715/labs/612225)
