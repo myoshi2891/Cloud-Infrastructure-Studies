@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Updated 2026-08-09
+Updated 2026-08-10
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -38,7 +38,8 @@ bun run build && bun run perf:report  # @lhci/cli autorun。.lighthouseci/ に J
 カバレッジダッシュボードは `__tests__/` と `e2e/` の静的解析（`import '@/...'` と `page.goto('/...')` の抽出）で生成される単一 HTML。`@vitest/coverage-v8` 等のランタイム計測ではないため、テスト追加時は `bun run dashboard` を再実行する。
 
 ```bash
-# Docker（Makefile 経由）
+# Docker
+bun run docker:rebuild # コンテナ停止 → 本番イメージ作成 → 開発コンテナ再構築・起動
 make dev             # 開発サーバー起動（hot reload、bind mount）
 make prod            # 本番ビルド & 起動（standalone、256MB）
 make down            # コンテナ停止・削除

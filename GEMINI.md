@@ -1,6 +1,6 @@
 # Project Overview: Cloud Infrastructure Studies
 
-Updated 2026-08-09
+Updated 2026-08-10
 
 このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
@@ -26,6 +26,7 @@ Updated 2026-08-09
 - **Performance 手動レポート:** `bun run build && bun run perf:report` (`@lhci/cli` autorun → `.lighthouseci/` に HTML/JSON 出力)
 - **Lint 実行:** `bun run lint`
 - **Markdown lint 実行:** `bun run markdownlint -- path/to/file.md`
+- **Docker 一括リビルド:** `bun run docker:rebuild`（コンテナ停止 → 本番イメージ作成 → 開発コンテナ再構築・起動）
 
 ## プロジェクト構造
 
@@ -67,7 +68,7 @@ Updated 2026-08-09
 ## デプロイ
 
 - **Netlify**: `netlify.toml` + `@netlify/plugin-nextjs` で構成。`next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で制御（Docker ビルド時: `standalone`、Netlify ビルド時: 未設定）。
-- **Docker**: `Dockerfile`（本番 standalone）、`Dockerfile.dev`（開発 hot reload）。`make dev` / `make prod` で起動。開発コンテナの `.next` ボリューム (`infra_dev_next_cache`) は `nextjs` ユーザー（UID 1001）所有で初期化される。
+- **Docker**: `Dockerfile`（本番 standalone）、`Dockerfile.dev`（開発 hot reload）。CSS キャッシュを含む一括再構築は `bun run docker:rebuild`、個別操作は `make dev` / `make prod` を使用。開発コンテナの `.next` ボリューム (`infra_dev_next_cache`) は `nextjs` ユーザー（UID 1001）所有で初期化される。
 
 ## 注意事項
 

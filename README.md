@@ -1,6 +1,6 @@
 # Cloud Infrastructure Studies
 
-最終更新日: 2026-08-09
+最終更新日: 2026-08-10
 
 Google Cloud (GCP) の資格試験対策を目的とした、インタラクティブな学習用 Next.js アプリケーションです。
 
@@ -39,6 +39,9 @@ make prod
 # 停止
 make down
 
+# CSS キャッシュを含む一括リビルド
+bun run docker:rebuild
+
 # コマンド一覧
 make help
 ```
@@ -56,6 +59,7 @@ make help
 | `make logs-dev` | 開発コンテナのログを表示 |
 | `make shell` | 本番コンテナ内シェル（デバッグ用） |
 | `make shell-dev` | 開発コンテナ内シェル（デバッグ用） |
+| `bun run docker:rebuild` | コンテナ停止 → 本番イメージ作成 → 開発コンテナ再構築・起動 |
 
 > **本番イメージサイズ:** standalone モードにより約 256MB（通常の Next.js + node_modules 全体比で大幅削減）
 > **注意:** `next.config.ts` の `output` は環境変数 `NEXT_OUTPUT_MODE` で切り替え。Docker は `standalone`、Netlify は未設定（SSR）。
