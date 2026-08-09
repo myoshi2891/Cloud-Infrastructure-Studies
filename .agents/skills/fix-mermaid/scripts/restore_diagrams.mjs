@@ -6,7 +6,7 @@
  * 各図の正しいソースを引き当てて差し替える。
  *
  * 使い方:
- *   bun run .claude/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
+ *   bun run .agents/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
  */
 import fs from 'fs';
 
@@ -73,6 +73,98 @@ export function restoreDiagrams(diagrams, mdBlocks) {
     return { diagrams: restored, warnings };
 }
 
+function findObjectEnd(source, openingIndex) {
+    let depth = 0;
+    let quote = null;
+    let escaped = false;
+    for (let index = openingIndex; index < source.length; index += 1) {
+        const char = source[index];
+        if (quote) {
+            if (escaped) escaped = false;
+            else if (char === '\\') escaped = true;
+            else if (char === quote) quote = null;
+            continue;
+        }
+        if (char === "'" || char === '"' || char === '`') quote = char;
+        else if (char === '{') depth += 1;
+        else if (char === '}') {
+            depth -= 1;
+            if (depth === 0) return index;
+        }
+    }
+    return -1;
+}
+
+function decodeEscape(char) {
+    return { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v' }[char] ?? char;
+}
+
+function readString(source, start, allowedQuotes) {
+    const quote = source[start];
+    if (!allowedQuotes.includes(quote)) throw new Error(`文字列リテラルが必要です (位置 ${start})`);
+    let value = '';
+    for (let index = start + 1; index < source.length; index += 1) {
+        const char = source[index];
+        if (char === quote) return { value, end: index + 1 };
+        if (char === '\\') {
+            index += 1;
+            if (index >= source.length) throw new Error('文字列末尾の不正なエスケープです。');
+            value += decodeEscape(source[index]);
+        } else {
+            value += char;
+        }
+    }
+    throw new Error('閉じられていない文字列リテラルです。');
+}
+
+function parseTemplateLiteralObject(objectSource) {
+    const diagrams = {};
+    let index = 1;
+    const skipSpace = () => {
+        while (/\s/.test(objectSource[index] ?? '')) index += 1;
+    };
+    while (index < objectSource.length - 1) {
+        skipSpace();
+        if (objectSource[index] === ',') {
+            index += 1;
+            continue;
+        }
+        if (objectSource[index] === '}') break;
+        const key = readString(objectSource, index, ["'", '"']);
+        index = key.end;
+        skipSpace();
+        if (objectSource[index] !== ':') throw new Error(`DIAGRAMS のキー ${key.value} に ':' がありません。`);
+        index += 1;
+        skipSpace();
+        const value = readString(objectSource, index, ['`']);
+        diagrams[key.value] = value.value;
+        index = value.end;
+        skipSpace();
+        if (objectSource[index] === ',') index += 1;
+    }
+    return diagrams;
+}
+
+/**
+ * JSON 互換の正準形式と、既存のテンプレートリテラル形式を eval せず抽出する。
+ */
+export function extractDiagramsDefinition(html) {
+    const assignment = /const\s+DIAGRAMS\s*=\s*/.exec(html);
+    if (!assignment) throw new Error('const DIAGRAMS の定義が見つかりません。');
+    const start = assignment.index + assignment[0].length;
+    if (html[start] !== '{') throw new Error('DIAGRAMS はオブジェクトリテラルで定義してください。');
+    const end = findObjectEnd(html, start);
+    if (end === -1) throw new Error('DIAGRAMS オブジェクトが閉じられていません。');
+    const objectSource = html.slice(start, end + 1);
+    let diagrams;
+    try {
+        diagrams = JSON.parse(objectSource);
+    } catch {
+        diagrams = parseTemplateLiteralObject(objectSource);
+    }
+    return { diagrams, start, end: end + 1 };
+}
+
 // --- CLI エントリポイント ----------------------------------------------------
 
 if (import.meta.main) {
@@ -97,24 +189,18 @@ if (import.meta.main) {
         process.exit(1);
     }
 
-    const diagramsMatch = html.match(/const DIAGRAMS = (\{[\s\S]*?\});/);
-    if (!diagramsMatch) {
-        console.error(`❌ Could not find "const DIAGRAMS = {...};" in ${htmlPath}`);
-        process.exit(1);
-    }
-
-    let diagrams;
+    let definition;
     try {
-        diagrams = JSON.parse(diagramsMatch[1]);
-    } catch {
-        console.error('❌ DIAGRAMS が JSON.parse できません。JSON 形式の DIAGRAMS のみ対応します。');
+        definition = extractDiagramsDefinition(html);
+    } catch (error) {
+        console.error(`❌ ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);
     }
 
-    const { diagrams: restored, warnings } = restoreDiagrams(diagrams, mdBlocks);
+    const { diagrams: restored, warnings } = restoreDiagrams(definition.diagrams, mdBlocks);
     warnings.forEach((w) => console.warn('  ⚠️ ' + w));
 
-    html = html.replace(diagramsMatch[1], JSON.stringify(restored, null, 2));
+    html = html.slice(0, definition.start) + JSON.stringify(restored, null, 2) + html.slice(definition.end);
     fs.writeFileSync(htmlPath, html, 'utf8');
     console.log(`\n✅ Restored ${Object.keys(restored).length} diagrams into ${htmlPath}`);
 }

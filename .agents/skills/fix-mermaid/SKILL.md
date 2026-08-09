@@ -9,16 +9,18 @@ description: >
 
 # Mermaid 構文・描画修正スキル
 
+(最終更新日: 2026-08-09)
+
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
 静的 HTML の Mermaid 描画崩れを直すときは、**ボイラープレート（render ループ・SVG 後処理・中央寄せ CSS）を手書きで再生成しないこと**。以下の再利用スクリプトで機械的処理を一括適用できる。
 
-1. **図ソースを JS テンプレートリテラルで定義**（LLM の判断が必要なのはここだけ）:
-   各図を 1 ステートメント 1 行・カラム 0・改行は `<br/>` で `const DIAGRAMS = { 'diag-1': \`flowchart TD ...\` }` として HTML の `<script>` 内に書く。
+1. **図ソースを JSON 互換の正準オブジェクトで定義**（LLM の判断が必要なのはここだけ）:
+   各図を 1 ステートメント 1 行・カラム 0・改行は `\n` または `<br/>` とし、`const DIAGRAMS = { "diag-1": "flowchart TD\\nA --> B" };` の形式で HTML の `<script>` 内に書く。`restore_diagrams.mjs` はこの正準形式に加え、既存の JavaScript テンプレートリテラル形式も `eval` せず安全に解析する。
 2. **描画パイプラインを冪等適用**:
 
    ```bash
-   bun run .claude/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
+   bun run .agents/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
    ```
 
    これが `<div class="mermaid">…</div>` → 連番 id 付き空 div への置換、`startOnLoad:false`+`securityLevel:'loose'` 付与、`applySvgFixups`+render ループ注入、中央寄せ CSS 注入をまとめて行う（再実行しても二重適用しない）。
@@ -26,13 +28,13 @@ description: >
 3. **正本 Markdown から図を復元する場合**（HTML 側ソースが破壊された等）:
 
    ```bash
-   bun run .claude/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
+   bun run .agents/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
    ```
 
 4. **インデント汚染・行分断のみの修正**（`.html`/`.md`/`.tsx`）は `fix_mermaid.ts`:
 
    ```bash
-   bun run .claude/skills/fix-mermaid/scripts/fix_mermaid.ts <file>
+   bun run .agents/skills/fix-mermaid/scripts/fix_mermaid.ts <file>
    ```
 
 > **SVG 幅の鉄則**: `apply_render_pipeline.mjs` は SVG 幅に **viewBox 由来の自然 px 幅 + `maxWidth:100%`** を使う。`width:'100%'` も `width:'auto'`（viewBox のみで intrinsic サイズを持たない SVG ではコンテナ全幅へ伸びる）も、小さい flowchart LR 図を異常拡大させるため**使わない**。
@@ -68,7 +70,7 @@ HTMLやコードのフォーマッタ（Prettier等）による破壊パター�
 自動修正を行う場合は TypeScript 版スクリプト `fix_mermaid.ts` を `bun` で実行します:
 
 ```bash
-bun run .claude/skills/fix-mermaid/scripts/fix_mermaid.ts path/to/file.tsx
+bun run .agents/skills/fix-mermaid/scripts/fix_mermaid.ts path/to/file.tsx
 ```
 
 ## 変換例
@@ -340,7 +342,6 @@ const Diagram = memo(function Diagram({ id, label }: { id: string; label: string
     );
 });
 ```
-
 
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
 

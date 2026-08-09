@@ -2,14 +2,14 @@
  * apply_render_pipeline.mjs — 静的 HTML の Mermaid 描画パイプラインを冪等に適用する。
  *
  * 旧来の死蔵ワンオフ (fix_mermaid_config / fix_mermaid_css / fix_mermaid_size) を統合・汎用化。
- * 「DIAGRAMS をテンプレートリテラルで定義する」LLM 判断が必要な部分以外の機械的処理を 1 本に集約し、
+ * 「DIAGRAMS の図ソースを定義する」LLM 判断が必要な部分以外の機械的処理を 1 本に集約し、
  * 同種作業でボイラープレートを手書き再生成しなくて済むようにする。
  *
  * 使い方:
- *   bun run .claude/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
+ *   bun run .agents/skills/fix-mermaid/scripts/apply_render_pipeline.mjs <file.html>
  *
- * 前提: HTML の <script> 内に `const DIAGRAMS = { 'diag-1': ` ... ` }` が定義済みであること
- *       (無い場合は空スタブを挿入して警告する)。各図の <div class="mermaid">...</div> は
+ * 前提: HTML の <script> 内に `const DIAGRAMS = {...}` が定義済みであること。
+ *       未定義の場合は入力を書き換えず失敗する。各図の <div class="mermaid">...</div> は
  *       本スクリプトが連番 id 付きの空 div に変換する。
  */
 import fs from 'fs';
@@ -109,27 +109,122 @@ export function injectIds(html) {
  * `startOnLoad: true` を false にし、未指定なら `securityLevel: 'loose'` を付与する。
  */
 export function ensureInitFlags(html) {
-    let out = html;
-    if (/startOnLoad:\s*true/.test(out)) {
-        out = out.replace(/startOnLoad:\s*true\s*,?/, "startOnLoad: false,");
+    const callMatch = /mermaid\.initialize\(\s*/.exec(html);
+    if (!callMatch) return html;
+    const optionsStart = callMatch.index + callMatch[0].length;
+    if (html[optionsStart] !== '{') return html;
+    const optionsEnd = findMatchingBrace(html, optionsStart);
+    if (optionsEnd === -1) return html;
+
+    let options = html.slice(optionsStart, optionsEnd + 1);
+    if (/startOnLoad:\s*true/.test(options)) {
+        options = options.replace(/startOnLoad:\s*true\s*,?/, 'startOnLoad: false,');
     }
-    // initialize 呼び出し内に securityLevel が無ければ注入する。
-    if (!/securityLevel\s*:/.test(out)) {
-        if (/startOnLoad:\s*false\s*,/.test(out)) {
+    // この initialize 呼び出しの options 直下に securityLevel が無ければ注入する。
+    if (!hasTopLevelProperty(options, 'securityLevel')) {
+        if (/startOnLoad:\s*false\s*,/.test(options)) {
             // 従来どおり startOnLoad 行の直後に追加
-            out = out.replace(
+            options = options.replace(
                 /(startOnLoad:\s*false\s*,)/,
                 "$1\n                securityLevel: 'loose',",
             );
         } else {
             // startOnLoad 不在/カンマ無し時は initialize の options ブロック先頭へ挿入
-            out = out.replace(
-                /(mermaid\.initialize\(\s*\{)/,
-                "$1 securityLevel: 'loose',",
-            );
+            options = options.replace('{', "{ securityLevel: 'loose',");
         }
     }
-    return out;
+    return html.slice(0, optionsStart) + options + html.slice(optionsEnd + 1);
+}
+
+function findMatchingBrace(source, openingIndex) {
+    let depth = 0;
+    let quote = null;
+    let escaped = false;
+    let lineComment = false;
+    let blockComment = false;
+    for (let index = openingIndex; index < source.length; index += 1) {
+        const char = source[index];
+        const next = source[index + 1];
+        if (lineComment) {
+            if (char === '\n') lineComment = false;
+            continue;
+        }
+        if (blockComment) {
+            if (char === '*' && next === '/') {
+                blockComment = false;
+                index += 1;
+            }
+            continue;
+        }
+        if (quote) {
+            if (escaped) escaped = false;
+            else if (char === '\\') escaped = true;
+            else if (char === quote) quote = null;
+            continue;
+        }
+        if (char === '/' && next === '/') {
+            lineComment = true;
+            index += 1;
+        } else if (char === '/' && next === '*') {
+            blockComment = true;
+            index += 1;
+        } else if (char === "'" || char === '"' || char === '`') {
+            quote = char;
+        } else if (char === '{') {
+            depth += 1;
+        } else if (char === '}') {
+            depth -= 1;
+            if (depth === 0) return index;
+        }
+    }
+    return -1;
+}
+
+function hasTopLevelProperty(objectSource, propertyName) {
+    let depth = 0;
+    let quote = null;
+    let escaped = false;
+    let lineComment = false;
+    let blockComment = false;
+    for (let index = 0; index < objectSource.length; index += 1) {
+        const char = objectSource[index];
+        const next = objectSource[index + 1];
+        if (lineComment) {
+            if (char === '\n') lineComment = false;
+            continue;
+        }
+        if (blockComment) {
+            if (char === '*' && next === '/') {
+                blockComment = false;
+                index += 1;
+            }
+            continue;
+        }
+        if (quote) {
+            if (escaped) escaped = false;
+            else if (char === '\\') escaped = true;
+            else if (char === quote) quote = null;
+            continue;
+        }
+        if (char === '/' && next === '/') {
+            lineComment = true;
+            index += 1;
+        } else if (char === '/' && next === '*') {
+            blockComment = true;
+            index += 1;
+        } else if (char === "'" || char === '"' || char === '`') {
+            quote = char;
+        } else if (char === '{') {
+            depth += 1;
+        } else if (char === '}') {
+            depth -= 1;
+        } else if (depth === 1 && objectSource.startsWith(propertyName, index)) {
+            const before = objectSource[index - 1];
+            const afterName = objectSource.slice(index + propertyName.length);
+            if ((!before || !/[\w$]/.test(before)) && /^\s*:/.test(afterName)) return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -174,6 +269,10 @@ export function injectCenteringCss(html) {
 export function applyPipeline(html) {
     const report = [];
 
+    if (!/const\s+DIAGRAMS\s*=/.test(html)) {
+        throw new Error('DIAGRAMS が定義されていません。図ソースを定義してから再実行してください。');
+    }
+
     const ids = injectIds(html);
     let out = ids.html;
     report.push(
@@ -181,15 +280,6 @@ export function applyPipeline(html) {
             ? `div→id 置換: ${ids.count} 件`
             : 'div→id 置換: 対象なし (適用済みか div.mermaid 不在)',
     );
-
-    if (!/const\s+DIAGRAMS\s*=/.test(out)) {
-        // DIAGRAMS 未定義: 空スタブを初期化ブロック直前に挿入して警告
-        const initIdx = out.indexOf('mermaid.initialize(');
-        if (initIdx !== -1) {
-            out = out.slice(0, initIdx) + 'const DIAGRAMS = {};\n            ' + out.slice(initIdx);
-        }
-        report.push('⚠️ DIAGRAMS 未定義: 空スタブを挿入。各図のソースを手動で定義してください。');
-    }
 
     const beforeFlags = out;
     out = ensureInitFlags(out);
