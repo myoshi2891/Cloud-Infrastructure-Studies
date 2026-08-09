@@ -871,7 +871,7 @@
                         </li>
                         <li>
                             <strong>US マルチリージョンを選ぶ理由</strong>:
-                            マルチリージョンは複数のリージョンにまたがってデータを複製するため、単一リージョンより可用性・耐久性が高く、地理的に分散したユーザーへの配信レイテンシも平準化されます。トレードオフとしてリージョン単体構成よりストレージ単価がやや高くなります。今回のように「まずは汎用のファイル置き場を作る」用途では、コストよりも可用性を優先するデフォルトの
+                            マルチリージョンは複数のリージョンにまたがってデータを複製するため、単一リージョンより可用性が高く、地理的に分散したユーザーへの配信レイテンシも平準化されます。トレードオフとしてリージョン単体構成よりストレージ単価がやや高くなります。今回のように「まずは汎用のファイル置き場を作る」用途では、コストよりも可用性を優先するデフォルトの
                             US マルチリージョンが妥当な選択です。
                         </li>
                         <li>
@@ -977,16 +977,16 @@
                         <pre><code class="language-bash" id="code-vm" data-code-src="src-vm"></code></pre>
                     </div>
                     <script type="text/plain" id="src-vm">
-                        export ZONE=&lt;ZONE をラボ指定の値に置換&gt;
-                        export REGION=&lt;REGION をラボ指定の値に置換&gt;
-                        export IMAGE_FAMILY=&lt;ラボ指定のイメージファミリー&gt;
-                        export IMAGE_PROJECT=&lt;ラボ指定のイメージプロジェクト&gt;
+                        export ZONE="YOUR_ZONE"
+                        export REGION="YOUR_REGION"
+                        export IMAGE_FAMILY="YOUR_IMAGE_FAMILY"
+                        export IMAGE_PROJECT="YOUR_IMAGE_PROJECT"
 
                         gcloud compute instances create my-instance \
-                          --zone=${ZONE} \
+                          --zone="$ZONE" \
                           --machine-type=e2-medium \
-                          --image-family=${IMAGE_FAMILY} \
-                          --image-project=${IMAGE_PROJECT} \
+                          --image-family="$IMAGE_FAMILY" \
+                          --image-project="$IMAGE_PROJECT" \
                           --boot-disk-type=pd-balanced \
                           --boot-disk-size=10GB \
                           --tags=http-server
@@ -1014,12 +1014,12 @@
                     </div>
                     <script type="text/plain" id="src-disk">
                         gcloud compute disks create mydisk \
-                          --zone=${ZONE} \
+                          --zone="$ZONE" \
                           --size=200GB \
                           --type=pd-balanced
 
                         gcloud compute instances attach-disk my-instance \
-                          --zone=${ZONE} \
+                          --zone="$ZONE" \
                           --disk=mydisk \
                           --device-name=mydisk
                     </script>
@@ -1127,7 +1127,7 @@
                         <pre><code class="language-bash" id="code-nginx" data-code-src="src-nginx"></code></pre>
                     </div>
                     <script type="text/plain" id="src-nginx">
-                        gcloud compute ssh my-instance --zone=${ZONE}
+                        gcloud compute ssh my-instance --zone="$ZONE"
 
                         sudo apt-get update
 
@@ -1309,7 +1309,7 @@
                                     <td>ディスクと VM の Zone が異なる</td>
                                     <td>
                                         <code
-                                            >gcloud compute disks describe mydisk --zone=ZONE</code
+                                            >gcloud compute disks describe mydisk --zone="$ZONE"</code
                                         >
                                         で Zone を確認し、VM と同じ Zone にディスクを作り直す
                                     </td>
@@ -1573,16 +1573,29 @@
                         var codeEl = document.getElementById(targetId);
                         if (!codeEl) return;
                         var text = codeEl.getAttribute('data-copy-text') || codeEl.textContent;
+                        var label = btn.querySelector('span');
+                        var original = label.textContent;
+                        function showCopyFailure() {
+                            label.textContent = 'Copy failed';
+                            setTimeout(function () {
+                                label.textContent = original;
+                            }, 1800);
+                        }
+                        if (
+                            !navigator.clipboard ||
+                            typeof navigator.clipboard.writeText !== 'function'
+                        ) {
+                            showCopyFailure();
+                            return;
+                        }
                         navigator.clipboard.writeText(text).then(function () {
-                            var label = btn.querySelector('span');
-                            var original = label.textContent;
                             btn.classList.add('copied');
                             label.textContent = 'Copied';
                             setTimeout(function () {
                                 btn.classList.remove('copied');
                                 label.textContent = original;
                             }, 1800);
-                        });
+                        }, showCopyFailure);
                     });
                 });
             }

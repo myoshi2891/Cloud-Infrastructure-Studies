@@ -1,4 +1,5 @@
 # Google Cloud Challenge Lab 攻略ガイド
+
 ## Cloud Storage バケット / Compute Engine + 永続ディスク / NGINX Web サーバー構築
 
 > 対象 Lab: *Build and Operate Infrastructure with Compute Engine and Cloud Storage*（Challenge Lab）
@@ -116,7 +117,7 @@ gcloud storage buckets create gs://${PROJECT_ID}-bucket \
 ### 1.4 なぜこの設定がベストプラクティスなのか
 
 - **バケット名にプロジェクト ID を含める**: Cloud Storage のバケット名は Google Cloud 全体で一意である必要があります。プロジェクト ID をプレフィックスにすることで命名衝突を避けられます。この命名規約はラボの要件でもあり、実運用でも一般的なパターンです。
-- **US マルチリージョンを選ぶ理由**: マルチリージョンは複数のリージョンにまたがってデータを複製するため、単一リージョンより **可用性・耐久性が高く**、地理的に分散したユーザーへの配信レイテンシも平準化されます。トレードオフとしてリージョン単体構成よりストレージ単価がやや高くなります。今回のように「まずは汎用のファイル置き場を作る」用途では、コストよりも可用性を優先するデフォルトの US マルチリージョンが妥当な選択です。
+- **US マルチリージョンを選ぶ理由**: マルチリージョンは複数のリージョンにまたがってデータを複製するため、単一リージョンより **可用性が高く**、地理的に分散したユーザーへの配信レイテンシも平準化されます。トレードオフとしてリージョン単体構成よりストレージ単価がやや高くなります。今回のように「まずは汎用のファイル置き場を作る」用途では、コストよりも可用性を優先するデフォルトの US マルチリージョンが妥当な選択です。
 - **Uniform bucket-level access（デフォルト）**: オブジェクト単位の ACL ではなく IAM ポリシーでバケット全体のアクセス制御を統一でき、権限管理がシンプルになります。
 - **最小権限の原則**: バケット作成には `roles/storage.admin` などバケット作成権限を持つロールが必要ですが、プロジェクト全体の Owner 権限を都度使うのではなく、必要な権限のみを持つロールを利用するのが望ましいプラクティスです。
 
@@ -160,16 +161,16 @@ flowchart TD
 ### 2.3 VM 作成の手順（gcloud CLI）
 
 ```bash
-export ZONE=<ZONE をラボ指定の値に置換>
-export REGION=<REGION をラボ指定の値に置換>
-export IMAGE_FAMILY=<ラボ指定のイメージファミリー>
-export IMAGE_PROJECT=<ラボ指定のイメージプロジェクト>
+export ZONE="YOUR_ZONE"
+export REGION="YOUR_REGION"
+export IMAGE_FAMILY="YOUR_IMAGE_FAMILY"
+export IMAGE_PROJECT="YOUR_IMAGE_PROJECT"
 
 gcloud compute instances create my-instance \
-  --zone=${ZONE} \
+  --zone="$ZONE" \
   --machine-type=e2-medium \
-  --image-family=${IMAGE_FAMILY} \
-  --image-project=${IMAGE_PROJECT} \
+  --image-family="$IMAGE_FAMILY" \
+  --image-project="$IMAGE_PROJECT" \
   --boot-disk-type=pd-balanced \
   --boot-disk-size=10GB \
   --tags=http-server
@@ -199,13 +200,13 @@ Console で作成する代わりに、CLI では以下の2コマンドで完結�
 ```bash
 # 200GB の永続ディスクを、VM と同じ Zone に作成
 gcloud compute disks create mydisk \
-  --zone=${ZONE} \
+  --zone="$ZONE" \
   --size=200GB \
   --type=pd-balanced
 
 # 作成したディスクを my-instance にアタッチ
 gcloud compute instances attach-disk my-instance \
-  --zone=${ZONE} \
+  --zone="$ZONE" \
   --disk=mydisk \
   --device-name=mydisk
 ```
@@ -256,7 +257,7 @@ sequenceDiagram
 
 ```bash
 # 1. SSH で my-instance に接続（Console の SSH ボタンでも可）
-gcloud compute ssh my-instance --zone=${ZONE}
+gcloud compute ssh my-instance --zone="$ZONE"
 
 # 2. OS のパッケージインデックスを最新化
 sudo apt-get update
@@ -314,7 +315,7 @@ External IP をコピーして `http://EXTERNAL_IP/` の形式で新しいタブ
 | SSH 接続後 `nginx: command not found` | インストールが完了していない、または別パッケージ名でインストールしようとした | `sudo apt-get install -y nginx` を再実行し、途中でエラーが出ていないかログを確認する |
 | `systemctl status nginx` が `inactive (dead)` | インストール直後に自動起動していない場合がある | `sudo systemctl start nginx` で起動し、`sudo systemctl enable nginx` で自動起動を設定する |
 | バケット作成時に `Bucket name already in use` | バケット名がグローバルで既に使用されている | `PROJECT_ID` を正しく含めているか確認する（プロジェクト ID はグローバルに一意なので通常は衝突しない） |
-| ディスクをアタッチできない | ディスクと VM の Zone が異なる | `gcloud compute disks describe mydisk --zone=<ZONE>` で Zone を確認し、VM と同じ Zone にディスクを作り直す |
+| ディスクをアタッチできない | ディスクと VM の Zone が異なる | `gcloud compute disks describe mydisk --zone="$ZONE"` で Zone を確認し、VM と同じ Zone にディスクを作り直す |
 | `Check my progress` が失敗する | リソース名・設定値がラボの要件と完全一致していない | リソース名（`my-instance` / `mydisk` / `PROJECT_ID-bucket`）や Region/Zone の綴りを再確認する |
 
 ---
