@@ -63,11 +63,25 @@ linux_home='/''home/'
 windows_home='C:\\''Users\\'
 tilde_home='~''/'
 local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home})"
-if git diff --cached \
-  | grep -E '^\+[^+]' \
-  | sed -E 's#/Users/<username>/##g; s#/home/<username>/##g; s#C:\\Users\\<username>\\##g' \
-  | grep -E "$local_path_pattern"; then
+staged_diff=$(mktemp) || exit 1
+sanitized_diff=$(mktemp) || exit 1
+trap 'rm -f "$staged_diff" "$sanitized_diff"' EXIT
+if ! git diff --cached > "$staged_diff"; then
+  echo 'ステージ差分を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! sed -E 's#/Users/<username>/##g; s#/home/<username>/##g; s#C:\\Users\\<username>\\##g' \
+  "$staged_diff" > "$sanitized_diff"; then
+  echo '絶対パス検出用の差分処理に失敗しました。コミットを中止します。' >&2
+  exit 1
+fi
+grep -E "^\+[^+].*$local_path_pattern" "$sanitized_diff"
+path_check_status=$?
+if [ "$path_check_status" -eq 0 ]; then
   echo 'ローカル絶対パスが検出されました。コミットを中止します。' >&2
+  exit 1
+elif [ "$path_check_status" -ne 1 ]; then
+  echo '絶対パス検出処理に失敗しました。コミットを中止します。' >&2
   exit 1
 fi
 ```

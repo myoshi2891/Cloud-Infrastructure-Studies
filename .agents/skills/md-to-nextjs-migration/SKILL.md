@@ -20,7 +20,7 @@ description: >
 (最終更新日: 2026-08-09)
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、必ず `.claude/rules/tdd-commit-workflow.md` のルールに従うこと。
+全てのコード実装において、必ず `.agents/rules/tdd-commit-workflow.md` のルールに従うこと。
 1. `test:` Red — 失敗するテストを先に作成しコミットする
 2. `feat:` Green — テストを Pass させる最小実装を行いコミットする
 3. `refactor:` Refactor / Integration — リファクタリングと統合を行いコミットする
@@ -221,9 +221,12 @@ import {
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
 git status --short
-git add app/constants.ts app/gcl/<exam>/
+git add app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2>
+git diff --cached
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
+
+`git add` には実際に変更したファイルだけを列挙し、試験ディレクトリ全体を指定しない。
 
 ### Step 6: Refactor / Integration を検証してコミット
 

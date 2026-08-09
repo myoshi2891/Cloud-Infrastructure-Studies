@@ -8,7 +8,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 (最終更新日: 2026-08-09)
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.claude/rules/tdd-commit-workflow.md` のステップバイステップ・コミットルールに従うこと。
+仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.agents/rules/tdd-commit-workflow.md` のステップバイステップ・コミットルールに従うこと。
 
 ## 目的
 
@@ -99,7 +99,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 
 ### F. テストの実装・整備を行った場合（P レベル・フェーズ完了時の Definition of Done）
 
-`.claude/rules/tdd-commit-workflow.md` Step 3 から強制呼び出しされる、**フェーズ完了時に「漏れなく」更新する全ファイル一覧**。単発の Step 3 で `CLAUDE.md` だけ触って終わらせるのは禁止。以下を 1 フェーズ内で確定させること。
+`.agents/rules/tdd-commit-workflow.md` Step 3 から強制呼び出しされる、**フェーズ完了時に「漏れなく」更新する全ファイル一覧**。単発の Step 3 で `CLAUDE.md` だけ触って終わらせるのは禁止。以下を 1 フェーズ内で確定させること。
 
 **変更対象ファイルと観点:**
 
@@ -121,7 +121,7 @@ P レベル・フェーズキーワード（例: `P2`, `Performance テスト`, 
 
 ```bash
 # 完了したフェーズのキーワードで横断 grep（例: P2 横断品質完了時）
-grep -rn "P2\|横断品質" *.md docs/*.md .claude/rules/*.md .claude/skills/*/SKILL.md
+grep -rn "P2\|横断品質" *.md docs/*.md .agents/rules/*.md .agents/skills/*/SKILL.md
 ```
 
 ---
@@ -189,12 +189,12 @@ bun run lint 2>&1 | tail -5
 仕様書のみの同期更新のコミットには**ソースコードの変更を一切含めない**でください（TDD コミット分割ルール）。
 
 ```bash
-# 1. .claude 内のルール・スキル変更を既存設定を保持したまま .gemini に同期
-rsync -a .claude/rules/ .gemini/rules/
-rsync -a .claude/skills/ .gemini/skills/
+# 1. 正本 .agents のルール・スキル変更を既存設定を保持したまま .gemini に同期
+rsync -a .agents/rules/ .gemini/rules/
+rsync -a .agents/skills/ .gemini/skills/
 
 # 2. 同期対象4ディレクトリだけをステージし、内容を確認してコミット
-git add .claude/rules/ .claude/skills/ .gemini/rules/ .gemini/skills/
+git add .agents/rules/ .agents/skills/ .gemini/rules/ .gemini/skills/
 git diff --cached
 git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"
 ```

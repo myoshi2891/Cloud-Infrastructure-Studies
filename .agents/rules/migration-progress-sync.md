@@ -38,6 +38,10 @@ HTML → Next.js 移行セッションでは、**コンテキストが逼迫す�
 ```bash
 bun run build   # ビルド成功を確認
 bun run lint    # ESLint エラーなし
+if [ -n "$(git status --short)" ]; then
+  echo '進捗同期前に worktree をクリーンにしてください。' >&2
+  exit 1
+fi
 implementation_head=$(git rev-parse --short HEAD)
 ```
 
@@ -62,6 +66,15 @@ implementation_head=$(git rev-parse --short HEAD)
 - `前回進捗同期コミット: <hash>` の値（今回の更新前に完了していた直前の進捗同期コミットと一致）
 - `次の作業:` の説明（ページ粒度で具体的に）
 - 未移行 HTML の残数
+
+編集後、変更が `MIGRATION_PROGRESS.md` だけであることを確認する:
+
+```bash
+if [ "$(git status --short)" != ' M MIGRATION_PROGRESS.md' ]; then
+  echo 'MIGRATION_PROGRESS.md 以外の変更が含まれています。' >&2
+  exit 1
+fi
+```
 
 ### 4. コミット
 

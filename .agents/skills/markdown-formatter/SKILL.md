@@ -169,10 +169,10 @@ bun scripts/format-markdown.mjs <file_path>
 
 ### Step 2: Linter による検証
 
-次に、プロジェクトの `.markdownlint.json` に従って Linter を実行し、残存するエラーがないかを確認します。
+次に、プロジェクトの `.markdownlint.json` に従って固定版の Linter を実行し、残存するエラーがないかを確認します。npm-only のサンドボックスでは、追跡対象の `bun.lock` を変更せずに再現可能な版を指定します。
 
 ```bash
-npx markdownlint-cli <file_path>
+npm exec --yes --package=markdownlint-cli2@0.23.2 -- markdownlint-cli2 <file_path>
 ```
 
 エラーが出力されなくなるまで、手動でマークダウンを修正します。
@@ -187,12 +187,21 @@ linux_home='/''home/'
 windows_home='C:\\''Users\\'
 tilde_home='~''/'
 local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home})"
-if git diff --cached \
-  | grep -E '^\+[^+]' \
-  | grep -E "$local_path_pattern"; then
+staged_diff=$(mktemp) || exit 1
+trap 'rm -f "$staged_diff"' EXIT
+if ! git diff --cached > "$staged_diff"; then
+  echo 'ステージ差分を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+grep -E "^\+[^+].*$local_path_pattern" "$staged_diff"
+path_check_status=$?
+if [ "$path_check_status" -eq 0 ]; then
   echo 'ローカル絶対パスまたは PII が検出されました。コミットを中止します。' >&2
+  exit 1
+elif [ "$path_check_status" -ne 1 ]; then
+  echo '絶対パス検出処理に失敗しました。コミットを中止します。' >&2
   exit 1
 fi
 ```
 
-一致があればエラーとしてコミットを中止する。`grep` が一致なしを示す終了コード 1 は `if` 条件の偽として扱われるため、検証成功としてコミットを適用する。
+一致があればエラーとしてコミットを中止する。`grep` の終了コード 1 だけを「一致なし」として許可し、差分取得または検出処理の失敗時はコミットを中止する。
