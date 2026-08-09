@@ -78,7 +78,7 @@ flowchart LR
 
 JSON API でのバケット作成は `POST` で、クエリパラメータに `project` が必須です。
 
-```
+```http
 POST https://storage.googleapis.com/storage/v1/b?project=PROJECT_ID
 ```
 
@@ -170,7 +170,7 @@ curl -X POST --data-binary @${OBJECT_NAME} \
 
 ### 4.1 リクエストの組み立て
 
-```
+```http
 POST https://storage.googleapis.com/storage/v1/b/SOURCE_BUCKET/o/SOURCE_OBJECT/copyTo/b/DESTINATION_BUCKET/o/DESTINATION_OBJECT
 ```
 
@@ -216,7 +216,7 @@ flowchart TD
 
 ラボの指示どおり、`ObjectAccessControls: insert` を使い、`allUsers` に `READER` 権限を付与します。
 
-```
+```http
 POST https://storage.googleapis.com/storage/v1/b/BUCKET/o/OBJECT/acl
 ```
 
@@ -243,20 +243,29 @@ Cloud Storage のアクセス制御には現在 2 つの方式が併存してい
 | **Uniform bucket-level access + IAM**（推奨） | バケット単位の IAM ポリシーのみで権限を一元管理。ACL は無効化される | Google が推奨するデフォルト方式 |
 | **Fine-grained access + ACL**（ラボで使用） | IAM に加えてオブジェクト単位の ACL も併用できるレガシー方式。S3 との相互運用のために残されている | 特定オブジェクトだけ個別に権限を変えたい場合の例外的な用途 |
 
-公式ドキュメントは「IAM と ACL の 2 つの権限系統が並行して働くため、意図しないデータ公開のリスクが増える」として、原則 ACL を避け Uniform bucket-level access を有効にすることを推奨しています。さらに、コピーの回で触れた `destinationPredefinedAcl` パラメータのように、**Uniform bucket-level access が有効なバケットに対して ACL 系の操作を送ると `400 Bad Request` になる**という技術的な制約もあります。つまり、このラボの Task4 をそのまま JSON API で成功させるには、対象バケットが Fine-grained（ACL 有効）でなければなりません。デフォルトでバケットを作成した場合は Fine-grained のままなので、Task1 で `iamConfiguration` を指定していなければそのまま動作します。
+公式ドキュメントは「IAM と ACL の 2 つの権限系統が並行して働くため、意図しないデータ公開のリスクが増える」として、原則 ACL を避け Uniform bucket-level access を有効にすることを推奨しています。さらに、コピーの回で触れた `destinationPredefinedAcl` パラメータのように、**Uniform bucket-level access が有効なバケットに対して ACL 系の操作を送ると `400 Bad Request` になる**という技術的な制約もあります。Task4 の前に対象バケットを `Buckets: get` で取得し、`iamConfiguration.uniformBucketLevelAccess.enabled` を確認してください。値が `false` または未設定の Fine-grained バケットだけが ACL 方式を利用でき、`true` の場合は IAM 方式へ分岐します。`constraints/storage.uniformBucketLevelAccess` 組織ポリシーで Uniform bucket-level access が強制されている場合も IAM 方式を使用します。
 
 ### 5.3 実務で推奨される代替方法：IAM ポリシーによる公開
 
 Uniform bucket-level access を有効にしたバケットで同じことをしたい場合は、ACL ではなく `setIamPolicy` を使います。
 
 ```bash
-cat > iam-policy.json <<EOF
-{
-  "bindings": [
-    { "role": "roles/storage.objectViewer", "members": ["allUsers"] }
-  ]
-}
-EOF
+curl -X GET \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam" \
+  -o iam-policy-current.json
+
+jq '
+  if any(.bindings[]?; .role == "roles/storage.objectViewer" and .condition == null) then
+    .bindings |= map(
+      if .role == "roles/storage.objectViewer" and .condition == null then
+        .members = ((.members + ["allUsers"]) | unique)
+      else . end
+    )
+  else
+    .bindings += [{"role": "roles/storage.objectViewer", "members": ["allUsers"]}]
+  end
+' iam-policy-current.json > iam-policy.json
 
 curl -X PUT --data-binary @iam-policy.json \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
@@ -264,7 +273,7 @@ curl -X PUT --data-binary @iam-policy.json \
   "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam"
 ```
 
-この方法を使う場合、対象バケットは Uniform bucket-level access が有効である必要があります。
+この read-modify-write では既存の bindings、条件、version、`etag` を保持したまま公開用メンバーを追加します。`etag` を PUT に含めることで、取得後に別の更新が入った場合の上書きを防ぎます。この方法を使う場合、対象バケットは Uniform bucket-level access が有効である必要があります。
 
 ```mermaid
 flowchart TD
@@ -277,6 +286,7 @@ flowchart TD
 
 ### 5.4 ベストプラクティス（公開設定に関する重要な注意）
 
+- **Public Access Prevention を先に確認する**：バケットの `iamConfiguration.publicAccessPrevention` と、親プロジェクト・フォルダ・組織の `constraints/storage.publicAccessPrevention` を確認します。有効な場合、`allUsers` を ACL / IAM に追加する操作は `412 Precondition Failed` となり、既存の公開設定も無効化されて匿名アクセスは `401` または `403` になります。このラボは公開設定が必要なため、Public Access Prevention が適用されていない環境で実施してください。
 - **`allUsers` への付与は必ず意図的に行う**：`allUsers` はインターネット上の誰でもという意味です。学習目的以外では、機密情報を含むバケットに対して安易に使わないこと。
 - **バケット全体を公開する場合は IAM、個別オブジェクトだけなら ACL**という使い分けが公式の考え方です。
 - **併用のリスク**：Fine-grained バケットでは、バケットの IAM ポリシーが非公開でも、1つのオブジェクトの ACL が `allUsers` になっているだけでそのオブジェクトは公開されてしまいます。定期的に ACL の棚卸しをするか、可能な限り Uniform bucket-level access に統一するのが安全です。
@@ -320,7 +330,7 @@ curl -X DELETE \
 ### 6.3 ベストプラクティス
 
 - **`bucket-2` は削除しない**：ラボの要件はコピー先の `bucket-2` は残したまま、コピー元の `bucket-1` とその中のオブジェクトだけを削除することです。誤って両方消してしまうミスに注意します。
-- **ソフトデリート（Soft Delete）の考慮**：バケットにソフトデリートポリシーが設定されている場合、`DELETE` してもすぐには完全消去されず、保持期間中は復元可能な状態になります。チャレンジラボでは影響しませんが、本番運用では想定より長くストレージ料金が発生する要因になり得ます。
+- **ソフトデリート（Soft Delete）の考慮**：新規 Cloud Storage バケットには既定で 7 日間の Soft Delete が適用されます。`DELETE` 後も復元可能期間中はデータが残り、ストレージ料金が発生する場合があります。使い捨てラボで完全削除を前提にする場合は、バケット作成時に `softDeletePolicy.retentionDurationSeconds` を `"0"` に設定して Soft Delete を無効化します。
 - **本番運用では削除前に一覧・バックアップを確認する**：削除は取り消せない操作（またはソフトデリート期間後に取り消せなくなる操作）なので、スクリプト化する場合は削除対象を `list` で確認するステップを挟むと安全です。
 
 **参考ソース**
