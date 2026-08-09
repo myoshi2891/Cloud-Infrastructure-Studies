@@ -315,8 +315,14 @@ const DISPLAY = {
   'wide-topology': { frameWidth: measured.wideTopologyFrame, naturalScale: true },
 } as const;
 
+const chart = DIAGRAMS[id];
+if (!chart) return null;
 <div style={{ maxWidth: DISPLAY[id].frameWidth, width: '100%' }}>
-  <MermaidDiagram preserveNaturalScale={DISPLAY[id].naturalScale} />
+  <MermaidDiagram
+    chart={chart}
+    ariaLabel="クラウド構成と通信経路を示す図"
+    preserveNaturalScale={DISPLAY[id].naturalScale}
+  />
 </div>
 ```
 

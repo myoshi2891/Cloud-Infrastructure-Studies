@@ -9,7 +9,10 @@
  *   bun run .agents/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
  */
 import fs from 'fs';
-import { findDiagramsDeclaration } from './javascript_source.mjs';
+import {
+    findDiagramsDeclaration,
+    maskCommentsAndStrings,
+} from './javascript_source.mjs';
 
 /**
  * Markdown 内の ```mermaid ブロックを抽出する。
@@ -75,19 +78,11 @@ export function restoreDiagrams(diagrams, mdBlocks) {
 }
 
 function findObjectEnd(source, openingIndex) {
+    const maskedSource = maskCommentsAndStrings(source);
     let depth = 0;
-    let quote = null;
-    let escaped = false;
-    for (let index = openingIndex; index < source.length; index += 1) {
-        const char = source[index];
-        if (quote) {
-            if (escaped) escaped = false;
-            else if (char === '\\') escaped = true;
-            else if (char === quote) quote = null;
-            continue;
-        }
-        if (char === "'" || char === '"' || char === '`') quote = char;
-        else if (char === '{') depth += 1;
+    for (let index = openingIndex; index < maskedSource.length; index += 1) {
+        const char = maskedSource[index];
+        if (char === '{') depth += 1;
         else if (char === '}') {
             depth -= 1;
             if (depth === 0) return index;
@@ -121,11 +116,24 @@ function readString(source, start, allowedQuotes) {
 function parseTemplateLiteralObject(objectSource) {
     const diagrams = {};
     let index = 1;
-    const skipSpace = () => {
-        while (/\s/.test(objectSource[index] ?? '')) index += 1;
+    const skipTrivia = () => {
+        while (index < objectSource.length) {
+            if (/\s/.test(objectSource[index] ?? '')) {
+                index += 1;
+            } else if (objectSource[index] === '/' && objectSource[index + 1] === '/') {
+                index += 2;
+                while (index < objectSource.length && objectSource[index] !== '\n') index += 1;
+            } else if (objectSource[index] === '/' && objectSource[index + 1] === '*') {
+                const commentEnd = objectSource.indexOf('*/', index + 2);
+                if (commentEnd === -1) throw new Error('閉じられていないブロックコメントです。');
+                index = commentEnd + 2;
+            } else {
+                break;
+            }
+        }
     };
     while (index < objectSource.length - 1) {
-        skipSpace();
+        skipTrivia();
         if (objectSource[index] === ',') {
             index += 1;
             continue;
@@ -136,14 +144,14 @@ function parseTemplateLiteralObject(objectSource) {
         }
         const key = readString(objectSource, index, ["'", '"']);
         index = key.end;
-        skipSpace();
+        skipTrivia();
         if (objectSource[index] !== ':') throw new Error(`DIAGRAMS のキー ${key.value} に ':' がありません。`);
         index += 1;
-        skipSpace();
-        const value = readString(objectSource, index, ['`']);
+        skipTrivia();
+        const value = readString(objectSource, index, ["'", '"', '`']);
         diagrams[key.value] = value.value;
         index = value.end;
-        skipSpace();
+        skipTrivia();
         if (objectSource[index] === ',') index += 1;
     }
     return diagrams;

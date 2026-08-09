@@ -30,16 +30,14 @@ function findInCode(source) {
 }
 
 /**
- * コメントと文字列を元のオフセットを維持した空白へ置換する。
- *
- * 正規表現リテラルおよびテンプレートリテラル内の `${...}` 補間は未対応。
- * これらに `const DIAGRAMS =` 相当の文字列が含まれる場合、後続の正しい
- * DIAGRAMS 宣言を見落とす可能性がある。
+ * コメント、文字列、テンプレートリテラル、正規表現リテラルを
+ * 元のオフセットを維持した空白へ置換する。
  */
 export function maskCommentsAndStrings(source) {
     const chars = source.split('');
     let state = 'code';
     let escaped = false;
+    let inRegexCharacterClass = false;
 
     for (let index = 0; index < source.length; index += 1) {
         const char = source[index];
@@ -55,6 +53,25 @@ export function maskCommentsAndStrings(source) {
             if (char === '*' && next === '/') {
                 chars[index + 1] = ' ';
                 index += 1;
+                state = 'code';
+            }
+            continue;
+        }
+        if (state === 'regex') {
+            chars[index] = char === '\n' ? '\n' : ' ';
+            if (escaped) {
+                escaped = false;
+            } else if (char === '\\') {
+                escaped = true;
+            } else if (char === '[') {
+                inRegexCharacterClass = true;
+            } else if (char === ']') {
+                inRegexCharacterClass = false;
+            } else if (char === '/' && !inRegexCharacterClass) {
+                while (/[a-z]/i.test(source[index + 1] ?? '')) {
+                    chars[index + 1] = ' ';
+                    index += 1;
+                }
                 state = 'code';
             }
             continue;
@@ -81,6 +98,11 @@ export function maskCommentsAndStrings(source) {
             chars[index] = chars[index + 1] = ' ';
             index += 1;
             state = 'block-comment';
+        } else if (char === '/' && canStartRegexLiteral(source, index)) {
+            chars[index] = ' ';
+            state = 'regex';
+            escaped = false;
+            inRegexCharacterClass = false;
         } else if (char === "'") {
             chars[index] = ' ';
             state = 'single-quote';
@@ -94,4 +116,21 @@ export function maskCommentsAndStrings(source) {
     }
 
     return chars.join('');
+}
+
+function canStartRegexLiteral(source, slashIndex) {
+    let cursor = slashIndex - 1;
+    while (/\s/.test(source[cursor] ?? '')) cursor -= 1;
+    if (cursor < 0) return true;
+
+    if ('[({,:;=!?&|+*%^~<>-'.includes(source[cursor])) return true;
+
+    if (/[\w$]/.test(source[cursor])) {
+        const end = cursor + 1;
+        while (/[\w$]/.test(source[cursor] ?? '')) cursor -= 1;
+        const keyword = source.slice(cursor + 1, end);
+        return /^(?:await|case|delete|do|else|in|instanceof|new|of|return|throw|typeof|void|yield)$/.test(keyword);
+    }
+
+    return false;
 }

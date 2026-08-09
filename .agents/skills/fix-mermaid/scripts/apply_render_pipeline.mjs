@@ -113,10 +113,9 @@ export function injectIds(html) {
  * `startOnLoad: true` を false にし、未指定なら `securityLevel: 'loose'` を付与する。
  */
 export function ensureInitFlags(html) {
-    const maskedHtml = maskCommentsAndStrings(html);
-    const callMatch = /mermaid\.initialize\(\s*/.exec(maskedHtml);
-    if (!callMatch) return html;
-    const optionsStart = callMatch.index + callMatch[0].length;
+    const initializeCall = findMermaidInitialize(html);
+    if (!initializeCall) return html;
+    const { maskedSource: maskedHtml, optionsStart } = initializeCall;
     if (html[optionsStart] !== '{') return html;
     const optionsEnd = findMatchingBrace(maskedHtml, optionsStart);
     if (optionsEnd === -1) return html;
@@ -162,6 +161,33 @@ export function ensureInitFlags(html) {
         out = out.slice(0, insertionIndex) + insertion + out.slice(insertionIndex);
     }
     return out;
+}
+
+function findMermaidInitialize(source) {
+    const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi;
+    const scripts = [...source.matchAll(scriptPattern)];
+    const segments = scripts.length > 0
+        ? scripts.map((script) => ({
+            offset: script.index + script[0].indexOf('>') + 1,
+            source: script[1],
+        }))
+        : [{ offset: 0, source }];
+
+    for (const segment of segments) {
+        const maskedSegment = maskCommentsAndStrings(segment.source);
+        const match = /(^|[^.$\w])mermaid\.initialize\(\s*/.exec(maskedSegment);
+        if (!match) continue;
+        const prefixLength = match[1].length;
+        const maskedSource = source.slice(0, segment.offset)
+            + maskedSegment
+            + source.slice(segment.offset + segment.source.length);
+        return {
+            index: segment.offset + match.index + prefixLength,
+            optionsStart: segment.offset + match.index + match[0].length,
+            maskedSource,
+        };
+    }
+    return null;
 }
 
 function findMatchingBrace(maskedSource, openingIndex) {
@@ -226,10 +252,11 @@ function readPropertyNameBeforeColon(source, colonIndex) {
  */
 export function injectRenderLoop(html) {
     if (html.includes(RENDER_LOOP_MARKER)) return html;
-    const initIdx = html.indexOf('mermaid.initialize(');
-    if (initIdx === -1) {
+    const initializeCall = findMermaidInitialize(html);
+    if (!initializeCall) {
         throw new Error('mermaid.initialize( が見つかりません。初期化ブロックを先に用意してください。');
     }
+    const initIdx = initializeCall.index;
     const closeIdx = html.indexOf('</script>', initIdx);
     if (closeIdx === -1) {
         throw new Error('mermaid.initialize 以降に </script> が見つかりません。');
