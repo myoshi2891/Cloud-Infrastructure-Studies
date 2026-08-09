@@ -68,13 +68,13 @@ content-heavy な単一HTML（hero + サイドバー + 多数セクション + M
 ### 2. GCP / ダークテーマ トークンマップ（確定値）
 
 HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既存トークンへ機械的に置換する。
-**コンポーネントCSSで新規 `--*` を定義しない。** 既存トークンに無いテーマ値は `app/globals.css` の `@theme` にグローバルトークンとして追加し、ページ CSS から参照する。
+既存トークンに無いテーマ値は、ページ固有 CSS のページルートセレクタに定義し、対応する `page.tsx` または `layout.tsx` から直接 import する。
 
 | HTML ローカル変数 | 置換先 | 備考 |
 |---|---|---|
 | `--gcp-blue` / `-green` / `-yellow` / `-red` | `var(--color-google-blue / -green / -yellow / -red)` | 既存トークン |
-| `--gcp-purple` | `var(--color-gcp-purple)` | グローバルトークン |
-| `--gcp-teal` | `var(--color-gcp-teal)` | グローバルトークン |
+| `--gcp-purple` | `var(--color-gcp-purple)` | ページ固有トークン |
+| `--gcp-teal` | `var(--color-gcp-teal)` | ページ固有トークン |
 | `--bg-primary` | `var(--color-background)` | |
 | `--bg-card` / `--bg-card-hover` | `var(--color-card)` / `var(--color-gcp-card-hover)` | |
 | `--bg-code` | `var(--color-gcp-code-background)` | |
@@ -210,7 +210,7 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` 変数）は、
 **「正準リファレンス §2 GCP / ダークテーマ トークンマップ」の確定表をそのまま適用**する
 （毎回 `globals.css` を grep して導出しない）。紫・ティール・コード背景・カードホバー・青み境界線・グローを含め、
-§2 に定義したグローバルトークンを使用し、コンポーネント CSS にリテラル値やローカル変数を追加しない。
+§2 に定義したトークンを使用し、既存グローバルトークンで表現できない値だけをページルートへ定義する。
 
 **Critical**: The project uses a **unified dark theme**. Light-theme HTML pages must be re-themed to match the dark color system. Do not attempt to preserve the original light color scheme.
 

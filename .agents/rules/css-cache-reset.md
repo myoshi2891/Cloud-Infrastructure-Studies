@@ -42,9 +42,22 @@ lsof -nP -iTCP -sTCP:LISTEN | rg 'node|next'
 dev_port=${PORT:?PORT を設定してください}
 dev_pid=$(lsof -tiTCP:"$dev_port" -sTCP:LISTEN | head -n 1)
 if [ -n "$dev_pid" ]; then
-  ps -p "$dev_pid" -o pid=,command=
+  dev_command=$(ps -p "$dev_pid" -o command=) || exit 1
+  dev_cwd=$(lsof -a -p "$dev_pid" -d cwd -Fn | sed -n 's/^n//p') || exit 1
+  if ! printf '%s\n' "$dev_command" | rg -q '(^|/)(next|node).*dev' || [ "$dev_cwd" != "$PWD" ]; then
+    echo '対象 PID はこのプロジェクトの dev サーバーではありません。' >&2
+    exit 1
+  fi
 
-  # 3. 確認済みの dev サーバーだけを停止
+  # 3. 確認済みの dev サーバーだけを明示承認後に停止
+  if [ -t 0 ]; then
+    printf 'PID %s を停止しますか? [y/N] ' "$dev_pid"
+    read -r confirm_stop
+    [ "$confirm_stop" = 'y' ] || [ "$confirm_stop" = 'Y' ] || exit 1
+  elif [ "${CONFIRM_STOP_DEV_SERVER:-}" != 'yes' ]; then
+    echo '非対話実行では CONFIRM_STOP_DEV_SERVER=yes による明示承認が必要です。' >&2
+    exit 1
+  fi
   kill "$dev_pid"
 fi
 
@@ -65,10 +78,11 @@ dev サーバーでは正常でも Docker の本番ビルドで CSS 変数が空
 
 原因を CSS チャンク分割と断定する前に、次を順に診断する:
 
-1. 生成 CSS に `@theme` の出力と対象 CSS 変数が含まれることを確認する。
+1. ソースの `@theme` と、生成 CSS の対象 CSS 変数を別々に確認する。
 
    ```bash
-   rg '@theme|--color-background' app .next/static/css
+   rg '@theme' app
+   rg -- '--color-background' .next/static/css
    ```
 
 2. 生成ページが参照する CSS の `preload` / `stylesheet` を確認する。
