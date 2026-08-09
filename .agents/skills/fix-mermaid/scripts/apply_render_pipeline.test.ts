@@ -126,6 +126,18 @@ describe("ensureInitFlags", () => {
     expect(out).toMatch(/\nmermaid\.initialize\(\{[^}]*startOnLoad: false/);
     expect(out.match(/securityLevel: 'loose'/g)?.length).toBe(1);
   });
+
+  test("customMermaid.initialize を無視して実際の mermaid.initialize を更新する", () => {
+    const input = `customMermaid.initialize({ startOnLoad: true });
+custommermaid.initialize({ startOnLoad: true });
+mermaid.initialize({ startOnLoad: true });`;
+    const out = ensureInitFlags(input);
+
+    expect(out).toContain("customMermaid.initialize({ startOnLoad: true });");
+    expect(out).toContain("custommermaid.initialize({ startOnLoad: true });");
+    expect(out).toMatch(/\nmermaid\.initialize\(\{[^}]*startOnLoad: false/);
+    expect(out.match(/securityLevel: 'loose'/g)?.length).toBe(1);
+  });
 });
 
 describe("injectRenderLoop", () => {
@@ -151,6 +163,17 @@ describe("injectRenderLoop", () => {
     const once = injectRenderLoop(FIXTURE);
     const twice = injectRenderLoop(once);
     expect(twice).toBe(once);
+  });
+
+  test("customMermaid.initialize より後の実際の初期化スクリプトへ注入する", () => {
+    const input = `<script>customMermaid.initialize({});</script>
+<script>custommermaid.initialize({});</script>
+<script>mermaid.initialize({ startOnLoad: false });</script>`;
+    const out = injectRenderLoop(input);
+
+    expect(out.indexOf("function applySvgFixups")).toBeGreaterThan(
+      out.indexOf("mermaid.initialize({ startOnLoad: false })"),
+    );
   });
 });
 
@@ -195,6 +218,15 @@ describe("applyPipeline (統合・冪等性)", () => {
       "      const DIAGRAMS = {",
       `      // const DIAGRAMS = {};
       const example = "const DIAGRAMS = {};";
+      const DIAGRAMS = {`,
+    );
+    expect(applyPipeline(input).html).toContain('id="diag-1"');
+  });
+
+  test("正規表現リテラル内の候補より後にある実宣言を検出する", () => {
+    const input = FIXTURE.replace(
+      "      const DIAGRAMS = {",
+      `      const declarationPattern = /const DIAGRAMS = \\{[^}]*\\}/g;
       const DIAGRAMS = {`,
     );
     expect(applyPipeline(input).html).toContain('id="diag-1"');

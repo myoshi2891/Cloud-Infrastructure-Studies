@@ -43,6 +43,33 @@ const DIAGRAMS = { "diag-1": "flowchart TD\\nA --> B" };
     expect(diagrams).toEqual({ "diag-1": "flowchart TD\nA --> B" });
   });
 
+  test("オブジェクト内コメントの波括弧と DIAGRAMS 候補を無視する", () => {
+    const html = `<script>
+const DIAGRAMS = {
+  // } const DIAGRAMS = { "fake": "ignored" };
+  "diag-1": "flowchart TD\\nA --> B",
+  /* } const DIAGRAMS = {}; */
+  "diag-2": "flowchart LR\\nB --> C"
+};
+</script>`;
+    const { diagrams } = extractDiagramsDefinition(html);
+
+    expect(diagrams).toEqual({
+      "diag-1": "flowchart TD\nA --> B",
+      "diag-2": "flowchart LR\nB --> C",
+    });
+  });
+
+  test("正規表現リテラル内の false match を飛ばして実宣言を抽出する", () => {
+    const html = `<script>
+const declarationPattern = /const DIAGRAMS = \\{[^}]*\\}/g;
+const DIAGRAMS = { "diag-1": "flowchart TD\\nA --> B" };
+</script>`;
+    const { diagrams } = extractDiagramsDefinition(html);
+
+    expect(diagrams).toEqual({ "diag-1": "flowchart TD\nA --> B" });
+  });
+
   test.each([
     "// const DIAGRAMS = {};",
     "/* const DIAGRAMS = {}; */",
