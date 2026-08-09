@@ -147,6 +147,9 @@
 /* ===== MAIN CONTENT ===== */
 .ace-s1-page .main {
     margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     flex: 1;
     min-width: 0;
     min-height: 100vh;
@@ -797,6 +800,8 @@
     }
     .ace-s1-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
     .ace-s1-page .hero,
     .ace-s1-page .content {

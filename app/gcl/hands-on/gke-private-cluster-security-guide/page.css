@@ -15,7 +15,7 @@
 .gke-security-guide-page .layout {
     display: block;
     width: 100%;
-    padding-left: 272px;
+    padding-left: 0;
     box-sizing: border-box;
 }
 
@@ -23,7 +23,7 @@
     position: fixed;
     top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
     left: 0;
-    width: 272px;
+    width: 280px;
     height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
     overflow-y: auto;
     background: var(--color-card, #0d1b2e);
@@ -92,17 +92,16 @@
 
 /* メインキャンバスは全幅、本文は内側で中央寄せ */
 .gke-security-guide-page .main {
-    margin: 0;
+    margin-left: 280px;
     padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 32px 120px;
-    width: 100%;
-    max-width: 100%;
+    width: calc(100% - 280px);
+    max-width: none;
     box-sizing: border-box;
 }
 
 .gke-security-guide-page .content-inner {
     width: 100%;
-    max-width: 1100px;
-    margin-inline: auto;
+    max-width: none;
 }
 
 .gke-security-guide-page .source-note {
@@ -456,6 +455,9 @@
         display: none;
     }
     .gke-security-guide-page .main {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
         padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px) 20px 80px;
     }
     .gke-security-guide-page .summary-grid {

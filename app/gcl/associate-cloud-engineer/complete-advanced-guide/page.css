@@ -214,6 +214,9 @@
 /* ===== MAIN CONTENT ===== */
 .complete-guide-page .main {
     margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     min-height: 100vh;
     position: relative;
     z-index: 1;
@@ -1025,6 +1028,8 @@
     }
     .complete-guide-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
     .complete-guide-page .hero,
     .complete-guide-page .content {

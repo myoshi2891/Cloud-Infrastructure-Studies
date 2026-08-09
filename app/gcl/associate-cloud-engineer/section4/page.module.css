@@ -12,8 +12,8 @@
 
 /* SIDEBAR & NAV */
 .sidebar {
-    width: 310px;
-    min-width: 310px;
+    width: 280px;
+    min-width: 280px;
     background: var(--color-background);
     border-right: 1px solid var(--color-border);
     position: fixed;
@@ -223,7 +223,10 @@
 
 /* MAIN CONTENT */
 .main {
-    margin-left: 310px;
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     flex: 1;
     min-width: 0;
     position: relative;
@@ -411,8 +414,7 @@
 /* CONTENT CONTAINER */
 .content {
     padding: 0 24px 60px;
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: none;
 }
 
 /* SECTION HEADER */
@@ -1221,6 +1223,8 @@
 
     .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
 
     .hero,

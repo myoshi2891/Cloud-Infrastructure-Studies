@@ -105,14 +105,15 @@
 /* Main Content */
 .ccna-ip-services-page .main {
     margin-left: 280px;
+    width: calc(100% - 280px);
     padding: 3rem 4rem 8rem;
-    max-width: 100%;
+    max-width: none;
+    box-sizing: border-box;
 }
 
 .ccna-ip-services-page .section {
     padding-top: 1.2rem;
-    max-width: 1000px;
-    margin-inline: auto;
+    max-width: none;
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 2rem);
 }
 
@@ -362,6 +363,8 @@
     }
     .ccna-ip-services-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
         padding: 2rem 1.5rem 6rem;
     }
 }

@@ -99,6 +99,9 @@
 /* ---------- Main Content ---------- */
 .ccna-software-dev-design-page .main {
     margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     padding: 0 0 100px;
 }
 
@@ -171,8 +174,7 @@
 .ccna-software-dev-design-page .hero > *,
 .ccna-software-dev-design-page .section > * {
     width: 100%;
-    max-width: 1100px;
-    margin-inline: auto;
+    max-width: none;
 }
 
 .ccna-software-dev-design-page .section {
@@ -498,6 +500,8 @@
     }
     .ccna-software-dev-design-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
     .ccna-software-dev-design-page .hero,
     .ccna-software-dev-design-page .section,
