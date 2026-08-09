@@ -1,5 +1,7 @@
 # Project Rules & Quality Mandates: Cloud Infrastructure Studies
 
+(最終更新日: 2026-08-09)
+
 本ファイルは、本プロジェクトにおけるコード実装・HTML移行・スタイリング・テスト駆動開発（TDD）の厳格な品質基準と運用ルールを規定する。
 
 ## 1. デザイン完全移転原則（厳守）
@@ -15,6 +17,7 @@
   - 新しい黄色系カラーコードを使用する際は、必ず [`components/MermaidDiagram.module.css`](../components/MermaidDiagram.module.css) の黒文字転換セレクタ（`.mermaidTarget :global(.node[style*="..."] .nodeLabel)` 等）にカラーコードを追加し、黒文字 (`#000000 !important`) で高コントラスト表示されることを確認すること。
 - **図解の拡大・枠外はみ出し防止**:
   - `diagram-wrapper` および `mermaid-wrap` 内の SVG 要素には `max-width: 100% !important; height: auto !important;` を指定し、ヘッダーや画面枠をはみ出さないよう収めること。
+  - **例外**: `MermaidDiagram.tsx` で `preserveNaturalScale={true}` を指定した図は、SVG の自然倍率維持を優先して `max-width: none` とし、親ラッパーの `overflow-x: auto` で横スクロールを提供する。この場合、`diagram-wrapper` / `mermaid-wrap` から `max-width: 100% !important` を SVG に適用してはならない。
 
 ## 3. TDD & コミットワークフローの鉄則
 

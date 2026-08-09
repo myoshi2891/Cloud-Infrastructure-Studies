@@ -1,5 +1,7 @@
 # リポジトリ内ファイルへの絶対パス記載禁止ルール
 
+(最終更新日: 2026-08-09)
+
 ## ルール
 
 コミット対象のファイル（ドキュメント、設定ファイル、コードのコメント等）に
@@ -8,9 +10,9 @@
 **禁止例**:
 
 ```text
-/Users/johndoe/.claude/plans/my-plan.md
-/home/johndoe/workspace/project/...
-C:\Users\johndoe\...
+/Users/<username>/.claude/plans/my-plan.md
+/home/<username>/workspace/project/...
+C:\Users\<username>\...
 ```
 
 **許可例**:
@@ -23,7 +25,6 @@ C:\Users\johndoe\...
 
 `~/.claude/plans/my-plan.md` などのチルダ（`~`）を使用したパス表記は、ローカルの個人環境におけるホームディレクトリを示します。これらは共有・コミットされるドキュメントやコード内に含めると動作しないか、ユーザー名が含まれる恐れがあるため、コミット対象のファイルへの記載は禁止されています。
 外部ファイルを参照したい場合は、後述の [外部ファイルを参照したい場合](#外部ファイルを参照したい場合) を確認し、リポジトリ配下にファイルをコピーした上で相対パスで参照してください。
-
 
 ## 適用対象
 
@@ -56,8 +57,11 @@ AI エージェントは、`git commit` などのコミットを行う前に、�
 
 ```bash
 # コミット対象の差分にローカル絶対パス（Users/ や home/）が含まれていないかチェック
-# プレースホルダー（johndoe）を除く絶対パスが検出された場合はコミットを中止する
-git diff --cached | grep -E '^\+[^+]' | grep -E '(/Users/|/home/|C:\\Users\\)' | grep -vE 'johndoe'
+# 例示用プレースホルダー文字列だけを除去した後、絶対パスが検出された場合はコミットを中止する
+git diff --cached \
+  | grep -E '^\+[^+]' \
+  | sed -E 's#/Users/<username>/##g; s#/home/<username>/##g; s#C:\\Users\\<username>\\##g' \
+  | grep -E '(/Users/|/home/|C:\\Users\\)'
 ```
 
 このチェックで結果（追加行）が出力された場合は、該当箇所を削除または相対パスに変更し、クリーンであることを確認した上でコミットを実行してください。

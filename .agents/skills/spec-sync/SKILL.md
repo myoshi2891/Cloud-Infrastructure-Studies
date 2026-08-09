@@ -5,6 +5,8 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 
 # 仕様書・テスト進捗同期スキル (spec-sync)
 
+(最終更新日: 2026-08-09)
+
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
 仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.claude/rules/tdd-commit-workflow.md` のステップバイステップ・コミットルールに従うこと。
 
@@ -30,7 +32,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 | `MIGRATION_PROGRESS.md` | `Updated YYYY-MM-DD`（現在地テーブル内） | 現在地テーブル内、または「最終 HEAD」欄 |
 | `docs/TEST_COVERAGE_PROGRESS.md` | `最終更新日: YYYY-MM-DD` | ファイル冒頭付近 |
 | `docs/coverage-dashboard.html` | `<time datetime="YYYY-MM-DD">YYYY-MM-DD</time>` | ヘッダーのメタ情報エリア（`Updated`）およびフッター |
-| 各個別 `SKILL.md` / `*.md` | `(最終更新日: YYYY-MM-DD)` または未移行HTMLリスト等の日付 | タイトル下、または進捗管理の日付欄 |
+| `.agents/AGENTS.md`、`.agents/rules/*.md`、各個別 `.agents/skills/*/SKILL.md` / `*.md` | `(最終更新日: YYYY-MM-DD)` または未移行HTMLリスト等の日付 | タイトル下、または進捗管理の日付欄。新規作成時から必須とし、既存ファイルは次回編集時に追記する |
 
 ---
 
@@ -144,7 +146,7 @@ find app -name "page.tsx" 2>/dev/null | sed 's|app/||' | sed 's|/page.tsx||'
 find __tests__/ -name "*.test.ts" -o -name "*.test.tsx" 2>/dev/null | sort
 
 # D. テスト実行結果の取得
-bun test 2>&1 | tail -5
+set -o pipefail; bun run test 2>&1 | tail -5
 bun run lint 2>&1 | tail -5
 ```
 
@@ -163,9 +165,10 @@ bun run lint 2>&1 | tail -5
   - [ ] 起動手順、テストの実行、定義に変更はないか。
   - [ ] 最終更新日のタイムスタンプが最新化されているか。
 - [ ] **`MIGRATION_PROGRESS.md` 監査**
-  - [ ] `最新 HEAD` が `git rev-parse --short HEAD` の出力と完全に一致しているか。
+  - [ ] `最新実装 HEAD` が、進捗同期コミットの直前に保存した実装コミットと完全に一致しているか。
+  - [ ] `最新進捗同期コミット` が、直前の進捗同期コミットと完全に一致し、`最新実装 HEAD` と混同されていないか。
   - [ ] `ビルド状態` の `bun test` の pass 数が現在の実測値と一致しているか。
-  - [ ] `## 次回セッションでの再開プロンプト` の `最新 HEAD`、`テスト件数` が上記と同期しているか。
+  - [ ] `## 次回セッションでの再開プロンプト` の `最新実装 HEAD`、`最新進捗同期コミット`、`テスト件数` が上記とそれぞれの意味で同期しているか。
   - [ ] 最終更新日（タイムスタンプ）が更新されているか。
 - [ ] **`docs/TEST_COVERAGE_PROGRESS.md` 監査**
   - [ ] Section 1 の全体サマリーが、最新の `dashboard` スクリプト出力値と同期しているか。
@@ -186,13 +189,13 @@ bun run lint 2>&1 | tail -5
 仕様書のみの同期更新のコミットには**ソースコードの変更を一切含めない**でください（TDD コミット分割ルール）。
 
 ```bash
-# 1. .claude 内のルール・スキル変更を .gemini に同期
-rm -rf .gemini/rules/* .gemini/skills/*
-cp -R .claude/rules/* .gemini/rules/
-cp -R .claude/skills/* .gemini/skills/
+# 1. .claude 内のルール・スキル変更を既存設定を保持したまま .gemini に同期
+rsync -a .claude/rules/ .gemini/rules/
+rsync -a .claude/skills/ .gemini/skills/
 
-# 2. 変更された仕様書とルール・スキルをステージングしてコミット
-git add CLAUDE.md GEMINI.md README.md MIGRATION_PROGRESS.md docs/TEST_COVERAGE_PROGRESS.md docs/coverage-dashboard.html .claude/ .gemini/
+# 2. 同期対象4ディレクトリだけをステージし、内容を確認してコミット
+git add .claude/rules/ .claude/skills/ .gemini/rules/ .gemini/skills/
+git diff --cached
 git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"
 ```
 

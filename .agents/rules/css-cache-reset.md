@@ -1,5 +1,7 @@
 # globals.css 変更後のキャッシュリセットルール
 
+(最終更新日: 2026-08-09)
+
 ## 問題
 
 `globals.css`（特に `@theme` ブロック）を変更した後、`.next` に古い CSS チャンクが残ると、CSS カスタムプロパティ（`--color-background` 等）が空文字に解決されてページのダークモードが消える。
@@ -8,9 +10,17 @@
 
 ```js
 getComputedStyle(document.documentElement).getPropertyValue('--color-background')
-// "" が返る → キャッシュ汚染
+// "" が返る → CSS変数が未適用の症状（キャッシュ汚染とは未確定）
 // "#08090f" が返る → 正常
 ```
+
+空文字の場合は `.next` を削除する前に、次を順に確認する:
+
+1. ブラウザの Network パネルで対象ページの CSS が 200 応答で読み込まれていること。
+2. 読み込まれた生成 CSS に `--color-background` の定義が含まれていること。
+3. ルートレイアウトから `app/globals.css` が import されていること。
+
+これらが正常でも古い CSS が配信される場合に、キャッシュ不整合として以下の削除・再起動を行う。
 
 ## ルール
 
@@ -25,13 +35,20 @@ getComputedStyle(document.documentElement).getPropertyValue('--color-background'
 ### 手順
 
 ```bash
-# 1. dev サーバーを停止（ポート 3000 または起動中のポートを使用中の場合）
-kill $(lsof -ti:3000) 2>/dev/null
+# 1. 設定済み、または実際に LISTEN 中の dev サーバーポートを確認
+lsof -nP -iTCP -sTCP:LISTEN | rg 'node|next'
 
-# 2. キャッシュ削除
+# 2. 対象 PID のコマンドと作業対象がこのプロジェクトの dev サーバーであることを確認
+dev_pid=$(lsof -tiTCP:<dev-port> -sTCP:LISTEN)
+ps -p "$dev_pid" -o pid=,command=
+
+# 3. 確認済みの dev サーバーだけを停止
+kill "$dev_pid"
+
+# 4. キャッシュ削除
 rm -rf .next
 
-# 3. dev サーバー再起動
+# 5. dev サーバー再起動（プロジェクトで設定されたポートを使用）
 bun run dev
 ```
 
