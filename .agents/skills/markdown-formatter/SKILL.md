@@ -168,10 +168,10 @@ bun scripts/format-markdown.mjs <file_path>
 
 ### Step 2: Linter による検証
 
-次に、プロジェクトの `.markdownlint.json` に従い、`devDependencies` に固定された `markdownlint-cli` を package script 経由で実行して残存エラーがないか確認します。
+次に、プロジェクトの `.markdownlint.json` に従って Linter を実行し、残存するエラーがないかを確認します。
 
 ```bash
-bun run markdownlint -- <file_path>
+npx markdownlint-cli <file_path>
 ```
 
 エラーが出力されなくなるまで、手動でマークダウンを修正します。

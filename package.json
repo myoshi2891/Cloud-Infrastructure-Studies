@@ -12,7 +12,6 @@
     "test:e2e": "playwright test --project=chromium",
     "test:perf": "playwright test --project=perf",
     "test:security": "node scripts/security-audit.mjs",
-    "markdownlint": "markdownlint",
     "perf:report": "lhci autorun",
     "dashboard": "node scripts/generate-coverage-dashboard.mjs"
   },
@@ -37,7 +36,6 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "16.2.11",
     "jsdom": "^29.0.2",
-    "markdownlint-cli": "0.48.0",
     "marked": "^18.0.7",
     "postcss": "^8.5.22",
     "tailwindcss": "^4.3.3",
