@@ -9,6 +9,7 @@
  *   bun run .agents/skills/fix-mermaid/scripts/restore_diagrams.mjs <file.html> <source.md>
  */
 import fs from 'fs';
+import { findDiagramsDeclaration } from './javascript_source.mjs';
 
 /**
  * Markdown 内の ```mermaid ブロックを抽出する。
@@ -149,9 +150,9 @@ function parseTemplateLiteralObject(objectSource) {
  * JSON 互換の正準形式と、既存のテンプレートリテラル形式を eval せず抽出する。
  */
 export function extractDiagramsDefinition(html) {
-    const assignment = /const\s+DIAGRAMS\s*=\s*/.exec(html);
-    if (!assignment) throw new Error('const DIAGRAMS の定義が見つかりません。');
-    const start = assignment.index + assignment[0].length;
+    const declaration = findDiagramsDeclaration(html);
+    if (!declaration) throw new Error('const DIAGRAMS の定義が見つかりません。');
+    const start = declaration.valueStart;
     if (html[start] !== '{') throw new Error('DIAGRAMS はオブジェクトリテラルで定義してください。');
     const end = findObjectEnd(html, start);
     if (end === -1) throw new Error('DIAGRAMS オブジェクトが閉じられていません。');
@@ -163,6 +164,10 @@ export function extractDiagramsDefinition(html) {
         diagrams = parseTemplateLiteralObject(objectSource);
     }
     return { diagrams, start, end: end + 1 };
+}
+
+export function serializeDiagramsDefinition(diagrams) {
+    return JSON.stringify(diagrams, null, 2);
 }
 
 // --- CLI エントリポイント ----------------------------------------------------
@@ -200,7 +205,10 @@ if (import.meta.main) {
     const { diagrams: restored, warnings } = restoreDiagrams(definition.diagrams, mdBlocks);
     warnings.forEach((w) => console.warn('  ⚠️ ' + w));
 
-    html = html.slice(0, definition.start) + JSON.stringify(restored, null, 2) + html.slice(definition.end);
+    html =
+        html.slice(0, definition.start) +
+        serializeDiagramsDefinition(restored) +
+        html.slice(definition.end);
     fs.writeFileSync(htmlPath, html, 'utf8');
     console.log(`\n✅ Restored ${Object.keys(restored).length} diagrams into ${htmlPath}`);
 }

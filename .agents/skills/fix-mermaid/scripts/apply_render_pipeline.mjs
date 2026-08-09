@@ -13,6 +13,7 @@
  *       本スクリプトが連番 id 付きの空 div に変換する。
  */
 import fs from 'fs';
+import { findDiagramsDeclaration } from './javascript_source.mjs';
 
 // --- 注入する正準ボイラープレート -------------------------------------------
 
@@ -117,17 +118,27 @@ export function ensureInitFlags(html) {
     if (optionsEnd === -1) return html;
 
     let options = html.slice(optionsStart, optionsEnd + 1);
-    if (/startOnLoad:\s*true/.test(options)) {
-        options = options.replace(/startOnLoad:\s*true\s*,?/, 'startOnLoad: false,');
+    let startOnLoad = findTopLevelProperty(options, 'startOnLoad');
+    if (startOnLoad && /^true\b/.test(options.slice(startOnLoad.valueStart))) {
+        options =
+            options.slice(0, startOnLoad.valueStart) +
+            'false' +
+            options.slice(startOnLoad.valueStart + 'true'.length);
     }
     // この initialize 呼び出しの options 直下に securityLevel が無ければ注入する。
     if (!hasTopLevelProperty(options, 'securityLevel')) {
-        if (/startOnLoad:\s*false\s*,/.test(options)) {
+        startOnLoad = findTopLevelProperty(options, 'startOnLoad');
+        const falseValue = startOnLoad && /^false\b/.exec(options.slice(startOnLoad.valueStart));
+        let commaIndex = falseValue
+            ? startOnLoad.valueStart + falseValue[0].length
+            : -1;
+        while (commaIndex !== -1 && /\s/.test(options[commaIndex] ?? '')) commaIndex += 1;
+        if (commaIndex !== -1 && options[commaIndex] === ',') {
             // 従来どおり startOnLoad 行の直後に追加
-            options = options.replace(
-                /(startOnLoad:\s*false\s*,)/,
-                "$1\n                securityLevel: 'loose',",
-            );
+            options =
+                options.slice(0, commaIndex + 1) +
+                "\n                securityLevel: 'loose'," +
+                options.slice(commaIndex + 1);
         } else {
             // startOnLoad 不在/カンマ無し時は initialize の options ブロック先頭へ挿入
             options = options.replace('{', "{ securityLevel: 'loose',");
@@ -180,10 +191,8 @@ function findMatchingBrace(source, openingIndex) {
     return -1;
 }
 
-function hasTopLevelProperty(objectSource, propertyName) {
+function findTopLevelProperty(objectSource, propertyName) {
     let depth = 0;
-    let quote = null;
-    let escaped = false;
     let lineComment = false;
     let blockComment = false;
     for (let index = 0; index < objectSource.length; index += 1) {
@@ -200,12 +209,6 @@ function hasTopLevelProperty(objectSource, propertyName) {
             }
             continue;
         }
-        if (quote) {
-            if (escaped) escaped = false;
-            else if (char === '\\') escaped = true;
-            else if (char === quote) quote = null;
-            continue;
-        }
         if (char === '/' && next === '/') {
             lineComment = true;
             index += 1;
@@ -213,18 +216,64 @@ function hasTopLevelProperty(objectSource, propertyName) {
             blockComment = true;
             index += 1;
         } else if (char === "'" || char === '"' || char === '`') {
-            quote = char;
+            const quoted = readQuotedToken(objectSource, index, char);
+            if (depth === 1 && quoted.value === propertyName) {
+                const colonIndex = skipWhitespace(objectSource, quoted.end);
+                if (objectSource[colonIndex] === ':') {
+                    return {
+                        valueStart: skipWhitespace(objectSource, colonIndex + 1),
+                    };
+                }
+            }
+            index = quoted.end - 1;
         } else if (char === '{') {
             depth += 1;
         } else if (char === '}') {
             depth -= 1;
-        } else if (depth === 1 && objectSource.startsWith(propertyName, index)) {
-            const before = objectSource[index - 1];
-            const afterName = objectSource.slice(index + propertyName.length);
-            if ((!before || !/[\w$]/.test(before)) && /^\s*:/.test(afterName)) return true;
+        } else if (depth === 1 && /[A-Za-z_$]/.test(char)) {
+            let end = index + 1;
+            while (/[\w$]/.test(objectSource[end] ?? '')) end += 1;
+            if (objectSource.slice(index, end) === propertyName) {
+                const colonIndex = skipWhitespace(objectSource, end);
+                if (objectSource[colonIndex] === ':') {
+                    return {
+                        valueStart: skipWhitespace(objectSource, colonIndex + 1),
+                    };
+                }
+            }
+            index = end - 1;
         }
     }
-    return false;
+    return null;
+}
+
+function hasTopLevelProperty(objectSource, propertyName) {
+    return findTopLevelProperty(objectSource, propertyName) !== null;
+}
+
+function skipWhitespace(source, start) {
+    let index = start;
+    while (/\s/.test(source[index] ?? '')) index += 1;
+    return index;
+}
+
+function readQuotedToken(source, start, quote) {
+    let value = '';
+    let escaped = false;
+    for (let index = start + 1; index < source.length; index += 1) {
+        const char = source[index];
+        if (escaped) {
+            value += char;
+            escaped = false;
+        } else if (char === '\\') {
+            escaped = true;
+        } else if (char === quote) {
+            return { value, end: index + 1 };
+        } else {
+            value += char;
+        }
+    }
+    return { value, end: source.length };
 }
 
 /**
@@ -269,7 +318,7 @@ export function injectCenteringCss(html) {
 export function applyPipeline(html) {
     const report = [];
 
-    if (!/const\s+DIAGRAMS\s*=/.test(html)) {
+    if (!findDiagramsDeclaration(html)) {
         throw new Error('DIAGRAMS が定義されていません。図ソースを定義してから再実行してください。');
     }
 
