@@ -22,6 +22,17 @@ A --> B\` };
     expect(diagrams["diag-1"]).toBe("flowchart TD\nA --> B");
   });
 
+  test("クォートされていないキーを固有メッセージで拒否する", () => {
+    const html = `<script>
+const DIAGRAMS = { diag1: \`flowchart TD
+A --> B\` };
+</script>`;
+
+    expect(() => extractDiagramsDefinition(html)).toThrow(
+      "DIAGRAMS のキーはクォートされた文字列リテラルで指定してください。",
+    );
+  });
+
   test("コメントと文字列の false match を飛ばして実宣言を抽出する", () => {
     const html = `<script>
 // const DIAGRAMS = {};

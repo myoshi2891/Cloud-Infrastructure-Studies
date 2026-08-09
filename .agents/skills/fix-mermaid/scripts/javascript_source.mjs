@@ -29,7 +29,14 @@ function findInCode(source) {
     };
 }
 
-function maskCommentsAndStrings(source) {
+/**
+ * コメントと文字列を元のオフセットを維持した空白へ置換する。
+ *
+ * 正規表現リテラルおよびテンプレートリテラル内の `${...}` 補間は未対応。
+ * これらに `const DIAGRAMS =` 相当の文字列が含まれる場合、後続の正しい
+ * DIAGRAMS 宣言を見落とす可能性がある。
+ */
+export function maskCommentsAndStrings(source) {
     const chars = source.split('');
     let state = 'code';
     let escaped = false;

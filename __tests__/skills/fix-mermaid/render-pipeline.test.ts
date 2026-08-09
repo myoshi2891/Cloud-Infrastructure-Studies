@@ -3,7 +3,6 @@ import {
     applyPipeline,
     ensureInitFlags,
 } from '../../../.agents/skills/fix-mermaid/scripts/apply_render_pipeline.mjs';
-import { extractDiagramsDefinition } from '../../../.agents/skills/fix-mermaid/scripts/restore_diagrams.mjs';
 
 const FIXTURE = `<!doctype html>
 <html>
@@ -35,41 +34,9 @@ describe('ensureInitFlags', () => {
 });
 
 describe('applyPipeline', () => {
-    test('DIAGRAMS 未定義なら入力を変更せず即座に失敗する', () => {
+    test('DIAGRAMS 未定義なら即座に失敗する', () => {
         const input = FIXTURE.replace(/\s*const DIAGRAMS = \{[\s\S]*?\};/, '');
-        const original = input;
 
         expect(() => applyPipeline(input)).toThrow(/DIAGRAMS/);
-        expect(input).toBe(original);
-    });
-});
-
-describe('extractDiagramsDefinition', () => {
-    test('JSON互換の正準DIAGRAMS形式を解析する', () => {
-        const html = `<script>
-const DIAGRAMS = {
-  "diag-1": "flowchart TD\\nA --> B"
-};
-</script>`;
-
-        expect(extractDiagramsDefinition(html).diagrams).toEqual({
-            'diag-1': 'flowchart TD\nA --> B',
-        });
-    });
-
-    test('既存のJavaScriptテンプレートリテラル形式を評価せず解析する', () => {
-        const html = `<script>
-const DIAGRAMS = {
-  'diag-1': \`flowchart TD
-A["${'${notEvaluated}'}"] --> B\`,
-  "diag-2": \`sequenceDiagram
-A->>B: escaped \\\`tick\\\`\`,
-};
-</script>`;
-
-        expect(extractDiagramsDefinition(html).diagrams).toEqual({
-            'diag-1': 'flowchart TD\nA["${notEvaluated}"] --> B',
-            'diag-2': 'sequenceDiagram\nA->>B: escaped `tick`',
-        });
     });
 });

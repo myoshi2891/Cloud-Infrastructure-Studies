@@ -114,6 +114,18 @@ describe("ensureInitFlags", () => {
     expect(out).toContain("flowchart: { startOnLoad: true }");
     expect(out).toContain("securityLevel: 'loose'");
   });
+
+  test.each([
+    '// mermaid.initialize({ startOnLoad: true });',
+    'const example = "mermaid.initialize({ startOnLoad: true });";',
+  ])("コメントや文字列の初期化候補を無視する: %s", (falseMatch) => {
+    const input = `${falseMatch}\nmermaid.initialize({ startOnLoad: true });`;
+    const out = ensureInitFlags(input);
+
+    expect(out).toContain(falseMatch);
+    expect(out).toMatch(/\nmermaid\.initialize\(\{[^}]*startOnLoad: false/);
+    expect(out.match(/securityLevel: 'loose'/g)?.length).toBe(1);
+  });
 });
 
 describe("injectRenderLoop", () => {

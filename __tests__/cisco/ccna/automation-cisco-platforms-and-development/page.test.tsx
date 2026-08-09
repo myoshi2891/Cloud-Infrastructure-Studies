@@ -154,7 +154,7 @@ describe('CcnaCiscoPlatformsDevelopmentPage', () => {
         const moduleStyles = existsSync(modulePath) ? readFileSync(modulePath, 'utf8') : '';
         const { container } = render(<CcnaCiscoPlatformsDevelopmentPage />);
 
-        expect(moduleStyles).not.toMatch(/^\s*--[\w-]+\s*:/m);
+        expect(moduleStyles).not.toMatch(/(?:^|[;{])\s*--[^:;{}]+\s*:/);
         expect(moduleStyles).toContain('margin-inline: auto');
         expect(container.querySelector('.article-body')).toBeInTheDocument();
     });

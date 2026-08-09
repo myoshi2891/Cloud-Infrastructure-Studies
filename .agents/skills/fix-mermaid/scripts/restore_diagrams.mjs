@@ -131,6 +131,9 @@ function parseTemplateLiteralObject(objectSource) {
             continue;
         }
         if (objectSource[index] === '}') break;
+        if (objectSource[index] !== "'" && objectSource[index] !== '"') {
+            throw new Error('DIAGRAMS のキーはクォートされた文字列リテラルで指定してください。');
+        }
         const key = readString(objectSource, index, ["'", '"']);
         index = key.end;
         skipSpace();

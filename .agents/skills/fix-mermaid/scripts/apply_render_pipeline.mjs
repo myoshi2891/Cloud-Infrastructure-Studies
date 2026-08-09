@@ -13,7 +13,10 @@
  *       本スクリプトが連番 id 付きの空 div に変換する。
  */
 import fs from 'fs';
-import { findDiagramsDeclaration } from './javascript_source.mjs';
+import {
+    findDiagramsDeclaration,
+    maskCommentsAndStrings,
+} from './javascript_source.mjs';
 
 // --- 注入する正準ボイラープレート -------------------------------------------
 
@@ -110,78 +113,62 @@ export function injectIds(html) {
  * `startOnLoad: true` を false にし、未指定なら `securityLevel: 'loose'` を付与する。
  */
 export function ensureInitFlags(html) {
-    const callMatch = /mermaid\.initialize\(\s*/.exec(html);
+    const maskedHtml = maskCommentsAndStrings(html);
+    const callMatch = /mermaid\.initialize\(\s*/.exec(maskedHtml);
     if (!callMatch) return html;
     const optionsStart = callMatch.index + callMatch[0].length;
     if (html[optionsStart] !== '{') return html;
-    const optionsEnd = findMatchingBrace(html, optionsStart);
+    const optionsEnd = findMatchingBrace(maskedHtml, optionsStart);
     if (optionsEnd === -1) return html;
 
-    let options = html.slice(optionsStart, optionsEnd + 1);
-    let startOnLoad = findTopLevelProperty(options, 'startOnLoad');
-    if (startOnLoad && /^true\b/.test(options.slice(startOnLoad.valueStart))) {
-        options =
-            options.slice(0, startOnLoad.valueStart) +
-            'false' +
-            options.slice(startOnLoad.valueStart + 'true'.length);
-    }
-    // この initialize 呼び出しの options 直下に securityLevel が無ければ注入する。
-    if (!hasTopLevelProperty(options, 'securityLevel')) {
-        startOnLoad = findTopLevelProperty(options, 'startOnLoad');
-        const falseValue = startOnLoad && /^false\b/.exec(options.slice(startOnLoad.valueStart));
-        let commaIndex = falseValue
-            ? startOnLoad.valueStart + falseValue[0].length
+    const startOnLoad = findTopLevelProperty(
+        html,
+        maskedHtml,
+        optionsStart,
+        optionsEnd,
+        'startOnLoad',
+    );
+    const securityLevel = findTopLevelProperty(
+        html,
+        maskedHtml,
+        optionsStart,
+        optionsEnd,
+        'securityLevel',
+    );
+    const startOnLoadValue = startOnLoad
+        ? /^(true|false)\b/.exec(maskedHtml.slice(startOnLoad.valueStart))
+        : null;
+    let insertionIndex = -1;
+
+    if (!securityLevel) {
+        let commaIndex = startOnLoadValue
+            ? startOnLoad.valueStart + startOnLoadValue[0].length
             : -1;
-        while (commaIndex !== -1 && /\s/.test(options[commaIndex] ?? '')) commaIndex += 1;
-        if (commaIndex !== -1 && options[commaIndex] === ',') {
-            // 従来どおり startOnLoad 行の直後に追加
-            options =
-                options.slice(0, commaIndex + 1) +
-                "\n                securityLevel: 'loose'," +
-                options.slice(commaIndex + 1);
-        } else {
-            // startOnLoad 不在/カンマ無し時は initialize の options ブロック先頭へ挿入
-            options = options.replace('{', "{ securityLevel: 'loose',");
-        }
+        while (commaIndex !== -1 && /\s/.test(maskedHtml[commaIndex] ?? '')) commaIndex += 1;
+        insertionIndex = commaIndex !== -1 && html[commaIndex] === ','
+            ? commaIndex + 1
+            : optionsStart + 1;
     }
-    return html.slice(0, optionsStart) + options + html.slice(optionsEnd + 1);
+
+    let out = html;
+    if (startOnLoadValue?.[1] === 'true') {
+        out = out.slice(0, startOnLoad.valueStart) + 'false' + out.slice(startOnLoad.valueStart + 4);
+        if (insertionIndex > startOnLoad.valueStart) insertionIndex += 1;
+    }
+    if (insertionIndex !== -1) {
+        const insertion = insertionIndex === optionsStart + 1
+            ? " securityLevel: 'loose',"
+            : "\n                securityLevel: 'loose',";
+        out = out.slice(0, insertionIndex) + insertion + out.slice(insertionIndex);
+    }
+    return out;
 }
 
-function findMatchingBrace(source, openingIndex) {
+function findMatchingBrace(maskedSource, openingIndex) {
     let depth = 0;
-    let quote = null;
-    let escaped = false;
-    let lineComment = false;
-    let blockComment = false;
-    for (let index = openingIndex; index < source.length; index += 1) {
-        const char = source[index];
-        const next = source[index + 1];
-        if (lineComment) {
-            if (char === '\n') lineComment = false;
-            continue;
-        }
-        if (blockComment) {
-            if (char === '*' && next === '/') {
-                blockComment = false;
-                index += 1;
-            }
-            continue;
-        }
-        if (quote) {
-            if (escaped) escaped = false;
-            else if (char === '\\') escaped = true;
-            else if (char === quote) quote = null;
-            continue;
-        }
-        if (char === '/' && next === '/') {
-            lineComment = true;
-            index += 1;
-        } else if (char === '/' && next === '*') {
-            blockComment = true;
-            index += 1;
-        } else if (char === "'" || char === '"' || char === '`') {
-            quote = char;
-        } else if (char === '{') {
+    for (let index = openingIndex; index < maskedSource.length; index += 1) {
+        const char = maskedSource[index];
+        if (char === '{') {
             depth += 1;
         } else if (char === '}') {
             depth -= 1;
@@ -191,64 +178,21 @@ function findMatchingBrace(source, openingIndex) {
     return -1;
 }
 
-function findTopLevelProperty(objectSource, propertyName) {
+function findTopLevelProperty(source, maskedSource, openingIndex, closingIndex, propertyName) {
     let depth = 0;
-    let lineComment = false;
-    let blockComment = false;
-    for (let index = 0; index < objectSource.length; index += 1) {
-        const char = objectSource[index];
-        const next = objectSource[index + 1];
-        if (lineComment) {
-            if (char === '\n') lineComment = false;
-            continue;
-        }
-        if (blockComment) {
-            if (char === '*' && next === '/') {
-                blockComment = false;
-                index += 1;
-            }
-            continue;
-        }
-        if (char === '/' && next === '/') {
-            lineComment = true;
-            index += 1;
-        } else if (char === '/' && next === '*') {
-            blockComment = true;
-            index += 1;
-        } else if (char === "'" || char === '"' || char === '`') {
-            const quoted = readQuotedToken(objectSource, index, char);
-            if (depth === 1 && quoted.value === propertyName) {
-                const colonIndex = skipWhitespace(objectSource, quoted.end);
-                if (objectSource[colonIndex] === ':') {
-                    return {
-                        valueStart: skipWhitespace(objectSource, colonIndex + 1),
-                    };
-                }
-            }
-            index = quoted.end - 1;
-        } else if (char === '{') {
+    for (let index = openingIndex; index <= closingIndex; index += 1) {
+        const char = maskedSource[index];
+        if (char === '{') {
             depth += 1;
         } else if (char === '}') {
             depth -= 1;
-        } else if (depth === 1 && /[A-Za-z_$]/.test(char)) {
-            let end = index + 1;
-            while (/[\w$]/.test(objectSource[end] ?? '')) end += 1;
-            if (objectSource.slice(index, end) === propertyName) {
-                const colonIndex = skipWhitespace(objectSource, end);
-                if (objectSource[colonIndex] === ':') {
-                    return {
-                        valueStart: skipWhitespace(objectSource, colonIndex + 1),
-                    };
-                }
+        } else if (depth === 1 && char === ':') {
+            if (readPropertyNameBeforeColon(source, index) === propertyName) {
+                return { valueStart: skipWhitespace(maskedSource, index + 1) };
             }
-            index = end - 1;
         }
     }
     return null;
-}
-
-function hasTopLevelProperty(objectSource, propertyName) {
-    return findTopLevelProperty(objectSource, propertyName) !== null;
 }
 
 function skipWhitespace(source, start) {
@@ -257,23 +201,23 @@ function skipWhitespace(source, start) {
     return index;
 }
 
-function readQuotedToken(source, start, quote) {
-    let value = '';
-    let escaped = false;
-    for (let index = start + 1; index < source.length; index += 1) {
-        const char = source[index];
-        if (escaped) {
-            value += char;
-            escaped = false;
-        } else if (char === '\\') {
-            escaped = true;
-        } else if (char === quote) {
-            return { value, end: index + 1 };
-        } else {
-            value += char;
+function readPropertyNameBeforeColon(source, colonIndex) {
+    let end = colonIndex;
+    while (/\s/.test(source[end - 1] ?? '')) end -= 1;
+    const last = source[end - 1];
+    if (last === "'" || last === '"') {
+        for (let start = end - 2; start >= 0; start -= 1) {
+            if (source[start] === last) {
+                let backslashes = 0;
+                for (let cursor = start - 1; source[cursor] === '\\'; cursor -= 1) backslashes += 1;
+                if (backslashes % 2 === 0) return source.slice(start + 1, end - 1);
+            }
         }
+        return null;
     }
-    return { value, end: source.length };
+    let start = end;
+    while (/[\w$]/.test(source[start - 1] ?? '')) start -= 1;
+    return source.slice(start, end);
 }
 
 /**
