@@ -138,18 +138,23 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 | progress bar / scroll-top の可視/scroll spy | **単一の `useEffect`** に集約。`scroll` リスナ + `IntersectionObserver` |
 | `IntersectionObserver` 全般 | jsdom 対策に `typeof IntersectionObserver !== 'undefined'` でガードし、cleanup で `disconnect()` |
 
-### 6. コードブロックの2パターン使い分け
+### 6. コードブロックは `.code-line` 構造へ統一
 
-- **構文ハイライトの `<span>` 入り**（GCPガイド系。`<pre><code><span class="c">…`）
-  → **Pattern B**: `<pre>` を `dangerouslySetInnerHTML` で注入（静的・作者管理コードのみ）。
-  生のコード文字列は `escapeHtml` ヘルパーで **`&` を先に `&amp;`、`<` を `&lt;`** に変換してから構文ハイライト用 `<span class="...">` で包み、`__html` へ渡す。生成するハイライト要素の `class` 属性は維持し、`{`/`}` とバッククォートはそのまま扱う。
-  `.<page>-page pre, .<page>-page pre code { white-space: pre; }` を指定（preflight 負け回避）。
+- `**/*.tsx` のコードブロックは、構文ハイライトの有無にかかわらず各行を `<div className="code-line">` でラップする。
+- 構文ハイライトする場合は、`.code-line` の内側へハイライト済みの `<span className="...">` を直接配置する。`dangerouslySetInnerHTML` で `<pre><code>` を生成しない。
+- プレーン整形のみの場合も同じ `.code-line` を使い、`.code-line { white-space: pre; }` でインデントと改行を保持する。
 
-  ```ts
-  const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  ```
-
-- **プレーン整形のみ**（ハイライト無し）→ global skill の `.code-line` ラッパー（`white-space: pre`）。
+```tsx
+<div className="code-block" role="region" aria-label="コマンド例">
+  <div className="code-line">
+    <span className="code-prompt">$</span>
+    <span className="code-command"> gcloud projects describe PROJECT_ID</span>
+  </div>
+  <div className="code-line">
+    <span className="code-comment"># 出力を確認する</span>
+  </div>
+</div>
+```
 
 ## 効率的読み取りプロトコル（省略禁止＋無駄読み禁止）
 

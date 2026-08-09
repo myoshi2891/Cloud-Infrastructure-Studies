@@ -244,7 +244,7 @@ app/
         CcnaCiscoPlatformsDevelopmentGuide.tsx # 本文＋インタラクション（client。全13セクション、Mermaid等）
         NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
         constants.ts                # Mermaid 図定義（10図）
-        page.css                    # ページ固有スタイル
+        page.module.css             # ページ固有スタイル
       ip-connectivity-guide/
         page.tsx                    # CCNA 200-301 IP Connectivity 完全ガイド（Server。メタデータ定義）
         CcnaIpConnectivityGuide.tsx # 本文＋インタラクション（client。全6章＋まとめ、Mermaid等）

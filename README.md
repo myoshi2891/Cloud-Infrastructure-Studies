@@ -110,7 +110,7 @@ bun run lint
 #### Markdown lint
 
 ```bash
-bun run markdownlint -- <file>
+bun run markdownlint -- path/to/file.md
 ```
 
 ## 🧪 テストの実行
