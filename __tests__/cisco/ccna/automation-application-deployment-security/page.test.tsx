@@ -185,12 +185,17 @@ describe('CcnaAppDeploymentSecurityPage', () => {
     });
 
     it('renders external reference links', () => {
-        render(<CcnaAppDeploymentSecurityPage />);
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
 
         const ciscoLink = screen.getByRole('link', { name: /Cisco 200-901 CCNAAUTO Exam Topics/i });
         expect(ciscoLink).toHaveAttribute('href', 'https://learningnetwork.cisco.com/s/ccnaauto-exam-topics');
 
-        const owaspLink = screen.getByRole('link', { name: /OWASP Top 10:2021/i });
-        expect(owaspLink).toHaveAttribute('href', 'https://owasp.org/Top10/');
+        const owaspLink = screen.getByRole('link', { name: /OWASP Top 10:2025.*A05:2025 Injection/i });
+        expect(owaspLink).toHaveAttribute('href', 'https://owasp.org/Top10/2025/A05_2025-Injection/');
+        expect(screen.getByText(/2025年版では、InjectionはA05:2025に分類される/)).toBeInTheDocument();
+        expect(container.querySelector('[data-diagram-id="diag-8"] [data-chart]')).toHaveAttribute(
+            'data-chart',
+            expect.stringContaining('A05:2025 Injection'),
+        );
     });
 });
