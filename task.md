@@ -26,7 +26,8 @@ Fail（Red）・Green・Refactor は**それぞれ独立したコミット**に�
 - 各画面のメイン領域へ `margin-left: 280px`、`width: calc(100% - 280px)`、
   `max-width: none`、`box-sizing: border-box` を適用する。
 - 本文全体を狭める `content-inner` 等の最大幅を解除する。
-- 900px前後の既存ブレークポイントではメイン領域を幅100%へ戻す。
+- 900px前後の既存ブレークポイントではメイン領域へ `margin-left: 0` と `width: 100%` を併用し、
+  デスクトップ用の280pxオフセットを明示的に解除する。
 - 対象テストの成功確認直後に、共通ゲートを通し、最小実装だけを
   `feat(layout): standardize full-width sidebar guide screens` 形式で独立コミットする。
 
@@ -40,3 +41,7 @@ Fail（Red）・Green・Refactor は**それぞれ独立したコミット**に�
 ## Docs Sync（仕様同期）
 
 - レイアウト契約、移行進捗、テスト進捗、カバレッジダッシュボードを同期する。
+- ユーザーが Docs Sync コミットを明示的に認可していることを確認してから開始する。
+- 同期対象の文書ファイルだけを個別に `git add` し、実装や Refactor の変更を混在させない。
+- `git diff --cached --name-only` と `git diff --cached` で対象範囲と内容を確認する。
+- 検証後、文書変更だけを独立した `docs:` コミットとして作成する。
