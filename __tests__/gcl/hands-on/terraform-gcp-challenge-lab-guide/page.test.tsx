@@ -132,7 +132,7 @@ describe('Terraform GCP Challenge Lab 完全攻略ガイド ページ', () => {
 
     it('アイコンフォントを外部 CDN ではなくローカル npm パッケージから読み込むこと', () => {
         expect(pageStyles).toContain(
-            "@import '@tabler/icons-webfont/dist/tabler-icons.min.css';",
+            "@import '@tabler/icons-webfont/tabler-icons.min.css';",
         );
         expect(pageStyles).not.toMatch(/@import\s+['"]https?:\/\//);
     });
