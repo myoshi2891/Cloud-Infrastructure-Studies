@@ -144,7 +144,8 @@ This skill provides rules and best practices to ensure all Markdown documents (`
 * **例外**: プロジェクトで意図的に HTML レンダリングする特定のダッシュボードやスライドコンポーネント用ファイル（例: `docs/coverage-dashboard.html`、またはマークダウン内で特別に許可されたアコーディオン等）を除き、原則として標準の Markdown 記法を使用してください。
 * **改行の代替案**: 行末に 2 つのスペースを入れる（ダブルスペース改行）、または新しいパラグラフ（空行を挟む）として分割してください。
 
----<!-- markdownlint-enable MD031 MD022 MD032 -->
+---
+<!-- markdownlint-enable MD031 MD022 MD032 -->
 
 ## ワークフロー (検証と修正の手順)
 
@@ -181,7 +182,17 @@ npx markdownlint-cli <file_path>
 変更したファイルを Git にステージング（`git add`）した後、リポジトリのセキュリティ規則（`no-absolute-paths.md`）に基づき、絶対パスや PII が含まれていないか必ず検証します。
 
 ```bash
-git diff --cached | grep -E '^\+[^+]' | grep -E '(/Users/[A-Za-z0-9._-]+|/home/[A-Za-z0-9._-]+|C:\\Users\\[A-Za-z0-9._-]+)'
+mac_home='/''Users/'
+linux_home='/''home/'
+windows_home='C:\\''Users\\'
+tilde_home='~''/'
+local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home})"
+if git diff --cached \
+  | grep -E '^\+[^+]' \
+  | grep -E "$local_path_pattern"; then
+  echo 'ローカル絶対パスまたは PII が検出されました。コミットを中止します。' >&2
+  exit 1
+fi
 ```
 
-検証が成功（何も検出されない）したことを確認してから、コミットを適用してください。
+一致があればエラーとしてコミットを中止する。`grep` が一致なしを示す終了コード 1 は `if` 条件の偽として扱われるため、検証成功としてコミットを適用する。

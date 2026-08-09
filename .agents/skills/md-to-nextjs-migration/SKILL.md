@@ -194,7 +194,7 @@ import {
     <div className="ctable-wrap">
         <table className="ctable">
             <thead>
-                <tr><th>列1</th><th>列2</th></tr>
+                <tr><th scope="col">列1</th><th scope="col">列2</th></tr>
             </thead>
             <tbody>
                 {NEW_ITEMS.map((row, i) => (
@@ -221,7 +221,7 @@ import {
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
 git status --short
-git add app/gcl/<exam>/
+git add app/constants.ts app/gcl/<exam>/
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
 
@@ -231,9 +231,11 @@ git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
 git status --short
-git add app/constants.ts app/gcl/<exam>/
+git add <refactored-files>
 git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
+
+Step 6 は実際にリファクタリングしたファイルだけをステージする。Green 実装や `app/constants.ts` を変更していない場合、それらを Refactor コミットへ重ねて含めない。
 
 ### Step 7: Docs Sync を検証してコミット
 
@@ -257,7 +259,7 @@ git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 - **SVG 移行品質**: オリジナルにリッチな SVG（チップ表示、ステータス、詳細な注釈等）が含まれる場合は簡略化せず全詳細を再現すること。プレースホルダーへの置き換えは禁止。属性は camelCase に変換し `style` はオブジェクト形式で記述すること
 - **`litellm` / `dspy` 追加禁止**（脆弱性懸念）
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。
-- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。
+- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。行を `map` で展開する場合は各要素へ安定した `key`（固定コードなら `key={"line-" + index}` 等）を付け、`.code-line { white-space: pre; }` で各行の先頭インデントを保持する。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background` など）を厳格に使用すること。独自のローカル変数定義は避ける。
 
