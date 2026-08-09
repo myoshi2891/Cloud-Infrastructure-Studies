@@ -35,31 +35,40 @@ getComputedStyle(document.documentElement).getPropertyValue('--color-background'
 ### 手順
 
 ```bash
-# 1. 設定済み、または実際に LISTEN 中の dev サーバーポートを確認
-lsof -nP -iTCP -sTCP:LISTEN | rg 'node|next'
-
-# 2. 対象 PID のコマンドと作業対象がこのプロジェクトの dev サーバーであることを確認
+# 1. PORT と、このポートで LISTEN 中の dev サーバーを fail-closed で取得
 dev_port=${PORT:?PORT を設定してください}
-dev_pid=$(lsof -tiTCP:"$dev_port" -sTCP:LISTEN | head -n 1)
-if [ -n "$dev_pid" ]; then
-  dev_command=$(ps -p "$dev_pid" -o command=) || exit 1
-  dev_cwd=$(lsof -a -p "$dev_pid" -d cwd -Fn | sed -n 's/^n//p') || exit 1
-  if ! printf '%s\n' "$dev_command" | rg -q '(^|/)(next|node).*dev' || [ "$dev_cwd" != "$PWD" ]; then
-    echo '対象 PID はこのプロジェクトの dev サーバーではありません。' >&2
-    exit 1
-  fi
-
-  # 3. 確認済みの dev サーバーだけを明示承認後に停止
-  if [ -t 0 ]; then
-    printf 'PID %s を停止しますか? [y/N] ' "$dev_pid"
-    read -r confirm_stop
-    [ "$confirm_stop" = 'y' ] || [ "$confirm_stop" = 'Y' ] || exit 1
-  elif [ "${CONFIRM_STOP_DEV_SERVER:-}" != 'yes' ]; then
-    echo '非対話実行では CONFIRM_STOP_DEV_SERVER=yes による明示承認が必要です。' >&2
-    exit 1
-  fi
-  kill "$dev_pid"
+if ! dev_pids=$(lsof -tiTCP:"$dev_port" -sTCP:LISTEN); then
+  echo '指定ポートの dev サーバー PID を取得できません。処理を中止します。' >&2
+  exit 1
 fi
+dev_pid=${dev_pids%%$'\n'*}
+[ -n "$dev_pid" ] || { echo 'dev サーバー PID が空です。処理を中止します。' >&2; exit 1; }
+
+# 2. 対象 PID のコマンドと cwd が、このプロジェクトの next dev --turbopack であることを確認
+if ! dev_command=$(ps -p "$dev_pid" -o command=); then
+  echo 'dev サーバーのコマンドを取得できません。処理を中止します。' >&2
+  exit 1
+fi
+if ! dev_cwd_record=$(lsof -a -p "$dev_pid" -d cwd -Fn); then
+  echo 'dev サーバーの cwd を取得できません。処理を中止します。' >&2
+  exit 1
+fi
+dev_cwd=${dev_cwd_record#n}
+if ! printf '%s\n' "$dev_command" | rg -q '(^|[ /])next dev --turbopack([[:space:]]|$)' || [ "$dev_cwd" != "$PWD" ]; then
+  echo '対象 PID はこのプロジェクトの next dev --turbopack ではありません。' >&2
+  exit 1
+fi
+
+# 3. 確認済みの dev サーバーだけを明示承認後に停止
+if [ -t 0 ]; then
+  printf 'PID %s を停止しますか? [y/N] ' "$dev_pid"
+  read -r confirm_stop
+  [ "$confirm_stop" = 'y' ] || [ "$confirm_stop" = 'Y' ] || exit 1
+elif [ "${CONFIRM_STOP_DEV_SERVER:-}" != 'yes' ]; then
+  echo '非対話実行では CONFIRM_STOP_DEV_SERVER=yes による明示承認が必要です。' >&2
+  exit 1
+fi
+kill "$dev_pid" || exit 1
 
 # 4. キャッシュ削除
 rm -rf .next
@@ -99,7 +108,7 @@ dev サーバーでは正常でも Docker の本番ビルドで CSS 変数が空
 
 **Docker リビルド手順**（`globals.css` 変更後）:
 
-Docker 操作はリポジトリの Bun コマンド規約に対するオーケストレーション上の例外として `make` を使用する。`make build` は Dockerfile 内で `bun install --frozen-lockfile` と `bun run build`、`make dev` は開発コンテナ内で `bun install` と `bun run dev` を実行する。
+Docker 操作はリポジトリのコマンド規約に対するオーケストレーション上の例外として `make` を使用する。`make build` は `docker compose --profile prod build` を実行して本番イメージだけをビルドし、コンテナは起動しない。`make dev` は `docker compose --profile dev up --build` を実行して開発イメージを再ビルドし、開発コンテナを起動する。
 
 ```bash
 make down && make build && make dev

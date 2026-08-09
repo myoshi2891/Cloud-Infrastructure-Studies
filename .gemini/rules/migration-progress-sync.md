@@ -38,11 +38,18 @@ HTML → Next.js 移行セッションでは、**コンテキストが逼迫す�
 ```bash
 bun run build   # ビルド成功を確認
 bun run lint    # ESLint エラーなし
-if [ -n "$(git status --short)" ]; then
+if ! progress_status=$(git status --short); then
+  echo 'worktree の状態を取得できません。進捗同期を中止します。' >&2
+  exit 1
+fi
+if [ -n "$progress_status" ]; then
   echo '進捗同期前に worktree をクリーンにしてください。' >&2
   exit 1
 fi
-implementation_head=$(git rev-parse --short HEAD)
+if ! implementation_head=$(git rev-parse --short HEAD); then
+  echo '最新実装 HEAD を取得できません。進捗同期を中止します。' >&2
+  exit 1
+fi
 ```
 
 `implementation_head` は進捗ファイルを編集する前の最新実装コミットであり、後続の進捗同期コミットとは区別する。
@@ -70,7 +77,11 @@ implementation_head=$(git rev-parse --short HEAD)
 編集後、変更が `MIGRATION_PROGRESS.md` だけであることを確認する:
 
 ```bash
-if [ "$(git status --short)" != ' M MIGRATION_PROGRESS.md' ]; then
+if ! progress_status=$(git status --short); then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if [ "$progress_status" != ' M MIGRATION_PROGRESS.md' ]; then
   echo 'MIGRATION_PROGRESS.md 以外の変更が含まれています。' >&2
   exit 1
 fi
@@ -79,14 +90,29 @@ fi
 ### 4. コミット
 
 ```bash
-git status --short
-git add MIGRATION_PROGRESS.md
-git diff --cached -- MIGRATION_PROGRESS.md
-git commit -m "chore(docs): update MIGRATION_PROGRESS.md — <作業内容の1行要約>"
-new_progress_sync_commit=$(git rev-parse --short HEAD)
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git add MIGRATION_PROGRESS.md; then
+  echo '進捗ファイルをステージできません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git diff --cached -- MIGRATION_PROGRESS.md; then
+  echo 'ステージ差分を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! git commit -m "chore(docs): update MIGRATION_PROGRESS.md — <作業内容の1行要約>"; then
+  echo '進捗同期コミットを作成できません。後続処理を中止します。' >&2
+  exit 1
+fi
+if ! new_progress_sync_commit=$(git rev-parse --short HEAD); then
+  echo '作成した進捗同期コミットを取得できません。後続処理を中止します。' >&2
+  exit 1
+fi
 ```
 
-`new_progress_sync_commit` は今回作成した進捗同期コミットの識別子として実行結果・引き継ぎに記録し、今回コミットした `前回進捗同期コミット` や `最新実装 HEAD` を上書きしない。次回の進捗同期時に、この値を `前回進捗同期コミット` として記録する。
+各 Git 操作が失敗した場合は、その時点で編集・記録・後続処理を中止する。`new_progress_sync_commit` は `git commit` が成功した直後の `HEAD` を取得できた場合にのみ代入し、失敗前の古い `HEAD` を流用しない。今回作成した進捗同期コミットの識別子として実行結果・引き継ぎに記録し、今回コミットした `前回進捗同期コミット` や `最新実装 HEAD` を上書きしない。次回の進捗同期時に、この値を `前回進捗同期コミット` として記録する。
 
 ## 禁止
 

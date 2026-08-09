@@ -186,20 +186,23 @@ mac_home='/''Users/'
 linux_home='/''home/'
 windows_home='C:\\''Users\\'
 tilde_home='~''/'
-local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home})"
+env_home='[$]''HOME/'
+local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home}|${env_home})"
+email_pattern='[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}'
+pii_pattern="(${local_path_pattern}|${email_pattern})"
 staged_diff=$(mktemp) || exit 1
 trap 'rm -f "$staged_diff"' EXIT
 if ! git diff --cached > "$staged_diff"; then
   echo 'ステージ差分を取得できません。コミットを中止します。' >&2
   exit 1
 fi
-grep -E "^\+[^+].*$local_path_pattern" "$staged_diff"
+grep -E "^\+[^+].*$pii_pattern" "$staged_diff"
 path_check_status=$?
 if [ "$path_check_status" -eq 0 ]; then
   echo 'ローカル絶対パスまたは PII が検出されました。コミットを中止します。' >&2
   exit 1
 elif [ "$path_check_status" -ne 1 ]; then
-  echo '絶対パス検出処理に失敗しました。コミットを中止します。' >&2
+  echo '絶対パスまたは PII の検出処理に失敗しました。コミットを中止します。' >&2
   exit 1
 fi
 ```

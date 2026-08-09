@@ -23,7 +23,7 @@ C:\Users\<username>\...
 
 ### ローカル環境でのみ参照する場合（コミット対象外）
 
-`$HOME/.claude/plans/my-plan.md` などの環境変数を使用したパス表記は、ローカルの個人環境におけるホームディレクトリを示します。これらは共有・コミットされるドキュメントやコード内に含めると環境に依存するため、コミット対象のファイルから直接参照せず、リポジトリ相対パスへ置き換えます。
+環境変数でホームディレクトリを表すパスも、共有・コミットされるドキュメントやコードでは禁止します。ローカル環境だけで使うコマンドに限定し、コミット対象ではリポジトリ相対パスへ置き換えます。
 外部ファイルを参照したい場合は、後述の [外部ファイルを参照したい場合](#外部ファイルを参照したい場合) を確認し、リポジトリ配下にファイルをコピーした上で相対パスで参照してください。
 
 ## 適用対象
@@ -62,7 +62,14 @@ mac_home='/''Users/'
 linux_home='/''home/'
 windows_home='C:\\''Users\\'
 tilde_home='~''/'
-local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home})"
+env_home='[$]''HOME/'
+local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home}|${env_home})"
+# 回帰チェック: 環境変数形式を検出し、リポジトリ相対パスは許可する
+home_fixture='+See $''HOME/private/file'
+printf '%s\n' "$home_fixture" | grep -Eq "$local_path_pattern" || exit 1
+if printf '%s\n' '+See .claude/rules/example.md' | grep -Eq "$local_path_pattern"; then
+  exit 1
+fi
 staged_diff=$(mktemp) || exit 1
 sanitized_diff=$(mktemp) || exit 1
 trap 'rm -f "$staged_diff" "$sanitized_diff"' EXIT

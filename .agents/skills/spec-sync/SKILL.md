@@ -56,6 +56,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 **変更対象ファイル:**
 1. `app/constants.ts` — `EXAMS` に `Exam` エントリ追加（これが正本、他は自動反映）
 2. `app/globals.css` — `icon-theme-<id>` ユーティリティ追加
+3. `app/<provider>/<exam>/page.tsx` — 新試験のルートページ追加。試験追加時の標準統合経路であり、自動生成ナビゲーションのリンク先を有効なルートとして保持する
 
 **仕様書更新:**
 - [ ] `CLAUDE.md` のプロジェクト概要に試験名を追記
@@ -190,14 +191,70 @@ bun run lint 2>&1 | tail -5
 
 ```bash
 # 1. 正本 .agents のルール・スキル変更を既存設定を保持したまま .gemini に同期
-rsync -a .agents/rules/ .gemini/rules/
-rsync -a .agents/skills/ .gemini/skills/
+if ! rsync -a .agents/rules/ .gemini/rules/; then
+  echo 'rules の同期に失敗しました。ステージやコミットへ進みません。' >&2
+  exit 1
+fi
+if ! rsync -a .agents/skills/ .gemini/skills/; then
+  echo 'skills の同期に失敗しました。ステージやコミットへ進みません。' >&2
+  exit 1
+fi
 
-# 2. 同期対象4ディレクトリだけをステージし、内容を確認してコミット
-git add .agents/rules/ .agents/skills/ .gemini/rules/ .gemini/skills/
-git diff --cached
-git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"
+# 2. worktree とステージの変更対象が同期対象4ディレクトリだけであることを検証
+allowed_sync_path() {
+  case "$1" in
+    .agents/rules/*|.agents/skills/*|.gemini/rules/*|.gemini/skills/*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+worktree_paths=$(mktemp) || exit 1
+staged_paths=$(mktemp) || exit 1
+trap 'rm -f "$worktree_paths" "$staged_paths"' EXIT
+if ! git diff --name-only HEAD > "$worktree_paths"; then
+  echo 'worktree 差分を取得できません。ステージやコミットへ進みません。' >&2
+  exit 1
+fi
+if ! git ls-files --others --exclude-standard >> "$worktree_paths"; then
+  echo '未追跡ファイルを取得できません。ステージやコミットへ進みません。' >&2
+  exit 1
+fi
+while IFS= read -r changed_path; do
+  allowed_sync_path "$changed_path" || {
+    echo "同期対象外の worktree 変更があります: $changed_path" >&2
+    exit 1
+  }
+done < "$worktree_paths"
+if ! git add .agents/rules/ .agents/skills/ .gemini/rules/ .gemini/skills/; then
+  echo '同期対象をステージできません。コミットへ進みません。' >&2
+  exit 1
+fi
+if ! git diff --cached --name-only > "$staged_paths"; then
+  echo 'ステージ対象の一覧を取得できません。コミットへ進みません。' >&2
+  exit 1
+fi
+while IFS= read -r staged_path; do
+  allowed_sync_path "$staged_path" || {
+    echo "同期対象外のステージ差分があります: $staged_path" >&2
+    exit 1
+  }
+done < "$staged_paths"
+if ! git diff --cached; then
+  echo 'ステージ差分を取得できません。コミットへ進みません。' >&2
+  exit 1
+fi
+
+# 3. ユーザーが今回のコミットを明示的に認可した場合だけコミット
+[ "${USER_AUTHORIZED_SPEC_COMMIT:-}" = 'yes' ] || {
+  echo 'ユーザーの明示認可がないため、コミットしません。' >&2
+  exit 1
+}
+if ! git commit -m "chore(docs): sync spec files — <具体的な更新理由や同期内容>"; then
+  echo '仕様同期コミットに失敗しました。後続処理を中止します。' >&2
+  exit 1
+fi
 ```
+
+`rsync`、変更範囲検証、`git add`、ステージ差分検証、ユーザー認可確認のいずれかが失敗した場合は即時停止し、部分同期のまま後続の Git 操作へ進まない。コミットはすべての同期・検証・Git 操作が成功した場合に限る。
 
 ---
 
