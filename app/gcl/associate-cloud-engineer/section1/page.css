@@ -1,7 +1,7 @@
 /* Scoped CSS for GCP ACE Section 1 Complete Guide
  * 正本: Ace-section1-complete-guide.html の <style>。
- * 色は globals.css の既存 design token（--color-google-*, --color-background 等）を再利用し、
- * このページ固有のテーマ値だけを .ace-s1-page にスコープして保持する。
+ * 色は globals.css の承認済み3層 design token を参照し、
+ * component-level CSS に custom property を定義しない。
  */
 
 .ace-s1-page *,
@@ -11,13 +11,6 @@
 }
 
 .ace-s1-page {
-    --color-gcp-purple: #9334e6;
-    --color-gcp-teal: #00bcd4;
-    --color-gcp-card-hover: #1a2035;
-    --color-gcp-code-background: #0d1117;
-    --color-gcp-border: rgba(var(--color-google-blue-rgb), 0.2);
-    --color-gcp-border-bright: rgba(var(--color-google-blue-rgb), 0.5);
-    --color-gcp-accent-glow: rgba(var(--color-google-blue-rgb), 0.15);
     position: relative;
     display: flex;
     min-height: 100vh;
