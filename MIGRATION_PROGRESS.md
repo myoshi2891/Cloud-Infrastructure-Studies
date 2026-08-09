@@ -1,13 +1,38 @@
 # Migration Progress
 
+<!-- markdownlint-disable MD050 -->
+
 HTMLファイルから Next.js / React コンポーネントへの移行作業の進捗と引き継ぎコンテキストを管理する**統合ファイル（Single Source of Truth）**です。
 
 ## 現在地
 
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
-- **次の作業:** (なし)
-- **最終更新日時(UTC):** 2026-08-08T15:10:00.000Z
+- **最新実装 HEAD:** `4a3f4c0` (`refactor(layout): fix guide CSS module and lint integration`)
+- **前回進捗同期コミット:** `226dc12` (`chore(docs): sync agent specifications and test dashboard`)
+- **次の作業:** 未追跡HTML 2件の移行要否・対象ルートを確認
+- **ビルド状態:** `bun run build` 成功（56ルート）、`bun run lint` 成功、レイアウト契約テスト 73件成功
+- **最終更新日時(UTC):** 2026-08-09T09:00:59.000Z
+
+## 2026-08-09: サイドバー付き全ガイド画面のレイアウト統一 (完了)
+
+### 目的
+
+HTMLから移行されたガイド画面ごとに異なっていたサイドバー幅、固定方法、メインコンテンツの最大幅を統一する。AWS / Cisco / GCP のサイドバー付き24スタイルシートを対象に、デスクトップでは左端固定280pxサイドバーと残り幅いっぱいのメイン領域、レスポンシブでは幅100%のメイン領域を適用する。
+
+### 完了済みステップ
+
+- [x] **Red**: `guide-content-widths.test.ts` に全24スタイルシート・73ケースの失敗テストを追加（`ba06f5f`, `7b8db13`）。
+- [x] **Green**: サイドバー幅280px、メイン領域の残幅100%、本文全体の最大幅制限解除、モバイル幅100%復帰を全対象へ実装（`a800640`）。
+- [x] **Refactor**: IAPコード例のJSXエスケープとACE Section 4のCSS Modulesセレクタを修正（`4a3f4c0`）。
+- [x] **Verification**: レイアウト契約テスト73件、ESLint、Next.js production build 56ルートが成功。
+
+### レイアウト契約
+
+- デスクトップ: `sidebar { position: fixed; left: 0; width: 280px; }`
+- デスクトップ: `main { margin-left: 280px; width: calc(100% - 280px); max-width: none; }`
+- レスポンシブ: `main { margin-left: 0; width: 100%; max-width: none; }`
+- 回帰テスト: `__tests__/guide-content-widths.test.ts`
 
 ## 2026-08-08: Cisco「CCNA Automation ドメイン3.0 Cisco Platforms and Development 徹底解説ガイド」移行 (完了)
 
@@ -57,7 +82,6 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html](archive/Cisco/html/ccna/Ccna-automation-application-deployment-security.html)
 - [archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md](archive/Cisco/md/ccna/Ccna-automation-application-deployment-security.md)
 
-
 ## 2026-08-05: Cisco「CCIE Enterprise Infrastructure 認定 完全ガイド」移行 (完了)
 
 ### 目的
@@ -81,7 +105,6 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [archive/Cisco/html/ccie/Ccie-enterprise-infrastructure.html](archive/Cisco/html/ccie/Ccie-enterprise-infrastructure.html)
 - [archive/Cisco/md/ccie/Ccie-enterprise-infrastructure.md](archive/Cisco/md/ccie/Ccie-enterprise-infrastructure.md)
 
-
 ## 2026-08-05: Cisco「Cisco Certified Design Expert (CCDE) 完全ガイド」移行 (完了)
 
 ### 目的
@@ -103,7 +126,6 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/cisco/ccde/complete-guide/page.css](app/cisco/ccde/complete-guide/page.css)
 - [__tests__/cisco-ccde-guide.test.tsx](__tests__/cisco-ccde-guide.test.tsx)
 - [archive/Cisco/html/ccde/Ccde-guide.html](archive/Cisco/html/ccde/Ccde-guide.html)
-
 
 ## 2026-08-05: AWS「Solutions Architect Associate Domain 4: コスト最適化アーキテクチャの設計」移行 (完了)
 
@@ -252,7 +274,6 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [__tests__/aws/solutions-architect-associate/domain1/page.test.tsx](__tests__/aws/solutions-architect-associate/domain1/page.test.tsx)
 - [archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain1.html](archive/Aws/SAA/html/AWS-Certified-Solutions-Architect-Associate-Domain1.html)
 - [archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain1.md](archive/Aws/SAA/md/AWS-Certified-Solutions-Architect-Associate-Domain1.md)
-
 
 ## 2026-07-28: AWS「AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド」移行 (完了)
 
@@ -546,7 +567,6 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [app/constants.ts](app/constants.ts)
 - [MIGRATION_PROGRESS.md](MIGRATION_PROGRESS.md)
 
-
 ---
 
 ## 2026-06-29: ACE「GCPネットワーク完全入門」移行 (完了)
@@ -817,7 +837,7 @@ bun run dashboard    # カバレッジダッシュボード再生成
 
 ### 次のステップ
 
-- [x] 🔵 P2: 横断品質（Visual, A11y, Performance, Security）の導入検討
+- [x] 🔵 P2: 横断品質（Visual, A11y, Performance, Security）の導入完了
   - Visual / A11y: 全 7 ドメイン対応済み（`e2e/visual.spec.ts`, `e2e/a11y.spec.ts`）
   - Performance: `bun run test:perf`（Playwright `perf` project + `e2e/perf-budgets.json`）+ `bun run perf:report`（`@lhci/cli` autorun）
   - Security: `bun run test:security`（`scripts/security-audit.mjs` + `bun audit --json` 集計）
@@ -942,10 +962,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-現在、リポジトリの最新 HEAD は `232184f` です。
-GCP ACE Section 1〜4 を含む全 HTML ファイルの Next.js への移行は完了済みです。現時点で未移行の HTML ファイルは存在しません。
+最新実装 HEAD は `4a3f4c0`、前回進捗同期コミットは `226dc12` です。
+サイドバー付き全24スタイルシートは、左端固定280pxサイドバーと残り幅いっぱいのメイン領域へ統一済みです。`__tests__/guide-content-widths.test.ts` の73ケース、ESLint、Next.js production build 56ルートが成功しています。
 
-次回の作業は HTML 移行ではなく、別途指示されたタスクから始めてください。
+ワークツリーには未追跡のHTMLが2件あります。次回は所有者の作業を保持したまま、移行要否と対象ルートを確認してから着手してください。既存の未追跡Markdownも変更しないでください。
 
 ---
 

@@ -9,6 +9,7 @@ Google Cloud (GCP) の資格試験対策を目的とした、インタラクテ�
 - **詳細な試験ガイド:** Associate Cloud Engineer (ACE)、Generative AI Leader、Cloud Digital Leader (CDL)、Associate Google Workspace Administrator (AGWA)、Professional Cloud Network Engineer (PCNE) の広範なトピックを網羅。AWS 対応準備中。
 - **データ駆動ナビゲーション:** `app/constants.ts` を正本とし、ハンバーガー Drawer が GCP/AWS をプロバイダ別に自動グルーピング。新試験追加は ① `app/constants.ts` の `EXAMS` にエントリ追加 ② `app/globals.css` に `icon-theme-<id>` ユーティリティ追加 ③ 試験ページ作成 の 3 ステップで Header は自動反映（直接編集不要）。
 - **視覚的な学習体験:** セクションごとに最適化されたデザインテーマ（Aurora, Sapphire, Laboratory, Gold）。
+- **統一ガイドレイアウト:** サイドバー付きガイドは左端固定の280pxナビゲーションと、残りの画面幅をすべて使うメインコンテンツへ統一。モバイルでは本文を幅100%へ切り替え。
 - **最新の技術解説:** Hypercomputer, SAIF, 責任ある AI 6原則など、試験頻出の高度なトピックを体系化。
 - **テスト済みのコンテンツ:** ユニットテスト（Vitest）と E2E テスト（Playwright）により、正確な情報提供と表示を保証。
 - **モダンな実装:** セクション分割、CSS Modules、アクセシビリティ対応、専用SVGコンポーネントによる高品質なコードベース。
