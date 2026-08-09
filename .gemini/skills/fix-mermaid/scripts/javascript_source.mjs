@@ -40,14 +40,34 @@ export function maskCommentsAndStrings(source) {
     let inRegexCharacterClass = false;
     const parenContexts = [];
     let closedControlCondition = false;
+    // コメントの終了位置 → 開始位置。後方走査でコメントを丸ごと飛ばすために使う。
+    const commentEnds = new Map();
+    let commentStart = -1;
+
+    /** 空白とコメントを飛ばして、直前の実コード文字の位置を返す。 */
+    const skipTriviaBackward = (from) => {
+        let cursor = from;
+        while (cursor >= 0) {
+            if (/\s/.test(source[cursor])) {
+                cursor -= 1;
+                continue;
+            }
+            const start = commentEnds.get(cursor);
+            if (start === undefined) break;
+            cursor = start - 1;
+        }
+        return cursor;
+    };
 
     for (let index = 0; index < source.length; index += 1) {
         const char = source[index];
         const next = source[index + 1];
 
         if (state === 'line-comment') {
-            if (char === '\n') state = 'code';
-            else chars[index] = ' ';
+            if (char === '\n') {
+                commentEnds.set(index - 1, commentStart);
+                state = 'code';
+            } else chars[index] = ' ';
             continue;
         }
         if (state === 'block-comment') {
@@ -55,6 +75,7 @@ export function maskCommentsAndStrings(source) {
             if (char === '*' && next === '/') {
                 chars[index + 1] = ' ';
                 index += 1;
+                commentEnds.set(index, commentStart);
                 state = 'code';
             }
             continue;
@@ -94,10 +115,12 @@ export function maskCommentsAndStrings(source) {
 
         if (char === '/' && next === '/') {
             chars[index] = chars[index + 1] = ' ';
+            commentStart = index;
             index += 1;
             state = 'line-comment';
         } else if (char === '/' && next === '*') {
             chars[index] = chars[index + 1] = ' ';
+            commentStart = index;
             index += 1;
             state = 'block-comment';
         } else if (char === '/' && canStartRegexLiteral(source, index, closedControlCondition)) {
@@ -115,8 +138,7 @@ export function maskCommentsAndStrings(source) {
             chars[index] = ' ';
             state = 'template';
         } else if (char === '(') {
-            let cursor = index - 1;
-            while (/\s/.test(source[cursor] ?? '')) cursor -= 1;
+            let cursor = skipTriviaBackward(index - 1);
             const end = cursor + 1;
             while (/[\w$]/.test(source[cursor] ?? '')) cursor -= 1;
             const keyword = source.slice(cursor + 1, end);

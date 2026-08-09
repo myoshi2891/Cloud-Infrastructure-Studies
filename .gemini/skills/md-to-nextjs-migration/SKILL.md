@@ -106,10 +106,16 @@ app/
     - フェーズ一覧・各フェーズの成果物・完了基準を明記する
 2. **フェーズ単位でコミットする**
     - 各フェーズ完了後に `git commit` を実行する
-    - コミットメッセージ: `feat(<path>/SN): <内容の要約>`
+    - コミットメッセージの接頭辞は後述の各ステップに従う（Red は `test:`、Green は `feat:`、
+      Refactor / Integration は `refactor:`、Docs Sync は `docs:`）。プランモード専用の
+      コミット形式は設けず、Red / Green / Refactor / Integration をそれぞれ別コミットで完了させる
 3. **ステップバイステップで進める**
     - 全フェーズを一括実装しない
     - 1フェーズ完了 → テスト通過確認 → コミット → 次フェーズ の順を守る
+4. **進捗同期ゲートを設ける**（`.agents/rules/migration-progress-sync.md` に従う）
+    - 各ページ・各フェーズの完了時に `MIGRATION_PROGRESS.md` を実際の進捗へ更新する
+    - テスト通過を確認してから `docs:` コミットで同期し、その後に次フェーズへ進む
+    - Step 7 まで到達せず中断した場合でも、中断時点が正確に記録されている状態を保つ
 
 ### 計画 MD のテンプレート
 
@@ -149,13 +155,41 @@ app/
 両ソースを全読みし、実装すべきコンテンツ一覧を把握してから実装を開始する。
 **省略・要約は一切禁止**。MD の全行を JSX に組み込む前提でコンテンツ量を把握すること。
 
+### 共通のステージングゲート（各コミット前に必ず実行）
+
+Red / Green / Refactor / Docs Sync のコミットを混在させないため、**すべての `git add` の前後**で
+次の 2 つの検査を行う。`assert_clean_stage` は `git add` の前、`assert_staged_scope` は `git add` の後に実行する。
+
+```bash
+# git add の前: 別ステップの差分が既にステージされていないことを確認する
+assert_clean_stage() {
+  git diff --cached --quiet || {
+    echo '既存のステージ差分があります。コミットを中止します。' >&2
+    return 1
+  }
+}
+
+# git add の後: そのステップで許可したファイルだけがステージされていることを確認する
+assert_staged_scope() {
+  staged=$(git diff --cached --name-only) || return 1
+  for file in $staged; do
+    case " $* " in
+      *" $file "*) ;;
+      *) echo "許可されていないファイルがステージされています: $file" >&2; return 1 ;;
+    esac
+  done
+}
+```
+
 ### Step 1: Red — 失敗するテストを作成してコミット
 
 ```bash
 # 要件を網羅するテストを追加
 bun run test __tests__/gcl/<exam>/page.test.tsx  # 失敗を確認
 git status --short
-git add __tests__/gcl/<exam>/page.test.tsx
+assert_clean_stage || exit 1
+git add __tests__/gcl/<exam>/page.test.tsx || exit 1
+assert_staged_scope __tests__/gcl/<exam>/page.test.tsx || exit 1
 git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
 ```
 
@@ -222,7 +256,9 @@ import {
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
 git status --short
-git add app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2>
+assert_clean_stage || exit 1
+git add app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
 git diff --cached
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
@@ -236,7 +272,9 @@ bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
 bun run lint
 git status --short
-git add <refactored-files>
+assert_clean_stage || exit 1
+git add <refactored-files> || exit 1
+assert_staged_scope <refactored-files> || exit 1
 git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 
@@ -251,7 +289,13 @@ if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
   echo 'Docs Sync コミットには COMMIT_AUTHORIZED=yes による明示認可が必要です。' >&2
   exit 1
 fi
-git add MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md
+assert_clean_stage || exit 1
+if ! git add MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md; then
+  echo 'Docs Sync 対象のステージに失敗しました。コミットを中止します。' >&2
+  exit 1
+fi
+# 文書 3 ファイル以外がステージされていないことを確認する
+assert_staged_scope MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md || exit 1
 if ! git diff --cached --check || ! git diff --cached; then
   echo 'ステージ差分を検証できません。コミットを中止します。' >&2
   exit 1
@@ -272,7 +316,8 @@ git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 - **SVG 移行品質**: オリジナルにリッチな SVG（チップ表示、ステータス、詳細な注釈等）が含まれる場合は簡略化せず全詳細を再現すること。プレースホルダーへの置き換えは禁止。属性は camelCase に変換し `style` はオブジェクト形式で記述すること
 - **`litellm` / `dspy` 追加禁止**（脆弱性懸念）
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。
-- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。行を `map` で展開する場合は各要素へ安定した `key`（固定コードなら `key={"line-" + index}` 等）を付け、`.code-line { white-space: pre; }` で各行の先頭インデントを保持する。
+- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。行を `map` で展開する場合は各要素へ安定した `key`（固定コードなら `key={"line-" + index}` 等）を付け、`.code-line { white-space: pre; }` で各行の先頭インデントを保持する。表示契約として、`app/globals.css` では
+  `.code-line` に `display` を指定せず、各ページ固有 CSS で必ず `display: block` を明示して既定表示を統一する。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background` など）を厳格に使用すること。独自のローカル変数定義は避ける。
 

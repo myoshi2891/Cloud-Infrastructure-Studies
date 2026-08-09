@@ -80,6 +80,16 @@ const DIAGRAMS = { "diag-1": "flowchart TD\\nA --> B" };
     expect(diagrams).toEqual({ "diag-1": "flowchart TD\nA --> B" });
   });
 
+  test("制御キーワードとコメントの間にある括弧でも正規表現を飛ばす", () => {
+    const html = `<script>
+if /* comment */ (ready) /const DIAGRAMS = \\{[^}]*\\}/.test(source);
+const DIAGRAMS = { "diag-1": "flowchart TD\\nA --> B" };
+</script>`;
+    const { diagrams } = extractDiagramsDefinition(html);
+
+    expect(diagrams).toEqual({ "diag-1": "flowchart TD\nA --> B" });
+  });
+
   test("メンバー名 return を正規表現開始キーワードとして扱わない", () => {
     const html = `<script>
 obj.return / 2;
@@ -100,6 +110,19 @@ const DIAGRAMS = {
 
     expect(() => extractDiagramsDefinition(html)).toThrow(
       "DIAGRAMS の値の後には ',' または '}' が必要です。",
+    );
+  });
+
+  test("要素間の連続したカンマを拒否する", () => {
+    const html = `<script>
+const DIAGRAMS = {
+  "diag-1": \`flowchart TD\nA --> B\`,,
+  "diag-2": \`flowchart LR\nB --> C\`
+};
+</script>`;
+
+    expect(() => extractDiagramsDefinition(html)).toThrow(
+      "DIAGRAMS のキーはクォートされた文字列リテラルで指定してください。",
     );
   });
 

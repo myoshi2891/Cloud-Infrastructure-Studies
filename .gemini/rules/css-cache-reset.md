@@ -87,8 +87,19 @@ fi
 kill "$dev_pid" || exit 1
 
 # PID の終了確認前にキャッシュを削除・再起動しない
+# ps の終了コード 1（対象 PID なし）だけを「終了確認」とし、それ以外の失敗は中止する
 shutdown_attempt=0
-while ps -p "$dev_pid" > /dev/null 2>&1; do
+while :; do
+  if ps -p "$dev_pid" > /dev/null 2>&1; then
+    ps_status=0
+  else
+    ps_status=$?
+  fi
+  [ "$ps_status" -eq 1 ] && break
+  if [ "$ps_status" -ne 0 ]; then
+    echo 'dev サーバーの終了確認に失敗しました。キャッシュ削除と再起動を中止します。' >&2
+    exit 1
+  fi
   shutdown_attempt=$((shutdown_attempt + 1))
   if [ "$shutdown_attempt" -ge 50 ]; then
     echo 'dev サーバーが期限内に終了しませんでした。再起動処理を中止します。' >&2

@@ -134,10 +134,6 @@ function parseTemplateLiteralObject(objectSource) {
     };
     while (index < objectSource.length - 1) {
         skipTrivia();
-        if (objectSource[index] === ',') {
-            index += 1;
-            continue;
-        }
         if (objectSource[index] === '}') break;
         if (objectSource[index] !== "'" && objectSource[index] !== '"') {
             throw new Error('DIAGRAMS のキーはクォートされた文字列リテラルで指定してください。');
