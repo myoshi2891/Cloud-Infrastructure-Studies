@@ -38,6 +38,8 @@ export function maskCommentsAndStrings(source) {
     let state = 'code';
     let escaped = false;
     let inRegexCharacterClass = false;
+    const parenContexts = [];
+    let closedControlCondition = false;
 
     for (let index = 0; index < source.length; index += 1) {
         const char = source[index];
@@ -98,7 +100,7 @@ export function maskCommentsAndStrings(source) {
             chars[index] = chars[index + 1] = ' ';
             index += 1;
             state = 'block-comment';
-        } else if (char === '/' && canStartRegexLiteral(source, index)) {
+        } else if (char === '/' && canStartRegexLiteral(source, index, closedControlCondition)) {
             chars[index] = ' ';
             state = 'regex';
             escaped = false;
@@ -112,13 +114,29 @@ export function maskCommentsAndStrings(source) {
         } else if (char === '`') {
             chars[index] = ' ';
             state = 'template';
+        } else if (char === '(') {
+            let cursor = index - 1;
+            while (/\s/.test(source[cursor] ?? '')) cursor -= 1;
+            const end = cursor + 1;
+            while (/[\w$]/.test(source[cursor] ?? '')) cursor -= 1;
+            const keyword = source.slice(cursor + 1, end);
+            const isControlCondition = source[cursor] !== '.'
+                && /^(?:catch|for|if|switch|while|with)$/.test(keyword);
+            parenContexts.push(isControlCondition ? 'control' : 'other');
+            closedControlCondition = false;
+        } else if (char === ')') {
+            closedControlCondition = parenContexts.pop() === 'control';
+        } else if (!/\s/.test(char)) {
+            closedControlCondition = false;
         }
     }
 
     return chars.join('');
 }
 
-function canStartRegexLiteral(source, slashIndex) {
+function canStartRegexLiteral(source, slashIndex, closedControlCondition) {
+    if (closedControlCondition) return true;
+
     let cursor = slashIndex - 1;
     while (/\s/.test(source[cursor] ?? '')) cursor -= 1;
     if (cursor < 0) return true;
@@ -129,6 +147,7 @@ function canStartRegexLiteral(source, slashIndex) {
         const end = cursor + 1;
         while (/[\w$]/.test(source[cursor] ?? '')) cursor -= 1;
         const keyword = source.slice(cursor + 1, end);
+        if (source[cursor] === '.') return false;
         return /^(?:await|case|delete|do|else|in|instanceof|new|of|return|throw|typeof|void|yield)$/.test(keyword);
     }
 

@@ -152,7 +152,11 @@ function parseTemplateLiteralObject(objectSource) {
         diagrams[key.value] = value.value;
         index = value.end;
         skipTrivia();
-        if (objectSource[index] === ',') index += 1;
+        if (objectSource[index] === ',') {
+            index += 1;
+        } else if (objectSource[index] !== '}') {
+            throw new Error("DIAGRAMS の値の後には ',' または '}' が必要です。");
+        }
     }
     return diagrams;
 }

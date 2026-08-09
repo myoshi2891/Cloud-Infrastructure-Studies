@@ -257,7 +257,11 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 
 ```tsx
 <div id="diag-0" className={styles.mermaid}>
-  <MermaidDiagram chart={DIAGRAM_0} />
+  <MermaidDiagram
+    chart={DIAGRAM_0}
+    ariaLabel="クラウド構成と通信経路を示す図"
+    preserveNaturalScale
+  />
 </div>
 ```
 
@@ -315,18 +319,30 @@ const DISPLAY = {
   'wide-topology': { frameWidth: measured.wideTopologyFrame, naturalScale: true },
 } as const;
 
-const chart = DIAGRAMS[id];
-if (!chart) return null;
-<div style={{ maxWidth: DISPLAY[id].frameWidth, width: '100%' }}>
-  <MermaidDiagram
-    chart={chart}
-    ariaLabel="クラウド構成と通信経路を示す図"
-    preserveNaturalScale={DISPLAY[id].naturalScale}
-  />
-</div>
+type DiagramId = keyof typeof DISPLAY;
+
+const DIAGRAMS: Partial<Record<DiagramId, string>> = {
+  'vertical-flow': VERTICAL_FLOW,
+  'wide-topology': WIDE_TOPOLOGY,
+};
+
+function Diagram({ id }: { id: DiagramId }) {
+  const chart = DIAGRAMS[id];
+  const display = DISPLAY[id];
+  if (!chart || !display) return null;
+  return (
+    <div style={{ maxWidth: display.frameWidth, width: '100%' }}>
+      <MermaidDiagram
+        chart={chart}
+        ariaLabel="クラウド構成と通信経路を示す図"
+        preserveNaturalScale={display.naturalScale}
+      />
+    </div>
+  );
+}
 ```
 
-自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` を検証する。既定動作のテストも残し、他ページへの波及を防ぐ。
+自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` を検証する。これは React の `MermaidDiagram` と各ページの `Diagram` コンポーネントだけの契約である。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` を維持する。既定動作のテストも残し、他ページへの波及を防ぐ。
 
 #### ⚠️ スクロール時の図解縮小・チカチカバグの防止（React.memo メモ化）
 
@@ -405,6 +421,8 @@ mermaid.initialize({
 `mermaid.render()` の戻り値（SVG 文字列）を **`DOMParser('image/svg+xml')` + `XMLSerializer` で往復させてはならない**。`foreignObject` 内の htmlLabels（XHTML 名前空間の HTML）が壊れ、ラベルが `width=0`・テキスト空になって表示が潰れる。
 
 **`innerHTML` 注入後の実 DOM 要素を直接操作**する（`apply_render_pipeline.mjs` も同方式）。React では `ref` + `svgStr` 依存の `useEffect` で、注入済み `<svg>` に対して後処理を適用する。
+
+以下の `applySvgFixups` は React の `MermaidDiagram` 実装例であり、静的 HTML の `RENDER_LOOP` へ `maxWidth: none` を適用するものではない。
 
 ```ts
 const applySvgFixups = (

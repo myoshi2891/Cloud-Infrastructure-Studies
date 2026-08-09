@@ -257,10 +257,13 @@ export function injectRenderLoop(html) {
         throw new Error('mermaid.initialize( が見つかりません。初期化ブロックを先に用意してください。');
     }
     const initIdx = initializeCall.index;
-    const closeIdx = html.indexOf('</script>', initIdx);
-    if (closeIdx === -1) {
+    const closingScriptPattern = /<\/script\s*>/gi;
+    closingScriptPattern.lastIndex = initIdx;
+    const closingScript = closingScriptPattern.exec(html);
+    if (!closingScript) {
         throw new Error('mermaid.initialize 以降に </script> が見つかりません。');
     }
+    const closeIdx = closingScript.index;
     return html.slice(0, closeIdx) + '\n' + RENDER_LOOP + '        ' + html.slice(closeIdx);
 }
 
