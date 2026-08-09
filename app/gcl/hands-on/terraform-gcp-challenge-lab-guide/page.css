@@ -1,4 +1,4 @@
-@import '@tabler/icons-webfont/dist/tabler-icons.min.css';
+@import '@tabler/icons-webfont/tabler-icons.min.css';
 
 .terraform-lab-guide-page {
     /* TODO: globals.css に固有ダーク面・構文色（#0d1a2b, #13253c, #12233d,
