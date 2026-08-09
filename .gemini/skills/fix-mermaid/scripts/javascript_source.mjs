@@ -1,0 +1,97 @@
+/**
+ * コメントと文字列を除外し、実コード上の `const DIAGRAMS =` 宣言を探す。
+ * 返す valueStart は `=` 後の空白を飛ばした値の開始位置。
+ */
+export function findDiagramsDeclaration(source) {
+    const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi;
+    let hasScript = false;
+    for (const script of source.matchAll(scriptPattern)) {
+        hasScript = true;
+        const declaration = findInCode(script[1]);
+        if (declaration) {
+            const contentStart = script.index + script[0].indexOf('>') + 1;
+            return {
+                index: contentStart + declaration.index,
+                valueStart: contentStart + declaration.valueStart,
+            };
+        }
+    }
+    return hasScript ? null : findInCode(source);
+}
+
+function findInCode(source) {
+    const code = maskCommentsAndStrings(source);
+    const match = /\bconst\s+DIAGRAMS\s*=\s*/.exec(code);
+    if (!match) return null;
+    return {
+        index: match.index,
+        valueStart: match.index + match[0].length,
+    };
+}
+
+/**
+ * コメントと文字列を元のオフセットを維持した空白へ置換する。
+ *
+ * 正規表現リテラルおよびテンプレートリテラル内の `${...}` 補間は未対応。
+ * これらに `const DIAGRAMS =` 相当の文字列が含まれる場合、後続の正しい
+ * DIAGRAMS 宣言を見落とす可能性がある。
+ */
+export function maskCommentsAndStrings(source) {
+    const chars = source.split('');
+    let state = 'code';
+    let escaped = false;
+
+    for (let index = 0; index < source.length; index += 1) {
+        const char = source[index];
+        const next = source[index + 1];
+
+        if (state === 'line-comment') {
+            if (char === '\n') state = 'code';
+            else chars[index] = ' ';
+            continue;
+        }
+        if (state === 'block-comment') {
+            chars[index] = char === '\n' ? '\n' : ' ';
+            if (char === '*' && next === '/') {
+                chars[index + 1] = ' ';
+                index += 1;
+                state = 'code';
+            }
+            continue;
+        }
+        if (state !== 'code') {
+            chars[index] = char === '\n' ? '\n' : ' ';
+            if (escaped) escaped = false;
+            else if (char === '\\') escaped = true;
+            else if (
+                (state === 'single-quote' && char === "'") ||
+                (state === 'double-quote' && char === '"') ||
+                (state === 'template' && char === '`')
+            ) {
+                state = 'code';
+            }
+            continue;
+        }
+
+        if (char === '/' && next === '/') {
+            chars[index] = chars[index + 1] = ' ';
+            index += 1;
+            state = 'line-comment';
+        } else if (char === '/' && next === '*') {
+            chars[index] = chars[index + 1] = ' ';
+            index += 1;
+            state = 'block-comment';
+        } else if (char === "'") {
+            chars[index] = ' ';
+            state = 'single-quote';
+        } else if (char === '"') {
+            chars[index] = ' ';
+            state = 'double-quote';
+        } else if (char === '`') {
+            chars[index] = ' ';
+            state = 'template';
+        }
+    }
+
+    return chars.join('');
+}

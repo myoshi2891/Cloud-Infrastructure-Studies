@@ -1,5 +1,7 @@
 # Project Overview: Cloud Infrastructure Studies
 
+Updated 2026-08-09
+
 このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
 

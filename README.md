@@ -1,5 +1,7 @@
 # Cloud Infrastructure Studies
 
+最終更新日: 2026-08-09
+
 Google Cloud (GCP) の資格試験対策を目的とした、インタラクティブな学習用 Next.js アプリケーションです。
 
 ## 🚀 特徴

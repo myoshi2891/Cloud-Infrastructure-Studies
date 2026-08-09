@@ -17,11 +17,14 @@ description: >
 
 # MD → Next.js 移行ワークフロー（Infra リポジトリ）
 
+(最終更新日: 2026-08-09)
+
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
-全てのコード実装において、必ず `.gemini/rules/tdd-commit-workflow.md` のルールに従うこと。
-1. `test:` 失敗するテストを先に書きコミットする
-2. `feat:` テストをPassさせる実装を行いコミットする
-3. `refactor/docs:` 統合を行いコミットする
+全てのコード実装において、必ず `.agents/rules/tdd-commit-workflow.md` のルールに従うこと。
+1. `test:` Red — 失敗するテストを先に作成しコミットする
+2. `feat:` Green — テストを Pass させる最小実装を行いコミットする
+3. `refactor:` Refactor / Integration — リファクタリングと統合を行いコミットする
+4. `docs:` Docs Sync — 進捗・仕様文書を同期しコミットする
 これらを1つの巨大なコミットにまとめることは厳禁である。
 
 ## 目的
@@ -107,9 +110,6 @@ app/
 3. **ステップバイステップで進める**
     - 全フェーズを一括実装しない
     - 1フェーズ完了 → テスト通過確認 → コミット → 次フェーズ の順を守る
-4. **MIGRATION_PROGRESS.md 同期のゲート条件（厳守）**
-    - `.gemini/rules/migration-progress-sync.md` に従い、各ページを完了してコミット（メッセージ形式 `feat(<path>/SN): ...`）した後は、次のソースファイルの読み込みや作業に進む前に**必ず即座に `MIGRATION_PROGRESS.md` を更新してコミット**してください。
-    - `MIGRATION_PROGRESS.md` の同期が完了していない状態で次のページ移行に進むことは、セッションの引き継ぎやLLMの継続性維持のために厳しく禁止されています。
 
 ### 計画 MD のテンプレート
 
@@ -149,13 +149,17 @@ app/
 両ソースを全読みし、実装すべきコンテンツ一覧を把握してから実装を開始する。
 **省略・要約は一切禁止**。MD の全行を JSX に組み込む前提でコンテンツ量を把握すること。
 
-### Step 1: テストを確認（RED）
+### Step 1: Red — 失敗するテストを作成してコミット
 
 ```bash
-bun run test __tests__/gcl/<exam>/page.test.tsx
+# 要件を網羅するテストを追加
+bun run test __tests__/gcl/<exam>/page.test.tsx  # 失敗を確認
+git status --short
+git add __tests__/gcl/<exam>/page.test.tsx
+git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
 ```
 
-失敗しているテストの期待テキストを確認し、実装対象とテキスト表記を把握する。
+失敗している期待テキストを確認し、実装対象と表記を把握する。Red のテストを Green 実装と同じコミットに含めない。
 
 ### Step 2: constants.ts に型とデータを追加
 
@@ -190,7 +194,7 @@ import {
     <div className="ctable-wrap">
         <table className="ctable">
             <thead>
-                <tr><th>列1</th><th>列2</th></tr>
+                <tr><th scope="col">列1</th><th scope="col">列2</th></tr>
             </thead>
             <tbody>
                 {NEW_ITEMS.map((row, i) => (
@@ -216,18 +220,33 @@ import {
 
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
+git status --short
+git add app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2>
+git diff --cached
+git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
 
-### Step 6: ビルド確認
+`git add` には実際に変更したファイルだけを列挙し、試験ディレクトリ全体を指定しない。
+
+### Step 6: Refactor / Integration を検証してコミット
 
 ```bash
+bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
+git status --short
+git add <refactored-files>
+git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 
-### Step 7: コミット
+Step 6 は実際にリファクタリングしたファイルだけをステージする。Green 実装や `app/constants.ts` を変更していない場合、それらを Refactor コミットへ重ねて含めない。
+
+### Step 7: Docs Sync を検証してコミット
 
 ```bash
-git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
+bun run test __tests__/gcl/<exam>/page.test.tsx
+git status --short
+git add MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md
+git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 ```
 
 ---
@@ -237,13 +256,13 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 - **テストランナーは bun**: `npm run test` ではなく `bun run test` を使う
 - **新ページ追加時**: `app/constants.ts` の `EXAMS` にエントリを追加する（`Header.tsx` は `toNavTree(EXAMS)` で自動反映されるため直接編集しない）
 - **ページ固有の共通定数**: `constants.ts` に集約する（グローバルに置かない）
-- **CSS テーマ**: ページ固有テーマは専用 `.css` ファイルに定義し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` を優先し、不要な `layout.tsx` の作成を避ける（GEMINI.md と整合）
+- **CSS テーマ**: ページ固有テーマは専用 `.css` ファイルに定義し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` を優先し、不要な `layout.tsx` の作成を避ける（CLAUDE.md と整合）
 - **分割方針（第一選択）**: `page.tsx` が ~400〜600 行を超えた場合は、新規セクションを `components/sections/Section*.tsx` などの独立コンポーネントに切り出すこと。再利用可能なロジックは hooks / util モジュールへ分離する。「編集を小分けにする」運用で肥大化を温存しないこと
 - **Edit サイズ（補助ルール）**: コンポーネント分割後もやむを得ず大きな編集が発生する場合に限り、1 回の Edit は 300 行以内に収める
 - **SVG 移行品質**: オリジナルにリッチな SVG（チップ表示、ステータス、詳細な注釈等）が含まれる場合は簡略化せず全詳細を再現すること。プレースホルダーへの置き換えは禁止。属性は camelCase に変換し `style` はオブジェクト形式で記述すること
 - **`litellm` / `dspy` 追加禁止**（脆弱性懸念）
 - **Client/Server コンポーネント境界**: ページ固有のアンカーナビなど状態やブラウザAPIに依存するUIは `'use client'` ディレクティブを含む専用コンポーネントとして切り出し、メインの `page.tsx` を Server Component として維持すること。
-- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。
+- **コードブロック内の改行 (`.code-block`)**: JSX変換時、コード内の改行に `{"\n"}` を使用せず、各行を `<div className="code-line">...</div>` でラップすること。行を `map` で展開する場合は各要素へ安定した `key`（固定コードなら `key={"line-" + index}` 等）を付け、`.code-line { white-space: pre; }` で各行の先頭インデントを保持する。
 - **表形式データの構造化**: テキストのスペース揃えで列を表現したデータは、フォント変更による列ズレを防ぐため、必ず `<table>` 要素に変換すること。
 - **CSS変数・テーマトークンの適用**: `globals.css` の3層アーキテクチャ CSS 変数（`--color-background` など）を厳格に使用すること。独自のローカル変数定義は避ける。
 
@@ -254,11 +273,11 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 ### 1. サブナビゲーション (snav) の固定と z-index
 
 各ページのサブナビゲーション (`.snav` 等) は、スクロール時に画面上部に固定（Sticky）され、
-グローバルサイトヘッダーの上に重なるようにする。
+グローバルサイトヘッダーと DisclaimerBanner の下に配置する。
 
-- **配置とレイヤー**: `.snav` には必ず `top: 0;` と `z-index: 100;` を設定する
+- **配置とレイヤー**: `.snav` には必ず `top: calc(var(--header-h) + var(--disclaimer-height));` と `z-index: 40;`（または40以下）を設定する
 
-  （サイトヘッダーは `z-index: 50` → snav がその上を覆う）
+  （サイトヘッダーは `z-index: 50` のため、snav が覆わないようにする）
 
 - **`position: sticky` を壊さないため**: 親要素（`.s1-page`, `.d2-page` などのラッパー）に
 
