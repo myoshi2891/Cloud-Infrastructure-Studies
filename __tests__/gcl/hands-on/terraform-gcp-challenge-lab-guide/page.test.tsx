@@ -1,8 +1,15 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import Page from '@/app/gcl/hands-on/terraform-gcp-challenge-lab-guide/page';
 import { DIAGRAMS } from '@/app/gcl/hands-on/terraform-gcp-challenge-lab-guide/constants';
+
+const pageStyles = readFileSync(
+    join(process.cwd(), 'app/gcl/hands-on/terraform-gcp-challenge-lab-guide/page.css'),
+    'utf8',
+);
 
 // MermaidDiagram コンポーネントをモック化
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -121,6 +128,13 @@ describe('Terraform GCP Challenge Lab 完全攻略ガイド ページ', () => {
             expect(mermaid.getAttribute('data-preserve-natural-scale')).toBe('true');
             expect(mermaid.getAttribute('aria-label')).toBeTruthy();
         });
+    });
+
+    it('アイコンフォントを外部 CDN ではなくローカル npm パッケージから読み込むこと', () => {
+        expect(pageStyles).toContain(
+            "@import '@tabler/icons-webfont/dist/tabler-icons.min.css';",
+        );
+        expect(pageStyles).not.toMatch(/@import\s+['"]https?:\/\//);
     });
 
     it('目次リンクに対応する本文セクションが存在すること', () => {
