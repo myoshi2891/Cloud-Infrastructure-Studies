@@ -75,6 +75,45 @@ describe("ensureInitFlags", () => {
     const out = ensureInitFlags(input);
     expect(out.match(/securityLevel/g)?.length).toBe(1);
   });
+
+  test.each(["'startOnLoad'", '"startOnLoad"'])(
+    "quoted key %s の true を false にする",
+    (key) => {
+      const input = `mermaid.initialize({ ${key}: true, theme: 'dark' });`;
+      const out = ensureInitFlags(input);
+      expect(out).toContain(`${key}: false`);
+      expect(out).not.toContain(`${key}: true`);
+    },
+  );
+
+  test.each(["'securityLevel'", '"securityLevel"'])(
+    "quoted key %s が既存なら securityLevel を注入しない",
+    (key) => {
+      const input = `mermaid.initialize({ startOnLoad: false, ${key}: 'strict' });`;
+      const out = ensureInitFlags(input);
+      expect(out.match(/securityLevel/g)?.length).toBe(1);
+      expect(out).toContain(`${key}: 'strict'`);
+      expect(out).not.toContain("securityLevel: 'loose'");
+    },
+  );
+
+  test("後方の quoted securityLevel を注入値で上書きしない", () => {
+    const input = `mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      "securityLevel": 'strict',
+    });`;
+    const out = ensureInitFlags(input);
+    expect(out.match(/securityLevel/g)?.length).toBe(1);
+    expect(out).toContain('"securityLevel": \'strict\'');
+  });
+
+  test("nested startOnLoad は変更せず top-level securityLevel を注入する", () => {
+    const input = "mermaid.initialize({ flowchart: { startOnLoad: true } });";
+    const out = ensureInitFlags(input);
+    expect(out).toContain("flowchart: { startOnLoad: true }");
+    expect(out).toContain("securityLevel: 'loose'");
+  });
 });
 
 describe("injectRenderLoop", () => {
@@ -126,5 +165,26 @@ describe("applyPipeline (統合・冪等性)", () => {
 
     const second = applyPipeline(first.html);
     expect(second.html).toBe(first.html);
+  });
+
+  test.each([
+    "// const DIAGRAMS = {};",
+    "/* const DIAGRAMS = {}; */",
+    "const example = 'const DIAGRAMS = {};'",
+    'const example = "const DIAGRAMS = {};"',
+    "const example = `const DIAGRAMS = {};`",
+  ])("コメントや文字列だけの宣言候補を拒否する: %s", (falseMatch) => {
+    const input = FIXTURE.replace(/\s*const DIAGRAMS = \{[\s\S]*?\n\s*\};/, `\n      ${falseMatch}`);
+    expect(() => applyPipeline(input)).toThrow("DIAGRAMS が定義されていません");
+  });
+
+  test("コメントと文字列の候補より後にある実宣言を検出する", () => {
+    const input = FIXTURE.replace(
+      "      const DIAGRAMS = {",
+      `      // const DIAGRAMS = {};
+      const example = "const DIAGRAMS = {};";
+      const DIAGRAMS = {`,
+    );
+    expect(applyPipeline(input).html).toContain('id="diag-1"');
   });
 });
