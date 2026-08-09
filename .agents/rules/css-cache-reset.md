@@ -1,6 +1,6 @@
 # globals.css 変更後のキャッシュリセットルール
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-10)
 
 ## 問題
 
@@ -146,8 +146,8 @@ dev サーバーでは正常でも Docker の本番ビルドで CSS 変数が空
 
 **Docker リビルド手順**（`globals.css` 変更後）:
 
-Docker 操作はリポジトリのコマンド規約に対するオーケストレーション上の例外として `make` を使用する。`make build` は `docker compose --profile prod build` を実行して本番イメージだけをビルドし、コンテナは起動しない。`make dev` は `docker compose --profile dev up --build` を実行して開発イメージを再ビルドし、開発コンテナを起動する。
+`package.json` の `docker:rebuild` スクリプトは、起動中のコンテナを停止し、本番イメージをビルドしてから、開発イメージを再ビルドして開発コンテナを起動する。
 
 ```bash
-make down && make build && make dev
+bun run docker:rebuild
 ```

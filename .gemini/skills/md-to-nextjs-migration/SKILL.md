@@ -17,7 +17,7 @@ description: >
 
 # MD → Next.js 移行ワークフロー（Infra リポジトリ）
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-10)
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
 全てのコード実装において、必ず `.agents/rules/tdd-commit-workflow.md` のルールに従うこと。
@@ -185,7 +185,18 @@ assert_staged_scope() {
 
 ```bash
 # 要件を網羅するテストを追加
-bun run test __tests__/gcl/<exam>/page.test.tsx  # 失敗を確認
+red_test_log=$(mktemp) || exit 1
+trap 'rm -f "$red_test_log"' EXIT
+if bun run test __tests__/gcl/<exam>/page.test.tsx >"$red_test_log" 2>&1; then
+  cat "$red_test_log"
+  echo 'Red テストが成功しました。コミットを中止します。' >&2
+  exit 1
+fi
+cat "$red_test_log"
+if ! grep -Eq 'AssertionError|TestingLibraryElementError|Unable to find an element|expected .* (to|not to)' "$red_test_log"; then
+  echo '想定したアサーション失敗を確認できません。コミットを中止します。' >&2
+  exit 1
+fi
 git status --short
 assert_clean_stage || exit 1
 git add __tests__/gcl/<exam>/page.test.tsx || exit 1
