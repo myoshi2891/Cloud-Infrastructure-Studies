@@ -17,6 +17,7 @@ GCP/AWS/Cisco 資格試験対策（Associate Cloud Engineer, Generative AI Leade
 bun run dev          # Turbopack で開発サーバー起動（localhost:3000）
 bun run build        # プロダクションビルド
 bun run lint         # ESLint
+bun run markdownlint -- <file> # Markdown lint（プロジェクト固定版）
 
 # テスト
 bun run test         # Vitest（ユニット・コンポーネント）

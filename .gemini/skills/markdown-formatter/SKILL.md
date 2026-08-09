@@ -169,10 +169,10 @@ bun scripts/format-markdown.mjs <file_path>
 
 ### Step 2: Linter による検証
 
-次に、プロジェクトの `.markdownlint.json` に従って固定版の Linter を実行し、残存するエラーがないかを確認します。npm-only のサンドボックスでは、追跡対象の `bun.lock` を変更せずに再現可能な版を指定します。
+次に、プロジェクトの `.markdownlint.json` に従って固定版の Linter を実行し、残存するエラーがないかを確認します。
 
 ```bash
-npm exec --yes --package=markdownlint-cli2@0.23.2 -- markdownlint-cli2 <file_path>
+bun run markdownlint -- <file_path>
 ```
 
 エラーが出力されなくなるまで、手動でマークダウンを修正します。

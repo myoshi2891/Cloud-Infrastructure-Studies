@@ -25,6 +25,7 @@ Updated 2026-08-09
 - **Security テスト実行:** `bun run test:security` (`bun audit --json` を [scripts/security-audit.mjs](scripts/security-audit.mjs) が集計し、high/critical 検出で exit 1)
 - **Performance 手動レポート:** `bun run build && bun run perf:report` (`@lhci/cli` autorun → `.lighthouseci/` に HTML/JSON 出力)
 - **Lint 実行:** `bun run lint`
+- **Markdown lint 実行:** `bun run markdownlint -- <file>`
 
 ## プロジェクト構造
 

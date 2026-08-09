@@ -106,6 +106,12 @@ bun run build
 bun run lint
 ```
 
+#### Markdown lint
+
+```bash
+bun run markdownlint -- <file>
+```
+
 ## 🧪 テストの実行
 
 ### ユニットテスト (Vitest)
