@@ -152,17 +152,29 @@ describe('CcnaAppDeploymentSecurityPage', () => {
     });
 
     it('目次クリック時にURLフラグメントとアクティブ項目を更新する', () => {
+        const originalScrollIntoView = Object.getOwnPropertyDescriptor(Element.prototype, 'scrollIntoView');
+        const originalHash = window.location.hash;
         const scrollIntoView = vi.fn();
-        Element.prototype.scrollIntoView = scrollIntoView;
-        const { container } = render(<CcnaAppDeploymentSecurityPage />);
-        const link = container.querySelector<HTMLAnchorElement>('a[href="#chapter4"]');
 
-        expect(link).not.toBeNull();
-        fireEvent.click(link!);
+        try {
+            Element.prototype.scrollIntoView = scrollIntoView;
+            const { container } = render(<CcnaAppDeploymentSecurityPage />);
+            const link = container.querySelector<HTMLAnchorElement>('a[href="#chapter4"]');
 
-        expect(window.location.hash).toBe('#chapter4');
-        expect(link).toHaveClass('active');
-        expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+            expect(link).not.toBeNull();
+            fireEvent.click(link!);
+
+            expect(window.location.hash).toBe('#chapter4');
+            expect(link).toHaveClass('active');
+            expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        } finally {
+            if (originalScrollIntoView) {
+                Object.defineProperty(Element.prototype, 'scrollIntoView', originalScrollIntoView);
+            } else {
+                Reflect.deleteProperty(Element.prototype, 'scrollIntoView');
+            }
+            window.location.hash = originalHash;
+        }
     });
 
     it('Docker CMDの説明で「最後」を正しく表示する', () => {
