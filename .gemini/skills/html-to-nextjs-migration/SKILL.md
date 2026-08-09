@@ -68,13 +68,13 @@ content-heavy な単一HTML（hero + サイドバー + 多数セクション + M
 ### 2. GCP / ダークテーマ トークンマップ（確定値）
 
 HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既存トークンへ機械的に置換する。
-既存トークンに無いテーマ値は、ページ固有 CSS のページルートセレクタに定義し、対応する `page.tsx` または `layout.tsx` から直接 import する。
+既存トークンに無いテーマ値は、承認済みの3層デザイントークンとして `app/globals.css` の `@theme` に追加してから参照する。ページ固有 CSS では新規 custom property を定義しない。
 
 | HTML ローカル変数 | 置換先 | 備考 |
 |---|---|---|
 | `--gcp-blue` / `-green` / `-yellow` / `-red` | `var(--color-google-blue / -green / -yellow / -red)` | 既存トークン |
-| `--gcp-purple` | `var(--color-gcp-purple)` | ページ固有トークン |
-| `--gcp-teal` | `var(--color-gcp-teal)` | ページ固有トークン |
+| `--gcp-purple` | `var(--color-gcp-purple)` | グローバルテーマトークン |
+| `--gcp-teal` | `var(--color-gcp-teal)` | グローバルテーマトークン |
 | `--bg-primary` | `var(--color-background)` | |
 | `--bg-card` / `--bg-card-hover` | `var(--color-card)` / `var(--color-gcp-card-hover)` | |
 | `--bg-code` | `var(--color-gcp-code-background)` | |
@@ -210,7 +210,7 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` 変数）は、
 **「正準リファレンス §2 GCP / ダークテーマ トークンマップ」の確定表をそのまま適用**する
 （毎回 `globals.css` を grep して導出しない）。紫・ティール・コード背景・カードホバー・青み境界線・グローを含め、
-§2 に定義したトークンを使用し、既存グローバルトークンで表現できない値だけをページルートへ定義する。
+§2 に定義したグローバルトークンを使用する。不足する値は `app/globals.css` の承認済み3層トークンへ追加してから参照し、ページルートへ定義しない。
 
 **Critical**: The project uses a **unified dark theme**. Light-theme HTML pages must be re-themed to match the dark color system. Do not attempt to preserve the original light color scheme.
 
@@ -387,6 +387,7 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 
 - **Never import external fonts via `<link>` tags** — Use `next/font/google` in `layout.tsx` only.
 - **Never define duplicate CSS variables** in page CSS that already exist in `globals.css @theme`
+- **Never define new theme custom properties in page CSS** — add approved three-layer tokens to `app/globals.css @theme` and reference them
 - **Never use `@layer components`** for page-specific styles — plain CSS only for proper specificity
 - **Never duplicate z-index in CSS** when Tailwind class is used in JSX
 - **Never place responsive overrides outside `@media` queries**

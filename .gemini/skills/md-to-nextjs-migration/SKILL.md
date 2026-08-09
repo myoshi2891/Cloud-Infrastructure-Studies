@@ -256,7 +256,7 @@ git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 - **テストランナーは bun**: `npm run test` ではなく `bun run test` を使う
 - **新ページ追加時**: `app/constants.ts` の `EXAMS` にエントリを追加する（`Header.tsx` は `toNavTree(EXAMS)` で自動反映されるため直接編集しない）
 - **ページ固有の共通定数**: `constants.ts` に集約する（グローバルに置かない）
-- **CSS テーマ**: ページ固有テーマは専用 `.css` ファイルに定義し、そのルートを所有する `page.tsx` または `layout.tsx` からインポートする。レイアウトスコープが不要な場合は `page.tsx` を優先し、不要な `layout.tsx` の作成を避ける（CLAUDE.md と整合）
+- **CSS テーマ**: ページ CSS では新規テーマ custom property を定義しない。`app/globals.css` の既存または追加済みの承認済み3層デザイントークンを参照し、ページ固有 CSS にはセレクタとスタイル規則だけを置く
 - **分割方針（第一選択）**: `page.tsx` が ~400〜600 行を超えた場合は、新規セクションを `components/sections/Section*.tsx` などの独立コンポーネントに切り出すこと。再利用可能なロジックは hooks / util モジュールへ分離する。「編集を小分けにする」運用で肥大化を温存しないこと
 - **Edit サイズ（補助ルール）**: コンポーネント分割後もやむを得ず大きな編集が発生する場合に限り、1 回の Edit は 300 行以内に収める
 - **SVG 移行品質**: オリジナルにリッチな SVG（チップ表示、ステータス、詳細な注釈等）が含まれる場合は簡略化せず全詳細を再現すること。プレースホルダーへの置き換えは禁止。属性は camelCase に変換し `style` はオブジェクト形式で記述すること
