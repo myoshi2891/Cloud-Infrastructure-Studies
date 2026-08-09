@@ -50,7 +50,7 @@ implementation_head=$(git rev-parse --short HEAD)
 | フィールド | 更新内容 |
 |---|---|
 | `最新実装 HEAD` | 進捗ファイル編集前に保存した `implementation_head` + 実装コミットメッセージ要約 |
-| `最新進捗同期コミット` | 直前に完了した進捗同期コミット。新しい同期コミット作成後に `git rev-parse --short HEAD` で別途取得し、次回同期時の監査基準として扱う |
+| `前回進捗同期コミット` | 今回の更新前に完了していた直前の進捗同期コミット。新しい同期コミット自身の値ではなく、次回同期時に前回値として更新する |
 | `次の作業` | 次セッションで **最初に** 取り掛かるページ（例: `Gcp-ace-complete-advanced-guide.html 移行`） |
 | `ビルド状態` | `bun run build` / `bun run lint` の最新状態 |
 
@@ -59,7 +59,7 @@ implementation_head=$(git rev-parse --short HEAD)
 `現在地` の値と一致するように再開プロンプト内の以下を書き換える:
 
 - `最新実装 HEAD: <hash>` の値（`implementation_head` と一致）
-- `最新進捗同期コミット: <hash>` の値（前回の進捗同期コミットと一致）
+- `前回進捗同期コミット: <hash>` の値（今回の更新前に完了していた直前の進捗同期コミットと一致）
 - `次の作業:` の説明（ページ粒度で具体的に）
 - 未移行 HTML の残数
 
@@ -70,10 +70,10 @@ git status --short
 git add MIGRATION_PROGRESS.md
 git diff --cached -- MIGRATION_PROGRESS.md
 git commit -m "chore(docs): update MIGRATION_PROGRESS.md — <作業内容の1行要約>"
-progress_sync_commit=$(git rev-parse --short HEAD)
+new_progress_sync_commit=$(git rev-parse --short HEAD)
 ```
 
-`progress_sync_commit` は作成した進捗同期コミットの識別子として実行結果・引き継ぎに記録し、`最新実装 HEAD` を上書きしない。
+`new_progress_sync_commit` は今回作成した進捗同期コミットの識別子として実行結果・引き継ぎに記録し、今回コミットした `前回進捗同期コミット` や `最新実装 HEAD` を上書きしない。次回の進捗同期時に、この値を `前回進捗同期コミット` として記録する。
 
 ## 禁止
 

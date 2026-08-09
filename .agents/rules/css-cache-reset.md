@@ -39,11 +39,14 @@ getComputedStyle(document.documentElement).getPropertyValue('--color-background'
 lsof -nP -iTCP -sTCP:LISTEN | rg 'node|next'
 
 # 2. 対象 PID のコマンドと作業対象がこのプロジェクトの dev サーバーであることを確認
-dev_pid=$(lsof -tiTCP:<dev-port> -sTCP:LISTEN)
-ps -p "$dev_pid" -o pid=,command=
+dev_port=${PORT:?PORT を設定してください}
+dev_pid=$(lsof -tiTCP:"$dev_port" -sTCP:LISTEN | head -n 1)
+if [ -n "$dev_pid" ]; then
+  ps -p "$dev_pid" -o pid=,command=
 
-# 3. 確認済みの dev サーバーだけを停止
-kill "$dev_pid"
+  # 3. 確認済みの dev サーバーだけを停止
+  kill "$dev_pid"
+fi
 
 # 4. キャッシュ削除
 rm -rf .next
@@ -60,11 +63,29 @@ Next.js + Tailwind v4 の CSS コンパイルはチャンク単位でキャッ�
 
 dev サーバーでは正常でも Docker の本番ビルドで CSS 変数が空になるケースがある。
 
-**原因**: Next.js 本番ビルドは CSS をルート単位でチャンク分割する。Tailwind v4 の `@theme` 出力が別チャンクに分離され、特定ページで読み込まれないことがある（ブラウザ警告: "preloaded but not used"）。
+原因を CSS チャンク分割と断定する前に、次を順に診断する:
+
+1. 生成 CSS に `@theme` の出力と対象 CSS 変数が含まれることを確認する。
+
+   ```bash
+   rg '@theme|--color-background' app .next/static/css
+   ```
+
+2. 生成ページが参照する CSS の `preload` / `stylesheet` を確認する。
+
+   ```bash
+   rg 'preload|stylesheet' .next/server/app
+   ```
+
+3. ブラウザの Network パネルで、参照された CSS が 200 応答であり、応答本文に対象 CSS 変数が含まれることを確認する。
+
+**原因の仮説**: Next.js 本番ビルドのルート単位の CSS チャンク分割により、Tailwind v4 の `@theme` 出力が対象ページから参照されないチャンクへ分離されている可能性がある。ブラウザの "preloaded but not used" 警告はこの仮説を調べる手掛かりであり、それだけでは確定原因ではない。
 
 **恒久対策**: 変数定義は `@theme` ブロックに定義します。キャッシュによる不整合が発生した場合は、上記の手順に従ってキャッシュを削除し再起動してください。
 
 **Docker リビルド手順**（`globals.css` 変更後）:
+
+Docker 操作はリポジトリの Bun コマンド規約に対するオーケストレーション上の例外として `make` を使用する。`make build` は Dockerfile 内で `bun install --frozen-lockfile` と `bun run build`、`make dev` は開発コンテナ内で `bun install` と `bun run dev` を実行する。
 
 ```bash
 make down && make build && make dev

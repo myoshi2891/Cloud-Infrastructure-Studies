@@ -79,7 +79,8 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
     - `docs/TEST_COVERAGE_PROGRESS.md` の Section 7（次回セッションでの再開プロンプト）の更新
     - `GEMINI.md` / `README.md` のコマンド一覧や各種仕様書への反映
 - **コミット対象とメッセージ (What to Commit)**:
-  - `Header.tsx` や `CLAUDE.md` 等へのルーティング統合および上記ドキュメント更新を含めます。
+  - 新しい試験の登録は `app/constants.ts` の `EXAMS` を正準データソースとし、ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` から生成します。新しい試験の追加時に `components/Header.tsx` を直接編集してはなりません。
+  - 上記のルーティング統合と `CLAUDE.md` 等のドキュメント更新を含めます。
   - コミット: `refactor(<scope>): integrate [機能名] into routing and update docs` (または `refactor/docs: ...`)
 
 ---
