@@ -36,8 +36,14 @@ HTML → Next.js 移行セッションでは、**コンテキストが逼迫す�
 ### 1. ビルド確認
 
 ```bash
-bun run build   # ビルド成功を確認
-bun run lint    # ESLint エラーなし
+if ! bun run build; then
+  echo 'ビルドに失敗しました。進捗同期を中止します。' >&2
+  exit 1
+fi
+if ! bun run lint; then
+  echo 'Lint に失敗しました。進捗同期を中止します。' >&2
+  exit 1
+fi
 if ! progress_status=$(git status --short); then
   echo 'worktree の状態を取得できません。進捗同期を中止します。' >&2
   exit 1
@@ -46,7 +52,7 @@ if [ -n "$progress_status" ]; then
   echo '進捗同期前に worktree をクリーンにしてください。' >&2
   exit 1
 fi
-if ! implementation_head=$(git rev-parse --short HEAD); then
+if ! implementation_head=$(git rev-parse HEAD); then
   echo '最新実装 HEAD を取得できません。進捗同期を中止します。' >&2
   exit 1
 fi
@@ -90,6 +96,10 @@ fi
 ### 4. コミット
 
 ```bash
+if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
+  echo '進捗同期コミットには COMMIT_AUTHORIZED=yes による明示認可が必要です。' >&2
+  exit 1
+fi
 if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
   exit 1
@@ -106,7 +116,7 @@ if ! git commit -m "chore(docs): update MIGRATION_PROGRESS.md — <作業内容�
   echo '進捗同期コミットを作成できません。後続処理を中止します。' >&2
   exit 1
 fi
-if ! new_progress_sync_commit=$(git rev-parse --short HEAD); then
+if ! new_progress_sync_commit=$(git rev-parse HEAD); then
   echo '作成した進捗同期コミットを取得できません。後続処理を中止します。' >&2
   exit 1
 fi

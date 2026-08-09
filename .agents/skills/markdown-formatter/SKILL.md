@@ -191,12 +191,21 @@ local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home}|${e
 email_pattern='[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}'
 pii_pattern="(${local_path_pattern}|${email_pattern})"
 staged_diff=$(mktemp) || exit 1
-trap 'rm -f "$staged_diff"' EXIT
+added_diff=$(mktemp) || exit 1
+trap 'rm -f "$staged_diff" "$added_diff"' EXIT
 if ! git diff --cached > "$staged_diff"; then
   echo 'ステージ差分を取得できません。コミットを中止します。' >&2
   exit 1
 fi
-grep -E "^\+[^+].*$pii_pattern" "$staged_diff"
+if ! awk '
+  /^diff --git / { in_hunk = 0; next }
+  /^@@ / { in_hunk = 1; next }
+  in_hunk && /^\+/ { print }
+' "$staged_diff" > "$added_diff"; then
+  echo '追加行の抽出に失敗しました。コミットを中止します。' >&2
+  exit 1
+fi
+grep -E "$pii_pattern" "$added_diff"
 path_check_status=$?
 if [ "$path_check_status" -eq 0 ]; then
   echo 'ローカル絶対パスまたは PII が検出されました。コミットを中止します。' >&2

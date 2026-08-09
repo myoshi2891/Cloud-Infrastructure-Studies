@@ -68,13 +68,40 @@ elif [ "${CONFIRM_STOP_DEV_SERVER:-}" != 'yes' ]; then
   echo '非対話実行では CONFIRM_STOP_DEV_SERVER=yes による明示承認が必要です。' >&2
   exit 1
 fi
+
+# 承認待ちの間に PID が再利用されていないことを停止直前に再検証
+if ! current_dev_command=$(ps -p "$dev_pid" -o command=); then
+  echo '停止直前の dev サーバーコマンドを取得できません。処理を中止します。' >&2
+  exit 1
+fi
+if ! current_dev_cwd_record=$(lsof -a -p "$dev_pid" -d cwd -Fn); then
+  echo '停止直前の dev サーバー cwd を取得できません。処理を中止します。' >&2
+  exit 1
+fi
+current_dev_cwd=${current_dev_cwd_record#n}
+if [ "$current_dev_command" != "$dev_command" ] || [ "$current_dev_cwd" != "$dev_cwd" ] || \
+  ! printf '%s\n' "$current_dev_command" | rg -q '(^|[ /])next dev --turbopack([[:space:]]|$)'; then
+  echo '対象 PID の同一性を再確認できません。停止せず処理を中止します。' >&2
+  exit 1
+fi
 kill "$dev_pid" || exit 1
+
+# PID の終了確認前にキャッシュを削除・再起動しない
+shutdown_attempt=0
+while ps -p "$dev_pid" > /dev/null 2>&1; do
+  shutdown_attempt=$((shutdown_attempt + 1))
+  if [ "$shutdown_attempt" -ge 50 ]; then
+    echo 'dev サーバーが期限内に終了しませんでした。再起動処理を中止します。' >&2
+    exit 1
+  fi
+  sleep 0.1
+done
 
 # 4. キャッシュ削除
 rm -rf .next
 
-# 5. dev サーバー再起動（プロジェクトで設定されたポートを使用）
-bun run dev
+# 5. dev サーバー再起動（検証済みのポートを明示的に使用）
+PORT="$dev_port" bun run dev
 ```
 
 ## 背景

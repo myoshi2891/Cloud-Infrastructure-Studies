@@ -166,13 +166,14 @@ git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
 ```typescript
 // 型定義（export 必須）
 export type NewItem = {
+    id: string;
     field1: string;
     field2: string;
 };
 
 // データ配列（export 必須）
 export const NEW_ITEMS: NewItem[] = [
-    { field1: 'value1', field2: 'value2' },
+    { id: 'item-1', field1: 'value1', field2: 'value2' },
 ];
 ```
 
@@ -197,8 +198,8 @@ import {
                 <tr><th scope="col">列1</th><th scope="col">列2</th></tr>
             </thead>
             <tbody>
-                {NEW_ITEMS.map((row, i) => (
-                    <tr key={i}>
+                {NEW_ITEMS.map((row) => (
+                    <tr key={row.id}>
                         <td><strong>{row.field1}</strong></td>
                         <td>{row.field2}</td>
                     </tr>
@@ -233,6 +234,7 @@ git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
+bun run lint
 git status --short
 git add <refactored-files>
 git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
@@ -245,7 +247,15 @@ Step 6 は実際にリファクタリングしたファイルだけをステー�
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
 git status --short
+if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
+  echo 'Docs Sync コミットには COMMIT_AUTHORIZED=yes による明示認可が必要です。' >&2
+  exit 1
+fi
 git add MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md
+if ! git diff --cached --check || ! git diff --cached; then
+  echo 'ステージ差分を検証できません。コミットを中止します。' >&2
+  exit 1
+fi
 git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 ```
 

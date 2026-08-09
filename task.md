@@ -6,6 +6,7 @@
 - デスクトップのサイドバー幅280px・左端固定と、メイン領域の残幅100%を検証する。
 - モバイルのメイン領域が横幅100%へ戻ることを検証する。
 - 既存の本文最大幅制限を許容するテストを、新しい全幅要件へ更新する。
+- 失敗確認の直後に、テストだけを `test(layout): add failing full-width guide contract` 形式でコミットする。
 
 ## Green（実装）
 
@@ -14,11 +15,13 @@
   `max-width: none`、`box-sizing: border-box` を適用する。
 - 本文全体を狭める `content-inner` 等の最大幅を解除する。
 - 900px前後の既存ブレークポイントではメイン領域を幅100%へ戻す。
+- 対象テストの成功確認直後に、最小実装だけを `feat(layout): standardize full-width sidebar guide screens` 形式でコミットする。
 
 ## Refactor（検証）
 
 - 対象テスト、全テスト、Lint、production buildを実行する。
 - CSSの重複した左余白や親要素のpaddingを除去し、二重オフセットを防ぐ。
+- 検証と整理の完了直後に、実際のリファクタ変更だけを `refactor(layout): integrate full-width guide layout` 形式で独立コミットする。
 
 ## Docs Sync（仕様同期）
 
