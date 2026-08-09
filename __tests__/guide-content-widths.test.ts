@@ -14,6 +14,11 @@ const firstRule = (css: string, selector: string): string => {
     return match?.[1] ?? '';
 };
 
+const rulesAfterFirst = (css: string, selector: string): string[] => {
+    const matches = [...css.matchAll(new RegExp(`${escapeRegExp(selector)}\\s*\\{([^}]*)\\}`, 'g'))];
+    return matches.slice(1).map((match) => match[1] ?? '');
+};
+
 const guideLayouts = [
     ['app/aws/solutions-architect-associate/domain1/page.css', '.aws-saa-domain1-page #sidebar', '.aws-saa-domain1-page .main-content'],
     ['app/aws/solutions-architect-associate/domain2/page.css', '.domain2-page .sidebar', '.domain2-page .content'],
@@ -57,6 +62,16 @@ describe('all sidebar guide layouts', () => {
         expect(rule).toMatch(/width:\s*calc\(100%\s*-\s*280px\)\s*;/);
         expect(rule).toMatch(/max-width:\s*none\s*;/);
         expect(rule).toMatch(/box-sizing:\s*border-box\s*;/);
+    });
+
+    it.each(guideLayouts)('%s restores a 100% main canvas in its responsive rule', (stylesheet, _sidebarSelector, mainSelector) => {
+        const responsiveRules = rulesAfterFirst(readWorkspaceFile(stylesheet), mainSelector);
+
+        expect(responsiveRules.some((rule) =>
+            /margin-left:\s*0\s*;/.test(rule)
+            && /width:\s*100%\s*;/.test(rule)
+            && /max-width:\s*none\s*;/.test(rule),
+        )).toBe(true);
     });
 
     it('removes narrow inner wrappers that previously re-constrained full-width guides', () => {
