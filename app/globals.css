@@ -120,15 +120,6 @@
     --color-google-red: #ea4335;
     --color-google-blue-rgb: 66, 133, 244;
 
-    /* Layer 3: GCP dark-guide theme tokens */
-    --color-gcp-purple: #9334e6;
-    --color-gcp-teal: #00bcd4;
-    --color-gcp-card-hover: #1a2035;
-    --color-gcp-code-background: #0d1117;
-    --color-gcp-border: rgba(var(--color-google-blue-rgb), 0.2);
-    --color-gcp-border-bright: rgba(var(--color-google-blue-rgb), 0.5);
-    --color-gcp-accent-glow: rgba(var(--color-google-blue-rgb), 0.15);
-
     /* Callout & Status Themes */
     --color-warning: #fb923c;
     --color-warning-bg: #fef3e8;
