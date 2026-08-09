@@ -13,7 +13,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 目的
 
-`Ccna-automation-cisco-platforms-and-development.html` (および `.md`)（静的HTML・1864行・10個のMermaid図・6個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcnaCiscoPlatformsDevelopmentGuide.tsx + constants.ts + page.module.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-cisco-platforms-and-development` ルートへ完全移行する。文章・表・10個のMermaid図・7個のコードブロック・16個の参考文献の一切の省略・要約なしで完全移植。
+`Ccna-automation-cisco-platforms-and-development.html` (および `.md`)（静的HTML・1864行・10個のMermaid図・6個の表）を、正準の設計パターン（Server page.tsx + Server CcnaCiscoPlatformsDevelopmentGuide.tsx + browser-side NavBar + constants.ts + page.module.css + 共有 browser-side MermaidDiagram）で `app/cisco/ccna/automation-cisco-platforms-and-development` ルートへ完全移行する。文章・表・10個のMermaid図・7個のコードブロック・16個の参考文献の一切の省略・要約なしで完全移植。
 
 ### 完了済みステップ
 
@@ -37,7 +37,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 目的
 
-`Ccna-automation-application-deployment-security.html` (および `.md`)（静的HTML・1857行・10個のMermaid図・17個の表）を、正準の設計パターン（NavBar + Server page.tsx + Client CcnaAppDeploymentSecurityGuide.tsx + constants.ts + page.css + 共有 MermaidDiagram）で `app/cisco/ccna/automation-application-deployment-security` ルートへ完全移行する。文章・表・10個のMermaid図・コードブロック・参考ソースの一切の省略・要約なしで完全移植。
+`Ccna-automation-application-deployment-security.html` (および `.md`)（静的HTML・1857行・10個のMermaid図・17個の表）を、正準の設計パターン（Server page.tsx + Server CcnaAppDeploymentSecurityGuide.tsx + browser-side NavBar + constants.ts + page.css + 共有 browser-side MermaidDiagram）で `app/cisco/ccna/automation-application-deployment-security` ルートへ完全移行する。文章・表・10個のMermaid図・コードブロック・参考ソースの一切の省略・要約なしで完全移植。
 
 ### 完了済みステップ
 
