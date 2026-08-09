@@ -43,6 +43,7 @@
     "vitest": "^4.1.10"
   },
   "dependencies": {
+    "@tabler/icons-webfont": "2.47.0",
     "clsx": "^2.1.1",
     "mermaid": "^11.16.0",
     "next": "16.2.11",

@@ -5,6 +5,7 @@
     "": {
       "name": "infra",
       "dependencies": {
+        "@tabler/icons-webfont": "2.47.0",
         "clsx": "^2.1.1",
         "mermaid": "^11.16.0",
         "next": "16.2.11",
@@ -330,6 +331,10 @@
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
     "@swc/helpers": ["@swc/helpers@0.5.15", "", { "dependencies": { "tslib": "^2.8.0" } }, "sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g=="],
+
+    "@tabler/icons": ["@tabler/icons@2.47.0", "", {}, "sha512-4w5evLh+7FUUiA1GucvGj2ReX2TvOjEr4ejXdwL/bsjoSkof6r1gQmzqI+VHrE2CpJpB3al7bCTulOkFa/RcyA=="],
+
+    "@tabler/icons-webfont": ["@tabler/icons-webfont@2.47.0", "", { "dependencies": { "@tabler/icons": "2.47.0" } }, "sha512-yfV9zDal0iYDmyGz4BS9IlhaaMydtLdyOrY2UAZToP65sVWj7AFIi6symNzsoBaX867xAZWVHdKcocah0BfSog=="],
 
     "@tailwindcss/node": ["@tailwindcss/node@4.3.3", "", { "dependencies": { "@jridgewell/remapping": "^2.3.5", "enhanced-resolve": "^5.24.1", "jiti": "^2.7.0", "lightningcss": "1.32.0", "magic-string": "^0.30.21", "source-map-js": "^1.2.1", "tailwindcss": "4.3.3" } }, "sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg=="],
 
