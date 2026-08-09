@@ -175,6 +175,21 @@ describe("injectRenderLoop", () => {
       out.indexOf("mermaid.initialize({ startOnLoad: false })"),
     );
   });
+
+  test.each(["</script >", "</SCRIPT>"])(
+    "閉じタグの表記ゆれ %s の直前へ注入する",
+    (closingTag) => {
+      const input = `<script>mermaid.initialize({ startOnLoad: false });${closingTag}`;
+      const out = injectRenderLoop(input);
+
+      expect(out.indexOf("function applySvgFixups")).toBeGreaterThan(
+        out.indexOf("mermaid.initialize({ startOnLoad: false })"),
+      );
+      expect(out.indexOf("function applySvgFixups")).toBeLessThan(
+        out.toLowerCase().indexOf("</script"),
+      );
+    },
+  );
 });
 
 describe("injectCenteringCss", () => {
