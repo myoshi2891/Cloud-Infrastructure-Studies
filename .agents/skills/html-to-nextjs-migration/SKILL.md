@@ -14,6 +14,8 @@ description: >
 
 # HTML → Next.js Migration Workflow（本リポジトリ専用）
 
+(最終更新日: 2026-08-09)
+
 ## Goal
 
 Provide the complete, ordered workflow for converting a standalone HTML page (with embedded `<style>` and trailing `<script>`) into a fully integrated Next.js App Router page in this repository. This skill extends the global `html-to-nextjs-migration` skill (JSX pitfalls) with project-specific CSS token mapping, file organization, MermaidDiagram reuse, and integration steps.
@@ -36,7 +38,7 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 | ファイル | 予定ルート | 状態 |
 |---|---|---|
-| `Ace-section1-complete-guide.html` | `/gcl/associate-cloud-engineer/section1` | ✅ 完了（元HTMLはルート残置） |
+| `Ace-section1-complete-guide.html` | `/gcl/associate-cloud-engineer/section1` | ✅ 完了（原本は内容を変更せず `archive/Gcl_Archive/Associate-Cloud-Engineer/html/associate-cloud-engineer/` へ移動済み） |
 
 > 残タスクの正本は `MIGRATION_PROGRESS.md`。この表は補助。
 
@@ -71,15 +73,15 @@ HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既
 | HTML ローカル変数 | 置換先 | 備考 |
 |---|---|---|
 | `--gcp-blue` / `-green` / `-yellow` / `-red` | `var(--color-google-blue / -green / -yellow / -red)` | 既存トークン |
-| `--gcp-purple` | リテラル `#9334e6` | **トークン無し** |
-| `--gcp-teal` | リテラル `#00bcd4` | トークン無し |
+| `--gcp-purple` | `var(--color-gcp-purple)` | グローバルトークン |
+| `--gcp-teal` | `var(--color-gcp-teal)` | グローバルトークン |
 | `--bg-primary` | `var(--color-background)` | |
-| `--bg-card` / `--bg-card-hover` | `var(--color-card)` / リテラル `#1a2035` | |
-| `--bg-code` | リテラル `#0d1117` | |
+| `--bg-card` / `--bg-card-hover` | `var(--color-card)` / `var(--color-gcp-card-hover)` | |
+| `--bg-code` | `var(--color-gcp-code-background)` | |
 | `--text-primary` | `var(--color-foreground)` | |
 | `--text-secondary` / `--text-muted` | `var(--color-muted-foreground)` | |
-| `--border` / `--border-bright` | リテラル `rgba(66,133,244,0.2)` / `…0.5)` | 青み境界線は維持 |
-| `--accent-glow` | リテラル `rgba(66,133,244,0.15)` | |
+| `--border` / `--border-bright` | `var(--color-gcp-border)` / `var(--color-gcp-border-bright)` | 青み境界線は維持 |
+| `--accent-glow` | `var(--color-gcp-accent-glow)` | |
 | Space Grotesk | `var(--font-display)` | DM Sans に統一 |
 | Noto Sans JP | `var(--font-body)` | |
 | JetBrains Mono | `var(--font-mono)` | |
@@ -140,8 +142,13 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 
 - **構文ハイライトの `<span>` 入り**（GCPガイド系。`<pre><code><span class="c">…`）
   → **Pattern B**: `<pre>` を `dangerouslySetInnerHTML` で注入（静的・作者管理コードのみ）。
-  `__html` 内は `class` 維持、`<` のみ `&lt;` にエスケープ、`{`/`}`/`&` は実文字、バッククォートは `` \` ``。
+  生のコード文字列は `escapeHtml` ヘルパーで **`&` を先に `&amp;`、`<` を `&lt;`** に変換してから構文ハイライト用 `<span class="...">` で包み、`__html` へ渡す。生成するハイライト要素の `class` 属性は維持し、`{`/`}` とバッククォートはそのまま扱う。
   `.<page>-page pre, .<page>-page pre code { white-space: pre; }` を指定（preflight 負け回避）。
+
+  ```ts
+  const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  ```
+
 - **プレーン整形のみ**（ハイライト無し）→ global skill の `.code-line` ラッパー（`white-space: pre`）。
 
 ## 効率的読み取りプロトコル（省略禁止＋無駄読み禁止）
@@ -202,8 +209,8 @@ Map every HTML CSS variable to the project's `globals.css` `@theme` token. Do NO
 
 GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` 変数）は、
 **「正準リファレンス §2 GCP / ダークテーマ トークンマップ」の確定表をそのまま適用**する
-（毎回 `globals.css` を grep して導出しない）。トークンが無い色（紫・コードブロック背景・青み境界線）は
-元の rgba/hex を**リテラルで保持**する。
+（毎回 `globals.css` を grep して導出しない）。紫・ティール・コード背景・カードホバー・青み境界線・グローを含め、
+§2 に定義したグローバルトークンを使用し、コンポーネント CSS にリテラル値やローカル変数を追加しない。
 
 **Critical**: The project uses a **unified dark theme**. Light-theme HTML pages must be re-themed to match the dark color system. Do not attempt to preserve the original light color scheme.
 

@@ -17,11 +17,14 @@ description: >
 
 # MD → Next.js 移行ワークフロー（Infra リポジトリ）
 
+(最終更新日: 2026-08-09)
+
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
 全てのコード実装において、必ず `.claude/rules/tdd-commit-workflow.md` のルールに従うこと。
-1. `test:` 失敗するテストを先に書きコミットする
-2. `feat:` テストをPassさせる実装を行いコミットする
-3. `refactor/docs:` 統合を行いコミットする
+1. `test:` Red — 失敗するテストを先に作成しコミットする
+2. `feat:` Green — テストを Pass させる最小実装を行いコミットする
+3. `refactor:` Refactor / Integration — リファクタリングと統合を行いコミットする
+4. `docs:` Docs Sync — 進捗・仕様文書を同期しコミットする
 これらを1つの巨大なコミットにまとめることは厳禁である。
 
 ## 目的
@@ -146,13 +149,17 @@ app/
 両ソースを全読みし、実装すべきコンテンツ一覧を把握してから実装を開始する。
 **省略・要約は一切禁止**。MD の全行を JSX に組み込む前提でコンテンツ量を把握すること。
 
-### Step 1: テストを確認（RED）
+### Step 1: Red — 失敗するテストを作成してコミット
 
 ```bash
-bun run test __tests__/gcl/<exam>/page.test.tsx
+# 要件を網羅するテストを追加
+bun run test __tests__/gcl/<exam>/page.test.tsx  # 失敗を確認
+git status --short
+git add __tests__/gcl/<exam>/page.test.tsx
+git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
 ```
 
-失敗しているテストの期待テキストを確認し、実装対象とテキスト表記を把握する。
+失敗している期待テキストを確認し、実装対象と表記を把握する。Red のテストを Green 実装と同じコミットに含めない。
 
 ### Step 2: constants.ts に型とデータを追加
 
@@ -213,18 +220,28 @@ import {
 
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
+git status --short
+git add app/gcl/<exam>/
+git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
 
-### Step 6: ビルド確認
+### Step 6: Refactor / Integration を検証してコミット
 
 ```bash
+bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
+git status --short
+git add app/constants.ts app/gcl/<exam>/
+git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 
-### Step 7: コミット
+### Step 7: Docs Sync を検証してコミット
 
 ```bash
-git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
+bun run test __tests__/gcl/<exam>/page.test.tsx
+git status --short
+git add MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md
+git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 ```
 
 ---
@@ -251,11 +268,11 @@ git commit -m "feat(gcl/<exam>/SN): add <内容の要約>"
 ### 1. サブナビゲーション (snav) の固定と z-index
 
 各ページのサブナビゲーション (`.snav` 等) は、スクロール時に画面上部に固定（Sticky）され、
-グローバルサイトヘッダーの上に重なるようにする。
+グローバルサイトヘッダーと DisclaimerBanner の下に配置する。
 
-- **配置とレイヤー**: `.snav` には必ず `top: 0;` と `z-index: 100;` を設定する
+- **配置とレイヤー**: `.snav` には必ず `top: calc(var(--header-h) + var(--disclaimer-height));` と `z-index: 40;`（または40以下）を設定する
 
-  （サイトヘッダーは `z-index: 50` → snav がその上を覆う）
+  （サイトヘッダーは `z-index: 50` のため、snav が覆わないようにする）
 
 - **`position: sticky` を壊さないため**: 親要素（`.s1-page`, `.d2-page` などのラッパー）に
 

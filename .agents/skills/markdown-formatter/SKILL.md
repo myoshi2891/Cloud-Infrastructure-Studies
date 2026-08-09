@@ -1,16 +1,18 @@
 ---
-name: qa-studies-markdown-formatter
+name: infra-markdown-formatter
 description: >
-  Comprehensive guide and rules for formatting Markdown files to comply with the project's `.markdownlint.json` configuration.
+  Comprehensive guide and rules for formatting Markdown files in the Infra repository to comply with the project's `.markdownlint.json` configuration.
   Addresses common errors like MD031, MD022, MD032, and MD047.
   Trigger: Markdownリント, markdownlint, markdown formatting, MD031, MD022, blanks-around-fences, blanks-around-headers, MD047.
 ---
 
-# QA_Studies Markdown Formatting & Linting Guide
+# Infra Markdown Formatting & Linting Guide
+
+(最終更新日: 2026-08-09)
 
 ## Goal
 
-This skill provides rules and best practices to ensure all Markdown documents (`.md` files) in the QA_Studies repository comply with the project's strict `.markdownlint.json` rules, preventing CI/CD build breakages due to markdown lint errors.
+This skill provides rules and best practices to ensure all Markdown documents (`.md` files) in the Infra repository comply with the project's strict `.markdownlint.json` rules, preventing CI/CD build breakages due to markdown lint errors.
 
 <!-- markdownlint-disable MD031 MD022 MD032 -->
 
@@ -166,10 +168,10 @@ bun scripts/format-markdown.mjs <file_path>
 
 ### Step 2: Linter による検証
 
-次に、プロジェクトの `.markdownlint.json` に従って Linter を実行し、残存するエラーがないかを確認します。（ローカル実行環境によっては bunx/bun x がエラーを起こす場合があるため、`npx` での実行を推奨します）
+次に、プロジェクトの `.markdownlint.json` に従い、`devDependencies` に固定された `markdownlint-cli` を package script 経由で実行して残存エラーがないか確認します。
 
 ```bash
-npx markdownlint-cli <file_path>
+bun run markdownlint -- <file_path>
 ```
 
 エラーが出力されなくなるまで、手動でマークダウンを修正します。
@@ -179,7 +181,7 @@ npx markdownlint-cli <file_path>
 変更したファイルを Git にステージング（`git add`）した後、リポジトリのセキュリティ規則（`no-absolute-paths.md`）に基づき、絶対パスや PII が含まれていないか必ず検証します。
 
 ```bash
-git diff --cached | grep -E '^\+[^+]' | grep -E '(/Users/|/home/|C:\\Users\\)' | grep -vE 'johndoe'
+git diff --cached | grep -E '^\+[^+]' | grep -E '(/Users/[A-Za-z0-9._-]+|/home/[A-Za-z0-9._-]+|C:\\Users\\[A-Za-z0-9._-]+)'
 ```
 
 検証が成功（何も検出されない）したことを確認してから、コミットを適用してください。
