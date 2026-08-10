@@ -161,6 +161,7 @@ Red / Green / Refactor / Docs Sync のコミットを混在させないため、
 次の 2 つの検査を行う。`assert_clean_stage` は `git add` の前、`assert_staged_scope` は `git add` の後に実行する。
 各 `git add` では許可ファイルを `--` の後に明示し、`git add -p` でそのステップに属する差分だけを選択する。
 許可ファイル内に別作業の変更があっても、ファイル全体をステージしてはならない。
+新規ファイルは通常の `git add -p` では選択対象にならないため、許可された対象ファイルごとに次の順序で扱う。
 
 ```bash
 # git add の前: 別ステップの差分が既にステージされていないことを確認する
@@ -181,6 +182,13 @@ assert_staged_scope() {
     esac
   done
 }
+
+# 新規ファイルごとに状態を確認し、intent-to-add の後で必要な差分だけを選択する
+git status --short -- <new-file>
+assert_clean_stage || exit 1
+git add -N -- <new-file> || exit 1
+git add -p -- <new-file> || exit 1
+assert_staged_scope <new-file> || exit 1
 ```
 
 ### Step 1: Red — 失敗するテストを作成してコミット
