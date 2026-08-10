@@ -333,6 +333,36 @@
                 border-radius: var(--radius);
                 padding: 1.5rem 1rem;
             }
+            /* Prevent page-level prose typography (.main p) from leaking into mermaid's
+   internally-generated <p> tags inside foreignObject HTML labels - a bare
+   ".main p" rule has lower specificity than "pre.mermaid p" but still directly
+   matches these nested <p> elements, which otherwise beats inheritance from
+   the ancestor span's node-specific color even when that color is !important */
+            pre.mermaid p {
+                color: inherit;
+                margin: 0;
+            }
+            /* Defensive contrast backup: force dark text on light-fill mermaid nodes
+   regardless of inline style application quirks in any given browser/renderer.
+   Explicitly includes the nested <p> case above, not just the direct span/text. */
+            pre.mermaid .blueFill .nodeLabel,
+            pre.mermaid .blueFill .nodeLabel p,
+            pre.mermaid .blueFill text,
+            pre.mermaid .blueFill tspan,
+            pre.mermaid .yellowFill .nodeLabel,
+            pre.mermaid .yellowFill .nodeLabel p,
+            pre.mermaid .yellowFill text,
+            pre.mermaid .yellowFill tspan,
+            pre.mermaid .heroFill .nodeLabel,
+            pre.mermaid .heroFill .nodeLabel p,
+            pre.mermaid .heroFill text,
+            pre.mermaid .heroFill tspan,
+            pre.mermaid .redFill .nodeLabel,
+            pre.mermaid .redFill .nodeLabel p,
+            pre.mermaid .redFill text,
+            pre.mermaid .redFill tspan {
+                color: #000000 !important;
+            }
 
             /* ---------- Callouts ---------- */
             blockquote {
@@ -1072,7 +1102,8 @@ flowchart LR
     S2 --&gt; T6["2.6 生成AI&lt;br/&gt;Geminiのプライバシーと管理"]
     S2 --&gt; T7["2.7 開発支援&lt;br/&gt;AppSheet・Apps Script"]
 
-    style S2 fill:#7c9eff,stroke:#333,stroke-width:2px,color:#000</pre
+    classDef heroFill fill:#7c9eff,stroke:#333,stroke-width:2px,color:#000
+    class S2 heroFill</pre
                 >
                 <p>
                     これらのタスクに共通する設計思想は、<strong
@@ -1234,10 +1265,8 @@ flowchart TD
     Q3 -- "はい" --&gt; CatchAll["Catch-All メールボックス&lt;br/&gt;Default routing（Unknown recipient）"]
     Q3 -- "いいえ" --&gt; Custom["特定の送信者・件名・&lt;br/&gt;添付・内容に基づく&lt;br/&gt;カスタムRoutingルール"]
 
-    style Dual fill:#7c9eff,color:#000
-    style Split fill:#7c9eff,color:#000
-    style CatchAll fill:#7c9eff,color:#000
-    style Custom fill:#7c9eff,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    class Dual,Split,CatchAll,Custom blueFill</pre
                 >
                 <ol type="1">
                     <li>
@@ -1336,9 +1365,10 @@ flowchart TB
     DenyCheck -- "はい" --&gt; Block["メッセージをブロック"]
     DenyCheck -- "いいえ" --&gt; NormalSpam["通常のGmail&lt;br/&gt;スパム・フィッシング・&lt;br/&gt;マルウェア判定"]
 
-    style BypassSpam fill:#7c9eff,color:#000
-    style Block fill:#e57373,color:#000
-    style RejectOther fill:#e57373,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    classDef redFill fill:#e57373,color:#000
+    class BypassSpam blueFill
+    class Block,RejectOther redFill</pre
                 >
                 <div class="table-scroll">
                     <table>
@@ -1828,9 +1858,12 @@ flowchart TD
     Check -- "Warn" --&gt; Warned["警告を表示した上で&lt;br/&gt;ユーザーの判断に委ねる"]
     Check -- "一致なし" --&gt; Fallback["デフォルトの&lt;br/&gt;Drive共有設定/&lt;br/&gt;ターゲットオーディエンス設定を適用"]
 
-    style Allowed fill:#7c9eff,color:#000
-    style Denied fill:#e57373,color:#000
-    style Warned fill:#ffd54f,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    classDef redFill fill:#e57373,color:#000
+    classDef yellowFill fill:#ffd54f,color:#000
+    class Allowed blueFill
+    class Denied redFill
+    class Warned yellowFill</pre
                 >
                 <p>
                     <strong>いつTrust Rulesを使うべきか（試験ポイント）：</strong> 「Identifying
@@ -2047,8 +2080,8 @@ flowchart LR
     SharedDrive --&gt; OU1["OUに割り当て"]
     OU1 --&gt; Policy["OU固有のポリシー継承&lt;br/&gt;（共有・ストレージ上限・セキュリティ）"]
 
-    style SharedDrive fill:#7c9eff,color:#000
-    style Stable fill:#7c9eff,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    class SharedDrive,Stable blueFill</pre
                 >
                 <blockquote class="callout-practice">
                     <p>
@@ -2172,7 +2205,8 @@ flowchart TD
     DLP -.-&gt; Priority
     AI -.-&gt; Priority
 
-    style Priority fill:#ffd54f,color:#000</pre
+    classDef yellowFill fill:#ffd54f,color:#000
+    class Priority yellowFill</pre
                 >
                 <p>
                     <strong>ロックの概念：</strong>
@@ -2294,10 +2328,10 @@ flowchart TD
     Decision -- "承認" --&gt; Confirmed2["予約確定"]
     Decision -- "却下/変更依頼" --&gt; Declined2["辞退"]
 
-    style Confirmed1 fill:#7c9eff,color:#000
-    style Confirmed2 fill:#7c9eff,color:#000
-    style Declined1 fill:#e57373,color:#000
-    style Declined2 fill:#e57373,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    classDef redFill fill:#e57373,color:#000
+    class Confirmed1,Confirmed2 blueFill
+    class Declined1,Declined2 redFill</pre
                 >
                 <p><strong>リソースマネージャー方式の設定手順：</strong></p>
                 <ol type="1">
@@ -2526,8 +2560,8 @@ flowchart TD
     Waiting["Waiting Room&lt;br/&gt;（待機室）"] --&gt;|"Quick accessが&lt;br/&gt;オフの場合に有効"| WaitFlow["参加者は待機室で&lt;br/&gt;ホストの承認を待つ"]
     QuickAccess["Quick access&lt;br/&gt;（クイックアクセス）"] --&gt;|"オンの場合"| QAFlow["カレンダー招待に含まれる&lt;br/&gt;参加者はホスト不在でも&lt;br/&gt;入室可能"]
 
-    style HMOn fill:#7c9eff,color:#000
-    style WaitFlow fill:#7c9eff,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    class HMOn,WaitFlow blueFill</pre
                 >
                 <div class="table-scroll">
                     <table>
@@ -2693,9 +2727,8 @@ flowchart LR
 
     Rec -.HostManagementの制約.-&gt; HMcheck["ホスト管理がオン かつ&lt;br/&gt;ホストが許可していない場合は&lt;br/&gt;録画不可"]
 
-    style Rec fill:#7c9eff,color:#000
-    style Trans fill:#7c9eff,color:#000
-    style Notes fill:#7c9eff,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    class Rec,Trans,Notes blueFill</pre
                 >
                 <blockquote class="callout-practice">
                     <p>
@@ -2792,9 +2825,12 @@ flowchart TD
     Q2 -- "はい" --&gt; ExtSpace["メンバー・認可されたChatアプリが&lt;br/&gt;外部ユーザー/ゲストを招待可能"]
     Q2 -- "いいえ" --&gt; NoExtSpace["スペースへの&lt;br/&gt;外部ユーザー招待不可"]
 
-    style Restricted fill:#7c9eff,color:#000
-    style AnyExternal fill:#ffd54f,color:#000
-    style NoExternal fill:#e57373,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    classDef yellowFill fill:#ffd54f,color:#000
+    classDef redFill fill:#e57373,color:#000
+    class Restricted blueFill
+    class AnyExternal yellowFill
+    class NoExternal redFill</pre
                 >
                 <p>
                     <strong>外部チャットの設定手順：</strong> Admin console →「Google
@@ -2955,9 +2991,8 @@ flowchart TD
     Layer2 --&gt;|"Admin console →&lt;br/&gt;Turn the Gemini app on/off"| L2Detail["既定で18歳以上かつ&lt;br/&gt;ライセンス保有ユーザーに提供。&lt;br/&gt;全ユーザーへの拡大も可能"]
     Layer3 --&gt;|"Admin console →&lt;br/&gt;Turn Google apps in Gemini on/off"| L3Detail["Calendar/Docs/Drive/Gmail/&lt;br/&gt;Keep/TasksのコンテンツをGeminiアプリの&lt;br/&gt;プロンプトに利用可能にするか"]
 
-    style Layer1 fill:#7c9eff,color:#000
-    style Layer2 fill:#7c9eff,color:#000
-    style Layer3 fill:#7c9eff,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    class Layer1,Layer2,Layer3 blueFill</pre
                 >
                 <div class="table-scroll">
                     <table>
@@ -3139,8 +3174,8 @@ flowchart LR
     AppSheet -.連携可能.-&gt; AppsScript
     AppsScript -.複雑なロジックを提供.-&gt; AppSheet
 
-    style AppSheet fill:#7c9eff,color:#000
-    style AppsScript fill:#7c9eff,color:#000</pre
+    classDef blueFill fill:#7c9eff,color:#000
+    class AppSheet,AppsScript blueFill</pre
                 >
                 <p><strong>AppSheetの主なユースケース：</strong></p>
                 <ul>
