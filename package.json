@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "docker:rebuild": "docker compose --profile dev --profile prod down --volumes && docker compose --profile prod build && docker compose --profile dev up --build",
     "lint": "eslint .",
+    "markdownlint": "markdownlint-cli2",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test --project=chromium",
@@ -36,6 +38,7 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "16.2.11",
     "jsdom": "^29.0.2",
+    "markdownlint-cli2": "0.23.2",
     "marked": "^18.0.7",
     "postcss": "^8.5.22",
     "tailwindcss": "^4.3.3",
@@ -43,6 +46,7 @@
     "vitest": "^4.1.10"
   },
   "dependencies": {
+    "@tabler/icons-webfont": "2.47.0",
     "clsx": "^2.1.1",
     "mermaid": "^11.16.0",
     "next": "16.2.11",

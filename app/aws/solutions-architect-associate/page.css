@@ -20,7 +20,7 @@
     --domain4: #ff8fa3;
     --mono: var(--font-mono, 'IBM Plex Mono', monospace);
     --sans: var(--font-body, 'Inter', sans-serif);
-    --sidebar-w: 308px;
+    --sidebar-w: 280px;
     --radius: 10px;
 }
 
@@ -55,7 +55,7 @@
     position: fixed;
     top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
     left: 0;
-    width: var(--sidebar-w);
+    width: 280px;
     height: calc(100vh - (var(--header-h, 60px) + var(--disclaimer-height, 0px)));
     overflow-y: auto;
     background: linear-gradient(180deg, var(--bg-raised) 0%, var(--bg) 100%);
@@ -163,7 +163,10 @@
 }
 
 .aws-saa-page .main {
-    margin-left: var(--sidebar-w);
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     padding: 0 0 120px;
     min-height: 100vh;
 }
@@ -660,6 +663,8 @@
     }
     .aws-saa-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
     .aws-saa-page .hero {
         padding: 56px 22px 36px;

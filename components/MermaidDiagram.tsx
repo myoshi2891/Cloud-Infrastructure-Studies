@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
+import { memo, useEffect, useId, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import styles from './MermaidDiagram.module.css';
 import mermaid from 'mermaid';
@@ -105,12 +105,15 @@ export const applySvgFixups = (
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
     svgEl.style.height = 'auto';
-    svgEl.style.maxWidth = '100%';
     svgEl.style.overflow = 'visible';
     svgEl.style.marginBottom = '10px';
 
     const viewBox = svgEl.getAttribute('viewBox');
-    if (!viewBox) return;
+    if (!viewBox) {
+        // viewBox がない場合はコンテナに収まるよう max-width のフォールバックを設定して終了
+        svgEl.style.maxWidth = '100%';
+        return;
+    }
 
     const parts = viewBox.split(/\s+/).map(Number);
     if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
@@ -120,14 +123,20 @@ export const applySvgFixups = (
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
-    // ⚠️ SKILL.md「SVG 幅の鉄則」: viewBox 由来の自然 px 幅 + maxWidth:100%。
-    // preserveNaturalScale は文字を1rem相当の自然倍率で見せたい図に個別指定する。
+    // ⚠️ SKILL.md「SVG 幅の鉄則」: viewBox 由来の自然 px 幅を基準にする。
+    // preserveNaturalScale は Mermaid が採寸した倍率を維持したい図に個別指定する。
     let targetWidth = w;
-    if (!preserveNaturalScale && w > 0 && w < 550) {
+    if (preserveNaturalScale && w > 0) {
+        // preserveNaturalScale=true: viewBox 由来の自然 px 幅 (1.0倍) をそのまま使い、
+        // 拡大・縮小せず Mermaid が採寸した 16px の文字サイズで描画する
+        targetWidth = w;
+    } else if (!preserveNaturalScale && w > 0 && w < 550) {
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
-    svgEl.style.maxWidth = '100%';
+    // preserveNaturalScale=true のとき max-width:none でコンテナ縮小に追従させない。
+    // ラッパー(.mermaid-wrap)の overflow-x:auto が横スクロールを担う。
+    svgEl.style.maxWidth = preserveNaturalScale ? 'none' : '100%';
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
@@ -138,7 +147,7 @@ export const applySvgFixups = (
  * - SSR / 初回マウント前は DSL を `<pre className="codeblock" aria-hidden>` として見せてハイドレーションエラーを防ぐ。
  * - jsdom 等 `getBBox` が無い環境ではフォールバック表示（DSL の `<pre>`）のまま描画しない。
  */
-export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
+export const MermaidDiagram: React.FC<MermaidDiagramProps> = memo(({
     chart,
     ariaLabel,
     className,
@@ -238,4 +247,6 @@ export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({
             )}
         </div>
     );
-};
+});
+
+MermaidDiagram.displayName = 'MermaidDiagram';

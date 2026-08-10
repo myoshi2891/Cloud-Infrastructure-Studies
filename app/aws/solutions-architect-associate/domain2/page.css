@@ -18,7 +18,7 @@
     top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
     left: 0;
     bottom: 0;
-    width: 300px;
+    width: 280px;
     overflow-y: auto;
     background: var(--color-card, #0d1a2c);
     border-right: 1px solid var(--color-border, #1c2f47);
@@ -119,9 +119,11 @@
 }
 
 .domain2-page .content {
-    margin-left: 300px;
+    margin-left: 280px;
+    width: calc(100% - 280px);
     padding: 0 64px 120px 64px;
     max-width: none;
+    box-sizing: border-box;
 }
 
 .domain2-page .hero {
@@ -444,6 +446,8 @@
     }
     .domain2-page .content {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
         padding: 0 20px 100px 20px;
     }
     .domain2-page .hero h1 {

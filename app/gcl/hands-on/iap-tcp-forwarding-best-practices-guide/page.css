@@ -27,10 +27,11 @@
 }
 
 .iap-guide-page .sidebar {
-    position: sticky;
+    position: fixed;
+    left: 0;
     top: var(--fixed-offset, 0px);
-    width: 300px;
-    flex: 0 0 300px;
+    width: 280px;
+    flex: 0 0 280px;
     height: calc(100vh - var(--fixed-offset, 0px));
     overflow-y: auto;
     background: var(--color-guide-surface-1);
@@ -161,9 +162,10 @@
 .iap-guide-page main {
     flex: 1 1 auto;
     min-width: 0;
-    width: 100%;
-    max-width: 1280px;
-    margin-inline: auto;
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     padding: 40px 48px 100px;
 }
 
@@ -423,6 +425,9 @@
         display: flex;
     }
     .iap-guide-page main {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
         padding: 60px 20px 80px;
     }
     .iap-guide-page .ref-grid {

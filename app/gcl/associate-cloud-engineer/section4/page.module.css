@@ -12,8 +12,8 @@
 
 /* SIDEBAR & NAV */
 .sidebar {
-    width: 310px;
-    min-width: 310px;
+    width: 280px;
+    min-width: 280px;
     background: var(--color-background);
     border-right: 1px solid var(--color-border);
     position: fixed;
@@ -223,7 +223,10 @@
 
 /* MAIN CONTENT */
 .main {
-    margin-left: 310px;
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     flex: 1;
     min-width: 0;
     position: relative;
@@ -411,8 +414,7 @@
 /* CONTENT CONTAINER */
 .content {
     padding: 0 24px 60px;
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: none;
 }
 
 /* SECTION HEADER */
@@ -766,22 +768,22 @@
 
 /* Mermaid 個別図解のサイズ微調整 */
 /* 縦長またはシンプルな図（引き伸ばすと巨大化するもの）の最大幅を制限 */
-:global(#diag-4) :global(svg) {
+.ace-section4-page :global(#diag-4) :global(svg) {
     max-width: 580px !important;
 }
-:global(#diag-5) :global(svg) {
+.ace-section4-page :global(#diag-5) :global(svg) {
     max-width: 650px !important;
 }
-:global(#diag-10) :global(svg) {
+.ace-section4-page :global(#diag-10) :global(svg) {
     max-width: 550px !important;
 }
 
 /* 横長の図（画面幅に収めると文字が小さくなりすぎるもの）の最小幅を確保し横スクロール化 */
-:global(#diag-7) :global(svg) {
+.ace-section4-page :global(#diag-7) :global(svg) {
     width: 1450px !important;
     max-width: none !important;
 }
-:global(#diag-11) :global(svg) {
+.ace-section4-page :global(#diag-11) :global(svg) {
     width: 1200px !important;
     max-width: none !important;
 }
@@ -1221,6 +1223,8 @@
 
     .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
 
     .hero,

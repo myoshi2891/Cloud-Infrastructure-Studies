@@ -15,7 +15,7 @@
 .gke-security-guide-page .layout {
     display: block;
     width: 100%;
-    padding-left: 272px;
+    padding-left: 0;
     box-sizing: border-box;
 }
 
@@ -23,7 +23,7 @@
     position: fixed;
     top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
     left: 0;
-    width: 272px;
+    width: 280px;
     height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
     overflow-y: auto;
     background: var(--color-card, #0d1b2e);
@@ -90,12 +90,18 @@
     color: #7c9eff;
 }
 
-/* メインコンテンツ: サイドバーを除いた領域で読みやすい幅に配置 */
+/* メインキャンバスは全幅、本文は内側で中央寄せ */
 .gke-security-guide-page .main {
-    margin: 0 auto;
-    padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 48px 120px;
-    max-width: 1120px;
+    margin-left: 280px;
+    padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 32px) 32px 120px;
+    width: calc(100% - 280px);
+    max-width: none;
     box-sizing: border-box;
+}
+
+.gke-security-guide-page .content-inner {
+    width: 100%;
+    max-width: none;
 }
 
 .gke-security-guide-page .source-note {
@@ -327,7 +333,7 @@
 .gke-security-guide-page .mermaid-wrap {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     background: var(--color-card, #0d1b2e);
     border: 1px solid #1c2d42;
     border-radius: var(--radius-lg, 12px);
@@ -336,9 +342,7 @@
 }
 
 .gke-security-guide-page .mermaid-wrap svg {
-    max-width: 100% !important;
     height: auto !important;
-    min-width: 600px; /* 文字サイズ 1rem (16px) を維持し極小潰れを防止 */
 }
 
 .gke-security-guide-page ol,
@@ -451,6 +455,9 @@
         display: none;
     }
     .gke-security-guide-page .main {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
         padding: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px) 20px 80px;
     }
     .gke-security-guide-page .summary-grid {

@@ -99,6 +99,9 @@
 /* ---------- Main Content ---------- */
 .ccna-software-dev-design-page .main {
     margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     padding: 0 0 100px;
 }
 
@@ -142,7 +145,7 @@
     font-size: 1.05rem;
     color: var(--color-muted-foreground, #94a3b8);
     max-width: 800px;
-    margin: 0 0 24px;
+    margin: 0 auto 24px;
 }
 
 .ccna-software-dev-design-page .hero-net {
@@ -170,8 +173,8 @@
 
 .ccna-software-dev-design-page .hero > *,
 .ccna-software-dev-design-page .section > * {
-    max-width: 1000px;
-    margin-inline: auto;
+    width: 100%;
+    max-width: none;
 }
 
 .ccna-software-dev-design-page .section {
@@ -367,14 +370,16 @@
 .ccna-software-dev-design-page .diagram-frame {
     margin: 24px auto 16px;
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
+    overflow-x: auto;
 }
 
 .ccna-software-dev-design-page .mermaid-wrap {
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     width: 100%;
     margin: 0 auto;
+    overflow-x: auto;
 }
 
 .ccna-software-dev-design-page .mermaid-wrap > div {
@@ -495,6 +500,8 @@
     }
     .ccna-software-dev-design-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
     .ccna-software-dev-design-page .hero,
     .ccna-software-dev-design-page .section,

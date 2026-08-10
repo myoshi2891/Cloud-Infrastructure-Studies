@@ -78,7 +78,7 @@
     position: fixed;
     top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
     left: 0;
-    width: 272px;
+    width: 280px;
     height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
     overflow-y: auto;
     background: var(--color-background-secondary);
@@ -149,8 +149,16 @@
 }
 
 .griffin-wordpress-gke-guide-page .main {
-    margin-left: 272px;
-    padding: 56px 64px 96px 64px;
+    margin-left: 280px;
+    padding: 56px 32px 96px 32px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
+}
+
+.griffin-wordpress-gke-guide-page .content-inner {
+    width: 100%;
+    max-width: none;
 }
 
 .griffin-wordpress-gke-guide-page .hero {
@@ -443,7 +451,7 @@
     padding: 20px;
     margin: 16px 0 24px 0;
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     overflow-x: auto;
 }
 
@@ -476,6 +484,8 @@
 
     .griffin-wordpress-gke-guide-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
         padding: 28px 20px 80px 20px;
     }
 }

@@ -1,0 +1,1474 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BigQuery × Apps Script × Connected Sheets 実践ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1826;
+                --color-background-tertiary: #13202f;
+                --color-background-info: #17324a;
+                --color-background-danger: #3a1620;
+                --color-background-success: #0f2e22;
+                --color-background-warning: #3a2c10;
+                --color-text-primary: #e8edf5;
+                --color-text-secondary: #a9bad0;
+                --color-text-tertiary: #6f849c;
+                --color-text-info: #8fc4ff;
+                --color-text-danger: #ff9baa;
+                --color-text-success: #7fe0b8;
+                --color-text-warning: #ffcf7f;
+                --color-border-tertiary: #16273a;
+                --color-border-secondary: #223c56;
+                --color-border-primary: #3a5977;
+                --accent: #7c9eff;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+                    sans-serif;
+                --font-mono:
+                    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono',
+                    monospace;
+                --radius-md: 8px;
+                --radius-lg: 12px;
+                --radius-xl: 16px;
+                --sidebar-width: 280px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+                font-weight: 400;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            /* ---------- Sidebar ---------- */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 28px 20px 40px;
+            }
+
+            .sidebar-eyebrow {
+                font-size: 12px;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--color-text-tertiary);
+                margin: 0 0 6px;
+            }
+
+            .sidebar-title {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 0 0 24px;
+                color: var(--color-text-primary);
+                line-height: 1.4;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .sidebar-nav a {
+                display: block;
+                padding: 9px 12px;
+                border-radius: var(--radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 16px;
+                border-left: 2px solid transparent;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease,
+                    border-color 0.15s ease;
+            }
+
+            .sidebar-nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .sidebar-nav a.active {
+                color: var(--accent);
+                background: var(--color-background-tertiary);
+                border-left-color: var(--accent);
+                font-weight: 500;
+            }
+
+            .sidebar-source {
+                margin-top: 28px;
+                padding-top: 20px;
+                border-top: 1px solid var(--color-border-tertiary);
+            }
+
+            .sidebar-source a {
+                font-size: 14px;
+                color: var(--color-text-tertiary);
+                text-decoration: none;
+            }
+
+            .sidebar-source a:hover {
+                color: var(--color-text-info);
+            }
+
+            /* ---------- Main content ---------- */
+            .main {
+                margin-left: var(--sidebar-width);
+                padding: 56px 64px 100px;
+            }
+
+            .hero {
+                margin-bottom: 56px;
+                padding-bottom: 40px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+
+            .hero-eyebrow {
+                font-size: 13px;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin: 0 0 14px;
+                font-weight: 500;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+                line-height: 1.35;
+                font-weight: 500;
+                margin: 0 0 14px;
+                color: var(--color-text-primary);
+            }
+
+            .hero-sub {
+                font-size: 18px;
+                color: var(--color-text-secondary);
+                margin: 0 0 22px;
+            }
+
+            .hero-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px 28px;
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+            }
+
+            .hero-meta strong {
+                color: var(--color-text-secondary);
+                font-weight: 500;
+            }
+
+            .hero-meta a {
+                color: var(--color-text-info);
+                text-decoration: none;
+            }
+            .hero-meta a:hover {
+                text-decoration: underline;
+            }
+
+            .section {
+                margin-bottom: 64px;
+                scroll-margin-top: 32px;
+            }
+
+            .section h2 {
+                font-size: 24px;
+                font-weight: 500;
+                margin: 0 0 20px;
+                padding-bottom: 14px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .section h3 {
+                font-size: 19px;
+                font-weight: 500;
+                margin: 32px 0 14px;
+                color: var(--color-text-primary);
+            }
+
+            .section p {
+                color: var(--color-text-secondary);
+                margin: 0 0 16px;
+            }
+
+            .section ol,
+            .section ul {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+                margin: 0 0 16px;
+            }
+            .section li {
+                margin-bottom: 8px;
+            }
+
+            .section a {
+                color: var(--color-text-info);
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: 5px;
+                padding: 1px 6px;
+                color: var(--color-text-info);
+            }
+
+            pre {
+                margin: 0 0 20px;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--color-border-tertiary);
+                overflow: hidden;
+            }
+
+            pre code.hljs {
+                display: block;
+                font-size: 16px;
+                padding: 18px 20px;
+                border: none;
+                border-radius: 0;
+                background: var(--color-background-secondary) !important;
+                overflow-x: auto;
+            }
+
+            /* ---------- Callouts ---------- */
+            .callout {
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--color-border-secondary);
+                border-left: 3px solid var(--color-text-warning);
+                background: var(--color-background-warning);
+                padding: 16px 20px;
+                margin: 0 0 20px;
+                font-size: 16px;
+                color: var(--color-text-primary);
+            }
+
+            .callout strong {
+                color: var(--color-text-warning);
+            }
+
+            /* ---------- Tables ---------- */
+            .table-wrap {
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                margin: 0 0 24px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 16px;
+            }
+
+            thead th {
+                text-align: left;
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                font-weight: 500;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--color-border-secondary);
+            }
+
+            tbody td {
+                padding: 12px 16px;
+                color: var(--color-text-secondary);
+                border-bottom: 1px solid var(--color-border-tertiary);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+            tbody tr:nth-child(even) {
+                background: var(--color-background-secondary);
+            }
+
+            tbody td strong,
+            tbody td code {
+                color: var(--color-text-primary);
+            }
+
+            /* ---------- Mermaid ---------- */
+            .diagram-card {
+                border: 1px solid var(--color-border-tertiary);
+                background: var(--color-background-secondary);
+                border-radius: var(--radius-xl);
+                padding: 28px;
+                margin: 0 0 24px;
+            }
+
+            .diagram-caption {
+                font-size: 14px;
+                color: var(--color-text-tertiary);
+                margin: 14px 0 0;
+                text-align: center;
+            }
+
+            .mermaid-target {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .mermaid-target svg {
+                max-width: 100%;
+            }
+
+            /* ---------- Compare grid (built-in vs advanced) ---------- */
+            .compare-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin: 0 0 20px;
+            }
+
+            .compare-card {
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--radius-lg);
+                background: var(--color-background-secondary);
+                padding: 18px 20px;
+            }
+
+            .compare-card h4 {
+                margin: 0 0 10px;
+                font-size: 16px;
+                color: var(--accent);
+                font-weight: 500;
+            }
+
+            .compare-card p {
+                margin: 0;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+            }
+
+            /* ---------- References ---------- */
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .ref-card {
+                display: flex;
+                gap: 14px;
+                border: 1px solid var(--color-border-tertiary);
+                background: var(--color-background-secondary);
+                border-radius: var(--radius-lg);
+                padding: 16px 18px;
+                text-decoration: none;
+                transition:
+                    border-color 0.15s ease,
+                    background 0.15s ease;
+            }
+
+            .ref-card:hover {
+                border-color: var(--color-border-primary);
+                background: var(--color-background-tertiary);
+            }
+
+            .ref-num {
+                flex: none;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-secondary);
+                color: var(--accent);
+                font-size: 14px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .ref-body p {
+                margin: 0;
+            }
+
+            .ref-title {
+                color: var(--color-text-primary);
+                font-size: 16px;
+                font-weight: 500;
+                margin-bottom: 4px !important;
+            }
+
+            .ref-url {
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+                word-break: break-all;
+            }
+
+            footer.page-footer {
+                padding-top: 32px;
+                margin-top: 32px;
+                border-top: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-tertiary);
+                font-size: 14px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 40px 24px 80px;
+                }
+                .compare-grid,
+                .ref-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar">
+                <p class="sidebar-eyebrow">実践ガイド</p>
+                <p class="sidebar-title">BigQuery × Apps Script<br />× Connected Sheets</p>
+                <div class="sidebar-nav">
+                    <a href="#overview">このラボの全体像</a>
+                    <a href="#prep">始める前の準備</a>
+                    <a href="#task1">タスク1: Apps Script 連携</a>
+                    <a href="#task2">タスク2: Connected Sheets</a>
+                    <a href="#task3">タスク3: Google Charts</a>
+                    <a href="#task4">タスク4: 新規シート作成</a>
+                    <a href="#best-practices">全体まとめ</a>
+                    <a href="#troubleshooting">トラブルシューティング</a>
+                    <a href="#references">参考文献</a>
+                </div>
+                <div class="sidebar-source">
+                    <a
+                        href="https://www.skills.google/course_templates/737/labs/607137"
+                        target="_blank"
+                        rel="noopener"
+                        >元ラボページを開く ↗</a
+                    >
+                </div>
+            </nav>
+
+            <main class="main">
+                <div class="hero">
+                    <p class="hero-eyebrow">Google Cloud Skills Boost チャレンジラボ攻略</p>
+                    <h1>BigQuery × Apps Script × Connected Sheets 実践ガイド</h1>
+                    <p class="hero-sub">
+                        初学者でも「なぜそうするのか」まで理解しながら4つのタスクを完了できるよう、公式ドキュメントの根拠付きでベストプラクティスを解説します。
+                    </p>
+                    <div class="hero-meta">
+                        <span
+                            ><strong>対象ラボ:</strong>
+                            <a
+                                href="https://www.skills.google/course_templates/737/labs/607137"
+                                target="_blank"
+                                rel="noopener"
+                                >skills.google 元ページ</a
+                            ></span
+                        >
+                        <span
+                            ><strong>対象読者:</strong> BigQuery・Apps
+                            Script・Sheets連携の初学者</span
+                        >
+                    </div>
+                </div>
+
+                <section id="overview" class="section">
+                    <h2>このラボの全体像</h2>
+                    <p>
+                        このラボは「BigQuery Public Datasets」を題材に、<strong
+                            >Apps Script（自動化・プログラム連携）</strong
+                        >と<strong>Connected Sheets（ノーコードでのデータ接続）</strong
+                        >という2つの異なるアプローチでBigQueryのデータをGoogle
+                        Sheets上で扱う体験を通じて学ぶ構成になっています。
+                    </p>
+
+                    <div class="diagram-card">
+                        <div id="diagram-overview" class="mermaid-target"></div>
+                        <p class="diagram-caption">
+                            4タスクの全体アーキテクチャ（クリックで拡大されません。スクロールしてご覧ください）
+                        </p>
+                    </div>
+
+                    <p>
+                        この2系統を並べて経験することで、「プログラムで自動化すべき処理」と「ビジネスユーザーが自分で分析すべき処理」を使い分ける感覚を養うのがこのラボの狙いです。
+                    </p>
+                </section>
+
+                <section id="prep" class="section">
+                    <h2>ラボを始める前の準備</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%">項目</th>
+                                    <th>ベストプラクティスと理由</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ブラウザウィンドウ</td>
+                                    <td>
+                                        シークレット（プライベート）ウィンドウを使用する。個人アカウントのセッションとラボ用の一時アカウントが同じブラウザ内で混在すると、意図せず個人のGoogle
+                                        Cloudアカウントに課金される事故につながるため
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>アカウント</td>
+                                    <td>
+                                        ラボが払い出す一時的な学習用アカウントのみを使用する。個人アカウントでリソースを作成すると、ラボ終了後も課金が継続するリスクがある
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>タイマー</td>
+                                    <td>
+                                        ラボは一時停止できないため、着手前にタスク1〜4を一通り読み、必要な作業時間を見積もっておく
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>プロジェクトID</td>
+                                    <td>
+                                        各タスクで払い出される一時プロジェクトのIDをメモしておく。Apps
+                                        Scriptのコード内で
+                                        <code>PROJECT_ID</code> として明示的に使用するため
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="task1" class="section">
+                    <h2>タスク1: Apps ScriptからBigQueryを呼び出しSheetsへ書き込む</h2>
+
+                    <h3>手順の流れ</h3>
+                    <ol>
+                        <li>
+                            <a href="https://script.google.com" target="_blank" rel="noopener"
+                                >script.google.com</a
+                            >
+                            で新しいApps Scriptプロジェクトを作成し、任意の名前を付ける
+                        </li>
+                        <li>
+                            エディタの「サービス」から
+                            <strong>BigQuery API</strong>
+                            をアドバンストサービスとして追加する（この時点でCloud
+                            Platformプロジェクト側のBigQuery APIも有効化される）<sup>[2][3]</sup>
+                        </li>
+                        <li>
+                            コードファイルを
+                            <code>bq-sheets.gs</code>
+                            にリネームし、クエリ実行用のスクリプトを実装する
+                        </li>
+                        <li><code>PROJECT_ID</code> に払い出されたプロジェクトIDを設定する</li>
+                        <li><code>runQuery()</code> を実行し、OAuth認可フローを承認する</li>
+                        <li>
+                            実行ログに出力される新規スプレッドシートのURLを開き、Shakespeare作品群の頻出単語トップ10が書き込まれていることを確認する
+                        </li>
+                    </ol>
+
+                    <h3>処理フローの可視化</h3>
+                    <p>
+                        <code>runQuery()</code>
+                        がやっていることを分解すると、次のようなシーケンスになります。BigQueryのクエリジョブは<strong>非同期</strong>で実行されるため、「ジョブを投げる」→「完了をポーリングする」→「結果を取得する」という3段階の設計になっている点が最大のポイントです<sup>[5][6]</sup>。
+                    </p>
+
+                    <div class="diagram-card">
+                        <div id="diagram-task1-sequence" class="mermaid-target"></div>
+                        <p class="diagram-caption">runQuery() の処理シーケンス</p>
+                    </div>
+
+                    <h3>コードの重要ポイント</h3>
+                    <p>
+                        サンプルコード（Apache License
+                        2.0で提供されている公式サンプル<sup>[3][17]</sup>）の中でも、特に押さえておくべき箇所は次の2つです。
+                    </p>
+
+                    <p><strong>(1) 指数バックオフによるジョブ完了待機</strong></p>
+                    <pre><code class="language-javascript">var sleepTimeMs = 500;
+while (!queryResults.jobComplete) {
+  Utilities.sleep(sleepTimeMs);
+  sleepTimeMs *= 2;
+  queryResults = BigQuery.Jobs.getQueryResults(PROJECT_ID, jobId);
+}</code></pre>
+                    <p>
+                        これはGoogle Cloudが横断的に推奨している「指数バックオフ（Exponential
+                        Backoff）」パターンそのものです。一定間隔で即座にリトライするのではなく、待機時間を倍々に伸ばしながら再試行することで、サーバー側への負荷集中や同時多発的なリトライの衝突を防ぎます<sup>[8][9]</sup>。
+                    </p>
+
+                    <p><strong>(2) ページトークンによるページネーション</strong></p>
+                    <pre><code class="language-javascript">while (queryResults.pageToken) {
+  queryResults = BigQuery.Jobs.getQueryResults(PROJECT_ID, jobId, {
+    pageToken: queryResults.pageToken
+  });
+  rows = rows.concat(queryResults.rows);
+}</code></pre>
+                    <p>
+                        BigQueryの結果セットは1回のレスポンスに収まらないことがあるため、<code
+                            >pageToken</code
+                        >
+                        が返ってくる限りループで取得し続ける必要があります。件数が少ないサンプルクエリでは意識しにくい処理ですが、本番データに対して同じコードを流用する際に必須になる実装です。
+                    </p>
+
+                    <div class="diagram-card">
+                        <div id="diagram-task1-backoff" class="mermaid-target"></div>
+                        <p class="diagram-caption">指数バックオフのロジック</p>
+                    </div>
+
+                    <h3>ベストプラクティス一覧</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%">項目</th>
+                                    <th>推奨する対応</th>
+                                    <th style="width: 10%">出典</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>アドバンストサービスの有効化</td>
+                                    <td>
+                                        Apps Scriptエディタ側とCloud Console側の両方でBigQuery
+                                        APIが有効になっていることを確認する
+                                    </td>
+                                    <td>[2][4]</td>
+                                </tr>
+                                <tr>
+                                    <td>SQL方言</td>
+                                    <td>
+                                        サンプルコードは
+                                        <code>[project:dataset.table]</code>
+                                        形式のレガシーSQLを使用しているが、新規に書くクエリは標準SQL（GoogleSQL）でバッククォート記法（<code>`project.dataset.table`</code>）に統一する。標準SQLはウィンドウ関数やDDL/DMLなど機能面でも優位
+                                    </td>
+                                    <td>[7]</td>
+                                </tr>
+                                <tr>
+                                    <td>ジョブのポーリング</td>
+                                    <td>
+                                        固定間隔リトライではなく指数バックオフを用いる。上限（max
+                                        backoff）を設けて無限に待ち続けないようにする
+                                    </td>
+                                    <td>[8][9]</td>
+                                </tr>
+                                <tr>
+                                    <td>ページネーション</td>
+                                    <td>
+                                        <code>pageToken</code>
+                                        の有無をチェックするループを省略しない
+                                    </td>
+                                    <td>[5][6]</td>
+                                </tr>
+                                <tr>
+                                    <td>プロジェクトIDの管理</td>
+                                    <td>
+                                        ハードコードで動かす場合も、コードの先頭で未設定チェックを入れる。恒久的な運用に載せる際はスクリプトプロパティ（Properties
+                                        Service）などに切り出す
+                                    </td>
+                                    <td>[3]</td>
+                                </tr>
+                                <tr>
+                                    <td>権限</td>
+                                    <td>
+                                        クエリの実行のみが目的であれば「BigQuery Job
+                                        User」＋対象データセットの「BigQuery Data
+                                        Viewer」という最小権限の組み合わせを意識する
+                                    </td>
+                                    <td>[10]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>よくあるエラーと対処</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%">エラー・症状</th>
+                                    <th style="width: 30%">主な原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <code
+                                            >Exception: Service BigQuery API has not been enabled
+                                            for your Apps</code
+                                        >
+                                    </td>
+                                    <td>
+                                        アドバンストサービスの追加とCloud
+                                        Platform側のAPI有効化のタイミングがずれている
+                                    </td>
+                                    <td>
+                                        エディタの「サービス」からBigQuery
+                                        APIを一度削除し、再度追加し直す
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>jobComplete</code> が
+                                        <code>true</code> にならずタイムアウトする
+                                    </td>
+                                    <td>
+                                        クエリが重い、または
+                                        <code>sleepTimeMs</code>
+                                        の上限を設けずに無限ループになっている
+                                    </td>
+                                    <td>
+                                        最大待機時間・最大リトライ回数を設け、超えたらエラーとしてログ出力する設計にする<sup
+                                            >[8][9]</sup
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>実行時に権限エラー（403）</td>
+                                    <td>
+                                        実行アカウントに対象プロジェクトへのBigQueryアクセス権が不足
+                                    </td>
+                                    <td>
+                                        「BigQuery Job
+                                        User」ロールがプロジェクトに付与されているか確認する<sup
+                                            >[10]</sup
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="task2" class="section">
+                    <h2>
+                        タスク2: BigQueryデータセットをGoogle Sheetsに接続する（Connected Sheets）
+                    </h2>
+
+                    <h3>手順の流れ</h3>
+                    <ol>
+                        <li>Google Sheetsのホーム画面から新しい空白のスプレッドシートを作成する</li>
+                        <li>
+                            メニューの「データ」→「データコネクタ」→「BigQueryに接続」を選択する
+                        </li>
+                        <li>
+                            課金が有効なプロジェクトを選び、「公開データセット」から
+                            <code>chicago_taxi_trips</code> を検索する
+                        </li>
+                        <li><code>taxi_trips</code> テーブルを選択し「接続」をクリックする</li>
+                        <li>
+                            接続後に表示されるプレビューシート上で、ピボットテーブルや数式を使って分析を行う
+                        </li>
+                    </ol>
+
+                    <h3>アーキテクチャ</h3>
+                    <p>
+                        Connected
+                        Sheetsは、Sheets上のデータをBigQueryにコピーするのではなく、<strong>必要な範囲だけをその都度BigQueryへ問い合わせる</strong>アーキテクチャです。プレビューには先頭500行のみが表示されますが、ピボットテーブルや数式、グラフは接続先の全データに対して実行されます<sup>[11]</sup>。
+                    </p>
+
+                    <div class="diagram-card">
+                        <div id="diagram-task2-arch" class="mermaid-target"></div>
+                        <p class="diagram-caption">Connected Sheets のデータフロー</p>
+                    </div>
+
+                    <h3>数式によるデータ分析の考え方</h3>
+                    <p>
+                        <code>taxi_trips</code> テーブルには
+                        <code>company</code
+                        >（配車会社名）、<code>tips</code>（チップ額）、<code>fare</code>（運賃）などの列が含まれています<sup>[18]</sup>。3つの設問は、いずれも列単位の集計関数で解けるように設計されています。
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 26%">分析したいこと</th>
+                                    <th style="width: 34%">考え方</th>
+                                    <th>使う関数の例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>タクシー会社の数</td>
+                                    <td>
+                                        <code>company</code> 列に含まれるユニークな値の数を数える
+                                    </td>
+                                    <td>
+                                        <code>COUNTA</code> と
+                                        <code>UNIQUE</code> の組み合わせ、またはピボットテーブルで
+                                        <code>company</code> を行にドラッグし件数を確認
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>チップがあった配車の割合</td>
+                                    <td>
+                                        <code>tips</code> 列が0より大きい行数を、全体の行数で割る
+                                    </td>
+                                    <td>
+                                        <code>COUNTIF(tips範囲, "&gt;0") / COUNTA(tips範囲)</code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>運賃が0より大きい配車の総数</td>
+                                    <td><code>fare</code> 列が0より大きい行だけを数える</td>
+                                    <td><code>COUNTIF(fare範囲, "&gt;0")</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout">
+                        <strong>注意:</strong>
+                        実際のセル参照や列位置は接続後のプレビューシートの構成に依存するため、上表は「どの関数を組み合わせるか」という考え方のガイドとして使ってください。ピボットテーブルの「値」に集計方法（合計・カウント・個別カウント）を指定するだけでも同等の答えが得られます。
+                    </div>
+
+                    <h3>ベストプラクティス一覧</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%">項目</th>
+                                    <th>推奨する対応</th>
+                                    <th style="width: 10%">出典</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>プレビュー行数の理解</td>
+                                    <td>
+                                        画面に表示されるのは先頭500行だが、数式・ピボット・グラフは全データに対して実行される点を理解した上で分析する
+                                    </td>
+                                    <td>[11]</td>
+                                </tr>
+                                <tr>
+                                    <td>集計方法の選択</td>
+                                    <td>
+                                        単純な合計・件数はピボットテーブル、条件付きの計算は数式（<code>COUNTIF</code>等）と使い分ける
+                                    </td>
+                                    <td>[11][12]</td>
+                                </tr>
+                                <tr>
+                                    <td>データの更新</td>
+                                    <td>
+                                        元データが変わりうる分析では、手動更新のほかにスケジュール更新（定期リフレッシュ）の設定も検討する
+                                    </td>
+                                    <td>[11][12]</td>
+                                </tr>
+                                <tr>
+                                    <td>SQLを書かずに分析</td>
+                                    <td>
+                                        Connected
+                                        SheetsはSQLの知識がなくても大規模データにアクセスできる点が価値。まずは使い慣れたSheetsの関数・ピボットで試すのが推奨アプローチ
+                                    </td>
+                                    <td>[13][12]</td>
+                                </tr>
+                                <tr>
+                                    <td>権限</td>
+                                    <td>
+                                        Connected Sheetsは
+                                        <code>bigquery.readonly</code>
+                                        スコープでBigQueryにアクセスする。読み取り専用であることを意識し、接続先データセットへの最小権限（Data
+                                        Viewer）で運用する
+                                    </td>
+                                    <td>[16][10]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="task3" class="section">
+                    <h2>タスク3: Google Chartsで可視化する</h2>
+
+                    <h3>手順の流れ</h3>
+                    <ol>
+                        <li>Connected Sheets接続済みのシート上で「挿入」→「グラフ」を選択する</li>
+                        <li>
+                            支払い方法（<code>payment_type</code>）の内訳を
+                            <strong>円グラフ</strong> で可視化する
+                        </li>
+                        <li>
+                            モバイル決済（mobile）の売上推移を
+                            <strong>折れ線グラフ</strong> で可視化する
+                        </li>
+                        <li>
+                            2015年にピークを迎えた後の推移だけを見たい場合は、グラフの期間フィルタや軸の範囲を絞り込む
+                        </li>
+                    </ol>
+
+                    <h3>グラフタイプの選び方</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%">分析の目的</th>
+                                    <th style="width: 20%">適したグラフ</th>
+                                    <th>理由</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ある時点における内訳（構成比）を見たい</td>
+                                    <td>円グラフ</td>
+                                    <td>
+                                        支払い方法ごとの割合など、全体に対する構成比の把握に向く
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>時間の経過に伴う変化・トレンドを見たい</td>
+                                    <td>折れ線グラフ</td>
+                                    <td>売上や件数の推移、ピークの検出、期間比較に向く</td>
+                                </tr>
+                                <tr>
+                                    <td>特定期間だけを深掘りしたい</td>
+                                    <td>折れ線グラフ＋軸の範囲指定</td>
+                                    <td>
+                                        ピーク（2015年）以降のみに絞ることで、その後の減少・回復傾向を読み取りやすくする
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        Google
+                        Sheets上でグラフを作成した後は、元データが更新された場合に「グラフを更新」ボタンでBigQuery側の最新データを反映できます<sup>[15]</sup>。ダッシュボードのように毎週参照するグラフであれば、この更新導線をチームに共有しておくと運用がスムーズです。
+                    </p>
+
+                    <h3>ベストプラクティス一覧</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%">項目</th>
+                                    <th>推奨する対応</th>
+                                    <th style="width: 10%">出典</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>グラフの選定</td>
+                                    <td>
+                                        「構成比を見たいのか」「推移を見たいのか」を先に決めてからグラフ種別を選ぶ
+                                    </td>
+                                    <td>[15]</td>
+                                </tr>
+                                <tr>
+                                    <td>更新性</td>
+                                    <td>
+                                        Connected
+                                        Sheets上のグラフは「更新」操作でBigQueryの最新データを反映できることをチームに周知する
+                                    </td>
+                                    <td>[15]</td>
+                                </tr>
+                                <tr>
+                                    <td>期間の絞り込み</td>
+                                    <td>
+                                        ピーク検出後は、軸範囲やフィルタで期間を絞った別ビューを作ると変化が読み取りやすい
+                                    </td>
+                                    <td>[15]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="task4" class="section">
+                    <h2>タスク4: Apps Scriptで新規ワークシートを作成する</h2>
+
+                    <h3>手順の流れ</h3>
+                    <ol>
+                        <li>Google Sheetsを開き、新しい空白のスプレッドシートを作成する</li>
+                        <li>左上のセルA1（1行目・A列）をクリックする</li>
+                        <li><code>76 9th Ave, New York</code> という住所文字列を入力する</li>
+                    </ol>
+
+                    <h3>なぜここでApps Scriptの組み込みサービスが登場するのか</h3>
+                    <p>
+                        タスク1では「BigQuery
+                        API」というアドバンストサービス（明示的な有効化が必要）を扱いましたが、タスク4のような「新しいシートを作る」「セルに値を入れる」といった操作は
+                        <code>SpreadsheetApp</code>
+                        という<strong>組み込みサービス</strong>だけで完結します。両者の違いを理解しておくと、今後どちらを使うべきか迷わなくなります<sup>[2]</sup>。
+                    </p>
+
+                    <div class="compare-grid">
+                        <div class="compare-card">
+                            <h4>組み込みサービス（例: SpreadsheetApp）</h4>
+                            <p>
+                                有効化不要。Sheets・Docs・Gmailなど主要Workspaceサービスの操作（シート作成、値の書き込み、書式設定）に使う。認可は自動的なOAuthフローで完結する。
+                            </p>
+                        </div>
+                        <div class="compare-card">
+                            <h4>アドバンストサービス（例: BigQuery）</h4>
+                            <p>
+                                Apps Script側・Cloud
+                                Console側の両方で明示的な有効化が必要。BigQueryなど外部Google Cloud
+                                APIへの薄いラッパーとして、大規模データへのクエリや外部システム連携に使う。
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>ベストプラクティス一覧</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%">項目</th>
+                                    <th>推奨する対応</th>
+                                    <th style="width: 10%">出典</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>サービスの使い分け</td>
+                                    <td>
+                                        Workspace内で完結する操作は組み込みサービス、外部Google
+                                        CloudのAPIを叩く操作はアドバンストサービス、という判断軸を持つ
+                                    </td>
+                                    <td>[2]</td>
+                                </tr>
+                                <tr>
+                                    <td>セル入力の自動化</td>
+                                    <td>
+                                        手動入力で済むタスクでも、繰り返し発生する住所入力などは
+                                        <code>sheet.getRange("A1").setValue(address)</code>
+                                        のようにコード化しておくと再現性が高まる
+                                    </td>
+                                    <td>[3]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="best-practices" class="section">
+                    <h2>全体のベストプラクティスまとめ</h2>
+                    <p>4つのタスクを横断して意識すべき観点を、テーマ別に整理します。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%">テーマ</th>
+                                    <th>ベストプラクティス</th>
+                                    <th style="width: 10%">出典</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>セキュリティ（最小権限の原則）</td>
+                                    <td>
+                                        クエリ実行には「BigQuery Job
+                                        User」、データ閲覧には対象データセットの「BigQuery Data
+                                        Viewer」というように、コンピュート権限とデータ権限を分けて最小限だけ付与する
+                                    </td>
+                                    <td>[10]</td>
+                                </tr>
+                                <tr>
+                                    <td>信頼性</td>
+                                    <td>
+                                        非同期ジョブに対しては指数バックオフでポーリングし、結果はページトークンを使い切るまで取得する
+                                    </td>
+                                    <td>[8][9][5]</td>
+                                </tr>
+                                <tr>
+                                    <td>保守性</td>
+                                    <td>
+                                        新規に書くクエリはレガシーSQLではなく標準SQL（GoogleSQL）に統一する
+                                    </td>
+                                    <td>[7]</td>
+                                </tr>
+                                <tr>
+                                    <td>コスト意識</td>
+                                    <td>
+                                        大規模データセットに対するクエリはスキャン量が課金に直結するため、必要な列だけを
+                                        <code>SELECT</code> し、<code>LIMIT</code> を活用する
+                                    </td>
+                                    <td>[6]</td>
+                                </tr>
+                                <tr>
+                                    <td>ノーコード活用</td>
+                                    <td>
+                                        プログラムを書かずに済む定型的な分析（会社数の集計、割合の算出など）はConnected
+                                        Sheets、繰り返し実行・自動化したい処理はApps
+                                        Scriptという住み分けを意識する
+                                    </td>
+                                    <td>[11][3]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="troubleshooting" class="section">
+                    <h2>トラブルシューティング早見表</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 12%">タスク</th>
+                                    <th style="width: 28%">症状</th>
+                                    <th style="width: 28%">主な原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>タスク1</td>
+                                    <td>BigQuery APIが有効化されていないというエラー</td>
+                                    <td>アドバンストサービスの追加処理が不完全</td>
+                                    <td>サービスを一度削除し再追加する</td>
+                                </tr>
+                                <tr>
+                                    <td>タスク1</td>
+                                    <td>クエリ結果が0件、または想定と異なる集計になる</td>
+                                    <td>
+                                        レガシーSQLとGoogleSQLで
+                                        <code>,</code> や識別子の扱いが異なる
+                                    </td>
+                                    <td>クエリ全体をどちらか一方の方言に統一する<sup>[7]</sup></td>
+                                </tr>
+                                <tr>
+                                    <td>タスク2</td>
+                                    <td>「データコネクタ」メニューが表示されない</td>
+                                    <td>組織のポリシーやエディション、事前設定の不足</td>
+                                    <td>
+                                        公式ヘルプの「開始する前に」の項目を確認する<sup>[13]</sup>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>タスク2</td>
+                                    <td>数式の結果が想定と合わない</td>
+                                    <td>プレビューの500行だけを見て検算してしまっている</td>
+                                    <td>
+                                        数式・ピボットは全データに対して実行される前提で結果を確認する<sup
+                                            >[11]</sup
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>タスク3</td>
+                                    <td>グラフが最新のBigQueryデータを反映していない</td>
+                                    <td>手動更新が行われていない</td>
+                                    <td>グラフ下部の「更新」を実行する<sup>[15]</sup></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="references" class="section">
+                    <h2>参考文献</h2>
+                    <div class="ref-grid" id="ref-grid"></div>
+                </section>
+
+                <footer class="page-footer">
+                    本ガイドは Google Cloud Skills Boost
+                    の公開ラボ手順を基に、公式ドキュメントを参照しながら作成した学習補助資料です。実際の画面や仕様は更新される場合があるため、最新情報は各参考文献のリンク先を確認してください。
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script>
+            // ---------- References data ----------
+            const REFERENCES = [
+                {
+                    title: 'Google Cloud Skills Boost 元ラボページ',
+                    url: 'https://www.skills.google/course_templates/737/labs/607137',
+                },
+                {
+                    title: 'Advanced Google services（Apps Script アドバンストサービスの有効化）',
+                    url: 'https://developers.google.com/apps-script/guides/services/advanced',
+                },
+                {
+                    title: 'BigQuery Service（Apps Script BigQueryアドバンストサービス リファレンス）',
+                    url: 'https://developers.google.com/apps-script/advanced/bigquery',
+                },
+                {
+                    title: 'Manage BigQuery API dependencies（BigQuery APIの依存関係管理）',
+                    url: 'https://docs.cloud.google.com/bigquery/docs/service-dependencies',
+                },
+                {
+                    title: 'Running jobs programmatically（BigQueryジョブのプログラムからの実行）',
+                    url: 'https://docs.cloud.google.com/bigquery/docs/running-jobs',
+                },
+                {
+                    title: 'Run a query（jobs.query / jobs.insert の使い分け）',
+                    url: 'https://docs.cloud.google.com/bigquery/docs/running-queries',
+                },
+                {
+                    title: 'Migrating to GoogleSQL（レガシーSQLから標準SQLへの移行）',
+                    url: 'https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/migrating-from-legacy-sql',
+                },
+                {
+                    title: 'Retry strategy（Cloud Storageにおける指数バックオフの解説）',
+                    url: 'https://docs.cloud.google.com/storage/docs/retry-strategy',
+                },
+                {
+                    title: 'Exponential backoff（Memorystore for Redis：バックオフアルゴリズムの定義）',
+                    url: 'https://docs.cloud.google.com/memorystore/docs/redis/exponential-backoff',
+                },
+                {
+                    title: 'Troubleshoot IAM permissions in BigQuery（最小権限の原則の適用方法）',
+                    url: 'https://docs.cloud.google.com/bigquery/docs/troubleshoot-access-control',
+                },
+                {
+                    title: 'Using Connected Sheets（BigQuery公式ドキュメント）',
+                    url: 'https://docs.cloud.google.com/bigquery/docs/connected-sheets',
+                },
+                {
+                    title: 'Using Connected Sheets to analyze BigQuery data（Google Cloud Blog）',
+                    url: 'https://cloud.google.com/blog/products/data-analytics/using-connected-sheets-to-analyze-bigquery-data',
+                },
+                {
+                    title: 'Get started with BigQuery data in Google Sheets（Google Docsエディタ ヘルプ）',
+                    url: 'https://support.google.com/docs/answer/9702507?hl=en',
+                },
+                {
+                    title: 'Use Connected Sheets（Apps Script）',
+                    url: 'https://developers.google.com/apps-script/guides/sheets/connected-sheets',
+                },
+                {
+                    title: 'Analyze & refresh BigQuery data in Google Sheets using Connected Sheets（グラフの更新方法）',
+                    url: 'https://support.google.com/docs/answer/9703214?hl=en',
+                },
+                {
+                    title: 'Connected Sheets（Google Sheets API ガイド、Shakespeareデータセットの例）',
+                    url: 'https://developers.google.com/workspace/sheets/api/guides/connected-sheets',
+                },
+                {
+                    title: 'Turn your big data into insights using Google Sheets and Slides（Codelab、サンプルコードの出典）',
+                    url: 'https://codelabs.developers.google.com/codelabs/bigquery-sheets-slides/',
+                },
+                {
+                    title: 'Chicago Taxi Trips（データセットの詳細ページ、列定義）',
+                    url: 'https://cloud.google.com/bigquery/public-data/chicago-taxi',
+                },
+            ];
+
+            const refGrid = document.getElementById('ref-grid');
+            REFERENCES.forEach((ref, i) => {
+                const a = document.createElement('a');
+                a.className = 'ref-card';
+                a.href = ref.url;
+                a.target = '_blank';
+                a.rel = 'noopener';
+                a.innerHTML =
+                    '<span class="ref-num">' +
+                    (i + 1) +
+                    '</span>' +
+                    '<span class="ref-body"><p class="ref-title">' +
+                    ref.title +
+                    '</p>' +
+                    '<p class="ref-url">' +
+                    ref.url +
+                    '</p></span>';
+                refGrid.appendChild(a);
+            });
+
+            // ---------- Mermaid diagrams ----------
+            const DIAGRAMS = {
+                'diagram-overview': `flowchart TB
+subgraph task1["タスク1: Apps Script連携"]
+A1["BigQuery Public Dataset<br/>samples.shakespeare"] --> A2["Apps Script<br/>BigQuery Advanced Service"]
+A2 --> A3["新規スプレッドシート<br/>クエリ結果"]
+end
+subgraph task2["タスク2: Connected Sheets接続"]
+B1["BigQuery Public Dataset<br/>chicago_taxi_trips"] --> B2["Google Sheets<br/>Data Connectors"]
+B2 --> B3["数式によるデータ分析"]
+end
+subgraph task3["タスク3: Google Charts可視化"]
+C1["円グラフ<br/>支払い方法の内訳"]
+C2["折れ線グラフ<br/>モバイル決済の推移"]
+end
+subgraph task4["タスク4: 新規シート作成"]
+D1["Apps Script<br/>SpreadsheetApp"] --> D2["セルA1に住所を入力"]
+end
+B3 --> C1
+B3 --> C2`,
+                'diagram-task1-sequence': `sequenceDiagram
+participant Dev as 開発者
+participant AS as Apps Script
+participant BQ as BigQuery API
+participant Sheet as Google Sheets
+Dev->>AS: runQueryを実行
+AS->>BQ: Jobs.query(request, PROJECT_ID)
+BQ-->>AS: jobReference.jobIdを返却
+loop ジョブ完了まで指数バックオフでポーリング
+AS->>AS: jobCompleteがtrueか確認
+AS->>AS: Utilities.sleep(sleepTimeMs)
+AS->>AS: sleepTimeMsを2倍にする
+AS->>BQ: Jobs.getQueryResults(jobId)
+BQ-->>AS: 最新のジョブ状態を返却
+end
+loop pageTokenが存在する間
+AS->>BQ: Jobs.getQueryResults(jobId, pageToken)
+BQ-->>AS: 追加のrowsを返却
+end
+AS->>Sheet: SpreadsheetApp.create(QUERY_NAME)
+AS->>Sheet: appendRow(headers) / setValues(data)
+Sheet-->>Dev: 新規スプレッドシートのURL`,
+                'diagram-task1-backoff': `flowchart TD
+Start(["クエリジョブを送信"]) --> Check{"jobCompleteか"}
+Check -->|"true"| Done["結果を取得してSheetsへ書き込み"]
+Check -->|"false"| Sleep["Utilities.sleep(sleepTimeMs)"]
+Sleep --> Double["sleepTimeMsを2倍にする"]
+Double --> Poll["Jobs.getQueryResultsを再実行"]
+Poll --> Check`,
+                'diagram-task2-arch': `flowchart LR
+subgraph gcp["Google Cloud"]
+BQ["BigQuery<br/>chicago_taxi_trips.taxi_trips"]
+end
+subgraph gs["Google Sheets"]
+DS["DATA_SOURCEシート<br/>プレビューは先頭500行"]
+PIVOT["ピボットテーブル"]
+FORMULA["数式<br/>COUNTIF / SUMなど"]
+CHART["Google Charts"]
+end
+BQ -->|"データコネクタ<br/>OAuth: bigquery.readonly"| DS
+DS --> PIVOT
+DS --> FORMULA
+PIVOT --> CHART
+FORMULA --> CHART`,
+            };
+
+            const SEQUENCE_LIKE_IDS = new Set(['diagram-task1-sequence']);
+
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                securityLevel: 'loose',
+                fontFamily: 'inherit',
+                flowchart: {
+                    useMaxWidth: false,
+                    htmlLabels: true,
+                    nodeSpacing: 45,
+                    rankSpacing: 50,
+                },
+                sequence: { useMaxWidth: false },
+                themeVariables: {
+                    background: '#07111e',
+                    primaryColor: '#13202f',
+                    primaryTextColor: '#e8edf5',
+                    primaryBorderColor: '#3a5977',
+                    lineColor: '#5b7a9b',
+                    secondaryColor: '#1a2c3f',
+                    tertiaryColor: '#0d1826',
+                    actorBkg: '#13202f',
+                    actorBorder: '#3a5977',
+                    actorTextColor: '#e8edf5',
+                    signalColor: '#5b7a9b',
+                    signalTextColor: '#e8edf5',
+                    loopTextColor: '#a9bad0',
+                    labelBoxBkgColor: '#17324a',
+                    labelTextColor: '#e8edf5',
+                    noteBkgColor: '#17324a',
+                    noteTextColor: '#e8edf5',
+                    fontSize: '16px',
+                },
+            });
+
+            function postProcessSvg(containerId, isSequenceLike) {
+                const container = document.getElementById(containerId);
+                const svg = container ? container.querySelector('svg') : null;
+                if (!svg) return;
+                svg.removeAttribute('height');
+                svg.style.overflow = 'visible';
+                const vb = svg.getAttribute('viewBox');
+                if (vb) {
+                    const parts = vb.split(/\s+/).map(Number);
+                    if (parts.length === 4) {
+                        parts[3] += isSequenceLike ? 110 : 15;
+                        svg.setAttribute('viewBox', parts.join(' '));
+                        svg.removeAttribute('width');
+                        svg.style.width = parts[2] + 'px';
+                        svg.style.maxWidth = '100%';
+                        svg.style.height = 'auto';
+                    }
+                }
+            }
+
+            async function renderDiagrams() {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+                let i = 0;
+                for (const id of Object.keys(DIAGRAMS)) {
+                    const target = document.getElementById(id);
+                    if (!target) continue;
+                    try {
+                        const { svg } = await mermaid.render('mmd-render-' + i++, DIAGRAMS[id]);
+                        target.innerHTML = svg;
+                        postProcessSvg(id, SEQUENCE_LIKE_IDS.has(id));
+                    } catch (err) {
+                        target.innerHTML =
+                            '<p style="color:var(--color-text-danger);font-size:14px;">図の描画に失敗しました: ' +
+                            err.message +
+                            '</p>';
+                    }
+                }
+            }
+            renderDiagrams();
+
+            // ---------- Syntax highlighting ----------
+            if (window.hljs) {
+                hljs.highlightAll();
+            }
+
+            // ---------- Sidebar active-section tracking ----------
+            const navLinks = Array.from(document.querySelectorAll('.sidebar-nav a'));
+            const sections = navLinks
+                .map((a) => document.querySelector(a.getAttribute('href')))
+                .filter(Boolean);
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const id = '#' + entry.target.id;
+                            navLinks.forEach((a) =>
+                                a.classList.toggle('active', a.getAttribute('href') === id),
+                            );
+                        }
+                    });
+                },
+                { rootMargin: '-20% 0px -70% 0px' },
+            );
+
+            sections.forEach((sec) => observer.observe(sec));
+        </script>
+    </body>
+</html>

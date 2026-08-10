@@ -80,7 +80,7 @@
     position: fixed;
     top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
     left: 0;
-    width: 300px;
+    width: 280px;
     bottom: 0;
     overflow-y: auto;
     background: var(--bg-elevated);
@@ -163,8 +163,10 @@
 
 /* Main Content */
 .aws-saa-domain1-page .main-content {
-    margin-left: 300px;
-    max-width: 100%;
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     padding: 40px 48px 100px;
 }
 
@@ -503,6 +505,8 @@
     }
     .aws-saa-domain1-page .main-content {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
         padding: 24px 16px 80px;
     }
     .aws-saa-domain1-page .hero-section {

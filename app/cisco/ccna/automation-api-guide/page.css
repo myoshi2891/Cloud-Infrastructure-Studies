@@ -99,7 +99,9 @@
 /* ---------- Main Content ---------- */
 .ccna-automation-api-page .main {
     margin-left: 280px;
-    max-width: 100%;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     padding: 48px 48px 96px;
 }
 
@@ -109,7 +111,8 @@
     }
     .ccna-automation-api-page .main {
         margin-left: 0;
-        max-width: 100%;
+        width: 100%;
+        max-width: none;
         padding: 24px 20px 64px;
     }
 }

@@ -1,6 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { MermaidDiagram, applySvgFixups } from '@/components/MermaidDiagram';
+
+const mermaidStyles = readFileSync(
+    join(process.cwd(), 'components/MermaidDiagram.module.css'),
+    'utf8',
+);
 
 /** viewBox 付き SVG 要素を生成するヘルパー */
 const makeSvg = (viewBox?: string): SVGSVGElement => {
@@ -11,6 +18,11 @@ const makeSvg = (viewBox?: string): SVGSVGElement => {
 
 describe('MermaidDiagram', () => {
     const sampleChart = 'flowchart LR\n  A[Start] --> B[End]';
+
+    it('自然幅のSVGをflexで縮小せず、Mermaidの採寸値16pxと同じ文字サイズを使うこと', () => {
+        expect(mermaidStyles).toMatch(/\.mermaidTarget\s+:global\(svg\)[^{]*\{[^}]*flex-shrink:\s*0;/s);
+        expect(mermaidStyles).toMatch(/:global\(tspan\)[^{]*\{[^}]*font-size:\s*16px\s*!important;/s);
+    });
 
     it('role="img" の wrapper を ariaLabel 付きで描画すること', () => {
         render(<MermaidDiagram chart={sampleChart} ariaLabel="サンプルフロー図" />);
@@ -108,13 +120,27 @@ describe('MermaidDiagram', () => {
             expect(svg.getAttribute('viewBox')).toBe('0 0 250 615');
         });
 
-        it('個別指定された図は自然倍率を維持して文字を拡大縮小しないこと', () => {
+        it('個別指定された図は自然倍率(1.0倍)を維持し、文字が巨大化しないよう自然px幅を使用すること', () => {
             const svg = makeSvg('0 0 250 600');
 
             applySvgFixups(svg, 'flowchart TD\nA-->B', true);
 
+            // preserveNaturalScale=true: viewBox 由来の自然幅 250px をそのまま維持し 1rem 実寸で表示
             expect(svg.style.width).toBe('250px');
-            expect(svg.style.maxWidth).toBe('100%');
+            // preserveNaturalScale=true: コンテナ幅で縮小させないよう max-width:none を設定
+            expect(svg.style.maxWidth).toBe('none');
+            expect(svg.style.maxHeight).toBe('none');
+        });
+
+        it('個別指定された図でviewBox幅が十分大きい場合はそのままの幅を使用すること', () => {
+            const svg = makeSvg('0 0 800 600');
+
+            applySvgFixups(svg, 'flowchart TD\nA-->B', true);
+
+            // viewBox 幅 800 > 600 のため、そのまま 800px
+            expect(svg.style.width).toBe('800px');
+            // preserveNaturalScale=true: max-width:none でスクロール時縮小を防止
+            expect(svg.style.maxWidth).toBe('none');
             expect(svg.style.maxHeight).toBe('none');
         });
 

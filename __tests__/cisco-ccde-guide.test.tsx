@@ -132,9 +132,9 @@ describe('Cisco CCDE Complete Guide Page', () => {
         expect(screen.getByText('Workforce Mobility')).toBeInTheDocument();
 
         // 費用
-        expect(screen.getByText('US$450')).toBeInTheDocument();
-        expect(screen.getByText('US$1,600')).toBeInTheDocument();
-        expect(screen.getByText('約 US$2,050')).toBeInTheDocument();
+        expect(screen.getByText('US$450（税別・受験料のみ）')).toBeInTheDocument();
+        expect(screen.getByText('US$1,600（税別・受験料のみ）')).toBeInTheDocument();
+        expect(screen.getByText('約 US$2,050（税別・受験料のみ）')).toBeInTheDocument();
 
         // Explanatory Cells (説明セル)
         expect(screen.getByText('なし（オープンな受験資格）')).toBeInTheDocument();
@@ -165,7 +165,7 @@ describe('Cisco CCDE Complete Guide Page', () => {
         expect(screen.getByText('CCDE v3.1 Unified Exam Topics（公式PDF・出題ドメインと配点）')).toBeInTheDocument();
         expect(screen.getByText('Recertification Policy（再認定ポリシー）')).toBeInTheDocument();
         expect(screen.getByText('Cisco Continuing Education Program（CE単位による再認定）')).toBeInTheDocument();
-        expect(screen.getByText('Exam, Testing, and Certification Policies（再受験の待機期間・18か月ルールなど）')).toBeInTheDocument();
+        expect(screen.getByText('Exam, Testing, and Certification Policies（再受験の待機期間など）')).toBeInTheDocument();
         expect(screen.getByText(/Cisco Learning Network：CCDE v3.1 Unified Exam Topics and Study Guide/)).toBeInTheDocument();
     });
 

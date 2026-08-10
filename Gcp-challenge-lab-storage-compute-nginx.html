@@ -1,0 +1,1912 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Google Cloud Challenge Lab 攻略ガイド | Cloud Storage / Compute Engine / NGINX
+        </title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.46.0/dist/tabler-icons.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1b2e;
+                --color-background-tertiary: #142337;
+                --color-background-info: #14283f;
+                --color-background-danger: #3a1620;
+                --color-background-success: #102a22;
+                --color-background-warning: #3a2c12;
+                --color-text-primary: #eaf0fb;
+                --color-text-secondary: #a9b8cf;
+                --color-text-tertiary: #6f81a0;
+                --color-text-info: #7c9eff;
+                --color-text-danger: #ff8a8a;
+                --color-text-success: #6fe0b0;
+                --color-text-warning: #ffcc80;
+                --color-border-primary: #24344d;
+                --color-border-secondary: #1a2740;
+                --color-border-tertiary: #131f34;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP', 'Yu Gothic', sans-serif;
+                --font-serif: Georgia, 'Hiragino Mincho ProN', serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 288px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-primary);
+                padding: 28px 18px;
+            }
+
+            .sidebar-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 0 10px 22px 10px;
+                border-bottom: 1px solid var(--color-border-primary);
+                margin-bottom: 18px;
+            }
+
+            .sidebar-header i {
+                font-size: 22px;
+                color: var(--accent);
+            }
+
+            .sidebar-header-title {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+            }
+
+            .sidebar-header-sub {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+            }
+
+            .sidebar-nav {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .sidebar-nav a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 16px;
+                font-weight: 400;
+                border-left: 2px solid transparent;
+            }
+
+            .sidebar-nav a i {
+                font-size: 18px;
+                width: 20px;
+                text-align: center;
+                color: var(--color-text-tertiary);
+            }
+
+            .sidebar-nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .sidebar-nav a.active {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+                border-left: 2px solid var(--accent);
+                font-weight: 500;
+            }
+
+            .sidebar-nav a.active i {
+                color: var(--accent);
+            }
+
+            .task-badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 22px;
+                height: 22px;
+                min-width: 22px;
+                border-radius: 50%;
+                background: var(--color-background-primary);
+                border: 1px solid var(--color-border-primary);
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+            }
+
+            .sidebar-nav a.active .task-badge {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+            .main-content {
+                margin-left: 288px;
+                padding: 56px 64px 96px 64px;
+            }
+
+            .hero {
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--color-border-primary);
+                margin-bottom: 40px;
+            }
+
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                color: var(--color-text-info);
+                font-weight: 500;
+                margin-bottom: 14px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 1.4;
+                margin: 0 0 8px 0;
+                color: var(--color-text-primary);
+            }
+
+            h1 + p {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                margin: 0 0 24px 0;
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 0 0 18px 0;
+                scroll-margin-top: 24px;
+            }
+
+            h2 i {
+                color: var(--accent);
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                margin: 28px 0 12px 0;
+            }
+
+            p {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                margin: 0 0 14px 0;
+            }
+
+            strong {
+                color: var(--color-text-primary);
+                font-weight: 500;
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            .section {
+                margin-bottom: 56px;
+                scroll-margin-top: 24px;
+            }
+
+            .meta-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .meta-list li {
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                display: flex;
+                gap: 8px;
+            }
+
+            .meta-list li span.label {
+                color: var(--color-text-tertiary);
+                min-width: 90px;
+            }
+
+            .callout {
+                display: flex;
+                gap: 14px;
+                padding: 18px 20px;
+                border-radius: var(--border-radius-lg);
+                border: 1px solid var(--color-border-primary);
+                margin: 20px 0;
+            }
+
+            .callout i {
+                font-size: 20px;
+                margin-top: 1px;
+            }
+
+            .callout p {
+                margin: 0;
+                color: var(--color-text-primary);
+            }
+
+            .callout-info {
+                background: var(--color-background-info);
+                border-color: var(--color-text-info);
+            }
+
+            .callout-info i {
+                color: var(--color-text-info);
+            }
+
+            .callout-warning {
+                background: var(--color-background-warning);
+                border-color: var(--color-text-warning);
+            }
+
+            .callout-warning i {
+                color: var(--color-text-warning);
+            }
+
+            ul.plain,
+            ol.plain {
+                margin: 0 0 14px 0;
+                padding-left: 22px;
+                color: var(--color-text-secondary);
+            }
+
+            ul.plain li,
+            ol.plain li {
+                margin-bottom: 8px;
+                font-size: 16px;
+            }
+
+            ul.insight {
+                list-style: none;
+                margin: 20px 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            ul.insight li {
+                position: relative;
+                padding: 16px 20px 16px 44px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                font-size: 16px;
+                color: var(--color-text-secondary);
+            }
+
+            ul.insight li::before {
+                content: '\eb27';
+                font-family: 'tabler-icons';
+                position: absolute;
+                left: 16px;
+                top: 17px;
+                color: var(--color-text-success);
+                font-size: 16px;
+            }
+
+            .table-wrap {
+                overflow-x: auto;
+                margin: 20px 0;
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            thead th {
+                text-align: left;
+                padding: 14px 18px;
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-secondary);
+                background: var(--color-background-secondary);
+                border-bottom: 1px solid var(--color-border-primary);
+                white-space: nowrap;
+            }
+
+            tbody td {
+                text-align: left;
+                padding: 14px 18px;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                border-bottom: 1px solid var(--color-border-tertiary);
+                vertical-align: top;
+            }
+
+            tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            tbody td code,
+            p code,
+            li code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: 4px;
+                padding: 1px 6px;
+                color: var(--color-text-primary);
+            }
+
+            .diagram-wrap {
+                display: flex;
+                justify-content: center;
+                overflow-x: auto;
+                padding: 28px 16px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                margin: 20px 0;
+                min-height: 80px;
+            }
+
+            .diagram-loading {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                align-self: center;
+            }
+
+            .code-block {
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                overflow: hidden;
+                margin: 20px 0;
+            }
+
+            .code-block-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 18px;
+                background: var(--color-background-secondary);
+                border-bottom: 1px solid var(--color-border-primary);
+            }
+
+            .code-block-header span {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+            }
+
+            .copy-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                color: var(--color-text-secondary);
+                border-radius: var(--border-radius-md);
+                padding: 5px 12px;
+                font-size: 16px;
+                font-weight: 500;
+                font-family: var(--font-sans);
+                cursor: pointer;
+            }
+
+            .copy-btn:hover {
+                color: var(--color-text-primary);
+                border-color: var(--accent);
+            }
+
+            .copy-btn.copied {
+                color: var(--color-text-success);
+                border-color: var(--color-text-success);
+            }
+
+            .code-block pre {
+                margin: 0;
+                padding: 20px;
+                overflow-x: auto;
+            }
+
+            .code-block code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                line-height: 1.7;
+                background: transparent;
+            }
+
+            .hljs {
+                background: transparent !important;
+            }
+
+            .ref-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 16px;
+                margin-top: 20px;
+            }
+
+            .ref-card {
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-primary);
+                border-radius: var(--border-radius-lg);
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .ref-card-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 16px;
+                color: var(--color-text-info);
+                font-weight: 500;
+            }
+
+            .ref-card-badge i {
+                font-size: 16px;
+            }
+
+            .ref-card h4 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--color-text-primary);
+                line-height: 1.5;
+            }
+
+            .ref-card p {
+                margin: 0;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+                line-height: 1.6;
+            }
+
+            .ref-card a {
+                font-size: 16px;
+                color: var(--accent);
+                text-decoration: none;
+                word-break: break-all;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: auto;
+            }
+
+            .ref-card a:hover {
+                text-decoration: underline;
+            }
+
+            .subrefs {
+                margin: 16px 0 0 0;
+                padding: 0;
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .subrefs li {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                display: flex;
+                gap: 8px;
+                align-items: baseline;
+            }
+
+            .subrefs a {
+                color: var(--accent);
+                text-decoration: none;
+                word-break: break-all;
+            }
+
+            .subrefs a:hover {
+                text-decoration: underline;
+            }
+
+            .footer {
+                padding-top: 32px;
+                border-top: 1px solid var(--color-border-primary);
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .footer p {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin: 0;
+            }
+
+            @media (max-width: 880px) {
+                .sidebar {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border-primary);
+                }
+
+                .main-content {
+                    margin-left: 0;
+                    padding: 32px 20px 64px 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <i class="ti ti-cloud"></i>
+                    <div>
+                        <div class="sidebar-header-title">GCP Challenge Lab 攻略ガイド</div>
+                        <div class="sidebar-header-sub">Storage / Compute / NGINX</div>
+                    </div>
+                </div>
+                <ul class="sidebar-nav">
+                    <li>
+                        <a href="#overview" class="nav-link"
+                            ><i class="ti ti-route"></i><span>この記事の使い方</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#requirements" class="nav-link"
+                            ><i class="ti ti-checklist"></i><span>シナリオと要件</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#architecture" class="nav-link"
+                            ><i class="ti ti-hierarchy"></i><span>全体アーキテクチャ</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#task1" class="nav-link"
+                            ><i class="ti ti-cloud"></i><span>Task 1: Cloud Storage</span
+                            ><span class="task-badge">1</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#task2" class="nav-link"
+                            ><i class="ti ti-server"></i><span>Task 2: Compute Engine</span
+                            ><span class="task-badge">2</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#task3" class="nav-link"
+                            ><i class="ti ti-terminal"></i><span>Task 3: NGINX</span
+                            ><span class="task-badge">3</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#test" class="nav-link"
+                            ><i class="ti ti-circle-check"></i><span>動作確認</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#troubleshooting" class="nav-link"
+                            ><i class="ti ti-bug"></i><span>トラブルシューティング</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#summary" class="nav-link"
+                            ><i class="ti ti-list-check"></i><span>まとめ: 全体フロー</span></a
+                        >
+                    </li>
+                    <li>
+                        <a href="#references" class="nav-link"
+                            ><i class="ti ti-book-2"></i><span>参考文献</span></a
+                        >
+                    </li>
+                </ul>
+            </nav>
+
+            <main class="main-content">
+                <header class="hero">
+                    <div class="hero-eyebrow">
+                        <i class="ti ti-shield-check"></i><span>Best practice guide</span>
+                    </div>
+                    <h1>Google Cloud Challenge Lab 攻略ガイド</h1>
+                    <p>
+                        Cloud Storage バケット / Compute Engine + 永続ディスク / NGINX Web
+                        サーバー構築
+                    </p>
+                    <ul class="meta-list">
+                        <li>
+                            <span class="label">対象 Lab</span
+                            ><span
+                                >Build and Operate Infrastructure with Compute Engine and Cloud
+                                Storage（Challenge Lab）</span
+                            >
+                        </li>
+                        <li>
+                            <span class="label">Lab URL</span
+                            ><a
+                                href="https://www.skills.google/course_templates/754/labs/597890"
+                                target="_blank"
+                                rel="noopener"
+                                >https://www.skills.google/course_templates/754/labs/597890</a
+                            >
+                        </li>
+                        <li>
+                            <span class="label">対象読者</span
+                            ><span>Google Cloud 初学者〜初級 Cloud Architect</span>
+                        </li>
+                    </ul>
+                    <div class="callout callout-info">
+                        <i class="ti ti-info-circle"></i>
+                        <p>
+                            Challenge Lab
+                            は「手順を丸暗記する」ものではなく「学んだスキルを自力で組み合わせる」ことが目的の演習です。本ガイドは各タスクの<strong>実施手順</strong>だけでなく、<strong>なぜその設定が正しいのか（ベストプラクティスの根拠）</strong>を公式ドキュメントへのリンク付きで解説します。
+                        </p>
+                    </div>
+                </header>
+
+                <section id="overview" class="section">
+                    <h2><i class="ti ti-route"></i>この記事の使い方</h2>
+                    <p>
+                        Challenge Lab
+                        の概要にある通り、このラボには新しいコンセプトの説明はなく、既存スキルの応用が求められます。そのため本ガイドでは、次の順で構成しています。
+                    </p>
+                    <ol class="plain">
+                        <li>各タスクの<strong>要件を表で整理</strong></li>
+                        <li>
+                            Console（GUI）と <code>gcloud</code> CLI の<strong>両方の手順</strong>
+                        </li>
+                        <li>
+                            各設定値が<strong>なぜベストプラクティスなのか</strong>という根拠と公式ソース
+                            URL
+                        </li>
+                        <li>Mermaid によるフローチャート／シーケンス図</li>
+                        <li>詰まりやすいポイントの<strong>トラブルシューティング表</strong></li>
+                    </ol>
+                    <p>
+                        <code>PROJECT_ID</code> / <code>Region</code> /
+                        <code>Zone</code>
+                        はラボ開始時に画面左側のパネルに表示される実際の値に読み替えてください（このラボでは
+                        Region/Zone は固定値ではなく起動ごとに割り当てられます）。
+                    </p>
+                </section>
+
+                <section id="requirements" class="section">
+                    <h2><i class="ti ti-checklist"></i>シナリオと要件の整理</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>タスク</th>
+                                    <th>作成するリソース</th>
+                                    <th>主要な要件</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Task 1</td>
+                                    <td>Cloud Storage バケット</td>
+                                    <td>
+                                        名前: <code>PROJECT_ID-bucket</code> / ロケーション: US
+                                        マルチリージョン
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Task 2</td>
+                                    <td>Compute Engine VM + 永続ディスク</td>
+                                    <td>
+                                        VM 名: <code>my-instance</code>（E2 /
+                                        e2-medium）、ディスク名:
+                                        <code>mydisk</code>（200GB）をアタッチ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Task 3</td>
+                                    <td>NGINX Web サーバー</td>
+                                    <td>
+                                        <code>my-instance</code> に SSH 接続し、OS 更新後に NGINX
+                                        をインストール・起動確認
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        すべてのリソースは、特に指示がない限り指定された <strong>Region</strong> /
+                        <strong>Zone</strong> に作成します。
+                    </p>
+                </section>
+
+                <section id="architecture" class="section">
+                    <h2><i class="ti ti-hierarchy"></i>全体アーキテクチャ</h2>
+                    <p>
+                        3つのタスクを完了すると、以下のような構成になります。Cloud Storage
+                        バケットはアプリケーションの実行系（VM）とは独立したストレージですが、チームがビルド成果物や起動スクリプトを置く場所として同じプロジェクト内に存在します。
+                    </p>
+                    <div class="diagram-wrap" data-diagram="arch">
+                        <span class="diagram-loading">diagram loading...</span>
+                    </div>
+                    <ul class="insight">
+                        <li>
+                            <strong>Cloud Storage</strong>
+                            はオブジェクトストレージ（ファイル置き場）で、VM
+                            のディスクとは別物です。ビルド成果物や起動スクリプトの保管に向いています。
+                        </li>
+                        <li>
+                            <strong>Compute Engine の永続ディスク（Persistent Disk）</strong> は VM
+                            から独立したブロックストレージで、VM
+                            を削除してもディスクだけ残すことができます。
+                        </li>
+                        <li>
+                            <strong>NGINX</strong> は VM の中で動作する Web
+                            サーバーソフトウェアで、ポート
+                            80（HTTP）でリクエストを待ち受けます。外部からアクセスするには
+                            <strong>Firewall ルール</strong>で tcp:80 を許可する必要があります。
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="task1" class="section">
+                    <h2><i class="ti ti-cloud"></i>Task 1: Cloud Storage バケットの作成</h2>
+
+                    <h3>1.1 要件</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>値</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>バケット名</td>
+                                    <td>
+                                        <code>PROJECT_ID-bucket</code>（<code>PROJECT_ID</code>
+                                        は自分のプロジェクト ID に置換）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ロケーションタイプ</td>
+                                    <td>Multi-region</td>
+                                </tr>
+                                <tr>
+                                    <td>ロケーション</td>
+                                    <td>US</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>1.2 手順（Console）</h3>
+                    <div class="diagram-wrap" data-diagram="task1_console">
+                        <span class="diagram-loading">diagram loading...</span>
+                    </div>
+
+                    <h3>1.3 手順（gcloud CLI）</h3>
+                    <p>
+                        Cloud Shell から実行する場合は以下のコマンドで同等のバケットを作成できます。
+                    </p>
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span
+                            ><button class="copy-btn" type="button" data-copy-target="code-bucket">
+                                <i class="ti ti-copy"></i><span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash" id="code-bucket" data-code-src="src-bucket"></code></pre>
+                    </div>
+                    <script type="text/plain" id="src-bucket">
+                        export PROJECT_ID=$(gcloud config get-value project)
+
+                        gcloud storage buckets create gs://${PROJECT_ID}-bucket \
+                          --location=US \
+                          --default-storage-class=STANDARD \
+                          --uniform-bucket-level-access
+                    </script>
+
+                    <h3>1.4 なぜこの設定がベストプラクティスなのか</h3>
+                    <ul class="insight">
+                        <li>
+                            <strong>バケット名にプロジェクト ID を含める</strong>: Cloud Storage
+                            のバケット名は Google Cloud 全体で一意である必要があります。プロジェクト
+                            ID
+                            をプレフィックスにすることで命名衝突を避けられます。この命名規約はラボの要件でもあり、実運用でも一般的なパターンです。
+                        </li>
+                        <li>
+                            <strong>US マルチリージョンを選ぶ理由</strong>:
+                            マルチリージョンは複数のリージョンにまたがってデータを複製するため、単一リージョンより可用性が高く、地理的に分散したユーザーへの配信レイテンシも平準化されます。トレードオフとしてリージョン単体構成よりストレージ単価がやや高くなります。今回のように「まずは汎用のファイル置き場を作る」用途では、コストよりも可用性を優先するデフォルトの
+                            US マルチリージョンが妥当な選択です。
+                        </li>
+                        <li>
+                            <strong>Uniform bucket-level access（デフォルト）</strong>:
+                            オブジェクト単位の ACL ではなく IAM
+                            ポリシーでバケット全体のアクセス制御を統一でき、権限管理がシンプルになります。
+                        </li>
+                        <li>
+                            <strong>最小権限の原則</strong>: バケット作成には
+                            <code>roles/storage.admin</code>
+                            などバケット作成権限を持つロールが必要ですが、プロジェクト全体の Owner
+                            権限を都度使うのではなく、必要な権限のみを持つロールを利用するのが望ましいプラクティスです。
+                        </li>
+                    </ul>
+
+                    <ul class="subrefs">
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/storage/docs/creating-buckets"
+                                target="_blank"
+                                rel="noopener"
+                                >Create a bucket — Google Cloud 公式</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/storage/docs/locations"
+                                target="_blank"
+                                rel="noopener"
+                                >Bucket locations — Google Cloud 公式</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="task2" class="section">
+                    <h2>
+                        <i class="ti ti-server"></i>Task 2: Compute Engine VM
+                        の作成と永続ディスクの作成・アタッチ
+                    </h2>
+
+                    <h3>2.1 要件</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Instance name</td>
+                                    <td><code>my-instance</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Series</td>
+                                    <td>E2</td>
+                                </tr>
+                                <tr>
+                                    <td>Machine type</td>
+                                    <td>e2-medium</td>
+                                </tr>
+                                <tr>
+                                    <td>Boot disk type</td>
+                                    <td>New balanced persistent disk</td>
+                                </tr>
+                                <tr>
+                                    <td>Boot disk size</td>
+                                    <td>10 GB</td>
+                                </tr>
+                                <tr>
+                                    <td>Boot disk image</td>
+                                    <td>ラボ開始時に指定されたイメージ</td>
+                                </tr>
+                                <tr>
+                                    <td>Firewall</td>
+                                    <td>Allow HTTP traffic を有効化</td>
+                                </tr>
+                                <tr>
+                                    <td>追加ディスク</td>
+                                    <td><code>mydisk</code>（200GB）を作成しアタッチ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>2.2 VM 作成の手順（Console）</h3>
+                    <div class="diagram-wrap" data-diagram="task2_vm_console">
+                        <span class="diagram-loading">diagram loading...</span>
+                    </div>
+
+                    <h3>2.3 VM 作成の手順（gcloud CLI）</h3>
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span
+                            ><button class="copy-btn" type="button" data-copy-target="code-vm">
+                                <i class="ti ti-copy"></i><span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash" id="code-vm" data-code-src="src-vm"></code></pre>
+                    </div>
+                    <script type="text/plain" id="src-vm">
+                        export ZONE="YOUR_ZONE"
+                        export REGION="YOUR_REGION"
+                        export IMAGE_FAMILY="YOUR_IMAGE_FAMILY"
+                        export IMAGE_PROJECT="YOUR_IMAGE_PROJECT"
+                        export NETWORK="default"
+
+                        gcloud compute instances create my-instance \
+                          --zone="$ZONE" \
+                          --network="$NETWORK" \
+                          --machine-type=e2-medium \
+                          --image-family="$IMAGE_FAMILY" \
+                          --image-project="$IMAGE_PROJECT" \
+                          --boot-disk-type=pd-balanced \
+                          --boot-disk-size=10GB \
+                          --tags=http-server
+
+                        NETWORK_SELF_LINK=$(gcloud compute networks describe "$NETWORK" \
+                          --format="value(selfLink)") || exit 1
+
+                        if FIREWALL_RULE_JSON=$(gcloud compute firewall-rules describe default-allow-http \
+                          --format=json 2>/dev/null); then
+                          if ! printf '%s\n' "$FIREWALL_RULE_JSON" | jq -e --arg network "$NETWORK_SELF_LINK" '
+                            .network == $network and .direction == "INGRESS"
+                          ' >/dev/null; then
+                            echo 'default-allow-http の network または direction が異なるため、自動更新できません。' >&2
+                            exit 1
+                          fi
+
+                          if ! printf '%s\n' "$FIREWALL_RULE_JSON" | jq -e '
+                            .sourceRanges == ["0.0.0.0/0"] and
+                            .allowed == [{"IPProtocol": "tcp", "ports": ["80"]}] and
+                            .targetTags == ["http-server"] and
+                            ((.disabled // false) == false)
+                          ' >/dev/null; then
+                            gcloud compute firewall-rules update default-allow-http \
+                              --allow=tcp:80 \
+                              --source-ranges=0.0.0.0/0 \
+                              --target-tags=http-server \
+                              --no-disabled || exit 1
+                          fi
+                        else
+                          gcloud compute firewall-rules create default-allow-http \
+                            --network="$NETWORK" \
+                            --direction=INGRESS \
+                            --allow=tcp:80 \
+                            --source-ranges=0.0.0.0/0 \
+                            --target-tags=http-server
+                        fi
+
+                        FIREWALL_RULE_JSON=$(gcloud compute firewall-rules describe default-allow-http \
+                          --format=json) || exit 1
+                        if ! printf '%s\n' "$FIREWALL_RULE_JSON" | jq -e --arg network "$NETWORK_SELF_LINK" '
+                          .network == $network and
+                          .direction == "INGRESS" and
+                          .sourceRanges == ["0.0.0.0/0"] and
+                          .allowed == [{"IPProtocol": "tcp", "ports": ["80"]}] and
+                          .targetTags == ["http-server"] and
+                          ((.disabled // false) == false)
+                        ' >/dev/null; then
+                          echo 'default-allow-http が期待する設定と一致しません。' >&2
+                          exit 1
+                        fi
+                    </script>
+                    <p>
+                        <code>--tags=http-server</code> は VM
+                        をファイアウォールルールの対象にします。CLI 手順ではさらに、<code
+                            >default-allow-http</code
+                        >のネットワーク、方向、送信元範囲、許可プロトコル・ポート、対象タグ、有効状態を検証します。更新可能な値は修正し、ネットワークまたは方向が異なる場合や最終検証に失敗した場合は処理を中止します。
+                    </p>
+
+                    <h3>2.4 永続ディスクの作成とアタッチ（Console）</h3>
+                    <div class="diagram-wrap" data-diagram="task2_disk_console">
+                        <span class="diagram-loading">diagram loading...</span>
+                    </div>
+
+                    <p>Console で作成する代わりに、CLI では以下の2コマンドで完結します。</p>
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span
+                            ><button class="copy-btn" type="button" data-copy-target="code-disk">
+                                <i class="ti ti-copy"></i><span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash" id="code-disk" data-code-src="src-disk"></code></pre>
+                    </div>
+                    <script type="text/plain" id="src-disk">
+                        export ZONE="YOUR_ZONE"
+
+                        gcloud compute disks create mydisk \
+                          --zone="$ZONE" \
+                          --size=200GB \
+                          --type=pd-balanced
+
+                        gcloud compute instances attach-disk my-instance \
+                          --zone="$ZONE" \
+                          --disk=mydisk \
+                          --device-name=mydisk
+                    </script>
+
+                    <h3>2.5 なぜこの設定がベストプラクティスなのか</h3>
+                    <ul class="insight">
+                        <li>
+                            <strong>ディスクと VM は同じ Zone に作る</strong>: Persistent Disk
+                            はゾーンリソースであり、作成されたゾーン内でのみ VM
+                            にアタッチできます。異なる Zone
+                            のディスクは直接アタッチできないため、<code>mydisk</code> は必ず
+                            <code>my-instance</code> と同じ Zone に作成します。
+                        </li>
+                        <li>
+                            <strong><code>--device-name</code> を明示的に指定する</strong>: OS
+                            内でのデバイス名（<code>/dev/sdb</code>
+                            など）は再起動のたびに変わる可能性がありますが、<code>device-name</code>
+                            を指定しておくと
+                            <code>/dev/disk/by-id/google-mydisk</code>
+                            という安定したシンボリックリンクが作られ、スクリプトや
+                            <code>/etc/fstab</code> から確実にディスクを参照できます。
+                        </li>
+                        <li>
+                            <strong>balanced persistent disk をブートディスクに選ぶ理由</strong>:
+                            <code>pd-balanced</code>
+                            はコストとパフォーマンスのバランスに優れた汎用タイプで、Console
+                            でブートディスクを作成する際のデフォルトでもあります。要件で明示的に「New
+                            balanced persistent disk」と指定されているのもこのためです。
+                        </li>
+                        <li>
+                            <strong>（発展）アタッチ後はフォーマット・マウントが必要</strong>:
+                            本ラボの採点基準はディスクの作成とアタッチまでですが、実運用でこの新規ディスクにデータを書き込む場合は、SSH
+                            接続後に <code>mkfs.ext4</code> でフォーマットし、<code
+                                >/etc/fstab</code
+                            >
+                            に UUID
+                            ベースでエントリを追加しておくと、再起動後も自動的にマウントされ、デバイス名の変動に影響されません。
+                        </li>
+                    </ul>
+
+                    <ul class="subrefs">
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/compute/docs/create-linux-vm-instance"
+                                target="_blank"
+                                rel="noopener"
+                                >Create a Linux VM instance — Google Cloud 公式</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/compute/docs/disks/add-persistent-disk"
+                                target="_blank"
+                                rel="noopener"
+                                >Create a new Persistent Disk volume — Google Cloud 公式</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/compute/docs/disks/attach-disks"
+                                target="_blank"
+                                rel="noopener"
+                                >Attach a non-boot disk to a VM — Google Cloud 公式</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/compute/docs/disks/format-mount-disk-linux"
+                                target="_blank"
+                                rel="noopener"
+                                >Format and mount a non-boot disk on a Linux VM — Google Cloud
+                                公式</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="task3" class="section">
+                    <h2><i class="ti ti-terminal"></i>Task 3: NGINX Web サーバーのインストール</h2>
+
+                    <h3>3.1 要件</h3>
+                    <ol class="plain">
+                        <li><code>my-instance</code> に SSH 接続する</li>
+                        <li>OS を更新する（Update the OS）</li>
+                        <li>NGINX をインストールする</li>
+                        <li>NGINX が起動していることを確認する</li>
+                    </ol>
+
+                    <h3>3.2 手順とベストプラクティスの解説</h3>
+                    <div class="diagram-wrap" data-diagram="task3_sequence">
+                        <span class="diagram-loading">diagram loading...</span>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span
+                            ><button class="copy-btn" type="button" data-copy-target="code-ssh">
+                                <i class="ti ti-copy"></i><span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash" id="code-ssh" data-code-src="src-ssh"></code></pre>
+                    </div>
+                    <script type="text/plain" id="src-ssh">
+                        export ZONE="YOUR_ZONE"
+
+                        gcloud compute ssh my-instance --zone="$ZONE"
+                    </script>
+
+                    <p>SSH 接続後、次のブロックを <strong>my-instance 内のシェル</strong>で実行します。</p>
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span
+                            ><button class="copy-btn" type="button" data-copy-target="code-nginx">
+                                <i class="ti ti-copy"></i><span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash" id="code-nginx" data-code-src="src-nginx"></code></pre>
+                    </div>
+                    <script type="text/plain" id="src-nginx">
+                        sudo apt-get update
+
+                        sudo apt-get install -y nginx
+
+                        sudo systemctl status nginx
+
+                        curl http://localhost
+                    </script>
+
+                    <p>
+                        <code>systemctl status nginx</code> の出力に
+                        <code>Active: active (running)</code>
+                        と表示されていれば起動確認は完了です。加えて、再起動後も自動起動するように有効化しておくと安心です。
+                    </p>
+
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span
+                            ><button class="copy-btn" type="button" data-copy-target="code-enable">
+                                <i class="ti ti-copy"></i><span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash" id="code-enable" data-code-src="src-enable"></code></pre>
+                    </div>
+                    <script type="text/plain" id="src-enable">
+                        sudo systemctl enable nginx
+                    </script>
+
+                    <h3>3.3 なぜこの手順がベストプラクティスなのか</h3>
+                    <ul class="insight">
+                        <li>
+                            <strong
+                                >インストール前に <code>apt-get update</code> を実行する理由</strong
+                            >:
+                            パッケージインデックスが古いままだと、依存パッケージのバージョン不整合やダウンロード失敗の原因になります。ラボの「Update
+                            the OS」という指示は、このパッケージインデックス更新（および必要に応じた
+                            <code>apt-get upgrade</code>）を意味します。
+                        </li>
+                        <li>
+                            <strong
+                                >ディストリビューション標準リポジトリからのインストールで十分</strong
+                            >: 本ラボの目的は「動作する Web
+                            サーバーを構築できること」の確認であるため、Debian/Ubuntu
+                            標準リポジトリの <code>nginx</code> パッケージ（<code
+                                >apt-get install nginx</code
+                            >）で要件を満たせます。最新の mainline 版が必要な場合は、公式
+                            <code>nginx.org</code> の APT
+                            リポジトリを追加する方法もありますが、その分セットアップ手順が増えます。
+                        </li>
+                        <li>
+                            <strong><code>systemctl enable</code> で自動起動を有効化する</strong>:
+                            VM が再起動した際に手動で NGINX を起動し直す必要がなくなり、Web
+                            サーバーとしての可用性が向上します。
+                        </li>
+                        <li>
+                            <strong>Firewall との関係</strong>: NGINX 自体はポート 80
+                            で待ち受けますが、Task 2 で「Allow HTTP
+                            traffic」を有効化していないと外部からアクセスできません。これは VM に
+                            <code>http-server</code> タグが付与され、<code>default-allow-http</code>
+                            という名前のファイアウォールルール（tcp:80、送信元
+                            <code>0.0.0.0/0</code
+                            >）の対象になる、という仕組みです。ラボでは学習目的のためこの全世界許可のルールで問題ありませんが、本番環境では送信元
+                            IP
+                            範囲を絞る、あるいはロードバランサ配下に置くといった追加の制御を検討するのがベストプラクティスです。
+                        </li>
+                    </ul>
+
+                    <ul class="subrefs">
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/"
+                                target="_blank"
+                                rel="noopener"
+                                >Installing NGINX Open Source — nginx 公式</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://nginx.org/en/linux_packages.html"
+                                target="_blank"
+                                rel="noopener"
+                                >nginx: Linux packages — nginx.org 公式</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/vpc/docs/add-remove-network-tags"
+                                target="_blank"
+                                rel="noopener"
+                                >Add network tags — Google Cloud 公式</a
+                            >
+                        </li>
+                        <li>
+                            <i class="ti ti-link"></i
+                            ><a
+                                href="https://cloud.google.com/firewall/docs/using-firewalls"
+                                target="_blank"
+                                rel="noopener"
+                                >Use VPC firewall rules — Google Cloud 公式</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="test" class="section">
+                    <h2><i class="ti ti-circle-check"></i>Web アプリケーションのテスト</h2>
+                    <div class="diagram-wrap" data-diagram="test_flow">
+                        <span class="diagram-loading">diagram loading...</span>
+                    </div>
+                    <p>
+                        External IP をコピーして
+                        <code>http://EXTERNAL_IP/</code>
+                        の形式で新しいタブに貼り付けても同様に確認できます。
+                    </p>
+                </section>
+
+                <section id="troubleshooting" class="section">
+                    <h2><i class="ti ti-bug"></i>トラブルシューティング</h2>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>症状</th>
+                                    <th>想定される原因</th>
+                                    <th>対処</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ブラウザで接続できない（タイムアウト）</td>
+                                    <td>Firewall で HTTP が許可されていない</td>
+                                    <td>
+                                        VM の詳細画面でネットワークタグに
+                                        <code>http-server</code>
+                                        が付いているか確認。付いていなければ Edit から追加、または
+                                        <code>default-allow-http</code> ルールの存在を確認する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>nginx: command not found</code></td>
+                                    <td>
+                                        インストールが完了していない、または別パッケージ名でインストールしようとした
+                                    </td>
+                                    <td>
+                                        <code>sudo apt-get install -y nginx</code>
+                                        を再実行し、途中でエラーが出ていないかログを確認する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>systemctl status nginx</code> が
+                                        <code>inactive (dead)</code>
+                                    </td>
+                                    <td>インストール直後に自動起動していない場合がある</td>
+                                    <td>
+                                        <code>sudo systemctl start nginx</code> で起動し、<code
+                                            >sudo systemctl enable nginx</code
+                                        >
+                                        で自動起動を設定する
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        バケット作成時に <code>Bucket name already in use</code>
+                                    </td>
+                                    <td>バケット名がグローバルで既に使用されている</td>
+                                    <td>
+                                        <code>PROJECT_ID</code>
+                                        を正しく含めているか確認する（プロジェクト ID
+                                        はグローバルに一意なので通常は衝突しない）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ディスクをアタッチできない</td>
+                                    <td>ディスクと VM の Zone が異なる</td>
+                                    <td>
+                                        <code
+                                            >export ZONE="YOUR_ZONE"; gcloud compute disks describe
+                                            mydisk --zone="$ZONE"</code
+                                        >
+                                        で Zone を確認し、VM と同じ Zone にディスクを作り直す
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>Check my progress</code> が失敗する</td>
+                                    <td>リソース名・設定値がラボの要件と完全一致していない</td>
+                                    <td>
+                                        リソース名（<code>my-instance</code> / <code>mydisk</code> /
+                                        <code>PROJECT_ID-bucket</code>）や Region/Zone
+                                        の綴りを再確認する
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="summary" class="section">
+                    <h2><i class="ti ti-list-check"></i>まとめ: 全体フロー</h2>
+                    <div class="diagram-wrap" data-diagram="summary_flow">
+                        <span class="diagram-loading">diagram loading...</span>
+                    </div>
+                    <p>
+                        3つのタスクはほぼ独立していますが、Task 3（NGINX インストール）は Task 2 で
+                        <code>my-instance</code> が作成済みであることが前提です。採点は各タスクの
+                        <code>Check my progress</code>
+                        ボタンでこまめに確認しながら進めると、途中の設定ミスに早く気づけます。
+                    </p>
+                </section>
+
+                <section id="references" class="section">
+                    <h2><i class="ti ti-book-2"></i>参考文献・引用ソース一覧</h2>
+                    <div class="ref-grid">
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Create a bucket</h4>
+                            <p>バケット作成手順、デフォルト設定、必要な IAM ロール</p>
+                            <a
+                                href="https://cloud.google.com/storage/docs/creating-buckets"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/storage/docs/creating-buckets</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Bucket locations</h4>
+                            <p>Region / Dual-region / Multi-region の違いと選定基準</p>
+                            <a
+                                href="https://cloud.google.com/storage/docs/locations"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/storage/docs/locations</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Create a Linux VM instance</h4>
+                            <p>
+                                Console での VM 作成手順、Allow HTTP traffic チェックボックスの効果
+                            </p>
+                            <a
+                                href="https://cloud.google.com/compute/docs/create-linux-vm-instance"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/compute/docs/create-linux-vm-instance</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Create and start a Compute Engine instance</h4>
+                            <p>
+                                VM 作成に必要な IAM
+                                ロール（roles/compute.instanceAdmin.v1）と権限の概要
+                            </p>
+                            <a
+                                href="https://cloud.google.com/compute/docs/instances/create-start-instance"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/compute/docs/instances/create-start-instance</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Create a new Persistent Disk volume</h4>
+                            <p>永続ディスク作成手順とディスクタイプ一覧（pd-balanced 等）</p>
+                            <a
+                                href="https://cloud.google.com/compute/docs/disks/add-persistent-disk"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/compute/docs/disks/add-persistent-disk</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Attach a non-boot disk to a VM</h4>
+                            <p>attach-disk コマンドと device-name オプションの解説</p>
+                            <a
+                                href="https://cloud.google.com/compute/docs/disks/attach-disks"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/compute/docs/disks/attach-disks</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Format and mount a non-boot disk on a Linux VM</h4>
+                            <p>
+                                フォーマット手順と UUID ベースの /etc/fstab
+                                設定（発展的ベストプラクティス）
+                            </p>
+                            <a
+                                href="https://cloud.google.com/compute/docs/disks/format-mount-disk-linux"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/compute/docs/disks/format-mount-disk-linux</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Add network tags</h4>
+                            <p>ネットワークタグとファイアウォールルールの紐付けの仕組み</p>
+                            <a
+                                href="https://cloud.google.com/vpc/docs/add-remove-network-tags"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/vpc/docs/add-remove-network-tags</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-google"></i>Google Cloud 公式</span
+                            >
+                            <h4>Use VPC firewall rules</h4>
+                            <p>ファイアウォールルールの基本概念とコマンド</p>
+                            <a
+                                href="https://cloud.google.com/firewall/docs/using-firewalls"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >cloud.google.com/firewall/docs/using-firewalls</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-nginx"></i>nginx 公式（F5/NGINX, Inc.）</span
+                            >
+                            <h4>Installing NGINX Open Source</h4>
+                            <p>Debian/Ubuntu 向け NGINX インストール手順</p>
+                            <a
+                                href="https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >docs.nginx.com/.../installing-nginx-open-source</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-brand-nginx"></i>nginx.org 公式サイト</span
+                            >
+                            <h4>nginx: Linux packages</h4>
+                            <p>nginx.org 提供パッケージによるインストール手順</p>
+                            <a
+                                href="https://nginx.org/en/linux_packages.html"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >nginx.org/en/linux_packages.html</a
+                            >
+                        </div>
+                        <div class="ref-card">
+                            <span class="ref-card-badge"
+                                ><i class="ti ti-school"></i>Google Cloud Skills Boost</span
+                            >
+                            <h4>対象 Challenge Lab</h4>
+                            <p>本ガイドが解説しているラボ本体</p>
+                            <a
+                                href="https://www.skills.google/course_templates/754/labs/597890"
+                                target="_blank"
+                                rel="noopener"
+                                ><i class="ti ti-external-link"></i
+                                >skills.google/course_templates/754/labs/597890</a
+                            >
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="footer">
+                    <p>Cloud Storage / Compute Engine / NGINX — best practice walkthrough</p>
+                    <p>各セクションの根拠はすべて公式ドキュメントにリンクしています</p>
+                </footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.min.js"></script>
+        <script>
+            function dedent(str) {
+                var lines = str
+                    .replace(/^\n/, '')
+                    .replace(/\n\s*$/, '')
+                    .split('\n');
+                var indents = lines
+                    .filter(function (l) {
+                        return l.trim().length > 0;
+                    })
+                    .map(function (l) {
+                        return l.match(/^ */)[0].length;
+                    });
+                var minIndent = indents.length ? Math.min.apply(null, indents) : 0;
+                return lines
+                    .map(function (l) {
+                        return l.slice(minIndent);
+                    })
+                    .join('\n');
+            }
+
+            function loadCodeBlocks() {
+                var codeEls = document.querySelectorAll('code[data-code-src]');
+                codeEls.forEach(function (codeEl) {
+                    var srcId = codeEl.getAttribute('data-code-src');
+                    var srcEl = document.getElementById(srcId);
+                    if (!srcEl) return;
+                    var text = dedent(srcEl.textContent);
+                    codeEl.textContent = text;
+                    codeEl.setAttribute('data-copy-text', text);
+                    hljs.highlightElement(codeEl);
+                });
+            }
+
+            function setupCopyButtons() {
+                document.querySelectorAll('.copy-btn').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var targetId = btn.getAttribute('data-copy-target');
+                        var codeEl = document.getElementById(targetId);
+                        if (!codeEl) return;
+                        var text = codeEl.getAttribute('data-copy-text') || codeEl.textContent;
+                        var label = btn.querySelector('span');
+                        var original = label.textContent;
+                        function showCopyFailure() {
+                            label.textContent = 'Copy failed';
+                            setTimeout(function () {
+                                label.textContent = original;
+                            }, 1800);
+                        }
+                        if (
+                            !navigator.clipboard ||
+                            typeof navigator.clipboard.writeText !== 'function'
+                        ) {
+                            showCopyFailure();
+                            return;
+                        }
+                        navigator.clipboard.writeText(text).then(function () {
+                            btn.classList.add('copied');
+                            label.textContent = 'Copied';
+                            setTimeout(function () {
+                                btn.classList.remove('copied');
+                                label.textContent = original;
+                            }, 1800);
+                        }, showCopyFailure);
+                    });
+                });
+            }
+
+            var DIAGRAMS = {
+                arch: `flowchart TB
+    User["User Browser"]
+
+    subgraph GCP["Google Cloud Project (PROJECT_ID)"]
+        subgraph StorageBlock["Cloud Storage"]
+            Bucket["Bucket: PROJECT_ID-bucket (US multi-region)"]
+        end
+
+        subgraph ComputeBlock["Compute Engine (Region / Zone)"]
+            VM["VM: my-instance (E2 / e2-medium)"]
+            BootDisk["Boot disk: balanced PD, 10GB"]
+            DataDisk["Persistent disk: mydisk (200GB)"]
+            Nginx["NGINX (port 80)"]
+
+            VM --- BootDisk
+            VM -- "attached as data disk" --- DataDisk
+            VM --> Nginx
+        end
+
+        FW["Firewall rule: default-allow-http (tcp:80, tag http-server)"]
+    end
+
+    User -- "HTTP GET http://EXTERNAL_IP/" --> FW
+    FW --> Nginx
+    Nginx -- "Welcome to nginx!" --> User`,
+
+                task1_console: `flowchart TD
+    A["Navigation menu > Cloud Storage > Buckets"] --> B["Create bucket をクリック"]
+    B --> C["Name your bucket: PROJECT_ID-bucket と入力"]
+    C --> D["Choose where to store your data: Multi-region"]
+    D --> E["Location: US を選択"]
+    E --> F["Storage class: Standard のままにする(デフォルト)"]
+    F --> G["Access control: Uniform のままにする(デフォルト)"]
+    G --> H["Protection tools: デフォルトのまま"]
+    H --> I["Create をクリック"]
+    I --> J["Check my progress で検証"]`,
+
+                task2_vm_console: `flowchart TD
+    A["Compute Engine > VM instances"] --> B["Create instance をクリック"]
+    B --> C["Name: my-instance"]
+    C --> D["Region / Zone: ラボ指定の値を選択"]
+    D --> E["Machine configuration > Series: E2"]
+    E --> F["Machine type: e2-medium"]
+    F --> G["OS and storage > Change"]
+    G --> H["Boot disk type: Balanced persistent disk, Size: 10GB"]
+    H --> I["指定されたブートディスクイメージを選択"]
+    I --> J["Firewall セクションで Allow HTTP traffic をチェック"]
+    J --> K["Create をクリックし起動を待つ"]`,
+
+                task2_disk_console: `flowchart TD
+    A["Compute Engine > Disks"] --> B["Create disk をクリック"]
+    B --> C["Name: mydisk"]
+    C --> D["Zone: my-instance と同じ Zone を選択"]
+    D --> E["Disk source type: Blank disk"]
+    E --> F["Size: 200GB"]
+    F --> G["Create をクリック"]
+    G --> H["VM instances > my-instance を開く"]
+    H --> I["Edit をクリック"]
+    I --> J["Additional disks > Attach existing disk"]
+    J --> K["mydisk を選択して Save"]
+    K --> L["Check my progress で検証"]`,
+
+                task3_sequence: `sequenceDiagram
+    participant U as User
+    participant C as Cloud Console
+    participant V as VM my-instance
+
+    U->>C: VM instances 一覧で SSH ボタンをクリック
+    C->>V: ブラウザ内 SSH セッションを確立
+    U->>V: sudo apt-get update
+    V-->>U: パッケージインデックスを最新化
+    U->>V: sudo apt-get install -y nginx
+    V-->>U: nginx パッケージをインストール
+    U->>V: sudo systemctl status nginx
+    V-->>U: active (running) と表示
+    U->>V: curl http://localhost
+    V-->>U: Welcome to nginx! の HTML を返却`,
+
+                test_flow: `flowchart LR
+    A["VM instances 一覧を開く"] --> B["my-instance 行の External IP をクリック"]
+    B --> C{"ブラウザで開けるか"}
+    C -- "Yes" --> D["Welcome to nginx! が表示されれば成功"]
+    C -- "No" --> E["トラブルシューティングへ"]`,
+
+                summary_flow: `flowchart TD
+    subgraph T1["Task 1: Cloud Storage"]
+        S1["バケット PROJECT_ID-bucket を US マルチリージョンに作成"]
+    end
+
+    subgraph T2["Task 2: Compute Engine"]
+        S2["VM my-instance を E2 / e2-medium で作成"]
+        S3["ディスク mydisk 200GB を作成"]
+        S4["mydisk を my-instance にアタッチ"]
+        S2 --> S3 --> S4
+    end
+
+    subgraph T3["Task 3: NGINX"]
+        S5["SSH 接続"]
+        S6["OS を更新"]
+        S7["NGINX をインストール"]
+        S8["起動を確認"]
+        S5 --> S6 --> S7 --> S8
+    end
+
+    S1 -.->|"独立したタスクとして並行実施可"| S2
+    S4 --> S5
+    S8 --> Test["External IP でブラウザから動作確認"]`,
+            };
+
+            function extendViewBoxHeight(svgEl, isSeqOrState) {
+                var viewBox = svgEl.getAttribute('viewBox');
+                if (!viewBox) return;
+                var parts = viewBox.trim().split(/\s+/).map(Number);
+                var minX = parts[0];
+                var minY = parts[1];
+                var w = parts[2];
+                var h = parts[3];
+                h += isSeqOrState ? 110 : 15;
+                svgEl.setAttribute('viewBox', minX + ' ' + minY + ' ' + w + ' ' + h);
+                svgEl.style.width = w + 'px';
+            }
+
+            async function renderDiagrams() {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily: 'inherit',
+                    flowchart: {
+                        useMaxWidth: false,
+                        nodeSpacing: 45,
+                        rankSpacing: 45,
+                        htmlLabels: true,
+                    },
+                    sequence: { useMaxWidth: false, actorMargin: 60, messageMargin: 40 },
+                    themeVariables: {
+                        fontSize: '16px',
+                        background: '#07111e',
+                        primaryColor: '#142337',
+                        primaryTextColor: '#eaf0fb',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#4a6fa5',
+                        secondaryColor: '#1a2740',
+                        tertiaryColor: '#0d1b2e',
+                        textColor: '#eaf0fb',
+                        nodeTextColor: '#eaf0fb',
+                        mainBkg: '#142337',
+                        secondBkg: '#1a2740',
+                        nodeBorder: '#7c9eff',
+                        clusterBkg: '#0d1b2e',
+                        clusterBorder: '#24344d',
+                        titleColor: '#eaf0fb',
+                        edgeLabelBackground: '#0d1b2e',
+                        actorBkg: '#142337',
+                        actorBorder: '#7c9eff',
+                        actorTextColor: '#eaf0fb',
+                        actorLineColor: '#4a6fa5',
+                        signalColor: '#a9b8cf',
+                        signalTextColor: '#eaf0fb',
+                        labelBoxBkgColor: '#142337',
+                        labelBoxBorderColor: '#7c9eff',
+                        labelTextColor: '#eaf0fb',
+                        loopTextColor: '#a9b8cf',
+                        noteBkgColor: '#3a2c12',
+                        noteTextColor: '#ffcc80',
+                        noteBorderColor: '#ffcc80',
+                        activationBkgColor: '#1a2740',
+                        activationBorderColor: '#7c9eff',
+                    },
+                });
+
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+
+                var ids = Object.keys(DIAGRAMS);
+                for (var i = 0; i < ids.length; i++) {
+                    var id = ids[i];
+                    var src = DIAGRAMS[id];
+                    var container = document.querySelector('[data-diagram="' + id + '"]');
+                    if (!container) continue;
+                    try {
+                        var result = await mermaid.render('mmd-' + id, src);
+                        container.innerHTML = result.svg;
+                        if (result.bindFunctions) {
+                            result.bindFunctions(container);
+                        }
+                        var svgEl = container.querySelector('svg');
+                        if (svgEl) {
+                            svgEl.removeAttribute('width');
+                            svgEl.removeAttribute('height');
+                            var isSeqOrState =
+                                src.trim().indexOf('sequenceDiagram') === 0 ||
+                                src.trim().indexOf('stateDiagram') === 0;
+                            extendViewBoxHeight(svgEl, isSeqOrState);
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                        }
+                    } catch (err) {
+                        container.innerHTML =
+                            '<span class="diagram-loading">diagram render error: ' +
+                            err.message +
+                            '</span>';
+                    }
+                }
+            }
+
+            function setupSidebarObserver() {
+                var sections = document.querySelectorAll('main section[id]');
+                var navLinks = document.querySelectorAll('.sidebar-nav a');
+                var observer = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting) {
+                                var id = entry.target.getAttribute('id');
+                                navLinks.forEach(function (link) {
+                                    link.classList.toggle(
+                                        'active',
+                                        link.getAttribute('href') === '#' + id,
+                                    );
+                                });
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+                sections.forEach(function (s) {
+                    observer.observe(s);
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                loadCodeBlocks();
+                setupCopyButtons();
+                setupSidebarObserver();
+                renderDiagrams();
+            });
+        </script>
+    </body>
+</html>

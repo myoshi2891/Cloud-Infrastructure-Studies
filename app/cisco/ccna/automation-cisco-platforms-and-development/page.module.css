@@ -1,0 +1,447 @@
+.ccnaPlatformsDevPage {
+  min-height: 100vh;
+  background: var(--color-guide-background);
+  color: var(--color-ccna-platforms-foreground);
+  font-family: var(--font-ccna-platforms-sans);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ccnaPlatformsDevPage :global(a) {
+  color: var(--color-guide-accent);
+  text-decoration: none;
+}
+
+.ccnaPlatformsDevPage :global(a:hover) {
+  text-decoration: underline;
+}
+
+/* ---------- Layout ---------- */
+.ccnaPlatformsDevPage :global(.layout) {
+  display: block;
+  min-height: 100vh;
+  position: relative;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar) {
+  position: fixed;
+  top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+  left: 0;
+  width: 280px;
+  height: calc(100vh - var(--header-h, 60px) - var(--disclaimer-height, 0px));
+  overflow-y: auto;
+  background: var(--color-ccna-platforms-surface-1);
+  border-right: 1px solid var(--color-guide-accent-glow);
+  padding: 32px 22px 48px;
+  z-index: 20;
+  scrollbar-width: thin;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar .brand) {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--color-ccna-platforms-foreground);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar .brand-sub) {
+  font-size: 1rem;
+  color: var(--color-ccna-platforms-foreground-faint);
+  margin-bottom: 28px;
+  display: block;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar nav ul) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar nav li) {
+  margin-bottom: 2px;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar nav a) {
+  display: block;
+  padding: 9px 12px;
+  font-size: 1rem;
+  color: var(--color-ccna-platforms-foreground-muted);
+  border-left: 2px solid transparent;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar nav a:hover) {
+  color: var(--color-ccna-platforms-foreground);
+  background: rgba(124, 158, 255, 0.06);
+  text-decoration: none;
+}
+
+.ccnaPlatformsDevPage :global(.sidebar nav a.active) {
+  color: var(--color-guide-accent);
+  border-left: 2px solid var(--color-guide-accent);
+  background: rgba(124, 158, 255, 0.09);
+  font-weight: 600;
+}
+
+/* ---------- Main Content ---------- */
+.ccnaPlatformsDevPage :global(.content) {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  max-width: none;
+  box-sizing: border-box;
+  padding: 0 64px 100px;
+}
+
+.ccnaPlatformsDevPage :global(.article-body) {
+  width: 100%;
+  max-width: none;
+}
+
+.ccnaPlatformsDevPage :global(.hero) {
+  padding: 72px 0 40px;
+  border-bottom: 1px solid var(--color-ccna-platforms-border-soft);
+  margin-bottom: 48px;
+}
+
+.ccnaPlatformsDevPage :global(.hero .kicker) {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-guide-accent);
+  background: rgba(124, 158, 255, 0.1);
+  border: 1px solid var(--color-guide-accent-glow);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+}
+
+.ccnaPlatformsDevPage :global(.hero h1) {
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.35;
+  margin: 0 0 20px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--color-guide-accent) 0%, var(--color-ccna-platforms-accent-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.ccnaPlatformsDevPage :global(.hero .lead) {
+  font-size: 1.15rem;
+  color: var(--color-ccna-platforms-foreground-muted);
+  max-width: none;
+  margin: 0 0 28px;
+  line-height: 1.8;
+}
+
+.ccnaPlatformsDevPage :global(.meta-bar) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.ccnaPlatformsDevPage :global(.meta-chip) {
+  background: var(--color-ccna-platforms-surface-2);
+  border: 1px solid var(--color-guide-accent-glow);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  color: var(--color-ccna-platforms-foreground-muted);
+}
+
+.ccnaPlatformsDevPage :global(.meta-chip b) {
+  color: var(--color-ccna-platforms-foreground);
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 2px;
+}
+
+.ccnaPlatformsDevPage :global(.notice-box) {
+  background: var(--color-ccna-platforms-surface-2);
+  border: 1px solid var(--color-guide-accent-glow);
+  border-left: 3px solid var(--color-guide-accent);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 28px 0;
+  color: var(--color-ccna-platforms-foreground-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.ccnaPlatformsDevPage :global(.notice-box strong) {
+  color: var(--color-ccna-platforms-foreground);
+}
+
+/* ---------- Sections ---------- */
+.ccnaPlatformsDevPage :global(.section) {
+  padding-top: 12px;
+  margin-bottom: 64px;
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.ccnaPlatformsDevPage :global(.section h2) {
+  font-size: 1.75rem;
+  color: var(--color-ccna-platforms-foreground);
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.ccnaPlatformsDevPage :global(.section h2 .num) {
+  color: var(--color-ccna-platforms-accent-secondary);
+  font-family: var(--font-ccna-platforms-mono);
+  font-size: 1.1rem;
+}
+
+.ccnaPlatformsDevPage :global(.section h3) {
+  font-size: 1.3rem;
+  color: var(--color-guide-accent);
+  margin: 40px 0 14px;
+}
+
+.ccnaPlatformsDevPage :global(.section h4) {
+  font-size: 1.08rem;
+  color: var(--color-ccna-platforms-foreground);
+  margin: 26px 0 10px;
+}
+
+.ccnaPlatformsDevPage :global(.prose p) {
+  margin: 0 0 18px;
+  color: var(--color-ccna-platforms-foreground);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.ccnaPlatformsDevPage :global(.prose ul),.ccnaPlatformsDevPage :global(.prose ol) {
+  margin: 0 0 20px;
+  padding-left: 1.4em;
+  color: var(--color-ccna-platforms-foreground);
+}
+
+.ccnaPlatformsDevPage :global(.prose li) {
+  margin-bottom: 8px;
+}
+
+.ccnaPlatformsDevPage :global(.prose strong) {
+  color: var(--color-ccna-platforms-accent-secondary);
+}
+
+/* ---------- Callouts ---------- */
+.ccnaPlatformsDevPage :global(.callout) {
+  background: var(--color-ccna-platforms-accent-secondary-soft);
+  border: 1px solid rgba(255, 212, 121, 0.35);
+  border-left: 3px solid var(--color-ccna-platforms-accent-secondary);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 26px 0;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.ccnaPlatformsDevPage :global(.callout .callout-label) {
+  font-weight: 700;
+  color: var(--color-ccna-platforms-accent-secondary);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ---------- Tables ---------- */
+.ccnaPlatformsDevPage :global(.table-wrapper) {
+  overflow-x: auto;
+  margin: 26px 0;
+  border: none;
+  border-radius: 0;
+}
+
+.ccnaPlatformsDevPage :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  background: var(--color-ccna-platforms-surface-2);
+  border-radius: var(--radius-ccna-platforms);
+  overflow: hidden;
+}
+
+.ccnaPlatformsDevPage :global(thead th) {
+  text-align: left;
+  padding: 14px 18px;
+  background: rgba(124, 158, 255, 0.12);
+  color: var(--color-guide-accent);
+  font-weight: 700;
+  border-bottom: 1px solid var(--color-guide-accent-glow);
+  white-space: nowrap;
+}
+
+.ccnaPlatformsDevPage :global(tbody td) {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--color-ccna-platforms-border-soft);
+  color: var(--color-ccna-platforms-foreground);
+  vertical-align: top;
+}
+
+.ccnaPlatformsDevPage :global(tbody tr:last-child td) {
+  border-bottom: none;
+}
+
+.ccnaPlatformsDevPage :global(tbody tr:hover td) {
+  background: rgba(124, 158, 255, 0.04);
+}
+
+.ccnaPlatformsDevPage :global(tr.highlight td) {
+  background: rgba(255, 212, 121, 0.08);
+}
+
+.ccnaPlatformsDevPage :global(tr.highlight td:first-child) {
+  border-left: 3px solid var(--color-ccna-platforms-accent-secondary);
+}
+
+/* ---------- Diagrams ---------- */
+.ccnaPlatformsDevPage :global(.diagram-wrapper) {
+  overflow-x: auto;
+  margin: 30px 0;
+  background: var(--color-ccna-platforms-surface-2);
+  border: 1px solid var(--color-guide-accent-glow);
+  border-radius: var(--radius-ccna-platforms);
+  padding: 28px 12px;
+  max-width: 100%;
+}
+
+.ccnaPlatformsDevPage :global(.mermaid-wrap) {
+  display: flex;
+  justify-content: safe center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.ccnaPlatformsDevPage :global(.mermaid-wrap svg) {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Ensure yellow node text is dark and high-contrast (#241a00) */
+.ccnaPlatformsDevPage :global(#D3 .nodeLabel),.ccnaPlatformsDevPage :global(#D3 .nodeLabel *),.ccnaPlatformsDevPage :global(#D3 span),.ccnaPlatformsDevPage :global(#D3 div),.ccnaPlatformsDevPage :global(#D3 p),.ccnaPlatformsDevPage :global([id*="D3"] .nodeLabel),.ccnaPlatformsDevPage :global([id*="D3"] .nodeLabel *),.ccnaPlatformsDevPage :global(.node[style*="ffe08a" i] .nodeLabel),.ccnaPlatformsDevPage :global(.node[style*="ffe08a" i] .nodeLabel *),.ccnaPlatformsDevPage :global(.node[style*="FFE08A" i] .nodeLabel),.ccnaPlatformsDevPage :global(.node[style*="FFE08A" i] .nodeLabel *),.ccnaPlatformsDevPage :global(.node[style*="255, 224, 138" i] .nodeLabel),.ccnaPlatformsDevPage :global(.node[style*="255, 224, 138" i] .nodeLabel *),.ccnaPlatformsDevPage :global(.node:has([style*="ffe08a" i]) .nodeLabel),.ccnaPlatformsDevPage :global(.node:has([style*="ffe08a" i]) .nodeLabel *),.ccnaPlatformsDevPage :global(.node:has([fill*="ffe08a" i]) .nodeLabel),.ccnaPlatformsDevPage :global(.node:has([fill*="ffe08a" i]) .nodeLabel *),.ccnaPlatformsDevPage :global(.node:has([fill*="FFE08A" i]) .nodeLabel),.ccnaPlatformsDevPage :global(.node:has([fill*="FFE08A" i]) .nodeLabel *),.ccnaPlatformsDevPage :global(.node:has([fill*="#ffe08a" i]) .nodeLabel),.ccnaPlatformsDevPage :global(.node:has([fill*="#ffe08a" i]) .nodeLabel *) {
+  color: #241a00 !important;
+  fill: #241a00 !important;
+}
+
+/* ---------- Code Blocks ---------- */
+.ccnaPlatformsDevPage :global(.code-block) {
+  background: var(--color-ccna-platforms-code-background);
+  border: 1px solid var(--color-guide-accent-glow);
+  border-radius: var(--radius-ccna-platforms);
+  padding: 22px 24px;
+  overflow-x: auto;
+  margin: 14px 0 26px;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-family: var(--font-ccna-platforms-mono);
+}
+
+.ccnaPlatformsDevPage :global(.code-keyword) { color: #ff7b72; font-weight: 600; }
+.ccnaPlatformsDevPage :global(.code-string) { color: #a5d6ff; }
+.ccnaPlatformsDevPage :global(.code-comment) { color: #8b949e; font-style: italic; }
+
+/* ---------- Roadmap Steps ---------- */
+.ccnaPlatformsDevPage :global(.step-list) {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+
+.ccnaPlatformsDevPage :global(.step-list li) {
+  counter-increment: step;
+  position: relative;
+  padding: 6px 0 6px 46px;
+  margin-bottom: 16px;
+  color: var(--color-ccna-platforms-foreground);
+  line-height: 1.8;
+}
+
+.ccnaPlatformsDevPage :global(.step-list li::before) {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 32px;
+  height: 32px;
+  background: rgba(124, 158, 255, 0.14);
+  border: 1px solid var(--color-guide-accent-glow);
+  color: var(--color-guide-accent);
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* ---------- Footer ---------- */
+.ccnaPlatformsDevPage :global(.footer) {
+  border-top: 1px solid var(--color-ccna-platforms-border-soft);
+  padding-top: 32px;
+  color: var(--color-ccna-platforms-foreground-faint);
+  font-size: 1rem;
+  scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.ccnaPlatformsDevPage :global(.refs-list) {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: ref;
+}
+
+.ccnaPlatformsDevPage :global(.refs-list li) {
+  counter-increment: ref;
+  padding: 12px 0 12px 40px;
+  position: relative;
+  border-bottom: 1px solid var(--color-ccna-platforms-border-soft);
+  font-size: 1rem;
+}
+
+.ccnaPlatformsDevPage :global(.refs-list li::before) {
+  content: counter(ref);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  color: var(--color-ccna-platforms-accent-secondary);
+  font-family: var(--font-ccna-platforms-mono);
+  font-weight: 700;
+}
+
+.ccnaPlatformsDevPage :global(.refs-list a) {
+  color: var(--color-guide-accent);
+  word-break: break-all;
+}
+
+.ccnaPlatformsDevPage :global(.refs-list .ref-desc) {
+  color: var(--color-ccna-platforms-foreground-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  .ccnaPlatformsDevPage :global(.sidebar) {
+    display: none;
+  }
+  .ccnaPlatformsDevPage :global(.content) {
+    margin-left: 0;
+    width: 100%;
+    max-width: none;
+    padding: 0 24px 80px;
+  }
+  .ccnaPlatformsDevPage :global(.hero) {
+    padding: 48px 0 32px;
+  }
+}

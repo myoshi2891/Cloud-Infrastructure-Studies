@@ -76,22 +76,9 @@ describe('CcnaSoftwareDevDesignPage', () => {
         expect(diagrams).toHaveLength(12);
         diagrams.forEach((diagram) => expect(diagram).toHaveAttribute('data-natural-scale', 'true'));
 
-        const widths: Record<string, string> = {
-            'diag-0': '760px',
-            'diag-1': '1200px',
-            'diag-2': '760px',
-            'diag-3': '760px',
-            'diag-4': '940px',
-            'diag-5': '940px',
-            'diag-6': '760px',
-            'diag-7': '900px',
-            'diag-8': '860px',
-            'diag-9': '900px',
-            'diag-10': '760px',
-            'diag-11': '760px',
-        };
-        Object.entries(widths).forEach(([id, width]) => {
-            expect(container.querySelector(`[data-diagram-id="${id}"]`)).toHaveStyle({ maxWidth: width });
+        const diagramIds = ['diag-0', 'diag-1', 'diag-2', 'diag-3', 'diag-4', 'diag-5', 'diag-6', 'diag-7', 'diag-8', 'diag-9', 'diag-10', 'diag-11'];
+        diagramIds.forEach((id) => {
+            expect(container.querySelector(`[data-diagram-id="${id}"]`)).toHaveStyle({ maxWidth: '100%' });
         });
     });
 

@@ -1,8 +1,7 @@
 /* Scoped CSS for GCP ACE Section 1 Complete Guide
  * 正本: Ace-section1-complete-guide.html の <style>。
- * 色は globals.css の design token（--color-google-*, --color-background 等）に整合させ、
- * トークンが存在しない値（青みがかった境界線・紫アクセント等）は元の HTML 値をリテラルで保持。
- * 新規カスタムプロパティ（--*）はこのファイルで定義しない（プロジェクト規約）。
+ * 色は globals.css の承認済み3層 design token を参照し、
+ * component-level CSS に custom property を定義しない。
  */
 
 .ace-s1-page *,
@@ -148,6 +147,9 @@
 /* ===== MAIN CONTENT ===== */
 .ace-s1-page .main {
     margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     flex: 1;
     min-width: 0;
     min-height: 100vh;
@@ -798,6 +800,8 @@
     }
     .ace-s1-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
     .ace-s1-page .hero,
     .ace-s1-page .content {

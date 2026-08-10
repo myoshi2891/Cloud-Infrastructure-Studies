@@ -9,8 +9,8 @@
  * Layer 2: 共有プリミティブ
  *   → 全ページで共通のフォント・radius・shadow 等。
  *
- * Layer 3: ページ固有テーマ変数（各ページの .css ファイルで定義）
- *   → Aurora, Sapphire, Laboratory, Executive 等のテーマカラー。
+ * Layer 3: 承認済みページ／テーマトークン（この @theme で一元管理）
+ *   → ページ CSS は新規 custom property を定義せず、この層を参照する。
  */
 
 @theme {
@@ -77,6 +77,17 @@
     --color-guide-meta: #5f7291;
     --color-guide-hero-start: #ffffff;
 
+    /* CCNA Platforms and Development guide (source-design fidelity) */
+    --color-ccna-platforms-surface-1: #0d1b2c;
+    --color-ccna-platforms-surface-2: #101f34;
+    --color-ccna-platforms-code-background: #0a1424;
+    --color-ccna-platforms-border-soft: rgba(124, 158, 255, 0.1);
+    --color-ccna-platforms-accent-secondary: #ffd479;
+    --color-ccna-platforms-accent-secondary-soft: rgba(255, 212, 121, 0.14);
+    --color-ccna-platforms-foreground: #e8edf7;
+    --color-ccna-platforms-foreground-muted: #9aa8c4;
+    --color-ccna-platforms-foreground-faint: #6b7a99;
+
     --color-theme-cdl-bg: hsl(160 50% 45% / 0.25);
     --color-theme-cdl-fg: hsl(160 70% 65%);
 
@@ -109,6 +120,14 @@
     --color-google-red: #ea4335;
     --color-google-blue-rgb: 66, 133, 244;
 
+    /* Layer 3: Shared GCP dark-guide theme tokens */
+    --color-gcp-purple: #9334e6;
+    --color-gcp-teal: #00bcd4;
+    --color-gcp-card-hover: #1a2035;
+    --color-gcp-code-background: #0d1117;
+    --color-gcp-border: rgba(var(--color-google-blue-rgb), 0.2);
+    --color-gcp-border-bright: rgba(var(--color-google-blue-rgb), 0.5);
+    --color-gcp-accent-glow: rgba(var(--color-google-blue-rgb), 0.15);
 
     /* Callout & Status Themes */
     --color-warning: #fb923c;
@@ -146,6 +165,8 @@
     --font-display: 'DM Sans', sans-serif;
     --font-body: 'Noto Sans JP', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    --font-ccna-platforms-sans: 'Noto Sans JP', 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', sans-serif;
+    --font-ccna-platforms-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
 
     /* サイトヘッダーの高さ */
     --header-h: 48px;
@@ -160,6 +181,8 @@
     --radius-md: 10px;
     --radius-lg: 16px;
     --radius-xl: 24px;
+    --radius-ccna-platforms: 14px;
+    --spacing-ccna-platforms-sidebar: 300px;
 
 }
 

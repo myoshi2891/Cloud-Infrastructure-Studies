@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS, type DiagramId } from './constants';
 import { NavBar } from './NavBar';
@@ -12,7 +12,7 @@ import { NavBar } from './NavBar';
  * @param label - Accessibility label for the diagram
  * @returns The rendered diagram container
  */
-function Diagram({ id, label }: { id: DiagramId; label: string }) {
+const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     return (
         <div className="mermaid-block">
@@ -21,7 +21,7 @@ function Diagram({ id, label }: { id: DiagramId; label: string }) {
             </div>
         </div>
     );
-}
+});
 
 /**
  * Presents a walkthrough for securing and validating a GKE private cluster.
@@ -59,6 +59,7 @@ export function GkePrivateClusterSecurityGuide() {
                 <NavBar activeId={activeId} />
 
                 <main className="main">
+                    <div className="content-inner">
                     <div className="hero">
                         <span className="eyebrow">
                             <i className="ti ti-cloud-lock" />
@@ -1059,6 +1060,7 @@ export function GkePrivateClusterSecurityGuide() {
                     <footer>
                         GKE Private Cluster Security Guide — Orca team challenge lab walkthrough
                     </footer>
+                    </div>
                 </main>
             </div>
         </div>

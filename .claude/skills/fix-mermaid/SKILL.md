@@ -225,11 +225,12 @@ mermaid.initialize({
 ```css
 .mermaid-wrap {
     display: flex;
-    justify-content: center;
+    justify-content: safe center; /* 親幅を超える場合は flex-start（左詰め）として扱い左見切れを防ぐ */
+    overflow-x: auto;
 }
 .mermaid {
     display: flex;
-    justify-content: center;
+    justify-content: safe center;
     width: 100%;
 }
 .mermaid svg {
@@ -317,7 +318,28 @@ const DISPLAY = {
 </div>
 ```
 
-自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` を検証する。既定動作のテストも残し、他ページへの波及を防ぐ。
+自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` を検証する。既定動作のテストも残し、他ページへの波及を防ぐ。
+
+#### ⚠️ スクロール時の図解縮小・チカチカバグの防止（React.memo メモ化）
+
+`IntersectionObserver` 等によるスクロール位置の監視（`setActiveSection` 等）により、親コンポーネントがスクロールするたびに高頻度で再レンダリングされる。
+ダイアグラムラッパー（`Diagram` コンポーネント等）および `MermaidDiagram` がメモ化されていない場合、親の再レンダリングのたびに `dangerouslySetInnerHTML` や `useEffect` がトリガーされ、DOM に適用された `style.width` などのインラインスタイルがリセットされて「上下スクロール時に図が豆粒に縮小される」不具合が発生する。
+
+**【対策】**:
+1. `MermaidDiagram` および各ガイドページの `Diagram` コンポーネントを必ず `React.memo` でラップする。
+2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` で `targetWidth = viewBox幅` および `svgEl.style.maxWidth = 'none'` を設定し、コンテナ幅の変化に追従した自動縮小を防止する。小さい図でも600pxなどの最小幅へ拡大せず、`width === viewBox幅` を正準仕様とする。
+
+```tsx
+const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
+    const chart = DIAGRAMS[id];
+    if (!chart) return null;
+    return (
+        <div className="mermaid-wrap">
+            <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale={true} />
+        </div>
+    );
+});
+```
 
 
 #### 2. テスト環境（Vitest）での MermaidDiagram のモック化
@@ -362,7 +384,7 @@ mermaid.initialize({
         lineColor: '#5f7fb8', secondaryColor: '#0f9d58', tertiaryColor: '#0d1a2e',
         background: '#060b14', mainBkg: '#0f2040', nodeBorder: '#1a73e8',
         clusterBkg: '#0d1a2e', titleColor: '#e8f0fe', edgeLabelBackground: '#0d1a2e',
-        fontFamily: "'Noto Sans JP', sans-serif", fontSize: '16px', // 標準環境の1rem
+        fontFamily: "'Noto Sans JP', sans-serif", fontSize: '16px', // SVG採寸に使う明示値
     },
     flowchart: { curve: 'basis', padding: 20 },
     sequence: { actorMargin: 60, mirrorActors: true },
@@ -378,7 +400,11 @@ mermaid.initialize({
 **`innerHTML` 注入後の実 DOM 要素を直接操作**する（`apply_render_pipeline.mjs` も同方式）。React では `ref` + `svgStr` 依存の `useEffect` で、注入済み `<svg>` に対して後処理を適用する。
 
 ```ts
-const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
+const applySvgFixups = (
+    svgEl: SVGSVGElement,
+    chart: string,
+    preserveNaturalScale = false
+): void => {
     svgEl.removeAttribute('width');
     svgEl.removeAttribute('height');
     svgEl.style.height = 'auto';
@@ -386,7 +412,10 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
     svgEl.style.marginBottom = '10px';
 
     const viewBox = svgEl.getAttribute('viewBox');
-    if (!viewBox) return;
+    if (!viewBox) {
+        svgEl.style.maxWidth = '100%';
+        return;
+    }
     const parts = viewBox.split(/\s+/).map(Number);
     if (parts.length !== 4 || !parts.every((n) => Number.isFinite(n))) return;
     const trimmed = chart.trim();
@@ -394,14 +423,35 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
         trimmed.startsWith('sequenceDiagram') || trimmed.startsWith('stateDiagram');
     const extraHeight = isSequenceOrState ? 110 : 15;
     const [x, y, w, h] = parts as [number, number, number, number];
-    // ⚠️ SVG 幅の鉄則: viewBox 由来の自然 px 幅 + maxWidth:100% を使う。
-    //    width:'100%' は viewBox のみで intrinsic サイズを持たない SVG をコンテナ全幅へ
-    //    伸ばし、小さい flowchart LR 図を異常拡大させるため使わない。
-    //    width:${w}px + maxWidth:100% なら「親より広い図のみ縮小、小さい図は自然サイズ」となる。
-    svgEl.style.width = `${w}px`;
-    svgEl.style.maxWidth = '100%';
+
+    let targetWidth = w;
+    if (preserveNaturalScale && w > 0) {
+        // preserveNaturalScale=true: Mermaidの採寸倍率を保つため viewBox 由来の自然 px 幅 (1.0倍) を維持する
+        targetWidth = w;
+    } else if (!preserveNaturalScale && w > 0 && w < 550) {
+        targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
+    }
+    svgEl.style.width = `${targetWidth}px`;
+    // preserveNaturalScale=true のときは max-width:none でスクロール時・コンテナ幅変更時の縮小を防止
+    svgEl.style.maxWidth = preserveNaturalScale ? 'none' : '100%';
+    svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
+```
+
+### Mermaid の採寸値と CSS 文字サイズを一致させる
+
+`1rem` は固定の16pxではなくルート要素の `font-size` に依存する。Mermaid が `themeVariables.fontSize: '16px'` でラベルを採寸する本実装では、図解内の文字要素にも `16px` を明示し、採寸値と実描画値を一致させる。ルートの文字サイズを変更しても SVG ラベルだけが再スケールされないため、採寸後の文字切れを防げる。
+
+```css
+.mermaidTarget :global(foreignObject > div),
+.mermaidTarget :global(.nodeLabel),
+.mermaidTarget :global(.edgeLabel),
+.mermaidTarget :global(text),
+.mermaidTarget :global(tspan) {
+    overflow: visible;
+    font-size: 16px !important;
+}
 ```
 
 ### 文字色は「ノードラベル限定」で当てる（明背景×明文字の再発防止）
@@ -423,13 +473,29 @@ const applySvgFixups = (svgEl: SVGSVGElement, chart: string): void => {
 .mermaidTarget :global(.node .nodeLabel),
 .mermaidTarget :global(.node .nodeLabel *) { color: #ffffff !important; }
 
-/* 黄色ノード(#fbbc04)のみラベルを黒に戻す（白×黄の同化回避） */
+/* 黄色系ノード(#fbbc04, #ffe08a, #ffd479, #ffba00)は白×黄で同化するため、ラベルのみ黒に戻す */
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel),
 .mermaidTarget :global(.node[style*="fbbc04" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="ffe08a" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="ffe08a" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="ffd479" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="ffd479" i] .nodeLabel *),
+.mermaidTarget :global(.node[style*="ffba00" i] .nodeLabel),
+.mermaidTarget :global(.node[style*="ffba00" i] .nodeLabel *),
 .mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel),
 .mermaidTarget :global(.node:has([style*="fbbc04" i]) .nodeLabel *),
-.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel),
-.mermaidTarget :global(.node:has([fill="#fbbc04" i]) .nodeLabel *) { color: #000000 !important; }
+.mermaidTarget :global(.node:has([style*="ffe08a" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="ffe08a" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([style*="ffd479" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([style*="ffd479" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="fbbc04" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="fbbc04" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="ffe08a" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="ffe08a" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="ffd479" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="ffd479" i]) .nodeLabel *),
+.mermaidTarget :global(.node:has([fill*="ffba00" i]) .nodeLabel),
+.mermaidTarget :global(.node:has([fill*="ffba00" i]) .nodeLabel *) { color: #000000 !important; }
 ```
 
 > `.edgeLabel *` に `fill:#fff` を当てない。エッジラベルの背景 `rect` が白く塗り潰される。色を当てるのは**ラベルテキストのみ・`color` のみ**に留める。

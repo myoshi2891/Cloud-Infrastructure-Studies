@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { memo, useState, useEffect, useRef, useCallback } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { NavBar } from './NavBar';
 import { DIAGRAMS } from './constants';
@@ -12,7 +12,7 @@ import { DIAGRAMS } from './constants';
  * @param label - The accessible label for the rendered diagram
  * @returns The rendered diagram, or `null` when the identifier is unknown
  */
-function Diagram({ id, label }: { id: string; label: string }) {
+const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -20,7 +20,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
             <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale={true} />
         </div>
     );
-}
+});
 
 /**
  * Renders the Team Griffin Google Cloud infrastructure challenge-lab guide, including navigation and task instructions for configuring VPCs, Cloud SQL, GKE, WordPress, monitoring, and IAM.
@@ -116,6 +116,7 @@ export function GriffinWordPressGkeGuide() {
                 />
 
                 <main className="main">
+                    <div className="content-inner">
                     <div className="hero">
                         <div className="hero-eyebrow">
                             <i className="ti ti-google" aria-hidden="true" />
@@ -1410,6 +1411,7 @@ export function GriffinWordPressGkeGuide() {
                     </section>
 
                     <div className="footer">Team Griffin インフラ構築チャレンジラボ 完全解説ガイド</div>
+                    </div>
                 </main>
             </div>
         </div>

@@ -33,8 +33,8 @@
 
 /* SIDEBAR */
 .ace-s2-page .sidebar {
-    width: var(--sidebar-w);
-    min-width: var(--sidebar-w);
+    width: 280px;
+    min-width: 280px;
     background: var(--bg-sidebar);
     border-right: 1px solid var(--border);
     position: fixed;
@@ -212,7 +212,10 @@
 
 /* MAIN */
 .ace-s2-page .main {
-    margin-left: var(--sidebar-w);
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
     flex: 1;
     min-width: 0;
 }
@@ -1065,6 +1068,8 @@
     }
     .ace-s2-page .main {
         margin-left: 0;
+        width: 100%;
+        max-width: none;
     }
     .ace-s2-page .hero,
     .ace-s2-page .content {

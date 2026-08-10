@@ -1,0 +1,285 @@
+.ccna-app-deployment-security-page {
+    background: var(--color-background, #08090f);
+    color: var(--color-foreground, #e2e8f0);
+    font-family: var(--font-body, 'Noto Sans JP', sans-serif);
+    font-size: 16px;
+    line-height: 1.85;
+    min-height: 100vh;
+}
+
+.ccna-app-deployment-security-page .layout {
+    display: block;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.ccna-app-deployment-security-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    overflow-y: auto;
+    background: var(--color-card-secondary, #0d1b2e);
+    border-right: 1px solid var(--color-border, #1e2840);
+    padding: 24px 18px 36px;
+    z-index: 40;
+}
+
+.ccna-app-deployment-security-page .toc-title {
+    font-family: var(--font-display, sans-serif);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-primary, #7c9eff);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-border, #1e2840);
+}
+
+.ccna-app-deployment-security-page .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ccna-app-deployment-security-page .toc-link {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: var(--color-muted-foreground, #94a3b8);
+    text-decoration: none;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ccna-app-deployment-security-page .toc-link:hover {
+    background: rgba(124, 158, 255, 0.08);
+    color: var(--color-foreground, #e2e8f0);
+}
+
+.ccna-app-deployment-security-page .toc-link.active {
+    background: rgba(124, 158, 255, 0.15);
+    color: var(--color-primary, #7c9eff);
+    font-weight: 600;
+}
+
+/* ---------- Main Content ---------- */
+.ccna-app-deployment-security-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    box-sizing: border-box;
+    padding: 32px 40px 80px;
+}
+
+.ccna-app-deployment-security-page .content-inner {
+    width: 100%;
+    max-width: none;
+}
+
+.ccna-app-deployment-security-page .hero {
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border, #1e2840);
+}
+
+.ccna-app-deployment-security-page .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-primary, #7c9eff);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.ccna-app-deployment-security-page .hero h1 {
+    font-family: var(--font-display, sans-serif);
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--color-foreground, #f8fafc);
+    margin: 0 0 16px;
+}
+
+.ccna-app-deployment-security-page .hero-description {
+    font-size: 1.05rem;
+    color: var(--color-muted-foreground, #cbd5e1);
+    background: rgba(124, 158, 255, 0.05);
+    border-left: 4px solid var(--color-primary, #7c9eff);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 16px;
+}
+
+/* ---------- Sections ---------- */
+.ccna-app-deployment-security-page .section-block {
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+    margin-bottom: 56px;
+}
+
+.ccna-app-deployment-security-page h2 {
+    font-family: var(--font-display, sans-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-foreground, #f8fafc);
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-border, #1e2840);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ccna-app-deployment-security-page h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary, #7c9eff);
+    margin: 32px 0 16px;
+}
+
+.ccna-app-deployment-security-page p {
+    margin-bottom: 16px;
+    color: var(--color-foreground, #e2e8f0);
+}
+
+.ccna-app-deployment-security-page ul,
+.ccna-app-deployment-security-page ol {
+    margin-bottom: 20px;
+    padding-left: 24px;
+}
+
+.ccna-app-deployment-security-page li {
+    margin-bottom: 8px;
+}
+
+/* ---------- Cards & Callouts ---------- */
+.ccna-app-deployment-security-page .card {
+    background: var(--color-card, #0f172a);
+    border: 1px solid var(--color-border, #1e2840);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.ccna-app-deployment-security-page .callout {
+    background: rgba(124, 158, 255, 0.08);
+    border: 1px solid rgba(124, 158, 255, 0.2);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+}
+
+.ccna-app-deployment-security-page .callout-warning {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ---------- Tables ---------- */
+.ccna-app-deployment-security-page .table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border, #1e2840);
+}
+
+.ccna-app-deployment-security-page table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    text-align: left;
+}
+
+.ccna-app-deployment-security-page th,
+.ccna-app-deployment-security-page td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border, #1e2840);
+}
+
+.ccna-app-deployment-security-page th {
+    background: var(--color-card-secondary, #0d1b2e);
+    color: var(--color-primary, #7c9eff);
+    font-weight: 600;
+}
+
+.ccna-app-deployment-security-page tr:last-child td {
+    border-bottom: none;
+}
+
+.ccna-app-deployment-security-page tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* ---------- Code Blocks ---------- */
+.ccna-app-deployment-security-page .code-block {
+    background: #0d1117;
+    border: 1px solid var(--color-border, #1e2840);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.ccna-app-deployment-security-page .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background: #161b22;
+    border-bottom: 1px solid #21262d;
+    border-radius: 8px 8px 0 0;
+    font-size: 0.78rem;
+    color: var(--color-muted-foreground, #8b949e);
+    font-family: var(--font-mono, monospace);
+    margin: -16px -16px 16px -16px;
+}
+
+.ccna-app-deployment-security-page .code-line {
+    white-space: pre;
+}
+
+.ccna-app-deployment-security-page .code-comment {
+    color: #8b949e;
+}
+
+.ccna-app-deployment-security-page .code-keyword {
+    color: #ff7b72;
+}
+
+.ccna-app-deployment-security-page .code-string {
+    color: #a5d6ff;
+}
+
+.ccna-app-deployment-security-page .code-function {
+    color: #d2a8ff;
+}
+
+/* ---------- Mermaid Diagram Wrapper ---------- */
+.ccna-app-deployment-security-page .mermaid-wrap {
+    margin: 24px auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .ccna-app-deployment-security-page .sidebar {
+        display: none;
+    }
+
+    .ccna-app-deployment-security-page .main {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
+        padding: 24px 20px 60px;
+    }
+}

@@ -436,16 +436,16 @@ export default function IapTcpForwardingGuide() {
                         <pre className="codeblock">
                             <div className="code-line">gcloud compute instances add-iam-policy-binding INSTANCE_NAME \</div>
                             <div className="code-line">  --zone=ZONE \</div>
-                            <div className="code-line">  --member="user:EMAIL" \</div>
-                            <div className="code-line">  --role="roles/iap.tunnelResourceAccessor"</div>
+                            <div className="code-line">  --member=&quot;user:EMAIL&quot; \</div>
+                            <div className="code-line">  --role=&quot;roles/iap.tunnelResourceAccessor&quot;</div>
                         </pre>
                         <p>さらにポートを絞り込む場合は <code>--condition</code> を付与します。</p>
                         <pre className="codeblock">
                             <div className="code-line">gcloud compute instances add-iam-policy-binding INSTANCE_NAME \</div>
                             <div className="code-line">  --zone=ZONE \</div>
-                            <div className="code-line">  --member="group:EMAIL" \</div>
-                            <div className="code-line">  --role="roles/iap.tunnelResourceAccessor" \</div>
-                            <div className="code-line">  --condition="expression=destination.port==22,title=ssh-only"</div>
+                            <div className="code-line">  --member=&quot;group:EMAIL&quot; \</div>
+                            <div className="code-line">  --role=&quot;roles/iap.tunnelResourceAccessor&quot; \</div>
+                            <div className="code-line">  --condition=&quot;expression=destination.port==22,title=ssh-only&quot;</div>
                         </pre>
                         <blockquote>
                             <p>参考:</p>

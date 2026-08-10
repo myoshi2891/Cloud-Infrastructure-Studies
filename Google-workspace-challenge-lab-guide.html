@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Google Workspace 入門チャレンジラボ 完全攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css"
+            integrity="sha384-ccZHbezhtZWmNy0cg8odL0D/jFU5k5HIls9y78Qd6lWor7rpvFIZtK0fTFG4z456"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"
+            integrity="sha384-o+g/BxPwhi0C3RK7oQBxQuNimeafQ3GE/ST4iT2BxVI4Wzt60SH4pq9iXVYujjaS"
+            crossorigin="anonymous"
+        ></script>
+        <style>
+            :root {
+                --bg-primary: #07111e;
+                --bg-secondary: #0d1b2e;
+                --bg-tertiary: #13253d;
+                --bg-info: #10243d;
+                --bg-danger: #2a1418;
+                --bg-success: #10241c;
+                --bg-warning: #2a2113;
+                --text-primary: #e8edf5;
+                --text-secondary: #a8b6c9;
+                --text-tertiary: #6d7f97;
+                --text-info: #7c9eff;
+                --text-danger: #ff8f8f;
+                --text-success: #6fd6a0;
+                --text-warning: #f2c265;
+                --border-tertiary: #1c2f47;
+                --border-secondary: #24405f;
+                --border-primary: #7c9eff;
+                --accent: #7c9eff;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP', Meiryo, sans-serif;
+                --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, monospace;
+                --radius-md: 8px;
+                --radius-lg: 12px;
+                --radius-xl: 16px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+                * {
+                    animation-duration: 0.001ms !important;
+                    transition-duration: 0.001ms !important;
+                }
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            a {
+                color: var(--text-info);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            a:focus-visible,
+            button:focus-visible,
+            li:focus-visible {
+                outline: 2px solid var(--accent);
+                outline-offset: 2px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 8px 0;
+                letter-spacing: 0.01em;
+            }
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 48px 0 16px 0;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-tertiary);
+            }
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 12px 0;
+                color: var(--text-primary);
+            }
+            p {
+                margin: 0 0 14px 0;
+                color: var(--text-secondary);
+            }
+            strong {
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border-tertiary);
+                border-radius: 4px;
+                padding: 1px 6px;
+                color: var(--text-info);
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 264px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--bg-secondary);
+                border-right: 1px solid var(--border-tertiary);
+                padding: 28px 20px;
+            }
+            .sidebar-title {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--text-primary);
+                margin-bottom: 4px;
+            }
+            .sidebar-sub {
+                font-size: 16px;
+                color: var(--text-tertiary);
+                margin-bottom: 24px;
+            }
+            .sidebar nav {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .sidebar nav a {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                color: var(--text-secondary);
+                padding: 8px 10px;
+                border-radius: var(--radius-md);
+                border-left: 2px solid transparent;
+            }
+            .sidebar nav a i {
+                font-size: 16px;
+                color: var(--text-tertiary);
+            }
+            .sidebar nav a:hover {
+                background: var(--bg-tertiary);
+                text-decoration: none;
+            }
+            .sidebar nav a.active {
+                color: var(--text-primary);
+                background: var(--bg-tertiary);
+                border-left: 2px solid var(--accent);
+            }
+            .sidebar nav a.active i {
+                color: var(--accent);
+            }
+            .nav-group-label {
+                font-size: 16px;
+                color: var(--text-tertiary);
+                margin: 18px 0 6px 10px;
+            }
+
+            .main {
+                margin-left: 264px;
+                padding: 56px 64px 96px 64px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 32px 24px 64px 24px;
+                }
+            }
+
+            .hero {
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--border-tertiary);
+                margin-bottom: 8px;
+            }
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 16px;
+                color: var(--text-info);
+                background: var(--bg-info);
+                border: 1px solid var(--border-secondary);
+                border-radius: var(--radius-md);
+                padding: 4px 10px;
+                margin-bottom: 16px;
+            }
+            .hero-sub {
+                font-size: 16px;
+                color: var(--text-secondary);
+                max-width: 72ch;
+            }
+            .lab-link-box {
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 16px;
+                color: var(--text-tertiary);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-md);
+                padding: 12px 16px;
+            }
+
+            section {
+                scroll-margin-top: 24px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 16px 0 24px 0;
+                font-size: 16px;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 10px 14px;
+                border: 1px solid var(--border-tertiary);
+                vertical-align: top;
+            }
+            th {
+                background: var(--bg-tertiary);
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+            td {
+                color: var(--text-secondary);
+            }
+            tr:nth-child(even) td {
+                background: rgba(255, 255, 255, 0.015);
+            }
+
+            .callout {
+                display: flex;
+                gap: 12px;
+                padding: 16px 18px;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border-tertiary);
+                margin: 20px 0;
+                font-size: 16px;
+            }
+            .callout i {
+                font-size: 18px;
+                margin-top: 1px;
+                flex-shrink: 0;
+            }
+            .callout-title {
+                font-weight: 500;
+                color: var(--text-primary);
+                margin-bottom: 4px;
+            }
+            .callout-body {
+                color: var(--text-secondary);
+            }
+            .callout-tip {
+                background: var(--bg-success);
+                border-color: #1f4a35;
+            }
+            .callout-tip i {
+                color: var(--text-success);
+            }
+            .callout-warning {
+                background: var(--bg-warning);
+                border-color: #4a3a1f;
+            }
+            .callout-warning i {
+                color: var(--text-warning);
+            }
+            .callout-info {
+                background: var(--bg-info);
+                border-color: var(--border-secondary);
+            }
+            .callout-info i {
+                color: var(--text-info);
+            }
+
+            .task-header {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                margin: 0 0 4px 0;
+            }
+            .task-num {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius-md);
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border-secondary);
+                color: var(--text-info);
+                font-size: 16px;
+                font-weight: 500;
+                flex-shrink: 0;
+            }
+            .task-header i.task-icon {
+                font-size: 20px;
+                color: var(--text-info);
+            }
+            .task-goal {
+                color: var(--text-secondary);
+                margin: 14px 0 22px 0;
+                padding-left: 50px;
+            }
+
+            ol.steps {
+                list-style: none;
+                counter-reset: step;
+                margin: 0 0 20px 0;
+                padding: 0;
+            }
+            ol.steps li {
+                counter-increment: step;
+                position: relative;
+                padding: 2px 0 14px 40px;
+                color: var(--text-secondary);
+                border-left: 1px solid var(--border-tertiary);
+                margin-left: 15px;
+            }
+            ol.steps li:last-child {
+                border-left: 1px solid transparent;
+            }
+            ol.steps li::before {
+                content: counter(step);
+                position: absolute;
+                left: -15px;
+                top: 0;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: var(--bg-tertiary);
+                border: 1px solid var(--border-secondary);
+                color: var(--text-info);
+                font-size: 16px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .diagram-wrap {
+                display: flex;
+                justify-content: center;
+                margin: 24px 0 32px 0;
+                padding: 20px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-lg);
+                overflow-x: auto;
+            }
+
+            .source-line {
+                font-size: 16px;
+                color: var(--text-tertiary);
+                margin-top: 8px;
+            }
+            .source-line i {
+                color: var(--text-tertiary);
+                margin-right: 4px;
+            }
+
+            .checklist-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 16px;
+                color: var(--text-info);
+            }
+
+            .refs-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin: 16px 0 8px 0;
+            }
+            .ref-card {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 14px 16px;
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-tertiary);
+                border-radius: var(--radius-lg);
+            }
+            .ref-card i {
+                font-size: 18px;
+                color: var(--text-info);
+                margin-top: 2px;
+            }
+            .ref-card-title {
+                font-size: 16px;
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+            .ref-card-url {
+                font-size: 16px;
+                color: var(--text-tertiary);
+                word-break: break-all;
+            }
+
+            footer {
+                margin-top: 64px;
+                padding-top: 24px;
+                border-top: 1px solid var(--border-tertiary);
+                font-size: 16px;
+                color: var(--text-tertiary);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="sidebar-title">Workspace チャレンジラボ</div>
+                <div class="sidebar-sub">攻略ガイド</div>
+                <nav>
+                    <a href="#overview"><i class="ti ti-info-circle"></i>概要</a>
+                    <a href="#prep"><i class="ti ti-checklist"></i>事前準備</a>
+                    <a href="#task-map"><i class="ti ti-route"></i>全体像</a>
+                    <div class="nav-group-label">タスク</div>
+                    <a href="#task1"><i class="ti ti-mail"></i>1. Gmail署名</a>
+                    <a href="#task2"><i class="ti ti-calendar-event"></i>2. OOO予定</a>
+                    <a href="#task3"><i class="ti ti-folder"></i>3. Driveフォルダ</a>
+                    <a href="#task4"><i class="ti ti-users"></i>4. 週次ミーティング</a>
+                    <a href="#task5"><i class="ti ti-table"></i>5. タスクシート共有</a>
+                    <a href="#task6"><i class="ti ti-apps"></i>6. AppSheet</a>
+                    <div class="nav-group-label">まとめ</div>
+                    <a href="#checklist"><i class="ti ti-list-check"></i>チェックリスト</a>
+                    <a href="#troubleshooting"><i class="ti ti-bug"></i>トラブルシューティング</a>
+                    <a href="#summary"><i class="ti ti-flag"></i>まとめ</a>
+                    <a href="#references"><i class="ti ti-books"></i>参考文献</a>
+                </nav>
+            </aside>
+
+            <main class="main">
+                <section id="overview">
+                    <div class="hero">
+                        <span class="eyebrow"
+                            ><i class="ti ti-brand-google"></i>Google Workspace Challenge Lab</span
+                        >
+                        <h1>Google Workspace 入門チャレンジラボ 完全攻略ガイド</h1>
+                        <p class="hero-sub">
+                            Gmail・カレンダー・Drive・Sheets・AppSheet
+                            を横断する初心者向けチャレンジラボを、ステップバイステップかつベストプラクティス付きで解説します。
+                        </p>
+                    </div>
+
+                    <p>
+                        このチャレンジラボは、手順を逐一教えてもらう「ガイド付きラボ」ではなく、これまで学んだ知識を使って自力でタスクを完了させる形式です。しかし初めて
+                        Google Workspace
+                        に触れる方にとっては、どの画面のどのボタンを押せばよいか迷う場面が多くあります。
+                    </p>
+                    <p>
+                        本ガイドでは6つのタスクそれぞれについて、<strong>目的・具体的な操作手順・実務で通用するベストプラクティス・陥りやすいミスと対処法・根拠となる公式ドキュメントのURL</strong>を整理しています。
+                    </p>
+                </section>
+
+                <section id="prep">
+                    <h2>事前準備とベストプラクティス</h2>
+                    <p>課題に取り組む前に、以下の点を必ず確認してください。</p>
+                    <table>
+                        <tr>
+                            <th>項目</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>ブラウザ</td>
+                            <td>
+                                シークレットモード（プライベートウィンドウ）を推奨。個人アカウントとラボ用アカウントの競合を防ぐため。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>アカウント</td>
+                            <td>
+                                必ずラボが発行する一時的な学生アカウント（Username /
+                                Password）を使用する。個人のGoogleアカウントは使わない。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>タイマー</td>
+                            <td>
+                                ラボは一時停止できない。Start Lab
+                                を押した瞬間からカウントダウンが始まるため、事前にこのガイド全体に目を通してから開始する。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>進捗確認</td>
+                            <td>
+                                各タスク完了後は必ず
+                                <code>Check my progress</code> をクリックして自動採点を受ける。
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="task-map">
+                    <h2>全体の流れ（タスクマップ）</h2>
+                    <p>
+                        6つのタスクは独立していますが、実務上は「個人設定 →
+                        チームコラボレーション」という自然な順序になっています。前半3つ（タスク1〜3）は個人の作業環境を整えるフェーズ、後半3つ（タスク4〜6）は同僚2名とのコラボレーションを設定するフェーズと捉えると理解しやすくなります。
+                    </p>
+                    <div class="diagram-wrap"><div data-diagram-id="taskMap"></div></div>
+                </section>
+
+                <section id="task1">
+                    <div class="task-header">
+                        <span class="task-num">1</span>
+                        <i class="ti ti-mail-forward task-icon"></i>
+                        <h3 style="margin: 0">Gmail署名の作成</h3>
+                    </div>
+                    <p class="task-goal">
+                        <strong>目的:</strong>
+                        新規メール作成時に、氏名・役職・連絡先が自動的に挿入されるようにし、対外的なコミュニケーションを効率化・プロフェッショナル化します。
+                    </p>
+
+                    <ol class="steps">
+                        <li>Gmail を開く</li>
+                        <li>
+                            右上の歯車アイコン（設定）をクリックし、「すべての設定を表示 (See all
+                            settings)」を選択
+                        </li>
+                        <li>
+                            「全般 (General)」タブを開き、「署名
+                            (Signature)」セクションまでスクロール
+                        </li>
+                        <li>「新規作成 (Create new)」をクリックし、署名に任意の名前を付ける</li>
+                        <li>
+                            テキストボックスに
+                            <strong>氏名・役職（Position）・連絡先情報</strong> を入力する
+                        </li>
+                        <li>
+                            「新規メール用の署名」と「返信または転送時の署名」の両方に、作成した署名をデフォルトとして設定する
+                        </li>
+                        <li>ページ最下部の「変更を保存 (Save Changes)」をクリック</li>
+                    </ol>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">ベストプラクティス</div>
+                            <div class="callout-body">
+                                署名を「作成」するだけでは不十分です。<strong>デフォルトの署名として選択されているか</strong>を必ず確認してください。ラボの採点は「新規作成時に自動挿入されるか」を見ています。画像を挿入する場合は文字数カウントに含まれる点にも注意しましょう。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="source-line">
+                        <i class="ti ti-link"></i>参考ソース: Create a Gmail signature（Google Gmail
+                        ヘルプ）―
+                        <a
+                            href="https://support.google.com/mail/answer/8395"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/mail/answer/8395</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task2">
+                    <div class="task-header">
+                        <span class="task-num">2</span>
+                        <i class="ti ti-calendar-event task-icon"></i>
+                        <h3 style="margin: 0">カレンダーに休暇予定を追加</h3>
+                    </div>
+                    <p class="task-goal">
+                        <strong>目的:</strong>
+                        今後3日間、オリエンテーションのため不在になることをチームに共有し、ダブルブッキングを防ぎます。
+                    </p>
+
+                    <ol class="steps">
+                        <li>Google Calendar を開く</li>
+                        <li>左上の「作成 (Create)」ボタン →「予定 (Event)」を選択</li>
+                        <li>タイトルに <strong>正確に「OOO Orientation」</strong> と入力する</li>
+                        <li>「終日 (All day)」をオンにする</li>
+                        <li>開始日を本日、終了日を3日後（本日を含め3日間）に設定する</li>
+                        <li>「保存 (Save)」をクリック</li>
+                    </ol>
+
+                    <div class="callout callout-warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <div class="callout-title">初学者がつまずきやすいポイント</div>
+                            <div class="callout-body">
+                                Google Calendarには「Out of
+                                office」という専用の予定タイプが存在します。しかしこのタイプで作成すると、タイトルが自動的に「Out
+                                of office」に固定され、タスクが要求する「OOO
+                                Orientation」というタイトルにはなりません。このタスクでは<strong
+                                    >通常の終日予定（All-day
+                                    event）としてタイトルを手動入力する</strong
+                                >のが正しい進め方です。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="diagram-wrap"><div data-diagram-id="oooBranch"></div></div>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">ベストプラクティス（実務向け補足）</div>
+                            <div class="callout-body">
+                                実際の業務では専用の「Out of
+                                office」機能を使うことで、不在期間中に届いた新規会議の招待を自動的に辞退し、送信者にカスタムメッセージを返すことができます。ラボのようにタイトル要件がない場面では、こちらを使うのが望ましい運用です。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="source-line">
+                        <i class="ti ti-link"></i>参考ソース: Set your working hours & location（Out
+                        of office を含む）―
+                        <a
+                            href="https://support.google.com/calendar/answer/7638168"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/calendar/answer/7638168</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task3">
+                    <div class="task-header">
+                        <span class="task-num">3</span>
+                        <i class="ti ti-folder-plus task-icon"></i>
+                        <h3 style="margin: 0">Google Driveにフォルダを作成</h3>
+                    </div>
+                    <p class="task-goal">
+                        <strong>目的:</strong>
+                        プロジェクト関連のドキュメント・画像・ファイルを整理するための保管場所を用意します。
+                    </p>
+
+                    <ol class="steps">
+                        <li>drive.google.com を開く</li>
+                        <li>左上の「新規 (New)」ボタンをクリック</li>
+                        <li>「新しいフォルダ (New folder)」を選択</li>
+                        <li>わかりやすいフォルダ名を入力する（例: Project Files）</li>
+                        <li>「作成 (Create)」をクリック</li>
+                    </ol>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">ベストプラクティス</div>
+                            <div class="callout-body">
+                                命名規則（naming
+                                convention）を統一し、短く・わかりやすい名前を付けましょう。色分け（color-code）でフォルダの種類を視覚的に識別できるようにするのも有効です。将来のサブフォルダによる階層化を見据えて、最初の粒度を決めすぎないようにします。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="source-line">
+                        <i class="ti ti-link"></i>参考ソース: Organize your files in Google Drive ―
+                        <a
+                            href="https://support.google.com/drive/answer/2375091"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/drive/answer/2375091</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task4">
+                    <div class="task-header">
+                        <span class="task-num">4</span>
+                        <i class="ti ti-users-group task-icon"></i>
+                        <h3 style="margin: 0">週次ステータスミーティングの設定</h3>
+                    </div>
+                    <p class="task-goal">
+                        <strong>目的:</strong>
+                        チームメンバー2名と定期的な情報共有の場を設け、コラボレーションを円滑にします。
+                    </p>
+
+                    <ol class="steps">
+                        <li>Google Calendar で「作成 (Create)」→「予定 (Event)」をクリック</li>
+                        <li>タイトルを入力する（例: Weekly Status Meeting）</li>
+                        <li>開催日時を設定する</li>
+                        <li>
+                            「繰り返さない (Does not repeat)」の下矢印をクリックし、「毎週
+                            (Weekly)」を選択
+                        </li>
+                        <li>
+                            「ゲストを追加 (Add guests)」欄に、ラボ情報パネルに記載された
+                            <strong>Colleague 1</strong> と
+                            <strong>Colleague 2</strong> のメールアドレスを入力
+                        </li>
+                        <li>「保存 (Save)」をクリックし、招待メールを送信する</li>
+                    </ol>
+
+                    <div class="diagram-wrap"><div data-diagram-id="weeklyMeeting"></div></div>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">ベストプラクティス</div>
+                            <div class="callout-body">
+                                タスクの要件「すべての繰り返しイベントが同じであること」を満たすには、<strong>最初の1件を作成する時点で正しい繰り返しパターン（毎週）とゲストを設定する</strong>のが確実です。後から一部のイベントだけを編集すると、「このイベントのみ更新」か「シリーズ全体を更新」かの選択を誤り、イベントごとに設定がバラつく原因になります。繰り返し予定には最大730回までという上限があることも覚えておきましょう。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="source-line">
+                        <i class="ti ti-link"></i>参考ソース: Create a recurring event ―
+                        <a
+                            href="https://support.google.com/calendar/answer/37115"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/calendar/answer/37115</a
+                        >
+                        / Invite people to your Calendar event ―
+                        <a
+                            href="https://support.google.com/calendar/answer/37161"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/calendar/answer/37161</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task5">
+                    <div class="task-header">
+                        <span class="task-num">5</span>
+                        <i class="ti ti-table task-icon"></i>
+                        <h3 style="margin: 0">タスク管理スプレッドシートの作成と共有</h3>
+                    </div>
+                    <p class="task-goal">
+                        <strong>目的:</strong>
+                        チームのタスク・担当者・優先度・進捗状況を一元管理できるシートを用意し、同僚2名と共同編集できるようにします。
+                    </p>
+
+                    <ol class="steps">
+                        <li>
+                            sheets.google.com を開き、空白のスプレッドシート (Blank spreadsheet)
+                            を新規作成
+                        </li>
+                        <li>
+                            左上のタイトル部分をクリックし、ファイル名を
+                            <strong>Project Task Sheet</strong> に変更
+                        </li>
+                        <li>1行目に以下のヘッダーを入力する</li>
+                    </ol>
+
+                    <table>
+                        <tr>
+                            <th>列</th>
+                            <th>ヘッダー名</th>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td><code>Tasks</code></td>
+                        </tr>
+                        <tr>
+                            <td>B</td>
+                            <td><code>Owner</code></td>
+                        </tr>
+                        <tr>
+                            <td>C</td>
+                            <td><code>Priority</code></td>
+                        </tr>
+                        <tr>
+                            <td>D</td>
+                            <td><code>Status</code></td>
+                        </tr>
+                        <tr>
+                            <td>E</td>
+                            <td><code>Comments</code></td>
+                        </tr>
+                    </table>
+
+                    <ol class="steps">
+                        <li>右上の「共有 (Share)」ボタンをクリック</li>
+                        <li>
+                            「ユーザーやグループを追加」欄に、タスク4と同じ Colleague 1 と Colleague
+                            2 のメールアドレスを入力
+                        </li>
+                        <li>
+                            権限（Viewer / Commenter / Editor）を選択する（共同作業のため Editor
+                            を推奨）
+                        </li>
+                        <li>「通知 (Notify people)」をオンのまま「送信 (Send)」をクリック</li>
+                    </ol>
+
+                    <div class="diagram-wrap"><div data-diagram-id="sheetShare"></div></div>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">ベストプラクティス</div>
+                            <div class="callout-body">
+                                採点システムは列見出しの文字列を厳密にチェックすることが多いため、表記ゆれ（大文字小文字・スペル）に注意して正確に入力しましょう。100人以上に共有する予定がある場合はWeb公開機能を検討するなど、共有規模に応じた方式選択も実務では重要です。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="source-line">
+                        <i class="ti ti-link"></i>参考ソース: Share files from Google Drive ―
+                        <a
+                            href="https://support.google.com/docs/answer/2494822"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/docs/answer/2494822</a
+                        >
+                        / Stop, limit, or change sharing ―
+                        <a
+                            href="https://support.google.com/docs/answer/2494893"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/docs/answer/2494893</a
+                        >
+                    </div>
+                </section>
+
+                <section id="task6">
+                    <div class="task-header">
+                        <span class="task-num">6</span>
+                        <i class="ti ti-apps task-icon"></i>
+                        <h3 style="margin: 0">AppSheetアプリケーションの作成</h3>
+                    </div>
+                    <p class="task-goal">
+                        <strong>目的:</strong> ノーコード開発プラットフォーム AppSheet
+                        にログインし、初期アプリ環境を作成できることを確認します（コーディングは不要です）。
+                    </p>
+
+                    <div class="callout callout-warning">
+                        <i class="ti ti-alert-triangle"></i>
+                        <div>
+                            <div class="callout-title">開始前の利用可否確認</div>
+                            <div class="callout-body">
+                                管理者が AppSheet サービスを無効にしている場合があります。タスクを始める前に、必ずラボの学生アカウントで
+                                AppSheet にログインし、「+ Create」メニューが表示されることを確認してください。
+                            </div>
+                        </div>
+                    </div>
+
+                    <ol class="steps">
+                        <li>AppSheet（appsheet.google.com もしくは提供されたリンク）を開く</li>
+                        <li>ラボの学生アカウントで認証（サインイン）する</li>
+                        <li>「作成 (+ Create)」→「アプリ (App)」をクリック</li>
+                        <li>
+                            アプリの種類は問われないため、最も簡単な
+                            <strong>Blank app（空白のアプリ）</strong> を選択する
+                        </li>
+                        <li>アプリ名を入力し、作成が完了して App Editor が開けば完了</li>
+                    </ol>
+
+                    <div class="callout callout-tip">
+                        <i class="ti ti-bulb"></i>
+                        <div>
+                            <div class="callout-title">ベストプラクティス</div>
+                            <div class="callout-body">
+                                AppSheet Core が追加コストなしで含まれるのは、一部の Google Workspace
+                                エディションに限られます。また、対象エディションでも管理者がサービスを無効にしている場合があります。上の事前確認で利用できることを確かめたうえで、タスクに必要な初期アプリ環境だけを作成しましょう。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="source-line">
+                        <i class="ti ti-link"></i>参考ソース: Create apps: The Essentials（AppSheet
+                        ヘルプ）―
+                        <a
+                            href="https://support.google.com/appsheet/answer/11980957"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/appsheet/answer/11980957</a
+                        >
+                        / Get started with AppSheet ―
+                        <a
+                            href="https://support.google.com/appsheet/answer/11581986"
+                            target="_blank"
+                            rel="noopener"
+                            >support.google.com/appsheet/answer/11581986</a
+                        >
+                    </div>
+                </section>
+
+                <section id="checklist">
+                    <h2>全タスク チェックリスト</h2>
+                    <table>
+                        <tr>
+                            <th>#</th>
+                            <th>タスク</th>
+                            <th>主なアクション</th>
+                            <th>公式ドキュメント</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Gmail署名の作成</td>
+                            <td>署名を作成しデフォルトに設定</td>
+                            <td>
+                                <a
+                                    href="https://support.google.com/mail/answer/8395"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >support.google.com/mail/answer/8395</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>OOO予定の追加</td>
+                            <td>終日予定「OOO Orientation」を3日間作成</td>
+                            <td>
+                                <a
+                                    href="https://support.google.com/calendar/answer/7638168"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >support.google.com/calendar/answer/7638168</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Driveフォルダ作成</td>
+                            <td>新規フォルダを作成</td>
+                            <td>
+                                <a
+                                    href="https://support.google.com/drive/answer/2375091"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >support.google.com/drive/answer/2375091</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>週次ミーティング設定</td>
+                            <td>毎週繰り返しの予定にColleague1・2を招待</td>
+                            <td>
+                                <a
+                                    href="https://support.google.com/calendar/answer/37115"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >support.google.com/calendar/answer/37115</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>タスクシート作成・共有</td>
+                            <td>5列ヘッダーのシートを作成しColleague1・2に共有</td>
+                            <td>
+                                <a
+                                    href="https://support.google.com/docs/answer/2494822"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >support.google.com/docs/answer/2494822</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>AppSheetアプリ作成</td>
+                            <td>サインインし空白アプリを作成</td>
+                            <td>
+                                <a
+                                    href="https://support.google.com/appsheet/answer/11980957"
+                                    target="_blank"
+                                    rel="noopener"
+                                    >support.google.com/appsheet/answer/11980957</a
+                                >
+                            </td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="troubleshooting">
+                    <h2>よくあるミスと対処法</h2>
+                    <table>
+                        <tr>
+                            <th>症状</th>
+                            <th>原因</th>
+                            <th>対処法</th>
+                        </tr>
+                        <tr>
+                            <td>署名タスクが未達成と判定される</td>
+                            <td>署名を作成したがデフォルト設定にしていない</td>
+                            <td>「新規メール用の署名」欄に作成した署名を選択し直す</td>
+                        </tr>
+                        <tr>
+                            <td>OOOタスクが未達成と判定される</td>
+                            <td>「Out of office」タイプで作成しタイトルが固定された</td>
+                            <td>
+                                通常の終日予定を作り直し、タイトルを「OOO Orientation」に手入力する
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>週次ミーティングが未達成と判定される</td>
+                            <td>
+                                繰り返し設定を後から個別イベントに追加し、シリーズ全体に反映されていない
+                            </td>
+                            <td>
+                                予定を削除し、最初から「毎週」の繰り返し設定とゲスト追加を同時に行って作り直す
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>シートの共有が未達成と判定される</td>
+                            <td>ファイル名や列見出しの表記が指定と異なる</td>
+                            <td>
+                                ファイル名を「Project Task
+                                Sheet」に、列見出しを指定の5つに正確に修正する
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>AppSheetタスクが未達成と判定される</td>
+                            <td>ラボアカウントとは別のGoogleアカウントでサインインしている</td>
+                            <td>一度サインアウトし、ラボが発行した学生アカウントで再認証する</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="summary">
+                    <h2>まとめ</h2>
+                    <p>
+                        このチャレンジラボは、Gmail・Calendar・Drive・Sheets・AppSheet という Google
+                        Workspace
+                        の主要アプリを横断して、個人の作業環境構築からチームコラボレーションの設定までを一通り体験する内容になっています。特に以下の3点を意識すると、初学者でも迷わず完了できます。
+                    </p>
+                    <ol class="steps">
+                        <li>
+                            設定は「作成」しただけで終わらせず、必ずデフォルト適用や保存まで確認する（署名タスクが典型例）
+                        </li>
+                        <li>
+                            タスク文の指示（タイトル・列名など）は文字列レベルで正確に一致させる（採点は完全一致を見ることが多い）
+                        </li>
+                        <li>
+                            繰り返し設定やゲスト招待は、最初の1回で正しく設定する（後からの部分修正はシリーズ全体に反映されにくい）
+                        </li>
+                    </ol>
+                </section>
+
+                <section id="references">
+                    <h2>参考文献一覧</h2>
+                    <div class="refs-grid">
+                        <div class="ref-card">
+                            <i class="ti ti-mail"></i>
+                            <div>
+                                <div class="ref-card-title">Create a Gmail signature</div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/mail/answer/8395"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/mail/answer/8395</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-calendar-event"></i>
+                            <div>
+                                <div class="ref-card-title">
+                                    Set your working hours &amp; location (Out of office)
+                                </div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/calendar/answer/7638168"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/calendar/answer/7638168</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-repeat"></i>
+                            <div>
+                                <div class="ref-card-title">Create a recurring event</div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/calendar/answer/37115"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/calendar/answer/37115</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-user-plus"></i>
+                            <div>
+                                <div class="ref-card-title">
+                                    Invite people to your Calendar event
+                                </div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/calendar/answer/37161"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/calendar/answer/37161</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-folder"></i>
+                            <div>
+                                <div class="ref-card-title">
+                                    Organize your files in Google Drive
+                                </div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/drive/answer/2375091"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/drive/answer/2375091</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-share"></i>
+                            <div>
+                                <div class="ref-card-title">Share files from Google Drive</div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/docs/answer/2494822"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/docs/answer/2494822</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-lock"></i>
+                            <div>
+                                <div class="ref-card-title">Stop, limit, or change sharing</div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/docs/answer/2494893"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/docs/answer/2494893</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-apps"></i>
+                            <div>
+                                <div class="ref-card-title">
+                                    Create apps: The Essentials (AppSheet)
+                                </div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/appsheet/answer/11980957"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/appsheet/answer/11980957</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-rocket"></i>
+                            <div>
+                                <div class="ref-card-title">Get started with AppSheet</div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://support.google.com/appsheet/answer/11581986"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >support.google.com/appsheet/answer/11581986</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ref-card">
+                            <i class="ti ti-external-link"></i>
+                            <div>
+                                <div class="ref-card-title">ラボ課題本体（サインイン必須）</div>
+                                <div class="ref-card-url">
+                                    <a
+                                        href="https://www.skills.google/course_templates/676/labs/594930"
+                                        target="_blank"
+                                        rel="noopener"
+                                        >skills.google/course_templates/676/labs/594930</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <footer>
+                    Google Workspace 入門チャレンジラボ 完全攻略ガイド ―
+                    各手順は執筆時点のGoogle公式ヘルプに基づいています。UIは更新される場合があるため、最新の公式ドキュメントも合わせてご確認ください。
+                </footer>
+            </main>
+        </div>
+
+        <script>
+            const DIAGRAMS = {
+                taskMap: `flowchart TD
+Start["Start Lab ラボ開始"] --> T1["タスク1 Gmail署名の作成"]
+T1 --> T2["タスク2 カレンダーにOOO予定を追加"]
+T2 --> T3["タスク3 Driveにフォルダを作成"]
+T3 --> T4["タスク4 週次ステータスミーティングの設定"]
+T4 --> T5["タスク5 タスク管理シートの作成と共有"]
+T5 --> T6["タスク6 AppSheetアプリの作成"]
+T6 --> Done["Check my progressで100パーセント達成"]
+classDef proc fill:#13253d,stroke:#7c9eff,color:#e8edf5
+classDef term fill:#8b7cf6,stroke:#a78bfa,color:#0b1220
+class Start,Done term
+class T1,T2,T3,T4,T5,T6 proc`,
+                oooBranch: `flowchart LR
+A["予定を新規作成"] --> B{"どちらの方式か"}
+B -->|"採点条件を満たす"| C["通常の終日予定 タイトルはOOO Orientation"]
+B -->|"実務のベストプラクティス"| D["Out of office機能 会議を自動辞退"]
+classDef proc fill:#13253d,stroke:#7c9eff,color:#e8edf5
+classDef alt fill:#0d1b2e,stroke:#2dd4bf,color:#e8edf5
+class A,C proc
+class D alt`,
+                weeklyMeeting: `flowchart TD
+A["予定を新規作成"] --> B["繰り返しをWeeklyに設定"]
+B --> C["ゲスト欄にColleague1のメールを追加"]
+B --> D["ゲスト欄にColleague2のメールを追加"]
+C --> E["保存し招待メールを送信"]
+D --> E
+E --> F["全ての繰り返しイベントが同一設定であることを確認"]
+classDef proc fill:#13253d,stroke:#7c9eff,color:#e8edf5
+classDef check fill:#8b7cf6,stroke:#a78bfa,color:#0b1220
+class A,B,C,D,E proc
+class F check`,
+                sheetShare: `flowchart TD
+A["Project Task Sheetを新規作成"] --> B["列見出しを5列入力"]
+B --> C["Shareボタンをクリック"]
+C --> D["Colleague1のメールアドレスを追加"]
+C --> E["Colleague2のメールアドレスを追加"]
+D --> F["権限レベルを選択し送信"]
+E --> F
+classDef proc fill:#13253d,stroke:#7c9eff,color:#e8edf5
+class A,B,C,D,E,F proc`,
+            };
+
+            async function renderDiagrams() {
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'strict',
+                    fontFamily:
+                        '-apple-system,BlinkMacSystemFont,Segoe UI,Hiragino Kaku Gothic ProN,Noto Sans JP,Meiryo,sans-serif',
+                    flowchart: { useMaxWidth: false, nodeSpacing: 45, rankSpacing: 45 },
+                    themeVariables: {
+                        background: '#07111e',
+                        primaryColor: '#13253d',
+                        primaryTextColor: '#e8edf5',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#4a5b73',
+                        secondaryColor: '#10243d',
+                        tertiaryColor: '#0d1b2e',
+                        fontSize: '16px',
+                    },
+                });
+
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+
+                const targets = document.querySelectorAll('[data-diagram-id]');
+                for (const el of targets) {
+                    const id = el.getAttribute('data-diagram-id');
+                    const src = DIAGRAMS[id];
+                    if (!src) continue;
+                    try {
+                        const renderId = 'mmd-' + id;
+                        const result = await mermaid.render(renderId, src);
+                        el.innerHTML = result.svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) {
+                            svgEl.removeAttribute('height');
+                            const vb = svgEl.getAttribute('viewBox');
+                            if (vb) {
+                                const parts = vb.split(/\s+/).map(Number);
+                                if (parts.length === 4) {
+                                    parts[3] = parts[3] + 15;
+                                    svgEl.setAttribute('viewBox', parts.join(' '));
+                                    svgEl.style.width = parts[2] + 'px';
+                                }
+                            }
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                            svgEl.removeAttribute('width');
+                        }
+                    } catch (err) {
+                        el.innerHTML =
+                            '<p style="color:#ff8f8f;font-size:16px;">diagram render error: ' +
+                            id +
+                            '</p>';
+                        console.error('mermaid render error', id, err);
+                    }
+                }
+            }
+
+            function setupNavHighlight() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('.sidebar nav a');
+                const linkFor = (id) =>
+                    document.querySelector('.sidebar nav a[href="#' + id + '"]');
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            const link = linkFor(entry.target.id);
+                            if (!link) return;
+                            if (entry.isIntersecting) {
+                                navLinks.forEach((l) => l.classList.remove('active'));
+                                link.classList.add('active');
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach((s) => observer.observe(s));
+            }
+
+            renderDiagrams();
+            setupNavHighlight();
+        </script>
+    </body>
+</html>

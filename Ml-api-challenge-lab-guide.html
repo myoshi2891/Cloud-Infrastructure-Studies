@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Machine Learning APIs チャレンジラボ 攻略ガイド</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <style>
+            :root {
+                --color-background-primary: #07111e;
+                --color-background-secondary: #0d1a2b;
+                --color-background-tertiary: #132238;
+                --color-background-info: #10243d;
+                --color-background-danger: #321421;
+                --color-background-success: #0f2e2b;
+                --color-background-warning: #332711;
+                --color-text-primary: #e6ecf5;
+                --color-text-secondary: #a9b8cc;
+                --color-text-tertiary: #78889e;
+                --color-text-info: #7ec8ff;
+                --color-text-danger: #ff8fa3;
+                --color-text-success: #5eead4;
+                --color-text-warning: #f6c453;
+                --color-border-tertiary: #1c2c42;
+                --color-border-secondary: #24354c;
+                --color-border-primary: #7c9eff;
+                --font-sans:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN',
+                    'Noto Sans JP', sans-serif;
+                --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+                --border-radius-md: 8px;
+                --border-radius-lg: 12px;
+                --border-radius-xl: 16px;
+                --accent: #7c9eff;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: var(--color-background-primary);
+                color: var(--color-text-primary);
+                font-family: var(--font-sans);
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100vh;
+                overflow-y: auto;
+                background: var(--color-background-secondary);
+                border-right: 1px solid var(--color-border-tertiary);
+                padding: 32px 20px;
+            }
+
+            .sidebar-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--color-text-tertiary);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 16px;
+            }
+
+            .sidebar-nav {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 2px;
+            }
+
+            .sidebar-nav a {
+                display: block;
+                padding: 8px 12px;
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+                text-decoration: none;
+                font-size: 16px;
+                border-left: 2px solid transparent;
+            }
+
+            .sidebar-nav a:hover {
+                background: var(--color-background-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            .sidebar-nav a.active {
+                background: var(--color-background-tertiary);
+                color: var(--accent);
+                border-left: 2px solid var(--accent);
+                font-weight: 500;
+            }
+
+            .main {
+                margin-left: 280px;
+                padding: 48px 56px 96px;
+            }
+
+            .hero {
+                margin-bottom: 40px;
+                padding-bottom: 24px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+            }
+
+            .hero-eyebrow {
+                font-size: 16px;
+                color: var(--color-text-info);
+                margin-bottom: 8px;
+            }
+
+            h1 {
+                font-size: 22px;
+                font-weight: 500;
+                margin: 0 0 8px;
+                color: var(--color-text-primary);
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: 500;
+                margin: 40px 0 16px;
+                padding-top: 8px;
+                border-top: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-primary);
+            }
+
+            section:first-of-type h2 {
+                border-top: none;
+                padding-top: 0;
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 28px 0 12px;
+                color: var(--color-text-primary);
+            }
+
+            p {
+                margin: 0 0 16px;
+                color: var(--color-text-secondary);
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            .lab-link {
+                display: inline-block;
+                margin-top: 4px;
+                font-size: 16px;
+                color: var(--color-text-info);
+            }
+
+            .callout {
+                background: var(--color-background-info);
+                border: 1px solid var(--color-border-secondary);
+                border-left: 3px solid var(--accent);
+                border-radius: var(--border-radius-md);
+                padding: 16px 20px;
+                margin: 0 0 24px;
+                font-size: 16px;
+                color: var(--color-text-secondary);
+            }
+
+            .callout strong {
+                color: var(--color-text-primary);
+            }
+
+            .callout.warning {
+                background: var(--color-background-warning);
+                border-left-color: var(--color-text-warning);
+            }
+
+            .diagram {
+                display: flex;
+                justify-content: center;
+                margin: 24px 0;
+                overflow-x: auto;
+            }
+
+            .diagram svg {
+                overflow: visible;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 0 0 24px;
+                font-size: 16px;
+            }
+
+            th,
+            td {
+                text-align: left;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-secondary);
+                vertical-align: top;
+            }
+
+            th {
+                color: var(--color-text-primary);
+                font-weight: 500;
+                background: var(--color-background-tertiary);
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            code {
+                font-family: var(--font-mono);
+                font-size: 16px;
+                background: var(--color-background-tertiary);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--color-text-info);
+            }
+
+            pre {
+                background: var(--color-background-tertiary) !important;
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-lg);
+                padding: 18px 20px;
+                overflow-x: auto;
+                margin: 0 0 24px;
+            }
+
+            pre code {
+                background: transparent;
+                padding: 0;
+                color: inherit;
+                font-size: 16px;
+                line-height: 1.6;
+            }
+
+            .code-label {
+                font-size: 16px;
+                color: var(--color-text-tertiary);
+                margin: -8px 0 8px;
+            }
+
+            ol,
+            ul {
+                color: var(--color-text-secondary);
+                padding-left: 22px;
+            }
+
+            li {
+                margin-bottom: 8px;
+            }
+
+            .ref-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .ref-list li {
+                padding: 14px 18px;
+                margin-bottom: 10px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+            }
+
+            .ref-list a {
+                font-weight: 500;
+                text-decoration: none;
+            }
+
+            .ref-list a:hover {
+                text-decoration: underline;
+            }
+
+            .summary-list {
+                padding: 0;
+                margin: 0;
+                list-style: none;
+                counter-reset: summary-counter;
+            }
+
+            .summary-list li {
+                counter-increment: summary-counter;
+                position: relative;
+                padding: 12px 18px 12px 48px;
+                margin-bottom: 10px;
+                background: var(--color-background-secondary);
+                border: 1px solid var(--color-border-tertiary);
+                border-radius: var(--border-radius-md);
+                color: var(--color-text-secondary);
+            }
+
+            .summary-list li::before {
+                content: counter(summary-counter);
+                position: absolute;
+                left: 16px;
+                top: 12px;
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                background: var(--color-background-tertiary);
+                border: 1px solid var(--color-border-primary);
+                color: var(--accent);
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            footer {
+                margin-top: 64px;
+                padding-top: 24px;
+                border-top: 1px solid var(--color-border-tertiary);
+                color: var(--color-text-tertiary);
+                font-size: 16px;
+            }
+
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .main {
+                    margin-left: 0;
+                    padding: 32px 24px 64px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <nav class="sidebar">
+                <div class="sidebar-title">目次</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#overview">1. 全体像</a></li>
+                    <li><a href="#task1">2. Task 1: サービスアカウント</a></li>
+                    <li><a href="#task2">3. Task 2: 認証情報</a></li>
+                    <li><a href="#task3">4. Task 3: Vision API</a></li>
+                    <li><a href="#task4">5. Task 4: Translation API</a></li>
+                    <li><a href="#task5">6. Task 5: BigQuery</a></li>
+                    <li><a href="#verification">7. 検証</a></li>
+                    <li><a href="#troubleshooting">8. トラブルシューティング</a></li>
+                    <li><a href="#summary">9. まとめ</a></li>
+                    <li><a href="#references">参考文献</a></li>
+                </ul>
+            </nav>
+
+            <main class="main">
+                <div class="hero">
+                    <div class="hero-eyebrow">
+                        Google Cloud Skills Boost / Challenge Lab 攻略ガイド
+                    </div>
+                    <h1>Machine Learning APIs チャレンジラボ 攻略ガイド</h1>
+                    <p style="margin: 0">
+                        Vision API × Translation API × BigQuery
+                        によるサイン画像テキスト抽出パイプライン
+                    </p>
+                    <a
+                        class="lab-link"
+                        href="https://www.skills.google/course_templates/630/labs/612231"
+                        target="_blank"
+                        rel="noopener"
+                        >対象ラボ: Integrate with Machine Learning APIs: Challenge Lab</a
+                    >
+                </div>
+
+                <div class="callout">
+                    <strong>このガイドの使い方</strong><br />
+                    チャレンジラボは「学んだスキルを自力で組み合わせて使えるか」を確認するためのものです。このガイドはコードを丸暗記させるものではなく、なぜそのAPI呼び出しが必要なのか・なぜその権限が必要なのかを理解しながら進められるように構成しています。各セクションの根拠は公式ドキュメントのURLとして明記しているので、実装時は必ず一次情報を確認してください。
+                </div>
+
+                <section id="overview">
+                    <h2>1. 全体像を理解する</h2>
+                    <p>
+                        このラボで構築するのは、Cloud
+                        Storage上の看板画像から文字を抽出し、必要に応じて翻訳し、結果をBigQueryに集約する小さなETL（Extract-Transform-Load）パイプラインです。
+                    </p>
+
+                    <h3>1-1. データフロー（アーキテクチャ）</h3>
+                    <div class="diagram" data-diagram="architecture"></div>
+
+                    <h3>1-2. タスクの実行順序</h3>
+                    <div class="diagram" data-diagram="tasks"></div>
+
+                    <p>
+                        順序には理由があります。認証情報（Task
+                        1・2）がなければAPI呼び出し自体が失敗し、Vision
+                        APIの出力（抽出テキストとロケール）がなければTranslation
+                        APIをいつ呼ぶべきか判定できません。必ずこの順で進め、各Taskの動作確認をしてから次に進んでください。
+                    </p>
+                </section>
+
+                <section id="task1">
+                    <h2>2. Task 1: サービスアカウントとIAM権限の準備</h2>
+
+                    <h3>2-1. なぜサービスアカウントが必要か</h3>
+                    <p>
+                        Pythonスクリプトはユーザーの代わりに、ユーザーが介在しないバックグラウンド処理としてGoogle
+                        CloudのAPIを呼び出します。この用途にはユーザーアカウントではなく、アプリケーション用のIDである<strong>サービスアカウント</strong>を使うのがベストプラクティスです。
+                    </p>
+                    <div class="callout">
+                        参考:
+                        <a
+                            href="https://docs.cloud.google.com/iam/docs/roles-overview"
+                            target="_blank"
+                            rel="noopener"
+                            >Roles and permissions | IAM (Google Cloud 公式ドキュメント)</a
+                        >
+                    </div>
+
+                    <h3>2-2. 付与すべきロール</h3>
+                    <p>
+                        ラボの指示は「BigQuery Role」と「Cloud Storage
+                        Role」を付与することですが、これは事前定義ロールの中でも管理者権限を持つ以下の2つを指します。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>用途</th>
+                                <th>ロール名</th>
+                                <th>ロールID</th>
+                                <th>主な権限</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cloud Storageの読み書き</td>
+                                <td>Storage Admin</td>
+                                <td><code>roles/storage.admin</code></td>
+                                <td>バケット・オブジェクトの作成/読み取り/更新/削除など全操作</td>
+                            </tr>
+                            <tr>
+                                <td>BigQueryへのデータ投入</td>
+                                <td>BigQuery Admin</td>
+                                <td><code>roles/bigquery.admin</code></td>
+                                <td>データセット/テーブルの管理、ジョブ実行、データ挿入</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="callout">
+                        参考:<br />
+                        Cloud Storage IAM ロール一覧 —
+                        <a
+                            href="https://docs.cloud.google.com/storage/docs/access-control/iam-roles"
+                            target="_blank"
+                            rel="noopener"
+                            >IAM roles for Cloud Storage</a
+                        ><br />
+                        BigQuery IAM ロール一覧 —
+                        <a
+                            href="https://docs.cloud.google.com/bigquery/docs/access-control"
+                            target="_blank"
+                            rel="noopener"
+                            >BigQuery IAM roles and permissions</a
+                        >
+                    </div>
+                    <p>
+                        <strong>ベストプラクティス補足:</strong> 本番運用であれば
+                        <code>storage.objectAdmin</code> や
+                        <code>bigquery.dataEditor</code>
+                        のようなより権限を絞ったロールを選び、最小権限の原則を守るべきです。このラボでは学習目的のため管理者ロールを使用します。
+                    </p>
+
+                    <h3>2-3. gcloud コマンドでの実装例</h3>
+                    <pre><code class="language-bash"># プロジェクトIDを変数に格納
+export PROJECT_ID=$(gcloud config get-value project)
+
+# サービスアカウントを作成
+gcloud iam service-accounts create ml-api-sa \
+  --display-name="ML API Challenge Lab Service Account"
+
+# 作成したサービスアカウントのメールアドレスを変数化
+export SA_EMAIL="ml-api-sa@${PROJECT_ID}.iam.gserviceaccount.com"
+
+# Storage Admin ロールを付与
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+  --member="serviceAccount:${SA_EMAIL}" \
+  --role="roles/storage.admin"
+
+# BigQuery Admin ロールを付与
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+  --member="serviceAccount:${SA_EMAIL}" \
+  --role="roles/bigquery.admin"</code></pre>
+                    <p>
+                        Cloud
+                        Consoleから作成する場合は「IAMと管理」→「サービスアカウント」→「サービスアカウントを作成」からGUIでも同様の設定が可能です。
+                    </p>
+                </section>
+
+                <section id="task2">
+                    <h2>3. Task 2: 認証情報ファイルの発行と環境変数設定</h2>
+
+                    <h3>3-1. JSONキーファイルの作成</h3>
+                    <pre><code class="language-bash">gcloud iam service-accounts keys create ~/key.json \
+  --iam-account="${SA_EMAIL}"</code></pre>
+                    <p>
+                        または Cloud Console の「サービスアカウント」詳細画面 →「キー」タブ
+                        →「鍵を追加」→「新しい鍵を作成」→ JSON形式、でも取得できます。
+                    </p>
+                    <div class="callout warning">
+                        <strong>キーファイルの取り扱い:</strong>
+                        JSONキーをGitリポジトリやCloud Storageバケットへ置かないでください。ラボ終了後は作成したキーを削除します。実務では長期キーを発行せず、Workload
+                        Identity連携または接続されたGoogle Cloudサービスが提供するADCを使用してください。
+                    </div>
+
+                    <h3>3-2. 環境変数 GOOGLE_APPLICATION_CREDENTIALS の設定</h3>
+                    <p>
+                        Pythonクライアントライブラリは、明示的に認証情報を渡さない限り<strong
+                            >Application Default Credentials（ADC）</strong
+                        >という仕組みで認証情報を探します。ADCが最初に確認するのがこの環境変数です。
+                    </p>
+                    <pre><code class="language-bash">export GOOGLE_APPLICATION_CREDENTIALS="$HOME/key.json"</code></pre>
+                    <div class="callout">
+                        参考: ADCとGOOGLE_APPLICATION_CREDENTIALS環境変数の役割 —
+                        <a
+                            href="https://docs.cloud.google.com/docs/authentication/application-default-credentials"
+                            target="_blank"
+                            rel="noopener"
+                            >How Application Default Credentials works | Authentication</a
+                        >
+                    </div>
+                    <div class="callout warning">
+                        <strong>よくある落とし穴:</strong> Cloud
+                        Shellのセッションが切れると環境変数もリセットされます。スクリプトが急に
+                        <code>DefaultCredentialsError</code>
+                        を出すようになったら、まずこの環境変数が現在のシェルに残っているか
+                        <code>echo $GOOGLE_APPLICATION_CREDENTIALS</code> で確認してください。
+                    </div>
+                </section>
+
+                <section id="task3">
+                    <h2>4. Task 3: Vision API でテキストを抽出する</h2>
+
+                    <h3>4-1. TEXT_DETECTION と DOCUMENT_TEXT_DETECTION の使い分け</h3>
+                    <p>
+                        Vision
+                        APIには文字検出用の機能が2種類あります。看板や標識のような比較的短いテキストが対象のこのラボでは、密度の高い文書向けの
+                        <code>DOCUMENT_TEXT_DETECTION</code>（<code>document_text_detection</code>
+                        メソッド）を使うのが適切です。こちらは行・段落単位の構造情報や、検出した言語（ロケール）の情報も返してくれるためです。
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>手法</th>
+                                <th>主な用途</th>
+                                <th>言語ロケール情報</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>text_detection</code></td>
+                                <td>短いテキスト（看板・ラベル・ナンバープレートなど）</td>
+                                <td>個別の language_code 情報は限定的</td>
+                            </tr>
+                            <tr>
+                                <td><code>document_text_detection</code></td>
+                                <td>密なテキスト（文書・書籍・領収書、標識も含む）</td>
+                                <td><code>page.property.detected_languages</code> で取得可能</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="callout">
+                        参考: 2つの検出方式の違い —
+                        <a
+                            href="https://docs.cloud.google.com/vision/docs/ocr"
+                            target="_blank"
+                            rel="noopener"
+                            >Detect and extract text from images | Cloud Vision API</a
+                        >
+                    </div>
+
+                    <h3>4-2. レスポンスの構造（full_text_annotation）</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>階層</th>
+                                <th>内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TextAnnotation（full_text_annotation）</td>
+                                <td>画像全体のOCR結果</td>
+                            </tr>
+                            <tr>
+                                <td>→ Page</td>
+                                <td>
+                                    ページ単位。property.detected_languages にロケール情報を持つ
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>→ → Block</td>
+                                <td>テキストブロック</td>
+                            </tr>
+                            <tr>
+                                <td>→ → → Paragraph</td>
+                                <td>段落</td>
+                            </tr>
+                            <tr>
+                                <td>→ → → → Word</td>
+                                <td>単語</td>
+                            </tr>
+                            <tr>
+                                <td>→ → → → → Symbol</td>
+                                <td>1文字単位</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="callout">
+                        参考: TextAnnotationの階層構造 —
+                        <a
+                            href="https://docs.cloud.google.com/vision/docs/reference/rpc/google.cloud.vision.v1"
+                            target="_blank"
+                            rel="noopener"
+                            >Package google.cloud.vision.v1 | Cloud Vision API</a
+                        >
+                    </div>
+
+                    <h3>4-3. 実装のポイント（# TBD 箇所の考え方）</h3>
+                    <p class="code-label">
+                        以下は実装の考え方を示す例です。実際の変数名・関数構造は配布されたスクリプトのコメントに合わせてください。
+                    </p>
+                    <pre><code class="language-python">from google.cloud import vision
+
+def detect_text(bucket_name, filename):
+    """Cloud Storage上の画像からテキストとロケールを抽出する"""
+    client = vision.ImageAnnotatorClient()
+
+    image = vision.Image()
+    image.source.image_uri = f"gs://{bucket_name}/{filename}"
+
+    # TBD: document_text_detection を呼び出す
+    response = client.document_text_detection(image=image)
+
+    text = response.full_text_annotation.text
+
+    # ロケール（検出言語）を取得する
+    locale = "und"  # und = undetermined（未確定）のデフォルト値
+    pages = response.full_text_annotation.pages
+    if pages and pages[0].property.detected_languages:
+        locale = pages[0].property.detected_languages[0].language_code
+
+    return text, locale</code></pre>
+                    <p>
+                        抽出したテキストは、同じCloud
+                        Storageバケットに元のファイル名を使ったテキストファイルとして書き戻します（例:
+                        <code>sign1.jpg</code> → <code>sign1.jpg.txt</code>）。
+                    </p>
+                    <div class="callout">
+                        <strong>動作確認のコツ:</strong>
+                        この段階で一度スクリプトを実行し、バケットにテキストファイルが生成されること・locale
+                        にそれらしい言語コード（en、ja、zh
+                        など）が入ることを確認してから、次のTaskに進んでください。全部を実装してから一括デバッグするより、段階ごとの確認の方がエラーの切り分けが容易です。
+                    </div>
+                </section>
+
+                <section id="task4">
+                    <h2>5. Task 4: Translation API でテキストを翻訳する</h2>
+
+                    <h3>5-1. なぜ「ロケールが基準言語と異なる場合だけ」翻訳するのか</h3>
+                    <p>
+                        すべてのテキストを無条件に翻訳すると、API呼び出し回数が不必要に増え、コストと実行時間が増加します。Vision
+                        APIがすでに検出したロケール情報を使って「翻訳が必要なものだけ」を絞り込むのが効率的な設計です。
+                    </p>
+
+                    <h3>5-2. Translation API（v2）の呼び出し方</h3>
+                    <p>
+                        このラボのスクリプトは
+                        <code>google.cloud.translate_v2</code> を使う設計になっています。
+                    </p>
+                    <pre><code class="language-python">from google.cloud import translate_v2 as translate
+
+TARGET_LANGUAGE = "en"  # スクリプトの基準言語（配布されたコードの定義に合わせる）
+
+def translate_text(text, source_locale):
+    """基準言語と異なる場合のみ翻訳する"""
+    source_language = source_locale.split("-", 1)[0].lower()
+    target_language = TARGET_LANGUAGE.split("-", 1)[0].lower()
+
+    if source_locale == "und" or source_language == target_language:
+        return text  # 翻訳不要、または言語判定不能な場合はそのまま返す
+
+    translate_client = translate.Client()
+
+    # TBD: translate を呼び出す
+    result = translate_client.translate(
+        text,
+        target_language=TARGET_LANGUAGE,
+    )
+
+    return result["translatedText"]</code></pre>
+                    <div class="callout">
+                        参考:<br />
+                        translate_v2.Client.translate の使い方 —
+                        <a
+                            href="https://docs.cloud.google.com/translate/docs/reference/libraries/v2/python"
+                            target="_blank"
+                            rel="noopener"
+                            >Cloud Translation client libraries | Google Cloud Documentation</a
+                        ><br />
+                        翻訳結果のサンプルコード —
+                        <a
+                            href="https://docs.cloud.google.com/translate/docs/samples/translate-translate-text"
+                            target="_blank"
+                            rel="noopener"
+                            >Translating text | Cloud Translation</a
+                        >
+                    </div>
+                    <p>
+                        <strong>ベストプラクティス補足:</strong> result
+                        は辞書型で返り、translatedText のほかに detectedSourceLanguage
+                        も含まれます。Vision APIのロケール判定に自信が持てない場合は、Translation
+                        API側の detectedSourceLanguage と突き合わせて整合性を確認するのも有効です。
+                    </p>
+                </section>
+
+                <section id="task5">
+                    <h2>6. Task 5: BigQueryへの書き込みを有効化する</h2>
+
+                    <h3>6-1. 事前にテーブルスキーマを確認する</h3>
+                    <p>
+                        配布されたスクリプトの末尾にあるBigQuery書き込み処理はコメントアウトされています。有効化する前に、書き込み先テーブルの実際のカラム構成を必ず確認してください。ラボごと・スクリプトのバージョンごとにカラム名が異なる場合があるため、想定で実装せずに次のコマンドで確認するのがベストプラクティスです。
+                    </p>
+                    <pre><code class="language-bash">bq show --schema --format=prettyjson image_classification_dataset.image_text_detail</code></pre>
+
+                    <h3>6-2. データ挿入の実装パターン</h3>
+                    <p>
+                        BigQueryへのデータ投入には、ストリーミング挿入用の
+                        <code>insert_rows_json</code> メソッドを使うのが一般的です。
+                    </p>
+                    <pre><code class="language-python">from google.cloud import bigquery
+
+def upload_to_bigquery(project_id, dataset_id, table_id, rows):
+    client = bigquery.Client(project=project_id)
+    table_ref = f"{project_id}.{dataset_id}.{table_id}"
+
+    # rows は確認した実際のスキーマに合わせた dict のリスト
+    # 例: [{"uri": ..., "text": ..., "locale": ..., "translated_text": ...}, ...]
+    errors = client.insert_rows_json(table_ref, rows)
+
+    if errors:
+        print(f"BigQuery insert errors: {errors}")
+    else:
+        print(f"{len(rows)} 件のレコードを {table_ref} に書き込みました")</code></pre>
+                    <div class="callout">
+                        参考:<br />
+                        insert_rows_json のシグネチャとリトライ挙動 —
+                        <a
+                            href="https://docs.cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.client.Client"
+                            target="_blank"
+                            rel="noopener"
+                            >Class Client | Python client libraries | Google Cloud Documentation</a
+                        ><br />
+                        ストリーミング挿入の基本パターン —
+                        <a
+                            href="https://docs.cloud.google.com/bigquery/docs/streaming-data-into-bigquery"
+                            target="_blank"
+                            rel="noopener"
+                            >Use the legacy streaming API | BigQuery</a
+                        >
+                    </div>
+
+                    <h3>6-3. コメントアウトの解除</h3>
+                    <p>
+                        配布スクリプトの最終行（BigQuery書き込みを実行する行）の先頭にある
+                        <code>#</code> を削除して有効化します。<strong
+                            >Vision APIとTranslation API双方の動作確認が完了してから</strong
+                        >この行を有効化してください。デバッグ中に無効なデータを何度もBigQueryに投入すると、テーブルの重複行の削除など余計な後処理が発生します。
+                    </p>
+                </section>
+
+                <section id="verification">
+                    <h2>7. 検証: 最頻出言語を確認する</h2>
+                    <p>
+                        すべての画像の処理とBigQueryへの投入が終わったら、以下のクエリで結果を確認します。
+                    </p>
+                    <pre><code class="language-sql">SELECT locale, COUNT(locale) AS lcount
+FROM image_classification_dataset.image_text_detail
+GROUP BY locale
+ORDER BY lcount DESC</code></pre>
+                    <p>
+                        このクエリが空の結果を返す、または想定より行数が少ない場合は、Task
+                        3・4のロジック（特にロケール判定条件）に戻って確認してください。
+                    </p>
+                </section>
+
+                <section id="troubleshooting">
+                    <h2>8. トラブルシューティング早見表</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>症状</th>
+                                <th>主な原因</th>
+                                <th>対処</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>PermissionDenied: 403</code></td>
+                                <td>IAMロールの反映待ち、または付与漏れ</td>
+                                <td>
+                                    IAMポリシー反映には数十秒〜数分かかることがある。ロールを再確認し、少し待って再実行
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>DefaultCredentialsError</code></td>
+                                <td>GOOGLE_APPLICATION_CREDENTIALSが未設定</td>
+                                <td>
+                                    Cloud Shellのセッションが切れると環境変数はリセットされる。echo
+                                    $GOOGLE_APPLICATION_CREDENTIALS で確認し再設定
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>ModuleNotFoundError</code></td>
+                                <td>必要なクライアントライブラリ未インストール</td>
+                                <td>
+                                    <code
+                                        >pip install google-cloud-vision google-cloud-translate
+                                        google-cloud-bigquery google-cloud-storage</code
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Translation APIでエラー</td>
+                                <td>ロケールが und（未確定）のまま翻訳を試行</td>
+                                <td>
+                                    ロケール判定前のガード処理（<code>source_locale == "und"</code
+                                    >）を確認
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BigQueryに行が入らない</td>
+                                <td>最終行のコメントアウト解除忘れ、またはスキーマ不一致</td>
+                                <td>
+                                    # の削除を確認し、bq show --schema
+                                    で実際のカラム名と型を突き合わせる
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="summary">
+                    <h2>9. まとめ: このラボで押さえるべきベストプラクティス</h2>
+                    <ol class="summary-list">
+                        <li>
+                            最小権限ではなく管理者ロールを使う場面と理由を理解する。学習用ラボでは
+                            *.admin ロールで進めるが、実務では権限を絞ったロールを検討する
+                        </li>
+                        <li>
+                            段階的に動作確認する。Vision API → Translation API →
+                            BigQueryの順に、各段階で出力を確認してから次に進む
+                        </li>
+                        <li>
+                            APIレスポンスの構造を理解してから実装する。full_text_annotation
+                            の階層（Page→Block→Paragraph→Word→Symbol）とロケール情報の位置を把握する
+                        </li>
+                        <li>
+                            想定ではなく実際のスキーマを確認する。BigQueryへの書き込み前に bq show
+                            --schema で実テーブル構成を確認する
+                        </li>
+                        <li>
+                            条件分岐でAPIコストと実行時間を最適化する。ロケールが基準言語と一致する場合は翻訳をスキップする設計にする
+                        </li>
+                    </ol>
+                </section>
+
+                <section id="references">
+                    <h2>参考文献（一次情報）</h2>
+                    <ul class="ref-list">
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/iam/docs/roles-overview"
+                                target="_blank"
+                                rel="noopener"
+                                >Roles and permissions | Identity and Access Management (IAM)</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/storage/docs/access-control/iam-roles"
+                                target="_blank"
+                                rel="noopener"
+                                >IAM roles for Cloud Storage</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/access-control"
+                                target="_blank"
+                                rel="noopener"
+                                >BigQuery IAM roles and permissions</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/docs/authentication/application-default-credentials"
+                                target="_blank"
+                                rel="noopener"
+                                >How Application Default Credentials works | Authentication</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vision/docs/ocr"
+                                target="_blank"
+                                rel="noopener"
+                                >Detect and extract text from images | Cloud Vision API</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vision/docs/fulltext-annotations"
+                                target="_blank"
+                                rel="noopener"
+                                >Dense document text detection tutorial | Cloud Vision API</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/vision/docs/reference/rpc/google.cloud.vision.v1"
+                                target="_blank"
+                                rel="noopener"
+                                >Package google.cloud.vision.v1 | Cloud Vision API</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/translate/docs/reference/libraries/v2/python"
+                                target="_blank"
+                                rel="noopener"
+                                >Cloud Translation client libraries (Python v2)</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/translate/docs/samples/translate-translate-text"
+                                target="_blank"
+                                rel="noopener"
+                                >Translating text | Cloud Translation</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.client.Client"
+                                target="_blank"
+                                rel="noopener"
+                                >Class Client | BigQuery Python client libraries</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://docs.cloud.google.com/bigquery/docs/streaming-data-into-bigquery"
+                                target="_blank"
+                                rel="noopener"
+                                >Use the legacy streaming API | BigQuery</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.skills.google/course_templates/630/labs/612231"
+                                target="_blank"
+                                rel="noopener"
+                                >ラボ本体: Integrate with Machine Learning APIs: Challenge Lab</a
+                            >
+                        </li>
+                    </ul>
+                </section>
+
+                <footer>Machine Learning APIs チャレンジラボ 攻略ガイド</footer>
+            </main>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+        <script>
+            const DIAGRAMS = {
+                architecture: `flowchart TB
+A["Cloud Storage: 入力画像ファイル群"] --> B["Python スクリプト analyze-images-v2.py"]
+B --> C["Vision API document_text_detection"]
+C --> D["Cloud Storage: 抽出テキストファイル txt"]
+C --> E{"検出ロケールは基準言語と一致するか"}
+E -->|"一致する"| G["翻訳をスキップ"]
+E -->|"一致しない"| F["Translation API translate"]
+F --> H["結果をリストに保持"]
+G --> H
+H --> I["BigQuery image_text_detail テーブル"]
+classDef store fill:#132238,stroke:#7c9eff,color:#e6ecf5
+classDef process fill:#1b3350,stroke:#7c9eff,color:#e6ecf5
+classDef decision fill:#0f2e2b,stroke:#5eead4,color:#e6fffa
+classDef api fill:#2a1f47,stroke:#a78bfa,color:#f0eaff
+class A,D,I store
+class B,H process
+class C,F api
+class E decision
+class G process`,
+                tasks: `flowchart LR
+T1["Task 1 サービスアカウント作成 IAM権限付与"] --> T2["Task 2 認証情報ファイル発行 環境変数設定"]
+T2 --> T3["Task 3 Vision API 実装"]
+T3 --> T4["Task 4 Translation API 実装"]
+T4 --> T5["Task 5 BigQuery書き込み有効化 結果検証"]
+classDef step fill:#132238,stroke:#7c9eff,color:#e6ecf5
+class T1,T2,T3,T4,T5 step`,
+            };
+
+            async function renderDiagrams() {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
+                }
+
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: 'dark',
+                    securityLevel: 'loose',
+                    fontFamily: 'inherit',
+                    flowchart: {
+                        useMaxWidth: false,
+                        htmlLabels: true,
+                        nodeSpacing: 45,
+                        rankSpacing: 45,
+                    },
+                    themeVariables: {
+                        fontSize: '16px',
+                        background: '#07111e',
+                        primaryColor: '#132238',
+                        primaryTextColor: '#e6ecf5',
+                        primaryBorderColor: '#7c9eff',
+                        lineColor: '#7c9eff',
+                        secondaryColor: '#1b3350',
+                        tertiaryColor: '#0f1e33',
+                    },
+                });
+
+                const targets = document.querySelectorAll('[data-diagram]');
+                for (const el of targets) {
+                    const key = el.getAttribute('data-diagram');
+                    const src = DIAGRAMS[key];
+                    if (!src) {
+                        continue;
+                    }
+                    const id = 'diagram-svg-' + key;
+                    try {
+                        const { svg } = await mermaid.render(id, src);
+                        el.innerHTML = svg;
+                        const svgEl = el.querySelector('svg');
+                        if (svgEl) {
+                            const vb = svgEl.getAttribute('viewBox');
+                            svgEl.removeAttribute('height');
+                            svgEl.removeAttribute('width');
+                            if (vb) {
+                                const parts = vb.split(' ').map(Number);
+                                if (parts.length === 4) {
+                                    parts[3] = parts[3] + 15;
+                                    svgEl.setAttribute('viewBox', parts.join(' '));
+                                    svgEl.style.width = parts[2] + 'px';
+                                }
+                            }
+                            svgEl.style.maxWidth = '100%';
+                            svgEl.style.height = 'auto';
+                            svgEl.style.overflow = 'visible';
+                        }
+                    } catch (err) {
+                        el.innerHTML =
+                            '<p style="color:var(--color-text-danger)">diagram render error: ' +
+                            err.message +
+                            '</p>';
+                    }
+                }
+            }
+
+            function setupSidebarObserver() {
+                const navLinks = document.querySelectorAll('.sidebar-nav a');
+                const sections = document.querySelectorAll('section[id]');
+                if (!sections.length) {
+                    return;
+                }
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                navLinks.forEach((link) => link.classList.remove('active'));
+                                const active = document.querySelector(
+                                    '.sidebar-nav a[href="#' + entry.target.id + '"]',
+                                );
+                                if (active) {
+                                    active.classList.add('active');
+                                }
+                            }
+                        });
+                    },
+                    { rootMargin: '-20% 0px -70% 0px' },
+                );
+
+                sections.forEach((section) => observer.observe(section));
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                renderDiagrams();
+                setupSidebarObserver();
+                if (window.hljs) {
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>
