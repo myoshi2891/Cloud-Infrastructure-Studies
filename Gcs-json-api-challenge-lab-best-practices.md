@@ -145,6 +145,8 @@ JSON API のオブジェクトアップロードには 3 種類の `uploadType` 
 
 ```bash
 export OBJECT_NAME="world-map.png"
+OBJECT_NAME_ENCODED=$(jq -rn --arg value "${OBJECT_NAME}" '$value | @uri')
+export OBJECT_NAME_ENCODED
 export BUCKET_1="${PROJECT_ID}-bucket-1"
 
 curl -X POST --data-binary @${OBJECT_NAME} \
@@ -180,7 +182,7 @@ export BUCKET_2="${PROJECT_ID}-bucket-2"
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Length: 0" \
-  "https://storage.googleapis.com/storage/v1/b/${BUCKET_1}/o/${OBJECT_NAME}/copyTo/b/${BUCKET_2}/o/${OBJECT_NAME}"
+  "https://storage.googleapis.com/storage/v1/b/${BUCKET_1}/o/${OBJECT_NAME_ENCODED}/copyTo/b/${BUCKET_2}/o/${OBJECT_NAME_ENCODED}"
 ```
 
 リクエストボディを空にした場合、送信元オブジェクトの編集可能なメタデータは複製先にも引き継がれます。ただし **ACL・object hold・retention 設定は引き継がれません**。これは初学者が見落としやすい仕様で、「コピーしたのに公開設定が消えている」という事象の原因になります。
@@ -231,7 +233,7 @@ EOF
 curl -X POST --data-binary @public-read.json \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
-  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/o/${OBJECT_NAME}/acl"
+  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/o/${OBJECT_NAME_ENCODED}/acl"
 ```
 
 ### 5.2 なぜこれが「レガシー」寄りの方法なのか

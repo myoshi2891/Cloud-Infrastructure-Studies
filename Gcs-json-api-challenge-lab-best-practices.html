@@ -1073,12 +1073,15 @@ curl -X POST --data-binary @public-read.json \
                         accessを有効にしたバケットで同じことをしたい場合は、ACLではなく
                         <code>setIamPolicy</code> を使います。
                     </p>
-                    <pre><code class="language-bash">curl -X GET \
+                    <pre><code class="language-bash">if ! curl --fail-with-body --silent --show-error -X GET \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam" \
-  -o iam-policy-current.json
+  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam?optionsRequestedPolicyVersion=3" \
+  -o iam-policy-current.json; then
+  echo 'IAMポリシーの取得に失敗しました。更新を中止します。' &gt;&amp;2
+  exit 1
+fi
 
-jq '
+if ! jq '
   if any(.bindings[]?; .role == "roles/storage.objectViewer" and .condition == null) then
     .bindings |= map(
       if .role == "roles/storage.objectViewer" and .condition == null then
@@ -1088,12 +1091,24 @@ jq '
   else
     .bindings += [{"role": "roles/storage.objectViewer", "members": ["allUsers"]}]
   end
-' iam-policy-current.json &gt; iam-policy.json
+' iam-policy-current.json &gt; iam-policy.json; then
+  echo 'IAMポリシーの更新データ作成に失敗しました。更新を中止します。' &gt;&amp;2
+  exit 1
+fi
 
-curl -X PUT --data-binary @iam-policy.json \
+if ! jq -e '(.bindings | type == "array") and (.etag | type == "string")' \
+  iam-policy.json &gt;/dev/null; then
+  echo 'IAMポリシーに有効なbindingsまたはetagがありません。更新を中止します。' &gt;&amp;2
+  exit 1
+fi
+
+if ! curl --fail-with-body --silent --show-error -X PUT --data-binary @iam-policy.json \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
-  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam"</code></pre>
+  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam"; then
+  echo 'IAMポリシーの更新に失敗しました。' &gt;&amp;2
+  exit 1
+fi</code></pre>
                     <p>
                         このread-modify-writeでは既存のbindings、条件、version、<code>etag</code>を保持したまま公開用メンバーを追加します。<code>etag</code>をPUTに含めることで、取得後に別の更新が入った場合の上書きを防ぎます。
                     </p>
