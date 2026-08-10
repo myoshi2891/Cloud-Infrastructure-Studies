@@ -149,13 +149,18 @@ describe('CcnaCiscoPlatformsDevelopmentPage', () => {
         expect(guideSource).toMatch(/className=\{styles\.ccnaPlatformsDevPage\}/);
     });
 
-    it('ローカルCSS変数を再定義せず、中央寄せの本文ラッパーを持つ', () => {
+    it('ローカルCSS変数を再定義せず、全幅の本文ラッパーを持つ', () => {
         const modulePath = join(routeDirectory, 'page.module.css');
         const moduleStyles = existsSync(modulePath) ? readFileSync(modulePath, 'utf8') : '';
+        const articleBodyRule = moduleStyles.match(
+            /\.ccnaPlatformsDevPage :global\(\.article-body\)\s*\{([^}]*)\}/,
+        )?.[1] ?? '';
         const { container } = render(<CcnaCiscoPlatformsDevelopmentPage />);
 
         expect(moduleStyles).not.toMatch(/(?:^|[;{])\s*--[^:;{}]+\s*:/);
-        expect(moduleStyles).toContain('margin-inline: auto');
+        expect(articleBodyRule).toMatch(/width:\s*100%\s*;/);
+        expect(articleBodyRule).toMatch(/max-width:\s*none\s*;/);
+        expect(articleBodyRule).not.toMatch(/margin-inline:/);
         expect(container.querySelector('.article-body')).toBeInTheDocument();
     });
 });
