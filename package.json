@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "docker:rebuild": "docker compose --profile dev --profile prod down && docker compose --profile prod build && docker compose --profile dev up --build",
+    "docker:rebuild": "docker compose --profile dev --profile prod down --volumes && docker compose --profile prod build && docker compose --profile dev up --build",
     "lint": "eslint .",
     "markdownlint": "markdownlint-cli2",
     "test": "vitest run",
