@@ -149,10 +149,10 @@ OBJECT_NAME_ENCODED=$(jq -rn --arg value "${OBJECT_NAME}" '$value | @uri')
 export OBJECT_NAME_ENCODED
 export BUCKET_1="${PROJECT_ID}-bucket-1"
 
-curl -X POST --data-binary @${OBJECT_NAME} \
+curl -X POST --data-binary @"${OBJECT_NAME}" \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: image/png" \
-  "https://storage.googleapis.com/upload/storage/v1/b/${BUCKET_1}/o?uploadType=media&name=${OBJECT_NAME}"
+  "https://storage.googleapis.com/upload/storage/v1/b/${BUCKET_1}/o?uploadType=media&name=${OBJECT_NAME_ENCODED}"
 ```
 
 ### 3.2 ベストプラクティス
@@ -245,52 +245,37 @@ Cloud Storage のアクセス制御には現在 2 つの方式が併存してい
 | **Uniform bucket-level access + IAM**（推奨） | バケット単位の IAM ポリシーのみで権限を一元管理。ACL は無効化される | Google が推奨するデフォルト方式 |
 | **Fine-grained access + ACL**（ラボで使用） | IAM に加えてオブジェクト単位の ACL も併用できるレガシー方式。S3 との相互運用のために残されている | 特定オブジェクトだけ個別に権限を変えたい場合の例外的な用途 |
 
-公式ドキュメントは「IAM と ACL の 2 つの権限系統が並行して働くため、意図しないデータ公開のリスクが増える」として、原則 ACL を避け Uniform bucket-level access を有効にすることを推奨しています。さらに、コピーの回で触れた `destinationPredefinedAcl` パラメータのように、**Uniform bucket-level access が有効なバケットに対して ACL 系の操作を送ると `400 Bad Request` になる**という技術的な制約もあります。Task4 の前に対象バケットを `Buckets: get` で取得し、`iamConfiguration.uniformBucketLevelAccess.enabled` を確認してください。値が `false` または未設定の Fine-grained バケットだけが ACL 方式を利用でき、`true` の場合は IAM 方式へ分岐します。`constraints/storage.uniformBucketLevelAccess` 組織ポリシーで Uniform bucket-level access が強制されている場合も IAM 方式を使用します。
+公式ドキュメントは「IAM と ACL の 2 つの権限系統が並行して働くため、意図しないデータ公開のリスクが増える」として、原則 ACL を避け Uniform bucket-level access を有効にすることを推奨しています。さらに、コピーの回で触れた `destinationPredefinedAcl` パラメータのように、**Uniform bucket-level access が有効なバケットに対して ACL 系の操作を送ると `400 Bad Request` になる**という技術的な制約もあります。Task4 の方式は、対象バケットを `Buckets: get` で取得し、実際の `iamConfiguration.uniformBucketLevelAccess.enabled` の値だけで選択してください。値が `false` または未設定なら ACL、`true` なら IAM ベースの方式（以下の署名付き URL）を使用します。組織ポリシー `constraints/storage.uniformBucketLevelAccess` は、新規バケットで Uniform bucket-level access を必須にしたり、既存バケットで無効化を禁止したりする制約です。対象バケットの現在の方式を直接示す値ではありません。
 
-### 5.3 実務で推奨される代替方法：IAM ポリシーによる公開
+### 5.3 Uniform bucket-level access 有効時の代替方法：署名付き URL
 
-Uniform bucket-level access を有効にしたバケットで同じことをしたい場合は、ACL ではなく `setIamPolicy` を使います。
+Uniform bucket-level access が有効な場合は ACL を使用できません。一方、`allUsers` への IAM binding には条件を付けられず、`roles/storage.objectViewer` を無条件に付与するとバケット全体のオブジェクト取得・一覧権限を公開します。`OBJECT_NAME` だけを共有するには、IAM で権限管理されたサービスアカウントを使って、期限付きの署名付き URL を発行します。
 
 ```bash
-curl -X GET \
-  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam" \
-  -o iam-policy-current.json
+export SIGNING_SERVICE_ACCOUNT="YOUR_SIGNING_SERVICE_ACCOUNT"
 
-jq '
-  if any(.bindings[]?; .role == "roles/storage.objectViewer" and .condition == null) then
-    .bindings |= map(
-      if .role == "roles/storage.objectViewer" and .condition == null then
-        .members = ((.members + ["allUsers"]) | unique)
-      else . end
-    )
-  else
-    .bindings += [{"role": "roles/storage.objectViewer", "members": ["allUsers"]}]
-  end
-' iam-policy-current.json > iam-policy.json
-
-curl -X PUT --data-binary @iam-policy.json \
-  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  -H "Content-Type: application/json" \
-  "https://storage.googleapis.com/storage/v1/b/${BUCKET_2}/iam"
+gcloud storage sign-url "gs://${BUCKET_2}/${OBJECT_NAME}" \
+  --duration=1h \
+  --http-verb=GET \
+  --impersonate-service-account="$SIGNING_SERVICE_ACCOUNT"
 ```
 
-この read-modify-write では既存の bindings、条件、version、`etag` を保持したまま公開用メンバーを追加します。`etag` を PUT に含めることで、取得後に別の更新が入った場合の上書きを防ぎます。この方法を使う場合、対象バケットは Uniform bucket-level access が有効である必要があります。
+署名用サービスアカウントには対象オブジェクトを取得できる権限が必要で、実行者にはそのサービスアカウントの `iam.serviceAccounts.signBlob` 権限が必要です。生成された URL は指定期間だけ、そのオブジェクトへの `GET` に利用でき、`storage.objects.list` は付与しません。継続的な匿名公開が必要なら、公開専用バケットへ公開対象だけを分離してから、そのバケットに限定して IAM を設定します。
 
 ```mermaid
 flowchart TD
     Q{"対象バケットは<br/>Uniform bucket-level access が有効か?"}
-    Q -->|"有効（推奨構成）"| I["IAM ポリシーで roles/storage.objectViewer を allUsers に付与<br/>PUT /b/BUCKET/iam"]
+    Q -->|"有効（推奨構成）"| I["IAM 管理の署名用サービスアカウントで<br/>対象オブジェクトの署名付き URL を発行"]
     Q -->|"無効（Fine-grained / ACL 構成、ラボはこちら）"| A["ObjectAccessControls.insert で entity=allUsers, role=READER<br/>POST /b/BUCKET/o/OBJECT/acl"]
-    I --> P["オブジェクトが一般公開される"]
-    A --> P
+    I --> S["対象オブジェクトだけを期限付きで共有"]
+    A --> P["対象オブジェクトを一般公開"]
 ```
 
 ### 5.4 ベストプラクティス（公開設定に関する重要な注意）
 
-- **Public Access Prevention を先に確認する**：バケットの `iamConfiguration.publicAccessPrevention` と、親プロジェクト・フォルダ・組織の `constraints/storage.publicAccessPrevention` を確認します。有効な場合、`allUsers` を ACL / IAM に追加する操作は `412 Precondition Failed` となり、既存の公開設定も無効化されて匿名アクセスは `401` または `403` になります。このラボは公開設定が必要なため、Public Access Prevention が適用されていない環境で実施してください。
+- **Public Access Prevention を先に確認する**：バケットの `iamConfiguration.publicAccessPrevention` と、親プロジェクト・フォルダ・組織の `constraints/storage.publicAccessPrevention` を確認します。有効な場合、`allUsers` を ACL / IAM に追加する操作は `412 Precondition Failed` となり、既存の公開設定も無効化されて匿名アクセスは `401` または `403` になります。ACL 方式でラボの一般公開要件を満たすには Public Access Prevention が適用されていない環境が必要です。署名付き URL は `allUsers` を追加せず署名用サービスアカウントとして認証するため、この制約による公開禁止とは別の方式です。
 - **`allUsers` への付与は必ず意図的に行う**：`allUsers` はインターネット上の誰でもという意味です。学習目的以外では、機密情報を含むバケットに対して安易に使わないこと。
-- **バケット全体を公開する場合は IAM、個別オブジェクトだけなら ACL**という使い分けが公式の考え方です。
+- **公開範囲に合わせて方式を選ぶ**：バケット全体を継続的に公開する場合は IAM、Fine-grained バケット内の個別オブジェクトを公開する場合は ACL、Uniform bucket-level access を維持したまま個別オブジェクトだけを共有する場合は署名付き URL を使います。
 - **併用のリスク**：Fine-grained バケットでは、バケットの IAM ポリシーが非公開でも、1つのオブジェクトの ACL が `allUsers` になっているだけでそのオブジェクトは公開されてしまいます。定期的に ACL の棚卸しをするか、可能な限り Uniform bucket-level access に統一するのが安全です。
 
 **参考ソース**
@@ -332,7 +317,7 @@ curl -X DELETE \
 ### 6.3 ベストプラクティス
 
 - **`bucket-2` は削除しない**：ラボの要件はコピー先の `bucket-2` は残したまま、コピー元の `bucket-1` とその中のオブジェクトだけを削除することです。誤って両方消してしまうミスに注意します。
-- **ソフトデリート（Soft Delete）の考慮**：新規 Cloud Storage バケットには既定で 7 日間の Soft Delete が適用されます。`DELETE` 後も復元可能期間中はデータが残り、ストレージ料金が発生する場合があります。使い捨てラボで完全削除を前提にする場合は、バケット作成時に `softDeletePolicy.retentionDurationSeconds` を `"0"` に設定して Soft Delete を無効化します。
+- **ソフトデリート（Soft Delete）の考慮**：新規 Cloud Storage バケットには既定で 7 日間の Soft Delete が適用されます。`DELETE` 後も復元可能期間中はデータが残り、ストレージ料金が発生する場合があります。使い捨てラボで完全削除を前提にする場合でも、`constraints/storage.softDeletePolicySeconds` が 0 秒を許可していると確認できた場合に限り、バケット作成時に `softDeletePolicy.retentionDurationSeconds` を `"0"` に設定します。許可値を確認できない場合は管理者へ確認し、0 秒が許可されていなければこの設定を省略してください。許可されない値を指定するとバケットの作成または更新が失敗します。
 - **本番運用では削除前に一覧・バックアップを確認する**：削除は取り消せない操作（またはソフトデリート期間後に取り消せなくなる操作）なので、スクリプト化する場合は削除対象を `list` で確認するステップを挟むと安全です。
 
 **参考ソース**

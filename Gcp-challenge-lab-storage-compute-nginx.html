@@ -982,20 +982,36 @@
                         export REGION="YOUR_REGION"
                         export IMAGE_FAMILY="YOUR_IMAGE_FAMILY"
                         export IMAGE_PROJECT="YOUR_IMAGE_PROJECT"
+                        export NETWORK="default"
 
                         gcloud compute instances create my-instance \
                           --zone="$ZONE" \
+                          --network="$NETWORK" \
                           --machine-type=e2-medium \
                           --image-family="$IMAGE_FAMILY" \
                           --image-project="$IMAGE_PROJECT" \
                           --boot-disk-type=pd-balanced \
                           --boot-disk-size=10GB \
                           --tags=http-server
+
+                        if gcloud compute firewall-rules describe default-allow-http >/dev/null 2>&1; then
+                          gcloud compute firewall-rules describe default-allow-http \
+                            --format="yaml(network,direction,sourceRanges,allowed,targetTags)"
+                        else
+                          gcloud compute firewall-rules create default-allow-http \
+                            --network="$NETWORK" \
+                            --direction=INGRESS \
+                            --allow=tcp:80 \
+                            --source-ranges=0.0.0.0/0 \
+                            --target-tags=http-server
+                        fi
                     </script>
                     <p>
-                        <code>--tags=http-server</code> を付けることで、後述する「Allow HTTP
-                        traffic」チェックボックスと同じ動作（<code>default-allow-http</code>
-                        ファイアウォールルールの対象になる）を CLI からも再現できます。
+                        <code>--tags=http-server</code> は VM
+                        をファイアウォールルールの対象にします。CLI 手順ではさらに、同じネットワーク上の
+                        <code>default-allow-http</code> が TCP ポート 80 を
+                        <code>http-server</code>
+                        タグへ許可していることを確認し、存在しない場合は作成します。
                     </p>
 
                     <h3>2.4 永続ディスクの作成とアタッチ（Console）</h3>
@@ -1014,6 +1030,8 @@
                         <pre><code class="language-bash" id="code-disk" data-code-src="src-disk"></code></pre>
                     </div>
                     <script type="text/plain" id="src-disk">
+                        export ZONE="YOUR_ZONE"
+
                         gcloud compute disks create mydisk \
                           --zone="$ZONE" \
                           --size=200GB \
@@ -1121,6 +1139,22 @@
                     <div class="code-block">
                         <div class="code-block-header">
                             <span>bash</span
+                            ><button class="copy-btn" type="button" data-copy-target="code-ssh">
+                                <i class="ti ti-copy"></i><span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash" id="code-ssh" data-code-src="src-ssh"></code></pre>
+                    </div>
+                    <script type="text/plain" id="src-ssh">
+                        export ZONE="YOUR_ZONE"
+
+                        gcloud compute ssh my-instance --zone="$ZONE"
+                    </script>
+
+                    <p>SSH 接続後、次のブロックを <strong>my-instance 内のシェル</strong>で実行します。</p>
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <span>bash</span
                             ><button class="copy-btn" type="button" data-copy-target="code-nginx">
                                 <i class="ti ti-copy"></i><span>Copy</span>
                             </button>
@@ -1128,8 +1162,6 @@
                         <pre><code class="language-bash" id="code-nginx" data-code-src="src-nginx"></code></pre>
                     </div>
                     <script type="text/plain" id="src-nginx">
-                        gcloud compute ssh my-instance --zone="$ZONE"
-
                         sudo apt-get update
 
                         sudo apt-get install -y nginx
@@ -1310,7 +1342,8 @@
                                     <td>ディスクと VM の Zone が異なる</td>
                                     <td>
                                         <code
-                                            >gcloud compute disks describe mydisk --zone="$ZONE"</code
+                                            >export ZONE="YOUR_ZONE"; gcloud compute disks describe
+                                            mydisk --zone="$ZONE"</code
                                         >
                                         で Zone を確認し、VM と同じ Zone にディスクを作り直す
                                     </td>

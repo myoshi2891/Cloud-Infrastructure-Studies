@@ -159,6 +159,8 @@ app/
 
 Red / Green / Refactor / Docs Sync のコミットを混在させないため、**すべての `git add` の前後**で
 次の 2 つの検査を行う。`assert_clean_stage` は `git add` の前、`assert_staged_scope` は `git add` の後に実行する。
+各 `git add` では許可ファイルを `--` の後に明示し、`git add -p` でそのステップに属する差分だけを選択する。
+許可ファイル内に別作業の変更があっても、ファイル全体をステージしてはならない。
 
 ```bash
 # git add の前: 別ステップの差分が既にステージされていないことを確認する
@@ -185,26 +187,30 @@ assert_staged_scope() {
 
 ```bash
 # 要件を網羅するテストを追加
+RED_TEST_NAME='renders the migrated SN requirement title'
+RED_EXPECTED_FAILURE='Unable to find an element with the text: SN requirement title'
 red_test_log=$(mktemp) || exit 1
 trap 'rm -f "$red_test_log"' EXIT
-if bun run test __tests__/gcl/<exam>/page.test.tsx >"$red_test_log" 2>&1; then
+if bun run test __tests__/gcl/<exam>/page.test.tsx -t "$RED_TEST_NAME" >"$red_test_log" 2>&1; then
   cat "$red_test_log"
   echo 'Red テストが成功しました。コミットを中止します。' >&2
   exit 1
 fi
 cat "$red_test_log"
-if ! grep -Eq 'AssertionError|TestingLibraryElementError|Unable to find an element|expected .* (to|not to)' "$red_test_log"; then
+if ! grep -F -- "$RED_EXPECTED_FAILURE" "$red_test_log" >/dev/null; then
   echo '想定したアサーション失敗を確認できません。コミットを中止します。' >&2
   exit 1
 fi
 git status --short
 assert_clean_stage || exit 1
-git add __tests__/gcl/<exam>/page.test.tsx || exit 1
+git add -p -- __tests__/gcl/<exam>/page.test.tsx || exit 1
 assert_staged_scope __tests__/gcl/<exam>/page.test.tsx || exit 1
 git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
 ```
 
-失敗している期待テキストを確認し、実装対象と表記を把握する。Red のテストを Green 実装と同じコミットに含めない。
+`RED_TEST_NAME` は追加したテストだけに一致する固有名、`RED_EXPECTED_FAILURE` はそのテストの期待値を含む固有の失敗メッセージに置き換える。
+`AssertionError` などの一般的なエラー名だけで Red と判定しない。上記の失敗を確認できた場合に限り `test:` コミットへ進み、
+Red のテストを Green 実装と同じコミットに含めない。
 
 ### Step 2: constants.ts に型とデータを追加
 
@@ -268,7 +274,7 @@ import {
 bun run test __tests__/gcl/<exam>/page.test.tsx
 git status --short
 assert_clean_stage || exit 1
-git add app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
 assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
 git diff --cached
 git commit -m "feat(gcl/<exam>/SN): implement migrated content"
@@ -284,7 +290,7 @@ bun run build
 bun run lint
 git status --short
 assert_clean_stage || exit 1
-git add <refactored-files> || exit 1
+git add -p -- <refactored-files> || exit 1
 assert_staged_scope <refactored-files> || exit 1
 git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
@@ -301,7 +307,7 @@ if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
   exit 1
 fi
 assert_clean_stage || exit 1
-if ! git add MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md; then
+if ! git add -p -- MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md; then
   echo 'Docs Sync 対象のステージに失敗しました。コミットを中止します。' >&2
   exit 1
 fi

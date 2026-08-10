@@ -166,18 +166,32 @@ export ZONE="YOUR_ZONE"
 export REGION="YOUR_REGION"
 export IMAGE_FAMILY="YOUR_IMAGE_FAMILY"
 export IMAGE_PROJECT="YOUR_IMAGE_PROJECT"
+export NETWORK="default"
 
 gcloud compute instances create my-instance \
   --zone="$ZONE" \
+  --network="$NETWORK" \
   --machine-type=e2-medium \
   --image-family="$IMAGE_FAMILY" \
   --image-project="$IMAGE_PROJECT" \
   --boot-disk-type=pd-balanced \
   --boot-disk-size=10GB \
   --tags=http-server
+
+if gcloud compute firewall-rules describe default-allow-http >/dev/null 2>&1; then
+  gcloud compute firewall-rules describe default-allow-http \
+    --format="yaml(network,direction,sourceRanges,allowed,targetTags)"
+else
+  gcloud compute firewall-rules create default-allow-http \
+    --network="$NETWORK" \
+    --direction=INGRESS \
+    --allow=tcp:80 \
+    --source-ranges=0.0.0.0/0 \
+    --target-tags=http-server
+fi
 ```
 
-`--tags=http-server` を付けることで、後述する「Allow HTTP traffic」チェックボックスと同じ動作（`default-allow-http` ファイアウォールルールの対象になる）を CLI からも再現できます。
+`--tags=http-server` は VM をファイアウォールルールの対象にします。CLI 手順ではさらに、同じネットワーク上の `default-allow-http` が TCP ポート 80 を `http-server` タグへ許可していることを確認し、存在しない場合は作成します。
 
 ### 2.4 永続ディスクの作成とアタッチ
 
@@ -199,6 +213,8 @@ flowchart TD
 Console で作成する代わりに、CLI では以下の2コマンドで完結します。
 
 ```bash
+export ZONE="YOUR_ZONE"
+
 # 200GB の永続ディスクを、VM と同じ Zone に作成
 gcloud compute disks create mydisk \
   --zone="$ZONE" \
@@ -258,8 +274,14 @@ sequenceDiagram
 
 ```bash
 # 1. SSH で my-instance に接続（Console の SSH ボタンでも可）
-gcloud compute ssh my-instance --zone="$ZONE"
+export ZONE="YOUR_ZONE"
 
+gcloud compute ssh my-instance --zone="$ZONE"
+```
+
+SSH 接続後、次のブロックを **my-instance 内のシェル**で実行します。
+
+```bash
 # 2. OS のパッケージインデックスを最新化
 sudo apt-get update
 
@@ -316,7 +338,7 @@ External IP をコピーして `http://EXTERNAL_IP/` の形式で新しいタブ
 | SSH 接続後 `nginx: command not found` | インストールが完了していない、または別パッケージ名でインストールしようとした | `sudo apt-get install -y nginx` を再実行し、途中でエラーが出ていないかログを確認する |
 | `systemctl status nginx` が `inactive (dead)` | インストール直後に自動起動していない場合がある | `sudo systemctl start nginx` で起動し、`sudo systemctl enable nginx` で自動起動を設定する |
 | バケット作成時に `Bucket name already in use` | バケット名がグローバルで既に使用されている | `PROJECT_ID` を正しく含めているか確認する（プロジェクト ID はグローバルに一意なので通常は衝突しない） |
-| ディスクをアタッチできない | ディスクと VM の Zone が異なる | `gcloud compute disks describe mydisk --zone="$ZONE"` で Zone を確認し、VM と同じ Zone にディスクを作り直す |
+| ディスクをアタッチできない | ディスクと VM の Zone が異なる | `export ZONE="YOUR_ZONE"; gcloud compute disks describe mydisk --zone="$ZONE"` で Zone を確認し、VM と同じ Zone にディスクを作り直す |
 | `Check my progress` が失敗する | リソース名・設定値がラボの要件と完全一致していない | リソース名（`my-instance` / `mydisk` / `PROJECT_ID-bucket`）や Region/Zone の綴りを再確認する |
 
 ---
