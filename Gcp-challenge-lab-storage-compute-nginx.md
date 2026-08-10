@@ -178,9 +178,30 @@ gcloud compute instances create my-instance \
   --boot-disk-size=10GB \
   --tags=http-server
 
-if gcloud compute firewall-rules describe default-allow-http >/dev/null 2>&1; then
-  gcloud compute firewall-rules describe default-allow-http \
-    --format="yaml(network,direction,sourceRanges,allowed,targetTags)"
+NETWORK_SELF_LINK=$(gcloud compute networks describe "$NETWORK" \
+  --format="value(selfLink)") || exit 1
+
+if FIREWALL_RULE_JSON=$(gcloud compute firewall-rules describe default-allow-http \
+  --format=json 2>/dev/null); then
+  if ! printf '%s\n' "$FIREWALL_RULE_JSON" | jq -e --arg network "$NETWORK_SELF_LINK" '
+    .network == $network and .direction == "INGRESS"
+  ' >/dev/null; then
+    echo 'default-allow-http の network または direction が異なるため、自動更新できません。' >&2
+    exit 1
+  fi
+
+  if ! printf '%s\n' "$FIREWALL_RULE_JSON" | jq -e '
+    .sourceRanges == ["0.0.0.0/0"] and
+    .allowed == [{"IPProtocol": "tcp", "ports": ["80"]}] and
+    .targetTags == ["http-server"] and
+    ((.disabled // false) == false)
+  ' >/dev/null; then
+    gcloud compute firewall-rules update default-allow-http \
+      --allow=tcp:80 \
+      --source-ranges=0.0.0.0/0 \
+      --target-tags=http-server \
+      --no-disabled || exit 1
+  fi
 else
   gcloud compute firewall-rules create default-allow-http \
     --network="$NETWORK" \
@@ -189,9 +210,23 @@ else
     --source-ranges=0.0.0.0/0 \
     --target-tags=http-server
 fi
+
+FIREWALL_RULE_JSON=$(gcloud compute firewall-rules describe default-allow-http \
+  --format=json) || exit 1
+if ! printf '%s\n' "$FIREWALL_RULE_JSON" | jq -e --arg network "$NETWORK_SELF_LINK" '
+  .network == $network and
+  .direction == "INGRESS" and
+  .sourceRanges == ["0.0.0.0/0"] and
+  .allowed == [{"IPProtocol": "tcp", "ports": ["80"]}] and
+  .targetTags == ["http-server"] and
+  ((.disabled // false) == false)
+' >/dev/null; then
+  echo 'default-allow-http が期待する設定と一致しません。' >&2
+  exit 1
+fi
 ```
 
-`--tags=http-server` は VM をファイアウォールルールの対象にします。CLI 手順ではさらに、同じネットワーク上の `default-allow-http` が TCP ポート 80 を `http-server` タグへ許可していることを確認し、存在しない場合は作成します。
+`--tags=http-server` は VM をファイアウォールルールの対象にします。CLI 手順ではさらに、`default-allow-http` のネットワーク、方向、送信元範囲、許可プロトコル・ポート、対象タグ、有効状態を検証します。更新可能な値は修正し、ネットワークまたは方向が異なる場合や最終検証に失敗した場合は処理を中止します。
 
 ### 2.4 永続ディスクの作成とアタッチ
 
