@@ -858,7 +858,8 @@
 
                         gcloud storage buckets create gs://${PROJECT_ID}-bucket \
                           --location=US \
-                          --default-storage-class=STANDARD
+                          --default-storage-class=STANDARD \
+                          --uniform-bucket-level-access
                     </script>
 
                     <h3>1.4 なぜこの設定がベストプラクティスなのか</h3>

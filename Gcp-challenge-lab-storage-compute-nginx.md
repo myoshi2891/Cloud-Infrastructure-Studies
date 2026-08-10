@@ -111,7 +111,8 @@ export PROJECT_ID=$(gcloud config get-value project)
 # US マルチリージョンにバケットを作成
 gcloud storage buckets create gs://${PROJECT_ID}-bucket \
   --location=US \
-  --default-storage-class=STANDARD
+  --default-storage-class=STANDARD \
+  --uniform-bucket-level-access
 ```
 
 ### 1.4 なぜこの設定がベストプラクティスなのか
