@@ -308,41 +308,34 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 **個別対応の正準手順**:
 
 1. 共通コンポーネントの既定動作を維持し、自然倍率を選べる任意propを追加する。
-2. ページ側に図IDごとの設定表を置き、カード幅と自然倍率の使用有無を個別指定する。
-3. 親は `display:block; width:100%` とし、図別 `max-width` で `viewBox幅 + 左右padding + border` 以上の表示領域を確保する。
+2. `MermaidDiagram` と `.mermaid-wrap` はコンテンツ領域の全幅を使い、ページ側で図ごとの `frameWidth` や `maxWidth` を指定しない。
+3. 親は `display:block; width:100%` とし、コンテンツ領域の幅をそのまま図の表示領域として使う。
 4. SVGは自然幅 + `max-width:100%` + `height:auto` を使う。図を広く見せたい場合はSVGを拡大せず、カード幅やMermaid DSLの `nodeSpacing` / `rankSpacing` をその図だけ調整する。
-5. TD、LR、state、pieを最低1枚ずつ確認し、修正対象外の図が縮小・拡大していないことを確認する。
+5. TD、LR、state、pieを最低1枚ずつ自動テストし、修正対象外の図が縮小・拡大していないことを確認する。
 
 ```tsx
-const DISPLAY = {
-  'vertical-flow': { frameWidth: measured.verticalFlowFrame, naturalScale: true },
-  'wide-topology': { frameWidth: measured.wideTopologyFrame, naturalScale: true },
-} as const;
+type DiagramId = 'vertical-flow' | 'wide-topology';
 
-type DiagramId = keyof typeof DISPLAY;
-
-const DIAGRAMS: Partial<Record<DiagramId, string>> = {
+const DIAGRAMS: Record<DiagramId, string> = {
   'vertical-flow': VERTICAL_FLOW,
   'wide-topology': WIDE_TOPOLOGY,
 };
 
 function Diagram({ id }: { id: DiagramId }) {
   const chart = DIAGRAMS[id];
-  const display = DISPLAY[id];
-  if (!chart || !display) return null;
   return (
-    <div style={{ maxWidth: display.frameWidth, width: '100%' }}>
+    <div className="mermaid-wrap">
       <MermaidDiagram
         chart={chart}
         ariaLabel="クラウド構成と通信経路を示す図"
-        preserveNaturalScale={display.naturalScale}
+        preserveNaturalScale
       />
     </div>
   );
 }
 ```
 
-自然倍率propのテストでは、`width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` を検証する。これは React の `MermaidDiagram` と各ページの `Diagram` コンポーネントだけの契約である。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` を維持する。既定動作のテストも残し、他ページへの波及を防ぐ。
+自然倍率を例外として使う場合、React の `MermaidDiagram` と各ページの `Diagram` だけで `width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` になる契約を明示し、自動テストする。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` と既定動作を維持する。既定動作のテストも残し、他ページへの波及を防ぐ。
 
 #### ⚠️ スクロール時の図解縮小・チカチカバグの防止（React.memo メモ化）
 
@@ -525,16 +518,16 @@ const applySvgFixups = (
 
 > `.edgeLabel *` に `fill:#fff` を当てない。エッジラベルの背景 `rect` が白く塗り潰される。色を当てるのは**ラベルテキストのみ・`color` のみ**に留める。
 
-### 確認手順（重要・順序厳守）
+### 完了確認（自動検証・順序厳守）
 
-1. `*.module.css` 変更時は `.agents/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、**dev サーバーを完全再起動**する。
+1. `*.module.css` 変更時は `.agents/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、検証用 dev サーバーを完全再起動する。
 
 ```bash
-kill $(lsof -ti:3000) 2>/dev/null; rm -rf .next; bun run dev
+npm run dev
 ```
 
-2. ブラウザは**ハードリロード（⌘+Shift+R）**。通常リロードでは古い SVG/CSS が残る。
-3. 目視確認はユーザー側で実施する（このリポジトリでは Playwright/ブラウザ自動操作は使わない方針）。
+2. `e2e/` 配下に Playwright テストを置き、設定済み `baseURL` と Chromium project を使って対象ページを検証する。
+3. DOM 上の SVG `viewBox`、`width`、`maxWidth`、`maxHeight`、ラッパー幅、クリッピング、重なりをアサーションし、移行用 DOM テストと Playwright の双方が成功したことを完了条件とする。ユーザーへの目視確認やスクリーンショット提供の依頼は完了条件にしない。
 
 ---
 

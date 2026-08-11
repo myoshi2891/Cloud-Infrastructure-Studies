@@ -22,11 +22,11 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 **Prerequisite**: The global skill covers `<pre>` block conversion, `class`/`className` rules, HTML entity handling, `@layer` priority, and cache invalidation. This skill assumes that knowledge and focuses on the **end-to-end workflow + reusable reference**.
 
-> **トークン効率の鉄則（省略禁止）**: 本 skill の目的の一つは将来の移行のトークン浪費削減である。
-> **ソースHTMLは常に100%読む。移行時の内容の省略・要約は厳禁。**
-> 削減してよいのは「参照ファイル・トークンマップ・配置値の**再読込/再導出の往復**」のみ。
-> 下記「正準リファレンス」と「効率的読み取りプロトコル」に従えば、参照コンポーネントや
-> `globals.css` を毎回読み直さずに移行を完了できる。
+> **ユーザー手動確認ゼロ原則（必須ルール）**:
+> ユーザーへ「目視確認」や「スクリーンショットの提供」を求める行為は**厳禁**とする。
+> 1. `scripts/verify-html-migration.mjs` (または `__tests__/` 内の全自動 DOM テスト) で元HTMLとNext.jsコンポーネントのテキストが100%全量一致することを自動検証する。
+> 2. `Playwright` E2E テストでスクロール時の文字重なり、固定ヘッダー遮蔽、ScrollSpy連動、レスポンシブ崩れが0件であることを自動検証する。
+> 3. 上記の自動テスト合格証明を添えて作業完了を宣言すること。
 
 ## セッション開始時に必ず読むファイル
 
@@ -69,6 +69,14 @@ content-heavy な単一HTML（hero + サイドバー + 多数セクション + M
 
 HTML の `:root` ローカル変数を、本リポジトリの `globals.css` 既存トークンへ機械的に置換する。
 既存トークンに無いテーマ値は、承認済みの3層デザイントークンとして `app/globals.css` の `@theme` に追加してから参照する。ページ固有 CSS では新規 custom property を定義しない。
+
+「100%忠実に移転」の対象は、原本の文章、情報構造、レイアウト、装飾、視覚効果など、原本を構成する要素とする。次のリポジトリ標準への対応付けだけは許可された変更であり、欠落や簡略化として扱わない。
+
+- Space Grotesk は既存の `var(--font-display)`（DM Sans）へ置換する。
+- 原本のテーマはリポジトリの統一ダークテーマへ対応付ける。
+- 原本の配色は、意味を保ったまま既存または承認済みの3層グローバルトークンへ置換する。
+
+優先順位は、原本要素をすべて保持したうえで上記標準へ対応付けること、次に既存コンポーネントとの統合とする。上記以外の文章・構造・レイアウト・装飾・視覚効果は変更、省略、簡略化しない。
 
 | HTML ローカル変数 | 置換先 | 備考 |
 |---|---|---|

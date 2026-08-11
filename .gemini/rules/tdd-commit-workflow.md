@@ -7,6 +7,7 @@ paths:
   - "lib/**/*.ts"
   - "__tests__/**/*.test.ts"
   - "__tests__/**/*.test.tsx"
+  - ".agents/skills/*"
 ---
 
 # TDD & Step-by-Step Commit Workflow Rules
@@ -75,9 +76,11 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
   - Pレベルタスク（`docs/TEST_COVERAGE_PROGRESS.md` の優先度別ネクストアクション）または複数コミットからなる「フェーズ」を完了する際は、必ず `.agents/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用してください。
   - 単発の Step 3 で `CLAUDE.md` だけを更新して終わらせることは禁止されています。
   - 同一フェーズ内で以下の成果物を確定させてください:
+    - `docs/coverage-dashboard.html` の再生成
+    - `docs/TEST_COVERAGE_PROGRESS.md` の全体サマリー、進捗、Section 7（次回セッションでの再開プロンプト）の更新
     - `MIGRATION_PROGRESS.md` の進捗チェックボックスの更新
-    - `docs/TEST_COVERAGE_PROGRESS.md` の Section 7（次回セッションでの再開プロンプト）の更新
-    - `GEMINI.md` / `README.md` のコマンド一覧や各種仕様書への反映
+    - `CLAUDE.md` / `GEMINI.md` / `README.md` のコマンド一覧や各種仕様書への反映
+  - 必須成果物の正準一覧と、テストを伴わない移行での例外は `.agents/skills/md-to-nextjs-migration/SKILL.md` Step 7 を参照してください。
 - **コミット対象とメッセージ (What to Commit)**:
   - 新しい試験の登録は `app/constants.ts` の `EXAMS` を正準データソースとし、ナビゲーションは `app/navigation.ts` の `toNavTree(EXAMS)` から生成します。新しい試験の追加時に `components/Header.tsx` を直接編集してはなりません。
   - 上記のルーティング統合と `CLAUDE.md` 等のドキュメント更新を含めます。
@@ -114,5 +117,5 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 
 ## 各種スキル・仕様書での扱い (Integration with Skills & Specs)
 
-本プロジェクトにおける全ての「仕様書（`CLAUDE.md`, `GEMINI.md` 等）」や「スキルファイル（`.claude/skills/*`, `.gemini/skills/*`）」に基づく作業は、**本ワークフローファイルに定められた手順を常に最優先事項として適用**すること。
+本プロジェクトにおける全ての「仕様書（`CLAUDE.md`, `GEMINI.md` 等）」や「スキルファイル（`.agents/skills/*`, `.claude/skills/*`, `.gemini/skills/*`）」に基づく作業は、**本ワークフローファイルに定められた手順を常に最優先事項として適用**すること。
 「実装せよ」「移行せよ」という指示を受けた場合、エージェントは自動的にこのTDDとコミットのステップを計画（Plan）に組み込み、ユーザーの合意を経た上で、各ステップ完了ごとに必ずローカルコミットを実行しなければならない。

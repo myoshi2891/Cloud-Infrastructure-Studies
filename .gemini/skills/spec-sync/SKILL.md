@@ -190,22 +190,54 @@ bun run lint 2>&1 | tail -5
 仕様書のみの同期更新のコミットには**ソースコードの変更を一切含めない**でください（TDD コミット分割ルール）。
 
 ```bash
-# 1. 正本 .agents の共通ルール・スキルを .claude と .gemini に同期
-# Codex 専用の improve スキル、Claude 固有の plans / lock は同期対象外
+# 1. 正本 .agents の共通ルール・スキルを、検証済み一時領域経由で同期
+# --delete は列挙した rules / skill ディレクトリ内だけに適用し、ミラー固有の他ディレクトリは保持する
+sync_skills=(fix-mermaid html-to-nextjs-migration markdown-formatter md-to-nextjs-migration spec-sync)
+sync_tmp=$(mktemp -d) || exit 1
+rollback_required=no
+rollback_mirrors() {
+  [ "$rollback_required" = 'yes' ] || return 0
+  for rollback_mirror in .claude .gemini; do
+    rsync -a --delete "$sync_tmp/backup/$rollback_mirror/rules/" "$rollback_mirror/rules/" || return 1
+    for rollback_skill in "${sync_skills[@]}"; do
+      rsync -a --delete "$sync_tmp/backup/$rollback_mirror/skills/$rollback_skill/" "$rollback_mirror/skills/$rollback_skill/" || return 1
+    done
+  done
+}
+cleanup_sync() {
+  rollback_mirrors || echo '同期前状態へのロールバックに失敗しました。手動復旧が必要です。' >&2
+  rm -rf "$sync_tmp"
+}
+trap cleanup_sync EXIT
+
 for mirror in .claude .gemini; do
-  if ! rsync -a .agents/rules/ "$mirror/rules/"; then
-    echo "$mirror への rules 同期に失敗しました。ステージやコミットへ進みません。" >&2
+  mirror_skill_paths=()
+  for skill_name in "${sync_skills[@]}"; do
+    mirror_skill_paths+=("$mirror/skills/$skill_name")
+  done
+  if [ -n "$(git status --porcelain=v1 --ignored --untracked-files=all -- "$mirror/rules" "${mirror_skill_paths[@]}")" ]; then
+    echo "$mirror の同期対象に既存の tracked・untracked・ignored 差分があります。同期を中止します。" >&2
     exit 1
   fi
-  for skill_name in fix-mermaid html-to-nextjs-migration markdown-formatter md-to-nextjs-migration spec-sync; do
-    if ! rsync -a ".agents/skills/$skill_name/" "$mirror/skills/$skill_name/"; then
-      echo "$mirror への $skill_name 同期に失敗しました。ステージやコミットへ進みません。" >&2
-      exit 1
-    fi
+  mkdir -p "$sync_tmp/staged/$mirror/rules" "$sync_tmp/backup/$mirror/rules"
+  rsync -a "$mirror/rules/" "$sync_tmp/backup/$mirror/rules/" || exit 1
+  rsync -a --delete .agents/rules/ "$sync_tmp/staged/$mirror/rules/" || exit 1
+  for skill_name in "${sync_skills[@]}"; do
+    mkdir -p "$sync_tmp/staged/$mirror/skills/$skill_name" "$sync_tmp/backup/$mirror/skills/$skill_name"
+    rsync -a "$mirror/skills/$skill_name/" "$sync_tmp/backup/$mirror/skills/$skill_name/" || exit 1
+    rsync -a --delete ".agents/skills/$skill_name/" "$sync_tmp/staged/$mirror/skills/$skill_name/" || exit 1
   done
 done
 
-# 2. worktree とステージの変更対象が同期対象4ディレクトリだけであることを検証
+rollback_required=yes
+for mirror in .claude .gemini; do
+  rsync -a --delete "$sync_tmp/staged/$mirror/rules/" "$mirror/rules/" || exit 1
+  for skill_name in "${sync_skills[@]}"; do
+    rsync -a --delete "$sync_tmp/staged/$mirror/skills/$skill_name/" "$mirror/skills/$skill_name/" || exit 1
+  done
+done
+
+# 2. worktree とステージの変更対象が同期対象6ディレクトリだけであることを検証
 allowed_sync_path() {
   case "$1" in
     .agents/rules/*|.agents/skills/*|.claude/rules/*|.claude/skills/*|.gemini/rules/*|.gemini/skills/*) return 0 ;;
@@ -229,10 +261,13 @@ while IFS= read -r changed_path; do
     exit 1
   }
 done < "$worktree_paths"
-if ! git add .agents/rules/ .agents/skills/ .claude/rules/ .claude/skills/ .gemini/rules/ .gemini/skills/; then
-  echo '同期対象をステージできません。コミットへ進みません。' >&2
-  exit 1
-fi
+while IFS= read -r changed_path; do
+  [ -n "$changed_path" ] || continue
+  if ! git add -- "$changed_path"; then
+    echo "今回の同期差分をステージできません: $changed_path" >&2
+    exit 1
+  fi
+done < "$worktree_paths"
 if ! git diff --cached --name-only > "$staged_paths"; then
   echo 'ステージ対象の一覧を取得できません。コミットへ進みません。' >&2
   exit 1
@@ -257,6 +292,7 @@ if ! git commit -m "chore(docs): sync spec files — <具体的な更新理由�
   echo '仕様同期コミットに失敗しました。後続処理を中止します。' >&2
   exit 1
 fi
+rollback_required=no
 ```
 
 `rsync`、変更範囲検証、`git add`、ステージ差分検証、ユーザー認可確認のいずれかが失敗した場合は即時停止し、部分同期のまま後続の Git 操作へ進まない。コミットはすべての同期・検証・Git 操作が成功した場合に限る。

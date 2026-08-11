@@ -37,12 +37,20 @@ getComputedStyle(document.documentElement).getPropertyValue('--color-background'
 ```bash
 # 1. PORT と、このポートで LISTEN 中の dev サーバーを fail-closed で取得
 dev_port=${PORT:?PORT を設定してください}
-if ! dev_pids=$(lsof -tiTCP:"$dev_port" -sTCP:LISTEN); then
+if ! raw_dev_pids=$(lsof -tiTCP:"$dev_port" -sTCP:LISTEN); then
   echo '指定ポートの dev サーバー PID を取得できません。処理を中止します。' >&2
   exit 1
 fi
-dev_pid=${dev_pids%%$'\n'*}
-[ -n "$dev_pid" ] || { echo 'dev サーバー PID が空です。処理を中止します。' >&2; exit 1; }
+if ! dev_pids=$(printf '%s\n' "$raw_dev_pids" | sed '/^$/d' | sort -u); then
+  echo 'dev サーバー PID を一意化できません。処理を中止します。' >&2
+  exit 1
+fi
+dev_pid_count=$(printf '%s\n' "$dev_pids" | awk 'NF { count += 1 } END { print count + 0 }') || exit 1
+[ "$dev_pid_count" -eq 1 ] || {
+  echo "dev サーバー PID が一意ではありません（${dev_pid_count}件）。処理を中止します。" >&2
+  exit 1
+}
+dev_pid=$dev_pids
 
 # 2. 対象 PID のコマンドと cwd が、このプロジェクトの next dev --turbopack であることを確認
 if ! dev_command=$(ps -p "$dev_pid" -o command=); then

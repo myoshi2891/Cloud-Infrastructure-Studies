@@ -182,9 +182,14 @@ assert_staged_scope() {
     esac
   done
 }
+```
 
+```bash
 # 新規ファイルごとに状態を確認し、intent-to-add の後で必要な差分だけを選択する
-git status --short -- <new-file>
+if ! git status --short -- <new-file>; then
+  echo '新規ファイルの状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
 assert_clean_stage || exit 1
 git add -N -- <new-file> || exit 1
 git add -p -- <new-file> || exit 1
@@ -209,8 +214,12 @@ if ! grep -F -- "$RED_EXPECTED_FAILURE" "$red_test_log" >/dev/null; then
   echo '想定したアサーション失敗を確認できません。コミットを中止します。' >&2
   exit 1
 fi
-git status --short
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
 assert_clean_stage || exit 1
+git add -N -- __tests__/gcl/<exam>/page.test.tsx || exit 1
 git add -p -- __tests__/gcl/<exam>/page.test.tsx || exit 1
 assert_staged_scope __tests__/gcl/<exam>/page.test.tsx || exit 1
 git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
@@ -280,7 +289,10 @@ import {
 
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
-git status --short
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
 assert_clean_stage || exit 1
 git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
 assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
@@ -296,7 +308,10 @@ git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
 bun run lint
-git status --short
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
 assert_clean_stage || exit 1
 git add -p -- <refactored-files> || exit 1
 assert_staged_scope <refactored-files> || exit 1
@@ -307,20 +322,45 @@ Step 6 は実際にリファクタリングしたファイルだけをステー�
 
 ### Step 7: Docs Sync を検証してコミット
 
+Docs Sync の必須成果物は次の6ファイルを正準一覧とする。
+
+- `docs/coverage-dashboard.html`
+- `docs/TEST_COVERAGE_PROGRESS.md`
+- `MIGRATION_PROGRESS.md`
+- `CLAUDE.md`
+- `GEMINI.md`
+- `README.md`
+
+テストを追加・変更しない移行に限り、`docs/coverage-dashboard.html` と `docs/TEST_COVERAGE_PROGRESS.md` を対象外にできる。その他4ファイルは必ず確認し、必要な更新をステージする。
+
 ```bash
 bun run test __tests__/gcl/<exam>/page.test.tsx
-git status --short
+if ! git status --short; then
+  echo 'worktree の状態を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
 if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
   echo 'Docs Sync コミットには COMMIT_AUTHORIZED=yes による明示認可が必要です。' >&2
   exit 1
 fi
 assert_clean_stage || exit 1
-if ! git add -p -- MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md; then
+docs_sync_files=(
+  docs/coverage-dashboard.html
+  docs/TEST_COVERAGE_PROGRESS.md
+  MIGRATION_PROGRESS.md
+  CLAUDE.md
+  GEMINI.md
+  README.md
+)
+if [ "${MIGRATION_HAS_TEST_CHANGES:-yes}" != 'yes' ]; then
+  docs_sync_files=(MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md README.md)
+fi
+if ! git add -p -- "${docs_sync_files[@]}"; then
   echo 'Docs Sync 対象のステージに失敗しました。コミットを中止します。' >&2
   exit 1
 fi
-# 文書 3 ファイル以外がステージされていないことを確認する
-assert_staged_scope MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md || exit 1
+# 正準一覧（テスト変更なしの場合は4ファイル）以外がステージされていないことを確認する
+assert_staged_scope "${docs_sync_files[@]}" || exit 1
 if ! git diff --cached --check || ! git diff --cached; then
   echo 'ステージ差分を検証できません。コミットを中止します。' >&2
   exit 1
