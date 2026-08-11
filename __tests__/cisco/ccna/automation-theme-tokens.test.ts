@@ -33,6 +33,7 @@ const expectedGlobalTokens = [
     '--color-ccna-network-foreground-faint',
     '--font-ccna-automation-sans',
     '--font-ccna-automation-mono',
+    '--font-ccna-app-mono',
     '--font-ccna-network-mono',
     '--radius-guide-card',
 ] as const;

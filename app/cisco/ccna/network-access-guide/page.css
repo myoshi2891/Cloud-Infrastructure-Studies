@@ -284,6 +284,9 @@
 }
 
 @media (max-width: 900px) {
+    .network-access-page .layout {
+        flex-direction: column;
+    }
     .network-access-page .sidebar {
         position: static;
         width: 100%;

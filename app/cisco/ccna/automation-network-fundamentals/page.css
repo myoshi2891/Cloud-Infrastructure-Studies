@@ -1,19 +1,7 @@
 .ccna-network-fundamentals-page {
-    --bg: #07111e;
-    --bg-elevated: #0d1626;
-    --bg-card: #101c30;
-    --border: #1f2b42;
-    --accent: #7c9eff;
-    --accent-soft: #3a4a6b;
-    --accent-dim: rgba(124, 158, 255, 0.12);
-    --text: #e8edf7;
-    --text-dim: #aab5cc;
-    --text-faint: #7686a3;
-    --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-
     min-height: 100vh;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--color-guide-background);
+    color: var(--color-ccna-platforms-foreground);
     font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
     line-height: 1.85;
     font-size: 16px;
@@ -30,16 +18,16 @@
     width: 280px;
     bottom: 0;
     overflow-y: auto;
-    background: var(--bg-elevated);
-    border-right: 1px solid var(--border);
+    background: var(--color-ccna-network-elevated);
+    border-right: 1px solid var(--color-ccna-network-border);
     padding: 2rem 1.25rem 3rem;
-    z-index: 40;
+    z-index: 100;
 }
 
 .ccna-network-fundamentals-page .sidebar .brand {
     font-size: 0.85rem;
     letter-spacing: 0.08em;
-    color: var(--text-faint);
+    color: var(--color-ccna-network-foreground-faint);
     text-transform: uppercase;
     margin-bottom: 0.35rem;
 }
@@ -47,7 +35,7 @@
 .ccna-network-fundamentals-page .sidebar .brand-title {
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--text);
+    color: var(--color-ccna-platforms-foreground);
     margin-bottom: 1.75rem;
     line-height: 1.5;
 }
@@ -60,7 +48,7 @@
 
 .ccna-network-fundamentals-page .sidebar .nav-group-label {
     font-size: 0.8rem;
-    color: var(--text-faint);
+    color: var(--color-ccna-network-foreground-faint);
     letter-spacing: 0.06em;
     margin: 1.1rem 0 0.35rem;
     text-transform: uppercase;
@@ -71,7 +59,7 @@
     display: block;
     padding: 0.45rem 0.6rem;
     border-radius: 6px;
-    color: var(--text-dim);
+    color: var(--color-ccna-network-foreground-muted);
     text-decoration: none;
     font-size: 0.9rem;
     border-left: 2px solid transparent;
@@ -79,14 +67,14 @@
 }
 
 .ccna-network-fundamentals-page .sidebar a:hover {
-    background: var(--accent-dim);
-    color: var(--text);
+    background: var(--color-accent-active);
+    color: var(--color-ccna-platforms-foreground);
 }
 
 .ccna-network-fundamentals-page .sidebar a.active {
-    background: var(--accent-dim);
-    color: var(--accent);
-    border-left: 2px solid var(--accent);
+    background: var(--color-accent-active);
+    color: var(--color-guide-accent);
+    border-left: 2px solid var(--color-guide-accent);
     font-weight: 600;
 }
 
@@ -99,7 +87,7 @@
 
 .ccna-network-fundamentals-page .hero {
     padding: 4.5rem 4rem 2.5rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-ccna-network-border);
     margin-bottom: 3rem;
 }
 
@@ -107,9 +95,9 @@
     display: inline-block;
     font-size: 0.85rem;
     letter-spacing: 0.08em;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid var(--accent-soft);
+    color: var(--color-guide-accent);
+    background: var(--color-accent-active);
+    border: 1px solid var(--color-ccna-network-accent-soft);
     padding: 0.3rem 0.8rem;
     border-radius: 999px;
     margin-bottom: 1.25rem;
@@ -119,7 +107,7 @@
     font-size: 2.1rem;
     line-height: 1.5;
     margin: 0 0 1rem;
-    background: linear-gradient(90deg, #ffffff 0%, var(--accent) 100%);
+    background: linear-gradient(90deg, #ffffff 0%, var(--color-guide-accent) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -128,7 +116,7 @@
 }
 
 .ccna-network-fundamentals-page .hero .lede {
-    color: var(--text-dim);
+    color: var(--color-ccna-network-foreground-muted);
     font-size: 1.02rem;
     max-width: 74ch;
     line-height: 1.8;
@@ -142,8 +130,8 @@
 }
 
 .ccna-network-fundamentals-page .meta-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-ccna-network-card);
+    border: 1px solid var(--color-ccna-network-border);
     border-radius: 10px;
     padding: 0.85rem 1.15rem;
     min-width: 150px;
@@ -151,7 +139,7 @@
 
 .ccna-network-fundamentals-page .meta-card .k {
     font-size: 0.8rem;
-    color: var(--text-faint);
+    color: var(--color-ccna-network-foreground-faint);
     letter-spacing: 0.04em;
     margin-bottom: 0.25rem;
 }
@@ -159,7 +147,7 @@
 .ccna-network-fundamentals-page .meta-card .v {
     font-size: 0.95rem;
     font-weight: 600;
-    color: var(--text);
+    color: var(--color-ccna-platforms-foreground);
 }
 
 .ccna-network-fundamentals-page section.section {
@@ -169,22 +157,22 @@
 
 .ccna-network-fundamentals-page h2.step-title {
     font-size: 1.55rem;
-    color: var(--text);
+    color: var(--color-ccna-platforms-foreground);
     display: flex;
     align-items: center;
     gap: 0.7rem;
     margin: 0 0 1.5rem;
     padding-bottom: 0.85rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-ccna-network-border);
     font-weight: 700;
 }
 
 .ccna-network-fundamentals-page h2.step-title .step-num {
     font-size: 0.9rem;
     font-weight: 700;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid var(--accent-soft);
+    color: var(--color-guide-accent);
+    background: var(--color-accent-active);
+    border: 1px solid var(--color-ccna-network-accent-soft);
     border-radius: 6px;
     padding: 0.15rem 0.6rem;
     white-space: nowrap;
@@ -192,29 +180,29 @@
 
 .ccna-network-fundamentals-page h3.sub-title {
     font-size: 1.15rem;
-    color: var(--text);
+    color: var(--color-ccna-platforms-foreground);
     margin: 2.25rem 0 0.9rem;
     font-weight: 600;
 }
 
 .ccna-network-fundamentals-page p {
-    color: var(--text-dim);
+    color: var(--color-ccna-network-foreground-muted);
     margin-bottom: 1.2rem;
 }
 
 .ccna-network-fundamentals-page strong {
-    color: var(--text);
+    color: var(--color-ccna-platforms-foreground);
 }
 
 .ccna-network-fundamentals-page a {
-    color: var(--accent);
+    color: var(--color-guide-accent);
 }
 
 .ccna-network-fundamentals-page code {
-    font-family: var(--mono);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--accent);
+    font-family: var(--font-ccna-network-mono);
+    background: var(--color-ccna-network-card);
+    border: 1px solid var(--color-ccna-network-border);
+    color: var(--color-guide-accent);
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
     font-size: 0.9em;
@@ -222,7 +210,7 @@
 
 .ccna-network-fundamentals-page ul,
 .ccna-network-fundamentals-page ol {
-    color: var(--text-dim);
+    color: var(--color-ccna-network-foreground-muted);
     padding-left: 1.4rem;
     margin-bottom: 1.5rem;
 }
@@ -232,21 +220,21 @@
 }
 
 .ccna-network-fundamentals-page li::marker {
-    color: var(--accent);
+    color: var(--color-guide-accent);
 }
 
 .ccna-network-fundamentals-page .callout {
-    background: var(--bg-card);
-    border: 1px solid var(--accent-soft);
-    border-left: 3px solid var(--accent);
+    background: var(--color-ccna-network-card);
+    border: 1px solid var(--color-ccna-network-accent-soft);
+    border-left: 3px solid var(--color-guide-accent);
     border-radius: 8px;
     padding: 1.1rem 1.4rem;
     margin: 1.5rem 0;
-    color: var(--text-dim);
+    color: var(--color-ccna-network-foreground-muted);
 }
 
 .ccna-network-fundamentals-page .callout strong {
-    color: var(--accent);
+    color: var(--color-guide-accent);
     display: block;
     margin-bottom: 0.3rem;
 }
@@ -254,9 +242,9 @@
 .ccna-network-fundamentals-page .table-wrapper {
     overflow-x: auto;
     margin: 1.25rem 0 1.75rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-ccna-network-border);
     border-radius: 10px;
-    background: var(--bg-card);
+    background: var(--color-ccna-network-card);
 }
 
 .ccna-network-fundamentals-page table.data-table {
@@ -267,19 +255,19 @@
 }
 
 .ccna-network-fundamentals-page table.data-table th {
-    background: var(--bg-elevated);
-    color: var(--accent);
+    background: var(--color-ccna-network-elevated);
+    color: var(--color-guide-accent);
     text-align: left;
     padding: 0.75rem 1rem;
     font-weight: 600;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-ccna-network-border);
     white-space: nowrap;
 }
 
 .ccna-network-fundamentals-page table.data-table td {
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-dim);
+    border-bottom: 1px solid var(--color-ccna-network-border);
+    color: var(--color-ccna-network-foreground-muted);
     vertical-align: top;
 }
 
@@ -293,11 +281,11 @@
 
 .ccna-network-fundamentals-page table.data-table td strong,
 .ccna-network-fundamentals-page table.data-table td code {
-    color: var(--text);
+    color: var(--color-ccna-platforms-foreground);
 }
 
 .ccna-network-fundamentals-page tr.this-domain td {
-    background: var(--accent-dim) !important;
+    background: var(--color-accent-active) !important;
 }
 
 .ccna-network-fundamentals-page .diagram-block {
@@ -306,15 +294,15 @@
 
 .ccna-network-fundamentals-page .diagram-wrapper {
     overflow-x: auto;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-ccna-network-card);
+    border: 1px solid var(--color-ccna-network-border);
     border-radius: 12px;
     padding: 1.5rem 1rem;
 }
 
 .ccna-network-fundamentals-page .diagram-caption {
     font-size: 0.85rem;
-    color: var(--text-faint);
+    color: var(--color-ccna-network-foreground-faint);
     margin-top: 0.6rem;
     text-align: center;
 }
@@ -322,8 +310,8 @@
 .ccna-network-fundamentals-page .footer {
     margin-top: 5rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--border);
-    color: var(--text-faint);
+    border-top: 1px solid var(--color-ccna-network-border);
+    color: var(--color-ccna-network-foreground-faint);
     font-size: 0.95rem;
 }
 
@@ -339,15 +327,15 @@
 
 .ccna-network-fundamentals-page .ref-list .ref-name {
     display: block;
-    color: var(--text);
+    color: var(--color-ccna-platforms-foreground);
     font-weight: 600;
     margin-bottom: 0.2rem;
 }
 
 .ccna-network-fundamentals-page .ref-list .ref-url {
-    font-family: var(--mono);
+    font-family: var(--font-ccna-network-mono);
     font-size: 0.85rem;
-    color: var(--accent);
+    color: var(--color-guide-accent);
     word-break: break-all;
 }
 
