@@ -60,6 +60,7 @@ test.describe('CCNA Automation Network Fundamentals 完全自動視覚 & 動的�
             }
         });
 
+        await page.goto(pageUrl);
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
         await page.waitForTimeout(500);
 
