@@ -29,8 +29,9 @@ export function extractMdMermaidBlocks(md) {
 }
 
 /**
- * 壊れた図ソースから検索キーワードを抽出する。
- * クォート内の文字列を優先し、無ければ英字 5 文字以上の語を使う。
+ * Extracts search keywords from a damaged diagram source.
+ * @param {string} brokenCode - The damaged diagram source.
+ * @returns {string[]} Quoted strings longer than three characters, or alphabetic words containing at least five characters when no such strings are found.
  */
 function extractKeywords(brokenCode) {
     const keywords = [];
@@ -80,7 +81,7 @@ export function restoreDiagrams(diagrams, mdBlocks) {
 }
 
 /**
- * Finds the closing brace matching an object opening brace.
+ * Finds the closing brace matching an object opening brace within the containing script element.
  * @param {string} source - The source text containing the object.
  * @param {number} openingIndex - The index of the object's opening brace.
  * @return {number} The index of the matching closing brace, or `-1` if none is found.
@@ -113,11 +114,11 @@ function findObjectEnd(source, openingIndex) {
 }
 
 /**
- * Decodes an escape sequence beginning at the specified position.
+ * Decodes an escape sequence from the specified position.
  * @param {string} source - The source string containing the escape sequence.
- * @param {number} start - The index of the escape character's following character.
- * @return {{value: string, next: number}} The decoded character and the index after the sequence.
- * @throws {Error} If a Unicode escape is malformed or specifies an out-of-range code point.
+ * @param {number} start - The index of the character following the escape character.
+ * @return {{value: string, next: number}} The decoded value and the index immediately after the escape sequence.
+ * @throws {Error} If a Unicode or hexadecimal escape is malformed or specifies an out-of-range code point.
  */
 function decodeEscape(source, start) {
     const char = source[start];
@@ -197,10 +198,10 @@ function readString(source, start, allowedQuotes) {
 }
 
 /**
- * Parses a template-literal-style diagram object without evaluating its contents.
- * @param {string} objectSource - The object literal source to parse.
- * @returns {Object<string, string>} The parsed diagram definitions.
- * @throws {Error} If the object contains invalid syntax or an unterminated comment.
+ * Parses a diagram definition object without evaluating its contents.
+ * @param {string} objectSource - The source of the diagram definition object.
+ * @return {Object<string, string>} The parsed diagram definitions.
+ * @throws {Error} If the object contains invalid syntax, an unterminated comment, or an invalid string.
  */
 function parseTemplateLiteralObject(objectSource) {
     const diagrams = {};

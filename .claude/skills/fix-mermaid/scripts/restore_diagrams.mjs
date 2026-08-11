@@ -29,8 +29,9 @@ export function extractMdMermaidBlocks(md) {
 }
 
 /**
- * 壊れた図ソースから検索キーワードを抽出する。
- * クォート内の文字列を優先し、無ければ英字 5 文字以上の語を使う。
+ * Extracts search keywords from damaged diagram source.
+ * @param {string} brokenCode - The damaged diagram source to inspect.
+ * @return {string[]} Quoted strings longer than three characters, or alphabetic words containing at least five characters when no such strings are found.
  */
 function extractKeywords(brokenCode) {
     const keywords = [];
@@ -197,7 +198,7 @@ function readString(source, start, allowedQuotes) {
 }
 
 /**
- * Parses a quoted-string object containing diagram definitions.
+ * Parses a diagram definition object with quoted keys and string values.
  * @param {string} objectSource - The object source, including its surrounding braces.
  * @return {Object<string, string>} The parsed diagram definitions.
  * @throws {Error} If the source contains invalid syntax, unterminated comments, or invalid key or value literals.
@@ -267,8 +268,8 @@ function validateDiagrams(diagrams) {
 /**
  * Extracts and validates the `DIAGRAMS` object from HTML source.
  * @param {string} html - The HTML source containing the `DIAGRAMS` declaration.
- * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagram definitions and their source range.
- * @throws {Error} If the declaration is missing, is not an object literal, is incomplete, or contains invalid diagram definitions.
+ * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagram definitions and the source range of the object.
+ * @throws {Error} If the declaration is missing, malformed, unterminated, or contains non-string diagram values.
  */
 export function extractDiagramsDefinition(html) {
     const declaration = findDiagramsDeclaration(html);

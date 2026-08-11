@@ -15,7 +15,7 @@ export function generateMetadata(): Metadata {
     };
 }
 
-/** Renders the server entry point for the Network Access guide. */
+/** Renders the CCNA 200-301 Network Access guide. */
 export default function Page() {
     return <CcnaNetworkAccessGuide />;
 }

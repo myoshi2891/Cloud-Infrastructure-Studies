@@ -1,7 +1,7 @@
 /**
- * Locates a real-code `const DIAGRAMS =` declaration in script content or the full source.
+ * Locates a real-code `const DIAGRAMS =` declaration in script blocks or the full source.
  * @param {string} source - The source text to search.
- * @returns {{index: number, valueStart: number}|null} The declaration index and value start index, or `null` when no declaration is found in script content.
+ * @returns {{index: number, valueStart: number}|null} The absolute declaration and value start indexes, or `null` if no declaration is found.
  */
 export function findDiagramsDeclaration(source) {
     const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi;

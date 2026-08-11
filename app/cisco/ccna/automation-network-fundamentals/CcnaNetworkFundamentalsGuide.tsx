@@ -19,7 +19,9 @@ const Diagram = React.memo(function Diagram({ id, label, caption }: { id: string
     );
 });
 
-/** Renders the complete guide and uses IntersectionObserver to track the visible section for ScrollSpy navigation. */
+/**
+ * Renders the CCNA Automation Network Fundamentals study guide and tracks the visible section for navigation.
+ */
 export default function CcnaNetworkFundamentalsGuide() {
     const [activeSectionId, setActiveSectionId] = useState<string>('overview');
 

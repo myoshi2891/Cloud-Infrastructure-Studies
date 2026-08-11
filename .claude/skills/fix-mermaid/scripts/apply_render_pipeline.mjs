@@ -94,8 +94,10 @@ const CENTERING_MARKER = 'mermaid-center (apply_render_pipeline.mjs)';
 // --- 各ステップ (純粋関数・冪等) --------------------------------------------
 
 /**
- * 各 `<div class="mermaid">…</div>` を `<div class="mermaid" id="diag-N"></div>` に置換する。
- * 既に id 付き (`class="mermaid" id=...`) の div は正規表現にマッチしないため自然に冪等。
+ * Replaces un-IDed Mermaid containers with sequential placeholder elements.
+ * Existing ID-bearing Mermaid containers remain unchanged.
+ * @param {string} html - The HTML to transform.
+ * @returns {{html: string, count: number}} The transformed HTML and number of replacements.
  */
 export function injectIds(html) {
     let count = 0;
@@ -281,9 +283,9 @@ function readPropertyNameBeforeColon(source, colonIndex) {
 }
 
 /**
- * Injects the Mermaid SVG fixups and rendering loop after initialization.
+ * Adds the Mermaid rendering loop to the script containing Mermaid initialization.
  * @param {string} html - The HTML document to update.
- * @returns {string} The HTML document with the rendering loop injected.
+ * @returns {string} The HTML document with the rendering loop inserted.
  * @throws {Error} If Mermaid initialization or a subsequent closing script tag is missing.
  */
 export function injectRenderLoop(html) {
@@ -304,8 +306,10 @@ export function injectRenderLoop(html) {
 }
 
 /**
- * 中央寄せ CSS を最初の </style> 直前に注入する。既に注入済みなら不変。
- * </style> が無い場合は </head> 直前に <style> ごと挿入する。
+ * Adds Mermaid centering styles to the HTML document.
+ * @param {string} html - The HTML source to update.
+ * @returns {string} The HTML source with centering styles injected.
+ * @throws {Error} If the document contains neither a closing `</style>` nor `</head>` tag.
  */
 export function injectCenteringCss(html) {
     if (html.includes(CENTERING_MARKER)) return html;
@@ -322,9 +326,9 @@ export function injectCenteringCss(html) {
 }
 
 /**
- * Applies all Mermaid integration steps to an HTML document.
+ * Applies the Mermaid rendering pipeline to an HTML document.
  * @param {string} html - The HTML document to process.
- * @returns {{html: string, report: string[]}} The processed HTML and a report of applied changes.
+ * @returns {{html: string, report: string[]}} The transformed HTML and a report describing applied changes.
  * @throws {Error} If the document does not define `DIAGRAMS`.
  */
 export function applyPipeline(html) {

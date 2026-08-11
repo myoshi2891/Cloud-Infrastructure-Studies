@@ -29,8 +29,9 @@ export function extractMdMermaidBlocks(md) {
 }
 
 /**
- * 壊れた図ソースから検索キーワードを抽出する。
- * クォート内の文字列を優先し、無ければ英字 5 文字以上の語を使う。
+ * Extracts search keywords from a damaged diagram source.
+ * @param {string} brokenCode - The damaged diagram source.
+ * @return {string[]} Quoted strings longer than three characters, or alphabetic words containing at least five characters when no such strings are found.
  */
 function extractKeywords(brokenCode) {
     const keywords = [];
@@ -80,9 +81,9 @@ export function restoreDiagrams(diagrams, mdBlocks) {
 }
 
 /**
- * Locates the closing brace for an object starting at the specified position.
+ * Finds the closing brace matching an object opening brace, including objects within script elements.
  * @param {string} source - The source text containing the object.
- * @param {number} openingIndex - The index of the object's opening brace.
+ * @param {number} openingIndex - The index of the object's opening brace in the source.
  * @return {number} The index of the matching closing brace, or `-1` if none is found.
  */
 function findObjectEnd(source, openingIndex) {
@@ -197,10 +198,10 @@ function readString(source, start, allowedQuotes) {
 }
 
 /**
- * Parses a quoted-string object containing diagram definitions.
+ * Parses a diagram definition object with quoted keys and string values.
  * @param {string} objectSource - The object source, including its surrounding braces.
  * @return {Object<string, string>} The parsed diagram definitions.
- * @throws {Error} If the object contains invalid syntax or an unterminated comment.
+ * @throws {Error} If the object contains invalid syntax or an unterminated comment or string.
  */
 function parseTemplateLiteralObject(objectSource) {
     const diagrams = {};
@@ -247,10 +248,10 @@ function parseTemplateLiteralObject(objectSource) {
 }
 
 /**
- * Validates that a DIAGRAMS value is an object containing only string values.
+ * Validates a DIAGRAMS value and returns it when all entries are strings.
  * @param {*} diagrams - The value to validate.
  * @return {Object} The validated DIAGRAMS object.
- * @throws {TypeError} If the value is null, an array, or contains a non-string value.
+ * @throws {TypeError} If the value is not an object, is null, is an array, or contains a non-string value.
  */
 function validateDiagrams(diagrams) {
     if (
@@ -267,8 +268,8 @@ function validateDiagrams(diagrams) {
 /**
  * Extracts and validates the `DIAGRAMS` object definition from HTML.
  * @param {string} html - The HTML source containing the `DIAGRAMS` declaration.
- * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagrams and the definition's source range.
- * @throws {Error} If the declaration is missing, invalid, or not a closed object literal.
+ * @returns {{diagrams: Object<string, string>, start: number, end: number}} The validated diagram definitions and the definition's source range, with `end` exclusive.
+ * @throws {Error} If the declaration is missing, is not a closed object literal, or contains invalid data.
  */
 export function extractDiagramsDefinition(html) {
     const declaration = findDiagramsDeclaration(html);
