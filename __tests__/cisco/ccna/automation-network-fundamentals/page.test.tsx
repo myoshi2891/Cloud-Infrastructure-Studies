@@ -29,8 +29,10 @@ describe('CCNA Automation Network Fundamentals Guide - ScrollSpy & Title Fidelit
     });
 
     it('renders exact H2 section step titles matching original HTML 100%', () => {
-        const { getByRole } = render(<CcnaNetworkFundamentalsGuide />);
-        
+        const { getAllByRole } = render(<CcnaNetworkFundamentalsGuide />);
+        const h2Elements = getAllByRole('heading', { level: 2 });
+        const h2Texts = h2Elements.map(el => (el.textContent || '').replace(/\s+/g, ' ').trim());
+
         const expectedH2Titles = [
             'はじめに：このガイドの位置づけ',
             'Step 0 Network Fundamentalsドメインの全体像',
@@ -47,9 +49,12 @@ describe('CCNA Automation Network Fundamentals Guide - ScrollSpy & Title Fidelit
             '参考情報源',
         ];
 
-        expectedH2Titles.forEach((title) => {
-            const h2 = getByRole('heading', { level: 2, name: new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') });
-            expect(h2).toBeTruthy();
+        expectedH2Titles.forEach((expectedTitle) => {
+            const hasMatch = h2Texts.some(text => text.includes(expectedTitle));
+            if (!hasMatch) {
+                console.log('MISSING H2 TITLE:', expectedTitle, 'DOM H2s:', h2Texts);
+            }
+            expect(hasMatch).toBe(true);
         });
     });
 

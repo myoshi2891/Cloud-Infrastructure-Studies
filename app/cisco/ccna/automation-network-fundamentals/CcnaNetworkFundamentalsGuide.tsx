@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
@@ -19,9 +19,30 @@ function Diagram({ id, label, caption }: { id: string; label: string; caption: s
 }
 
 export default function CcnaNetworkFundamentalsGuide() {
+    const [activeSectionId, setActiveSectionId] = useState<string>('overview');
+
+    useEffect(() => {
+        if (typeof IntersectionObserver === 'undefined') return;
+
+        const sections = document.querySelectorAll('section.section, footer.footer');
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && entry.target.id) {
+                        setActiveSectionId(entry.target.id);
+                    }
+                });
+            },
+            { rootMargin: '-20% 0px -70% 0px' }
+        );
+
+        sections.forEach((s) => observer.observe(s));
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <div className="ccna-network-fundamentals-page">
-            <NavBar />
+            <NavBar activeId={activeSectionId} />
             <main className="main">
                 {/* HERO */}
                 <header className="hero">
@@ -104,7 +125,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 0 */}
                 <section id="step0" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 0</span>
+                        <span className="step-num">Step 0</span>{' '}
                         Network Fundamentalsドメインの全体像
                     </h2>
                     <p>
@@ -180,13 +201,13 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 1 */}
                 <section id="step1" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 1</span>
-                        MACアドレスとVLANの目的と使われ方を説明できる（6.1）
+                        <span className="step-num">Step 1</span>{' '}
+                        MACアドレスとVLAN（6.1）
                     </h2>
 
                     <h3 className="sub-title">MACアドレスとは</h3>
                     <p>
-                        MACアドレス（Media Access Control Address）は、ネットワークインターフェースカード（NIC）ごとに割り当てられた <strong>48ビット（6バイト）の物理アドレス</strong> です。IPアドレスのように後から人間が変更する前提のものではなく、機器の出荷時に焼き込まれる一意な識別子です。
+                        MACアドレス（Media Access Control Address）は、ネットワークインターフェース（NIC）ごとに割り当てられた <strong>48ビット（6バイト）の物理アドレス</strong> です。IPアドレスのように後から人間が変更する前提のものではなく、機器の出荷時に焼き込まれる一意な識別子です。
                     </p>
 
                     <div className="table-wrapper">
@@ -245,8 +266,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 2 */}
                 <section id="step2" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 2</span>
-                        IPアドレス・ルート・サブネットマスク/プレフィックス・ゲートウェイを説明できる（6.2）
+                        <span className="step-num">Step 2</span>{' '}
+                        IPアドレス・ルート・サブネットマスク/プレフィックス・ゲートウェイ（6.2）
                     </h2>
 
                     <h3 className="sub-title">IPアドレスの基本</h3>
@@ -357,8 +378,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 3 */}
                 <section id="step3" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 3</span>
-                        スイッチ・ルーター・ファイアウォール・ロードバランサーの機能を説明できる（6.3）
+                        <span className="step-num">Step 3</span>{' '}
+                        ネットワーク機器の役割（6.3）
                     </h2>
                     <p>
                         自動化対象となる代表的なネットワーク機器と、その役割を整理します。まず前提として、OSI参照モデルの 主要レイヤーを簡単に押さえておくと機器の役割が理解しやすくなります。
@@ -443,8 +464,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 4 */}
                 <section id="step4" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 4</span>
-                        基本的なネットワークトポロジ図を解読できる（6.4）
+                        <span className="step-num">Step 4</span>{' '}
+                        ネットワークトポロジ図の読み方（6.4）
                     </h2>
                     <p>
                         試験では、スイッチ・ルーター・ファイアウォール・ロードバランサー・ポート番号などを含む基本的なトポロジ図を 読み解く問題が出題されます。以下は典型的な構成例です。
@@ -467,8 +488,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 5 */}
                 <section id="step5" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 5</span>
-                        Management Plane / Data Plane / Control Plane の機能を比較説明できる（6.5）
+                        <span className="step-num">Step 5</span>{' '}
+                        Management / Data / Control Plane（6.5）
                     </h2>
                     <p>
                         ネットワーク機器（ルーターやスイッチ）の内部動作は、役割ごとに3つの「プレーン」に分けて理解すると 自動化の対象範囲が明確になります。
@@ -517,8 +538,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 6 */}
                 <section id="step6" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 6</span>
-                        DHCP・DNS・NAT・SNMP・NTPの各機能を説明できる（6.6）
+                        <span className="step-num">Step 6</span>{' '}
+                        IPサービス（DHCP・DNS・NAT・SNMP・NTP）（6.6）
                     </h2>
                     <p>
                         ネットワーク自動化の現場でも頻繁に登場する、5つの代表的なIPサービスを解説します。
@@ -620,8 +641,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 7 */}
                 <section id="step7" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 7</span>
-                        代表的なポート番号とその役割を答えることができる（6.7）
+                        <span className="step-num">Step 7</span>{' '}
+                        プロトコルとポート番号（6.7）
                     </h2>
                     <p>
                         自動化スクリプトでAPIやCLIに接続する際、どのポートを使うかを把握しておくことは、接続トラブルの 切り分けにも直結します。
@@ -704,8 +725,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 8 */}
                 <section id="step8" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 8</span>
-                        アプリケーション接続トラブルの原因を診断できる（6.8）
+                        <span className="step-num">Step 8</span>{' '}
+                        アプリケーション接続トラブルの切り分け（6.8）
                     </h2>
                     <p>
                         自動化スクリプトやAPIクライアントから接続できないとき、原因を「NAT不良」「ポート遮断」「プロキシ」 「VPN」の観点で切り分ける考え方を整理します。
@@ -761,8 +782,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* STEP 9 */}
                 <section id="step9" className="section">
                     <h2 className="step-title">
-                        <span className="step-num">Step 9</span>
-                        ネットワーク制約がアプリケーションに与える影響を説明できる（6.9）
+                        <span className="step-num">Step 9</span>{' '}
+                        ネットワーク制約がアプリケーションに与える影響（6.9）
                     </h2>
                     <p>
                         最後に、ネットワークの物理的・構成的な制約が、アプリケーションの動作にどう影響するかを整理します。
