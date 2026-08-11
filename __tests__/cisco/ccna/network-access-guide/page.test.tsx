@@ -1,4 +1,6 @@
 import { JSDOM } from 'jsdom';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', { url: 'http://localhost' });
 (globalThis as any).window = dom.window;
@@ -11,18 +13,19 @@ import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Page, { generateMetadata } from '@/app/cisco/ccna/network-access-guide/page';
 import CcnaNetworkAccessGuide from '@/app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide';
+import NavBar from '@/app/cisco/ccna/network-access-guide/NavBar';
 import { DIAGRAMS } from '@/app/cisco/ccna/network-access-guide/constants';
 
 // Mock MermaidDiagram
 vi.mock('@/components/MermaidDiagram', () => ({
     MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel: string }) => (
         <div data-testid="mermaid-diagram" aria-label={ariaLabel}>
-            {chart}
+            {ariaLabel}
         </div>
     ),
 }));
 
-describe('CCNA Network Access Guide Page', () => {
+describe('CCNA Network Access Guide Page - Automated 100% Fidelity & Structural Checks', () => {
     it('generateMetadata returns correct metadata', () => {
         const metadata = generateMetadata();
         expect(metadata.title).toContain('Network Access');
@@ -73,6 +76,41 @@ describe('CCNA Network Access Guide Page', () => {
         const { getAllByTestId } = render(<CcnaNetworkAccessGuide />);
         const diagrams = getAllByTestId('mermaid-diagram');
         expect(diagrams).toHaveLength(17);
+    });
+
+    it('verifies 100% text fidelity against source HTML file automatically', () => {
+        const htmlPath = path.resolve(process.cwd(), 'archive/Cisco/html/ccna/Ccna-network-access-guide.html');
+        const htmlRaw = fs.readFileSync(htmlPath, 'utf8');
+        const domHtml = new JSDOM(htmlRaw);
+        const docHtml = domHtml.window.document;
+
+        const { container } = render(<CcnaNetworkAccessGuide />);
+        const jsxTextNormalized = (container.textContent || '').replace(/\s+/g, '');
+
+        const sourceElements = Array.from(
+            docHtml.querySelectorAll('main h1, main h2, main h3, main p, main li, main th, main td, main a')
+        );
+        const missingTexts: string[] = [];
+
+        sourceElements.forEach((el) => {
+            const textNormalized = (el.textContent || '').replace(/\s+/g, '');
+            if (textNormalized && !jsxTextNormalized.includes(textNormalized)) {
+                missingTexts.push(el.textContent?.replace(/\s+/g, ' ').trim() || '');
+            }
+        });
+
+        if (missingTexts.length > 0) {
+            console.error(`\n❌ [AUTOMATED CHECK FAILED] Found ${missingTexts.length} missing elements from source HTML:\n`);
+            missingTexts.forEach((t, i) => console.error(`  ${i + 1}. "${t}"`));
+        }
+
+        expect(missingTexts).toEqual([]);
+    });
+
+    it('renders NavBar component with TOC links', () => {
+        const { container } = render(<NavBar />);
+        const links = container.querySelectorAll('.toc a');
+        expect(links.length).toBe(15);
     });
 
     it('renders page component without crashing', () => {
