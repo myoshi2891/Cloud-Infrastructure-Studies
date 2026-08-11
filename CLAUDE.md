@@ -246,6 +246,12 @@ app/
         NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
         constants.ts                # Mermaid 図定義（10図）
         page.module.css             # ページ固有スタイル
+      automation-infrastructure-and-automation/
+        page.tsx                    # CCNA Automation 5.0 Infrastructure and Automation ステップバイステップ解説ガイド（Server。メタデータ定義）
+        CcnaInfraAutomationGuide.tsx # 本文＋インタラクション（client。全17セクション、15個のMermaid図等）
+        NavBar.tsx                  # サイドバーナビ（IntersectionObserver）
+        constants.ts                # Mermaid 図定義（15図）
+        page.css                    # ページ固有スタイル
       ip-connectivity-guide/
         page.tsx                    # CCNA 200-301 IP Connectivity 完全ガイド（Server。メタデータ定義）
         CcnaIpConnectivityGuide.tsx # 本文＋インタラクション（client。全6章＋まとめ、Mermaid等）

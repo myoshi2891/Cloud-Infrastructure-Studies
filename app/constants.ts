@@ -341,6 +341,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/cisco/ccna/automation-cisco-platforms-and-development',
                 pct: '15%',
             },
+            {
+                label: '5.0 Infrastructure and Automation',
+                href: '/cisco/ccna/automation-infrastructure-and-automation',
+                pct: '20%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',
