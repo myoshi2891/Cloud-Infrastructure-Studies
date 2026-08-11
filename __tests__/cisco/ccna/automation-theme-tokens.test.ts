@@ -94,7 +94,9 @@ describe('CCNA automation theme token ownership', () => {
             'app/cisco/ccna/automation-network-fundamentals/page.css',
         );
 
-        expect(pageStyles).not.toMatch(/rgba\(|#[0-9a-fA-F]{3,8}\b/);
+        expect(pageStyles).not.toMatch(
+            /\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color|color-mix|device-cmyk)\s*\(|#[\da-f]{3,8}\b/i,
+        );
         expect(networkCss).toContain(
             'linear-gradient(90deg, var(--color-ccna-platforms-foreground) 0%, var(--color-guide-accent) 100%)',
         );
