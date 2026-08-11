@@ -7,12 +7,20 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 ## 現在地
 
 - **ブランチ:** dev
-- **進行中タスク:** CCNA 200-301 Network Access 徹底解説 100%全量移行 (完了)
-- **最新実装 HEAD:** `968e597` (`refactor(ccna): integrate CCNA Network Access guide into navigation and update docs`)
-- **前回進捗同期コミット:** `968e597`
+- **進行中タスク:** CCNAレビュー指摘の検証・修正 (完了)
+- **最新実装 HEAD:** `8694b35` (`refactor(ccna): document guide component responsibilities`)
+- **前回進捗同期コミット:** `0eb60dd`
 - **次の作業:** 完了
-- **ビルド状態:** 単体テスト全パス (Vitest passed)
-- **最終更新日時(UTC):** 2026-08-11T06:14:00.000Z
+- **検証状態:** 対象Vitest成功、`npm run lint` 成功。標準 `npm test` は実行環境の localStorage 不備で既存30件が失敗。ビルドは依頼により未実施。
+- **最終更新日時(UTC):** 2026-08-11T07:10:00.000Z
+
+## 2026-08-11: CCNAレビュー指摘の検証・修正 (完了)
+
+- [x] **Rules / Skills**: 正本とClaude/Geminiミラーの同期、安全なrsync、Docs Sync成果物、Mermaid自動検証規約を更新 (`835596f`)。
+- [x] **Mermaid parser Red / Green**: HTML外側の記号、Unicode/hex/行継続、型検証の回帰テストと実装 (`a21d9a0`, `9c9179a`)。
+- [x] **CSS tokens Red / Green**: CCNA Automationのローカルトークンをグローバル3層トークンへ移設し、モバイル配置とz-indexを修正 (`5390336`, `75a708f`)。
+- [x] **CCNA behavior Red / Green**: ARIA、参照リンク、JSON忠実性、200-901メタデータ、CCNA/CCNAAUTO分離を修正 (`270712e`, `1689b5c`)。
+- [x] **Refactor**: 対象TSXコンポーネントの責務をJSDoc化 (`8694b35`)。
 
 ## 2026-08-11: Cisco「CCNA 200-301 Network Access 徹底解説」100%全量移行 (完了)
 
@@ -141,8 +149,6 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - 第11章: DevOps表を原本通り4行（文化/自動化/計測/共有）に修正（独自追加のLean削除）、詳細段落追加
 - 第12章: 冒頭段落追加、列名をNo./サブトピック/一言でいうと、12行に修正
 - 参考文献: 8リンク全て復元（認定概要/試験詳細/PDF/LN/OWASP/Dockerfile/unittest）＋免責事項段落
-
-
 
 ## 2026-08-09: サイドバー付き全ガイド画面のレイアウト統一 (完了)
 
@@ -1092,10 +1098,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `4a3f4c0`、前回進捗同期コミットは `226dc12` です。
-サイドバー付き全24スタイルシートは、左端固定280pxサイドバーと残り幅いっぱいのメイン領域へ統一済みです。`__tests__/guide-content-widths.test.ts` の73ケース、ESLint、Next.js production build 56ルートが成功しています。
+最新実装 HEAD は `8694b35`、前回進捗同期コミットは `0eb60dd` です。
+CCNAレビュー指摘はカテゴリー別のRed / Green / Refactorコミットで対応済みです。Mermaid復元23件、CCNAテーマ3件、CCNAコンポーネント／ナビゲーション42件の対象テストと `npm run lint` が成功しています。ビルドは依頼により未実施です。
 
-ワークツリーには未追跡のHTMLが2件あります。次回は所有者の作業を保持したまま、移行要否と対象ルートを確認してから着手してください。既存の未追跡Markdownも変更しないでください。
+標準 `npm test` は実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
 
 ---
 

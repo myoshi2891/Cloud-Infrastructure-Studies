@@ -1,8 +1,8 @@
 # Project Overview: Cloud Infrastructure Studies
 
-Updated 2026-08-10
+Updated 2026-08-11
 
-このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
+このプロジェクトは、Google Cloud / AWS / Cisco のクラウド・ネットワーク資格試験対策（Associate Cloud Engineer, Generative AI Leader, Cloud Digital Leader, Associate Google Workspace Administrator, Professional Cloud Network Engineer, Cisco Certified Network Associate, Cisco Certified Network Associate Automation、AWS Certified Solutions Architect – Associate）を目的とした学習用 Next.js アプリケーションです。
 試験ガイド、重要ポイントの解説、およびテスト対策コンテンツを提供します。
 
 ## 主な技術スタック
@@ -40,20 +40,23 @@ Updated 2026-08-10
   - `/app/cisco/ccde/complete-guide`: Cisco CCDE 認定 完全ガイド。
   - `/app/cisco/ccna/beginner-guide`: Cisco CCNA試験 完全ガイド。
   - `/app/cisco/ccna/automation-software-development-design`: CCNA Automation ソフトウェア開発と設計 完全ガイド。
+  - `/app/cisco/ccna/automation-api-guide`: CCNA Automation API 完全ガイド。
   - `/app/cisco/ccna/automation-application-deployment-security`: CCNA Automation アプリケーションの展開とセキュリティ 完全ガイド。
   - `/app/cisco/ccna/automation-cisco-platforms-and-development`: CCNA Automation Cisco Platforms and Development 徹底解説ガイド。
   - `/app/cisco/ccna/automation-infrastructure-and-automation`: CCNA Automation 5.0 Infrastructure and Automation ステップバイステップ解説ガイド。
+  - `/app/cisco/ccna/automation-network-fundamentals`: CCNAAUTO 200-901 6.0 Network Fundamentals 完全ガイド。
   - `/app/cisco/ccna/network-access-guide`: CCNA 200-301 Network Access 徹底解説ガイド。
   - `/app/cisco/ccna/ip-connectivity-guide`: CCNA 200-301 IP Connectivity 完全ガイド。
   - `/app/cisco/ccna/ip-services-guide`: CCNA 200-301 IP Services 完全ガイド。
   - `/app/cisco/ccna/automation-programmability`: CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド。
+  - `/app/cisco/ccna/security-fundamentals`: CCNA 200-301 Security Fundamentals 完全ガイド。
   - `/app/aws/solutions-architect-associate`: AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド（`domain1` を含む）。
 - `/app/constants.ts`: 試験データ正本（EXAMS / STATS）。`provider: 'GCP' | 'AWS' | 'Cisco'` で分類され、`toNavTree` が自動グルーピング。
 - `/app/navigation.ts`: `toNavTree(EXAMS)` adapter。Header.tsx が参照し、provider 別にナビを自動生成。`status: 'coming-soon'` の試験はナビに「準備中」として表示。
 - AWS: `app/aws/` 配下（`solutions-architect-associate/page.tsx` 完全対策ガイド、`solutions-architect-associate/domain1/page.tsx` ドメイン1ガイド、`solutions-architect-associate/domain2/page.tsx` ドメイン2ガイド、`solutions-architect-associate/domain3/page.tsx` ドメイン3ガイド、`solutions-architect-associate/domain4/page.tsx` ドメイン4ガイド）
 - Cisco: `app/cisco/` 配下（`ccna/beginner-guide/page.tsx` 完全ガイド、`ccna/automation-software-development-design/page.tsx`、`ccna/automation-application-deployment-security/page.tsx`、`ccna/automation-cisco-platforms-and-development/page.tsx`、`ccna/automation-infrastructure-and-automation/page.tsx`、`ccna/ip-connectivity-guide/page.tsx`、`ccna/ip-services-guide/page.tsx`、`ccna/automation-programmability/page.tsx` 含む）
 - `/components`: 共通コンポーネント（Header: ハンバーガー Drawer ナビ、Footer、DisclaimerBanner など）。
-- `/__tests__`: Vitest によるユニットテスト。
+- `/__tests__`: Vitest によるユニットテスト。`restore_diagrams.test.ts` はスキル配下から標準実行へ追加される。
 - `/e2e`: Playwright による E2E テスト。
 - `/archive`: 移行済みの旧式 HTML / Markdown 学習ガイド資料。Cisco 資料の正規保存先は `/archive/Cisco/html` および `/archive/Cisco/md` とし、`/Gcl_Archive/Cisco` は使用禁止。
 - `/Aws`: AWS 関連の古い資料（アーカイブ済み）。
