@@ -56,6 +56,15 @@ describe('CCNA Automation and Programmability Guide - Automated 100% Text & Stru
         }
 
         expect(missingTexts).toEqual([]);
+
+        const sourceCodeLines = (docHtml.querySelector('pre code.language-json')?.textContent || '')
+            .replace(/^\n|\n$/g, '')
+            .split('\n');
+        const migratedCodeLines = Array.from(
+            container.querySelectorAll<HTMLElement>('.code-block .code-line'),
+            (line) => line.textContent || '',
+        );
+        expect(migratedCodeLines).toEqual(sourceCodeLines);
     });
 
     it('renders NavBar with active section highlight capability (ScrollSpy)', () => {
@@ -63,6 +72,16 @@ describe('CCNA Automation and Programmability Guide - Automated 100% Text & Stru
         const activeLink = container.querySelector('a.active');
         expect(activeLink).toBeTruthy();
         expect(activeLink?.getAttribute('href')).toBe('#sec63');
+    });
+
+    it('gives the outer sidebar and inner table of contents distinct names', () => {
+        const { container } = render(<NavBar />);
+        const navigations = Array.from(container.querySelectorAll('nav'));
+
+        expect(navigations.map((nav) => nav.getAttribute('aria-label'))).toEqual([
+            'Automation and Programmability サイドバー',
+            'Automation and Programmability 目次',
+        ]);
     });
 
     it('renders JSON code block with syntax highlighting span tags (.code-attr, .code-string, .code-number, .code-literal)', () => {

@@ -233,6 +233,30 @@ describe('toNavTree', () => {
             expect(ids).toContain('ccna');
         });
 
+        it('CCNA と CCNAAUTO を独立した6ドメインの試験として保持する', () => {
+            const ccna = EXAMS.find((exam) => exam.id === 'ccna');
+            const ccnaauto = EXAMS.find((exam) => exam.id === 'ccnaauto');
+
+            expect(ccna?.domains.map(({ label, pct }) => ({ label, pct }))).toEqual([
+                { label: '1.0 Network Fundamentals（ネットワークの基礎）', pct: '20%' },
+                { label: '2.0 Network Access（ネットワークアクセス）', pct: '20%' },
+                { label: '3.0 IP Connectivity（IP接続性）', pct: '25%' },
+                { label: '4.0 IP Services（IP サービス）', pct: '10%' },
+                { label: '5.0 Security Fundamentals（セキュリティ基礎）', pct: '15%' },
+                {
+                    label: '6.0 Automation and Programmability（自動化とプログラマビリティ）',
+                    pct: '10%',
+                },
+            ]);
+            expect(ccna?.domains.every(({ href }) => !href.includes('/automation-'))).toBe(
+                true,
+            );
+            expect(ccnaauto?.domains).toHaveLength(6);
+            expect(ccnaauto?.domains.every(({ href }) => href.includes('/automation-'))).toBe(
+                true,
+            );
+        });
+
         it('GCP グループに ace, agwa, cdl, genai, pcne, hands-on 試験が含まれる', () => {
             // Arrange & Act
             const result = toNavTree(EXAMS);

@@ -1,12 +1,14 @@
 // @vitest-environment jsdom
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Page from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/page';
 import CcnaInfraAutomationGuide from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide';
 import { DIAGRAMS } from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/constants';
+import NavBar from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/NavBar';
 
-// Mock MermaidDiagram component
+/** Renders Mermaid source as an inspectable test element. */
 vi.mock('@/components/MermaidDiagram', () => ({
+    /** Exposes chart and accessible-label props without invoking Mermaid. */
     MermaidDiagram: ({ chart, ariaLabel }: { chart: string; ariaLabel: string }) => (
         <div data-testid="mermaid-diagram" data-chart={chart} aria-label={ariaLabel}>
             {ariaLabel}
@@ -15,6 +17,20 @@ vi.mock('@/components/MermaidDiagram', () => ({
 }));
 
 describe('CCNA Automation Infrastructure and Automation Page', () => {
+    it('associates the menu toggle with its labelled sidebar navigation', () => {
+        render(<NavBar />);
+        const toggle = screen.getByRole('button', { name: '目次を開く' });
+        const navigation = screen.getByRole('navigation', {
+            name: 'Infrastructure and Automation 目次',
+        });
+
+        expect(navigation).toHaveAttribute('id', 'infrastructure-automation-sidebar');
+        expect(toggle).toHaveAttribute('aria-controls', navigation.id);
+        expect(toggle).toHaveAttribute('aria-expanded', 'false');
+        fireEvent.click(toggle);
+        expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    });
+
     it('renders metadata and page header in Server Component', () => {
         const pageElement = Page();
         expect(pageElement).toBeTruthy();

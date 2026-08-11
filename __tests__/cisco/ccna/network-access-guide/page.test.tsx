@@ -111,6 +111,11 @@ describe('CCNA Network Access Guide Page - Automated 100% Fidelity & Structural 
         const { container } = render(<NavBar />);
         const links = container.querySelectorAll('.toc a');
         expect(links.length).toBe(15);
+        expect(container.querySelector('a.active')).toHaveAttribute(
+            'aria-current',
+            'location',
+        );
+        expect(container.querySelectorAll('a[aria-current="location"]')).toHaveLength(1);
     });
 
     it('renders page component without crashing', () => {

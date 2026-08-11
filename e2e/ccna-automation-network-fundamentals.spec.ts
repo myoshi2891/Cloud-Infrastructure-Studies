@@ -8,7 +8,9 @@ test.describe('CCNA Automation Network Fundamentals 完全自動視覚 & 動的�
     });
 
     test('ページタイトルおよびH1見出しが正しいこと', async ({ page }) => {
-        await expect(page).toHaveTitle(/CCNA Automation Network Fundamentals/);
+        await expect(page).toHaveTitle(
+            'CCNAAUTO 200-901 | 6.0 Network Fundamentals 完全対策ガイド | Cloud Infrastructure Studies',
+        );
         await expect(page.locator('h1')).toContainText('Network Fundamentals ドメイン徹底解説');
     });
 

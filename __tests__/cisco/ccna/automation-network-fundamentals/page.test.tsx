@@ -13,10 +13,11 @@ import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import CcnaNetworkFundamentalsGuide from '@/app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide';
 import NavBar from '@/app/cisco/ccna/automation-network-fundamentals/NavBar';
-import Page from '@/app/cisco/ccna/automation-network-fundamentals/page';
+import Page, { metadata } from '@/app/cisco/ccna/automation-network-fundamentals/page';
 
-// Mock MermaidDiagram component to render fallback/testable container with aria-label
+/** Replaces Mermaid rendering with an inspectable accessible element. */
 vi.mock('@/components/MermaidDiagram', () => ({
+    /** Preserves the aria-label contract used by the guide diagrams. */
     MermaidDiagram: ({ ariaLabel }: { ariaLabel: string }) => (
         <div data-testid="mermaid-diagram" aria-label={ariaLabel}>
             {ariaLabel}
@@ -25,6 +26,14 @@ vi.mock('@/components/MermaidDiagram', () => ({
 }));
 
 describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Structure Verification', () => {
+    it('identifies the CCNAAUTO 200-901 Network Fundamentals domain in metadata', () => {
+        expect(metadata.title).toBe(
+            'CCNAAUTO 200-901 | 6.0 Network Fundamentals 完全対策ガイド | Cloud Infrastructure Studies',
+        );
+        expect(metadata.description).toContain('CCNA Automation 200-901');
+        expect(metadata.description).not.toContain('CCNA 200-301');
+    });
+
     it('renders the Page component with title and Server Component wrapper', () => {
         const pageElement = Page();
         expect(pageElement).toBeTruthy();
@@ -63,5 +72,35 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
         const activeLink = container.querySelector('a.active');
         expect(activeLink).toBeTruthy();
         expect(activeLink?.getAttribute('href')).toBe('#step3');
+        expect(activeLink).toHaveAttribute('aria-current', 'location');
+        expect(container.querySelectorAll('a[aria-current="location"]')).toHaveLength(1);
+    });
+
+    it('preserves reference link text, count, and href values from the source HTML', () => {
+        const htmlPath = path.resolve(
+            process.cwd(),
+            'archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html',
+        );
+        const sourceDocument = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
+        const sourceLinks = Array.from(
+            sourceDocument.querySelectorAll<HTMLElement>('.ref-url'),
+        );
+        const { container } = render(<CcnaNetworkFundamentalsGuide />);
+        const migratedLinks = Array.from(
+            container.querySelectorAll<HTMLAnchorElement>('a.ref-url'),
+        );
+
+        expect(migratedLinks).toHaveLength(sourceLinks.length);
+        expect(
+            migratedLinks.map((link) => ({
+                text: link.textContent?.trim(),
+                href: link.getAttribute('href'),
+            })),
+        ).toEqual(
+            sourceLinks.map((link) => ({
+                text: link.textContent?.trim(),
+                href: link.textContent?.trim(),
+            })),
+        );
     });
 });
