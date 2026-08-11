@@ -1,5 +1,6 @@
 # Sensitive Data Protection (DLP) Challenge Lab 攻略ガイド
-### ― PII の秘匿化・de-identify テンプレート・Job Trigger をゼロから理解する ―
+
+## ― PII の秘匿化・de-identify テンプレート・Job Trigger をゼロから理解する ―
 
 > 対象ラボ: [Protect Sensitive Data in Text and Files with Sensitive Data Protection: Challenge Lab](https://www.skills.google/course_templates/750/labs/643223)
 > 想定読者: Google Cloud を触り始めたばかりのジュニアクラウドエンジニア／QAエンジニア
@@ -76,9 +77,13 @@ export DLP_TOKEN=$(gcloud auth print-access-token)
 
 **出典:** [Sensitive Data Protection の IAM 権限](https://docs.cloud.google.com/sensitive-data-protection/docs/iam-permissions)
 
-### 2.3 必要な IAM ロール
+### 2.3 Task ごとに必要な IAM ロール
 
-DLP API の `content:deidentify` のような課金対象メソッドを呼ぶには、`serviceusage.services.use` 権限が必要です。これは `roles/editor` や `roles/owner` にも含まれますが、**最小権限の原則（Principle of Least Privilege）に従うなら `roles/dlp.user` を付与するのが適切**です。Qwiklabs / Skills Boost の学生アカウントには通常あらかじめ付与されていますが、実務でこのラボと同じ構成を再現する場合は覚えておいてください。
+- **Task 1（`content:deidentify`）**: `serviceusage.services.use` を含み、コンテンツの検査・秘匿化向けに用意された `roles/dlp.user` を維持します。
+- **Task 2（De-identify Template 作成）**: `dlp.deidentifyTemplates.create` を含む `roles/dlp.deidentifyTemplatesEditor` を付与します。DLP 全体を管理する必要がある場合は `roles/dlp.editor` や `roles/dlp.admin` でも実行できますが、権限範囲は広くなります。
+- **Task 3（Job Trigger 作成）**: `dlp.jobTriggers.create` とジョブ作成に必要な権限を含む `roles/dlp.jobTriggersEditor` を付与します。組織の方針でカスタムロールを使う場合は、少なくとも作成処理で要求される `dlp.jobTriggers.create` と `dlp.jobs.create` を含めます。`roles/dlp.editor` や `roles/dlp.admin` も利用できますが、最小権限ではありません。
+
+Qwiklabs / Skills Boost の学生アカウントには必要な権限が通常あらかじめ付与されています。実務で同じ構成を再現する場合は、1つの広いロールを全Taskへ流用せず、実行するTaskに対応するロールを選んでください。
 
 **出典:** [Sensitive Data Protection の IAM ロール](https://cloud.google.com/sensitive-data-protection/docs/iam-roles)
 
@@ -401,13 +406,13 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    IAM["IAM: 最小権限\nroles/dlp.user を付与"] --> POLICY["ポリシーの一元管理\nde-identify テンプレートで秘匿化ルールを統一"]
+    IAM["IAM: Task ごとの最小権限\nDLP User / Template Editor / Job Triggers Editor"] --> POLICY["ポリシーの一元管理\nde-identify テンプレートで秘匿化ルールを統一"]
     POLICY --> REGION["データレジデンシー\nテンプレート・Job/Job Trigger の\nリージョンを揃える"]
     REGION --> AUTOMATION["自動化\nJob Trigger によるスケジュール実行"]
     AUTOMATION --> MONITOR["監視\n通知・Security Command Center 連携"]
 ```
 
-1. **最小権限の原則**: `content:deidentify` のような課金対象 API 呼び出しには `roles/dlp.user` を割り当て、`roles/owner` のような強力すぎるロールを避ける。（[出典](https://cloud.google.com/sensitive-data-protection/docs/iam-roles)）
+1. **最小権限の原則**: Task 1 は `roles/dlp.user`、Task 2 は `roles/dlp.deidentifyTemplatesEditor`、Task 3 は `roles/dlp.jobTriggersEditor` を基本とし、`roles/owner` のような強力すぎるロールを避ける。（[出典](https://cloud.google.com/sensitive-data-protection/docs/iam-roles)）
 2. **infoType は必要最小限に絞る**: 検出対象を増やすほど処理コストと誤検知が増える。ビジネス上の必要性に基づいて選定する。（[出典](https://cloud.google.com/sensitive-data-protection/docs/concepts-infotypes)）
 3. **秘匿化ロジックはテンプレート化する**: JSON をその都度書くのではなく、`De-identify Template` として保存し、Job/Job Trigger から再利用する。（[出典](https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid)）
 4. **リージョンの一貫性を保つ**: テンプレート・infoType・KMS キーは同一リージョンの Job/Job Trigger からしか参照できない。データレジデンシー要件がある場合は特に重要。（[出典](https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location)）
@@ -420,7 +425,7 @@ flowchart TD
 
 | 症状 | 主な原因 | 対処 |
 |---|---|---|
-| `curl` が `403 PERMISSION_DENIED` を返す | `roles/dlp.user` 等の権限不足、または DLP API が有効化されていない | `gcloud services enable dlp.googleapis.com` を実行し、IAM ロールを確認する |
+| `curl` が `403 PERMISSION_DENIED` を返す | 実行するTaskに必要な DLP 権限の不足、または DLP API が有効化されていない | `gcloud services enable dlp.googleapis.com` を実行し、Taskごとの IAM ロールを確認する |
 | `curl` が `400 INVALID_ARGUMENT` を返す | `redact-request.json` の JSON 構文エラー、キー名のタイプミス | `cat redact-request.json` で内容を確認し、`python3 -m json.tool redact-request.json` などで構文検証する |
 | アクセストークンで認証エラーになる | `gcloud auth print-access-token` のトークンは有効期限が短い | コマンドを再実行してトークンを再取得する |
 | Check my progress が 0% のまま | テンプレート名・Job ID が指定と完全一致していない、リージョンが `Multi-region > us` になっていない | テンプレート名のスペルを再確認し、Resource location をすべて統一する |
