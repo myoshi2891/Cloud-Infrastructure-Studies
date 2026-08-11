@@ -8,22 +8,24 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
-- **最新実装 HEAD:** `6ece372` (`feat(cisco/ccna): rewrite automation-app-deployment-security guide with 100% HTML-faithful content`)
-- **前回進捗同期コミット:** `6ece372`
+- **最新実装 HEAD:** `4ef5a60` (`feat(cisco/ccna): complete 100% faithful CSS style and code syntax highlighting migration for automation-app-deployment-security`)
+- **前回進捗同期コミット:** `4ef5a60`
 - **次の作業:** 完了
-- **ビルド状態:** 単体テスト32件全パス（内24件は厳密な原本忠実性テスト）
-- **最終更新日時(UTC):** 2026-08-11T03:46:00.000Z
+- **ビルド状態:** 単体テスト40件全パス（デザイン忠実性テスト7件含む）
+- **最終更新日時(UTC):** 2026-08-11T03:57:00.000Z
 
-## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」コンテンツ100%忠実化 (完了)
+## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」コンテンツ＆デザイン100%完全忠実移植 (完了)
 
 ### 目的
 
-`Ccna-automation-application-deployment-security.html`（1944行）との全量照合により、CcnaAppDeploymentSecurityGuide.tsxが「独自の補足列追加・コンテンツ入れ替え・省略」を大量に含んでいたことを発見。24件の厳密な原本忠実性テスト（Red）を追加し、コンポーネントを原本HTMLに100%忠実に全面書き直した（Green）。
+`Ccna-automation-application-deployment-security.html`（1944行）との全量照合およびデザインレビューにより、文章・表構造だけでなくCSS変数（`:root`）、`h1`グラデーションテキスト、`h2`左アクセントバー、`th`白文字＆半透明アクセント背景、`.badge`ピル型、`.callout`アクセントバー、インラインコード背景、コードブロック構文ハイライトの乖離を特定。デザイン忠実性テスト7件（Red）を追加し、`page.css`およびTSXコンポーネントを原本HTMLデザインに100%忠実に全面修復・完成させた（Green）。
 
 ### 完了済みステップ
 
-- [x] **Step 1 (Red)**: `test(cisco/ccna): add 24 failing tests for complete HTML-faithful migration of automation-app-deployment-security guide` (`4f36e15`)
-- [x] **Step 2 (Green)**: `feat(cisco/ccna): rewrite automation-app-deployment-security guide with 100% HTML-faithful content` (`6ece372`)
+- [x] **Step 1 (Red - コンテンツ)**: `test(cisco/ccna): add 24 failing tests for complete HTML-faithful migration of automation-app-deployment-security guide` (`4f36e15`)
+- [x] **Step 2 (Green - コンテンツ)**: `feat(cisco/ccna): rewrite automation-app-deployment-security guide with 100% HTML-faithful content` (`6ece372`)
+- [x] **Step 1 (Red - デザイン・CSS)**: `test(cisco/ccna): add 7 failing design-faithfulness tests for automation-app-deployment-security CSS migration` (`b324651`)
+- [x] **Step 2 (Green - デザイン・CSS)**: `feat(cisco/ccna): complete 100% faithful CSS style and code syntax highlighting migration for automation-app-deployment-security` (`4ef5a60`)
 
 ### 主な修正内容
 
