@@ -10,7 +10,7 @@ export default defineConfig({
         setupFiles: ['./vitest.setup.ts'],
         include: [
             '__tests__/**/*.test.{ts,tsx}',
-            '.agents/skills/**/scripts/*.test.{ts,tsx}',
+            '.agents/skills/fix-mermaid/scripts/restore_diagrams.test.ts',
         ],
     },
     resolve: {

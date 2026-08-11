@@ -78,21 +78,67 @@ export function restoreDiagrams(diagrams, mdBlocks) {
 }
 
 function findObjectEnd(source, openingIndex) {
-    const maskedSource = maskCommentsAndStrings(source);
+    const scriptPattern = /<script\b[^>]*>([\s\S]*?)<\/script\s*>/gi;
+    let sourceOffset = 0;
+    let sourceToMask = source;
+    for (const script of source.matchAll(scriptPattern)) {
+        const bodyStart = script.index + script[0].indexOf('>') + 1;
+        const bodyEnd = bodyStart + script[1].length;
+        if (openingIndex >= bodyStart && openingIndex < bodyEnd) {
+            sourceOffset = bodyStart;
+            sourceToMask = script[1];
+            break;
+        }
+    }
+    const maskedSource = maskCommentsAndStrings(sourceToMask);
+    const localOpeningIndex = openingIndex - sourceOffset;
     let depth = 0;
-    for (let index = openingIndex; index < maskedSource.length; index += 1) {
+    for (let index = localOpeningIndex; index < maskedSource.length; index += 1) {
         const char = maskedSource[index];
         if (char === '{') depth += 1;
         else if (char === '}') {
             depth -= 1;
-            if (depth === 0) return index;
+            if (depth === 0) return sourceOffset + index;
         }
     }
     return -1;
 }
 
-function decodeEscape(char) {
-    return { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v' }[char] ?? char;
+function decodeEscape(source, start) {
+    const char = source[start];
+    const simpleEscapes = {
+        n: '\n',
+        r: '\r',
+        t: '\t',
+        b: '\b',
+        f: '\f',
+        v: '\v',
+        0: '\0',
+        '\\': '\\',
+        "'": "'",
+        '"': '"',
+        '`': '`',
+        '/': '/',
+    };
+    if (Object.hasOwn(simpleEscapes, char)) {
+        return { value: simpleEscapes[char], next: start + 1 };
+    }
+    if (char === '\n') return { value: '', next: start + 1 };
+    if (char === '\r') {
+        return { value: '', next: source[start + 1] === '\n' ? start + 2 : start + 1 };
+    }
+    const escapeLength = char === 'u' ? 4 : char === 'x' ? 2 : 0;
+    if (escapeLength > 0) {
+        const digits = source.slice(start + 1, start + 1 + escapeLength);
+        if (!new RegExp(`^[0-9a-fA-F]{${escapeLength}}$`).test(digits)) {
+            throw new Error(`不正な \\${char} エスケープです。`);
+        }
+        return {
+            value: String.fromCharCode(Number.parseInt(digits, 16)),
+            next: start + 1 + escapeLength,
+        };
+    }
+    throw new Error(`未対応のエスケープです: \\${char}`);
 }
 
 function readString(source, start, allowedQuotes) {
@@ -103,9 +149,11 @@ function readString(source, start, allowedQuotes) {
         const char = source[index];
         if (char === quote) return { value, end: index + 1 };
         if (char === '\\') {
-            index += 1;
-            if (index >= source.length) throw new Error('文字列末尾の不正なエスケープです。');
-            value += decodeEscape(source[index]);
+            const escapeStart = index + 1;
+            if (escapeStart >= source.length) throw new Error('文字列末尾の不正なエスケープです。');
+            const decoded = decodeEscape(source, escapeStart);
+            value += decoded.value;
+            index = decoded.next - 1;
         } else {
             value += char;
         }
@@ -157,6 +205,18 @@ function parseTemplateLiteralObject(objectSource) {
     return diagrams;
 }
 
+function validateDiagrams(diagrams) {
+    if (
+        diagrams === null ||
+        typeof diagrams !== 'object' ||
+        Array.isArray(diagrams) ||
+        Object.values(diagrams).some((diagram) => typeof diagram !== 'string')
+    ) {
+        throw new TypeError('DIAGRAMS の値はすべて文字列で指定してください。');
+    }
+    return diagrams;
+}
+
 /**
  * JSON 互換の正準形式と、既存のテンプレートリテラル形式を eval せず抽出する。
  */
@@ -171,10 +231,11 @@ export function extractDiagramsDefinition(html) {
     let diagrams;
     try {
         diagrams = JSON.parse(objectSource);
-    } catch {
+    } catch (error) {
+        if (!(error instanceof SyntaxError)) throw error;
         diagrams = parseTemplateLiteralObject(objectSource);
     }
-    return { diagrams, start, end: end + 1 };
+    return { diagrams: validateDiagrams(diagrams), start, end: end + 1 };
 }
 
 export function serializeDiagramsDefinition(diagrams) {
