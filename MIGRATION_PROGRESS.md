@@ -37,14 +37,14 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 関連ファイル
 
-- [app/cisco/ccna/network-access-guide/page.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/page.tsx)
-- [app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx)
-- [app/cisco/ccna/network-access-guide/NavBar.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/NavBar.tsx)
-- [app/cisco/ccna/network-access-guide/constants.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/constants.ts)
-- [app/cisco/ccna/network-access-guide/page.css](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/network-access-guide/page.css)
-- [__tests__/cisco/ccna/network-access-guide/page.test.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/__tests__/cisco/ccna/network-access-guide/page.test.tsx)
-- [archive/Cisco/html/ccna/Ccna-network-access-guide.html](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/html/ccna/Ccna-network-access-guide.html)
-- [archive/Cisco/md/ccna/Ccna-network-access-guide.md](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/md/ccna/Ccna-network-access-guide.md)
+- [app/cisco/ccna/network-access-guide/page.tsx](app/cisco/ccna/network-access-guide/page.tsx)
+- [app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx](app/cisco/ccna/network-access-guide/CcnaNetworkAccessGuide.tsx)
+- [app/cisco/ccna/network-access-guide/NavBar.tsx](app/cisco/ccna/network-access-guide/NavBar.tsx)
+- [app/cisco/ccna/network-access-guide/constants.ts](app/cisco/ccna/network-access-guide/constants.ts)
+- [app/cisco/ccna/network-access-guide/page.css](app/cisco/ccna/network-access-guide/page.css)
+- [__tests__/cisco/ccna/network-access-guide/page.test.tsx](__tests__/cisco/ccna/network-access-guide/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-network-access-guide.html](archive/Cisco/html/ccna/Ccna-network-access-guide.html)
+- [archive/Cisco/md/ccna/Ccna-network-access-guide.md](archive/Cisco/md/ccna/Ccna-network-access-guide.md)
 
 ## 2026-08-11: Cisco「CCNA 6.0 自動化とプログラマビリティ (Automation and Programmability)」100%全量移行 (完了)
 
@@ -61,15 +61,15 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 関連ファイル
 
-- [app/cisco/ccna/automation-programmability/page.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-programmability/page.tsx)
-- [app/cisco/ccna/automation-programmability/CcnaAutomationProgrammabilityGuide.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-programmability/CcnaAutomationProgrammabilityGuide.tsx)
-- [app/cisco/ccna/automation-programmability/NavBar.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-programmability/NavBar.tsx)
-- [app/cisco/ccna/automation-programmability/constants.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-programmability/constants.ts)
-- [app/cisco/ccna/automation-programmability/page.css](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-programmability/page.css)
-- [__tests__/cisco/ccna/automation-programmability/page.test.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/__tests__/cisco/ccna/automation-programmability/page.test.tsx)
-- [e2e/ccna-automation-programmability.spec.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/e2e/ccna-automation-programmability.spec.ts)
-- [archive/Cisco/html/ccna/Ccna-automation-programmability.html](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/html/ccna/Ccna-automation-programmability.html)
-- [archive/Cisco/md/ccna/Ccna-automation-programmability.md](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/md/ccna/Ccna-automation-programmability.md)
+- [app/cisco/ccna/automation-programmability/page.tsx](app/cisco/ccna/automation-programmability/page.tsx)
+- [app/cisco/ccna/automation-programmability/CcnaAutomationProgrammabilityGuide.tsx](app/cisco/ccna/automation-programmability/CcnaAutomationProgrammabilityGuide.tsx)
+- [app/cisco/ccna/automation-programmability/NavBar.tsx](app/cisco/ccna/automation-programmability/NavBar.tsx)
+- [app/cisco/ccna/automation-programmability/constants.ts](app/cisco/ccna/automation-programmability/constants.ts)
+- [app/cisco/ccna/automation-programmability/page.css](app/cisco/ccna/automation-programmability/page.css)
+- [__tests__/cisco/ccna/automation-programmability/page.test.tsx](__tests__/cisco/ccna/automation-programmability/page.test.tsx)
+- [e2e/ccna-automation-programmability.spec.ts](e2e/ccna-automation-programmability.spec.ts)
+- [archive/Cisco/html/ccna/Ccna-automation-programmability.html](archive/Cisco/html/ccna/Ccna-automation-programmability.html)
+- [archive/Cisco/md/ccna/Ccna-automation-programmability.md](archive/Cisco/md/ccna/Ccna-automation-programmability.md)
 
 ## 2026-08-11: Cisco「CCNA 6.0 Network Fundamentals ドメイン徹底解説」100%全量移行 (完了)
 
@@ -86,13 +86,13 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 関連ファイル
 
-- [app/cisco/ccna/automation-network-fundamentals/page.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/page.tsx)
-- [app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx)
-- [app/cisco/ccna/automation-network-fundamentals/NavBar.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/NavBar.tsx)
-- [app/cisco/ccna/automation-network-fundamentals/constants.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/constants.ts)
-- [app/cisco/ccna/automation-network-fundamentals/page.css](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/page.css)
-- [__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx)
-- [archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html)
+- [app/cisco/ccna/automation-network-fundamentals/page.tsx](app/cisco/ccna/automation-network-fundamentals/page.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx](app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/NavBar.tsx](app/cisco/ccna/automation-network-fundamentals/NavBar.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/constants.ts](app/cisco/ccna/automation-network-fundamentals/constants.ts)
+- [app/cisco/ccna/automation-network-fundamentals/page.css](app/cisco/ccna/automation-network-fundamentals/page.css)
+- [__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx](__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html](archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html)
 
 ## 2026-08-11: Cisco「CCNA Automation ドメイン5.0 Infrastructure and Automation ステップバイステップ解説ガイド」100%全量移行 (完了)
 
@@ -109,14 +109,14 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 関連ファイル
 
-- [app/cisco/ccna/automation-infrastructure-and-automation/page.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/page.tsx)
-- [app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx)
-- [app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx)
-- [app/cisco/ccna/automation-infrastructure-and-automation/constants.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/constants.ts)
-- [app/cisco/ccna/automation-infrastructure-and-automation/page.css](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/page.css)
-- [__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx)
-- [archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html)
-- [archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md)
+- [app/cisco/ccna/automation-infrastructure-and-automation/page.tsx](app/cisco/ccna/automation-infrastructure-and-automation/page.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx](app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx](app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/constants.ts](app/cisco/ccna/automation-infrastructure-and-automation/constants.ts)
+- [app/cisco/ccna/automation-infrastructure-and-automation/page.css](app/cisco/ccna/automation-infrastructure-and-automation/page.css)
+- [__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx](__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html](archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html)
+- [archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md](archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md)
 
 ## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」コンテンツ＆デザイン100%完全忠実移植 (完了)
 
