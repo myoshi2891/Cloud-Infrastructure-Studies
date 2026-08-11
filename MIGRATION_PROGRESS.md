@@ -8,11 +8,24 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
-- **最新実装 HEAD:** `4a3f4c0` (`refactor(layout): fix guide CSS module and lint integration`)
-- **前回進捗同期コミット:** `226dc12` (`chore(docs): sync agent specifications and test dashboard`)
-- **次の作業:** 未追跡HTML 2件の移行要否・対象ルートを確認
-- **ビルド状態:** `bun run build` 成功（56ルート）、`bun run lint` 成功、レイアウト契約テスト 73件成功
-- **最終更新日時(UTC):** 2026-08-09T09:00:59.000Z
+- **最新実装 HEAD:** `a980d45` (`feat(cisco): implement missing callouts and full HTML text coverage in CCNA automation app deployment security guide`)
+- **前回進捗同期コミット:** `a980d45` (`feat(cisco): implement missing callouts and full HTML text coverage in CCNA automation app deployment security guide`)
+- **次の作業:** 完了
+- **ビルド状態:** 単体テスト12件・レイアウト契約テスト73件成功
+- **最終更新日時(UTC):** 2026-08-11T03:23:30.000Z
+
+## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」再検証・コールアウト網羅・アーカイブクリーンアップ (完了)
+
+### 目的
+
+`Ccna-automation-application-deployment-security.html`（1857行・10個のMermaid図・17個の表・12個のコールアウト）の移植漏れを検証し、全12個のコールアウト（「このガイドの使い方」および第1〜11章末尾の「この章のポイント」）と本文・表・図を100%網羅して `app/cisco/ccna/automation-application-deployment-security` ルートへ完全移植する。またルートの未整理HTMLを削除し `archive/Cisco/html/ccna/` へ整列させる。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(cisco): add failing tests for missing callouts in CCNA automation app deployment security guide` (`9c10bb8`)
+- [x] **Step 2 (Green)**: `feat(cisco): implement missing callouts and full HTML text coverage in CCNA automation app deployment security guide` (`a980d45`)
+- [x] **Step 3 (Refactor / Integration & Archiving)**: `refactor(cisco): clean up root HTML and update migration progress` (本コミット)
+
 
 ## 2026-08-09: サイドバー付き全ガイド画面のレイアウト統一 (完了)
 
