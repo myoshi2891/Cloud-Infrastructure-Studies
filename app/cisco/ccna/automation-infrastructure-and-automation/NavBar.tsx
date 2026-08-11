@@ -109,6 +109,7 @@ export default function NavBar() {
                             key={item.id}
                             href={`#${item.id}`}
                             className={`nav-link ${isActive ? 'active' : ''}`}
+                            aria-current={isActive ? 'location' : undefined}
                             onClick={() => setIsOpen(false)}
                         >
                             <span className="nav-num">{item.num}</span>

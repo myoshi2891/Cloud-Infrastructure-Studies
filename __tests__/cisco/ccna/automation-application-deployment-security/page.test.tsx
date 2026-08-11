@@ -556,15 +556,15 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         expect(cssSource).toMatch(/h2[^}]*border-left:\s*4px solid/s);
     });
 
-    it('page.cssのthが白文字（color: #fff）と半透明アクセント背景を持つ', () => {
+    it('page.cssのthが承認済みトークンの白文字と半透明アクセント背景を持つ', () => {
         const cssSource = readFileSync(
             join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
             'utf8',
         );
-        // 原本: th { color: #fff; }
-        expect(cssSource).toMatch(/th[^}]*color:\s*#fff/s);
-        // 原本: thead tr { background: rgba(124, 158, 255, 0.14); }
-        expect(cssSource).toMatch(/thead[^}]*background:\s*rgba\(124,\s*158,\s*255/s);
+        expect(cssSource).toMatch(/th[^}]*color:\s*var\(--color-primary-foreground\)/s);
+        expect(cssSource).toMatch(
+            /thead[^}]*background:\s*var\(--color-ccna-automation-app-table-header\)/s,
+        );
     });
 
     it('page.cssのcalloutにborder-leftアクセントバーが定義されている', () => {
@@ -585,14 +585,16 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         expect(cssSource).toMatch(/\.badge[^}]*border-radius:\s*999px/s);
     });
 
-    it('page.cssにインラインcodeのスタイル（background: rgba(124,158,255,0.12)）が定義されている', () => {
+    it('page.cssにトークン化されたインラインcodeスタイルが定義されている', () => {
         const cssSource = readFileSync(
             join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
             'utf8',
         );
-        // 原本: :not(pre) > code { background: rgba(124, 158, 255, 0.12); color: #c9d8ff; }
         expect(cssSource).toMatch(/:not\(pre\).*code/s);
-        expect(cssSource).toMatch(/#c9d8ff/);
+        expect(cssSource).toContain('background: var(--color-accent-active)');
+        expect(cssSource).toContain(
+            'color: var(--color-ccna-automation-app-inline-code-foreground)',
+        );
     });
 
     it('page.cssの.mermaid-wrapが中央寄せスタイル（margin: ... auto ...）を持つ', () => {

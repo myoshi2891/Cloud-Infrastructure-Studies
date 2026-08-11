@@ -19,6 +19,19 @@ const expectedGlobalTokens = [
     '--color-ccna-automation-app-foreground-muted',
     '--color-ccna-automation-app-warning',
     '--color-ccna-automation-app-code-background',
+    '--color-ccna-automation-app-inline-code-foreground',
+    '--color-ccna-automation-app-accent-border',
+    '--color-ccna-automation-app-callout-border',
+    '--color-ccna-automation-app-warning-background',
+    '--color-ccna-automation-app-warning-border',
+    '--color-ccna-automation-app-table-header',
+    '--color-ccna-automation-app-highlight-background',
+    '--color-ccna-automation-app-row-hover',
+    '--color-ccna-automation-app-code-header',
+    '--color-ccna-automation-app-code-comment',
+    '--color-ccna-automation-app-code-keyword',
+    '--color-ccna-automation-app-code-string',
+    '--color-ccna-automation-app-code-function',
     '--color-ccna-programmability-panel',
     '--color-ccna-programmability-card',
     '--color-ccna-programmability-card-alt',
@@ -64,6 +77,20 @@ describe('CCNA automation theme token ownership', () => {
         );
 
         expect(sidebarRule?.[1]).toContain('z-index: 100');
+    });
+
+    it('keeps page-specific colors behind approved global tokens', () => {
+        const appSecurityCss = readWorkspaceFile(
+            'app/cisco/ccna/automation-application-deployment-security/page.css',
+        );
+        const networkCss = readWorkspaceFile(
+            'app/cisco/ccna/automation-network-fundamentals/page.css',
+        );
+
+        expect(appSecurityCss).not.toMatch(/rgba\(|#[0-9a-fA-F]{3,8}\b/);
+        expect(networkCss).toContain(
+            'linear-gradient(90deg, var(--color-ccna-platforms-foreground) 0%, var(--color-guide-accent) 100%)',
+        );
     });
 
     it('stacks the Network Access layout vertically on mobile', () => {

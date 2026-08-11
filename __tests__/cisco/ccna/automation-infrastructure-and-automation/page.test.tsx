@@ -50,6 +50,8 @@ describe('CCNA Automation Infrastructure and Automation Page', () => {
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
         fireEvent.click(toggle);
         expect(toggle).toHaveAttribute('aria-expanded', 'true');
+        expect(navigation.querySelector('a.active')).toHaveAttribute('aria-current', 'location');
+        expect(navigation.querySelectorAll('a[aria-current="location"]')).toHaveLength(1);
     });
 
     it('renders metadata and page header in Server Component', () => {
