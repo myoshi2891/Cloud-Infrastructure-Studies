@@ -346,7 +346,7 @@
 
 .ccna-infra-automation-page .mermaid-wrap {
   width: 100%;
-  margin: 0 auto;
+  margin: 1.5rem auto 2rem;
   display: flex;
   justify-content: center;
 }
