@@ -8,23 +8,40 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
-- **最新実装 HEAD:** `a980d45` (`feat(cisco): implement missing callouts and full HTML text coverage in CCNA automation app deployment security guide`)
-- **前回進捗同期コミット:** `a980d45` (`feat(cisco): implement missing callouts and full HTML text coverage in CCNA automation app deployment security guide`)
+- **最新実装 HEAD:** `6ece372` (`feat(cisco/ccna): rewrite automation-app-deployment-security guide with 100% HTML-faithful content`)
+- **前回進捗同期コミット:** `6ece372`
 - **次の作業:** 完了
-- **ビルド状態:** 単体テスト12件・レイアウト契約テスト73件成功
-- **最終更新日時(UTC):** 2026-08-11T03:23:30.000Z
+- **ビルド状態:** 単体テスト32件全パス（内24件は厳密な原本忠実性テスト）
+- **最終更新日時(UTC):** 2026-08-11T03:46:00.000Z
 
-## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」再検証・コールアウト網羅・アーカイブクリーンアップ (完了)
+## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」コンテンツ100%忠実化 (完了)
 
 ### 目的
 
-`Ccna-automation-application-deployment-security.html`（1857行・10個のMermaid図・17個の表・12個のコールアウト）の移植漏れを検証し、全12個のコールアウト（「このガイドの使い方」および第1〜11章末尾の「この章のポイント」）と本文・表・図を100%網羅して `app/cisco/ccna/automation-application-deployment-security` ルートへ完全移植する。またルートの未整理HTMLを削除し `archive/Cisco/html/ccna/` へ整列させる。
+`Ccna-automation-application-deployment-security.html`（1944行）との全量照合により、CcnaAppDeploymentSecurityGuide.tsxが「独自の補足列追加・コンテンツ入れ替え・省略」を大量に含んでいたことを発見。24件の厳密な原本忠実性テスト（Red）を追加し、コンポーネントを原本HTMLに100%忠実に全面書き直した（Green）。
 
 ### 完了済みステップ
 
-- [x] **Step 1 (Red)**: `test(cisco): add failing tests for missing callouts in CCNA automation app deployment security guide` (`9c10bb8`)
-- [x] **Step 2 (Green)**: `feat(cisco): implement missing callouts and full HTML text coverage in CCNA automation app deployment security guide` (`a980d45`)
-- [x] **Step 3 (Refactor / Integration & Archiving)**: `refactor(cisco): clean up root HTML and update migration progress` (本コミット)
+- [x] **Step 1 (Red)**: `test(cisco/ccna): add 24 failing tests for complete HTML-faithful migration of automation-app-deployment-security guide` (`4f36e15`)
+- [x] **Step 2 (Green)**: `feat(cisco/ccna): rewrite automation-app-deployment-security guide with 100% HTML-faithful content` (`6ece372`)
+
+### 主な修正内容
+
+- ヒーロー: バッジ行（配点15%・サブトピック4.1〜4.12・試験時間120分・対応言語）を追加
+- 第2章4.1: 3列表→2列表（利点/説明）に修正、説明文を原本通りに
+- 第2章4.2: 列名を管理主体/主な特徴/典型的な用途に修正
+- 第3章: ul/liリスト（4.3.a/b/c）追加、属性比較表の列名修正
+- 第4章: CI/CDパイプライン表を2列8行に完全書き直し、説明文修正
+- 第5章: コード例をadd(a,b)関数に戻す、assertEqual/assertTrue/assertRaises段落追加
+- 第6章: DockerfileにENTRYPOINT追加（8行）、dockerコマンドをlogs/exec/stop+rm/push+pull含む8行に
+- 第7章: シークレット保護の箇条書き3点追加、暗号化表を種類/説明/代表例2列に、データ取り扱い段落修正
+- 第8章: 冒頭段落追加、表を要素/役割2列に修正
+- 第9章: OWASP Top 10 2025年版10カテゴリ表（A01〜A10）追加、詳細段落追加
+- 第10章: Bashコマンドを原本通り7+5+4行に復元（cd/rmdir/find/echo $HOME/unset含む）
+- 第11章: DevOps表を原本通り4行（文化/自動化/計測/共有）に修正（独自追加のLean削除）、詳細段落追加
+- 第12章: 冒頭段落追加、列名をNo./サブトピック/一言でいうと、12行に修正
+- 参考文献: 8リンク全て復元（認定概要/試験詳細/PDF/LN/OWASP/Dockerfile/unittest）＋免責事項段落
+
 
 
 ## 2026-08-09: サイドバー付き全ガイド画面のレイアウト統一 (完了)
