@@ -11,7 +11,7 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - **最新実装 HEAD:** `2cd6be2` (`fix(ccna): memoize network fundamentals diagrams`)
 - **前回進捗同期コミット:** `2951b8a`
 - **次の作業:** 完了
-- **検証状態:** 対象Vitest 25件成功、`npm run lint` 成功。標準 `npm test` は912件成功し、実行環境の localStorage 不備で既存30件が失敗。対象E2Eは4件成功し、既存のページタイトル二重付与との期待値不一致1件が失敗。ビルドは依頼により未実施。
+- **検証状態:** 対象Vitest 25件成功、`bun run lint` 成功。標準 `bun run test` は912件成功し、実行環境の localStorage 不備で既存30件が失敗。対象E2Eは4件成功し、既存のページタイトル二重付与との期待値不一致1件が失敗。ビルドは依頼により未実施。
 - **最終更新日時(UTC):** 2026-08-11T12:08:33.000Z
 
 ## 2026-08-11: CCNAレビュー指摘の検証・修正 (完了)
@@ -1102,9 +1102,9 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
 最新実装 HEAD は `2cd6be2`、前回進捗同期コミットは `2951b8a` です。
-CCNAレビュー指摘の追補はカテゴリー別のRed / Green / Docsコミットで対応済みです。対象Vitest 25件と `npm run lint` が成功し、Network Fundamentals対象E2Eは5件中4件が成功しています。残る1件は既存のページタイトル二重付与と期待値の不一致です。ビルドは依頼により未実施です。
+CCNAレビュー指摘の追補はカテゴリー別のRed / Green / Docsコミットで対応済みです。対象Vitest 25件と `bun run lint` が成功し、Network Fundamentals対象E2Eは5件中4件が成功しています。残る1件は既存のページタイトル二重付与と期待値の不一致です。ビルドは依頼により未実施です。
 
-標準 `npm test` は912件成功し、実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
+標準 `bun run test` は912件成功し、実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
 
 ---
 
