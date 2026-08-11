@@ -351,6 +351,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/cisco/ccna/automation-network-fundamentals',
                 pct: '15%',
             },
+            {
+                label: '6.0 Automation and Programmability（自動化とプログラマビリティ）',
+                href: '/cisco/ccna/automation-programmability',
+                pct: '10%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',

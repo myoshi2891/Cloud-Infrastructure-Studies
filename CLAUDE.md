@@ -264,6 +264,12 @@ app/
         NavBar.tsx                  # サイドバーナビ
         constants.ts                # Mermaid 図定義（18図）
         page.css                    # ページ固有スタイル
+      automation-programmability/
+        page.tsx                    # CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド（Server。メタデータ定義）
+        CcnaAutomationProgrammabilityGuide.tsx # 本文＋インタラクション（client。全10セクション、Mermaid等）
+        NavBar.tsx                  # サイドバーナビ
+        constants.ts                # Mermaid 図定義（7図）
+        page.css                    # ページ固有スタイル
   aws/
     solutions-architect-associate/
       page.tsx                      # AWS Certified Solutions Architect – Associate (SAA-C03) 完全対策ガイド (Server)
