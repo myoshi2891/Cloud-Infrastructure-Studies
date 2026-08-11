@@ -8,11 +8,11 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** CCNAレビュー指摘の検証・修正 (完了)
-- **最新実装 HEAD:** `8694b35` (`refactor(ccna): document guide component responsibilities`)
-- **前回進捗同期コミット:** `0eb60dd`
+- **最新実装 HEAD:** `2cd6be2` (`fix(ccna): memoize network fundamentals diagrams`)
+- **前回進捗同期コミット:** `2951b8a`
 - **次の作業:** 完了
-- **検証状態:** 対象Vitest成功、`bun run lint` 成功。標準 `bun run test` は実行環境の localStorage 不備で既存30件が失敗。ビルドは依頼により未実施。
-- **最終更新日時(UTC):** 2026-08-11T07:10:00.000Z
+- **検証状態:** 対象Vitest 25件成功、`npm run lint` 成功。標準 `npm test` は912件成功し、実行環境の localStorage 不備で既存30件が失敗。対象E2Eは4件成功し、既存のページタイトル二重付与との期待値不一致1件が失敗。ビルドは依頼により未実施。
+- **最終更新日時(UTC):** 2026-08-11T12:08:33.000Z
 
 ## 2026-08-11: CCNAレビュー指摘の検証・修正 (完了)
 
@@ -21,6 +21,9 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 - [x] **CSS tokens Red / Green**: CCNA Automationのローカルトークンをグローバル3層トークンへ移設し、モバイル配置とz-indexを修正 (`5390336`, `75a708f`)。
 - [x] **CCNA behavior Red / Green**: ARIA、参照リンク、JSON忠実性、200-901メタデータ、CCNA/CCNAAUTO分離を修正 (`270712e`, `1689b5c`)。
 - [x] **Refactor**: 対象TSXコンポーネントの責務をJSDoc化 (`8694b35`)。
+- [x] **レビュー追補テスト**: 色関数リテラル検査、ScrollSpyの状態待ち、逐次スクロール、モバイル境界検証を強化 (`7fe5306`)。
+- [x] **Diagram再描画 Red / Green**: ScrollSpy更新で11図が再描画される回帰テストを追加し、ページ固有Diagramを`React.memo`化 (`0632d9b`, `2cd6be2`)。
+- [x] **ガイド・スキル文書**: Mermaid / Docs Sync手順、Vision API curl案内、DLP IAMロール、リポジトリ相対リンクを修正 (`da12df2`, `c7ebd0a`, `46bb211`, `2951b8a`)。
 
 ## 2026-08-11: Cisco「CCNA 200-301 Network Access 徹底解説」100%全量移行 (完了)
 
@@ -1098,10 +1101,10 @@ bun run test:e2e e2e/nav.spec.ts  # Chromium 2 件 pass
 ## 次回セッションでの再開プロンプト
 
 あなたは熟練したフロントエンドエンジニアであり、Next.js (App Router) の移行スペシャリストです。
-最新実装 HEAD は `8694b35`、前回進捗同期コミットは `0eb60dd` です。
-CCNAレビュー指摘はカテゴリー別のRed / Green / Refactorコミットで対応済みです。Mermaid復元23件、CCNAテーマ3件、CCNAコンポーネント／ナビゲーション42件の対象テストと `bun run lint` が成功しています。ビルドは依頼により未実施です。
+最新実装 HEAD は `2cd6be2`、前回進捗同期コミットは `2951b8a` です。
+CCNAレビュー指摘の追補はカテゴリー別のRed / Green / Docsコミットで対応済みです。対象Vitest 25件と `npm run lint` が成功し、Network Fundamentals対象E2Eは5件中4件が成功しています。残る1件は既存のページタイトル二重付与と期待値の不一致です。ビルドは依頼により未実施です。
 
-標準 `bun run test` は実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
+標準 `npm test` は912件成功し、実行環境の `window.localStorage` 不備により、既存の `recentPages`、`RecentPageRecorder`、`Header.drawer-features` の計30件が失敗します。次回はアプリ実装を変更する前に、Node/jsdomのlocalStorage設定を切り分けてください。
 
 ---
 

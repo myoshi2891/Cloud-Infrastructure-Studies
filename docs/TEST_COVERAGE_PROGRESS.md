@@ -161,7 +161,7 @@ bun run dashboard
 あなたは熟練したテストエンジニアであり、Next.js (App Router) / TypeScript / Vitest / Playwright のテストスペシャリストです。
 現在、[docs/TEST_COVERAGE_PROGRESS.md](TEST_COVERAGE_PROGRESS.md) にまとめられた「4. 優先度別ネクストアクション」のうち **🔴 P0 / 🟡 P1 / 🔵 P2 は全て完了済み** です。サイドバー付き全24スタイルシートの横断レイアウト契約も `guide-content-widths.test.ts` の73ケースで保護されています。次フェーズとして以下のいずれかをステップバイステップで進めてください。
 
-直近のCCNAレビュー指摘対応では、Mermaid復元23件、CCNAテーマ3件、CCNAコンポーネント／ナビゲーション42件の対象テストと全体ESLintが成功しています。標準 `bun run test` は実行環境の `window.localStorage` 不備により既存のrecent-pages／Header関連30件が失敗するため、次回は環境設定の切り分けを優先候補に含めてください。
+直近のCCNAレビュー指摘追補では、色関数リテラル検査、Network FundamentalsのScrollSpy・モバイル境界、Diagram再描画防止を強化し、対象Vitest 25件と全体ESLintが成功しています。対象E2Eは5件中4件が成功し、既存のページタイトル二重付与との期待値不一致1件が残っています。標準 `npm test` は912件成功し、実行環境の `window.localStorage` 不備により既存のrecent-pages／Header関連30件が失敗するため、次回は環境設定の切り分けを優先候補に含めてください。
 
 以下の要件を厳守して実装を進めてください。
 1. **TDD（テスト駆動開発）の厳格な遵守**:
