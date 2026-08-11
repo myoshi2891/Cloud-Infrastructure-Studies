@@ -350,7 +350,7 @@ function Diagram({ id }: { id: DiagramId }) {
 2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` は `targetWidth = viewBox幅` を設定する。`max-width:100%` と `height:auto` は共通 CSS に委ね、小さい図でも600pxなどの最小幅へ拡大しない。
 
 ```tsx
-const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
+const Diagram = memo(function Diagram({ id, label }: { id: DiagramId; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (

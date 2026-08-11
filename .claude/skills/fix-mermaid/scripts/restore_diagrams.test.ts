@@ -85,7 +85,7 @@ D" };
 
   test("コードポイント形式の Unicode エスケープを復元する", () => {
     const html = String.raw`<script>
-const DIAGRAMS = { "diag-1": "face: 😀" };
+const DIAGRAMS = { "diag-1": "face: \u{1F600}" };
 </script>`;
 
     const { diagrams } = extractDiagramsDefinition(html);
