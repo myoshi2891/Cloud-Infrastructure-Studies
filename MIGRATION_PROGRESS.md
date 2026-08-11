@@ -8,11 +8,35 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
-- **最新実装 HEAD:** `fe5bc4e` (`feat(cisco/ccna): make diagram wrappers full-width without artificial maxWidth restrictions`)
-- **前回進捗同期コミット:** `fe5bc4e`
+- **最新実装 HEAD:** `4183329` (`refactor/docs(cisco/ccna): integrate CCNA automation infrastructure and automation guide into routing and update docs`)
+- **前回進捗同期コミット:** `4183329`
 - **次の作業:** 完了
-- **ビルド状態:** 単体テスト42件全パス（図解の中央寄せ・全幅化レイアウトテスト含む）
-- **最終更新日時(UTC):** 2026-08-11T04:01:00.000Z
+- **ビルド状態:** 単体テスト全パス (Vitest 7/7 passed)
+- **最終更新日時(UTC):** 2026-08-11T04:26:00.000Z
+
+## 2026-08-11: Cisco「CCNA Automation ドメイン5.0 Infrastructure and Automation ステップバイステップ解説ガイド」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-automation-infrastructure-and-automation.html`（2628行、15個のMermaid図、15個の表、13個の参考文献）および同名 Markdown を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaInfraAutomationGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/automation-infrastructure-and-automation` ルートへ移行。文章・表・15個のMermaid図・コードブロック・13個の参考文献・免責事項を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(cisco/ccna): add failing tests for complete HTML-faithful migration of automation-infrastructure-and-automation guide` (`ced08b6`)
+- [x] **Step 2 (Green)**: `feat(cisco/ccna): implement CCNA automation infrastructure and automation guide page components to pass tests` (`11f4cb2`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor/docs(cisco/ccna): integrate CCNA automation infrastructure and automation guide into routing and update docs` (`4183329`)
+- [x] **Step 4 (Archive & Sync)**: 元HTMLおよびMDを `archive/Cisco/html/ccna/` と `archive/Cisco/md/ccna/` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-infrastructure-and-automation/page.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/page.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/NavBar.tsx)
+- [app/cisco/ccna/automation-infrastructure-and-automation/constants.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/constants.ts)
+- [app/cisco/ccna/automation-infrastructure-and-automation/page.css](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-infrastructure-and-automation/page.css)
+- [__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/__tests__/cisco/ccna/automation-infrastructure-and-automation/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html)
+- [archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/md/ccna/Ccna-automation-infrastructure-and-automation.md)
 
 ## 2026-08-11: Cisco「CCNA Automation ドメイン4.0 Application Deployment and Security 完全ガイド」コンテンツ＆デザイン100%完全忠実移植 (完了)
 
