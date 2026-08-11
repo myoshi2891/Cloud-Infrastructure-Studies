@@ -520,12 +520,15 @@ const applySvgFixups = (
 
 ### 完了確認（自動検証・順序厳守）
 
-1. `*.module.css` 変更時は `.agents/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、検証用 dev サーバーを完全再起動する。
+1. CSS 変更時は `.agents/rules/css-cache-reset.md` に従い、稼働中の対象 dev サーバーを停止してから `.next` を削除し、検証用 dev サーバーを完全再起動する。`mermaid.initialize` がモジュール最上位にあるため、HMR だけでは変更が反映されない。
 
 ```bash
+# 対象 dev サーバーの停止・同一性確認は css-cache-reset.md の手順に従う
+rm -rf .next
 bun run dev
 ```
 
+   `bun run dev` は別ターミナルで実行し、対象 URL の応答準備ができたことを確認してから、元のターミナルで後続の移行用 DOM テストと Playwright 検証を行う。検証後は別ターミナルで dev サーバーを停止する。
 2. `e2e/` 配下に Playwright テストを置き、設定済み `baseURL` と Chromium project を使って対象ページを検証する。
 3. DOM 上の SVG `viewBox`、`width`、`maxWidth`、`maxHeight`、ラッパー幅、クリッピング、重なりをアサーションし、移行用 DOM テストと Playwright の双方が成功したことを完了条件とする。ユーザーへの目視確認やスクリーンショット提供の依頼は完了条件にしない。
 

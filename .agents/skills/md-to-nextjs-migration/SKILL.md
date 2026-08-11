@@ -363,6 +363,29 @@ case "$migration_has_test_changes" in
     exit 1
     ;;
 esac
+test_change_paths=$(mktemp) || exit 1
+trap 'rm -f "$test_change_paths"' EXIT
+if ! git diff --name-only HEAD > "$test_change_paths"; then
+  echo 'tracked ファイルの変更一覧を取得できません。Docs Sync を中止します。' >&2
+  exit 1
+fi
+if ! git ls-files --others --exclude-standard >> "$test_change_paths"; then
+  echo 'untracked ファイルの変更一覧を取得できません。Docs Sync を中止します。' >&2
+  exit 1
+fi
+actual_test_changes=no
+while IFS= read -r changed_path; do
+  case "$changed_path" in
+    __tests__/*|e2e/*|*/__tests__/*|*.test.ts|*.test.tsx|*.spec.ts|*.spec.tsx)
+      actual_test_changes=yes
+      break
+      ;;
+  esac
+done < "$test_change_paths"
+if [ "$actual_test_changes" = 'yes' ] && [ "$migration_has_test_changes" = 'no' ]; then
+  echo '実際の tracked または untracked テスト変更があるため、MIGRATION_HAS_TEST_CHANGES=no では Docs Sync を実行できません。' >&2
+  exit 1
+fi
 if [ "$migration_has_test_changes" = 'no' ]; then
   docs_sync_files=(MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md README.md)
 fi
