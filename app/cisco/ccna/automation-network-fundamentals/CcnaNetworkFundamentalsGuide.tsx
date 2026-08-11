@@ -887,33 +887,33 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <ul className="ref-list">
                         <li>
                             <span className="ref-name">CCNA Automation Certification（資格概要）</span>
-                            <span className="ref-url">
+                            <a className="ref-url" href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html">
                                 https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html
-                            </span>
+                            </a>
                         </li>
                         <li>
                             <span className="ref-name">
                                 CCNA Automation Exam and Training（試験概要・受験情報：試験名、時間、言語、費用など）
                             </span>
-                            <span className="ref-url">
+                            <a className="ref-url" href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html">
                                 https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html
-                            </span>
+                            </a>
                         </li>
                         <li>
                             <span className="ref-name">
                                 Automating Networks Using Cisco Platforms v1.1（200-901）Exam Topics（公式出題範囲PDF：本ガイドの6.1〜6.9の項目立てはこの一次資料に基づく）
                             </span>
-                            <span className="ref-url">
+                            <a className="ref-url" href="https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf">
                                 https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf
-                            </span>
+                            </a>
                         </li>
                         <li>
                             <span className="ref-name">
                                 Cisco Learning Network：CCNAAUTO Exam Topics and Study Guide（コミュニティ上の出題範囲ページ）
                             </span>
-                            <span className="ref-url">
+                            <a className="ref-url" href="https://learningnetwork.cisco.com/s/ccnaauto-exam-topics">
                                 https://learningnetwork.cisco.com/s/ccnaauto-exam-topics
-                            </span>
+                            </a>
                         </li>
                     </ul>
                     <p style={{ marginTop: '2rem', fontSize: '0.85rem' }}>

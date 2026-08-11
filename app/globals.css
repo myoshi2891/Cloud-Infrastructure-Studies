@@ -285,6 +285,11 @@ body {
     color: var(--color-theme-cisco-fg);
 }
 
+@utility icon-theme-ccnaauto {
+    background: var(--color-theme-cisco-bg);
+    color: var(--color-theme-cisco-fg);
+}
+
 @utility icon-theme-ccde {
     background: var(--color-theme-cisco-bg);
     color: var(--color-theme-cisco-fg);

@@ -302,19 +302,14 @@ const ALL_EXAMS: Exam[] = [
             'シスコ認定のネットワーク基礎・アクセス・IP接続/サービス・セキュリティ・自動化の知識と実務スキルを認定。',
         domains: [
             {
-                label: '完全ビギナーガイド',
+                label: '1.0 Network Fundamentals（ネットワークの基礎）',
                 href: '/cisco/ccna/beginner-guide',
-                pct: '入門',
-            },
-            {
-                label: '2.0 APIの理解と活用',
-                href: '/cisco/ccna/automation-api-guide',
                 pct: '20%',
             },
             {
-                label: '6.0 自動化とプログラマビリティ',
-                href: '/cisco/ccna/automation-software-development-design',
-                pct: '10%',
+                label: '2.0 Network Access（ネットワークアクセス）',
+                href: '/cisco/ccna/network-access-guide',
+                pct: '20%',
             },
             {
                 label: '3.0 IP Connectivity（IP接続性）',
@@ -332,13 +327,44 @@ const ALL_EXAMS: Exam[] = [
                 pct: '15%',
             },
             {
-                label: '4.0 Application Deployment and Security',
-                href: '/cisco/ccna/automation-application-deployment-security',
+                label: '6.0 Automation and Programmability（自動化とプログラマビリティ）',
+                href: '/cisco/ccna/automation-programmability',
+                pct: '10%',
+            },
+        ],
+        badge: 'ネットワーク基礎',
+        icon: '🌐',
+        provider: 'Cisco',
+    },
+    {
+        id: 'ccnaauto',
+        label: 'Cisco Certified Network Associate Automation',
+        abbr: 'CCNAAUTO',
+        level: 'Associate',
+        score: '~90-120問 / 120分',
+        color: 'card-ccna',
+        href: '/cisco/ccna/automation-software-development-design',
+        description:
+            'Ciscoネットワークのソフトウェア開発、API、プラットフォーム、自動化、セキュリティ、ネットワーク基礎の知識を認定。',
+        domains: [
+            {
+                label: '1.0 Software Development and Design',
+                href: '/cisco/ccna/automation-software-development-design',
                 pct: '15%',
+            },
+            {
+                label: '2.0 APIの理解と活用',
+                href: '/cisco/ccna/automation-api-guide',
+                pct: '20%',
             },
             {
                 label: '3.0 Cisco Platforms and Development',
                 href: '/cisco/ccna/automation-cisco-platforms-and-development',
+                pct: '15%',
+            },
+            {
+                label: '4.0 Application Deployment and Security',
+                href: '/cisco/ccna/automation-application-deployment-security',
                 pct: '15%',
             },
             {
@@ -347,23 +373,13 @@ const ALL_EXAMS: Exam[] = [
                 pct: '20%',
             },
             {
-                label: '1.0 Network Fundamentals（ネットワークの基礎）',
+                label: '6.0 Network Fundamentals',
                 href: '/cisco/ccna/automation-network-fundamentals',
                 pct: '15%',
             },
-            {
-                label: '2.0 Network Access（ネットワークアクセス）',
-                href: '/cisco/ccna/network-access-guide',
-                pct: '20%',
-            },
-            {
-                label: '6.0 Automation and Programmability（自動化とプログラマビリティ）',
-                href: '/cisco/ccna/automation-programmability',
-                pct: '10%',
-            },
         ],
-        badge: 'ネットワーク基礎',
-        icon: '🌐',
+        badge: 'ネットワーク自動化',
+        icon: '⚙️',
         provider: 'Cisco',
     },
     {

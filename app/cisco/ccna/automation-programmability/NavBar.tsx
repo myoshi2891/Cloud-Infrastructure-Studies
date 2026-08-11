@@ -47,11 +47,14 @@ export default function NavBar({ activeId: initialActiveId }: { activeId?: strin
     const currentActive = initialActiveId || activeId;
 
     return (
-        <nav className="sidebar">
+        <nav
+            className="sidebar"
+            aria-label="Automation and Programmability サイドバー"
+        >
             <span className="brand">CCNA 200-301</span>
             <span className="brand-sub">v1.1 ブループリント学習ガイド</span>
             <span className="nav-badge">DOMAIN 6.0 &middot; 10%</span>
-            <nav className="toc">
+            <nav className="toc" aria-label="Automation and Programmability 目次">
                 {NAV_ITEMS.map((item) => {
                     const id = item.href.replace('#', '');
                     const isActive = currentActive === id;

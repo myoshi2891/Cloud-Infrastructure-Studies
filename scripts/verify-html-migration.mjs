@@ -9,7 +9,7 @@ vi_mock_mermaid();
 
 function vi_mock_mermaid() {
     // If running in standalone node process
-    (globalThis as any).React = React;
+    globalThis.React = React;
 }
 
 import CcnaNetworkFundamentalsGuide from '../app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx';
@@ -33,7 +33,7 @@ export function verifyDOMFidelity(htmlPath) {
     const domJsx = new JSDOM(`<!DOCTYPE html><html><body>${jsxHtml}</body></html>`);
     const docJsx = domJsx.window.document;
 
-    const sourceElements = Array.from(docHtml.querySelectorAll('main h1, main h2, main h3, main p, main li, main th, main td, main a.ref-url, main span.ref-name'));
+    const sourceElements = Array.from(docHtml.querySelectorAll('main h1, main h2, main h3, main p, main li, main th, main td, main .ref-url, main span.ref-name'));
     const jsxText = (docJsx.body.textContent || '').replace(/\s+/g, ' ').trim();
 
     const missingTexts = [];
@@ -51,6 +51,25 @@ export function verifyDOMFidelity(htmlPath) {
             console.error(`  ... and ${missingTexts.length - 15} more missing items.`);
         }
         throw new Error(`Migration verification failed: ${missingTexts.length} text nodes missing in rendered component.`);
+    }
+
+    const normalizeRefLink = (link, source = false) => {
+        const text = link.textContent.replace(/\s+/g, ' ').trim();
+        return {
+            text,
+            href: source ? link.getAttribute('href') ?? text : link.getAttribute('href'),
+        };
+    };
+    const sourceRefLinks = Array.from(
+        docHtml.querySelectorAll('main a.ref-url, main span.ref-url'),
+        (link) => normalizeRefLink(link, true),
+    );
+    const migratedRefLinks = Array.from(
+        docJsx.querySelectorAll('main a.ref-url'),
+        (link) => normalizeRefLink(link),
+    );
+    if (JSON.stringify(migratedRefLinks) !== JSON.stringify(sourceRefLinks)) {
+        throw new Error('Migration verification failed: reference link text, count, or href differs.');
     }
 
     console.log(`\n✅ [VERIFICATION SUCCESSFUL] All ${sourceElements.length} DOM text elements from source HTML match Next.js rendered component 100%!\n`);

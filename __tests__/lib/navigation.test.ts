@@ -248,9 +248,17 @@ describe('toNavTree', () => {
                     pct: '10%',
                 },
             ]);
-            expect(ccna?.domains.every(({ href }) => !href.includes('/automation-'))).toBe(
-                true,
-            );
+            const ccnaautoOnlyHrefs = new Set([
+                '/cisco/ccna/automation-api-guide',
+                '/cisco/ccna/automation-software-development-design',
+                '/cisco/ccna/automation-cisco-platforms-and-development',
+                '/cisco/ccna/automation-application-deployment-security',
+                '/cisco/ccna/automation-infrastructure-and-automation',
+                '/cisco/ccna/automation-network-fundamentals',
+            ]);
+            expect(
+                ccna?.domains.every(({ href }) => !ccnaautoOnlyHrefs.has(href)),
+            ).toBe(true);
             expect(ccnaauto?.domains).toHaveLength(6);
             expect(ccnaauto?.domains.every(({ href }) => href.includes('/automation-'))).toBe(
                 true,

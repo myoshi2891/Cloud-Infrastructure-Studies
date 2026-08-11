@@ -78,12 +78,17 @@ export default function NavBar() {
                 className="menu-toggle"
                 aria-label={isOpen ? '目次を閉じる' : '目次を開く'}
                 aria-expanded={isOpen}
+                aria-controls="infrastructure-automation-sidebar"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 ☰
             </button>
 
-            <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <nav
+                id="infrastructure-automation-sidebar"
+                className={`sidebar ${isOpen ? 'open' : ''}`}
+                aria-label="Infrastructure and Automation 目次"
+            >
                 <div className="brand">
                     <span className="brand-badge">5.0</span> CCNA Automation
                 </div>

@@ -665,7 +665,7 @@ export default function CcnaAutomationProgrammabilityGuide() {
                             <div className="code-line">    &#125;</div>
                             <div className="code-line">  ],</div>
                             <div className="code-line">  <span className="code-attr">&quot;description&quot;</span>: <span className="code-literal">null</span></div>
-                            <div className="code-line">&#123;</div>
+                            <div className="code-line">&#125;</div>
                         </div>
 
                         <p>
