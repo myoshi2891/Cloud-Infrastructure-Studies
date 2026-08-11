@@ -9,7 +9,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', { url: 'http:
 (globalThis as any).HTMLElement = dom.window.HTMLElement;
 (globalThis as any).SVGElement = dom.window.SVGElement;
 
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import CcnaNetworkFundamentalsGuide from '@/app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide';
 import NavBar from '@/app/cisco/ccna/automation-network-fundamentals/NavBar';
@@ -21,14 +21,19 @@ import {
     expectTableFidelity,
 } from '../archive-fidelity';
 
+const { mermaidRenderMock } = vi.hoisted(() => ({ mermaidRenderMock: vi.fn() }));
+
 /** Replaces Mermaid rendering with an inspectable accessible element. */
 vi.mock('@/components/MermaidDiagram', () => ({
     /** Preserves the aria-label contract used by the guide diagrams. */
-    MermaidDiagram: ({ ariaLabel }: { ariaLabel: string }) => (
-        <div data-testid="mermaid-diagram" aria-label={ariaLabel}>
-            {ariaLabel}
-        </div>
-    ),
+    MermaidDiagram: ({ ariaLabel }: { ariaLabel: string }) => {
+        mermaidRenderMock(ariaLabel);
+        return (
+            <div data-testid="mermaid-diagram" aria-label={ariaLabel}>
+                {ariaLabel}
+            </div>
+        );
+    },
 }));
 
 describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Structure Verification', () => {
@@ -80,6 +85,33 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
         expect(activeLink?.getAttribute('href')).toBe('#step3');
         expect(activeLink).toHaveAttribute('aria-current', 'location');
         expect(container.querySelectorAll('a[aria-current="location"]')).toHaveLength(1);
+    });
+
+    it('does not re-render diagrams when ScrollSpy updates the active section', () => {
+        let observerCallback: IntersectionObserverCallback | undefined;
+        class IntersectionObserverStub {
+            constructor(callback: IntersectionObserverCallback) {
+                observerCallback = callback;
+            }
+            observe() {}
+            disconnect() {}
+        }
+        vi.stubGlobal('IntersectionObserver', IntersectionObserverStub);
+        mermaidRenderMock.mockClear();
+
+        render(<CcnaNetworkFundamentalsGuide />);
+        const initialRenderCount = mermaidRenderMock.mock.calls.length;
+
+        act(() => {
+            observerCallback?.(
+                [{ isIntersecting: true, target: { id: 'step3' } } as IntersectionObserverEntry],
+                {} as IntersectionObserver,
+            );
+        });
+
+        expect(initialRenderCount).toBeGreaterThan(0);
+        expect(mermaidRenderMock).toHaveBeenCalledTimes(initialRenderCount);
+        vi.unstubAllGlobals();
     });
 
     it('preserves reference link text, count, and href values from the source HTML', () => {
