@@ -199,6 +199,10 @@ assert_staged_scope <new-file> || exit 1
 ### Step 1: Red — 失敗するテストを作成してコミット
 
 ```bash
+# 移行開始時の HEAD を、Step 7 の変更検出まで同じシェルで保持する
+MIGRATION_BASELINE_COMMIT=$(git rev-parse HEAD) || exit 1
+export MIGRATION_BASELINE_COMMIT
+
 # 要件を網羅するテストを追加
 RED_TEST_NAME='renders the migrated SN requirement title'
 RED_EXPECTED_FAILURE='Unable to find an element with the text: SN requirement title'
@@ -365,8 +369,16 @@ case "$migration_has_test_changes" in
 esac
 test_change_paths=$(mktemp) || exit 1
 trap 'rm -f "$test_change_paths"' EXIT
-if ! git diff --name-only HEAD > "$test_change_paths"; then
-  echo 'tracked ファイルの変更一覧を取得できません。Docs Sync を中止します。' >&2
+if [ -z "${MIGRATION_BASELINE_COMMIT:-}" ]; then
+  echo 'MIGRATION_BASELINE_COMMIT が未設定です。Docs Sync を中止します。' >&2
+  exit 1
+fi
+if ! git diff --name-only "$MIGRATION_BASELINE_COMMIT" HEAD > "$test_change_paths"; then
+  echo '移行開始から HEAD までの変更一覧を取得できません。Docs Sync を中止します。' >&2
+  exit 1
+fi
+if ! git diff --name-only HEAD >> "$test_change_paths"; then
+  echo '現在の working tree の変更一覧を取得できません。Docs Sync を中止します。' >&2
   exit 1
 fi
 if ! git ls-files --others --exclude-standard >> "$test_change_paths"; then
