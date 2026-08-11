@@ -198,4 +198,30 @@ describe('CcnaAppDeploymentSecurityPage', () => {
             expect.stringContaining('A05:2025 Injection'),
         );
     });
+
+    it('renders usage callout and all 11 chapter key point callouts without omission', () => {
+        render(<CcnaAppDeploymentSecurityPage />);
+
+        expect(screen.getByText('このガイドの使い方')).toBeInTheDocument();
+        expect(screen.getByText(/前提知識としてPythonの基礎、Linux\/Bashの基本操作/)).toBeInTheDocument();
+
+        const chapterKeyPointPatterns = [
+            /ドメイン4\.0は試験全体の15%を占め/i,
+            /エッジコンピューティングの利点は「低遅延・帯域節約・オフライン耐性・データローカリティ」の4つに集約できる/i,
+            /分離の強さと起動の速さはトレードオフの関係にある/i,
+            /CI（継続的インテグレーション）は「頻繁に統合し、自動テストで早期に問題を検出する」/i,
+            /ユニットテストは「準備（Arrange）→実行（Act）→検証（Assert）」の3ステップで考えると書きやすい/i,
+            /Dockerfileは「上から順に1行ずつ実行される構築手順書」として読むと理解しやすい/i,
+            /「シークレットはコードに書かない」「転送時と保存時の両方を暗号化する」/i,
+            /「名前解決 → アクセス制御 → 負荷分散 → プロキシによる終端・制御 → アプリ本体」という順序/i,
+            /XSS・SQLインジェクション・CSRFはいずれも「入力・リクエストを検証せず信頼する」ことが根本原因/i,
+            /「ファイル管理」「ディレクトリ操作」「環境変数」の3分類で整理すると覚えやすい/i,
+            /DevOpsは単なるツールの導入ではなく、「文化・自動化・計測・共有」という考え方の集合体である/i,
+        ];
+
+        chapterKeyPointPatterns.forEach((pattern) => {
+            expect(screen.getByText(pattern)).toBeInTheDocument();
+        });
+    });
 });
+
