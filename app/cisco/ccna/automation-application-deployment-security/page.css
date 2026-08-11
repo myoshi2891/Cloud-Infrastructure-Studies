@@ -406,7 +406,7 @@
 .ccna-app-deployment-security-page .mermaid-wrap {
     width: 100%;
     overflow-x: auto;
-    margin: 1.5rem 0 2rem;
+    margin: 1.5rem auto 2rem;
     padding: 1.25rem 0;
     background: var(--bg-panel);
     border-radius: var(--radius);

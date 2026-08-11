@@ -75,7 +75,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 <section id="overview" className="section prose">
                     <h2 className="step-title">はじめに：このガイドの位置づけ</h2>
                     <p>
-                        <strong>CCNA Automation</strong> は、Ciscoが2026年に「DevNet Associate」から名称変更した資格で、ネットワークの基礎知識とソフトウェア開発・自動化スキルの両方を証明する認定資格です。取得には、120分の試験 <strong>200-901 CCNAAUTO（Automating Networks Using Cisco Platforms v1.1）</strong> に合格する必要があります。日本語での受験も可能です。
+                        <strong>CCNA Automation</strong> は、Cisco が2026年に「DevNet Associate」から名称変更した資格で、ネットワークの基礎知識とソフトウェア開発・自動化スキルの両方を証明する認定資格です。取得には、120分の試験 <strong>200-901 CCNAAUTO（Automating Networks Using Cisco Platforms v1.1）</strong> に合格する必要があります。日本語での受験も可能です。
                     </p>
                     <p>
                         この試験は次の6つのドメインで構成されており、その中で本ガイドが扱う <strong>「6.0 Network Fundamentals」は出題比率15%</strong> を占めます。
@@ -252,8 +252,8 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <p>VLANを使う主な理由：</p>
                     <ul>
                         <li>部署やシステムの単位でネットワークを論理分離し、セキュリティを高める</li>
-                        <li>ブロードキャストトラフィックの到達範囲を狭め、無駄なトラフィックを減らす</li>
-                        <li>物理的な配線変更なしに設定変更だけでネットワークを再構成できる</li>
+                        <li>ブロードキャストトラフィックの範囲を限定し、無駄な通信を減らす</li>
+                        <li>物理的な配線を変更せずに、ポートの割り当て変更だけでネットワーク構成を変えられる</li>
                     </ul>
 
                     <Diagram
@@ -465,6 +465,11 @@ export default function CcnaNetworkFundamentalsGuide() {
                             </tbody>
                         </table>
                     </div>
+
+                    <div className="callout">
+                        <strong>自動化の観点でのポイント：</strong>
+                        これらの機器はそれぞれ異なるAPI・プロトコル（RESTCONF、NETCONF、ベンダー独自API等）で操作されることが多く、「どの機器が、どのレイヤーで、何をしているか」を理解していないと自動化スクリプトが何を制御しているのか把握できません。
+                    </div>
                 </section>
 
                 {/* STEP 4 */}
@@ -485,9 +490,18 @@ export default function CcnaNetworkFundamentalsGuide() {
 
                     <p>このようなトポロジ図を読み解くときのチェックポイント：</p>
                     <ul>
-                        <li>クライアントからWebサーバーへの通信パス：クライアント → L2スイッチ → ルーター → ファイアウォール → ロードバランサー（VIP） → Webサーバー</li>
-                        <li>ロードバランサー（LB）は、外部（443/HTTPS）の通信を受け取り、背後の複数サーバー（8080等）へトラフィックを分散する</li>
-                        <li>ファイアウォール（FW）は、特定のポートや送信元/送信先IPのみを許可するACLを設定して不正アクセスを防ぐ</li>
+                        <li>
+                            <strong>通信の入口から出口までの経路</strong>：クライアント→スイッチ→ルーター→ファイアウォール→ロードバランサー→サーバー、という順に、どの機器を経由するかを追う
+                        </li>
+                        <li>
+                            <strong>境界（レイヤーの切り替わり地点）</strong>：VLANの境界はスイッチ、ネットワークの境界はルーター、というようにどこで何が変わるかを意識する
+                        </li>
+                        <li>
+                            <strong>ポート番号の意味</strong>：<code>203.0.113.10:443</code> のような表記は「そのIPアドレスの443番ポート（HTTPS）で待ち受けている」ことを示す
+                        </li>
+                        <li>
+                            <strong>通信がどこで変換・分散されるか</strong>：ロードバランサーの仮想IP宛ての通信が、内部的にどのサーバーへ振り分けられるか
+                        </li>
                     </ul>
                 </section>
 
