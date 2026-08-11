@@ -648,24 +648,24 @@ export default function CcnaAutomationProgrammabilityGuide() {
                         <p>以下は、あるルータのインターフェース情報をJSON形式で表現した例です。</p>
                         <div className="code-block" role="region" aria-label="JSONデータの例">
                             <div className="code-line">&#123;</div>
-                            <div className="code-line">  &quot;hostname&quot;: &quot;R1&quot;,</div>
-                            <div className="code-line">  &quot;vlan_id&quot;: 10,</div>
-                            <div className="code-line">  &quot;interfaces&quot;: [</div>
+                            <div className="code-line">  <span className="code-attr">&quot;hostname&quot;</span>: <span className="code-string">&quot;R1&quot;</span>,</div>
+                            <div className="code-line">  <span className="code-attr">&quot;vlan_id&quot;</span>: <span className="code-number">10</span>,</div>
+                            <div className="code-line">  <span className="code-attr">&quot;interfaces&quot;</span>: [</div>
                             <div className="code-line">    &#123;</div>
-                            <div className="code-line">      &quot;name&quot;: &quot;GigabitEthernet0/1&quot;,</div>
-                            <div className="code-line">      &quot;ip_address&quot;: &quot;192.168.1.1&quot;,</div>
-                            <div className="code-line">      &quot;subnet_mask&quot;: &quot;255.255.255.0&quot;,</div>
-                            <div className="code-line">      &quot;enabled&quot;: true</div>
+                            <div className="code-line">      <span className="code-attr">&quot;name&quot;</span>: <span className="code-string">&quot;GigabitEthernet0/1&quot;</span>,</div>
+                            <div className="code-line">      <span className="code-attr">&quot;ip_address&quot;</span>: <span className="code-string">&quot;192.168.1.1&quot;</span>,</div>
+                            <div className="code-line">      <span className="code-attr">&quot;subnet_mask&quot;</span>: <span className="code-string">&quot;255.255.255.0&quot;</span>,</div>
+                            <div className="code-line">      <span className="code-attr">&quot;enabled&quot;</span>: <span className="code-literal">true</span></div>
                             <div className="code-line">    &#125;,</div>
                             <div className="code-line">    &#123;</div>
-                            <div className="code-line">      &quot;name&quot;: &quot;GigabitEthernet0/2&quot;,</div>
-                            <div className="code-line">      &quot;ip_address&quot;: &quot;192.168.2.1&quot;,</div>
-                            <div className="code-line">      &quot;subnet_mask&quot;: &quot;255.255.255.0&quot;,</div>
-                            <div className="code-line">      &quot;enabled&quot;: false</div>
+                            <div className="code-line">      <span className="code-attr">&quot;name&quot;</span>: <span className="code-string">&quot;GigabitEthernet0/2&quot;</span>,</div>
+                            <div className="code-line">      <span className="code-attr">&quot;ip_address&quot;</span>: <span className="code-string">&quot;192.168.2.1&quot;</span>,</div>
+                            <div className="code-line">      <span className="code-attr">&quot;subnet_mask&quot;</span>: <span className="code-string">&quot;255.255.255.0&quot;</span>,</div>
+                            <div className="code-line">      <span className="code-attr">&quot;enabled&quot;</span>: <span className="code-literal">false</span></div>
                             <div className="code-line">    &#125;</div>
                             <div className="code-line">  ],</div>
-                            <div className="code-line">  &quot;description&quot;: null</div>
-                            <div className="code-line">&#125;</div>
+                            <div className="code-line">  <span className="code-attr">&quot;description&quot;</span>: <span className="code-literal">null</span></div>
+                            <div className="code-line">&#123;</div>
                         </div>
 
                         <p>

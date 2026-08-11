@@ -277,6 +277,26 @@
     white-space: pre;
 }
 
+.ccna-automation-programmability-page .code-attr {
+    color: #e06c75;
+}
+
+.ccna-automation-programmability-page .code-string {
+    color: #98c379;
+}
+
+.ccna-automation-programmability-page .code-number {
+    color: #d19a66;
+}
+
+.ccna-automation-programmability-page .code-literal {
+    color: #c678dd;
+}
+
+.ccna-automation-programmability-page .code-punctuation {
+    color: #abb2bf;
+}
+
 .ccna-automation-programmability-page code:not(.hljs) {
     font-family: var(--mono);
     background: var(--bg-card);
