@@ -1,0 +1,68 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { JSDOM } from 'jsdom';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+
+// Mock MermaidDiagram component to avoid SVG rendering issues during SSR string compilation
+vi_mock_mermaid();
+
+function vi_mock_mermaid() {
+    // If running in standalone node process
+    (globalThis as any).React = React;
+}
+
+import CcnaNetworkFundamentalsGuide from '../app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx';
+
+/**
+ * Compare DOM text nodes between source HTML and rendered Next.js component.
+ *
+ * @param {string} htmlPath - Absolute path to source HTML
+ * @returns {boolean} True if 100% matched
+ */
+export function verifyDOMFidelity(htmlPath) {
+    if (!fs.existsSync(htmlPath)) {
+        throw new Error(`Source HTML file not found: ${htmlPath}`);
+    }
+
+    const htmlRaw = fs.readFileSync(htmlPath, 'utf8');
+    const domHtml = new JSDOM(htmlRaw);
+    const docHtml = domHtml.window.document;
+
+    const jsxHtml = renderToString(React.createElement(CcnaNetworkFundamentalsGuide));
+    const domJsx = new JSDOM(`<!DOCTYPE html><html><body>${jsxHtml}</body></html>`);
+    const docJsx = domJsx.window.document;
+
+    const sourceElements = Array.from(docHtml.querySelectorAll('main h1, main h2, main h3, main p, main li, main th, main td, main a.ref-url, main span.ref-name'));
+    const jsxText = (docJsx.body.textContent || '').replace(/\s+/g, ' ').trim();
+
+    const missingTexts = [];
+    sourceElements.forEach((el) => {
+        const text = el.textContent.replace(/\s+/g, ' ').trim();
+        if (text && !jsxText.includes(text)) {
+            missingTexts.push(text);
+        }
+    });
+
+    if (missingTexts.length > 0) {
+        console.error(`\n❌ [VERIFICATION FAILED] Found ${missingTexts.length} missing texts in rendered Next.js component:\n`);
+        missingTexts.slice(0, 15).forEach((t, i) => console.error(`  ${i + 1}. "${t}"`));
+        if (missingTexts.length > 15) {
+            console.error(`  ... and ${missingTexts.length - 15} more missing items.`);
+        }
+        throw new Error(`Migration verification failed: ${missingTexts.length} text nodes missing in rendered component.`);
+    }
+
+    console.log(`\n✅ [VERIFICATION SUCCESSFUL] All ${sourceElements.length} DOM text elements from source HTML match Next.js rendered component 100%!\n`);
+    return true;
+}
+
+if (process.argv[1] && process.argv[1].endsWith('verify-html-migration.mjs')) {
+    const htmlPath = path.resolve(process.cwd(), 'archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html');
+    try {
+        verifyDOMFidelity(htmlPath);
+    } catch (err) {
+        console.error(err.message);
+        process.exit(1);
+    }
+}

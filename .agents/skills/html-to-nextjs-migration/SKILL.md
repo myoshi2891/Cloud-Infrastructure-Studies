@@ -14,7 +14,7 @@ description: >
 
 # HTML → Next.js Migration Workflow（本リポジトリ専用）
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-11)
 
 ## Goal
 
@@ -22,17 +22,17 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 **Prerequisite**: The global skill covers `<pre>` block conversion, `class`/`className` rules, HTML entity handling, `@layer` priority, and cache invalidation. This skill assumes that knowledge and focuses on the **end-to-end workflow + reusable reference**.
 
-> **トークン効率の鉄則（省略禁止）**: 本 skill の目的の一つは将来の移行のトークン浪費削減である。
-> **ソースHTMLは常に100%読む。移行時の内容の省略・要約は厳禁。**
-> 削減してよいのは「参照ファイル・トークンマップ・配置値の**再読込/再導出の往復**」のみ。
-> 下記「正準リファレンス」と「効率的読み取りプロトコル」に従えば、参照コンポーネントや
-> `globals.css` を毎回読み直さずに移行を完了できる。
+> **ユーザー手動確認ゼロ原則（必須ルール）**:
+> ユーザーへ「目視確認」や「スクリーンショットの提供」を求める行為は**厳禁**とする。
+> 1. `scripts/verify-html-migration.mjs` (または `__tests__/` 内の全自動 DOM テスト) で元HTMLとNext.jsコンポーネントのテキストが100%全量一致することを自動検証する。
+> 2. `Playwright` E2E テストでスクロール時の文字重なり、固定ヘッダー遮蔽、ScrollSpy連動、レスポンシブ崩れが0件であることを自動検証する。
+> 3. 上記の自動テスト合格証明を添えて作業完了を宣言すること。
 
 ## セッション開始時に必ず読むファイル
 
 1. **`MIGRATION_PROGRESS.md`**（リポジトリ直下）— 現在地・残タスク・再開プロンプト
 2. **このファイル（`SKILL.md`）** — 移行手順・正準リファレンス・本リポジトリ固有ルール
-3. **`.claude/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
+3. **`.agents/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
 
 ## 未移行 HTML
 
@@ -127,7 +127,7 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
   }
   ```
 
-- 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.claude/skills/fix-mermaid`。
+- 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.agents/skills/fix-mermaid`。
 
 ### 5. HTML 末尾 `<script>` の interactivity → React 変換表
 
@@ -173,7 +173,7 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 
 ### TDD 必須サイクルの適用（最重要）
 
-移行作業中は、常に `.claude/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
+移行作業中は、常に `.agents/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
 
 1. **タスク設計の段階（`task.md` の作成時）**:
    - `task.md` 内のタスクを「Red（テスト失敗とコミット）」「Green（実装とコミット）」「Refactor（リファクタ/ビルド/Linter修正とコミット）」「Docs Sync（進捗同期とコミット）」のコミット単位に明確に構造化してください。
@@ -375,7 +375,7 @@ rm -rf .next && bun run build
 
 ## セッション終了前同期（必須）
 
-進捗同期の手順は `.claude/rules/migration-progress-sync.md` に従ってください。毎ページ、移行作業の完了直後に実施します。
+進捗同期の手順は `.agents/rules/migration-progress-sync.md` に従ってください。毎ページ、移行作業の完了直後に実施します。
 
 ## Reusable CSS Component Classes (globals.css)
 
