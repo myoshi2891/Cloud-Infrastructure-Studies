@@ -60,6 +60,51 @@ const DIAGRAMS = {
     });
   });
 
+  test("script 外の引用符・CSS コメント・スラッシュを無視してオブジェクト終端を検出する", () => {
+    const html = `<style>/* owner's / theme */ .card { color: red; }</style>
+<main>it's outside / the script</main>
+<script>
+const DIAGRAMS = { "diag-1": "flowchart TD\\nA --> B" };
+</script>`;
+
+    const { diagrams } = extractDiagramsDefinition(html);
+
+    expect(diagrams).toEqual({ "diag-1": "flowchart TD\nA --> B" });
+  });
+
+  test("JavaScript 文字列の unicode・hex・行継続エスケープを完全に消費する", () => {
+    const html = String.raw`<script>
+const DIAGRAMS = { "diag-1": "A\u0042\x43\
+D" };
+</script>`;
+
+    const { diagrams } = extractDiagramsDefinition(html);
+
+    expect(diagrams).toEqual({ "diag-1": "ABCD" });
+  });
+
+  test("未対応の JavaScript エスケープを拒否する", () => {
+    const html = String.raw`<script>
+const DIAGRAMS = { "diag-1": "flowchart\q" };
+</script>`;
+
+    expect(() => extractDiagramsDefinition(html)).toThrow(
+      "未対応のエスケープです: \\q",
+    );
+  });
+
+  test.each([
+    '{ "diag-1": 42 }',
+    '{ "diag-1": null }',
+    '{ "diag-1": { "chart": "flowchart TD" } }',
+  ])("JSON として有効でも文字列以外の diagram 値を拒否する: %s", (definition) => {
+    const html = `<script>const DIAGRAMS = ${definition};</script>`;
+
+    expect(() => extractDiagramsDefinition(html)).toThrow(
+      "DIAGRAMS の値はすべて文字列で指定してください。",
+    );
+  });
+
   test("正規表現リテラル内の false match を飛ばして実宣言を抽出する", () => {
     const html = `<script>
 const declarationPattern = /const DIAGRAMS = \\{[^}]*\\}/g;
