@@ -4,6 +4,7 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/** Renders a labelled Mermaid diagram while preserving its natural scale. */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -15,6 +16,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/** Renders the complete Network Access guide and its seventeen source-backed diagrams. */
 export default function CcnaNetworkAccessGuide() {
     return (
         <div className="network-access-page">

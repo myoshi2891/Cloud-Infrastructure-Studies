@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import CcnaNetworkAccessGuide from './CcnaNetworkAccessGuide';
 import './page.css';
 
+/** Supplies title and description metadata for the Network Access guide route. */
 export function generateMetadata(): Metadata {
     return {
         title: 'CCNA 200-301「Network Access」徹底解説 | 初学者向けステップバイステップガイド',
@@ -10,6 +11,7 @@ export function generateMetadata(): Metadata {
     };
 }
 
+/** Renders the server entry point for the Network Access guide. */
 export default function Page() {
     return <CcnaNetworkAccessGuide />;
 }

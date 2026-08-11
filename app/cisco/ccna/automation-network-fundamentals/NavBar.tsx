@@ -6,6 +6,7 @@ interface NavBarProps {
     activeId?: string;
 }
 
+/** Renders the Network Fundamentals table of contents and marks the supplied section active. */
 export default function NavBar({ activeId = 'overview' }: NavBarProps) {
     const getItemClass = (id: string) => (activeId === id ? 'active' : '');
 

@@ -4,6 +4,7 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/** Renders the labelled Mermaid diagram selected by its identifier. */
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -14,6 +15,7 @@ function Diagram({ id, label }: { id: string; label: string }) {
     );
 }
 
+/** Renders the complete CCNA Automation and Programmability study guide. */
 export default function CcnaAutomationProgrammabilityGuide() {
     return (
         <div className="ccna-automation-programmability-page">

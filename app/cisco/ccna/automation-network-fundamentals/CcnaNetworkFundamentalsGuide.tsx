@@ -5,6 +5,7 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
+/** Renders one labelled Mermaid diagram and its caption for a diagram identifier. */
 function Diagram({ id, label, caption }: { id: string; label: string; caption: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
@@ -18,6 +19,7 @@ function Diagram({ id, label, caption }: { id: string; label: string; caption: s
     );
 }
 
+/** Renders the complete CCNAAUTO Network Fundamentals guide with ScrollSpy navigation. */
 export default function CcnaNetworkFundamentalsGuide() {
     const [activeSectionId, setActiveSectionId] = useState<string>('overview');
 

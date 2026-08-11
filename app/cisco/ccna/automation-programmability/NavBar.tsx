@@ -15,6 +15,11 @@ const NAV_ITEMS = [
     { href: '#sources', label: '出典・参考資料' },
 ];
 
+/**
+ * Renders the Automation and Programmability table of contents with ScrollSpy.
+ *
+ * @param activeId - Optional externally controlled section identifier.
+ */
 export default function NavBar({ activeId: initialActiveId }: { activeId?: string }) {
     const [activeId, setActiveId] = useState<string>(initialActiveId || 'overview');
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+/** Renders the responsive Infrastructure and Automation table of contents with scroll tracking. */
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('overview');

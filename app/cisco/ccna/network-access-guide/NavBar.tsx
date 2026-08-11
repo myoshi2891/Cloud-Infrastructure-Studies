@@ -20,6 +20,7 @@ const TOC_ITEMS = [
     { id: 'sources', label: '15. 参考資料・出典' },
 ];
 
+/** Tracks visible guide sections and provides smooth-scrolling Network Access navigation. */
 export default function NavBar() {
     const [activeId, setActiveId] = useState<string>('overview');
 
