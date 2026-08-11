@@ -14,6 +14,22 @@ function vi_mock_mermaid() {
 
 import CcnaNetworkFundamentalsGuide from '../app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx';
 
+export function findOrderedTextMismatches(sourceTexts, jsxTexts) {
+    const comparisonText = (text) => text.replace(/\s+/g, '');
+    const missingTexts = [];
+    const comparisonLength = Math.max(sourceTexts.length, jsxTexts.length);
+    for (let index = 0; index < comparisonLength; index += 1) {
+        if (comparisonText(sourceTexts[index] ?? '') !== comparisonText(jsxTexts[index] ?? '')) {
+            missingTexts.push(
+                sourceTexts[index]
+                    ? `${sourceTexts[index]} [移行先: ${jsxTexts[index] ?? 'なし'}]`
+                    : `[移行先のみ: ${jsxTexts[index]}]`,
+            );
+        }
+    }
+    return missingTexts;
+}
+
 /**
  * Compare DOM text nodes between source HTML and rendered Next.js component.
  *
@@ -33,16 +49,11 @@ export function verifyDOMFidelity(htmlPath) {
     const domJsx = new JSDOM(`<!DOCTYPE html><html><body>${jsxHtml}</body></html>`);
     const docJsx = domJsx.window.document;
 
-    const sourceElements = Array.from(docHtml.querySelectorAll('main h1, main h2, main h3, main p, main li, main th, main td, main .ref-url, main span.ref-name'));
-    const jsxText = (docJsx.body.textContent || '').replace(/\s+/g, ' ').trim();
-
-    const missingTexts = [];
-    sourceElements.forEach((el) => {
-        const text = el.textContent.replace(/\s+/g, ' ').trim();
-        if (text && !jsxText.includes(text)) {
-            missingTexts.push(text);
-        }
-    });
+    const contentSelector = 'main h1, main h2, main h3, main p, main li, main th, main td, main .ref-url, main span.ref-name';
+    const normalizeText = (element) => element.textContent.replace(/\s+/g, ' ').trim();
+    const sourceTexts = Array.from(docHtml.querySelectorAll(contentSelector), normalizeText).filter(Boolean);
+    const jsxTexts = Array.from(docJsx.querySelectorAll(contentSelector), normalizeText).filter(Boolean);
+    const missingTexts = findOrderedTextMismatches(sourceTexts, jsxTexts);
 
     if (missingTexts.length > 0) {
         console.error(`\n❌ [VERIFICATION FAILED] Found ${missingTexts.length} missing texts in rendered Next.js component:\n`);
@@ -72,7 +83,7 @@ export function verifyDOMFidelity(htmlPath) {
         throw new Error('Migration verification failed: reference link text, count, or href differs.');
     }
 
-    console.log(`\n✅ [VERIFICATION SUCCESSFUL] All ${sourceElements.length} DOM text elements from source HTML match Next.js rendered component 100%!\n`);
+    console.log(`\n✅ [VERIFICATION SUCCESSFUL] All ${sourceTexts.length} DOM text elements from source HTML match Next.js rendered component 100%!\n`);
     return true;
 }
 

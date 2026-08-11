@@ -635,9 +635,6 @@ export default function CcnaNetworkFundamentalsGuide() {
                         id="diagram-8"
                         label="SNMPのポーリングとTrap通知フロー"
                     />
-                    <p>
-                        SNMPでは、監視サーバー（NMS）からの問い合わせ（ポーリング）だけでなく、機器側で異常を検知した際に自発的に通知を送る「Trap（トラップ）」機能が重要です。
-                    </p>
 
                     <h3 className="sub-title">NTP：時刻同期の階層構造</h3>
                     <Diagram

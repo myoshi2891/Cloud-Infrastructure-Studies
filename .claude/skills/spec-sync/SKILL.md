@@ -206,6 +206,7 @@ rollback_mirrors() {
 }
 cleanup_sync() {
   rollback_mirrors || echo '同期前状態へのロールバックに失敗しました。手動復旧が必要です。' >&2
+  rm -f "${worktree_paths:-}" "${staged_paths:-}"
   rm -rf "$sync_tmp"
 }
 trap cleanup_sync EXIT
@@ -246,7 +247,6 @@ allowed_sync_path() {
 }
 worktree_paths=$(mktemp) || exit 1
 staged_paths=$(mktemp) || exit 1
-trap 'rm -f "$worktree_paths" "$staged_paths"' EXIT
 if ! git diff --name-only HEAD > "$worktree_paths"; then
   echo 'worktree 差分を取得できません。ステージやコミットへ進みません。' >&2
   exit 1

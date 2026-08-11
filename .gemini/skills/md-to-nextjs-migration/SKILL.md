@@ -361,6 +361,10 @@ if ! git add -p -- "${docs_sync_files[@]}"; then
 fi
 # 正準一覧（テスト変更なしの場合は4ファイル）以外がステージされていないことを確認する
 assert_staged_scope "${docs_sync_files[@]}" || exit 1
+if git diff --cached --quiet; then
+  echo 'Docs Sync のステージ差分が空です。コミットを中止します。' >&2
+  exit 1
+fi
 if ! git diff --cached --check || ! git diff --cached; then
   echo 'ステージ差分を検証できません。コミットを中止します。' >&2
   exit 1
