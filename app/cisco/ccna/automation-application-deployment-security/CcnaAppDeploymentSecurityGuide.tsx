@@ -2,29 +2,11 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import { DIAGRAMS } from './constants';
 import { NavBar } from './NavBar';
 
-const DIAGRAM_DISPLAY: Record<string, { frameWidth: number }> = {
-    'diag-0': { frameWidth: 800 },
-    'diag-1': { frameWidth: 800 },
-    'diag-2': { frameWidth: 900 },
-    'diag-3': { frameWidth: 900 },
-    'diag-4': { frameWidth: 800 },
-    'diag-5': { frameWidth: 800 },
-    'diag-6': { frameWidth: 800 },
-    'diag-7': { frameWidth: 850 },
-    'diag-8': { frameWidth: 850 },
-    'diag-9': { frameWidth: 800 },
-};
-
 function Diagram({ id, label }: { id: string; label: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
-    const display = DIAGRAM_DISPLAY[id] ?? { frameWidth: 800 };
     return (
-        <div
-            className="mermaid-wrap"
-            data-diagram-id={id}
-            style={{ maxWidth: `${display.frameWidth}px` }}
-        >
+        <div className="mermaid-wrap" data-diagram-id={id}>
             <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
         </div>
     );
