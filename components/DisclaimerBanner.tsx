@@ -43,13 +43,14 @@ export function DisclaimerBanner() {
                 // fixed だと flow 外になり scroll = 0 で Header より上に表示され縦並びが入れ替わる現象が起きる。
                 position: 'sticky',
                 top: 'var(--header-h, 48px)',
-                background: 'rgba(234, 179, 8, 0.12)',
-                borderBottom: '1px solid rgba(234, 179, 8, 0.25)',
+                background: '#131b2e',
+                borderBottom: '1px solid rgba(234, 179, 8, 0.35)',
+                backdropFilter: 'blur(12px)',
                 zIndex: 40,
                 textAlign: 'center',
                 padding: '0.35rem 1rem',
                 fontSize: '0.75rem',
-                color: '#d4a017',
+                color: '#facc15',
                 lineHeight: 1.4,
             }}
         >

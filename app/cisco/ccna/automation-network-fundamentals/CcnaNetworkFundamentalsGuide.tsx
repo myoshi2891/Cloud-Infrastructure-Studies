@@ -842,50 +842,70 @@ export default function CcnaNetworkFundamentalsGuide() {
                 {/* SUMMARY */}
                 <section id="summary" className="section prose">
                     <h2 className="step-title">まとめ：学習のポイント</h2>
-                    <p>Network Fundamentalsドメインの学習ポイント：</p>
-                    <ol>
-                        <li>MACアドレス/VLAN（L2）とIPアドレス/ルーティング（L3）の役割の違いを説明できるようにする</li>
-                        <li>スイッチ・ルーター・FW・ロードバランサーがOSI参照モデルのどこで機能するかを覚える</li>
-                        <li>Management / Control / Data の3つのPlaneの役割と具体例を区別する</li>
-                        <li>DHCP（DORA）、DNS、NAT、SNMP（Trap）、NTP（Stratum）の仕組みとポート番号を押さえる</li>
-                        <li>「コードのバグなのか、ネットワーク経路・遮断の問題なのか」を論理的に切り分ける視点を持つ</li>
-                    </ol>
+                    <ul>
+                        <li>
+                            <strong>Network Fundamentalsは出題比率15%</strong> で、6つのドメインの中では中程度の比率だが、他ドメイン（特に「5.0 Infrastructure and Automation」）の理解の土台になる
+                        </li>
+                        <li>
+                            <strong>6.1〜6.4</strong> は「モノの名前と役割」を覚える暗記寄りの範囲：MACアドレス、VLAN、IPアドレス、サブネット、ゲートウェイ、各種ネットワーク機器、トポロジ図の読み方
+                        </li>
+                        <li>
+                            <strong>6.5</strong> は機器内部の「動作の分類」（Management/Control/Data Plane）を理解する範囲
+                        </li>
+                        <li>
+                            <strong>6.6〜6.7</strong> はIPサービス（DHCP・DNS・NAT・SNMP・NTP）とポート番号という「実務で頻出する具体的な仕組み」を押さえる範囲
+                        </li>
+                        <li>
+                            <strong>6.8〜6.9</strong> は「トラブルシューティングの考え方」を問う応用範囲であり、他の項目の理解を前提とした総合問題になりやすい
+                        </li>
+                        <li>
+                            学習の順序としては、<strong>用語（6.1〜6.4）→ 仕組み（6.5〜6.7）→ 応用・診断（6.8〜6.9）</strong> の順に進めると理解しやすい
+                        </li>
+                    </ul>
                 </section>
 
                 {/* REFERENCES / FOOTER */}
-                <footer id="references" className="footer prose">
+                <section id="references" className="section prose footer">
                     <h2 className="step-title">参考情報源</h2>
                     <p>
                         本ガイドの内容は、以下のCisco公式情報源に基づいて作成しています。最新情報は変更される可能性があるため、 学習の際は必ず一次情報を確認してください。
                     </p>
                     <ul className="ref-list">
                         <li>
-                            <span className="ref-name">Cisco Official CCNA 200-301 Exam Topics</span>
-                            <a
-                                href="https://www.cisco.com/c/en/us/training-events/training-certifications/exams/current-list/ccna-200-301.html"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="ref-url"
-                            >
-                                https://www.cisco.com/c/en/us/training-events/training-certifications/exams/current-list/ccna-200-301.html
-                            </a>
+                            <span className="ref-name">CCNA Automation Certification（資格概要）</span>
+                            <span className="ref-url">
+                                https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html
+                            </span>
                         </li>
                         <li>
-                            <span className="ref-name">RFC 1918 - Address Allocation for Private Internets</span>
-                            <a
-                                href="https://datatracker.ietf.org/doc/html/rfc1918"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="ref-url"
-                            >
-                                https://datatracker.ietf.org/doc/html/rfc1918
-                            </a>
+                            <span className="ref-name">
+                                CCNA Automation Exam and Training（試験概要・受験情報：試験名、時間、言語、費用など）
+                            </span>
+                            <span className="ref-url">
+                                https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html
+                            </span>
+                        </li>
+                        <li>
+                            <span className="ref-name">
+                                Automating Networks Using Cisco Platforms v1.1（200-901）Exam Topics（公式出題範囲PDF：本ガイドの6.1〜6.9の項目立てはこの一次資料に基づく）
+                            </span>
+                            <span className="ref-url">
+                                https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf
+                            </span>
+                        </li>
+                        <li>
+                            <span className="ref-name">
+                                Cisco Learning Network：CCNAAUTO Exam Topics and Study Guide（コミュニティ上の出題範囲ページ）
+                            </span>
+                            <span className="ref-url">
+                                https://learningnetwork.cisco.com/s/ccnaauto-exam-topics
+                            </span>
                         </li>
                     </ul>
                     <p style={{ marginTop: '2rem', fontSize: '0.85rem' }}>
                         補足：CCNA Automationは、Ciscoが2026年に「DevNet Associate」から名称変更した資格です。既存のDevNet Associate 資格保有者は、自動的にCCNA Automation資格保有者として扱われます。
                     </p>
-                </footer>
+                </section>
             </main>
         </div>
     );
