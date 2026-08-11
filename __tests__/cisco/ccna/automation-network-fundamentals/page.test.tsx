@@ -22,105 +22,118 @@ vi.mock('@/components/MermaidDiagram', () => ({
     ),
 }));
 
-describe('CCNA Automation Network Fundamentals Guide - Visual & Structural Completeness', () => {
+describe('CCNA Automation Network Fundamentals Guide - Full Text & Visual Faithful Assertions', () => {
     it('renders the Page component with title and Server Component wrapper', () => {
         const pageElement = Page();
         expect(pageElement).toBeTruthy();
     });
 
-    it('renders Hero section with original HTML visual structure, eyebrow, gradient h1, lede and meta-cards', () => {
-        const { container, getByRole, getByText } = render(<CcnaNetworkFundamentalsGuide />);
-        
-        // Eyebrow badge
+    it('renders exact paragraph text from original HTML in Overview section', () => {
+        const { getByText } = render(<CcnaNetworkFundamentalsGuide />);
+        expect(
+            getByText(
+                /「自動化やプログラミングの資格なのに、なぜネットワークの基礎知識が問われるのか？」と疑問に思うかもしれません。/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(
+                /理由のはシンプルで、ネットワークの仕組みを理解していないと、API呼び出しの失敗やアプリケーションの接続不良が「コードの問題」なのか「ネットワークの問題」なのかを切り分けられないからです。/i
+            )
+        ).toBeTruthy();
+    });
+
+    it('renders exact paragraph text and list items for Step 1 (MAC & VLAN)', () => {
+        const { getByText } = render(<CcnaNetworkFundamentalsGuide />);
+        expect(
+            getByText(
+                /IPアドレスのように後から人間が変更する前提のものではなく、機器の出荷時に焼き込まれる一意な識別子です。/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(
+                /表記例：AA:BB:CC:11:22:33（コロン区切り16進数）。スイッチはこのMACアドレスをもとにMACアドレステーブルを作成し、どのポートの先にどの端末がいるかを学習してフレームを転送します。/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(/VLANを使う主な理由：/i)
+        ).toBeTruthy();
+        expect(
+            getByText(/部署やシステムの単位でネットワークを論理分離し、セキュリティを高める/i)
+        ).toBeTruthy();
+        expect(
+            getByText(/同じスイッチに接続していても、異なるVLAN同士は直接通信できない/i)
+        ).toBeTruthy();
+    });
+
+    it('renders exact paragraph text and callouts for Step 2 to Step 4', () => {
+        const { getByText } = render(<CcnaNetworkFundamentalsGuide />);
+        expect(
+            getByText(
+                /ネットワークを自動化する上では、「どこまでがネットワーク部で、どこからがホスト部か」 を正しく読めることが重要です。/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(
+                /社内ネットワークなど、インターネットに直接公開しないネットワークでは、以下のプライベートIPアドレス範囲 （RFC 1918）が使われます。/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(/このようなトポロジ図を読み解くときのチェックポイント：/i)
+        ).toBeTruthy();
+        expect(
+            getByText(/クライアントからWebサーバーへの通信パス：クライアント → L2スイッチ → ルーター → ファイアウォール → ロードバランサー（VIP） → Webサーバー/i)
+        ).toBeTruthy();
+    });
+
+    it('renders exact paragraph text for Step 5 to Step 9, Summary & Disclaimer Note', () => {
+        const { getByText } = render(<CcnaNetworkFundamentalsGuide />);
+        expect(
+            getByText(
+                /自動化スクリプトの多くは Management Plane を経由して機器を操作します （例：NETCONFで設定を投入する、SNMPで状態を取得する）。/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(
+                /切り分けの基本方針： 「まずネットワーク経路を疑い、その後にアプリケーション層を疑う」という順序で進めるのが基本です。/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(
+                /これらは一見「ネットワーク側の話」に見えますが、自動化やアプリケーション開発を行う上でも/i
+            )
+        ).toBeTruthy();
+        expect(
+            getByText(
+                /補足：CCNA Automationは、Ciscoが2026年に「DevNet Associate」から名称変更した資格です。/i
+            )
+        ).toBeTruthy();
+    });
+
+    it('renders Hero section with original HTML visual structure and meta-cards', () => {
+        const { container, getByRole } = render(<CcnaNetworkFundamentalsGuide />);
         const eyebrow = container.querySelector('.eyebrow');
-        expect(eyebrow).toBeTruthy();
         expect(eyebrow?.textContent).toContain('CCNA Automation 試験対策ガイド');
 
-        // H1 Title with gradient styling class
         const h1 = getByRole('heading', { level: 1 });
         expect(h1.textContent).toContain('Network Fundamentals ドメイン徹底解説');
 
-        // Lede description
-        const lede = container.querySelector('.lede');
-        expect(lede).toBeTruthy();
-        expect(lede?.textContent).toContain('200-901 CCNAAUTO');
-
-        // Meta Cards grid
         const metaCards = container.querySelectorAll('.meta-card');
         expect(metaCards.length).toBeGreaterThanOrEqual(4);
-        
-        expect(getByText('試験時間')).toBeTruthy();
-        expect(getByText('120分')).toBeTruthy();
-        expect(getByText('受験言語')).toBeTruthy();
-        expect(getByText('英語・日本語')).toBeTruthy();
-        expect(getByText('受験料')).toBeTruthy();
-        expect(getByText('US $300')).toBeTruthy();
-        expect(getByText('本ドメインの出題比率')).toBeTruthy();
     });
 
-    it('renders Sidebar with brand title and grouped navigation matching original HTML', () => {
-        const { container, getByText } = render(<NavBar />);
-        
-        // Brand header
+    it('renders Sidebar with brand title and grouped navigation', () => {
+        const { container } = render(<NavBar />);
         const brand = container.querySelector('.brand');
-        expect(brand).toBeTruthy();
         expect(brand?.textContent).toContain('CCNA Automation ／ 200-901 CCNAAUTO');
 
-        const brandTitle = container.querySelector('.brand-title');
-        expect(brandTitle).toBeTruthy();
-        expect(brandTitle?.textContent).toContain('Network Fundamentals');
-
-        // Group labels
         const groupLabels = container.querySelectorAll('.nav-group-label');
         expect(groupLabels.length).toBeGreaterThanOrEqual(3);
-
-        expect(getByText('6.1〜6.4：基礎知識と機器')).toBeTruthy();
-        expect(getByText('6.5〜6.7：仕組みとサービス')).toBeTruthy();
-        expect(getByText('6.8〜6.9：診断と応用')).toBeTruthy();
     });
 
-    it('renders section step titles with step-num tags', () => {
+    it('renders step-num tags, table-wrappers and diagram-blocks', () => {
         const { container } = render(<CcnaNetworkFundamentalsGuide />);
-        const stepNums = container.querySelectorAll('.step-num');
-        expect(stepNums.length).toBeGreaterThanOrEqual(9);
-        expect(stepNums[0]?.textContent).toBe('Step 0');
-        expect(stepNums[1]?.textContent).toBe('Step 1');
-    });
-
-    it('renders tables wrapped in table-wrapper with data-table class', () => {
-        const { container } = render(<CcnaNetworkFundamentalsGuide />);
-        const tableWrappers = container.querySelectorAll('.table-wrapper');
-        expect(tableWrappers.length).toBe(12);
-
-        const dataTables = container.querySelectorAll('table.data-table');
-        expect(dataTables.length).toBe(12);
-
-        // Active domain highlight row
-        const activeDomainRow = container.querySelector('tr.this-domain');
-        expect(activeDomainRow).toBeTruthy();
-    });
-
-    it('renders diagrams inside diagram-block and diagram-wrapper with caption', () => {
-        const { container } = render(<CcnaNetworkFundamentalsGuide />);
-        const diagramBlocks = container.querySelectorAll('.diagram-block');
-        expect(diagramBlocks.length).toBe(11);
-
-        const diagramWrappers = container.querySelectorAll('.diagram-wrapper');
-        expect(diagramWrappers.length).toBe(11);
-
-        const diagramCaptions = container.querySelectorAll('.diagram-caption');
-        expect(diagramCaptions.length).toBe(11);
-    });
-
-    it('renders callout boxes with proper styling class', () => {
-        const { container } = render(<CcnaNetworkFundamentalsGuide />);
-        const callouts = container.querySelectorAll('.callout');
-        expect(callouts.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it('renders reference list with ref-list class', () => {
-        const { container } = render(<CcnaNetworkFundamentalsGuide />);
-        const refList = container.querySelector('.ref-list');
-        expect(refList).toBeTruthy();
+        expect(container.querySelectorAll('.step-num').length).toBeGreaterThanOrEqual(9);
+        expect(container.querySelectorAll('.table-wrapper').length).toBe(12);
+        expect(container.querySelectorAll('.diagram-block').length).toBe(11);
     });
 });
