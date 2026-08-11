@@ -514,4 +514,83 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         // テキストは段落内に含まれる（code要素で分割されない文）
         expect(screen.getByText(/試験ガイドが例示するSQLインジェクションとXSSは、現行の2025年版では主に「A05/)).toBeInTheDocument();
     });
+
+    // ============================================================
+    // デザイン忠実性テスト（原本HTMLのCSS完全移植確認）
+    // ============================================================
+    it('ヒーローバッジ行に.badge-rowと.badgeクラスを持つDOM要素が存在する', () => {
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
+        // .badge-rowが存在する
+        expect(container.querySelector('.badge-row')).toBeInTheDocument();
+        // .badgeが4個以上存在する
+        expect(container.querySelectorAll('.badge').length).toBeGreaterThanOrEqual(4);
+    });
+
+    it('コードブロックに構文ハイライト用のcode-comment / code-keywordスパンが存在する', () => {
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
+        // Dockerfileコードブロックのコメント行がcode-commentクラスを持つspanでラップされている
+        expect(container.querySelector('.code-comment')).toBeInTheDocument();
+        // Dockerfile命令（FROM, WORKDIR等）またはPythonキーワードがcode-keywordクラスを持つspanでラップされている
+        expect(container.querySelector('.code-keyword')).toBeInTheDocument();
+    });
+
+    it('page.cssにh1グラデーション（background-clip: text）が定義されている', () => {
+        const cssSource = readFileSync(
+            join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
+            'utf8',
+        );
+        // 原本: background: linear-gradient(90deg, var(--accent), var(--accent-2))
+        expect(cssSource).toMatch(/linear-gradient.*90deg/);
+        // 原本: -webkit-background-clip: text; background-clip: text
+        expect(cssSource).toMatch(/background-clip:\s*text/);
+        expect(cssSource).toMatch(/-webkit-text-fill-color:\s*transparent/);
+    });
+
+    it('page.cssのh2がborder-left（左アクセントバー）を持つ', () => {
+        const cssSource = readFileSync(
+            join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
+            'utf8',
+        );
+        // 原本: border-left: 4px solid var(--accent)
+        expect(cssSource).toMatch(/h2[^}]*border-left:\s*4px solid/s);
+    });
+
+    it('page.cssのthが白文字（color: #fff）と半透明アクセント背景を持つ', () => {
+        const cssSource = readFileSync(
+            join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
+            'utf8',
+        );
+        // 原本: th { color: #fff; }
+        expect(cssSource).toMatch(/th[^}]*color:\s*#fff/s);
+        // 原本: thead tr { background: rgba(124, 158, 255, 0.14); }
+        expect(cssSource).toMatch(/thead[^}]*background:\s*rgba\(124,\s*158,\s*255/s);
+    });
+
+    it('page.cssのcalloutにborder-leftアクセントバーが定義されている', () => {
+        const cssSource = readFileSync(
+            join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
+            'utf8',
+        );
+        // 原本: .callout { border-left: 4px solid var(--accent) }
+        expect(cssSource).toMatch(/\.callout[^}]*border-left:\s*4px solid/s);
+    });
+
+    it('page.cssのbadgeにborder-radius:999pxのピル型スタイルが定義されている', () => {
+        const cssSource = readFileSync(
+            join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
+            'utf8',
+        );
+        // 原本: .badge { border-radius: 999px; }
+        expect(cssSource).toMatch(/\.badge[^}]*border-radius:\s*999px/s);
+    });
+
+    it('page.cssにインラインcodeのスタイル（background: rgba(124,158,255,0.12)）が定義されている', () => {
+        const cssSource = readFileSync(
+            join(process.cwd(), 'app/cisco/ccna/automation-application-deployment-security/page.css'),
+            'utf8',
+        );
+        // 原本: :not(pre) > code { background: rgba(124, 158, 255, 0.12); color: #c9d8ff; }
+        expect(cssSource).toMatch(/:not\(pre\).*code/s);
+        expect(cssSource).toMatch(/#c9d8ff/);
+    });
 });
