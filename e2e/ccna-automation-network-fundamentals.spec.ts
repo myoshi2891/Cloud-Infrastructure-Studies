@@ -16,6 +16,12 @@ const sectionIds = [
     'references',
 ] as const;
 
+/**
+ * 指定したセクションを、ビューポート高の20〜30%にある検出帯の中央へ移動します。
+ *
+ * @param sectionId 移動対象のセクションID
+ * @remarks `window.scrollTo` によりページのスクロール位置を変更します。
+ */
 async function positionSectionInDetectionBand(
     page: import('@playwright/test').Page,
     sectionId: (typeof sectionIds)[number],
