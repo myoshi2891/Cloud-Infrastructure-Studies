@@ -1,0 +1,377 @@
+.ccna-automation-programmability-page {
+    --bg: #07111e;
+    --bg-panel: #0c1830;
+    --bg-card: #0f1e3d;
+    --bg-card-alt: #0b1730;
+    --accent: #7c9eff;
+    --accent-soft: rgba(124, 158, 255, 0.12);
+    --accent-soft-2: rgba(124, 158, 255, 0.22);
+    --border: rgba(124, 158, 255, 0.18);
+    --text: #e3e9f7;
+    --text-dim: #93a4c3;
+    --text-dimmer: #5f7093;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ccna-automation-programmability-page * {
+    box-sizing: border-box;
+}
+
+.ccna-automation-programmability-page .layout {
+    display: block;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.ccna-automation-programmability-page .sidebar {
+    position: fixed;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    left: 0;
+    width: 280px;
+    bottom: 0;
+    overflow-y: auto;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.25rem 3rem;
+    z-index: 40;
+}
+
+.ccna-automation-programmability-page .sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ccna-automation-programmability-page .sidebar::-webkit-scrollbar-thumb {
+    background: var(--accent-soft-2);
+    border-radius: 4px;
+}
+
+.ccna-automation-programmability-page .sidebar .brand {
+    display: block;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+}
+
+.ccna-automation-programmability-page .sidebar .brand-sub {
+    display: block;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.75rem;
+}
+
+.ccna-automation-programmability-page .sidebar .nav-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    margin-bottom: 1.25rem;
+}
+
+.ccna-automation-programmability-page .sidebar nav.toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.ccna-automation-programmability-page .sidebar nav.toc a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.88rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ccna-automation-programmability-page .sidebar nav.toc a:hover {
+    color: var(--text);
+    background: var(--accent-soft);
+}
+
+.ccna-automation-programmability-page .sidebar nav.toc a.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-left: 2px solid var(--accent);
+    font-weight: 500;
+}
+
+/* ---------- Main Content ---------- */
+.ccna-automation-programmability-page .content {
+    margin-left: 280px;
+    padding: 3.5rem 4rem 8rem;
+    width: calc(100% - 280px);
+    max-width: none;
+}
+
+.ccna-automation-programmability-page .hero {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.ccna-automation-programmability-page .hero .eyebrow {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+}
+
+.ccna-automation-programmability-page .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1.35;
+    margin: 0 0 0.75rem;
+    background: linear-gradient(120deg, var(--text) 40%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ccna-automation-programmability-page .hero p.lede {
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    max-width: 70ch;
+}
+
+.ccna-automation-programmability-page section {
+    margin-bottom: 4rem;
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 24px);
+}
+
+.ccna-automation-programmability-page h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+}
+
+.ccna-automation-programmability-page h2 .num {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.ccna-automation-programmability-page h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 2rem 0 0.9rem;
+}
+
+.ccna-automation-programmability-page p {
+    margin: 0 0 1.1rem;
+    color: var(--text);
+}
+
+.ccna-automation-programmability-page ul,
+.ccna-automation-programmability-page ol {
+    margin: 0 0 1.1rem;
+    padding-left: 1.4rem;
+    color: var(--text);
+}
+
+.ccna-automation-programmability-page li {
+    margin-bottom: 0.45rem;
+}
+
+.ccna-automation-programmability-page strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ---------- Callouts ---------- */
+.ccna-automation-programmability-page .callout {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0 1.75rem;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+}
+
+.ccna-automation-programmability-page .callout strong {
+    color: var(--accent);
+}
+
+/* ---------- Tables ---------- */
+.ccna-automation-programmability-page .table-wrap {
+    overflow-x: auto;
+    margin: 1.5rem 0 2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.ccna-automation-programmability-page table.dtable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.ccna-automation-programmability-page table.dtable th,
+.ccna-automation-programmability-page table.dtable td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+.ccna-automation-programmability-page table.dtable thead th {
+    background: var(--bg-card-alt);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.ccna-automation-programmability-page table.dtable tbody tr:nth-child(even) {
+    background: rgba(124, 158, 255, 0.03);
+}
+
+.ccna-automation-programmability-page table.dtable tbody tr:hover {
+    background: var(--accent-soft);
+}
+
+.ccna-automation-programmability-page table.dtable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ---------- Code Block ---------- */
+.ccna-automation-programmability-page .code-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin: 1.5rem 0;
+}
+
+.ccna-automation-programmability-page .code-line {
+    white-space: pre;
+}
+
+.ccna-automation-programmability-page code:not(.hljs) {
+    font-family: var(--mono);
+    background: var(--bg-card);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.88em;
+    color: var(--accent);
+}
+
+/* ---------- Mermaid ---------- */
+.ccna-automation-programmability-page .diagram-figure {
+    margin: 1.75rem 0 2.25rem;
+}
+
+.ccna-automation-programmability-page .mermaid-wrap {
+    width: 100%;
+    margin: 1.5rem auto 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem 1rem;
+}
+
+.ccna-automation-programmability-page figcaption {
+    text-align: center;
+    color: var(--text-dimmer);
+    font-size: 0.82rem;
+    margin-top: 0.6rem;
+    font-family: var(--mono);
+}
+
+/* ---------- Sources Footer ---------- */
+.ccna-automation-programmability-page footer.sources {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.ccna-automation-programmability-page footer.sources a {
+    color: var(--accent);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.ccna-automation-programmability-page footer.sources a:hover {
+    text-decoration: underline;
+}
+
+.ccna-automation-programmability-page footer.sources li {
+    margin-bottom: 0.9rem;
+}
+
+.ccna-automation-programmability-page footer.sources .src-note {
+    display: block;
+    color: var(--text-dimmer);
+    font-size: 0.85rem;
+    margin-top: 0.15rem;
+}
+
+.ccna-automation-programmability-page .disclaimer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dimmer);
+    font-size: 0.85rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .ccna-automation-programmability-page .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 1.25rem 1.75rem;
+    }
+
+    .ccna-automation-programmability-page .sidebar nav.toc {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    .ccna-automation-programmability-page .sidebar nav.toc a {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .ccna-automation-programmability-page .content {
+        margin-left: 0;
+        width: 100%;
+        padding: 2.5rem 1.25rem 4rem;
+    }
+
+    .ccna-automation-programmability-page .hero h1 {
+        font-size: 1.75rem;
+    }
+}
