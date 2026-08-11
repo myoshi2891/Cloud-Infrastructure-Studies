@@ -22,9 +22,9 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 ### 完了済みステップ
 
-- [x] **Step 1 (Red)**: `test(ccna): add failing tests for Network Fundamentals guide migration` (`b6df393`), `test(ccna): update unit tests to strictly assert visual CSS classes and HTML structural hierarchy` (`457c0a6`)
-- [x] **Step 2 (Green)**: `feat(ccna): implement Network Fundamentals guide page and components to pass tests` (`4fbda39`), `feat(ccna): fully restore original HTML design, styles, and structural elements for Network Fundamentals guide` (`2098561`)
-- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(ccna): integrate Network Fundamentals guide into routing, archive html, and update docs` (`9779950`), ビジュアルデザイン完全一致更新
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for Network Fundamentals guide migration` (`b6df393`), `test(ccna): update unit tests to strictly assert visual CSS classes and HTML structural hierarchy` (`457c0a6`), `test(ccna): add failing tests asserting 100% verbatim paragraph and text fidelity from source HTML` (`fd08a1b`)
+- [x] **Step 2 (Green)**: `feat(ccna): implement Network Fundamentals guide page and components to pass tests` (`4fbda39`), `feat(ccna): fully restore original HTML design, styles, and structural elements for Network Fundamentals guide` (`2098561`), `feat(ccna): restore 100% verbatim paragraph texts, list items, and fix header layout offset` (`18e7c80`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(ccna): integrate Network Fundamentals guide into routing, archive html, and update docs` (`9779950`), 全文章逐語的完全移植 & レイアウト位置計算完了
 - [x] **Step 4 (Archive & Sync)**: 元HTMLを `archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html` へ移動し `MIGRATION_PROGRESS.md` を同期
 
 ### 関連ファイル
