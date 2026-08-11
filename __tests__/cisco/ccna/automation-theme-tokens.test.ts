@@ -9,6 +9,7 @@ const pageStylePaths = [
     'app/cisco/ccna/automation-application-deployment-security/page.css',
     'app/cisco/ccna/automation-programmability/page.css',
     'app/cisco/ccna/automation-network-fundamentals/page.css',
+    'app/cisco/ccna/network-access-guide/page.css',
 ] as const;
 
 const expectedGlobalTokens = [

@@ -14,6 +14,12 @@ import { describe, expect, it, vi } from 'vitest';
 import CcnaNetworkFundamentalsGuide from '@/app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide';
 import NavBar from '@/app/cisco/ccna/automation-network-fundamentals/NavBar';
 import Page, { metadata } from '@/app/cisco/ccna/automation-network-fundamentals/page';
+import {
+    expectContentCssCoverage,
+    expectElementPlacementFidelity,
+    expectSupplementalFidelity,
+    expectTableFidelity,
+} from '../archive-fidelity';
 
 /** Replaces Mermaid rendering with an inspectable accessible element. */
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -101,6 +107,44 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
                 text: link.textContent?.trim(),
                 href: link.textContent?.trim(),
             })),
+        );
+    });
+
+    it('preserves every table cell, supplemental item, inline-code token, CSS class, and element placement', () => {
+        const htmlPath = path.resolve(
+            process.cwd(),
+            'archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html',
+        );
+        const sourceDocument = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
+        const { container } = render(<CcnaNetworkFundamentalsGuide />);
+        const css = fs.readFileSync(
+            path.resolve(
+                process.cwd(),
+                'app/cisco/ccna/automation-network-fundamentals/page.css',
+            ),
+            'utf8',
+        );
+        const inlineCode = (root: ParentNode) =>
+            Array.from(root.querySelectorAll('main code:not(pre code), code:not(pre code)'), (code) =>
+                code.textContent?.replace(/\s+/g, ' ').trim(),
+            );
+
+        expectTableFidelity(sourceDocument, container);
+        expectSupplementalFidelity(
+            sourceDocument,
+            container,
+            '.callout, .meta-card, .diagram-caption',
+        );
+        expect(inlineCode(container)).toEqual(inlineCode(sourceDocument));
+        expectContentCssCoverage(sourceDocument, container, css, {
+            prose: 'ccna-network-fundamentals-page',
+            'domain-highlight': 'this-domain',
+            mermaid: 'diagram-wrapper',
+        });
+        expectElementPlacementFidelity(
+            sourceDocument,
+            container,
+            '.table-wrapper > table, .diagram-block, .callout',
         );
     });
 });

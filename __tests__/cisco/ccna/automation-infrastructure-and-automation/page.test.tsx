@@ -1,10 +1,21 @@
 // @vitest-environment jsdom
+import fs from 'node:fs';
+import path from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { JSDOM } from 'jsdom';
 import { describe, expect, it, vi } from 'vitest';
 import Page from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/page';
 import CcnaInfraAutomationGuide from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/CcnaInfraAutomationGuide';
 import { DIAGRAMS } from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/constants';
 import NavBar from '../../../../app/cisco/ccna/automation-infrastructure-and-automation/NavBar';
+import {
+    expectCodeFidelity,
+    expectContentCssCoverage,
+    expectElementPlacementFidelity,
+    expectSupplementalFidelity,
+    expectSyntaxHighlightFidelity,
+    expectTableFidelity,
+} from '../archive-fidelity';
 
 /** Renders Mermaid source as an inspectable test element. */
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -17,6 +28,16 @@ vi.mock('@/components/MermaidDiagram', () => ({
 }));
 
 describe('CCNA Automation Infrastructure and Automation Page', () => {
+    const sourceDocument = new JSDOM(
+        fs.readFileSync(
+            path.resolve(
+                process.cwd(),
+                'archive/Cisco/html/ccna/Ccna-automation-infrastructure-and-automation.html',
+            ),
+            'utf8',
+        ),
+    ).window.document;
+
     it('associates the menu toggle with its labelled sidebar navigation', () => {
         render(<NavBar />);
         const toggle = screen.getByRole('button', { name: '目次を開く' });
@@ -138,5 +159,56 @@ describe('CCNA Automation Infrastructure and Automation Page', () => {
         });
 
         expect(screen.getByText(/免責事項：/i)).toBeInTheDocument();
+    });
+
+    it('preserves every table cell, supplemental item, code block, CSS class, and element placement', () => {
+        const { container } = render(<CcnaInfraAutomationGuide />);
+        const css = fs.readFileSync(
+            path.resolve(
+                process.cwd(),
+                'app/cisco/ccna/automation-infrastructure-and-automation/page.css',
+            ),
+            'utf8',
+        );
+
+        expectTableFidelity(sourceDocument, container);
+        expectSupplementalFidelity(
+            sourceDocument,
+            container,
+            '.callout, .chip, .weight-tag, .diagram-label, .code-label',
+        );
+        expectCodeFidelity(sourceDocument, container);
+        expectSyntaxHighlightFidelity(sourceDocument, container, {
+            'hl-kw': '.hljs-keyword, .hljs-literal',
+            'hl-str': '.hljs-string',
+            'hl-num': '.hljs-number',
+            'hl-fn': '.hljs-built_in, .hljs-name',
+            'hl-cm': '.hljs-comment',
+            'hl-add': '.hljs-addition',
+            'hl-del': '.hljs-deletion',
+        });
+        expectContentCssCoverage(sourceDocument, container, css, {
+            hljs: 'code-block',
+            'hljs-comment': 'hl-cm',
+            'hljs-keyword': 'hl-kw',
+            'hljs-literal': 'hl-kw',
+            'hljs-built_in': 'hl-fn',
+            'hljs-string': 'hl-str',
+            'hljs-number': 'hl-num',
+            'hljs-attr': 'hl-attr',
+            'hljs-name': 'hl-fn',
+            'hljs-tag': 'hl-fn',
+            'hljs-variable': 'hl-str',
+            'hljs-subst': 'hl-str',
+            'hljs-bullet': 'hl-meta',
+            'hljs-meta': 'hl-meta',
+            'hljs-addition': 'hl-add',
+            'hljs-deletion': 'hl-del',
+        });
+        expectElementPlacementFidelity(
+            sourceDocument,
+            container,
+            '.table-wrapper > table, .diagram-wrapper, .callout, .code-block, pre',
+        );
     });
 });

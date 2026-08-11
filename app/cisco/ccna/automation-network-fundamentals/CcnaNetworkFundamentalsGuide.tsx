@@ -6,7 +6,7 @@ import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
 /** Renders one labelled Mermaid diagram and its caption for a diagram identifier. */
-function Diagram({ id, label, caption }: { id: string; label: string; caption: string }) {
+function Diagram({ id, label, caption }: { id: string; label: string; caption?: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -14,7 +14,7 @@ function Diagram({ id, label, caption }: { id: string; label: string; caption: s
             <div className="diagram-wrapper">
                 <MermaidDiagram chart={chart} ariaLabel={label} preserveNaturalScale />
             </div>
-            <div className="diagram-caption">{caption}</div>
+            {caption ? <p className="diagram-caption">{caption}</p> : null}
         </div>
     );
 }
@@ -143,7 +143,6 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <Diagram
                         id="diagram-0"
                         label="Network Fundamentals ドメインの全体像フローチャート"
-                        caption="図 0: Network Fundamentalsドメインの全体構造"
                     />
 
                     <div className="table-wrapper">
@@ -261,14 +260,12 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <Diagram
                         id="diagram-1"
                         label="L2スイッチとVLANによるネットワーク分割の図解"
-                        caption="図 1: L2スイッチとVLANによるネットワーク分割"
+                        caption="同じスイッチに接続していても、異なるVLAN同士は直接通信できない"
                     />
 
-                    <div className="callout">
-                        <strong>同じスイッチに接続していても、異なるVLAN同士は直接通信できない</strong>
-                        <br />
+                    <p>
                         上図のように、同じスイッチに接続していても、VLAN 10とVLAN 20の端末同士は直接通信できません。両者を通信させたい場合は、後述するルーター（またはL3スイッチ）が間に入る必要があります。
-                    </div>
+                    </p>
                 </section>
 
                 {/* STEP 2 */}
@@ -300,31 +297,31 @@ export default function CcnaNetworkFundamentalsGuide() {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><code>/24</code></td>
+                                    <td>/24</td>
                                     <td>255.255.255.0</td>
                                     <td>24ビット</td>
                                     <td>254台</td>
                                 </tr>
                                 <tr>
-                                    <td><code>/25</code></td>
+                                    <td>/25</td>
                                     <td>255.255.255.128</td>
                                     <td>25ビット</td>
                                     <td>126台</td>
                                 </tr>
                                 <tr>
-                                    <td><code>/26</code></td>
+                                    <td>/26</td>
                                     <td>255.255.255.192</td>
                                     <td>26ビット</td>
                                     <td>62台</td>
                                 </tr>
                                 <tr>
-                                    <td><code>/16</code></td>
+                                    <td>/16</td>
                                     <td>255.255.0.0</td>
                                     <td>16ビット</td>
                                     <td>約65,534台</td>
                                 </tr>
                                 <tr>
-                                    <td><code>/8</code></td>
+                                    <td>/8</td>
                                     <td>255.0.0.0</td>
                                     <td>8ビット</td>
                                     <td>約1,677万台</td>
@@ -349,18 +346,18 @@ export default function CcnaNetworkFundamentalsGuide() {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><code>10.0.0.0 〜 10.255.255.255</code></td>
-                                    <td><code>10.0.0.0/8</code></td>
+                                    <td>10.0.0.0 〜 10.255.255.255</td>
+                                    <td>10.0.0.0/8</td>
                                     <td>大規模企業ネットワーク</td>
                                 </tr>
                                 <tr>
-                                    <td><code>172.16.0.0 〜 172.31.255.255</code></td>
-                                    <td><code>172.16.0.0/12</code></td>
+                                    <td>172.16.0.0 〜 172.31.255.255</td>
+                                    <td>172.16.0.0/12</td>
                                     <td>中規模ネットワーク</td>
                                 </tr>
                                 <tr>
-                                    <td><code>192.168.0.0 〜 192.168.255.255</code></td>
-                                    <td><code>192.168.0.0/16</code></td>
+                                    <td>192.168.0.0 〜 192.168.255.255</td>
+                                    <td>192.168.0.0/16</td>
                                     <td>家庭用・小規模オフィス</td>
                                 </tr>
                             </tbody>
@@ -375,7 +372,6 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <Diagram
                         id="diagram-2"
                         label="デフォルトゲートウェイとルーティングの流れ"
-                        caption="図 2: デフォルトゲートウェイとルーティングの流れ"
                     />
 
                     <p>
@@ -487,7 +483,6 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <Diagram
                         id="diagram-3"
                         label="各層のネットワーク機器とロードバランサー配置図"
-                        caption="図 3: 各層のネットワーク機器とロードバランサーの配置"
                     />
 
                     <p>このようなトポロジ図を読み解くときのチェックポイント：</p>
@@ -517,12 +512,6 @@ export default function CcnaNetworkFundamentalsGuide() {
                         ネットワーク機器（ルーターやスイッチ）の内部動作は、役割ごとに3つの「プレーン」に分けて理解すると 自動化の対象範囲が明確になります。
                     </p>
 
-                    <Diagram
-                        id="diagram-4"
-                        label="Management, Control, Data Planeの3層概念図"
-                        caption="図 4: ネットワーク機器における3つのPlane"
-                    />
-
                     <div className="table-wrapper">
                         <table className="data-table">
                             <thead>
@@ -551,6 +540,11 @@ export default function CcnaNetworkFundamentalsGuide() {
                             </tbody>
                         </table>
                     </div>
+
+                    <Diagram
+                        id="diagram-4"
+                        label="Management, Control, Data Planeの3層概念図"
+                    />
 
                     <p>
                         自動化スクリプトの多くは Management Plane を経由して機器を操作します （例：NETCONFで設定を投入する、SNMPで状態を取得する）。一方で、実際にユーザーの通信を運ぶのは Data Plane であり、両者は別物であることを区別して理解しておくことが重要です。
@@ -619,21 +613,18 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <Diagram
                         id="diagram-5"
                         label="DHCPシーケンス（Discover, Offer, Request, ACK）"
-                        caption="図 5: DHCPの動作シーケンス（DORAプロトコル）"
                     />
 
                     <h3 className="sub-title">DNS：名前解決の流れ</h3>
                     <Diagram
                         id="diagram-6"
                         label="DNS名前解決シーケンス"
-                        caption="図 6: DNS名前解決の流れ"
                     />
 
                     <h3 className="sub-title">NAT：アドレス変換の考え方</h3>
                     <Diagram
                         id="diagram-7"
                         label="NAT（アドレス変換）の動作概念図"
-                        caption="図 7: NAT（アドレス変換）の考え方"
                     />
                     <p>
                         社内のプライベートIPアドレスは、インターネットへ出る際にルーター（またはファイアウォール）で グローバルIPアドレスへ変換されます。この変換テーブルの不整合や枯渇が、後述する「NAT Problem」の 原因になります。
@@ -643,7 +634,6 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <Diagram
                         id="diagram-8"
                         label="SNMPのポーリングとTrap通知フロー"
-                        caption="図 8: SNMPのポーリングとTrap通知"
                     />
                     <p>
                         SNMPでは、監視サーバー（NMS）からの問い合わせ（ポーリング）だけでなく、機器側で異常を検知した際に自発的に通知を送る「Trap（トラップ）」機能が重要です。
@@ -653,7 +643,6 @@ export default function CcnaNetworkFundamentalsGuide() {
                     <Diagram
                         id="diagram-9"
                         label="NTPのStratum（階層構造）の図解"
-                        caption="図 9: NTPのStratum（階層構造）"
                     />
                     <p>
                         NTPでは、時刻源からの距離（階層）を「Stratum」という数値で表します。ログの時刻がずれていると 障害発生時刻の突き合わせができなくなるため、自動化・運用の現場でも時刻同期は地味に重要な要素です。
@@ -754,8 +743,12 @@ export default function CcnaNetworkFundamentalsGuide() {
                         自動化スクリプトやAPIクライアントから接続できないとき、原因を「NAT不良」「ポート遮断」「プロキシ」 「VPN」の観点で切り分ける考え方を整理します。
                     </p>
 
-                    <h3 className="sub-title">症状から原因を推測するための早見表</h3>
+                    <Diagram
+                        id="diagram-10"
+                        label="アプリケーション接続トラブル診断フローチャート"
+                    />
 
+                    <h3 className="sub-title">症状から原因を推測するための早見表</h3>
                     <div className="table-wrapper">
                         <table className="data-table">
                             <thead>
@@ -790,15 +783,10 @@ export default function CcnaNetworkFundamentalsGuide() {
                         </table>
                     </div>
 
-                    <Diagram
-                        id="diagram-10"
-                        label="アプリケーション接続トラブル診断フローチャート"
-                        caption="図 10: アプリケーション接続トラブル診断フロー"
-                    />
-
-                    <p>
-                        切り分けの基本方針： 「まずネットワーク経路を疑い、その後にアプリケーション層を疑う」という順序で進めるのが基本です。 自動化エンジニアであっても、コードを直す前にネットワークパスを確認する習慣が重要になります。
-                    </p>
+                    <div className="callout">
+                        <strong>切り分けの基本方針：</strong>
+                        「まずネットワーク経路を疑い、その後にアプリケーション層を疑う」という順序で進めるのが基本です。 自動化エンジニアであっても、コードを直す前にネットワークパスを確認する習慣が重要になります。
+                    </div>
                 </section>
 
                 {/* STEP 9 */}

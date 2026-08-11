@@ -55,7 +55,7 @@ test.describe('CCNA Automation Network Fundamentals 完全自動視覚 & 動的�
     test('全セクションスクロール時、コンソールエラーや警告が発生しないこと', async ({ page }) => {
         const errors: string[] = [];
         page.on('console', (msg) => {
-            if (msg.type() === 'error') {
+            if (msg.type() === 'error' || msg.type() === 'warning') {
                 errors.push(msg.text());
             }
         });

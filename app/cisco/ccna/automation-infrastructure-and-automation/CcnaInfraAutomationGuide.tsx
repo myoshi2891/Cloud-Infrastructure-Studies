@@ -785,7 +785,7 @@ export default function CcnaInfraAutomationGuide() {
                             <div className="code-label">setup.sh</div>
                             <pre className="code-block">
                                 <div className="code-line"><span className="hl-meta">#!/bin/bash</span></div>
-                                <div className="code-line"><span className="hl-kw">set</span> -e</div>
+                                <div className="code-line"><span className="hl-fn">set</span> -e</div>
                                 <div className="code-line"></div>
                                 <div className="code-line">APP_DIR=<span className="hl-str">&quot;/opt/myapp&quot;</span></div>
                                 <div className="code-line">LOG_FILE=<span className="hl-str">&quot;/var/log/myapp_setup.log&quot;</span></div>

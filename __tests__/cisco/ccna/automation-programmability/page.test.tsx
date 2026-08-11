@@ -14,6 +14,13 @@ import { describe, expect, it, vi } from 'vitest';
 import CcnaAutomationProgrammabilityGuide from '@/app/cisco/ccna/automation-programmability/CcnaAutomationProgrammabilityGuide';
 import NavBar from '@/app/cisco/ccna/automation-programmability/NavBar';
 import Page from '@/app/cisco/ccna/automation-programmability/page';
+import {
+    expectCodeFidelity,
+    expectContentCssCoverage,
+    expectElementPlacementFidelity,
+    expectSupplementalFidelity,
+    expectTableFidelity,
+} from '../archive-fidelity';
 
 // Mock MermaidDiagram component to render fallback/testable container with aria-label
 vi.mock('@/components/MermaidDiagram', () => ({
@@ -92,5 +99,43 @@ describe('CCNA Automation and Programmability Guide - Automated 100% Text & Stru
         expect(codeBlock?.querySelector('.code-string')).toBeTruthy();
         expect(codeBlock?.querySelector('.code-number')).toBeTruthy();
         expect(codeBlock?.querySelector('.code-literal')).toBeTruthy();
+    });
+
+    it('preserves every code block, table cell, supplemental item, CSS class, and element placement', () => {
+        const htmlPath = path.resolve(
+            process.cwd(),
+            'archive/Cisco/html/ccna/Ccna-automation-programmability.html',
+        );
+        const sourceDocument = new JSDOM(fs.readFileSync(htmlPath, 'utf8')).window.document;
+        const { container } = render(<CcnaAutomationProgrammabilityGuide />);
+        const css = fs.readFileSync(
+            path.resolve(process.cwd(), 'app/cisco/ccna/automation-programmability/page.css'),
+            'utf8',
+        );
+        const sourceJson = sourceDocument.querySelector('pre code.language-json')?.textContent ?? '';
+        const highlightedTokens = (className: string) =>
+            Array.from(container.querySelectorAll(`.${className}`), (token) => token.textContent ?? '');
+
+        expectTableFidelity(sourceDocument, container);
+        expectSupplementalFidelity(sourceDocument, container, '.callout, figcaption');
+        expectCodeFidelity(sourceDocument, container);
+        expect(highlightedTokens('code-attr')).toEqual(
+            Array.from(sourceJson.matchAll(/"[^"]+"(?=\s*:)/g), (match) => match[0]),
+        );
+        expect(highlightedTokens('code-string')).toEqual(
+            Array.from(sourceJson.matchAll(/:\s*("[^"]+")/g), (match) => match[1]),
+        );
+        expect(highlightedTokens('code-number')).toEqual(
+            Array.from(sourceJson.matchAll(/:\s*(\d+)/g), (match) => match[1]),
+        );
+        expect(highlightedTokens('code-literal')).toEqual(
+            Array.from(sourceJson.matchAll(/:\s*(true|false|null)/g), (match) => match[1]),
+        );
+        expectContentCssCoverage(sourceDocument, container, css);
+        expectElementPlacementFidelity(
+            sourceDocument,
+            container,
+            '.table-wrap > table, figure, .callout, .code-block, pre',
+        );
     });
 });
