@@ -83,14 +83,30 @@ D" };
     expect(diagrams).toEqual({ "diag-1": "ABCD" });
   });
 
-  test("未対応の JavaScript エスケープを拒否する", () => {
+  test("コードポイント形式の Unicode エスケープを復元する", () => {
+    const html = String.raw`<script>
+const DIAGRAMS = { "diag-1": "face: 😀" };
+</script>`;
+
+    const { diagrams } = extractDiagramsDefinition(html);
+
+    expect(diagrams).toEqual({ "diag-1": "face: 😀" });
+  });
+
+  test.each([String.raw`\u{}`, String.raw`\u{xyz}`, String.raw`\u{110000}`])(
+    "不正なコードポイント形式の Unicode エスケープを拒否する: %s",
+    (escape) => {
+      const html = `<script>const DIAGRAMS = { "diag-1": "${escape}" };</script>`;
+      expect(() => extractDiagramsDefinition(html)).toThrow();
+    },
+  );
+
+  test("未対応の JavaScript identity escape はエスケープ対象文字として復元する", () => {
     const html = String.raw`<script>
 const DIAGRAMS = { "diag-1": "flowchart\q" };
 </script>`;
 
-    expect(() => extractDiagramsDefinition(html)).toThrow(
-      "未対応のエスケープです: \\q",
-    );
+    expect(extractDiagramsDefinition(html).diagrams).toEqual({ "diag-1": "flowchartq" });
   });
 
   test.each([

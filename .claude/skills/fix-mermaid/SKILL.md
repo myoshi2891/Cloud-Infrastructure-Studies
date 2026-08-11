@@ -229,6 +229,8 @@ mermaid.initialize({
     display: flex;
     justify-content: safe center; /* 親幅を超える場合は flex-start（左詰め）として扱い左見切れを防ぐ */
     overflow-x: auto;
+    width: 100%;
+    margin: 0 auto;
 }
 .mermaid {
     display: flex;
@@ -271,6 +273,7 @@ React (Next.js App Router) 移行に際して共通の `MermaidDiagram` コン�
 .mermaid {
   display: block;
   width: 100%;
+  margin: 0 auto;
 }
 .mermaid > div {
   width: 100%;
@@ -335,7 +338,7 @@ function Diagram({ id }: { id: DiagramId }) {
 }
 ```
 
-自然倍率を例外として使う場合、React の `MermaidDiagram` と各ページの `Diagram` だけで `width === viewBox幅` かつ `maxHeight === 'none'` かつ `maxWidth === 'none'` になる契約を明示し、自動テストする。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` と既定動作を維持する。既定動作のテストも残し、他ページへの波及を防ぐ。
+自然倍率を使う場合も、React の `MermaidDiagram` と `.mermaid-wrap` は `width:100%` と中央寄せを維持し、SVG は `width === viewBox幅`、`max-width:100%`、`height:auto` とする。React 側で `maxWidth` をインライン上書きせず、自動テストで共通契約を固定する。静的 HTML の `apply_render_pipeline.mjs` は冒頭の鉄則どおり `maxWidth = '100%'` と既定動作を維持する。
 
 #### ⚠️ スクロール時の図解縮小・チカチカバグの防止（React.memo メモ化）
 
@@ -344,7 +347,7 @@ function Diagram({ id }: { id: DiagramId }) {
 
 **【対策】**:
 1. `MermaidDiagram` および各ガイドページの `Diagram` コンポーネントを必ず `React.memo` でラップする。
-2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` で `targetWidth = viewBox幅` および `svgEl.style.maxWidth = 'none'` を設定し、コンテナ幅の変化に追従した自動縮小を防止する。小さい図でも600pxなどの最小幅へ拡大せず、`width === viewBox幅` を正準仕様とする。
+2. `preserveNaturalScale=true` が指定されている場合、`applySvgFixups` は `targetWidth = viewBox幅` を設定する。`max-width:100%` と `height:auto` は共通 CSS に委ね、小さい図でも600pxなどの最小幅へ拡大しない。
 
 ```tsx
 const Diagram = memo(function Diagram({ id, label }: { id: string; label: string }) {
@@ -431,7 +434,6 @@ const applySvgFixups = (
 
     const viewBox = svgEl.getAttribute('viewBox');
     if (!viewBox) {
-        svgEl.style.maxWidth = '100%';
         return;
     }
     const parts = viewBox.split(/\s+/).map(Number);
@@ -450,8 +452,6 @@ const applySvgFixups = (
         targetWidth = Math.min(650, Math.max(Math.round(w * 1.35), 480));
     }
     svgEl.style.width = `${targetWidth}px`;
-    // preserveNaturalScale=true のときは max-width:none でスクロール時・コンテナ幅変更時の縮小を防止
-    svgEl.style.maxWidth = preserveNaturalScale ? 'none' : '100%';
     svgEl.style.maxHeight = preserveNaturalScale ? 'none' : h > 550 ? '580px' : 'none';
     svgEl.setAttribute('viewBox', `${x} ${y} ${w} ${h + extraHeight}`);
 };
@@ -523,7 +523,7 @@ const applySvgFixups = (
 1. `*.module.css` 変更時は `.agents/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、検証用 dev サーバーを完全再起動する。
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 2. `e2e/` 配下に Playwright テストを置き、設定済み `baseURL` と Chromium project を使って対象ページを検証する。

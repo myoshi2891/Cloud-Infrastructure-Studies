@@ -127,6 +127,18 @@ function decodeEscape(source, start) {
     if (char === '\r') {
         return { value: '', next: source[start + 1] === '\n' ? start + 2 : start + 1 };
     }
+    if (char === 'u' && source[start + 1] === '{') {
+        const closingBrace = source.indexOf('}', start + 2);
+        const digits = closingBrace === -1 ? '' : source.slice(start + 2, closingBrace);
+        if (!/^[0-9a-fA-F]+$/.test(digits)) {
+            throw new Error('不正な \\u{...} エスケープです。');
+        }
+        const codePoint = Number.parseInt(digits, 16);
+        if (codePoint > 0x10ffff) {
+            throw new Error('Unicode コードポイントが範囲外です。');
+        }
+        return { value: String.fromCodePoint(codePoint), next: closingBrace + 1 };
+    }
     const escapeLength = char === 'u' ? 4 : char === 'x' ? 2 : 0;
     if (escapeLength > 0) {
         const digits = source.slice(start + 1, start + 1 + escapeLength);
@@ -138,7 +150,7 @@ function decodeEscape(source, start) {
             next: start + 1 + escapeLength,
         };
     }
-    throw new Error(`未対応のエスケープです: \\${char}`);
+    return { value: char, next: start + 1 };
 }
 
 function readString(source, start, allowedQuotes) {

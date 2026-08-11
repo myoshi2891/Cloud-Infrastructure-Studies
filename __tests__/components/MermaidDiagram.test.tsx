@@ -113,7 +113,7 @@ describe('MermaidDiagram', () => {
             applySvgFixups(svg, 'flowchart TD\nA-->B');
 
             // Assert: 共通の既定値では小さい図を拡大し、過度な縦長表示を抑える
-            expect(svg.style.maxWidth).toBe('100%');
+            expect(svg.style.maxWidth).toBe('');
             expect(svg.style.width).toBe('480px');
             expect(svg.style.maxHeight).toBe('580px');
             // flowchart は viewBox 高さを +15 拡張する
@@ -127,8 +127,8 @@ describe('MermaidDiagram', () => {
 
             // preserveNaturalScale=true: viewBox 由来の自然幅 250px をそのまま維持し 1rem 実寸で表示
             expect(svg.style.width).toBe('250px');
-            // preserveNaturalScale=true: コンテナ幅で縮小させないよう max-width:none を設定
-            expect(svg.style.maxWidth).toBe('none');
+            // max-width はインライン上書きせず共通 CSS の 100% 契約に委ねる
+            expect(svg.style.maxWidth).toBe('');
             expect(svg.style.maxHeight).toBe('none');
         });
 
@@ -139,12 +139,11 @@ describe('MermaidDiagram', () => {
 
             // viewBox 幅 800 > 600 のため、そのまま 800px
             expect(svg.style.width).toBe('800px');
-            // preserveNaturalScale=true: max-width:none でスクロール時縮小を防止
-            expect(svg.style.maxWidth).toBe('none');
+            expect(svg.style.maxWidth).toBe('');
             expect(svg.style.maxHeight).toBe('none');
         });
 
-        it('viewBox が無い場合は max-width:100% のフォールバックを維持すること', () => {
+        it('viewBox が無い場合も max-width のインライン上書きを行わないこと', () => {
             // Arrange
             const svg = makeSvg();
 
@@ -152,7 +151,7 @@ describe('MermaidDiagram', () => {
             applySvgFixups(svg, 'flowchart TD\nA-->B');
 
             // Assert
-            expect(svg.style.maxWidth).toBe('100%');
+            expect(svg.style.maxWidth).toBe('');
         });
     });
 
