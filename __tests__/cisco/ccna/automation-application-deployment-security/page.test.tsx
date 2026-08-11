@@ -187,13 +187,13 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         // 原本の説明文
         expect(screen.getByText(/エッジコンピューティングとは、データを中央のクラウドやデータセンターまで送らず、/)).toBeInTheDocument();
         expect(screen.getByText(/工場のセンサー、店舗のPOSレジ、IoTデバイスなどが典型例/)).toBeInTheDocument();
-        // 表のヘッダ: 利点 / 説明 (3列目「具体例」は原本にない)
+        // 表のヘッダ: 利点 (3列目「具体例」は原本にない)
         expect(screen.getByRole('columnheader', { name: '利点' })).toBeInTheDocument();
-        // 原本の行テキスト
+        // 原本の行テキスト（早見表にも「オフライン耐性」が含まれるのでgetAllByRoleで対応）
         expect(screen.getByRole('cell', { name: '低遅延（レイテンシ削減）' })).toBeInTheDocument();
-        expect(screen.getByRole('cell', { name: /帯域幅の節約/ })).toBeInTheDocument();
-        expect(screen.getByRole('cell', { name: /オフライン耐性/ })).toBeInTheDocument();
-        expect(screen.getByRole('cell', { name: /データローカリティ／プライバシー/ })).toBeInTheDocument();
+        expect(screen.getByRole('cell', { name: '帯域幅の節約' })).toBeInTheDocument();
+        expect(screen.getAllByRole('cell', { name: /オフライン耐性/ }).length).toBeGreaterThan(0);
+        expect(screen.getByRole('cell', { name: 'データローカリティ／プライバシー' })).toBeInTheDocument();
     });
 
     it('第2章4.2: 原本HTMLの表列（管理主体/主な特徴/典型的な用途）を描画する', () => {
@@ -267,9 +267,10 @@ describe('CcnaAppDeploymentSecurityPage', () => {
     // ============================================================
     it('第5章: 原本の説明文・コード例・assertRaises言及を描画する', () => {
         render(<CcnaAppDeploymentSecurityPage />);
-        // 原本の冒頭説明文
+        // 原本の冒頭説明文（前半だけで検索：後半はcodeタグで分割される）
         expect(screen.getByText(/ユニットテストとは、プログラムの中の「最小単位（関数やメソッド）」が期待どおりに動くかを自動で検証するテストです/)).toBeInTheDocument();
-        expect(screen.getByText(/Pythonでは標準ライブラリのunittestモジュールがよく使われます/)).toBeInTheDocument();
+        // unitestはcodeタグに分割されるので別にチェック
+        expect(screen.getByText(/モジュールがよく使われます/)).toBeInTheDocument();
         // 原本コードのコード例ラベル
         expect(screen.getByText(/Python — unittest の基本形/)).toBeInTheDocument();
         // 原本コードの内容（add関数）
@@ -278,9 +279,9 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         expect(screen.getByText(/class TestAddFunction/)).toBeInTheDocument();
         expect(screen.getByText(/test_add_positive_numbers/)).toBeInTheDocument();
         expect(screen.getByText(/test_add_negative_numbers/)).toBeInTheDocument();
-        // assertRaisesへの言及
-        expect(screen.getByText(/assertRaises/)).toBeInTheDocument();
-        expect(screen.getByText(/assertTrue/)).toBeInTheDocument();
+        // assertRaisesへの言及（codeタグなので個別に見つかる）
+        expect(screen.getAllByText(/assertRaises/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/assertTrue/).length).toBeGreaterThan(0);
     });
 
     // ============================================================
@@ -288,15 +289,16 @@ describe('CcnaAppDeploymentSecurityPage', () => {
     // ============================================================
     it('第6章Dockerfile表: ENTRYPOINTを含む8行と命令/役割列を描画する', () => {
         render(<CcnaAppDeploymentSecurityPage />);
-        // 原本の列名
+        // 原本の列名（「命令」は1つのみ存在するはず）
         expect(screen.getByRole('columnheader', { name: '命令' })).toBeInTheDocument();
-        expect(screen.getByRole('columnheader', { name: '役割' })).toBeInTheDocument();
+        // 「役割」は複数テーブルに存在するのでgetAllByRole使用
+        expect(screen.getAllByRole('columnheader', { name: '役割' }).length).toBeGreaterThan(0);
         // ENTRYPOINTが含まれる
-        expect(screen.getByRole('cell', { name: 'ENTRYPOINT' })).toBeInTheDocument();
-        // ENVが含まれる
-        expect(screen.getByRole('cell', { name: 'ENV' })).toBeInTheDocument();
-        // 原本のFROMセル内容（python:3.12-slim参照）
-        expect(screen.getByText(/FROM python:3\.12-slim/)).toBeInTheDocument();
+        expect(screen.getAllByRole('cell', { name: 'ENTRYPOINT' }).length).toBeGreaterThan(0);
+        // ENVが含まれる（コードブロックにもあるのでgetAllBy）
+        expect(screen.getAllByRole('cell', { name: 'ENV' }).length).toBeGreaterThan(0);
+        // 原本のFROMセル内容（python:3.12-slimはtableとcodeblockの両方にある）
+        expect(screen.getAllByText(/FROM python:3\.12-slim/).length).toBeGreaterThan(0);
     });
 
     it('第6章Dockerコマンド表: 8コマンド全て（docker logs/exec/rm/push/pull含む）を描画する', () => {
@@ -315,13 +317,16 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         render(<CcnaAppDeploymentSecurityPage />);
         expect(screen.getByText(/コードやDockerイメージにシークレットを直接書き込まない/)).toBeInTheDocument();
         expect(screen.getByText(/環境変数、シークレット管理サービス（Vaultなど）、クラウドのシークレットマネージャーを利用する/)).toBeInTheDocument();
-        expect(screen.getByText(/Gitリポジトリに誤ってコミットしないよう.*\.gitignore/)).toBeInTheDocument();
+        // .gitignoreはcodeタグで分割されるので「前後」でチェック
+        expect(screen.getByText(/Gitリポジトリに誤ってコミットしないよう/)).toBeInTheDocument();
+        expect(screen.getByText(/や事前スキャンツールを活用する/)).toBeInTheDocument();
     });
 
     it('第7章暗号化表: 原本の列名（種類/説明/代表例）と2行を描画する', () => {
         render(<CcnaAppDeploymentSecurityPage />);
         expect(screen.getByRole('columnheader', { name: '種類' })).toBeInTheDocument();
-        expect(screen.getByRole('columnheader', { name: '説明' })).toBeInTheDocument();
+        // 「説明」は複数テーブルにあるのでgetAllBy
+        expect(screen.getAllByRole('columnheader', { name: '説明' }).length).toBeGreaterThan(0);
         expect(screen.getByRole('columnheader', { name: '代表例' })).toBeInTheDocument();
         expect(screen.getByRole('cell', { name: '転送時の暗号化（Encryption in Transit）' })).toBeInTheDocument();
         expect(screen.getByRole('cell', { name: '保存時の暗号化（Encryption at Rest）' })).toBeInTheDocument();
@@ -343,9 +348,9 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         render(<CcnaAppDeploymentSecurityPage />);
         // 冒頭段落
         expect(screen.getByText(/アプリケーションを展開する際、ユーザーからのリクエストは複数のネットワーク要素を経由します/)).toBeInTheDocument();
-        // 列名
+        // 列名（「役割」は複数テーブルにあるのでgetAllBy。「要素」は1つだけ）
         expect(screen.getByRole('columnheader', { name: '要素' })).toBeInTheDocument();
-        expect(screen.getByRole('columnheader', { name: '役割' })).toBeInTheDocument();
+        expect(screen.getAllByRole('columnheader', { name: '役割' }).length).toBeGreaterThan(0);
         // セル
         expect(screen.getByRole('cell', { name: 'DNS（Domain Name System）' })).toBeInTheDocument();
         expect(screen.getByRole('cell', { name: 'ファイアウォール' })).toBeInTheDocument();
@@ -441,7 +446,8 @@ describe('CcnaAppDeploymentSecurityPage', () => {
         render(<CcnaAppDeploymentSecurityPage />);
         expect(screen.getByText(/試験直前の見直し用に、サブトピックごとの要点を1行にまとめました/)).toBeInTheDocument();
         expect(screen.getByRole('columnheader', { name: 'No.' })).toBeInTheDocument();
-        expect(screen.getByRole('columnheader', { name: 'サブトピック' })).toBeInTheDocument();
+        // 「サブトピック」は第1章表と早見表に存在するのでgetAllBy
+        expect(screen.getAllByRole('columnheader', { name: 'サブトピック' }).length).toBeGreaterThan(0);
         expect(screen.getByRole('columnheader', { name: '一言でいうと' })).toBeInTheDocument();
         // 4.1〜4.12が個別行に存在する（4.6と4.7は別行）
         expect(screen.getByRole('cell', { name: 'エッジコンピューティングの利点' })).toBeInTheDocument();
@@ -454,33 +460,28 @@ describe('CcnaAppDeploymentSecurityPage', () => {
     // 参考文献: 原本の8リンク全て
     // ============================================================
     it('参考文献: 原本の8リンク全てと免責事項を描画する', () => {
-        render(<CcnaAppDeploymentSecurityPage />);
+        const { container } = render(<CcnaAppDeploymentSecurityPage />);
         // 免責事項
         expect(screen.getByText(/本ガイドは学習支援を目的とした非公式の解説資料です/)).toBeInTheDocument();
-        // Cisco認定概要ページ
-        const certLink = screen.getByRole('link', { name: /CCNA Automation Certification（Cisco公式・認定概要ページ）/ });
-        expect(certLink).toHaveAttribute('href', 'https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html');
-        // 試験と学習ページ
-        const examTrainingLink = screen.getByRole('link', { name: /CCNA Automation Exam and Training/ });
-        expect(examTrainingLink).toHaveAttribute('href', 'https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html');
-        // 試験詳細ページ
-        const examDetailLink = screen.getByRole('link', { name: /200-901 CCNAAUTO（Cisco公式・試験詳細ページ）/ });
-        expect(examDetailLink).toHaveAttribute('href', 'https://www.cisco.com/site/us/en/learn/training-certifications/exams/ccnaauto.html');
-        // 出題範囲PDF
-        const pdfLink = screen.getByRole('link', { name: /Automating Networks Using Cisco Platforms v1\.1.*Exam Topics/ });
-        expect(pdfLink).toHaveAttribute('href', 'https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf');
-        // Learning Network
-        const learningLink = screen.getByRole('link', { name: /CCNAAUTO Exam Topics and Study Guide/ });
-        expect(learningLink).toHaveAttribute('href', 'https://learningnetwork.cisco.com/s/ccnaauto-exam-topics');
-        // OWASP Top 10
-        const owaspLink = screen.getByRole('link', { name: /OWASP Top 10:2025（OWASP公式/ });
-        expect(owaspLink).toHaveAttribute('href', 'https://owasp.org/Top10/2025/');
-        // Dockerfile reference
-        const dockerfileLink = screen.getByRole('link', { name: /Dockerfile reference/ });
-        expect(dockerfileLink).toHaveAttribute('href', 'https://docs.docker.com/reference/dockerfile/');
-        // unittest
-        const unittestLink = screen.getByRole('link', { name: /unittest — ユニットテストフレームワーク/ });
-        expect(unittestLink).toHaveAttribute('href', 'https://docs.python.org/3/library/unittest.html');
+        // 原本HTMLではリンクテキストはURL文字列なので、href属性でコンテナから直接検索する
+        const links: Array<[string, string]> = [
+            ['https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/index.html', 'CCNA Automation Certification 認定概要'],
+            ['https://www.cisco.com/site/us/en/learn/training-certifications/certifications/automation/ccna-automation/exams-and-training.html', 'CCNA Automation Exam and Training'],
+            ['https://www.cisco.com/site/us/en/learn/training-certifications/exams/ccnaauto.html', '200-901 CCNAAUTO 試験詳細'],
+            ['https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf', '出題範囲PDF'],
+            ['https://learningnetwork.cisco.com/s/ccnaauto-exam-topics', 'Learning Network'],
+            ['https://owasp.org/Top10/2025/', 'OWASP Top 10:2025'],
+            ['https://docs.docker.com/reference/dockerfile/', 'Dockerfile reference'],
+            ['https://docs.python.org/3/library/unittest.html', 'unittest'],
+        ];
+        links.forEach(([href]) => {
+            const el = container.querySelector(`a[href="${href}"]`);
+            expect(el).toBeInTheDocument();
+        });
+        // 参考文献リストのテキスト確認
+        expect(screen.getByText(/CCNA Automation Certification（Cisco公式・認定概要ページ）/)).toBeInTheDocument();
+        expect(screen.getByText(/Dockerfile reference（Docker公式ドキュメント/)).toBeInTheDocument();
+        expect(screen.getByText(/unittest — ユニットテストフレームワーク（Python公式ドキュメント/)).toBeInTheDocument();
     });
 
     it('renders usage callout and all 11 chapter key point callouts without omission', () => {
@@ -510,6 +511,7 @@ describe('CcnaAppDeploymentSecurityPage', () => {
 
     it('renders external reference links', () => {
         render(<CcnaAppDeploymentSecurityPage />);
-        expect(screen.getByText(/2025年版では、InjectionはA05:2025に分類される/)).toBeInTheDocument();
+        // テキストは段落内に含まれる（code要素で分割されない文）
+        expect(screen.getByText(/試験ガイドが例示するSQLインジェクションとXSSは、現行の2025年版では主に「A05/)).toBeInTheDocument();
     });
 });
