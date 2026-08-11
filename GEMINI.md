@@ -43,6 +43,7 @@ Updated 2026-08-10
   - `/app/cisco/ccna/automation-application-deployment-security`: CCNA Automation アプリケーションの展開とセキュリティ 完全ガイド。
   - `/app/cisco/ccna/automation-cisco-platforms-and-development`: CCNA Automation Cisco Platforms and Development 徹底解説ガイド。
   - `/app/cisco/ccna/automation-infrastructure-and-automation`: CCNA Automation 5.0 Infrastructure and Automation ステップバイステップ解説ガイド。
+  - `/app/cisco/ccna/network-access-guide`: CCNA 200-301 Network Access 徹底解説ガイド。
   - `/app/cisco/ccna/ip-connectivity-guide`: CCNA 200-301 IP Connectivity 完全ガイド。
   - `/app/cisco/ccna/ip-services-guide`: CCNA 200-301 IP Services 完全ガイド。
   - `/app/cisco/ccna/automation-programmability`: CCNA 200-301 6.0 自動化とプログラマビリティ 完全ガイド。

@@ -352,6 +352,11 @@ const ALL_EXAMS: Exam[] = [
                 pct: '15%',
             },
             {
+                label: '2.0 Network Access（ネットワークアクセス）',
+                href: '/cisco/ccna/network-access-guide',
+                pct: '20%',
+            },
+            {
                 label: '6.0 Automation and Programmability（自動化とプログラマビリティ）',
                 href: '/cisco/ccna/automation-programmability',
                 pct: '10%',
