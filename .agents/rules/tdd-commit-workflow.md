@@ -11,7 +11,7 @@ paths:
 
 # TDD & Step-by-Step Commit Workflow Rules
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-11)
 
 ## 目的 (Objective)
 
@@ -72,7 +72,7 @@ LLMエージェントがコードを実装する際、要件漏れや意図し�
 - コードの重複削除、読みやすさの向上、ビルド/リンターエラーの修正、CSSトークンのマッピングを行う。
 - **実行**: `bun run build` および `bun run lint` を実行し、既存機能が破壊されていないか確認する。
 - **🚨 ゲート条件（Pレベルタスクまたは複数コミットのフェーズ完了時）**:
-  - Pレベルタスク（`docs/TEST_COVERAGE_PROGRESS.md` の優先度別ネクストアクション）または複数コミットからなる「フェーズ」を完了する際は、必ず `.claude/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用してください。
+  - Pレベルタスク（`docs/TEST_COVERAGE_PROGRESS.md` の優先度別ネクストアクション）または複数コミットからなる「フェーズ」を完了する際は、必ず `.agents/skills/spec-sync/SKILL.md` の Section F「フェーズ完了時の Definition of Done」を適用してください。
   - 単発の Step 3 で `CLAUDE.md` だけを更新して終わらせることは禁止されています。
   - 同一フェーズ内で以下の成果物を確定させてください:
     - `MIGRATION_PROGRESS.md` の進捗チェックボックスの更新

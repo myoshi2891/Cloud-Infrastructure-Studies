@@ -1,16 +1,18 @@
 ---
-name: qa-studies-markdown-formatter
+name: infra-markdown-formatter
 description: >
-  Comprehensive guide and rules for formatting Markdown files to comply with the project's `.markdownlint.json` configuration.
+  Comprehensive guide and rules for formatting Markdown files in the Infra repository to comply with the project's `.markdownlint.json` configuration.
   Addresses common errors like MD031, MD022, MD032, and MD047.
   Trigger: Markdownリント, markdownlint, markdown formatting, MD031, MD022, blanks-around-fences, blanks-around-headers, MD047.
 ---
 
-# QA_Studies Markdown Formatting & Linting Guide
+# Infra Markdown Formatting & Linting Guide
+
+(最終更新日: 2026-08-09)
 
 ## Goal
 
-This skill provides rules and best practices to ensure all Markdown documents (`.md` files) in the QA_Studies repository comply with the project's strict `.markdownlint.json` rules, preventing CI/CD build breakages due to markdown lint errors.
+This skill provides rules and best practices to ensure all Markdown documents (`.md` files) in the Infra repository comply with the project's strict `.markdownlint.json` rules, preventing CI/CD build breakages due to markdown lint errors.
 
 <!-- markdownlint-disable MD031 MD022 MD032 -->
 
@@ -142,7 +144,8 @@ This skill provides rules and best practices to ensure all Markdown documents (`
 * **例外**: プロジェクトで意図的に HTML レンダリングする特定のダッシュボードやスライドコンポーネント用ファイル（例: `docs/coverage-dashboard.html`、またはマークダウン内で特別に許可されたアコーディオン等）を除き、原則として標準の Markdown 記法を使用してください。
 * **改行の代替案**: 行末に 2 つのスペースを入れる（ダブルスペース改行）、または新しいパラグラフ（空行を挟む）として分割してください。
 
----<!-- markdownlint-enable MD031 MD022 MD032 -->
+---
+<!-- markdownlint-enable MD031 MD022 MD032 -->
 
 ## ワークフロー (検証と修正の手順)
 
@@ -166,10 +169,10 @@ bun scripts/format-markdown.mjs <file_path>
 
 ### Step 2: Linter による検証
 
-次に、プロジェクトの `.markdownlint.json` に従って Linter を実行し、残存するエラーがないかを確認します。（ローカル実行環境によっては bunx/bun x がエラーを起こす場合があるため、`npx` での実行を推奨します）
+次に、プロジェクトの `.markdownlint.json` に従って固定版の Linter を実行し、残存するエラーがないかを確認します。
 
 ```bash
-npx markdownlint-cli <file_path>
+bun run markdownlint -- <file_path>
 ```
 
 エラーが出力されなくなるまで、手動でマークダウンを修正します。
@@ -179,7 +182,39 @@ npx markdownlint-cli <file_path>
 変更したファイルを Git にステージング（`git add`）した後、リポジトリのセキュリティ規則（`no-absolute-paths.md`）に基づき、絶対パスや PII が含まれていないか必ず検証します。
 
 ```bash
-git diff --cached | grep -E '^\+[^+]' | grep -E '(/Users/|/home/|C:\\Users\\)' | grep -vE 'johndoe'
+mac_home='/''Users/'
+linux_home='/''home/'
+windows_home='C:\\''Users\\'
+tilde_home='~''/'
+env_home='[$]''HOME/'
+local_path_pattern="(${mac_home}|${linux_home}|${windows_home}|${tilde_home}|${env_home})"
+email_pattern='[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}'
+pii_pattern="(${local_path_pattern}|${email_pattern})"
+staged_diff=$(mktemp) || exit 1
+trap 'rm -f "$staged_diff" "$added_diff"' EXIT
+added_diff=$(mktemp) || exit 1
+if ! git diff --cached > "$staged_diff"; then
+  echo 'ステージ差分を取得できません。コミットを中止します。' >&2
+  exit 1
+fi
+if ! awk '
+  /^diff --git / { in_hunk = 0; next }
+  /^@@ / { in_hunk = 1; next }
+  in_hunk && /^\+/ { print }
+' "$staged_diff" > "$added_diff"; then
+  echo '追加行の抽出に失敗しました。コミットを中止します。' >&2
+  exit 1
+fi
+# -q で一致行を標準出力へ出さない（検出内容そのものが PII のため）
+grep -Eq "$pii_pattern" "$added_diff"
+path_check_status=$?
+if [ "$path_check_status" -eq 0 ]; then
+  echo 'ローカル絶対パスまたは PII が検出されました。コミットを中止します。' >&2
+  exit 1
+elif [ "$path_check_status" -ne 1 ]; then
+  echo '絶対パスまたは PII の検出処理に失敗しました。コミットを中止します。' >&2
+  exit 1
+fi
 ```
 
-検証が成功（何も検出されない）したことを確認してから、コミットを適用してください。
+一致があればエラーとしてコミットを中止する。`grep` の終了コード 1 だけを「一致なし」として許可し、差分取得または検出処理の失敗時はコミットを中止する。

@@ -14,7 +14,7 @@ description: >
 
 # HTML → Next.js Migration Workflow（本リポジトリ専用）
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-11)
 
 ## Goal
 
@@ -32,7 +32,7 @@ Provide the complete, ordered workflow for converting a standalone HTML page (wi
 
 1. **`MIGRATION_PROGRESS.md`**（リポジトリ直下）— 現在地・残タスク・再開プロンプト
 2. **このファイル（`SKILL.md`）** — 移行手順・正準リファレンス・本リポジトリ固有ルール
-3. **`.claude/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
+3. **`.agents/rules/tdd-commit-workflow.md`** — TDD必須サイクル & コミット分割ルール
 
 ## 未移行 HTML
 
@@ -127,7 +127,7 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
   }
   ```
 
-- 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.claude/skills/fix-mermaid`。
+- 壊れた Mermaid 構文（`__STR0__` プレースホルダ・重複エッジ等）は移植時に修正する → `.agents/skills/fix-mermaid`。
 
 ### 5. HTML 末尾 `<script>` の interactivity → React 変換表
 
@@ -173,7 +173,7 @@ HTML 末尾 `<script>` の `DIAGRAMS` オブジェクト + `mermaid.render(...)`
 
 ### TDD 必須サイクルの適用（最重要）
 
-移行作業中は、常に `.claude/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
+移行作業中は、常に `.agents/rules/tdd-commit-workflow.md` に定められた TDD サイクル（Red → Green → Refactor → Docs）を最優先で適用しなければなりません。
 
 1. **タスク設計の段階（`task.md` の作成時）**:
    - `task.md` 内のタスクを「Red（テスト失敗とコミット）」「Green（実装とコミット）」「Refactor（リファクタ/ビルド/Linter修正とコミット）」「Docs Sync（進捗同期とコミット）」のコミット単位に明確に構造化してください。
@@ -234,7 +234,8 @@ GCP 系ガイド HTML（`--gcp-blue` / `--bg-*` / `--text-*` などの `:root` �
 | --- | --- | --- |
 | Invalid DOM property | `<div class="sidebar">` | `<div className="sidebar">` （JSXでは `className` に統一） |
 | Unescaped entities | `parsed["hostname"]` (raw text) | `{`print(parsed["hostname"])`}` や `&quot;` / `&apos;` でラップ（`react/no-unescaped-entities` 解消） |
-| 元CSS変数・デザインの省略 | 共通グラデーションやカード色を汎用黒に簡略化、またはローカルな `--*` 変数を再作成 | 元HTMLの変数が表すグラデーション、色、余白、タイポグラフィ、境界線、バッジ、ボタンの全デザイン値をグローバル `@theme` トークンへ対応付けて100%忠実に移転（ローカル変数の再作成は不要） |
+| 元CSS変数・デザインの省略 | 共通グラデーションやカード色を汎用黒に簡略化、またはローカルな `--*` 変数を再作成 | 元HTMLの変数が表す `:root` カラー、h1グラデーションテキスト、h2左バー、thスタイル、ピル型バッジ、calloutバー、コードブロック構文ハイライトの全デザイン値を100%忠実に移転 |
+| Mermaid図の人工的な幅制限 | `style={{ maxWidth: '800px' }}` 等で幅を狭めスクロールバー発生 | 人工的な `maxWidth` 制限を排除して全幅 (`width: 100%`) を使い、`margin: 1.5rem auto 2rem` で中央寄せ |
 | Mermaid 黄色ノードの文字色 | 白文字 (`#fff`) になり同化 | `components/MermaidDiagram.module.css` の黄色ノード条件に `#ffe08a`, `#ffd479` 等のカラーコードを漏れなく追加し黒文字 (`#000000 !important`) を強制 |
 | Monochrome code blocks | ハイライト無しの単色 `<pre><code>` | コードブロックの各要素（`.code-comment`, `.code-prompt`, `.code-keyword`, `.code-command`, `.code-number`, `.code-param` 等）を `<span>` でカラー装飾するか、プレーン整形のみ（Section 6の方針に従い使い分け） |
 | Mermaid 図の文字縮小 | `preserveNaturalScale` なしの `<MermaidDiagram>` | `<MermaidDiagram chart={...} ariaLabel="..." preserveNaturalScale />` を指定し 1rem (16px) サイズを維持 |
@@ -374,7 +375,7 @@ rm -rf .next && bun run build
 
 ## セッション終了前同期（必須）
 
-進捗同期の手順は `.claude/rules/migration-progress-sync.md` に従ってください。毎ページ、移行作業の完了直後に実施します。
+進捗同期の手順は `.agents/rules/migration-progress-sync.md` に従ってください。毎ページ、移行作業の完了直後に実施します。
 
 ## Reusable CSS Component Classes (globals.css)
 
@@ -399,6 +400,8 @@ Do NOT redefine these in page-specific CSS. Use them directly in TSX:
 - **Never use camelCase for `@keyframes` names** — use kebab-case
 - **Pages are server-rendered by default** — no `useState`/`useEffect` in `page.tsx`。**例外**: 進捗バー・scroll spy・チェックリスト等を持つリッチガイドは「正準リファレンス §1」の通り、Server `page.tsx`（`metadata` + `<XxxGuide/>` を返すだけ）と client `XxxGuide.tsx`（`'use client'`）に分割する。Server に状態を持ち込まない。
 - **Always specify `preserveNaturalScale={true}` for `<MermaidDiagram>`** — 図が無理やり縮小されて文字が 1rem 未満になるのを絶対防止する
+- **Never apply artificial `maxWidth` inline styles to Diagram wrappers** — `Diagram` や `.mermaid-wrap` に個別の `maxWidth` 幅制限（`maxWidth: 800px` 等）をインラインスタイルで指定することは禁止。コンテンツ領域の全幅 (`width: 100%`) を活用し、`margin: 1.5rem auto 2rem` で親コンテナ内中央に配置すること
+- **Never omit or simplify visual design elements from original HTML** — 元HTMLの `:root` スタイル変数、`h1` グラデーションテキスト (`background-clip: text`)、`h2` 左アクセントバー (`border-left`)、`th` 白文字＆背景色、`.badge` ピル型 (`border-radius: 999px`)、`.callout` アクセントバー、構文ハイライトを100%完全に全量移植すること
 - **Apply CLI / code syntax highlighting appropriately** — コードブロックは Section 6 の方針に従い `.code-header`, `.code-line`, `.code-comment` 等のクラスでカラー装飾するか、プレーン整形のみ（`.code-line`）を適切に選択すること
 - **Always archive original files to correct subdirectories** — Cisco資料は原本を保持したまま `archive/Cisco/html/` および `archive/Cisco/md/` へそれぞれコピーして保存すること（削除厳禁）
 - **Always write implementation plans in Japanese** — `implementation_plan.md` や応答は必ず日本語で作成すること

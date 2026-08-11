@@ -9,7 +9,7 @@ description: >
 
 # Mermaid 構文・描画修正スキル
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-11)
 
 ## 🚀 まず再利用スクリプトを使う（トークン節約・最優先）
 
@@ -527,7 +527,7 @@ const applySvgFixups = (
 
 ### 確認手順（重要・順序厳守）
 
-1. `*.module.css` 変更時は `.claude/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、**dev サーバーを完全再起動**する。
+1. `*.module.css` 変更時は `.agents/rules/css-cache-reset.md` に従う。`mermaid.initialize` がモジュール最上位＝ HMR で再実行されないため、**dev サーバーを完全再起動**する。
 
 ```bash
 kill $(lsof -ti:3000) 2>/dev/null; rm -rf .next; bun run dev

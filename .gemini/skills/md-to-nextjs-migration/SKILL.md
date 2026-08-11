@@ -159,6 +159,9 @@ app/
 
 Red / Green / Refactor / Docs Sync のコミットを混在させないため、**すべての `git add` の前後**で
 次の 2 つの検査を行う。`assert_clean_stage` は `git add` の前、`assert_staged_scope` は `git add` の後に実行する。
+各 `git add` では許可ファイルを `--` の後に明示し、`git add -p` でそのステップに属する差分だけを選択する。
+許可ファイル内に別作業の変更があっても、ファイル全体をステージしてはならない。
+新規ファイルは通常の `git add -p` では選択対象にならないため、許可された対象ファイルごとに次の順序で扱う。
 
 ```bash
 # git add の前: 別ステップの差分が既にステージされていないことを確認する
@@ -179,34 +182,43 @@ assert_staged_scope() {
     esac
   done
 }
+
+# 新規ファイルごとに状態を確認し、intent-to-add の後で必要な差分だけを選択する
+git status --short -- <new-file>
+assert_clean_stage || exit 1
+git add -N -- <new-file> || exit 1
+git add -p -- <new-file> || exit 1
+assert_staged_scope <new-file> || exit 1
 ```
 
 ### Step 1: Red — 失敗するテストを作成してコミット
 
 ```bash
 # 要件を網羅するテストを追加
-exam='professional-cloud-architect'
-test_file="__tests__/gcl/${exam}/page.test.tsx"
+RED_TEST_NAME='renders the migrated SN requirement title'
+RED_EXPECTED_FAILURE='Unable to find an element with the text: SN requirement title'
 red_test_log=$(mktemp) || exit 1
 trap 'rm -f "$red_test_log"' EXIT
-if bun run test "${test_file}" >"$red_test_log" 2>&1; then
+if bun run test __tests__/gcl/<exam>/page.test.tsx -t "$RED_TEST_NAME" >"$red_test_log" 2>&1; then
   cat "$red_test_log"
   echo 'Red テストが成功しました。コミットを中止します。' >&2
   exit 1
 fi
 cat "$red_test_log"
-if ! grep -Eq 'AssertionError|TestingLibraryElementError|Unable to find an element|expected .* (to|not to)' "$red_test_log"; then
+if ! grep -F -- "$RED_EXPECTED_FAILURE" "$red_test_log" >/dev/null; then
   echo '想定したアサーション失敗を確認できません。コミットを中止します。' >&2
   exit 1
 fi
 git status --short
 assert_clean_stage || exit 1
-git add "${test_file}" || exit 1
-assert_staged_scope "${test_file}" || exit 1
-git commit -m "test(gcl/${exam}/SN): add failing migration coverage"
+git add -p -- __tests__/gcl/<exam>/page.test.tsx || exit 1
+assert_staged_scope __tests__/gcl/<exam>/page.test.tsx || exit 1
+git commit -m "test(gcl/<exam>/SN): add failing migration coverage"
 ```
 
-失敗している期待テキストを確認し、実装対象と表記を把握する。Red のテストを Green 実装と同じコミットに含めない。
+`RED_TEST_NAME` は追加したテストだけに一致する固有名、`RED_EXPECTED_FAILURE` はそのテストの期待値を含む固有の失敗メッセージに置き換える。
+`AssertionError` などの一般的なエラー名だけで Red と判定しない。上記の失敗を確認できた場合に限り `test:` コミットへ進み、
+Red のテストを Green 実装と同じコミットに含めない。
 
 ### Step 2: constants.ts に型とデータを追加
 
@@ -267,17 +279,13 @@ import {
 ### Step 5: テストを GREEN にする
 
 ```bash
-exam='professional-cloud-architect'
-test_file="__tests__/gcl/${exam}/page.test.tsx"
-changed_file_1="app/gcl/${exam}/page.tsx"
-changed_file_2="app/gcl/${exam}/components/sections/SectionN.tsx"
-bun run test "${test_file}"
+bun run test __tests__/gcl/<exam>/page.test.tsx
 git status --short
 assert_clean_stage || exit 1
-git add "app/constants.ts" "${changed_file_1}" "${changed_file_2}" || exit 1
-assert_staged_scope "app/constants.ts" "${changed_file_1}" "${changed_file_2}" || exit 1
+git add -p -- app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
+assert_staged_scope app/constants.ts app/gcl/<exam>/<changed-file-1> app/gcl/<exam>/<changed-file-2> || exit 1
 git diff --cached
-git commit -m "feat(gcl/${exam}/SN): implement migrated content"
+git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ```
 
 `git add` には実際に変更したファイルだけを列挙し、試験ディレクトリ全体を指定しない。
@@ -285,20 +293,14 @@ git commit -m "feat(gcl/${exam}/SN): implement migrated content"
 ### Step 6: Refactor / Integration を検証してコミット
 
 ```bash
-exam='professional-cloud-architect'
-test_file="__tests__/gcl/${exam}/page.test.tsx"
-refactored_files=(
-  "app/gcl/${exam}/page.tsx"
-  "app/gcl/${exam}/components/sections/SectionN.tsx"
-)
-bun run test "${test_file}"
+bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
 bun run lint
 git status --short
 assert_clean_stage || exit 1
-git add "${refactored_files[@]}" || exit 1
-assert_staged_scope "${refactored_files[@]}" || exit 1
-git commit -m "refactor(gcl/${exam}/SN): integrate migrated content"
+git add -p -- <refactored-files> || exit 1
+assert_staged_scope <refactored-files> || exit 1
+git commit -m "refactor(gcl/<exam>/SN): integrate migrated content"
 ```
 
 Step 6 は実際にリファクタリングしたファイルだけをステージする。Green 実装や `app/constants.ts` を変更していない場合、それらを Refactor コミットへ重ねて含めない。
@@ -306,16 +308,14 @@ Step 6 は実際にリファクタリングしたファイルだけをステー�
 ### Step 7: Docs Sync を検証してコミット
 
 ```bash
-exam='professional-cloud-architect'
-test_file="__tests__/gcl/${exam}/page.test.tsx"
-bun run test "${test_file}"
+bun run test __tests__/gcl/<exam>/page.test.tsx
 git status --short
 if [ "${COMMIT_AUTHORIZED:-}" != 'yes' ]; then
   echo 'Docs Sync コミットには COMMIT_AUTHORIZED=yes による明示認可が必要です。' >&2
   exit 1
 fi
 assert_clean_stage || exit 1
-if ! git add MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md; then
+if ! git add -p -- MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md; then
   echo 'Docs Sync 対象のステージに失敗しました。コミットを中止します。' >&2
   exit 1
 fi
@@ -325,7 +325,7 @@ if ! git diff --cached --check || ! git diff --cached; then
   echo 'ステージ差分を検証できません。コミットを中止します。' >&2
   exit 1
 fi
-git commit -m "docs(gcl/${exam}/SN): sync migration progress"
+git commit -m "docs(gcl/<exam>/SN): sync migration progress"
 ```
 
 ---

@@ -5,7 +5,7 @@ description: Audit and update all repository specifications (CLAUDE.md, GEMINI.m
 
 # 仕様書・テスト進捗同期スキル (spec-sync)
 
-(最終更新日: 2026-08-09)
+(最終更新日: 2026-08-11)
 
 **🚨 開発時の必須ルール（TDD & Step-by-step Commit） 🚨**
 仕様書の更新やテスト進捗の更新作業においても、対応するコード修正（実装やテスト修正）を伴う場合は必ず `.agents/rules/tdd-commit-workflow.md` のステップバイステップ・コミットルールに従うこと。
@@ -190,20 +190,25 @@ bun run lint 2>&1 | tail -5
 仕様書のみの同期更新のコミットには**ソースコードの変更を一切含めない**でください（TDD コミット分割ルール）。
 
 ```bash
-# 1. 正本 .agents のルール・スキル変更を既存設定を保持したまま .gemini に同期
-if ! rsync -a .agents/rules/ .gemini/rules/; then
-  echo 'rules の同期に失敗しました。ステージやコミットへ進みません。' >&2
-  exit 1
-fi
-if ! rsync -a .agents/skills/ .gemini/skills/; then
-  echo 'skills の同期に失敗しました。ステージやコミットへ進みません。' >&2
-  exit 1
-fi
+# 1. 正本 .agents の共通ルール・スキルを .claude と .gemini に同期
+# Codex 専用の improve スキル、Claude 固有の plans / lock は同期対象外
+for mirror in .claude .gemini; do
+  if ! rsync -a .agents/rules/ "$mirror/rules/"; then
+    echo "$mirror への rules 同期に失敗しました。ステージやコミットへ進みません。" >&2
+    exit 1
+  fi
+  for skill_name in fix-mermaid html-to-nextjs-migration markdown-formatter md-to-nextjs-migration spec-sync; do
+    if ! rsync -a ".agents/skills/$skill_name/" "$mirror/skills/$skill_name/"; then
+      echo "$mirror への $skill_name 同期に失敗しました。ステージやコミットへ進みません。" >&2
+      exit 1
+    fi
+  done
+done
 
 # 2. worktree とステージの変更対象が同期対象4ディレクトリだけであることを検証
 allowed_sync_path() {
   case "$1" in
-    .agents/rules/*|.agents/skills/*|.gemini/rules/*|.gemini/skills/*) return 0 ;;
+    .agents/rules/*|.agents/skills/*|.claude/rules/*|.claude/skills/*|.gemini/rules/*|.gemini/skills/*) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -224,7 +229,7 @@ while IFS= read -r changed_path; do
     exit 1
   }
 done < "$worktree_paths"
-if ! git add .agents/rules/ .agents/skills/ .gemini/rules/ .gemini/skills/; then
+if ! git add .agents/rules/ .agents/skills/ .claude/rules/ .claude/skills/ .gemini/rules/ .gemini/skills/; then
   echo '同期対象をステージできません。コミットへ進みません。' >&2
   exit 1
 fi
