@@ -1040,10 +1040,9 @@
                                 <tr>
                                     <td><code>--data-binary @request.json</code></td>
                                     <td>
-                                        ファイルの内容をそのまま（改行や空白を保持したまま）送信する。<code
-                                            >-d</code
-                                        >
-                                        と異なり改行が保持される
+                                        ファイルの内容をバイト単位で保持して送信する。Google
+                                        公式手順の <code>-d @request.json</code> も有効で、JSON
+                                        の前後や要素間の空白・改行は意味を変えない
                                     </td>
                                 </tr>
                                 <tr>
@@ -1059,19 +1058,20 @@
                         <div class="callout-body">
                             <div class="callout-title">根拠</div>
                             <p>
-                                Vision API の REST エンドポイントは
+                                Vision API の公式コマンドライン手順では
                                 <code>POST https://vision.googleapis.com/v1/images:annotate</code>
-                                であり、 リクエスト本文を
-                                <code>request.json</code>
-                                に保存して送信する手順が公式ドキュメントに示されています。
+                                に <code>-d @request.json</code> で JSON
+                                を送信しています。本ガイドでは送信バイトをそのまま保持したい場合の選択肢として
+                                <code>--data-binary</code> を使用しています。
                             </p>
                             <span class="src"
                                 >出典:
                                 <a
-                                    href="https://docs.cloud.google.com/vision/docs/ocr"
+                                    href="https://cloud.google.com/vision/docs/detect-labels-image-command-line"
                                     target="_blank"
                                     rel="noopener"
-                                    >Detect and extract text from images | Cloud Vision API</a
+                                    >Detect labels in an image by using the command line | Cloud Vision
+                                    API</a
                                 ></span
                             >
                         </div>
@@ -1251,10 +1251,15 @@ gsutil cp landmark-response.json gs://BUCKET_NAME_FILLED_AFTER_LAB_START</code><
                                 <tr>
                                     <td>レスポンスファイルが空</td>
                                     <td>
-                                        <code>--data-binary</code> の代わりに誤って通常の
-                                        <code>-d</code> を使い改行が壊れた、またはファイルパスの誤り
+                                        HTTP エラー、レスポンスのエラー内容、JSON 構文、または
+                                        <code>@request.json</code> のパスに問題がある。公式手順の
+                                        <code>-d @request.json</code> 自体は有効
                                     </td>
-                                    <td><code>@request.json</code> のパスと構文を再確認</td>
+                                    <td>
+                                        HTTP ステータスとレスポンスの <code>error</code>
+                                        を確認し、JSON 構文と <code>@request.json</code>
+                                        のパスを再確認
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><code>gsutil cp</code> が失敗する</td>
@@ -1688,7 +1693,7 @@ Q2 -- はい --> F1["Vision API の有効化と API キーの制限設定を確�
 Q2 -- いいえ --> Q3{"PERMISSION_DENIED や could not be read が含まれるか"}
 Q3 -- はい --> F2["Cloud Storage オブジェクトが公開設定になっているか確認する"]
 Q3 -- いいえ --> Q4{"レスポンスが空、または JSON 構文エラーか"}
-Q4 -- はい --> F3["request.json の構文と curl の data-binary オプションを確認する"]
+Q4 -- はい --> F3["HTTP ステータス、レスポンスの error、request.json の構文とパスを確認する"]
 Q4 -- いいえ --> F4["レスポンス全文を確認し原因を特定する"]`,
             };
 

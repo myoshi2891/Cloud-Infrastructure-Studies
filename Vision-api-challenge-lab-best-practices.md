@@ -1,4 +1,5 @@
 # Cloud Vision API チャレンジラボ攻略ガイド
+
 ## テキスト検出とランドマーク検出のベストプラクティス（初学者向けステップバイステップ解説）
 
 > 対象ラボ: *Analyze Images with the Cloud Vision API: Challenge Lab*（Google Skills / Qwiklabs）
@@ -193,6 +194,8 @@ Vision API へのリクエストは JSON 形式で組み立てます。以下が
 > **根拠**: `gcsImageUri` は Cloud Storage バケット内に格納された画像を示すフィールドである、という定義は公式クイックスタートに記載されています。
 > 出典: [Quickstart: Detect labels in an image by using the command line | Cloud Vision API](https://docs.cloud.google.com/vision/docs/detect-labels-image-command-line)
 
+<!-- -->
+
 > **ベストプラクティス**: `request.json` のようにリクエスト本文をファイルに切り出しておくと、`curl` コマンド自体がシンプルになり、JSON の構文エラーをエディタ側で事前にチェックしやすくなります。ヒアドキュメントでインラインに JSON を書くよりも、独立したファイルとして管理する方が可読性・再利用性の面で優れています。
 
 ---
@@ -218,11 +221,13 @@ curl -s -X POST \
 | `-s` | サイレントモード。プログレス表示を抑制し、レスポンスのみを出力する |
 | `-X POST` | HTTP メソッドを `POST` に指定する |
 | `-H "Content-Type: application/json"` | リクエストボディが JSON であることをサーバーに伝えるヘッダー |
-| `--data-binary @request.json` | ファイルの内容をそのまま（改行や空白を保持したまま）送信する。`-d` と異なり改行が保持される |
+| `--data-binary @request.json` | ファイルの内容をバイト単位で保持して送信する。Google 公式手順の `-d @request.json` も有効で、JSON の前後や要素間の空白・改行は意味を変えない |
 | `-o text-response.json` | レスポンスを標準出力ではなくファイルに保存する |
 
-> **根拠**: Vision API の REST エンドポイントは `POST https://vision.googleapis.com/v1/images:annotate` であり、リクエスト本文を `request.json` に保存して送信する手順が公式ドキュメントに示されています。
-> 出典: [Detect and extract text from images | Cloud Vision API](https://docs.cloud.google.com/vision/docs/ocr)
+> **根拠**: Vision API の公式コマンドライン手順では `POST https://vision.googleapis.com/v1/images:annotate` に `-d @request.json` で JSON を送信しています。本ガイドでは送信バイトをそのまま保持したい場合の選択肢として `--data-binary` を使用しています。
+> 出典: [Detect labels in an image by using the command line | Cloud Vision API](https://cloud.google.com/vision/docs/detect-labels-image-command-line)
+
+<!-- -->
 
 > **補足（発展的なベストプラクティス）**: 公式ドキュメントの多くのサンプルでは、API キーではなく `Authorization: Bearer $(gcloud auth print-access-token)` ヘッダーと `x-goog-user-project` ヘッダーを使う認証方式が案内されています。これは IAM ベースの認証であり、API キーよりも安全性が高い方式です。ラボでは学習を簡潔にするために API キー方式を採用していますが、実務では Bearer トークン方式も選択肢として知っておくとよいでしょう。
 > 出典: [Detect image properties | Cloud Vision API](https://docs.cloud.google.com/vision/docs/detecting-properties)
@@ -302,7 +307,7 @@ flowchart TD
     Q3 -- はい --> F2["Cloud Storageオブジェクトが\n公開設定になっているか確認する"]
     Q3 -- いいえ --> Q4{"レスポンスが空、または\nJSON構文エラーか"}
 
-    Q4 -- はい --> F3["request.jsonの構文と\ncurlの--data-binaryオプションを確認する"]
+    Q4 -- はい --> F3["HTTPステータス、レスポンスのerror、\nrequest.jsonの構文とパスを確認する"]
     Q4 -- いいえ --> F4["レスポンス全文を確認し、\nエラーメッセージから原因を特定する"]
 ```
 
@@ -312,7 +317,7 @@ flowchart TD
 |---|---|---|
 | `API key not valid` | Vision API が有効化されていない／キーに API 制限がかかっている | Task 1 の API 有効化を再確認、キーの制限設定を確認 |
 | `PERMISSION_DENIED` / 画像が読み取れない | Cloud Storage オブジェクトが非公開のまま | `allUsers` に `Storage Object Viewer` を付与したか確認 |
-| レスポンスファイルが空 | `--data-binary` の代わりに誤って通常の `-d` を使い改行が壊れた、またはファイルパスの誤り | `@request.json` のパスと構文を再確認 |
+| レスポンスファイルが空 | HTTP エラー、レスポンスのエラー内容、JSON 構文、または `@request.json` のパスに問題がある。公式手順の `-d @request.json` 自体は有効 | HTTP ステータスとレスポンスの `error` を確認し、JSON 構文と `@request.json` のパスを再確認 |
 | `gsutil cp` が失敗する | 認証切れ、またはバケット名の誤り | `gcloud auth list` で認証状態を確認し、バケット名を再確認 |
 
 ---
