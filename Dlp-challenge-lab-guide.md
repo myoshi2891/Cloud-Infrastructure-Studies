@@ -81,7 +81,7 @@ export DLP_TOKEN=$(gcloud auth print-access-token)
 
 - **Task 1（`content:deidentify`）**: `serviceusage.services.use` を含み、コンテンツの検査・秘匿化向けに用意された `roles/dlp.user` を維持します。
 - **Task 2（De-identify Template 作成）**: `dlp.deidentifyTemplates.create` を含む `roles/dlp.deidentifyTemplatesEditor` を付与します。DLP 全体を管理する必要がある場合は `roles/dlp.editor` や `roles/dlp.admin` でも実行できますが、権限範囲は広くなります。
-- **Task 3（Job Trigger 作成）**: `dlp.jobTriggers.create` を含む `roles/dlp.jobTriggersEditor` と、`dlp.jobs.create` を含む `roles/dlp.jobsEditor` を付与します。組織の方針でカスタムロールを使う場合は、少なくとも作成処理で要求される `dlp.jobTriggers.create` と `dlp.jobs.create` を含めます。`roles/dlp.editor` や `roles/dlp.admin` も利用できますが、最小権限ではありません。
+- **Task 3（Job Trigger 作成・実行）**: 基本権限は `roles/dlp.jobTriggersEditor` のみです。組織の方針でカスタムロールを使う場合は、`dlp.jobTriggers.create` と `dlp.jobTriggers.get` を含めます。Job Trigger とは別に独立した DLP Job を作成する場合のみ、`roles/dlp.jobsEditor` を追加します。`roles/dlp.editor` や `roles/dlp.admin` も利用できますが、最小権限ではありません。
 
 Qwiklabs / Skills Boost の学生アカウントには必要な権限が通常あらかじめ付与されています。実務で同じ構成を再現する場合は、1つの広いロールを全Taskへ流用せず、実行するTaskに対応するロールを選んでください。
 
@@ -406,13 +406,13 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    IAM["IAM: Task ごとの最小権限\nDLP User / Template Editor / Job Triggers Editor / Jobs Editor"] --> POLICY["ポリシーの一元管理\nde-identify テンプレートで秘匿化ルールを統一"]
+    IAM["IAM: Task ごとの最小権限\nDLP User / Template Editor / Job Triggers Editor\n独立した DLP Job のみ Jobs Editor"] --> POLICY["ポリシーの一元管理\nde-identify テンプレートで秘匿化ルールを統一"]
     POLICY --> REGION["データレジデンシー\nテンプレート・Job/Job Trigger の\nリージョンを揃える"]
     REGION --> AUTOMATION["自動化\nJob Trigger によるスケジュール実行"]
     AUTOMATION --> MONITOR["監視\n通知・Security Command Center 連携"]
 ```
 
-1. **最小権限の原則**: Task 1 は `roles/dlp.user`、Task 2 は `roles/dlp.deidentifyTemplatesEditor`、Task 3 は `roles/dlp.jobTriggersEditor` と `roles/dlp.jobsEditor` を基本とし、`roles/owner` のような強力すぎるロールを避ける。（[出典](https://cloud.google.com/sensitive-data-protection/docs/iam-roles)）
+1. **最小権限の原則**: Task 1 は `roles/dlp.user`、Task 2 は `roles/dlp.deidentifyTemplatesEditor`、Task 3 の Job Trigger 作成・実行は `roles/dlp.jobTriggersEditor` を基本とする。Job Trigger とは別に独立した DLP Job を作成する場合のみ `roles/dlp.jobsEditor` を追加し、`roles/owner` のような強力すぎるロールを避ける。（[出典](https://cloud.google.com/sensitive-data-protection/docs/iam-roles)）
 2. **infoType は必要最小限に絞る**: 検出対象を増やすほど処理コストと誤検知が増える。ビジネス上の必要性に基づいて選定する。（[出典](https://cloud.google.com/sensitive-data-protection/docs/concepts-infotypes)）
 3. **秘匿化ロジックはテンプレート化する**: JSON をその都度書くのではなく、`De-identify Template` として保存し、Job/Job Trigger から再利用する。（[出典](https://docs.cloud.google.com/sensitive-data-protection/docs/creating-templates-deid)）
 4. **リージョンの一貫性を保つ**: テンプレート・infoType・KMS キーは同一リージョンの Job/Job Trigger からしか参照できない。データレジデンシー要件がある場合は特に重要。（[出典](https://docs.cloud.google.com/sensitive-data-protection/docs/specifying-location)）
