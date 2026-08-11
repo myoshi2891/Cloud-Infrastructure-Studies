@@ -276,7 +276,7 @@
 }
 
 .ccna-network-fundamentals-page table.data-table tr:nth-child(even) td {
-    background: rgba(124, 158, 255, 0.03);
+    background: var(--color-ccna-network-row-even);
 }
 
 .ccna-network-fundamentals-page table.data-table td strong,

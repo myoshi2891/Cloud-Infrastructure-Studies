@@ -55,6 +55,9 @@ const expectedGlobalTokens = [
 const extractCustomPropertyNames = (css: string): string[] =>
     Array.from(css.matchAll(/(?<![\w-])(--[\w-]+)\s*:/g), (match) => match[1]);
 
+const extractReferencedCustomPropertyNames = (css: string): string[] =>
+    Array.from(new Set(Array.from(css.matchAll(/var\(\s*(--[\w-]+)/g), (match) => match[1])));
+
 describe('CCNA automation theme token ownership', () => {
     it('defines shared tokens once in globals.css and none in page styles', () => {
         const globals = readWorkspaceFile('app/globals.css');
@@ -62,6 +65,12 @@ describe('CCNA automation theme token ownership', () => {
 
         for (const token of expectedGlobalTokens) {
             expect(globalPropertyNames.filter((name) => name === token)).toHaveLength(1);
+        }
+        const referencedTokens = extractReferencedCustomPropertyNames(
+            pageStylePaths.map(readWorkspaceFile).join('\n'),
+        );
+        for (const token of referencedTokens) {
+            expect(globalPropertyNames.filter((name) => name === token), token).toHaveLength(1);
         }
         for (const path of pageStylePaths) {
             expect(extractCustomPropertyNames(readWorkspaceFile(path))).toEqual([]);
@@ -80,14 +89,12 @@ describe('CCNA automation theme token ownership', () => {
     });
 
     it('keeps page-specific colors behind approved global tokens', () => {
-        const appSecurityCss = readWorkspaceFile(
-            'app/cisco/ccna/automation-application-deployment-security/page.css',
-        );
+        const pageStyles = pageStylePaths.map(readWorkspaceFile).join('\n');
         const networkCss = readWorkspaceFile(
             'app/cisco/ccna/automation-network-fundamentals/page.css',
         );
 
-        expect(appSecurityCss).not.toMatch(/rgba\(|#[0-9a-fA-F]{3,8}\b/);
+        expect(pageStyles).not.toMatch(/rgba\(|#[0-9a-fA-F]{3,8}\b/);
         expect(networkCss).toContain(
             'linear-gradient(90deg, var(--color-ccna-platforms-foreground) 0%, var(--color-guide-accent) 100%)',
         );

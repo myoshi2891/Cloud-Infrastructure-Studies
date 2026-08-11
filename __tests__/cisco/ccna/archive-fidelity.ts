@@ -13,7 +13,7 @@ const elementText = (element: Element): string =>
         )
             .filter(Boolean)
             .join(' '),
-    ).replace(/\s+/g, '');
+    );
 
 const sectionId = (element: Element): string => element.closest('section')?.id ?? 'hero';
 
@@ -60,9 +60,8 @@ export const expectCodeFidelity = (source: DocumentLike, migrated: ParentNode): 
     );
     const migratedBlocks = Array.from(migrated.querySelectorAll('.code-block'), (pre) => {
         const lineElements = Array.from(pre.querySelectorAll<HTMLElement>(':scope > .code-line'));
-        return lineElements.length > 0
-            ? normalizeLines(lineElements.map((line) => line.textContent ?? ''))
-            : normalizeLines((pre.textContent ?? '').split('\n'));
+        expect(lineElements.length, '.code-block must contain at least one direct .code-line').toBeGreaterThan(0);
+        return normalizeLines(lineElements.map((line) => line.textContent ?? ''));
     });
 
     expect(migratedBlocks).toEqual(sourceBlocks);

@@ -1,6 +1,6 @@
 .network-access-page {
-    background-color: var(--color-background, #07111e);
-    color: var(--color-foreground, #dbe4f5);
+    background-color: var(--color-ccna-access-background);
+    color: var(--color-ccna-access-foreground);
     min-height: 100vh;
 }
 
@@ -18,16 +18,16 @@
     width: 280px;
     z-index: 40;
     overflow-y: auto;
-    border-right: 1px solid var(--color-border, #1e2f4d);
+    border-right: 1px solid var(--color-ccna-access-border);
     padding: 1.5rem 1rem;
-    background: var(--color-card, #0e1b2e);
+    background: var(--color-ccna-access-card);
 }
 
 .network-access-page .sidebar-brand {
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 0.85rem;
-    color: var(--color-muted-foreground, #8fa2c4);
+    color: var(--color-ccna-access-foreground-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 1.25rem;
@@ -35,7 +35,7 @@
 
 .network-access-page .sidebar-brand span {
     display: block;
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-ccna-access-primary);
     font-size: 1.15rem;
     letter-spacing: 0;
     text-transform: none;
@@ -57,21 +57,21 @@
     display: block;
     padding: 0.4rem 0.6rem;
     border-radius: 6px;
-    color: var(--color-muted-foreground, #8fa2c4);
+    color: var(--color-ccna-access-foreground-muted);
     border-left: 2px solid transparent;
     transition: all 0.2s ease;
 }
 
 .network-access-page .toc a:hover {
-    background: rgba(124, 158, 255, 0.12);
-    color: var(--color-foreground, #dbe4f5);
+    background: var(--color-ccna-access-hover);
+    color: var(--color-ccna-access-foreground);
     text-decoration: none;
 }
 
 .network-access-page .toc a.active {
-    background: rgba(124, 158, 255, 0.22);
-    color: #ffffff;
-    border-left: 2px solid var(--color-primary, #7c9eff);
+    background: var(--color-ccna-access-active);
+    color: var(--color-primary-foreground);
+    border-left: 2px solid var(--color-ccna-access-primary);
     font-weight: 500;
 }
 
@@ -85,7 +85,7 @@
 .network-access-page h1 {
     font-family: var(--font-display);
     font-size: 2.2rem;
-    color: #f2f5fc;
+    color: var(--color-ccna-access-heading);
     letter-spacing: -0.01em;
     line-height: 1.3;
     margin: 0 0 0.75rem;
@@ -94,32 +94,32 @@
 .network-access-page h2 {
     font-family: var(--font-display);
     font-size: 1.6rem;
-    color: #f2f5fc;
+    color: var(--color-ccna-access-heading);
     letter-spacing: -0.01em;
     line-height: 1.3;
     margin: 3rem 0 1rem;
     padding-top: 1.25rem;
-    border-top: 1px solid var(--color-border, #1e2f4d);
+    border-top: 1px solid var(--color-ccna-access-border);
     scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 16px);
 }
 
 .network-access-page h3 {
     font-family: var(--font-display);
     font-size: 1.25rem;
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-ccna-access-primary);
     margin: 2rem 0 0.75rem;
 }
 
 .network-access-page h4 {
     font-family: var(--font-display);
     font-size: 1.05rem;
-    color: var(--color-foreground, #dbe4f5);
+    color: var(--color-ccna-access-foreground);
     margin: 1.5rem 0 0.5rem;
 }
 
 .network-access-page p {
     margin: 0 0 1.1rem;
-    color: var(--color-foreground, #dbe4f5);
+    color: var(--color-ccna-access-foreground);
     line-height: 1.75;
 }
 
@@ -135,8 +135,8 @@
 
 .network-access-page code {
     font-family: var(--font-mono);
-    background: #0b1626;
-    color: #ffd9a0;
+    background: var(--color-ccna-access-code-background);
+    color: var(--color-ccna-access-inline-code);
     padding: 0.15em 0.4em;
     border-radius: 4px;
     font-size: 0.88em;
@@ -144,13 +144,13 @@
 
 .network-access-page .code-block {
     font-family: var(--font-mono);
-    background: #0b1626;
-    border: 1px solid var(--color-border, #1e2f4d);
+    background: var(--color-ccna-access-code-background);
+    border: 1px solid var(--color-ccna-access-border);
     border-radius: 8px;
     padding: 1.1rem 1.3rem;
     overflow-x: auto;
     font-size: 0.88rem;
-    color: #cfe0ff;
+    color: var(--color-ccna-access-code-foreground);
     line-height: 1.65;
     margin: 1.2rem 0 1.6rem;
 }
@@ -160,15 +160,15 @@
 }
 
 .network-access-page .code-prompt {
-    color: var(--color-muted-foreground, #8fa2c4);
+    color: var(--color-ccna-access-foreground-muted);
 }
 
 .network-access-page .code-cmd {
-    color: #8fd3a8;
+    color: var(--color-ccna-access-code-command);
 }
 
 .network-access-page .code-comment {
-    color: var(--color-muted-foreground, #8fa2c4);
+    color: var(--color-ccna-access-foreground-muted);
     font-style: italic;
 }
 
@@ -184,25 +184,25 @@
     font-size: 0.78rem;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    background: #122036;
-    border: 1px solid var(--color-border, #1e2f4d);
-    color: var(--color-muted-foreground, #8fa2c4);
+    background: var(--color-ccna-access-emphasis-background);
+    border: 1px solid var(--color-ccna-access-border);
+    color: var(--color-ccna-access-foreground-muted);
 }
 
 .network-access-page .badge.accent {
-    color: var(--color-primary, #7c9eff);
-    border-color: rgba(124, 158, 255, 0.22);
+    color: var(--color-ccna-access-primary);
+    border-color: var(--color-ccna-access-active);
 }
 
 .network-access-page .lede {
     font-size: 1.15rem;
-    color: var(--color-muted-foreground, #8fa2c4);
+    color: var(--color-ccna-access-foreground-muted);
     max-width: 52em;
 }
 
 .network-access-page .callout {
-    border-left: 4px solid var(--color-primary, #7c9eff);
-    background: var(--color-card, #0e1b2e);
+    border-left: 4px solid var(--color-ccna-access-primary);
+    background: var(--color-ccna-access-card);
     padding: 1.1rem 1.4rem;
     border-radius: 0 8px 8px 0;
     margin: 1.6rem 0;
@@ -214,18 +214,18 @@
 
 .network-access-page .callout-title {
     font-weight: 600;
-    color: var(--color-primary, #7c9eff);
+    color: var(--color-ccna-access-primary);
     display: block;
     margin-bottom: 0.4rem;
 }
 
 .network-access-page .callout.warn {
-    border-left-color: #e0a84f;
-    background: rgba(224, 168, 79, 0.09);
+    border-left-color: var(--color-ccna-access-warning);
+    background: var(--color-ccna-access-warning-background);
 }
 
 .network-access-page .callout.warn .callout-title {
-    color: #e0a84f;
+    color: var(--color-ccna-access-warning);
 }
 
 .network-access-page table {
@@ -236,11 +236,11 @@
 }
 
 .network-access-page thead th {
-    background: #122036;
-    color: var(--color-primary, #7c9eff);
+    background: var(--color-ccna-access-emphasis-background);
+    color: var(--color-ccna-access-primary);
     text-align: left;
     padding: 0.7rem 1rem;
-    border-bottom: 2px solid var(--color-border, #1e2f4d);
+    border-bottom: 2px solid var(--color-ccna-access-border);
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 0.85rem;
@@ -249,18 +249,18 @@
 
 .network-access-page td {
     padding: 0.65rem 1rem;
-    border-bottom: 1px solid var(--color-border, #1e2f4d);
+    border-bottom: 1px solid var(--color-ccna-access-border);
     vertical-align: top;
-    color: var(--color-foreground, #dbe4f5);
+    color: var(--color-ccna-access-foreground);
 }
 
 .network-access-page tbody tr:hover {
-    background: rgba(124, 158, 255, 0.12);
+    background: var(--color-ccna-access-hover);
 }
 
 .network-access-page .mermaid-wrap {
-    background: var(--color-card, #0e1b2e);
-    border: 1px solid var(--color-border, #1e2f4d);
+    background: var(--color-ccna-access-card);
+    border: 1px solid var(--color-ccna-access-border);
     border-radius: 10px;
     margin: 1.5rem auto 2rem;
     width: 100%;
@@ -269,7 +269,7 @@
 
 .network-access-page .diagram-caption {
     font-size: 0.82rem;
-    color: var(--color-muted-foreground, #8fa2c4);
+    color: var(--color-ccna-access-foreground-muted);
     text-align: center;
     padding: 0.4rem 0 0.8rem;
     font-family: var(--font-mono);
@@ -278,8 +278,8 @@
 .network-access-page footer.page-footer {
     margin-top: 4rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--color-border, #1e2f4d);
-    color: var(--color-muted-foreground, #8fa2c4);
+    border-top: 1px solid var(--color-ccna-access-border);
+    color: var(--color-ccna-access-foreground-muted);
     font-size: 0.85rem;
 }
 
@@ -292,7 +292,7 @@
         width: 100%;
         height: auto;
         border-right: none;
-        border-bottom: 1px solid var(--color-border, #1e2f4d);
+        border-bottom: 1px solid var(--color-ccna-access-border);
     }
     .network-access-page .content {
         margin-left: 0;

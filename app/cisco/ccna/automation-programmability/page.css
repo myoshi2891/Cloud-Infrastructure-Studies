@@ -185,7 +185,7 @@
 }
 
 .ccna-automation-programmability-page strong {
-    color: #fff;
+    color: var(--color-primary-foreground);
     font-weight: 700;
 }
 
@@ -236,7 +236,7 @@
 }
 
 .ccna-automation-programmability-page table.dtable tbody tr:nth-child(even) {
-    background: rgba(124, 158, 255, 0.03);
+    background: var(--color-ccna-programmability-row-even);
 }
 
 .ccna-automation-programmability-page table.dtable tbody tr:hover {
@@ -264,23 +264,23 @@
 }
 
 .ccna-automation-programmability-page .code-attr {
-    color: #e06c75;
+    color: var(--color-ccna-programmability-code-attribute);
 }
 
 .ccna-automation-programmability-page .code-string {
-    color: #98c379;
+    color: var(--color-ccna-programmability-code-string);
 }
 
 .ccna-automation-programmability-page .code-number {
-    color: #d19a66;
+    color: var(--color-ccna-programmability-code-number);
 }
 
 .ccna-automation-programmability-page .code-literal {
-    color: #c678dd;
+    color: var(--color-ccna-programmability-code-literal);
 }
 
 .ccna-automation-programmability-page .code-punctuation {
-    color: #abb2bf;
+    color: var(--color-ccna-programmability-code-punctuation);
 }
 
 .ccna-automation-programmability-page code:not(.hljs) {

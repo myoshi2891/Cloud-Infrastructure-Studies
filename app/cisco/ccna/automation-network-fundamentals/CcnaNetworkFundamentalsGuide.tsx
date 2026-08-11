@@ -466,7 +466,9 @@ export default function CcnaNetworkFundamentalsGuide() {
 
                     <div className="callout">
                         <strong>自動化の観点でのポイント：</strong>
-                        これらの機器はそれぞれ異なるAPI・プロトコル（RESTCONF、NETCONF、ベンダー独自API等）で操作されることが多く、「どの機器が、どのレイヤーで、何をしているか」を理解していないと自動化スクリプトが何を制御しているのか把握できません。
+                        これらの機器はそれぞれ異なるAPI・プロトコル（RESTCONF、NETCONF、ベンダー独自API等）で操作されることが多く、
+                        「どの機器が、どのレイヤーで、何をしているか」を理解していないと自動化スクリプトが何を制御しているのか
+                        把握できません。
                     </div>
                 </section>
 
