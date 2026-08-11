@@ -22,7 +22,7 @@ vi.mock('@/components/MermaidDiagram', () => ({
     ),
 }));
 
-describe('CCNA Automation Network Fundamentals Guide - Layout & Order Integrity', () => {
+describe('CCNA Automation Network Fundamentals Guide - Full Fidelity Assertions', () => {
     it('renders the Page component with title and Server Component wrapper', () => {
         const pageElement = Page();
         expect(pageElement).toBeTruthy();
@@ -73,6 +73,33 @@ describe('CCNA Automation Network Fundamentals Guide - Layout & Order Integrity'
             const hasMatch = h2Texts.some(text => text.includes(expectedTitle));
             expect(hasMatch).toBe(true);
         });
+    });
+
+    it('renders Summary section with exact list items from original HTML', () => {
+        const { container } = render(<CcnaNetworkFundamentalsGuide />);
+        const summarySection = container.querySelector('#summary');
+        expect(summarySection).toBeTruthy();
+
+        const listItems = summarySection?.querySelectorAll('li');
+        expect(listItems?.length).toBe(6);
+
+        expect(listItems?.[0]?.textContent).toContain('Network Fundamentalsは出題比率15%');
+        expect(listItems?.[5]?.textContent).toContain('用語（6.1〜6.4）→ 仕組み（6.5〜6.7）→ 応用・診断（6.8〜6.9）');
+    });
+
+    it('renders References section with exact 4 reference links from original HTML', () => {
+        const { container } = render(<CcnaNetworkFundamentalsGuide />);
+        const refSection = container.querySelector('#references');
+        expect(refSection).toBeTruthy();
+
+        const refItems = refSection?.querySelectorAll('.ref-list li');
+        expect(refItems?.length).toBe(4);
+
+        const text = refSection?.textContent || '';
+        expect(text).toContain('CCNA Automation Certification（資格概要）');
+        expect(text).toContain('CCNA Automation Exam and Training');
+        expect(text).toContain('200-901-CCNAAUTO_v.1.1.pdf');
+        expect(text).toContain('Cisco Learning Network：CCNAAUTO Exam Topics and Study Guide');
     });
 
     it('renders NavBar with active section highlight capability (ScrollSpy)', () => {
