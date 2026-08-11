@@ -97,21 +97,24 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
             disconnect() {}
         }
         vi.stubGlobal('IntersectionObserver', IntersectionObserverStub);
-        mermaidRenderMock.mockClear();
+        try {
+            mermaidRenderMock.mockClear();
 
-        render(<CcnaNetworkFundamentalsGuide />);
-        const initialRenderCount = mermaidRenderMock.mock.calls.length;
+            render(<CcnaNetworkFundamentalsGuide />);
+            const initialRenderCount = mermaidRenderMock.mock.calls.length;
 
-        act(() => {
-            observerCallback?.(
-                [{ isIntersecting: true, target: { id: 'step3' } } as IntersectionObserverEntry],
-                {} as IntersectionObserver,
-            );
-        });
+            act(() => {
+                observerCallback?.(
+                    [{ isIntersecting: true, target: { id: 'step3' } } as IntersectionObserverEntry],
+                    {} as IntersectionObserver,
+                );
+            });
 
-        expect(initialRenderCount).toBeGreaterThan(0);
-        expect(mermaidRenderMock).toHaveBeenCalledTimes(initialRenderCount);
-        vi.unstubAllGlobals();
+            expect(initialRenderCount).toBeGreaterThan(0);
+            expect(mermaidRenderMock).toHaveBeenCalledTimes(initialRenderCount);
+        } finally {
+            vi.unstubAllGlobals();
+        }
     });
 
     it('preserves reference link text, count, and href values from the source HTML', () => {
