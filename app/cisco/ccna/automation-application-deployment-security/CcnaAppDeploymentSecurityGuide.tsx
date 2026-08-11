@@ -46,6 +46,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                         </p>
                     </header>
 
+                    <div className="callout">
+                        <div className="callout-title">このガイドの使い方</div>
+                        <p>
+                            各章は試験ガイドのサブトピック番号（4.1、4.2…）に対応しています。図解はすべて<strong>Mermaid</strong>によるフローチャート、比較情報はすべて<strong>表</strong>で示しており、ASCIIアートは使用していません。前提知識としてPythonの基礎、Linux/Bashの基本操作、Dockerの概念に軽く触れたことがあると理解がスムーズですが、未経験でも読み進められるように用語から説明しています。各章末の「この章のポイント」と、最後の第12章の早見表を試験直前の見直しに活用してください。
+                        </p>
+                    </div>
+
                     {/* 第1章 */}
                     <section id="chapter1" className="section-block">
                         <h2>第1章 出題範囲の全体像</h2>
@@ -165,6 +172,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                         <p>このドメイン全体の位置づけを図にすると次のとおりです。</p>
 
                         <Diagram id="diag-0" label="CCNAAUTO 試験ドメイン比率とドメイン4.0の範囲" />
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                ドメイン4.0は試験全体の15%を占め、「開発したアプリをどこでどう動かし、どう守るか」を扱う。12個のサブトピックは、大きく「展開モデル・展開先の選定（4.1〜4.3）」「CI/CDと自動テスト（4.4・4.5）」「コンテナ実務（4.6・4.7）」「セキュリティ（4.8〜4.10）」「運用スキル（4.11・4.12）」の5グループに整理できる。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第2章 */}
@@ -255,6 +269,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                         </div>
 
                         <Diagram id="diag-1" label="エッジコンピューティングとハイブリッドクラウド構成図" />
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                エッジコンピューティングの利点は「低遅延・帯域節約・オフライン耐性・データローカリティ」の4つに集約できる。展開モデルは「誰が管理するか」「どこにデータ・計算資源があるか」で分類され、要件（コスト・拡張性・規制・遅延）に応じて選択する。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第3章 */}
@@ -313,6 +334,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                                 </tbody>
                             </table>
                         </div>
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                分離の強さと起動の速さはトレードオフの関係にある：ベアメタル・VMは分離が強いが重く、コンテナは軽量だがOSカーネルを共有する。コンテナはCI/CDやマイクロサービスとの相性が良く、次章のCI/CDパイプラインとも密接に関係する。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第4章 */}
@@ -370,6 +398,13 @@ export function CcnaAppDeploymentSecurityGuide() {
 
                         <h3>パイプライン全体の流れ</h3>
                         <Diagram id="diag-3" label="CI/CDパイプラインの一般的なフロー図" />
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                CI（継続的インテグレーション）は「頻繁に統合し、自動テストで早期に問題を検出する」こと、CD（継続的デリバリー／デプロイ）は「いつでも展開できる状態を保ち、実際に自動展開まで行う」ことを指す。テスト失敗・承認却下時にフローが開発者へ戻る「フィードバックループ」がある点が重要。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第5章 */}
@@ -434,6 +469,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                             <div className="code-line">&nbsp;</div>
                             <div className="code-line">        <span className="code-comment"># Assert</span></div>
                             <div className="code-line">        self.assertEqual(mbps, <span className="code-string">4.0</span>)</div>
+                        </div>
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                ユニットテストは「準備（Arrange）→実行（Act）→検証（Assert）」の3ステップで考えると書きやすい。CI/CDパイプラインでは、このユニットテストが自動テストステージの中核を担う。
+                            </p>
                         </div>
                     </section>
 
@@ -550,6 +592,13 @@ export function CcnaAppDeploymentSecurityGuide() {
 
                         <h3>イメージのライフサイクル</h3>
                         <Diagram id="diag-5" label="Dockerイメージおよびコンテナのライフサイクル図" />
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                Dockerfileは「上から順に1行ずつ実行される構築手順書」として読むと理解しやすい。<code>COPY requirements.txt</code>を<code>COPY . .</code>より先に行うのは、依存関係が変わらない限りビルドキャッシュを再利用して高速化するための定石。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第7章 */}
@@ -617,8 +666,14 @@ export function CcnaAppDeploymentSecurityGuide() {
 
                         <h3>セキュアなデータフローのイメージ</h3>
                         <Diagram id="diag-6" label="セキュアなアプリケーションデータフロー図" />
-                    </section>
 
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                「シークレットはコードに書かない」「転送時と保存時の両方を暗号化する」の2点は特に頻出の観点。暗号化は「守る対象がどこにあるか（通信中か、保存中か）」で使う技術が異なる。
+                            </p>
+                        </div>
+                    </section>
                     {/* 第8章 */}
                     <section id="chapter8" className="section-block">
                         <h2>第8章 ネットワーク境界のセキュリティ要素：ファイアウォール・DNS・ロードバランサー・リバースプロキシ（4.9）</h2>
@@ -659,6 +714,13 @@ export function CcnaAppDeploymentSecurityGuide() {
 
                         <h3>リクエストが辿る経路</h3>
                         <Diagram id="diag-7" label="Webリクエストが辿るネットワーク境界要素の構成" />
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                「名前解決 → アクセス制御 → 負荷分散 → プロキシによる終端・制御 → アプリ本体」という順序でリクエストが処理される、という全体像を押さえる。ロードバランサーとリバースプロキシは役割が重なることも多いが、試験では「負荷分散」と「TLS終端・経路制御」という観点の違いで整理すると覚えやすい。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第9章 */}
@@ -709,6 +771,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                             2025年版では、InjectionはA05:2025に分類されるため、SQLインジェクションやXSSを含む入力処理の安全性をこの分類に沿って確認します。
                         </p>
                         <Diagram id="diag-8" label="入力検証とセッションチェックによるOWASP脅威回避フロー" />
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                XSS・SQLインジェクション・CSRFはいずれも「入力・リクエストを検証せず信頼する」ことが根本原因。OWASP Top 10は定期的に改訂されるため、学習時は「攻撃の仕組みと対策の考え方」を理解することを優先し、順位や名称は最新の一次情報で確認する。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第10章 */}
@@ -801,6 +870,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                                 </tbody>
                             </table>
                         </div>
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                「ファイル管理」「ディレクトリ操作」「環境変数」の3分類で整理すると覚えやすい。自動化スクリプト（第4章のCI/CDや第11章のDevOps運用）では、これらのコマンドが組み合わさって使われる。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第11章 */}
@@ -851,6 +927,13 @@ export function CcnaAppDeploymentSecurityGuide() {
                         </div>
 
                         <Diagram id="diag-9" label="DevOpsの無限ループ（Plan-Code-Build-Test-Release-Deploy-Operate-Monitor）" />
+
+                        <div className="callout">
+                            <div className="callout-title">この章のポイント</div>
+                            <p>
+                                DevOpsは単なるツールの導入ではなく、「文化・自動化・計測・共有」という考え方の集合体である。このループが途切れず回り続けることこそが、継続的デリバリー（CD）の本質。
+                            </p>
+                        </div>
                     </section>
 
                     {/* 第12章 */}
