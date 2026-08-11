@@ -5,7 +5,7 @@ import { MermaidDiagram } from '@/components/MermaidDiagram';
 import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
-/** Renders one labelled Mermaid diagram and its caption for a diagram identifier. */
+/** Renders the Mermaid diagram identified by id with its accessible label and optional caption. */
 const Diagram = React.memo(function Diagram({ id, label, caption }: { id: string; label: string; caption?: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
