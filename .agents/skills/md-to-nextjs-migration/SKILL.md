@@ -288,6 +288,7 @@ import {
 ### Step 5: テストを GREEN にする
 
 ```bash
+set -euo pipefail
 bun run test __tests__/gcl/<exam>/page.test.tsx
 if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
@@ -305,6 +306,7 @@ git commit -m "feat(gcl/<exam>/SN): implement migrated content"
 ### Step 6: Refactor / Integration を検証してコミット
 
 ```bash
+set -euo pipefail
 bun run test __tests__/gcl/<exam>/page.test.tsx
 bun run build
 bun run lint
@@ -334,6 +336,7 @@ Docs Sync の必須成果物は次の6ファイルを正準一覧とする。
 テストを追加・変更しない移行に限り、`docs/coverage-dashboard.html` と `docs/TEST_COVERAGE_PROGRESS.md` を対象外にできる。その他4ファイルは必ず確認し、必要な更新をステージする。
 
 ```bash
+set -euo pipefail
 bun run test __tests__/gcl/<exam>/page.test.tsx
 if ! git status --short; then
   echo 'worktree の状態を取得できません。コミットを中止します。' >&2
@@ -352,7 +355,15 @@ docs_sync_files=(
   GEMINI.md
   README.md
 )
-if [ "${MIGRATION_HAS_TEST_CHANGES:-yes}" != 'yes' ]; then
+migration_has_test_changes=${MIGRATION_HAS_TEST_CHANGES:-yes}
+case "$migration_has_test_changes" in
+  yes | no) ;;
+  *)
+    echo 'MIGRATION_HAS_TEST_CHANGES は yes または no を指定してください。' >&2
+    exit 1
+    ;;
+esac
+if [ "$migration_has_test_changes" = 'no' ]; then
   docs_sync_files=(MIGRATION_PROGRESS.md CLAUDE.md GEMINI.md README.md)
 fi
 if ! git add -p -- "${docs_sync_files[@]}"; then
