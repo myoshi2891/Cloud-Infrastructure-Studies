@@ -1,0 +1,53 @@
+.ccna-network-fundamentals-page {
+    --bg-page: var(--color-background, #07111e);
+    --bg-panel: var(--color-card, #0d1626);
+    --bg-panel-elevated: #101c30;
+    --bg-code: var(--color-gcp-code-background, #050b14);
+    --border-color: var(--color-gcp-border, #1f2b42);
+    --border-bright: var(--color-gcp-border-bright, #2d3f61);
+    --accent-color: #7c9eff;
+    --accent-soft: #3a4a6b;
+    --accent-dim: rgba(124, 158, 255, 0.12);
+    --text-color: var(--color-foreground, #e8edf7);
+    --text-dim: var(--color-muted-foreground, #aab5cc);
+
+    min-height: 100vh;
+    background-color: var(--bg-page);
+    color: var(--text-color);
+}
+
+.ccna-network-fundamentals-page .sidebar {
+    position: fixed;
+    left: 0;
+    top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px));
+    bottom: 0;
+    width: 280px;
+    z-index: 40;
+    overflow-y: auto;
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem 1rem;
+}
+
+.ccna-network-fundamentals-page .main {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    max-width: none;
+    padding: 2rem 2.5rem 4rem;
+}
+
+.ccna-network-fundamentals-page .section-block {
+    scroll-margin-top: calc(var(--header-h, 60px) + var(--disclaimer-height, 0px) + 20px);
+    margin-bottom: 3.5rem;
+}
+
+@media (max-width: 900px) {
+    .ccna-network-fundamentals-page .sidebar {
+        display: none;
+    }
+    .ccna-network-fundamentals-page .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 1.5rem 1rem 3rem;
+    }
+}
