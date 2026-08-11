@@ -6,7 +6,7 @@ import NavBar from './NavBar';
 import { DIAGRAMS } from './constants';
 
 /** Renders one labelled Mermaid diagram and its caption for a diagram identifier. */
-function Diagram({ id, label, caption }: { id: string; label: string; caption?: string }) {
+const Diagram = React.memo(function Diagram({ id, label, caption }: { id: string; label: string; caption?: string }) {
     const chart = DIAGRAMS[id];
     if (!chart) return null;
     return (
@@ -17,9 +17,9 @@ function Diagram({ id, label, caption }: { id: string; label: string; caption?: 
             {caption ? <p className="diagram-caption">{caption}</p> : null}
         </div>
     );
-}
+});
 
-/** Renders the complete CCNAAUTO Network Fundamentals guide with ScrollSpy navigation. */
+/** Renders the complete guide and uses IntersectionObserver to track the visible section for ScrollSpy navigation. */
 export default function CcnaNetworkFundamentalsGuide() {
     const [activeSectionId, setActiveSectionId] = useState<string>('overview');
 
@@ -465,10 +465,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                     </div>
 
                     <div className="callout">
-                        <strong>自動化の観点でのポイント：</strong>
-                        これらの機器はそれぞれ異なるAPI・プロトコル（RESTCONF、NETCONF、ベンダー独自API等）で操作されることが多く、
-                        「どの機器が、どのレイヤーで、何をしているか」を理解していないと自動化スクリプトが何を制御しているのか
-                        把握できません。
+                        <strong>自動化の観点でのポイント：</strong> これらの機器はそれぞれ異なるAPI・プロトコル（RESTCONF、NETCONF、ベンダー独自API等）で操作されることが多く、 「どの機器が、どのレイヤーで、何をしているか」を理解していないと自動化スクリプトが何を制御しているのか 把握できません。
                     </div>
                 </section>
 
