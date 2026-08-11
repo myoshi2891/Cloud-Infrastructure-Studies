@@ -211,7 +211,8 @@ curl -s -X POST \
   -H "Content-Type: application/json" \
   --data-binary @request.json \
   "https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}" \
-  -o text-response.json
+  -o text-response.json \
+  -w '\nHTTP %{http_code}\n'
 ```
 
 ### curl オプションの意味
@@ -261,7 +262,8 @@ curl -s -X POST \
   -H "Content-Type: application/json" \
   --data-binary @request.json \
   "https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}" \
-  -o landmark-response.json
+  -o landmark-response.json \
+  -w '\nHTTP %{http_code}\n'
 
 gsutil cp landmark-response.json gs://BUCKET_NAME_FILLED_AFTER_LAB_START
 ```
