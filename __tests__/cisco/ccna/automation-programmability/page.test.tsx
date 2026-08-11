@@ -64,4 +64,14 @@ describe('CCNA Automation and Programmability Guide - Automated 100% Text & Stru
         expect(activeLink).toBeTruthy();
         expect(activeLink?.getAttribute('href')).toBe('#sec63');
     });
+
+    it('renders JSON code block with syntax highlighting span tags (.code-attr, .code-string, .code-number, .code-literal)', () => {
+        const { container } = render(<CcnaAutomationProgrammabilityGuide />);
+        const codeBlock = container.querySelector('.code-block');
+        expect(codeBlock).toBeTruthy();
+        expect(codeBlock?.querySelector('.code-attr')).toBeTruthy();
+        expect(codeBlock?.querySelector('.code-string')).toBeTruthy();
+        expect(codeBlock?.querySelector('.code-number')).toBeTruthy();
+        expect(codeBlock?.querySelector('.code-literal')).toBeTruthy();
+    });
 });
