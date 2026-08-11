@@ -27,19 +27,31 @@ export default function CcnaNetworkFundamentalsGuide() {
         if (typeof IntersectionObserver === 'undefined') return;
 
         const sections = document.querySelectorAll('section.section, footer.footer');
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting && entry.target.id) {
-                        setActiveSectionId(entry.target.id);
-                    }
-                });
-            },
-            { rootMargin: '-20% 0px -70% 0px' }
-        );
+        const handleIntersections: IntersectionObserverCallback = (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.target.id) {
+                    setActiveSectionId(entry.target.id);
+                }
+            });
+        };
+        let observer: IntersectionObserver | undefined;
 
-        sections.forEach((s) => observer.observe(s));
-        return () => observer.disconnect();
+        const observeSections = () => {
+            observer?.disconnect();
+            const topOffset = Math.round(window.innerHeight * 0.2);
+            const bottomOffset = Math.round(window.innerHeight * 0.7);
+            observer = new IntersectionObserver(handleIntersections, {
+                rootMargin: `-${topOffset}px 0px -${bottomOffset}px 0px`,
+            });
+            sections.forEach((section) => observer.observe(section));
+        };
+
+        observeSections();
+        window.addEventListener('resize', observeSections);
+        return () => {
+            window.removeEventListener('resize', observeSections);
+            observer?.disconnect();
+        };
     }, []);
 
     return (
