@@ -346,6 +346,11 @@ const ALL_EXAMS: Exam[] = [
                 href: '/cisco/ccna/automation-infrastructure-and-automation',
                 pct: '20%',
             },
+            {
+                label: '1.0 Network Fundamentals（ネットワークの基礎）',
+                href: '/cisco/ccna/automation-network-fundamentals',
+                pct: '15%',
+            },
         ],
         badge: 'ネットワーク基礎',
         icon: '🌐',

@@ -8,11 +8,34 @@ HTMLファイルから Next.js / React コンポーネントへの移行作業�
 
 - **ブランチ:** dev
 - **進行中タスク:** (なし)
-- **最新実装 HEAD:** `4183329` (`refactor/docs(cisco/ccna): integrate CCNA automation infrastructure and automation guide into routing and update docs`)
-- **前回進捗同期コミット:** `4183329`
+- **最新実装 HEAD:** `4fbda39` (`feat(ccna): implement Network Fundamentals guide page and components to pass tests`)
+- **前回進捗同期コミット:** `4fbda39`
 - **次の作業:** 完了
-- **ビルド状態:** 単体テスト全パス (Vitest 7/7 passed)
-- **最終更新日時(UTC):** 2026-08-11T04:26:00.000Z
+- **ビルド状態:** 単体テスト全パス (Vitest 8/8 passed)
+- **最終更新日時(UTC):** 2026-08-11T04:47:00.000Z
+
+## 2026-08-11: Cisco「CCNA 6.0 Network Fundamentals ドメイン徹底解説」100%全量移行 (完了)
+
+### 目的
+
+`Ccna-automation-network-fundamentals.html`（1612行、11個のMermaid図、12個の表、13個の参考文献）を、Next.js App Router 5ファイル構成 (`page.tsx`, `CcnaNetworkFundamentalsGuide.tsx`, `NavBar.tsx`, `constants.ts`, `page.css`) で `/cisco/ccna/automation-network-fundamentals` ルートへ移行。文章・表・11個のMermaid図・コードブロック・13個の参考文献・免責事項を一切の省略・要約なしで100%全量移植。
+
+### 完了済みステップ
+
+- [x] **Step 1 (Red)**: `test(ccna): add failing tests for Network Fundamentals guide migration` (`b6df393`)
+- [x] **Step 2 (Green)**: `feat(ccna): implement Network Fundamentals guide page and components to pass tests` (`4fbda39`)
+- [x] **Step 3 (Refactor / Integration & Nav & Docs)**: `refactor(ccna): integrate Network Fundamentals guide into routing, archive html, and update docs`
+- [x] **Step 4 (Archive & Sync)**: 元HTMLを `archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html` へ移動し `MIGRATION_PROGRESS.md` を同期
+
+### 関連ファイル
+
+- [app/cisco/ccna/automation-network-fundamentals/page.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/page.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/CcnaNetworkFundamentalsGuide.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/NavBar.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/NavBar.tsx)
+- [app/cisco/ccna/automation-network-fundamentals/constants.ts](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/constants.ts)
+- [app/cisco/ccna/automation-network-fundamentals/page.css](file:///Users/mitsuruyoshizumi/Workspace/Infra/app/cisco/ccna/automation-network-fundamentals/page.css)
+- [__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx](file:///Users/mitsuruyoshizumi/Workspace/Infra/__tests__/cisco/ccna/automation-network-fundamentals/page.test.tsx)
+- [archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html](file:///Users/mitsuruyoshizumi/Workspace/Infra/archive/Cisco/html/ccna/Ccna-automation-network-fundamentals.html)
 
 ## 2026-08-11: Cisco「CCNA Automation ドメイン5.0 Infrastructure and Automation ステップバイステップ解説ガイド」100%全量移行 (完了)
 
