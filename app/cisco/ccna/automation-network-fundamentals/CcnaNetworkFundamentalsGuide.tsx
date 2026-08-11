@@ -72,10 +72,16 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </header>
 
                 {/* OVERVIEW */}
-                <section id="overview" className="section">
+                <section id="overview" className="section prose">
                     <h2 className="step-title">はじめに：このガイドの位置づけ</h2>
+                    <p>
+                        <strong>CCNA Automation</strong> は、Ciscoが2026年に「DevNet Associate」から名称変更した資格で、ネットワークの基礎知識とソフトウェア開発・自動化スキルの両方を証明する認定資格です。取得には、120分の試験 <strong>200-901 CCNAAUTO（Automating Networks Using Cisco Platforms v1.1）</strong> に合格する必要があります。日本語での受験も可能です。
+                    </p>
+                    <p>
+                        この試験は次の6つのドメインで構成されており、その中で本ガイドが扱う <strong>「6.0 Network Fundamentals」は出題比率15%</strong> を占めます。
+                    </p>
                     <div className="table-wrapper">
-                        <table className="data-table">
+                        <table className="data-table domain-highlight">
                             <thead>
                                 <tr>
                                     <th scope="col">ドメイン番号</th>
@@ -123,7 +129,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 0 */}
-                <section id="step0" className="section">
+                <section id="step0" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 0</span>{' '}
                         Network Fundamentalsドメインの全体像
@@ -199,7 +205,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 1 */}
-                <section id="step1" className="section">
+                <section id="step1" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 1</span>{' '}
                         MACアドレスとVLAN（6.1）
@@ -264,7 +270,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 2 */}
-                <section id="step2" className="section">
+                <section id="step2" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 2</span>{' '}
                         IPアドレス・ルート・サブネットマスク/プレフィックス・ゲートウェイ（6.2）
@@ -376,7 +382,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 3 */}
-                <section id="step3" className="section">
+                <section id="step3" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 3</span>{' '}
                         ネットワーク機器の役割（6.3）
@@ -462,7 +468,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 4 */}
-                <section id="step4" className="section">
+                <section id="step4" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 4</span>{' '}
                         ネットワークトポロジ図の読み方（6.4）
@@ -486,7 +492,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 5 */}
-                <section id="step5" className="section">
+                <section id="step5" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 5</span>{' '}
                         Management / Data / Control Plane（6.5）
@@ -536,7 +542,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 6 */}
-                <section id="step6" className="section">
+                <section id="step6" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 6</span>{' '}
                         IPサービス（DHCP・DNS・NAT・SNMP・NTP）（6.6）
@@ -639,7 +645,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 7 */}
-                <section id="step7" className="section">
+                <section id="step7" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 7</span>{' '}
                         プロトコルとポート番号（6.7）
@@ -723,7 +729,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 8 */}
-                <section id="step8" className="section">
+                <section id="step8" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 8</span>{' '}
                         アプリケーション接続トラブルの切り分け（6.8）
@@ -780,7 +786,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* STEP 9 */}
-                <section id="step9" className="section">
+                <section id="step9" className="section prose">
                     <h2 className="step-title">
                         <span className="step-num">Step 9</span>{' '}
                         ネットワーク制約がアプリケーションに与える影響（6.9）
@@ -834,7 +840,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* SUMMARY */}
-                <section id="summary" className="section">
+                <section id="summary" className="section prose">
                     <h2 className="step-title">まとめ：学習のポイント</h2>
                     <p>Network Fundamentalsドメインの学習ポイント：</p>
                     <ol>
@@ -847,7 +853,7 @@ export default function CcnaNetworkFundamentalsGuide() {
                 </section>
 
                 {/* REFERENCES / FOOTER */}
-                <footer id="references" className="footer">
+                <footer id="references" className="footer prose">
                     <h2 className="step-title">参考情報源</h2>
                     <p>
                         本ガイドの内容は、以下のCisco公式情報源に基づいて作成しています。最新情報は変更される可能性があるため、 学習の際は必ず一次情報を確認してください。
