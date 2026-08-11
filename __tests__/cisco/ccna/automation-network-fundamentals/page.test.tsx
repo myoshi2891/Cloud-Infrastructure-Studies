@@ -89,12 +89,15 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
 
     it('does not re-render diagrams when ScrollSpy updates the active section', () => {
         let observerCallback: IntersectionObserverCallback | undefined;
+        const observerOptions: IntersectionObserverInit[] = [];
+        const disconnect = vi.fn();
         class IntersectionObserverStub {
-            constructor(callback: IntersectionObserverCallback) {
+            constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
                 observerCallback = callback;
+                observerOptions.push(options ?? {});
             }
             observe() {}
-            disconnect() {}
+            disconnect = disconnect;
         }
         vi.stubGlobal('IntersectionObserver', IntersectionObserverStub);
         try {
@@ -103,8 +106,16 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
             render(<CcnaNetworkFundamentalsGuide />);
             const initialRenderCount = mermaidRenderMock.mock.calls.length;
 
+            expect(observerCallback).toBeTypeOf('function');
+            expect(observerOptions).toEqual([
+                { rootMargin: '-154px 0px -538px 0px' },
+            ]);
+            if (!observerCallback) {
+                throw new Error('ScrollSpy must register an IntersectionObserver callback');
+            }
+
             act(() => {
-                observerCallback?.(
+                observerCallback(
                     [{ isIntersecting: true, target: { id: 'step3' } } as IntersectionObserverEntry],
                     {} as IntersectionObserver,
                 );
@@ -112,6 +123,20 @@ describe('CCNA Automation Network Fundamentals Guide - Automated 100% Text & Str
 
             expect(initialRenderCount).toBeGreaterThan(0);
             expect(mermaidRenderMock).toHaveBeenCalledTimes(initialRenderCount);
+
+            act(() => {
+                Object.defineProperty(window, 'innerHeight', {
+                    configurable: true,
+                    value: 1000,
+                });
+                window.dispatchEvent(new window.Event('resize'));
+            });
+
+            expect(disconnect).toHaveBeenCalledTimes(1);
+            expect(observerOptions).toEqual([
+                { rootMargin: '-154px 0px -538px 0px' },
+                { rootMargin: '-200px 0px -700px 0px' },
+            ]);
         } finally {
             vi.unstubAllGlobals();
         }
